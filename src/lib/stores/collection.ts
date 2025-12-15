@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import type { HeartDesign } from '$lib/types/heart';
+import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
 
 const STORAGE_KEY = 'julehjerte-collection';
 
@@ -8,7 +9,11 @@ export function getUserCollection(): HeartDesign[] {
 
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    const raw = stored ? (JSON.parse(stored) as unknown[]) : [];
+    if (!Array.isArray(raw)) return [];
+    return raw
+      .map(normalizeHeartDesign)
+      .filter((d): d is HeartDesign => d !== null);
   } catch {
     return [];
   }
@@ -25,7 +30,7 @@ export function saveUserDesign(design: HeartDesign): void {
   } else {
     collection.push(design);
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(collection));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(collection.map(serializeHeartDesign)));
 }
 
 export function deleteUserDesign(id: string): void {
@@ -33,7 +38,7 @@ export function deleteUserDesign(id: string): void {
 
   const collection = getUserCollection();
   const filtered = collection.filter((d) => d.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered.map(serializeHeartDesign)));
 }
 
 export function clearUserCollection(): void {
@@ -52,7 +57,8 @@ export async function loadStaticHearts(): Promise<HeartDesign[]> {
         try {
           const heartResponse = await fetch(`/hearts/${id}.json`);
           if (!heartResponse.ok) return null;
-          return (await heartResponse.json()) as HeartDesign;
+          const raw = (await heartResponse.json()) as unknown;
+          return normalizeHeartDesign(raw);
         } catch {
           // Skip invalid hearts
           return null;
@@ -66,13 +72,13 @@ export async function loadStaticHearts(): Promise<HeartDesign[]> {
   }
 }
 
-export async function loadAllHearts(): Promise<HeartDesign[]> {
+export async function loadAllHearts(): Promise<(HeartDesign & { isUserCreated?: boolean })[]> {
   const staticHearts = await loadStaticHearts();
   const userHearts = getUserCollection();
 
-  // User hearts come first, marked with isUserCreated
+  // Static hearts first, then user-created hearts at the end (marked with isUserCreated)
   return [
-    ...userHearts.map((h) => ({ ...h, isUserCreated: true })),
-    ...staticHearts
+    ...staticHearts,
+    ...userHearts.map((h) => ({ ...h, isUserCreated: true }))
   ];
 }

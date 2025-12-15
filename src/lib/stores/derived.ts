@@ -8,7 +8,7 @@ import { toScreen, CANVAS_WIDTH, CANVAS_HEIGHT } from '../geometry/heart';
 
 /**
  * Derived store for sampled finger path points (for rendering)
- * Returns screen coordinates ready for Konva
+ * Returns screen coordinates
  */
 export const sampledPaths = derived(heartStore, $heart => {
   const paths: Record<string, Point[]> = {};
@@ -109,61 +109,3 @@ export const pathStyles = derived(
   }
 );
 
-/**
- * Helper to convert flat point array to Konva line points format
- */
-export function toKonvaPoints(points: Point[]): number[] {
-  const flat: number[] = [];
-  for (const p of points) {
-    flat.push(p.x, p.y);
-  }
-  return flat;
-}
-
-/**
- * Derived store for Konva-ready path data
- * Left lobe fingers are dark red, right lobe fingers are dark green
- * This makes the weave crossing pattern visible
- */
-export const konvaPaths = derived(
-  [sampledPaths, pathStyles, heartStore],
-  ([$sampledPaths, $pathStyles, $heart]) => {
-    return Object.entries($sampledPaths).map(([fingerId, points]) => {
-      const finger = $heart.fingers[fingerId];
-      const style = $pathStyles[fingerId];
-
-      // Different colors for each lobe's fingers to show the weave
-      const strokeColor = finger.lobe === 'left' ? '#8B0000' : '#006400';
-
-      return {
-        id: fingerId,
-        points: toKonvaPoints(points),
-        stroke: strokeColor,
-        strokeWidth: style.strokeWidth + 2, // Thicker lines for visibility
-        opacity: style.opacity,
-        lobe: finger.lobe
-      };
-    });
-  }
-);
-
-/**
- * Derived store for Konva-ready lobe outlines
- * Using colors that match the mockup - soft green/pink fills with black outlines
- */
-export const konvaLobes = derived(lobeOutlines, $lobes => {
-  return {
-    left: {
-      points: toKonvaPoints($lobes.left),
-      fill: 'rgba(144, 238, 144, 0.7)', // soft green (matching mockup)
-      stroke: '#1a1a1a', // dark/black outline
-      strokeWidth: 2
-    },
-    right: {
-      points: toKonvaPoints($lobes.right),
-      fill: 'rgba(255, 200, 200, 0.7)', // soft pink/salmon (matching mockup)
-      stroke: '#1a1a1a', // dark/black outline
-      strokeWidth: 2
-    }
-  };
-});

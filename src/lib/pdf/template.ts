@@ -1,8 +1,9 @@
 import { jsPDF } from 'jspdf';
 import type { HeartDesign, Finger, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
+import { SITE_DOMAIN } from '$lib/config';
 
-const STRIP_WIDTH = 50;
+const STRIP_WIDTH = 75;
 const CENTER = { x: 300, y: 300 };
 
 // A4 dimensions in mm
@@ -10,13 +11,42 @@ const PAGE_WIDTH = 210;
 const PAGE_HEIGHT = 297;
 const MARGIN = 10;
 
-// Template dimensions - at 100% scale, templates are nearly full page
-// At 50% scale, they fit a 2x2 grid layout
-const BASE_TEMPLATE_WIDTH = (PAGE_WIDTH - MARGIN * 3); // ~180mm at 100%
-const BASE_TEMPLATE_HEIGHT = (PAGE_HEIGHT - MARGIN * 3); // ~267mm at 100%
+// Layout modes for PDF generation
+export type LayoutMode = 'small' | 'medium' | 'large';
+
+const LAYOUTS = {
+  small: { cols: 4, rows: 4 },   // 16 per page
+  medium: { cols: 3, rows: 3 },  // 9 per page
+  large: { cols: 2, rows: 2 }    // 4 per page
+};
 
 export interface PDFOptions {
-  scale?: number; // 0.5 to 1.0, default 0.5 (100% = compact 2x2 layout)
+  layout?: LayoutMode;
+}
+
+// Calculate template dimensions based on layout mode
+function getTemplateDimensions(layout: LayoutMode) {
+  const COMPACT_MARGIN = 5;
+  const FOOTER_HEIGHT = 5;
+  const availableWidth = PAGE_WIDTH - COMPACT_MARGIN * 2;
+  const availableHeight = PAGE_HEIGHT - COMPACT_MARGIN * 2 - FOOTER_HEIGHT;
+
+  const { cols, rows } = LAYOUTS[layout];
+
+  const maxWidth = (availableWidth - COMPACT_MARGIN * (cols - 1)) / cols;
+  const maxHeight = (availableHeight - COMPACT_MARGIN * (rows - 1)) / rows;
+
+  // Maintain heart template aspect ratio (~1.5 height/width)
+  const aspectRatio = 1.5;
+  let width = maxWidth;
+  let height = width * aspectRatio;
+
+  if (height > maxHeight) {
+    height = maxHeight;
+    width = height / aspectRatio;
+  }
+
+  return { width, height, cols, rows, margin: COMPACT_MARGIN, footerHeight: FOOTER_HEIGHT };
 }
 
 interface LobeParams {
@@ -188,9 +218,10 @@ function transformPathData(
     if (type === 'M') {
       const [x, y] = args;
       if (lobe === 'left') {
-        // Rotate 90° counterclockwise: new_x = y - squareTop, new_y = squareLeft + squareSize - x
+        // Rotate 90° counterclockwise, then shift down by earRadius for ear at top
+        // new_x = y - squareTop, new_y = squareLeft + squareSize - x + earRadius
         const newX = y - squareTop;
-        const newY = squareLeft + squareSize - x;
+        const newY = squareLeft + squareSize - x + earRadius;
         result += `M ${newX} ${newY} `;
       } else {
         // Right lobe: just translate to local coordinates
@@ -206,7 +237,7 @@ function transformPathData(
           const x = args[i];
           const y = args[i + 1];
           const newX = y - squareTop;
-          const newY = squareLeft + squareSize - x;
+          const newY = squareLeft + squareSize - x + earRadius;
           newArgs.push(newX, newY);
         }
         result += `C ${newArgs.join(' ')} `;
@@ -225,7 +256,7 @@ function transformPathData(
       const [x, y] = args;
       if (lobe === 'left') {
         const newX = y - squareTop;
-        const newY = squareLeft + squareSize - x;
+        const newY = squareLeft + squareSize - x + earRadius;
         result += `L ${newX} ${newY} `;
       } else {
         const newX = x - squareLeft;
@@ -351,15 +382,15 @@ function drawLobeTemplate(
     for (const finger of leftFingers) {
       if (finger.pathData) {
         // Transform pathData: rotate 90° counterclockwise
-        // new_x = y - squareTop, new_y = squareLeft + squareSize - x
+        // new_x = y - squareTop, new_y = squareLeft + squareSize - x + earRadius
         const transformedPath = transformPathData(finger.pathData, squareTop, squareLeft, squareSize, 'left');
         drawSVGPath(pdf, transformedPath, offsetX, offsetY, scale);
       } else {
-        // Transform: rotate 90° counterclockwise around center
-        const transformedP0 = { x: finger.p0.y - squareTop, y: squareLeft + squareSize - finger.p0.x };
-        const transformedP1 = { x: finger.p1.y - squareTop, y: squareLeft + squareSize - finger.p1.x };
-        const transformedP2 = { x: finger.p2.y - squareTop, y: squareLeft + squareSize - finger.p2.x };
-        const transformedP3 = { x: finger.p3.y - squareTop, y: squareLeft + squareSize - finger.p3.x };
+        // Transform: rotate 90° counterclockwise, then shift down by earRadius to account for ear at top
+        const transformedP0 = { x: finger.p0.y - squareTop, y: squareLeft + squareSize - finger.p0.x + earRadius };
+        const transformedP1 = { x: finger.p1.y - squareTop, y: squareLeft + squareSize - finger.p1.x + earRadius };
+        const transformedP2 = { x: finger.p2.y - squareTop, y: squareLeft + squareSize - finger.p2.x + earRadius };
+        const transformedP3 = { x: finger.p3.y - squareTop, y: squareLeft + squareSize - finger.p3.x + earRadius };
         drawBezier(pdf, transformedP0, transformedP1, transformedP2, transformedP3, offsetX, offsetY, scale);
       }
     }
@@ -474,37 +505,22 @@ function addTemplatesPage(
   startIndex: number,
   isFirstPage: boolean,
   heartImages: Map<string, string>,
-  scale: number = 0.85
+  layout: LayoutMode = 'medium'
 ): number {
   if (!isFirstPage) {
     pdf.addPage();
   }
 
-  // Reduce margins for more compact layout
-  const COMPACT_MARGIN = 6;
+  // Get dimensions based on layout mode
+  const { width: TEMPLATE_WIDTH, height: TEMPLATE_HEIGHT, cols, rows, margin: COMPACT_MARGIN, footerHeight: FOOTER_HEIGHT } = getTemplateDimensions(layout);
 
-  // Apply scale to template dimensions
-  const TEMPLATE_WIDTH = BASE_TEMPLATE_WIDTH * scale;
-  const TEMPLATE_HEIGHT = BASE_TEMPLATE_HEIGHT * scale;
-
-  // Determine layout based on how many templates fit
-  const availableWidth = PAGE_WIDTH - COMPACT_MARGIN * 2;
-  const availableHeight = PAGE_HEIGHT - COMPACT_MARGIN * 2;
-
-  // Can we fit 2 columns?
-  const canFitTwoCols = (TEMPLATE_WIDTH * 2 + COMPACT_MARGIN) <= availableWidth;
-  // Can we fit 2 rows?
-  const canFitTwoRows = (TEMPLATE_HEIGHT * 2 + COMPACT_MARGIN) <= availableHeight;
-
-  const cols = canFitTwoCols ? 2 : 1;
-  const rows = canFitTwoRows ? 2 : 1;
   const maxPerPage = cols * rows;
 
   // Calculate grid positions based on layout
   const totalGridWidth = TEMPLATE_WIDTH * cols + COMPACT_MARGIN * (cols - 1);
   const totalGridHeight = TEMPLATE_HEIGHT * rows + COMPACT_MARGIN * (rows - 1);
   const startX = (PAGE_WIDTH - totalGridWidth) / 2 + TEMPLATE_WIDTH / 2;
-  const startY = (PAGE_HEIGHT - totalGridHeight) / 2 + TEMPLATE_HEIGHT / 2;
+  const startY = (PAGE_HEIGHT - FOOTER_HEIGHT - totalGridHeight) / 2 + TEMPLATE_HEIGHT / 2;
 
   const positions: { x: number; y: number }[] = [];
   for (let row = 0; row < rows; row++) {
@@ -516,10 +532,9 @@ function addTemplatesPage(
     }
   }
 
-  // Preview size scales with template size, with reasonable min/max
-  const PREVIEW_SIZE = Math.min(Math.max(18 * scale * 1.5, 18), 30);
+  // Preview size: scales with template size, max 30% of template width
+  const PREVIEW_SIZE = Math.min(TEMPLATE_WIDTH * 0.35, TEMPLATE_HEIGHT * 0.25);
   const HEADER_SPACE = 4; // Space for name text
-  const GAP = 2; // Gap between preview and template
 
   let drawn = 0;
   for (let i = 0; i < maxPerPage && startIndex + i < templates.length; i++) {
@@ -538,25 +553,12 @@ function addTemplatesPage(
       : `${template.design.name} (${template.lobe === 'left' ? 'Venstre' : 'Højre'})`;
     pdf.text(label, pos.x, slotTop + HEADER_SPACE, { align: 'center' });
 
-    // Draw colored preview heart image below name
-    const previewTop = slotTop + HEADER_SPACE + 2;
-    const imageData = heartImages.get(template.design.id);
-    if (imageData) {
-      pdf.addImage(
-        imageData,
-        'PNG',
-        pos.x - PREVIEW_SIZE / 2,
-        previewTop,
-        PREVIEW_SIZE,
-        PREVIEW_SIZE
-      );
-    }
-
-    // Draw the template below preview
-    const templateTop = previewTop + PREVIEW_SIZE + GAP;
+    // Calculate template dimensions to position preview inside the ear
+    const templateTop = slotTop + HEADER_SPACE + 2;
     const templateHeight = slotBottom - templateTop;
     const templateCenterY = templateTop + templateHeight / 2;
 
+    // Draw the template first
     const lobeToUse = template.lobe === 'both' ? 'right' : template.lobe;
     drawLobeTemplate(
       pdf,
@@ -568,14 +570,34 @@ function addTemplatesPage(
       templateHeight - 2
     );
 
+    // Draw colored preview heart image inside the ear (semicircle) portion
+    const earHeight = templateHeight / 3; // Approximate ear portion
+    const previewCenterY = templateTop + earHeight * 0.6; // Slightly below ear center
+    const imageData = heartImages.get(template.design.id);
+    if (imageData) {
+      pdf.addImage(
+        imageData,
+        'PNG',
+        pos.x - PREVIEW_SIZE / 2,
+        previewCenterY - PREVIEW_SIZE / 2,
+        PREVIEW_SIZE,
+        PREVIEW_SIZE
+      );
+    }
+
     drawn++;
   }
+
+  // Add footer with source attribution
+  pdf.setFontSize(7);
+  pdf.setTextColor(128);
+  pdf.text(SITE_DOMAIN, PAGE_WIDTH / 2, PAGE_HEIGHT - 3, { align: 'center' });
 
   return drawn;
 }
 
 export async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promise<jsPDF> {
-  const scale = options.scale ?? 0.5;
+  const layout = options.layout ?? 'medium';
 
   const pdf = new jsPDF({
     orientation: 'portrait',
@@ -585,13 +607,13 @@ export async function generatePDF(design: HeartDesign, options: PDFOptions = {})
 
   const heartImages = await prerenderHeartImages([design]);
   const templates = collectTemplates([design]);
-  addTemplatesPage(pdf, templates, 0, true, heartImages, scale);
+  addTemplatesPage(pdf, templates, 0, true, heartImages, layout);
 
   return pdf;
 }
 
 export async function generateMultiPDF(designs: HeartDesign[], options: PDFOptions = {}): Promise<jsPDF> {
-  const scale = options.scale ?? 0.5;
+  const layout = options.layout ?? 'medium';
 
   const pdf = new jsPDF({
     orientation: 'portrait',
@@ -605,7 +627,7 @@ export async function generateMultiPDF(designs: HeartDesign[], options: PDFOptio
   let isFirst = true;
 
   while (index < templates.length) {
-    const drawn = addTemplatesPage(pdf, templates, index, isFirst, heartImages, scale);
+    const drawn = addTemplatesPage(pdf, templates, index, isFirst, heartImages, layout);
     index += drawn;
     isFirst = false;
   }

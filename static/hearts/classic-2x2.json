@@ -1,0 +1,19 @@
+{
+  "id": "classic-2x2",
+  "name": "Classic 2x2",
+  "author": "Traditional",
+  "description": "The traditional Danish woven heart with 2 strips per side",
+  "gridSize": 2,
+  "fingers": [
+    {
+      "id": "L-0",
+      "lobe": "left",
+      "pathData": "M 350 300 C 316.6667 300 283.3333 300 250 300"
+    },
+    {
+      "id": "R-0",
+      "lobe": "right",
+      "pathData": "M 300 350 C 300 316.6667 300 283.3333 300 250"
+    }
+  ]
+}

@@ -20,6 +20,16 @@ const config = {
 			// Base path for GitHub Pages (repo name)
 			// Set to '' for custom domain or root deployment
 			base: process.env.NODE_ENV === 'production' ? '/julehjerte' : ''
+		},
+		prerender: {
+			handleHttpError: ({ path, referrer, message }) => {
+				// Ignore 500 errors during prerender (SSR fetch issues)
+				if (message.includes('500')) {
+					console.warn(`Prerender warning: ${path} (from ${referrer})`);
+					return;
+				}
+				throw new Error(message);
+			}
 		}
 	}
 };

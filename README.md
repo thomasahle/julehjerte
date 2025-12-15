@@ -35,6 +35,16 @@ npm run preview  # Preview the production build
 npm run check
 ```
 
+## Graph Utilities (Python)
+
+These scripts are used for experimenting with planar face-adjacency graphs from two-colour images.
+
+- Export embedded dual `G0` (faces + boundary “green” ports): `python3 image_adjacency.py example.png --embedded-json tmp/g0.json`
+- Find a grid expansion (grid-minor style) and optionally emit the expanded grid graph:
+  - `python3 gridify_embedded_dual.py tmp/g0.json --out tmp/grid.json --out-graph tmp/grid_graph.json`
+- Apply refinement ops manually (SplitArc / VertexSplit):
+  - `python3 refine_embedded_dual.py tmp/g0.json --op split_arc:0 --op vertex_split:1:1:3 --out tmp/g1.json`
+
 ## Deployment
 
 The project is configured for GitHub Pages deployment. Push to `main` to trigger automatic deployment via GitHub Actions.

@@ -8,6 +8,11 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	// Google Analytics
+	interface Window {
+		dataLayer: unknown[];
+	}
 }
 
 export {};

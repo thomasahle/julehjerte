@@ -1,27 +1,36 @@
 import paperPkg from 'paper';
 import type { HeartDesign, Finger, Vec, LobeId } from '$lib/types/heart';
+import { getColors, type HeartColors } from '$lib/stores/colors';
 
 const { PaperScope } = paperPkg;
 
-const CANVAS_SIZE = 300; // Larger preview size to prevent cropping
-const CENTER: Vec = { x: CANVAS_SIZE / 2, y: CANVAS_SIZE / 2 };
-const LEFT_FILL = { r: 1, g: 1, b: 1, a: 1 }; // White
-const RIGHT_FILL = { r: 0.85, g: 0.15, b: 0.15, a: 1 }; // Red
+const DEFAULT_CANVAS_SIZE = 300; // Larger preview size to prevent cropping
 const REFERENCE_GRID_SIZE = 4;
+
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16) / 255,
+        g: parseInt(result[2], 16) / 255,
+        b: parseInt(result[3], 16) / 255
+      }
+    : { r: 1, g: 1, b: 1 };
+}
 
 function toPoint(paper: paper.PaperScope, v: Vec): paper.Point {
   return new paper.Point(v.x, v.y);
 }
 
-function lobeFillColor(paper: paper.PaperScope, lobe: LobeId) {
-  return lobe === 'left'
-    ? new paper.Color(LEFT_FILL.r, LEFT_FILL.g, LEFT_FILL.b, LEFT_FILL.a)
-    : new paper.Color(RIGHT_FILL.r, RIGHT_FILL.g, RIGHT_FILL.b, RIGHT_FILL.a);
+function lobeFillColor(paper: paper.PaperScope, lobe: LobeId, colors: HeartColors) {
+  const rgb = hexToRgb(lobe === 'left' ? colors.left : colors.right);
+  return new paper.Color(rgb.r, rgb.g, rgb.b, 1);
 }
 
 function buildLobeShape(
   paper: paper.PaperScope,
   kind: LobeId,
+  colors: HeartColors,
   squareLeft: number,
   squareTop: number,
   squareSize: number,
@@ -63,7 +72,7 @@ function buildLobeShape(
   squareRect.remove();
   semi.remove();
 
-  lobe.fillColor = lobeFillColor(paper, kind);
+  lobe.fillColor = lobeFillColor(paper, kind, colors);
   lobe.strokeColor = null;
   lobe.strokeWidth = 0;
 
@@ -116,6 +125,28 @@ function itemArea(item: paper.Item | null | undefined): number {
   return typeof area === 'number' ? area : 0;
 }
 
+// Clean up compound paths by removing very small children (artifacts from boolean ops)
+function cleanupPath(paper: paper.PaperScope, item: paper.PathItem, minArea: number = 10): paper.PathItem {
+  if (item.className === 'CompoundPath') {
+    const compound = item as paper.CompoundPath;
+    const children = compound.children.slice();
+    for (const child of children) {
+      if (Math.abs(itemArea(child)) < minArea) {
+        child.remove();
+      }
+    }
+    // If only one child left, return it directly
+    if (compound.children.length === 1) {
+      const single = compound.children[0] as paper.Path;
+      single.fillColor = compound.fillColor;
+      single.remove();
+      compound.remove();
+      return single;
+    }
+  }
+  return item;
+}
+
 function buildStripRegionBetween(
   paper: paper.PaperScope,
   a: paper.Path,
@@ -137,11 +168,13 @@ function buildStripRegionBetween(
 function buildLobeStrips(
   paper: paper.PaperScope,
   lobe: LobeId,
+  colors: HeartColors,
   fingers: Finger[],
   overlap: paper.PathItem,
   squareLeft: number,
   squareTop: number,
-  squareSize: number
+  squareSize: number,
+  onlyEvenStrips = false
 ): Array<{ index: number; item: paper.PathItem }> {
   const squareRight = squareLeft + squareSize;
   const squareBottom = squareTop + squareSize;
@@ -189,6 +222,7 @@ function buildLobeStrips(
 
   const strips: Array<{ index: number; item: paper.PathItem }> = [];
   for (let i = 0; i < boundaries.length - 1; i++) {
+    if (onlyEvenStrips && i % 2 === 1) continue;
     const a = boundaries[i]();
     const b = boundaries[i + 1]();
     const strip = buildStripRegionBetween(paper, a, b, overlap);
@@ -198,37 +232,66 @@ function buildLobeStrips(
       strip?.remove();
       continue;
     }
-    strip.fillColor = lobeFillColor(paper, lobe);
+    strip.fillColor = lobeFillColor(paper, lobe, colors);
     strip.strokeColor = null;
     strips.push({ index: i, item: strip });
   }
   return strips;
 }
 
+function buildOddWeaveMask(
+  paper: paper.PaperScope,
+  leftStrips: Array<{ index: number; item: paper.PathItem }>,
+  rightStrips: Array<{ index: number; item: paper.PathItem }>
+): paper.PathItem | null {
+  // Odd parity cells are where (leftIndex + rightIndex) % 2 === 1.
+  // Represent as XOR(L_even, R_even) via even-odd fill rule (no boolean ops).
+  const prev = paper.settings.insertItems;
+  paper.settings.insertItems = false;
+  try {
+    const children = [
+      ...leftStrips.filter((s) => s.index % 2 === 0).map((s) => s.item),
+      ...rightStrips.filter((s) => s.index % 2 === 0).map((s) => s.item)
+    ];
+    if (!children.length) return null;
+    const mask = new paper.CompoundPath({ children });
+    mask.fillRule = 'evenodd';
+    return mask;
+  } finally {
+    paper.settings.insertItems = prev;
+  }
+}
+
 /**
  * Renders a heart design to a canvas and returns it as a data URL
  */
-export async function renderHeartToDataURL(design: HeartDesign): Promise<string> {
+export async function renderHeartToDataURL(
+  design: HeartDesign,
+  options: { size?: number; colors?: HeartColors } = {}
+): Promise<string> {
+  const canvasSize = options.size ?? DEFAULT_CANVAS_SIZE;
+  const colors = options.colors ?? getColors();
+
   // Create an off-screen canvas
   const canvas = document.createElement('canvas');
-  canvas.width = CANVAS_SIZE;
-  canvas.height = CANVAS_SIZE;
+  canvas.width = canvasSize;
+  canvas.height = canvasSize;
 
   // Create a new Paper.js scope for this render
   const paper = new PaperScope();
   paper.setup(canvas);
-  paper.view.viewSize = new paper.Size(CANVAS_SIZE, CANVAS_SIZE);
+  paper.view.viewSize = new paper.Size(canvasSize, canvasSize);
 
-  const STRIP_WIDTH = 50;
+  const STRIP_WIDTH = 75;
   const gridSize = design.gridSize;
   const squareSize = gridSize * STRIP_WIDTH;
 
-  // Scale everything to fit in our canvas
-  // After 45° rotation, the diagonal is sqrt(2) times larger
-  // Heart extends squareSize + earRadius in each dimension before rotation
+  // Scale everything to fit in our canvas using REFERENCE_GRID_SIZE for consistency
+  // This ensures all hearts appear the same size regardless of grid size
   const baseCenter = 300; // Original design center
-  const heartExtent = (squareSize + squareSize / 2) * Math.SQRT2; // Rotated bounding box
-  const scale = (CANVAS_SIZE * 0.85) / heartExtent; // Use 85% of canvas
+  const referenceSquareSize = REFERENCE_GRID_SIZE * STRIP_WIDTH;
+  const referenceExtent = (referenceSquareSize + referenceSquareSize / 2) * Math.SQRT2;
+  const scale = (canvasSize * 0.85) / referenceExtent; // Use 85% of canvas, fixed scale
 
   const squareLeft = baseCenter - squareSize / 2;
   const squareTop = baseCenter - squareSize / 2;
@@ -237,8 +300,8 @@ export async function renderHeartToDataURL(design: HeartDesign): Promise<string>
   const items: paper.Item[] = [];
 
   // Build lobes
-  const leftLobe = buildLobeShape(paper, 'left', squareLeft, squareTop, squareSize, earRadius);
-  const rightLobe = buildLobeShape(paper, 'right', squareLeft, squareTop, squareSize, earRadius);
+  const leftLobe = buildLobeShape(paper, 'left', colors, squareLeft, squareTop, squareSize, earRadius);
+  const rightLobe = buildLobeShape(paper, 'right', colors, squareLeft, squareTop, squareSize, earRadius);
 
   // Overlap and outside fills
   const overlap = leftLobe.intersect(rightLobe, { insert: false });
@@ -247,46 +310,32 @@ export async function renderHeartToDataURL(design: HeartDesign): Promise<string>
   leftLobe.remove();
   rightLobe.remove();
 
-  leftOutside.fillColor = lobeFillColor(paper, 'left');
+  leftOutside.fillColor = lobeFillColor(paper, 'left', colors);
   leftOutside.strokeColor = null;
-  rightOutside.fillColor = lobeFillColor(paper, 'right');
+  rightOutside.fillColor = lobeFillColor(paper, 'right', colors);
   rightOutside.strokeColor = null;
   items.push(leftOutside, rightOutside);
 
   // Build strips
-  const leftStrips = buildLobeStrips(paper, 'left', design.fingers, overlap, squareLeft, squareTop, squareSize);
-  const rightStrips = buildLobeStrips(paper, 'right', design.fingers, overlap, squareLeft, squareTop, squareSize);
+  // Only even-index strips are needed for the even-odd weave mask.
+  const leftStrips = buildLobeStrips(paper, 'left', colors, design.fingers, overlap, squareLeft, squareTop, squareSize, true);
+  const rightStrips = buildLobeStrips(paper, 'right', colors, design.fingers, overlap, squareLeft, squareTop, squareSize, true);
 
-  // Weave
-  for (const l of leftStrips) {
-    for (const r of rightStrips) {
-      const inter = l.item.intersect(r.item, { insert: false });
-      if (!inter || Math.abs(itemArea(inter)) < 1) {
-        inter?.remove();
-        continue;
-      }
-      const leftOnTop = (l.index + r.index) % 2 === 0;
-      if (leftOnTop) {
-        const fill = r.item.fillColor;
-        const next = r.item.subtract(inter, { insert: false });
-        next.fillColor = fill;
-        next.strokeColor = null;
-        r.item.remove();
-        r.item = next;
-      } else {
-        const fill = l.item.fillColor;
-        const next = l.item.subtract(inter, { insert: false });
-        next.fillColor = fill;
-        next.strokeColor = null;
-        l.item.remove();
-        l.item = next;
-      }
-      inter.remove();
-    }
+  // Fast weave: even-odd fill rule (no boolean ops).
+  // Render overlap in left color, then overlay odd-parity cells in right color.
+  const oddMask = buildOddWeaveMask(paper, leftStrips, rightStrips);
+
+  overlap.fillColor = lobeFillColor(paper, 'left', colors);
+  overlap.strokeColor = null;
+  items.push(overlap);
+
+  if (oddMask && Math.abs(itemArea(oddMask)) >= 1) {
+    oddMask.fillColor = lobeFillColor(paper, 'right', colors);
+    oddMask.strokeColor = null;
+    items.push(oddMask);
+  } else {
+    oddMask?.remove();
   }
-
-  leftStrips.forEach((s) => items.push(s.item));
-  rightStrips.forEach((s) => items.push(s.item));
 
   // Group and transform
   const group = new paper.Group(items);
@@ -300,7 +349,7 @@ export async function renderHeartToDataURL(design: HeartDesign): Promise<string>
 
   // Scale and center in canvas
   group.scale(scale, new paper.Point(baseCenter, baseCenter));
-  group.position = new paper.Point(CANVAS_SIZE / 2, CANVAS_SIZE / 2);
+  group.position = new paper.Point(canvasSize / 2, canvasSize / 2);
 
   // Force render
   paper.view.update();
