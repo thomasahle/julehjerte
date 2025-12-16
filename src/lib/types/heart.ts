@@ -2,6 +2,8 @@ export type Vec = { x: number; y: number };
 export type LobeId = 'left' | 'right';
 export type NodeType = 'corner' | 'smooth' | 'symmetric';
 
+export type GridSize = { x: number; y: number };
+
 export type Finger = {
   id: string;
   lobe: LobeId;
@@ -16,7 +18,8 @@ export interface HeartDesign {
   name: string;
   author: string;
   description?: string;
-  gridSize: number;
+  // Number of strips in the overlap rectangle (x = columns, y = rows).
+  gridSize: GridSize;
   fingers: Finger[];
 }
 

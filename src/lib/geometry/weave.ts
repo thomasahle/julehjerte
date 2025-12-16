@@ -1,5 +1,5 @@
 import type { HeartState, WeaveMatrix, WeaveCell, FingerPath, Point } from '../types';
-import { intersectBezierWithHorizontal, intersectBezierCurves, toBezierJs } from './curves';
+import { intersectBezierWithHorizontal, intersectBezierCurves } from './curves';
 
 /**
  * Compute the weave matrix based on finger intersections

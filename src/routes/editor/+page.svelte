@@ -8,7 +8,7 @@
   import { t, getLanguage, setLanguage, subscribeLanguage, type Language } from '$lib/i18n';
   import { getColors, setLeftColor, setRightColor, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { saveUserDesign } from '$lib/stores/collection';
-  import type { Finger, HeartDesign } from '$lib/types/heart';
+  import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
   import { traceHeartFromPng, type PngTemplateLayout } from '$lib/trace/templatePng';
   import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
   import GitHubStarsButton from '$lib/components/GitHubStarsButton.svelte';
@@ -41,7 +41,7 @@
 
   // Initialize fingers/gridSize with URL design if available
   let currentFingers: Finger[] = $state(urlDesign?.fingers ?? []);
-  let currentGridSize: number = $state(urlDesign?.gridSize ?? 3);
+  let currentGridSize: GridSize = $state(urlDesign?.gridSize ?? { x: 3, y: 3 });
 
   // Form fields - initialize with URL design if available
   let heartName = $state('');
@@ -83,7 +83,7 @@
     lang = newLang;
   }
 
-  function handleFingersChange(fingers: Finger[], gridSize: number) {
+  function handleFingersChange(fingers: Finger[], gridSize: GridSize) {
     currentFingers = fingers;
     currentGridSize = gridSize;
   }
@@ -166,7 +166,7 @@
     if (pngPreviewUrl) URL.revokeObjectURL(pngPreviewUrl);
     pngFile = file;
     pngPreviewUrl = URL.createObjectURL(file);
-    pngGridSize = currentGridSize || 4;
+    pngGridSize = Math.max(currentGridSize.x, currentGridSize.y) || 4;
     pngLayout = 'double';
     pngSwapHalves = false;
     showPngImport = true;
@@ -191,7 +191,7 @@
       });
 
       currentFingers = traced.fingers;
-      currentGridSize = traced.gridSize;
+      currentGridSize = { x: traced.gridSize, y: traced.gridSize };
 
       if (!heartName) heartName = t('importedHeart', lang);
 
@@ -201,7 +201,7 @@
         name: heartName,
         author: authorName,
         description: description || undefined,
-        gridSize: traced.gridSize,
+        gridSize: { x: traced.gridSize, y: traced.gridSize },
         fingers: traced.fingers
       };
       editorKey++;

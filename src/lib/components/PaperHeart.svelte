@@ -14,7 +14,10 @@
   import NodeSymmetricIcon from "$lib/components/icons/NodeSymmetricIcon.svelte";
   import SegmentCurveIcon from "$lib/components/icons/SegmentCurveIcon.svelte";
   import SegmentLineIcon from "$lib/components/icons/SegmentLineIcon.svelte";
-  import type { Finger, Vec, LobeId, NodeType } from "$lib/types/heart";
+  import { insertNodeInFinger, shiftNodeTypesOnDelete } from "$lib/editor/commands";
+  import { curveHitFromPaperHit, getClickCount, type CurveHit } from "$lib/editor/hitTest";
+  import { toggleNumberInList } from "$lib/editor/selection";
+  import type { Finger, GridSize, Vec, LobeId, NodeType } from "$lib/types/heart";
   import {
     type BezierSegment,
     cloneSegments,
@@ -76,9 +79,9 @@
   interface Props {
     readonly?: boolean;
     initialFingers?: Finger[];
-    initialGridSize?: number;
+    initialGridSize?: GridSize | number;
     size?: number;
-    onFingersChange?: (fingers: Finger[], gridSize: number) => void;
+    onFingersChange?: (fingers: Finger[], gridSize: GridSize) => void;
   }
 
   let {
@@ -92,8 +95,12 @@
   const BASE_CANVAS_SIZE = 600;
   const CENTER: Vec = { x: BASE_CANVAS_SIZE / 2, y: BASE_CANVAS_SIZE / 2 };
   const ROTATION_RAD = Math.PI / 4;
-  // Overlap square size is `gridSize * STRIP_WIDTH` (600px canvas, 75px per strip).
+  // Overlap rectangle size is `gridSize.(x|y) * STRIP_WIDTH` (600px canvas, 75px per strip).
   const STRIP_WIDTH = 75;
+  const MIN_STRIPS = 2;
+  const MAX_STRIPS = 8;
+  const OUTER_EDGE_TOL = 0.75;
+  const OUTER_EDGE_REMOVE_TOL = 1.25;
 
   // Colors from store
   let heartColors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
@@ -117,6 +124,26 @@
 
   function clamp(value: number, min: number, max: number) {
     return Math.max(min, Math.min(max, value));
+  }
+
+  function clampInt(value: number, min: number, max: number) {
+    return Math.max(min, Math.min(max, Math.round(value)));
+  }
+
+  function normalizeGridSize(raw: GridSize | number): GridSize {
+    if (typeof raw === "number" && Number.isFinite(raw)) {
+      const n = clampInt(raw, MIN_STRIPS, MAX_STRIPS);
+      return { x: n, y: n };
+    }
+    const x = (raw as GridSize)?.x;
+    const y = (raw as GridSize)?.y;
+    if (typeof x === "number" && typeof y === "number") {
+      return {
+        x: clampInt(x, MIN_STRIPS, MAX_STRIPS),
+        y: clampInt(y, MIN_STRIPS, MAX_STRIPS),
+      };
+    }
+    return { x: 3, y: 3 };
   }
 
   function rotateVecAroundCenter(v: Vec, angleRad: number): Vec {
@@ -155,14 +182,34 @@
   let didInitialFingerSetup = false;
 
   // Editing controls
-  let gridSize = $state(initialGridSize); // number of fingers/strips per lobe (2-8)
-  let showCurves = $state(true);
-  let symmetryWithinCurve = $state(false);
-  let symmetryWithinLobe = $state(false);
-  let symmetryBetweenLobes = $state(false);
-  let antiWithinCurve = $state(false);
-  let antiWithinLobe = $state(false);
-  let antiBetweenLobes = $state(false);
+  // Initialized from props in `$effect.pre` below; avoid capturing `initialGridSize` here.
+  let gridSize = $state(normalizeGridSize(3)); // strips: x (cols) and y (rows)
+  // Overlap rectangle edges in unrotated coordinates (may be offset from CENTER).
+  let overlapLeft = $state(0);
+  let overlapRight = $state(0);
+  let overlapTop = $state(0);
+  let overlapBottom = $state(0);
+  type SymmetryMode = TriSwitchValue;
+  let editor = $state<{
+    showCurves: boolean;
+    withinCurveMode: SymmetryMode;
+    withinLobeMode: SymmetryMode;
+    betweenLobesMode: SymmetryMode;
+  }>({
+    showCurves: true,
+    withinCurveMode: 0,
+    withinLobeMode: 0,
+    betweenLobesMode: 0,
+  });
+
+  // Derived views for readability in the rest of the file.
+  let showCurves = $derived(editor.showCurves);
+  let symmetryWithinCurve = $derived(editor.withinCurveMode !== 0);
+  let antiWithinCurve = $derived(editor.withinCurveMode === 2);
+  let symmetryWithinLobe = $derived(editor.withinLobeMode !== 0);
+  let antiWithinLobe = $derived(editor.withinLobeMode === 2);
+  let symmetryBetweenLobes = $derived(editor.betweenLobesMode !== 0);
+  let antiBetweenLobes = $derived(editor.betweenLobesMode === 2);
 
   // Handle semantics: a "missing" handle is represented by collapsing it onto the anchor.
   // We hide collapsed handles and treat them as intentionally removed.
@@ -175,18 +222,27 @@
 
   // Boundary curve model (unrotated coordinates)
   let fingers = $state<Finger[]>([]);
-  let selectedFingerId = $state<string | null>(null);
-  let selectedAnchors = $state<number[]>([]);
-  let selectedSegments = $state<number[]>([]);
   let hoverFingerId = $state<string | null>(null);
   let dragTarget = $state<DragTarget>(null);
 
+  type Selection = {
+    fingerId: string | null;
+    anchors: number[];
+    segments: number[];
+    lastCurveHit: CurveHit | null;
+  };
+  let selection = $state<Selection>({
+    fingerId: null,
+    anchors: [],
+    segments: [],
+    lastCurveHit: null,
+  });
+
   type HistorySnapshot = {
     fingers: Finger[];
-    gridSize: number;
-    selectedFingerId: string | null;
-    selectedAnchors: number[];
-    selectedSegments: number[];
+    gridSize: GridSize;
+    overlap: { left: number; right: number; top: number; bottom: number };
+    selection: Selection;
   };
 
   let undoStack = $state<HistorySnapshot[]>([]);
@@ -203,23 +259,44 @@
     };
   }
 
+  function snapshotSelection(): Selection {
+    return {
+      fingerId: selection.fingerId,
+      anchors: selection.anchors.slice(),
+      segments: selection.segments.slice(),
+      lastCurveHit: selection.lastCurveHit ? { ...selection.lastCurveHit } : null,
+    };
+  }
+
+  function restoreSelection(s: Selection) {
+    selection.fingerId = s.fingerId;
+    selection.anchors = s.anchors.slice();
+    selection.segments = (s.segments ?? []).slice();
+    selection.lastCurveHit = s.lastCurveHit ? { ...s.lastCurveHit } : null;
+  }
+
   function snapshotState(): HistorySnapshot {
     return {
       fingers: fingers.map(cloneFinger),
       gridSize,
-      selectedFingerId,
-      selectedAnchors: selectedAnchors.slice(),
-      selectedSegments: selectedSegments.slice(),
+      overlap: {
+        left: overlapLeft,
+        right: overlapRight,
+        top: overlapTop,
+        bottom: overlapBottom,
+      },
+      selection: snapshotSelection(),
     };
   }
 
   function restoreSnapshot(s: HistorySnapshot) {
     gridSize = s.gridSize;
-    lastGridSize = s.gridSize;
+    overlapLeft = s.overlap.left;
+    overlapRight = s.overlap.right;
+    overlapTop = s.overlap.top;
+    overlapBottom = s.overlap.bottom;
     fingers = s.fingers.map(cloneFinger);
-    selectedFingerId = s.selectedFingerId;
-    selectedAnchors = s.selectedAnchors.slice();
-    selectedSegments = (s.selectedSegments ?? []).slice();
+    restoreSelection(s.selection);
     dragTarget = null;
     draw();
   }
@@ -267,7 +344,7 @@
       return;
     }
     if (e.key === "Backspace" || e.key === "Delete") {
-      if (selectedFingerId && selectedAnchors.length) {
+      if (selection.fingerId && selection.anchors.length) {
         e.preventDefault();
         deleteSelectedAnchors();
       }
@@ -276,14 +353,13 @@
   }
 
   function toggleAnchorSelection(anchorIdx: number) {
-    const exists = selectedAnchors.includes(anchorIdx);
-    selectedAnchors = exists
-      ? selectedAnchors.filter((x) => x !== anchorIdx)
-      : [...selectedAnchors, anchorIdx];
+    selection.lastCurveHit = null;
+    selection.anchors = toggleNumberInList(selection.anchors, anchorIdx);
   }
 
   function setSingleAnchorSelection(anchorIdx: number) {
-    selectedAnchors = [anchorIdx];
+    selection.lastCurveHit = null;
+    selection.anchors = [anchorIdx];
   }
 
   function getAnchorNodeType(finger: Finger, anchorIdx: number): NodeType {
@@ -291,47 +367,15 @@
     return finger.nodeTypes?.[key] ?? "corner";
   }
 
-  function shiftNodeTypesOnInsert(
-    nodeTypes: Record<string, NodeType> | undefined,
-    insertedAnchorIdx: number,
-  ) {
-    const src = nodeTypes ?? {};
-    const next: Record<string, NodeType> = {};
-    for (const [k, v] of Object.entries(src)) {
-      const idx = Number(k);
-      if (!Number.isFinite(idx)) continue;
-      const shifted = idx >= insertedAnchorIdx ? idx + 1 : idx;
-      next[String(shifted)] = v;
-    }
-    return next;
-  }
-
-  function shiftNodeTypesOnDelete(
-    nodeTypes: Record<string, NodeType> | undefined,
-    deletedAnchorIdx: number,
-  ) {
-    const src = nodeTypes ?? {};
-    const next: Record<string, NodeType> = {};
-    for (const [k, v] of Object.entries(src)) {
-      const idx = Number(k);
-      if (!Number.isFinite(idx)) continue;
-      if (idx === deletedAnchorIdx) continue;
-      const shifted = idx > deletedAnchorIdx ? idx - 1 : idx;
-      next[String(shifted)] = v;
-    }
-    return next;
-  }
-
   function setSelectedAnchorsNodeType(type: NodeType) {
-    const fingerId = selectedFingerId;
+    const fingerId = selection.fingerId;
     if (!fingerId) return;
     const finger = getFingerById(fingerId);
     if (!finger) return;
     const segCount = fingerToSegments(finger).length;
-    const internal = selectedAnchors.filter(
-      (idx) => idx >= 1 && idx <= segCount - 1,
-    );
-    if (!internal.length) return;
+    const targets = selection.anchors.filter((idx) => idx >= 0 && idx <= segCount);
+    if (!targets.length) return;
+    const internal = targets.filter((idx) => idx >= 1 && idx <= segCount - 1);
 
     const before = snapshotState();
     updateFinger(fingerId, (f) => {
@@ -339,7 +383,7 @@
         ...(f.nodeTypes ?? {}),
       };
       if (type === "corner") {
-        for (const idx of internal) delete nextNodeTypes[String(idx)];
+        for (const idx of targets) delete nextNodeTypes[String(idx)];
         return {
           ...f,
           nodeTypes: Object.keys(nextNodeTypes).length
@@ -348,7 +392,7 @@
         };
       }
 
-      for (const idx of internal) nextNodeTypes[String(idx)] = type;
+      for (const idx of targets) nextNodeTypes[String(idx)] = type;
 
       const segs = cloneSegments(fingerToSegments(f));
       for (const anchorIdx of internal) {
@@ -407,7 +451,7 @@
   }
 
   function deleteSelectedAnchors() {
-    const fingerId = selectedFingerId;
+    const fingerId = selection.fingerId;
     if (!fingerId) return;
     const finger = getFingerById(fingerId);
     if (!finger) return;
@@ -416,7 +460,7 @@
     const segments = fingerToSegments(finger);
     if (segments.length <= 1) return;
 
-    const deletions = selectedAnchors
+    const deletions = selection.anchors
       .filter((idx) => idx >= 1 && idx <= segments.length - 1)
       .slice()
       .sort((a, b) => b - a);
@@ -438,57 +482,91 @@
       ...updateFingerSegments(f, segs),
       nodeTypes,
     }));
-    selectedAnchors = [];
+    selection.anchors = [];
+    selection.segments = [];
+    selection.lastCurveHit = null;
     pushUndo(before);
     draw();
   }
 
   function insertNodeBetweenSelectedAnchors() {
-    const fingerId = selectedFingerId;
+    const fingerId = selection.fingerId;
     if (!fingerId) return;
     const finger = getFingerById(fingerId);
     if (!finger) return;
-    if (selectedAnchors.length !== 2) return;
+    if (selection.anchors.length !== 2) return;
 
-    const segments = fingerToSegments(finger);
-    const [a, b] = selectedAnchors.slice().sort((x, y) => x - y);
+    const [a, b] = selection.anchors.slice().sort((x, y) => x - y);
     if (a == null || b == null) return;
     if (b - a !== 1) return;
-    if (a < 0 || a >= segments.length) return;
+    const segmentsLength = fingerToSegments(finger).length;
+    if (a < 0 || a >= segmentsLength) return;
 
     const before = snapshotState();
-    const segs = cloneSegments(segments);
-    const [s1, s2] = splitBezierAt(segs[a]!, 0.5);
-    // New nodes should be control-point-free by default: collapse the handles at the inserted anchor.
-    s1.p2 = { ...s1.p3 };
-    s2.p1 = { ...s2.p0 };
-    segs.splice(a, 1, s1, s2);
+    const t =
+      selection.lastCurveHit &&
+      selection.lastCurveHit.fingerId === fingerId &&
+      selection.lastCurveHit.segmentIndex === a
+        ? Math.min(0.999, Math.max(0.001, selection.lastCurveHit.t))
+        : 0.5;
+    const inserted = insertNodeInFinger(finger, a, t);
+    if (!inserted) return;
+    const { insertedAnchorIdx } = inserted;
+    let candidate: Finger = inserted.finger;
+    if (symmetryWithinCurve) candidate = applyWithinCurveSymmetry(candidate);
+    const overrides = deriveSymmetryOverrides(candidate);
+    if (!overridesAreValid(overrides)) return;
+    applyOverrides(overrides);
 
-    const insertedAnchorIdx = a + 1;
-    const nodeTypes = shiftNodeTypesOnInsert(
-      finger.nodeTypes,
-      insertedAnchorIdx,
+    selection.anchors = [insertedAnchorIdx];
+    selection.segments = [];
+    selection.lastCurveHit = null;
+    pushUndo(before);
+    draw();
+  }
+
+  function insertNodeAtCurveHit(hitInfo: CurveHit) {
+    const fingerId = hitInfo.fingerId;
+    const finger = getFingerById(fingerId);
+    if (!finger) return;
+
+    const segmentsLength = fingerToSegments(finger).length;
+    if (!segmentsLength) return;
+    const segIdx = Math.max(
+      0,
+      Math.min(segmentsLength - 1, hitInfo.segmentIndex),
     );
-    updateFinger(fingerId, (f) => ({
-      ...updateFingerSegments(f, segs),
-      nodeTypes,
-    }));
-    selectedAnchors = [a + 1];
-    selectedSegments = [];
+    const t = Math.min(0.999, Math.max(0.001, hitInfo.t));
+
+    const before = snapshotState();
+    const inserted = insertNodeInFinger(finger, segIdx, t);
+    if (!inserted) return;
+    const { insertedAnchorIdx } = inserted;
+
+    let candidate: Finger = inserted.finger;
+    if (symmetryWithinCurve) candidate = applyWithinCurveSymmetry(candidate);
+    const overrides = deriveSymmetryOverrides(candidate);
+    if (!overridesAreValid(overrides)) return;
+    applyOverrides(overrides);
+
+    selection.fingerId = fingerId;
+    selection.anchors = [insertedAnchorIdx];
+    selection.segments = [];
+    selection.lastCurveHit = null;
     pushUndo(before);
     draw();
   }
 
   function getSelectedSegmentIndexes(segmentsLength: number): number[] {
     const uniq = new Set<number>();
-    for (const idx of selectedSegments) {
+    for (const idx of selection.segments) {
       if (Number.isFinite(idx) && idx >= 0 && idx < segmentsLength)
         uniq.add(idx);
     }
     if (uniq.size) return Array.from(uniq).sort((a, b) => a - b);
 
-    if (selectedAnchors.length === 2) {
-      const [a, b] = selectedAnchors;
+    if (selection.anchors.length === 2) {
+      const [a, b] = selection.anchors;
       if (a != null && b != null && Math.abs(a - b) === 1) {
         const segIdx = Math.min(a, b);
         if (segIdx >= 0 && segIdx < segmentsLength) return [segIdx];
@@ -498,7 +576,7 @@
   }
 
   function makeSelectedSegmentsStraight() {
-    const fingerId = selectedFingerId;
+    const fingerId = selection.fingerId;
     if (!fingerId) return;
     const finger = getFingerById(fingerId);
     if (!finger) return;
@@ -525,7 +603,7 @@
   }
 
   function makeSelectedSegmentsCurved() {
-    const fingerId = selectedFingerId;
+    const fingerId = selection.fingerId;
     if (!fingerId) return;
     const finger = getFingerById(fingerId);
     if (!finger) return;
@@ -583,7 +661,7 @@
   }
 
   function makeSelectedAnchorsCurved() {
-    const fingerId = selectedFingerId;
+    const fingerId = selection.fingerId;
     if (!fingerId) return;
     const finger = getFingerById(fingerId);
     if (!finger) return;
@@ -592,7 +670,7 @@
     const n = segs.length;
     if (!n) return;
 
-    const internal = selectedAnchors
+    const internal = selection.anchors
       .filter((idx) => Number.isFinite(idx) && idx >= 0 && idx <= n)
       .slice()
       .sort((a, b) => a - b);
@@ -706,22 +784,149 @@
   $effect.pre(() => {
     if (!didInitialFingerSetup) {
       didInitialFingerSetup = true;
+      gridSize = normalizeGridSize(initialGridSize);
+      setCenteredOverlapRect(gridSize);
       if (initialFingers && initialFingers.length > 0) {
         // Deep copy the initial fingers to avoid mutating the prop
         fingers = initialFingers.map((f) => ({ ...f }));
+        // Infer overlap rectangle placement from the incoming curves (supports nxm + offset).
+        const inferred = inferOverlapRectFromFingers(fingers, gridSize);
+        setOverlapRect(inferred);
       } else {
         fingers = createDefaultFingers(gridSize);
       }
+      // Always include the four outer boundary curves (legacy designs omitted them).
+      ensureOuterBoundaryCurves();
+      renumberBoundaryIds();
+      syncGridSizeToFingers();
+      initialized = true;
     }
   });
 
-  function getSquareParams(strips = gridSize) {
-    const squareSize = strips * STRIP_WIDTH;
-    const squareLeft = CENTER.x - squareSize / 2;
-    const squareTop = CENTER.y - squareSize / 2;
-    const earRadius = squareSize / 2;
-    const stripWidth = STRIP_WIDTH;
-    return { squareSize, squareLeft, squareTop, earRadius, stripWidth };
+  function setCenteredOverlapRect(size: GridSize) {
+    const width = size.x * STRIP_WIDTH;
+    const height = size.y * STRIP_WIDTH;
+    overlapLeft = CENTER.x - width / 2;
+    overlapRight = overlapLeft + width;
+    overlapTop = CENTER.y - height / 2;
+    overlapBottom = overlapTop + height;
+  }
+
+  // Back-compat helper for existing dev benchmarks and any remaining call sites.
+  // NOTE: For non-square overlap rectangles, this returns the min dimension as `squareSize`.
+  function getSquareParams(strips: GridSize | number = gridSize) {
+    const size = normalizeGridSize(strips);
+    const width = size.x * STRIP_WIDTH;
+    const height = size.y * STRIP_WIDTH;
+    const squareSize = Math.min(width, height);
+    const squareLeft = CENTER.x - width / 2;
+    const squareTop = CENTER.y - height / 2;
+    return { squareSize, squareLeft, squareTop };
+  }
+
+  function getOverlapRect() {
+    return {
+      left: overlapLeft,
+      right: overlapRight,
+      top: overlapTop,
+      bottom: overlapBottom,
+      width: overlapRight - overlapLeft,
+      height: overlapBottom - overlapTop,
+    };
+  }
+
+  function setOverlapRect(rect: {
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+  }) {
+    overlapLeft = rect.left;
+    overlapRight = rect.right;
+    overlapTop = rect.top;
+    overlapBottom = rect.bottom;
+  }
+
+  function median(values: number[]): number {
+    if (!values.length) return 0;
+    const sorted = values.slice().sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 === 1 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
+  }
+
+  function inferOverlapRectFromFingers(
+    curFingers: Finger[],
+    fallbackGridSize: GridSize,
+  ) {
+    const leftCandidates: number[] = [];
+    const rightCandidates: number[] = [];
+    const topCandidates: number[] = [];
+    const bottomCandidates: number[] = [];
+
+    for (const f of curFingers) {
+      const segs = fingerToSegments(f);
+      if (!segs.length) continue;
+      const start = segs[0]!.p0;
+      const end = segs[segs.length - 1]!.p3;
+      if (f.lobe === "left") {
+        leftCandidates.push(Math.min(start.x, end.x));
+        rightCandidates.push(Math.max(start.x, end.x));
+      } else {
+        topCandidates.push(Math.min(start.y, end.y));
+        bottomCandidates.push(Math.max(start.y, end.y));
+      }
+    }
+
+    const expectedW = fallbackGridSize.x * STRIP_WIDTH;
+    const expectedH = fallbackGridSize.y * STRIP_WIDTH;
+    const centeredLeft = CENTER.x - expectedW / 2;
+    const centeredTop = CENTER.y - expectedH / 2;
+
+    let left = leftCandidates.length ? median(leftCandidates) : centeredLeft;
+    let right = rightCandidates.length ? median(rightCandidates) : centeredLeft + expectedW;
+    let top = topCandidates.length ? median(topCandidates) : centeredTop;
+    let bottom = bottomCandidates.length ? median(bottomCandidates) : centeredTop + expectedH;
+
+    if (Math.abs(right - left - expectedW) <= 3) right = left + expectedW;
+    if (Math.abs(bottom - top - expectedH) <= 3) bottom = top + expectedH;
+
+    return { left, right, top, bottom };
+  }
+
+  function inferGridSizeFromFingers(
+    curFingers: Finger[],
+    fallbackGridSize: GridSize,
+  ): GridSize {
+    const leftCount = curFingers.filter((f) => f.lobe === "left").length;
+    const rightCount = curFingers.filter((f) => f.lobe === "right").length;
+    // Boundaries include the two outer edges, so strips = boundaries - 1.
+    const x = clampInt(rightCount - 1, MIN_STRIPS, MAX_STRIPS);
+    const y = clampInt(leftCount - 1, MIN_STRIPS, MAX_STRIPS);
+    if (x === fallbackGridSize.x && y === fallbackGridSize.y) return fallbackGridSize;
+    return { x, y };
+  }
+
+  function makeNewBoundary(lobe: LobeId, pos: number): Finger {
+    const id = `${lobePrefix(lobe)}-tmp-${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2, 7)}`;
+    const { left, right, top, bottom } = getOverlapRect();
+
+    if (lobe === "right") {
+      const x = pos;
+      const p0: Vec = { x, y: bottom };
+      const p3: Vec = { x, y: top };
+      const p1: Vec = { ...p0 };
+      const p2: Vec = { ...p3 };
+      return { id, lobe, pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) };
+    }
+
+    const y = pos;
+    const p0: Vec = { x: right, y };
+    const p3: Vec = { x: left, y };
+    const p1: Vec = { ...p0 };
+    const p2: Vec = { ...p3 };
+    return { id, lobe, pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) };
   }
 
   function projectEndpoint(
@@ -729,11 +934,8 @@
     point: Vec,
     pointKey: "p0" | "p3",
   ): Vec {
-    const { squareSize, squareLeft, squareTop } = getSquareParams();
-    const minX = squareLeft;
-    const maxX = squareLeft + squareSize;
-    const minY = squareTop;
-    const maxY = squareTop + squareSize;
+    const { left: minX, right: maxX, top: minY, bottom: maxY } =
+      getOverlapRect();
 
     if (finger.lobe === "left") {
       const y = clamp(point.y, minY, maxY);
@@ -746,26 +948,32 @@
     return { x, y };
   }
 
-  function createDefaultFingers(countPerLobe: number): Finger[] {
-    const strips = countPerLobe;
-    const { squareSize, squareLeft, squareTop } = getSquareParams(strips);
-
+  function createDefaultFingers(sizeInput: GridSize | number): Finger[] {
+    const size = normalizeGridSize(sizeInput as any);
+    const width = size.x * STRIP_WIDTH;
+    const height = size.y * STRIP_WIDTH;
+    const left = CENTER.x - width / 2;
+    const top = CENTER.y - height / 2;
+    const right = left + width;
+    const bottom = top + height;
     const result: Finger[] = [];
 
     // Fingers are the space between adjacent curves, so we store the *boundary* curves.
-    // For N strips, there are (N-1) internal boundaries per lobe (plus fixed outer edges).
-    const internal = Math.max(0, strips - 1);
+    // For N strips, there are (N+1) boundaries per lobe (including both outer edges).
+    const boundariesLeft = Math.max(0, size.y + 1);
+    const boundariesRight = Math.max(0, size.x + 1);
 
-    // Left lobe boundaries: across overlap square (right edge -> left edge)
-    for (let i = 0; i < internal; i++) {
-      const t = (i + 1) / strips;
-      const y = squareTop + t * squareSize;
-      const p0: Vec = { x: squareLeft + squareSize, y };
-      const p3: Vec = { x: squareLeft, y };
+    // Left lobe boundaries: across overlap rectangle (right edge -> left edge)
+    for (let i = 0; i < boundariesLeft; i++) {
+      const t = size.y ? i / size.y : 0;
+      const y = top + t * height;
+      const p0: Vec = { x: right, y };
+      const p3: Vec = { x: left, y };
 
-      const bow = (t - 0.5) * squareSize * 0.12;
-      const p1: Vec = { x: p0.x - squareSize * 0.3, y: p0.y + bow };
-      const p2: Vec = { x: p3.x + squareSize * 0.3, y: p3.y - bow };
+      const isEdge = i === 0 || i === size.y;
+      const bow = (t - 0.5) * height * 0.12;
+      const p1: Vec = isEdge ? { ...p0 } : { x: p0.x - width * 0.3, y: p0.y + bow };
+      const p2: Vec = isEdge ? { ...p3 } : { x: p3.x + width * 0.3, y: p3.y - bow };
 
       result.push({
         id: `L-${i}`,
@@ -774,16 +982,17 @@
       });
     }
 
-    // Right lobe boundaries: across overlap square (bottom edge -> top edge)
-    for (let i = 0; i < internal; i++) {
-      const t = (i + 1) / strips;
-      const x = squareLeft + t * squareSize;
-      const p0: Vec = { x, y: squareTop + squareSize };
-      const p3: Vec = { x, y: squareTop };
+    // Right lobe boundaries: across overlap rectangle (bottom edge -> top edge)
+    for (let i = 0; i < boundariesRight; i++) {
+      const t = size.x ? i / size.x : 0;
+      const x = left + t * width;
+      const p0: Vec = { x, y: bottom };
+      const p3: Vec = { x, y: top };
 
-      const bow = (t - 0.5) * squareSize * 0.12;
-      const p1: Vec = { x: p0.x + bow, y: p0.y - squareSize * 0.3 };
-      const p2: Vec = { x: p3.x - bow, y: p3.y + squareSize * 0.3 };
+      const isEdge = i === 0 || i === size.x;
+      const bow = (t - 0.5) * width * 0.12;
+      const p1: Vec = isEdge ? { ...p0 } : { x: p0.x + bow, y: p0.y - height * 0.3 };
+      const p2: Vec = isEdge ? { ...p3 } : { x: p3.x - bow, y: p3.y + height * 0.3 };
 
       result.push({
         id: `R-${i}`,
@@ -794,25 +1003,6 @@
 
     return result;
   }
-
-  // Regenerate default fingers when gridSize changes in editor mode
-  // Initial finger setup is handled by $effect.pre above
-  // Track the previous gridSize to detect actual changes
-  let lastGridSize = gridSize;
-  $effect(() => {
-    const n = gridSize;
-    if (!initialized) {
-      initialized = true;
-      lastGridSize = n;
-      // Initial setup already done by $effect.pre, just mark as initialized
-    } else if (!readonly && n !== lastGridSize) {
-      // Only regenerate when gridSize actually changes (not on every effect run)
-      lastGridSize = n;
-      fingers = createDefaultFingers(n);
-      selectedFingerId = null;
-      dragTarget = null;
-    }
-  });
 
   // Notify parent of changes
   $effect(() => {
@@ -834,12 +1024,15 @@
 
     // Apply between-lobes symmetry: left lobe is the source, right lobe copies
     if (symmetryBetweenLobes) {
+      if (!canSymmetryBetweenLobes()) {
+        editor.betweenLobesMode = 0;
+      } else {
       const leftFingers = updated.filter((f) => f.lobe === "left");
       for (const leftFinger of leftFingers) {
         const idx = boundaryIndexFromId(leftFinger.id);
         const rightId = idForBoundary(
           "right",
-          mateBoundaryIndexBetweenLobes(idx),
+          mateBoundaryIndexBetweenLobes("left", idx),
         );
         const rightIdx = updated.findIndex((f) => f.id === rightId);
         if (rightIdx >= 0) {
@@ -852,16 +1045,17 @@
           );
         }
       }
+      }
     }
 
     // Apply within-lobe symmetry: first half is source, second half mirrors
     if (symmetryWithinLobe) {
-      const internal = internalBoundaryCount();
       for (const lobe of ["left", "right"] as const) {
+        const internal = boundaryCurveCount(lobe);
         const lobeFingers = updated.filter((f) => f.lobe === lobe);
         for (const finger of lobeFingers) {
           const idx = boundaryIndexFromId(finger.id);
-          const mirrorIdx = mirrorBoundaryIndex(idx);
+          const mirrorIdx = mirrorBoundaryIndex(lobe, idx);
           if (mirrorIdx > idx && mirrorIdx >= 0 && mirrorIdx < internal) {
             const mirrorId = idForBoundary(lobe, mirrorIdx);
             const mirrorArrayIdx = updated.findIndex((f) => f.id === mirrorId);
@@ -883,60 +1077,43 @@
   }
 
   // Track previous symmetry state to detect changes
-  let prevSymmetryWithinCurve = false;
-  let prevSymmetryWithinLobe = false;
-  let prevSymmetryBetweenLobes = false;
-  let prevAntiWithinCurve = false;
-  let prevAntiWithinLobe = false;
-  let prevAntiBetweenLobes = false;
+  let prevWithinCurveMode: SymmetryMode = 0;
+  let prevWithinLobeMode: SymmetryMode = 0;
+  let prevBetweenLobesMode: SymmetryMode = 0;
 
   $effect(() => {
-    // Only apply when a symmetry option is newly enabled
-    const withinCurveChanged = symmetryWithinCurve && !prevSymmetryWithinCurve;
-    const withinLobeChanged = symmetryWithinLobe && !prevSymmetryWithinLobe;
-    const betweenLobesChanged =
-      symmetryBetweenLobes && !prevSymmetryBetweenLobes;
-    const antiCurveChanged =
-      antiWithinCurve !== prevAntiWithinCurve && symmetryWithinCurve;
-    const antiLobeChanged =
-      antiWithinLobe !== prevAntiWithinLobe && symmetryWithinLobe;
-    const antiBetweenChanged =
-      antiBetweenLobes !== prevAntiBetweenLobes && symmetryBetweenLobes;
+    // Only apply when symmetry is enabled/changed (turning off does not mutate).
+    const shouldApply =
+      (editor.withinCurveMode !== 0 &&
+        editor.withinCurveMode !== prevWithinCurveMode) ||
+      (editor.withinLobeMode !== 0 && editor.withinLobeMode !== prevWithinLobeMode) ||
+      (editor.betweenLobesMode !== 0 &&
+        editor.betweenLobesMode !== prevBetweenLobesMode);
 
-    prevSymmetryWithinCurve = symmetryWithinCurve;
-    prevSymmetryWithinLobe = symmetryWithinLobe;
-    prevSymmetryBetweenLobes = symmetryBetweenLobes;
-    prevAntiWithinCurve = antiWithinCurve;
-    prevAntiWithinLobe = antiWithinLobe;
-    prevAntiBetweenLobes = antiBetweenLobes;
+    prevWithinCurveMode = editor.withinCurveMode;
+    prevWithinLobeMode = editor.withinLobeMode;
+    prevBetweenLobesMode = editor.betweenLobesMode;
 
-    if (
-      withinCurveChanged ||
-      withinLobeChanged ||
-      betweenLobesChanged ||
-      antiCurveChanged ||
-      antiLobeChanged ||
-      antiBetweenChanged
-    ) {
+    if (shouldApply) {
       applySymmetryToAllFingers();
     }
   });
 
   function buildLobeShape(
     kind: LobeId,
-    squareLeft: number,
-    squareTop: number,
-    squareSize: number,
-    earRadius: number,
+    overlapLeft: number,
+    overlapTop: number,
+    overlapWidth: number,
+    overlapHeight: number,
   ): paper.PathItem {
     return buildLobeShapeShared(
       paper,
       kind,
       heartColors,
-      squareLeft,
-      squareTop,
-      squareSize,
-      earRadius,
+      overlapLeft,
+      overlapTop,
+      overlapWidth,
+      overlapHeight,
     );
   }
 
@@ -1001,16 +1178,75 @@
     return lobe === "left" ? "right" : "left";
   }
 
-  function internalBoundaryCount(strips = gridSize) {
-    return Math.max(0, strips - 1);
+  function canSymmetryBetweenLobes() {
+    return gridSize.x === gridSize.y;
   }
 
-  function mirrorBoundaryIndex(index: number) {
-    return internalBoundaryCount() - 1 - index;
+  function stripsForLobe(lobe: LobeId): number {
+    return lobe === "left" ? gridSize.y : gridSize.x;
   }
 
-  function mateBoundaryIndexBetweenLobes(index: number) {
-    return antiBetweenLobes ? mirrorBoundaryIndex(index) : index;
+  function boundaryCurveCount(lobe: LobeId) {
+    return Math.max(0, stripsForLobe(lobe) + 1);
+  }
+
+  function mirrorBoundaryIndex(lobe: LobeId, index: number) {
+    return boundaryCurveCount(lobe) - 1 - index;
+  }
+
+  function mateBoundaryIndexBetweenLobes(lobe: LobeId, index: number) {
+    return antiBetweenLobes ? mirrorBoundaryIndex(lobe, index) : index;
+  }
+
+  function renumberBoundaryIds(): Map<string, string> {
+    const idMap = new Map<string, string>();
+
+    const left = fingers
+      .filter((f) => f.lobe === "left")
+      .slice()
+      .sort((a, b) => {
+        const ay = fingerToSegments(a)[0]?.p0.y ?? 0;
+        const by = fingerToSegments(b)[0]?.p0.y ?? 0;
+        return ay - by;
+      });
+    const right = fingers
+      .filter((f) => f.lobe === "right")
+      .slice()
+      .sort((a, b) => {
+        const ax = fingerToSegments(a)[0]?.p0.x ?? 0;
+        const bx = fingerToSegments(b)[0]?.p0.x ?? 0;
+        return ax - bx;
+      });
+
+    const nextLeft = left.map((f, i) => {
+      const nextId = idForBoundary("left", i);
+      idMap.set(f.id, nextId);
+      return f.id === nextId ? f : { ...f, id: nextId };
+    });
+    const nextRight = right.map((f, i) => {
+      const nextId = idForBoundary("right", i);
+      idMap.set(f.id, nextId);
+      return f.id === nextId ? f : { ...f, id: nextId };
+    });
+
+    fingers = [...nextLeft, ...nextRight];
+
+    if (selection.fingerId)
+      selection.fingerId = idMap.get(selection.fingerId) ?? selection.fingerId;
+    if (hoverFingerId) hoverFingerId = idMap.get(hoverFingerId) ?? hoverFingerId;
+    if (selection.lastCurveHit) {
+      selection.lastCurveHit = {
+        ...selection.lastCurveHit,
+        fingerId:
+          idMap.get(selection.lastCurveHit.fingerId) ??
+          selection.lastCurveHit.fingerId,
+      };
+    }
+    if (dragTarget && (dragTarget.kind === "control" || dragTarget.kind === "path")) {
+      const mapped = idMap.get(dragTarget.fingerId);
+      if (mapped) dragTarget = { ...dragTarget, fingerId: mapped };
+    }
+    return idMap;
   }
 
   function getFingerById(id: string, overrides?: Map<string, Finger>) {
@@ -1018,25 +1254,17 @@
   }
 
   function swapPointBetweenLobes(p: Vec, anti = false): Vec {
-    const { squareSize, squareLeft, squareTop } = getSquareParams();
-    if (!anti) {
-      return {
-        x: squareLeft + (p.y - squareTop),
-        y: squareTop + (p.x - squareLeft),
-      };
-    }
-
-    // The other diagonal of the overlap square.
-    return {
-      x: squareLeft + squareSize - (p.y - squareTop),
-      y: squareTop + squareSize - (p.x - squareLeft),
-    };
+    const { left, top, width, height } = getOverlapRect();
+    const u = width ? (p.x - left) / width : 0;
+    const v = height ? (p.y - top) / height : 0;
+    if (!anti) return { x: left + v * width, y: top + u * height };
+    return { x: left + (1 - v) * width, y: top + (1 - u) * height };
   }
 
   function mirrorPointWithinLobe(lobe: LobeId, p: Vec, anti = false): Vec {
-    const { squareSize, squareLeft, squareTop } = getSquareParams();
-    const cx = squareLeft + squareSize / 2;
-    const cy = squareTop + squareSize / 2;
+    const { left, top, width, height } = getOverlapRect();
+    const cx = left + width / 2;
+    const cy = top + height / 2;
     if (anti) return { x: 2 * cx - p.x, y: 2 * cy - p.y };
     if (lobe === "left") return { x: p.x, y: 2 * cy - p.y };
     return { x: 2 * cx - p.x, y: p.y };
@@ -1102,9 +1330,9 @@
     overrides.set(primary.id, primary);
 
     const idx = boundaryIndexFromId(primary.id);
-    const internal = internalBoundaryCount();
+    const internal = boundaryCurveCount(primary.lobe);
     if (idx < 0 || idx >= internal) return overrides;
-    const mirrorIdx = mirrorBoundaryIndex(idx);
+    const mirrorIdx = mirrorBoundaryIndex(primary.lobe, idx);
 
     if (
       symmetryWithinLobe &&
@@ -1128,11 +1356,11 @@
       }
     }
 
-    if (symmetryBetweenLobes) {
+    if (symmetryBetweenLobes && canSymmetryBetweenLobes()) {
       const otherLobe = oppositeLobe(primary.lobe);
       const otherId = idForBoundary(
         otherLobe,
-        mateBoundaryIndexBetweenLobes(idx),
+        mateBoundaryIndexBetweenLobes(primary.lobe, idx),
       );
       const otherExisting = getFingerById(otherId);
       if (otherExisting) {
@@ -1156,7 +1384,7 @@
       ) {
         const otherMirrorId = idForBoundary(
           otherLobe,
-          mateBoundaryIndexBetweenLobes(mirrorIdx),
+          mateBoundaryIndexBetweenLobes(primary.lobe, mirrorIdx),
         );
         const otherMirrorExisting = getFingerById(otherMirrorId);
         if (otherMirrorExisting) {
@@ -1189,11 +1417,8 @@
     return withInsertItemsDisabled(() => {
       if (benchActive) benchCounters.candidateIsValidCalls++;
 
-      const { squareSize, squareLeft, squareTop } = getSquareParams();
-      const minX = squareLeft;
-      const maxX = squareLeft + squareSize;
-      const minY = squareTop;
-      const maxY = squareTop + squareSize;
+      const { left: minX, right: maxX, top: minY, bottom: maxY } =
+        getOverlapRect();
       const orderEps = 1;
       const tol = 0.5;
 
@@ -1203,7 +1428,7 @@
       const nextId = idForBoundary(candidate.lobe, idx + 1);
       const prev = idx > 0 ? getFingerById(prevId, overrides) : undefined;
       const next =
-        idx < internalBoundaryCount() - 1
+        idx < boundaryCurveCount(candidate.lobe) - 1
           ? getFingerById(nextId, overrides)
           : undefined;
 
@@ -1220,19 +1445,27 @@
       const nextLast = nextSegments?.[nextSegments.length - 1];
 
       if (candidate.lobe === "left") {
-        const minP0Y = ((prevFirst?.p0.y ?? minY) as number) + orderEps;
-        const maxP0Y = ((nextFirst?.p0.y ?? maxY) as number) - orderEps;
-        const minP3Y = ((prevLast?.p3.y ?? minY) as number) + orderEps;
-        const maxP3Y = ((nextLast?.p3.y ?? maxY) as number) - orderEps;
+        const minP0Y =
+          typeof prevFirst?.p0.y === "number" ? prevFirst.p0.y + orderEps : minY;
+        const maxP0Y =
+          typeof nextFirst?.p0.y === "number" ? nextFirst.p0.y - orderEps : maxY;
+        const minP3Y =
+          typeof prevLast?.p3.y === "number" ? prevLast.p3.y + orderEps : minY;
+        const maxP3Y =
+          typeof nextLast?.p3.y === "number" ? nextLast.p3.y - orderEps : maxY;
         if (candidateFirst.p0.y < minP0Y || candidateFirst.p0.y > maxP0Y)
           return false;
         if (candidateLast.p3.y < minP3Y || candidateLast.p3.y > maxP3Y)
           return false;
       } else {
-        const minP0X = ((prevFirst?.p0.x ?? minX) as number) + orderEps;
-        const maxP0X = ((nextFirst?.p0.x ?? maxX) as number) - orderEps;
-        const minP3X = ((prevLast?.p3.x ?? minX) as number) + orderEps;
-        const maxP3X = ((nextLast?.p3.x ?? maxX) as number) - orderEps;
+        const minP0X =
+          typeof prevFirst?.p0.x === "number" ? prevFirst.p0.x + orderEps : minX;
+        const maxP0X =
+          typeof nextFirst?.p0.x === "number" ? nextFirst.p0.x - orderEps : maxX;
+        const minP3X =
+          typeof prevLast?.p3.x === "number" ? prevLast.p3.x + orderEps : minX;
+        const maxP3X =
+          typeof nextLast?.p3.x === "number" ? nextLast.p3.x - orderEps : maxX;
         if (candidateFirst.p0.x < minP0X || candidateFirst.p0.x > maxP0X)
           return false;
         if (candidateLast.p3.x < minP3X || candidateLast.p3.x > maxP3X)
@@ -1275,6 +1508,42 @@
     if (!finger) return 0;
     return fingerToSegments(finger).length;
   }
+
+  function getNodeTypeSelection(
+    finger: Finger | undefined,
+    anchors: number[],
+  ): NodeType | null {
+    if (!finger || !anchors.length) return null;
+    const firstType = getAnchorNodeType(finger, anchors[0]!);
+    for (let i = 1; i < anchors.length; i++) {
+      if (getAnchorNodeType(finger, anchors[i]!) !== firstType) return null;
+    }
+    return firstType;
+  }
+
+  // UI-only derived values (keeps template small).
+  let selectedFinger = $derived(
+    !readonly && selection.fingerId
+      ? fingers.find((f) => f.id === selection.fingerId)
+      : undefined,
+  );
+  let selectedSegCount = $derived(getSegmentCount(selectedFinger));
+  let selectedSegs = $derived(getSelectedSegmentIndexes(selectedSegCount));
+  let canMakeSegmentsStraight = $derived(selectedSegs.length > 0);
+  let canMakeSegmentsCurved = $derived(selectedSegs.length > 0);
+  let canDeleteNode = $derived(
+    selection.anchors.some(
+      (idx) => idx >= 1 && idx <= selectedSegCount - 1,
+    ),
+  );
+  let canInsertNode = $derived(
+    selection.anchors.length === 2 &&
+      Math.abs(selection.anchors[0]! - selection.anchors[1]!) === 1,
+  );
+  let validAnchors = $derived(
+    selection.anchors.filter((idx) => idx >= 0 && idx <= selectedSegCount),
+  );
+  let nodeTypeSelected = $derived(getNodeTypeSelection(selectedFinger, validAnchors));
 
   // Reflect a point across the perpendicular bisector of the segment p0->p3.
   // This keeps the point on the "same side" of the chord line (mirror symmetry),
@@ -1568,20 +1837,19 @@
   function buildLobeStrips(
     lobe: LobeId,
     overlap: paper.PathItem,
-    squareLeft: number,
-    squareTop: number,
-    squareSize: number,
     onlyEvenStrips = false,
   ): Array<{ index: number; item: paper.PathItem }> {
+    const { left, top, width, height } = getOverlapRect();
     return buildLobeStripsShared(
       paper,
       lobe,
       heartColors,
       fingers,
       overlap,
-      squareLeft,
-      squareTop,
-      squareSize,
+      left,
+      top,
+      width,
+      height,
       onlyEvenStrips,
     );
   }
@@ -1598,9 +1866,7 @@
     paper.activate();
     paper.project.clear();
 
-    const strips = gridSize;
-    const { squareSize, squareLeft, squareTop, earRadius } =
-      getSquareParams(strips);
+    const { left, top, right, bottom, width, height } = getOverlapRect();
 
     const fillItems: paper.Item[] = [];
     const overlayItems: paper.Item[] = [];
@@ -1608,26 +1874,26 @@
     // Lobes (build full shapes, then render outsides + woven overlap)
     const leftLobe = buildLobeShape(
       "left",
-      squareLeft,
-      squareTop,
-      squareSize,
-      earRadius,
+      left,
+      top,
+      width,
+      height,
     );
     const rightLobe = buildLobeShape(
       "right",
-      squareLeft,
-      squareTop,
-      squareSize,
-      earRadius,
+      left,
+      top,
+      width,
+      height,
     );
 
-    // Overlap is always the square region; construct it explicitly to avoid
+    // Overlap is always the rectangle region; construct it explicitly to avoid
     // boolean-op precision artifacts (hairline seams).
-    const overlapSquare = withInsertItemsDisabled(
+    const overlapRect = withInsertItemsDisabled(
       () =>
         new paper.Path.Rectangle(
-          new paper.Point(squareLeft, squareTop),
-          new paper.Size(squareSize, squareSize),
+          new paper.Point(left, top),
+          new paper.Size(width, height),
         ),
     );
 
@@ -1640,69 +1906,44 @@
     leftLobe.strokeColor = null;
     fillItems.push(leftLobe);
 
-    const rightOutsideOverlap = rightLobe.subtract(overlapSquare, {
+    const rightOutsideOverlap = rightLobe.subtract(overlapRect, {
       insert: false,
-    });
+    }) as paper.PathItem;
     rightLobe.remove();
-    rightOutsideOverlap.fillColor = lobeFillColor("right");
-    rightOutsideOverlap.strokeColor = null;
-    fillItems.push(rightOutsideOverlap);
 
     // Build strip areas as the space between adjacent boundary curves, clipped to overlap
     // Only even-index strips are needed for the even-odd weave mask.
-    const leftStrips = buildLobeStrips(
-      "left",
-      overlapSquare,
-      squareLeft,
-      squareTop,
-      squareSize,
-      true,
-    );
-    const rightStrips = buildLobeStrips(
-      "right",
-      overlapSquare,
-      squareLeft,
-      squareTop,
-      squareSize,
-      true,
-    );
+    const leftStrips = buildLobeStrips("left", overlapRect, true);
+    const rightStrips = buildLobeStrips("right", overlapRect, true);
 
     // Fast weave: rely on even-odd fill rule (no boolean ops).
     // Render overlap in left color, then overlay odd-parity cells in right color.
     const oddMask = buildOddWeaveMask(leftStrips, rightStrips);
 
     if (oddMask && Math.abs(itemArea(oddMask)) >= 1) {
-      oddMask.fillColor = lobeFillColor("right");
-      oddMask.strokeColor = null;
+      // Unite the odd-parity overlap cells with the outside-right region so the
+      // fold line is painted by a single item (avoids 1px AA seams).
+      const redTop = oddMask.unite(rightOutsideOverlap, { insert: false }) as paper.PathItem;
+      oddMask.remove();
+      rightOutsideOverlap.remove();
 
-      // Clip the odd-mask to the overlap using a clip group. This avoids rare
-      // sliver artifacts at the boundary without relying on boolean ops on
-      // CompoundPaths (which can be unstable).
-      const clip = overlapSquare.clone({ insert: false }) as paper.PathItem;
-      clip.clipMask = true;
-      clip.fillColor = null;
-      clip.strokeColor = null;
-      // Inset the clip by ~1px (in the 600x600 coordinate system) to avoid
-      // anti-alias fringes at the overlap boundary.
-      const clipCenter = new paper.Point(
-        squareLeft + squareSize / 2,
-        squareTop + squareSize / 2,
-      );
-      const clipInsetPx = 0;
-      const clipScale = (squareSize - clipInsetPx) / squareSize;
-      clip.scale(clipScale, clipCenter);
-      const clippedOdd = new paper.Group([clip, oddMask]);
-      fillItems.push(clippedOdd);
+      redTop.fillColor = lobeFillColor("right");
+      redTop.strokeColor = null;
+      if (Math.abs(itemArea(redTop)) >= 1) fillItems.push(redTop);
+      else redTop.remove();
     } else {
       oddMask?.remove();
+      rightOutsideOverlap.fillColor = lobeFillColor("right");
+      rightOutsideOverlap.strokeColor = null;
+      fillItems.push(rightOutsideOverlap);
     }
 
-    overlapSquare.remove();
+    overlapRect.remove();
 
     // Render boundary curves on top (for editing/selection) - skip in readonly mode
     if (!readonly) {
       for (const finger of fingers) {
-        const isSelected = finger.id === selectedFingerId;
+        const isSelected = finger.id === selection.fingerId;
         const isHovered = finger.id === hoverFingerId;
         const hidden = !showCurves;
 
@@ -1767,19 +2008,21 @@
         }
       }
 
-      // Selected finger handles (drawn on top of weave)
-      const selected = fingers.find((f) => f.id === selectedFingerId);
-      if (selected) {
-        const segments = fingerToSegments(selected);
-        const n = segments.length;
-        if (n >= 1) {
+	      // Selected finger handles (drawn on top of weave)
+	      const selected = selection.fingerId
+	        ? fingers.find((f) => f.id === selection.fingerId)
+	        : undefined;
+	      if (selected) {
+	        const segments = fingerToSegments(selected);
+	        const n = segments.length;
+	        if (n >= 1) {
           const endpointSize = 10;
           const anchorSize = endpointSize;
           const handleRadius = 5;
 
-          const selectedSet = new Set(
-            selectedAnchors.filter((idx) => idx >= 0 && idx <= n),
-          );
+	          const selectedSet = new Set(
+	            selection.anchors.filter((idx) => idx >= 0 && idx <= n),
+	          );
           const visibleSet = new Set<number>();
           if (selectedSet.size) {
             for (const idx of selectedSet) {
@@ -1787,13 +2030,13 @@
               visibleSet.add(Math.max(0, idx - 1));
               visibleSet.add(Math.min(n, idx + 1));
             }
-          }
-          // Segment selection should also reveal the segment's endpoint handles.
-          if (selectedSegments.length) {
-            for (const segIdx of selectedSegments) {
-              if (!Number.isFinite(segIdx)) continue;
-              if (segIdx < 0 || segIdx >= n) continue;
-              const a = segIdx;
+	          }
+	          // Segment selection should also reveal the segment's endpoint handles.
+	          if (selection.segments.length) {
+	            for (const segIdx of selection.segments) {
+	              if (!Number.isFinite(segIdx)) continue;
+	              if (segIdx < 0 || segIdx >= n) continue;
+	              const a = segIdx;
               const b = segIdx + 1;
               visibleSet.add(a);
               visibleSet.add(b);
@@ -1909,6 +2152,7 @@
           }
         }
       }
+
     }
 
     // Group and rotate for the classic heart angle (keep state unrotated)
@@ -1957,7 +2201,249 @@
     });
   }
 
+  function translateFinger(fingerId: string, delta: Vec) {
+    updateFinger(fingerId, (f) => {
+      const segs = cloneSegments(fingerToSegments(f));
+      for (const seg of segs) {
+        seg.p0 = vecAdd(seg.p0, delta);
+        seg.p1 = vecAdd(seg.p1, delta);
+        seg.p2 = vecAdd(seg.p2, delta);
+        seg.p3 = vecAdd(seg.p3, delta);
+      }
+      return updateFingerSegments(f, segs);
+    });
+  }
+
+  function syncGridSizeToFingers() {
+    const inferred = inferGridSizeFromFingers(fingers, gridSize);
+    if (inferred.x !== gridSize.x || inferred.y !== gridSize.y) {
+      gridSize = inferred;
+      if (!canSymmetryBetweenLobes() && symmetryBetweenLobes) {
+        editor.betweenLobesMode = 0;
+      }
+    }
+  }
+
+  function ensureOuterBoundaryCurves(): boolean {
+    const { left, right, top, bottom } = getOverlapRect();
+
+    const endpoints = (f: Finger) => {
+      const segs = fingerToSegments(f);
+      if (!segs.length) return null;
+      return { p0: segs[0]!.p0, p3: segs[segs.length - 1]!.p3 };
+    };
+
+    const leftCurves = fingers.filter((f) => f.lobe === "left");
+    const rightCurves = fingers.filter((f) => f.lobe === "right");
+
+    const minBy = (arr: Finger[], key: (f: Finger) => number) => {
+      let best: Finger | null = null;
+      let bestK = Infinity;
+      for (const f of arr) {
+        const k = key(f);
+        if (k < bestK) {
+          best = f;
+          bestK = k;
+        }
+      }
+      return best;
+    };
+    const maxBy = (arr: Finger[], key: (f: Finger) => number) => {
+      let best: Finger | null = null;
+      let bestK = -Infinity;
+      for (const f of arr) {
+        const k = key(f);
+        if (k > bestK) {
+          best = f;
+          bestK = k;
+        }
+      }
+      return best;
+    };
+
+    const topFinger = minBy(leftCurves, (f) => fingerToSegments(f)[0]?.p0.y ?? 0);
+    const bottomFinger = maxBy(leftCurves, (f) => fingerToSegments(f)[0]?.p0.y ?? 0);
+    const leftFinger = minBy(rightCurves, (f) => fingerToSegments(f)[0]?.p0.x ?? 0);
+    const rightFinger = maxBy(rightCurves, (f) => fingerToSegments(f)[0]?.p0.x ?? 0);
+
+    const topE = topFinger ? endpoints(topFinger) : null;
+    const bottomE = bottomFinger ? endpoints(bottomFinger) : null;
+    const leftE = leftFinger ? endpoints(leftFinger) : null;
+    const rightE = rightFinger ? endpoints(rightFinger) : null;
+
+    const hasTop =
+      !!topE &&
+      Math.abs(topE.p0.y - top) <= OUTER_EDGE_TOL &&
+      Math.abs(topE.p3.y - top) <= OUTER_EDGE_TOL;
+    const hasBottom =
+      !!bottomE &&
+      Math.abs(bottomE.p0.y - bottom) <= OUTER_EDGE_TOL &&
+      Math.abs(bottomE.p3.y - bottom) <= OUTER_EDGE_TOL;
+    const hasLeft =
+      !!leftE &&
+      Math.abs(leftE.p0.x - left) <= OUTER_EDGE_TOL &&
+      Math.abs(leftE.p3.x - left) <= OUTER_EDGE_TOL;
+    const hasRight =
+      !!rightE &&
+      Math.abs(rightE.p0.x - right) <= OUTER_EDGE_TOL &&
+      Math.abs(rightE.p3.x - right) <= OUTER_EDGE_TOL;
+
+    const missingTop = !hasTop;
+    const missingBottom = !hasBottom;
+    const missingLeft = !hasLeft;
+    const missingRight = !hasRight;
+
+    const toAddLeft = (missingTop ? 1 : 0) + (missingBottom ? 1 : 0);
+    const toAddRight = (missingLeft ? 1 : 0) + (missingRight ? 1 : 0);
+
+    const newCurves: Finger[] = [];
+    let changed = false;
+
+    if (toAddLeft) {
+      const nextStrips = leftCurves.length + toAddLeft - 1;
+      if (nextStrips <= MAX_STRIPS) {
+        if (missingTop) newCurves.push(makeNewBoundary("left", top));
+        if (missingBottom) newCurves.push(makeNewBoundary("left", bottom));
+        changed = true;
+      } else {
+        // At max strips: snap the existing outer boundary back to the edge.
+        if (missingTop && topFinger && topE) {
+          translateFinger(topFinger.id, { x: 0, y: top - topE.p0.y });
+          clampEndpoints(topFinger.id);
+          changed = true;
+        }
+        if (missingBottom && bottomFinger && bottomE) {
+          translateFinger(bottomFinger.id, { x: 0, y: bottom - bottomE.p0.y });
+          clampEndpoints(bottomFinger.id);
+          changed = true;
+        }
+      }
+    }
+
+    if (toAddRight) {
+      const nextStrips = rightCurves.length + toAddRight - 1;
+      if (nextStrips <= MAX_STRIPS) {
+        if (missingLeft) newCurves.push(makeNewBoundary("right", left));
+        if (missingRight) newCurves.push(makeNewBoundary("right", right));
+        changed = true;
+      } else {
+        if (missingLeft && leftFinger && leftE) {
+          translateFinger(leftFinger.id, { x: left - leftE.p0.x, y: 0 });
+          clampEndpoints(leftFinger.id);
+          changed = true;
+        }
+        if (missingRight && rightFinger && rightE) {
+          translateFinger(rightFinger.id, { x: right - rightE.p0.x, y: 0 });
+          clampEndpoints(rightFinger.id);
+          changed = true;
+        }
+      }
+    }
+
+    if (newCurves.length) {
+      fingers = [...fingers, ...newCurves];
+    }
+
+    return changed || newCurves.length > 0;
+  }
+
+  function dropSelectionForRemovedFingers(removedIds: Set<string>) {
+    if (selection.fingerId && removedIds.has(selection.fingerId)) {
+      selection.fingerId = null;
+      selection.anchors = [];
+      selection.segments = [];
+      selection.lastCurveHit = null;
+    } else if (selection.lastCurveHit && removedIds.has(selection.lastCurveHit.fingerId)) {
+      selection.lastCurveHit = null;
+    }
+
+    if (hoverFingerId && removedIds.has(hoverFingerId)) hoverFingerId = null;
+    if (
+      dragTarget &&
+      (dragTarget.kind === "control" || dragTarget.kind === "path") &&
+      removedIds.has(dragTarget.fingerId)
+    ) {
+      dragTarget = null;
+    }
+  }
+
+  function reconcileBoundaryCurves(options?: {
+    allowEdgeRemoval?: boolean;
+    forceRenumber?: boolean;
+  }): boolean {
+    const allowEdgeRemoval = options?.allowEdgeRemoval ?? false;
+    const forceRenumber = options?.forceRenumber ?? false;
+
+    let changed = false;
+
+    if (allowEdgeRemoval) {
+      const { left, right, top, bottom } = getOverlapRect();
+
+      const endpointsMatch = (finger: Finger, axis: "x" | "y", pos: number, tol: number) => {
+        const segs = fingerToSegments(finger);
+        if (!segs.length) return false;
+        const first = segs[0]!;
+        const last = segs[segs.length - 1]!;
+        const a = axis === "x" ? first.p0.x : first.p0.y;
+        const b = axis === "x" ? last.p3.x : last.p3.y;
+        return Math.abs(a - pos) <= tol && Math.abs(b - pos) <= tol;
+      };
+
+      const sortedLeft = fingers
+        .filter((f) => f.lobe === "left")
+        .slice()
+        .sort((a, b) => (fingerToSegments(a)[0]?.p0.y ?? 0) - (fingerToSegments(b)[0]?.p0.y ?? 0));
+      const sortedRight = fingers
+        .filter((f) => f.lobe === "right")
+        .slice()
+        .sort((a, b) => (fingerToSegments(a)[0]?.p0.x ?? 0) - (fingerToSegments(b)[0]?.p0.x ?? 0));
+
+      const toRemove = new Set<string>();
+
+      const maybeRemoveNearEdge = (
+        boundaries: Finger[],
+        which: "min" | "max",
+        axis: "x" | "y",
+        edgePos: number,
+      ) => {
+        const strips = Math.max(0, boundaries.length - 1);
+        if (strips <= MIN_STRIPS) return;
+
+        const idx = which === "min" ? 1 : boundaries.length - 2;
+        const candidate = boundaries[idx];
+        if (!candidate) return;
+        if (endpointsMatch(candidate, axis, edgePos, OUTER_EDGE_REMOVE_TOL)) {
+          toRemove.add(candidate.id);
+        }
+      };
+
+      maybeRemoveNearEdge(sortedLeft, "min", "y", top);
+      maybeRemoveNearEdge(sortedLeft, "max", "y", bottom);
+      maybeRemoveNearEdge(sortedRight, "min", "x", left);
+      maybeRemoveNearEdge(sortedRight, "max", "x", right);
+
+      if (toRemove.size) {
+        fingers = fingers.filter((f) => !toRemove.has(f.id));
+        dropSelectionForRemovedFingers(toRemove);
+        changed = true;
+      }
+    }
+
+    if (ensureOuterBoundaryCurves()) {
+      changed = true;
+    }
+
+    if (changed || forceRenumber) {
+      renumberBoundaryIds();
+      syncGridSizeToFingers();
+      return true;
+    }
+
+    return false;
+  }
+
   function handleMouseDown(event: any) {
+    const clickCount = getClickCount(event);
     const hits = paper.project.hitTestAll(event.point, {
       fill: true,
       stroke: true,
@@ -1968,20 +2454,21 @@
       hits.find((h) => h.item?.data?.kind === "finger-hit") ??
       hits.find((h) => h.item?.data?.kind === "finger");
 
-    if (!hit) {
-      selectedFingerId = null;
-      selectedAnchors = [];
-      selectedSegments = [];
-      dragTarget = null;
-      draw();
-      return;
-    }
+	    if (!hit) {
+	      selection.fingerId = null;
+	      selection.anchors = [];
+	      selection.segments = [];
+	      selection.lastCurveHit = null;
+	      dragTarget = null;
+	      draw();
+	      return;
+	    }
 
-    const data = hit.item.data;
-    if (data.kind === "control") {
-      const prevSelectedFingerId = selectedFingerId;
-      const isShift = Boolean(event.modifiers?.shift);
-      // Clicking handles should not change which anchors are selected.
+	    const data = hit.item.data;
+	    if (data.kind === "control") {
+	      const prevSelectedFingerId = selection.fingerId;
+	      const isShift = Boolean(event.modifiers?.shift);
+	      // Clicking handles should not change which anchors are selected.
       const pointKeyStr =
         typeof data.pointKey === "string" ? data.pointKey : null;
       const isHandle = Boolean(
@@ -1989,28 +2476,29 @@
           (pointKeyStr.endsWith("_p1") || pointKeyStr.endsWith("_p2")),
       );
 
-      if (prevSelectedFingerId !== data.fingerId) {
-        selectedAnchors = [];
-        selectedSegments = [];
-      }
-      selectedFingerId = data.fingerId;
-      const f = getFingerById(data.fingerId);
-      if (f) {
-        const segmentsLen = fingerToSegments(f).length;
-        const anchorIdx = anchorIndexFromPointKey(
+	      if (prevSelectedFingerId !== data.fingerId) {
+	        selection.anchors = [];
+	        selection.segments = [];
+	        selection.lastCurveHit = null;
+	      }
+	      selection.fingerId = data.fingerId;
+	      const f = getFingerById(data.fingerId);
+	      if (f) {
+	        const segmentsLen = fingerToSegments(f).length;
+	        const anchorIdx = anchorIndexFromPointKey(
           data.pointKey,
           segmentsLen,
           data.segmentIndex,
         );
-        if (anchorIdx != null) {
-          // Anchor selection overrides segment selection.
-          selectedSegments = [];
-          if (isShift) toggleAnchorSelection(anchorIdx);
-          else setSingleAnchorSelection(anchorIdx);
-        } else if (!isHandle) {
-          // Handle selected: select its associated anchor (start for p1, end for p2).
-          if (
-            typeof data.pointKey === "string" &&
+	        if (anchorIdx != null) {
+	          // Anchor selection overrides segment selection.
+	          selection.segments = [];
+	          if (isShift) toggleAnchorSelection(anchorIdx);
+	          else setSingleAnchorSelection(anchorIdx);
+	        } else if (!isHandle) {
+	          // Handle selected: select its associated anchor (start for p1, end for p2).
+	          if (
+	            typeof data.pointKey === "string" &&
             data.pointKey.endsWith("_p1")
           ) {
             const idx = Number.isFinite(data.segmentIndex)
@@ -2025,11 +2513,11 @@
               ? data.segmentIndex + 1
               : 1;
             setSingleAnchorSelection(Math.max(0, Math.min(segmentsLen, idx)));
-          } else {
-            selectedAnchors = [];
-          }
-        }
-      }
+	          } else {
+	            selection.anchors = [];
+	          }
+	        }
+	      }
       dragTarget = {
         kind: "control",
         fingerId: data.fingerId,
@@ -2039,34 +2527,69 @@
       dragSnapshot = snapshotState();
       dragDirty = false;
       draw();
-      return;
-    }
+	      return;
+	    }
 
-    if (selectedFingerId !== data.fingerId) {
-      selectedAnchors = [];
-      selectedSegments = [];
-    }
-    const prevSelected = selectedFingerId;
-    selectedFingerId = data.fingerId;
+	    if (selection.fingerId !== data.fingerId) {
+	      selection.anchors = [];
+	      selection.segments = [];
+	      selection.lastCurveHit = null;
+	    }
+	    const prevSelected = selection.fingerId;
+	    selection.fingerId = data.fingerId;
     // When selecting a curve, select the two anchors around the click point so
     // it's easy to insert a node right there.
-    if (!event.modifiers?.shift) {
-      const f = getFingerById(data.fingerId);
-      const segLen = f ? fingerToSegments(f).length : 0;
-      const curveIdx =
-        typeof (hit as any).location?.curve?.index === "number"
-          ? (hit as any).location.curve.index
-          : null;
-      if (curveIdx != null && Number.isFinite(curveIdx)) {
-        const a = Math.max(0, Math.min(segLen, curveIdx));
-        const b = Math.max(0, Math.min(segLen, curveIdx + 1));
-        selectedAnchors = a === b ? [a] : [a, b];
-        selectedSegments = a < segLen ? [a] : [];
-      } else if (segLen > 0) {
-        selectedAnchors = [0, segLen];
-        selectedSegments = [];
-      }
-    }
+    const isShift = Boolean(event.modifiers?.shift);
+    const f = getFingerById(data.fingerId);
+    const segLen = f ? fingerToSegments(f).length : 0;
+    const { segmentIndex: curveIdx, t: curveT } = curveHitFromPaperHit(hit as any);
+	    if (
+	      curveIdx != null &&
+	      Number.isFinite(curveIdx) &&
+      curveT != null &&
+      Number.isFinite(curveT)
+    ) {
+	      selection.lastCurveHit = {
+	        fingerId: data.fingerId,
+	        segmentIndex: curveIdx,
+	        t: curveT,
+	      };
+	    } else {
+	      selection.lastCurveHit = null;
+	    }
+
+	    if (!isShift) {
+	      if (curveIdx != null && Number.isFinite(curveIdx)) {
+	        const a = Math.max(0, Math.min(segLen, curveIdx));
+	        const b = Math.max(0, Math.min(segLen, curveIdx + 1));
+	        selection.anchors = a === b ? [a] : [a, b];
+	        selection.segments = a < segLen ? [a] : [];
+	      } else if (segLen > 0) {
+	        selection.anchors = [0, segLen];
+	        selection.segments = [];
+	      }
+	    } else if (curveIdx != null && Number.isFinite(curveIdx)) {
+      // Shift-click toggles selection of the segment and its surrounding anchors.
+      const a = Math.max(0, Math.min(segLen, curveIdx));
+      const b = Math.max(0, Math.min(segLen, curveIdx + 1));
+	      const segIdx = a;
+	      const anchorsToToggle = a === b ? [a] : [a, b];
+	      for (const idx of anchorsToToggle)
+	        selection.anchors = toggleNumberInList(selection.anchors, idx);
+	      if (segIdx < segLen) {
+	        selection.segments = toggleNumberInList(selection.segments, segIdx);
+	      }
+	    }
+
+    // Double-click inserts a node at the clicked location on the curve.
+	    if (
+	      clickCount >= 2 &&
+	      selection.lastCurveHit &&
+	      selection.lastCurveHit.fingerId === data.fingerId
+	    ) {
+	      insertNodeAtCurveHit(selection.lastCurveHit);
+	      return;
+	    }
     dragTarget = { kind: "path", fingerId: data.fingerId };
     dragSnapshot = snapshotState();
     dragDirty = false;
@@ -2092,6 +2615,15 @@
     if (next !== hoverFingerId) {
       hoverFingerId = next;
       draw();
+    }
+
+    if (canvas) {
+      canvas.style.cursor =
+        kind === "control"
+          ? "pointer"
+          : kind === "finger-hit" || kind === "finger"
+            ? "move"
+            : "default";
     }
   }
 
@@ -2326,7 +2858,7 @@
   }
 
   function handleMouseDrag(event: any) {
-    const target = dragTarget;
+    let target = dragTarget;
     if (!target) return;
 
     if (target.kind === "control") {
@@ -2340,10 +2872,13 @@
         const anchorIdx = anchorIndexFromPointKey(pointKey, segLen, segIdx);
         if (anchorIdx != null) {
           const dRaw = unrotateDelta(event.delta);
-          const anchorsToMove = selectedAnchors.includes(anchorIdx)
-            ? selectedAnchors
+          const anchorsToMove = selection.anchors.includes(anchorIdx)
+            ? selection.anchors
             : [anchorIdx];
-          applyConstrainedUpdate(target.fingerId, (current, fraction) => {
+          const refreshed = dragTarget;
+          const activeFingerId =
+            refreshed && refreshed.kind === "control" ? refreshed.fingerId : target.fingerId;
+          applyConstrainedUpdate(activeFingerId, (current, fraction) => {
             const segs = cloneSegments(fingerToSegments(current));
             const d = { x: dRaw.x * fraction, y: dRaw.y * fraction };
             applyDeltaToAnchorsInSegments(current, segs, anchorsToMove, d);
@@ -2418,11 +2953,8 @@
     // Drag whole path: translate while keeping endpoints snapped and boundaries non-intersecting
     const dRaw = unrotateDelta(event.delta);
     applyConstrainedUpdate(target.fingerId, (current, fraction) => {
-      const { squareSize, squareLeft, squareTop } = getSquareParams();
-      const minX = squareLeft;
-      const maxX = squareLeft + squareSize;
-      const minY = squareTop;
-      const maxY = squareTop + squareSize;
+      const { left: minX, right: maxX, top: minY, bottom: maxY } =
+        getOverlapRect();
 
       const segments = cloneSegments(fingerToSegments(current));
       if (!segments.length) return current;
@@ -2524,12 +3056,24 @@
     if (dragTarget?.kind === "path") {
       clampEndpoints(dragTarget.fingerId);
     }
+
+    // If an outer boundary curve was dragged inward, insert a new outer curve at the edge
+    // so the overlap rectangle always has boundary curves at all four sides.
+    if (dragDirty && ensureOuterBoundaryCurves()) {
+      renumberBoundaryIds();
+      syncGridSizeToFingers();
+      dragDirty = true;
+    }
+
     if (dragSnapshot && dragDirty) {
       pushUndo(dragSnapshot);
     }
     dragSnapshot = null;
     dragDirty = false;
     dragTarget = null;
+    if (canvas) {
+      canvas.style.cursor = hoverFingerId ? "move" : "default";
+    }
     draw();
   }
 
@@ -2590,14 +3134,13 @@
           get gridSize() {
             return gridSize;
           },
-          set gridSize(v: number) {
-            gridSize = v;
-          },
-          get lastGridSize() {
-            return lastGridSize;
-          },
-          set lastGridSize(v: number) {
-            lastGridSize = v;
+          set gridSize(v: any) {
+            const next = normalizeGridSize(v as any);
+            gridSize = next;
+            setCenteredOverlapRect(next);
+            fingers = createDefaultFingers(next);
+            renumberBoundaryIds();
+            draw();
           },
           get fingers() {
             return fingers;
@@ -2606,22 +3149,22 @@
             fingers = v;
           },
           get selectedFingerId() {
-            return selectedFingerId;
+            return selection.fingerId;
           },
           set selectedFingerId(v: string | null) {
-            selectedFingerId = v;
+            selection.fingerId = v;
           },
           get selectedAnchors() {
-            return selectedAnchors;
+            return selection.anchors;
           },
           set selectedAnchors(v: number[]) {
-            selectedAnchors = v;
+            selection.anchors = v;
           },
           get selectedSegments() {
-            return selectedSegments;
+            return selection.segments;
           },
           set selectedSegments(v: number[]) {
-            selectedSegments = v;
+            selection.segments = v;
           },
           get hoverFingerId() {
             return hoverFingerId;
@@ -2635,48 +3178,54 @@
           set dragTarget(v: DragTarget) {
             dragTarget = v;
           },
-          get symmetryWithinCurve() {
-            return symmetryWithinCurve;
-          },
-          set symmetryWithinCurve(v: boolean) {
-            symmetryWithinCurve = v;
-          },
-          get symmetryWithinLobe() {
-            return symmetryWithinLobe;
-          },
-          set symmetryWithinLobe(v: boolean) {
-            symmetryWithinLobe = v;
-          },
-          get symmetryBetweenLobes() {
-            return symmetryBetweenLobes;
-          },
-          set symmetryBetweenLobes(v: boolean) {
-            symmetryBetweenLobes = v;
-          },
-          get antiWithinCurve() {
-            return antiWithinCurve;
-          },
-          set antiWithinCurve(v: boolean) {
-            antiWithinCurve = v;
-          },
-          get antiWithinLobe() {
-            return antiWithinLobe;
-          },
-          set antiWithinLobe(v: boolean) {
-            antiWithinLobe = v;
-          },
-          get antiBetweenLobes() {
-            return antiBetweenLobes;
-          },
-          set antiBetweenLobes(v: boolean) {
-            antiBetweenLobes = v;
-          },
-          get showCurves() {
-            return showCurves;
-          },
-          set showCurves(v: boolean) {
-            showCurves = v;
-          },
+	          get symmetryWithinCurve() {
+	            return editor.withinCurveMode !== 0;
+	          },
+	          set symmetryWithinCurve(v: boolean) {
+	            if (!v) editor.withinCurveMode = 0;
+	            else if (editor.withinCurveMode === 0) editor.withinCurveMode = 1;
+	          },
+	          get symmetryWithinLobe() {
+	            return editor.withinLobeMode !== 0;
+	          },
+	          set symmetryWithinLobe(v: boolean) {
+	            if (!v) editor.withinLobeMode = 0;
+	            else if (editor.withinLobeMode === 0) editor.withinLobeMode = 1;
+	          },
+	          get symmetryBetweenLobes() {
+	            return editor.betweenLobesMode !== 0;
+	          },
+	          set symmetryBetweenLobes(v: boolean) {
+	            if (!v) editor.betweenLobesMode = 0;
+	            else if (editor.betweenLobesMode === 0) editor.betweenLobesMode = 1;
+	          },
+	          get antiWithinCurve() {
+	            return editor.withinCurveMode === 2;
+	          },
+	          set antiWithinCurve(v: boolean) {
+	            if (v) editor.withinCurveMode = 2;
+	            else if (editor.withinCurveMode === 2) editor.withinCurveMode = 1;
+	          },
+	          get antiWithinLobe() {
+	            return editor.withinLobeMode === 2;
+	          },
+	          set antiWithinLobe(v: boolean) {
+	            if (v) editor.withinLobeMode = 2;
+	            else if (editor.withinLobeMode === 2) editor.withinLobeMode = 1;
+	          },
+	          get antiBetweenLobes() {
+	            return editor.betweenLobesMode === 2;
+	          },
+	          set antiBetweenLobes(v: boolean) {
+	            if (v) editor.betweenLobesMode = 2;
+	            else if (editor.betweenLobesMode === 2) editor.betweenLobesMode = 1;
+	          },
+	          get showCurves() {
+	            return editor.showCurves;
+	          },
+	          set showCurves(v: boolean) {
+	            editor.showCurves = v;
+	          },
 
           get benchActive() {
             return benchActive;
@@ -2744,72 +3293,41 @@
     draw();
   });
 
-  $effect(() => {
-    // Track showCurves to redraw when visibility toggles
-    const _ = showCurves;
-    if (!paperReady || !canvas || !paper.project) return;
-    draw();
-  });
+	  $effect(() => {
+	    // Track showCurves to redraw when visibility toggles
+	    const _ = editor.showCurves;
+	    if (!paperReady || !canvas || !paper.project) return;
+	    draw();
+	  });
 </script>
 
 <div class="paper-heart">
   {#if !readonly}
-    <div class="controls">
-      <label>
-        Fingers:
-        <input type="number" bind:value={gridSize} min="2" max="8" />
-      </label>
-      <label class="checkbox">
-        <input type="checkbox" bind:checked={showCurves} />
-        Show curves
-      </label>
-      <TriSwitch
-        label="Within curve"
-        value={(symmetryWithinCurve
-          ? antiWithinCurve
-            ? 2
-            : 1
-          : 0) as TriSwitchValue}
-        options={["Off", "Sym", "Anti"] as const}
-        titles={["Off", "Mirror symmetry", "Anti-symmetry"] as const}
-        on:change={(e) => {
-          const v = e.detail as TriSwitchValue;
-          symmetryWithinCurve = v !== 0;
-          antiWithinCurve = v === 2;
-        }}
-      />
-      <TriSwitch
-        label="Within lobe"
-        value={(symmetryWithinLobe
-          ? antiWithinLobe
-            ? 2
-            : 1
-          : 0) as TriSwitchValue}
-        options={["Off", "Sym", "Anti"] as const}
-        titles={["Off", "Mirror symmetry", "Anti-symmetry"] as const}
-        on:change={(e) => {
-          const v = e.detail as TriSwitchValue;
-          symmetryWithinLobe = v !== 0;
-          antiWithinLobe = v === 2;
-        }}
-      />
-      <TriSwitch
-        label="Between lobes"
-        value={(symmetryBetweenLobes
-          ? antiBetweenLobes
-            ? 2
-            : 1
-          : 0) as TriSwitchValue}
-        options={["Off", "Sym", "Anti"] as const}
-        titles={["Off", "Mirror symmetry", "Anti-symmetry"] as const}
-        on:change={(e) => {
-          const v = e.detail as TriSwitchValue;
-          symmetryBetweenLobes = v !== 0;
-          antiBetweenLobes = v === 2;
-        }}
-      />
-    </div>
-  {/if}
+	    <div class="controls">
+	      <label class="checkbox">
+	        <input type="checkbox" bind:checked={editor.showCurves} />
+	        Show curves
+	      </label>
+	      <TriSwitch
+	        label="Within curve"
+	        bind:value={editor.withinCurveMode}
+	        options={["Off", "Sym", "Anti"] as const}
+	        titles={["Off", "Mirror symmetry", "Anti-symmetry"] as const}
+	      />
+	      <TriSwitch
+	        label="Within lobe"
+	        bind:value={editor.withinLobeMode}
+	        options={["Off", "Sym", "Anti"] as const}
+	        titles={["Off", "Mirror symmetry", "Anti-symmetry"] as const}
+	      />
+	      <TriSwitch
+	        label="Between lobes"
+	        bind:value={editor.betweenLobesMode}
+	        options={["Off", "Sym", "Anti"] as const}
+	        titles={["Off", "Mirror symmetry", "Anti-symmetry"] as const}
+	      />
+	    </div>
+	  {/if}
   <div class="canvas-wrapper" style:width="{size}px" style:height="{size}px">
     <canvas
       bind:this={canvas}
@@ -2819,35 +3337,11 @@
       style:transform-origin="top left"
     ></canvas>
   </div>
-  {#if !readonly && selectedFingerId}
-    {@const selectedFinger = fingers.find((f) => f.id === selectedFingerId)}
-    {@const segCount = getSegmentCount(selectedFinger)}
-    {@const selectedSegs = getSelectedSegmentIndexes(segCount)}
-    {@const canMakeSegmentsStraight = selectedSegs.length > 0}
-    {@const canMakeSegmentsCurved = selectedSegs.length > 0}
-    {@const canDeleteNode = selectedAnchors.some(
-      (idx) => idx >= 1 && idx <= segCount - 1,
-    )}
-    {@const canInsertNode =
-      selectedAnchors.length === 2 &&
-      Math.abs(selectedAnchors[0]! - selectedAnchors[1]!) === 1}
-    {@const internalAnchors = selectedAnchors.filter(
-      (idx) => idx >= 1 && idx <= segCount - 1,
-    )}
-    {@const nodeTypeSelected =
-      selectedFinger && internalAnchors.length
-        ? internalAnchors.every(
-            (idx) =>
-              getAnchorNodeType(selectedFinger, idx) ===
-              getAnchorNodeType(selectedFinger, internalAnchors[0]!),
-          )
-          ? getAnchorNodeType(selectedFinger, internalAnchors[0]!)
-          : null
-        : null}
-	    <div class="segment-controls" aria-label="Curve tools">
-	      <div class="edit-controls" aria-label="Edit">
-	        <Button
-	          variant="outline"
+	  {#if selectedFinger}
+		    <div class="segment-controls" aria-label="Curve tools">
+		      <div class="edit-controls" aria-label="Edit">
+		        <Button
+		          variant="outline"
 	          size="icon-sm"
 	          onclick={insertNodeBetweenSelectedAnchors}
 	          disabled={!canInsertNode}
@@ -2878,11 +3372,11 @@
 	            ? "bg-[#cc0000]/10 border-[#cc0000]/40"
 	            : ""}
 	          onclick={() => setSelectedAnchorsNodeType("corner")}
-	          disabled={!internalAnchors.length}
+	          disabled={!validAnchors.length}
 	          title="Corner node"
 	          aria-label="Corner node"
 	        >
-	          <NodeCornerIcon size={16} aria-hidden="true" />
+	          <span aria-hidden="true"><NodeCornerIcon size={16} /></span>
 	        </Button>
 	        <Button
 	          variant="outline"
@@ -2891,11 +3385,11 @@
 	            ? "bg-[#cc0000]/10 border-[#cc0000]/40"
 	            : ""}
 	          onclick={() => setSelectedAnchorsNodeType("smooth")}
-	          disabled={!internalAnchors.length}
+	          disabled={!validAnchors.length}
 	          title="Smooth node (collinear handles)"
 	          aria-label="Smooth node"
 	        >
-	          <NodeSmoothIcon size={16} aria-hidden="true" />
+	          <span aria-hidden="true"><NodeSmoothIcon size={16} /></span>
 	        </Button>
 	        <Button
 	          variant="outline"
@@ -2904,21 +3398,21 @@
 	            ? "bg-[#cc0000]/10 border-[#cc0000]/40"
 	            : ""}
 	          onclick={() => setSelectedAnchorsNodeType("symmetric")}
-	          disabled={!internalAnchors.length}
+	          disabled={!validAnchors.length}
 	          title="Symmetric node (equal + collinear handles)"
 	          aria-label="Symmetric node"
 	        >
-	          <NodeSymmetricIcon size={16} aria-hidden="true" />
+	          <span aria-hidden="true"><NodeSymmetricIcon size={16} /></span>
 	        </Button>
 	        <Button
 	          variant="outline"
 	          size="icon-sm"
 	          onclick={makeSelectedAnchorsCurved}
-	          disabled={!selectedAnchors.length}
+	          disabled={!selection.anchors.length}
 	          title="Curve node (pull out handles)"
 	          aria-label="Curve node"
 	        >
-	          <CurveNodeToolIcon size={16} aria-hidden="true" />
+	          <span aria-hidden="true"><CurveNodeToolIcon size={16} /></span>
 	        </Button>
 	      </div>
 	      <div class="toolbar-separator" aria-hidden="true">
@@ -2933,7 +3427,7 @@
 	          title="Straight segment"
 	          aria-label="Straight segment"
 	        >
-	          <SegmentLineIcon size={16} aria-hidden="true" />
+	          <span aria-hidden="true"><SegmentLineIcon size={16} /></span>
 	        </Button>
 	        <Button
 	          variant="outline"
@@ -2943,7 +3437,7 @@
 	          title="Curved segment"
 	          aria-label="Curved segment"
 	        >
-	          <SegmentCurveIcon size={16} aria-hidden="true" />
+	          <span aria-hidden="true"><SegmentCurveIcon size={16} /></span>
 	        </Button>
 	      </div>
 	    </div>
@@ -2982,14 +3476,6 @@
     white-space: nowrap;
   }
 
-  .controls input[type="number"] {
-    width: 50px;
-    padding: 0.25rem 0.4rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 0.85rem;
-  }
-
   .controls input[type="checkbox"] {
     accent-color: #cc0000;
   }
@@ -3021,10 +3507,6 @@
 	  }
 
 	  /* active styles are applied via tailwind classes on the Button */
-
-  .canvas-wrapper {
-    /* dimensions set via inline styles */
-  }
 
   canvas {
     background: transparent;

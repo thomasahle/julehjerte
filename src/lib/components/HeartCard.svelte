@@ -63,19 +63,19 @@
     };
   });
 
-  function handleSelect(e: MouseEvent) {
+  function handleDetails(e: MouseEvent) {
     e.stopPropagation();
-    onSelect?.(design);
+    onClick?.(design);
   }
 
   function handleClick() {
-    onClick?.(design);
+    onSelect?.(design);
   }
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      onClick?.(design);
+      onSelect?.(design);
     }
   }
 </script>
@@ -103,8 +103,8 @@
   </div>
   <div class="overlay">
     <span class="title">{design.name}</span>
-    <button class="select-btn" onclick={handleSelect}>
-      {selected ? t('selected', lang) : t('select', lang)}
+    <button class="details-btn" onclick={handleDetails}>
+      {t('details', lang)}
     </button>
   </div>
   {#if selected}
@@ -120,24 +120,20 @@
   .card {
     position: relative;
     aspect-ratio: 1;
-    background: white;
+    background: transparent;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition:
-      transform 0.2s,
-      box-shadow 0.2s;
+    transition: transform 0.2s;
   }
 
   .card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transform: scale(1.02);
   }
 
   .card.selected {
-    box-shadow:
-      0 0 0 3px #cc0000,
-      0 4px 16px rgba(0, 0, 0, 0.15);
+    outline: 3px solid #cc0000;
+    outline-offset: -3px;
   }
 
   .preview {
@@ -146,35 +142,43 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #bad4dc;
+    background: transparent;
+  }
+
+  .preview :global(canvas) {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
+    transition: filter 0.2s;
+  }
+
+  .card:hover .preview :global(canvas) {
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
   }
 
   .thumb-skeleton {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, #bad4dc 0%, #d6e6eb 50%, #bad4dc 100%);
-    background-size: 200% 100%;
-    animation: shimmer 1.2s ease-in-out infinite;
+    width: 70%;
+    height: 70%;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
   }
 
-  @keyframes shimmer {
-    0% {
-      background-position: 200% 0;
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.4;
     }
-    100% {
-      background-position: -200% 0;
+    50% {
+      opacity: 0.7;
     }
   }
 
   .overlay {
     position: absolute;
     inset: 0;
-    background: rgb(188 83 97 / 30%);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
-    padding: 1rem;
+    align-items: flex-end;
+    padding: 0.75rem;
     opacity: 0;
     transition: opacity 0.2s;
   }
@@ -190,12 +194,9 @@
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   }
 
-  .select-btn {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
+  .details-btn {
     padding: 0.4rem 0.8rem;
-    background: #cc0000;
+    background: rgba(0, 0, 0, 0.6);
     color: white;
     border: none;
     border-radius: 6px;
@@ -205,8 +206,8 @@
     transition: background 0.2s;
   }
 
-  .select-btn:hover {
-    background: #aa0000;
+  .details-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
   }
 
   .selected-badge {
@@ -231,8 +232,8 @@
 
   .custom-badge {
     position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
+    top: 0.5rem;
+    left: 0.5rem;
     width: 24px;
     height: 24px;
     background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%);
@@ -246,8 +247,8 @@
 
   .custom-badge-hover {
     position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
+    top: 0.5rem;
+    left: 0.5rem;
     background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%);
     color: #333;
     border-radius: 12px;

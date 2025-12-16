@@ -98,7 +98,6 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
 
   const saved = {
     gridSize: ctx.gridSize,
-    lastGridSize: ctx.lastGridSize,
     fingers: ctx.fingers.map((f: any) => ({ ...f })),
     selectedFingerId: ctx.selectedFingerId,
     dragTarget: ctx.dragTarget,
@@ -112,7 +111,6 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
   };
 
   try {
-    ctx.lastGridSize = benchGridSize;
     ctx.gridSize = benchGridSize;
     ctx.showCurves = false;
     ctx.symmetryWithinCurve = false;
@@ -361,7 +359,6 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
   } finally {
     ctx.benchActive = false;
     ctx.benchCounters = { candidateIsValidCalls: 0, intersectionChecks: 0 };
-    ctx.lastGridSize = saved.lastGridSize;
     ctx.gridSize = saved.gridSize;
     ctx.fingers = saved.fingers;
     ctx.selectedFingerId = saved.selectedFingerId;
@@ -392,7 +389,6 @@ async function runIntersectionBench(
 
   const saved = {
     gridSize: ctx.gridSize,
-    lastGridSize: ctx.lastGridSize,
     fingers: ctx.fingers.map((f: any) => ({ ...f })),
     selectedFingerId: ctx.selectedFingerId,
     dragTarget: ctx.dragTarget,
@@ -406,7 +402,6 @@ async function runIntersectionBench(
   };
 
   try {
-    ctx.lastGridSize = benchGridSize;
     ctx.gridSize = benchGridSize;
     ctx.showCurves = false;
     ctx.symmetryWithinCurve = false;
@@ -543,7 +538,6 @@ async function runIntersectionBench(
   } finally {
     ctx.benchActive = false;
     ctx.benchCounters = { candidateIsValidCalls: 0, intersectionChecks: 0 };
-    ctx.lastGridSize = saved.lastGridSize;
     ctx.gridSize = saved.gridSize;
     ctx.fingers = saved.fingers;
     ctx.selectedFingerId = saved.selectedFingerId;

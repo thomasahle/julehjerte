@@ -1,7 +1,7 @@
-import type { Finger, HeartDesign, LobeId, NodeType, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, HeartDesign, LobeId, NodeType, Vec } from '$lib/types/heart';
 
 type RawFinger = Partial<Finger> & { id?: unknown; lobe?: unknown; pathData?: unknown };
-type RawDesign = Partial<HeartDesign> & { fingers?: unknown };
+type RawDesign = Omit<Partial<HeartDesign>, 'gridSize'> & { gridSize?: unknown; fingers?: unknown };
 
 type BezierSegment = { p0: Vec; p1: Vec; p2: Vec; p3: Vec };
 
@@ -13,11 +13,73 @@ function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
 }
 
-function getSquareParams(gridSize: number, stripWidth: number = STRIP_WIDTH) {
-  const squareSize = gridSize * stripWidth;
-  const squareLeft = CENTER.x - squareSize / 2;
-  const squareTop = CENTER.y - squareSize / 2;
-  return { squareSize, squareLeft, squareTop };
+function clampInt(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, Math.round(value)));
+}
+
+function normalizeGridSize(raw: unknown): GridSize {
+  if (typeof raw === 'number' && Number.isFinite(raw)) {
+    const n = clampInt(raw, 2, 8);
+    return { x: n, y: n };
+  }
+  if (raw && typeof raw === 'object') {
+    const x = (raw as any).x;
+    const y = (raw as any).y;
+    if (typeof x === 'number' && typeof y === 'number' && Number.isFinite(x) && Number.isFinite(y)) {
+      return { x: clampInt(x, 2, 8), y: clampInt(y, 2, 8) };
+    }
+  }
+  return { x: 3, y: 3 };
+}
+
+function getCenteredRectParams(gridSize: GridSize, stripWidth: number = STRIP_WIDTH) {
+  const width = gridSize.x * stripWidth;
+  const height = gridSize.y * stripWidth;
+  const left = CENTER.x - width / 2;
+  const top = CENTER.y - height / 2;
+  return { left, top, right: left + width, bottom: top + height };
+}
+
+function median(values: number[]): number {
+  if (!values.length) return 0;
+  const sorted = values.slice().sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 1 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
+}
+
+function inferOverlapRectFromFingers(fingers: Finger[], gridSize: GridSize) {
+  const leftCandidates: number[] = [];
+  const rightCandidates: number[] = [];
+  const topCandidates: number[] = [];
+  const bottomCandidates: number[] = [];
+
+  for (const finger of fingers) {
+    const segs = parsePathDataToSegments(finger.pathData);
+    if (!segs.length) continue;
+    const start = segs[0]!.p0;
+    const end = segs[segs.length - 1]!.p3;
+
+    if (finger.lobe === 'left') {
+      leftCandidates.push(Math.min(start.x, end.x));
+      rightCandidates.push(Math.max(start.x, end.x));
+    } else {
+      topCandidates.push(Math.min(start.y, end.y));
+      bottomCandidates.push(Math.max(start.y, end.y));
+    }
+  }
+
+  const fallback = getCenteredRectParams(gridSize);
+  let left = leftCandidates.length ? median(leftCandidates) : fallback.left;
+  let right = rightCandidates.length ? median(rightCandidates) : fallback.right;
+  let top = topCandidates.length ? median(topCandidates) : fallback.top;
+  let bottom = bottomCandidates.length ? median(bottomCandidates) : fallback.bottom;
+
+  const expectedW = gridSize.x * STRIP_WIDTH;
+  const expectedH = gridSize.y * STRIP_WIDTH;
+  if (Math.abs(right - left - expectedW) <= 3) right = left + expectedW;
+  if (Math.abs(bottom - top - expectedH) <= 3) bottom = top + expectedH;
+
+  return { left, right, top, bottom };
 }
 
 function parsePathDataToSegments(pathData: string): BezierSegment[] {
@@ -105,12 +167,11 @@ function reverseNodeTypes(nodeTypes: Record<string, NodeType> | undefined, segme
   return Object.keys(out).length ? out : undefined;
 }
 
-function canonicalizeFingerForGrid(finger: Finger, gridSize: number): Finger {
-  const { squareSize, squareLeft, squareTop } = getSquareParams(gridSize);
-  const minX = squareLeft;
-  const maxX = squareLeft + squareSize;
-  const minY = squareTop;
-  const maxY = squareTop + squareSize;
+function canonicalizeFingerForGrid(finger: Finger, rect: { left: number; right: number; top: number; bottom: number }): Finger {
+  const minX = rect.left;
+  const maxX = rect.right;
+  const minY = rect.top;
+  const maxY = rect.bottom;
 
   const projectEndpoint = (point: Vec, pointKey: 'p0' | 'p3'): Vec => {
     if (finger.lobe === 'left') {
@@ -171,6 +232,68 @@ function canonicalizeFingerForGrid(finger: Finger, gridSize: number): Finger {
   };
 }
 
+function makeStraightBoundary(lobe: LobeId, rect: { left: number; right: number; top: number; bottom: number }, pos: number): Finger {
+  const id = `${lobe === 'left' ? 'L' : 'R'}-edge-${pos}`;
+  if (lobe === 'right') {
+    const x = pos;
+    const p0: Vec = { x, y: rect.bottom };
+    const p3: Vec = { x, y: rect.top };
+    const p1: Vec = { ...p0 };
+    const p2: Vec = { ...p3 };
+    return { id, lobe, pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) };
+  }
+  const y = pos;
+  const p0: Vec = { x: rect.right, y };
+  const p3: Vec = { x: rect.left, y };
+  const p1: Vec = { ...p0 };
+  const p2: Vec = { ...p3 };
+  return { id, lobe, pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) };
+}
+
+function ensureOuterBoundaries(fingers: Finger[], rect: { left: number; right: number; top: number; bottom: number }): Finger[] {
+  const tol = 0.75;
+
+  const atTop = (f: Finger) => {
+    if (f.lobe !== 'left') return false;
+    const segs = parsePathDataToSegments(f.pathData);
+    if (!segs.length) return false;
+    const first = segs[0]!;
+    const last = segs[segs.length - 1]!;
+    return Math.abs(first.p0.y - rect.top) <= tol && Math.abs(last.p3.y - rect.top) <= tol;
+  };
+  const atBottom = (f: Finger) => {
+    if (f.lobe !== 'left') return false;
+    const segs = parsePathDataToSegments(f.pathData);
+    if (!segs.length) return false;
+    const first = segs[0]!;
+    const last = segs[segs.length - 1]!;
+    return Math.abs(first.p0.y - rect.bottom) <= tol && Math.abs(last.p3.y - rect.bottom) <= tol;
+  };
+  const atLeft = (f: Finger) => {
+    if (f.lobe !== 'right') return false;
+    const segs = parsePathDataToSegments(f.pathData);
+    if (!segs.length) return false;
+    const first = segs[0]!;
+    const last = segs[segs.length - 1]!;
+    return Math.abs(first.p0.x - rect.left) <= tol && Math.abs(last.p3.x - rect.left) <= tol;
+  };
+  const atRight = (f: Finger) => {
+    if (f.lobe !== 'right') return false;
+    const segs = parsePathDataToSegments(f.pathData);
+    if (!segs.length) return false;
+    const first = segs[0]!;
+    const last = segs[segs.length - 1]!;
+    return Math.abs(first.p0.x - rect.right) <= tol && Math.abs(last.p3.x - rect.right) <= tol;
+  };
+
+  const next = fingers.slice();
+  if (!next.some(atTop)) next.push(makeStraightBoundary('left', rect, rect.top));
+  if (!next.some(atBottom)) next.push(makeStraightBoundary('left', rect, rect.bottom));
+  if (!next.some(atLeft)) next.push(makeStraightBoundary('right', rect, rect.left));
+  if (!next.some(atRight)) next.push(makeStraightBoundary('right', rect, rect.right));
+  return next;
+}
+
 export function fingerToPathData(finger: Finger): string {
   return finger.pathData;
 }
@@ -210,21 +333,28 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   const name = typeof r.name === 'string' ? r.name : 'Untitled';
   const author = typeof r.author === 'string' ? r.author : '';
   const description = typeof r.description === 'string' ? r.description : undefined;
-  const gridSize = typeof r.gridSize === 'number' && Number.isFinite(r.gridSize) ? r.gridSize : 3;
+  const gridSize = normalizeGridSize(r.gridSize);
 
   const fingersRaw = Array.isArray(r.fingers) ? r.fingers : [];
   let fingers = fingersRaw
     .map(normalizeFinger)
     .filter((f): f is Finger => f !== null);
 
-  fingers = fingers.map((f) => canonicalizeFingerForGrid(f, gridSize));
+  const rect = inferOverlapRectFromFingers(fingers, gridSize);
+  fingers = fingers.map((f) => canonicalizeFingerForGrid(f, rect));
+  fingers = ensureOuterBoundaries(fingers, rect);
+
+  const inferredGrid: GridSize = {
+    x: clampInt(fingers.filter((f) => f.lobe === 'right').length - 1, 2, 8),
+    y: clampInt(fingers.filter((f) => f.lobe === 'left').length - 1, 2, 8)
+  };
 
   return {
     id,
     name,
     author,
     description,
-    gridSize,
+    gridSize: inferredGrid,
     fingers
   };
 }

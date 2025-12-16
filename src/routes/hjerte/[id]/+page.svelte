@@ -125,11 +125,11 @@
 <svelte:head>
   <title>{design?.name ?? 'Template'} - {SITE_TITLE}</title>
   {#if design}
-    <meta name="description" content={design.description ?? `${design.name} - et flettet julehjerte design med ${design.gridSize}x${design.gridSize} grid. Download PDF skabelon gratis.`} />
+    <meta name="description" content={design.description ?? `${design.name} - et flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} grid. Download PDF skabelon gratis.`} />
     <link rel="canonical" href="{SITE_URL}/hjerte/{design.id}" />
     <meta property="og:url" content="{SITE_URL}/hjerte/{design.id}" />
     <meta property="og:title" content="{design.name} - {SITE_TITLE}" />
-    <meta property="og:description" content={design.description ?? `Flettet julehjerte design med ${design.gridSize} striber per side.`} />
+    <meta property="og:description" content={design.description ?? `Flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} striber.`} />
     <meta property="og:type" content="article" />
     <meta name="twitter:title" content="{design.name} - {SITE_TITLE}" />
   {/if}
@@ -170,7 +170,7 @@
         <div class="details">
           <div class="detail">
             <span class="label">{t('gridSize', lang)}</span>
-            <span class="value">{design.gridSize} x {design.gridSize}</span>
+            <span class="value">{design.gridSize.x} x {design.gridSize.y}</span>
           </div>
           <div class="detail">
             <span class="label">{t('symmetry', lang)}</span>
@@ -303,13 +303,14 @@
   }
 
   .preview-section {
-    background: #bad4dc;
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 1rem;
+  }
+
+  .preview-section :global(canvas) {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
   }
 
   .info-section {

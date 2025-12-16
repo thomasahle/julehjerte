@@ -26,7 +26,7 @@ function hashStringFNV1a(input: string): string {
 function getDesignKey(design: HeartDesign, colors: HeartColors, size: number): string {
   const serialized = JSON.stringify(serializeHeartDesign(design));
   const digest = hashStringFNV1a(serialized);
-  return `${digest}:${design.id}:${design.gridSize}:${colors.left}:${colors.right}:${size}`;
+  return `${digest}:${design.id}:${design.gridSize.x}x${design.gridSize.y}:${colors.left}:${colors.right}:${size}`;
 }
 
 async function runQueue(): Promise<void> {

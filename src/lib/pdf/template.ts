@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import type { HeartDesign, Finger, Vec } from '$lib/types/heart';
+import type { GridSize, HeartDesign, Finger, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
 
@@ -49,19 +49,50 @@ function getTemplateDimensions(layout: LayoutMode) {
   return { width, height, cols, rows, margin: COMPACT_MARGIN, footerHeight: FOOTER_HEIGHT };
 }
 
-interface LobeParams {
-  squareLeft: number;
-  squareTop: number;
-  squareSize: number;
-  earRadius: number;
+function overlapDims(gridSize: GridSize) {
+  return { overlapWidth: gridSize.x * STRIP_WIDTH, overlapHeight: gridSize.y * STRIP_WIDTH };
 }
 
-function getSquareParams(gridSize: number): LobeParams {
-  const squareSize = gridSize * STRIP_WIDTH;
-  const squareLeft = CENTER.x - squareSize / 2;
-  const squareTop = CENTER.y - squareSize / 2;
-  const earRadius = squareSize / 2;
-  return { squareSize, squareLeft, squareTop, earRadius };
+function median(values: number[]): number {
+  if (!values.length) return 0;
+  const sorted = values.slice().sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 1 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
+}
+
+function inferOverlapRect(design: HeartDesign) {
+  const { overlapWidth: expectedW, overlapHeight: expectedH } = overlapDims(design.gridSize);
+  const centeredLeft = CENTER.x - expectedW / 2;
+  const centeredTop = CENTER.y - expectedH / 2;
+
+  const leftCandidates: number[] = [];
+  const rightCandidates: number[] = [];
+  const topCandidates: number[] = [];
+  const bottomCandidates: number[] = [];
+
+  for (const finger of design.fingers) {
+    const segs = parsePathDataToSegments(finger.pathData);
+    if (!segs.length) continue;
+    const start = segs[0]!.p0;
+    const end = segs[segs.length - 1]!.p3;
+    if (finger.lobe === 'left') {
+      leftCandidates.push(Math.min(start.x, end.x));
+      rightCandidates.push(Math.max(start.x, end.x));
+    } else {
+      topCandidates.push(Math.min(start.y, end.y));
+      bottomCandidates.push(Math.max(start.y, end.y));
+    }
+  }
+
+  let left = leftCandidates.length ? median(leftCandidates) : centeredLeft;
+  let right = rightCandidates.length ? median(rightCandidates) : centeredLeft + expectedW;
+  let top = topCandidates.length ? median(topCandidates) : centeredTop;
+  let bottom = bottomCandidates.length ? median(bottomCandidates) : centeredTop + expectedH;
+
+  if (Math.abs(right - left - expectedW) <= 3) right = left + expectedW;
+  if (Math.abs(bottom - top - expectedH) <= 3) bottom = top + expectedH;
+
+  return { overlapLeft: left, overlapTop: top, overlapWidth: right - left, overlapHeight: bottom - top };
 }
 
 type BezierSegment = { p0: Vec; p1: Vec; p2: Vec; p3: Vec };
@@ -105,24 +136,32 @@ function pointsClose(a: Vec, b: Vec, tol = 0.75): boolean {
   return Math.abs(a.x - b.x) <= tol && Math.abs(a.y - b.y) <= tol;
 }
 
-function mapPointBetweenLobes(p: Vec, squareLeft: number, squareTop: number): Vec {
+function mapPointBetweenLobes(p: Vec, rect: { overlapLeft: number; overlapTop: number; overlapWidth: number; overlapHeight: number }): Vec {
+  const u = rect.overlapWidth ? (p.x - rect.overlapLeft) / rect.overlapWidth : 0;
+  const v = rect.overlapHeight ? (p.y - rect.overlapTop) / rect.overlapHeight : 0;
   return {
-    x: squareLeft + (p.y - squareTop),
-    y: squareTop + (p.x - squareLeft)
+    x: rect.overlapLeft + v * rect.overlapWidth,
+    y: rect.overlapTop + u * rect.overlapHeight
   };
 }
 
 // Check if two fingers have the same curve (mirrored between lobes)
-function fingersAreSymmetric(leftFingers: Finger[], rightFingers: Finger[], gridSize: number): boolean {
+function fingersAreSymmetric(leftFingers: Finger[], rightFingers: Finger[], gridSize: GridSize, rect: { overlapLeft: number; overlapTop: number; overlapWidth: number; overlapHeight: number }): boolean {
+  if (gridSize.x !== gridSize.y) return false;
   if (leftFingers.length !== rightFingers.length) return false;
 
   // For symmetric hearts, left finger curves should mirror right finger curves
   // This checks that swapping x/y within the overlap square maps left -> right.
-  const { squareLeft, squareTop } = getSquareParams(gridSize);
+  const leftSorted = leftFingers
+    .slice()
+    .sort((a, b) => (parsePathDataToSegments(a.pathData)[0]?.p0.y ?? 0) - (parsePathDataToSegments(b.pathData)[0]?.p0.y ?? 0));
+  const rightSorted = rightFingers
+    .slice()
+    .sort((a, b) => (parsePathDataToSegments(a.pathData)[0]?.p0.x ?? 0) - (parsePathDataToSegments(b.pathData)[0]?.p0.x ?? 0));
 
-  for (let i = 0; i < leftFingers.length; i++) {
-    const left = leftFingers[i];
-    const right = rightFingers[i];
+  for (let i = 0; i < leftSorted.length; i++) {
+    const left = leftSorted[i]!;
+    const right = rightSorted[i]!;
 
     const leftSegs = parsePathDataToSegments(left.pathData);
     const rightSegs = parsePathDataToSegments(right.pathData);
@@ -132,10 +171,10 @@ function fingersAreSymmetric(leftFingers: Finger[], rightFingers: Finger[], grid
       const l = leftSegs[s]!;
       const r = rightSegs[s]!;
       if (
-        !pointsClose(mapPointBetweenLobes(l.p0, squareLeft, squareTop), r.p0) ||
-        !pointsClose(mapPointBetweenLobes(l.p1, squareLeft, squareTop), r.p1) ||
-        !pointsClose(mapPointBetweenLobes(l.p2, squareLeft, squareTop), r.p2) ||
-        !pointsClose(mapPointBetweenLobes(l.p3, squareLeft, squareTop), r.p3)
+        !pointsClose(mapPointBetweenLobes(l.p0, rect), r.p0) ||
+        !pointsClose(mapPointBetweenLobes(l.p1, rect), r.p1) ||
+        !pointsClose(mapPointBetweenLobes(l.p2, rect), r.p2) ||
+        !pointsClose(mapPointBetweenLobes(l.p3, rect), r.p3)
       ) {
         return false;
       }
@@ -246,13 +285,14 @@ function drawBezier(
 // Transform SVG path data coordinates for template rotation
 function transformPathData(
   pathData: string,
-  squareTop: number,
-  squareLeft: number,
-  squareSize: number,
+  overlapTop: number,
+  overlapLeft: number,
+  overlapWidth: number,
+  overlapHeight: number,
+  earRadius: number,
   lobe: 'left' | 'right'
 ): string {
   const commands = pathData.match(/[MLCQAZ][^MLCQAZ]*/gi) || [];
-  const earRadius = squareSize / 2;
   let result = '';
 
   for (const cmd of commands) {
@@ -267,14 +307,14 @@ function transformPathData(
       const [x, y] = args;
       if (lobe === 'left') {
         // Rotate 90° counterclockwise, then shift down by earRadius for ear at top
-        // new_x = y - squareTop, new_y = squareLeft + squareSize - x + earRadius
-        const newX = y - squareTop;
-        const newY = squareLeft + squareSize - x + earRadius;
+        // new_x = y - overlapTop, new_y = overlapWidth - (x - overlapLeft) + earRadius
+        const newX = y - overlapTop;
+        const newY = overlapWidth - (x - overlapLeft) + earRadius;
         result += `M ${newX} ${newY} `;
       } else {
         // Right lobe: just translate to local coordinates
-        const newX = x - squareLeft;
-        const newY = y - squareTop + earRadius;
+        const newX = x - overlapLeft;
+        const newY = y - overlapTop + earRadius;
         result += `M ${newX} ${newY} `;
       }
     } else if (type === 'C') {
@@ -284,8 +324,8 @@ function transformPathData(
         for (let i = 0; i < args.length; i += 2) {
           const x = args[i];
           const y = args[i + 1];
-          const newX = y - squareTop;
-          const newY = squareLeft + squareSize - x + earRadius;
+          const newX = y - overlapTop;
+          const newY = overlapWidth - (x - overlapLeft) + earRadius;
           newArgs.push(newX, newY);
         }
         result += `C ${newArgs.join(' ')} `;
@@ -294,8 +334,8 @@ function transformPathData(
         for (let i = 0; i < args.length; i += 2) {
           const x = args[i];
           const y = args[i + 1];
-          const newX = x - squareLeft;
-          const newY = y - squareTop + earRadius;
+          const newX = x - overlapLeft;
+          const newY = y - overlapTop + earRadius;
           newArgs.push(newX, newY);
         }
         result += `C ${newArgs.join(' ')} `;
@@ -303,12 +343,12 @@ function transformPathData(
     } else if (type === 'L') {
       const [x, y] = args;
       if (lobe === 'left') {
-        const newX = y - squareTop;
-        const newY = squareLeft + squareSize - x + earRadius;
+        const newX = y - overlapTop;
+        const newY = overlapWidth - (x - overlapLeft) + earRadius;
         result += `L ${newX} ${newY} `;
       } else {
-        const newX = x - squareLeft;
-        const newY = y - squareTop + earRadius;
+        const newX = x - overlapLeft;
+        const newY = y - overlapTop + earRadius;
         result += `L ${newX} ${newY} `;
       }
     }
@@ -355,12 +395,17 @@ function drawLobeTemplate(
   maxWidth: number,
   maxHeight: number
 ) {
-  const { squareLeft, squareTop, squareSize, earRadius } = getSquareParams(design.gridSize);
+  const rect = inferOverlapRect(design);
+  const overlapWidth = rect.overlapWidth;
+  const overlapHeight = rect.overlapHeight;
+  const earRadius = lobe === 'left' ? overlapHeight / 2 : overlapWidth / 2;
+  const bodyWidth = lobe === 'left' ? overlapHeight : overlapWidth;
+  const bodyHeight = lobe === 'left' ? overlapWidth : overlapHeight;
 
   // Calculate scale to fit template in available space
   // Template is squareSize wide and squareSize + earRadius tall
-  const templateWidth = squareSize;
-  const templateHeight = squareSize + earRadius;
+  const templateWidth = bodyWidth;
+  const templateHeight = bodyHeight + earRadius;
 
   const scaleX = maxWidth / templateWidth;
   const scaleY = maxHeight / templateHeight;
@@ -428,9 +473,15 @@ function drawLobeTemplate(
     // Draw cut lines (finger boundaries) - transform from horizontal to vertical
     const leftFingers = design.fingers.filter((f) => f.lobe === 'left');
     for (const finger of leftFingers) {
-      // Transform pathData: rotate 90° counterclockwise
-      // new_x = y - squareTop, new_y = squareLeft + squareSize - x + earRadius
-      const transformedPath = transformPathData(finger.pathData, squareTop, squareLeft, squareSize, 'left');
+      const transformedPath = transformPathData(
+        finger.pathData,
+        rect.overlapTop,
+        rect.overlapLeft,
+        overlapWidth,
+        overlapHeight,
+        earRadius,
+        'left'
+      );
       drawSVGPath(pdf, transformedPath, offsetX, offsetY, scale);
     }
   } else {
@@ -440,7 +491,7 @@ function drawLobeTemplate(
     // Semicircle at top (center at bottom of arc, arc extends upward)
     drawArc(
       pdf,
-      squareSize / 2,
+      templateWidth / 2,
       earRadius,
       earRadius,
       Math.PI,
@@ -480,7 +531,15 @@ function drawLobeTemplate(
     const rightFingers = design.fingers.filter((f) => f.lobe === 'right');
     for (const finger of rightFingers) {
       // Transform pathData to local coordinates
-      const transformedPath = transformPathData(finger.pathData, squareTop, squareLeft, squareSize, 'right');
+      const transformedPath = transformPathData(
+        finger.pathData,
+        rect.overlapTop,
+        rect.overlapLeft,
+        overlapWidth,
+        overlapHeight,
+        earRadius,
+        'right'
+      );
       drawSVGPath(pdf, transformedPath, offsetX, offsetY, scale);
     }
   }
@@ -516,7 +575,8 @@ function collectTemplates(designs: HeartDesign[]): TemplateSlot[] {
     const leftFingers = design.fingers.filter(f => f.lobe === 'left');
     const rightFingers = design.fingers.filter(f => f.lobe === 'right');
 
-    if (fingersAreSymmetric(leftFingers, rightFingers, design.gridSize)) {
+    const rect = inferOverlapRect(design);
+    if (fingersAreSymmetric(leftFingers, rightFingers, design.gridSize, rect)) {
       // Symmetric - only need one template
       templates.push({ design, lobe: 'both' });
     } else {

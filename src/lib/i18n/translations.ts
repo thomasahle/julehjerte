@@ -17,6 +17,7 @@ export const translations = {
     layoutLarge: 'Stor (2×2)',
     select: 'Vælg',
     selected: '✓ Valgt',
+    details: 'Detaljer',
     private: 'Privat',
 
     // Heart detail
@@ -102,6 +103,7 @@ export const translations = {
     layoutLarge: 'Large (2×2)',
     select: 'Select',
     selected: '✓ Selected',
+    details: 'Details',
     private: 'Private',
 
     // Heart detail

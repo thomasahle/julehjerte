@@ -1,14 +1,23 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type TriSwitchValue = 0 | 1 | 2;
 </script>
 
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-  export let label: string;
-  export let value: TriSwitchValue = 0;
-  export let options: readonly [string, string, string] = ['Off', 'Sym', 'Anti'];
-  export let titles: readonly [string, string, string] | null = null;
+  type Props = {
+    label: string;
+    value?: TriSwitchValue;
+    options?: readonly [string, string, string];
+    titles?: readonly [string, string, string] | null;
+  };
+
+  let {
+    label,
+    value = $bindable(0 as TriSwitchValue),
+    options = ['Off', 'Sym', 'Anti'] as const,
+    titles = null
+  }: Props = $props();
 
   const dispatch = createEventDispatcher<{ change: TriSwitchValue }>();
 

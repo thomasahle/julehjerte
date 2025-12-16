@@ -283,6 +283,11 @@
     margin-bottom: 2rem;
   }
 
+  .toolbar :global(button),
+  .toolbar :global(a) {
+    white-space: nowrap;
+  }
+
   .loading,
   .empty {
     text-align: center;

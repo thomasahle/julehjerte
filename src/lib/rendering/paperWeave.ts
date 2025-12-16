@@ -1,5 +1,5 @@
 import type paperPkg from 'paper';
-import type { Finger, LobeId, Vec } from '../types/heart';
+import type { Finger, GridSize, LobeId, Vec } from '../types/heart';
 import { fingerToSegments } from '../geometry/bezierSegments';
 import type { HeartColors } from '../stores/colors';
 
@@ -7,12 +7,19 @@ export const STRIP_WIDTH = 75;
 export const BASE_CANVAS_SIZE = 600;
 export const BASE_CENTER = BASE_CANVAS_SIZE / 2;
 
-export function getSquareParams(gridSize: number, center: Vec = { x: BASE_CENTER, y: BASE_CENTER }) {
-  const squareSize = gridSize * STRIP_WIDTH;
-  const squareLeft = center.x - squareSize / 2;
-  const squareTop = center.y - squareSize / 2;
-  const earRadius = squareSize / 2;
-  return { squareSize, squareLeft, squareTop, earRadius };
+export function getOverlapParams(gridSize: GridSize, center: Vec = { x: BASE_CENTER, y: BASE_CENTER }) {
+  const width = gridSize.x * STRIP_WIDTH;
+  const height = gridSize.y * STRIP_WIDTH;
+  const left = center.x - width / 2;
+  const top = center.y - height / 2;
+  return {
+    width,
+    height,
+    left,
+    top,
+    right: left + width,
+    bottom: top + height
+  };
 }
 
 export function toPoint(paper: paper.PaperScope, v: Vec): paper.Point {
@@ -73,39 +80,41 @@ export function buildLobeShape(
   paper: paper.PaperScope,
   kind: LobeId,
   colors: HeartColors,
-  squareLeft: number,
-  squareTop: number,
-  squareSize: number,
-  earRadius: number
+  overlapLeft: number,
+  overlapTop: number,
+  overlapWidth: number,
+  overlapHeight: number
 ): paper.PathItem {
-  const squareRect = new paper.Path.Rectangle(
-    new paper.Point(squareLeft, squareTop),
-    new paper.Size(squareSize, squareSize)
+  const overlapRect = new paper.Path.Rectangle(
+    new paper.Point(overlapLeft, overlapTop),
+    new paper.Size(overlapWidth, overlapHeight)
   );
 
   let semi: paper.PathItem;
   if (kind === 'left') {
-    const ear = new paper.Path.Circle(new paper.Point(squareLeft, squareTop + squareSize / 2), earRadius);
+    const earRadius = overlapHeight / 2;
+    const ear = new paper.Path.Circle(new paper.Point(overlapLeft, overlapTop + overlapHeight / 2), earRadius);
     const cut = new paper.Path.Rectangle(
-      new paper.Point(squareLeft, squareTop),
-      new paper.Point(squareLeft + earRadius, squareTop + squareSize)
+      new paper.Point(overlapLeft, overlapTop),
+      new paper.Point(overlapLeft + earRadius, overlapTop + overlapHeight)
     );
     semi = ear.subtract(cut);
     ear.remove();
     cut.remove();
   } else {
-    const ear = new paper.Path.Circle(new paper.Point(squareLeft + squareSize / 2, squareTop), earRadius);
+    const earRadius = overlapWidth / 2;
+    const ear = new paper.Path.Circle(new paper.Point(overlapLeft + overlapWidth / 2, overlapTop), earRadius);
     const cut = new paper.Path.Rectangle(
-      new paper.Point(squareLeft, squareTop),
-      new paper.Point(squareLeft + squareSize, squareTop + earRadius)
+      new paper.Point(overlapLeft, overlapTop),
+      new paper.Point(overlapLeft + overlapWidth, overlapTop + earRadius)
     );
     semi = ear.subtract(cut);
     ear.remove();
     cut.remove();
   }
 
-  const lobe = squareRect.unite(semi);
-  squareRect.remove();
+  const lobe = overlapRect.unite(semi);
+  overlapRect.remove();
   semi.remove();
 
   lobe.fillColor = lobeFillColor(paper, kind, colors);
@@ -143,11 +152,15 @@ function samplePath(path: paper.Path, samples: number): paper.Point[] {
   const length = path.length;
   if (!length) return [];
   const pts: paper.Point[] = [];
-  for (let i = 0; i <= samples; i++) {
+  const start = path.getPointAt(0) ?? path.firstSegment?.point?.clone();
+  const end = path.getPointAt(length) ?? path.lastSegment?.point?.clone();
+  if (start) pts.push(start);
+  for (let i = 1; i < samples; i++) {
     const offset = (length * i) / samples;
     const pt = path.getPointAt(offset);
     if (pt) pts.push(pt);
   }
+  if (end) pts.push(end);
   return pts;
 }
 
@@ -183,15 +196,13 @@ export function buildLobeStrips(
   colors: HeartColors,
   fingers: Finger[],
   overlap: paper.PathItem,
-  squareLeft: number,
-  squareTop: number,
-  squareSize: number,
+  overlapLeft: number,
+  overlapTop: number,
+  overlapWidth: number,
+  overlapHeight: number,
   onlyEvenStrips = false
 ): Array<{ index: number; item: paper.PathItem }> {
-  const squareRight = squareLeft + squareSize;
-  const squareBottom = squareTop + squareSize;
-
-  const internal = fingers
+  const boundariesFingers = fingers
     .filter((f) => f.lobe === lobe)
     .map((finger) => {
       const segs = fingerToSegments(finger);
@@ -201,28 +212,11 @@ export function buildLobeStrips(
     .sort((a, b) => (lobe === 'left' ? a.p0.y - b.p0.y : a.p0.x - b.p0.x))
     .map(({ finger }) => finger);
 
-  const boundaries: Array<() => paper.Path> = [];
-
-  if (lobe === 'left') {
-    boundaries.push(
-      () => new paper.Path.Line(new paper.Point(squareRight, squareTop), new paper.Point(squareLeft, squareTop))
-    );
-    internal.forEach((f) => boundaries.push(() => buildFingerPath(paper, f)));
-    boundaries.push(
-      () =>
-        new paper.Path.Line(new paper.Point(squareRight, squareBottom), new paper.Point(squareLeft, squareBottom))
-    );
-  } else {
-    boundaries.push(
-      () =>
-        new paper.Path.Line(new paper.Point(squareLeft, squareBottom), new paper.Point(squareLeft, squareTop))
-    );
-    internal.forEach((f) => boundaries.push(() => buildFingerPath(paper, f)));
-    boundaries.push(
-      () =>
-        new paper.Path.Line(new paper.Point(squareRight, squareBottom), new paper.Point(squareRight, squareTop))
-    );
-  }
+  // `fingers` contains *all* boundary curves, including the two outer edges for each lobe.
+  // This keeps rendering in sync with the editor model (and avoids implicit edge lines).
+  const boundaries: Array<() => paper.Path> = boundariesFingers.map(
+    (f) => () => buildFingerPath(paper, f)
+  );
 
   const strips: Array<{ index: number; item: paper.PathItem }> = [];
   for (let i = 0; i < boundaries.length - 1; i++) {

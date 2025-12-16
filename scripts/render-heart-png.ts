@@ -2,15 +2,13 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import paperPkg from 'paper';
 
-import type { Finger } from '../src/lib/types/heart';
+import type { Finger, GridSize } from '../src/lib/types/heart';
 import type { HeartColors } from '../src/lib/stores/colors';
 import {
   BASE_CENTER,
-  STRIP_WIDTH,
   buildLobeShape,
   buildLobeStrips,
-  buildOddWeaveMask,
-  getSquareParams,
+  getOverlapParams,
   itemArea,
   lobeFillColor
 } from '../src/lib/rendering/paperWeave';
@@ -18,8 +16,6 @@ import {
 const { PaperScope } = paperPkg;
 
 const DEFAULT_SIZE = 600;
-const REFERENCE_GRID_SIZE = 4;
-
 function usage(): never {
   console.error(
     [
@@ -58,71 +54,79 @@ function withInsertItemsDisabled<T>(paper: paper.PaperScope, fn: () => T): T {
   }
 }
 
-type RenderDesign = { gridSize: number; fingers: Finger[] };
+type RenderDesign = { gridSize: GridSize; fingers: Finger[] };
+
+function normalizeGridSize(raw: unknown): GridSize {
+  const clampInt = (value: number, min: number, max: number) => Math.max(min, Math.min(max, Math.round(value)));
+  if (typeof raw === 'number' && Number.isFinite(raw)) {
+    const n = clampInt(raw, 2, 8);
+    return { x: n, y: n };
+  }
+  if (raw && typeof raw === 'object') {
+    const x = (raw as any).x;
+    const y = (raw as any).y;
+    if (typeof x === 'number' && typeof y === 'number' && Number.isFinite(x) && Number.isFinite(y)) {
+      return { x: clampInt(x, 2, 8), y: clampInt(y, 2, 8) };
+    }
+  }
+  return { x: 3, y: 3 };
+}
 
 async function loadDesign(input: string): Promise<RenderDesign> {
   const jsonPath = input.endsWith('.json') ? input : path.join('static', 'hearts', `${input}.json`);
   const raw = await fs.readFile(jsonPath, 'utf8');
-  const parsed = JSON.parse(raw) as { gridSize: number; fingers: Finger[] };
-  return { gridSize: parsed.gridSize, fingers: parsed.fingers };
+  const parsed = JSON.parse(raw) as { gridSize?: unknown; fingers?: unknown };
+  const gridSize = normalizeGridSize(parsed.gridSize);
+  const fingers = Array.isArray(parsed.fingers) ? (parsed.fingers as Finger[]) : [];
+  return { gridSize, fingers };
 }
 
-async function renderDesignToPng(
-  design: RenderDesign,
-  outPath: string,
-  size: number,
-  colors: HeartColors,
-  opts: { noWeave: boolean }
-) {
-  const { noWeave } = opts;
+async function renderDesignToPng(design: RenderDesign, outPath: string, size: number, colors: HeartColors, noWeave: boolean) {
   const paper = new PaperScope();
   paper.setup([size, size]);
 
-  const { squareSize, squareLeft, squareTop, earRadius } = getSquareParams(design.gridSize, {
+  const SEAM_BLEED_PX = 3;
+
+  const { width: overlapWidth, height: overlapHeight, left: overlapLeft, top: overlapTop } = getOverlapParams(design.gridSize, {
     x: BASE_CENTER,
     y: BASE_CENTER
   });
 
-  const referenceSquareSize = REFERENCE_GRID_SIZE * STRIP_WIDTH;
-  const referenceExtent = (referenceSquareSize + referenceSquareSize / 2) * Math.SQRT2;
-  const scale = (size * 0.85) / referenceExtent;
-
   const items: paper.Item[] = [];
 
-  const leftLobe = buildLobeShape(paper, 'left', colors, squareLeft, squareTop, squareSize, earRadius);
-  const rightLobe = buildLobeShape(paper, 'right', colors, squareLeft, squareTop, squareSize, earRadius);
+  const leftLobe = buildLobeShape(paper, 'left', colors, overlapLeft, overlapTop, overlapWidth, overlapHeight);
+  const rightLobe = buildLobeShape(paper, 'right', colors, overlapLeft, overlapTop, overlapWidth, overlapHeight);
 
   const overlapSquare = withInsertItemsDisabled(paper, () => {
-    return new paper.Path.Rectangle(new paper.Point(squareLeft, squareTop), new paper.Size(squareSize, squareSize));
+    return new paper.Path.Rectangle(new paper.Point(overlapLeft, overlapTop), new paper.Size(overlapWidth, overlapHeight));
   });
+  overlapSquare.fillColor = null;
+  overlapSquare.strokeColor = null;
 
-  // Render overlap first, then draw the outside lobes on top. This hides any
-  // sub-pixel fringes where many weave pieces meet the overlap boundary.
-  const overlapBase = overlapSquare.clone({ insert: false }) as paper.PathItem;
-  overlapBase.fillColor = lobeFillColor(paper, 'left', colors);
-  overlapBase.strokeColor = null;
-  items.push(overlapBase);
+  // Base fill as a single color first, then layer the red-on-top regions. This
+  // avoids a white-on-red AA seam along the fold line when the weave touches it.
+  leftLobe.fillColor = lobeFillColor(paper, 'left', colors);
+  leftLobe.strokeColor = null;
+  rightLobe.fillColor = lobeFillColor(paper, 'left', colors);
+  rightLobe.strokeColor = null;
+  items.push(leftLobe, rightLobe);
 
-  const leftOutside = leftLobe.subtract(overlapSquare, { insert: false });
-  leftLobe.remove();
-  leftOutside.fillColor = lobeFillColor(paper, 'left', colors);
-  leftOutside.strokeColor = null;
-
-  let rightOutside = rightLobe.subtract(overlapSquare, { insert: false }) as paper.PathItem;
-  rightLobe.remove();
-  rightOutside.fillColor = lobeFillColor(paper, 'right', colors);
-  rightOutside.strokeColor = null;
+  const rightOutsideOverlap = rightLobe.subtract(overlapSquare, { insert: false }) as paper.PathItem;
+  rightOutsideOverlap.fillColor = lobeFillColor(paper, 'right', colors);
+  rightOutsideOverlap.strokeColor = null;
 
   if (!noWeave) {
+    // Only even-index strips are needed for the even-odd weave mask.
     const leftStrips = buildLobeStrips(
       paper,
       'left',
       colors,
       design.fingers,
       overlapSquare,
-      squareLeft,
-      squareTop,
-      squareSize,
+      overlapLeft,
+      overlapTop,
+      overlapWidth,
+      overlapHeight,
       true
     );
     const rightStrips = buildLobeStrips(
@@ -131,42 +135,87 @@ async function renderDesignToPng(
       colors,
       design.fingers,
       overlapSquare,
-      squareLeft,
-      squareTop,
-      squareSize,
+      overlapLeft,
+      overlapTop,
+      overlapWidth,
+      overlapHeight,
       true
     );
 
-    const oddMask = buildOddWeaveMask(paper, leftStrips, rightStrips);
-    if (oddMask && Math.abs(itemArea(oddMask)) >= 1) {
-      oddMask.fillColor = lobeFillColor(paper, 'right', colors);
-      oddMask.strokeColor = null;
-      // Union the red overlap cells with the red outside lobe to avoid
-      // anti-alias seams where same-colored shapes meet along the overlap edge.
-      const redComposite = rightOutside.unite(oddMask, { insert: false }) as paper.PathItem;
-      oddMask.remove();
-      rightOutside.remove();
-      redComposite.fillColor = lobeFillColor(paper, 'right', colors);
-      redComposite.strokeColor = null;
-      rightOutside = redComposite;
-    } else {
-      oddMask?.remove();
-    }
+      // Build a single even-odd mask in the overlap and unite it with the
+      // outside-right region. Painting this as one PathItem avoids hairline AA
+      // seams where two red regions meet exactly on the fold line.
+      const maskChildren = [
+        ...leftStrips.filter((s) => s.index % 2 === 0).map((s) => s.item),
+        ...rightStrips.filter((s) => s.index % 2 === 0).map((s) => s.item)
+      ];
+
+      const overlapOdd = withInsertItemsDisabled(paper, () => new paper.CompoundPath({ children: maskChildren }));
+      overlapOdd.fillRule = 'evenodd';
+      overlapOdd.fillColor = null;
+      overlapOdd.strokeColor = null;
+
+      // Add a tiny "bleed" bridge across the fold line for the odd overlap
+      // cells. The outside-right lobe and overlap cells touch exactly at the
+      // boundary, which can leave 1px AA seams at small sizes.
+      const seamBand = withInsertItemsDisabled(paper, () => {
+        return new paper.Path.Rectangle(
+          new paper.Point(overlapLeft, overlapTop),
+          new paper.Size(overlapWidth, SEAM_BLEED_PX)
+        );
+      });
+      seamBand.fillColor = null;
+      seamBand.strokeColor = null;
+
+      const oddEdge = overlapOdd.intersect(seamBand, { insert: false }) as paper.PathItem | null;
+      seamBand.remove();
+
+      let seamBridge: paper.PathItem | null = null;
+      if (oddEdge && Math.abs(itemArea(oddEdge)) >= 0.5) {
+        const moved = oddEdge.clone({ insert: false }) as paper.PathItem;
+        moved.translate(new paper.Point(0, -SEAM_BLEED_PX / 2));
+
+        const rightClip = rightLobe.clone({ insert: false }) as paper.PathItem;
+        rightClip.fillColor = null;
+        rightClip.strokeColor = null;
+
+        seamBridge = moved.intersect(rightClip, { insert: false }) as paper.PathItem | null;
+        moved.remove();
+        rightClip.remove();
+      }
+      oddEdge?.remove();
+
+      const redTop = overlapOdd.unite(rightOutsideOverlap, { insert: false }) as paper.PathItem;
+      overlapOdd.remove();
+      rightOutsideOverlap.remove();
+
+      redTop.fillColor = lobeFillColor(paper, 'right', colors);
+      redTop.strokeColor = null;
+      if (seamBridge && Math.abs(itemArea(seamBridge)) >= 0.5) {
+        seamBridge.fillColor = lobeFillColor(paper, 'right', colors);
+        seamBridge.strokeColor = null;
+        items.push(seamBridge);
+      } else {
+        seamBridge?.remove();
+      }
+      if (Math.abs(itemArea(redTop)) >= 1) items.push(redTop);
+      else redTop.remove();
+  } else {
+    rightOutsideOverlap.fillColor = lobeFillColor(paper, 'right', colors);
+    rightOutsideOverlap.strokeColor = null;
+    items.push(rightOutsideOverlap);
   }
 
-  // Outsides on top of the overlap.
-  items.push(leftOutside, rightOutside);
-
   overlapSquare.remove();
+  if (noWeave) {
+    // nothing extra; base + rightOutsideOverlap already built
+  }
 
   const group = new paper.Group(items);
   group.rotate(45, new paper.Point(BASE_CENTER, BASE_CENTER));
-
-  const normalizeScale = REFERENCE_GRID_SIZE / design.gridSize;
-  if (normalizeScale !== 1) {
-    group.scale(normalizeScale, new paper.Point(BASE_CENTER, BASE_CENTER));
-  }
-
+  const target = size * 0.85;
+  const maxDim = Math.max(group.bounds.width, group.bounds.height) || 1;
+  const scale = target / maxDim;
   group.scale(scale, new paper.Point(BASE_CENTER, BASE_CENTER));
   group.position = new paper.Point(size / 2, size / 2);
 
@@ -194,7 +243,7 @@ async function main() {
   const noWeave = flags.get('no-weave') === 'true';
 
   const design = await loadDesign(input);
-  await renderDesignToPng(design, outPath, size, colors, { noWeave });
+  await renderDesignToPng(design, outPath, size, colors, noWeave);
   console.log(`Wrote ${outPath}`);
 }
 

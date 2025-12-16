@@ -1,9 +1,11 @@
+import type { GridSize } from '$lib/types/heart';
+
 type PaperHeartDebugCtx = {
   paper: any;
   get fingers(): any[];
   set fingers(v: any[]);
-  get gridSize(): number;
-  set gridSize(v: number);
+  get gridSize(): GridSize;
+  set gridSize(v: GridSize);
   get selectedFingerId(): string | null;
   set selectedFingerId(v: string | null);
   get selectedAnchors(): number[];
@@ -75,7 +77,7 @@ export function attachPaperHeartDebug(target: any, ctx: PaperHeartDebugCtx): () 
   };
 
   type DebugState = {
-    gridSize: number;
+    gridSize: GridSize;
     fingers: any[];
     selectedFingerId: string | null;
     selectedAnchors: number[];
@@ -180,8 +182,8 @@ export function attachPaperHeartDebug(target: any, ctx: PaperHeartDebugCtx): () 
     },
 
     // Deterministic curve selection testing.
-    clickProjectPoint(point: { x: number; y: number }, shift = false) {
-      ctx.handleMouseDown({ point, modifiers: { shift } });
+    clickProjectPoint(point: { x: number; y: number }, shift = false, clickCount = 1) {
+      ctx.handleMouseDown({ point, modifiers: { shift }, event: { detail: clickCount } });
       return true;
     },
 

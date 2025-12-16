@@ -7,15 +7,59 @@ import {
   buildLobeShape,
   buildLobeStrips,
   buildOddWeaveMask,
-  getSquareParams,
+  getOverlapParams,
   itemArea,
   lobeFillColor
 } from '$lib/rendering/paperWeave';
+import { fingerToSegments } from '$lib/geometry/bezierSegments';
 
 const { PaperScope } = paperPkg;
 
 const DEFAULT_CANVAS_SIZE = 300; // Larger preview size to prevent cropping
 const REFERENCE_GRID_SIZE = 4;
+
+function median(values: number[]): number {
+  if (!values.length) return 0;
+  const sorted = values.slice().sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 1 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
+}
+
+function inferOverlapRect(design: HeartDesign) {
+  const { width: expectedW, height: expectedH, left: centeredLeft, top: centeredTop } = getOverlapParams(design.gridSize, {
+    x: BASE_CENTER,
+    y: BASE_CENTER
+  });
+
+  const leftCandidates: number[] = [];
+  const rightCandidates: number[] = [];
+  const topCandidates: number[] = [];
+  const bottomCandidates: number[] = [];
+
+  for (const f of design.fingers) {
+    const segs = fingerToSegments(f);
+    if (!segs.length) continue;
+    const start = segs[0]!.p0;
+    const end = segs[segs.length - 1]!.p3;
+    if (f.lobe === 'left') {
+      leftCandidates.push(Math.min(start.x, end.x));
+      rightCandidates.push(Math.max(start.x, end.x));
+    } else {
+      topCandidates.push(Math.min(start.y, end.y));
+      bottomCandidates.push(Math.max(start.y, end.y));
+    }
+  }
+
+  let left = leftCandidates.length ? median(leftCandidates) : centeredLeft;
+  let right = rightCandidates.length ? median(rightCandidates) : centeredLeft + expectedW;
+  let top = topCandidates.length ? median(topCandidates) : centeredTop;
+  let bottom = bottomCandidates.length ? median(bottomCandidates) : centeredTop + expectedH;
+
+  if (Math.abs(right - left - expectedW) <= 3) right = left + expectedW;
+  if (Math.abs(bottom - top - expectedH) <= 3) bottom = top + expectedH;
+
+  return { left, top, width: right - left, height: bottom - top };
+}
 
 /**
  * Renders a heart design to a canvas and returns it as a data URL
@@ -37,11 +81,7 @@ export async function renderHeartToDataURL(
   paper.setup(canvas);
   paper.view.viewSize = new paper.Size(canvasSize, canvasSize);
 
-  const gridSize = design.gridSize;
-  const { squareSize, squareLeft, squareTop, earRadius } = getSquareParams(gridSize, {
-    x: BASE_CENTER,
-    y: BASE_CENTER
-  });
+  const { left: overlapLeft, top: overlapTop, width: overlapWidth, height: overlapHeight } = inferOverlapRect(design);
 
   // Scale everything to fit in our canvas using REFERENCE_GRID_SIZE for consistency
   // This ensures all hearts appear the same size regardless of grid size
@@ -52,54 +92,75 @@ export async function renderHeartToDataURL(
   const items: paper.Item[] = [];
 
   // Build lobes
-  const leftLobe = buildLobeShape(paper, 'left', colors, squareLeft, squareTop, squareSize, earRadius);
-  const rightLobe = buildLobeShape(paper, 'right', colors, squareLeft, squareTop, squareSize, earRadius);
+  const leftLobe = buildLobeShape(paper, 'left', colors, overlapLeft, overlapTop, overlapWidth, overlapHeight);
+  const rightLobe = buildLobeShape(paper, 'right', colors, overlapLeft, overlapTop, overlapWidth, overlapHeight);
 
   const prevInsert = paper.settings.insertItems;
   paper.settings.insertItems = false;
-  const overlapSquare = new paper.Path.Rectangle(new paper.Point(squareLeft, squareTop), new paper.Size(squareSize, squareSize));
+  const overlapSquare = new paper.Path.Rectangle(
+    new paper.Point(overlapLeft, overlapTop),
+    new paper.Size(overlapWidth, overlapHeight)
+  );
   paper.settings.insertItems = prevInsert;
 
   // Base fill:
   // - Paint the left lobe (including overlap square) in left color.
-  // - Paint only the right lobe *outside* the overlap square in right color.
-  // This avoids anti-alias seams along the overlap boundary from two adjacent
-  // fills meeting edge-to-edge.
+  // - Paint the red-on-top regions as a single united shape to avoid AA seams
+  //   where two red fills touch (the fold line when weave reaches it).
   leftLobe.fillColor = lobeFillColor(paper, 'left', colors);
   leftLobe.strokeColor = null;
   items.push(leftLobe);
 
-  const rightOutsideOverlap = rightLobe.subtract(overlapSquare, { insert: false });
+  const rightOutsideOverlap = rightLobe.subtract(overlapSquare, { insert: false }) as paper.PathItem;
   rightLobe.remove();
   rightOutsideOverlap.fillColor = lobeFillColor(paper, 'right', colors);
   rightOutsideOverlap.strokeColor = null;
-  items.push(rightOutsideOverlap);
 
   // Build strips
   // Only even-index strips are needed for the even-odd weave mask.
-  const leftStrips = buildLobeStrips(paper, 'left', colors, design.fingers, overlapSquare, squareLeft, squareTop, squareSize, true);
-  const rightStrips = buildLobeStrips(paper, 'right', colors, design.fingers, overlapSquare, squareLeft, squareTop, squareSize, true);
+  const leftStrips = buildLobeStrips(
+    paper,
+    'left',
+    colors,
+    design.fingers,
+    overlapSquare,
+    overlapLeft,
+    overlapTop,
+    overlapWidth,
+    overlapHeight,
+    true
+  );
+  const rightStrips = buildLobeStrips(
+    paper,
+    'right',
+    colors,
+    design.fingers,
+    overlapSquare,
+    overlapLeft,
+    overlapTop,
+    overlapWidth,
+    overlapHeight,
+    true
+  );
 
   // Fast weave: even-odd fill rule (no boolean ops).
   // Render overlap in left color, then overlay odd-parity cells in right color.
   const oddMask = buildOddWeaveMask(paper, leftStrips, rightStrips);
 
   if (oddMask && Math.abs(itemArea(oddMask)) >= 1) {
-    oddMask.fillColor = lobeFillColor(paper, 'right', colors);
-    oddMask.strokeColor = null;
+    // Unite the odd-parity overlap cells with the outside-right region so the
+    // fold line is painted by a single item (avoids 1px AA seams).
+    const redTop = oddMask.unite(rightOutsideOverlap, { insert: false }) as paper.PathItem;
+    oddMask.remove();
+    rightOutsideOverlap.remove();
 
-    const clip = overlapSquare.clone({ insert: false }) as paper.PathItem;
-    clip.clipMask = true;
-    clip.fillColor = null;
-    clip.strokeColor = null;
-    const clipCenter = new paper.Point(squareLeft + squareSize / 2, squareTop + squareSize / 2);
-    const clipInsetPx = 0;
-    const clipScale = (squareSize - clipInsetPx) / squareSize;
-    clip.scale(clipScale, clipCenter);
-    const clippedOdd = new paper.Group([clip, oddMask]);
-    items.push(clippedOdd);
+    redTop.fillColor = lobeFillColor(paper, 'right', colors);
+    redTop.strokeColor = null;
+    if (Math.abs(itemArea(redTop)) >= 1) items.push(redTop);
+    else redTop.remove();
   } else {
     oddMask?.remove();
+    items.push(rightOutsideOverlap);
   }
 
   overlapSquare.remove();
@@ -109,7 +170,7 @@ export async function renderHeartToDataURL(
   group.rotate(45, new paper.Point(BASE_CENTER, BASE_CENTER));
 
   // Normalize size
-  const normalizeScale = REFERENCE_GRID_SIZE / gridSize;
+  const normalizeScale = REFERENCE_GRID_SIZE / Math.max(design.gridSize.x, design.gridSize.y);
   if (normalizeScale !== 1) {
     group.scale(normalizeScale, new paper.Point(BASE_CENTER, BASE_CENTER));
   }

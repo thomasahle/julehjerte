@@ -18,7 +18,13 @@ Options:
   --desc <text>         Description
   --grid <n>            gridSize (default 4)
   --paths <id1,id2>     Only include these comma-separated path ids (keep document order)
+  --assume-lobe <lobe>  Treat all input paths as this lobe (left|right), unless overridden by --lobe
   --lobe <id:lobe>      Override lobe detection for a path id (lobe = left|right)
+  --viewbox-is-overlap  Map the SVG viewBox onto the app overlap square (useful if your SVG uses the full viewBox as the overlap region)
+  --stitch-tolerance <n>  Max endpoint gap when joining subpaths (defaults to auto)
+  --strict-stitch       Fail if a <path> contains subpaths we can't stitch into one
+  --derive-other-lobe   Create a between-lobes mirrored copy of each finger (fills the missing side for symmetric designs)
+  --anti-between-lobes  Use the anti-diagonal mapping when deriving the other lobe (also reverses direction)
   --precision <n>       Decimal places for coordinates (default 3)
 `);
   process.exit(0);
@@ -47,6 +53,31 @@ const heartDesc = getFlag('--desc', undefined);
 const gridSize = Number(getFlag('--grid', '4'));
 const precision = Number(getFlag('--precision', '3'));
 const includeIds = getFlag('--paths', null)?.split(',').filter(Boolean) ?? null;
+const assumeLobeRaw = getFlag('--assume-lobe', null);
+const stitchToleranceRaw = getFlag('--stitch-tolerance', null);
+const strictStitch = argv.includes('--strict-stitch');
+const deriveOtherLobe = argv.includes('--derive-other-lobe');
+const antiBetweenLobes = argv.includes('--anti-between-lobes');
+const viewBoxIsOverlap = argv.includes('--viewbox-is-overlap');
+
+const assumeLobe =
+  assumeLobeRaw === null
+    ? null
+    : (() => {
+        if (assumeLobeRaw === 'left' || assumeLobeRaw === 'right') return assumeLobeRaw;
+        throw new Error(`Invalid --assume-lobe=${assumeLobeRaw} (expected left|right)`);
+      })();
+
+const stitchTolerance =
+  stitchToleranceRaw === null
+    ? null
+    : (() => {
+        const n = Number(stitchToleranceRaw);
+        if (!Number.isFinite(n) || n < 0) {
+          throw new Error(`Invalid --stitch-tolerance=${stitchToleranceRaw}`);
+        }
+        return n;
+      })();
 
 const lobeOverrides = new Map(
   getAllFlags('--lobe')
@@ -119,6 +150,215 @@ function convertLineToCubic(p0, p1) {
     p2: { x: p0.x + (2 * dx) / 3, y: p0.y + (2 * dy) / 3 },
     p3: p1
   };
+}
+
+function pointDistance(a, b) {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function reverseSegment(seg) {
+  return { ...seg, p0: seg.p3, p1: seg.p2, p2: seg.p1, p3: seg.p0 };
+}
+
+function reverseSubpath(segments) {
+  return segments.slice().reverse().map(reverseSegment);
+}
+
+function approxSegmentLength(seg) {
+  // Quick upper-ish bound based on control polygon length.
+  return (
+    pointDistance(seg.p0, seg.p1) +
+    pointDistance(seg.p1, seg.p2) +
+    pointDistance(seg.p2, seg.p3)
+  );
+}
+
+function parseViewBox(attr) {
+  const parts = String(attr ?? '')
+    .trim()
+    .split(/[\s,]+/)
+    .filter(Boolean)
+    .map(Number);
+  if (parts.length === 4 && parts.every((n) => Number.isFinite(n))) {
+    return { minX: parts[0], minY: parts[1], width: parts[2], height: parts[3] };
+  }
+  return { minX: 0, minY: 0, width: 600, height: 600 };
+}
+
+function getCenteredOverlapRect(gridSize) {
+  const STRIP_WIDTH = 75;
+  const CANVAS_SIZE = 600;
+  const size = gridSize * STRIP_WIDTH;
+  const left = CANVAS_SIZE / 2 - size / 2;
+  const top = CANVAS_SIZE / 2 - size / 2;
+  return { left, top, right: left + size, bottom: top + size, width: size, height: size };
+}
+
+function median(values) {
+  if (!values.length) return 0;
+  const sorted = values.slice().sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 1 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function inferOverlapRectFromFingers(curFingers, fallbackGridSize) {
+  const STRIP_WIDTH = 75;
+  const CENTER = { x: 300, y: 300 };
+  const leftCandidates = [];
+  const rightCandidates = [];
+  const topCandidates = [];
+  const bottomCandidates = [];
+
+  for (const f of curFingers) {
+    const segs = f.segments ?? [];
+    if (!segs.length) continue;
+    const start = segs[0].p0;
+    const end = segs[segs.length - 1].p3;
+    if (f.lobe === 'left') {
+      leftCandidates.push(Math.min(start.x, end.x));
+      rightCandidates.push(Math.max(start.x, end.x));
+    } else {
+      topCandidates.push(Math.min(start.y, end.y));
+      bottomCandidates.push(Math.max(start.y, end.y));
+    }
+  }
+
+  const expectedW = fallbackGridSize * STRIP_WIDTH;
+  const expectedH = fallbackGridSize * STRIP_WIDTH;
+  const centeredLeft = CENTER.x - expectedW / 2;
+  const centeredTop = CENTER.y - expectedH / 2;
+
+  let left = leftCandidates.length ? median(leftCandidates) : centeredLeft;
+  let right = rightCandidates.length ? median(rightCandidates) : centeredLeft + expectedW;
+  let top = topCandidates.length ? median(topCandidates) : centeredTop;
+  let bottom = bottomCandidates.length ? median(bottomCandidates) : centeredTop + expectedH;
+
+  if (Math.abs(right - left - expectedW) <= 3) right = left + expectedW;
+  if (Math.abs(bottom - top - expectedH) <= 3) bottom = top + expectedH;
+
+  return { left, right, top, bottom, width: right - left, height: bottom - top };
+}
+
+function swapPointBetweenLobes(p, rect, anti = false) {
+  const u = rect.width ? (p.x - rect.left) / rect.width : 0;
+  const v = rect.height ? (p.y - rect.top) / rect.height : 0;
+  if (!anti) return { x: rect.left + v * rect.width, y: rect.top + u * rect.height };
+  return { x: rect.left + (1 - v) * rect.width, y: rect.top + (1 - u) * rect.height };
+}
+
+function canonicalizeDirectionForLobe(lobe, segments) {
+  if (!segments.length) return segments;
+  const start = segments[0].p0;
+  const end = segments[segments.length - 1].p3;
+  if (lobe === 'right') {
+    // Keep a consistent direction (bottom -> top). This matters because the
+    // weave renderer samples paths in-order to build strip ribbons.
+    if (start.y < end.y) return reverseSubpath(segments);
+  } else {
+    // left lobe: right -> left
+    if (start.x < end.x) return reverseSubpath(segments);
+  }
+  return segments;
+}
+
+function splitIntoSubpaths(segments) {
+  const subpaths = [];
+  let current = [];
+  for (const seg of segments) {
+    if (seg.move && current.length) {
+      subpaths.push(current);
+      current = [];
+    }
+    current.push(seg);
+  }
+  if (current.length) subpaths.push(current);
+  return subpaths;
+}
+
+function stitchSubpathsIntoSinglePath(subpaths, tolerance) {
+  if (subpaths.length <= 1) return { segments: subpaths[0] ?? [], unused: 0 };
+
+  const scored = subpaths.map((segs) => ({
+    segs,
+    length: segs.reduce((sum, s) => sum + approxSegmentLength(s), 0)
+  }));
+  scored.sort((a, b) => b.length - a.length);
+
+  let chain = scored[0]?.segs ? scored[0].segs.slice() : [];
+  const remaining = scored.slice(1).map((x) => x.segs);
+
+  const chainStart = () => chain[0]?.p0;
+  const chainEnd = () => chain[chain.length - 1]?.p3;
+
+  function tryAttach(candidate) {
+    const start = chainStart();
+    const end = chainEnd();
+    if (!start || !end) return null;
+
+    const candStart = candidate[0]?.p0;
+    const candEnd = candidate[candidate.length - 1]?.p3;
+    if (!candStart || !candEnd) return null;
+
+    const asIs = candidate;
+    const rev = reverseSubpath(candidate);
+
+    const options = [];
+    // Append after chain
+    options.push({ where: 'append', segs: asIs, gap: pointDistance(end, candStart), joinTo: candStart });
+    options.push({ where: 'append', segs: rev, gap: pointDistance(end, candEnd), joinTo: candEnd });
+    // Prepend before chain
+    options.push({ where: 'prepend', segs: asIs, gap: pointDistance(start, candEnd), joinTo: candEnd });
+    options.push({ where: 'prepend', segs: rev, gap: pointDistance(start, candStart), joinTo: candStart });
+
+    const valid = options.filter((o) => o.gap <= tolerance);
+    if (!valid.length) return null;
+
+    valid.sort((a, b) => a.gap - b.gap);
+    return valid[0];
+  }
+
+  while (remaining.length) {
+    let best = null;
+    let bestIdx = -1;
+    for (let i = 0; i < remaining.length; i++) {
+      const candidate = remaining[i];
+      if (!candidate?.length) continue;
+      const attempt = tryAttach(candidate);
+      if (!attempt) continue;
+      const candidateLen = candidate.reduce((sum, s) => sum + approxSegmentLength(s), 0);
+      const key = { gap: attempt.gap, len: candidateLen };
+      if (!best) {
+        best = { ...attempt, key };
+        bestIdx = i;
+      } else if (key.gap < best.key.gap || (key.gap === best.key.gap && key.len > best.key.len)) {
+        best = { ...attempt, key };
+        bestIdx = i;
+      }
+    }
+
+    if (!best) break;
+
+    const beforeStart = chainStart();
+    const beforeEnd = chainEnd();
+    if (!beforeStart || !beforeEnd) break;
+
+    if (best.where === 'append') {
+      if (best.gap > 0) {
+        chain.push(convertLineToCubic(beforeEnd, best.joinTo));
+      }
+      chain.push(...best.segs);
+    } else {
+      const prefix = best.segs.slice();
+      if (best.gap > 0) {
+        prefix.push(convertLineToCubic(best.joinTo, beforeStart));
+      }
+      chain = [...prefix, ...chain];
+    }
+
+    remaining.splice(bestIdx, 1);
+  }
+
+  return { segments: chain, unused: remaining.length };
 }
 
 function parsePathToSegments(d) {
@@ -228,18 +468,10 @@ function parsePathToSegments(d) {
 
 function segmentsToPathData(segments, places) {
   if (!segments.length) return '';
-  // Keep only curve segments; drop lines that were used for bookkeeping in SVG.
-  const curves = segments.filter((s) => s.kind === 'curve');
-  if (!curves.length) return '';
   const fmt = (n) => Number(n.toFixed(places));
   let d = '';
-  let first = true;
-  for (const seg of curves) {
-    const needsMove = first || seg.move;
-    if (needsMove) {
-      d += `${first ? '' : ' '}M ${fmt(seg.p0.x)} ${fmt(seg.p0.y)}`;
-      first = false;
-    }
+  d += `M ${fmt(segments[0].p0.x)} ${fmt(segments[0].p0.y)}`;
+  for (const seg of segments) {
     d += ` C ${fmt(seg.p1.x)} ${fmt(seg.p1.y)} ${fmt(seg.p2.x)} ${fmt(seg.p2.y)} ${fmt(
       seg.p3.x
     )} ${fmt(seg.p3.y)}`;
@@ -250,6 +482,8 @@ function segmentsToPathData(segments, places) {
 const svg = fs.readFileSync(inputPath, 'utf8');
 const dom = new JSDOM(svg, { contentType: 'image/svg+xml' });
 const doc = dom.window.document;
+const viewBox = parseViewBox(doc.documentElement?.getAttribute?.('viewBox'));
+const overlapRect = getCenteredOverlapRect(gridSize);
 
 const selectedPaths =
   includeIds?.map((id) => doc.getElementById(id)).filter(Boolean) ??
@@ -280,6 +514,19 @@ for (const el of selectedPaths) {
     kind: seg.kind
   }));
 
+  if (viewBoxIsOverlap) {
+    const sx = overlapRect.width / (viewBox.width || 1);
+    const sy = overlapRect.height / (viewBox.height || 1);
+    const tx = overlapRect.left - viewBox.minX * sx;
+    const ty = overlapRect.top - viewBox.minY * sy;
+    for (const seg of segments) {
+      for (const key of ['p0', 'p1', 'p2', 'p3']) {
+        const p = seg[key];
+        seg[key] = { x: p.x * sx + tx, y: p.y * sy + ty };
+      }
+    }
+  }
+
   const invalid = segments.find((seg) =>
     [seg.p0, seg.p1, seg.p2, seg.p3].some((p) => !Number.isFinite(p.x) || !Number.isFinite(p.y))
   );
@@ -293,13 +540,66 @@ for (const el of selectedPaths) {
   const width = Math.max(...xs) - Math.min(...xs);
   const height = Math.max(...ys) - Math.min(...ys);
   const autoLobe = height > width ? 'right' : 'left';
-  const lobe = lobeOverrides.get(id) ?? autoLobe;
+  const lobe = lobeOverrides.get(id) ?? assumeLobe ?? autoLobe;
+
+  const subpaths = splitIntoSubpaths(segments);
+  const joinTol = stitchTolerance ?? Math.max(0.5, Math.max(width, height) * 1e-3);
+  const stitched = stitchSubpathsIntoSinglePath(subpaths, joinTol);
+  if (stitched.unused) {
+    const kept = subpaths.length - stitched.unused;
+    const msg = `[svg-to-heart] ${id}: only stitched ${kept}/${subpaths.length} subpaths; dropped ${stitched.unused} (try increasing --stitch-tolerance)`;
+    if (strictStitch) throw new Error(msg);
+    console.warn(msg);
+  }
+  const simplified = stitched.segments;
+
+  const directed = canonicalizeDirectionForLobe(lobe, simplified);
 
   fingers.push({
     id,
     lobe,
-    pathData: segmentsToPathData(segments, precision)
+    segments: directed,
+    pathData: segmentsToPathData(directed, precision)
   });
+}
+
+if (deriveOtherLobe) {
+  const lobes = new Set(fingers.map((f) => f.lobe));
+  if (lobes.size > 1) {
+    console.warn(
+      `[svg-to-heart] --derive-other-lobe: input already contains both lobes (${Array.from(lobes).join(
+        ', '
+      )}); deriving will duplicate boundaries`
+    );
+  }
+  const rect = viewBoxIsOverlap
+    ? overlapRect
+    : (() => {
+        const inferred = inferOverlapRectFromFingers(fingers, gridSize);
+        if (inferred.width < 1 || inferred.height < 1) return overlapRect;
+        return inferred;
+      })();
+  const derived = fingers.map((f) => {
+    const targetLobe = f.lobe === 'left' ? 'right' : 'left';
+    const mapped = f.segments.map((seg) => ({
+      ...seg,
+      p0: swapPointBetweenLobes(seg.p0, rect, antiBetweenLobes),
+      p1: swapPointBetweenLobes(seg.p1, rect, antiBetweenLobes),
+      p2: swapPointBetweenLobes(seg.p2, rect, antiBetweenLobes),
+      p3: swapPointBetweenLobes(seg.p3, rect, antiBetweenLobes)
+    }));
+    const finalSegments = canonicalizeDirectionForLobe(
+      targetLobe,
+      antiBetweenLobes ? reverseSubpath(mapped) : mapped
+    );
+    return {
+      id: `mirror-${f.id}`,
+      lobe: targetLobe,
+      segments: finalSegments,
+      pathData: segmentsToPathData(finalSegments, precision)
+    };
+  });
+  fingers.push(...derived);
 }
 
 const heart = {
@@ -308,7 +608,7 @@ const heart = {
   author: heartAuthor,
   description: heartDesc,
   gridSize,
-  fingers
+  fingers: fingers.map(({ id, lobe, pathData }) => ({ id, lobe, pathData }))
 };
 
 const json = JSON.stringify(heart, null, 2);
