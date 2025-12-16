@@ -244,9 +244,11 @@ export function buildOddWeaveMask(
   rightStrips: Array<{ index: number; item: paper.PathItem }>
 ): paper.PathItem | null {
   return withInsertItemsDisabled(paper, () => {
+    const leftEven = leftStrips.filter((s) => s.index % 2 === 0);
+    const rightEven = rightStrips.filter((s) => s.index % 2 === 0);
     const children = [
-      ...leftStrips.filter((s) => s.index % 2 === 0).map((s) => s.item),
-      ...rightStrips.filter((s) => s.index % 2 === 0).map((s) => s.item)
+      ...leftEven.map((s) => s.item),
+      ...rightEven.map((s) => s.item)
     ];
     if (!children.length) return null;
     const mask = new paper.CompoundPath({ children });

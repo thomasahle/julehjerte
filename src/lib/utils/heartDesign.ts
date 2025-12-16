@@ -32,6 +32,11 @@ function normalizeGridSize(raw: unknown): GridSize {
   return { x: 3, y: 3 };
 }
 
+function normalizeWeaveParity(raw: unknown): 0 | 1 {
+  const v = typeof raw === 'number' && Number.isFinite(raw) ? Math.round(raw) : 0;
+  return v % 2 === 1 ? 1 : 0;
+}
+
 function getCenteredRectParams(gridSize: GridSize, stripWidth: number = STRIP_WIDTH) {
   const width = gridSize.x * stripWidth;
   const height = gridSize.y * stripWidth;
@@ -333,6 +338,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   const name = typeof r.name === 'string' ? r.name : 'Untitled';
   const author = typeof r.author === 'string' ? r.author : '';
   const description = typeof r.description === 'string' ? r.description : undefined;
+  const weaveParity = normalizeWeaveParity((r as any).weaveParity);
   const gridSize = normalizeGridSize(r.gridSize);
 
   const fingersRaw = Array.isArray(r.fingers) ? r.fingers : [];
@@ -354,6 +360,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
     name,
     author,
     description,
+    weaveParity,
     gridSize: inferredGrid,
     fingers
   };
@@ -367,6 +374,7 @@ export function serializeHeartDesign(design: HeartDesign): Omit<HeartDesign, 'fi
     name: design.name,
     author: design.author,
     description: design.description,
+    weaveParity: design.weaveParity ?? 0,
     gridSize: design.gridSize,
     fingers: design.fingers.map((f) => ({
       id: f.id,

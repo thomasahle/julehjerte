@@ -22,6 +22,7 @@
     type HeartColors,
   } from "$lib/stores/colors";
   import type { HeartDesign } from "$lib/types/heart";
+  import { trackHeartView, trackHeartSelect, trackMultiDownload } from "$lib/analytics";
   import { Button } from "$lib/components/ui/button";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
   import GitHubStarsButton from "$lib/components/GitHubStarsButton.svelte";
@@ -93,16 +94,19 @@
 
   function handleSelect(design: HeartDesign) {
     const newSet = new Set(selectedIds);
-    if (newSet.has(design.id)) {
+    const wasSelected = newSet.has(design.id);
+    if (wasSelected) {
       newSet.delete(design.id);
     } else {
       newSet.add(design.id);
     }
     selectedIds = newSet;
     updateUrlWithSelections(newSet);
+    trackHeartSelect(design.id, design.name, !wasSelected);
   }
 
   function handleClick(design: HeartDesign) {
+    trackHeartView(design.id, design.name);
     goto(`${base}/hjerte/${design.id}`);
   }
 
@@ -111,6 +115,7 @@
     if (selected.length > 0) {
       generating = true;
       try {
+        trackMultiDownload(selected.map(h => h.id), selected.length);
         await downloadMultiPDF(selected, { layout: pdfLayout });
       } finally {
         generating = false;

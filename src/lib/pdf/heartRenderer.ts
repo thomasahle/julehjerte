@@ -148,16 +148,17 @@ export async function renderHeartToDataURL(
   const oddMask = buildOddWeaveMask(paper, leftStrips, rightStrips);
 
   if (oddMask && Math.abs(itemArea(oddMask)) >= 1) {
-    // Unite the odd-parity overlap cells with the outside-right region so the
-    // fold line is painted by a single item (avoids 1px AA seams).
-    const redTop = oddMask.unite(rightOutsideOverlap, { insert: false }) as paper.PathItem;
-    oddMask.remove();
-    rightOutsideOverlap.remove();
+    // Render oddMask and rightOutsideOverlap separately (not united).
+    // Paper.js boolean operations don't correctly handle CompoundPath with
+    // evenodd fill rule - unite() treats all child path areas as filled
+    // rather than respecting the evenodd intersection semantics.
+    oddMask.fillColor = lobeFillColor(paper, 'right', colors);
+    oddMask.strokeColor = null;
+    items.push(oddMask);
 
-    redTop.fillColor = lobeFillColor(paper, 'right', colors);
-    redTop.strokeColor = null;
-    if (Math.abs(itemArea(redTop)) >= 1) items.push(redTop);
-    else redTop.remove();
+    rightOutsideOverlap.fillColor = lobeFillColor(paper, 'right', colors);
+    rightOutsideOverlap.strokeColor = null;
+    items.push(rightOutsideOverlap);
   } else {
     oddMask?.remove();
     items.push(rightOutsideOverlap);

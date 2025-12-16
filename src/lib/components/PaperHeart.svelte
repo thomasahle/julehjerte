@@ -1,13 +1,17 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import paperPkg from "paper";
-  import SplitIcon from "@lucide/svelte/icons/split";
-  import Trash2Icon from "@lucide/svelte/icons/trash-2";
-  import { Button } from "$lib/components/ui/button";
-  import { Separator } from "$lib/components/ui/separator";
-  import TriSwitch, {
-    type TriSwitchValue,
-  } from "$lib/components/TriSwitch.svelte";
+	  import SplitIcon from "@lucide/svelte/icons/split";
+	  import Trash2Icon from "@lucide/svelte/icons/trash-2";
+	  import { Button } from "$lib/components/ui/button";
+	  import { Separator } from "$lib/components/ui/separator";
+	  import { ToggleGroup, ToggleGroupItem } from "$lib/components/ui/toggle-group";
+	  import {
+	    Tooltip,
+	    TooltipContent,
+	    TooltipProvider,
+	    TooltipTrigger,
+	  } from "$lib/components/ui/tooltip";
   import CurveNodeToolIcon from "$lib/components/icons/CurveNodeToolIcon.svelte";
   import NodeCornerIcon from "$lib/components/icons/NodeCornerIcon.svelte";
   import NodeSmoothIcon from "$lib/components/icons/NodeSmoothIcon.svelte";
@@ -80,14 +84,20 @@
     readonly?: boolean;
     initialFingers?: Finger[];
     initialGridSize?: GridSize | number;
+    initialWeaveParity?: 0 | 1 | number;
     size?: number;
-    onFingersChange?: (fingers: Finger[], gridSize: GridSize) => void;
+    onFingersChange?: (
+      fingers: Finger[],
+      gridSize: GridSize,
+      weaveParity: 0 | 1,
+    ) => void;
   }
 
   let {
     readonly = false,
     initialFingers = undefined,
     initialGridSize = 3,
+    initialWeaveParity = 0,
     size = 600,
     onFingersChange = undefined,
   }: Props = $props();
@@ -146,6 +156,11 @@
     return { x: 3, y: 3 };
   }
 
+  function normalizeWeaveParity(raw: unknown): 0 | 1 {
+    const v = typeof raw === "number" && Number.isFinite(raw) ? Math.round(raw) : 0;
+    return v % 2 === 1 ? 1 : 0;
+  }
+
   function rotateVecAroundCenter(v: Vec, angleRad: number): Vec {
     const sin = Math.sin(angleRad);
     const cos = Math.cos(angleRad);
@@ -189,7 +204,10 @@
   let overlapRight = $state(0);
   let overlapTop = $state(0);
   let overlapBottom = $state(0);
-  type SymmetryMode = TriSwitchValue;
+  // Parity base for which overlap cells have the right lobe on top.
+  // `0` means top-left cell is left-on-top.
+  let weaveParity = $state<0 | 1>(0);
+  type SymmetryMode = "off" | "sym" | "anti";
   let editor = $state<{
     showCurves: boolean;
     withinCurveMode: SymmetryMode;
@@ -197,19 +215,19 @@
     betweenLobesMode: SymmetryMode;
   }>({
     showCurves: true,
-    withinCurveMode: 0,
-    withinLobeMode: 0,
-    betweenLobesMode: 0,
+    withinCurveMode: "off",
+    withinLobeMode: "off",
+    betweenLobesMode: "off",
   });
 
   // Derived views for readability in the rest of the file.
   let showCurves = $derived(editor.showCurves);
-  let symmetryWithinCurve = $derived(editor.withinCurveMode !== 0);
-  let antiWithinCurve = $derived(editor.withinCurveMode === 2);
-  let symmetryWithinLobe = $derived(editor.withinLobeMode !== 0);
-  let antiWithinLobe = $derived(editor.withinLobeMode === 2);
-  let symmetryBetweenLobes = $derived(editor.betweenLobesMode !== 0);
-  let antiBetweenLobes = $derived(editor.betweenLobesMode === 2);
+  let symmetryWithinCurve = $derived(editor.withinCurveMode !== "off");
+  let antiWithinCurve = $derived(editor.withinCurveMode === "anti");
+  let symmetryWithinLobe = $derived(editor.withinLobeMode !== "off");
+  let antiWithinLobe = $derived(editor.withinLobeMode === "anti");
+  let symmetryBetweenLobes = $derived(editor.betweenLobesMode !== "off");
+  let antiBetweenLobes = $derived(editor.betweenLobesMode === "anti");
 
   // Handle semantics: a "missing" handle is represented by collapsing it onto the anchor.
   // We hide collapsed handles and treat them as intentionally removed.
@@ -241,6 +259,7 @@
   type HistorySnapshot = {
     fingers: Finger[];
     gridSize: GridSize;
+    weaveParity: 0 | 1;
     overlap: { left: number; right: number; top: number; bottom: number };
     selection: Selection;
   };
@@ -785,6 +804,7 @@
     if (!didInitialFingerSetup) {
       didInitialFingerSetup = true;
       gridSize = normalizeGridSize(initialGridSize);
+      weaveParity = normalizeWeaveParity(initialWeaveParity);
       setCenteredOverlapRect(gridSize);
       if (initialFingers && initialFingers.length > 0) {
         // Deep copy the initial fingers to avoid mutating the prop
@@ -1006,7 +1026,7 @@
   // Notify parent of changes
   $effect(() => {
     if (onFingersChange && initialized) {
-      onFingersChange(fingers, gridSize);
+      onFingersChange(fingers, gridSize, weaveParity);
     }
   });
 
@@ -1024,7 +1044,7 @@
     // Apply between-lobes symmetry: left lobe is the source, right lobe copies
     if (symmetryBetweenLobes) {
       if (!canSymmetryBetweenLobes()) {
-        editor.betweenLobesMode = 0;
+        editor.betweenLobesMode = "off";
       } else {
       const leftFingers = updated.filter((f) => f.lobe === "left");
       for (const leftFinger of leftFingers) {
@@ -1076,17 +1096,18 @@
   }
 
   // Track previous symmetry state to detect changes
-  let prevWithinCurveMode: SymmetryMode = 0;
-  let prevWithinLobeMode: SymmetryMode = 0;
-  let prevBetweenLobesMode: SymmetryMode = 0;
+  let prevWithinCurveMode: SymmetryMode = "off";
+  let prevWithinLobeMode: SymmetryMode = "off";
+  let prevBetweenLobesMode: SymmetryMode = "off";
 
   $effect(() => {
     // Only apply when symmetry is enabled/changed (turning off does not mutate).
     const shouldApply =
-      (editor.withinCurveMode !== 0 &&
+      (editor.withinCurveMode !== "off" &&
         editor.withinCurveMode !== prevWithinCurveMode) ||
-      (editor.withinLobeMode !== 0 && editor.withinLobeMode !== prevWithinLobeMode) ||
-      (editor.betweenLobesMode !== 0 &&
+      (editor.withinLobeMode !== "off" &&
+        editor.withinLobeMode !== prevWithinLobeMode) ||
+      (editor.betweenLobesMode !== "off" &&
         editor.betweenLobesMode !== prevBetweenLobesMode);
 
     prevWithinCurveMode = editor.withinCurveMode;
@@ -1920,16 +1941,17 @@
     const oddMask = buildOddWeaveMask(leftStrips, rightStrips);
 
     if (oddMask && Math.abs(itemArea(oddMask)) >= 1) {
-      // Unite the odd-parity overlap cells with the outside-right region so the
-      // fold line is painted by a single item (avoids 1px AA seams).
-      const redTop = oddMask.unite(rightOutsideOverlap, { insert: false }) as paper.PathItem;
-      oddMask.remove();
-      rightOutsideOverlap.remove();
+      // Render oddMask and rightOutsideOverlap separately (not united).
+      // Paper.js boolean operations don't correctly handle CompoundPath with
+      // evenodd fill rule - unite() treats all child path areas as filled
+      // rather than respecting the evenodd intersection semantics.
+      oddMask.fillColor = lobeFillColor("right");
+      oddMask.strokeColor = null;
+      fillItems.push(oddMask);
 
-      redTop.fillColor = lobeFillColor("right");
-      redTop.strokeColor = null;
-      if (Math.abs(itemArea(redTop)) >= 1) fillItems.push(redTop);
-      else redTop.remove();
+      rightOutsideOverlap.fillColor = lobeFillColor("right");
+      rightOutsideOverlap.strokeColor = null;
+      fillItems.push(rightOutsideOverlap);
     } else {
       oddMask?.remove();
       rightOutsideOverlap.fillColor = lobeFillColor("right");
@@ -2218,7 +2240,7 @@
     if (inferred.x !== gridSize.x || inferred.y !== gridSize.y) {
       gridSize = inferred;
       if (!canSymmetryBetweenLobes() && symmetryBetweenLobes) {
-        editor.betweenLobesMode = 0;
+        editor.betweenLobesMode = "off";
       }
     }
   }
@@ -3181,46 +3203,46 @@
             dragTarget = v;
           },
 	          get symmetryWithinCurve() {
-	            return editor.withinCurveMode !== 0;
+	            return editor.withinCurveMode !== "off";
 	          },
 	          set symmetryWithinCurve(v: boolean) {
-	            if (!v) editor.withinCurveMode = 0;
-	            else if (editor.withinCurveMode === 0) editor.withinCurveMode = 1;
+	            if (!v) editor.withinCurveMode = "off";
+	            else if (editor.withinCurveMode === "off") editor.withinCurveMode = "sym";
 	          },
 	          get symmetryWithinLobe() {
-	            return editor.withinLobeMode !== 0;
+	            return editor.withinLobeMode !== "off";
 	          },
 	          set symmetryWithinLobe(v: boolean) {
-	            if (!v) editor.withinLobeMode = 0;
-	            else if (editor.withinLobeMode === 0) editor.withinLobeMode = 1;
+	            if (!v) editor.withinLobeMode = "off";
+	            else if (editor.withinLobeMode === "off") editor.withinLobeMode = "sym";
 	          },
 	          get symmetryBetweenLobes() {
-	            return editor.betweenLobesMode !== 0;
+	            return editor.betweenLobesMode !== "off";
 	          },
 	          set symmetryBetweenLobes(v: boolean) {
-	            if (!v) editor.betweenLobesMode = 0;
-	            else if (editor.betweenLobesMode === 0) editor.betweenLobesMode = 1;
+	            if (!v) editor.betweenLobesMode = "off";
+	            else if (editor.betweenLobesMode === "off") editor.betweenLobesMode = "sym";
 	          },
 	          get antiWithinCurve() {
-	            return editor.withinCurveMode === 2;
+	            return editor.withinCurveMode === "anti";
 	          },
 	          set antiWithinCurve(v: boolean) {
-	            if (v) editor.withinCurveMode = 2;
-	            else if (editor.withinCurveMode === 2) editor.withinCurveMode = 1;
+	            if (v) editor.withinCurveMode = "anti";
+	            else if (editor.withinCurveMode === "anti") editor.withinCurveMode = "sym";
 	          },
 	          get antiWithinLobe() {
-	            return editor.withinLobeMode === 2;
+	            return editor.withinLobeMode === "anti";
 	          },
 	          set antiWithinLobe(v: boolean) {
-	            if (v) editor.withinLobeMode = 2;
-	            else if (editor.withinLobeMode === 2) editor.withinLobeMode = 1;
+	            if (v) editor.withinLobeMode = "anti";
+	            else if (editor.withinLobeMode === "anti") editor.withinLobeMode = "sym";
 	          },
 	          get antiBetweenLobes() {
-	            return editor.betweenLobesMode === 2;
+	            return editor.betweenLobesMode === "anti";
 	          },
 	          set antiBetweenLobes(v: boolean) {
-	            if (v) editor.betweenLobesMode = 2;
-	            else if (editor.betweenLobesMode === 2) editor.betweenLobesMode = 1;
+	            if (v) editor.betweenLobesMode = "anti";
+	            else if (editor.betweenLobesMode === "anti") editor.betweenLobesMode = "sym";
 	          },
 	          get showCurves() {
 	            return editor.showCurves;
@@ -3303,6 +3325,7 @@
 	  });
 </script>
 
+<TooltipProvider delayDuration={250}>
 <div class="paper-heart">
   {#if !readonly}
 	    <div class="controls">
@@ -3310,24 +3333,37 @@
 	        <input type="checkbox" bind:checked={editor.showCurves} />
 	        Show curves
 	      </label>
-	      <TriSwitch
-	        label="Within curve"
-	        bind:value={editor.withinCurveMode}
-	        options={["Off", "Sym", "Anti"] as const}
-	        titles={["Off", "Mirror symmetry", "Anti-symmetry"] as const}
-	      />
-	      <TriSwitch
-	        label="Within lobe"
-	        bind:value={editor.withinLobeMode}
-	        options={["Off", "Sym", "Anti"] as const}
-	        titles={["Off", "Mirror symmetry", "Anti-symmetry"] as const}
-	      />
-	      <TriSwitch
-	        label="Between lobes"
-	        bind:value={editor.betweenLobesMode}
-	        options={["Off", "Sym", "Anti"] as const}
-	        titles={["Off", "Mirror symmetry", "Anti-symmetry"] as const}
-	      />
+
+	      <div class="symmetry-row" aria-label="Within curve symmetry">
+	        <span class="symmetry-label">Within curve</span>
+	        <ToggleGroup type="single" bind:value={editor.withinCurveMode}>
+	          <ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
+	          <ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
+	          <ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
+	        </ToggleGroup>
+	      </div>
+
+	      <div class="symmetry-row" aria-label="Within lobe symmetry">
+	        <span class="symmetry-label">Within lobe</span>
+	        <ToggleGroup type="single" bind:value={editor.withinLobeMode}>
+	          <ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
+	          <ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
+	          <ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
+	        </ToggleGroup>
+	      </div>
+
+	      <div class="symmetry-row" aria-label="Between lobes symmetry">
+	        <span class="symmetry-label">Between lobes</span>
+	        <ToggleGroup
+	          type="single"
+	          bind:value={editor.betweenLobesMode}
+	          disabled={!canSymmetryBetweenLobes()}
+	        >
+	          <ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
+	          <ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
+	          <ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
+	        </ToggleGroup>
+	      </div>
 	    </div>
 	  {/if}
   <div class="canvas-wrapper" style:width="{size}px" style:height="{size}px">
@@ -3342,109 +3378,166 @@
 	  {#if selectedFinger}
 		    <div class="segment-controls" aria-label="Curve tools">
 		      <div class="edit-controls" aria-label="Edit">
-		        <Button
-		          variant="outline"
-	          size="icon-sm"
-	          onclick={insertNodeBetweenSelectedAnchors}
-	          disabled={!canInsertNode}
-	          title="Insert node between selected"
-	          aria-label="Insert node"
-	        >
-	          <SplitIcon size={16} aria-hidden="true" />
-	        </Button>
-	        <Button
-	          variant="outline"
-	          size="icon-sm"
-	          onclick={deleteSelectedAnchors}
-	          disabled={!canDeleteNode}
-	          title="Delete selected node(s)"
-	          aria-label="Delete node"
-	        >
-	          <Trash2Icon size={16} aria-hidden="true" />
-	        </Button>
-	      </div>
+		        <Tooltip>
+		          <TooltipTrigger>
+		            {#snippet child({ props })}
+		              <Button
+		                {...props}
+		                variant="outline"
+		                size="icon-sm"
+		                onclick={insertNodeBetweenSelectedAnchors}
+		                disabled={!canInsertNode}
+		                aria-label="Insert node"
+		              >
+		                <SplitIcon size={16} aria-hidden="true" />
+		              </Button>
+		            {/snippet}
+		          </TooltipTrigger>
+		          <TooltipContent>Insert node</TooltipContent>
+		        </Tooltip>
+		        <Tooltip>
+		          <TooltipTrigger>
+		            {#snippet child({ props })}
+		              <Button
+		                {...props}
+		                variant="outline"
+		                size="icon-sm"
+		                onclick={deleteSelectedAnchors}
+		                disabled={!canDeleteNode}
+		                aria-label="Delete node"
+		              >
+		                <Trash2Icon size={16} aria-hidden="true" />
+		              </Button>
+		            {/snippet}
+		          </TooltipTrigger>
+		          <TooltipContent>Delete node</TooltipContent>
+		        </Tooltip>
+		      </div>
 	      <div class="toolbar-separator" aria-hidden="true">
 	        <Separator orientation="vertical" class="h-6" decorative />
 	      </div>
-	      <div class="node-type-controls" aria-label="Node type">
-	        <Button
-	          variant="outline"
-	          size="icon-sm"
-	          class={nodeTypeSelected === "corner"
-	            ? "bg-[#cc0000]/10 border-[#cc0000]/40"
-	            : ""}
-	          onclick={() => setSelectedAnchorsNodeType("corner")}
-	          disabled={!validAnchors.length}
-	          title="Corner node"
-	          aria-label="Corner node"
-	        >
-	          <span aria-hidden="true"><NodeCornerIcon size={16} /></span>
-	        </Button>
-	        <Button
-	          variant="outline"
-	          size="icon-sm"
-	          class={nodeTypeSelected === "smooth"
-	            ? "bg-[#cc0000]/10 border-[#cc0000]/40"
-	            : ""}
-	          onclick={() => setSelectedAnchorsNodeType("smooth")}
-	          disabled={!validAnchors.length}
-	          title="Smooth node (collinear handles)"
-	          aria-label="Smooth node"
-	        >
-	          <span aria-hidden="true"><NodeSmoothIcon size={16} /></span>
-	        </Button>
-	        <Button
-	          variant="outline"
-	          size="icon-sm"
-	          class={nodeTypeSelected === "symmetric"
-	            ? "bg-[#cc0000]/10 border-[#cc0000]/40"
-	            : ""}
-	          onclick={() => setSelectedAnchorsNodeType("symmetric")}
-	          disabled={!validAnchors.length}
-	          title="Symmetric node (equal + collinear handles)"
-	          aria-label="Symmetric node"
-	        >
-	          <span aria-hidden="true"><NodeSymmetricIcon size={16} /></span>
-	        </Button>
-	        <Button
-	          variant="outline"
-	          size="icon-sm"
-	          onclick={makeSelectedAnchorsCurved}
-	          disabled={!selection.anchors.length}
-	          title="Curve node (pull out handles)"
-	          aria-label="Curve node"
-	        >
-	          <span aria-hidden="true"><CurveNodeToolIcon size={16} /></span>
-	        </Button>
-	      </div>
+		      <div class="node-type-controls" aria-label="Node type">
+		        <Tooltip>
+		          <TooltipTrigger>
+		            {#snippet child({ props })}
+		              <Button
+		                {...props}
+		                variant="outline"
+		                size="icon-sm"
+		                class={nodeTypeSelected === "corner"
+		                  ? "bg-[#cc0000]/10 border-[#cc0000]/40"
+		                  : ""}
+		                onclick={() => setSelectedAnchorsNodeType("corner")}
+		                disabled={!validAnchors.length}
+		                aria-label="Corner node"
+		              >
+		                <span aria-hidden="true"><NodeCornerIcon size={16} /></span>
+		              </Button>
+		            {/snippet}
+		          </TooltipTrigger>
+		          <TooltipContent>Corner node</TooltipContent>
+		        </Tooltip>
+		        <Tooltip>
+		          <TooltipTrigger>
+		            {#snippet child({ props })}
+		              <Button
+		                {...props}
+		                variant="outline"
+		                size="icon-sm"
+		                class={nodeTypeSelected === "smooth"
+		                  ? "bg-[#cc0000]/10 border-[#cc0000]/40"
+		                  : ""}
+		                onclick={() => setSelectedAnchorsNodeType("smooth")}
+		                disabled={!validAnchors.length}
+		                aria-label="Smooth node"
+		              >
+		                <span aria-hidden="true"><NodeSmoothIcon size={16} /></span>
+		              </Button>
+		            {/snippet}
+		          </TooltipTrigger>
+		          <TooltipContent>Smooth node</TooltipContent>
+		        </Tooltip>
+		        <Tooltip>
+		          <TooltipTrigger>
+		            {#snippet child({ props })}
+		              <Button
+		                {...props}
+		                variant="outline"
+		                size="icon-sm"
+		                class={nodeTypeSelected === "symmetric"
+		                  ? "bg-[#cc0000]/10 border-[#cc0000]/40"
+		                  : ""}
+		                onclick={() => setSelectedAnchorsNodeType("symmetric")}
+		                disabled={!validAnchors.length}
+		                aria-label="Symmetric node"
+		              >
+		                <span aria-hidden="true"><NodeSymmetricIcon size={16} /></span>
+		              </Button>
+		            {/snippet}
+		          </TooltipTrigger>
+		          <TooltipContent>Symmetric node</TooltipContent>
+		        </Tooltip>
+		        <Tooltip>
+		          <TooltipTrigger>
+		            {#snippet child({ props })}
+		              <Button
+		                {...props}
+		                variant="outline"
+		                size="icon-sm"
+		                onclick={makeSelectedAnchorsCurved}
+		                disabled={!selection.anchors.length}
+		                aria-label="Curve node"
+		              >
+		                <span aria-hidden="true"><CurveNodeToolIcon size={16} /></span>
+		              </Button>
+		            {/snippet}
+		          </TooltipTrigger>
+		          <TooltipContent>Curve node</TooltipContent>
+		        </Tooltip>
+		      </div>
 	      <div class="toolbar-separator" aria-hidden="true">
 	        <Separator orientation="vertical" class="h-6" decorative />
 	      </div>
-	      <div class="convert-controls" aria-label="Convert">
-	        <Button
-	          variant="outline"
-	          size="icon-sm"
-	          onclick={makeSelectedSegmentsStraight}
-	          disabled={!canMakeSegmentsStraight}
-	          title="Straight segment"
-	          aria-label="Straight segment"
-	        >
-	          <span aria-hidden="true"><SegmentLineIcon size={16} /></span>
-	        </Button>
-	        <Button
-	          variant="outline"
-	          size="icon-sm"
-	          onclick={makeSelectedSegmentsCurved}
-	          disabled={!canMakeSegmentsCurved}
-	          title="Curved segment"
-	          aria-label="Curved segment"
-	        >
-	          <span aria-hidden="true"><SegmentCurveIcon size={16} /></span>
-	        </Button>
-	      </div>
-	    </div>
-		  {/if}
-		</div>
+		      <div class="convert-controls" aria-label="Convert">
+		        <Tooltip>
+		          <TooltipTrigger>
+		            {#snippet child({ props })}
+		              <Button
+		                {...props}
+		                variant="outline"
+		                size="icon-sm"
+		                onclick={makeSelectedSegmentsStraight}
+		                disabled={!canMakeSegmentsStraight}
+		                aria-label="Straight segment"
+		              >
+		                <span aria-hidden="true"><SegmentLineIcon size={16} /></span>
+		              </Button>
+		            {/snippet}
+		          </TooltipTrigger>
+		          <TooltipContent>Straight segment</TooltipContent>
+		        </Tooltip>
+		        <Tooltip>
+		          <TooltipTrigger>
+		            {#snippet child({ props })}
+		              <Button
+		                {...props}
+		                variant="outline"
+		                size="icon-sm"
+		                onclick={makeSelectedSegmentsCurved}
+		                disabled={!canMakeSegmentsCurved}
+		                aria-label="Curved segment"
+		              >
+		                <span aria-hidden="true"><SegmentCurveIcon size={16} /></span>
+		              </Button>
+		            {/snippet}
+		          </TooltipTrigger>
+		          <TooltipContent>Curved segment</TooltipContent>
+		        </Tooltip>
+		      </div>
+		    </div>
+			  {/if}
+			</div>
+</TooltipProvider>
 
 <style>
   .paper-heart {
@@ -3480,6 +3573,18 @@
 
   .controls input[type="checkbox"] {
     accent-color: #cc0000;
+  }
+
+  .symmetry-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .symmetry-label {
+    color: #444;
+    font-size: 0.85rem;
+    white-space: nowrap;
   }
 
   .segment-controls {

@@ -18,6 +18,9 @@ export interface HeartDesign {
   name: string;
   author: string;
   description?: string;
+  // Parity base for the overlap weave. `0` means top-left cell has left lobe on top.
+  // This may flip when adding/removing strips on the top/left to keep existing cells stable.
+  weaveParity?: 0 | 1;
   // Number of strips in the overlap rectangle (x = columns, y = rows).
   gridSize: GridSize;
   fingers: Finger[];

@@ -13,6 +13,7 @@
   import { detectSymmetry, getSymmetryDescription } from '$lib/utils/symmetry';
   import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
   import type { HeartDesign } from '$lib/types/heart';
+  import { trackHeartDownload, trackHeartShare, trackHeartEdit } from '$lib/analytics';
 
   let design = $state<HeartDesign | null>(null);
   let isUserCreated = $state(false);
@@ -65,12 +66,14 @@
 
   function handleDownload() {
     if (design) {
+      trackHeartDownload(design.id, design.name);
       downloadPDF(design);
     }
   }
 
   function openInEditor() {
     if (design) {
+      trackHeartEdit(design.id, design.name);
       const designData = encodeURIComponent(JSON.stringify(serializeHeartDesign(design)));
       // For user-created hearts, pass edit=true to allow saving over the original
       const editParam = isUserCreated ? '&edit=true' : '';
@@ -99,6 +102,7 @@
           text: shareText,
           url: shareUrl
         });
+        trackHeartShare(design.id, design.name, 'native');
         return;
       } catch (err) {
         // User cancelled or share failed, fall through to clipboard
@@ -109,6 +113,7 @@
     // Fallback: copy to clipboard
     try {
       await navigator.clipboard.writeText(shareUrl);
+      trackHeartShare(design.id, design.name, 'clipboard');
       shareStatus = 'copied';
       setTimeout(() => {
         shareStatus = 'idle';
