@@ -17,9 +17,8 @@ const config = {
 			strict: true
 		}),
 		paths: {
-			// Base path for GitHub Pages (repo name)
-			// Set to '' for custom domain or root deployment
-			base: process.env.NODE_ENV === 'production' ? '/julehjerte' : ''
+			// Base path - empty for custom domain deployment
+			base: ''
 		},
 		prerender: {
 			handleHttpError: ({ path, referrer, message }) => {
