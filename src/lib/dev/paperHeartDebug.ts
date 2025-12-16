@@ -8,6 +8,8 @@ type PaperHeartDebugCtx = {
   set selectedFingerId(v: string | null);
   get selectedAnchors(): number[];
   set selectedAnchors(v: number[]);
+  get selectedSegments(): number[];
+  set selectedSegments(v: number[]);
   get hoverFingerId(): string | null;
   set hoverFingerId(v: string | null);
   get showCurves(): boolean;
@@ -21,6 +23,8 @@ type PaperHeartDebugCtx = {
   snapshotState: () => any;
   pushUndo: (before: any) => void;
   undo: () => void;
+  updateSegmentControlPoint: (fingerId: string, segmentIndex: number, pointKey: string, newPos: any) => boolean;
+  handleMouseDown: (event: any) => void;
 };
 
 export function attachPaperHeartDebug(target: any, ctx: PaperHeartDebugCtx): () => void {
@@ -63,6 +67,8 @@ export function attachPaperHeartDebug(target: any, ctx: PaperHeartDebugCtx): () 
       clientY: rect.top + viewPt.y * scaleY,
       viewX: viewPt.x,
       viewY: viewPt.y,
+      projectX: item.position.x,
+      projectY: item.position.y,
       pointKey,
       fingerId
     };
@@ -73,6 +79,7 @@ export function attachPaperHeartDebug(target: any, ctx: PaperHeartDebugCtx): () 
     fingers: any[];
     selectedFingerId: string | null;
     selectedAnchors: number[];
+    selectedSegments: number[];
     hoverFingerId: string | null;
     showCurves: boolean;
   };
@@ -84,6 +91,7 @@ export function attachPaperHeartDebug(target: any, ctx: PaperHeartDebugCtx): () 
         fingers: ctx.fingers,
         selectedFingerId: ctx.selectedFingerId,
         selectedAnchors: ctx.selectedAnchors,
+        selectedSegments: ctx.selectedSegments,
         hoverFingerId: ctx.hoverFingerId,
         showCurves: ctx.showCurves
       };
@@ -94,6 +102,7 @@ export function attachPaperHeartDebug(target: any, ctx: PaperHeartDebugCtx): () 
       if (patch.fingers != null) ctx.fingers = patch.fingers;
       if (patch.selectedFingerId !== undefined) ctx.selectedFingerId = patch.selectedFingerId;
       if (patch.selectedAnchors != null) ctx.selectedAnchors = patch.selectedAnchors;
+      if (patch.selectedSegments != null) ctx.selectedSegments = patch.selectedSegments;
       if (patch.hoverFingerId !== undefined) ctx.hoverFingerId = patch.hoverFingerId;
       if (patch.showCurves != null) ctx.showCurves = patch.showCurves;
       ctx.draw();
@@ -102,11 +111,18 @@ export function attachPaperHeartDebug(target: any, ctx: PaperHeartDebugCtx): () 
     selectFinger(fingerId: string | null) {
       ctx.selectedFingerId = fingerId;
       ctx.selectedAnchors = [];
+      ctx.selectedSegments = [];
       ctx.draw();
     },
 
     selectAnchors(anchorIdxs: number[]) {
       ctx.selectedAnchors = anchorIdxs.slice();
+      ctx.selectedSegments = [];
+      ctx.draw();
+    },
+
+    selectSegments(segmentIdxs: number[]) {
+      ctx.selectedSegments = segmentIdxs.slice();
       ctx.draw();
     },
 
@@ -135,6 +151,37 @@ export function attachPaperHeartDebug(target: any, ctx: PaperHeartDebugCtx): () 
       ctx.fingers = ctx.fingers.map((f) => (f.id === fingerId ? updated : f));
       if (before) ctx.pushUndo(before);
       ctx.draw();
+      return true;
+    },
+
+    setNodeType(fingerId: string, anchorIdx: number, nodeType: 'corner' | 'smooth' | 'symmetric', pushToUndo = false) {
+      const finger = ctx.getFingerById(fingerId);
+      if (!finger) return false;
+      const before = pushToUndo ? ctx.snapshotState() : null;
+      const nodeTypes = { ...(finger.nodeTypes ?? {}) };
+      nodeTypes[String(anchorIdx)] = nodeType;
+      const updated = { ...finger, nodeTypes };
+      ctx.fingers = ctx.fingers.map((f) => (f.id === fingerId ? updated : f));
+      if (before) ctx.pushUndo(before);
+      ctx.draw();
+      return true;
+    },
+
+    moveControlPoint(fingerId: string, segmentIndex: number, pointKey: string, newPos: { x: number; y: number }) {
+      return ctx.updateSegmentControlPoint(fingerId, segmentIndex, pointKey, newPos);
+    },
+
+    // Deterministic selection testing: triggers the component’s real hit-test + selection logic.
+    clickControl(fingerId: string, pointKey: string, segmentIndex?: number, shift = false) {
+      const item = findControlItem(fingerId, pointKey, segmentIndex);
+      if (!item) return false;
+      ctx.handleMouseDown({ point: item.position, modifiers: { shift } });
+      return true;
+    },
+
+    // Deterministic curve selection testing.
+    clickProjectPoint(point: { x: number; y: number }, shift = false) {
+      ctx.handleMouseDown({ point, modifiers: { shift } });
       return true;
     },
 

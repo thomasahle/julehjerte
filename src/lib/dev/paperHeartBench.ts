@@ -105,7 +105,9 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
     symmetryWithinCurve: ctx.symmetryWithinCurve,
     symmetryWithinLobe: ctx.symmetryWithinLobe,
     symmetryBetweenLobes: ctx.symmetryBetweenLobes,
-    antiSymmetry: ctx.antiSymmetry,
+    antiWithinCurve: ctx.antiWithinCurve,
+    antiWithinLobe: ctx.antiWithinLobe,
+    antiBetweenLobes: ctx.antiBetweenLobes,
     showCurves: ctx.showCurves
   };
 
@@ -116,7 +118,9 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
     ctx.symmetryWithinCurve = false;
     ctx.symmetryWithinLobe = false;
     ctx.symmetryBetweenLobes = false;
-    ctx.antiSymmetry = false;
+    ctx.antiWithinCurve = false;
+    ctx.antiWithinLobe = false;
+    ctx.antiBetweenLobes = false;
     ctx.selectedFingerId = null;
     ctx.dragTarget = null;
 
@@ -365,7 +369,9 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
     ctx.symmetryWithinCurve = saved.symmetryWithinCurve;
     ctx.symmetryWithinLobe = saved.symmetryWithinLobe;
     ctx.symmetryBetweenLobes = saved.symmetryBetweenLobes;
-    ctx.antiSymmetry = saved.antiSymmetry;
+    ctx.antiWithinCurve = saved.antiWithinCurve;
+    ctx.antiWithinLobe = saved.antiWithinLobe;
+    ctx.antiBetweenLobes = saved.antiBetweenLobes;
     ctx.showCurves = saved.showCurves;
     ctx.draw();
   }
@@ -393,7 +399,9 @@ async function runIntersectionBench(
     symmetryWithinCurve: ctx.symmetryWithinCurve,
     symmetryWithinLobe: ctx.symmetryWithinLobe,
     symmetryBetweenLobes: ctx.symmetryBetweenLobes,
-    antiSymmetry: ctx.antiSymmetry,
+    antiWithinCurve: ctx.antiWithinCurve,
+    antiWithinLobe: ctx.antiWithinLobe,
+    antiBetweenLobes: ctx.antiBetweenLobes,
     showCurves: ctx.showCurves
   };
 
@@ -404,7 +412,9 @@ async function runIntersectionBench(
     ctx.symmetryWithinCurve = false;
     ctx.symmetryWithinLobe = false;
     ctx.symmetryBetweenLobes = false;
-    ctx.antiSymmetry = false;
+    ctx.antiWithinCurve = false;
+    ctx.antiWithinLobe = false;
+    ctx.antiBetweenLobes = false;
     ctx.fingers = ctx.createDefaultFingers(benchGridSize);
     ctx.selectedFingerId = null;
     ctx.dragTarget = null;
@@ -541,7 +551,9 @@ async function runIntersectionBench(
     ctx.symmetryWithinCurve = saved.symmetryWithinCurve;
     ctx.symmetryWithinLobe = saved.symmetryWithinLobe;
     ctx.symmetryBetweenLobes = saved.symmetryBetweenLobes;
-    ctx.antiSymmetry = saved.antiSymmetry;
+    ctx.antiWithinCurve = saved.antiWithinCurve;
+    ctx.antiWithinLobe = saved.antiWithinLobe;
+    ctx.antiBetweenLobes = saved.antiBetweenLobes;
     ctx.showCurves = saved.showCurves;
     ctx.draw();
   }

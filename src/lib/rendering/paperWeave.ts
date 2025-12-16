@@ -1,0 +1,273 @@
+import type paperPkg from 'paper';
+import type { Finger, LobeId, Vec } from '../types/heart';
+import { fingerToSegments } from '../geometry/bezierSegments';
+import type { HeartColors } from '../stores/colors';
+
+export const STRIP_WIDTH = 75;
+export const BASE_CANVAS_SIZE = 600;
+export const BASE_CENTER = BASE_CANVAS_SIZE / 2;
+
+export function getSquareParams(gridSize: number, center: Vec = { x: BASE_CENTER, y: BASE_CENTER }) {
+  const squareSize = gridSize * STRIP_WIDTH;
+  const squareLeft = center.x - squareSize / 2;
+  const squareTop = center.y - squareSize / 2;
+  const earRadius = squareSize / 2;
+  return { squareSize, squareLeft, squareTop, earRadius };
+}
+
+export function toPoint(paper: paper.PaperScope, v: Vec): paper.Point {
+  return new paper.Point(v.x, v.y);
+}
+
+export function hexToRgb01(hex: string): { r: number; g: number; b: number } {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16) / 255,
+        g: parseInt(result[2], 16) / 255,
+        b: parseInt(result[3], 16) / 255
+      }
+    : { r: 1, g: 1, b: 1 };
+}
+
+export function lobeFillColor(paper: paper.PaperScope, lobe: LobeId, colors: HeartColors) {
+  const rgb = hexToRgb01(lobe === 'left' ? colors.left : colors.right);
+  return new paper.Color(rgb.r, rgb.g, rgb.b, 1);
+}
+
+export function itemArea(item: paper.Item | null | undefined): number {
+  const area = (item as unknown as { area?: number }).area;
+  return typeof area === 'number' ? area : 0;
+}
+
+export function cleanupPathItem(paper: paper.PaperScope, item: paper.PathItem, minArea: number = 10): paper.PathItem {
+  if (item.className !== 'CompoundPath') return item;
+  const compound = item as paper.CompoundPath;
+  const children = compound.children.slice();
+  for (const child of children) {
+    if (Math.abs(itemArea(child)) < minArea) child.remove();
+  }
+  if (compound.children.length === 1) {
+    const single = compound.children[0] as paper.Path;
+    single.fillColor = compound.fillColor;
+    single.strokeColor = compound.strokeColor;
+    single.strokeWidth = compound.strokeWidth;
+    single.remove();
+    compound.remove();
+    return single;
+  }
+  return compound;
+}
+
+export function withInsertItemsDisabled<T>(paper: paper.PaperScope, fn: () => T): T {
+  const prev = paper.settings.insertItems;
+  paper.settings.insertItems = false;
+  try {
+    return fn();
+  } finally {
+    paper.settings.insertItems = prev;
+  }
+}
+
+export function buildLobeShape(
+  paper: paper.PaperScope,
+  kind: LobeId,
+  colors: HeartColors,
+  squareLeft: number,
+  squareTop: number,
+  squareSize: number,
+  earRadius: number
+): paper.PathItem {
+  const squareRect = new paper.Path.Rectangle(
+    new paper.Point(squareLeft, squareTop),
+    new paper.Size(squareSize, squareSize)
+  );
+
+  let semi: paper.PathItem;
+  if (kind === 'left') {
+    const ear = new paper.Path.Circle(new paper.Point(squareLeft, squareTop + squareSize / 2), earRadius);
+    const cut = new paper.Path.Rectangle(
+      new paper.Point(squareLeft, squareTop),
+      new paper.Point(squareLeft + earRadius, squareTop + squareSize)
+    );
+    semi = ear.subtract(cut);
+    ear.remove();
+    cut.remove();
+  } else {
+    const ear = new paper.Path.Circle(new paper.Point(squareLeft + squareSize / 2, squareTop), earRadius);
+    const cut = new paper.Path.Rectangle(
+      new paper.Point(squareLeft, squareTop),
+      new paper.Point(squareLeft + squareSize, squareTop + earRadius)
+    );
+    semi = ear.subtract(cut);
+    ear.remove();
+    cut.remove();
+  }
+
+  const lobe = squareRect.unite(semi);
+  squareRect.remove();
+  semi.remove();
+
+  lobe.fillColor = lobeFillColor(paper, kind, colors);
+  lobe.strokeColor = null;
+  lobe.strokeWidth = 0;
+  return lobe;
+}
+
+export function buildFingerPath(paper: paper.PaperScope, finger: Finger): paper.Path {
+  const segs = fingerToSegments(finger);
+  if (!segs.length) return new paper.Path();
+
+  const path = new paper.Path();
+  path.moveTo(toPoint(paper, segs[0]!.p0));
+  for (const seg of segs) {
+    path.cubicCurveTo(toPoint(paper, seg.p1), toPoint(paper, seg.p2), toPoint(paper, seg.p3));
+  }
+  return path;
+}
+
+function cloneSegment(paper: paper.PaperScope, seg: paper.Segment): paper.Segment {
+  return new paper.Segment(seg.point.clone(), seg.handleIn.clone(), seg.handleOut.clone());
+}
+
+function reverseSegmentsInPlace(segments: paper.Segment[]) {
+  segments.reverse();
+  for (const seg of segments) {
+    const tmp = seg.handleIn;
+    seg.handleIn = seg.handleOut;
+    seg.handleOut = tmp;
+  }
+}
+
+function samplePath(path: paper.Path, samples: number): paper.Point[] {
+  const length = path.length;
+  if (!length) return [];
+  const pts: paper.Point[] = [];
+  for (let i = 0; i <= samples; i++) {
+    const offset = (length * i) / samples;
+    const pt = path.getPointAt(offset);
+    if (pt) pts.push(pt);
+  }
+  return pts;
+}
+
+function buildRibbonBetweenSampled(paper: paper.PaperScope, a: paper.Path, b: paper.Path, samples: number): paper.Path {
+  const aPts = samplePath(a, samples);
+  const bPts = samplePath(b, samples);
+  const ribbon = new paper.Path();
+  ribbon.addSegments(aPts.map((p) => new paper.Segment(p)));
+  ribbon.addSegments(bPts.reverse().map((p) => new paper.Segment(p)));
+  ribbon.closed = true;
+  return ribbon;
+}
+
+export function buildStripRegionBetween(
+  paper: paper.PaperScope,
+  a: paper.Path,
+  b: paper.Path,
+  overlap: paper.PathItem
+): paper.PathItem | null {
+  return withInsertItemsDisabled(paper, () => {
+    // Paper.js boolean ops internally flatten curves; sampling here makes the
+    // strip geometry stable and consistent across renderers.
+    const ribbon = buildRibbonBetweenSampled(paper, a, b, 80);
+    const clipped = ribbon.intersect(overlap, { insert: false });
+    ribbon.remove();
+    return clipped ? cleanupPathItem(paper, clipped, 10) : null;
+  });
+}
+
+export function buildLobeStrips(
+  paper: paper.PaperScope,
+  lobe: LobeId,
+  colors: HeartColors,
+  fingers: Finger[],
+  overlap: paper.PathItem,
+  squareLeft: number,
+  squareTop: number,
+  squareSize: number,
+  onlyEvenStrips = false
+): Array<{ index: number; item: paper.PathItem }> {
+  const squareRight = squareLeft + squareSize;
+  const squareBottom = squareTop + squareSize;
+
+  const internal = fingers
+    .filter((f) => f.lobe === lobe)
+    .map((finger) => {
+      const segs = fingerToSegments(finger);
+      const p0 = segs[0]?.p0 ?? { x: 0, y: 0 };
+      return { finger, p0 };
+    })
+    .sort((a, b) => (lobe === 'left' ? a.p0.y - b.p0.y : a.p0.x - b.p0.x))
+    .map(({ finger }) => finger);
+
+  const boundaries: Array<() => paper.Path> = [];
+
+  if (lobe === 'left') {
+    boundaries.push(
+      () => new paper.Path.Line(new paper.Point(squareRight, squareTop), new paper.Point(squareLeft, squareTop))
+    );
+    internal.forEach((f) => boundaries.push(() => buildFingerPath(paper, f)));
+    boundaries.push(
+      () =>
+        new paper.Path.Line(new paper.Point(squareRight, squareBottom), new paper.Point(squareLeft, squareBottom))
+    );
+  } else {
+    boundaries.push(
+      () =>
+        new paper.Path.Line(new paper.Point(squareLeft, squareBottom), new paper.Point(squareLeft, squareTop))
+    );
+    internal.forEach((f) => boundaries.push(() => buildFingerPath(paper, f)));
+    boundaries.push(
+      () =>
+        new paper.Path.Line(new paper.Point(squareRight, squareBottom), new paper.Point(squareRight, squareTop))
+    );
+  }
+
+  const strips: Array<{ index: number; item: paper.PathItem }> = [];
+  for (let i = 0; i < boundaries.length - 1; i++) {
+    if (onlyEvenStrips && i % 2 === 1) continue;
+    const a = boundaries[i]!();
+    const b = boundaries[i + 1]!();
+    const strip = buildStripRegionBetween(paper, a, b, overlap);
+    a.remove();
+    b.remove();
+    if (!strip || Math.abs(itemArea(strip)) < 1) {
+      strip?.remove();
+      continue;
+    }
+    strip.fillColor = lobeFillColor(paper, lobe, colors);
+    strip.strokeColor = null;
+    strips.push({ index: i, item: strip });
+  }
+
+  return strips;
+}
+
+export function buildOddWeaveMask(
+  paper: paper.PaperScope,
+  leftStrips: Array<{ index: number; item: paper.PathItem }>,
+  rightStrips: Array<{ index: number; item: paper.PathItem }>
+): paper.PathItem | null {
+  return withInsertItemsDisabled(paper, () => {
+    const children = [
+      ...leftStrips.filter((s) => s.index % 2 === 0).map((s) => s.item),
+      ...rightStrips.filter((s) => s.index % 2 === 0).map((s) => s.item)
+    ];
+    if (!children.length) return null;
+    const mask = new paper.CompoundPath({ children });
+    mask.fillRule = 'evenodd';
+    return cleanupPathItem(paper, mask, 10);
+  });
+}
+
+export function buildEvenWeaveMask(
+  paper: paper.PaperScope,
+  overlap: paper.PathItem,
+  oddMask: paper.PathItem
+): paper.PathItem | null {
+  return withInsertItemsDisabled(paper, () => {
+    const even = overlap.subtract(oddMask, { insert: false });
+    return even ? cleanupPathItem(paper, even, 10) : null;
+  });
+}

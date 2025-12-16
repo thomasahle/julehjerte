@@ -1,8 +1,8 @@
 export const translations = {
   da: {
     // Site
-    siteTitle: 'Juleflet',
-    siteDescription: 'Design og print flettede julehjerter – gratis skabeloner',
+    siteTitle: 'Juleflet.dk',
+    siteDescription: 'Velkommen til min hjemmeside med skabeloner til julefletning! Brug julehjertedesigneren til at lave dine egne mønstre, print dem ud, og god fornøjelse med julefletningen!',
 
     // Gallery
     createNewHeart: 'Lav Nyt Hjerte',

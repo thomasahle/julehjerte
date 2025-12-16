@@ -1,41 +1,57 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { goto } from '$app/navigation';
-  import { browser } from '$app/environment';
-  import { base } from '$app/paths';
-  import HeartCard from '$lib/components/HeartCard.svelte';
-  import { loadAllHearts } from '$lib/stores/collection';
-  import { downloadMultiPDF, type LayoutMode } from '$lib/pdf/template';
-  import { SITE_TITLE, SITE_URL, SITE_DESCRIPTION } from '$lib/config';
-  import { t, getLanguage, setLanguage, subscribeLanguage, type Language } from '$lib/i18n';
-  import { getColors, setLeftColor, setRightColor, subscribeColors, type HeartColors } from '$lib/stores/colors';
-  import type { HeartDesign } from '$lib/types/heart';
-  import { Button } from '$lib/components/ui/button';
-  import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-  import SettingsIcon from '@lucide/svelte/icons/settings';
+  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
+  import { browser } from "$app/environment";
+  import { base } from "$app/paths";
+  import HeartCard from "$lib/components/HeartCard.svelte";
+  import { loadAllHearts } from "$lib/stores/collection";
+  import { downloadMultiPDF, type LayoutMode } from "$lib/pdf/template";
+  import { SITE_TITLE, SITE_URL, SITE_DESCRIPTION } from "$lib/config";
+  import {
+    t,
+    getLanguage,
+    setLanguage,
+    subscribeLanguage,
+    type Language,
+  } from "$lib/i18n";
+  import {
+    getColors,
+    setLeftColor,
+    setRightColor,
+    subscribeColors,
+    type HeartColors,
+  } from "$lib/stores/colors";
+  import type { HeartDesign } from "$lib/types/heart";
+  import { Button } from "$lib/components/ui/button";
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
+  import GitHubStarsButton from "$lib/components/GitHubStarsButton.svelte";
+  import SettingsIcon from "@lucide/svelte/icons/settings";
 
   // Layout options for PDF generation
-  const LAYOUT_OPTIONS: { value: LayoutMode; labelKey: 'layoutSmall' | 'layoutMedium' | 'layoutLarge' }[] = [
-    { value: 'small', labelKey: 'layoutSmall' },
-    { value: 'medium', labelKey: 'layoutMedium' },
-    { value: 'large', labelKey: 'layoutLarge' }
+  const LAYOUT_OPTIONS: {
+    value: LayoutMode;
+    labelKey: "layoutSmall" | "layoutMedium" | "layoutLarge";
+  }[] = [
+    { value: "small", labelKey: "layoutSmall" },
+    { value: "medium", labelKey: "layoutMedium" },
+    { value: "large", labelKey: "layoutLarge" },
   ];
 
   let hearts = $state<(HeartDesign & { isUserCreated?: boolean })[]>([]);
   let selectedIds = $state<Set<string>>(new Set());
   let loading = $state(true);
   let generating = $state(false);
-  let pdfLayout = $state<LayoutMode>('medium');
-  let lang = $state<Language>('da');
-  let colors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
+  let pdfLayout = $state<LayoutMode>("medium");
+  let lang = $state<Language>("da");
+  let colors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
 
   // Read selections from URL on mount
   function getSelectionsFromUrl(): Set<string> {
     if (!browser) return new Set();
     const params = new URLSearchParams(window.location.search);
-    const selected = params.get('selected');
+    const selected = params.get("selected");
     if (selected) {
-      return new Set(selected.split(',').filter(Boolean));
+      return new Set(selected.split(",").filter(Boolean));
     }
     return new Set();
   }
@@ -45,19 +61,23 @@
     if (!browser) return;
     const url = new URL(window.location.href);
     if (ids.size > 0) {
-      url.searchParams.set('selected', Array.from(ids).join(','));
+      url.searchParams.set("selected", Array.from(ids).join(","));
     } else {
-      url.searchParams.delete('selected');
+      url.searchParams.delete("selected");
     }
-    window.history.replaceState({}, '', url.toString());
+    window.history.replaceState({}, "", url.toString());
   }
 
   onMount(async () => {
     // Initialize language and colors
     lang = getLanguage();
-    subscribeLanguage((l) => { lang = l; });
+    subscribeLanguage((l) => {
+      lang = l;
+    });
     colors = getColors();
-    subscribeColors((c) => { colors = c; });
+    subscribeColors((c) => {
+      colors = c;
+    });
 
     // Load selections from URL first
     selectedIds = getSelectionsFromUrl();
@@ -66,7 +86,7 @@
   });
 
   function toggleLanguage() {
-    const newLang = lang === 'da' ? 'en' : 'da';
+    const newLang = lang === "da" ? "en" : "da";
     setLanguage(newLang);
     lang = newLang;
   }
@@ -114,14 +134,14 @@
 <div class="gallery-page">
   <header>
     <h1>
-      <a class="site-title-link" href="{base}/">{t('siteTitle', lang)}</a>
+      <a class="site-title-link" href="{base}/">{t("siteTitle", lang)}</a>
     </h1>
-    <p>{t('siteDescription', lang)}</p>
+    <p>{t("siteDescription", lang)}</p>
   </header>
 
   <div class="toolbar">
     <Button href="{base}/editor" variant="destructive">
-      {t('createNewHeart', lang)}
+      {t("createNewHeart", lang)}
     </Button>
     <div class="inline-flex rounded-md shadow-xs" role="group">
       <Button
@@ -130,7 +150,9 @@
         onclick={handlePrintSelected}
         disabled={selectedCount === 0 || generating}
       >
-        {generating ? t('generating', lang) : `${t('printSelected', lang)} (${selectedCount})`}
+        {generating
+          ? t("generating", lang)
+          : `${t("printSelected", lang)} (${selectedCount})`}
       </Button>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
@@ -160,11 +182,11 @@
   </div>
 
   {#if loading}
-    <div class="loading">{t('loadingHearts', lang)}</div>
+    <div class="loading">{t("loadingHearts", lang)}</div>
   {:else if hearts.length === 0}
     <div class="empty">
-      <p>{t('noHeartsYet', lang)}</p>
-      <p>{t('clickCreateNew', lang)}</p>
+      <p>{t("noHeartsYet", lang)}</p>
+      <p>{t("clickCreateNew", lang)}</p>
     </div>
   {:else}
     <div class="gallery">
@@ -184,7 +206,7 @@
     <div class="footer-controls">
       <div class="color-pickers">
         <label class="color-picker">
-          <span class="color-label">{t('leftColor', lang)}</span>
+          <span class="color-label">{t("leftColor", lang)}</span>
           <input
             type="color"
             value={colors.left}
@@ -192,7 +214,7 @@
           />
         </label>
         <label class="color-picker">
-          <span class="color-label">{t('rightColor', lang)}</span>
+          <span class="color-label">{t("rightColor", lang)}</span>
           <input
             type="color"
             value={colors.right}
@@ -200,16 +222,21 @@
           />
         </label>
       </div>
-      <button class="lang-toggle" onclick={toggleLanguage} title={lang === 'da' ? 'Switch to English' : 'Skift til dansk'}>
-        {lang === 'da' ? '🇬🇧 EN' : '🇩🇰 DA'}
+      <button
+        class="lang-toggle"
+        onclick={toggleLanguage}
+        title={lang === "da" ? "Switch to English" : "Skift til dansk"}
+      >
+        {lang === "da" ? "🇬🇧 EN" : "🇩🇰 DA"}
       </button>
+      <GitHubStarsButton repo="thomasahle/julehjerte" />
       <a
-        href="https://github.com/ahle/juleflet/issues/new?title=Heart%20suggestion&body=%23%23%20Heart%20Design%20Suggestion%0A%0A**Name%3A**%20%0A**Description%3A**%20%0A**Grid%20size%3A**%20%0A%0A**Reference%20image%20or%20description%3A**%0A%0A%3C!--%20Please%20attach%20an%20image%20or%20describe%20the%20pattern%20--%3E"
+        href="https://github.com/thomasahle/julehjerte/issues/new?title=Heart%20suggestion&body=%23%23%20Heart%20Design%20Suggestion%0A%0A**Name%3A**%20%0A**Description%3A**%20%0A**Grid%20size%3A**%20%0A%0A**Reference%20image%20or%20description%3A**%0A%0A%3C!--%20Please%20attach%20an%20image%20or%20describe%20the%20pattern%20--%3E"
         class="suggest-link"
         target="_blank"
         rel="noopener noreferrer"
       >
-        {t('suggestHeart', lang)}
+        {t("suggestHeart", lang)}
       </a>
     </div>
   </footer>

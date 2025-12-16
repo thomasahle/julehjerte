@@ -11,6 +11,7 @@
   import type { Finger, HeartDesign } from '$lib/types/heart';
   import { traceHeartFromPng, type PngTemplateLayout } from '$lib/trace/templatePng';
   import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
+  import GitHubStarsButton from '$lib/components/GitHubStarsButton.svelte';
   import { browser } from '$app/environment';
 
   // Helper to parse design from URL - called once at initialization
@@ -353,6 +354,7 @@
       <button class="lang-toggle" onclick={toggleLanguage} title={lang === 'da' ? 'Switch to English' : 'Skift til dansk'}>
         {lang === 'da' ? '🇬🇧 EN' : '🇩🇰 DA'}
       </button>
+      <GitHubStarsButton repo="thomasahle/julehjerte" />
     </div>
   </footer>
 </div>

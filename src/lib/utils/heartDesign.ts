@@ -1,4 +1,4 @@
-import type { Finger, HeartDesign, LobeId, Vec } from '$lib/types/heart';
+import type { Finger, HeartDesign, LobeId, NodeType, Vec } from '$lib/types/heart';
 
 type RawFinger = Partial<Finger> & { id?: unknown; lobe?: unknown; pathData?: unknown };
 type RawDesign = Partial<HeartDesign> & { fingers?: unknown };
@@ -77,6 +77,34 @@ function reverseSegments(segments: BezierSegment[]): BezierSegment[] {
     }));
 }
 
+function normalizeNodeTypes(
+  raw: unknown,
+  segmentsLength: number
+): Record<string, NodeType> | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const out: Record<string, NodeType> = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    const idx = Number(k);
+    if (!Number.isFinite(idx) || idx < 0 || idx > segmentsLength) continue;
+    if (v !== 'corner' && v !== 'smooth' && v !== 'symmetric') continue;
+    out[String(idx)] = v;
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+
+function reverseNodeTypes(nodeTypes: Record<string, NodeType> | undefined, segmentsLength: number) {
+  if (!nodeTypes) return undefined;
+  const out: Record<string, NodeType> = {};
+  for (const [k, v] of Object.entries(nodeTypes)) {
+    const idx = Number(k);
+    if (!Number.isFinite(idx)) continue;
+    const nextIdx = segmentsLength - idx;
+    if (nextIdx < 0 || nextIdx > segmentsLength) continue;
+    out[String(nextIdx)] = v;
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+
 function canonicalizeFingerForGrid(finger: Finger, gridSize: number): Finger {
   const { squareSize, squareLeft, squareTop } = getSquareParams(gridSize);
   const minX = squareLeft;
@@ -97,6 +125,7 @@ function canonicalizeFingerForGrid(finger: Finger, gridSize: number): Finger {
 
   let segments = parsePathDataToSegments(finger.pathData);
   if (!segments.length) return finger;
+  let nodeTypes = finger.nodeTypes;
 
   const start = segments[0].p0;
   const end = segments[segments.length - 1].p3;
@@ -117,6 +146,7 @@ function canonicalizeFingerForGrid(finger: Finger, gridSize: number): Finger {
 
   if (swappedCost + 0.01 < directCost) {
     segments = reverseSegments(segments);
+    nodeTypes = reverseNodeTypes(nodeTypes, segments.length);
   }
 
   const first = segments[0];
@@ -136,7 +166,8 @@ function canonicalizeFingerForGrid(finger: Finger, gridSize: number): Finger {
   return {
     id: finger.id,
     lobe: finger.lobe,
-    pathData: segmentsToPathData(segments)
+    pathData: segmentsToPathData(segments),
+    nodeTypes
   };
 }
 
@@ -159,10 +190,12 @@ export function normalizeFinger(raw: unknown): Finger | null {
   const first = segments[0];
   const last = segments[segments.length - 1];
   if (first && last) {
+    const nodeTypes = normalizeNodeTypes((r as any).nodeTypes, segments.length);
     return {
       id,
       lobe,
-      pathData: segmentsToPathData(segments)
+      pathData: segmentsToPathData(segments),
+      nodeTypes
     };
   }
 
@@ -197,7 +230,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
 }
 
 export function serializeHeartDesign(design: HeartDesign): Omit<HeartDesign, 'fingers'> & {
-  fingers: Array<{ id: string; lobe: LobeId; pathData: string }>;
+  fingers: Array<{ id: string; lobe: LobeId; pathData: string; nodeTypes?: Record<string, NodeType> }>;
 } {
   return {
     id: design.id,
@@ -205,6 +238,11 @@ export function serializeHeartDesign(design: HeartDesign): Omit<HeartDesign, 'fi
     author: design.author,
     description: design.description,
     gridSize: design.gridSize,
-    fingers: design.fingers.map((f) => ({ id: f.id, lobe: f.lobe, pathData: fingerToPathData(f) }))
+    fingers: design.fingers.map((f) => ({
+      id: f.id,
+      lobe: f.lobe,
+      pathData: fingerToPathData(f),
+      nodeTypes: f.nodeTypes && Object.keys(f.nodeTypes).length ? f.nodeTypes : undefined
+    }))
   };
 }

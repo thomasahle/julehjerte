@@ -48,8 +48,14 @@ Each design file is a `HeartDesign` (see `src/lib/types/heart.ts`):
   - `id`: usually `L-<i>` or `R-<i>` with `i = 0..N-2`.
   - `lobe`: `"left"` or `"right"`.
   - `pathData`: SVG path data using absolute `M` + one or more `C` cubic segments.
+    - `M x y` is an absolute “move-to” that sets the start point.
+    - Each `C x1 y1 x2 y2 x y` is an absolute cubic Bezier segment (two control points, then the segment end point). For multi-segment curves you repeat `C ...` and each segment starts where the previous ended.
     - Only absolute `M`/`C` commands are supported (no relative commands, and other commands like `Q`/`S`/`A` are ignored).
+  - `nodeTypes` (optional): per-anchor node behavior, keyed by anchor index as a string (`"0"`..`"<n>"` where `n` is the number of `C` segments).
+    - Values are `"corner" | "smooth" | "symmetric"` (Inkscape-like).
+    - Anchor `0` is the `M` point, anchors `1..n-1` are segment junctions, and anchor `n` is the final segment end point.
   - Coordinates are in the app's canvas space (a `600x600` square). The overlap square has side length `gridSize * 75` and is centered at `(300, 300)`. When loading, endpoints are snapped to the overlap-square edges for the given `lobe`.
+  - Legacy `p0/p1/p2/p3`-style finger formats are not used; the on-disk/share format is `pathData` (+ optional `nodeTypes`) only.
 
 ## Development
 

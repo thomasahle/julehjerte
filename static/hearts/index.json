@@ -1,17 +1,12 @@
 {
   "hearts": [
-    "classic-2x2",
     "classic-3x3",
     "classic-4x4",
-    "classic-5x5",
-    "wavy-3x3",
+    "ramme",
     "wavy-4x4",
-    "scalloped-4x4",
     "hourglass-3x3",
-    "hourglass-4x4",
-    "zigzag-3x3",
-    "zigzag-4x4",
     "deep-wave-4x4",
-    "bulge-3x3"
+    "bulge-3x3",
+    "sol-4x4"
   ]
 }
