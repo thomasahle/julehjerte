@@ -795,10 +795,9 @@
       } else {
         fingers = createDefaultFingers(gridSize);
       }
-      // Always include the four outer boundary curves (legacy designs omitted them).
-      ensureOuterBoundaryCurves();
-      renumberBoundaryIds();
-      syncGridSizeToFingers();
+      // Always include the four outer boundary curves (legacy designs omitted them),
+      // and normalize boundary IDs/order to match editor invariants.
+      reconcileBoundaryCurves({ forceRenumber: true });
       initialized = true;
     }
   });
@@ -2857,6 +2856,11 @@
     return true;
   }
 
+  function finishDragFrame() {
+    if (dragDirty) reconcileBoundaryCurves();
+    draw();
+  }
+
   function handleMouseDrag(event: any) {
     let target = dragTarget;
     if (!target) return;
@@ -2893,7 +2897,7 @@
             return updateFingerSegments(current, segs);
           });
           dragDirty = true;
-          draw();
+          finishDragFrame();
           return;
         }
       }
@@ -2904,7 +2908,7 @@
       if (typeof pointKey === "string" && pointKey.startsWith("seg")) {
         updateSegmentControlPoint(target.fingerId, segIdx, pointKey, p);
         dragDirty = true;
-        draw();
+        finishDragFrame();
         return;
       }
       if (pointKey !== "p0" && pointKey !== "p3") return;
@@ -2946,7 +2950,7 @@
         return updateFingerSegments(current, segments);
       });
       dragDirty = true;
-      draw();
+      finishDragFrame();
       return;
     }
 
@@ -3013,7 +3017,7 @@
       return updateFingerSegments(current, segments);
     });
     dragDirty = true;
-    draw();
+    finishDragFrame();
   }
 
   function handleMouseUp() {
@@ -3057,11 +3061,9 @@
       clampEndpoints(dragTarget.fingerId);
     }
 
-    // If an outer boundary curve was dragged inward, insert a new outer curve at the edge
-    // so the overlap rectangle always has boundary curves at all four sides.
-    if (dragDirty && ensureOuterBoundaryCurves()) {
-      renumberBoundaryIds();
-      syncGridSizeToFingers();
+    // Structural reconcile: keep dummy outer curves at all four edges, and allow
+    // "remove by dragging to edge" to avoid stacking curves on top of an outer curve.
+    if (dragDirty && reconcileBoundaryCurves({ allowEdgeRemoval: true })) {
       dragDirty = true;
     }
 

@@ -11,6 +11,6 @@ export const SITE_KEYWORDS =
   'julehjerter, flettede hjerter, jul, julepynt, dansk tradition, christmas hearts, woven hearts, craft, DIY';
 
 // Google Analytics 4 Measurement ID (leave empty to disable)
-export const GA_MEASUREMENT_ID = '';
+export const GA_MEASUREMENT_ID = 'G-FTTXTT5KYB';
 
 // For dynamic UI text, use the i18n system: import { t } from '$lib/i18n';
