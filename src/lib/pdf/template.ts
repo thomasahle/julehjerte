@@ -64,34 +64,82 @@ function getSquareParams(gridSize: number): LobeParams {
   return { squareSize, squareLeft, squareTop, earRadius };
 }
 
+type BezierSegment = { p0: Vec; p1: Vec; p2: Vec; p3: Vec };
+
+function parsePathDataToSegments(pathData: string): BezierSegment[] {
+  const segments: BezierSegment[] = [];
+  const commands = pathData.match(/[MLCQAZ][^MLCQAZ]*/gi) || [];
+  let currentX = 0;
+  let currentY = 0;
+
+  for (const cmd of commands) {
+    const type = cmd[0]?.toUpperCase();
+    const args = cmd
+      .slice(1)
+      .trim()
+      .split(/[\s,]+/)
+      .filter(Boolean)
+      .map(Number);
+
+    if (type === 'M') {
+      currentX = args[0] ?? currentX;
+      currentY = args[1] ?? currentY;
+    } else if (type === 'C') {
+      if (args.length >= 6) {
+        segments.push({
+          p0: { x: currentX, y: currentY },
+          p1: { x: args[0]!, y: args[1]! },
+          p2: { x: args[2]!, y: args[3]! },
+          p3: { x: args[4]!, y: args[5]! }
+        });
+        currentX = args[4]!;
+        currentY = args[5]!;
+      }
+    }
+  }
+
+  return segments;
+}
+
+function pointsClose(a: Vec, b: Vec, tol = 0.75): boolean {
+  return Math.abs(a.x - b.x) <= tol && Math.abs(a.y - b.y) <= tol;
+}
+
+function mapPointBetweenLobes(p: Vec, squareLeft: number, squareTop: number): Vec {
+  return {
+    x: squareLeft + (p.y - squareTop),
+    y: squareTop + (p.x - squareLeft)
+  };
+}
+
 // Check if two fingers have the same curve (mirrored between lobes)
-function fingersAreSymmetric(leftFingers: Finger[], rightFingers: Finger[]): boolean {
+function fingersAreSymmetric(leftFingers: Finger[], rightFingers: Finger[], gridSize: number): boolean {
   if (leftFingers.length !== rightFingers.length) return false;
 
   // For symmetric hearts, left finger curves should mirror right finger curves
-  // This is a simplified check - could be made more precise
+  // This checks that swapping x/y within the overlap square maps left -> right.
+  const { squareLeft, squareTop } = getSquareParams(gridSize);
+
   for (let i = 0; i < leftFingers.length; i++) {
     const left = leftFingers[i];
     const right = rightFingers[i];
 
-    // If either has pathData, they need to match (or be equivalent when mirrored)
-    if (left.pathData || right.pathData) {
-      // For now, if pathData exists, assume they might be different
-      if (left.pathData !== right.pathData) return false;
+    const leftSegs = parsePathDataToSegments(left.pathData);
+    const rightSegs = parsePathDataToSegments(right.pathData);
+    if (leftSegs.length !== rightSegs.length) return false;
+
+    for (let s = 0; s < leftSegs.length; s++) {
+      const l = leftSegs[s]!;
+      const r = rightSegs[s]!;
+      if (
+        !pointsClose(mapPointBetweenLobes(l.p0, squareLeft, squareTop), r.p0) ||
+        !pointsClose(mapPointBetweenLobes(l.p1, squareLeft, squareTop), r.p1) ||
+        !pointsClose(mapPointBetweenLobes(l.p2, squareLeft, squareTop), r.p2) ||
+        !pointsClose(mapPointBetweenLobes(l.p3, squareLeft, squareTop), r.p3)
+      ) {
+        return false;
+      }
     }
-
-    // Check if control points are mirrored
-    // Left lobe: horizontal curves, Right lobe: vertical curves
-    // For a symmetric heart, p1.y offset from center should equal p1.x offset for right
-    const { squareLeft, squareTop, squareSize } = getSquareParams(3); // Use base params
-    const cx = squareLeft + squareSize / 2;
-    const cy = squareTop + squareSize / 2;
-
-    // Simple symmetry check: control point offsets should be similar
-    const leftP1Offset = Math.abs(left.p1.y - left.p0.y);
-    const rightP1Offset = Math.abs(right.p1.x - right.p0.x);
-
-    if (Math.abs(leftP1Offset - rightP1Offset) > 5) return false;
   }
 
   return true;
@@ -380,19 +428,10 @@ function drawLobeTemplate(
     // Draw cut lines (finger boundaries) - transform from horizontal to vertical
     const leftFingers = design.fingers.filter((f) => f.lobe === 'left');
     for (const finger of leftFingers) {
-      if (finger.pathData) {
-        // Transform pathData: rotate 90° counterclockwise
-        // new_x = y - squareTop, new_y = squareLeft + squareSize - x + earRadius
-        const transformedPath = transformPathData(finger.pathData, squareTop, squareLeft, squareSize, 'left');
-        drawSVGPath(pdf, transformedPath, offsetX, offsetY, scale);
-      } else {
-        // Transform: rotate 90° counterclockwise, then shift down by earRadius to account for ear at top
-        const transformedP0 = { x: finger.p0.y - squareTop, y: squareLeft + squareSize - finger.p0.x + earRadius };
-        const transformedP1 = { x: finger.p1.y - squareTop, y: squareLeft + squareSize - finger.p1.x + earRadius };
-        const transformedP2 = { x: finger.p2.y - squareTop, y: squareLeft + squareSize - finger.p2.x + earRadius };
-        const transformedP3 = { x: finger.p3.y - squareTop, y: squareLeft + squareSize - finger.p3.x + earRadius };
-        drawBezier(pdf, transformedP0, transformedP1, transformedP2, transformedP3, offsetX, offsetY, scale);
-      }
+      // Transform pathData: rotate 90° counterclockwise
+      // new_x = y - squareTop, new_y = squareLeft + squareSize - x + earRadius
+      const transformedPath = transformPathData(finger.pathData, squareTop, squareLeft, squareSize, 'left');
+      drawSVGPath(pdf, transformedPath, offsetX, offsetY, scale);
     }
   } else {
     // Right lobe is already oriented correctly (ear at top)
@@ -440,18 +479,9 @@ function drawLobeTemplate(
     // Draw cut lines (finger boundaries)
     const rightFingers = design.fingers.filter((f) => f.lobe === 'right');
     for (const finger of rightFingers) {
-      if (finger.pathData) {
-        // Transform pathData to local coordinates
-        const transformedPath = transformPathData(finger.pathData, squareTop, squareLeft, squareSize, 'right');
-        drawSVGPath(pdf, transformedPath, offsetX, offsetY, scale);
-      } else {
-        // Transform to local coordinates (relative to template origin)
-        const localP0 = { x: finger.p0.x - squareLeft, y: finger.p0.y - squareTop + earRadius };
-        const localP1 = { x: finger.p1.x - squareLeft, y: finger.p1.y - squareTop + earRadius };
-        const localP2 = { x: finger.p2.x - squareLeft, y: finger.p2.y - squareTop + earRadius };
-        const localP3 = { x: finger.p3.x - squareLeft, y: finger.p3.y - squareTop + earRadius };
-        drawBezier(pdf, localP0, localP1, localP2, localP3, offsetX, offsetY, scale);
-      }
+      // Transform pathData to local coordinates
+      const transformedPath = transformPathData(finger.pathData, squareTop, squareLeft, squareSize, 'right');
+      drawSVGPath(pdf, transformedPath, offsetX, offsetY, scale);
     }
   }
 }
@@ -486,7 +516,7 @@ function collectTemplates(designs: HeartDesign[]): TemplateSlot[] {
     const leftFingers = design.fingers.filter(f => f.lobe === 'left');
     const rightFingers = design.fingers.filter(f => f.lobe === 'right');
 
-    if (fingersAreSymmetric(leftFingers, rightFingers)) {
+    if (fingersAreSymmetric(leftFingers, rightFingers, design.gridSize)) {
       // Symmetric - only need one template
       templates.push({ design, lobe: 'both' });
     } else {

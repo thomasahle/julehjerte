@@ -1,4 +1,5 @@
 import type { Finger, Vec } from '$lib/types/heart';
+import { fingerToSegments } from '$lib/geometry/bezierSegments';
 
 const TOLERANCE = 5; // pixels
 
@@ -14,6 +15,26 @@ function vecSwapXY(v: Vec): Vec {
   return { x: v.y, y: v.x };
 }
 
+function reflectAcrossChordBisector(p0: Vec, p3: Vec, p: Vec): Vec {
+  const mid = { x: (p0.x + p3.x) / 2, y: (p0.y + p3.y) / 2 };
+  const dx = p3.x - p0.x;
+  const dy = p3.y - p0.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const ux = dx / len;
+  const uy = dy / len;
+  const vx = -uy;
+  const vy = ux;
+  const rx = p.x - mid.x;
+  const ry = p.y - mid.y;
+  const uComp = rx * ux + ry * uy;
+  const vComp = rx * vx + ry * vy;
+  return { x: mid.x + (-uComp) * ux + vComp * vx, y: mid.y + (-uComp) * uy + vComp * vy };
+}
+
+function pointReflectAcrossMidpoint(p0: Vec, p3: Vec, p: Vec): Vec {
+  return { x: p0.x + p3.x - p.x, y: p0.y + p3.y - p.y };
+}
+
 // Check if two points are approximately equal
 function pointsEqual(a: Vec, b: Vec): boolean {
   return vecDistance(a, b) < TOLERANCE;
@@ -21,15 +42,21 @@ function pointsEqual(a: Vec, b: Vec): boolean {
 
 // Check if a curve is symmetric within itself (around its midpoint)
 function isCurveSymmetric(finger: Finger): boolean {
-  // For a symmetric curve, p0-p1 should mirror p3-p2
-  const midX = (finger.p0.x + finger.p3.x) / 2;
-  const midY = (finger.p0.y + finger.p3.y) / 2;
+  const segments = fingerToSegments(finger);
+  if (segments.length === 0) return true;
 
-  // Check if control points are symmetric around midpoint
-  const p1MirrorX = 2 * midX - finger.p1.x;
-  const p1MirrorY = 2 * midY - finger.p1.y;
+  for (const seg of segments) {
+    const mirrorP2 = reflectAcrossChordBisector(seg.p0, seg.p3, seg.p1);
+    const mirrorP1 = reflectAcrossChordBisector(seg.p0, seg.p3, seg.p2);
+    const antiP2 = pointReflectAcrossMidpoint(seg.p0, seg.p3, seg.p1);
+    const antiP1 = pointReflectAcrossMidpoint(seg.p0, seg.p3, seg.p2);
 
-  return pointsEqual({ x: p1MirrorX, y: p1MirrorY }, finger.p2);
+    const mirrorOk = pointsEqual(seg.p2, mirrorP2) || pointsEqual(seg.p1, mirrorP1);
+    const antiOk = pointsEqual(seg.p2, antiP2) || pointsEqual(seg.p1, antiP1);
+    if (!mirrorOk && !antiOk) return false;
+  }
+
+  return true;
 }
 
 // Check if all curves within each lobe are symmetric (mirrored around lobe center)
@@ -39,12 +66,20 @@ function areLobesInternallySymmetric(fingers: Finger[]): boolean {
 
   // Check if left lobe fingers mirror each other
   if (leftFingers.length > 1) {
-    const centerY = (leftFingers[0].p0.y + leftFingers[leftFingers.length - 1].p0.y) / 2;
+    const firstY = fingerToSegments(leftFingers[0])?.[0]?.p0.y ?? 0;
+    const lastY = fingerToSegments(leftFingers[leftFingers.length - 1])?.[0]?.p0.y ?? 0;
+    const centerY = (firstY + lastY) / 2;
     for (let i = 0; i < Math.floor(leftFingers.length / 2); i++) {
       const f1 = leftFingers[i];
       const f2 = leftFingers[leftFingers.length - 1 - i];
-      if (!pointsEqual(vecMirrorY(f1.p0, centerY), f2.p0) ||
-          !pointsEqual(vecMirrorY(f1.p3, centerY), f2.p3)) {
+      const s1 = fingerToSegments(f1);
+      const s2 = fingerToSegments(f2);
+      const f1p0 = s1[0]?.p0;
+      const f1p3 = s1[s1.length - 1]?.p3;
+      const f2p0 = s2[0]?.p0;
+      const f2p3 = s2[s2.length - 1]?.p3;
+      if (!f1p0 || !f1p3 || !f2p0 || !f2p3) return false;
+      if (!pointsEqual(vecMirrorY(f1p0, centerY), f2p0) || !pointsEqual(vecMirrorY(f1p3, centerY), f2p3)) {
         return false;
       }
     }
@@ -52,13 +87,19 @@ function areLobesInternallySymmetric(fingers: Finger[]): boolean {
 
   // Check if right lobe fingers mirror each other
   if (rightFingers.length > 1) {
-    const centerX = (rightFingers[0].p0.x + rightFingers[rightFingers.length - 1].p0.x) / 2;
+    const firstX = fingerToSegments(rightFingers[0])?.[0]?.p0.x ?? 0;
+    const lastX = fingerToSegments(rightFingers[rightFingers.length - 1])?.[0]?.p0.x ?? 0;
+    const centerX = (firstX + lastX) / 2;
     for (let i = 0; i < Math.floor(rightFingers.length / 2); i++) {
       const f1 = rightFingers[i];
       const f2 = rightFingers[rightFingers.length - 1 - i];
-      const f1MirrorX = { x: 2 * centerX - f1.p0.x, y: f1.p0.y };
-      const f2Check = f2.p0;
-      if (!pointsEqual(f1MirrorX, f2Check)) {
+      const s1 = fingerToSegments(f1);
+      const s2 = fingerToSegments(f2);
+      const f1p0 = s1[0]?.p0;
+      const f2p0 = s2[0]?.p0;
+      if (!f1p0 || !f2p0) return false;
+      const f1MirrorX = { x: 2 * centerX - f1p0.x, y: f1p0.y };
+      if (!pointsEqual(f1MirrorX, f2p0)) {
         return false;
       }
     }
@@ -79,12 +120,21 @@ function areLobesMirrored(fingers: Finger[]): boolean {
     const left = leftFingers[i];
     const right = rightFingers[i];
 
-    // When mirrored across diagonal, x and y swap
-    if (!pointsEqual(vecSwapXY(left.p0), right.p0) ||
-        !pointsEqual(vecSwapXY(left.p3), right.p3) ||
-        !pointsEqual(vecSwapXY(left.p1), right.p1) ||
-        !pointsEqual(vecSwapXY(left.p2), right.p2)) {
-      return false;
+    const lSegs = fingerToSegments(left);
+    const rSegs = fingerToSegments(right);
+    if (lSegs.length !== rSegs.length) return false;
+    for (let s = 0; s < lSegs.length; s++) {
+      const l = lSegs[s];
+      const r = rSegs[s];
+      if (!l || !r) return false;
+      if (
+        !pointsEqual(vecSwapXY(l.p0), r.p0) ||
+        !pointsEqual(vecSwapXY(l.p1), r.p1) ||
+        !pointsEqual(vecSwapXY(l.p2), r.p2) ||
+        !pointsEqual(vecSwapXY(l.p3), r.p3)
+      ) {
+        return false;
+      }
     }
   }
 
@@ -94,16 +144,14 @@ function areLobesMirrored(fingers: Finger[]): boolean {
 // Check if it's a "classic" design (all straight lines, no curves)
 function isClassicDesign(fingers: Finger[]): boolean {
   for (const finger of fingers) {
-    // A straight line has control points on the line between endpoints
-    const dx = finger.p3.x - finger.p0.x;
-    const dy = finger.p3.y - finger.p0.y;
-
-    // Expected control points for straight line (1/3 and 2/3 along)
-    const expectedP1 = { x: finger.p0.x + dx / 3, y: finger.p0.y + dy / 3 };
-    const expectedP2 = { x: finger.p0.x + 2 * dx / 3, y: finger.p0.y + 2 * dy / 3 };
-
-    if (!pointsEqual(finger.p1, expectedP1) || !pointsEqual(finger.p2, expectedP2)) {
-      return false;
+    const segments = fingerToSegments(finger);
+    for (const seg of segments) {
+      // A straight line has control points on the line between endpoints.
+      const dx = seg.p3.x - seg.p0.x;
+      const dy = seg.p3.y - seg.p0.y;
+      const expectedP1 = { x: seg.p0.x + dx / 3, y: seg.p0.y + dy / 3 };
+      const expectedP2 = { x: seg.p0.x + 2 * dx / 3, y: seg.p0.y + 2 * dy / 3 };
+      if (!pointsEqual(seg.p1, expectedP1) || !pointsEqual(seg.p2, expectedP2)) return false;
     }
   }
   return true;

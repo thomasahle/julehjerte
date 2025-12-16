@@ -494,26 +494,20 @@ function rotate90CCW(p: Vec, center: number): Vec {
 function buildFingerFromPoints(id: string, lobe: 'left' | 'right', points: Vec[]): Finger {
   if (points.length < 2) {
     const p = points[0] ?? { x: 0, y: 0 };
-    return { id, lobe, p0: p, p1: p, p2: p, p3: p };
+    return { id, lobe, pathData: `M ${p.x} ${p.y} C ${p.x} ${p.y} ${p.x} ${p.y} ${p.x} ${p.y}` };
   }
 
   const simplified = simplifyRdp(points, 2.25);
   const segs = catmullRomToBezier(simplified);
-  if (segs.length <= 1) {
-    const seg = segs[0]!;
-    return { id, lobe, p0: seg.p0, p1: seg.p1, p2: seg.p2, p3: seg.p3 };
+  if (segs.length <= 0) {
+    const p = points[0] ?? { x: 0, y: 0 };
+    return { id, lobe, pathData: `M ${p.x} ${p.y} C ${p.x} ${p.y} ${p.x} ${p.y} ${p.x} ${p.y}` };
   }
 
   const d = segmentsToPathData(segs);
-  const first = segs[0]!;
-  const last = segs[segs.length - 1]!;
   return {
     id,
     lobe,
-    p0: first.p0,
-    p1: first.p1,
-    p2: first.p2,
-    p3: last.p3,
     pathData: d
   };
 }

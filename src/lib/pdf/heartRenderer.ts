@@ -1,5 +1,6 @@
 import paperPkg from 'paper';
 import type { HeartDesign, Finger, Vec, LobeId } from '$lib/types/heart';
+import { parsePathDataToSegments } from '$lib/geometry/bezierSegments';
 import { getColors, type HeartColors } from '$lib/stores/colors';
 
 const { PaperScope } = paperPkg;
@@ -80,17 +81,7 @@ function buildLobeShape(
 }
 
 function buildFingerPath(paper: paper.PaperScope, finger: Finger): paper.Path {
-  if (finger.pathData) {
-    return new paper.Path(finger.pathData);
-  }
-  const path = new paper.Path();
-  path.moveTo(toPoint(paper, finger.p0));
-  path.cubicCurveTo(
-    toPoint(paper, finger.p1),
-    toPoint(paper, finger.p2),
-    toPoint(paper, finger.p3)
-  );
-  return path;
+  return new paper.Path(finger.pathData);
 }
 
 function samplePath(path: paper.Path, samples: number): paper.Point[] {
@@ -181,8 +172,13 @@ function buildLobeStrips(
 
   const internal = fingers
     .filter((f) => f.lobe === lobe)
-    .slice()
-    .sort((a, b) => (lobe === 'left' ? a.p0.y - b.p0.y : a.p0.x - b.p0.x));
+    .map((finger) => {
+      const segs = parsePathDataToSegments(finger.pathData);
+      const p0 = segs[0]?.p0 ?? { x: 0, y: 0 };
+      return { finger, p0 };
+    })
+    .sort((a, b) => (lobe === 'left' ? a.p0.y - b.p0.y : a.p0.x - b.p0.x))
+    .map(({ finger }) => finger);
 
   const boundaries: Array<() => paper.Path> = [];
 

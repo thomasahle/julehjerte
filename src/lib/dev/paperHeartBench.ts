@@ -61,6 +61,18 @@ type SnapBenchResult = {
   methods: SnapBenchMethodResult[];
 };
 
+type Vec = { x: number; y: number };
+type BezierSegment = { p0: Vec; p1: Vec; p2: Vec; p3: Vec };
+
+function cloneSegments(segments: BezierSegment[]): BezierSegment[] {
+  return segments.map((seg) => ({
+    p0: { ...seg.p0 },
+    p1: { ...seg.p1 },
+    p2: { ...seg.p2 },
+    p3: { ...seg.p3 }
+  }));
+}
+
 function percentile(sorted: number[], p: number): number {
   if (!sorted.length) return 0;
   const idx = Math.max(0, Math.min(sorted.length - 1, Math.ceil(p * sorted.length) - 1));
@@ -93,6 +105,7 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
     symmetryWithinCurve: ctx.symmetryWithinCurve,
     symmetryWithinLobe: ctx.symmetryWithinLobe,
     symmetryBetweenLobes: ctx.symmetryBetweenLobes,
+    antiSymmetry: ctx.antiSymmetry,
     showCurves: ctx.showCurves
   };
 
@@ -103,6 +116,7 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
     ctx.symmetryWithinCurve = false;
     ctx.symmetryWithinLobe = false;
     ctx.symmetryBetweenLobes = false;
+    ctx.antiSymmetry = false;
     ctx.selectedFingerId = null;
     ctx.dragTarget = null;
 
@@ -178,12 +192,18 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
       const targetId = `${ctx.lobePrefix(lobe)}-${idx}`;
       const base = ctx.getFingerById(targetId);
       if (!base) continue;
-      const from = ctx.toPoint(base[pointKey]);
+      const baseSegments = ctx.fingerToSegments(base) as BezierSegment[];
+      const seg0 = baseSegments[0];
+      if (!seg0) continue;
+      const from = ctx.toPoint(pointKey === 'p1' ? seg0.p1 : seg0.p2);
 
       let desired: any = null;
       for (let k = 0; k < 20; k++) {
         const candDesired = new ctx.paper.Point(square.minX + rng() * squareSize, square.minY + rng() * squareSize);
-        const candidate = { ...base, [pointKey]: { x: candDesired.x, y: candDesired.y } };
+        const segs = cloneSegments(baseSegments);
+        if (pointKey === 'p1') segs[0]!.p1 = { x: candDesired.x, y: candDesired.y };
+        else segs[0]!.p2 = { x: candDesired.x, y: candDesired.y };
+        const candidate = ctx.updateFingerSegments(base, segs);
         if (!ctx.candidateIsValid(targetId, candidate)) {
           desired = candDesired;
           break;
@@ -191,7 +211,12 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
       }
       if (!desired) continue;
 
-      const buildCandidateAt = (pos: any) => ({ ...base, [pointKey]: { x: pos.x, y: pos.y } });
+      const buildCandidateAt = (pos: any) => {
+        const segs = cloneSegments(baseSegments);
+        if (pointKey === 'p1') segs[0]!.p1 = { x: pos.x, y: pos.y };
+        else segs[0]!.p2 = { x: pos.x, y: pos.y };
+        return ctx.updateFingerSegments(base, segs);
+      };
       const isValidCandidate = (candidate: any) => ctx.candidateIsValid(targetId, candidate);
 
       const obstacles = ctx.withInsertItemsDisabled(() => ctx.buildObstaclePaths(targetId, base.lobe));
@@ -229,9 +254,9 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
             2
           );
         } else if (method === 'pgd') {
-          const p0 = ctx.toPoint(base.p0);
-          const p3 = ctx.toPoint(base.p3);
-          const other = pointKey === 'p1' ? ctx.toPoint(base.p2) : ctx.toPoint(base.p1);
+          const p0 = ctx.toPoint(seg0.p0);
+          const p3 = ctx.toPoint(seg0.p3);
+          const other = pointKey === 'p1' ? ctx.toPoint(seg0.p2) : ctx.toPoint(seg0.p1);
           out = snapProjectedGradientBezierControl(
             buildCandidateAt,
             from,
@@ -245,9 +270,9 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
             square
           );
         } else if (method === 'sqpproj') {
-          const p0 = ctx.toPoint(base.p0);
-          const p3 = ctx.toPoint(base.p3);
-          const other = pointKey === 'p1' ? ctx.toPoint(base.p2) : ctx.toPoint(base.p1);
+          const p0 = ctx.toPoint(seg0.p0);
+          const p3 = ctx.toPoint(seg0.p3);
+          const other = pointKey === 'p1' ? ctx.toPoint(seg0.p2) : ctx.toPoint(seg0.p1);
           out = snapSequentialQPBezierControl(
             buildCandidateAt,
             from,
@@ -261,9 +286,9 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
             square
           );
         } else {
-          const p0 = ctx.toPoint(base.p0);
-          const p3 = ctx.toPoint(base.p3);
-          const other = pointKey === 'p1' ? ctx.toPoint(base.p2) : ctx.toPoint(base.p1);
+          const p0 = ctx.toPoint(seg0.p0);
+          const p3 = ctx.toPoint(seg0.p3);
+          const other = pointKey === 'p1' ? ctx.toPoint(seg0.p2) : ctx.toPoint(seg0.p1);
           out = snapPenalizedNewtonBezierControl(
             buildCandidateAt,
             from,
@@ -340,6 +365,7 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
     ctx.symmetryWithinCurve = saved.symmetryWithinCurve;
     ctx.symmetryWithinLobe = saved.symmetryWithinLobe;
     ctx.symmetryBetweenLobes = saved.symmetryBetweenLobes;
+    ctx.antiSymmetry = saved.antiSymmetry;
     ctx.showCurves = saved.showCurves;
     ctx.draw();
   }
@@ -367,6 +393,7 @@ async function runIntersectionBench(
     symmetryWithinCurve: ctx.symmetryWithinCurve,
     symmetryWithinLobe: ctx.symmetryWithinLobe,
     symmetryBetweenLobes: ctx.symmetryBetweenLobes,
+    antiSymmetry: ctx.antiSymmetry,
     showCurves: ctx.showCurves
   };
 
@@ -377,6 +404,7 @@ async function runIntersectionBench(
     ctx.symmetryWithinCurve = false;
     ctx.symmetryWithinLobe = false;
     ctx.symmetryBetweenLobes = false;
+    ctx.antiSymmetry = false;
     ctx.fingers = ctx.createDefaultFingers(benchGridSize);
     ctx.selectedFingerId = null;
     ctx.dragTarget = null;
@@ -421,8 +449,15 @@ async function runIntersectionBench(
       const t0 = performance.now();
 
       if (mode === 'candidate-p1') {
-        const candidate = { ...base, p1: desired };
-        ctx.candidateIsValid(targetId, candidate);
+        const baseSegments = ctx.fingerToSegments(base) as BezierSegment[];
+        if (baseSegments.length) {
+          const segs = cloneSegments(baseSegments);
+          segs[0]!.p1 = desired;
+          const candidate = ctx.updateFingerSegments(base, segs);
+          ctx.candidateIsValid(targetId, candidate);
+        } else {
+          ctx.candidateIsValid(targetId, base);
+        }
       } else if (mode === 'candidate-midpoint') {
         const segments = ctx.fingerToSegments(base);
         if (segments.length >= 2) {
@@ -439,8 +474,41 @@ async function runIntersectionBench(
           ctx.candidateIsValid(targetId, base);
         }
       } else {
-        const isValidCandidate = (candidate: any) => ctx.overridesAreValid(ctx.deriveSymmetryOverrides(candidate));
-        ctx.snapFreeControlPoint(targetId, base, 'p1', desired, isValidCandidate);
+        const baseSegments = ctx.fingerToSegments(base) as BezierSegment[];
+        const seg0 = baseSegments[0];
+        if (!seg0) {
+          ctx.candidateIsValid(targetId, base);
+        } else {
+          const from = ctx.toPoint(seg0.p1);
+          const desiredPt = ctx.toPoint(desired);
+
+          const buildCandidateAtPoint = (pos: any) => {
+            const segs = cloneSegments(baseSegments);
+            segs[0]!.p1 = { x: pos.x, y: pos.y };
+            return ctx.updateFingerSegments(base, segs);
+          };
+
+          const isValidCandidate = (candidate: any) =>
+            ctx.overridesAreValid(ctx.deriveSymmetryOverrides(candidate));
+
+          const obstacles = ctx.withInsertItemsDisabled(() => ctx.buildObstaclePaths(targetId, base.lobe));
+          try {
+            snapSequentialQPBezierControl(
+              buildCandidateAtPoint,
+              from,
+              desiredPt,
+              isValidCandidate,
+              'p1',
+              ctx.toPoint(seg0.p0),
+              ctx.toPoint(seg0.p2),
+              ctx.toPoint(seg0.p3),
+              obstacles,
+              { minX, maxX, minY, maxY }
+            );
+          } finally {
+            for (const p of obstacles) p.remove();
+          }
+        }
       }
 
       const t1 = performance.now();
@@ -473,6 +541,7 @@ async function runIntersectionBench(
     ctx.symmetryWithinCurve = saved.symmetryWithinCurve;
     ctx.symmetryWithinLobe = saved.symmetryWithinLobe;
     ctx.symmetryBetweenLobes = saved.symmetryBetweenLobes;
+    ctx.antiSymmetry = saved.antiSymmetry;
     ctx.showCurves = saved.showCurves;
     ctx.draw();
   }
@@ -491,4 +560,3 @@ export function attachPaperHeartBench(target: any, ctx: any): () => void {
     }
   };
 }
-

@@ -15,6 +15,42 @@ Interactive Danish woven Christmas heart ("julehjerte") designer and PDF templat
 
 Visit [ahle.github.io/julehjerte](https://ahle.github.io/julehjerte) to try it out.
 
+## Heart JSON Format
+
+The built-in gallery hearts live in `static/hearts/`:
+
+- `static/hearts/index.json` lists the heart ids in the gallery (without `.json`).
+- `static/hearts/<id>.json` contains a single heart design.
+
+### Heart design schema
+
+Each design file is a `HeartDesign` (see `src/lib/types/heart.ts`):
+
+```json
+{
+  "id": "classic-4x4",
+  "name": "Classic 4x4",
+  "author": "Traditional",
+  "description": "Optional",
+  "gridSize": 4,
+  "fingers": [
+    { "id": "L-0", "lobe": "left", "pathData": "M 450 225 C 380 235 300 215 150 225" },
+    { "id": "R-0", "lobe": "right", "pathData": "M 225 450 C 235 380 215 300 225 150" }
+  ]
+}
+```
+
+- `id`: stable identifier used in URLs and filenames.
+- `name`, `author`, `description`: display metadata (`description` is optional).
+- `gridSize`: number of strips per lobe (typically `2`–`8` in the UI).
+- `fingers`: the *internal boundary curves* that separate adjacent strips.
+  - For `gridSize = N` there are typically `N - 1` boundaries for the left lobe and `N - 1` for the right lobe (outer edges are implied).
+  - `id`: usually `L-<i>` or `R-<i>` with `i = 0..N-2`.
+  - `lobe`: `"left"` or `"right"`.
+  - `pathData`: SVG path data using absolute `M` + one or more `C` cubic segments.
+    - Only absolute `M`/`C` commands are supported (no relative commands, and other commands like `Q`/`S`/`A` are ignored).
+  - Coordinates are in the app's canvas space (a `600x600` square). The overlap square has side length `gridSize * 75` and is centered at `(300, 300)`. When loading, endpoints are snapped to the overlap-square edges for the given `lobe`.
+
 ## Development
 
 ```sh

@@ -8,6 +8,8 @@
     cloneSegments,
     fingerToSegments,
     getInternalSegments,
+    mergeBezierSegments,
+    segmentsToPathData,
     setInternalSegments,
     splitBezierAt,
     updateFingerSegments
@@ -48,6 +50,7 @@
   const ROTATION_RAD = Math.PI / 4;
   // Overlap square size is `gridSize * STRIP_WIDTH` (600px canvas, 75px per strip).
   const STRIP_WIDTH = 75;
+  const MAX_BEZIER_SEGMENTS_PER_FINGER = 64;
 
   // Colors from store
   let heartColors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
@@ -98,6 +101,7 @@
   }
 
   let canvas: HTMLCanvasElement;
+  let tool: paper.Tool | null = null;
   // Use non-reactive variables to prevent effects from re-running when these change
   let initialized = false;
   let paperReady = $state(false);
@@ -109,11 +113,238 @@
   let symmetryWithinCurve = $state(false);
   let symmetryWithinLobe = $state(false);
   let symmetryBetweenLobes = $state(false);
+  let antiSymmetry = $state(false);
 
   // Boundary curve model (unrotated coordinates)
   let fingers = $state<Finger[]>([]);
   let selectedFingerId = $state<string | null>(null);
+  let selectedAnchors = $state<number[]>([]);
+  let hoverFingerId = $state<string | null>(null);
   let dragTarget = $state<DragTarget>(null);
+
+  type HistorySnapshot = {
+    fingers: Finger[];
+    gridSize: number;
+    selectedFingerId: string | null;
+    selectedAnchors: number[];
+  };
+
+  let undoStack = $state<HistorySnapshot[]>([]);
+  let redoStack = $state<HistorySnapshot[]>([]);
+  let dragSnapshot: HistorySnapshot | null = null;
+  let dragDirty = false;
+
+  function cloneFinger(f: Finger): Finger {
+    return {
+      id: f.id,
+      lobe: f.lobe,
+      pathData: f.pathData
+    };
+  }
+
+  function snapshotState(): HistorySnapshot {
+    return {
+      fingers: fingers.map(cloneFinger),
+      gridSize,
+      selectedFingerId,
+      selectedAnchors: selectedAnchors.slice()
+    };
+  }
+
+  function restoreSnapshot(s: HistorySnapshot) {
+    gridSize = s.gridSize;
+    lastGridSize = s.gridSize;
+    fingers = s.fingers.map(cloneFinger);
+    selectedFingerId = s.selectedFingerId;
+    selectedAnchors = s.selectedAnchors.slice();
+    dragTarget = null;
+    draw();
+  }
+
+  function pushUndo(before: HistorySnapshot) {
+    undoStack = [...undoStack, before];
+    redoStack = [];
+  }
+
+  function undo() {
+    const prev = undoStack[undoStack.length - 1];
+    if (!prev) return;
+    undoStack = undoStack.slice(0, -1);
+    redoStack = [...redoStack, snapshotState()];
+    restoreSnapshot(prev);
+  }
+
+  function redo() {
+    const next = redoStack[redoStack.length - 1];
+    if (!next) return;
+    redoStack = redoStack.slice(0, -1);
+    undoStack = [...undoStack, snapshotState()];
+    restoreSnapshot(next);
+  }
+
+  function isMac() {
+    return typeof navigator !== 'undefined' && /Mac|iPhone|iPad|iPod/.test(navigator.platform);
+  }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (readonly) return;
+    const metaOrCtrl = isMac() ? e.metaKey : e.ctrlKey;
+    if (metaOrCtrl && (e.key === 'z' || e.key === 'Z')) {
+      e.preventDefault();
+      if (e.shiftKey) redo();
+      else undo();
+      return;
+    }
+    if (metaOrCtrl && (e.key === 'y' || e.key === 'Y')) {
+      e.preventDefault();
+      redo();
+      return;
+    }
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+      if (selectedFingerId && selectedAnchors.length) {
+        e.preventDefault();
+        deleteSelectedAnchors();
+      }
+      return;
+    }
+  }
+
+  function toggleAnchorSelection(anchorIdx: number) {
+    const exists = selectedAnchors.includes(anchorIdx);
+    selectedAnchors = exists ? selectedAnchors.filter((x) => x !== anchorIdx) : [...selectedAnchors, anchorIdx];
+  }
+
+  function setSingleAnchorSelection(anchorIdx: number) {
+    selectedAnchors = [anchorIdx];
+  }
+
+  function anchorIndexFromPointKey(
+    pointKey: ControlPointKey,
+    segmentsLength: number,
+    segmentIndex?: number
+  ): number | null {
+    if (pointKey === 'p0') return 0;
+    if (pointKey === 'p3') return segmentsLength;
+    if (typeof pointKey === 'string' && pointKey.startsWith('seg') && pointKey.endsWith('_p0')) {
+      const idx = Number(pointKey.slice(3).split('_')[0]);
+      if (Number.isFinite(idx) && idx >= 1 && idx <= segmentsLength - 1) return idx;
+      if (
+        typeof segmentIndex === 'number' &&
+        Number.isFinite(segmentIndex) &&
+        segmentIndex >= 1 &&
+        segmentIndex <= segmentsLength - 1
+      ) {
+        return segmentIndex;
+      }
+      return null;
+    }
+    return null;
+  }
+
+  function deleteSelectedAnchors() {
+    const fingerId = selectedFingerId;
+    if (!fingerId) return;
+    const finger = getFingerById(fingerId);
+    if (!finger) return;
+
+    const before = snapshotState();
+    const segments = fingerToSegments(finger);
+    if (segments.length <= 1) return;
+
+    const deletions = selectedAnchors
+      .filter((idx) => idx >= 1 && idx <= segments.length - 1)
+      .slice()
+      .sort((a, b) => b - a);
+    if (!deletions.length) return;
+
+    let segs = cloneSegments(segments);
+    for (const anchorIdx of deletions) {
+      if (anchorIdx <= 0 || anchorIdx >= segs.length) continue;
+      const merged = mergeBezierSegments(segs[anchorIdx - 1]!, segs[anchorIdx]!);
+      segs.splice(anchorIdx - 1, 2, merged);
+    }
+
+    updateFinger(fingerId, (f) => updateFingerSegments(f, segs));
+    selectedAnchors = [];
+    pushUndo(before);
+    draw();
+  }
+
+  function insertNodeBetweenSelectedAnchors() {
+    const fingerId = selectedFingerId;
+    if (!fingerId) return;
+    const finger = getFingerById(fingerId);
+    if (!finger) return;
+    if (selectedAnchors.length !== 2) return;
+
+    const segments = fingerToSegments(finger);
+    const [a, b] = selectedAnchors.slice().sort((x, y) => x - y);
+    if (a == null || b == null) return;
+    if (b - a !== 1) return;
+    if (a < 0 || a >= segments.length) return;
+
+    const before = snapshotState();
+    const segs = cloneSegments(segments);
+    const [s1, s2] = splitBezierAt(segs[a]!, 0.5);
+    segs.splice(a, 1, s1, s2);
+
+    updateFinger(fingerId, (f) => updateFingerSegments(f, segs));
+    selectedAnchors = [a + 1];
+    pushUndo(before);
+    draw();
+  }
+
+  function applyDeltaToAnchorsInSegments(
+    finger: Finger,
+    segments: BezierSegment[],
+    anchors: Iterable<number>,
+    delta: Vec
+  ): BezierSegment[] {
+    if (!segments.length) return segments;
+    const n = segments.length;
+
+    const anchorList = Array.from(anchors)
+      .filter((idx) => Number.isFinite(idx) && idx >= 0 && idx <= n)
+      .slice()
+      .sort((a, b) => a - b);
+
+    // Endpoints: project back onto the correct edges.
+    for (const idx of anchorList) {
+      if (idx !== 0 && idx !== n) continue;
+      if (idx === 0) {
+        const old = segments[0]!.p0;
+        const desired = { x: old.x + delta.x, y: old.y + delta.y };
+        const nextP0 = projectEndpoint(finger, desired, 'p0');
+        const d = vecSub(nextP0, old);
+        segments[0]!.p0 = nextP0;
+        segments[0]!.p1 = vecAdd(segments[0]!.p1, d);
+      } else {
+        const last = segments[n - 1]!;
+        const old = last.p3;
+        const desired = { x: old.x + delta.x, y: old.y + delta.y };
+        const nextP3 = projectEndpoint(finger, desired, 'p3');
+        const d = vecSub(nextP3, old);
+        last.p3 = nextP3;
+        last.p2 = vecAdd(last.p2, d);
+      }
+    }
+
+    // Internal anchors: move junction and translate adjacent handles.
+    for (const idx of anchorList) {
+      if (idx <= 0 || idx >= n) continue;
+      const seg = segments[idx]!;
+      const prev = segments[idx - 1]!;
+      const old = seg.p0;
+      const next = { x: old.x + delta.x, y: old.y + delta.y };
+      const d = vecSub(next, old);
+      seg.p0 = next;
+      prev.p3 = next;
+      prev.p2 = vecAdd(prev.p2, d);
+      seg.p1 = vecAdd(seg.p1, d);
+    }
+
+    return segments;
+  }
 
   // Initialize fingers from prop BEFORE first render using $effect.pre
   // This ensures initialFingers is properly captured even in Svelte 5
@@ -177,7 +408,7 @@
       const p1: Vec = { x: p0.x - squareSize * 0.3, y: p0.y + bow };
       const p2: Vec = { x: p3.x + squareSize * 0.3, y: p3.y - bow };
 
-      result.push({ id: `L-${i}`, lobe: 'left', p0, p1, p2, p3 });
+      result.push({ id: `L-${i}`, lobe: 'left', pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) });
     }
 
     // Right lobe boundaries: across overlap square (bottom edge -> top edge)
@@ -191,7 +422,7 @@
       const p1: Vec = { x: p0.x + bow, y: p0.y - squareSize * 0.3 };
       const p2: Vec = { x: p3.x - bow, y: p3.y + squareSize * 0.3 };
 
-      result.push({ id: `R-${i}`, lobe: 'right', p0, p1, p2, p3 });
+      result.push({ id: `R-${i}`, lobe: 'right', pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) });
     }
 
     return result;
@@ -231,7 +462,7 @@
 
     // Apply within-curve symmetry first
     if (symmetryWithinCurve) {
-      updated = updated.map(f => applyWithinCurveSymmetry(f, 'p1'));
+      updated = updated.map((f) => applyWithinCurveSymmetry(f));
     }
 
     // Apply between-lobes symmetry: left lobe is the source, right lobe copies
@@ -273,18 +504,21 @@
   let prevSymmetryWithinCurve = false;
   let prevSymmetryWithinLobe = false;
   let prevSymmetryBetweenLobes = false;
+  let prevAntiSymmetry = false;
 
   $effect(() => {
     // Only apply when a symmetry option is newly enabled
     const withinCurveChanged = symmetryWithinCurve && !prevSymmetryWithinCurve;
     const withinLobeChanged = symmetryWithinLobe && !prevSymmetryWithinLobe;
     const betweenLobesChanged = symmetryBetweenLobes && !prevSymmetryBetweenLobes;
+    const antiChanged = antiSymmetry !== prevAntiSymmetry && (symmetryWithinCurve || symmetryWithinLobe || symmetryBetweenLobes);
 
     prevSymmetryWithinCurve = symmetryWithinCurve;
     prevSymmetryWithinLobe = symmetryWithinLobe;
     prevSymmetryBetweenLobes = symmetryBetweenLobes;
+    prevAntiSymmetry = antiSymmetry;
 
-    if (withinCurveChanged || withinLobeChanged || betweenLobesChanged) {
+    if (withinCurveChanged || withinLobeChanged || betweenLobesChanged || antiChanged) {
       applySymmetryToAllFingers();
     }
   });
@@ -414,10 +648,18 @@
   }
 
   function swapPointBetweenLobes(p: Vec): Vec {
-    const { squareLeft, squareTop } = getSquareParams();
+    const { squareSize, squareLeft, squareTop } = getSquareParams();
+    if (!antiSymmetry) {
+      return {
+        x: squareLeft + (p.y - squareTop),
+        y: squareTop + (p.x - squareLeft)
+      };
+    }
+
+    // Anti-symmetry: use the other diagonal of the overlap square.
     return {
-      x: squareLeft + (p.y - squareTop),
-      y: squareTop + (p.x - squareLeft)
+      x: squareLeft + squareSize - (p.y - squareTop),
+      y: squareTop + squareSize - (p.x - squareLeft)
     };
   }
 
@@ -425,6 +667,7 @@
     const { squareSize, squareLeft, squareTop } = getSquareParams();
     const cx = squareLeft + squareSize / 2;
     const cy = squareTop + squareSize / 2;
+    if (antiSymmetry) return { x: 2 * cx - p.x, y: 2 * cy - p.y };
     if (lobe === 'left') return { x: p.x, y: 2 * cy - p.y };
     return { x: 2 * cx - p.x, y: p.y };
   }
@@ -435,53 +678,36 @@
     targetLobe: LobeId,
     mapPoint: (p: Vec) => Vec
   ): Finger {
-    // Handle multi-segment paths
-    if (source.pathData) {
-      const segments = fingerToSegments(source);
-      // Map all control points in all segments
-      const mappedSegments = segments.map(seg => ({
-        p0: mapPoint(seg.p0),
-        p1: mapPoint(seg.p1),
-        p2: mapPoint(seg.p2),
-        p3: mapPoint(seg.p3)
-      }));
+    const segments = fingerToSegments(source);
+    const mappedSegments = segments.map((seg) => ({
+      p0: mapPoint(seg.p0),
+      p1: mapPoint(seg.p1),
+      p2: mapPoint(seg.p2),
+      p3: mapPoint(seg.p3)
+    }));
 
-      // Create the mapped finger with pathData
-      const mapped = updateFingerSegments(
-        { ...source, id: targetId, lobe: targetLobe },
-        mappedSegments
-      );
+    const base: Finger = { id: targetId, lobe: targetLobe, pathData: source.pathData };
+    if (!mappedSegments.length) return base;
 
-      // Project endpoints to valid positions
-      const projectedP0 = projectEndpoint(mapped, mapped.p0, 'p0');
-      const projectedP3 = projectEndpoint(mapped, mapped.p3, 'p3');
+    // Project endpoints to valid positions (and keep tangents by shifting adjacent controls).
+    const first = mappedSegments[0];
+    const last = mappedSegments[mappedSegments.length - 1];
 
-      // If endpoints were projected, update the segments
-      if (projectedP0.x !== mapped.p0.x || projectedP0.y !== mapped.p0.y ||
-          projectedP3.x !== mapped.p3.x || projectedP3.y !== mapped.p3.y) {
-        mappedSegments[0].p0 = projectedP0;
-        mappedSegments[mappedSegments.length - 1].p3 = projectedP3;
-        return updateFingerSegments(
-          { ...source, id: targetId, lobe: targetLobe },
-          mappedSegments
-        );
-      }
-
-      return mapped;
+    const projectedP0 = projectEndpoint(base, first.p0, 'p0');
+    if (projectedP0.x !== first.p0.x || projectedP0.y !== first.p0.y) {
+      const d = vecSub(projectedP0, first.p0);
+      first.p0 = projectedP0;
+      first.p1 = vecAdd(first.p1, d);
     }
 
-    // Simple 4-point bezier (no pathData)
-    const mapped: Finger = {
-      id: targetId,
-      lobe: targetLobe,
-      p0: mapPoint(source.p0),
-      p1: mapPoint(source.p1),
-      p2: mapPoint(source.p2),
-      p3: mapPoint(source.p3)
-    };
-    mapped.p0 = projectEndpoint(mapped, mapped.p0, 'p0');
-    mapped.p3 = projectEndpoint(mapped, mapped.p3, 'p3');
-    return mapped;
+    const projectedP3 = projectEndpoint(base, last.p3, 'p3');
+    if (projectedP3.x !== last.p3.x || projectedP3.y !== last.p3.y) {
+      const d = vecSub(projectedP3, last.p3);
+      last.p3 = projectedP3;
+      last.p2 = vecAdd(last.p2, d);
+    }
+
+    return updateFingerSegments(base, mappedSegments);
   }
 
   function deriveSymmetryOverrides(primary: Finger): Map<string, Finger> {
@@ -552,20 +778,32 @@
       const prev = idx > 0 ? getFingerById(prevId, overrides) : undefined;
       const next = idx < internalBoundaryCount() - 1 ? getFingerById(nextId, overrides) : undefined;
 
+      const candidateSegments = fingerToSegments(candidate);
+      const candidateFirst = candidateSegments[0];
+      const candidateLast = candidateSegments[candidateSegments.length - 1];
+      if (!candidateFirst || !candidateLast) return false;
+
+      const prevSegments = prev ? fingerToSegments(prev) : null;
+      const nextSegments = next ? fingerToSegments(next) : null;
+      const prevFirst = prevSegments?.[0];
+      const prevLast = prevSegments?.[prevSegments.length - 1];
+      const nextFirst = nextSegments?.[0];
+      const nextLast = nextSegments?.[nextSegments.length - 1];
+
       if (candidate.lobe === 'left') {
-        const minP0Y = (prev?.p0.y ?? minY) + orderEps;
-        const maxP0Y = (next?.p0.y ?? maxY) - orderEps;
-        const minP3Y = (prev?.p3.y ?? minY) + orderEps;
-        const maxP3Y = (next?.p3.y ?? maxY) - orderEps;
-        if (candidate.p0.y < minP0Y || candidate.p0.y > maxP0Y) return false;
-        if (candidate.p3.y < minP3Y || candidate.p3.y > maxP3Y) return false;
+        const minP0Y = ((prevFirst?.p0.y ?? minY) as number) + orderEps;
+        const maxP0Y = ((nextFirst?.p0.y ?? maxY) as number) - orderEps;
+        const minP3Y = ((prevLast?.p3.y ?? minY) as number) + orderEps;
+        const maxP3Y = ((nextLast?.p3.y ?? maxY) as number) - orderEps;
+        if (candidateFirst.p0.y < minP0Y || candidateFirst.p0.y > maxP0Y) return false;
+        if (candidateLast.p3.y < minP3Y || candidateLast.p3.y > maxP3Y) return false;
       } else {
-        const minP0X = (prev?.p0.x ?? minX) + orderEps;
-        const maxP0X = (next?.p0.x ?? maxX) - orderEps;
-        const minP3X = (prev?.p3.x ?? minX) + orderEps;
-        const maxP3X = (next?.p3.x ?? maxX) - orderEps;
-        if (candidate.p0.x < minP0X || candidate.p0.x > maxP0X) return false;
-        if (candidate.p3.x < minP3X || candidate.p3.x > maxP3X) return false;
+        const minP0X = ((prevFirst?.p0.x ?? minX) as number) + orderEps;
+        const maxP0X = ((nextFirst?.p0.x ?? maxX) as number) - orderEps;
+        const minP3X = ((prevLast?.p3.x ?? minX) as number) + orderEps;
+        const maxP3X = ((nextLast?.p3.x ?? maxX) as number) - orderEps;
+        if (candidateFirst.p0.x < minP0X || candidateFirst.p0.x > maxP0X) return false;
+        if (candidateLast.p3.x < minP3X || candidateLast.p3.x > maxP3X) return false;
       }
 
       const candidatePath = buildFingerPath(candidate);
@@ -605,12 +843,21 @@
     if (!finger) return;
 
     const segments = fingerToSegments(finger);
+    if (segments.length >= MAX_BEZIER_SEGMENTS_PER_FINGER) return;
+
+    const before = snapshotState();
+    const oldLen = segments.length;
+
     // Split the last segment in half
     const lastIdx = segments.length - 1;
     const [first, second] = splitBezierAt(segments[lastIdx], 0.5);
     segments.splice(lastIdx, 1, first, second);
 
-    updateFinger(fingerId, () => updateFingerSegments(finger, segments));
+    updateFinger(fingerId, (f) => updateFingerSegments(f, segments));
+    if (selectedFingerId === fingerId) {
+      selectedAnchors = selectedAnchors.map((idx) => (idx === oldLen ? oldLen + 1 : idx));
+    }
+    pushUndo(before);
     draw();
   }
 
@@ -620,6 +867,8 @@
 
     const segments = fingerToSegments(finger);
     if (segments.length <= 1) return; // Can't remove the only segment
+    const before = snapshotState();
+    const oldLen = segments.length;
 
     // Merge last two segments into one
     const lastIdx = segments.length - 1;
@@ -635,7 +884,15 @@
     };
 
     segments.splice(lastIdx - 1, 2, merged);
-    updateFinger(fingerId, () => updateFingerSegments(finger, segments));
+    updateFinger(fingerId, (f) => updateFingerSegments(f, segments));
+    if (selectedFingerId === fingerId) {
+      const removedAnchor = oldLen - 1;
+      const newLen = oldLen - 1;
+      selectedAnchors = selectedAnchors
+        .filter((idx) => idx !== removedAnchor)
+        .map((idx) => (idx === oldLen ? newLen : idx));
+    }
+    pushUndo(before);
     draw();
   }
 
@@ -658,68 +915,46 @@
     return vecAdd(mid, mirrored);
   }
 
-  function applyWithinCurveSymmetry(
-    finger: Finger,
-    driver: 'p1' | 'p2' = 'p1'
-  ): Finger {
-    const segments = fingerToSegments(finger);
-    if (segments.length !== 1) {
-      // Within-curve symmetry is only well-defined for a single segment.
-      return finger;
-    }
-
-    const seg = segments[0];
-    if (driver === 'p2') {
-      seg.p1 = reflectAcrossChordBisector(seg.p0, seg.p3, seg.p2);
-    } else {
-      seg.p2 = reflectAcrossChordBisector(seg.p0, seg.p3, seg.p1);
-    }
-    return updateFingerSegments(finger, segments);
+  function pointReflectAcrossMidpoint(p0: Vec, p3: Vec, p: Vec): Vec {
+    // 2*mid - p, but avoid extra allocs.
+    return { x: p0.x + p3.x - p.x, y: p0.y + p3.y - p.y };
   }
 
-  function snapFreeControlPoint(
-    fingerId: string,
-    base: Finger,
-    pointKey: 'p1' | 'p2',
-    desired: Vec,
-    isValidCandidate: (candidate: Finger) => boolean = candidate => candidateIsValid(fingerId, candidate)
-  ): Vec {
-    const buildCandidateAtPoint = (pos: paper.Point) =>
-      ({ ...base, [pointKey]: { x: pos.x, y: pos.y } } as Finger);
+  function withinSegmentSymmetryMate(p0: Vec, p3: Vec, p: Vec): Vec {
+    return antiSymmetry ? pointReflectAcrossMidpoint(p0, p3, p) : reflectAcrossChordBisector(p0, p3, p);
+  }
 
-    const from = toPoint(base[pointKey]);
-    const desiredPt = toPoint(desired);
-
-    const { squareSize, squareLeft, squareTop } = getSquareParams();
-    const square = {
-      minX: squareLeft,
-      maxX: squareLeft + squareSize,
-      minY: squareTop,
-      maxY: squareTop + squareSize
-    };
-
-    const p0 = toPoint(base.p0);
-    const p3 = toPoint(base.p3);
-    const other = toPoint(pointKey === 'p1' ? base.p2 : base.p1);
-
-    const obstacles = withInsertItemsDisabled(() => buildObstaclePaths(fingerId, base.lobe));
-    try {
-      const out = snapSequentialQPBezierControl(
-        buildCandidateAtPoint,
-        from,
-        desiredPt,
-        isValidCandidate,
-        pointKey,
-        p0,
-        other,
-        p3,
-        obstacles,
-        square
-      );
-      return { x: out.point.x, y: out.point.y };
-    } finally {
-      for (const p of obstacles) p.remove();
+  function applyWithinCurveSymmetryToSegments(
+    segments: BezierSegment[],
+    segmentIndex: number,
+    driver: 'p1' | 'p2' = 'p1'
+  ) {
+    const seg = segments[segmentIndex];
+    if (!seg) return;
+    if (driver === 'p2') {
+      seg.p1 = withinSegmentSymmetryMate(seg.p0, seg.p3, seg.p2);
+    } else {
+      seg.p2 = withinSegmentSymmetryMate(seg.p0, seg.p3, seg.p1);
     }
+  }
+
+  function applyWithinCurveSymmetry(
+    finger: Finger,
+    segmentIndex?: number,
+    driver: 'p1' | 'p2' = 'p1'
+  ): Finger {
+    const segments = cloneSegments(fingerToSegments(finger));
+    if (!segments.length) return finger;
+
+    if (segmentIndex != null) {
+      applyWithinCurveSymmetryToSegments(segments, segmentIndex, driver);
+      return updateFingerSegments(finger, segments);
+    }
+
+    for (let i = 0; i < segments.length; i++) {
+      applyWithinCurveSymmetryToSegments(segments, i, driver);
+    }
+    return updateFingerSegments(finger, segments);
   }
 
   function overridesAreValid(overrides: Map<string, Finger>): boolean {
@@ -779,16 +1014,7 @@
       return path;
     }
 
-    // Use SVG path data if provided (for complex multi-segment paths)
-    if (finger.pathData) {
-      return new paper.Path(finger.pathData);
-    }
-
-    // Otherwise use simple p0-p3 cubic bezier (backwards compatible)
-    const path = new paper.Path();
-    path.moveTo(toPoint(finger.p0));
-    path.cubicCurveTo(toPoint(finger.p1), toPoint(finger.p2), toPoint(finger.p3));
-    return path;
+    return new paper.Path(finger.pathData);
   }
 
   function samplePath(path: paper.Path, samples: number): paper.Point[] {
@@ -842,7 +1068,12 @@
     const internal = fingers
       .filter(f => f.lobe === lobe)
       .slice()
-      .sort((a, b) => (lobe === 'left' ? a.p0.y - b.p0.y : a.p0.x - b.p0.x));
+      .sort((a, b) => {
+        const a0 = fingerToSegments(a)[0]?.p0;
+        const b0 = fingerToSegments(b)[0]?.p0;
+        if (!a0 || !b0) return 0;
+        return lobe === 'left' ? a0.y - b0.y : a0.x - b0.x;
+      });
 
     const boundaries: Array<() => paper.Path> = [];
 
@@ -965,6 +1196,7 @@
     if (!readonly) {
       for (const finger of fingers) {
         const isSelected = finger.id === selectedFingerId;
+        const isHovered = finger.id === hoverFingerId;
         const hidden = !showCurves;
 
         // Different colors for left (horizontal) and right (vertical) curves
@@ -974,15 +1206,19 @@
             ? new paper.Color('#00ddff') // Bright cyan for horizontal
             : new paper.Color('#ff8800'); // Bright orange for vertical
 
-        if (hidden) {
-          // Hidden: just a barely-visible hitbox
-          const path = buildFingerPath(finger);
-          path.strokeColor = new paper.Color(0, 0, 0, 0.001);
-          path.strokeWidth = 2;
-          path.fillColor = null;
-          path.data = { kind: 'finger', fingerId: finger.id };
-          overlayItems.push(path);
-        } else {
+        // Always: wide invisible hit stroke for hover/selection.
+        const hitPath = buildFingerPath(finger);
+        // Keep this fully transparent but still hittable (Paper.js hit-testing treats
+        // `strokeColor = null` as no stroke, but alpha=0 still counts as a stroke).
+        hitPath.strokeColor = new paper.Color(0, 0, 0, 0);
+        hitPath.strokeWidth = 14;
+        hitPath.strokeCap = 'round';
+        hitPath.strokeJoin = 'round';
+        hitPath.fillColor = null;
+        hitPath.data = { kind: 'finger-hit', fingerId: finger.id };
+        overlayItems.push(hitPath);
+
+        if (!hidden) {
           // Visible: draw outline first for contrast
           const outlinePath = buildFingerPath(finger);
           outlinePath.strokeColor = isSelected ? new paper.Color('#ffffff') : new paper.Color('#000000');
@@ -990,6 +1226,7 @@
           outlinePath.strokeCap = 'round';
           outlinePath.strokeJoin = 'round';
           outlinePath.fillColor = null;
+          outlinePath.data = { kind: 'finger', fingerId: finger.id };
           overlayItems.push(outlinePath);
 
           // Then draw colored stroke on top
@@ -1002,87 +1239,97 @@
           path.data = { kind: 'finger', fingerId: finger.id };
           overlayItems.push(path);
         }
+
+        // Hover overlay: darken stroke, or show a thin black stroke when curves are hidden.
+        if (isHovered) {
+          const hoverPath = buildFingerPath(finger);
+          hoverPath.strokeColor = hidden ? new paper.Color('#000000') : new paper.Color(0, 0, 0, 0.35);
+          hoverPath.strokeWidth = hidden ? 2 : 5;
+          hoverPath.strokeCap = 'round';
+          hoverPath.strokeJoin = 'round';
+          hoverPath.fillColor = null;
+          overlayItems.push(hoverPath);
+        }
       }
 
       // Selected finger handles (drawn on top of weave)
       const selected = fingers.find(f => f.id === selectedFingerId);
       if (selected) {
         const segments = fingerToSegments(selected);
-        const endpointSize = 10;
-        const handleRadius = 5;
-        const midpointSize = 8;
+        const n = segments.length;
+        if (n >= 1) {
+          const endpointSize = 10;
+          const anchorSize = 8;
+          const handleRadius = 5;
 
-        // Draw all segments' control handles
-        for (let segIdx = 0; segIdx < segments.length; segIdx++) {
-          const seg = segments[segIdx];
-          const isFirst = segIdx === 0;
-          const isLast = segIdx === segments.length - 1;
-
-          // Control handle lines
-          const c1 = new paper.Path.Line(toPoint(seg.p0), toPoint(seg.p1));
-          c1.strokeColor = new paper.Color('#666666');
-          c1.strokeWidth = 1;
-          overlayItems.push(c1);
-
-          const c2 = new paper.Path.Line(toPoint(seg.p3), toPoint(seg.p2));
-          c2.strokeColor = new paper.Color('#666666');
-          c2.strokeWidth = 1;
-          overlayItems.push(c2);
-
-          // Endpoint p0 (only for first segment)
-          if (isFirst) {
-            const p0Handle = new paper.Path.Rectangle({
-              point: new paper.Point(seg.p0.x - endpointSize / 2, seg.p0.y - endpointSize / 2),
-              size: endpointSize
-            });
-            p0Handle.fillColor = new paper.Color('#ffffff');
-            p0Handle.strokeColor = new paper.Color('#111111');
-            p0Handle.strokeWidth = 2;
-            p0Handle.data = { kind: 'control', fingerId: selected.id, pointKey: 'p0', segmentIndex: 0 };
-            overlayItems.push(p0Handle);
+          const selectedSet = new Set(selectedAnchors.filter((idx) => idx >= 0 && idx <= n));
+          const visibleSet = new Set<number>();
+          if (selectedSet.size) {
+            for (const idx of selectedSet) {
+              visibleSet.add(idx);
+              visibleSet.add(Math.max(0, idx - 1));
+              visibleSet.add(Math.min(n, idx + 1));
+            }
           }
 
-          // Endpoint p3 (only for last segment)
-          if (isLast) {
-            const p3Handle = new paper.Path.Rectangle({
-              point: new paper.Point(seg.p3.x - endpointSize / 2, seg.p3.y - endpointSize / 2),
-              size: endpointSize
-            });
-            p3Handle.fillColor = new paper.Color('#ffffff');
-            p3Handle.strokeColor = new paper.Color('#111111');
-            p3Handle.strokeWidth = 2;
-            p3Handle.data = { kind: 'control', fingerId: selected.id, pointKey: 'p3', segmentIndex: segIdx };
-            overlayItems.push(p3Handle);
+          const anchorPos = (idx: number): Vec => {
+            if (idx <= 0) return segments[0]!.p0;
+            if (idx >= n) return segments[n - 1]!.p3;
+            return segments[idx]!.p0;
+          };
+
+          // Always show anchor points for the selected curve (endpoints + junctions).
+          for (let idx = 0; idx <= n; idx++) {
+            const pos = anchorPos(idx);
+            const isEndpoint = idx === 0 || idx === n;
+            const isSelectedAnchor = selectedSet.has(idx);
+
+            const size = isEndpoint ? endpointSize : anchorSize;
+            const shape = isEndpoint
+              ? new paper.Path.Rectangle({
+                  point: new paper.Point(pos.x - size / 2, pos.y - size / 2),
+                  size
+                })
+              : new paper.Path.RegularPolygon(new paper.Point(pos.x, pos.y), 4, size / 2);
+            if (!isEndpoint) shape.rotate(45);
+
+            shape.fillColor = isSelectedAnchor ? new paper.Color('#ffcc00') : new paper.Color('#ffffff');
+            shape.strokeColor = new paper.Color('#111111');
+            shape.strokeWidth = 2;
+
+            const pointKey: ControlPointKey =
+              idx === 0 ? 'p0' : idx === n ? 'p3' : (`seg${idx}_p0` as ControlPointKey);
+            shape.data = { kind: 'control', fingerId: selected.id, pointKey, segmentIndex: Math.min(idx, n - 1) };
+            overlayItems.push(shape);
           }
 
-          // Midpoint (junction between segments)
-          if (!isFirst) {
-            const midHandle = new paper.Path.Rectangle({
-              point: new paper.Point(seg.p0.x - midpointSize / 2, seg.p0.y - midpointSize / 2),
-              size: midpointSize
-            });
-            midHandle.fillColor = new paper.Color('#ffffff');
-            midHandle.strokeColor = new paper.Color('#111111');
-            midHandle.strokeWidth = 2;
-            midHandle.data = { kind: 'control', fingerId: selected.id, pointKey: `seg${segIdx}_p0`, segmentIndex: segIdx };
-            overlayItems.push(midHandle);
+          // Only show control handles for the selected anchors and their neighbors.
+          if (visibleSet.size) {
+            const drawHandle = (from: Vec, to: Vec, segIdx: number, pointKey: ControlPointKey) => {
+              const line = new paper.Path.Line(toPoint(from), toPoint(to));
+              line.strokeColor = new paper.Color('#666666');
+              line.strokeWidth = 1;
+              overlayItems.push(line);
+
+              const handle = new paper.Path.Circle(toPoint(to), handleRadius);
+              handle.fillColor = new paper.Color(0.9);
+              handle.strokeColor = new paper.Color('#111111');
+              handle.strokeWidth = 1.5;
+              handle.data = { kind: 'control', fingerId: selected.id, pointKey, segmentIndex: segIdx };
+              overlayItems.push(handle);
+            };
+
+            for (const idx of visibleSet) {
+              if (idx === 0) {
+                drawHandle(anchorPos(0), segments[0]!.p1, 0, `seg0_p1` as ControlPointKey);
+              } else if (idx === n) {
+                drawHandle(anchorPos(n), segments[n - 1]!.p2, n - 1, `seg${n - 1}_p2` as ControlPointKey);
+              } else {
+                drawHandle(anchorPos(idx), segments[idx - 1]!.p2, idx - 1, `seg${idx - 1}_p2` as ControlPointKey);
+                drawHandle(anchorPos(idx), segments[idx]!.p1, idx, `seg${idx}_p1` as ControlPointKey);
+              }
+            }
           }
-
-          // Control point p1
-          const p1Handle = new paper.Path.Circle(toPoint(seg.p1), handleRadius);
-          p1Handle.fillColor = new paper.Color(0.9);
-          p1Handle.strokeColor = new paper.Color('#111111');
-          p1Handle.strokeWidth = 1.5;
-          p1Handle.data = { kind: 'control', fingerId: selected.id, pointKey: `seg${segIdx}_p1`, segmentIndex: segIdx };
-          overlayItems.push(p1Handle);
-
-          // Control point p2
-          const p2Handle = new paper.Path.Circle(toPoint(seg.p2), handleRadius);
-          p2Handle.fillColor = new paper.Color(0.9);
-          p2Handle.strokeColor = new paper.Color('#111111');
-          p2Handle.strokeWidth = 1.5;
-          p2Handle.data = { kind: 'control', fingerId: selected.id, pointKey: `seg${segIdx}_p2`, segmentIndex: segIdx };
-          overlayItems.push(p2Handle);
         }
       }
     }
@@ -1109,20 +1356,22 @@
 
   function clampEndpoints(fingerId: string) {
     updateFinger(fingerId, (f) => {
-      if (!f.pathData) {
-        return {
-          ...f,
-          p0: projectEndpoint(f, f.p0, 'p0'),
-          p3: projectEndpoint(f, f.p3, 'p3')
-        };
-      }
-
       const segments = fingerToSegments(f);
       if (!segments.length) return f;
       const first = segments[0];
       const last = segments[segments.length - 1];
-      first.p0 = projectEndpoint(f, first.p0, 'p0');
-      last.p3 = projectEndpoint(f, last.p3, 'p3');
+      const nextP0 = projectEndpoint(f, first.p0, 'p0');
+      if (nextP0.x !== first.p0.x || nextP0.y !== first.p0.y) {
+        const d = vecSub(nextP0, first.p0);
+        first.p0 = nextP0;
+        first.p1 = vecAdd(first.p1, d);
+      }
+      const nextP3 = projectEndpoint(f, last.p3, 'p3');
+      if (nextP3.x !== last.p3.x || nextP3.y !== last.p3.y) {
+        const d = vecSub(nextP3, last.p3);
+        last.p3 = nextP3;
+        last.p2 = vecAdd(last.p2, d);
+      }
       return updateFingerSegments(f, segments);
     });
   }
@@ -1135,10 +1384,12 @@
     });
     const hit =
       hits.find((h) => h.item?.data?.kind === 'control') ??
+      hits.find((h) => h.item?.data?.kind === 'finger-hit') ??
       hits.find((h) => h.item?.data?.kind === 'finger');
 
     if (!hit) {
       selectedFingerId = null;
+      selectedAnchors = [];
       dragTarget = null;
       draw();
       return;
@@ -1146,20 +1397,64 @@
 
     const data = hit.item.data;
     if (data.kind === 'control') {
+      const isShift = Boolean(event.modifiers?.shift);
       selectedFingerId = data.fingerId;
+      const f = getFingerById(data.fingerId);
+      if (f) {
+        const segmentsLen = fingerToSegments(f).length;
+        const anchorIdx = anchorIndexFromPointKey(data.pointKey, segmentsLen, data.segmentIndex);
+        if (anchorIdx != null) {
+          if (isShift) toggleAnchorSelection(anchorIdx);
+          else setSingleAnchorSelection(anchorIdx);
+        } else {
+          // Handle selected: select its associated anchor (start for p1, end for p2).
+          if (typeof data.pointKey === 'string' && data.pointKey.endsWith('_p1')) {
+            const idx = Number.isFinite(data.segmentIndex) ? data.segmentIndex : 0;
+            setSingleAnchorSelection(Math.max(0, Math.min(segmentsLen, idx)));
+          } else if (typeof data.pointKey === 'string' && data.pointKey.endsWith('_p2')) {
+            const idx = Number.isFinite(data.segmentIndex) ? data.segmentIndex + 1 : 1;
+            setSingleAnchorSelection(Math.max(0, Math.min(segmentsLen, idx)));
+          } else {
+            selectedAnchors = [];
+          }
+        }
+      }
       dragTarget = {
         kind: 'control',
         fingerId: data.fingerId,
         pointKey: data.pointKey,
         segmentIndex: data.segmentIndex
       };
+      dragSnapshot = snapshotState();
+      dragDirty = false;
       draw();
       return;
     }
 
+    if (selectedFingerId !== data.fingerId) {
+      selectedAnchors = [];
+    }
     selectedFingerId = data.fingerId;
     dragTarget = { kind: 'path', fingerId: data.fingerId };
+    dragSnapshot = snapshotState();
+    dragDirty = false;
     draw();
+  }
+
+  function handleMouseMove(event: any) {
+    const hit = paper.project.hitTest(event.point, {
+      fill: false,
+      stroke: true,
+      tolerance: 10
+    });
+    const next =
+      hit?.item?.data?.kind === 'finger-hit' || hit?.item?.data?.kind === 'finger'
+        ? (hit.item.data.fingerId as string)
+        : null;
+    if (next !== hoverFingerId) {
+      hoverFingerId = next;
+      draw();
+    }
   }
 
   // Build a candidate finger with updated segment control point (without modifying state)
@@ -1212,35 +1507,13 @@
     if (!finger) return false;
 
     const segments = fingerToSegments(finger);
-    const isSingleSegment = segments.length === 1 && segmentIndex === 0;
     const isP1 = pointKey.endsWith('_p1');
     const isP2 = pointKey.endsWith('_p2');
     const isMidpoint = pointKey.endsWith('_p0');
 
-    // For single-segment p1/p2, reuse the snapping + symmetry logic to prevent intersections.
-    if (isSingleSegment && (isP1 || isP2)) {
-      const driverKey: 'p1' | 'p2' = isP1 ? 'p1' : 'p2';
-      const base = updateFingerSegments(finger, segments); // clears pathData for single segment
-
-      const isValidCandidate = (candidate: Finger) => {
-        const symCandidate = symmetryWithinCurve ? applyWithinCurveSymmetry(candidate, driverKey) : candidate;
-        return overridesAreValid(deriveSymmetryOverrides(symCandidate));
-      };
-
-      const snapped = snapFreeControlPoint(fingerId, base, driverKey, newPos, isValidCandidate);
-      let primaryCandidate = { ...base, [driverKey]: snapped } as Finger;
-      if (symmetryWithinCurve) {
-        primaryCandidate = applyWithinCurveSymmetry(primaryCandidate, driverKey);
-      }
-      const overrides = deriveSymmetryOverrides(primaryCandidate);
-      if (!overridesAreValid(overrides)) return false;
-      applyOverrides(overrides);
-      return true;
-    }
-
-    // Multi-segment controls (and midpoints): constrain the drag like other controls by backing off
+    // Segment controls (and midpoints): constrain the drag by backing off
     // to the nearest valid position.
-    if (!isSingleSegment && (isP1 || isP2 || isMidpoint)) {
+    if (isP1 || isP2 || isMidpoint) {
       if (segmentIndex < 0 || segmentIndex >= segments.length) return false;
       if (isMidpoint && segmentIndex <= 0) return false;
 
@@ -1265,19 +1538,22 @@
           seg.p1 = vecAdd(seg.p1, delta);
         }
 
-        const cand: Finger = {
-          ...finger,
-          p0: segs[0].p0,
-          p1: segs[0].p1,
-          p2: segs[0].p2,
-          p3: segs[segs.length - 1].p3,
-          pathData: finger.pathData
-        };
-        return setInternalSegments(cand, segs);
+        return setInternalSegments(updateFingerSegments(finger, segs), segs);
       };
 
-      const isValidCandidate = (candidate: Finger) =>
-        overridesAreValid(deriveSymmetryOverrides(candidate));
+      const isValidCandidate = (candidate: Finger) => {
+        if (!symmetryWithinCurve) return overridesAreValid(deriveSymmetryOverrides(candidate));
+
+        const segs = cloneSegments(getInternalSegments(candidate) ?? fingerToSegments(candidate));
+        if (isP1 || isP2) {
+          applyWithinCurveSymmetryToSegments(segs, segmentIndex, isP1 ? 'p1' : 'p2');
+        } else {
+          applyWithinCurveSymmetryToSegments(segs, segmentIndex - 1, 'p1');
+          applyWithinCurveSymmetryToSegments(segs, segmentIndex, 'p2');
+        }
+        const symCandidate = updateFingerSegments(candidate, segs);
+        return overridesAreValid(deriveSymmetryOverrides(symCandidate));
+      };
 
       let snapped: Vec;
       if (isP1 || isP2) {
@@ -1366,11 +1642,21 @@
         }
       }
       const snappedCandidate = buildCandidateAt(snapped);
-      const snappedSegments = snappedCandidate.__segments;
+      const snappedSegments = getInternalSegments(snappedCandidate);
       if (!snappedSegments) return false;
 
+      const committedSegs = cloneSegments(snappedSegments);
+      if (symmetryWithinCurve) {
+        if (isP1 || isP2) {
+          applyWithinCurveSymmetryToSegments(committedSegs, segmentIndex, isP1 ? 'p1' : 'p2');
+        } else {
+          applyWithinCurveSymmetryToSegments(committedSegs, segmentIndex - 1, 'p1');
+          applyWithinCurveSymmetryToSegments(committedSegs, segmentIndex, 'p2');
+        }
+      }
+
       // Commit with proper pathData so serialization + future edits stay consistent.
-      const committed = updateFingerSegments(finger, snappedSegments);
+      const committed = updateFingerSegments(finger, committedSegs);
       const overrides = deriveSymmetryOverrides(committed);
       if (!overridesAreValid(overrides)) return false;
       applyOverrides(overrides);
@@ -1381,9 +1667,13 @@
     let candidate = buildSegmentUpdateCandidate(finger, segmentIndex, pointKey, newPos);
     if (!candidate) return false;
 
-    // Within-curve symmetry only applies cleanly for single-segment curves.
-    if (symmetryWithinCurve && isSingleSegment && (isP1 || isP2)) {
-      candidate = applyWithinCurveSymmetry(candidate, isP1 ? 'p1' : 'p2');
+    if (symmetryWithinCurve) {
+      if (isP1 || isP2) {
+        candidate = applyWithinCurveSymmetry(candidate, segmentIndex, isP1 ? 'p1' : 'p2');
+      } else if (isMidpoint) {
+        candidate = applyWithinCurveSymmetry(candidate, segmentIndex - 1, 'p1');
+        candidate = applyWithinCurveSymmetry(candidate, segmentIndex, 'p2');
+      }
     }
 
     const overrides = deriveSymmetryOverrides(candidate);
@@ -1397,42 +1687,35 @@
     if (!target) return;
 
     if (target.kind === 'control') {
-      const p = unrotatePoint(event.point);
       const pointKey = target.pointKey;
       const segIdx = target.segmentIndex ?? 0;
 
-      // Check if this is a multi-segment control point (has seg prefix)
-      if (typeof pointKey === 'string' && pointKey.startsWith('seg')) {
-        updateSegmentControlPoint(target.fingerId, segIdx, pointKey, p);
-        draw();
-        return;
+      // Anchor drag (endpoints + junctions), supports multi-select.
+      const base = getFingerById(target.fingerId);
+      if (base) {
+        const segLen = fingerToSegments(base).length;
+        const anchorIdx = anchorIndexFromPointKey(pointKey, segLen, segIdx);
+        if (anchorIdx != null) {
+          const dRaw = unrotateDelta(event.delta);
+          const anchorsToMove = selectedAnchors.includes(anchorIdx) ? selectedAnchors : [anchorIdx];
+          applyConstrainedUpdate(target.fingerId, (current, fraction) => {
+            const segs = cloneSegments(fingerToSegments(current));
+            const d = { x: dRaw.x * fraction, y: dRaw.y * fraction };
+            applyDeltaToAnchorsInSegments(current, segs, anchorsToMove, d);
+            return updateFingerSegments(current, segs);
+          });
+          dragDirty = true;
+          draw();
+          return;
+        }
       }
 
-      if (pointKey === 'p1' || pointKey === 'p2') {
-        const driverKey = pointKey;
-        const base = getFingerById(target.fingerId);
-        if (!base) return;
+      const p = unrotatePoint(event.point);
 
-        const isValidCandidate = (candidate: Finger) => {
-          const symCandidate = symmetryWithinCurve
-            ? applyWithinCurveSymmetry(candidate, driverKey)
-            : candidate;
-          return overridesAreValid(deriveSymmetryOverrides(symCandidate));
-        };
-        const snapped = snapFreeControlPoint(
-          target.fingerId,
-          base,
-          driverKey,
-          p,
-          isValidCandidate
-        );
-        let primaryCandidate = { ...base, [driverKey]: snapped } as Finger;
-        if (symmetryWithinCurve) {
-          primaryCandidate = applyWithinCurveSymmetry(primaryCandidate, driverKey);
-        }
-        const overrides = deriveSymmetryOverrides(primaryCandidate);
-        if (!overridesAreValid(overrides)) return;
-        applyOverrides(overrides);
+      // Multi-segment control handle drag (has seg prefix).
+      if (typeof pointKey === 'string' && pointKey.startsWith('seg')) {
+        updateSegmentControlPoint(target.fingerId, segIdx, pointKey, p);
+        dragDirty = true;
         draw();
         return;
       }
@@ -1441,58 +1724,39 @@
       applyConstrainedUpdate(target.fingerId, (current, fraction) => {
         const desiredPt = projectEndpoint(current, p, pointKey);
 
-        // Multi-segment: edit the underlying segment endpoints so pathData stays in sync.
-        if (current.pathData) {
-          const segments = fingerToSegments(current);
-          if (!segments.length) return current;
-          const first = segments[0];
-          const last = segments[segments.length - 1];
+        const segments = cloneSegments(fingerToSegments(current));
+        if (!segments.length) return current;
+        const first = segments[0]!;
+        const last = segments[segments.length - 1]!;
 
-          const oldPt = pointKey === 'p0' ? first.p0 : last.p3;
-          const dx = (desiredPt.x - oldPt.x) * fraction;
-          const dy = (desiredPt.y - oldPt.y) * fraction;
-          const moved = { x: oldPt.x + dx, y: oldPt.y + dy };
-
-          if (pointKey === 'p0') {
-            const nextP0 = projectEndpoint(current, moved, 'p0');
-            const d = vecSub(nextP0, first.p0);
-            first.p0 = nextP0;
-            first.p1 = vecAdd(first.p1, d);
-          } else {
-            const nextP3 = projectEndpoint(current, moved, 'p3');
-            const d = vecSub(nextP3, last.p3);
-            last.p3 = nextP3;
-            last.p2 = vecAdd(last.p2, d);
-          }
-          return updateFingerSegments(current, segments);
-        }
-
-        const oldPt = current[pointKey];
+        const oldPt = pointKey === 'p0' ? first.p0 : last.p3;
         const dx = (desiredPt.x - oldPt.x) * fraction;
         const dy = (desiredPt.y - oldPt.y) * fraction;
-        const movedEndpoint = projectEndpoint(
-          current,
-          { x: oldPt.x + dx, y: oldPt.y + dy },
-          pointKey
-        );
-        const d = vecSub(movedEndpoint, oldPt);
-        let next = {
-          ...current,
-          [pointKey]: movedEndpoint
-        } as Finger;
+        const moved = { x: oldPt.x + dx, y: oldPt.y + dy };
 
         if (pointKey === 'p0') {
-          next.p1 = vecAdd(next.p1, d);
+          const nextP0 = projectEndpoint(current, moved, 'p0');
+          const d = vecSub(nextP0, first.p0);
+          first.p0 = nextP0;
+          first.p1 = vecAdd(first.p1, d);
         } else {
-          next.p2 = vecAdd(next.p2, d);
+          const nextP3 = projectEndpoint(current, moved, 'p3');
+          const d = vecSub(nextP3, last.p3);
+          last.p3 = nextP3;
+          last.p2 = vecAdd(last.p2, d);
         }
 
+        let next = updateFingerSegments(current, segments);
         if (symmetryWithinCurve) {
-          next = applyWithinCurveSymmetry(next, pointKey === 'p0' ? 'p1' : 'p2');
+          if (pointKey === 'p0') {
+            next = applyWithinCurveSymmetry(next, 0, 'p1');
+          } else {
+            next = applyWithinCurveSymmetry(next, segments.length - 1, 'p2');
+          }
         }
-
         return next;
       });
+      dragDirty = true;
       draw();
       return;
     }
@@ -1506,53 +1770,53 @@
       const minY = squareTop;
       const maxY = squareTop + squareSize;
 
+      const segments = cloneSegments(fingerToSegments(current));
+      if (!segments.length) return current;
+      const first = segments[0]!;
+      const last = segments[segments.length - 1]!;
+
       let dx = dRaw.x;
       let dy = dRaw.y;
 
       if (current.lobe === 'left') {
         dx = 0;
-        const dyMin = minY - Math.min(current.p0.y, current.p3.y);
-        const dyMax = maxY - Math.max(current.p0.y, current.p3.y);
+        const dyMin = minY - Math.min(first.p0.y, last.p3.y);
+        const dyMax = maxY - Math.max(first.p0.y, last.p3.y);
         dy = clamp(dRaw.y, dyMin, dyMax);
       } else {
         dy = 0;
-        const dxMin = minX - Math.min(current.p0.x, current.p3.x);
-        const dxMax = maxX - Math.max(current.p0.x, current.p3.x);
+        const dxMin = minX - Math.min(first.p0.x, last.p3.x);
+        const dxMax = maxX - Math.max(first.p0.x, last.p3.x);
         dx = clamp(dRaw.x, dxMin, dxMax);
       }
 
       dx *= fraction;
       dy *= fraction;
 
-      if (current.pathData) {
-        const segments = fingerToSegments(current);
-        if (!segments.length) return current;
-
-        for (const seg of segments) {
-          seg.p0 = { x: seg.p0.x + dx, y: seg.p0.y + dy };
-          seg.p1 = { x: seg.p1.x + dx, y: seg.p1.y + dy };
-          seg.p2 = { x: seg.p2.x + dx, y: seg.p2.y + dy };
-          seg.p3 = { x: seg.p3.x + dx, y: seg.p3.y + dy };
-        }
-
-        // Keep endpoints snapped to the correct edges.
-        segments[0].p0 = projectEndpoint(current, segments[0].p0, 'p0');
-        segments[segments.length - 1].p3 = projectEndpoint(current, segments[segments.length - 1].p3, 'p3');
-        return updateFingerSegments(current, segments);
+      for (const seg of segments) {
+        seg.p0 = { x: seg.p0.x + dx, y: seg.p0.y + dy };
+        seg.p1 = { x: seg.p1.x + dx, y: seg.p1.y + dy };
+        seg.p2 = { x: seg.p2.x + dx, y: seg.p2.y + dy };
+        seg.p3 = { x: seg.p3.x + dx, y: seg.p3.y + dy };
       }
 
-      const moved: Finger = {
-        ...current,
-        p0: { x: current.p0.x + dx, y: current.p0.y + dy },
-        p1: { x: current.p1.x + dx, y: current.p1.y + dy },
-        p2: { x: current.p2.x + dx, y: current.p2.y + dy },
-        p3: { x: current.p3.x + dx, y: current.p3.y + dy }
-      };
+      // Keep endpoints snapped to the correct edges (and preserve tangents).
+      const nextP0 = projectEndpoint(current, segments[0]!.p0, 'p0');
+      if (nextP0.x !== segments[0]!.p0.x || nextP0.y !== segments[0]!.p0.y) {
+        const d = vecSub(nextP0, segments[0]!.p0);
+        segments[0]!.p0 = nextP0;
+        segments[0]!.p1 = vecAdd(segments[0]!.p1, d);
+      }
+      const nextP3 = projectEndpoint(current, segments[segments.length - 1]!.p3, 'p3');
+      if (nextP3.x !== segments[segments.length - 1]!.p3.x || nextP3.y !== segments[segments.length - 1]!.p3.y) {
+        const d = vecSub(nextP3, segments[segments.length - 1]!.p3);
+        segments[segments.length - 1]!.p3 = nextP3;
+        segments[segments.length - 1]!.p2 = vecAdd(segments[segments.length - 1]!.p2, d);
+      }
 
-      moved.p0 = projectEndpoint(moved, moved.p0, 'p0');
-      moved.p3 = projectEndpoint(moved, moved.p3, 'p3');
-      return moved;
+      return updateFingerSegments(current, segments);
     });
+    dragDirty = true;
     draw();
   }
 
@@ -1560,6 +1824,11 @@
     if (dragTarget?.kind === 'path') {
       clampEndpoints(dragTarget.fingerId);
     }
+    if (dragSnapshot && dragDirty) {
+      pushUndo(dragSnapshot);
+    }
+    dragSnapshot = null;
+    dragDirty = false;
     dragTarget = null;
     draw();
   }
@@ -1586,9 +1855,14 @@
     // Ensure view uses correct coordinate space (600x600) regardless of CSS display size
     paper.view.viewSize = new paper.Size(BASE_CANVAS_SIZE, BASE_CANVAS_SIZE);
     if (!readonly) {
-      paper.view.onMouseDown = handleMouseDown;
-      paper.view.onMouseDrag = handleMouseDrag;
-      paper.view.onMouseUp = handleMouseUp;
+      tool = new paper.Tool();
+      tool.onMouseDown = handleMouseDown;
+      tool.onMouseMove = handleMouseMove;
+      tool.onMouseDrag = handleMouseDrag;
+      tool.onMouseUp = handleMouseUp;
+    }
+    if (typeof window !== 'undefined') {
+      window.addEventListener('keydown', handleKeyDown);
     }
 
     // Initialize colors from store and subscribe to changes
@@ -1599,9 +1873,11 @@
 
     paperReady = true;
     let detachBench: null | (() => void) = null;
+    let detachDebug: null | (() => void) = null;
     let disposed = false;
     if (import.meta.env.DEV && typeof window !== 'undefined') {
-      void import('$lib/dev/paperHeartBench').then(({ attachPaperHeartBench }) => {
+      void Promise.all([import('$lib/dev/paperHeartBench'), import('$lib/dev/paperHeartDebug')]).then(
+        ([benchMod, debugMod]) => {
         if (disposed) return;
         const ctx = {
           get paperReady() { return paperReady; },
@@ -1615,6 +1891,10 @@
           set fingers(v: Finger[]) { fingers = v; },
           get selectedFingerId() { return selectedFingerId; },
           set selectedFingerId(v: string | null) { selectedFingerId = v; },
+          get selectedAnchors() { return selectedAnchors; },
+          set selectedAnchors(v: number[]) { selectedAnchors = v; },
+          get hoverFingerId() { return hoverFingerId; },
+          set hoverFingerId(v: string | null) { hoverFingerId = v; },
           get dragTarget() { return dragTarget; },
           set dragTarget(v: DragTarget) { dragTarget = v; },
           get symmetryWithinCurve() { return symmetryWithinCurve; },
@@ -1623,6 +1903,8 @@
           set symmetryWithinLobe(v: boolean) { symmetryWithinLobe = v; },
           get symmetryBetweenLobes() { return symmetryBetweenLobes; },
           set symmetryBetweenLobes(v: boolean) { symmetryBetweenLobes = v; },
+          get antiSymmetry() { return antiSymmetry; },
+          set antiSymmetry(v: boolean) { antiSymmetry = v; },
           get showCurves() { return showCurves; },
           set showCurves(v: boolean) { showCurves = v; },
 
@@ -1636,27 +1918,38 @@
           lobePrefix,
           getFingerById,
           fingerToSegments,
+          cloneSegments,
           splitBezierAt,
           updateFingerSegments,
           updateFinger,
+          applyDeltaToAnchorsInSegments,
           candidateIsValid,
           deriveSymmetryOverrides,
           overridesAreValid,
-          snapFreeControlPoint,
           buildSegmentUpdateCandidate,
+          snapshotState,
+          pushUndo,
+          undo,
           toPoint,
           withInsertItemsDisabled,
           buildObstaclePaths,
           draw
         };
 
-        detachBench = attachPaperHeartBench(window as any, ctx);
+        detachBench = benchMod.attachPaperHeartBench(window as any, ctx);
+        detachDebug = debugMod.attachPaperHeartDebug(window as any, ctx);
       });
     }
 
     return () => {
       disposed = true;
+      tool?.remove();
+      tool = null;
       detachBench?.();
+      detachDebug?.();
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('keydown', handleKeyDown);
+      }
       unsubscribe();
     };
   });
@@ -1692,6 +1985,14 @@
         <input type="checkbox" bind:checked={symmetryBetweenLobes} />
         Symmetric (between lobes)
       </label>
+      <label class="checkbox">
+        <input
+          type="checkbox"
+          bind:checked={antiSymmetry}
+          disabled={!symmetryWithinCurve && !symmetryWithinLobe && !symmetryBetweenLobes}
+        />
+        Anti-symmetry
+      </label>
     </div>
   {/if}
   <div class="canvas-wrapper" style:width="{size}px" style:height="{size}px">
@@ -1706,13 +2007,23 @@
   {#if !readonly && selectedFingerId}
     {@const selectedFinger = fingers.find(f => f.id === selectedFingerId)}
     {@const segCount = getSegmentCount(selectedFinger)}
+    {@const canDeleteNode = selectedAnchors.some((idx) => idx >= 1 && idx <= segCount - 1)}
+    {@const canInsertNode =
+      selectedAnchors.length === 2 &&
+      Math.abs(selectedAnchors[0]! - selectedAnchors[1]!) === 1}
     <div class="segment-controls">
       <span class="segment-label">Curve segments: {segCount}</span>
-      <button class="segment-btn" onclick={() => addSegmentToFinger(selectedFingerId!)}>
+      <button class="segment-btn" onclick={() => addSegmentToFinger(selectedFingerId!)} disabled={segCount >= MAX_BEZIER_SEGMENTS_PER_FINGER}>
         + Add
       </button>
       <button class="segment-btn" onclick={() => removeSegmentFromFinger(selectedFingerId!)} disabled={segCount <= 1}>
         - Remove
+      </button>
+      <button class="segment-btn" onclick={insertNodeBetweenSelectedAnchors} disabled={!canInsertNode}>
+        + Insert node
+      </button>
+      <button class="segment-btn" onclick={deleteSelectedAnchors} disabled={!canDeleteNode}>
+        Delete node
       </button>
     </div>
   {/if}

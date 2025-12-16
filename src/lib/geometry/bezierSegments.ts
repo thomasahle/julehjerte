@@ -40,8 +40,7 @@ export function cloneSegments(segments: BezierSegment[]): BezierSegment[] {
 export function fingerToSegments(finger: Finger): BezierSegment[] {
   const internalSegs = getInternalSegments(finger);
   if (internalSegs) return internalSegs;
-  if (finger.pathData) return parsePathDataToSegments(finger.pathData);
-  return [{ p0: finger.p0, p1: finger.p1, p2: finger.p2, p3: finger.p3 }];
+  return parsePathDataToSegments(finger.pathData);
 }
 
 export function segmentsToPathData(segments: BezierSegment[]): string {
@@ -90,25 +89,8 @@ export function updateFingerSegments(finger: Finger, segments: BezierSegment[]):
   const base = { ...finger } as Finger & { __segments?: unknown };
   delete (base as unknown as { __segments?: unknown }).__segments;
 
-  if (segments.length === 1) {
-    return {
-      ...base,
-      p0: segments[0].p0,
-      p1: segments[0].p1,
-      p2: segments[0].p2,
-      p3: segments[0].p3,
-      pathData: undefined
-    };
-  }
-
-  return {
-    ...base,
-    p0: segments[0]?.p0 ?? base.p0,
-    p1: segments[0]?.p1 ?? base.p1,
-    p2: segments[0]?.p2 ?? base.p2,
-    p3: segments[segments.length - 1]?.p3 ?? base.p3,
-    pathData: segmentsToPathData(segments)
-  };
+  if (!segments.length) return base;
+  return { ...base, pathData: segmentsToPathData(segments) };
 }
 
 export function splitBezierAt(seg: BezierSegment, t: number): [BezierSegment, BezierSegment] {
@@ -132,3 +114,14 @@ export function splitBezierAt(seg: BezierSegment, t: number): [BezierSegment, Be
   ];
 }
 
+export function mergeBezierSegments(seg1: BezierSegment, seg2: BezierSegment): BezierSegment {
+  // Simple merge heuristic: preserve endpoints and blend controls near the join.
+  // This intentionally avoids heavy fitting (good enough for interactive editing).
+  const bridge = vecLerp(seg1.p2, seg2.p1, 0.5);
+  return {
+    p0: seg1.p0,
+    p1: vecLerp(seg1.p1, bridge, 0.5),
+    p2: vecLerp(bridge, seg2.p2, 0.5),
+    p3: seg2.p3
+  };
+}
