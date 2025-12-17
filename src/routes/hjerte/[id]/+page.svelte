@@ -18,6 +18,7 @@
   import * as Tooltip from '$lib/components/ui/tooltip';
   import { Separator } from '$lib/components/ui/separator';
   import GitHubStarsButton from '$lib/components/GitHubStarsButton.svelte';
+  import PageHeader from '$lib/components/PageHeader.svelte';
 
   let design = $state<HeartDesign | null>(null);
   let isUserCreated = $state(false);
@@ -145,12 +146,7 @@
 </svelte:head>
 
 <div class="template-page">
-  <header>
-    <div class="header-row">
-      <Button variant="ghost" href="{base}/" class="w-fit">{t('backToGallery', lang)}</Button>
-      <a href="{base}/" class="site-title">{t('siteTitle', lang)}</a>
-    </div>
-  </header>
+  <PageHeader {lang} />
 
   {#if loading}
     <div class="loading">{t('loadingTemplate', lang)}</div>
@@ -279,41 +275,6 @@
     max-width: 1100px;
     margin: 0 auto;
     padding: 2rem;
-  }
-
-  header {
-    margin-bottom: 1.5rem;
-  }
-
-  .header-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .back-link {
-    color: #666;
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: color 0.2s;
-  }
-
-  .back-link:hover {
-    color: #cc0000;
-  }
-
-  .site-title {
-    flex: 1;
-    text-align: center;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #333;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .site-title:hover {
-    color: #cc0000;
   }
 
   .loading,

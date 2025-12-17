@@ -11,6 +11,7 @@
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
     import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
   import GitHubStarsButton from '$lib/components/GitHubStarsButton.svelte';
+  import PageHeader from '$lib/components/PageHeader.svelte';
   import { browser } from '$app/environment';
   import CircleHelpIcon from '@lucide/svelte/icons/circle-help';
   import XIcon from '@lucide/svelte/icons/x';
@@ -166,15 +167,11 @@
 </svelte:head>
 
 <div class="editor">
-  <header>
-    <div class="header-row">
-      <Button variant="ghost" href="{base}/" class="w-fit">{t('backToGallery', lang)}</Button>
-      <a href="{base}/" class="site-title">{t('siteTitle', lang)}</a>
-      <Button variant="ghost" size="icon" onclick={() => showHelp = true} aria-label="Help" class="ml-auto">
-        <CircleHelpIcon size={20} />
-      </Button>
-    </div>
-  </header>
+  <PageHeader {lang}>
+    <Button variant="ghost" size="icon" onclick={() => showHelp = true} aria-label="Help">
+      <CircleHelpIcon size={20} />
+    </Button>
+  </PageHeader>
 
   <div class="editor-layout">
     <main>
@@ -362,41 +359,6 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 1rem;
-  }
-
-  header {
-    margin-bottom: 1rem;
-  }
-
-  .header-row {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    margin-bottom: 0.5rem;
-  }
-
-  .back-link {
-    color: #666;
-    text-decoration: none;
-    font-size: 0.9rem;
-    justify-self: start;
-  }
-
-  .back-link:hover {
-    color: #cc0000;
-  }
-
-  .site-title {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: #333;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .site-title:hover {
-    color: #cc0000;
   }
 
   .editor-layout {
