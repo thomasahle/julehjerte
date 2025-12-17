@@ -346,7 +346,7 @@
 
   @media (max-width: 600px) {
     .gallery-page {
-      padding: 1rem;
+      padding: 0.75rem;
     }
 
     header h1 {
@@ -356,11 +356,28 @@
     .toolbar {
       flex-direction: column;
       align-items: stretch;
+      gap: 0.5rem;
+    }
+
+    .toolbar :global(a[data-slot="button"]) {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .toolbar > div[role="group"] {
+      display: flex;
+      width: 100%;
+    }
+
+    .toolbar > div[role="group"] > :global(button:first-child),
+    .toolbar > div[role="group"] > :global(a:first-child) {
+      flex: 1;
     }
 
     .gallery {
       grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
+      gap: 0.5rem;
+      padding-top: 1.5rem;
     }
   }
 </style>
