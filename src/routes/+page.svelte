@@ -376,8 +376,7 @@
 
     .gallery {
       grid-template-columns: repeat(2, 1fr);
-      gap: 0.5rem;
-      padding-top: 1.5rem;
+      gap: 0.75rem;
     }
   }
 </style>

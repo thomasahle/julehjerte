@@ -3533,7 +3533,7 @@
 </script>
 
 <TooltipProvider delayDuration={250}>
-<div class="paper-heart">
+<div class="paper-heart" class:readonly>
   <div class="canvas-area">
     <div class="canvas-wrapper" style:width="{size}px" style:height="{size}px">
       <canvas
@@ -4026,14 +4026,14 @@
       height: 24px !important;
     }
 
-    .canvas-wrapper {
+    .paper-heart:not(.readonly) .canvas-wrapper {
       width: 100% !important;
       height: auto !important;
       aspect-ratio: 1;
       max-width: 500px;
     }
 
-    canvas {
+    .paper-heart:not(.readonly) canvas {
       width: 100% !important;
       height: 100% !important;
     }

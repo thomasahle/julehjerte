@@ -128,17 +128,6 @@
     transition: transform 0.2s;
   }
 
-  @media (max-width: 600px) {
-    .card {
-      aspect-ratio: 5 / 4;
-      overflow: visible;
-    }
-
-    .preview {
-      transform: scale(1.25);
-      transform-origin: center center;
-    }
-  }
 
   .card:hover {
     transform: scale(1.02);
