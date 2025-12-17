@@ -191,11 +191,14 @@
   }
 
   let canvas: HTMLCanvasElement;
+  let canvasWrapper: HTMLDivElement;
   let tool: paper.Tool | null = null;
   // Use non-reactive variables to prevent effects from re-running when these change
   let initialized = false;
   let paperReady = $state(false);
   let didInitialFingerSetup = false;
+  // Actual displayed size of the canvas wrapper (for responsive scaling)
+  let displayedSize = $state(size);
 
   // Editing controls
   // Initialized from props in `$effect.pre` below; avoid capturing `initialGridSize` here.
@@ -583,30 +586,22 @@
     const [a, b] = selection.anchors.slice().sort((x, y) => x - y);
     if (a == null || b == null) return;
     if (b - a !== 1) return;
-    const segmentsLength = fingerToSegments(finger).length;
-    if (a < 0 || a >= segmentsLength) return;
+    const n = fingerToSegments(finger).length;
+    if (a < 0 || a >= n) return;
 
-    const before = snapshotState();
     const t =
       selection.lastCurveHit &&
       selection.lastCurveHit.fingerId === fingerId &&
       selection.lastCurveHit.segmentIndex === a
         ? Math.min(0.999, Math.max(0.001, selection.lastCurveHit.t))
         : 0.5;
-    const inserted = insertNodeInFinger(finger, a, t);
-    if (!inserted) return;
-    const { insertedAnchorIdx } = inserted;
-    let candidate: Finger = inserted.finger;
-    if (symmetryWithinCurve) candidate = applyWithinCurveSymmetry(candidate);
-    const overrides = deriveSymmetryOverrides(candidate);
-    if (!overridesAreValid(overrides)) return;
-    applyOverrides(overrides);
 
-    selection.anchors = [insertedAnchorIdx];
-    selection.segments = [];
-    selection.lastCurveHit = null;
-    pushUndo(before);
-    draw();
+    // Use the shared curve hit logic for symmetric insertion
+    insertNodeAtCurveHit({
+      fingerId,
+      segmentIndex: a,
+      t,
+    });
   }
 
   function insertNodeAtCurveHit(hitInfo: CurveHit) {
@@ -614,21 +609,111 @@
     const finger = getFingerById(fingerId);
     if (!finger) return;
 
-    const segmentsLength = fingerToSegments(finger).length;
-    if (!segmentsLength) return;
-    const segIdx = Math.max(
-      0,
-      Math.min(segmentsLength - 1, hitInfo.segmentIndex),
-    );
+    const n = fingerToSegments(finger).length;
+    if (!n) return;
+    const segIdx = Math.max(0, Math.min(n - 1, hitInfo.segmentIndex));
     const t = Math.min(0.999, Math.max(0.001, hitInfo.t));
 
     const before = snapshotState();
+
+    // When within-curve symmetry is enabled, we need to insert two nodes
+    // at symmetric positions to maintain proper symmetry structure.
+    if (symmetryWithinCurve) {
+      // Calculate the global parameter (0 to 1) for the clicked position
+      const globalT = (segIdx + t) / n;
+      // The symmetric position is mirrored across the midpoint (0.5)
+      const mateGlobalT = 1 - globalT;
+
+      // Check if we're close enough to the midpoint that only one node makes sense
+      const midpointThreshold = 0.5 / n; // Half a segment's worth
+      if (Math.abs(globalT - 0.5) < midpointThreshold) {
+        // Near midpoint: insert single node at exact midpoint
+        const midSegIdx = Math.floor(n / 2);
+        const midT = n % 2 === 0 ? 0.001 : 0.5;
+        const inserted = insertNodeInFinger(finger, midSegIdx, midT);
+        if (!inserted) return;
+
+        let candidate = inserted.finger;
+        candidate = applyWithinCurveSymmetry(candidate);
+        const overrides = deriveSymmetryOverrides(candidate);
+        if (!overridesAreValid(overrides)) return;
+        applyOverrides(overrides);
+
+        selection.fingerId = fingerId;
+        selection.anchors = [inserted.insertedAnchorIdx];
+        selection.segments = [];
+        selection.lastCurveHit = null;
+        pushUndo(before);
+        draw();
+        return;
+      }
+
+      // Calculate mate position in segment/t terms
+      const mateSegFloat = mateGlobalT * n;
+      let mateSegIdx = Math.floor(mateSegFloat);
+      let mateT = mateSegFloat - mateSegIdx;
+      // Clamp to valid range
+      if (mateSegIdx >= n) {
+        mateSegIdx = n - 1;
+        mateT = 0.999;
+      }
+      mateT = Math.min(0.999, Math.max(0.001, mateT));
+
+      // Insert the node further along the curve first (higher segment/t)
+      // to avoid index shifting issues
+      let firstSegIdx: number, firstT: number;
+      let secondSegIdx: number, secondT: number;
+
+      if (segIdx > mateSegIdx || (segIdx === mateSegIdx && t > mateT)) {
+        // User clicked on the "end" half - insert that first
+        firstSegIdx = segIdx;
+        firstT = t;
+        secondSegIdx = mateSegIdx;
+        secondT = mateT;
+      } else {
+        // User clicked on the "start" half - insert mate first
+        firstSegIdx = mateSegIdx;
+        firstT = mateT;
+        secondSegIdx = segIdx;
+        secondT = t;
+      }
+
+      // First insertion (further along the curve)
+      const inserted1 = insertNodeInFinger(finger, firstSegIdx, firstT);
+      if (!inserted1) return;
+
+      // Second insertion (closer to start)
+      const inserted2 = insertNodeInFinger(inserted1.finger, secondSegIdx, secondT);
+      if (!inserted2) return;
+
+      let candidate = inserted2.finger;
+      candidate = applyWithinCurveSymmetry(candidate);
+      const overrides = deriveSymmetryOverrides(candidate);
+      if (!overridesAreValid(overrides)) return;
+      applyOverrides(overrides);
+
+      // Select the node the user actually clicked on
+      // The second insertion added a node, so the first node's index shifted by 1
+      const selectedAnchorIdx =
+        segIdx > mateSegIdx || (segIdx === mateSegIdx && t > mateT)
+          ? inserted1.insertedAnchorIdx + 1
+          : inserted2.insertedAnchorIdx;
+
+      selection.fingerId = fingerId;
+      selection.anchors = [selectedAnchorIdx];
+      selection.segments = [];
+      selection.lastCurveHit = null;
+      pushUndo(before);
+      draw();
+      return;
+    }
+
+    // Non-symmetric case: single node insertion
     const inserted = insertNodeInFinger(finger, segIdx, t);
     if (!inserted) return;
     const { insertedAnchorIdx } = inserted;
 
     let candidate: Finger = inserted.finger;
-    if (symmetryWithinCurve) candidate = applyWithinCurveSymmetry(candidate);
     const overrides = deriveSymmetryOverrides(candidate);
     if (!overridesAreValid(overrides)) return;
     applyOverrides(overrides);
@@ -2604,7 +2689,8 @@
 
   function handleMouseDown(event: any) {
     const clickCount = getClickCount(event);
-    const hits = paper.project.hitTestAll(event.point, {
+    const point = correctCoords(event.point);
+    const hits = paper.project.hitTestAll(point, {
       fill: true,
       stroke: true,
       tolerance: 3,
@@ -2756,8 +2842,30 @@
     draw();
   }
 
+  /**
+   * Get the CSS scaling factor for coordinate correction.
+   * Paper.js doesn't properly handle when CSS size differs from view size.
+   */
+  function getCoordScale(): number {
+    if (!canvas) return 1;
+    const rect = canvas.getBoundingClientRect();
+    const actualSize = rect.width; // The CSS-displayed size
+    if (actualSize <= 0 || actualSize === BASE_CANVAS_SIZE) return 1;
+    return BASE_CANVAS_SIZE / actualSize;
+  }
+
+  /**
+   * Correct Paper.js coordinates for CSS scaling (works for both points and deltas).
+   */
+  function correctCoords(point: paper.Point): paper.Point {
+    const scale = getCoordScale();
+    if (scale === 1) return point;
+    return new paper.Point(point.x * scale, point.y * scale);
+  }
+
   function handleMouseMove(event: any) {
-    const hits = paper.project.hitTestAll(event.point, {
+    const point = correctCoords(event.point);
+    const hits = paper.project.hitTestAll(point, {
       fill: true,
       stroke: true,
       tolerance: 3,
@@ -3093,6 +3201,10 @@
     let target = dragTarget;
     if (!target) return;
 
+    // Correct coordinates for CSS scaling
+    const correctedPoint = correctCoords(event.point);
+    const correctedDelta = correctCoords(event.delta);
+
     if (target.kind === "control") {
       const pointKey = target.pointKey;
       const segIdx = target.segmentIndex ?? 0;
@@ -3103,7 +3215,7 @@
         const segLen = fingerToSegments(base).length;
         const anchorIdx = anchorIndexFromPointKey(pointKey, segLen, segIdx);
         if (anchorIdx != null) {
-          const dRaw = unrotateDelta(event.delta);
+          const dRaw = unrotateDelta(correctedDelta);
           const anchorsToMove = selection.anchors.includes(anchorIdx)
             ? selection.anchors
             : [anchorIdx];
@@ -3130,7 +3242,7 @@
         }
       }
 
-      const p = unrotatePoint(event.point);
+      const p = unrotatePoint(correctedPoint);
 
       // Multi-segment control handle drag (has seg prefix).
       if (typeof pointKey === "string" && pointKey.startsWith("seg")) {
@@ -3324,9 +3436,19 @@
   // DEV benchmarks are attached dynamically from `$lib/dev/paperHeartBench`.
 
   onMount(() => {
+    // Set initial canvas size based on wrapper's actual size (before Paper.js setup)
+    if (canvasWrapper) {
+      const wrapperRect = canvasWrapper.getBoundingClientRect();
+      if (wrapperRect.width > 0) {
+        displayedSize = wrapperRect.width;
+        canvas.style.width = `${wrapperRect.width}px`;
+        canvas.style.height = `${wrapperRect.width}px`;
+      }
+    }
+
     paper.activate();
     paper.setup(canvas);
-    // Ensure view uses correct coordinate space (600x600) regardless of CSS display size
+    // Set view to BASE_CANVAS_SIZE coordinate space
     paper.view.viewSize = new paper.Size(BASE_CANVAS_SIZE, BASE_CANVAS_SIZE);
     if (!readonly) {
       tool = new paper.Tool();
@@ -3337,6 +3459,23 @@
     }
     if (typeof window !== "undefined") {
       window.addEventListener("keydown", handleKeyDown);
+    }
+
+    // Track wrapper size changes for coordinate correction (fixes mobile hit zone offset)
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width } = entry.contentRect;
+        if (width > 0 && width !== displayedSize) {
+          displayedSize = width;
+          if (canvas) {
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${width}px`;
+          }
+        }
+      }
+    });
+    if (canvasWrapper) {
+      resizeObserver.observe(canvasWrapper);
     }
 
     // Initialize colors from store and subscribe to changes
@@ -3510,6 +3649,7 @@
       tool = null;
       detachBench?.();
       detachDebug?.();
+      resizeObserver.disconnect();
       if (typeof window !== "undefined") {
         window.removeEventListener("keydown", handleKeyDown);
       }
@@ -3535,13 +3675,11 @@
 <TooltipProvider delayDuration={250}>
 <div class="paper-heart" class:readonly>
   <div class="canvas-area">
-    <div class="canvas-wrapper" style:width="{size}px" style:height="{size}px">
+    <div class="canvas-wrapper" bind:this={canvasWrapper}>
       <canvas
         bind:this={canvas}
-        width={BASE_CANVAS_SIZE}
-        height={BASE_CANVAS_SIZE}
-        style:transform="scale({size / BASE_CANVAS_SIZE})"
-        style:transform-origin="top left"
+        style:width="{displayedSize}px"
+        style:height="{displayedSize}px"
       ></canvas>
     </div>
     {#if !readonly}
@@ -4031,11 +4169,6 @@
       height: auto !important;
       aspect-ratio: 1;
       max-width: 500px;
-    }
-
-    .paper-heart:not(.readonly) canvas {
-      width: 100% !important;
-      height: 100% !important;
     }
   }
 </style>

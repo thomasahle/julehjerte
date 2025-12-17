@@ -19,6 +19,7 @@ export const translations = {
     selected: '✓ Valgt',
     details: 'Detaljer',
     private: 'Privat',
+    selectHeartsFirst: 'Vælg hjerter først',
 
     // Heart detail
     backToGallery: '← Tilbage til Galleri',
@@ -67,6 +68,47 @@ export const translations = {
     importedHeart: 'Importeret Hjerte',
     invalidHeartFile: 'Ugyldig hjertedesign fil',
 
+    // Editor help
+    helpOpenAriaLabel: 'Hjælp',
+    helpCloseAriaLabel: 'Luk',
+    helpTitle: 'Sådan designer du flettede papirhjerter',
+    helpSectionWhatAreTitle: 'Hvad er flettede papirhjerter?',
+    helpSectionWhatAreText:
+      'Flettede papirhjerter (dansk: <em>julehjerter</em>) er en traditionel skandinavisk juledekoration. To papirhalvdele flettes sammen til en hjerteformet kurv, der kan fyldes med godter eller pynt.',
+    helpSectionBasicStructureTitle: 'Grundstruktur',
+    helpSectionBasicStructureText:
+      'Hvert hjerte består af to <strong>lapper</strong> (venstre og højre), som flettes sammen i midten. Kurverne du ser, er <strong>grænserne</strong> mellem papirstrimler. Træk i kurverne for at ændre formen, eller træk fra kanterne for at tilføje nye strimler.',
+    helpSectionEditingCurvesTitle: 'Redigering af kurver',
+    helpSectionEditingCurvesBullets: [
+      '<strong>Klik på en kurve</strong> for at vælge den og se dens kontrolpunkter',
+      '<strong>Træk i ankerpunkter</strong> (diamanter) for at flytte kurvens endepunkter',
+      '<strong>Træk i kontrolhåndtag</strong> (cirkler) for at justere kurvens form',
+      '<strong>Brug værktøjslinjen</strong> til venstre for at tilføje/slette noder eller ændre nodetyper'
+    ],
+    helpSectionSymmetryTitle: 'Symmetrimuligheder',
+    helpSectionSymmetryIntro: 'Brug symmetripanelet til højre for at håndhæve begrænsninger:',
+    helpSectionSymmetryBullets: [
+      '<strong>Inden i kurve:</strong> Gør hver kurve symmetrisk omkring sit midtpunkt',
+      '<strong>Inden i lap:</strong> Spejler kurver inden for hver lap',
+      '<strong>Mellem lapper:</strong> Gør begge lapper identiske (kræver samme gitterstørrelse)'
+    ],
+    helpSectionSymmetryNote: '<em>Sym</em> = spejlsymmetri, <em>Anti</em> = punktsymmetri (180° rotation)',
+    helpSectionRequirementsTitle: 'Krav for hjerter der kan foldes',
+    helpSectionRequirementsIntro: 'For at et hjertedesign kan foldes fysisk af papir:',
+    helpSectionRequirementsBullets: [
+      '<strong>Ingen selvkryds:</strong> Kurver i samme lap må ikke krydse hinanden',
+      '<strong>Korrekt fletning:</strong> Striber skal skiftevis ligge over/under ved hvert kryds',
+      '<strong>Bløde kurver:</strong> Skarpe knæk kan være svære at folde pænt',
+      '<strong>Rimelig kompleksitet:</strong> Flere strimler = sværere at flette i hånden'
+    ],
+    helpSectionTipsTitle: 'Tips til gode designs',
+    helpSectionTipsBullets: [
+      'Start med et simpelt gitter (3×3) og eksperimentér',
+      'Brug symmetri til at skabe afbalancerede, pæne mønstre',
+      'Hold kurverne bløde – undgå stramme zigzag-mønstre',
+      'Test dit design ved at downloade PDF\'en og prøve at folde det!'
+    ],
+
     // Footer
     lobeColors: 'Lobe farver',
     leftColor: 'Venstre farve',
@@ -99,6 +141,7 @@ export const translations = {
     selected: '✓ Selected',
     details: 'Details',
     private: 'Private',
+    selectHeartsFirst: 'Select hearts first',
 
     // Heart detail
     backToGallery: '← Back to Gallery',
@@ -146,6 +189,47 @@ export const translations = {
     copy: '(Copy)',
     importedHeart: 'Imported Heart',
     invalidHeartFile: 'Invalid heart design file',
+
+    // Editor help
+    helpOpenAriaLabel: 'Help',
+    helpCloseAriaLabel: 'Close',
+    helpTitle: 'How to Design Paper Hearts',
+    helpSectionWhatAreTitle: 'What are Woven Paper Hearts?',
+    helpSectionWhatAreText:
+      'Woven paper hearts (Danish: <em>julehjerter</em>) are a traditional Scandinavian craft. Two paper pieces are woven together to create a heart-shaped basket that can hold treats or decorations.',
+    helpSectionBasicStructureTitle: 'Basic Structure',
+    helpSectionBasicStructureText:
+      'Each heart consists of two <strong>lobes</strong> (left and right) that interweave in the center. The curves you see are the <strong>boundaries</strong> between paper strips. Drag curves to reshape them, or drag from the edges to add new strips.',
+    helpSectionEditingCurvesTitle: 'Editing Curves',
+    helpSectionEditingCurvesBullets: [
+      '<strong>Click a curve</strong> to select it and see its control points',
+      '<strong>Drag anchor points</strong> (diamonds) to move curve endpoints',
+      '<strong>Drag control handles</strong> (circles) to adjust curve shape',
+      '<strong>Use the toolbar</strong> on the left to add/delete nodes or change node types'
+    ],
+    helpSectionSymmetryTitle: 'Symmetry Options',
+    helpSectionSymmetryIntro: 'Use the symmetry panel on the right to enforce constraints:',
+    helpSectionSymmetryBullets: [
+      '<strong>Within curve:</strong> Makes each curve symmetric around its center',
+      '<strong>Within lobe:</strong> Mirrors curves within each lobe',
+      '<strong>Between lobes:</strong> Makes both lobes identical (requires equal grid size)'
+    ],
+    helpSectionSymmetryNote: '<em>Sym</em> = mirror symmetry, <em>Anti</em> = point symmetry (180° rotation)',
+    helpSectionRequirementsTitle: 'Requirements for Foldable Hearts',
+    helpSectionRequirementsIntro: 'For a heart design to be physically foldable from paper:',
+    helpSectionRequirementsBullets: [
+      '<strong>No self-intersections:</strong> Curves within the same lobe must not cross each other',
+      '<strong>Proper weaving:</strong> Strips must alternate over/under at each crossing',
+      '<strong>Smooth curves:</strong> Sharp angles can be difficult to fold cleanly',
+      '<strong>Reasonable complexity:</strong> More strips = harder to weave by hand'
+    ],
+    helpSectionTipsTitle: 'Tips for Good Designs',
+    helpSectionTipsBullets: [
+      'Start with a simple grid (3x3) and experiment',
+      'Use symmetry to create balanced, pleasing patterns',
+      'Keep curves smooth - avoid tight zigzags',
+      'Test your design by downloading the PDF and trying to fold it!'
+    ],
 
     // Footer
     lobeColors: 'Lobe colors',

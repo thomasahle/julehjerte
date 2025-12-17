@@ -22,7 +22,11 @@
     type HeartColors,
   } from "$lib/stores/colors";
   import type { HeartDesign } from "$lib/types/heart";
-  import { trackHeartView, trackHeartSelect, trackMultiDownload } from "$lib/analytics";
+  import {
+    trackHeartView,
+    trackHeartSelect,
+    trackMultiDownload,
+  } from "$lib/analytics";
   import { Button } from "$lib/components/ui/button";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
   import * as Tooltip from "$lib/components/ui/tooltip";
@@ -118,7 +122,10 @@
     if (selected.length > 0) {
       generating = true;
       try {
-        trackMultiDownload(selected.map(h => h.id), selected.length);
+        trackMultiDownload(
+          selected.map((h) => h.id),
+          selected.length,
+        );
         await downloadMultiPDF(selected, { layout: pdfLayout });
       } finally {
         generating = false;
@@ -152,16 +159,25 @@
       {t("createNewHeart", lang)}
     </Button>
     <div class="inline-flex rounded-md shadow-xs" role="group">
-      <Button
-        variant="secondary"
-        class="rounded-r-none border-r-0"
-        onclick={handlePrintSelected}
-        disabled={selectedCount === 0 || generating}
-      >
-        {generating
-          ? t("generating", lang)
-          : `${t("printSelected", lang)} (${selectedCount})`}
-      </Button>
+      <Tooltip.Root>
+        <Tooltip.Trigger
+          disabled={selectedCount > 0 || generating}
+        >
+          <Button
+            variant="secondary"
+            class="rounded-r-none border-r-0"
+            onclick={handlePrintSelected}
+            disabled={selectedCount === 0 || generating}
+          >
+            {generating
+              ? t("generating", lang)
+              : `${t("printSelected", lang)} (${selectedCount})`}
+          </Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content>
+          <p>{t("selectHeartsFirst", lang)}</p>
+        </Tooltip.Content>
+      </Tooltip.Root>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
           {#snippet child({ props })}
@@ -216,11 +232,14 @@
       <div class="flex items-center gap-2">
         <Tooltip.Root>
           <Tooltip.Trigger>
-            <label class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden">
+            <label
+              class="inline-flex size-8 rounded-full shadow-xs cursor-pointer overflow-hidden"
+            >
               <input
                 type="color"
                 value={colors.left}
-                oninput={(e) => setLeftColor((e.target as HTMLInputElement).value)}
+                oninput={(e) =>
+                  setLeftColor((e.target as HTMLInputElement).value)}
                 class="w-full h-full border-0 cursor-pointer scale-150"
               />
             </label>
@@ -231,11 +250,14 @@
         </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger>
-            <label class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden">
+            <label
+              class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden"
+            >
               <input
                 type="color"
                 value={colors.right}
-                oninput={(e) => setRightColor((e.target as HTMLInputElement).value)}
+                oninput={(e) =>
+                  setRightColor((e.target as HTMLInputElement).value)}
                 class="w-full h-full border-0 cursor-pointer scale-150"
               />
             </label>
@@ -298,9 +320,11 @@
   }
 
   header p {
-    margin: 0.5rem 0 0 0;
+    max-width: 700px;
+    margin: 0.5rem auto 0;
     color: #555;
     font-size: 1.1rem;
+    line-height: 1.6;
   }
 
   .toolbar {
@@ -330,6 +354,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
   }
 
   .page-footer {

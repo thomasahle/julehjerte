@@ -5,11 +5,11 @@
   import { onMount } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { SITE_TITLE } from '$lib/config';
-  import { t, getLanguage, setLanguage, subscribeLanguage, type Language } from '$lib/i18n';
+  import { t, tArray, getLanguage, setLanguage, subscribeLanguage, type Language } from '$lib/i18n';
   import { getColors, setLeftColor, setRightColor, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
-    import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
+  import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
   import GitHubStarsButton from '$lib/components/GitHubStarsButton.svelte';
   import PageHeader from '$lib/components/PageHeader.svelte';
   import { browser } from '$app/environment';
@@ -168,7 +168,7 @@
 
 <div class="editor">
   <PageHeader {lang}>
-    <Button variant="ghost" size="icon" onclick={() => showHelp = true} aria-label="Help">
+    <Button variant="ghost" size="icon" onclick={() => showHelp = true} aria-label={t('helpOpenAriaLabel', lang)}>
       <CircleHelpIcon size={20} />
     </Button>
   </PageHeader>
@@ -232,72 +232,63 @@
         onclick={(e) => e.stopPropagation()}
         onkeydown={(e) => e.stopPropagation()}
         role="dialog"
+        tabindex="-1"
         aria-modal="true"
         aria-labelledby="help-title"
       >
         <div class="help-header">
-          <h2 id="help-title">How to Design Paper Hearts</h2>
-          <button class="close-button" onclick={() => showHelp = false} aria-label="Close">
+          <h2 id="help-title">{t('helpTitle', lang)}</h2>
+          <button class="close-button" onclick={() => showHelp = false} aria-label={t('helpCloseAriaLabel', lang)}>
             <XIcon size={20} />
           </button>
         </div>
         <div class="help-content">
           <section>
-            <h3>What are Woven Paper Hearts?</h3>
-            <p>
-              Woven paper hearts (Danish: <em>julehjerter</em>) are a traditional Scandinavian craft.
-              Two paper pieces are woven together to create a heart-shaped basket that can hold treats or decorations.
-            </p>
+            <h3>{t('helpSectionWhatAreTitle', lang)}</h3>
+            <p>{@html t('helpSectionWhatAreText', lang)}</p>
           </section>
 
           <section>
-            <h3>Basic Structure</h3>
-            <p>
-              Each heart consists of two <strong>lobes</strong> (left and right) that interweave in the center.
-              The curves you see are the <strong>boundaries</strong> between paper strips.
-              Drag curves to reshape them, or drag from the edges to add new strips.
-            </p>
+            <h3>{t('helpSectionBasicStructureTitle', lang)}</h3>
+            <p>{@html t('helpSectionBasicStructureText', lang)}</p>
           </section>
 
           <section>
-            <h3>Editing Curves</h3>
+            <h3>{t('helpSectionEditingCurvesTitle', lang)}</h3>
             <ul>
-              <li><strong>Click a curve</strong> to select it and see its control points</li>
-              <li><strong>Drag anchor points</strong> (diamonds) to move curve endpoints</li>
-              <li><strong>Drag control handles</strong> (circles) to adjust curve shape</li>
-              <li><strong>Use the toolbar</strong> on the left to add/delete nodes or change node types</li>
+              {#each tArray('helpSectionEditingCurvesBullets', lang) as item}
+                <li>{@html item}</li>
+              {/each}
             </ul>
           </section>
 
           <section>
-            <h3>Symmetry Options</h3>
-            <p>Use the symmetry panel on the right to enforce constraints:</p>
+            <h3>{t('helpSectionSymmetryTitle', lang)}</h3>
+            <p>{t('helpSectionSymmetryIntro', lang)}</p>
             <ul>
-              <li><strong>Within curve:</strong> Makes each curve symmetric around its center</li>
-              <li><strong>Within lobe:</strong> Mirrors curves within each lobe</li>
-              <li><strong>Between lobes:</strong> Makes both lobes identical (requires equal grid size)</li>
+              {#each tArray('helpSectionSymmetryBullets', lang) as item}
+                <li>{@html item}</li>
+              {/each}
             </ul>
-            <p><em>Sym</em> = mirror symmetry, <em>Anti</em> = point symmetry (180° rotation)</p>
+            <p>{@html t('helpSectionSymmetryNote', lang)}</p>
           </section>
 
           <section>
-            <h3>Requirements for Foldable Hearts</h3>
-            <p>For a heart design to be physically foldable from paper:</p>
+            <h3>{t('helpSectionRequirementsTitle', lang)}</h3>
+            <p>{t('helpSectionRequirementsIntro', lang)}</p>
             <ul>
-              <li><strong>No self-intersections:</strong> Curves within the same lobe must not cross each other</li>
-              <li><strong>Proper weaving:</strong> Strips must alternate over/under at each crossing</li>
-              <li><strong>Smooth curves:</strong> Sharp angles can be difficult to fold cleanly</li>
-              <li><strong>Reasonable complexity:</strong> More strips = harder to weave by hand</li>
+              {#each tArray('helpSectionRequirementsBullets', lang) as item}
+                <li>{@html item}</li>
+              {/each}
             </ul>
           </section>
 
           <section>
-            <h3>Tips for Good Designs</h3>
+            <h3>{t('helpSectionTipsTitle', lang)}</h3>
             <ul>
-              <li>Start with a simple grid (3x3) and experiment</li>
-              <li>Use symmetry to create balanced, pleasing patterns</li>
-              <li>Keep curves smooth - avoid tight zigzags</li>
-              <li>Test your design by downloading the PDF and trying to fold it!</li>
+              {#each tArray('helpSectionTipsBullets', lang) as item}
+                <li>{item}</li>
+              {/each}
             </ul>
           </section>
         </div>
@@ -532,27 +523,6 @@
     }
   }
 
-  .help-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    justify-self: end;
-    width: 32px;
-    height: 32px;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    background: white;
-    color: #666;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .help-button:hover {
-    background: #f5f5f5;
-    color: #cc0000;
-    border-color: #cc0000;
-  }
-
   .help-modal {
     max-width: 700px;
     max-height: 85vh;
@@ -631,11 +601,11 @@
     margin-bottom: 0.35rem;
   }
 
-  .help-content em {
+  .help-content :global(em) {
     color: #666;
   }
 
-  .help-content strong {
+  .help-content :global(strong) {
     color: #333;
   }
 </style>
