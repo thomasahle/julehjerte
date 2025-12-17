@@ -339,6 +339,8 @@
     justify-content: center;
     align-items: center;
     padding: 1rem;
+    max-width: 450px;
+    margin: 0 auto;
   }
 
   .preview-section :global(canvas) {
