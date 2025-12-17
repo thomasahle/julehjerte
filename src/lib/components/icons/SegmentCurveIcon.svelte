@@ -1,24 +1,18 @@
-<script lang="ts">
-  export let size = 16;
-</script>
-
 <svg
+  style="width: 28px !important; height: 28px !important;"
   viewBox="0 0 24 24"
-  width={size}
-  height={size}
   fill="none"
-  stroke="currentColor"
   stroke-width="1.8"
   stroke-linecap="round"
   stroke-linejoin="round"
   aria-hidden="true"
 >
-  <!-- Curved segment (Inkscape-like: square nodes + visible handles) -->
-  <path d="M6 16 C10 8 14 8 18 16" />
-  <path d="M6 16 L9 10" />
-  <path d="M18 16 L15 10" />
-  <circle cx="9" cy="10" r="1.4" />
-  <circle cx="15" cy="10" r="1.4" />
-  <rect x="4.5" y="14.5" width="3" height="3" />
-  <rect x="16.5" y="14.5" width="3" height="3" />
+  <!-- Curved segment with handles -->
+  <path d="M4 17 C8 5 16 5 20 17" stroke="#333" stroke-width="2" />
+  <path d="M4 17 L7 8" stroke="#666" stroke-width="1.5" />
+  <path d="M20 17 L17 8" stroke="#666" stroke-width="1.5" />
+  <circle cx="7" cy="8" r="2.2" fill="white" stroke="#666" stroke-width="1.2" />
+  <circle cx="17" cy="8" r="2.2" fill="white" stroke="#666" stroke-width="1.2" />
+  <rect x="1.5" y="14.5" width="5" height="5" fill="#f5c542" stroke="#333" stroke-width="1" />
+  <rect x="17.5" y="14.5" width="5" height="5" fill="#f5c542" stroke="#333" stroke-width="1" />
 </svg>

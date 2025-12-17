@@ -173,6 +173,41 @@ function approxSegmentLength(seg) {
   );
 }
 
+function bboxForSegment(seg) {
+  const xs = [seg.p0.x, seg.p1.x, seg.p2.x, seg.p3.x];
+  const ys = [seg.p0.y, seg.p1.y, seg.p2.y, seg.p3.y];
+  return {
+    minX: Math.min(...xs),
+    maxX: Math.max(...xs),
+    minY: Math.min(...ys),
+    maxY: Math.max(...ys)
+  };
+}
+
+function bboxOverlapsRect(bbox, rect) {
+  return (
+    bbox.maxX >= rect.left &&
+    bbox.minX <= rect.right &&
+    bbox.maxY >= rect.top &&
+    bbox.minY <= rect.bottom
+  );
+}
+
+function trimSegmentsToRect(segments, rect) {
+  if (!segments.length) return { segments, droppedStart: 0, droppedEnd: 0 };
+  let startIdx = 0;
+  while (startIdx < segments.length && !bboxOverlapsRect(bboxForSegment(segments[startIdx]), rect)) {
+    startIdx++;
+  }
+  let endIdx = segments.length;
+  while (endIdx > startIdx && !bboxOverlapsRect(bboxForSegment(segments[endIdx - 1]), rect)) {
+    endIdx--;
+  }
+  if (startIdx === 0 && endIdx === segments.length) return { segments, droppedStart: 0, droppedEnd: 0 };
+  const trimmed = segments.slice(startIdx, endIdx);
+  return { segments: trimmed.length ? trimmed : segments, droppedStart: startIdx, droppedEnd: segments.length - endIdx };
+}
+
 function parseViewBox(attr) {
   const parts = String(attr ?? '')
     .trim()
@@ -273,6 +308,18 @@ function splitIntoSubpaths(segments) {
   }
   if (current.length) subpaths.push(current);
   return subpaths;
+}
+
+function pruneInkscapeHelperSubpaths(subpaths) {
+  if (subpaths.length <= 1) return subpaths;
+
+  // Inkscape often exports helper/tail geometry as separate subpaths within a single <path>,
+  // typically as pure line segments ("m ... v ... m ... v ...") before/after the real curve.
+  // If any subpath contains actual curve segments, drop subpaths that are line-only.
+  const hasCurve = subpaths.some((s) => s.some((seg) => seg.kind === 'curve'));
+  if (!hasCurve) return subpaths;
+  const kept = subpaths.filter((s) => s.some((seg) => seg.kind === 'curve'));
+  return kept.length ? kept : subpaths;
 }
 
 function stitchSubpathsIntoSinglePath(subpaths, tolerance) {
@@ -534,16 +581,15 @@ for (const el of selectedPaths) {
     throw new Error(`Non-finite coordinate detected in path ${id}`);
   }
 
-  // Detect lobe: vertical-ish -> right, else left
-  const xs = segments.flatMap((s) => [s.p0.x, s.p1.x, s.p2.x, s.p3.x]);
-  const ys = segments.flatMap((s) => [s.p0.y, s.p1.y, s.p2.y, s.p3.y]);
-  const width = Math.max(...xs) - Math.min(...xs);
-  const height = Math.max(...ys) - Math.min(...ys);
-  const autoLobe = height > width ? 'right' : 'left';
-  const lobe = lobeOverrides.get(id) ?? assumeLobe ?? autoLobe;
+  let subpaths = splitIntoSubpaths(segments);
+  subpaths = pruneInkscapeHelperSubpaths(subpaths);
 
-  const subpaths = splitIntoSubpaths(segments);
-  const joinTol = stitchTolerance ?? Math.max(0.5, Math.max(width, height) * 1e-3);
+  const xsAll = segments.flatMap((s) => [s.p0.x, s.p1.x, s.p2.x, s.p3.x]);
+  const ysAll = segments.flatMap((s) => [s.p0.y, s.p1.y, s.p2.y, s.p3.y]);
+  const widthAll = Math.max(...xsAll) - Math.min(...xsAll);
+  const heightAll = Math.max(...ysAll) - Math.min(...ysAll);
+  const joinTol = stitchTolerance ?? Math.max(0.5, Math.max(widthAll, heightAll) * 1e-3);
+
   const stitched = stitchSubpathsIntoSinglePath(subpaths, joinTol);
   if (stitched.unused) {
     const kept = subpaths.length - stitched.unused;
@@ -551,7 +597,21 @@ for (const el of selectedPaths) {
     if (strictStitch) throw new Error(msg);
     console.warn(msg);
   }
-  const simplified = stitched.segments;
+  let simplified = stitched.segments;
+
+  // Drop leading/trailing tail segments that never touch the overlap region. This makes
+  // overlap inference stable and avoids producing long "tails" in the exported heart.
+  // Note: designs may extend beyond the overlap; we only trim segments fully outside it.
+  const trimmed = trimSegmentsToRect(simplified, overlapRect);
+  simplified = trimmed.segments;
+
+  // Detect lobe: vertical-ish -> right, else left (after simplification).
+  const xs = simplified.flatMap((s) => [s.p0.x, s.p1.x, s.p2.x, s.p3.x]);
+  const ys = simplified.flatMap((s) => [s.p0.y, s.p1.y, s.p2.y, s.p3.y]);
+  const width = Math.max(...xs) - Math.min(...xs);
+  const height = Math.max(...ys) - Math.min(...ys);
+  const autoLobe = height > width ? 'right' : 'left';
+  const lobe = lobeOverrides.get(id) ?? assumeLobe ?? autoLobe;
 
   const directed = canonicalizeDirectionForLobe(lobe, simplified);
 

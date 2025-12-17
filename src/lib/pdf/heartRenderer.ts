@@ -7,58 +7,18 @@ import {
   buildLobeShape,
   buildLobeStrips,
   buildOddWeaveMask,
-  getOverlapParams,
   itemArea,
   lobeFillColor
 } from '$lib/rendering/paperWeave';
-import { fingerToSegments } from '$lib/geometry/bezierSegments';
+import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 
 const { PaperScope } = paperPkg;
 
 const DEFAULT_CANVAS_SIZE = 300; // Larger preview size to prevent cropping
 const REFERENCE_GRID_SIZE = 4;
 
-function median(values: number[]): number {
-  if (!values.length) return 0;
-  const sorted = values.slice().sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 === 1 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
-}
-
 function inferOverlapRect(design: HeartDesign) {
-  const { width: expectedW, height: expectedH, left: centeredLeft, top: centeredTop } = getOverlapParams(design.gridSize, {
-    x: BASE_CENTER,
-    y: BASE_CENTER
-  });
-
-  const leftCandidates: number[] = [];
-  const rightCandidates: number[] = [];
-  const topCandidates: number[] = [];
-  const bottomCandidates: number[] = [];
-
-  for (const f of design.fingers) {
-    const segs = fingerToSegments(f);
-    if (!segs.length) continue;
-    const start = segs[0]!.p0;
-    const end = segs[segs.length - 1]!.p3;
-    if (f.lobe === 'left') {
-      leftCandidates.push(Math.min(start.x, end.x));
-      rightCandidates.push(Math.max(start.x, end.x));
-    } else {
-      topCandidates.push(Math.min(start.y, end.y));
-      bottomCandidates.push(Math.max(start.y, end.y));
-    }
-  }
-
-  let left = leftCandidates.length ? median(leftCandidates) : centeredLeft;
-  let right = rightCandidates.length ? median(rightCandidates) : centeredLeft + expectedW;
-  let top = topCandidates.length ? median(topCandidates) : centeredTop;
-  let bottom = bottomCandidates.length ? median(bottomCandidates) : centeredTop + expectedH;
-
-  if (Math.abs(right - left - expectedW) <= 3) right = left + expectedW;
-  if (Math.abs(bottom - top - expectedH) <= 3) bottom = top + expectedH;
-
-  return { left, top, width: right - left, height: bottom - top };
+  return inferOverlapRectShared(design.fingers, design.gridSize);
 }
 
 /**
@@ -116,8 +76,8 @@ export async function renderHeartToDataURL(
   rightOutsideOverlap.fillColor = lobeFillColor(paper, 'right', colors);
   rightOutsideOverlap.strokeColor = null;
 
-  // Build strips
-  // Only even-index strips are needed for the even-odd weave mask.
+  // Build strips for the even-odd weave mask.
+  // Alternate strips are sufficient; which cells are red-on-top is controlled by `weaveParity`.
   const leftStrips = buildLobeStrips(
     paper,
     'left',
@@ -128,7 +88,7 @@ export async function renderHeartToDataURL(
     overlapTop,
     overlapWidth,
     overlapHeight,
-    true
+    0
   );
   const rightStrips = buildLobeStrips(
     paper,
@@ -140,7 +100,7 @@ export async function renderHeartToDataURL(
     overlapTop,
     overlapWidth,
     overlapHeight,
-    true
+    (design.weaveParity ?? 0) as 0 | 1
   );
 
   // Fast weave: even-odd fill rule (no boolean ops).

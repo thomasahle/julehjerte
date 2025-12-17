@@ -1,27 +1,5 @@
 import { describe, it, expect } from 'vitest';
-
-// Test the implementations that will be consolidated into math.ts
-// For now, we test the functions as they exist in heartDesign.ts
-
-// Inline implementations to test (these will become the canonical versions)
-function clamp(value: number, min: number, max: number): number {
-	return Math.max(min, Math.min(max, value));
-}
-
-function clampInt(value: number, min: number, max: number): number {
-	return Math.max(min, Math.min(max, Math.round(value)));
-}
-
-function median(values: number[]): number {
-	if (!values.length) return 0;
-	const sorted = values.slice().sort((a, b) => a - b);
-	const mid = Math.floor(sorted.length / 2);
-	return sorted.length % 2 === 1 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
-}
-
-function clamp01(value: number): number {
-	return Math.max(0, Math.min(1, value));
-}
+import { clamp, clampInt, median, clamp01 } from './math';
 
 describe('clamp', () => {
 	it('returns value unchanged when within range', () => {

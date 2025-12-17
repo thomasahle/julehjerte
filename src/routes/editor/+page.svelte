@@ -9,10 +9,17 @@
   import { getColors, setLeftColor, setRightColor, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
-  import { traceHeartFromPng, type PngTemplateLayout } from '$lib/trace/templatePng';
-  import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
+    import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
   import GitHubStarsButton from '$lib/components/GitHubStarsButton.svelte';
   import { browser } from '$app/environment';
+  import CircleHelpIcon from '@lucide/svelte/icons/circle-help';
+  import XIcon from '@lucide/svelte/icons/x';
+  import { Button } from '$lib/components/ui/button';
+  import * as Tooltip from '$lib/components/ui/tooltip';
+  import { Separator } from '$lib/components/ui/separator';
+
+  // Help modal state
+  let showHelp = $state(false);
 
   // Helper to parse design from URL - called once at initialization
   function getDesignFromUrl(): { design: HeartDesign | null; isEditMode: boolean } {
@@ -42,6 +49,7 @@
   // Initialize fingers/gridSize with URL design if available
   let currentFingers: Finger[] = $state(urlDesign?.fingers ?? []);
   let currentGridSize: GridSize = $state(urlDesign?.gridSize ?? { x: 3, y: 3 });
+  let currentWeaveParity: 0 | 1 = $state((urlDesign?.weaveParity ?? 0) as 0 | 1);
 
   // Form fields - initialize with URL design if available
   let heartName = $state('');
@@ -49,15 +57,6 @@
   let description = $state(urlDesign?.description ?? '');
   let lang = $state<Language>('da');
   let colors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
-
-  // PNG import
-  let showPngImport = $state(false);
-  let pngFile = $state<File | null>(null);
-  let pngPreviewUrl = $state<string | null>(null);
-  let pngGridSize = $state(4);
-  let pngLayout = $state<PngTemplateLayout>('double');
-  let pngSwapHalves = $state(false);
-  let pngTracing = $state(false);
 
   onMount(() => {
     // Initialize language
@@ -83,9 +82,10 @@
     lang = newLang;
   }
 
-  function handleFingersChange(fingers: Finger[], gridSize: GridSize) {
+  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
     currentFingers = fingers;
     currentGridSize = gridSize;
+    currentWeaveParity = weaveParity;
   }
 
   function generateId(): string {
@@ -99,6 +99,7 @@
       name: heartName,
       author: authorName,
       description: description || undefined,
+      weaveParity: currentWeaveParity,
       gridSize: currentGridSize,
       fingers: currentFingers
     };
@@ -144,6 +145,7 @@
 
         currentFingers = design.fingers;
         currentGridSize = design.gridSize;
+        currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
         heartName = design.name || t('importedHeart', lang);
         authorName = design.author || '';
         description = design.description || '';
@@ -157,62 +159,6 @@
     reader.readAsText(file);
   }
 
-  function handleImportPng(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    input.value = '';
-    if (!file) return;
-
-    if (pngPreviewUrl) URL.revokeObjectURL(pngPreviewUrl);
-    pngFile = file;
-    pngPreviewUrl = URL.createObjectURL(file);
-    pngGridSize = Math.max(currentGridSize.x, currentGridSize.y) || 4;
-    pngLayout = 'double';
-    pngSwapHalves = false;
-    showPngImport = true;
-  }
-
-  function closePngImport() {
-    showPngImport = false;
-    pngFile = null;
-    if (pngPreviewUrl) URL.revokeObjectURL(pngPreviewUrl);
-    pngPreviewUrl = null;
-    pngTracing = false;
-  }
-
-  async function runPngTrace() {
-    if (!pngFile) return;
-    pngTracing = true;
-    try {
-      const traced = await traceHeartFromPng(pngFile, {
-        gridSize: pngGridSize,
-        layout: pngLayout,
-        swapHalves: pngSwapHalves
-      });
-
-      currentFingers = traced.fingers;
-      currentGridSize = { x: traced.gridSize, y: traced.gridSize };
-
-      if (!heartName) heartName = t('importedHeart', lang);
-
-      editingExisting = false;
-      initialDesign = {
-        id: '',
-        name: heartName,
-        author: authorName,
-        description: description || undefined,
-        gridSize: { x: traced.gridSize, y: traced.gridSize },
-        fingers: traced.fingers
-      };
-      editorKey++;
-      closePngImport();
-    } catch (e) {
-      console.error(e);
-      alert(t('pngImportFailed', lang));
-    } finally {
-      pngTracing = false;
-    }
-  }
 </script>
 
 <svelte:head>
@@ -222,10 +168,12 @@
 <div class="editor">
   <header>
     <div class="header-row">
-      <a href="{base}/" class="back-link">{t('backToGallery', lang)}</a>
+      <Button variant="ghost" href="{base}/" class="w-fit">{t('backToGallery', lang)}</Button>
       <a href="{base}/" class="site-title">{t('siteTitle', lang)}</a>
+      <Button variant="ghost" size="icon" onclick={() => showHelp = true} aria-label="Help" class="ml-auto">
+        <CircleHelpIcon size={20} />
+      </Button>
     </div>
-    <h1>{editingExisting ? t('editHeart', lang) : t('createNewHeartTitle', lang)}</h1>
   </header>
 
   <div class="editor-layout">
@@ -235,6 +183,7 @@
           onFingersChange={handleFingersChange}
           initialGridSize={currentGridSize}
           initialFingers={currentFingers}
+          initialWeaveParity={currentWeaveParity}
         />
       {/key}
     </main>
@@ -263,97 +212,146 @@
             {isEditMode ? t('saveChanges', lang) : t('showInGallery', lang)}
           </button>
           <button class="btn secondary full-width" onclick={downloadJSON}>
-            {t('downloadJson', lang)}
+            {t('download', lang)}
           </button>
           <label class="btn secondary full-width import-btn">
-            {t('importJson', lang)}
+            {t('import', lang)}
             <input type="file" accept=".json" onchange={handleImport} hidden />
-          </label>
-          <label class="btn secondary full-width import-btn">
-            {t('importPng', lang)}
-            <input type="file" accept="image/png" onchange={handleImportPng} hidden />
           </label>
         </div>
       </div>
     </aside>
   </div>
 
-  {#if showPngImport}
+  {#if showHelp}
     <div
       class="modal-overlay"
-      onclick={closePngImport}
-      onkeydown={(e) => e.key === 'Escape' && closePngImport()}
+      onclick={() => showHelp = false}
+      onkeydown={(e) => e.key === 'Escape' && (showHelp = false)}
       role="presentation"
     >
       <div
-        class="modal"
+        class="modal help-modal"
         onclick={(e) => e.stopPropagation()}
         onkeydown={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="png-import-title"
+        aria-labelledby="help-title"
       >
-        <h2 id="png-import-title">{t('importPng', lang)}</h2>
-        <p class="modal-hint">{t('pngImportHint', lang)}</p>
-
-        {#if pngPreviewUrl}
-          <img class="png-preview" src={pngPreviewUrl} alt="PNG preview" />
-        {/if}
-
-        <div class="modal-row">
-          <label>
-            {t('gridSize', lang)}:
-            <input type="number" min="2" max="8" bind:value={pngGridSize} />
-          </label>
-          <label class="checkbox">
-            <input type="checkbox" bind:checked={pngSwapHalves} />
-            {t('pngSwapHalves', lang)}
-          </label>
-          <label class="checkbox">
-            <input
-              type="checkbox"
-              checked={pngLayout === 'double'}
-              onchange={(e) => (pngLayout = (e.target as HTMLInputElement).checked ? 'double' : 'single')}
-            />
-            {t('pngTwoHalves', lang)}
-          </label>
+        <div class="help-header">
+          <h2 id="help-title">How to Design Paper Hearts</h2>
+          <button class="close-button" onclick={() => showHelp = false} aria-label="Close">
+            <XIcon size={20} />
+          </button>
         </div>
+        <div class="help-content">
+          <section>
+            <h3>What are Woven Paper Hearts?</h3>
+            <p>
+              Woven paper hearts (Danish: <em>julehjerter</em>) are a traditional Scandinavian craft.
+              Two paper pieces are woven together to create a heart-shaped basket that can hold treats or decorations.
+            </p>
+          </section>
 
-        <div class="modal-actions">
-          <button class="btn secondary" onclick={closePngImport} disabled={pngTracing}>
-            {t('cancel', lang)}
-          </button>
-          <button class="btn primary" onclick={runPngTrace} disabled={pngTracing || !pngFile}>
-            {pngTracing ? t('pngTracing', lang) : t('pngTrace', lang)}
-          </button>
+          <section>
+            <h3>Basic Structure</h3>
+            <p>
+              Each heart consists of two <strong>lobes</strong> (left and right) that interweave in the center.
+              The curves you see are the <strong>boundaries</strong> between paper strips.
+              Drag curves to reshape them, or drag from the edges to add new strips.
+            </p>
+          </section>
+
+          <section>
+            <h3>Editing Curves</h3>
+            <ul>
+              <li><strong>Click a curve</strong> to select it and see its control points</li>
+              <li><strong>Drag anchor points</strong> (diamonds) to move curve endpoints</li>
+              <li><strong>Drag control handles</strong> (circles) to adjust curve shape</li>
+              <li><strong>Use the toolbar</strong> on the left to add/delete nodes or change node types</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Symmetry Options</h3>
+            <p>Use the symmetry panel on the right to enforce constraints:</p>
+            <ul>
+              <li><strong>Within curve:</strong> Makes each curve symmetric around its center</li>
+              <li><strong>Within lobe:</strong> Mirrors curves within each lobe</li>
+              <li><strong>Between lobes:</strong> Makes both lobes identical (requires equal grid size)</li>
+            </ul>
+            <p><em>Sym</em> = mirror symmetry, <em>Anti</em> = point symmetry (180° rotation)</p>
+          </section>
+
+          <section>
+            <h3>Requirements for Foldable Hearts</h3>
+            <p>For a heart design to be physically foldable from paper:</p>
+            <ul>
+              <li><strong>No self-intersections:</strong> Curves within the same lobe must not cross each other</li>
+              <li><strong>Proper weaving:</strong> Strips must alternate over/under at each crossing</li>
+              <li><strong>Smooth curves:</strong> Sharp angles can be difficult to fold cleanly</li>
+              <li><strong>Reasonable complexity:</strong> More strips = harder to weave by hand</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Tips for Good Designs</h3>
+            <ul>
+              <li>Start with a simple grid (3x3) and experiment</li>
+              <li>Use symmetry to create balanced, pleasing patterns</li>
+              <li>Keep curves smooth - avoid tight zigzags</li>
+              <li>Test your design by downloading the PDF and trying to fold it!</li>
+            </ul>
+          </section>
         </div>
       </div>
     </div>
   {/if}
 
   <footer class="page-footer">
+    <Separator class="mb-4" />
     <div class="footer-controls">
-      <div class="color-pickers">
-        <label class="color-picker">
-          <span class="color-label">{t('leftColor', lang)}</span>
-          <input
-            type="color"
-            value={colors.left}
-            oninput={(e) => setLeftColor((e.target as HTMLInputElement).value)}
-          />
-        </label>
-        <label class="color-picker">
-          <span class="color-label">{t('rightColor', lang)}</span>
-          <input
-            type="color"
-            value={colors.right}
-            oninput={(e) => setRightColor((e.target as HTMLInputElement).value)}
-          />
-        </label>
+      <div class="flex items-center gap-2">
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            <label class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden">
+              <input
+                type="color"
+                value={colors.left}
+                oninput={(e) => setLeftColor((e.target as HTMLInputElement).value)}
+                class="w-full h-full border-0 cursor-pointer scale-150"
+              />
+            </label>
+          </Tooltip.Trigger>
+          <Tooltip.Content>
+            <p>{t('leftColor', lang)}</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            <label class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden">
+              <input
+                type="color"
+                value={colors.right}
+                oninput={(e) => setRightColor((e.target as HTMLInputElement).value)}
+                class="w-full h-full border-0 cursor-pointer scale-150"
+              />
+            </label>
+          </Tooltip.Trigger>
+          <Tooltip.Content>
+            <p>{t('rightColor', lang)}</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
       </div>
-      <button class="lang-toggle" onclick={toggleLanguage} title={lang === 'da' ? 'Switch to English' : 'Skift til dansk'}>
+      <Button
+        variant="secondary"
+        size="sm"
+        onclick={toggleLanguage}
+        title={lang === 'da' ? 'Switch to English' : 'Skift til dansk'}
+        class="rounded-full"
+      >
         {lang === 'da' ? '🇬🇧 EN' : '🇩🇰 DA'}
-      </button>
+      </Button>
       <GitHubStarsButton repo="thomasahle/julehjerte" />
     </div>
   </footer>
@@ -371,9 +369,9 @@
   }
 
   .header-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    gap: 1rem;
     margin-bottom: 0.5rem;
   }
 
@@ -381,6 +379,7 @@
     color: #666;
     text-decoration: none;
     font-size: 0.9rem;
+    justify-self: start;
   }
 
   .back-link:hover {
@@ -388,9 +387,8 @@
   }
 
   .site-title {
-    flex: 1;
     text-align: center;
-    font-size: 1.25rem;
+    font-size: 2.5rem;
     font-weight: 600;
     color: #333;
     text-decoration: none;
@@ -401,23 +399,17 @@
     color: #cc0000;
   }
 
-  h1 {
-    margin: 0;
-    color: #111;
-    font-size: 1.75rem;
-    font-weight: 600;
-  }
-
   .editor-layout {
-    display: grid;
-    grid-template-columns: 1fr 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 1.5rem;
-    align-items: start;
   }
 
   main {
     display: flex;
     justify-content: center;
+    width: 100%;
   }
 
   .sidebar {
@@ -425,13 +417,14 @@
     border-radius: 12px;
     padding: 1.25rem;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
   }
 
   .sidebar-section {
-    margin-bottom: 1.5rem;
-  }
-
-  .sidebar-section:last-child {
     margin-bottom: 0;
   }
 
@@ -530,8 +523,6 @@
 
   .page-footer {
     margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .footer-controls {
@@ -540,57 +531,6 @@
     align-items: center;
     gap: 2rem;
     flex-wrap: wrap;
-  }
-
-  .color-pickers {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .color-picker {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-  }
-
-  .color-label {
-    font-size: 0.85rem;
-    color: #555;
-  }
-
-  .color-picker input[type='color'] {
-    width: 32px;
-    height: 32px;
-    border: 2px solid white;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    padding: 0;
-  }
-
-  .color-picker input[type='color']::-webkit-color-swatch-wrapper {
-    padding: 2px;
-  }
-
-  .color-picker input[type='color']::-webkit-color-swatch {
-    border-radius: 3px;
-    border: none;
-  }
-
-  .lang-toggle {
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 0.4rem 0.75rem;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .lang-toggle:hover {
-    background: white;
   }
 
   .modal-overlay {
@@ -619,50 +559,121 @@
     color: #222;
   }
 
-  .modal-hint {
-    margin: 0 0 1rem 0;
-    color: #666;
-    font-size: 0.95rem;
-    line-height: 1.4;
-  }
-
-  .png-preview {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    border: 1px solid #eee;
-    background: #fafafa;
-  }
-
-  .modal-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    margin-top: 1rem;
-  }
-
-  .checkbox {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    user-select: none;
-  }
-
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    margin-top: 1.25rem;
-  }
-
-  @media (max-width: 900px) {
-    .editor-layout {
-      grid-template-columns: 1fr;
+  @media (max-width: 600px) {
+    .editor {
+      padding: 0.5rem;
     }
 
     .sidebar {
-      order: -1;
+      grid-template-columns: 1fr;
+      max-width: 400px;
     }
+  }
+
+  .help-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: end;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    background: white;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .help-button:hover {
+    background: #f5f5f5;
+    color: #cc0000;
+    border-color: #cc0000;
+  }
+
+  .help-modal {
+    max-width: 700px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .help-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+  }
+
+  .help-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #222;
+  }
+
+  .close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .close-button:hover {
+    background: #f0f0f0;
+    color: #333;
+  }
+
+  .help-content {
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+
+  .help-content section {
+    margin-bottom: 1.5rem;
+  }
+
+  .help-content section:last-child {
+    margin-bottom: 0;
+  }
+
+  .help-content h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  .help-content p {
+    margin: 0 0 0.75rem 0;
+    line-height: 1.6;
+    color: #555;
+  }
+
+  .help-content ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    line-height: 1.6;
+    color: #555;
+  }
+
+  .help-content li {
+    margin-bottom: 0.35rem;
+  }
+
+  .help-content em {
+    color: #666;
+  }
+
+  .help-content strong {
+    color: #333;
   }
 </style>

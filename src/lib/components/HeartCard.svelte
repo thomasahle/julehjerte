@@ -95,6 +95,7 @@
         readonly
         initialFingers={design.fingers}
         initialGridSize={design.gridSize}
+        initialWeaveParity={design.weaveParity ?? 0}
         size={previewSize}
       />
     {:else}

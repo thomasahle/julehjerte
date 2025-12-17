@@ -1,4 +1,5 @@
 import type { Point, CubicBezierSegment } from "../types";
+import { clamp01 } from "$lib/utils/math";
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
@@ -6,10 +7,6 @@ function lerp(a: number, b: number, t: number) {
 
 function lerpPoint(a: Point, b: Point, t: number): Point {
   return { x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t) };
-}
-
-function clamp01(t: number) {
-  return Math.max(0, Math.min(1, t));
 }
 
 function cubicAt(p0: number, p1: number, p2: number, p3: number, t: number): number {

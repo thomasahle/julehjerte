@@ -2,25 +2,14 @@ import type paperPkg from 'paper';
 import type { Finger, GridSize, LobeId, Vec } from '../types/heart';
 import { fingerToSegments } from '../geometry/bezierSegments';
 import type { HeartColors } from '../stores/colors';
+import { STRIP_WIDTH, BASE_CANVAS_SIZE, BASE_CENTER } from '../constants';
+import { getCenteredRectParams } from '../utils/overlapRect';
 
-export const STRIP_WIDTH = 75;
-export const BASE_CANVAS_SIZE = 600;
-export const BASE_CENTER = BASE_CANVAS_SIZE / 2;
+// Re-export constants for backward compatibility
+export { STRIP_WIDTH, BASE_CANVAS_SIZE, BASE_CENTER };
 
-export function getOverlapParams(gridSize: GridSize, center: Vec = { x: BASE_CENTER, y: BASE_CENTER }) {
-  const width = gridSize.x * STRIP_WIDTH;
-  const height = gridSize.y * STRIP_WIDTH;
-  const left = center.x - width / 2;
-  const top = center.y - height / 2;
-  return {
-    width,
-    height,
-    left,
-    top,
-    right: left + width,
-    bottom: top + height
-  };
-}
+// Re-export getCenteredRectParams as getOverlapParams for backward compatibility
+export { getCenteredRectParams as getOverlapParams };
 
 export function toPoint(paper: paper.PaperScope, v: Vec): paper.Point {
   return new paper.Point(v.x, v.y);
@@ -200,7 +189,7 @@ export function buildLobeStrips(
   overlapTop: number,
   overlapWidth: number,
   overlapHeight: number,
-  onlyEvenStrips = false
+  stripParity: 0 | 1 | null = null
 ): Array<{ index: number; item: paper.PathItem }> {
   const boundariesFingers = fingers
     .filter((f) => f.lobe === lobe)
@@ -220,7 +209,7 @@ export function buildLobeStrips(
 
   const strips: Array<{ index: number; item: paper.PathItem }> = [];
   for (let i = 0; i < boundaries.length - 1; i++) {
-    if (onlyEvenStrips && i % 2 === 1) continue;
+    if (stripParity != null && i % 2 !== stripParity) continue;
     const a = boundaries[i]!();
     const b = boundaries[i + 1]!();
     const strip = buildStripRegionBetween(paper, a, b, overlap);
@@ -244,11 +233,9 @@ export function buildOddWeaveMask(
   rightStrips: Array<{ index: number; item: paper.PathItem }>
 ): paper.PathItem | null {
   return withInsertItemsDisabled(paper, () => {
-    const leftEven = leftStrips.filter((s) => s.index % 2 === 0);
-    const rightEven = rightStrips.filter((s) => s.index % 2 === 0);
     const children = [
-      ...leftEven.map((s) => s.item),
-      ...rightEven.map((s) => s.item)
+      ...leftStrips.map((s) => s.item),
+      ...rightStrips.map((s) => s.item)
     ];
     if (!children.length) return null;
     const mask = new paper.CompoundPath({ children });

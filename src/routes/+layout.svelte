@@ -4,6 +4,7 @@
 	import { SITE_NAME, SITE_TITLE, SITE_DESCRIPTION, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID } from "$lib/config";
 	import { browser } from "$app/environment";
 	import { onMount } from "svelte";
+	import * as Tooltip from "$lib/components/ui/tooltip";
 
 	let { children } = $props();
 
@@ -57,7 +58,9 @@
 	<meta name="twitter:image" content="{SITE_URL}/og-image.png" />
 </svelte:head>
 
-{@render children()}
+<Tooltip.Provider>
+	{@render children()}
+</Tooltip.Provider>
 
 <style>
 	:global(body) {

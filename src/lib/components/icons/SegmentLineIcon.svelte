@@ -1,20 +1,14 @@
-<script lang="ts">
-  export let size = 16;
-</script>
-
 <svg
+  style="width: 28px !important; height: 28px !important;"
   viewBox="0 0 24 24"
-  width={size}
-  height={size}
   fill="none"
-  stroke="currentColor"
   stroke-width="1.8"
   stroke-linecap="round"
   stroke-linejoin="round"
   aria-hidden="true"
 >
-  <!-- Straight segment (Inkscape-like: square nodes) -->
-  <path d="M6 16 L18 16" />
-  <rect x="4.5" y="14.5" width="3" height="3" />
-  <rect x="16.5" y="14.5" width="3" height="3" />
+  <!-- Straight segment -->
+  <path d="M4 12 L20 12" stroke="#333" stroke-width="2" />
+  <rect x="1.5" y="9.5" width="5" height="5" fill="#f5c542" stroke="#333" stroke-width="1" />
+  <rect x="17.5" y="9.5" width="5" height="5" fill="#f5c542" stroke="#333" stroke-width="1" />
 </svg>

@@ -3,6 +3,8 @@
   import paperPkg from "paper";
 	  import SplitIcon from "@lucide/svelte/icons/split";
 	  import Trash2Icon from "@lucide/svelte/icons/trash-2";
+	  import Undo2Icon from "@lucide/svelte/icons/undo-2";
+	  import Redo2Icon from "@lucide/svelte/icons/redo-2";
 	  import { Button } from "$lib/components/ui/button";
 	  import { Separator } from "$lib/components/ui/separator";
 	  import { ToggleGroup, ToggleGroupItem } from "$lib/components/ui/toggle-group";
@@ -57,6 +59,19 @@
     itemArea as itemAreaShared,
     lobeFillColor as lobeFillColorShared,
   } from "$lib/rendering/paperWeave";
+  import {
+    STRIP_WIDTH,
+    BASE_CANVAS_SIZE,
+    CENTER,
+    MIN_GRID_SIZE,
+    MAX_GRID_SIZE,
+  } from "$lib/constants";
+  import { clamp, clampInt } from "$lib/utils/math";
+  import { inferOverlapRect as inferOverlapRectShared } from "$lib/utils/overlapRect";
+  import {
+    snapSequentialQPBezierControl,
+    snapSequentialQPBezierJunction,
+  } from "$lib/algorithms/snapBezierControl";
 
   // Each component instance gets its own Paper.js scope
   const { PaperScope } = paperPkg;
@@ -102,15 +117,9 @@
     onFingersChange = undefined,
   }: Props = $props();
 
-  const BASE_CANVAS_SIZE = 600;
-  const CENTER: Vec = { x: BASE_CANVAS_SIZE / 2, y: BASE_CANVAS_SIZE / 2 };
   const ROTATION_RAD = Math.PI / 4;
-  // Overlap rectangle size is `gridSize.(x|y) * STRIP_WIDTH` (600px canvas, 75px per strip).
-  const STRIP_WIDTH = 75;
-  const MIN_STRIPS = 2;
-  const MAX_STRIPS = 8;
   const OUTER_EDGE_TOL = 0.75;
-  const OUTER_EDGE_REMOVE_TOL = 1.25;
+  const OUTER_EDGE_REMOVE_TOL = 5;
 
   // Colors from store
   let heartColors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
@@ -132,25 +141,17 @@
       : { r: 1, g: 1, b: 1, a: 1 };
   }
 
-  function clamp(value: number, min: number, max: number) {
-    return Math.max(min, Math.min(max, value));
-  }
-
-  function clampInt(value: number, min: number, max: number) {
-    return Math.max(min, Math.min(max, Math.round(value)));
-  }
-
   function normalizeGridSize(raw: GridSize | number): GridSize {
     if (typeof raw === "number" && Number.isFinite(raw)) {
-      const n = clampInt(raw, MIN_STRIPS, MAX_STRIPS);
+      const n = clampInt(raw, MIN_GRID_SIZE, MAX_GRID_SIZE);
       return { x: n, y: n };
     }
     const x = (raw as GridSize)?.x;
     const y = (raw as GridSize)?.y;
     if (typeof x === "number" && typeof y === "number") {
       return {
-        x: clampInt(x, MIN_STRIPS, MAX_STRIPS),
-        y: clampInt(y, MIN_STRIPS, MAX_STRIPS),
+        x: clampInt(x, MIN_GRID_SIZE, MAX_GRID_SIZE),
+        y: clampInt(y, MIN_GRID_SIZE, MAX_GRID_SIZE),
       };
     }
     return { x: 3, y: 3 };
@@ -220,6 +221,11 @@
     betweenLobesMode: "off",
   });
 
+  // Track previous symmetry state to detect changes (used by $effect and restoreSnapshot)
+  let prevWithinCurveMode: SymmetryMode = "off";
+  let prevWithinLobeMode: SymmetryMode = "off";
+  let prevBetweenLobesMode: SymmetryMode = "off";
+
   // Derived views for readability in the rest of the file.
   let showCurves = $derived(editor.showCurves);
   let symmetryWithinCurve = $derived(editor.withinCurveMode !== "off");
@@ -262,10 +268,17 @@
     weaveParity: 0 | 1;
     overlap: { left: number; right: number; top: number; bottom: number };
     selection: Selection;
+    symmetry?: {
+      withinCurveMode: SymmetryMode;
+      withinLobeMode: SymmetryMode;
+      betweenLobesMode: SymmetryMode;
+    };
   };
 
   let undoStack = $state<HistorySnapshot[]>([]);
   let redoStack = $state<HistorySnapshot[]>([]);
+  let canUndo = $derived(undoStack.length > 0);
+  let canRedo = $derived(redoStack.length > 0);
   let dragSnapshot: HistorySnapshot | null = null;
   let dragDirty = false;
 
@@ -298,6 +311,7 @@
     return {
       fingers: fingers.map(cloneFinger),
       gridSize,
+      weaveParity,
       overlap: {
         left: overlapLeft,
         right: overlapRight,
@@ -305,17 +319,33 @@
         bottom: overlapBottom,
       },
       selection: snapshotSelection(),
+      symmetry: {
+        withinCurveMode: editor.withinCurveMode,
+        withinLobeMode: editor.withinLobeMode,
+        betweenLobesMode: editor.betweenLobesMode,
+      },
     };
   }
 
   function restoreSnapshot(s: HistorySnapshot) {
     gridSize = s.gridSize;
+    weaveParity = s.weaveParity ?? 0;
     overlapLeft = s.overlap.left;
     overlapRight = s.overlap.right;
     overlapTop = s.overlap.top;
     overlapBottom = s.overlap.bottom;
     fingers = s.fingers.map(cloneFinger);
     restoreSelection(s.selection);
+    // Restore symmetry modes if present, and update prev* to match
+    // so the $effect doesn't see a change and re-apply symmetry
+    if (s.symmetry) {
+      editor.withinCurveMode = s.symmetry.withinCurveMode;
+      editor.withinLobeMode = s.symmetry.withinLobeMode;
+      editor.betweenLobesMode = s.symmetry.betweenLobesMode;
+      prevWithinCurveMode = s.symmetry.withinCurveMode;
+      prevWithinLobeMode = s.symmetry.withinLobeMode;
+      prevBetweenLobesMode = s.symmetry.betweenLobesMode;
+    }
     dragTarget = null;
     draw();
   }
@@ -339,6 +369,14 @@
     redoStack = redoStack.slice(0, -1);
     undoStack = [...undoStack, snapshotState()];
     restoreSnapshot(next);
+  }
+
+  function flipWeaveColors() {
+    if (readonly || !initialized) return;
+    const before = snapshotState();
+    weaveParity = (weaveParity ^ 1) as 0 | 1;
+    pushUndo(before);
+    draw();
   }
 
   function isMac() {
@@ -477,10 +515,37 @@
 
     const before = snapshotState();
     const segments = fingerToSegments(finger);
-    if (segments.length <= 1) return;
+    const segLen = segments.length;
+
+    // Check if both endpoints are selected (i.e., the whole curve is selected)
+    const hasFirstAnchor = selection.anchors.includes(0);
+    const hasLastAnchor = selection.anchors.includes(segLen);
+    const wholeSelected = hasFirstAnchor && hasLastAnchor && selection.anchors.length >= 2;
+
+    if (wholeSelected) {
+      // Delete the entire curve if we have enough strips remaining
+      const strips = boundaryCurveCount(finger.lobe) - 1;
+      if (strips > MIN_GRID_SIZE) {
+        fingers = fingers.filter((f) => f.id !== fingerId);
+        selection.fingerId = null;
+        selection.anchors = [];
+        selection.segments = [];
+        selection.lastCurveHit = null;
+        renumberBoundaryIds();
+        syncGridSizeToFingers();
+        pushUndo(before);
+        draw();
+        return;
+      }
+      // Can't delete - at minimum grid size
+      return;
+    }
+
+    // Original logic: delete internal anchors by merging segments
+    if (segLen <= 1) return;
 
     const deletions = selection.anchors
-      .filter((idx) => idx >= 1 && idx <= segments.length - 1)
+      .filter((idx) => idx >= 1 && idx <= segLen - 1)
       .slice()
       .sort((a, b) => b - a);
     if (!deletions.length) return;
@@ -866,50 +931,11 @@
     overlapBottom = rect.bottom;
   }
 
-  function median(values: number[]): number {
-    if (!values.length) return 0;
-    const sorted = values.slice().sort((a, b) => a - b);
-    const mid = Math.floor(sorted.length / 2);
-    return sorted.length % 2 === 1 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
-  }
-
   function inferOverlapRectFromFingers(
     curFingers: Finger[],
     fallbackGridSize: GridSize,
   ) {
-    const leftCandidates: number[] = [];
-    const rightCandidates: number[] = [];
-    const topCandidates: number[] = [];
-    const bottomCandidates: number[] = [];
-
-    for (const f of curFingers) {
-      const segs = fingerToSegments(f);
-      if (!segs.length) continue;
-      const start = segs[0]!.p0;
-      const end = segs[segs.length - 1]!.p3;
-      if (f.lobe === "left") {
-        leftCandidates.push(Math.min(start.x, end.x));
-        rightCandidates.push(Math.max(start.x, end.x));
-      } else {
-        topCandidates.push(Math.min(start.y, end.y));
-        bottomCandidates.push(Math.max(start.y, end.y));
-      }
-    }
-
-    const expectedW = fallbackGridSize.x * STRIP_WIDTH;
-    const expectedH = fallbackGridSize.y * STRIP_WIDTH;
-    const centeredLeft = CENTER.x - expectedW / 2;
-    const centeredTop = CENTER.y - expectedH / 2;
-
-    let left = leftCandidates.length ? median(leftCandidates) : centeredLeft;
-    let right = rightCandidates.length ? median(rightCandidates) : centeredLeft + expectedW;
-    let top = topCandidates.length ? median(topCandidates) : centeredTop;
-    let bottom = bottomCandidates.length ? median(bottomCandidates) : centeredTop + expectedH;
-
-    if (Math.abs(right - left - expectedW) <= 3) right = left + expectedW;
-    if (Math.abs(bottom - top - expectedH) <= 3) bottom = top + expectedH;
-
-    return { left, right, top, bottom };
+    return inferOverlapRectShared(curFingers, fallbackGridSize);
   }
 
   function inferGridSizeFromFingers(
@@ -919,8 +945,8 @@
     const leftCount = curFingers.filter((f) => f.lobe === "left").length;
     const rightCount = curFingers.filter((f) => f.lobe === "right").length;
     // Boundaries include the two outer edges, so strips = boundaries - 1.
-    const x = clampInt(rightCount - 1, MIN_STRIPS, MAX_STRIPS);
-    const y = clampInt(leftCount - 1, MIN_STRIPS, MAX_STRIPS);
+    const x = clampInt(rightCount - 1, MIN_GRID_SIZE, MAX_GRID_SIZE);
+    const y = clampInt(leftCount - 1, MIN_GRID_SIZE, MAX_GRID_SIZE);
     if (x === fallbackGridSize.x && y === fallbackGridSize.y) return fallbackGridSize;
     return { x, y };
   }
@@ -930,21 +956,25 @@
       .toString(36)
       .slice(2, 7)}`;
     const { left, right, top, bottom } = getOverlapRect();
+    const width = right - left;
+    const height = bottom - top;
 
     if (lobe === "right") {
       const x = pos;
       const p0: Vec = { x, y: bottom };
       const p3: Vec = { x, y: top };
-      const p1: Vec = { ...p0 };
-      const p2: Vec = { ...p3 };
+      // Add slight curve like createDefaultFingers (with bow = 0 for neutral curve)
+      const p1: Vec = { x: p0.x, y: p0.y - height * 0.3 };
+      const p2: Vec = { x: p3.x, y: p3.y + height * 0.3 };
       return { id, lobe, pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) };
     }
 
     const y = pos;
     const p0: Vec = { x: right, y };
     const p3: Vec = { x: left, y };
-    const p1: Vec = { ...p0 };
-    const p2: Vec = { ...p3 };
+    // Add slight curve like createDefaultFingers (with bow = 0 for neutral curve)
+    const p1: Vec = { x: p0.x - width * 0.3, y: p0.y };
+    const p2: Vec = { x: p3.x + width * 0.3, y: p3.y };
     return { id, lobe, pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) };
   }
 
@@ -1095,11 +1125,6 @@
     fingers = updated;
   }
 
-  // Track previous symmetry state to detect changes
-  let prevWithinCurveMode: SymmetryMode = "off";
-  let prevWithinLobeMode: SymmetryMode = "off";
-  let prevBetweenLobesMode: SymmetryMode = "off";
-
   $effect(() => {
     // Only apply when symmetry is enabled/changed (turning off does not mutate).
     const shouldApply =
@@ -1110,12 +1135,23 @@
       (editor.betweenLobesMode !== "off" &&
         editor.betweenLobesMode !== prevBetweenLobesMode);
 
+    // Capture old symmetry state BEFORE updating prev* variables
+    const oldSymmetry = {
+      withinCurveMode: prevWithinCurveMode,
+      withinLobeMode: prevWithinLobeMode,
+      betweenLobesMode: prevBetweenLobesMode,
+    };
+
     prevWithinCurveMode = editor.withinCurveMode;
     prevWithinLobeMode = editor.withinLobeMode;
     prevBetweenLobesMode = editor.betweenLobesMode;
 
     if (shouldApply) {
+      const before = snapshotState();
+      // Override with OLD symmetry state so undo restores the previous mode
+      before.symmetry = oldSymmetry;
       applySymmetryToAllFingers();
+      pushUndo(before);
     }
   });
 
@@ -1522,6 +1558,59 @@
     });
   }
 
+  /**
+   * Check if a finger has issues: self-intersecting, intersecting other curves,
+   * or too close to other curves in the same lobe.
+   * Returns true if there are problems.
+   */
+  function fingerHasIntersectionIssues(finger: Finger): boolean {
+    const MIN_CURVE_DISTANCE = 3; // Minimum distance between curves
+    const SAMPLE_COUNT = 20; // Number of points to sample along curve for proximity check
+
+    return withInsertItemsDisabled(() => {
+      const path = buildFingerPath(finger);
+
+      // Check for self-intersections
+      const selfIntersections = path.getIntersections(path);
+      if (selfIntersections.length > 0) {
+        path.remove();
+        return true;
+      }
+
+      // Check for intersections and proximity to other curves in the same lobe
+      for (const other of fingers) {
+        if (other.id === finger.id) continue;
+        if (other.lobe !== finger.lobe) continue;
+        const otherPath = buildFingerPath(other);
+
+        // Check intersections
+        const intersections = path.getIntersections(otherPath);
+        if (intersections.length > 0) {
+          otherPath.remove();
+          path.remove();
+          return true;
+        }
+
+        // Check proximity by sampling points
+        for (let i = 0; i <= SAMPLE_COUNT; i++) {
+          const t = i / SAMPLE_COUNT;
+          const point = path.getPointAt(t * path.length);
+          if (!point) continue;
+          const nearest = otherPath.getNearestPoint(point);
+          if (nearest && point.getDistance(nearest) < MIN_CURVE_DISTANCE) {
+            otherPath.remove();
+            path.remove();
+            return true;
+          }
+        }
+        otherPath.remove();
+      }
+
+      path.remove();
+      return false;
+    });
+  }
+
   // Multi-segment bezier support lives in `$lib/geometry/bezierSegments`.
 
   function getSegmentCount(finger: Finger | undefined): number {
@@ -1857,7 +1946,7 @@
   function buildLobeStrips(
     lobe: LobeId,
     overlap: paper.PathItem,
-    onlyEvenStrips = false,
+    stripParity: 0 | 1 | null = null,
   ): Array<{ index: number; item: paper.PathItem }> {
     const { left, top, width, height } = getOverlapRect();
     return buildLobeStripsShared(
@@ -1870,7 +1959,7 @@
       top,
       width,
       height,
-      onlyEvenStrips,
+      stripParity,
     );
   }
 
@@ -1931,10 +2020,11 @@
     }) as paper.PathItem;
     rightLobe.remove();
 
-    // Build strip areas as the space between adjacent boundary curves, clipped to overlap
-    // Only even-index strips are needed for the even-odd weave mask.
-    const leftStrips = buildLobeStrips("left", overlapRect, true);
-    const rightStrips = buildLobeStrips("right", overlapRect, true);
+    // Build strip areas as the space between adjacent boundary curves, clipped to overlap.
+    // Alternate strips are sufficient for the even-odd weave mask; `weaveParity` controls
+    // whether the top-left overlap cell is left-on-top or right-on-top.
+    const leftStrips = buildLobeStrips("left", overlapRect, 0);
+    const rightStrips = buildLobeStrips("right", overlapRect, weaveParity);
 
     // Fast weave: rely on even-odd fill rule (no boolean ops).
     // Render overlap in left color, then overlay odd-parity cells in right color.
@@ -1967,29 +2057,32 @@
         const isSelected = finger.id === selection.fingerId;
         const isHovered = finger.id === hoverFingerId;
         const hidden = !showCurves;
+        const hasIssues = fingerHasIntersectionIssues(finger);
 
         // Different colors for left (horizontal) and right (vertical) curves
         // Using bright cyan and orange with dark outlines for visibility on any background.
-        const lobeColor =
-          finger.lobe === "left"
+        // Red color indicates intersection issues (self-intersecting or crossing other curves).
+        const lobeColor = hasIssues
+          ? new paper.Color("#ff0000") // Red for intersection issues
+          : finger.lobe === "left"
             ? new paper.Color("#00ddff") // Bright cyan for horizontal
             : new paper.Color("#ff8800"); // Bright orange for vertical
 
-        // Always: wide invisible hit stroke for hover/selection.
-        const hitPath = buildFingerPath(finger);
-        // Keep this essentially invisible but still hittable.
-        // Use opacity rather than alpha=0, since some Paper.js hit-testing paths treat
-        // fully transparent strokes as "no stroke".
-        hitPath.strokeColor = new paper.Color("#000000");
-        hitPath.opacity = 0.001;
-        hitPath.strokeWidth = hidden ? 22 : 14;
-        hitPath.strokeCap = "round";
-        hitPath.strokeJoin = "round";
-        hitPath.fillColor = null;
-        hitPath.data = { kind: "finger-hit", fingerId: finger.id };
-        overlayItems.push(hitPath);
-
-        if (!hidden) {
+        if (hidden) {
+          // When curves are hidden, create an invisible hit stroke for hover/selection.
+          const hitPath = buildFingerPath(finger);
+          // Keep this essentially invisible but still hittable.
+          // Use opacity rather than alpha=0, since some Paper.js hit-testing paths treat
+          // fully transparent strokes as "no stroke".
+          hitPath.strokeColor = new paper.Color("#000000");
+          hitPath.opacity = 0.001;
+          hitPath.strokeWidth = 5;
+          hitPath.strokeCap = "round";
+          hitPath.strokeJoin = "round";
+          hitPath.fillColor = null;
+          hitPath.data = { kind: "finger-hit", fingerId: finger.id };
+          overlayItems.push(hitPath);
+        } else {
           // Visible: draw outline first for contrast
           const outlinePath = buildFingerPath(finger);
           outlinePath.strokeColor = isSelected
@@ -2004,9 +2097,11 @@
 
           // Then draw colored stroke on top
           const path = buildFingerPath(finger);
-          path.strokeColor = isSelected
-            ? new paper.Color("#111111")
-            : lobeColor;
+          path.strokeColor = hasIssues
+            ? new paper.Color("#ff0000") // Red for intersection issues (even when selected)
+            : isSelected
+              ? new paper.Color("#111111")
+              : lobeColor;
           path.strokeWidth = isSelected ? 4 : 2;
           path.strokeCap = "round";
           path.strokeJoin = "round";
@@ -2245,7 +2340,13 @@
     }
   }
 
-  function ensureOuterBoundaryCurves(): boolean {
+  function ensureOuterBoundaryCurves(): {
+    changed: boolean;
+    insertedTop: boolean;
+    insertedBottom: boolean;
+    insertedLeft: boolean;
+    insertedRight: boolean;
+  } {
     const { left, right, top, bottom } = getOverlapRect();
 
     const endpoints = (f: Finger) => {
@@ -2319,12 +2420,22 @@
 
     const newCurves: Finger[] = [];
     let changed = false;
+    let insertedTop = false;
+    let insertedBottom = false;
+    let insertedLeft = false;
+    let insertedRight = false;
 
     if (toAddLeft) {
       const nextStrips = leftCurves.length + toAddLeft - 1;
-      if (nextStrips <= MAX_STRIPS) {
-        if (missingTop) newCurves.push(makeNewBoundary("left", top));
-        if (missingBottom) newCurves.push(makeNewBoundary("left", bottom));
+      if (nextStrips <= MAX_GRID_SIZE) {
+        if (missingTop) {
+          newCurves.push(makeNewBoundary("left", top));
+          insertedTop = true;
+        }
+        if (missingBottom) {
+          newCurves.push(makeNewBoundary("left", bottom));
+          insertedBottom = true;
+        }
         changed = true;
       } else {
         // At max strips: snap the existing outer boundary back to the edge.
@@ -2343,9 +2454,15 @@
 
     if (toAddRight) {
       const nextStrips = rightCurves.length + toAddRight - 1;
-      if (nextStrips <= MAX_STRIPS) {
-        if (missingLeft) newCurves.push(makeNewBoundary("right", left));
-        if (missingRight) newCurves.push(makeNewBoundary("right", right));
+      if (nextStrips <= MAX_GRID_SIZE) {
+        if (missingLeft) {
+          newCurves.push(makeNewBoundary("right", left));
+          insertedLeft = true;
+        }
+        if (missingRight) {
+          newCurves.push(makeNewBoundary("right", right));
+          insertedRight = true;
+        }
         changed = true;
       } else {
         if (missingLeft && leftFinger && leftE) {
@@ -2365,7 +2482,14 @@
       fingers = [...fingers, ...newCurves];
     }
 
-    return changed || newCurves.length > 0;
+    const added = newCurves.length > 0;
+    return {
+      changed: changed || added,
+      insertedTop,
+      insertedBottom,
+      insertedLeft,
+      insertedRight,
+    };
   }
 
   function dropSelectionForRemovedFingers(removedIds: Set<string>) {
@@ -2426,32 +2550,47 @@
         which: "min" | "max",
         axis: "x" | "y",
         edgePos: number,
-      ) => {
+      ): boolean => {
         const strips = Math.max(0, boundaries.length - 1);
-        if (strips <= MIN_STRIPS) return;
+        if (strips <= MIN_GRID_SIZE) return false;
 
         const idx = which === "min" ? 1 : boundaries.length - 2;
         const candidate = boundaries[idx];
-        if (!candidate) return;
+        if (!candidate) return false;
         if (endpointsMatch(candidate, axis, edgePos, OUTER_EDGE_REMOVE_TOL)) {
           toRemove.add(candidate.id);
+          return true;
         }
+        return false;
       };
 
-      maybeRemoveNearEdge(sortedLeft, "min", "y", top);
+      const removedTop = maybeRemoveNearEdge(sortedLeft, "min", "y", top);
       maybeRemoveNearEdge(sortedLeft, "max", "y", bottom);
-      maybeRemoveNearEdge(sortedRight, "min", "x", left);
+      const removedLeft = maybeRemoveNearEdge(sortedRight, "min", "x", left);
       maybeRemoveNearEdge(sortedRight, "max", "x", right);
 
       if (toRemove.size) {
         fingers = fingers.filter((f) => !toRemove.has(f.id));
         dropSelectionForRemovedFingers(toRemove);
         changed = true;
+
+        // Removing a strip at the top/left shifts row/col indices for all existing cells.
+        // Flip the parity base so existing cell colors remain stable.
+        const shift = (removedTop ? 1 : 0) ^ (removedLeft ? 1 : 0);
+        if (shift) {
+          weaveParity = (weaveParity ^ shift) as 0 | 1;
+        }
       }
     }
 
-    if (ensureOuterBoundaryCurves()) {
+    const ensured = ensureOuterBoundaryCurves();
+    if (ensured.changed) {
       changed = true;
+      // Inserting a new strip at the top/left shifts indices; flip parity base to compensate.
+      const shift = (ensured.insertedTop ? 1 : 0) ^ (ensured.insertedLeft ? 1 : 0);
+      if (shift) {
+        weaveParity = (weaveParity ^ shift) as 0 | 1;
+      }
     }
 
     if (changed || forceRenumber) {
@@ -2468,7 +2607,7 @@
     const hits = paper.project.hitTestAll(event.point, {
       fill: true,
       stroke: true,
-      tolerance: 10,
+      tolerance: 3,
     });
     const hit =
       hits.find((h) => h.item?.data?.kind === "control") ??
@@ -2621,7 +2760,7 @@
     const hits = paper.project.hitTestAll(event.point, {
       fill: true,
       stroke: true,
-      tolerance: 10,
+      tolerance: 3,
     });
     const hit =
       hits.find((h) => h.item?.data?.kind === "control") ??
@@ -2643,7 +2782,7 @@
         kind === "control"
           ? "pointer"
           : kind === "finger-hit" || kind === "finger"
-            ? "move"
+            ? "crosshair"
             : "default";
     }
   }
@@ -2801,24 +2940,91 @@
         return overridesAreValid(deriveSymmetryOverrides(symCandidate));
       };
 
-      // General constraint handling: if the desired point is invalid, back off
-      // along the drag direction (binary search) to the nearest valid point.
-      let snapped: Vec = newPos;
-      if (!isValidCandidate(buildCandidateAt(snapped))) {
-        let lo = 0;
-        let hi = 1;
-        let bestPos = basePos;
-        for (let i = 0; i < 8; i++) {
-          const mid = (lo + hi) / 2;
-          const pos = vecLerp(basePos, newPos, mid);
-          if (isValidCandidate(buildCandidateAt(pos))) {
-            bestPos = pos;
-            lo = mid;
-          } else {
-            hi = mid;
-          }
+      // Use sequential QP snapping to project to the nearest valid position.
+      let snapped: Vec;
+      if (isP1 || isP2) {
+        const pointKeySimple: "p1" | "p2" = isP1 ? "p1" : "p2";
+        const from = toPoint(basePos);
+        const desired = toPoint(newPos);
+
+        const { left, right, top, bottom } = getOverlapRect();
+        const square = { minX: left, maxX: right, minY: top, maxY: bottom };
+
+        const baseSegForConstraints = baseSegments[segmentIndex];
+        const p0 = toPoint(baseSegForConstraints.p0);
+        const p3 = toPoint(baseSegForConstraints.p3);
+        const other = toPoint(
+          pointKeySimple === "p1"
+            ? baseSegForConstraints.p2
+            : baseSegForConstraints.p1,
+        );
+
+        const buildCandidateAtPoint = (pos: paper.Point) =>
+          buildCandidateAt({ x: pos.x, y: pos.y });
+
+        const obstacles = withInsertItemsDisabled(() =>
+          buildObstaclePaths(fingerId, finger.lobe),
+        );
+        try {
+          const out = snapSequentialQPBezierControl(
+            buildCandidateAtPoint,
+            from,
+            desired,
+            isValidCandidate,
+            pointKeySimple,
+            p0,
+            other,
+            p3,
+            obstacles,
+            square,
+          );
+          snapped = { x: out.point.x, y: out.point.y };
+        } finally {
+          for (const p of obstacles) p.remove();
         }
-        snapped = bestPos;
+      } else {
+        // Midpoint (junction) drag
+        const from = toPoint(basePos);
+        const desired = toPoint(newPos);
+
+        const { left, right, top, bottom } = getOverlapRect();
+        const square = { minX: left, maxX: right, minY: top, maxY: bottom };
+
+        const prevSegForConstraints = baseSegments[segmentIndex - 1];
+        const nextSegForConstraints = baseSegments[segmentIndex];
+
+        const prevP0 = toPoint(prevSegForConstraints.p0);
+        const prevP1 = toPoint(prevSegForConstraints.p1);
+        const prevP2 = toPoint(prevSegForConstraints.p2);
+        const nextP1 = toPoint(nextSegForConstraints.p1);
+        const nextP2 = toPoint(nextSegForConstraints.p2);
+        const nextP3 = toPoint(nextSegForConstraints.p3);
+
+        const buildCandidateAtPoint = (pos: paper.Point) =>
+          buildCandidateAt({ x: pos.x, y: pos.y });
+
+        const obstacles = withInsertItemsDisabled(() =>
+          buildObstaclePaths(fingerId, finger.lobe),
+        );
+        try {
+          const out = snapSequentialQPBezierJunction(
+            buildCandidateAtPoint,
+            from,
+            desired,
+            isValidCandidate,
+            prevP0,
+            prevP1,
+            prevP2,
+            nextP1,
+            nextP2,
+            nextP3,
+            obstacles,
+            square,
+          );
+          snapped = { x: out.point.x, y: out.point.y };
+        } finally {
+          for (const p of obstacles) p.remove();
+        }
       }
       const snappedCandidate = buildCandidateAt(snapped);
       const snappedSegments = getInternalSegments(snappedCandidate);
@@ -3096,7 +3302,7 @@
     dragDirty = false;
     dragTarget = null;
     if (canvas) {
-      canvas.style.cursor = hoverFingerId ? "move" : "default";
+      canvas.style.cursor = hoverFingerId ? "crosshair" : "default";
     }
     draw();
   }
@@ -3158,14 +3364,15 @@
           get gridSize() {
             return gridSize;
           },
-          set gridSize(v: any) {
-            const next = normalizeGridSize(v as any);
-            gridSize = next;
-            setCenteredOverlapRect(next);
-            fingers = createDefaultFingers(next);
-            renumberBoundaryIds();
-            draw();
-          },
+	          set gridSize(v: any) {
+	            const next = normalizeGridSize(v as any);
+	            gridSize = next;
+	            weaveParity = 0;
+	            setCenteredOverlapRect(next);
+	            fingers = createDefaultFingers(next);
+	            renumberBoundaryIds();
+	            draw();
+	          },
           get fingers() {
             return fingers;
           },
@@ -3327,216 +3534,281 @@
 
 <TooltipProvider delayDuration={250}>
 <div class="paper-heart">
-  {#if !readonly}
-	    <div class="controls">
-	      <label class="checkbox">
-	        <input type="checkbox" bind:checked={editor.showCurves} />
-	        Show curves
-	      </label>
-
-	      <div class="symmetry-row" aria-label="Within curve symmetry">
-	        <span class="symmetry-label">Within curve</span>
-	        <ToggleGroup type="single" bind:value={editor.withinCurveMode}>
-	          <ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
-	          <ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
-	          <ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
-	        </ToggleGroup>
-	      </div>
-
-	      <div class="symmetry-row" aria-label="Within lobe symmetry">
-	        <span class="symmetry-label">Within lobe</span>
-	        <ToggleGroup type="single" bind:value={editor.withinLobeMode}>
-	          <ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
-	          <ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
-	          <ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
-	        </ToggleGroup>
-	      </div>
-
-	      <div class="symmetry-row" aria-label="Between lobes symmetry">
-	        <span class="symmetry-label">Between lobes</span>
-	        <ToggleGroup
-	          type="single"
-	          bind:value={editor.betweenLobesMode}
-	          disabled={!canSymmetryBetweenLobes()}
-	        >
-	          <ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
-	          <ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
-	          <ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
-	        </ToggleGroup>
-	      </div>
-	    </div>
-	  {/if}
-  <div class="canvas-wrapper" style:width="{size}px" style:height="{size}px">
-    <canvas
-      bind:this={canvas}
-      width={BASE_CANVAS_SIZE}
-      height={BASE_CANVAS_SIZE}
-      style:transform="scale({size / BASE_CANVAS_SIZE})"
-      style:transform-origin="top left"
-    ></canvas>
+  <div class="canvas-area">
+    <div class="canvas-wrapper" style:width="{size}px" style:height="{size}px">
+      <canvas
+        bind:this={canvas}
+        width={BASE_CANVAS_SIZE}
+        height={BASE_CANVAS_SIZE}
+        style:transform="scale({size / BASE_CANVAS_SIZE})"
+        style:transform-origin="top left"
+      ></canvas>
+    </div>
+    {#if !readonly}
+      <div class="right-panel">
+        <div class="controls">
+          <label class="checkbox">
+            <input type="checkbox" bind:checked={editor.showCurves} />
+            Edges
+          </label>
+          <button type="button" class="flip-colors" onclick={flipWeaveColors}>
+            Flip colors
+          </button>
+        </div>
+        <div class="symmetry-panel">
+          <h4 class="symmetry-header">Symmetry</h4>
+        <div class="symmetry-row" aria-label="Within curve symmetry">
+          <span class="symmetry-label">Within curve</span>
+          <ToggleGroup type="single" bind:value={editor.withinCurveMode}>
+            <ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
+            <ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
+            <ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+        <div class="symmetry-row" aria-label="Within lobe symmetry">
+          <span class="symmetry-label">Within lobe</span>
+          <ToggleGroup type="single" bind:value={editor.withinLobeMode}>
+            <ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
+            <ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
+            <ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+        <div class="symmetry-row" aria-label="Between lobes symmetry">
+          <span class="symmetry-label">Between lobes</span>
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <ToggleGroup
+                    type="single"
+                    bind:value={editor.betweenLobesMode}
+                    disabled={!canSymmetryBetweenLobes()}
+                  >
+                    <ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
+                    <ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
+                    <ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
+                  </ToggleGroup>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{canSymmetryBetweenLobes() ? 'Between lobes symmetry' : 'Requires equal grid size'}</TooltipContent>
+          </Tooltip>
+        </div>
+        </div>
+      </div>
+    {/if}
+    {#if !readonly}
+      <div class="segment-controls" aria-label="Curve tools">
+        <div class="history-controls" aria-label="History">
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onclick={undo}
+                    disabled={!canUndo}
+                    aria-label="Undo"
+                  >
+                    <Undo2Icon size={18} aria-hidden="true" />
+                  </Button>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{canUndo ? 'Undo' : 'Nothing to undo'}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onclick={redo}
+                    disabled={!canRedo}
+                    aria-label="Redo"
+                  >
+                    <Redo2Icon size={18} aria-hidden="true" />
+                  </Button>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{canRedo ? 'Redo' : 'Nothing to redo'}</TooltipContent>
+          </Tooltip>
+        </div>
+        <div class="toolbar-separator" aria-hidden="true">
+          <Separator orientation="horizontal" class="w-6" decorative />
+        </div>
+        <div class="edit-controls" aria-label="Edit">
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onclick={insertNodeBetweenSelectedAnchors}
+                    disabled={!canInsertNode}
+                    aria-label="Insert node"
+                  >
+                    <SplitIcon size={18} aria-hidden="true" />
+                  </Button>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{canInsertNode ? 'Insert node' : 'Select two adjacent nodes'}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onclick={deleteSelectedAnchors}
+                    disabled={!canDeleteNode}
+                    aria-label="Delete node"
+                  >
+                    <Trash2Icon size={18} aria-hidden="true" />
+                  </Button>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{canDeleteNode ? 'Delete node' : 'Select a deletable node'}</TooltipContent>
+          </Tooltip>
+        </div>
+        <div class="toolbar-separator" aria-hidden="true">
+          <Separator orientation="horizontal" class="w-6" decorative />
+        </div>
+        <div class="node-type-controls" aria-label="Node type">
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    class={nodeTypeSelected === "corner"
+                      ? "bg-[#cc0000]/10 border-[#cc0000]/40"
+                      : ""}
+                    onclick={() => setSelectedAnchorsNodeType("corner")}
+                    disabled={!validAnchors.length}
+                    aria-label="Corner node"
+                  >
+                    <span aria-hidden="true"><NodeCornerIcon /></span>
+                  </Button>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{validAnchors.length ? 'Corner node' : 'Select a node first'}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    class={nodeTypeSelected === "smooth"
+                      ? "bg-[#cc0000]/10 border-[#cc0000]/40"
+                      : ""}
+                    onclick={() => setSelectedAnchorsNodeType("smooth")}
+                    disabled={!validAnchors.length}
+                    aria-label="Smooth node"
+                  >
+                    <span aria-hidden="true"><NodeSmoothIcon /></span>
+                  </Button>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{validAnchors.length ? 'Smooth node' : 'Select a node first'}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    class={nodeTypeSelected === "symmetric"
+                      ? "bg-[#cc0000]/10 border-[#cc0000]/40"
+                      : ""}
+                    onclick={() => setSelectedAnchorsNodeType("symmetric")}
+                    disabled={!validAnchors.length}
+                    aria-label="Symmetric node"
+                  >
+                    <span aria-hidden="true"><NodeSymmetricIcon /></span>
+                  </Button>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{validAnchors.length ? 'Symmetric node' : 'Select a node first'}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onclick={makeSelectedAnchorsCurved}
+                    disabled={!selection.anchors.length}
+                    aria-label="Curve node"
+                  >
+                    <span aria-hidden="true"><CurveNodeToolIcon /></span>
+                  </Button>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{selection.anchors.length ? 'Curve node' : 'Select a node first'}</TooltipContent>
+          </Tooltip>
+        </div>
+        <div class="toolbar-separator" aria-hidden="true">
+          <Separator orientation="horizontal" class="w-6" decorative />
+        </div>
+        <div class="convert-controls" aria-label="Convert">
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onclick={makeSelectedSegmentsStraight}
+                    disabled={!canMakeSegmentsStraight}
+                    aria-label="Straight segment"
+                  >
+                    <span aria-hidden="true"><SegmentLineIcon /></span>
+                  </Button>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{canMakeSegmentsStraight ? 'Straight segment' : 'Select a curved segment'}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet child({ props })}
+                <span class="tooltip-wrapper" {...props}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onclick={makeSelectedSegmentsCurved}
+                    disabled={!canMakeSegmentsCurved}
+                    aria-label="Curved segment"
+                  >
+                    <span aria-hidden="true"><SegmentCurveIcon /></span>
+                  </Button>
+                </span>
+              {/snippet}
+            </TooltipTrigger>
+            <TooltipContent>{canMakeSegmentsCurved ? 'Curved segment' : 'Select a straight segment'}</TooltipContent>
+          </Tooltip>
+        </div>
+      </div>
+    {/if}
   </div>
-	  {#if selectedFinger}
-		    <div class="segment-controls" aria-label="Curve tools">
-		      <div class="edit-controls" aria-label="Edit">
-		        <Tooltip>
-		          <TooltipTrigger>
-		            {#snippet child({ props })}
-		              <Button
-		                {...props}
-		                variant="outline"
-		                size="icon-sm"
-		                onclick={insertNodeBetweenSelectedAnchors}
-		                disabled={!canInsertNode}
-		                aria-label="Insert node"
-		              >
-		                <SplitIcon size={16} aria-hidden="true" />
-		              </Button>
-		            {/snippet}
-		          </TooltipTrigger>
-		          <TooltipContent>Insert node</TooltipContent>
-		        </Tooltip>
-		        <Tooltip>
-		          <TooltipTrigger>
-		            {#snippet child({ props })}
-		              <Button
-		                {...props}
-		                variant="outline"
-		                size="icon-sm"
-		                onclick={deleteSelectedAnchors}
-		                disabled={!canDeleteNode}
-		                aria-label="Delete node"
-		              >
-		                <Trash2Icon size={16} aria-hidden="true" />
-		              </Button>
-		            {/snippet}
-		          </TooltipTrigger>
-		          <TooltipContent>Delete node</TooltipContent>
-		        </Tooltip>
-		      </div>
-	      <div class="toolbar-separator" aria-hidden="true">
-	        <Separator orientation="vertical" class="h-6" decorative />
-	      </div>
-		      <div class="node-type-controls" aria-label="Node type">
-		        <Tooltip>
-		          <TooltipTrigger>
-		            {#snippet child({ props })}
-		              <Button
-		                {...props}
-		                variant="outline"
-		                size="icon-sm"
-		                class={nodeTypeSelected === "corner"
-		                  ? "bg-[#cc0000]/10 border-[#cc0000]/40"
-		                  : ""}
-		                onclick={() => setSelectedAnchorsNodeType("corner")}
-		                disabled={!validAnchors.length}
-		                aria-label="Corner node"
-		              >
-		                <span aria-hidden="true"><NodeCornerIcon size={16} /></span>
-		              </Button>
-		            {/snippet}
-		          </TooltipTrigger>
-		          <TooltipContent>Corner node</TooltipContent>
-		        </Tooltip>
-		        <Tooltip>
-		          <TooltipTrigger>
-		            {#snippet child({ props })}
-		              <Button
-		                {...props}
-		                variant="outline"
-		                size="icon-sm"
-		                class={nodeTypeSelected === "smooth"
-		                  ? "bg-[#cc0000]/10 border-[#cc0000]/40"
-		                  : ""}
-		                onclick={() => setSelectedAnchorsNodeType("smooth")}
-		                disabled={!validAnchors.length}
-		                aria-label="Smooth node"
-		              >
-		                <span aria-hidden="true"><NodeSmoothIcon size={16} /></span>
-		              </Button>
-		            {/snippet}
-		          </TooltipTrigger>
-		          <TooltipContent>Smooth node</TooltipContent>
-		        </Tooltip>
-		        <Tooltip>
-		          <TooltipTrigger>
-		            {#snippet child({ props })}
-		              <Button
-		                {...props}
-		                variant="outline"
-		                size="icon-sm"
-		                class={nodeTypeSelected === "symmetric"
-		                  ? "bg-[#cc0000]/10 border-[#cc0000]/40"
-		                  : ""}
-		                onclick={() => setSelectedAnchorsNodeType("symmetric")}
-		                disabled={!validAnchors.length}
-		                aria-label="Symmetric node"
-		              >
-		                <span aria-hidden="true"><NodeSymmetricIcon size={16} /></span>
-		              </Button>
-		            {/snippet}
-		          </TooltipTrigger>
-		          <TooltipContent>Symmetric node</TooltipContent>
-		        </Tooltip>
-		        <Tooltip>
-		          <TooltipTrigger>
-		            {#snippet child({ props })}
-		              <Button
-		                {...props}
-		                variant="outline"
-		                size="icon-sm"
-		                onclick={makeSelectedAnchorsCurved}
-		                disabled={!selection.anchors.length}
-		                aria-label="Curve node"
-		              >
-		                <span aria-hidden="true"><CurveNodeToolIcon size={16} /></span>
-		              </Button>
-		            {/snippet}
-		          </TooltipTrigger>
-		          <TooltipContent>Curve node</TooltipContent>
-		        </Tooltip>
-		      </div>
-	      <div class="toolbar-separator" aria-hidden="true">
-	        <Separator orientation="vertical" class="h-6" decorative />
-	      </div>
-		      <div class="convert-controls" aria-label="Convert">
-		        <Tooltip>
-		          <TooltipTrigger>
-		            {#snippet child({ props })}
-		              <Button
-		                {...props}
-		                variant="outline"
-		                size="icon-sm"
-		                onclick={makeSelectedSegmentsStraight}
-		                disabled={!canMakeSegmentsStraight}
-		                aria-label="Straight segment"
-		              >
-		                <span aria-hidden="true"><SegmentLineIcon size={16} /></span>
-		              </Button>
-		            {/snippet}
-		          </TooltipTrigger>
-		          <TooltipContent>Straight segment</TooltipContent>
-		        </Tooltip>
-		        <Tooltip>
-		          <TooltipTrigger>
-		            {#snippet child({ props })}
-		              <Button
-		                {...props}
-		                variant="outline"
-		                size="icon-sm"
-		                onclick={makeSelectedSegmentsCurved}
-		                disabled={!canMakeSegmentsCurved}
-		                aria-label="Curved segment"
-		              >
-		                <span aria-hidden="true"><SegmentCurveIcon size={16} /></span>
-		              </Button>
-		            {/snippet}
-		          </TooltipTrigger>
-		          <TooltipContent>Curved segment</TooltipContent>
-		        </Tooltip>
-		      </div>
-		    </div>
-			  {/if}
-			</div>
+</div>
 </TooltipProvider>
 
 <style>
@@ -3549,16 +3821,14 @@
 
   .controls {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-    z-index: 10;
-    position: relative;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+    align-self: flex-end;
     background: white;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem;
     border-radius: 8px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     font-size: 0.85rem;
   }
 
@@ -3569,6 +3839,25 @@
     color: #444;
     cursor: pointer;
     white-space: nowrap;
+  }
+
+  .flip-colors {
+    border: 1px solid #ddd;
+    background: white;
+    color: #444;
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .flip-colors:hover {
+    background: #f7f7f7;
+  }
+
+  .flip-colors:active {
+    background: #f0f0f0;
   }
 
   .controls input[type="checkbox"] {
@@ -3587,36 +3876,166 @@
     white-space: nowrap;
   }
 
+  .canvas-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    padding: 0 240px;
+    box-sizing: border-box;
+  }
+
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: absolute;
+    right: 40px;
+    bottom: 0;
+    align-items: flex-end;
+  }
+
+  .symmetry-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  }
+
+  .symmetry-header {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .symmetry-panel .symmetry-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.6rem;
+  }
+
+  .canvas-wrapper {
+  }
+
   .segment-controls {
     display: flex;
+    flex-direction: column;
     gap: 0.5rem;
     align-items: center;
     background: #fff;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    flex-wrap: wrap;
-    justify-content: center;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    position: absolute;
+    left: 60px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
-	  .convert-controls,
-	  .node-type-controls,
-	  .edit-controls {
-	    display: inline-flex;
-	    align-items: center;
-	    gap: 0.25rem;
-	  }
+  .tooltip-wrapper {
+    display: inline-flex;
+  }
 
-	  .toolbar-separator {
-	    display: flex;
-	    align-items: center;
-	    justify-content: center;
-	  }
+  .history-controls,
+  .convert-controls,
+  .node-type-controls,
+  .edit-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .toolbar-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .toolbar-separator :global([data-separator]) {
+    background-color: #e5e5e5;
+  }
 
 	  /* active styles are applied via tailwind classes on the Button */
 
   canvas {
     background: transparent;
     cursor: default;
+  }
+
+  @media (max-width: 900px) {
+    .canvas-area {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0;
+    }
+
+    .segment-controls {
+      position: static;
+      transform: none;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      order: -1;
+      padding: 0.5rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .right-panel {
+      position: static;
+      transform: none;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .controls {
+      align-self: auto;
+      flex-direction: row;
+    }
+
+    .history-controls,
+    .convert-controls,
+    .node-type-controls,
+    .edit-controls {
+      flex-direction: row;
+    }
+
+    .toolbar-separator {
+      width: auto;
+      height: auto;
+    }
+
+    .toolbar-separator :global([data-separator]) {
+      width: 1px !important;
+      min-width: 1px !important;
+      max-width: 1px !important;
+      height: 24px !important;
+    }
+
+    .canvas-wrapper {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 1;
+      max-width: 500px;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
   }
 </style>

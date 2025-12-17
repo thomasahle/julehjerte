@@ -8,10 +8,12 @@ import {
   BASE_CENTER,
   buildLobeShape,
   buildLobeStrips,
-  getOverlapParams,
   itemArea,
   lobeFillColor
 } from '../src/lib/rendering/paperWeave';
+import type { OverlapRect } from '../src/lib/utils/overlapRect';
+import { inferOverlapRect } from '../src/lib/utils/overlapRect';
+import { normalizeFinger, normalizeHeartDesign } from '../src/lib/utils/heartDesign';
 
 const { PaperScope } = paperPkg;
 
@@ -54,7 +56,8 @@ function withInsertItemsDisabled<T>(paper: paper.PaperScope, fn: () => T): T {
   }
 }
 
-type RenderDesign = { gridSize: GridSize; fingers: Finger[] };
+type RenderDesign = { gridSize: GridSize; fingers: Finger[]; weaveParity?: 0 | 1 };
+type RenderDesignNormalized = RenderDesign & { overlapRect: OverlapRect };
 
 function normalizeGridSize(raw: unknown): GridSize {
   const clampInt = (value: number, min: number, max: number) => Math.max(min, Math.min(max, Math.round(value)));
@@ -72,25 +75,53 @@ function normalizeGridSize(raw: unknown): GridSize {
   return { x: 3, y: 3 };
 }
 
-async function loadDesign(input: string): Promise<RenderDesign> {
-  const jsonPath = input.endsWith('.json') ? input : path.join('static', 'hearts', `${input}.json`);
-  const raw = await fs.readFile(jsonPath, 'utf8');
-  const parsed = JSON.parse(raw) as { gridSize?: unknown; fingers?: unknown };
-  const gridSize = normalizeGridSize(parsed.gridSize);
-  const fingers = Array.isArray(parsed.fingers) ? (parsed.fingers as Finger[]) : [];
-  return { gridSize, fingers };
+function normalizeWeaveParity(raw: unknown): 0 | 1 {
+  const v = typeof raw === 'number' && Number.isFinite(raw) ? Math.round(raw) : 0;
+  return v % 2 === 1 ? 1 : 0;
 }
 
-async function renderDesignToPng(design: RenderDesign, outPath: string, size: number, colors: HeartColors, noWeave: boolean) {
+async function loadDesign(input: string): Promise<RenderDesignNormalized> {
+  const jsonPath = input.endsWith('.json') ? input : path.join('static', 'hearts', `${input}.json`);
+  const raw = await fs.readFile(jsonPath, 'utf8');
+  const parsed = JSON.parse(raw) as { gridSize?: unknown; fingers?: unknown; weaveParity?: unknown };
+
+  // Mirror PaperHeart.svelte initialization:
+  // 1) normalize fallback gridSize + weaveParity
+  // 2) infer overlap rect from incoming curves
+  // 3) reconcile/normalize curves (outer boundaries, endpoints on correct edges)
+  const fallbackGridSize = normalizeGridSize(parsed.gridSize);
+
+  const incomingFingers = Array.isArray(parsed.fingers)
+    ? parsed.fingers
+        .map(normalizeFinger)
+        .filter((f): f is Finger => Boolean(f))
+    : [];
+  const overlapRect: OverlapRect = inferOverlapRect(incomingFingers, fallbackGridSize);
+
+  const normalized = normalizeHeartDesign(parsed);
+  if (!normalized) throw new Error(`Invalid heart JSON: ${jsonPath}`);
+
+  return {
+    gridSize: normalized.gridSize,
+    fingers: normalized.fingers,
+    weaveParity: normalizeWeaveParity((normalized as any).weaveParity),
+    overlapRect
+  };
+}
+
+async function renderDesignToPng(
+  design: RenderDesignNormalized,
+  outPath: string,
+  size: number,
+  colors: HeartColors,
+  noWeave: boolean
+) {
   const paper = new PaperScope();
   paper.setup([size, size]);
 
   const SEAM_BLEED_PX = 3;
 
-  const { width: overlapWidth, height: overlapHeight, left: overlapLeft, top: overlapTop } = getOverlapParams(design.gridSize, {
-    x: BASE_CENTER,
-    y: BASE_CENTER
-  });
+  const { left: overlapLeft, top: overlapTop, width: overlapWidth, height: overlapHeight } = design.overlapRect;
 
   const items: paper.Item[] = [];
 
@@ -116,7 +147,8 @@ async function renderDesignToPng(design: RenderDesign, outPath: string, size: nu
   rightOutsideOverlap.strokeColor = null;
 
   if (!noWeave) {
-    // Only even-index strips are needed for the even-odd weave mask.
+    // Alternate strips are sufficient for the even-odd weave mask; `weaveParity` controls
+    // whether the top-left overlap cell is left-on-top or right-on-top.
     const leftStrips = buildLobeStrips(
       paper,
       'left',
@@ -127,7 +159,7 @@ async function renderDesignToPng(design: RenderDesign, outPath: string, size: nu
       overlapTop,
       overlapWidth,
       overlapHeight,
-      true
+      0
     );
     const rightStrips = buildLobeStrips(
       paper,
@@ -139,15 +171,15 @@ async function renderDesignToPng(design: RenderDesign, outPath: string, size: nu
       overlapTop,
       overlapWidth,
       overlapHeight,
-      true
+      (design.weaveParity ?? 0) as 0 | 1
     );
 
       // Build a single even-odd mask in the overlap and unite it with the
       // outside-right region. Painting this as one PathItem avoids hairline AA
       // seams where two red regions meet exactly on the fold line.
       const maskChildren = [
-        ...leftStrips.filter((s) => s.index % 2 === 0).map((s) => s.item),
-        ...rightStrips.filter((s) => s.index % 2 === 0).map((s) => s.item)
+        ...leftStrips.map((s) => s.item),
+        ...rightStrips.map((s) => s.item)
       ];
 
       const overlapOdd = withInsertItemsDisabled(paper, () => new paper.CompoundPath({ children: maskChildren }));

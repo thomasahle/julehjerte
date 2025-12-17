@@ -25,8 +25,11 @@
   import { trackHeartView, trackHeartSelect, trackMultiDownload } from "$lib/analytics";
   import { Button } from "$lib/components/ui/button";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
+  import * as Tooltip from "$lib/components/ui/tooltip";
+  import { Separator } from "$lib/components/ui/separator";
   import GitHubStarsButton from "$lib/components/GitHubStarsButton.svelte";
   import SettingsIcon from "@lucide/svelte/icons/settings";
+  import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
 
   // Layout options for PDF generation
   const LAYOUT_OPTIONS: {
@@ -208,41 +211,60 @@
   {/if}
 
   <footer class="page-footer">
+    <Separator class="mb-6" />
     <div class="footer-controls">
-      <div class="color-pickers">
-        <label class="color-picker">
-          <span class="color-label">{t("leftColor", lang)}</span>
-          <input
-            type="color"
-            value={colors.left}
-            oninput={(e) => setLeftColor((e.target as HTMLInputElement).value)}
-          />
-        </label>
-        <label class="color-picker">
-          <span class="color-label">{t("rightColor", lang)}</span>
-          <input
-            type="color"
-            value={colors.right}
-            oninput={(e) => setRightColor((e.target as HTMLInputElement).value)}
-          />
-        </label>
+      <div class="flex items-center gap-2">
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            <label class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden">
+              <input
+                type="color"
+                value={colors.left}
+                oninput={(e) => setLeftColor((e.target as HTMLInputElement).value)}
+                class="w-full h-full border-0 cursor-pointer scale-150"
+              />
+            </label>
+          </Tooltip.Trigger>
+          <Tooltip.Content>
+            <p>{t("leftColor", lang)}</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            <label class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden">
+              <input
+                type="color"
+                value={colors.right}
+                oninput={(e) => setRightColor((e.target as HTMLInputElement).value)}
+                class="w-full h-full border-0 cursor-pointer scale-150"
+              />
+            </label>
+          </Tooltip.Trigger>
+          <Tooltip.Content>
+            <p>{t("rightColor", lang)}</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
       </div>
-      <button
-        class="lang-toggle"
+      <Button
+        variant="secondary"
+        size="sm"
         onclick={toggleLanguage}
         title={lang === "da" ? "Switch to English" : "Skift til dansk"}
+        class="rounded-full"
       >
         {lang === "da" ? "🇬🇧 EN" : "🇩🇰 DA"}
-      </button>
+      </Button>
       <GitHubStarsButton repo="thomasahle/julehjerte" />
-      <a
+      <Button
+        variant="link"
+        size="sm"
         href="https://github.com/thomasahle/julehjerte/issues/new?title=Heart%20suggestion&body=%23%23%20Heart%20Design%20Suggestion%0A%0A**Name%3A**%20%0A**Description%3A**%20%0A**Grid%20size%3A**%20%0A%0A**Reference%20image%20or%20description%3A**%0A%0A%3C!--%20Please%20attach%20an%20image%20or%20describe%20the%20pattern%20--%3E"
-        class="suggest-link"
         target="_blank"
-        rel="noopener noreferrer"
+        class="gap-1"
       >
         {t("suggestHeart", lang)}
-      </a>
+        <ExternalLinkIcon class="size-3" />
+      </Button>
     </div>
   </footer>
 </div>
@@ -312,8 +334,6 @@
 
   .page-footer {
     margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .footer-controls {
@@ -322,69 +342,6 @@
     align-items: center;
     gap: 2rem;
     flex-wrap: wrap;
-  }
-
-  .color-pickers {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .color-picker {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-  }
-
-  .color-label {
-    font-size: 0.85rem;
-    color: #555;
-  }
-
-  .color-picker input[type="color"] {
-    width: 32px;
-    height: 32px;
-    border: 2px solid white;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    padding: 0;
-  }
-
-  .color-picker input[type="color"]::-webkit-color-swatch-wrapper {
-    padding: 2px;
-  }
-
-  .color-picker input[type="color"]::-webkit-color-swatch {
-    border-radius: 3px;
-    border: none;
-  }
-
-  .lang-toggle {
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 0.4rem 0.75rem;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .lang-toggle:hover {
-    background: white;
-  }
-
-  .suggest-link {
-    color: #666;
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .suggest-link:hover {
-    color: #cc0000;
-    text-decoration: underline;
   }
 
   @media (max-width: 600px) {

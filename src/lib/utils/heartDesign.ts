@@ -1,21 +1,18 @@
 import type { Finger, GridSize, HeartDesign, LobeId, NodeType, Vec } from '$lib/types/heart';
+import { STRIP_WIDTH, BASE_CENTER, CENTER } from '$lib/constants';
+import { clamp, clampInt } from '$lib/utils/math';
+import {
+  type BezierSegment,
+  parsePathDataToSegments,
+  segmentsToPathData
+} from '$lib/geometry/bezierSegments';
+import {
+  getCenteredRectParams,
+  inferOverlapRect as inferOverlapRectFromFingers
+} from '$lib/utils/overlapRect';
 
 type RawFinger = Partial<Finger> & { id?: unknown; lobe?: unknown; pathData?: unknown };
 type RawDesign = Omit<Partial<HeartDesign>, 'gridSize'> & { gridSize?: unknown; fingers?: unknown };
-
-type BezierSegment = { p0: Vec; p1: Vec; p2: Vec; p3: Vec };
-
-const BASE_CANVAS_SIZE = 600;
-const CENTER = { x: BASE_CANVAS_SIZE / 2, y: BASE_CANVAS_SIZE / 2 };
-const STRIP_WIDTH = 75;
-
-function clamp(value: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, value));
-}
-
-function clampInt(value: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, Math.round(value)));
-}
 
 function normalizeGridSize(raw: unknown): GridSize {
   if (typeof raw === 'number' && Number.isFinite(raw)) {
@@ -35,101 +32,6 @@ function normalizeGridSize(raw: unknown): GridSize {
 function normalizeWeaveParity(raw: unknown): 0 | 1 {
   const v = typeof raw === 'number' && Number.isFinite(raw) ? Math.round(raw) : 0;
   return v % 2 === 1 ? 1 : 0;
-}
-
-function getCenteredRectParams(gridSize: GridSize, stripWidth: number = STRIP_WIDTH) {
-  const width = gridSize.x * stripWidth;
-  const height = gridSize.y * stripWidth;
-  const left = CENTER.x - width / 2;
-  const top = CENTER.y - height / 2;
-  return { left, top, right: left + width, bottom: top + height };
-}
-
-function median(values: number[]): number {
-  if (!values.length) return 0;
-  const sorted = values.slice().sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 === 1 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
-}
-
-function inferOverlapRectFromFingers(fingers: Finger[], gridSize: GridSize) {
-  const leftCandidates: number[] = [];
-  const rightCandidates: number[] = [];
-  const topCandidates: number[] = [];
-  const bottomCandidates: number[] = [];
-
-  for (const finger of fingers) {
-    const segs = parsePathDataToSegments(finger.pathData);
-    if (!segs.length) continue;
-    const start = segs[0]!.p0;
-    const end = segs[segs.length - 1]!.p3;
-
-    if (finger.lobe === 'left') {
-      leftCandidates.push(Math.min(start.x, end.x));
-      rightCandidates.push(Math.max(start.x, end.x));
-    } else {
-      topCandidates.push(Math.min(start.y, end.y));
-      bottomCandidates.push(Math.max(start.y, end.y));
-    }
-  }
-
-  const fallback = getCenteredRectParams(gridSize);
-  let left = leftCandidates.length ? median(leftCandidates) : fallback.left;
-  let right = rightCandidates.length ? median(rightCandidates) : fallback.right;
-  let top = topCandidates.length ? median(topCandidates) : fallback.top;
-  let bottom = bottomCandidates.length ? median(bottomCandidates) : fallback.bottom;
-
-  const expectedW = gridSize.x * STRIP_WIDTH;
-  const expectedH = gridSize.y * STRIP_WIDTH;
-  if (Math.abs(right - left - expectedW) <= 3) right = left + expectedW;
-  if (Math.abs(bottom - top - expectedH) <= 3) bottom = top + expectedH;
-
-  return { left, right, top, bottom };
-}
-
-function parsePathDataToSegments(pathData: string): BezierSegment[] {
-  const segments: BezierSegment[] = [];
-  const commands = pathData.match(/[MLCQAZ][^MLCQAZ]*/gi) || [];
-  let currentX = 0;
-  let currentY = 0;
-
-  for (const cmd of commands) {
-    const type = cmd[0]?.toUpperCase();
-    const args = cmd
-      .slice(1)
-      .trim()
-      .split(/[\s,]+/)
-      .filter(Boolean)
-      .map(Number);
-
-    if (type === 'M') {
-      currentX = args[0] ?? currentX;
-      currentY = args[1] ?? currentY;
-    } else if (type === 'C') {
-      // Cubic bezier: C x1 y1 x2 y2 x y
-      if (args.length >= 6) {
-        segments.push({
-          p0: { x: currentX, y: currentY },
-          p1: { x: args[0]!, y: args[1]! },
-          p2: { x: args[2]!, y: args[3]! },
-          p3: { x: args[4]!, y: args[5]! }
-        });
-        currentX = args[4]!;
-        currentY = args[5]!;
-      }
-    }
-  }
-
-  return segments;
-}
-
-function segmentsToPathData(segments: BezierSegment[]): string {
-  if (!segments.length) return '';
-  let d = `M ${segments[0].p0.x} ${segments[0].p0.y}`;
-  for (const seg of segments) {
-    d += ` C ${seg.p1.x} ${seg.p1.y} ${seg.p2.x} ${seg.p2.y} ${seg.p3.x} ${seg.p3.y}`;
-  }
-  return d;
 }
 
 function reverseSegments(segments: BezierSegment[]): BezierSegment[] {

@@ -2,9 +2,9 @@ import { jsPDF } from 'jspdf';
 import type { GridSize, HeartDesign, Finger, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
-
-const STRIP_WIDTH = 75;
-const CENTER = { x: 300, y: 300 };
+import { STRIP_WIDTH, CENTER } from '$lib/constants';
+import { type BezierSegment, parsePathDataToSegments } from '$lib/geometry/bezierSegments';
+import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 
 // A4 dimensions in mm
 const PAGE_WIDTH = 210;
@@ -49,87 +49,14 @@ function getTemplateDimensions(layout: LayoutMode) {
   return { width, height, cols, rows, margin: COMPACT_MARGIN, footerHeight: FOOTER_HEIGHT };
 }
 
-function overlapDims(gridSize: GridSize) {
-  return { overlapWidth: gridSize.x * STRIP_WIDTH, overlapHeight: gridSize.y * STRIP_WIDTH };
-}
-
-function median(values: number[]): number {
-  if (!values.length) return 0;
-  const sorted = values.slice().sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 === 1 ? sorted[mid]! : (sorted[mid - 1]! + sorted[mid]!) / 2;
-}
-
 function inferOverlapRect(design: HeartDesign) {
-  const { overlapWidth: expectedW, overlapHeight: expectedH } = overlapDims(design.gridSize);
-  const centeredLeft = CENTER.x - expectedW / 2;
-  const centeredTop = CENTER.y - expectedH / 2;
-
-  const leftCandidates: number[] = [];
-  const rightCandidates: number[] = [];
-  const topCandidates: number[] = [];
-  const bottomCandidates: number[] = [];
-
-  for (const finger of design.fingers) {
-    const segs = parsePathDataToSegments(finger.pathData);
-    if (!segs.length) continue;
-    const start = segs[0]!.p0;
-    const end = segs[segs.length - 1]!.p3;
-    if (finger.lobe === 'left') {
-      leftCandidates.push(Math.min(start.x, end.x));
-      rightCandidates.push(Math.max(start.x, end.x));
-    } else {
-      topCandidates.push(Math.min(start.y, end.y));
-      bottomCandidates.push(Math.max(start.y, end.y));
-    }
-  }
-
-  let left = leftCandidates.length ? median(leftCandidates) : centeredLeft;
-  let right = rightCandidates.length ? median(rightCandidates) : centeredLeft + expectedW;
-  let top = topCandidates.length ? median(topCandidates) : centeredTop;
-  let bottom = bottomCandidates.length ? median(bottomCandidates) : centeredTop + expectedH;
-
-  if (Math.abs(right - left - expectedW) <= 3) right = left + expectedW;
-  if (Math.abs(bottom - top - expectedH) <= 3) bottom = top + expectedH;
-
-  return { overlapLeft: left, overlapTop: top, overlapWidth: right - left, overlapHeight: bottom - top };
-}
-
-type BezierSegment = { p0: Vec; p1: Vec; p2: Vec; p3: Vec };
-
-function parsePathDataToSegments(pathData: string): BezierSegment[] {
-  const segments: BezierSegment[] = [];
-  const commands = pathData.match(/[MLCQAZ][^MLCQAZ]*/gi) || [];
-  let currentX = 0;
-  let currentY = 0;
-
-  for (const cmd of commands) {
-    const type = cmd[0]?.toUpperCase();
-    const args = cmd
-      .slice(1)
-      .trim()
-      .split(/[\s,]+/)
-      .filter(Boolean)
-      .map(Number);
-
-    if (type === 'M') {
-      currentX = args[0] ?? currentX;
-      currentY = args[1] ?? currentY;
-    } else if (type === 'C') {
-      if (args.length >= 6) {
-        segments.push({
-          p0: { x: currentX, y: currentY },
-          p1: { x: args[0]!, y: args[1]! },
-          p2: { x: args[2]!, y: args[3]! },
-          p3: { x: args[4]!, y: args[5]! }
-        });
-        currentX = args[4]!;
-        currentY = args[5]!;
-      }
-    }
-  }
-
-  return segments;
+  const rect = inferOverlapRectShared(design.fingers, design.gridSize);
+  return {
+    overlapLeft: rect.left,
+    overlapTop: rect.top,
+    overlapWidth: rect.width,
+    overlapHeight: rect.height
+  };
 }
 
 function pointsClose(a: Vec, b: Vec, tol = 0.75): boolean {

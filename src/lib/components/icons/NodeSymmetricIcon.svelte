@@ -1,21 +1,15 @@
-<script lang="ts">
-  export let size = 16;
-</script>
-
 <svg
-  width={size}
-  height={size}
+  style="width: 28px !important; height: 28px !important;"
   viewBox="0 0 24 24"
   fill="none"
-  stroke="currentColor"
   stroke-width="1.8"
   stroke-linecap="round"
   stroke-linejoin="round"
   aria-hidden="true"
 >
   <!-- Symmetric node: collinear + equal handle lengths -->
-  <path d="M6 12 L18 12" />
-  <circle cx="6" cy="12" r="1.4" />
-  <circle cx="18" cy="12" r="1.4" />
-  <rect x="10.5" y="10.5" width="3" height="3" transform="rotate(45 12 12)" />
+  <path d="M3 12 L21 12" stroke="#666" stroke-width="1.5" />
+  <circle cx="3" cy="12" r="2.2" fill="white" stroke="#666" stroke-width="1.2" />
+  <circle cx="21" cy="12" r="2.2" fill="white" stroke="#666" stroke-width="1.2" />
+  <rect x="9.5" y="9.5" width="5" height="5" fill="#f5c542" stroke="#333" stroke-width="1" />
 </svg>

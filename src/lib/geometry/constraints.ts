@@ -1,5 +1,9 @@
 import type { Point, LobeOutline } from '../types';
 import { findClosestPointOnPath, getPointOnPath } from './heart';
+import { clamp01 } from '$lib/utils/math';
+
+// Re-export clamp01 for backward compatibility
+export { clamp01 };
 
 /**
  * Constrain a point to lie on a lobe's border
@@ -53,13 +57,6 @@ export function isPointNearBorder(
 ): boolean {
   const result = findClosestPointOnPath(lobe.pathPoints, point);
   return result.distance < threshold;
-}
-
-/**
- * Clamp a value to 0-1 range
- */
-export function clamp01(value: number): number {
-  return Math.max(0, Math.min(1, value));
 }
 
 /**

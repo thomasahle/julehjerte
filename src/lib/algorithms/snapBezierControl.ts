@@ -83,6 +83,100 @@ function affineSampleJunctionNext(
   return { A, w };
 }
 
+// Sampler abstraction: returns affine samples { A, w } for a given t value
+export type AffineSampler = (t: number) => Array<{ A: paper.Point; w: number }>;
+
+// Create a sampler for control point (p1 or p2) dragging
+export function createControlSampler(
+  control: BezierControlKey,
+  p0: paper.Point,
+  fixedOther: paper.Point,
+  p3: paper.Point
+): AffineSampler {
+  return (t: number) => [affineSample(control, p0, fixedOther, p3, t)];
+}
+
+// Create a sampler for junction (midpoint) dragging
+export function createJunctionSampler(
+  prevP0: paper.Point,
+  prevP1: paper.Point,
+  prevP2: paper.Point,
+  from: paper.Point,
+  nextP1: paper.Point,
+  nextP2: paper.Point,
+  nextP3: paper.Point
+): AffineSampler {
+  return (t: number) => [
+    affineSampleJunctionPrev(prevP0, prevP1, prevP2, from, t),
+    affineSampleJunctionNext(nextP1, nextP2, nextP3, from, t)
+  ];
+}
+
+// Unified sequential QP snapping function
+export function snapSequentialQP<TCandidate>(
+  buildCandidateAt: (pos: paper.Point) => TCandidate,
+  from: paper.Point,
+  desired: paper.Point,
+  isValidCandidate: (candidate: TCandidate) => boolean,
+  sampler: AffineSampler,
+  obstacles: paper.Path[],
+  square: SquareBounds,
+  opts: {
+    tSamples?: number[];
+    margin?: number;
+    iters?: number;
+    obstacleThreshold?: number;
+  } = {}
+): SnapResult {
+  let iterations = 0;
+  let pt = moveHandleToward(buildCandidateAt, from, desired, isValidCandidate);
+  iterations++;
+  const seed = pt;
+
+  const tSamples = opts.tSamples ?? [0.1, 0.2, 0.35, 0.5, 0.65, 0.8, 0.9];
+  const margin = opts.margin ?? 0.75;
+  const iters = opts.iters ?? 6;
+  const obstacleThreshold = opts.obstacleThreshold ?? 12;
+
+  for (let k = 0; k < iters; k++) {
+    const constraints: LinearConstraint[] = [];
+
+    for (const t of tSamples) {
+      const samples = sampler(t);
+      for (const { A, w } of samples) {
+        if (w < 1e-3) continue;
+
+        const x = A.add(pt.multiply(w));
+
+        // Square constraints at sample points.
+        constraints.push({ a: makePoint(seed, w, 0), b: square.minX - A.x });
+        constraints.push({ a: makePoint(seed, -w, 0), b: A.x - square.maxX });
+        constraints.push({ a: makePoint(seed, 0, w), b: square.minY - A.y });
+        constraints.push({ a: makePoint(seed, 0, -w), b: A.y - square.maxY });
+
+        // Obstacle half-space constraints from nearest point + normal.
+        const nearest = nearestObstacle(x, obstacles);
+        if (!Number.isFinite(nearest.dist) || nearest.dist < 1e-6) continue;
+        if (nearest.dist < obstacleThreshold) {
+          const n = x.subtract(nearest.point).normalize();
+          const a = n.multiply(w);
+          const rhs = margin - n.dot(A.subtract(nearest.point));
+          constraints.push({ a, b: rhs });
+        }
+      }
+    }
+
+    const projected = solve2DProjection(desired, constraints);
+    const next = moveHandleToward(buildCandidateAt, pt, projected, isValidCandidate);
+    iterations++;
+    if (next.getDistance(pt) < 0.25) break;
+    if (next.getDistance(desired) + 0.01 >= pt.getDistance(desired)) break;
+    pt = next;
+  }
+
+  return { point: pt, iterations };
+}
+
 export function snapProjectedGradientBezierControl<TCandidate>(
   buildCandidateAt: (pos: paper.Point) => TCandidate,
   from: paper.Point,
@@ -157,6 +251,7 @@ export function snapProjectedGradientBezierControl<TCandidate>(
   return { point: pt, iterations };
 }
 
+// Wrapper for backward compatibility - delegates to unified snapSequentialQP
 export function snapSequentialQPBezierControl<TCandidate>(
   buildCandidateAt: (pos: paper.Point) => TCandidate,
   from: paper.Point,
@@ -175,53 +270,11 @@ export function snapSequentialQPBezierControl<TCandidate>(
     obstacleThreshold?: number;
   } = {}
 ): SnapResult {
-  let iterations = 0;
-  let pt = moveHandleToward(buildCandidateAt, from, desired, isValidCandidate);
-  iterations++;
-  const seed = pt;
-
-  const tSamples = opts.tSamples ?? [0.1, 0.2, 0.35, 0.5, 0.65, 0.8, 0.9];
-  const margin = opts.margin ?? 0.75;
-  const iters = opts.iters ?? 6;
-  const obstacleThreshold = opts.obstacleThreshold ?? 12;
-
-  for (let k = 0; k < iters; k++) {
-    const constraints: LinearConstraint[] = [];
-
-    for (const t of tSamples) {
-      const { A, w } = affineSample(control, p0, fixedOther, p3, t);
-      if (w < 1e-3) continue;
-
-      const x = A.add(pt.multiply(w));
-
-      // Square constraints at sample points.
-      constraints.push({ a: makePoint(seed, w, 0), b: square.minX - A.x });
-      constraints.push({ a: makePoint(seed, -w, 0), b: A.x - square.maxX });
-      constraints.push({ a: makePoint(seed, 0, w), b: square.minY - A.y });
-      constraints.push({ a: makePoint(seed, 0, -w), b: A.y - square.maxY });
-
-      // Obstacle half-space constraints from nearest point + normal (frozen at current iterate).
-      const nearest = nearestObstacle(x, obstacles);
-      if (!Number.isFinite(nearest.dist) || nearest.dist < 1e-6) continue;
-      if (nearest.dist < obstacleThreshold) {
-        const n = x.subtract(nearest.point).normalize();
-        const a = n.multiply(w);
-        const rhs = margin - n.dot(A.subtract(nearest.point));
-        constraints.push({ a, b: rhs });
-      }
-    }
-
-    const projected = solve2DProjection(desired, constraints);
-    const next = moveHandleToward(buildCandidateAt, pt, projected, isValidCandidate);
-    iterations++;
-    if (next.getDistance(pt) < 0.25) break;
-    if (next.getDistance(desired) + 0.01 >= pt.getDistance(desired)) break;
-    pt = next;
-  }
-
-  return { point: pt, iterations };
+  const sampler = createControlSampler(control, p0, fixedOther, p3);
+  return snapSequentialQP(buildCandidateAt, from, desired, isValidCandidate, sampler, obstacles, square, opts);
 }
 
+// Wrapper for backward compatibility - delegates to unified snapSequentialQP
 export function snapSequentialQPBezierJunction<TCandidate>(
   buildCandidateAt: (junction: paper.Point) => TCandidate,
   from: paper.Point,
@@ -242,56 +295,8 @@ export function snapSequentialQPBezierJunction<TCandidate>(
     obstacleThreshold?: number;
   } = {}
 ): SnapResult {
-  let iterations = 0;
-  let pt = moveHandleToward(buildCandidateAt, from, desired, isValidCandidate);
-  iterations++;
-  const seed = pt;
-
-  const tSamples = opts.tSamples ?? [0.1, 0.2, 0.35, 0.5, 0.65, 0.8, 0.9];
-  const margin = opts.margin ?? 0.75;
-  const iters = opts.iters ?? 6;
-  const obstacleThreshold = opts.obstacleThreshold ?? 12;
-
-  const addSampleConstraints = (A: paper.Point, w: number, constraints: LinearConstraint[]) => {
-    if (w < 1e-3) return;
-    const x = A.add(pt.multiply(w));
-
-    // Square constraints at sample points.
-    constraints.push({ a: makePoint(seed, w, 0), b: square.minX - A.x });
-    constraints.push({ a: makePoint(seed, -w, 0), b: A.x - square.maxX });
-    constraints.push({ a: makePoint(seed, 0, w), b: square.minY - A.y });
-    constraints.push({ a: makePoint(seed, 0, -w), b: A.y - square.maxY });
-
-    const nearest = nearestObstacle(x, obstacles);
-    if (!Number.isFinite(nearest.dist) || nearest.dist < 1e-6) return;
-    if (nearest.dist < obstacleThreshold) {
-      const n = x.subtract(nearest.point).normalize();
-      const a = n.multiply(w);
-      const rhs = margin - n.dot(A.subtract(nearest.point));
-      constraints.push({ a, b: rhs });
-    }
-  };
-
-  for (let k = 0; k < iters; k++) {
-    const constraints: LinearConstraint[] = [];
-
-    for (const t of tSamples) {
-      const prev = affineSampleJunctionPrev(prevP0, prevP1, prevP2, from, t);
-      addSampleConstraints(prev.A, prev.w, constraints);
-
-      const next = affineSampleJunctionNext(nextP1, nextP2, nextP3, from, t);
-      addSampleConstraints(next.A, next.w, constraints);
-    }
-
-    const projected = solve2DProjection(desired, constraints);
-    const next = moveHandleToward(buildCandidateAt, pt, projected, isValidCandidate);
-    iterations++;
-    if (next.getDistance(pt) < 0.25) break;
-    if (next.getDistance(desired) + 0.01 >= pt.getDistance(desired)) break;
-    pt = next;
-  }
-
-  return { point: pt, iterations };
+  const sampler = createJunctionSampler(prevP0, prevP1, prevP2, from, nextP1, nextP2, nextP3);
+  return snapSequentialQP(buildCandidateAt, from, desired, isValidCandidate, sampler, obstacles, square, opts);
 }
 
 export function snapPenalizedNewtonBezierControl<TCandidate>(
