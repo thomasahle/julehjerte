@@ -3436,20 +3436,24 @@
   // DEV benchmarks are attached dynamically from `$lib/dev/paperHeartBench`.
 
   onMount(() => {
-    // Set initial canvas size based on wrapper's actual size (before Paper.js setup)
-    if (canvasWrapper) {
-      const wrapperRect = canvasWrapper.getBoundingClientRect();
-      if (wrapperRect.width > 0) {
-        displayedSize = wrapperRect.width;
-        canvas.style.width = `${wrapperRect.width}px`;
-        canvas.style.height = `${wrapperRect.width}px`;
-      }
-    }
-
     paper.activate();
     paper.setup(canvas);
     // Set view to BASE_CANVAS_SIZE coordinate space
     paper.view.viewSize = new paper.Size(BASE_CANVAS_SIZE, BASE_CANVAS_SIZE);
+
+    // Set canvas CSS size AFTER Paper.js setup (Paper.js overrides styles during setup).
+    // Start with the size prop, then check if wrapper constrains it smaller.
+    // This handles mobile/responsive layouts where container is smaller than requested size.
+    let targetSize = size;
+    if (canvasWrapper) {
+      const wrapperRect = canvasWrapper.getBoundingClientRect();
+      if (wrapperRect.width > 0 && wrapperRect.width < targetSize) {
+        targetSize = wrapperRect.width;
+      }
+    }
+    displayedSize = targetSize;
+    canvas.style.width = `${targetSize}px`;
+    canvas.style.height = `${targetSize}px`;
     if (!readonly) {
       tool = new paper.Tool();
       tool.onMouseDown = handleMouseDown;
@@ -3462,14 +3466,17 @@
     }
 
     // Track wrapper size changes for coordinate correction (fixes mobile hit zone offset)
+    // Cap at the size prop - we can shrink to fit container but never expand beyond intended size
+    const maxSize = size;
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width } = entry.contentRect;
-        if (width > 0 && width !== displayedSize) {
-          displayedSize = width;
+        const newSize = Math.min(width, maxSize);
+        if (newSize > 0 && newSize !== displayedSize) {
+          displayedSize = newSize;
           if (canvas) {
-            canvas.style.width = `${width}px`;
-            canvas.style.height = `${width}px`;
+            canvas.style.width = `${newSize}px`;
+            canvas.style.height = `${newSize}px`;
           }
         }
       }
