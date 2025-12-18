@@ -94,7 +94,7 @@
       {t("madeBy", lang)}
       <a href="https://thomasahle.com" target="_blank" rel="noopener"
         >Thomas Ahle</a
-      >, 2025
+      >, {lang === "da" ? "julen" : "Christmas"} 2025
     </span>
   </div>
 </footer>

@@ -144,7 +144,7 @@
   </header>
 
   <div class="toolbar">
-    <Button href="{base}/editor" variant="destructive">
+    <Button href="{base}/editor" variant="destructive" class="shadow-s">
       {t("createNewHeart", lang)}
     </Button>
     <div class="inline-flex rounded-md shadow-xs" role="group">

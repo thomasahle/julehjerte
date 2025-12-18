@@ -2,8 +2,11 @@
   import type { HeartDesign } from "$lib/types/heart";
   import { t, getLanguage, subscribeLanguage, type Language } from "$lib/i18n";
   import type { HeartColors } from "$lib/stores/colors";
-  import PaperHeart from "$lib/components/PaperHeart.svelte";
+  import type PaperHeartType from "$lib/components/PaperHeart.svelte";
   import { onMount } from "svelte";
+
+  // Dynamic import to avoid SSR issues with Paper.js
+  let PaperHeart = $state<typeof PaperHeartType | null>(null);
 
   interface Props {
     design: HeartDesign & { isUserCreated?: boolean };
@@ -43,15 +46,22 @@
     }
 
     if (!('IntersectionObserver' in window)) {
-      previewReady = true;
+      // Fallback: load immediately
+      import("$lib/components/PaperHeart.svelte").then((module) => {
+        PaperHeart = module.default;
+        previewReady = true;
+      });
       return () => resizeObserver?.disconnect();
     }
 
     const observer = new IntersectionObserver(
-      (entries) => {
+      async (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
-          previewReady = true;
           observer.disconnect();
+          // Dynamic import to avoid SSR issues with Paper.js
+          const module = await import("$lib/components/PaperHeart.svelte");
+          PaperHeart = module.default;
+          previewReady = true;
         }
       },
       { rootMargin: '300px' }
@@ -90,7 +100,7 @@
   aria-label="{design.name}{selected ? ` - ${t('selected', lang)}` : ''}"
 >
   <div class="preview" bind:this={previewEl}>
-    {#if previewReady}
+    {#if previewReady && PaperHeart}
       <PaperHeart
         readonly
         initialFingers={design.fingers}

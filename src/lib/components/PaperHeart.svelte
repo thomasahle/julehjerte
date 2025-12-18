@@ -3867,10 +3867,10 @@
       <div class="right-panel">
         <div class="controls">
           <label class="checkbox">
-            <input type="checkbox" bind:checked={editor.showCurves} />
-            Edges
+            <input type="checkbox" bind:checked={editor.showCurves} aria-label="Show curve outlines" />
+            Outlines
           </label>
-          <button type="button" class="flip-colors" onclick={flipWeaveColors}>
+          <button type="button" class="flip-colors" onclick={flipWeaveColors} aria-label="Flip lobe colors">
             Flip colors
           </button>
         </div>

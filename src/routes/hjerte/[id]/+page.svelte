@@ -214,7 +214,7 @@
           <button class="btn secondary" onclick={openInEditor}>
             {t("openInEditor", lang)}
           </button>
-          <button class="btn share" onclick={handleShare}>
+          <button class="btn share" onclick={handleShare} aria-label={t("share", lang)}>
             {#if shareStatus === "copied"}
               {t("copied", lang)}
             {:else if shareStatus === "error"}
@@ -227,6 +227,7 @@
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                aria-hidden="true"
               >
                 <circle cx="18" cy="5" r="3"></circle>
                 <circle cx="6" cy="12" r="3"></circle>
