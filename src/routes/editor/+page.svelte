@@ -5,19 +5,17 @@
   import { onMount } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { SITE_TITLE } from '$lib/config';
-  import { t, tArray, getLanguage, setLanguage, subscribeLanguage, type Language } from '$lib/i18n';
-  import { getColors, setLeftColor, setRightColor, subscribeColors, type HeartColors } from '$lib/stores/colors';
+  import { t, tArray, getLanguage, subscribeLanguage, type Language } from '$lib/i18n';
+  import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
-  import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
-  import GitHubStarsButton from '$lib/components/GitHubStarsButton.svelte';
+  import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
   import PageHeader from '$lib/components/PageHeader.svelte';
   import { browser } from '$app/environment';
   import CircleHelpIcon from '@lucide/svelte/icons/circle-help';
   import XIcon from '@lucide/svelte/icons/x';
   import { Button } from '$lib/components/ui/button';
   import * as Tooltip from '$lib/components/ui/tooltip';
-  import { Separator } from '$lib/components/ui/separator';
 
   // Help modal state
   let showHelp = $state(false);
@@ -77,12 +75,6 @@
     }
   });
 
-  function toggleLanguage() {
-    const newLang = lang === 'da' ? 'en' : 'da';
-    setLanguage(newLang);
-    lang = newLang;
-  }
-
   function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
     currentFingers = fingers;
     currentGridSize = gridSize;
@@ -106,15 +98,15 @@
     };
   }
 
-  function downloadJSON() {
+  function downloadSVG() {
     const design = createHeartDesign();
-    const json = JSON.stringify(serializeHeartDesign(design), null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
+    const svg = serializeHeartToSVG(design);
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${design.name.toLowerCase().replace(/\s+/g, '-')}.json`;
+    a.download = `${design.name.toLowerCase().replace(/\s+/g, '-')}.svg`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -140,8 +132,9 @@
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
-        const raw = JSON.parse(e.target?.result as string) as unknown;
-        const design = normalizeHeartDesign(raw);
+        const content = e.target?.result as string;
+        const design = parseHeartFromSVG(content, file.name);
+
         if (!design) throw new Error('Invalid design');
 
         currentFingers = design.fingers;
@@ -208,12 +201,12 @@
           <button class="btn primary full-width" onclick={showInGallery}>
             {isEditMode ? t('saveChanges', lang) : t('showInGallery', lang)}
           </button>
-          <button class="btn secondary full-width" onclick={downloadJSON}>
+          <button class="btn secondary full-width" onclick={downloadSVG}>
             {t('download', lang)}
           </button>
           <label class="btn secondary full-width import-btn">
             {t('import', lang)}
-            <input type="file" accept=".json" onchange={handleImport} hidden />
+            <input type="file" accept=".svg" onchange={handleImport} hidden />
           </label>
         </div>
       </div>
@@ -295,54 +288,6 @@
       </div>
     </div>
   {/if}
-
-  <footer class="page-footer">
-    <Separator class="mb-4" />
-    <div class="footer-controls">
-      <div class="flex items-center gap-2">
-        <Tooltip.Root>
-          <Tooltip.Trigger>
-            <label class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden">
-              <input
-                type="color"
-                value={colors.left}
-                oninput={(e) => setLeftColor((e.target as HTMLInputElement).value)}
-                class="w-full h-full border-0 cursor-pointer scale-150"
-              />
-            </label>
-          </Tooltip.Trigger>
-          <Tooltip.Content>
-            <p>{t('leftColor', lang)}</p>
-          </Tooltip.Content>
-        </Tooltip.Root>
-        <Tooltip.Root>
-          <Tooltip.Trigger>
-            <label class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden">
-              <input
-                type="color"
-                value={colors.right}
-                oninput={(e) => setRightColor((e.target as HTMLInputElement).value)}
-                class="w-full h-full border-0 cursor-pointer scale-150"
-              />
-            </label>
-          </Tooltip.Trigger>
-          <Tooltip.Content>
-            <p>{t('rightColor', lang)}</p>
-          </Tooltip.Content>
-        </Tooltip.Root>
-      </div>
-      <Button
-        variant="secondary"
-        size="sm"
-        onclick={toggleLanguage}
-        title={lang === 'da' ? 'Switch to English' : 'Skift til dansk'}
-        class="rounded-full"
-      >
-        {lang === 'da' ? '🇬🇧 EN' : '🇩🇰 DA'}
-      </Button>
-      <GitHubStarsButton repo="thomasahle/julehjerte" />
-    </div>
-  </footer>
 </div>
 
 <style>
@@ -472,18 +417,6 @@
   .import-btn {
     display: block;
     cursor: pointer;
-  }
-
-  .page-footer {
-    margin-top: 1.5rem;
-  }
-
-  .footer-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    flex-wrap: wrap;
   }
 
   .modal-overlay {

@@ -1,6 +1,7 @@
 import type { Point, LobeOutline } from '../types';
 import { findClosestPointOnPath, getPointOnPath } from './heart';
 import { clamp01 } from '$lib/utils/math';
+import { vecDist, vecLerp } from './vec';
 
 // Re-export clamp01 for backward compatibility
 export { clamp01 };
@@ -72,21 +73,12 @@ export function clampToCanvas(point: Point): Point {
 /**
  * Calculate the distance between two points
  */
-export function distance(p1: Point, p2: Point): number {
-  const dx = p2.x - p1.x;
-  const dy = p2.y - p1.y;
-  return Math.sqrt(dx * dx + dy * dy);
-}
+export const distance = vecDist;
 
 /**
  * Linear interpolation between two points
  */
-export function lerp(p1: Point, p2: Point, t: number): Point {
-  return {
-    x: p1.x + (p2.x - p1.x) * t,
-    y: p1.y + (p2.y - p1.y) * t
-  };
-}
+export const lerp = vecLerp;
 
 /**
  * Move a point towards a target by a maximum distance

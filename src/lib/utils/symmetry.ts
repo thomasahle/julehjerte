@@ -1,13 +1,10 @@
 import type { Finger, Vec } from '$lib/types/heart';
-import { fingerToSegments } from '$lib/geometry/bezierSegments';
+import { fingerToSegments, reverseSegments, type BezierSegment } from '$lib/geometry/bezierSegments';
+import { vecDist } from '$lib/geometry/vec';
 
 const TOLERANCE = 5; // pixels
 
-type Segment = { p0: Vec; p1: Vec; p2: Vec; p3: Vec };
-
-function vecDistance(a: Vec, b: Vec): number {
-  return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
-}
+type Segment = BezierSegment;
 
 function reflectAcrossChordBisector(p0: Vec, p3: Vec, p: Vec): Vec {
   const mid = { x: (p0.x + p3.x) / 2, y: (p0.y + p3.y) / 2 };
@@ -31,14 +28,7 @@ function pointReflectAcrossMidpoint(p0: Vec, p3: Vec, p: Vec): Vec {
 
 // Check if two points are approximately equal
 function pointsEqual(a: Vec, b: Vec): boolean {
-  return vecDistance(a, b) < TOLERANCE;
-}
-
-function reverseSegments(segments: Segment[]): Segment[] {
-  return segments
-    .slice()
-    .reverse()
-    .map((seg) => ({ p0: seg.p3, p1: seg.p2, p2: seg.p1, p3: seg.p0 }));
+  return vecDist(a, b) < TOLERANCE;
 }
 
 function mapSegments(

@@ -57,7 +57,7 @@ export function moveHandleToward<TCandidate>(
   return from.add(delta.multiply(best));
 }
 
-export function snapHandlePosition<TCandidate>(
+function snapHandlePosition<TCandidate>(
   buildCandidateAt: (pos: paper.Point) => TCandidate,
   from: paper.Point,
   desired: paper.Point,

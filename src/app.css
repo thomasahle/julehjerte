@@ -21,4 +21,6 @@
   --color-input: oklch(0.922 0 0);
   --color-ring: oklch(0.708 0 0);
   --radius: 0.625rem;
+  --shadow-color: rgb(0 90 118 / 51%);
+  --shadow-color-hover: rgb(0 90 118 / 51%);
 }

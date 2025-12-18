@@ -1,8 +1,9 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import paperPkg from 'paper';
+import { JSDOM } from 'jsdom';
 
-import type { Finger, GridSize } from '../src/lib/types/heart';
+import type { Finger, GridSize, HeartDesign } from '../src/lib/types/heart';
 import type { HeartColors } from '../src/lib/stores/colors';
 import {
   BASE_CENTER,
@@ -13,7 +14,11 @@ import {
 } from '../src/lib/rendering/paperWeave';
 import type { OverlapRect } from '../src/lib/utils/overlapRect';
 import { inferOverlapRect } from '../src/lib/utils/overlapRect';
-import { normalizeFinger, normalizeHeartDesign } from '../src/lib/utils/heartDesign';
+import { normalizeFinger, normalizeHeartDesign, parseHeartFromSVG } from '../src/lib/utils/heartDesign';
+
+// Polyfill DOMParser for Node.js
+const dom = new JSDOM('');
+(globalThis as any).DOMParser = dom.window.DOMParser;
 
 const { PaperScope } = paperPkg;
 
@@ -22,11 +27,13 @@ function usage(): never {
   console.error(
     [
       'Usage:',
-      '  npm run render:png -- <heart-id-or-json> <out.png> [--size=600] [--left=#ffffff] [--right=#cc0000] [--no-weave]',
+      '  npm run render:png -- <heart-id-or-file> <out.png> [--size=600] [--left=#ffffff] [--right=#cc0000] [--no-weave]',
+      '  npm run render:png -- --all-og [--left=#ffffff] [--right=#cc0000]',
       '',
       'Examples:',
-      '  npm run render:png -- hourglass-3x3 tmp/hourglass-3x3.png --size=900',
-      '  npm run render:png -- static/hearts/hourglass-3x3.json tmp/hg.png --left=#fff --right=#b33'
+      '  npm run render:png -- classic-3x3 tmp/classic-3x3.png --size=900',
+      '  npm run render:png -- static/hearts/classic-3x3.svg tmp/classic.png',
+      '  npm run render:png -- --all-og    # Generate all OG images to static/og/'
     ].join('\n')
   );
   process.exit(2);
@@ -57,7 +64,7 @@ function withInsertItemsDisabled<T>(paper: paper.PaperScope, fn: () => T): T {
 }
 
 type RenderDesign = { gridSize: GridSize; fingers: Finger[]; weaveParity?: 0 | 1 };
-type RenderDesignNormalized = RenderDesign & { overlapRect: OverlapRect };
+type RenderDesignNormalized = RenderDesign & { overlapRect: OverlapRect; isSvg: boolean };
 
 function normalizeGridSize(raw: unknown): GridSize {
   const clampInt = (value: number, min: number, max: number) => Math.max(min, Math.min(max, Math.round(value)));
@@ -81,31 +88,60 @@ function normalizeWeaveParity(raw: unknown): 0 | 1 {
 }
 
 async function loadDesign(input: string): Promise<RenderDesignNormalized> {
-  const jsonPath = input.endsWith('.json') ? input : path.join('static', 'hearts', `${input}.json`);
-  const raw = await fs.readFile(jsonPath, 'utf8');
-  const parsed = JSON.parse(raw) as { gridSize?: unknown; fingers?: unknown; weaveParity?: unknown };
+  // Determine file path and type
+  let filePath: string;
+  let isSvg: boolean;
 
-  // Mirror PaperHeart.svelte initialization:
-  // 1) normalize fallback gridSize + weaveParity
-  // 2) infer overlap rect from incoming curves
-  // 3) reconcile/normalize curves (outer boundaries, endpoints on correct edges)
-  const fallbackGridSize = normalizeGridSize(parsed.gridSize);
+  if (input.endsWith('.json')) {
+    filePath = input;
+    isSvg = false;
+  } else if (input.endsWith('.svg')) {
+    filePath = input;
+    isSvg = true;
+  } else {
+    // Try SVG first, fall back to JSON
+    const svgPath = path.join('static', 'hearts', `${input}.svg`);
+    const jsonPath = path.join('static', 'hearts', `${input}.json`);
+    try {
+      await fs.access(svgPath);
+      filePath = svgPath;
+      isSvg = true;
+    } catch {
+      filePath = jsonPath;
+      isSvg = false;
+    }
+  }
 
-  const incomingFingers = Array.isArray(parsed.fingers)
-    ? parsed.fingers
-        .map(normalizeFinger)
-        .filter((f): f is Finger => Boolean(f))
-    : [];
-  const overlapRect: OverlapRect = inferOverlapRect(incomingFingers, fallbackGridSize);
+  const raw = await fs.readFile(filePath, 'utf8');
 
-  const normalized = normalizeHeartDesign(parsed);
-  if (!normalized) throw new Error(`Invalid heart JSON: ${jsonPath}`);
+  let normalized: HeartDesign | null;
+
+  if (isSvg) {
+    // Parse SVG using the shared parser
+    normalized = parseHeartFromSVG(raw, path.basename(filePath));
+    if (!normalized) throw new Error(`Invalid heart SVG: ${filePath}`);
+  } else {
+    // Parse JSON
+    const parsed = JSON.parse(raw) as { gridSize?: unknown; fingers?: unknown; weaveParity?: unknown };
+    normalized = normalizeHeartDesign(parsed);
+    if (!normalized) throw new Error(`Invalid heart JSON: ${filePath}`);
+  }
+
+  // For SVG-parsed designs, fingers are already in pixel coordinates
+  // For JSON designs, normalizeFinger transforms from 0-100 to pixel coords
+  const incomingFingers = isSvg
+    ? normalized.fingers
+    : normalized.fingers
+        .map((f) => normalizeFinger(f, normalized.gridSize))
+        .filter((f): f is Finger => Boolean(f));
+  const overlapRect: OverlapRect = inferOverlapRect(incomingFingers, normalized.gridSize);
 
   return {
     gridSize: normalized.gridSize,
     fingers: normalized.fingers,
     weaveParity: normalizeWeaveParity((normalized as any).weaveParity),
-    overlapRect
+    overlapRect,
+    isSvg
   };
 }
 
@@ -114,10 +150,18 @@ async function renderDesignToPng(
   outPath: string,
   size: number,
   colors: HeartColors,
-  noWeave: boolean
+  noWeave: boolean,
+  backgroundColor?: string
 ) {
   const paper = new PaperScope();
   paper.setup([size, size]);
+
+  // Add background if specified (useful for OG images where white needs to be visible)
+  if (backgroundColor) {
+    const bg = new paper.Path.Rectangle(new paper.Point(0, 0), new paper.Size(size, size));
+    bg.fillColor = new paper.Color(backgroundColor);
+    bg.sendToBack();
+  }
 
   const SEAM_BLEED_PX = 3;
 
@@ -260,18 +304,51 @@ async function renderDesignToPng(
   paper.project.clear();
 }
 
+const OG_SIZE = 1200; // Recommended OG image size
+const OG_OUTPUT_DIR = 'static/og';
+const HEARTS_DIR = 'static/hearts';
+const OG_BACKGROUND = '#a3bfca'; // Match site background color
+
+async function renderAllOgImages(colors: HeartColors) {
+  const files = await fs.readdir(HEARTS_DIR);
+  const heartFiles = files.filter(f => f.endsWith('.svg') || (f.endsWith('.json') && f !== 'index.json'));
+
+  await fs.mkdir(OG_OUTPUT_DIR, { recursive: true });
+
+  for (const file of heartFiles) {
+    const id = file.replace(/\.(svg|json)$/, '');
+    const outPath = path.join(OG_OUTPUT_DIR, `${id}.png`);
+
+    try {
+      const design = await loadDesign(path.join(HEARTS_DIR, file));
+      await renderDesignToPng(design, outPath, OG_SIZE, colors, false, OG_BACKGROUND);
+      console.log(`✓ ${outPath}`);
+    } catch (err) {
+      console.error(`✗ ${file}: ${(err as Error).message}`);
+    }
+  }
+}
+
 async function main() {
   const { positional, flags } = parseArgs(process.argv.slice(2));
+
+  const colors: HeartColors = {
+    left: flags.get('left') ?? '#ffffff',
+    right: flags.get('right') ?? '#cc0000'
+  };
+
+  // --all-og mode: generate OG images for all hearts
+  if (flags.get('all-og') === 'true') {
+    await renderAllOgImages(colors);
+    return;
+  }
+
   if (positional.length < 2) usage();
 
   const [input, outPath] = positional;
   const size = Number(flags.get('size') ?? DEFAULT_SIZE);
   if (!Number.isFinite(size) || size <= 0) throw new Error(`Invalid --size=${flags.get('size')}`);
 
-  const colors: HeartColors = {
-    left: flags.get('left') ?? '#ffffff',
-    right: flags.get('right') ?? '#cc0000'
-  };
   const noWeave = flags.get('no-weave') === 'true';
 
   const design = await loadDesign(input);

@@ -1,12 +1,9 @@
 import type { Point, CubicBezierSegment } from "../types";
 import { clamp01 } from "$lib/utils/math";
+import { vecDist, vecLerp, normalize } from "./vec";
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
-}
-
-function lerpPoint(a: Point, b: Point, t: number): Point {
-  return { x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t) };
 }
 
 function cubicAt(p0: number, p1: number, p2: number, p3: number, t: number): number {
@@ -47,16 +44,6 @@ function cubicTangentAt(seg: CubicBezierSegment, t: number): Point {
   };
 }
 
-function dist(a: Point, b: Point) {
-  const dx = a.x - b.x;
-  const dy = a.y - b.y;
-  return Math.hypot(dx, dy);
-}
-
-function normalize(v: Point): Point {
-  const d = Math.hypot(v.x, v.y);
-  return d > 1e-12 ? { x: v.x / d, y: v.y / d } : { x: 0, y: 0 };
-}
 
 function solveQuadratic(a: number, b: number, c: number): number[] {
   const eps = 1e-12;
@@ -86,7 +73,7 @@ function cubicDerivativeRoots(p0: number, p1: number, p2: number, p3: number): n
 /**
  * Sample points along a cubic Bézier segment
  */
-export function sampleBezier(segment: CubicBezierSegment, steps = 50): Point[] {
+function sampleBezier(segment: CubicBezierSegment, steps = 50): Point[] {
   const points: Point[] = [];
 
   for (let i = 0; i <= steps; i++) {
@@ -118,21 +105,21 @@ export function sampleBezierPath(segments: CubicBezierSegment[], stepsPerSegment
 /**
  * Get a point on a Bézier curve at parameter t
  */
-export function getPointOnBezier(segment: CubicBezierSegment, t: number): Point {
+function getPointOnBezier(segment: CubicBezierSegment, t: number): Point {
   return cubicPointAt(segment, t);
 }
 
 /**
  * Get the derivative (tangent) at parameter t
  */
-export function getTangentOnBezier(segment: CubicBezierSegment, t: number): Point {
+function getTangentOnBezier(segment: CubicBezierSegment, t: number): Point {
   return cubicTangentAt(segment, t);
 }
 
 /**
  * Get the normal at parameter t
  */
-export function getNormalOnBezier(segment: CubicBezierSegment, t: number): Point {
+function getNormalOnBezier(segment: CubicBezierSegment, t: number): Point {
   const tan = cubicTangentAt(segment, t);
   const n = normalize({ x: -tan.y, y: tan.x });
   return n;
@@ -200,14 +187,14 @@ export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezie
 /**
  * Split a Bézier curve at parameter t
  */
-export function splitBezier(segment: CubicBezierSegment, t: number): [CubicBezierSegment, CubicBezierSegment] {
+function splitBezier(segment: CubicBezierSegment, t: number): [CubicBezierSegment, CubicBezierSegment] {
   const tt = clamp01(t);
-  const a = lerpPoint(segment.p0, segment.p1, tt);
-  const b = lerpPoint(segment.p1, segment.p2, tt);
-  const c = lerpPoint(segment.p2, segment.p3, tt);
-  const d = lerpPoint(a, b, tt);
-  const e = lerpPoint(b, c, tt);
-  const p = lerpPoint(d, e, tt);
+  const a = vecLerp(segment.p0, segment.p1, tt);
+  const b = vecLerp(segment.p1, segment.p2, tt);
+  const c = vecLerp(segment.p2, segment.p3, tt);
+  const d = vecLerp(a, b, tt);
+  const e = vecLerp(b, c, tt);
+  const p = vecLerp(d, e, tt);
 
   return [
     { p0: segment.p0, p1: a, p2: d, p3: p },
@@ -218,7 +205,7 @@ export function splitBezier(segment: CubicBezierSegment, t: number): [CubicBezie
 /**
  * Get the bounding box of a Bézier curve
  */
-export function getBezierBBox(segment: CubicBezierSegment): { x: number; y: number; width: number; height: number } {
+function getBezierBBox(segment: CubicBezierSegment): { x: number; y: number; width: number; height: number } {
   const tx = cubicDerivativeRoots(segment.p0.x, segment.p1.x, segment.p2.x, segment.p3.x);
   const ty = cubicDerivativeRoots(segment.p0.y, segment.p1.y, segment.p2.y, segment.p3.y);
   const ts = [0, 1, ...tx, ...ty].filter((t) => t >= 0 && t <= 1);
@@ -242,13 +229,13 @@ export function getBezierBBox(segment: CubicBezierSegment): { x: number; y: numb
 /**
  * Get the approximate length of a Bézier curve
  */
-export function getBezierLength(segment: CubicBezierSegment): number {
+function getBezierLength(segment: CubicBezierSegment): number {
   const steps = 80;
   let total = 0;
   let prev = cubicPointAt(segment, 0);
   for (let i = 1; i <= steps; i++) {
     const p = cubicPointAt(segment, i / steps);
-    total += dist(prev, p);
+    total += vecDist(prev, p);
     prev = p;
   }
   return total;
@@ -257,17 +244,17 @@ export function getBezierLength(segment: CubicBezierSegment): number {
 /**
  * Find the closest point on a Bézier curve to a target point
  */
-export function closestPointOnBezier(segment: CubicBezierSegment, target: Point): { t: number; point: Point; distance: number } {
+function closestPointOnBezier(segment: CubicBezierSegment, target: Point): { t: number; point: Point; distance: number } {
   // Coarse sample + local refinement (good enough for UI).
   let bestT = 0;
   let bestP = cubicPointAt(segment, 0);
-  let bestD = dist(bestP, target);
+  let bestD = vecDist(bestP, target);
 
   const samples = 80;
   for (let i = 1; i <= samples; i++) {
     const t = i / samples;
     const p = cubicPointAt(segment, t);
-    const d = dist(p, target);
+    const d = vecDist(p, target);
     if (d < bestD) {
       bestD = d;
       bestT = t;
@@ -284,8 +271,8 @@ export function closestPointOnBezier(segment: CubicBezierSegment, target: Point)
     const m2 = lerp(a, b, 2 / 3);
     const p1 = cubicPointAt(segment, m1);
     const p2 = cubicPointAt(segment, m2);
-    const d1 = dist(p1, target);
-    const d2 = dist(p2, target);
+    const d1 = vecDist(p1, target);
+    const d2 = vecDist(p2, target);
     if (d1 < d2) {
       bestT = m1;
       bestP = p1;
@@ -304,7 +291,7 @@ export function closestPointOnBezier(segment: CubicBezierSegment, target: Point)
 /**
  * Create a simple straight-line Bézier segment between two points
  */
-export function createLinearBezier(start: Point, end: Point): CubicBezierSegment {
+function createLinearBezier(start: Point, end: Point): CubicBezierSegment {
   // Control points at 1/3 and 2/3 along the line
   return {
     p0: start,
@@ -323,7 +310,7 @@ export function createLinearBezier(start: Point, end: Point): CubicBezierSegment
 /**
  * Create a curved Bézier segment between two points with some curvature
  */
-export function createCurvedBezier(start: Point, end: Point, curvature = 0.3): CubicBezierSegment {
+function createCurvedBezier(start: Point, end: Point, curvature = 0.3): CubicBezierSegment {
   const dx = end.x - start.x;
   const dy = end.y - start.y;
 

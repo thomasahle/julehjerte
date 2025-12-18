@@ -8,16 +8,13 @@
   import { getUserCollection } from '$lib/stores/collection';
   import { downloadPDF } from '$lib/pdf/template';
   import { SITE_TITLE, SITE_URL } from '$lib/config';
-  import { t, translations, getLanguage, setLanguage, subscribeLanguage, type Language } from '$lib/i18n';
-  import { getColors, setLeftColor, setRightColor, subscribeColors, type HeartColors } from '$lib/stores/colors';
+  import { t, translations, getLanguage, subscribeLanguage, type Language } from '$lib/i18n';
+  import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { detectSymmetry, getSymmetryDescription } from '$lib/utils/symmetry';
-  import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
+  import { serializeHeartDesign, parseHeartFromSVG } from '$lib/utils/heartDesign';
   import type { HeartDesign } from '$lib/types/heart';
   import { trackHeartDownload, trackHeartShare, trackHeartEdit } from '$lib/analytics';
   import { Button } from '$lib/components/ui/button';
-  import * as Tooltip from '$lib/components/ui/tooltip';
-  import { Separator } from '$lib/components/ui/separator';
-  import GitHubStarsButton from '$lib/components/GitHubStarsButton.svelte';
   import PageHeader from '$lib/components/PageHeader.svelte';
 
   let design = $state<HeartDesign | null>(null);
@@ -52,10 +49,10 @@
 
     // Then check static hearts
     try {
-      const response = await fetch(`/hearts/${id}.json`);
+      const response = await fetch(`/hearts/${id}.svg`);
       if (response.ok) {
-        const raw = (await response.json()) as unknown;
-        design = normalizeHeartDesign(raw);
+        const svgText = await response.text();
+        design = parseHeartFromSVG(svgText, `${id}.svg`);
         if (!design) {
           error = t('heartNotFound', lang);
         }
@@ -84,12 +81,6 @@
       const editParam = isUserCreated ? '&edit=true' : '';
       goto(`${base}/editor?design=${designData}${editParam}`);
     }
-  }
-
-  function toggleLanguage() {
-    const newLang = lang === 'da' ? 'en' : 'da';
-    setLanguage(newLang);
-    lang = newLang;
   }
 
   async function handleShare() {
@@ -140,8 +131,14 @@
     <meta property="og:url" content="{SITE_URL}/hjerte/{design.id}" />
     <meta property="og:title" content="{design.name} - {SITE_TITLE}" />
     <meta property="og:description" content={design.description ?? `Flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} striber.`} />
+    <meta property="og:image" content="{SITE_URL}/og/{design.id}.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
     <meta property="og:type" content="article" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{design.name} - {SITE_TITLE}" />
+    <meta name="twitter:description" content={design.description ?? `Flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} striber.`} />
+    <meta name="twitter:image" content="{SITE_URL}/og/{design.id}.png" />
   {/if}
 </svelte:head>
 
@@ -220,54 +217,6 @@
       </div>
     </div>
   {/if}
-
-  <footer class="page-footer">
-    <Separator class="mb-4" />
-    <div class="footer-controls">
-      <div class="flex items-center gap-2">
-        <Tooltip.Root>
-          <Tooltip.Trigger>
-            <label class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden">
-              <input
-                type="color"
-                value={colors.left}
-                onchange={(e) => setLeftColor((e.target as HTMLInputElement).value)}
-                class="w-full h-full border-0 cursor-pointer scale-150"
-              />
-            </label>
-          </Tooltip.Trigger>
-          <Tooltip.Content>
-            <p>{t('leftColor', lang)}</p>
-          </Tooltip.Content>
-        </Tooltip.Root>
-        <Tooltip.Root>
-          <Tooltip.Trigger>
-            <label class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden">
-              <input
-                type="color"
-                value={colors.right}
-                onchange={(e) => setRightColor((e.target as HTMLInputElement).value)}
-                class="w-full h-full border-0 cursor-pointer scale-150"
-              />
-            </label>
-          </Tooltip.Trigger>
-          <Tooltip.Content>
-            <p>{t('rightColor', lang)}</p>
-          </Tooltip.Content>
-        </Tooltip.Root>
-      </div>
-      <Button
-        variant="secondary"
-        size="sm"
-        onclick={toggleLanguage}
-        title={lang === 'da' ? 'Switch to English' : 'Skift til dansk'}
-        class="rounded-full"
-      >
-        {lang === 'da' ? '🇬🇧 EN' : '🇩🇰 DA'}
-      </Button>
-      <GitHubStarsButton repo="thomasahle/julehjerte" />
-    </div>
-  </footer>
 </div>
 
 <style>
@@ -305,7 +254,7 @@
   }
 
   .preview-section :global(canvas) {
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(0 4px 8px var(--shadow-color));
   }
 
   .info-section {
@@ -436,18 +385,6 @@
   .instructions li {
     margin-bottom: 0.5rem;
     line-height: 1.5;
-  }
-
-  .page-footer {
-    margin-top: 1.5rem;
-  }
-
-  .footer-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    flex-wrap: wrap;
   }
 
   @media (max-width: 800px) {

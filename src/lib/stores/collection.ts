@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import type { HeartDesign } from '$lib/types/heart';
-import { normalizeHeartDesign, serializeHeartDesign } from '$lib/utils/heartDesign';
+import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG } from '$lib/utils/heartDesign';
 
 const STORAGE_KEY = 'julehjerte-collection';
 
@@ -55,12 +55,11 @@ export async function loadStaticHearts(): Promise<HeartDesign[]> {
     const designs = await Promise.all(
       index.hearts.map(async (id) => {
         try {
-          const heartResponse = await fetch(`/hearts/${id}.json`);
+          const heartResponse = await fetch(`/hearts/${id}.svg`);
           if (!heartResponse.ok) return null;
-          const raw = (await heartResponse.json()) as unknown;
-          return normalizeHeartDesign(raw);
+          const svgText = await heartResponse.text();
+          return parseHeartFromSVG(svgText, `${id}.svg`);
         } catch {
-          // Skip invalid hearts
           return null;
         }
       })

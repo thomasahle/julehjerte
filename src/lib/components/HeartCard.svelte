@@ -123,7 +123,6 @@
     aspect-ratio: 1;
     background: transparent;
     border-radius: 12px;
-    overflow: hidden;
     cursor: pointer;
     transition: transform 0.2s;
   }
@@ -145,15 +144,17 @@
     justify-content: center;
     align-items: center;
     background: transparent;
+    padding: 8px;
+    pointer-events: none; /* Don't capture events from overflow area */
   }
 
   .preview :global(canvas) {
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(0 4px 8px var(--shadow-color));
     transition: filter 0.2s;
   }
 
   .card:hover .preview :global(canvas) {
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0 6px 12px var(--shadow-color-hover));
   }
 
   .thumb-skeleton {
@@ -182,11 +183,13 @@
     align-items: flex-end;
     padding: 0.75rem;
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.2s;
   }
 
   .card:hover .overlay {
     opacity: 1;
+    pointer-events: auto;
   }
 
   .title {

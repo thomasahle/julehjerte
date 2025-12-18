@@ -4,15 +4,73 @@ import { clamp, clampInt } from '$lib/utils/math';
 import {
   type BezierSegment,
   parsePathDataToSegments,
-  segmentsToPathData
+  segmentsToPathData,
+  reverseSegments
 } from '$lib/geometry/bezierSegments';
 import {
   getCenteredRectParams,
   inferOverlapRect as inferOverlapRectFromFingers
 } from '$lib/utils/overlapRect';
+import { validateRawFingers } from '$lib/utils/validatePaths';
+import { SITE_DOMAIN } from '$lib/config';
+import { vecDist } from '$lib/geometry/vec';
 
 type RawFinger = Partial<Finger> & { id?: unknown; lobe?: unknown; pathData?: unknown };
 type RawDesign = Omit<Partial<HeartDesign>, 'gridSize'> & { gridSize?: unknown; fingers?: unknown };
+
+// ============================================================================
+// Coordinate Transform: JSON (0-100) ↔ Internal Pixels
+// ============================================================================
+
+interface OverlapRect {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
+
+function getOverlapRect(gridSize: GridSize): OverlapRect {
+  const width = gridSize.x * STRIP_WIDTH;
+  const height = gridSize.y * STRIP_WIDTH;
+  return {
+    left: BASE_CENTER - width / 2,
+    top: BASE_CENTER - height / 2,
+    width,
+    height
+  };
+}
+
+/** Transform a single coordinate from JSON (0-100) to pixels */
+function jsonToPixel(jsonCoord: number, rectOffset: number, rectSize: number): number {
+  return rectOffset + (jsonCoord / 100) * rectSize;
+}
+
+/** Transform a single coordinate from pixels to JSON (0-100) */
+function pixelToJson(pixelCoord: number, rectOffset: number, rectSize: number): number {
+  return ((pixelCoord - rectOffset) / rectSize) * 100;
+}
+
+/** Transform segments from JSON (0-100) coordinates to internal pixel coordinates */
+function transformSegmentsToPixels(segments: BezierSegment[], gridSize: GridSize): BezierSegment[] {
+  const rect = getOverlapRect(gridSize);
+  return segments.map((seg) => ({
+    p0: { x: jsonToPixel(seg.p0.x, rect.left, rect.width), y: jsonToPixel(seg.p0.y, rect.top, rect.height) },
+    p1: { x: jsonToPixel(seg.p1.x, rect.left, rect.width), y: jsonToPixel(seg.p1.y, rect.top, rect.height) },
+    p2: { x: jsonToPixel(seg.p2.x, rect.left, rect.width), y: jsonToPixel(seg.p2.y, rect.top, rect.height) },
+    p3: { x: jsonToPixel(seg.p3.x, rect.left, rect.width), y: jsonToPixel(seg.p3.y, rect.top, rect.height) }
+  }));
+}
+
+/** Transform segments from internal pixel coordinates to JSON (0-100) coordinates */
+function transformSegmentsToJson(segments: BezierSegment[], gridSize: GridSize): BezierSegment[] {
+  const rect = getOverlapRect(gridSize);
+  return segments.map((seg) => ({
+    p0: { x: pixelToJson(seg.p0.x, rect.left, rect.width), y: pixelToJson(seg.p0.y, rect.top, rect.height) },
+    p1: { x: pixelToJson(seg.p1.x, rect.left, rect.width), y: pixelToJson(seg.p1.y, rect.top, rect.height) },
+    p2: { x: pixelToJson(seg.p2.x, rect.left, rect.width), y: pixelToJson(seg.p2.y, rect.top, rect.height) },
+    p3: { x: pixelToJson(seg.p3.x, rect.left, rect.width), y: pixelToJson(seg.p3.y, rect.top, rect.height) }
+  }));
+}
 
 function normalizeGridSize(raw: unknown): GridSize {
   if (typeof raw === 'number' && Number.isFinite(raw)) {
@@ -32,18 +90,6 @@ function normalizeGridSize(raw: unknown): GridSize {
 function normalizeWeaveParity(raw: unknown): 0 | 1 {
   const v = typeof raw === 'number' && Number.isFinite(raw) ? Math.round(raw) : 0;
   return v % 2 === 1 ? 1 : 0;
-}
-
-function reverseSegments(segments: BezierSegment[]): BezierSegment[] {
-  return segments
-    .slice()
-    .reverse()
-    .map((seg) => ({
-      p0: seg.p3,
-      p1: seg.p2,
-      p2: seg.p1,
-      p3: seg.p0
-    }));
 }
 
 function normalizeNodeTypes(
@@ -205,26 +251,31 @@ export function fingerToPathData(finger: Finger): string {
   return finger.pathData;
 }
 
-export function normalizeFinger(raw: unknown): Finger | null {
+export function normalizeFinger(raw: unknown, gridSize: GridSize): Finger | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as RawFinger;
 
-  const id = typeof r.id === 'string' ? r.id : null;
   const lobe = r.lobe === 'left' || r.lobe === 'right' ? (r.lobe as LobeId) : null;
-  if (!id || !lobe) return null;
+  if (!lobe) return null;
 
   const pathData = typeof r.pathData === 'string' ? r.pathData : null;
   if (!pathData || !pathData.trim()) return null;
 
-  const segments = parsePathDataToSegments(pathData);
-  const first = segments[0];
-  const last = segments[segments.length - 1];
+  // Generate ID if not provided (IDs are regenerated on load anyway)
+  const id = typeof r.id === 'string' ? r.id : `${lobe === 'left' ? 'L' : 'R'}-tmp-${Math.random().toString(36).slice(2, 9)}`;
+
+  // Parse path data (in JSON 0-100 format) and transform to internal pixel coordinates
+  const jsonSegments = parsePathDataToSegments(pathData);
+  const first = jsonSegments[0];
+  const last = jsonSegments[jsonSegments.length - 1];
   if (first && last) {
-    const nodeTypes = normalizeNodeTypes((r as any).nodeTypes, segments.length);
+    // Transform from JSON 0-100 coords to internal pixel coords
+    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize);
+    const nodeTypes = normalizeNodeTypes((r as any).nodeTypes, pixelSegments.length);
     return {
       id,
       lobe,
-      pathData: segmentsToPathData(segments),
+      pathData: segmentsToPathData(pixelSegments),
       nodeTypes
     };
   }
@@ -244,8 +295,14 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   const gridSize = normalizeGridSize(r.gridSize);
 
   const fingersRaw = Array.isArray(r.fingers) ? r.fingers : [];
+
+  // Validate raw JSON paths (0-100 coords) before transformation
+  if (fingersRaw.length > 0) {
+    validateRawFingers(id || 'unknown', fingersRaw);
+  }
+
   let fingers = fingersRaw
-    .map(normalizeFinger)
+    .map((f) => normalizeFinger(f, gridSize))
     .filter((f): f is Finger => f !== null);
 
   const rect = inferOverlapRectFromFingers(fingers, gridSize);
@@ -268,9 +325,35 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   };
 }
 
+/** Get the primary coordinate for a finger (y for left lobe, x for right lobe) */
+function getFingerPosition(finger: Finger): number {
+  const segments = parsePathDataToSegments(finger.pathData);
+  if (!segments.length) return 0;
+  // For left lobe, position is the y-coordinate (horizontal paths)
+  // For right lobe, position is the x-coordinate (vertical paths)
+  if (finger.lobe === 'left') {
+    return segments[0].p0.y;
+  }
+  return segments[0].p0.x;
+}
+
 export function serializeHeartDesign(design: HeartDesign): Omit<HeartDesign, 'fingers'> & {
-  fingers: Array<{ id: string; lobe: LobeId; pathData: string; nodeTypes?: Record<string, NodeType> }>;
+  fingers: Array<{ lobe: LobeId; pathData: string; nodeTypes?: Record<string, NodeType> }>;
 } {
+  // Sort fingers by position so boundaries are at correct positions
+  const leftFingers = design.fingers
+    .filter((f) => f.lobe === 'left')
+    .sort((a, b) => getFingerPosition(a) - getFingerPosition(b));
+  const rightFingers = design.fingers
+    .filter((f) => f.lobe === 'right')
+    .sort((a, b) => getFingerPosition(a) - getFingerPosition(b));
+
+  // Filter out outer boundary curves (first and last of each lobe - dummy edges for editing)
+  const interiorFingers = [
+    ...leftFingers.slice(1, -1),
+    ...rightFingers.slice(1, -1)
+  ];
+
   return {
     id: design.id,
     name: design.name,
@@ -278,11 +361,672 @@ export function serializeHeartDesign(design: HeartDesign): Omit<HeartDesign, 'fi
     description: design.description,
     weaveParity: design.weaveParity ?? 0,
     gridSize: design.gridSize,
-    fingers: design.fingers.map((f) => ({
-      id: f.id,
-      lobe: f.lobe,
-      pathData: fingerToPathData(f),
-      nodeTypes: f.nodeTypes && Object.keys(f.nodeTypes).length ? f.nodeTypes : undefined
-    }))
+    fingers: interiorFingers.map((f) => {
+      // Transform from internal pixel coords to JSON 0-100 coords
+      const pixelSegments = parsePathDataToSegments(f.pathData);
+      const jsonSegments = transformSegmentsToJson(pixelSegments, design.gridSize);
+      return {
+        lobe: f.lobe,
+        pathData: segmentsToPathData(jsonSegments),
+        nodeTypes: f.nodeTypes && Object.keys(f.nodeTypes).length ? f.nodeTypes : undefined
+      };
+    })
+  };
+}
+
+// ============================================================================
+// SVG Serialization / Parsing
+// ============================================================================
+
+function escapeXml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+export function serializeHeartToSVG(design: HeartDesign): string {
+  // Filter out outer boundary curves (first and last of each lobe)
+  const leftFingers = design.fingers.filter((f) => f.lobe === 'left');
+  const rightFingers = design.fingers.filter((f) => f.lobe === 'right');
+  const interiorLeft = leftFingers.slice(1, -1);
+  const interiorRight = rightFingers.slice(1, -1);
+
+  // Transform to 0-100 coords and keep lobe info
+  const leftPaths = interiorLeft.map((f) => {
+    const pixelSegments = parsePathDataToSegments(f.pathData);
+    const jsonSegments = transformSegmentsToJson(pixelSegments, design.gridSize);
+    return segmentsToPathData(jsonSegments);
+  });
+  const rightPaths = interiorRight.map((f) => {
+    const pixelSegments = parsePathDataToSegments(f.pathData);
+    const jsonSegments = transformSegmentsToJson(pixelSegments, design.gridSize);
+    return segmentsToPathData(jsonSegments);
+  });
+
+  // Build SVG
+  const attrs: string[] = [
+    'viewBox="0 0 100 100"',
+    'xmlns="http://www.w3.org/2000/svg"',
+    `data-source="${SITE_DOMAIN}"`,
+    `data-exported="${new Date().toISOString()}"`
+  ];
+  if (design.author) attrs.push(`data-author="${escapeXml(design.author)}"`);
+  attrs.push(`data-weave-parity="${design.weaveParity ?? 0}"`);
+
+  const lines: string[] = [
+    `<svg ${attrs.join(' ')}>`,
+    `  <title>${escapeXml(design.name)}</title>`
+  ];
+  if (design.description) {
+    lines.push(`  <desc>${escapeXml(design.description)}</desc>`);
+  }
+
+  // Horizontal paths (left lobe) in orange, vertical paths (right lobe) in green
+  for (const path of leftPaths) {
+    lines.push(`  <path d="${path}" stroke="orange" fill="none"/>`);
+  }
+  for (const path of rightPaths) {
+    lines.push(`  <path d="${path}" stroke="green" fill="none"/>`);
+  }
+
+  lines.push('</svg>');
+  return lines.join('\n');
+}
+
+/**
+ * Split a path string into subpaths at M/m commands
+ */
+function splitPathIntoSubpaths(pathData: string): string[] {
+  // Match M/m commands and split, keeping track of current position for relative commands
+  const commands = pathData.match(/[MmLlHhVvCcSsQqTtAaZz][^MmLlHhVvCcSsQqTtAaZz]*/g) || [];
+
+  const subpaths: string[] = [];
+  let currentSubpath = '';
+  let currentX = 0;
+  let currentY = 0;
+
+  for (const cmd of commands) {
+    const type = cmd[0];
+    if (!type) continue;
+
+    const isRelative = type === type.toLowerCase();
+    const absType = type.toUpperCase();
+
+    if (absType === 'M') {
+      // Start a new subpath
+      if (currentSubpath.trim()) {
+        subpaths.push(currentSubpath.trim());
+      }
+
+      const args = cmd.slice(1).trim().split(/[\s,]+/).filter(Boolean).map(Number);
+      if (isRelative) {
+        currentX += args[0] ?? 0;
+        currentY += args[1] ?? 0;
+      } else {
+        currentX = args[0] ?? 0;
+        currentY = args[1] ?? 0;
+      }
+      // Always write absolute M for the new subpath
+      currentSubpath = `M ${currentX} ${currentY}`;
+
+      // Handle implicit lineto after M
+      for (let i = 2; i < args.length; i += 2) {
+        if (isRelative) {
+          currentX += args[i] ?? 0;
+          currentY += args[i + 1] ?? 0;
+        } else {
+          currentX = args[i] ?? 0;
+          currentY = args[i + 1] ?? 0;
+        }
+        currentSubpath += ` L ${currentX} ${currentY}`;
+      }
+    } else {
+      // Continue current subpath, converting relative to absolute
+      if (isRelative) {
+        // Convert relative command to absolute
+        const args = cmd.slice(1).trim().split(/[\s,]+/).filter(Boolean).map(Number);
+        switch (absType) {
+          case 'L':
+            for (let i = 0; i < args.length; i += 2) {
+              currentX += args[i] ?? 0;
+              currentY += args[i + 1] ?? 0;
+              currentSubpath += ` L ${currentX} ${currentY}`;
+            }
+            break;
+          case 'H':
+            for (const arg of args) {
+              currentX += arg;
+              currentSubpath += ` H ${currentX}`;
+            }
+            break;
+          case 'V':
+            for (const arg of args) {
+              currentY += arg;
+              currentSubpath += ` V ${currentY}`;
+            }
+            break;
+          case 'C':
+            for (let i = 0; i < args.length; i += 6) {
+              const c1x = currentX + (args[i] ?? 0);
+              const c1y = currentY + (args[i + 1] ?? 0);
+              const c2x = currentX + (args[i + 2] ?? 0);
+              const c2y = currentY + (args[i + 3] ?? 0);
+              const endX = currentX + (args[i + 4] ?? 0);
+              const endY = currentY + (args[i + 5] ?? 0);
+              currentSubpath += ` C ${c1x} ${c1y} ${c2x} ${c2y} ${endX} ${endY}`;
+              currentX = endX;
+              currentY = endY;
+            }
+            break;
+          default:
+            // For other commands, just append as-is (may need expansion later)
+            currentSubpath += ' ' + cmd;
+        }
+      } else {
+        // Absolute command - just append and track position
+        currentSubpath += ' ' + cmd;
+        // Update current position based on command type
+        const args = cmd.slice(1).trim().split(/[\s,]+/).filter(Boolean).map(Number);
+        switch (absType) {
+          case 'L':
+            if (args.length >= 2) {
+              currentX = args[args.length - 2] ?? currentX;
+              currentY = args[args.length - 1] ?? currentY;
+            }
+            break;
+          case 'H':
+            currentX = args[args.length - 1] ?? currentX;
+            break;
+          case 'V':
+            currentY = args[args.length - 1] ?? currentY;
+            break;
+          case 'C':
+            if (args.length >= 6) {
+              currentX = args[args.length - 2] ?? currentX;
+              currentY = args[args.length - 1] ?? currentY;
+            }
+            break;
+        }
+      }
+    }
+  }
+
+  if (currentSubpath.trim()) {
+    subpaths.push(currentSubpath.trim());
+  }
+
+  return subpaths;
+}
+
+/**
+ * Join subpaths whose endpoints touch (within tolerance) into continuous paths
+ */
+function joinSubpaths(subpaths: string[], tolerance: number = 1): string[] {
+  if (subpaths.length <= 1) return subpaths;
+
+  // Parse each subpath to get start/end points
+  interface SubpathInfo {
+    pathData: string;
+    segments: BezierSegment[];
+    start: Vec;
+    end: Vec;
+    used: boolean;
+  }
+
+  const infos: SubpathInfo[] = subpaths.map(p => {
+    const segments = parsePathDataToSegments(p);
+    return {
+      pathData: p,
+      segments,
+      start: segments.length > 0 ? segments[0].p0 : { x: 0, y: 0 },
+      end: segments.length > 0 ? segments[segments.length - 1].p3 : { x: 0, y: 0 },
+      used: false
+    };
+  }).filter(info => info.segments.length > 0);
+
+  const result: string[] = [];
+
+  while (infos.some(i => !i.used)) {
+    // Find first unused subpath
+    const startIdx = infos.findIndex(i => !i.used);
+    if (startIdx === -1) break;
+
+    let chain: BezierSegment[] = [...infos[startIdx].segments];
+    infos[startIdx].used = true;
+
+    // Try to extend the chain in both directions
+    let extended = true;
+    while (extended) {
+      extended = false;
+      const chainStart = chain[0].p0;
+      const chainEnd = chain[chain.length - 1].p3;
+
+      for (const info of infos) {
+        if (info.used) continue;
+
+        // Check if this subpath connects to the end of our chain
+        if (vecDist(chainEnd, info.start) < tolerance) {
+          chain.push(...info.segments);
+          info.used = true;
+          extended = true;
+          break;
+        }
+        if (vecDist(chainEnd, info.end) < tolerance) {
+          chain.push(...reverseSegments(info.segments));
+          info.used = true;
+          extended = true;
+          break;
+        }
+        // Check if this subpath connects to the start of our chain
+        if (vecDist(chainStart, info.end) < tolerance) {
+          chain = [...info.segments, ...chain];
+          info.used = true;
+          extended = true;
+          break;
+        }
+        if (vecDist(chainStart, info.start) < tolerance) {
+          chain = [...reverseSegments(info.segments), ...chain];
+          info.used = true;
+          extended = true;
+          break;
+        }
+      }
+    }
+
+    result.push(segmentsToPathData(chain));
+  }
+
+  return result;
+}
+
+/**
+ * Process a single path element's data: split at M commands and rejoin connected subpaths
+ */
+function processPathData(pathData: string): string[] {
+  const subpaths = splitPathIntoSubpaths(pathData);
+  return joinSubpaths(subpaths);
+}
+
+/**
+ * Analyze a path to determine its lobe and representative position.
+ * Uses bounding box analysis to handle complex paths with scattered elements.
+ * Returns the lobe type and the average position along the strip axis.
+ */
+function analyzePathForLobe(pathData: string): { lobe: LobeId; position: number } | null {
+  const segments = parsePathDataToSegments(pathData);
+  if (!segments.length) return null;
+
+  // Compute bounding box of all points
+  let minX = Infinity, maxX = -Infinity;
+  let minY = Infinity, maxY = -Infinity;
+  let sumX = 0, sumY = 0;
+  let pointCount = 0;
+
+  for (const seg of segments) {
+    for (const p of [seg.p0, seg.p1, seg.p2, seg.p3]) {
+      minX = Math.min(minX, p.x);
+      maxX = Math.max(maxX, p.x);
+      minY = Math.min(minY, p.y);
+      maxY = Math.max(maxY, p.y);
+      sumX += p.x;
+      sumY += p.y;
+      pointCount++;
+    }
+  }
+
+  if (pointCount === 0) return null;
+
+  const xExtent = maxX - minX;
+  const yExtent = maxY - minY;
+  const avgX = sumX / pointCount;
+  const avgY = sumY / pointCount;
+
+  // If the path spans more in X than Y, it's a horizontal strip (left lobe)
+  // If it spans more in Y than X, it's a vertical strip (right lobe)
+  if (xExtent > yExtent) {
+    return { lobe: 'left', position: avgY };
+  } else if (yExtent > xExtent) {
+    return { lobe: 'right', position: avgX };
+  }
+
+  return null;
+}
+
+/**
+ * Detect lobe from path direction:
+ * - Left lobe: horizontal paths (large x span between endpoints)
+ * - Right lobe: vertical paths (large y span between endpoints)
+ */
+function detectLobeFromPath(pathData: string): LobeId | null {
+  const segments = parsePathDataToSegments(pathData);
+  if (!segments.length) return null;
+
+  const start = segments[0].p0;
+  const end = segments[segments.length - 1].p3;
+
+  const xSpan = Math.abs(end.x - start.x);
+  const ySpan = Math.abs(end.y - start.y);
+
+  // Horizontal paths (left lobe) span more in x than y
+  // Vertical paths (right lobe) span more in y than x
+  if (xSpan > ySpan) return 'left';
+  if (ySpan > xSpan) return 'right';
+
+  return null;
+}
+
+// ============================================================================
+// SVG Transform Support
+// ============================================================================
+
+type TransformMatrix = [number, number, number, number, number, number]; // [a, b, c, d, e, f]
+
+function identityMatrix(): TransformMatrix {
+  return [1, 0, 0, 1, 0, 0];
+}
+
+function multiplyMatrices(m1: TransformMatrix, m2: TransformMatrix): TransformMatrix {
+  const [a1, b1, c1, d1, e1, f1] = m1;
+  const [a2, b2, c2, d2, e2, f2] = m2;
+  return [
+    a1 * a2 + c1 * b2,
+    b1 * a2 + d1 * b2,
+    a1 * c2 + c1 * d2,
+    b1 * c2 + d1 * d2,
+    a1 * e2 + c1 * f2 + e1,
+    b1 * e2 + d1 * f2 + f1
+  ];
+}
+
+function applyMatrixToPoint(m: TransformMatrix, p: Vec): Vec {
+  const [a, b, c, d, e, f] = m;
+  return {
+    x: a * p.x + c * p.y + e,
+    y: b * p.x + d * p.y + f
+  };
+}
+
+function parseTransform(transform: string): TransformMatrix {
+  let result = identityMatrix();
+
+  // Match transform functions: name(args)
+  const regex = /(\w+)\s*\(([^)]+)\)/g;
+  let match;
+
+  while ((match = regex.exec(transform)) !== null) {
+    const [, name, argsStr] = match;
+    const args = argsStr.split(/[\s,]+/).filter(Boolean).map(Number);
+
+    let matrix: TransformMatrix;
+
+    switch (name) {
+      case 'matrix':
+        if (args.length >= 6) {
+          matrix = [args[0], args[1], args[2], args[3], args[4], args[5]];
+        } else {
+          continue;
+        }
+        break;
+
+      case 'translate': {
+        const tx = args[0] ?? 0;
+        const ty = args[1] ?? 0;
+        matrix = [1, 0, 0, 1, tx, ty];
+        break;
+      }
+
+      case 'scale': {
+        const sx = args[0] ?? 1;
+        const sy = args[1] ?? sx;
+        matrix = [sx, 0, 0, sy, 0, 0];
+        break;
+      }
+
+      case 'rotate': {
+        const angle = (args[0] ?? 0) * Math.PI / 180;
+        const cx = args[1] ?? 0;
+        const cy = args[2] ?? 0;
+        const cos = Math.cos(angle);
+        const sin = Math.sin(angle);
+        // Rotate around (cx, cy): translate to origin, rotate, translate back
+        if (cx !== 0 || cy !== 0) {
+          matrix = multiplyMatrices(
+            [1, 0, 0, 1, cx, cy],
+            multiplyMatrices([cos, sin, -sin, cos, 0, 0], [1, 0, 0, 1, -cx, -cy])
+          );
+        } else {
+          matrix = [cos, sin, -sin, cos, 0, 0];
+        }
+        break;
+      }
+
+      case 'skewX': {
+        const angle = (args[0] ?? 0) * Math.PI / 180;
+        matrix = [1, 0, Math.tan(angle), 1, 0, 0];
+        break;
+      }
+
+      case 'skewY': {
+        const angle = (args[0] ?? 0) * Math.PI / 180;
+        matrix = [1, Math.tan(angle), 0, 1, 0, 0];
+        break;
+      }
+
+      default:
+        continue;
+    }
+
+    result = multiplyMatrices(result, matrix);
+  }
+
+  return result;
+}
+
+function getCumulativeTransform(element: Element, stopAt: Element): TransformMatrix {
+  let matrix = identityMatrix();
+  let current: Element | null = element;
+
+  // Collect transforms from element up to (but not including) stopAt
+  const transforms: TransformMatrix[] = [];
+  while (current && current !== stopAt) {
+    const transform = current.getAttribute('transform');
+    if (transform) {
+      transforms.push(parseTransform(transform));
+    }
+    current = current.parentElement;
+  }
+
+  // Apply transforms from root to element (reverse order)
+  for (let i = transforms.length - 1; i >= 0; i--) {
+    matrix = multiplyMatrices(matrix, transforms[i]);
+  }
+
+  return matrix;
+}
+
+function applyTransformToSegments(segments: BezierSegment[], matrix: TransformMatrix): BezierSegment[] {
+  return segments.map(seg => ({
+    p0: applyMatrixToPoint(matrix, seg.p0),
+    p1: applyMatrixToPoint(matrix, seg.p1),
+    p2: applyMatrixToPoint(matrix, seg.p2),
+    p3: applyMatrixToPoint(matrix, seg.p3)
+  }));
+}
+
+export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesign | null {
+  // Parse SVG using DOMParser
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(svgText, 'image/svg+xml');
+
+  // Check for parse errors
+  const parseError = doc.querySelector('parsererror');
+  if (parseError) {
+    console.error('SVG parse error:', parseError.textContent);
+    return null;
+  }
+
+  const svg = doc.querySelector('svg');
+  if (!svg) return null;
+
+  // Extract metadata
+  const titleEl = svg.querySelector('title');
+  const descEl = svg.querySelector('desc');
+  const name = titleEl?.textContent?.trim() || 'Untitled';
+  const description = descEl?.textContent?.trim() || undefined;
+  const author = svg.getAttribute('data-author') || '';
+  const weaveParity = normalizeWeaveParity(parseInt(svg.getAttribute('data-weave-parity') || '0', 10));
+
+  // Extract id from filename (remove .svg extension)
+  const id = filename ? filename.replace(/\.svg$/i, '') : '';
+
+  // Get all paths from anywhere in the SVG (handles nested groups from Inkscape, etc.)
+  const leftPathData: string[] = [];
+  const rightPathData: string[] = [];
+
+  // Track positions for deduplication when using bounding box analysis
+  const leftPositions: number[] = [];
+  const rightPositions: number[] = [];
+  const POSITION_TOLERANCE = 2; // Consider positions within 2 units as the same strip
+
+  // Find all path elements regardless of grouping
+  const allPaths = Array.from(svg.querySelectorAll('path'));
+  for (const pathEl of allPaths) {
+    const pathData = pathEl.getAttribute('d');
+    if (!pathData) continue;
+
+    // Get cumulative transform from all parent elements
+    const transform = getCumulativeTransform(pathEl, svg);
+    const hasTransform = transform[0] !== 1 || transform[1] !== 0 || transform[2] !== 0 ||
+                         transform[3] !== 1 || transform[4] !== 0 || transform[5] !== 0;
+
+    // Apply transform to get actual coordinates
+    let transformedPathData = pathData;
+    if (hasTransform) {
+      const segments = parsePathDataToSegments(pathData);
+      const transformedSegments = applyTransformToSegments(segments, transform);
+      transformedPathData = segmentsToPathData(transformedSegments);
+    }
+
+    // Split and rejoin subpaths within this path element
+    const joinedPaths = processPathData(transformedPathData);
+    let usedJoinedPaths = false;
+
+    for (const joinedPath of joinedPaths) {
+      // Check if the joined path spans from edge to edge (endpoints near 0 or 100)
+      const segments = parsePathDataToSegments(joinedPath);
+      if (!segments.length) continue;
+
+      const start = segments[0].p0;
+      const end = segments[segments.length - 1].p3;
+      const EDGE_TOLERANCE = 5;
+      const nearEdge = (v: number) => v < EDGE_TOLERANCE || v > 100 - EDGE_TOLERANCE;
+
+      // For left lobe (horizontal): start.x near 100, end.x near 0
+      // For right lobe (vertical): start.y near 100, end.y near 0
+      const isHorizontalSpan = nearEdge(start.x) && nearEdge(end.x);
+      const isVerticalSpan = nearEdge(start.y) && nearEdge(end.y);
+
+      if (isHorizontalSpan || isVerticalSpan) {
+        // Path spans edge to edge - use original path
+        const lobe = detectLobeFromPath(joinedPath);
+        if (lobe === 'left') {
+          leftPathData.push(joinedPath);
+          usedJoinedPaths = true;
+        } else if (lobe === 'right') {
+          rightPathData.push(joinedPath);
+          usedJoinedPaths = true;
+        }
+      }
+    }
+
+    // If no joined paths worked, use bounding box analysis to count strips
+    if (!usedJoinedPaths) {
+      const analysis = analyzePathForLobe(transformedPathData);
+      if (analysis) {
+        const { lobe, position } = analysis;
+
+        // Check if we already have a strip at this position (deduplication)
+        const positions = lobe === 'left' ? leftPositions : rightPositions;
+        const alreadyHave = positions.some(p => Math.abs(p - position) < POSITION_TOLERANCE);
+
+        if (!alreadyHave) {
+          positions.push(position);
+          // Just track that we found a strip - we'll generate proper lines later
+        }
+      }
+    }
+  }
+
+  // If we used bounding box analysis (positions were tracked), generate proper grid lines
+  if (leftPositions.length > 0 || rightPositions.length > 0) {
+    const numLeftStrips = leftPositions.length;
+    const numRightStrips = rightPositions.length;
+
+    // Generate straight lines at proper grid positions
+    for (let i = 0; i < numLeftStrips; i++) {
+      // Position at (i+1)/(numStrips+1) * 100 for uniform spacing
+      const y = ((i + 1) / (numLeftStrips + 1)) * 100;
+      leftPathData.push(`M 100 ${y} L 0 ${y}`);
+    }
+    for (let i = 0; i < numRightStrips; i++) {
+      const x = ((i + 1) / (numRightStrips + 1)) * 100;
+      rightPathData.push(`M ${x} 100 L ${x} 0`);
+    }
+  }
+
+  // Infer grid size from path counts (interior cuts = strips - 1)
+  const gridSize: GridSize = {
+    x: clampInt(rightPathData.length + 1, 2, 8),
+    y: clampInt(leftPathData.length + 1, 2, 8)
+  };
+
+  // Convert paths to fingers
+  const fingers: Finger[] = [];
+
+  for (let i = 0; i < leftPathData.length; i++) {
+    const jsonSegments = parsePathDataToSegments(leftPathData[i]);
+    if (!jsonSegments.length) continue;
+
+    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize);
+    fingers.push({
+      id: `L-tmp-${i}`,
+      lobe: 'left',
+      pathData: segmentsToPathData(pixelSegments)
+    });
+  }
+
+  for (let i = 0; i < rightPathData.length; i++) {
+    const jsonSegments = parsePathDataToSegments(rightPathData[i]);
+    if (!jsonSegments.length) continue;
+
+    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize);
+    fingers.push({
+      id: `R-tmp-${i}`,
+      lobe: 'right',
+      pathData: segmentsToPathData(pixelSegments)
+    });
+  }
+
+  // Add outer boundaries and canonicalize
+  const rect = inferOverlapRectFromFingers(fingers, gridSize);
+  const canonicalizedFingers = fingers.map((f) => canonicalizeFingerForGrid(f, rect));
+  const finalFingers = ensureOuterBoundaries(canonicalizedFingers, rect);
+
+  // Recalculate grid size from final finger count
+  const inferredGrid: GridSize = {
+    x: clampInt(finalFingers.filter((f) => f.lobe === 'right').length - 1, 2, 8),
+    y: clampInt(finalFingers.filter((f) => f.lobe === 'left').length - 1, 2, 8)
+  };
+
+  return {
+    id,
+    name,
+    author,
+    description,
+    weaveParity,
+    gridSize: inferredGrid,
+    fingers: finalFingers
   };
 }

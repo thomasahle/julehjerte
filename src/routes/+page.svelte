@@ -10,14 +10,11 @@
   import {
     t,
     getLanguage,
-    setLanguage,
     subscribeLanguage,
     type Language,
   } from "$lib/i18n";
   import {
     getColors,
-    setLeftColor,
-    setRightColor,
     subscribeColors,
     type HeartColors,
   } from "$lib/stores/colors";
@@ -30,10 +27,7 @@
   import { Button } from "$lib/components/ui/button";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
   import * as Tooltip from "$lib/components/ui/tooltip";
-  import { Separator } from "$lib/components/ui/separator";
-  import GitHubStarsButton from "$lib/components/GitHubStarsButton.svelte";
   import SettingsIcon from "@lucide/svelte/icons/settings";
-  import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
 
   // Layout options for PDF generation
   const LAYOUT_OPTIONS: {
@@ -92,12 +86,6 @@
     hearts = await loadAllHearts();
     loading = false;
   });
-
-  function toggleLanguage() {
-    const newLang = lang === "da" ? "en" : "da";
-    setLanguage(newLang);
-    lang = newLang;
-  }
 
   function handleSelect(design: HeartDesign) {
     const newSet = new Set(selectedIds);
@@ -159,20 +147,21 @@
       {t("createNewHeart", lang)}
     </Button>
     <div class="inline-flex rounded-md shadow-xs" role="group">
-      <Tooltip.Root>
-        <Tooltip.Trigger
-          disabled={selectedCount > 0 || generating}
-        >
-          <Button
-            variant="secondary"
-            class="rounded-r-none border-r-0"
-            onclick={handlePrintSelected}
-            disabled={selectedCount === 0 || generating}
-          >
-            {generating
-              ? t("generating", lang)
-              : `${t("printSelected", lang)} (${selectedCount})`}
-          </Button>
+      <Tooltip.Root disabled={selectedCount > 0 || generating}>
+        <Tooltip.Trigger>
+          {#snippet child({ props })}
+            <Button
+              {...props}
+              variant="secondary"
+              class="rounded-r-none border-r-0"
+              onclick={handlePrintSelected}
+              disabled={selectedCount === 0 || generating}
+            >
+              {generating
+                ? t("generating", lang)
+                : `${t("printSelected", lang)} (${selectedCount})`}
+            </Button>
+          {/snippet}
         </Tooltip.Trigger>
         <Tooltip.Content>
           <p>{t("selectHeartsFirst", lang)}</p>
@@ -225,70 +214,6 @@
       {/each}
     </div>
   {/if}
-
-  <footer class="page-footer">
-    <Separator class="mb-6" />
-    <div class="footer-controls">
-      <div class="flex items-center gap-2">
-        <Tooltip.Root>
-          <Tooltip.Trigger>
-            <label
-              class="inline-flex size-8 rounded-full shadow-xs cursor-pointer overflow-hidden"
-            >
-              <input
-                type="color"
-                value={colors.left}
-                oninput={(e) =>
-                  setLeftColor((e.target as HTMLInputElement).value)}
-                class="w-full h-full border-0 cursor-pointer scale-150"
-              />
-            </label>
-          </Tooltip.Trigger>
-          <Tooltip.Content>
-            <p>{t("leftColor", lang)}</p>
-          </Tooltip.Content>
-        </Tooltip.Root>
-        <Tooltip.Root>
-          <Tooltip.Trigger>
-            <label
-              class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden"
-            >
-              <input
-                type="color"
-                value={colors.right}
-                oninput={(e) =>
-                  setRightColor((e.target as HTMLInputElement).value)}
-                class="w-full h-full border-0 cursor-pointer scale-150"
-              />
-            </label>
-          </Tooltip.Trigger>
-          <Tooltip.Content>
-            <p>{t("rightColor", lang)}</p>
-          </Tooltip.Content>
-        </Tooltip.Root>
-      </div>
-      <Button
-        variant="secondary"
-        size="sm"
-        onclick={toggleLanguage}
-        title={lang === "da" ? "Switch to English" : "Skift til dansk"}
-        class="rounded-full"
-      >
-        {lang === "da" ? "🇬🇧 EN" : "🇩🇰 DA"}
-      </Button>
-      <GitHubStarsButton repo="thomasahle/julehjerte" />
-      <Button
-        variant="link"
-        size="sm"
-        href="https://github.com/thomasahle/julehjerte/issues/new?title=Heart%20suggestion&body=%23%23%20Heart%20Design%20Suggestion%0A%0A**Name%3A**%20%0A**Description%3A**%20%0A**Grid%20size%3A**%20%0A%0A**Reference%20image%20or%20description%3A**%0A%0A%3C!--%20Please%20attach%20an%20image%20or%20describe%20the%20pattern%20--%3E"
-        target="_blank"
-        class="gap-1"
-      >
-        {t("suggestHeart", lang)}
-        <ExternalLinkIcon class="size-3" />
-      </Button>
-    </div>
-  </footer>
 </div>
 
 <style>
@@ -358,18 +283,6 @@
     margin: 0 auto;
   }
 
-  .page-footer {
-    margin-top: 2rem;
-  }
-
-  .footer-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-  }
-
   @media (max-width: 600px) {
     .gallery-page {
       padding: 0.75rem;
@@ -395,8 +308,13 @@
       width: 100%;
     }
 
-    .toolbar > div[role="group"] > :global(button:first-child),
-    .toolbar > div[role="group"] > :global(a:first-child) {
+    /* First child might be a Tooltip wrapper, not the button directly */
+    .toolbar > div[role="group"] > :global(:first-child) {
+      flex: 1;
+      display: flex;
+    }
+
+    .toolbar > div[role="group"] > :global(:first-child) :global(button) {
       flex: 1;
     }
 

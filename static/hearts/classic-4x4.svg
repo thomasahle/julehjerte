@@ -1,0 +1,10 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-author="Traditional" data-weave-parity="0">
+  <title>Classic 4x4</title>
+  <desc>The traditional Danish woven heart with 4 strips per side</desc>
+  <path d="M 100 25 C 75 25 25 25 0 25" stroke="orange" fill="none"/>
+  <path d="M 100 50 C 75 50 25 50 0 50" stroke="orange" fill="none"/>
+  <path d="M 100 75 C 75 75 25 75 0 75" stroke="orange" fill="none"/>
+  <path d="M 25 100 C 25 75 25 25 25 0" stroke="green" fill="none"/>
+  <path d="M 50 100 C 50 75 50 25 50 0" stroke="green" fill="none"/>
+  <path d="M 75 100 C 75 75 75 25 75 0" stroke="green" fill="none"/>
+</svg>

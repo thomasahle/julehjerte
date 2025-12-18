@@ -2,7 +2,7 @@ export const translations = {
   da: {
     // Site
     siteTitle: 'Juleflet.dk',
-    siteDescription: 'Velkommen til min hjemmeside med skabeloner til julefletning! Brug julehjertedesigneren til at lave dine egne mønstre, print dem ud, og god fornøjelse med julefletningen!',
+    siteDescription: 'Velkommen til min hjemmeside med skabeloner til julefletning! Design dine egne mønstre, print dem ud, og god fornøjelse med julefletningen!',
 
     // Gallery
     createNewHeart: 'Lav Nyt Hjerte',
@@ -12,9 +12,9 @@ export const translations = {
     noHeartsYet: 'Ingen hjertedesigns endnu!',
     clickCreateNew: 'Klik "Lav Nyt Hjerte" for at designe dit første hjerte.',
     pdfLayout: 'PDF Layout',
-    layoutSmall: 'Lille (4×4)',
-    layoutMedium: 'Medium (3×3)',
-    layoutLarge: 'Stor (2×2)',
+    layoutSmall: 'Små (16 per side)',
+    layoutMedium: 'Mellem (9 per side)',
+    layoutLarge: 'Store (4 per side)',
     select: 'Vælg',
     selected: '✓ Valgt',
     details: 'Detaljer',
@@ -114,6 +114,7 @@ export const translations = {
     leftColor: 'Venstre farve',
     rightColor: 'Højre farve',
     suggestHeart: 'Foreslå hjerte',
+    madeBy: 'Af',
 
     // Error page
     errorTitle: 'Ups! Noget gik galt',
@@ -124,7 +125,7 @@ export const translations = {
   en: {
     // Site
     siteTitle: 'Juleflet',
-    siteDescription: 'Design and print woven Christmas hearts – free templates',
+    siteDescription: 'Design and print woven Christmas hearts – free templates. — Best, {author}',
 
     // Gallery
     createNewHeart: 'Create New Heart',
@@ -134,9 +135,9 @@ export const translations = {
     noHeartsYet: 'No heart designs yet!',
     clickCreateNew: 'Click "Create New Heart" to design your first heart.',
     pdfLayout: 'PDF Layout',
-    layoutSmall: 'Small (4×4)',
-    layoutMedium: 'Medium (3×3)',
-    layoutLarge: 'Large (2×2)',
+    layoutSmall: 'Small (16 per page)',
+    layoutMedium: 'Medium (9 per page)',
+    layoutLarge: 'Large (4 per page)',
     select: 'Select',
     selected: '✓ Selected',
     details: 'Details',
@@ -236,6 +237,7 @@ export const translations = {
     leftColor: 'Left color',
     rightColor: 'Right color',
     suggestHeart: 'Suggest heart',
+    madeBy: 'By',
 
     // Error page
     errorTitle: 'Oops! Something went wrong',

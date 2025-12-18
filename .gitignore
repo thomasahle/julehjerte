@@ -11,6 +11,9 @@ __pycache__/
 /.svelte-kit
 /build
 
+# Generated OG images (built by CI)
+/static/og/
+
 # OS
 .DS_Store
 Thumbs.db

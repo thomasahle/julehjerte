@@ -5,6 +5,7 @@
 	import { browser } from "$app/environment";
 	import { onMount } from "svelte";
 	import * as Tooltip from "$lib/components/ui/tooltip";
+	import PageFooter from "$lib/components/PageFooter.svelte";
 
 	let { children } = $props();
 
@@ -60,6 +61,7 @@
 
 <Tooltip.Provider>
 	{@render children()}
+	<PageFooter />
 </Tooltip.Provider>
 
 <style>

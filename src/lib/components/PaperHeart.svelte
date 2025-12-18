@@ -197,8 +197,13 @@
   let initialized = false;
   let paperReady = $state(false);
   let didInitialFingerSetup = false;
-  // Actual displayed size of the canvas wrapper (for responsive scaling)
-  let displayedSize = $state(size);
+
+  // Track container width reactively - ResizeObserver updates this (editor mode only)
+  let containerWidth = $state(size);
+  // Displayed size is derived: min of container width and size prop
+  // This allows growing back when container expands
+  // For readonly mode, we render at BASE_CANVAS_SIZE and CSS-scale to `size` for performance
+  let displayedSize = $derived(readonly ? BASE_CANVAS_SIZE : Math.min(containerWidth, size));
 
   // Editing controls
   // Initialized from props in `$effect.pre` below; avoid capturing `initialGridSize` here.
@@ -1644,50 +1649,81 @@
   }
 
   /**
-   * Check if a finger has issues: self-intersecting, intersecting other curves,
-   * or too close to other curves in the same lobe.
-   * Returns true if there are problems.
+   * Check if a finger has issues with other curves in the same lobe:
+   * - Actual intersections (curves crossing each other)
+   * - Curves too close together (proximity check)
+   *
+   * We filter out intersections at curve endpoints since adjacent curves
+   * legitimately share endpoints on the boundary edges.
+   *
+   * Note: We don't check for self-intersections since multi-segment beziers
+   * naturally have segment joints that Paper.js may detect as intersections.
    */
   function fingerHasIntersectionIssues(finger: Finger): boolean {
-    const MIN_CURVE_DISTANCE = 3; // Minimum distance between curves
-    const SAMPLE_COUNT = 20; // Number of points to sample along curve for proximity check
+    const ENDPOINT_TOLERANCE = 2; // pixels - for filtering endpoint intersections
+    const MIN_CURVE_DISTANCE = 3; // pixels - minimum distance between different curves
+    const SAMPLE_COUNT = 20; // number of points to sample for proximity check
 
     return withInsertItemsDisabled(() => {
       const path = buildFingerPath(finger);
+      const pathStart = path.firstSegment?.point;
+      const pathEnd = path.lastSegment?.point;
 
-      // Check for self-intersections
-      const selfIntersections = path.getIntersections(path);
-      if (selfIntersections.length > 0) {
-        path.remove();
-        return true;
-      }
-
-      // Check for intersections and proximity to other curves in the same lobe
+      // Check for intersections and proximity with other curves in the same lobe
       for (const other of fingers) {
         if (other.id === finger.id) continue;
         if (other.lobe !== finger.lobe) continue;
+
         const otherPath = buildFingerPath(other);
+        const otherStart = otherPath.firstSegment?.point;
+        const otherEnd = otherPath.lastSegment?.point;
 
-        // Check intersections
+        // Check actual intersections, filtering out those at endpoints
         const intersections = path.getIntersections(otherPath);
-        if (intersections.length > 0) {
-          otherPath.remove();
-          path.remove();
-          return true;
-        }
+        for (const ix of intersections) {
+          const pt = ix.point;
+          // Skip if intersection is at an endpoint of either curve
+          const atPathEndpoint =
+            (pathStart && pt.getDistance(pathStart) < ENDPOINT_TOLERANCE) ||
+            (pathEnd && pt.getDistance(pathEnd) < ENDPOINT_TOLERANCE);
+          const atOtherEndpoint =
+            (otherStart && pt.getDistance(otherStart) < ENDPOINT_TOLERANCE) ||
+            (otherEnd && pt.getDistance(otherEnd) < ENDPOINT_TOLERANCE);
 
-        // Check proximity by sampling points
-        for (let i = 0; i <= SAMPLE_COUNT; i++) {
-          const t = i / SAMPLE_COUNT;
-          const point = path.getPointAt(t * path.length);
-          if (!point) continue;
-          const nearest = otherPath.getNearestPoint(point);
-          if (nearest && point.getDistance(nearest) < MIN_CURVE_DISTANCE) {
+          if (!atPathEndpoint && !atOtherEndpoint) {
+            // Found a real intersection not at endpoints
             otherPath.remove();
             path.remove();
             return true;
           }
         }
+
+        // Check proximity - sample points along this curve and check distance to other curve
+        // Skip points near the endpoints (where curves legitimately meet)
+        const pathLength = path.length;
+        for (let i = 1; i < SAMPLE_COUNT - 1; i++) {
+          const t = i / SAMPLE_COUNT;
+          const point = path.getPointAt(t * pathLength);
+          if (!point) continue;
+
+          // Skip if this sample point is near our own endpoints
+          if (pathStart && point.getDistance(pathStart) < ENDPOINT_TOLERANCE * 2) continue;
+          if (pathEnd && point.getDistance(pathEnd) < ENDPOINT_TOLERANCE * 2) continue;
+
+          const nearest = otherPath.getNearestPoint(point);
+          if (!nearest) continue;
+
+          // Skip if the nearest point on other curve is near its endpoints
+          if (otherStart && nearest.getDistance(otherStart) < ENDPOINT_TOLERANCE * 2) continue;
+          if (otherEnd && nearest.getDistance(otherEnd) < ENDPOINT_TOLERANCE * 2) continue;
+
+          if (point.getDistance(nearest) < MIN_CURVE_DISTANCE) {
+            otherPath.remove();
+            path.remove();
+            return true;
+          }
+        }
+
         otherPath.remove();
       }
 
@@ -2368,9 +2404,10 @@
 
     // Fit the (filled) heart to the viewport to prevent cropping.
     // Use fillGroup bounds to keep view stable (avoid jitter when selecting handles).
+    // displayedSize matches viewSize, so zoom handles both content fitting and size scaling.
     const bounds = fillGroup.bounds;
-    const padding = BASE_CANVAS_SIZE * 0.02;
-    const available = BASE_CANVAS_SIZE - 2 * padding;
+    const padding = displayedSize * 0.02;
+    const available = displayedSize - 2 * padding;
     const zoom = Math.min(available / bounds.width, available / bounds.height);
     paper.view.zoom = Number.isFinite(zoom) && zoom > 0 ? zoom : 1;
     paper.view.center = bounds.center;
@@ -2689,7 +2726,7 @@
 
   function handleMouseDown(event: any) {
     const clickCount = getClickCount(event);
-    const point = correctCoords(event.point);
+    const point = event.point;
     const hits = paper.project.hitTestAll(point, {
       fill: true,
       stroke: true,
@@ -2842,29 +2879,8 @@
     draw();
   }
 
-  /**
-   * Get the CSS scaling factor for coordinate correction.
-   * Paper.js doesn't properly handle when CSS size differs from view size.
-   */
-  function getCoordScale(): number {
-    if (!canvas) return 1;
-    const rect = canvas.getBoundingClientRect();
-    const actualSize = rect.width; // The CSS-displayed size
-    if (actualSize <= 0 || actualSize === BASE_CANVAS_SIZE) return 1;
-    return BASE_CANVAS_SIZE / actualSize;
-  }
-
-  /**
-   * Correct Paper.js coordinates for CSS scaling (works for both points and deltas).
-   */
-  function correctCoords(point: paper.Point): paper.Point {
-    const scale = getCoordScale();
-    if (scale === 1) return point;
-    return new paper.Point(point.x * scale, point.y * scale);
-  }
-
   function handleMouseMove(event: any) {
-    const point = correctCoords(event.point);
+    const point = event.point;
     const hits = paper.project.hitTestAll(point, {
       fill: true,
       stroke: true,
@@ -3201,9 +3217,8 @@
     let target = dragTarget;
     if (!target) return;
 
-    // Correct coordinates for CSS scaling
-    const correctedPoint = correctCoords(event.point);
-    const correctedDelta = correctCoords(event.delta);
+    const correctedPoint = event.point;
+    const correctedDelta = event.delta;
 
     if (target.kind === "control") {
       const pointKey = target.pointKey;
@@ -3436,24 +3451,36 @@
   // DEV benchmarks are attached dynamically from `$lib/dev/paperHeartBench`.
 
   onMount(() => {
+    // For readonly mode, set canvas to BASE_CANVAS_SIZE before Paper.js setup
+    // This ensures Paper.js initializes with the correct dimensions
+    // We'll scale down via CSS after setup
+    if (readonly) {
+      canvas.width = BASE_CANVAS_SIZE;
+      canvas.height = BASE_CANVAS_SIZE;
+      canvas.style.width = `${BASE_CANVAS_SIZE}px`;
+      canvas.style.height = `${BASE_CANVAS_SIZE}px`;
+    }
+
     paper.activate();
     paper.setup(canvas);
-    // Set view to BASE_CANVAS_SIZE coordinate space
-    paper.view.viewSize = new paper.Size(BASE_CANVAS_SIZE, BASE_CANVAS_SIZE);
 
-    // Set canvas CSS size AFTER Paper.js setup (Paper.js overrides styles during setup).
-    // Start with the size prop, then check if wrapper constrains it smaller.
-    // This handles mobile/responsive layouts where container is smaller than requested size.
-    let targetSize = size;
+    // For readonly, now scale down via CSS after Paper.js is set up
+    if (readonly) {
+      canvas.style.width = `${size}px`;
+      canvas.style.height = `${size}px`;
+    }
+
+    // Measure initial container width (may be smaller than size prop on mobile)
     if (canvasWrapper) {
       const wrapperRect = canvasWrapper.getBoundingClientRect();
-      if (wrapperRect.width > 0 && wrapperRect.width < targetSize) {
-        targetSize = wrapperRect.width;
+      if (wrapperRect.width > 0) {
+        containerWidth = wrapperRect.width;
       }
     }
-    displayedSize = targetSize;
-    canvas.style.width = `${targetSize}px`;
-    canvas.style.height = `${targetSize}px`;
+
+    // Set viewSize to match canvas internal resolution
+    paper.view.viewSize = new paper.Size(displayedSize, displayedSize);
+
     if (!readonly) {
       tool = new paper.Tool();
       tool.onMouseDown = handleMouseDown;
@@ -3465,24 +3492,20 @@
       window.addEventListener("keydown", handleKeyDown);
     }
 
-    // Track wrapper size changes for coordinate correction (fixes mobile hit zone offset)
-    // Cap at the size prop - we can shrink to fit container but never expand beyond intended size
-    const maxSize = size;
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width } = entry.contentRect;
-        const newSize = Math.min(width, maxSize);
-        if (newSize > 0 && newSize !== displayedSize) {
-          displayedSize = newSize;
-          if (canvas) {
-            canvas.style.width = `${newSize}px`;
-            canvas.style.height = `${newSize}px`;
+    // Track container width changes (editor mode only - readonly uses CSS scaling)
+    let resizeObserver: ResizeObserver | null = null;
+    if (!readonly) {
+      resizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const { width } = entry.contentRect;
+          if (width > 0) {
+            containerWidth = width;
           }
         }
+      });
+      if (canvasWrapper) {
+        resizeObserver.observe(canvasWrapper);
       }
-    });
-    if (canvasWrapper) {
-      resizeObserver.observe(canvasWrapper);
     }
 
     // Initialize colors from store and subscribe to changes
@@ -3492,6 +3515,12 @@
     });
 
     paperReady = true;
+
+    // Force initial draw after Paper.js is fully set up
+    // Use requestAnimationFrame to ensure canvas dimensions are settled
+    requestAnimationFrame(() => {
+      draw();
+    });
     let detachBench: null | (() => void) = null;
     let detachDebug: null | (() => void) = null;
     let disposed = false;
@@ -3656,7 +3685,7 @@
       tool = null;
       detachBench?.();
       detachDebug?.();
-      resizeObserver.disconnect();
+      resizeObserver?.disconnect();
       if (typeof window !== "undefined") {
         window.removeEventListener("keydown", handleKeyDown);
       }
@@ -3677,6 +3706,17 @@
 	    if (!paperReady || !canvas || !paper.project) return;
 	    draw();
 	  });
+
+  // Sync Paper.js viewSize with displayedSize (reactive to container resize)
+  $effect(() => {
+    if (!paperReady || !paper.view) return;
+    const currentSize = displayedSize;
+    // Only update if viewSize actually differs
+    if (paper.view.viewSize.width !== currentSize || paper.view.viewSize.height !== currentSize) {
+      paper.view.viewSize = new paper.Size(currentSize, currentSize);
+      draw();
+    }
+  });
 </script>
 
 <TooltipProvider delayDuration={250}>
@@ -3685,8 +3725,10 @@
     <div class="canvas-wrapper" bind:this={canvasWrapper}>
       <canvas
         bind:this={canvas}
-        style:width="{displayedSize}px"
-        style:height="{displayedSize}px"
+        width={readonly ? BASE_CANVAS_SIZE : displayedSize}
+        height={readonly ? BASE_CANVAS_SIZE : displayedSize}
+        style:width="{readonly ? size : displayedSize}px"
+        style:height="{readonly ? size : displayedSize}px"
       ></canvas>
     </div>
     {#if !readonly}
@@ -4068,6 +4110,18 @@
   }
 
   .canvas-wrapper {
+    /* For readonly (gallery), wrapper sizes to canvas content */
+  }
+
+  /* Readonly canvases shouldn't capture pointer events */
+  .paper-heart.readonly {
+    pointer-events: none;
+  }
+
+  /* For editor, wrapper needs explicit sizing so it doesn't shrink-wrap the canvas */
+  .paper-heart:not(.readonly) .canvas-wrapper {
+    width: 600px;
+    height: 600px;
   }
 
   .segment-controls {

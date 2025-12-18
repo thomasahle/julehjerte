@@ -1,0 +1,12 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-author="Thomas" data-weave-parity="0">
+  <title>Ramme</title>
+  <desc>En skæv lille ramme</desc>
+  <path d="M 100 27.754 C 74.749 13.765 25.251 13.765 0 27.754" stroke="orange" fill="none"/>
+  <path d="M 100 36.647 C 72.654 19.424 27.346 19.424 0 36.647" stroke="orange" fill="none"/>
+  <path d="M 100 63.353 C 72.654 80.576 27.346 80.576 0 63.353" stroke="orange" fill="none"/>
+  <path d="M 100 72.246 C 74.749 86.235 25.251 86.235 0 72.246" stroke="orange" fill="none"/>
+  <path d="M 27.754 100 C 13.765 74.749 13.765 25.251 27.754 0" stroke="green" fill="none"/>
+  <path d="M 36.647 100 C 19.424 72.654 19.424 27.346 36.647 0" stroke="green" fill="none"/>
+  <path d="M 63.353 100 C 80.576 72.654 80.576 27.346 63.353 0" stroke="green" fill="none"/>
+  <path d="M 72.246 100 C 86.235 74.749 86.235 25.251 72.246 0" stroke="green" fill="none"/>
+</svg>
