@@ -1,5 +1,5 @@
 import type { Finger, GridSize, HeartDesign, LobeId, NodeType, Vec } from '$lib/types/heart';
-import { STRIP_WIDTH, BASE_CENTER, CENTER } from '$lib/constants';
+import { STRIP_WIDTH, BASE_CENTER } from '$lib/constants';
 import { clamp, clampInt } from '$lib/utils/math';
 import {
   type BezierSegment,
@@ -387,9 +387,13 @@ function escapeXml(str: string): string {
 }
 
 export function serializeHeartToSVG(design: HeartDesign): string {
-  // Filter out outer boundary curves (first and last of each lobe)
-  const leftFingers = design.fingers.filter((f) => f.lobe === 'left');
-  const rightFingers = design.fingers.filter((f) => f.lobe === 'right');
+  // Sort fingers by position so boundaries are at correct positions, then filter out outer boundaries
+  const leftFingers = design.fingers
+    .filter((f) => f.lobe === 'left')
+    .sort((a, b) => getFingerPosition(a) - getFingerPosition(b));
+  const rightFingers = design.fingers
+    .filter((f) => f.lobe === 'right')
+    .sort((a, b) => getFingerPosition(a) - getFingerPosition(b));
   const interiorLeft = leftFingers.slice(1, -1);
   const interiorRight = rightFingers.slice(1, -1);
 
@@ -520,6 +524,21 @@ function splitPathIntoSubpaths(pathData: string): string[] {
               currentY = endY;
             }
             break;
+          case 'A':
+            // Arc: rx ry x-axis-rotation large-arc-flag sweep-flag x y
+            for (let i = 0; i < args.length; i += 7) {
+              const rx = args[i] ?? 0;
+              const ry = args[i + 1] ?? 0;
+              const rotation = args[i + 2] ?? 0;
+              const largeArc = args[i + 3] ?? 0;
+              const sweep = args[i + 4] ?? 0;
+              const endX = currentX + (args[i + 5] ?? 0);
+              const endY = currentY + (args[i + 6] ?? 0);
+              currentSubpath += ` A ${rx} ${ry} ${rotation} ${largeArc} ${sweep} ${endX} ${endY}`;
+              currentX = endX;
+              currentY = endY;
+            }
+            break;
           default:
             // For other commands, just append as-is (may need expansion later)
             currentSubpath += ' ' + cmd;
@@ -544,6 +563,13 @@ function splitPathIntoSubpaths(pathData: string): string[] {
             break;
           case 'C':
             if (args.length >= 6) {
+              currentX = args[args.length - 2] ?? currentX;
+              currentY = args[args.length - 1] ?? currentY;
+            }
+            break;
+          case 'A':
+            // Arc: rx ry x-axis-rotation large-arc-flag sweep-flag x y
+            if (args.length >= 7) {
               currentX = args[args.length - 2] ?? currentX;
               currentY = args[args.length - 1] ?? currentY;
             }
@@ -650,54 +676,10 @@ function processPathData(pathData: string): string[] {
 }
 
 /**
- * Analyze a path to determine its lobe and representative position.
- * Uses bounding box analysis to handle complex paths with scattered elements.
- * Returns the lobe type and the average position along the strip axis.
- */
-function analyzePathForLobe(pathData: string): { lobe: LobeId; position: number } | null {
-  const segments = parsePathDataToSegments(pathData);
-  if (!segments.length) return null;
-
-  // Compute bounding box of all points
-  let minX = Infinity, maxX = -Infinity;
-  let minY = Infinity, maxY = -Infinity;
-  let sumX = 0, sumY = 0;
-  let pointCount = 0;
-
-  for (const seg of segments) {
-    for (const p of [seg.p0, seg.p1, seg.p2, seg.p3]) {
-      minX = Math.min(minX, p.x);
-      maxX = Math.max(maxX, p.x);
-      minY = Math.min(minY, p.y);
-      maxY = Math.max(maxY, p.y);
-      sumX += p.x;
-      sumY += p.y;
-      pointCount++;
-    }
-  }
-
-  if (pointCount === 0) return null;
-
-  const xExtent = maxX - minX;
-  const yExtent = maxY - minY;
-  const avgX = sumX / pointCount;
-  const avgY = sumY / pointCount;
-
-  // If the path spans more in X than Y, it's a horizontal strip (left lobe)
-  // If it spans more in Y than X, it's a vertical strip (right lobe)
-  if (xExtent > yExtent) {
-    return { lobe: 'left', position: avgY };
-  } else if (yExtent > xExtent) {
-    return { lobe: 'right', position: avgX };
-  }
-
-  return null;
-}
-
-/**
  * Detect lobe from path direction:
- * - Left lobe: horizontal paths (large x span between endpoints)
- * - Right lobe: vertical paths (large y span between endpoints)
+ * - Left lobe: horizontal paths (large x span)
+ * - Right lobe: vertical paths (large y span)
+ * Uses bounding box analysis if endpoints don't provide a clear direction.
  */
 function detectLobeFromPath(pathData: string): LobeId | null {
   const segments = parsePathDataToSegments(pathData);
@@ -709,10 +691,29 @@ function detectLobeFromPath(pathData: string): LobeId | null {
   const xSpan = Math.abs(end.x - start.x);
   const ySpan = Math.abs(end.y - start.y);
 
-  // Horizontal paths (left lobe) span more in x than y
-  // Vertical paths (right lobe) span more in y than x
-  if (xSpan > ySpan) return 'left';
-  if (ySpan > xSpan) return 'right';
+  // If endpoints give a clear direction, use that
+  if (xSpan > ySpan + 1) return 'left';
+  if (ySpan > xSpan + 1) return 'right';
+
+  // Fallback: analyze bounding box of all points
+  let minX = Infinity, maxX = -Infinity;
+  let minY = Infinity, maxY = -Infinity;
+
+  for (const seg of segments) {
+    for (const p of [seg.p0, seg.p1, seg.p2, seg.p3]) {
+      minX = Math.min(minX, p.x);
+      maxX = Math.max(maxX, p.x);
+      minY = Math.min(minY, p.y);
+      maxY = Math.max(maxY, p.y);
+    }
+  }
+
+  const xExtent = maxX - minX;
+  const yExtent = maxY - minY;
+
+  // If the path spans more in X than Y, it's horizontal (left lobe)
+  if (xExtent > yExtent + 1) return 'left';
+  if (yExtent > xExtent + 1) return 'right';
 
   return null;
 }
@@ -882,12 +883,8 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   const id = filename ? filename.replace(/\.svg$/i, '') : '';
 
   // Get all paths from anywhere in the SVG (handles nested groups from Inkscape, etc.)
-  const leftPathData: string[] = [];
-  const rightPathData: string[] = [];
-
-  // Track positions for deduplication when using bounding box analysis
-  const leftPositions: number[] = [];
-  const rightPositions: number[] = [];
+  let leftPathData: string[] = [];
+  let rightPathData: string[] = [];
   const POSITION_TOLERANCE = 2; // Consider positions within 2 units as the same strip
 
   // Find all path elements regardless of grouping
@@ -911,69 +908,126 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
 
     // Split and rejoin subpaths within this path element
     const joinedPaths = processPathData(transformedPathData);
-    let usedJoinedPaths = false;
 
     for (const joinedPath of joinedPaths) {
-      // Check if the joined path spans from edge to edge (endpoints near 0 or 100)
       const segments = parsePathDataToSegments(joinedPath);
-      if (!segments.length) continue;
-
-      const start = segments[0].p0;
-      const end = segments[segments.length - 1].p3;
-      const EDGE_TOLERANCE = 5;
-      const nearEdge = (v: number) => v < EDGE_TOLERANCE || v > 100 - EDGE_TOLERANCE;
-
-      // For left lobe (horizontal): start.x near 100, end.x near 0
-      // For right lobe (vertical): start.y near 100, end.y near 0
-      const isHorizontalSpan = nearEdge(start.x) && nearEdge(end.x);
-      const isVerticalSpan = nearEdge(start.y) && nearEdge(end.y);
-
-      if (isHorizontalSpan || isVerticalSpan) {
-        // Path spans edge to edge - use original path
-        const lobe = detectLobeFromPath(joinedPath);
-        if (lobe === 'left') {
-          leftPathData.push(joinedPath);
-          usedJoinedPaths = true;
-        } else if (lobe === 'right') {
-          rightPathData.push(joinedPath);
-          usedJoinedPaths = true;
-        }
+      if (!segments.length) {
+        console.warn(`[parseHeartFromSVG] Skipping path with no segments: ${joinedPath.slice(0, 50)}...`);
+        continue;
       }
-    }
 
-    // If no joined paths worked, use bounding box analysis to count strips
-    if (!usedJoinedPaths) {
-      const analysis = analyzePathForLobe(transformedPathData);
-      if (analysis) {
-        const { lobe, position } = analysis;
-
-        // Check if we already have a strip at this position (deduplication)
-        const positions = lobe === 'left' ? leftPositions : rightPositions;
-        const alreadyHave = positions.some(p => Math.abs(p - position) < POSITION_TOLERANCE);
-
-        if (!alreadyHave) {
-          positions.push(position);
-          // Just track that we found a strip - we'll generate proper lines later
-        }
+      // Detect lobe based on whether path is more horizontal or vertical
+      const lobe = detectLobeFromPath(joinedPath);
+      if (lobe === 'left') {
+        leftPathData.push(joinedPath);
+      } else if (lobe === 'right') {
+        rightPathData.push(joinedPath);
+      } else {
+        // Path doesn't have a clear horizontal or vertical direction
+        const start = segments[0].p0;
+        const end = segments[segments.length - 1].p3;
+        console.warn(
+          `[parseHeartFromSVG] Skipping ambiguous path (neither horizontal nor vertical): ` +
+          `start=(${start.x.toFixed(1)}, ${start.y.toFixed(1)}), end=(${end.x.toFixed(1)}, ${end.y.toFixed(1)}), ` +
+          `path: ${joinedPath.slice(0, 80)}...`
+        );
       }
     }
   }
 
-  // If we used bounding box analysis (positions were tracked), generate proper grid lines
-  if (leftPositions.length > 0 || rightPositions.length > 0) {
-    const numLeftStrips = leftPositions.length;
-    const numRightStrips = rightPositions.length;
+  // Normalize paths if they don't span 0-100 (e.g., SVGs exported with non-standard coordinate systems)
+  // Find the actual span of path endpoints and normalize to 0-100
+  const normalizePathsToFullSpan = (paths: string[], lobe: LobeId): string[] => {
+    if (paths.length === 0) return paths;
 
-    // Generate straight lines at proper grid positions
-    for (let i = 0; i < numLeftStrips; i++) {
-      // Position at (i+1)/(numStrips+1) * 100 for uniform spacing
-      const y = ((i + 1) / (numLeftStrips + 1)) * 100;
-      leftPathData.push(`M 100 ${y} L 0 ${y}`);
+    // Collect all endpoint coordinates for the spanning dimension
+    let minSpan = Infinity, maxSpan = -Infinity;
+    for (const pathData of paths) {
+      const segments = parsePathDataToSegments(pathData);
+      if (!segments.length) continue;
+      const start = segments[0].p0;
+      const end = segments[segments.length - 1].p3;
+      // For left lobe (horizontal), spanning dimension is X
+      // For right lobe (vertical), spanning dimension is Y
+      if (lobe === 'left') {
+        minSpan = Math.min(minSpan, start.x, end.x);
+        maxSpan = Math.max(maxSpan, start.x, end.x);
+      } else {
+        minSpan = Math.min(minSpan, start.y, end.y);
+        maxSpan = Math.max(maxSpan, start.y, end.y);
+      }
     }
-    for (let i = 0; i < numRightStrips; i++) {
-      const x = ((i + 1) / (numRightStrips + 1)) * 100;
-      rightPathData.push(`M ${x} 100 L ${x} 0`);
-    }
+
+    // Check if paths already span close to 0-100 (within tolerance)
+    const EDGE_TOLERANCE = 5;
+    const spansFullRange = minSpan < EDGE_TOLERANCE && maxSpan > 100 - EDGE_TOLERANCE;
+    if (spansFullRange || minSpan === Infinity) return paths;
+
+    // Normalize paths to span 0-100
+    const span = maxSpan - minSpan;
+    if (span < 10) return paths; // Too narrow, skip normalization
+
+    return paths.map(pathData => {
+      const segments = parsePathDataToSegments(pathData);
+      const normalizedSegments = segments.map(seg => {
+        const normalizeCoord = (coord: number) => ((coord - minSpan) / span) * 100;
+        if (lobe === 'left') {
+          // Normalize X coordinates, keep Y as-is
+          return {
+            p0: { x: normalizeCoord(seg.p0.x), y: seg.p0.y },
+            p1: { x: normalizeCoord(seg.p1.x), y: seg.p1.y },
+            p2: { x: normalizeCoord(seg.p2.x), y: seg.p2.y },
+            p3: { x: normalizeCoord(seg.p3.x), y: seg.p3.y }
+          };
+        } else {
+          // Normalize Y coordinates, keep X as-is
+          return {
+            p0: { x: seg.p0.x, y: normalizeCoord(seg.p0.y) },
+            p1: { x: seg.p1.x, y: normalizeCoord(seg.p1.y) },
+            p2: { x: seg.p2.x, y: normalizeCoord(seg.p2.y) },
+            p3: { x: seg.p3.x, y: normalizeCoord(seg.p3.y) }
+          };
+        }
+      });
+      return segmentsToPathData(normalizedSegments);
+    });
+  };
+
+  leftPathData = normalizePathsToFullSpan(leftPathData, 'left');
+  rightPathData = normalizePathsToFullSpan(rightPathData, 'right');
+
+  // Deduplicate paths that are at the same position (within tolerance)
+  const deduplicatePaths = (paths: string[], lobe: LobeId): string[] => {
+    const seen: number[] = [];
+    return paths.filter(pathData => {
+      const segments = parsePathDataToSegments(pathData);
+      if (!segments.length) return false;
+      // Position is the non-spanning coordinate (Y for left lobe, X for right lobe)
+      const position = lobe === 'left' ? segments[0].p0.y : segments[0].p0.x;
+      if (seen.some(p => Math.abs(p - position) < POSITION_TOLERANCE)) return false;
+      seen.push(position);
+      return true;
+    });
+  };
+
+  leftPathData = deduplicatePaths(leftPathData, 'left');
+  rightPathData = deduplicatePaths(rightPathData, 'right');
+
+  // Check if we found any valid paths
+  if (leftPathData.length === 0 && rightPathData.length === 0) {
+    console.error(
+      `[parseHeartFromSVG] No valid horizontal or vertical paths found in SVG "${name}". ` +
+      `The SVG may contain complex paths that don't represent a woven heart pattern, ` +
+      `or the paths may not span clearly in one direction.`
+    );
+    return null;
+  }
+
+  if (leftPathData.length === 0) {
+    console.warn(`[parseHeartFromSVG] No horizontal paths (left lobe) found in SVG "${name}"`);
+  }
+  if (rightPathData.length === 0) {
+    console.warn(`[parseHeartFromSVG] No vertical paths (right lobe) found in SVG "${name}"`);
   }
 
   // Infer grid size from path counts (interior cuts = strips - 1)

@@ -1,5 +1,7 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-weave-parity="0">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+    data-author="Traditional" data-weave-parity="0">
   <title>Eksplosion</title>
+  <desc>Strålende farver fra midten der skyder ud i alle retninger.</desc>
   <path d="M 100 24.401 C 100 24.401 53.982 39.28 53.982 39.28 C 53.982 39.28 46.018 39.28 46.018 39.28 C 46.018 39.28 0 24.401 0 24.401" stroke="orange" fill="none"/>
   <path d="M 100 40 C 100 40 53.982 46.077 53.982 46.077 C 53.982 46.077 46.018 46.077 46.018 46.077 C 46.018 46.077 0 40 0 40" stroke="orange" fill="none"/>
   <path d="M 100 60 C 100 60 53.982 53.923 53.982 53.923 C 53.982 53.923 46.018 53.923 46.018 53.923 C 46.018 53.923 0 60 0 60" stroke="orange" fill="none"/>

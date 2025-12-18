@@ -28,6 +28,11 @@ export const translations = {
     failedToLoad: 'Kunne ikke indlæse hjertedesign',
     by: 'af',
     gridSize: 'Gitterstørrelse',
+    difficulty: 'Sværhedsgrad',
+    difficultyEasy: 'Let',
+    difficultyMedium: 'Mellem',
+    difficultyHard: 'Svær',
+    difficultyExpert: 'Ekspert',
     symmetry: 'Symmetri',
     symmetricCurves: 'Symmetriske kurver',
     symmetricLobes: 'Symmetriske lapper',
@@ -35,7 +40,7 @@ export const translations = {
     noSymmetry: 'Ingen symmetri',
     classic: 'Klassisk',
     downloadPdfTemplate: 'Download PDF Skabelon',
-    openInEditor: 'Åbn i Editor',
+    openInEditor: 'Rediger',
     share: 'Del',
     copied: 'Kopieret!',
     failed: 'Fejl',
@@ -114,6 +119,7 @@ export const translations = {
     leftColor: 'Venstre farve',
     rightColor: 'Højre farve',
     suggestHeart: 'Foreslå hjerte',
+    didntFindHeart: 'Fandt du ikke det hjerte du søgte?',
     madeBy: 'Af',
 
     // Error page
@@ -151,6 +157,11 @@ export const translations = {
     failedToLoad: 'Failed to load heart design',
     by: 'by',
     gridSize: 'Grid Size',
+    difficulty: 'Difficulty',
+    difficultyEasy: 'Easy',
+    difficultyMedium: 'Medium',
+    difficultyHard: 'Hard',
+    difficultyExpert: 'Expert',
     symmetry: 'Symmetry',
     symmetricCurves: 'Symmetric curves',
     symmetricLobes: 'Symmetric lobes',
@@ -237,6 +248,7 @@ export const translations = {
     leftColor: 'Left color',
     rightColor: 'Right color',
     suggestHeart: 'Suggest heart',
+    didntFindHeart: "Didn't find the heart you were looking for?",
     madeBy: 'By',
 
     // Error page

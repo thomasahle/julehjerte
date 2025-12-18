@@ -1,38 +1,60 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
-  import { onMount } from 'svelte';
-  import { browser } from '$app/environment';
-  import { base } from '$app/paths';
-  import PaperHeart from '$lib/components/PaperHeart.svelte';
-  import { getUserCollection } from '$lib/stores/collection';
-  import { downloadPDF } from '$lib/pdf/template';
-  import { SITE_TITLE, SITE_URL } from '$lib/config';
-  import { t, translations, getLanguage, subscribeLanguage, type Language } from '$lib/i18n';
-  import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
-  import { detectSymmetry, getSymmetryDescription } from '$lib/utils/symmetry';
-  import { serializeHeartDesign, parseHeartFromSVG } from '$lib/utils/heartDesign';
-  import type { HeartDesign } from '$lib/types/heart';
-  import { trackHeartDownload, trackHeartShare, trackHeartEdit } from '$lib/analytics';
-  import { Button } from '$lib/components/ui/button';
-  import PageHeader from '$lib/components/PageHeader.svelte';
+  import { page } from "$app/stores";
+  import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
+  import { browser } from "$app/environment";
+  import { base } from "$app/paths";
+  import PaperHeart from "$lib/components/PaperHeart.svelte";
+  import { getUserCollection } from "$lib/stores/collection";
+  import { downloadPDF } from "$lib/pdf/template";
+  import { SITE_TITLE, SITE_URL } from "$lib/config";
+  import {
+    t,
+    translations,
+    getLanguage,
+    subscribeLanguage,
+    type Language,
+  } from "$lib/i18n";
+  import {
+    getColors,
+    subscribeColors,
+    type HeartColors,
+  } from "$lib/stores/colors";
+  import { detectSymmetry, getSymmetryDescription } from "$lib/utils/symmetry";
+  import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
+  import {
+    serializeHeartDesign,
+    parseHeartFromSVG,
+  } from "$lib/utils/heartDesign";
+  import type { HeartDesign } from "$lib/types/heart";
+  import {
+    trackHeartDownload,
+    trackHeartShare,
+    trackHeartEdit,
+  } from "$lib/analytics";
+  import { Button } from "$lib/components/ui/button";
+  import PageHeader from "$lib/components/PageHeader.svelte";
 
   let design = $state<HeartDesign | null>(null);
   let isUserCreated = $state(false);
   let loading = $state(true);
   let error = $state<string | null>(null);
-  let shareStatus = $state<'idle' | 'copied' | 'error'>('idle');
-  let lang = $state<Language>('da');
-  let colors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
+  let shareStatus = $state<"idle" | "copied" | "error">("idle");
+  let lang = $state<Language>("da");
+  let colors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
 
   onMount(async () => {
     // Initialize language
     lang = getLanguage();
-    subscribeLanguage((l) => { lang = l; });
+    subscribeLanguage((l) => {
+      lang = l;
+    });
 
     // Initialize colors
     colors = getColors();
-    subscribeColors((c) => { colors = c; });
+    subscribeColors((c) => {
+      colors = c;
+    });
 
     const id = $page.params.id;
 
@@ -54,13 +76,13 @@
         const svgText = await response.text();
         design = parseHeartFromSVG(svgText, `${id}.svg`);
         if (!design) {
-          error = t('heartNotFound', lang);
+          error = t("heartNotFound", lang);
         }
       } else {
-        error = t('heartNotFound', lang);
+        error = t("heartNotFound", lang);
       }
     } catch {
-      error = t('failedToLoad', lang);
+      error = t("failedToLoad", lang);
     }
 
     loading = false;
@@ -76,9 +98,11 @@
   function openInEditor() {
     if (design) {
       trackHeartEdit(design.id, design.name);
-      const designData = encodeURIComponent(JSON.stringify(serializeHeartDesign(design)));
+      const designData = encodeURIComponent(
+        JSON.stringify(serializeHeartDesign(design)),
+      );
       // For user-created hearts, pass edit=true to allow saving over the original
-      const editParam = isUserCreated ? '&edit=true' : '';
+      const editParam = isUserCreated ? "&edit=true" : "";
       goto(`${base}/editor?design=${designData}${editParam}`);
     }
   }
@@ -96,48 +120,70 @@
         await navigator.share({
           title: shareTitle,
           text: shareText,
-          url: shareUrl
+          url: shareUrl,
         });
-        trackHeartShare(design.id, design.name, 'native');
+        trackHeartShare(design.id, design.name, "native");
         return;
       } catch (err) {
         // User cancelled or share failed, fall through to clipboard
-        if ((err as Error).name === 'AbortError') return;
+        if ((err as Error).name === "AbortError") return;
       }
     }
 
     // Fallback: copy to clipboard
     try {
       await navigator.clipboard.writeText(shareUrl);
-      trackHeartShare(design.id, design.name, 'clipboard');
-      shareStatus = 'copied';
+      trackHeartShare(design.id, design.name, "clipboard");
+      shareStatus = "copied";
       setTimeout(() => {
-        shareStatus = 'idle';
+        shareStatus = "idle";
       }, 2000);
     } catch {
-      shareStatus = 'error';
+      shareStatus = "error";
       setTimeout(() => {
-        shareStatus = 'idle';
+        shareStatus = "idle";
       }, 2000);
     }
+  }
+
+  function getDifficultyLabel(level: DifficultyLevel): string {
+    const labels: Record<DifficultyLevel, 'difficultyEasy' | 'difficultyMedium' | 'difficultyHard' | 'difficultyExpert'> = {
+      easy: 'difficultyEasy',
+      medium: 'difficultyMedium',
+      hard: 'difficultyHard',
+      expert: 'difficultyExpert'
+    };
+    return t(labels[level], lang);
   }
 </script>
 
 <svelte:head>
-  <title>{design?.name ?? 'Template'} - {SITE_TITLE}</title>
+  <title>{design?.name ?? "Template"} - {SITE_TITLE}</title>
   {#if design}
-    <meta name="description" content={design.description ?? `${design.name} - et flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} grid. Download PDF skabelon gratis.`} />
+    <meta
+      name="description"
+      content={design.description ??
+        `${design.name} - et flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} grid. Download PDF skabelon gratis.`}
+    />
     <link rel="canonical" href="{SITE_URL}/hjerte/{design.id}" />
     <meta property="og:url" content="{SITE_URL}/hjerte/{design.id}" />
     <meta property="og:title" content="{design.name} - {SITE_TITLE}" />
-    <meta property="og:description" content={design.description ?? `Flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} striber.`} />
+    <meta
+      property="og:description"
+      content={design.description ??
+        `Flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} striber.`}
+    />
     <meta property="og:image" content="{SITE_URL}/og/{design.id}.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="1200" />
     <meta property="og:type" content="article" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{design.name} - {SITE_TITLE}" />
-    <meta name="twitter:description" content={design.description ?? `Flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} striber.`} />
+    <meta
+      name="twitter:description"
+      content={design.description ??
+        `Flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} striber.`}
+    />
     <meta name="twitter:image" content="{SITE_URL}/og/{design.id}.png" />
   {/if}
 </svelte:head>
@@ -146,7 +192,7 @@
   <PageHeader {lang} />
 
   {#if loading}
-    <div class="loading">{t('loadingTemplate', lang)}</div>
+    <div class="loading">{t("loadingTemplate", lang)}</div>
   {:else if error}
     <div class="error">{error}</div>
   {:else if design}
@@ -164,7 +210,7 @@
       <div class="info-section">
         <h1>{design.name}</h1>
         {#if design.author}
-          <p class="author">{t('by', lang)} {design.author}</p>
+          <p class="author">{t("by", lang)} {design.author}</p>
         {/if}
         {#if design.description}
           <p class="description">{design.description}</p>
@@ -172,42 +218,50 @@
 
         <div class="details">
           <div class="detail">
-            <span class="label">{t('gridSize', lang)}</span>
-            <span class="value">{design.gridSize.x} x {design.gridSize.y}</span>
+            <span class="label">{t("difficulty", lang)}</span>
+            <span class="value">{getDifficultyLabel(calculateDifficulty(design).level)}</span>
           </div>
           <div class="detail">
-            <span class="label">{t('symmetry', lang)}</span>
-            <span class="value">{getSymmetryDescription(detectSymmetry(design.fingers), (key) => t(key as any, lang))}</span>
+            <span class="label">{t("symmetry", lang)}</span>
+            <span class="value"
+              >{getSymmetryDescription(detectSymmetry(design.fingers), (key) =>
+                t(key as any, lang),
+              )}</span
+            >
           </div>
         </div>
 
         <div class="button-group">
-          <button class="btn primary large" onclick={handleDownload}>
-            {t('downloadPdfTemplate', lang)}
-          </button>
           <button class="btn secondary large" onclick={openInEditor}>
-            {t('openInEditor', lang)}
+            {t("openInEditor", lang)}
           </button>
           <button class="btn share" onclick={handleShare}>
-            {#if shareStatus === 'copied'}
-              {t('copied', lang)}
-            {:else if shareStatus === 'error'}
-              {t('failed', lang)}
+            {#if shareStatus === "copied"}
+              {t("copied", lang)}
+            {:else if shareStatus === "error"}
+              {t("failed", lang)}
             {:else}
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <circle cx="18" cy="5" r="3"></circle>
                 <circle cx="6" cy="12" r="3"></circle>
                 <circle cx="18" cy="19" r="3"></circle>
                 <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
                 <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
               </svg>
-              {t('share', lang)}
+              {t("share", lang)}
             {/if}
           </button>
         </div>
 
         <div class="instructions">
-          <h3>{t('howToMake', lang)}</h3>
+          <h3>{t("howToMake", lang)}</h3>
           <ol>
             {#each [0, 1, 2, 3, 4] as i}
               <li>{translations[lang].instructions[i]}</li>

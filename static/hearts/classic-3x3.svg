@@ -1,6 +1,7 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-author="Traditional" data-weave-parity="0">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+   data-author="Traditional" data-weave-parity="0">
   <title>Classic 3x3</title>
-  <desc>The traditional Danish woven heart with 3 strips per side</desc>
+  <desc>Det traditionelle danske vevne hjerte med 3 striber per side</desc>
   <path d="M 100 33.333333 C 75 33.333333 25 33.333333 0 33.333333" stroke="orange" fill="none"/>
   <path d="M 100 66.666667 C 75 66.666667 25 66.666667 0 66.666667" stroke="orange" fill="none"/>
   <path d="M 33.333333 100 C 33.333333 75 33.333333 25 33.333333 0" stroke="green" fill="none"/>

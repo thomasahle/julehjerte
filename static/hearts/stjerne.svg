@@ -1,4 +1,5 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-author="Thomas" data-weave-parity="0">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+  data-author="Thomas" data-weave-parity="0">
   <title>Stjerne</title>
   <desc>Klassisk design</desc>
   <path d="M 100 15.101 C 100 15.101 84.786 15.493 84.786 15.493 C 84.786 15.493 77.018 22.730 77.018 22.730 C 77.018 22.730 56.893 35.138 56.893 35.138 C 56.893 35.138 50 15.858 50 15.858 C 50 15.858 43.107 35.138 43.107 35.138 C 43.107 35.138 22.982 22.730 22.982 22.730 C 22.982 22.730 15.214 15.493 15.214 15.493 C 15.214 15.493 0 15.101 0 15.101" stroke="orange" fill="none"/>

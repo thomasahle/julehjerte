@@ -19,8 +19,7 @@
   import * as Tooltip from "$lib/components/ui/tooltip";
   import { Separator } from "$lib/components/ui/separator";
   import GitHubStarsButton from "$lib/components/GitHubStarsButton.svelte";
-  import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
-
+  
   let lang = $state<Language>("da");
   let colors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
 
@@ -93,16 +92,6 @@
       {lang === "da" ? "🇬🇧 EN" : "🇩🇰 DA"}
     </Button>
     <GitHubStarsButton repo="thomasahle/julehjerte" />
-    <Button
-      variant="link"
-      size="sm"
-      href="https://github.com/thomasahle/julehjerte/issues/new?title=Heart%20suggestion&body=%23%23%20Heart%20Design%20Suggestion%0A%0A**Name%3A**%20%0A**Description%3A**%20%0A**Grid%20size%3A**%20%0A%0A**Reference%20image%20or%20description%3A**%0A%0A%3C!--%20Please%20attach%20an%20image%20or%20describe%20the%20pattern%20--%3E"
-      target="_blank"
-      class="gap-1"
-    >
-      {t("suggestHeart", lang)}
-      <ExternalLinkIcon class="size-3" />
-    </Button>
     <span class="made-by">
       {t("madeBy", lang)}
       <a href="https://thomasahle.com" target="_blank" rel="noopener"

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   sodipodi:docname="h4h2.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+  data-author="Thomas Ahle" data-weave-parity="0">
+  <title>Hjerte i hjerte</title>
+  <desc>En variation af det klassiske "mor og barn" julehjerte</desc>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.298466"
+     inkscape:cx="181.36786"
+     inkscape:cy="250.68042"
+     inkscape:window-width="1632"
+     inkscape:window-height="930"
+     inkscape:window-x="691"
+     inkscape:window-y="261"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
+     showgrid="false" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;fill-opacity:1;stroke:#f8e45c;stroke-width:0.400001;stroke-dasharray:none;stroke-opacity:1"
+       d="m 71.497316,0.01333696 -0.0098,5.93429614 c 5.301594,2.6058241 7.959859,5.0461929 11.390222,9.9731879 3.392125,5.037681 3.889414,10.553388 4.212681,14.592753 0.130145,1.626029 0.06548,56.669631 0.09396,56.669631 l -15.690107,0.01057 -0.01214,12.823095"
+       id="path832"
+       sodipodi:nodetypes="cccsccc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#f8e45c;stroke-width:0.400001;stroke-dasharray:none;stroke-opacity:1"
+       d="M 43.021311,0.07760521 42.991937,7.6065636 C 40.788509,9.4137919 39.316332,9.87968 35.60394,14.45482 32.037377,19.347551 30.24605,25.373351 30.456726,30.460375 l 28.354065,0.03328 -0.0094,56.686851 -15.80855,0.007 -0.0071,12.800505"
+       id="path833"
+       sodipodi:nodetypes="cccccccc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#f8e45c;stroke-width:0.400001;stroke-dasharray:none;stroke-opacity:1"
+       d="m 14.469725,0.00752251 0.01645,14.49090849 0.009,21.153968 16.021376,7.334877 -0.01527,15.829856 -16.021576,23.043605 -0.0082,18.136411"
+       id="path834"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#dc8add;stroke-width:0.400001;stroke-dasharray:none;stroke-opacity:1"
+       d="m -0.00769651,71.482613 6.25745221,-0.02467 c 1.5691372,4.594177 5.2890023,8.071542 8.2344213,10.41657 l 16.025723,-23.06085 56.684992,-0.0011 -0.02232,12.674788 12.835508,-0.01214"
+       id="path835"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#dc8add;stroke-width:0.400001;stroke-dasharray:none;stroke-opacity:1"
+       d="M 100.01631,14.64149 81.894935,14.51228 C 70.32676,-1.0007615 50.569485,2.5732681 43.100616,7.6036114 40.88789,8.8980445 36.929377,12.129276 35.610464,14.488944 l -21.116343,1.88e-4 -14.49635793,0.0137"
+       id="path836"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#dc8add;stroke-width:0.400001;stroke-dasharray:none;stroke-opacity:1"
+       d="M 58.80774,30.093559 Z"
+       id="path837" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#dc8add;stroke-width:0.400001;stroke-dasharray:none;stroke-opacity:1"
+       d="m 99.674857,42.899265 -12.492047,0.09397 -0.09055,-12.493334 -28.284724,-0.0067 -28.348747,-0.03563 0.04265,12.522943 -16.027027,-7.353276 c -2.159015,1.78838 -4.6673577,3.725233 -6.8078598,7.363382 l -7.66909953,0.01018"
+       id="path838"
+       sodipodi:nodetypes="ccccccccc" />
+  </g>
+</svg>

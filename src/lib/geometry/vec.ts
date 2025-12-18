@@ -22,6 +22,10 @@ export function vecDist(a: Vec, b: Vec): number {
   return Math.hypot(dx, dy);
 }
 
+export function vecLength(v: Vec): number {
+  return Math.hypot(v.x, v.y);
+}
+
 export function midpoint(a: Vec, b: Vec): Vec {
   return vecScale(vecAdd(a, b), 0.5);
 }

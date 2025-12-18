@@ -190,6 +190,33 @@
     return new paper.Point(v.x, v.y);
   }
 
+  // Snap anchor points to nearby anchor points from opposite-lobe curves
+  const SNAP_THRESHOLD = 15; // units in heart coordinate system (~15% of strip width)
+  function findNearestOppositeAnchor(
+    pos: paper.Point,
+    currentLobe: LobeId
+  ): paper.Point | null {
+    const oppositeLobe: LobeId = currentLobe === "left" ? "right" : "left";
+    let nearest: paper.Point | null = null;
+    let nearestDist = SNAP_THRESHOLD;
+
+    for (const finger of fingers) {
+      if (finger.lobe !== oppositeLobe) continue;
+      const segments = fingerToSegments(finger);
+      for (const seg of segments) {
+        for (const anchor of [seg.p0, seg.p3]) {
+          const anchorPt = toPoint(anchor);
+          const dist = pos.getDistance(anchorPt);
+          if (dist < nearestDist) {
+            nearestDist = dist;
+            nearest = anchorPt;
+          }
+        }
+      }
+    }
+    return nearest;
+  }
+
   let canvas: HTMLCanvasElement;
   let canvasWrapper: HTMLDivElement;
   let tool: paper.Tool | null = null;
@@ -219,11 +246,13 @@
   type SymmetryMode = "off" | "sym" | "anti";
   let editor = $state<{
     showCurves: boolean;
+    snapToOpposite: boolean;
     withinCurveMode: SymmetryMode;
     withinLobeMode: SymmetryMode;
     betweenLobesMode: SymmetryMode;
   }>({
     showCurves: true,
+    snapToOpposite: false,
     withinCurveMode: "off",
     withinLobeMode: "off",
     betweenLobesMode: "off",
@@ -233,6 +262,16 @@
   let prevWithinCurveMode: SymmetryMode = "off";
   let prevWithinLobeMode: SymmetryMode = "off";
   let prevBetweenLobesMode: SymmetryMode = "off";
+
+  // Zoom state for pinch-to-zoom (editor mode only)
+  let userZoom = $state(1.0); // 1.0 = 100%, multiplied with fit zoom
+  let userPanOffset = $state({ x: 0, y: 0 }); // Pan offset for zoom-towards-cursor
+  const MIN_ZOOM = 0.5;
+  const MAX_ZOOM = 4.0;
+  // Touch pinch tracking
+  let pinchStartDistance = 0;
+  let pinchStartZoom = 1.0;
+  let pinchCenter = { x: 0, y: 0 };
 
   // Derived views for readability in the rest of the file.
   let showCurves = $derived(editor.showCurves);
@@ -2174,6 +2213,9 @@
 
     // Render boundary curves on top (for editing/selection) - skip in readonly mode
     if (!readonly) {
+      // Scale stroke widths inversely with zoom to keep constant visual size
+      const curveUiScale = 1 / userZoom;
+
       for (const finger of fingers) {
         const isSelected = finger.id === selection.fingerId;
         const isHovered = finger.id === hoverFingerId;
@@ -2197,7 +2239,7 @@
           // fully transparent strokes as "no stroke".
           hitPath.strokeColor = new paper.Color("#000000");
           hitPath.opacity = 0.001;
-          hitPath.strokeWidth = 5;
+          hitPath.strokeWidth = 5 * curveUiScale;
           hitPath.strokeCap = "round";
           hitPath.strokeJoin = "round";
           hitPath.fillColor = null;
@@ -2209,7 +2251,7 @@
           outlinePath.strokeColor = isSelected
             ? new paper.Color("#ffffff")
             : new paper.Color("#000000");
-          outlinePath.strokeWidth = isSelected ? 6 : 4;
+          outlinePath.strokeWidth = (isSelected ? 6 : 4) * curveUiScale;
           outlinePath.strokeCap = "round";
           outlinePath.strokeJoin = "round";
           outlinePath.fillColor = null;
@@ -2223,7 +2265,7 @@
             : isSelected
               ? new paper.Color("#111111")
               : lobeColor;
-          path.strokeWidth = isSelected ? 4 : 2;
+          path.strokeWidth = (isSelected ? 4 : 2) * curveUiScale;
           path.strokeCap = "round";
           path.strokeJoin = "round";
           path.fillColor = null;
@@ -2237,7 +2279,7 @@
           hoverPath.strokeColor = hidden
             ? new paper.Color("#000000")
             : new paper.Color(0, 0, 0, 0.35);
-          hoverPath.strokeWidth = hidden ? 2 : 5;
+          hoverPath.strokeWidth = (hidden ? 2 : 5) * curveUiScale;
           hoverPath.strokeCap = "round";
           hoverPath.strokeJoin = "round";
           hoverPath.fillColor = null;
@@ -2253,9 +2295,11 @@
 	        const segments = fingerToSegments(selected);
 	        const n = segments.length;
 	        if (n >= 1) {
-          const endpointSize = 10;
+          // Scale UI elements inversely with zoom to keep constant visual size
+          const uiScale = 1 / userZoom;
+          const endpointSize = 10 * uiScale;
           const anchorSize = endpointSize;
-          const handleRadius = 5;
+          const handleRadius = 5 * uiScale;
 
 	          const selectedSet = new Set(
 	            selection.anchors.filter((idx) => idx >= 0 && idx <= n),
@@ -2312,7 +2356,7 @@
               ? new paper.Color("#ffcc00")
               : new paper.Color("#ffffff");
             shape.strokeColor = new paper.Color("#111111");
-            shape.strokeWidth = 2;
+            shape.strokeWidth = 2 * uiScale;
 
             const pointKey: ControlPointKey =
               idx === 0
@@ -2340,13 +2384,13 @@
               if (isHandleCollapsed(to, from)) return;
               const line = new paper.Path.Line(toPoint(from), toPoint(to));
               line.strokeColor = new paper.Color("#666666");
-              line.strokeWidth = 1;
+              line.strokeWidth = 1 * uiScale;
               overlayItems.push(line);
 
               const handle = new paper.Path.Circle(toPoint(to), handleRadius);
               handle.fillColor = new paper.Color(0.9);
               handle.strokeColor = new paper.Color("#111111");
-              handle.strokeWidth = 1.5;
+              handle.strokeWidth = 1.5 * uiScale;
               handle.data = {
                 kind: "control",
                 fingerId: selected.id,
@@ -2408,9 +2452,15 @@
     const bounds = fillGroup.bounds;
     const padding = displayedSize * 0.02;
     const available = displayedSize - 2 * padding;
-    const zoom = Math.min(available / bounds.width, available / bounds.height);
-    paper.view.zoom = Number.isFinite(zoom) && zoom > 0 ? zoom : 1;
-    paper.view.center = bounds.center;
+    const fitZoom = Math.min(available / bounds.width, available / bounds.height);
+    // Apply user zoom on top of fit zoom (for pinch-to-zoom)
+    const effectiveZoom = (Number.isFinite(fitZoom) && fitZoom > 0 ? fitZoom : 1) * userZoom;
+    paper.view.zoom = effectiveZoom;
+    // Apply pan offset (convert from view coords to project coords)
+    paper.view.center = new paper.Point(
+      bounds.center.x + userPanOffset.x / effectiveZoom,
+      bounds.center.y + userPanOffset.y / effectiveZoom
+    );
   }
 
   function updateFinger(fingerId: string, updater: (f: Finger) => Finger) {
@@ -2722,6 +2772,112 @@
     }
 
     return false;
+  }
+
+  // Clamp pan offset to keep at least 40% of heart visible (max 60% empty)
+  function clampPanOffset(offset: { x: number; y: number }): { x: number; y: number } {
+    // At zoom=1, content fills viewport. At higher zoom, allow panning up to 30% of viewport.
+    // This ensures at least 40% of the heart is visible (since heart fills ~85% at zoom=1).
+    const maxPan = displayedSize * 0.3 * userZoom;
+    return {
+      x: Math.max(-maxPan, Math.min(maxPan, offset.x)),
+      y: Math.max(-maxPan, Math.min(maxPan, offset.y)),
+    };
+  }
+
+  // Pinch-to-zoom and two-finger scroll handlers
+  function handleWheel(event: WheelEvent) {
+    if (readonly) return;
+    // Trackpad pinch gestures fire wheel events with ctrlKey=true
+    if (event.ctrlKey) {
+      event.preventDefault();
+      const delta = -event.deltaY * 0.01;
+      const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, userZoom * (1 + delta)));
+      if (newZoom !== userZoom) {
+        // Get cursor position relative to canvas center
+        const rect = canvas.getBoundingClientRect();
+        const cursorX = event.clientX - rect.left - rect.width / 2;
+        const cursorY = event.clientY - rect.top - rect.height / 2;
+
+        // Adjust pan offset to keep cursor point fixed
+        // Formula: newOffset = oldOffset + cursor * (1/oldZoom - 1/newZoom)
+        const zoomDiff = 1 / userZoom - 1 / newZoom;
+        userZoom = newZoom; // Update zoom first so clamp uses new zoom
+        userPanOffset = clampPanOffset({
+          x: userPanOffset.x + cursorX * zoomDiff,
+          y: userPanOffset.y + cursorY * zoomDiff,
+        });
+
+        draw();
+      }
+    } else if (userZoom > 1) {
+      // Two-finger scroll for panning (only when zoomed in)
+      event.preventDefault();
+      userPanOffset = clampPanOffset({
+        x: userPanOffset.x + event.deltaX,
+        y: userPanOffset.y + event.deltaY,
+      });
+      draw();
+    }
+  }
+
+  function getTouchDistance(touches: TouchList): number {
+    if (touches.length < 2) return 0;
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function getTouchCenter(touches: TouchList): { x: number; y: number } {
+    if (touches.length < 2) return { x: 0, y: 0 };
+    return {
+      x: (touches[0].clientX + touches[1].clientX) / 2,
+      y: (touches[0].clientY + touches[1].clientY) / 2,
+    };
+  }
+
+  function handleTouchStart(event: TouchEvent) {
+    if (readonly) return;
+    if (event.touches.length === 2) {
+      // Start of pinch gesture
+      pinchStartDistance = getTouchDistance(event.touches);
+      pinchStartZoom = userZoom;
+      // Store pinch center relative to canvas center
+      const rect = canvas.getBoundingClientRect();
+      const center = getTouchCenter(event.touches);
+      pinchCenter = {
+        x: center.x - rect.left - rect.width / 2,
+        y: center.y - rect.top - rect.height / 2,
+      };
+    }
+  }
+
+  function handleTouchMove(event: TouchEvent) {
+    if (readonly) return;
+    if (event.touches.length === 2 && pinchStartDistance > 0) {
+      event.preventDefault();
+      const currentDistance = getTouchDistance(event.touches);
+      const scale = currentDistance / pinchStartDistance;
+      const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinchStartZoom * scale));
+      if (newZoom !== userZoom) {
+        // Adjust pan offset to keep pinch center point fixed
+        const zoomDiff = 1 / userZoom - 1 / newZoom;
+        userZoom = newZoom; // Update zoom first so clamp uses new zoom
+        userPanOffset = clampPanOffset({
+          x: userPanOffset.x + pinchCenter.x * zoomDiff,
+          y: userPanOffset.y + pinchCenter.y * zoomDiff,
+        });
+
+        draw();
+      }
+    }
+  }
+
+  function handleTouchEnd(event: TouchEvent) {
+    if (readonly) return;
+    if (event.touches.length < 2) {
+      pinchStartDistance = 0;
+    }
   }
 
   function handleMouseDown(event: any) {
@@ -3269,27 +3425,39 @@
       if (pointKey !== "p0" && pointKey !== "p3") return;
 
       applyConstrainedUpdate(target.fingerId, (current, fraction) => {
-        const desiredPt = projectEndpoint(current, p, pointKey);
-
         const segments = cloneSegments(fingerToSegments(current));
         if (!segments.length) return current;
         const first = segments[0]!;
         const last = segments[segments.length - 1]!;
-
         const oldPt = pointKey === "p0" ? first.p0 : last.p3;
-        const dx = (desiredPt.x - oldPt.x) * fraction;
-        const dy = (desiredPt.y - oldPt.y) * fraction;
-        const moved = { x: oldPt.x + dx, y: oldPt.y + dy };
+
+        // Check for snap target first (before any projection)
+        let snapTarget: paper.Point | null = null;
+        if (editor.snapToOpposite) {
+          // Use mouse position directly for snap detection
+          snapTarget = findNearestOppositeAnchor(toPoint(p), current.lobe);
+        }
+
+        let finalPt: Vec;
+        if (snapTarget) {
+          // When snapping, go directly to snap target (no projection)
+          finalPt = { x: snapTarget.x, y: snapTarget.y };
+        } else {
+          // Normal behavior: project and apply fractional movement
+          const desiredPt = projectEndpoint(current, p, pointKey);
+          const dx = (desiredPt.x - oldPt.x) * fraction;
+          const dy = (desiredPt.y - oldPt.y) * fraction;
+          const moved = { x: oldPt.x + dx, y: oldPt.y + dy };
+          finalPt = projectEndpoint(current, moved, pointKey);
+        }
 
         if (pointKey === "p0") {
-          const nextP0 = projectEndpoint(current, moved, "p0");
-          const d = vecSub(nextP0, first.p0);
-          first.p0 = nextP0;
+          const d = vecSub(finalPt, first.p0);
+          first.p0 = finalPt;
           first.p1 = vecAdd(first.p1, d);
         } else {
-          const nextP3 = projectEndpoint(current, moved, "p3");
-          const d = vecSub(nextP3, last.p3);
-          last.p3 = nextP3;
+          const d = vecSub(finalPt, last.p3);
+          last.p3 = finalPt;
           last.p2 = vecAdd(last.p2, d);
         }
 
@@ -3729,11 +3897,19 @@
         height={readonly ? BASE_CANVAS_SIZE : displayedSize}
         style:width="{readonly ? size : displayedSize}px"
         style:height="{readonly ? size : displayedSize}px"
+        onwheel={handleWheel}
+        ontouchstart={handleTouchStart}
+        ontouchmove={handleTouchMove}
+        ontouchend={handleTouchEnd}
       ></canvas>
     </div>
     {#if !readonly}
       <div class="right-panel">
         <div class="controls">
+          <label class="checkbox">
+            <input type="checkbox" bind:checked={editor.snapToOpposite} />
+            Snap
+          </label>
           <label class="checkbox">
             <input type="checkbox" bind:checked={editor.showCurves} />
             Edges
@@ -4078,7 +4254,7 @@
     flex-direction: column;
     gap: 0.75rem;
     position: absolute;
-    right: 40px;
+    right: 20px;
     bottom: 0;
     align-items: flex-end;
   }
@@ -4134,7 +4310,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     position: absolute;
-    left: 60px;
+    left: 100px;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -4169,6 +4345,7 @@
   canvas {
     background: transparent;
     cursor: default;
+    filter: drop-shadow(0 4px 8px var(--shadow-color));
   }
 
   @media (max-width: 900px) {

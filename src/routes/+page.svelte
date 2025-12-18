@@ -28,6 +28,7 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
   import * as Tooltip from "$lib/components/ui/tooltip";
   import SettingsIcon from "@lucide/svelte/icons/settings";
+  import ExternalLinkIcon from "@lucide/svelte/icons/external-link";
 
   // Layout options for PDF generation
   const LAYOUT_OPTIONS: {
@@ -213,6 +214,18 @@
         />
       {/each}
     </div>
+    <div class="suggest-section">
+      <p>{t("didntFindHeart", lang)}</p>
+      <Button
+        variant="link"
+        href="https://github.com/thomasahle/julehjerte/issues/new?title=Heart%20suggestion&body=%23%23%20Heart%20Design%20Suggestion%0A%0A**Name%3A**%20%0A**Description%3A**%20%0A**Grid%20size%3A**%20%0A%0A**Reference%20image%20or%20description%3A**%0A%0A%3C!--%20Please%20attach%20an%20image%20or%20describe%20the%20pattern%20--%3E"
+        target="_blank"
+        class="gap-1"
+      >
+        {t("suggestHeart", lang)}
+        <ExternalLinkIcon class="size-3" />
+      </Button>
+    </div>
   {/if}
 </div>
 
@@ -281,6 +294,17 @@
     gap: 1.5rem;
     max-width: 1000px;
     margin: 0 auto;
+  }
+
+  .suggest-section {
+    text-align: center;
+    margin-top: 3rem;
+    color: #666;
+  }
+
+  .suggest-section p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
   }
 
   @media (max-width: 600px) {

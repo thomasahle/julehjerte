@@ -1,15 +1,16 @@
 {
   "hearts": [
     "classic-3x3",
-    "classic-4x4",
+    "gaver",
     "ramme",
     "explotion",
     "juletrae",
     "stjerne",
     "kogle",
-    "yin-yang",
+    "sun",
     "plus",
     "balls",
-    "circle"
+    "circle",
+    "h4h2"
   ]
 }
