@@ -11,7 +11,8 @@ declare global {
 
 	// Google Analytics
 	interface Window {
-		dataLayer: unknown[][];
+		dataLayer: unknown[];
+		gtag: (...args: unknown[]) => void;
 	}
 }
 

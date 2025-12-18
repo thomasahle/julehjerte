@@ -8,9 +8,9 @@ export function trackEvent(
   eventName: string,
   params?: Record<string, string | number | boolean>
 ) {
-  if (!browser || !GA_MEASUREMENT_ID || !window.dataLayer) return;
+  if (!browser || !GA_MEASUREMENT_ID || typeof window.gtag !== 'function') return;
 
-  window.dataLayer.push(['event', eventName, params]);
+  window.gtag('event', eventName, params);
 }
 
 /**

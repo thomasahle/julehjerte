@@ -19,13 +19,13 @@
 		script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
 		document.head.appendChild(script);
 
-		// Initialize gtag
+		// Initialize gtag globally
 		window.dataLayer = window.dataLayer || [];
-		function gtag(...args: unknown[]) {
+		window.gtag = function(...args: unknown[]) {
 			window.dataLayer.push(args);
-		}
-		gtag('js', new Date());
-		gtag('config', GA_MEASUREMENT_ID);
+		};
+		window.gtag('js', new Date());
+		window.gtag('config', GA_MEASUREMENT_ID);
 	});
 </script>
 
