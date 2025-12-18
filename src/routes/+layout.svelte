@@ -26,8 +26,7 @@
 		};
 		window.gtag('js', new Date());
 		window.gtag('config', GA_MEASUREMENT_ID, {
-			client_storage: 'none',
-			anonymize_ip: true
+			client_storage: 'none'
 		});
 	});
 </script>
