@@ -25,7 +25,10 @@
 			window.dataLayer.push(args);
 		};
 		window.gtag('js', new Date());
-		window.gtag('config', GA_MEASUREMENT_ID);
+		window.gtag('config', GA_MEASUREMENT_ID, {
+			client_storage: 'none',
+			anonymize_ip: true
+		});
 	});
 </script>
 
