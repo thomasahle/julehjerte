@@ -86,13 +86,18 @@
     return `heart-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
   }
 
+  // Sanitize user input by removing HTML tags
+  function sanitize(text: string): string {
+    return text.replace(/<[^>]*>/g, '').trim();
+  }
+
   function createHeartDesign(): HeartDesign {
     return {
       // In edit mode, keep the original ID; otherwise generate a new one
       id: isEditMode && initialDesign ? initialDesign.id : generateId(),
-      name: heartName,
-      author: authorName,
-      description: description || undefined,
+      name: sanitize(heartName),
+      author: sanitize(authorName),
+      description: sanitize(description) || undefined,
       weaveParity: currentWeaveParity,
       gridSize: currentGridSize,
       fingers: currentFingers
