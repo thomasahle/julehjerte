@@ -10,6 +10,7 @@
   import { saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
   import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
+  import { sanitizeHtml } from '$lib/utils';
   import { trackImportError } from '$lib/analytics';
   import PageHeader from '$lib/components/PageHeader.svelte';
   import { browser } from '$app/environment';
@@ -86,18 +87,13 @@
     return `heart-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
   }
 
-  // Sanitize user input by removing HTML tags
-  function sanitize(text: string): string {
-    return text.replace(/<[^>]*>/g, '').trim();
-  }
-
   function createHeartDesign(): HeartDesign {
     return {
       // In edit mode, keep the original ID; otherwise generate a new one
       id: isEditMode && initialDesign ? initialDesign.id : generateId(),
-      name: sanitize(heartName),
-      author: sanitize(authorName),
-      description: sanitize(description) || undefined,
+      name: sanitizeHtml(heartName),
+      author: sanitizeHtml(authorName),
+      description: sanitizeHtml(description) || undefined,
       weaveParity: currentWeaveParity,
       gridSize: currentGridSize,
       fingers: currentFingers

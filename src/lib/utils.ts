@@ -7,6 +7,16 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
+/**
+ * Sanitize user input by removing HTML tags using the browser's DOM parser.
+ * Returns plain text content only.
+ */
+export function sanitizeHtml(text: string): string {
+	if (!text) return '';
+	const doc = new DOMParser().parseFromString(text, 'text/html');
+	return doc.body.textContent?.trim() || '';
+}
+
 export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & {
 	ref?: U | null;
 };
