@@ -17,7 +17,6 @@
   } from "$lib/stores/colors";
   import { Button } from "$lib/components/ui/button";
   import * as Tooltip from "$lib/components/ui/tooltip";
-  import { Separator } from "$lib/components/ui/separator";
   import GitHubStarsButton from "$lib/components/GitHubStarsButton.svelte";
   
   let lang = $state<Language>("da");
@@ -42,7 +41,6 @@
 </script>
 
 <footer class="page-footer">
-  <Separator class="mb-6" />
   <div class="footer-controls">
     <div class="flex items-center gap-2">
       <Tooltip.Root>
@@ -66,7 +64,7 @@
       <Tooltip.Root>
         <Tooltip.Trigger>
           <label
-            class="inline-flex size-8 rounded-full border shadow-xs cursor-pointer overflow-hidden"
+            class="inline-flex size-8 rounded-full shadow-xs cursor-pointer overflow-hidden"
           >
             <input
               type="color"
@@ -104,7 +102,8 @@
 <style>
   .page-footer {
     margin-top: 2rem;
-    padding: 0 2rem 2rem;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.3);
   }
 
   .footer-controls {

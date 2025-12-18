@@ -31,6 +31,8 @@
     trackHeartDownload,
     trackHeartShare,
     trackHeartEdit,
+    trackHeartLoadError,
+    trackSvgParseError,
   } from "$lib/analytics";
   import { Button } from "$lib/components/ui/button";
   import PageHeader from "$lib/components/PageHeader.svelte";
@@ -76,12 +78,15 @@
         const svgText = await response.text();
         design = parseHeartFromSVG(svgText, `${id}.svg`);
         if (!design) {
+          trackSvgParseError(`${id}.svg`, 'No valid paths found');
           error = t("heartNotFound", lang);
         }
       } else {
+        trackHeartLoadError(id ?? '', `HTTP ${response.status}`);
         error = t("heartNotFound", lang);
       }
-    } catch {
+    } catch (err) {
+      trackHeartLoadError(id ?? '', err instanceof Error ? err.message : 'Unknown error');
       error = t("failedToLoad", lang);
     }
 
@@ -205,34 +210,8 @@
           initialWeaveParity={design.weaveParity ?? 0}
           size={400}
         />
-      </div>
-
-      <div class="info-section">
-        <h1>{design.name}</h1>
-        {#if design.author}
-          <p class="author">{t("by", lang)} {design.author}</p>
-        {/if}
-        {#if design.description}
-          <p class="description">{design.description}</p>
-        {/if}
-
-        <div class="details">
-          <div class="detail">
-            <span class="label">{t("difficulty", lang)}</span>
-            <span class="value">{getDifficultyLabel(calculateDifficulty(design).level)}</span>
-          </div>
-          <div class="detail">
-            <span class="label">{t("symmetry", lang)}</span>
-            <span class="value"
-              >{getSymmetryDescription(detectSymmetry(design.fingers), (key) =>
-                t(key as any, lang),
-              )}</span
-            >
-          </div>
-        </div>
-
         <div class="button-group">
-          <button class="btn secondary large" onclick={openInEditor}>
+          <button class="btn secondary" onclick={openInEditor}>
             {t("openInEditor", lang)}
           </button>
           <button class="btn share" onclick={handleShare}>
@@ -258,6 +237,31 @@
               {t("share", lang)}
             {/if}
           </button>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h1>{design.name}</h1>
+        {#if design.author}
+          <p class="author">{t("by", lang)} {design.author}</p>
+        {/if}
+        {#if design.description}
+          <p class="description">{design.description}</p>
+        {/if}
+
+        <div class="details">
+          <div class="detail">
+            <span class="label">{t("difficulty", lang)}</span>
+            <span class="value">{getDifficultyLabel(calculateDifficulty(design).level)}</span>
+          </div>
+          <div class="detail">
+            <span class="label">{t("symmetry", lang)}</span>
+            <span class="value"
+              >{getSymmetryDescription(detectSymmetry(design.fingers), (key) =>
+                t(key as any, lang),
+              )}</span
+            >
+          </div>
         </div>
 
         <div class="instructions">
@@ -300,6 +304,7 @@
 
   .preview-section {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 1rem;
@@ -370,15 +375,6 @@
     transition: background 0.2s;
   }
 
-  .btn.primary {
-    background: #cc0000;
-    color: white;
-  }
-
-  .btn.primary:hover {
-    background: #aa0000;
-  }
-
   .btn.secondary {
     background: #555;
     color: white;
@@ -405,16 +401,11 @@
     flex-shrink: 0;
   }
 
-  .btn.large {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    font-weight: 500;
-  }
-
   .button-group {
     display: flex;
+    justify-content: center;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
     flex-wrap: wrap;
   }
 

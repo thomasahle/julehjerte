@@ -113,7 +113,7 @@
     initialFingers = undefined,
     initialGridSize = 3,
     initialWeaveParity = 0,
-    size = 600,
+    size = 800,
     onFingersChange = undefined,
   }: Props = $props();
 
@@ -190,33 +190,6 @@
     return new paper.Point(v.x, v.y);
   }
 
-  // Snap anchor points to nearby anchor points from opposite-lobe curves
-  const SNAP_THRESHOLD = 15; // units in heart coordinate system (~15% of strip width)
-  function findNearestOppositeAnchor(
-    pos: paper.Point,
-    currentLobe: LobeId
-  ): paper.Point | null {
-    const oppositeLobe: LobeId = currentLobe === "left" ? "right" : "left";
-    let nearest: paper.Point | null = null;
-    let nearestDist = SNAP_THRESHOLD;
-
-    for (const finger of fingers) {
-      if (finger.lobe !== oppositeLobe) continue;
-      const segments = fingerToSegments(finger);
-      for (const seg of segments) {
-        for (const anchor of [seg.p0, seg.p3]) {
-          const anchorPt = toPoint(anchor);
-          const dist = pos.getDistance(anchorPt);
-          if (dist < nearestDist) {
-            nearestDist = dist;
-            nearest = anchorPt;
-          }
-        }
-      }
-    }
-    return nearest;
-  }
-
   let canvas: HTMLCanvasElement;
   let canvasWrapper: HTMLDivElement;
   let tool: paper.Tool | null = null;
@@ -226,11 +199,12 @@
   let didInitialFingerSetup = false;
 
   // Track container width reactively - ResizeObserver updates this (editor mode only)
-  let containerWidth = $state(size);
+  // Initialize to 0; will be set by ResizeObserver on mount
+  let containerWidth = $state(0);
   // Displayed size is derived: min of container width and size prop
   // This allows growing back when container expands
   // For readonly mode, we render at BASE_CANVAS_SIZE and CSS-scale to `size` for performance
-  let displayedSize = $derived(readonly ? BASE_CANVAS_SIZE : Math.min(containerWidth, size));
+  let displayedSize = $derived(readonly ? BASE_CANVAS_SIZE : Math.min(containerWidth || size, size));
 
   // Editing controls
   // Initialized from props in `$effect.pre` below; avoid capturing `initialGridSize` here.
@@ -246,13 +220,11 @@
   type SymmetryMode = "off" | "sym" | "anti";
   let editor = $state<{
     showCurves: boolean;
-    snapToOpposite: boolean;
     withinCurveMode: SymmetryMode;
     withinLobeMode: SymmetryMode;
     betweenLobesMode: SymmetryMode;
   }>({
     showCurves: true,
-    snapToOpposite: false,
     withinCurveMode: "off",
     withinLobeMode: "off",
     betweenLobesMode: "off",
@@ -3425,39 +3397,27 @@
       if (pointKey !== "p0" && pointKey !== "p3") return;
 
       applyConstrainedUpdate(target.fingerId, (current, fraction) => {
+        const desiredPt = projectEndpoint(current, p, pointKey);
+
         const segments = cloneSegments(fingerToSegments(current));
         if (!segments.length) return current;
         const first = segments[0]!;
         const last = segments[segments.length - 1]!;
+
         const oldPt = pointKey === "p0" ? first.p0 : last.p3;
-
-        // Check for snap target first (before any projection)
-        let snapTarget: paper.Point | null = null;
-        if (editor.snapToOpposite) {
-          // Use mouse position directly for snap detection
-          snapTarget = findNearestOppositeAnchor(toPoint(p), current.lobe);
-        }
-
-        let finalPt: Vec;
-        if (snapTarget) {
-          // When snapping, go directly to snap target (no projection)
-          finalPt = { x: snapTarget.x, y: snapTarget.y };
-        } else {
-          // Normal behavior: project and apply fractional movement
-          const desiredPt = projectEndpoint(current, p, pointKey);
-          const dx = (desiredPt.x - oldPt.x) * fraction;
-          const dy = (desiredPt.y - oldPt.y) * fraction;
-          const moved = { x: oldPt.x + dx, y: oldPt.y + dy };
-          finalPt = projectEndpoint(current, moved, pointKey);
-        }
+        const dx = (desiredPt.x - oldPt.x) * fraction;
+        const dy = (desiredPt.y - oldPt.y) * fraction;
+        const moved = { x: oldPt.x + dx, y: oldPt.y + dy };
 
         if (pointKey === "p0") {
-          const d = vecSub(finalPt, first.p0);
-          first.p0 = finalPt;
+          const nextP0 = projectEndpoint(current, moved, "p0");
+          const d = vecSub(nextP0, first.p0);
+          first.p0 = nextP0;
           first.p1 = vecAdd(first.p1, d);
         } else {
-          const d = vecSub(finalPt, last.p3);
-          last.p3 = finalPt;
+          const nextP3 = projectEndpoint(current, moved, "p3");
+          const d = vecSub(nextP3, last.p3);
+          last.p3 = nextP3;
           last.p2 = vecAdd(last.p2, d);
         }
 
@@ -3907,10 +3867,6 @@
       <div class="right-panel">
         <div class="controls">
           <label class="checkbox">
-            <input type="checkbox" bind:checked={editor.snapToOpposite} />
-            Snap
-          </label>
-          <label class="checkbox">
             <input type="checkbox" bind:checked={editor.showCurves} />
             Edges
           </label>
@@ -4285,10 +4241,6 @@
     gap: 0.6rem;
   }
 
-  .canvas-wrapper {
-    /* For readonly (gallery), wrapper sizes to canvas content */
-  }
-
   /* Readonly canvases shouldn't capture pointer events */
   .paper-heart.readonly {
     pointer-events: none;
@@ -4296,8 +4248,8 @@
 
   /* For editor, wrapper needs explicit sizing so it doesn't shrink-wrap the canvas */
   .paper-heart:not(.readonly) .canvas-wrapper {
-    width: 600px;
-    height: 600px;
+    width: 800px;
+    height: 800px;
   }
 
   .segment-controls {

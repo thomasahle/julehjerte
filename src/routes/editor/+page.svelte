@@ -10,6 +10,7 @@
   import { saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
   import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
+  import { trackImportError } from '$lib/analytics';
   import PageHeader from '$lib/components/PageHeader.svelte';
   import { browser } from '$app/environment';
   import CircleHelpIcon from '@lucide/svelte/icons/circle-help';
@@ -135,7 +136,11 @@
         const content = e.target?.result as string;
         const design = parseHeartFromSVG(content, file.name);
 
-        if (!design) throw new Error('Invalid design');
+        if (!design) {
+          trackImportError(file.name, 'No valid paths found in SVG');
+          alert(t('invalidHeartFile', lang));
+          return;
+        }
 
         currentFingers = design.fingers;
         currentGridSize = design.gridSize;
@@ -146,7 +151,8 @@
         editingExisting = false;
         initialDesign = design;
         editorKey++;
-      } catch {
+      } catch (err) {
+        trackImportError(file.name, err instanceof Error ? err.message : 'Unknown parse error');
         alert(t('invalidHeartFile', lang));
       }
     };

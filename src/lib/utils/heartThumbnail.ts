@@ -1,6 +1,7 @@
 import type { HeartDesign } from '$lib/types/heart';
 import type { HeartColors } from '$lib/stores/colors';
 import { serializeHeartDesign } from '$lib/utils/heartDesign';
+import { trackThumbnailError } from '$lib/analytics';
 
 type ThumbnailOptions = {
   size?: number;
@@ -68,6 +69,8 @@ export function getHeartThumbnail(
         resolved.set(key, url);
         resolve(url);
       } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Unknown render error';
+        trackThumbnailError(design.id || 'unknown', errorMsg);
         reject(err);
       } finally {
         inflight.delete(key);

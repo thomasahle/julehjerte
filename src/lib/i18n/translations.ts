@@ -119,7 +119,7 @@ export const translations = {
     leftColor: 'Venstre farve',
     rightColor: 'Højre farve',
     suggestHeart: 'Foreslå hjerte',
-    didntFindHeart: 'Fandt du ikke det hjerte du søgte?',
+    didntFindHeart: 'Har du et yndlingsjulehjerte vi mangler i galleriet?',
     madeBy: 'Af',
 
     // Error page
@@ -131,7 +131,7 @@ export const translations = {
   en: {
     // Site
     siteTitle: 'Juleflet',
-    siteDescription: 'Design and print woven Christmas hearts – free templates. — Best, {author}',
+    siteDescription: 'Design and print woven Christmas hearts – free templates.',
 
     // Gallery
     createNewHeart: 'Create New Heart',

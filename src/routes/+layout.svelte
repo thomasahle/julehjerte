@@ -60,8 +60,12 @@
 </svelte:head>
 
 <Tooltip.Provider>
-	{@render children()}
-	<PageFooter />
+	<div class="page-container">
+		<main class="page-content">
+			{@render children()}
+		</main>
+		<PageFooter />
+	</div>
 </Tooltip.Provider>
 
 <style>
@@ -70,5 +74,15 @@
 		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		background: #aacdd8;
 		color: #111;
+	}
+
+	.page-container {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+	}
+
+	.page-content {
+		flex: 1;
 	}
 </style>

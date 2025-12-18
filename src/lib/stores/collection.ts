@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import type { HeartDesign } from '$lib/types/heart';
 import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG } from '$lib/utils/heartDesign';
+import { trackHeartLoadError, trackSvgParseError } from '$lib/analytics';
 
 const STORAGE_KEY = 'julehjerte-collection';
 
@@ -49,24 +50,36 @@ export function clearUserCollection(): void {
 export async function loadStaticHearts(): Promise<HeartDesign[]> {
   try {
     const response = await fetch('/hearts/index.json');
-    if (!response.ok) return [];
+    if (!response.ok) {
+      trackHeartLoadError('index', `Failed to load index.json: ${response.status}`);
+      return [];
+    }
 
     const index: { hearts: string[] } = await response.json();
     const designs = await Promise.all(
       index.hearts.map(async (id) => {
         try {
           const heartResponse = await fetch(`/hearts/${id}.svg`);
-          if (!heartResponse.ok) return null;
+          if (!heartResponse.ok) {
+            trackHeartLoadError(id, `HTTP ${heartResponse.status}`);
+            return null;
+          }
           const svgText = await heartResponse.text();
-          return parseHeartFromSVG(svgText, `${id}.svg`);
-        } catch {
+          const design = parseHeartFromSVG(svgText, `${id}.svg`);
+          if (!design) {
+            trackSvgParseError(`${id}.svg`, 'No valid paths found');
+          }
+          return design;
+        } catch (err) {
+          trackHeartLoadError(id, err instanceof Error ? err.message : 'Unknown error');
           return null;
         }
       })
     );
 
     return designs.filter((d): d is HeartDesign => d !== null);
-  } catch {
+  } catch (err) {
+    trackHeartLoadError('index', err instanceof Error ? err.message : 'Unknown error');
     return [];
   }
 }
