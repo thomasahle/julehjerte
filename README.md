@@ -1,4 +1,4 @@
-# Juleflet Julehjerter Designer
+# Juleflet Designer
 
 <img width="823" height="741" alt="Screenshot 2025-12-18 at 7 53 14 AM" src="https://github.com/user-attachments/assets/cfca1398-ceaf-4be2-b9c9-31fbd6dff6db" />
 
