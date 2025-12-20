@@ -4,9 +4,17 @@ export const translations = {
     siteTitle: 'Juleflet.dk',
     siteDescription: 'Velkommen til min hjemmeside med skabeloner til julefletning! Design dine egne mønstre, print dem ud, og god fornøjelse med julefletningen!',
 
+    // Categories
+    categoryKlassiske: 'Klassiske',
+    categoryStjerner: 'Stjerner',
+    categoryFigurer: 'Figurer',
+    categoryMoenstre: 'Mønstre',
+    categoryHjerter: 'Hjerter',
+    categoryMine: 'Mine Hjerter',
+
     // Gallery
     createNewHeart: 'Lav Nyt Hjerte',
-    printSelected: 'Print Valgte',
+    printSelected: 'Hent Skabeloner',
     generating: 'Genererer...',
     loadingHearts: 'Indlæser hjerter...',
     noHeartsYet: 'Ingen hjertedesigns endnu!',
@@ -44,6 +52,10 @@ export const translations = {
     share: 'Del',
     copied: 'Kopieret!',
     failed: 'Fejl',
+    template: 'Skabelon',
+    templateLeft: 'Skabelon (Venstre)',
+    templateRight: 'Skabelon (Højre)',
+    photo: 'Foto',
     howToMake: 'Sådan gør du',
     instructions: [
       'Print skabelonen i 100% størrelse på A4 papir',
@@ -133,6 +145,14 @@ export const translations = {
     siteTitle: 'Juleflet',
     siteDescription: 'Design and print woven Christmas hearts – free templates.',
 
+    // Categories
+    categoryKlassiske: 'Classic',
+    categoryStjerner: 'Stars',
+    categoryFigurer: 'Figures',
+    categoryMoenstre: 'Patterns',
+    categoryHjerter: 'Hearts',
+    categoryMine: 'My Hearts',
+
     // Gallery
     createNewHeart: 'Create New Heart',
     printSelected: 'Print Selected',
@@ -173,6 +193,10 @@ export const translations = {
     share: 'Share',
     copied: 'Copied!',
     failed: 'Failed',
+    template: 'Template',
+    templateLeft: 'Template (Left)',
+    templateRight: 'Template (Right)',
+    photo: 'Photo',
     howToMake: 'How to Make',
     instructions: [
       'Print the template at 100% scale on A4 paper',

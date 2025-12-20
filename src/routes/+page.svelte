@@ -4,7 +4,7 @@
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
   import HeartCard from "$lib/components/HeartCard.svelte";
-  import { loadAllHearts } from "$lib/stores/collection";
+  import { loadAllHearts, type HeartCategoryWithMeta } from "$lib/stores/collection";
   import { downloadMultiPDF, type LayoutMode } from "$lib/pdf/template";
   import { SITE_TITLE, SITE_URL, SITE_DESCRIPTION } from "$lib/config";
   import {
@@ -40,7 +40,7 @@
     { value: "large", labelKey: "layoutLarge" },
   ];
 
-  let hearts = $state<(HeartDesign & { isUserCreated?: boolean })[]>([]);
+  let categories = $state<HeartCategoryWithMeta[]>([]);
   let selectedIds = $state<Set<string>>(new Set());
   let loading = $state(true);
   let generating = $state(false);
@@ -84,7 +84,7 @@
 
     // Load selections from URL first
     selectedIds = getSelectionsFromUrl();
-    hearts = await loadAllHearts();
+    categories = await loadAllHearts();
     loading = false;
   });
 
@@ -106,8 +106,11 @@
     goto(`${base}/hjerte/${design.id}`);
   }
 
+  // Flatten all hearts from all categories
+  let allHearts = $derived(categories.flatMap((cat) => cat.hearts));
+
   async function handlePrintSelected() {
-    const selected = hearts.filter((h) => selectedIds.has(h.id));
+    const selected = allHearts.filter((h) => selectedIds.has(h.id));
     if (selected.length > 0) {
       generating = true;
       try {
@@ -121,6 +124,16 @@
       }
     }
   }
+
+  // Category ID to translation key mapping
+  const categoryTitleKeys: Record<string, "categoryKlassiske" | "categoryStjerner" | "categoryFigurer" | "categoryMoenstre" | "categoryHjerter" | "categoryMine"> = {
+    klassiske: "categoryKlassiske",
+    stjerner: "categoryStjerner",
+    figurer: "categoryFigurer",
+    moenstre: "categoryMoenstre",
+    hjerter: "categoryHjerter",
+    mine: "categoryMine",
+  };
 
   let selectedCount = $derived(selectedIds.size);
 </script>
@@ -197,23 +210,27 @@
 
   {#if loading}
     <div class="loading">{t("loadingHearts", lang)}</div>
-  {:else if hearts.length === 0}
+  {:else if allHearts.length === 0}
     <div class="empty">
       <p>{t("noHeartsYet", lang)}</p>
       <p>{t("clickCreateNew", lang)}</p>
     </div>
   {:else}
-    <div class="gallery">
-      {#each hearts as design (design.id)}
-        <HeartCard
-          {design}
-          {colors}
-          selected={selectedIds.has(design.id)}
-          onSelect={handleSelect}
-          onClick={handleClick}
-        />
-      {/each}
-    </div>
+    {#each categories as category (category.id)}
+      <section class="category-section">
+        <h2 class="category-header">{t(categoryTitleKeys[category.id], lang)}</h2>
+        <div class="gallery svg-renderer">
+          {#each category.hearts as design (design.id)}
+            <HeartCard
+              {design}
+              selected={selectedIds.has(design.id)}
+              onSelect={handleSelect}
+              onClick={handleClick}
+            />
+          {/each}
+        </div>
+      </section>
+    {/each}
     <div class="suggest-section">
       <p>{t("didntFindHeart", lang)}</p>
       <Button
@@ -288,12 +305,36 @@
     margin: 0.5rem 0;
   }
 
+  .category-section {
+    max-width: 1000px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .category-section:first-of-type {
+    margin-top: 0;
+  }
+
+  .category-header {
+    color: #4a7c8a;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 1rem 0;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid #a3bfca;
+  }
+
   .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 1.5rem;
-    max-width: 1000px;
-    margin: 0 auto;
+    padding-top: 35px; /* Space for selected heart handles */
+  }
+
+  .gallery.svg-renderer {
+    gap: 1.5rem;
+    padding-top: 0;
   }
 
   .suggest-section {
@@ -344,6 +385,10 @@
 
     .gallery {
       grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+
+    .gallery.svg-renderer {
       gap: 0.75rem;
     }
   }

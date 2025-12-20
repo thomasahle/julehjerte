@@ -1,7 +1,20 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-    data-author="Traditional" data-weave-parity="0">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-weave-parity="0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title>Eksplosion</title>
   <desc>Strålende farver fra midten der skyder ud i alle retninger.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Eksplosion</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Traditional</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>Strålende farver fra midten der skyder ud i alle retninger.</dc:description>
+        <dc:source>juleflet.dk</dc:source>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
   <path d="M 100 24.401 C 100 24.401 53.982 39.28 53.982 39.28 C 53.982 39.28 46.018 39.28 46.018 39.28 C 46.018 39.28 0 24.401 0 24.401" stroke="orange" fill="none"/>
   <path d="M 100 40 C 100 40 53.982 46.077 53.982 46.077 C 53.982 46.077 46.018 46.077 46.018 46.077 C 46.018 46.077 0 40 0 40" stroke="orange" fill="none"/>
   <path d="M 100 60 C 100 60 53.982 53.923 53.982 53.923 C 53.982 53.923 46.018 53.923 46.018 53.923 C 46.018 53.923 0 60 0 60" stroke="orange" fill="none"/>

@@ -1,22 +1,17 @@
 <script lang="ts">
   import type { HeartDesign } from "$lib/types/heart";
   import { t, getLanguage, subscribeLanguage, type Language } from "$lib/i18n";
-  import type { HeartColors } from "$lib/stores/colors";
-  import type PaperHeartType from "$lib/components/PaperHeart.svelte";
+  import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
   import { onMount } from "svelte";
-
-  // Dynamic import to avoid SSR issues with Paper.js
-  let PaperHeart = $state<typeof PaperHeartType | null>(null);
 
   interface Props {
     design: HeartDesign & { isUserCreated?: boolean };
     selected?: boolean;
-    colors: HeartColors;
     onSelect?: (design: HeartDesign) => void;
     onClick?: (design: HeartDesign) => void;
   }
 
-  let { design, selected = false, colors, onSelect, onClick }: Props = $props();
+  let { design, selected = false, onSelect, onClick }: Props = $props();
   let lang = $state<Language>('da');
   let previewReady = $state(false);
   let previewEl: HTMLDivElement | null = null;
@@ -33,8 +28,10 @@
 
     const updateSize = () => {
       if (!previewEl) return;
-      const rect = previewEl.getBoundingClientRect();
-      if (rect.width > 0) previewSize = Math.round(rect.width);
+      // Use offsetWidth instead of getBoundingClientRect to ignore CSS transforms (hover scale)
+      // Cap at 400px max - gallery cards should never be larger than this
+      const width = previewEl.offsetWidth;
+      if (width > 0 && width <= 400) previewSize = width;
     };
     updateSize();
     requestAnimationFrame(updateSize);
@@ -45,32 +42,8 @@
       resizeObserver.observe(previewEl);
     }
 
-    if (!('IntersectionObserver' in window)) {
-      // Fallback: load immediately
-      import("$lib/components/PaperHeart.svelte").then((module) => {
-        PaperHeart = module.default;
-        previewReady = true;
-      });
-      return () => resizeObserver?.disconnect();
-    }
-
-    const observer = new IntersectionObserver(
-      async (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          observer.disconnect();
-          // Dynamic import to avoid SSR issues with Paper.js
-          const module = await import("$lib/components/PaperHeart.svelte");
-          PaperHeart = module.default;
-          previewReady = true;
-        }
-      },
-      { rootMargin: '300px' }
-    );
-    observer.observe(previewEl);
-    return () => {
-      observer.disconnect();
-      resizeObserver?.disconnect();
-    };
+    previewReady = true;
+    return () => resizeObserver?.disconnect();
   });
 
   function handleDetails(e: MouseEvent) {
@@ -99,9 +72,9 @@
   tabindex="0"
   aria-label="{design.name}{selected ? ` - ${t('selected', lang)}` : ''}"
 >
-  <div class="preview" bind:this={previewEl}>
-    {#if previewReady && PaperHeart}
-      <PaperHeart
+  <div class="preview svg-renderer" bind:this={previewEl}>
+    {#if previewReady}
+      <PaperHeartSVG
         readonly
         initialFingers={design.fingers}
         initialGridSize={design.gridSize}
@@ -135,6 +108,7 @@
     border-radius: 12px;
     cursor: pointer;
     transition: transform 0.2s;
+    overflow: visible; /* Allow SVG hearts to overflow when scaled */
   }
 
 
@@ -144,7 +118,8 @@
 
   .card.selected {
     outline: 3px solid #cc0000;
-    outline-offset: -3px;
+    outline-offset: 2px;
+    border-radius: 12px;
   }
 
   .preview {
@@ -156,14 +131,21 @@
     background: transparent;
     padding: 8px;
     pointer-events: none; /* Don't capture events from overflow area */
+    overflow: visible; /* Allow SVG hearts to overflow when scaled */
   }
 
-  .preview :global(canvas) {
+  .preview.svg-renderer {
+    padding: 0;
+  }
+
+  .preview :global(canvas),
+  .preview :global(svg) {
     filter: drop-shadow(0 4px 8px var(--shadow-color));
     transition: filter 0.2s;
   }
 
-  .card:hover .preview :global(canvas) {
+  .card:hover .preview :global(canvas),
+  .card:hover .preview :global(svg) {
     filter: drop-shadow(0 6px 12px var(--shadow-color-hover));
   }
 

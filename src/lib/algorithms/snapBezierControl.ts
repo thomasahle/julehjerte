@@ -126,6 +126,8 @@ export function snapSequentialQP<TCandidate>(
     margin?: number;
     iters?: number;
     obstacleThreshold?: number;
+    previousSolution?: paper.Point;
+    stickiness?: number;
   } = {}
 ): SnapResult {
   let iterations = 0;
@@ -137,6 +139,20 @@ export function snapSequentialQP<TCandidate>(
   const margin = opts.margin ?? 0.75;
   const iters = opts.iters ?? 6;
   const obstacleThreshold = opts.obstacleThreshold ?? 12;
+  // Stickiness: blend between desired and previous solution to reduce jumping
+  const stickiness = opts.stickiness ?? 0;
+  const previousSolution = opts.previousSolution;
+
+  // Compute effective target: blend desired with previous solution for temporal smoothness
+  let effectiveDesired = desired;
+  if (previousSolution && stickiness > 0) {
+    // Only apply stickiness if previous solution is reasonably close to desired
+    const prevDist = previousSolution.getDistance(desired);
+    if (prevDist < 100) {
+      // Bias toward previous solution to reduce jumping between constraint boundaries
+      effectiveDesired = previousSolution.add(desired.subtract(previousSolution).multiply(1 - stickiness));
+    }
+  }
 
   for (let k = 0; k < iters; k++) {
     const constraints: LinearConstraint[] = [];
@@ -166,11 +182,11 @@ export function snapSequentialQP<TCandidate>(
       }
     }
 
-    const projected = solve2DProjection(desired, constraints);
+    const projected = solve2DProjection(effectiveDesired, constraints);
     const next = moveHandleToward(buildCandidateAt, pt, projected, isValidCandidate);
     iterations++;
     if (next.getDistance(pt) < 0.25) break;
-    if (next.getDistance(desired) + 0.01 >= pt.getDistance(desired)) break;
+    if (next.getDistance(effectiveDesired) + 0.01 >= pt.getDistance(effectiveDesired)) break;
     pt = next;
   }
 
@@ -268,6 +284,8 @@ export function snapSequentialQPBezierControl<TCandidate>(
     margin?: number;
     iters?: number;
     obstacleThreshold?: number;
+    previousSolution?: paper.Point;
+    stickiness?: number;
   } = {}
 ): SnapResult {
   const sampler = createControlSampler(control, p0, fixedOther, p3);
@@ -293,6 +311,8 @@ export function snapSequentialQPBezierJunction<TCandidate>(
     margin?: number;
     iters?: number;
     obstacleThreshold?: number;
+    previousSolution?: paper.Point;
+    stickiness?: number;
   } = {}
 ): SnapResult {
   const sampler = createJunctionSampler(prevP0, prevP1, prevP2, from, nextP1, nextP2, nextP3);

@@ -298,7 +298,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
 
   // Validate raw JSON paths (0-100 coords) before transformation
   if (fingersRaw.length > 0) {
-    validateRawFingers(id || 'unknown', fingersRaw);
+    validateRawFingers(id || 'unknown', fingersRaw, name);
   }
 
   let fingers = fingersRaw
@@ -409,15 +409,15 @@ export function serializeHeartToSVG(design: HeartDesign): string {
     return segmentsToPathData(jsonSegments);
   });
 
-  // Build SVG
+  // Build SVG with RDF/Dublin Core metadata (W3C standard)
   const attrs: string[] = [
     'viewBox="0 0 100 100"',
     'xmlns="http://www.w3.org/2000/svg"',
-    `data-source="${SITE_DOMAIN}"`,
-    `data-exported="${new Date().toISOString()}"`
+    'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"',
+    'xmlns:cc="http://creativecommons.org/ns#"',
+    'xmlns:dc="http://purl.org/dc/elements/1.1/"',
+    `data-weave-parity="${design.weaveParity ?? 0}"`
   ];
-  if (design.author) attrs.push(`data-author="${escapeXml(design.author)}"`);
-  attrs.push(`data-weave-parity="${design.weaveParity ?? 0}"`);
 
   const lines: string[] = [
     `<svg ${attrs.join(' ')}>`,
@@ -426,6 +426,31 @@ export function serializeHeartToSVG(design: HeartDesign): string {
   if (design.description) {
     lines.push(`  <desc>${escapeXml(design.description)}</desc>`);
   }
+
+  // RDF/Dublin Core metadata block
+  lines.push('  <metadata>');
+  lines.push('    <rdf:RDF>');
+  lines.push('      <cc:Work rdf:about="">');
+  lines.push(`        <dc:title>${escapeXml(design.name)}</dc:title>`);
+  if (design.author) {
+    lines.push('        <dc:creator>');
+    if (design.authorUrl) {
+      lines.push(`          <cc:Agent rdf:about="${escapeXml(design.authorUrl)}">`);
+    } else {
+      lines.push('          <cc:Agent>');
+    }
+    lines.push(`            <dc:title>${escapeXml(design.author)}</dc:title>`);
+    lines.push('          </cc:Agent>');
+    lines.push('        </dc:creator>');
+  }
+  if (design.description) {
+    lines.push(`        <dc:description>${escapeXml(design.description)}</dc:description>`);
+  }
+  lines.push(`        <dc:source>${SITE_DOMAIN}</dc:source>`);
+  lines.push(`        <dc:date>${new Date().toISOString().split('T')[0]}</dc:date>`);
+  lines.push('      </cc:Work>');
+  lines.push('    </rdf:RDF>');
+  lines.push('  </metadata>');
 
   // Horizontal paths (left lobe) in orange, vertical paths (right lobe) in green
   for (const path of leftPaths) {
@@ -856,6 +881,92 @@ function applyTransformToSegments(segments: BezierSegment[], matrix: TransformMa
   }));
 }
 
+/**
+ * Recursively resolve a <use> element to find all paths it references,
+ * accumulating transforms along the way. Handles chains like use -> use -> use -> path.
+ */
+function resolveUseElement(
+  useEl: Element,
+  svg: SVGSVGElement,
+  accumulatedTransform: TransformMatrix,
+  visited: Set<string>
+): Array<{ pathEl: SVGPathElement; useTransform: TransformMatrix }> {
+  const results: Array<{ pathEl: SVGPathElement; useTransform: TransformMatrix }> = [];
+
+  // Get the href (supports both xlink:href and href attributes)
+  const href = useEl.getAttribute('xlink:href') || useEl.getAttribute('href');
+  if (!href || !href.startsWith('#')) return results;
+
+  const targetId = href.slice(1);
+
+  // Prevent infinite loops from circular references
+  if (visited.has(targetId)) return results;
+  visited.add(targetId);
+
+  const targetEl = svg.getElementById(targetId);
+  if (!targetEl) return results;
+
+  // Get the transform from this <use> element
+  const useTransform = parseTransform(useEl.getAttribute('transform') || '');
+  const combinedTransform = multiplyMatrices(accumulatedTransform, useTransform);
+
+  const tagName = targetEl.tagName.toLowerCase();
+
+  if (tagName === 'use') {
+    // Recursively resolve the referenced <use> element
+    return resolveUseElement(targetEl, svg, combinedTransform, visited);
+  } else if (tagName === 'path') {
+    // Found a path - add it with the accumulated transform
+    results.push({ pathEl: targetEl as SVGPathElement, useTransform: combinedTransform });
+  } else {
+    // It's a group or other container - find all paths within
+    const paths = Array.from(targetEl.querySelectorAll('path'));
+    for (const pathEl of paths) {
+      results.push({ pathEl, useTransform: combinedTransform });
+    }
+
+    // Also check for nested <use> elements within the group
+    const nestedUses = Array.from(targetEl.querySelectorAll('use'));
+    for (const nestedUse of nestedUses) {
+      results.push(...resolveUseElement(nestedUse, svg, combinedTransform, visited));
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Resolve all <use> elements in the SVG by finding referenced elements and collecting their paths
+ * with the combined transform. Handles nested <use> chains.
+ */
+function resolveUseElements(svg: SVGSVGElement): Array<{ pathEl: SVGPathElement; useTransform: TransformMatrix }> {
+  const results: Array<{ pathEl: SVGPathElement; useTransform: TransformMatrix }> = [];
+  const useElements = Array.from(svg.querySelectorAll('use'));
+
+  for (const useEl of useElements) {
+    // Get the cumulative transform from <use> element's parents (but not the <use> itself)
+    let parentTransform = identityMatrix();
+    let parent: Element | null = useEl.parentElement;
+    const transforms: TransformMatrix[] = [];
+    while (parent && parent !== (svg as Element)) {
+      const transform = parent.getAttribute('transform');
+      if (transform) {
+        transforms.push(parseTransform(transform));
+      }
+      parent = parent.parentElement;
+    }
+    // Apply transforms from root to element (reverse order)
+    for (let i = transforms.length - 1; i >= 0; i--) {
+      parentTransform = multiplyMatrices(parentTransform, transforms[i]);
+    }
+
+    const resolved = resolveUseElement(useEl, svg, parentTransform, new Set());
+    results.push(...resolved);
+  }
+
+  return results;
+}
+
 export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesign | null {
   // Parse SVG using DOMParser
   const parser = new DOMParser();
@@ -871,12 +982,54 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   const svg = doc.querySelector('svg');
   if (!svg) return null;
 
-  // Extract metadata
+  // Extract metadata - check both standard SVG elements and Dublin Core (Inkscape) format
   const titleEl = svg.querySelector('title');
   const descEl = svg.querySelector('desc');
-  const name = titleEl?.textContent?.trim() || 'Untitled';
-  const description = descEl?.textContent?.trim() || undefined;
-  const author = svg.getAttribute('data-author') || '';
+
+  // Dublin Core metadata (used by Inkscape) - need to use namespace-aware methods
+  const DC_NS = 'http://purl.org/dc/elements/1.1/';
+  const dcTitles = svg.getElementsByTagNameNS(DC_NS, 'title');
+  const dcDescs = svg.getElementsByTagNameNS(DC_NS, 'description');
+  const dcCreators = svg.getElementsByTagNameNS(DC_NS, 'creator');
+
+  // Get first DC title that's inside metadata (not the main SVG title)
+  let dcTitle: string | undefined;
+  for (let i = 0; i < dcTitles.length; i++) {
+    const el = dcTitles[i];
+    if (el.closest('metadata')) {
+      dcTitle = el.textContent?.trim();
+      break;
+    }
+  }
+
+  // Get DC description
+  const dcDesc = dcDescs[0]?.textContent?.trim();
+
+  // Get DC creator (the author name is nested inside cc:Agent > dc:title)
+  // Also extract author URL from cc:Agent rdf:about attribute
+  const CC_NS = 'http://creativecommons.org/ns#';
+  const RDF_NS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+  let dcCreator: string | undefined;
+  let dcCreatorUrl: string | undefined;
+  if (dcCreators[0]) {
+    // The creator element contains cc:Agent which contains dc:title with the name
+    const agents = dcCreators[0].getElementsByTagNameNS(CC_NS, 'Agent');
+    if (agents[0]) {
+      // Get author URL from rdf:about attribute on cc:Agent
+      dcCreatorUrl = agents[0].getAttributeNS(RDF_NS, 'about') || agents[0].getAttribute('rdf:about') || undefined;
+      const creatorTitles = agents[0].getElementsByTagNameNS(DC_NS, 'title');
+      dcCreator = creatorTitles[0]?.textContent?.trim();
+    } else {
+      // Fallback: look for dc:title directly in creator
+      const creatorTitles = dcCreators[0].getElementsByTagNameNS(DC_NS, 'title');
+      dcCreator = creatorTitles[0]?.textContent?.trim();
+    }
+  }
+
+  const name = titleEl?.textContent?.trim() || dcTitle || 'Untitled';
+  const description = descEl?.textContent?.trim() || dcDesc || undefined;
+  const author = svg.getAttribute('data-author') || dcCreator || '';
+  const authorUrl = dcCreatorUrl || undefined;
   const weaveParity = normalizeWeaveParity(parseInt(svg.getAttribute('data-weave-parity') || '0', 10));
 
   // Extract id from filename (remove .svg extension)
@@ -889,6 +1042,9 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
 
   // Find all path elements regardless of grouping
   const allPaths = Array.from(svg.querySelectorAll('path'));
+
+  // Also resolve <use> elements to get paths they reference
+  const usePaths = resolveUseElements(svg as SVGSVGElement);
   for (const pathEl of allPaths) {
     const pathData = pathEl.getAttribute('d');
     if (!pathData) continue;
@@ -912,7 +1068,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     for (const joinedPath of joinedPaths) {
       const segments = parsePathDataToSegments(joinedPath);
       if (!segments.length) {
-        console.warn(`[parseHeartFromSVG] Skipping path with no segments: ${joinedPath.slice(0, 50)}...`);
+        console.warn(`[parseHeartFromSVG: ${name}] Skipping path with no segments: ${joinedPath.slice(0, 50)}...`);
         continue;
       }
 
@@ -927,7 +1083,57 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
         const start = segments[0].p0;
         const end = segments[segments.length - 1].p3;
         console.warn(
-          `[parseHeartFromSVG] Skipping ambiguous path (neither horizontal nor vertical): ` +
+          `[parseHeartFromSVG: ${name}] Skipping ambiguous path (neither horizontal nor vertical): ` +
+          `start=(${start.x.toFixed(1)}, ${start.y.toFixed(1)}), end=(${end.x.toFixed(1)}, ${end.y.toFixed(1)}), ` +
+          `path: ${joinedPath.slice(0, 80)}...`
+        );
+      }
+    }
+  }
+
+  // Process paths from <use> elements
+  for (const { pathEl, useTransform } of usePaths) {
+    const pathData = pathEl.getAttribute('d');
+    if (!pathData) continue;
+
+    // Get the path's own transform within its parent group
+    const pathTransform = getCumulativeTransform(pathEl, svg);
+
+    // Combine: first apply the path's transform, then the <use> element's transform
+    const combinedTransform = multiplyMatrices(useTransform, pathTransform);
+    const hasTransform = combinedTransform[0] !== 1 || combinedTransform[1] !== 0 || combinedTransform[2] !== 0 ||
+                         combinedTransform[3] !== 1 || combinedTransform[4] !== 0 || combinedTransform[5] !== 0;
+
+    // Apply transform to get actual coordinates
+    let transformedPathData = pathData;
+    if (hasTransform) {
+      const segments = parsePathDataToSegments(pathData);
+      const transformedSegments = applyTransformToSegments(segments, combinedTransform);
+      transformedPathData = segmentsToPathData(transformedSegments);
+    }
+
+    // Split and rejoin subpaths within this path element
+    const joinedPaths = processPathData(transformedPathData);
+
+    for (const joinedPath of joinedPaths) {
+      const segments = parsePathDataToSegments(joinedPath);
+      if (!segments.length) {
+        console.warn(`[parseHeartFromSVG: ${name}] Skipping <use> path with no segments: ${joinedPath.slice(0, 50)}...`);
+        continue;
+      }
+
+      // Detect lobe based on whether path is more horizontal or vertical
+      const lobe = detectLobeFromPath(joinedPath);
+      if (lobe === 'left') {
+        leftPathData.push(joinedPath);
+      } else if (lobe === 'right') {
+        rightPathData.push(joinedPath);
+      } else {
+        // Path doesn't have a clear horizontal or vertical direction
+        const start = segments[0].p0;
+        const end = segments[segments.length - 1].p3;
+        console.warn(
+          `[parseHeartFromSVG: ${name}] Skipping ambiguous <use> path (neither horizontal nor vertical): ` +
           `start=(${start.x.toFixed(1)}, ${start.y.toFixed(1)}), end=(${end.x.toFixed(1)}, ${end.y.toFixed(1)}), ` +
           `path: ${joinedPath.slice(0, 80)}...`
         );
@@ -1016,7 +1222,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   // Check if we found any valid paths
   if (leftPathData.length === 0 && rightPathData.length === 0) {
     console.error(
-      `[parseHeartFromSVG] No valid horizontal or vertical paths found in SVG "${name}". ` +
+      `[parseHeartFromSVG: ${name}] No valid horizontal or vertical paths found. ` +
       `The SVG may contain complex paths that don't represent a woven heart pattern, ` +
       `or the paths may not span clearly in one direction.`
     );
@@ -1024,10 +1230,10 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   }
 
   if (leftPathData.length === 0) {
-    console.warn(`[parseHeartFromSVG] No horizontal paths (left lobe) found in SVG "${name}"`);
+    console.warn(`[parseHeartFromSVG: ${name}] No horizontal paths (left lobe) found`);
   }
   if (rightPathData.length === 0) {
-    console.warn(`[parseHeartFromSVG] No vertical paths (right lobe) found in SVG "${name}"`);
+    console.warn(`[parseHeartFromSVG: ${name}] No vertical paths (right lobe) found`);
   }
 
   // Infer grid size from path counts (interior cuts = strips - 1)
@@ -1078,6 +1284,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     id,
     name,
     author,
+    authorUrl,
     description,
     weaveParity,
     gridSize: inferredGrid,

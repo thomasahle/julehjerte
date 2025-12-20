@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   sodipodi:docname="venus.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title7">Venus</title>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="2.0352851"
+     inkscape:cx="163.85911"
+     inkscape:cy="200.21765"
+     inkscape:window-width="1728"
+     inkscape:window-height="1010"
+     inkscape:window-x="0"
+     inkscape:window-y="34"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <ellipse
+       style="fill:none;stroke:#2ec27e;stroke-width:0.299998"
+       id="ellipse6"
+       cx="40.065159"
+       cy="40.065025"
+       rx="19.876152"
+       ry="19.954144" />
+    <ellipse
+       style="fill:none;stroke:#2ec27e;stroke-width:0.299999"
+       id="path6"
+       cx="39.986977"
+       cy="39.986843"
+       rx="14.246959"
+       ry="14.246821" />
+    <g
+       id="g6"
+       transform="rotate(-90,50.017506,49.971019)"
+       style="fill:none">
+      <path
+         style="fill:none;stroke:#9141ac;stroke-width:0.3"
+         d="M 91.959801,0.0634756 V 43.913493 c 0,0 0.473414,1.995916 0.473414,6.120811 0,4.124894 -0.422193,5.904117 -0.422193,5.904117 l -0.110636,43.905085"
+         id="path460"
+         sodipodi:nodetypes="ccscc" />
+      <path
+         style="fill:none;stroke:#9141ac;stroke-width:0.3"
+         d="M 79.987228,0.13538973 79.953221,20.014963 c 2.335779,2.31098 4.443202,4.79303 6.055545,7.64599 l -7.812783,4.382204 c 2.353213,4.969459 2.126001,11.7368 -0.05111,16.077096 l 11.776272,15.951982 c -1.931364,6.4125 -5.468378,11.573191 -10.025722,15.995773 l 0.09182,19.805072"
+         id="path951"
+         sodipodi:nodetypes="cccccccc" />
+      <path
+         style="fill:none;stroke:#9141ac;stroke-width:0.3"
+         d="M 55.95987,1.6093999e-8 V 8.0073134 c 5.938386,0.9776877 11.420054,2.7764336 16.367278,5.9817546 l -4.385904,7.821372 c 2.338334,1.042792 4.477255,2.519693 6.096784,4.172196 l -3.950172,3.916165 c 5.511161,5.541783 5.569244,14.532539 -0.02139,20.128646 l 4.043398,3.954045 c -5.040318,5.373922 -16.229527,9.107347 -26.021017,2.022776 l -8.065901,7.982489 8.061473,7.9906 -2.145601,1.901155 17.992502,16.050646 c -2.607263,0.990708 -5.094678,1.846775 -7.94046,2.122691 v 7.861644"
+         id="path952"
+         sodipodi:nodetypes="ccccccccccccccc" />
+      <path
+         style="fill:none;stroke:#9141ac;stroke-width:0.3"
+         d="m 43.982377,0.13825198 0.02946,7.83734162 c -2.22714,0.3054708 -5.318105,0.9951378 -8.095886,2.0872494 l 15.948527,11.778113 c -1.550245,0.603344 -4.01805,2.134055 -5.916142,3.983437 l 3.980001,4.063819 c -5.010525,4.882624 -6.124202,13.613097 0.01826,20.159219 l -23.947978,23.944085 1.930154,1.999495 -0.04731,10.133441 c 4.6841,2.891578 9.911318,5.114231 16.109459,5.888522 l 0.01456,7.781809"
+         id="path953"
+         sodipodi:nodetypes="cccccccccccc" />
+      <path
+         style="fill:none;stroke:#9141ac;stroke-width:0.3"
+         d="M 19.99342,0.03989359 19.927224,20.08649 c -4.254638,4.790392 -7.984619,9.871948 -9.873597,15.975141 l 16.059055,17.98664 -2.010196,2.007966 7.974582,7.9988 -8.070327,8.002334 -10.144662,0.04915 c 1.894253,3.042103 4.062288,5.501996 6.131345,7.845672 l -0.0036,19.954475"
+         id="path954"
+         sodipodi:nodetypes="cccccccccc" />
+      <path
+         style="fill:none;stroke:#9141ac;stroke-width:0.3"
+         d="M 7.9466043,0.00260295 V 43.967524 c -0.4614273,4.013147 -0.4679555,8.026294 0.029989,12.039441 l 0.029965,43.93497"
+         id="path955"
+         sodipodi:nodetypes="cccc" />
+    </g>
+    <use
+       x="0"
+       y="0"
+       xlink:href="#g6"
+       id="use6"
+       transform="matrix(0,1,1,0,0.04648468,-0.04648768)"
+       style="stroke:#2ec27e;fill:none" />
+  </g>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Venus</dc:title>
+        <dc:creator>
+          <cc:Agent rdf:about="https://hjemmesider.diku.dk/~torbenm/">
+            <dc:title>Torben Ægidius Mogensen</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>Et Venus / Kvinde Symbol</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

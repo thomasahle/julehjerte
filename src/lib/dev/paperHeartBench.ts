@@ -46,6 +46,8 @@ type SnapBenchMethodResult = {
   successRate: number;
   distAvg: number;
   distP95: number;
+  distFromOptAvg: number;
+  distFromOptP95: number;
   msAvg: number;
   msP95: number;
   validCallsTotal: number;
@@ -142,10 +144,19 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
         const idx = Math.floor(rng() * ctx.fingers.length);
         const f = ctx.fingers[idx];
         if (!f) continue;
+        // Convert finger to segments to access control points
+        const segments = ctx.fingerToSegments(f) as BezierSegment[];
+        const seg0 = segments[0];
+        if (!seg0) continue;
         const key: 'p1' | 'p2' = rng() < 0.5 ? 'p1' : 'p2';
         const delta = new ctx.paper.Point((rng() * 2 - 1) * range, (rng() * 2 - 1) * range);
-        const nextPosPoint = ctx.toPoint(f[key]).add(delta);
-        const candidate = { ...f, [key]: { x: nextPosPoint.x, y: nextPosPoint.y } };
+        const currentPt = key === 'p1' ? seg0.p1 : seg0.p2;
+        const nextPosPoint = ctx.toPoint(currentPt).add(delta);
+        // Update the segment and convert back to finger
+        const newSegments = cloneSegments(segments);
+        if (key === 'p1') newSegments[0]!.p1 = { x: nextPosPoint.x, y: nextPosPoint.y };
+        else newSegments[0]!.p2 = { x: nextPosPoint.x, y: nextPosPoint.y };
+        const candidate = ctx.updateFingerSegments(f, newSegments);
         if (ctx.candidateIsValid(f.id, candidate)) {
           ctx.fingers = ctx.fingers.map((ff: any) => (ff.id === f.id ? candidate : ff));
         }
@@ -158,6 +169,7 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
       {
         ms: number[];
         dist: number[];
+        distFromOpt: number[];
         ok: number;
         total: number;
         validCalls: number;
@@ -169,6 +181,7 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
       methodStats.set(m, {
         ms: [],
         dist: [],
+        distFromOpt: [],
         ok: 0,
         total: 0,
         validCalls: 0,
@@ -222,6 +235,9 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
       const isValidCandidate = (candidate: any) => ctx.candidateIsValid(targetId, candidate);
 
       const obstacles = ctx.withInsertItemsDisabled(() => ctx.buildObstaclePaths(targetId, base.lobe));
+
+      // Store results for each method in this case
+      const caseResults = new Map<SnapBenchMethod, { point: any; ms: number; iterations: number; validCalls: number; intersectionChecks: number; isValid: boolean }>();
 
       for (const method of methods) {
         const stats = methodStats.get(method);
@@ -308,15 +324,51 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
 
         const afterCalls = ctx.benchCounters.candidateIsValidCalls;
         const afterIntersections = ctx.benchCounters.intersectionChecks;
-        stats.validCalls += afterCalls - beforeCalls;
-        stats.intersectionChecks += afterIntersections - beforeIntersections;
-
-        stats.ms.push(t1 - t0);
-        stats.dist.push(out.point.getDistance(desired));
-        stats.iterations.push(out.iterations);
-
         const okCandidate = buildCandidateAt(out.point);
-        if (ctx.candidateIsValid(targetId, okCandidate)) stats.ok++;
+        const isValid = ctx.candidateIsValid(targetId, okCandidate);
+
+        caseResults.set(method, {
+          point: out.point,
+          ms: t1 - t0,
+          iterations: out.iterations,
+          validCalls: afterCalls - beforeCalls,
+          intersectionChecks: afterIntersections - beforeIntersections,
+          isValid
+        });
+      }
+
+      // Find the best (closest to desired) valid result among all methods
+      let bestDist = Infinity;
+      let bestPoint: any = null;
+      for (const [, result] of caseResults) {
+        if (result.isValid) {
+          const dist = result.point.getDistance(desired);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestPoint = result.point;
+          }
+        }
+      }
+
+      // Now record stats for each method, including distance from optimal
+      for (const method of methods) {
+        const stats = methodStats.get(method);
+        const result = caseResults.get(method);
+        if (!stats || !result) continue;
+
+        stats.validCalls += result.validCalls;
+        stats.intersectionChecks += result.intersectionChecks;
+        stats.ms.push(result.ms);
+        stats.dist.push(result.point.getDistance(desired));
+        stats.iterations.push(result.iterations);
+        if (result.isValid) stats.ok++;
+
+        // Distance from optimal (best known solution)
+        if (bestPoint) {
+          stats.distFromOpt.push(result.point.getDistance(bestPoint));
+        } else {
+          stats.distFromOpt.push(0);
+        }
       }
 
       for (const p of obstacles) p.remove();
@@ -331,8 +383,10 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
       if (!stats) continue;
       const msSorted = stats.ms.slice().sort((a, b) => a - b);
       const distSorted = stats.dist.slice().sort((a, b) => a - b);
+      const distFromOptSorted = stats.distFromOpt.slice().sort((a, b) => a - b);
       const msTotal = stats.ms.reduce((a, b) => a + b, 0);
       const distTotal = stats.dist.reduce((a, b) => a + b, 0);
+      const distFromOptTotal = stats.distFromOpt.reduce((a, b) => a + b, 0);
       const iterTotal = stats.iterations.reduce((a, b) => a + b, 0);
       results.push({
         method,
@@ -340,6 +394,8 @@ async function runSnapBench(ctx: any, opts: SnapBenchOptions = {}): Promise<Snap
         successRate: stats.total ? stats.ok / stats.total : 0,
         distAvg: stats.total ? distTotal / stats.total : 0,
         distP95: percentile(distSorted, 0.95),
+        distFromOptAvg: stats.total ? distFromOptTotal / stats.total : 0,
+        distFromOptP95: percentile(distFromOptSorted, 0.95),
         msAvg: stats.total ? msTotal / stats.total : 0,
         msP95: percentile(msSorted, 0.95),
         validCallsTotal: stats.validCalls,

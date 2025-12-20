@@ -1,7 +1,20 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-  data-author="Thomas" data-weave-parity="0">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-weave-parity="0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title>Stjerne</title>
   <desc>Klassisk design</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>8-Stjerne</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Thomas</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>Klassisk design</dc:description>
+        <dc:source>juleflet.dk</dc:source>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
   <path d="M 100 15.101 C 100 15.101 84.786 15.493 84.786 15.493 C 84.786 15.493 77.018 22.730 77.018 22.730 C 77.018 22.730 56.893 35.138 56.893 35.138 C 56.893 35.138 50 15.858 50 15.858 C 50 15.858 43.107 35.138 43.107 35.138 C 43.107 35.138 22.982 22.730 22.982 22.730 C 22.982 22.730 15.214 15.493 15.214 15.493 C 15.214 15.493 0 15.101 0 15.101" stroke="orange" fill="none"/>
   <path d="M 100 84.899 C 100 84.899 84.786 84.507 84.786 84.507 C 84.786 84.507 77.018 77.270 77.018 77.270 C 77.018 77.270 56.893 64.862 56.893 64.862 C 56.893 64.862 50 84.142 50 84.142 C 50 84.142 43.107 64.862 43.107 64.862 C 43.107 64.862 22.982 77.270 22.982 77.270 C 22.982 77.270 15.214 84.507 15.214 84.507 C 15.214 84.507 0 84.899 0 84.899" stroke="orange" fill="none"/>
   <path d="M 15.101 100 C 15.101 100 15.493 84.786 15.493 84.786 C 15.493 84.786 22.730 77.018 22.730 77.018 C 22.730 77.018 35.138 56.893 35.138 56.893 C 35.138 56.893 15.858 50 15.858 50 C 15.858 50 35.138 43.107 35.138 43.107 C 35.138 43.107 22.730 22.982 22.730 22.982 C 22.730 22.982 15.493 15.214 15.493 15.214 C 15.493 15.214 15.101 0 15.101 0" stroke="green" fill="none"/>

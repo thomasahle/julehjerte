@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 100 100"
+   data-weave-parity="0"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="amy-pinecone.svg"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     id="namedview12"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="5.4686188"
+     inkscape:cx="24.229153"
+     inkscape:cy="41.78386"
+     inkscape:window-width="1304"
+     inkscape:window-height="884"
+     inkscape:window-x="0"
+     inkscape:window-y="34"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg12" />
+  <title
+     id="title1">Pinecone</title>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Pinecone</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Amy</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>juleflet.dk</dc:source>
+        <dc:date>2025-12-20</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     d="M 99.669289,16.73297 C 77.851642,2.3678871 22.148354,2.3678871 0.33070685,16.73297"
+     stroke="#ffa500"
+     fill="none"
+     id="path1"
+     style="stroke-width:1" />
+  <path
+     d="m 99.669289,35.096676 c -34.51669,-30.4388158 -64.821892,-30.4388158 -99.33858215,0"
+     stroke="#ffa500"
+     fill="none"
+     id="path2"
+     style="stroke-width:1" />
+  <path
+     d="m 99.669289,45.778085 c -44.717561,-29.409994 -54.621021,-29.409994 -99.33858215,0"
+     stroke="#ffa500"
+     fill="none"
+     id="path3"
+     style="stroke-width:1" />
+  <path
+     d="m 99.669289,54.221157 c -44.717561,29.409994 -54.621021,29.409994 -99.33858215,0"
+     stroke="#ffa500"
+     fill="none"
+     id="path4"
+     style="stroke-width:1" />
+  <path
+     d="m 99.669289,64.902566 c -34.51669,30.438816 -64.821892,30.438816 -99.33858215,0"
+     stroke="#ffa500"
+     fill="none"
+     id="path5"
+     style="stroke-width:1" />
+  <path
+     d="m 99.669289,83.266272 c -21.817647,14.365083 -77.520935,14.365083 -99.33858215,0"
+     stroke="#ffa500"
+     fill="none"
+     id="path6"
+     style="stroke-width:1" />
+  <path
+     d="M 16.733094,99.668535 C 2.3679025,77.851054 2.3679025,22.148188 16.733094,0.33070699"
+     stroke="#008000"
+     fill="none"
+     id="path7"
+     style="stroke-width:1" />
+  <path
+     d="m 35.09694,99.668535 c -30.4390471,-34.516428 -30.4390471,-64.8214 0,-99.33782801"
+     stroke="#008000"
+     fill="none"
+     id="path8"
+     style="stroke-width:1" />
+  <path
+     d="m 45.77846,99.668535 c -29.410217,-44.717221 -29.410217,-54.620607 0,-99.33782801"
+     stroke="#008000"
+     fill="none"
+     id="path9"
+     style="stroke-width:1" />
+  <path
+     d="m 54.221536,99.668535 c 29.410217,-44.717221 29.410217,-54.620607 0,-99.33782801"
+     stroke="#008000"
+     fill="none"
+     id="path10"
+     style="stroke-width:1" />
+  <path
+     d="m 64.903056,99.668535 c 30.439047,-34.516428 30.439047,-64.8214 0,-99.33782801"
+     stroke="#008000"
+     fill="none"
+     id="path11"
+     style="stroke-width:1" />
+  <path
+     d="m 83.266902,99.668535 c 14.365192,-21.817481 14.365192,-77.520347 0,-99.33782801"
+     stroke="#008000"
+     fill="none"
+     id="path12"
+     style="stroke-width:1" />
+</svg>

@@ -50,7 +50,7 @@
           >
             <input
               type="color"
-              value={colors.left}
+              value={colors.left || '#ffffff'}
               oninput={(e) =>
                 setLeftColor((e.target as HTMLInputElement).value)}
               class="w-full h-full border-0 cursor-pointer scale-150"
@@ -68,7 +68,7 @@
           >
             <input
               type="color"
-              value={colors.right}
+              value={colors.right || '#cc0000'}
               oninput={(e) =>
                 setRightColor((e.target as HTMLInputElement).value)}
               class="w-full h-full border-0 cursor-pointer scale-150"

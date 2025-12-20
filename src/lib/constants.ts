@@ -18,5 +18,5 @@ export const CENTER = { x: BASE_CENTER, y: BASE_CENTER } as const;
 /** Minimum allowed grid size for heart designs */
 export const MIN_GRID_SIZE = 2;
 
-/** Maximum allowed grid size for heart designs */
-export const MAX_GRID_SIZE = 8;
+/** Maximum allowed grid size for heart designs (unlimited) */
+export const MAX_GRID_SIZE = Infinity;

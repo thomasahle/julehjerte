@@ -62,14 +62,6 @@ function segmentsEqual(a: Segment[], b: Segment[]): boolean {
   return true;
 }
 
-function sortByIdIndex(fingers: Finger[]): Finger[] {
-  const parse = (id: string): number => {
-    const idx = Number(id.split('-')[1]);
-    return Number.isFinite(idx) ? idx : 0;
-  };
-  return fingers.slice().sort((a, b) => parse(a.id) - parse(b.id));
-}
-
 function inferSquareBounds(fingers: Finger[]): { minX: number; maxX: number; minY: number; maxY: number; size: number } | null {
   const endpoints: Vec[] = [];
   for (const finger of fingers) {
@@ -144,14 +136,31 @@ function areLobesInternallySymmetric(fingers: Finger[]): boolean {
 
   const check = (anti: boolean): boolean => {
     for (const lobe of ['left', 'right'] as const) {
-      const lobeFingers = sortByIdIndex(fingers.filter((f) => f.lobe === lobe));
-      for (let i = 0; i < Math.floor(lobeFingers.length / 2); i++) {
-        const f1 = lobeFingers[i]!;
-        const f2 = lobeFingers[lobeFingers.length - 1 - i]!;
-        const s1 = fingerToSegments(f1);
-        const s2 = fingerToSegments(f2);
+      const lobeFingers = fingers.filter((f) => f.lobe === lobe);
+      // For each finger, find its mirror pair within the same lobe
+      const used = new Set<number>();
+      for (let i = 0; i < lobeFingers.length; i++) {
+        if (used.has(i)) continue;
+        const s1 = fingerToSegments(lobeFingers[i]!);
         const mapped = mapSegments(s1, (p) => mapPointWithinLobe(bounds, lobe, p, anti), anti);
-        if (!segmentsEqual(mapped, s2)) return false;
+        // Check if it's self-symmetric
+        if (segmentsEqual(mapped, s1)) {
+          used.add(i);
+          continue;
+        }
+        // Find a matching pair
+        let foundPair = false;
+        for (let j = i + 1; j < lobeFingers.length; j++) {
+          if (used.has(j)) continue;
+          const s2 = fingerToSegments(lobeFingers[j]!);
+          if (segmentsEqual(mapped, s2)) {
+            used.add(i);
+            used.add(j);
+            foundPair = true;
+            break;
+          }
+        }
+        if (!foundPair) return false;
       }
     }
     return true;
@@ -165,18 +174,27 @@ function areLobesMirrored(fingers: Finger[]): boolean {
   const bounds = inferSquareBounds(fingers);
   if (!bounds) return false;
 
-  const leftFingers = sortByIdIndex(fingers.filter((f) => f.lobe === 'left'));
-  const rightFingers = sortByIdIndex(fingers.filter((f) => f.lobe === 'right'));
+  const leftFingers = fingers.filter((f) => f.lobe === 'left');
+  const rightFingers = fingers.filter((f) => f.lobe === 'right');
   if (leftFingers.length !== rightFingers.length) return false;
 
   const check = (anti: boolean): boolean => {
-    for (let i = 0; i < leftFingers.length; i++) {
-      const left = leftFingers[i]!;
-      const right = rightFingers[i]!;
+    // For each left finger, find a matching right finger (greedy matching)
+    const usedRight = new Set<number>();
+    for (const left of leftFingers) {
       const lSegs = fingerToSegments(left);
-      const rSegs = fingerToSegments(right);
       const mapped = mapSegments(lSegs, (p) => mapPointBetweenLobes(bounds, p, anti), anti);
-      if (!segmentsEqual(mapped, rSegs)) return false;
+      let foundMatch = false;
+      for (let j = 0; j < rightFingers.length; j++) {
+        if (usedRight.has(j)) continue;
+        const rSegs = fingerToSegments(rightFingers[j]!);
+        if (segmentsEqual(mapped, rSegs)) {
+          usedRight.add(j);
+          foundMatch = true;
+          break;
+        }
+      }
+      if (!foundMatch) return false;
     }
     return true;
   };

@@ -239,7 +239,7 @@
   let userZoom = $state(1.0); // 1.0 = 100%, multiplied with fit zoom
   let userPanOffset = $state({ x: 0, y: 0 }); // Pan offset for zoom-towards-cursor
   const MIN_ZOOM = 0.5;
-  const MAX_ZOOM = 4.0;
+  const MAX_ZOOM = 20.0;
   // Touch pinch tracking
   let pinchStartDistance = 0;
   let pinchStartZoom = 1.0;
@@ -300,6 +300,8 @@
   let canRedo = $derived(redoStack.length > 0);
   let dragSnapshot: HistorySnapshot | null = null;
   let dragDirty = false;
+  // Track previous snapped position for temporal smoothing during drag
+  let previousSnappedPos: paper.Point | null = null;
 
   function cloneFinger(f: Finger): Finger {
     return {
@@ -2937,6 +2939,7 @@
       };
       dragSnapshot = snapshotState();
       dragDirty = false;
+      previousSnappedPos = null; // Reset for new drag
       draw();
 	      return;
 	    }
@@ -3004,6 +3007,7 @@
     dragTarget = { kind: "path", fingerId: data.fingerId };
     dragSnapshot = snapshotState();
     dragDirty = false;
+    previousSnappedPos = null; // Reset for new drag
     draw();
   }
 
@@ -3229,8 +3233,13 @@
             p3,
             obstacles,
             square,
+            {
+              previousSolution: previousSnappedPos ?? undefined,
+              stickiness: 0.3, // Temporal smoothing to reduce jumping
+            },
           );
           snapped = { x: out.point.x, y: out.point.y };
+          previousSnappedPos = out.point; // Track for next frame
         } finally {
           for (const p of obstacles) p.remove();
         }
@@ -3272,8 +3281,13 @@
             nextP3,
             obstacles,
             square,
+            {
+              previousSolution: previousSnappedPos ?? undefined,
+              stickiness: 0.3, // Temporal smoothing to reduce jumping
+            },
           );
           snapped = { x: out.point.x, y: out.point.y };
+          previousSnappedPos = out.point; // Track for next frame
         } finally {
           for (const p of obstacles) p.remove();
         }
@@ -3579,24 +3593,18 @@
   // DEV benchmarks are attached dynamically from `$lib/dev/paperHeartBench`.
 
   onMount(() => {
-    // For readonly mode, set canvas to BASE_CANVAS_SIZE before Paper.js setup
-    // This ensures Paper.js initializes with the correct dimensions
-    // We'll scale down via CSS after setup
+    // For readonly mode, set canvas internal resolution to BASE_CANVAS_SIZE
+    // and CSS size to the `size` prop for crisp rendering at any display size
     if (readonly) {
       canvas.width = BASE_CANVAS_SIZE;
       canvas.height = BASE_CANVAS_SIZE;
-      canvas.style.width = `${BASE_CANVAS_SIZE}px`;
-      canvas.style.height = `${BASE_CANVAS_SIZE}px`;
+      // Set CSS size before Paper.js setup to ensure correct initial render
+      canvas.style.width = `${size}px`;
+      canvas.style.height = `${size}px`;
     }
 
     paper.activate();
     paper.setup(canvas);
-
-    // For readonly, now scale down via CSS after Paper.js is set up
-    if (readonly) {
-      canvas.style.width = `${size}px`;
-      canvas.style.height = `${size}px`;
-    }
 
     // Measure initial container width (may be smaller than size prop on mobile)
     if (canvasWrapper) {
@@ -3844,6 +3852,14 @@
       paper.view.viewSize = new paper.Size(currentSize, currentSize);
       draw();
     }
+  });
+
+  // For readonly mode, sync canvas CSS size with the size prop (reactive to prop changes)
+  $effect(() => {
+    if (!readonly || !canvas) return;
+    // Track size prop to update CSS when it changes
+    canvas.style.width = `${size}px`;
+    canvas.style.height = `${size}px`;
   });
 </script>
 

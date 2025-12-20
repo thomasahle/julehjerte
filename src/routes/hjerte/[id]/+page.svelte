@@ -4,7 +4,8 @@
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
-  import PaperHeart from "$lib/components/PaperHeart.svelte";
+  import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
+  import TemplatePreview from "$lib/components/TemplatePreview.svelte";
   import { getUserCollection } from "$lib/stores/collection";
   import { downloadPDF } from "$lib/pdf/template";
   import { SITE_TITLE, SITE_URL } from "$lib/config";
@@ -26,7 +27,7 @@
     serializeHeartDesign,
     parseHeartFromSVG,
   } from "$lib/utils/heartDesign";
-  import type { HeartDesign } from "$lib/types/heart";
+  import type { HeartDesign, Finger, GridSize, Vec } from "$lib/types/heart";
   import {
     trackHeartDownload,
     trackHeartShare,
@@ -36,6 +37,9 @@
   } from "$lib/analytics";
   import { Button } from "$lib/components/ui/button";
   import PageHeader from "$lib/components/PageHeader.svelte";
+  import * as Carousel from "$lib/components/ui/carousel";
+  import { inferOverlapRect } from "$lib/utils/overlapRect";
+  import { parsePathDataToSegments } from "$lib/geometry/bezierSegments";
 
   let design = $state<HeartDesign | null>(null);
   let isUserCreated = $state(false);
@@ -44,6 +48,7 @@
   let shareStatus = $state<"idle" | "copied" | "error">("idle");
   let lang = $state<Language>("da");
   let colors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
+  let photoUrl = $state<string | null>(null);
 
   onMount(async () => {
     // Initialize language
@@ -91,6 +96,22 @@
     }
 
     loading = false;
+
+    // Check if a photo exists for this heart
+    if (!isUserCreated) {
+      const photoExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+      for (const ext of photoExtensions) {
+        try {
+          const photoResponse = await fetch(`/hearts/photos/${id}.${ext}`, { method: 'HEAD' });
+          if (photoResponse.ok) {
+            photoUrl = `/hearts/photos/${id}.${ext}`;
+            break;
+          }
+        } catch {
+          // Photo doesn't exist, continue
+        }
+      }
+    }
   });
 
   function handleDownload() {
@@ -160,6 +181,65 @@
     };
     return t(labels[level], lang);
   }
+
+  // Symmetry detection for templates
+  function pointsClose(a: Vec, b: Vec, tol = 0.75): boolean {
+    return Math.abs(a.x - b.x) <= tol && Math.abs(a.y - b.y) <= tol;
+  }
+
+  function mapPointBetweenLobes(p: Vec, rect: { left: number; top: number; width: number; height: number }): Vec {
+    const u = rect.width ? (p.x - rect.left) / rect.width : 0;
+    const v = rect.height ? (p.y - rect.top) / rect.height : 0;
+    return {
+      x: rect.left + v * rect.width,
+      y: rect.top + u * rect.height
+    };
+  }
+
+  function checkTemplateSymmetry(d: HeartDesign): boolean {
+    if (d.gridSize.x !== d.gridSize.y) return false;
+
+    const leftFingers = d.fingers.filter((f: Finger) => f.lobe === 'left');
+    const rightFingers = d.fingers.filter((f: Finger) => f.lobe === 'right');
+
+    if (leftFingers.length !== rightFingers.length) return false;
+
+    const rect = inferOverlapRect(d.fingers, d.gridSize);
+
+    const leftSorted = leftFingers
+      .slice()
+      .sort((a: Finger, b: Finger) => (parsePathDataToSegments(a.pathData)[0]?.p0.y ?? 0) - (parsePathDataToSegments(b.pathData)[0]?.p0.y ?? 0));
+    const rightSorted = rightFingers
+      .slice()
+      .sort((a: Finger, b: Finger) => (parsePathDataToSegments(a.pathData)[0]?.p0.x ?? 0) - (parsePathDataToSegments(b.pathData)[0]?.p0.x ?? 0));
+
+    for (let i = 0; i < leftSorted.length; i++) {
+      const left = leftSorted[i]!;
+      const right = rightSorted[i]!;
+
+      const leftSegs = parsePathDataToSegments(left.pathData);
+      const rightSegs = parsePathDataToSegments(right.pathData);
+      if (leftSegs.length !== rightSegs.length) return false;
+
+      for (let s = 0; s < leftSegs.length; s++) {
+        const l = leftSegs[s]!;
+        const r = rightSegs[s]!;
+        if (
+          !pointsClose(mapPointBetweenLobes(l.p0, rect), r.p0) ||
+          !pointsClose(mapPointBetweenLobes(l.p1, rect), r.p1) ||
+          !pointsClose(mapPointBetweenLobes(l.p2, rect), r.p2) ||
+          !pointsClose(mapPointBetweenLobes(l.p3, rect), r.p3)
+        ) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  // Reactive symmetry check
+  let isSymmetric = $derived(design ? checkTemplateSymmetry(design) : true);
 </script>
 
 <svelte:head>
@@ -203,13 +283,60 @@
   {:else if design}
     <div class="content">
       <div class="preview-section">
-        <PaperHeart
-          readonly={true}
-          initialFingers={design.fingers}
-          initialGridSize={design.gridSize}
-          initialWeaveParity={design.weaveParity ?? 0}
-          size={400}
-        />
+        <Carousel.Root class="carousel-root">
+          <Carousel.Content class="carousel-content">
+            <!-- Slide 1: Colored preview -->
+            <Carousel.Item class="carousel-item">
+              <div class="slide-content">
+                <PaperHeartSVG
+                  readonly
+                  initialFingers={design.fingers}
+                  initialGridSize={design.gridSize}
+                  initialWeaveParity={design.weaveParity ?? 0}
+                  size={350}
+                />
+              </div>
+            </Carousel.Item>
+
+            <!-- Photo slide (only if photo exists) -->
+            {#if photoUrl}
+              <Carousel.Item class="carousel-item">
+                <div class="slide-content photo-slide">
+                  <img src={photoUrl} alt="{design.name} - {t('photo', lang)}" class="heart-photo" />
+                </div>
+              </Carousel.Item>
+            {/if}
+
+            <!-- Slide 2: Template (left or "both" if symmetric) -->
+            <Carousel.Item class="carousel-item">
+              <div class="slide-content template-slide">
+                <TemplatePreview
+                  {design}
+                  lobe="left"
+                  size={350}
+                  label={isSymmetric ? t("template", lang) : t("templateLeft", lang)}
+                />
+              </div>
+            </Carousel.Item>
+
+            <!-- Slide 3: Right template (only if asymmetric) -->
+            {#if !isSymmetric}
+              <Carousel.Item class="carousel-item">
+                <div class="slide-content template-slide">
+                  <TemplatePreview
+                    {design}
+                    lobe="right"
+                    size={350}
+                    label={t("templateRight", lang)}
+                  />
+                </div>
+              </Carousel.Item>
+            {/if}
+          </Carousel.Content>
+          <Carousel.Previous class="carousel-prev" />
+          <Carousel.Next class="carousel-next" />
+        </Carousel.Root>
+
         <div class="button-group">
           <button class="btn secondary" onclick={openInEditor}>
             {t("openInEditor", lang)}
@@ -244,7 +371,14 @@
       <div class="info-section">
         <h1>{design.name}</h1>
         {#if design.author}
-          <p class="author">{t("by", lang)} {design.author}</p>
+          <p class="author">
+            {t("by", lang)}
+            {#if design.authorUrl}
+              <a href={design.authorUrl} target="_blank" rel="noopener noreferrer">{design.author}</a>
+            {:else}
+              {design.author}
+            {/if}
+          </p>
         {/if}
         {#if design.description}
           <p class="description">{design.description}</p>
@@ -317,6 +451,76 @@
     filter: drop-shadow(0 4px 8px var(--shadow-color));
   }
 
+  .preview-section :global(.carousel-root) {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .preview-section :global(.carousel-content) {
+    margin-left: 0;
+  }
+
+  .preview-section :global(.carousel-item) {
+    padding-left: 0;
+  }
+
+  .slide-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 360px;
+  }
+
+  .template-slide {
+    padding: 0.5rem;
+  }
+
+  .photo-slide {
+    padding: 0.5rem;
+  }
+
+  .heart-photo {
+    max-width: 350px;
+    max-height: 350px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .preview-section :global(.carousel-prev),
+  .preview-section :global(.carousel-next) {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    z-index: 10;
+  }
+
+  .preview-section :global(.carousel-prev:hover),
+  .preview-section :global(.carousel-next:hover) {
+    background: white;
+    border-color: #aaa;
+  }
+
+  .preview-section :global(.carousel-prev) {
+    left: -20px;
+  }
+
+  .preview-section :global(.carousel-next) {
+    right: -20px;
+  }
+
   .info-section {
     padding: 1rem 0;
   }
@@ -333,6 +537,15 @@
     margin: 0.5rem 0 0 0;
     color: #888;
     font-size: 1.1rem;
+  }
+
+  .author a {
+    color: #4a7c8a;
+    text-decoration: none;
+  }
+
+  .author a:hover {
+    text-decoration: underline;
   }
 
   .description {

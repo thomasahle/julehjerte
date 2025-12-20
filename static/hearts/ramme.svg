@@ -1,6 +1,20 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-author="Thomas" data-weave-parity="0">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-weave-parity="0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title>Ramme</title>
   <desc>En skæv lille ramme</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Ramme</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Thomas</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>En skæv lille ramme</dc:description>
+        <dc:source>juleflet.dk</dc:source>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
   <path d="M 100 27.754 C 74.749 13.765 25.251 13.765 0 27.754" stroke="orange" fill="none"/>
   <path d="M 100 36.647 C 72.654 19.424 27.346 19.424 0 36.647" stroke="orange" fill="none"/>
   <path d="M 100 63.353 C 72.654 80.576 27.346 80.576 0 63.353" stroke="orange" fill="none"/>

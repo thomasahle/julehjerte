@@ -1,17 +1,32 @@
 {
-  "hearts": [
-    "classic-3x3",
-    "gaver",
-    "ramme",
-    "explotion",
-    "juletrae",
-    "stjerne",
-    "kogle",
-    "sun",
-    "plus",
-    "balls",
-    "circle",
-    "h4h2",
-    "stjerne-ramme"
+  "categories": [
+    {
+      "id": "klassiske",
+      "hearts": ["classic-3x3", "ramme", "gaver", "jul"]
+    },
+    {
+      "id": "stjerner",
+      "hearts": ["stjerne", "stjerne-ramme", "5star", "sun", "explosion"]
+    },
+    {
+      "id": "moenstre",
+      "hearts": ["circle", "balls", "kogle", "plus", "plus3",
+        "amy-weave-1",
+        "amy-weave-2",
+        "amy-rosette",
+        "amy-pattern",
+        "amy-flowering",
+        "amy-pinecone"
+      ]
+    },
+    {
+      "id": "figurer",
+      "hearts": ["juletrae", "flower", "venus", "angel"
+        ]
+    },
+    {
+      "id": "hjerter",
+      "hearts": ["triple-heart", "h4h2", "nemt-hjerte"]
+    }
   ]
 }

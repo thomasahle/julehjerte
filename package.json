@@ -27,6 +27,7 @@
 		"@testing-library/svelte": "^5.2.9",
 		"bits-ui": "^2.14.4",
 		"canvas": "^3.2.0",
+		"embla-carousel-svelte": "^8.6.0",
 		"jsdom": "^27.3.0",
 		"svelte": "^5.43.8",
 		"svelte-check": "^4.3.4",
@@ -37,9 +38,11 @@
 		"vitest": "^4.0.15"
 	},
 	"dependencies": {
+		"@types/three": "^0.182.0",
 		"clsx": "^2.1.1",
 		"jspdf": "^3.0.4",
 		"paper": "^0.12.18",
-		"tailwind-merge": "^3.4.0"
+		"tailwind-merge": "^3.4.0",
+		"three": "^0.182.0"
 	}
 }

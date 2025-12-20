@@ -191,7 +191,8 @@ export function validateFingerPathData(
  */
 export function validateRawFingers(
   heartId: string,
-  rawFingers: Array<{ lobe?: unknown; pathData?: unknown; id?: unknown }>
+  rawFingers: Array<{ lobe?: unknown; pathData?: unknown; id?: unknown }>,
+  heartName?: string
 ): void {
   let hasWarnings = false;
 
@@ -206,14 +207,16 @@ export function validateRawFingers(
     const result = validateFingerPathData(pathData, lobe, id);
     if (!result.valid) {
       hasWarnings = true;
+      const heartLabel = heartName ? `${heartName} (${heartId})` : heartId;
       for (const warning of result.warnings) {
-        console.warn(`[Heart: ${heartId}] Finger ${id}: ${warning}`);
+        console.warn(`[Heart: ${heartLabel}] Finger ${id}: ${warning}`);
       }
     }
   }
 
   if (hasWarnings) {
-    console.warn(`[Heart: ${heartId}] JSON coordinates should be in 0-100 range (overlap area)`);
+    const heartLabel = heartName ? `${heartName} (${heartId})` : heartId;
+    console.warn(`[Heart: ${heartLabel}] JSON coordinates should be in 0-100 range (overlap area)`);
   }
 }
 
@@ -225,9 +228,10 @@ export function validateFinger(finger: Finger, gridSize: GridSize): ValidationRe
 export function validateHeartDesign(
   heartId: string,
   fingers: Finger[],
-  gridSize: GridSize
+  gridSize: GridSize,
+  heartName?: string
 ): void {
-  // This now validates pixel coordinates, but messages assume 0-100
+  // This validates pixel coordinates
   // For proper validation, use validateRawFingers before transformation
   let hasWarnings = false;
 
@@ -235,8 +239,9 @@ export function validateHeartDesign(
     const result = validateFinger(finger, gridSize);
     if (!result.valid) {
       hasWarnings = true;
+      const heartLabel = heartName ? `${heartName} (${heartId})` : heartId;
       for (const warning of result.warnings) {
-        console.warn(`[Heart: ${heartId}] Finger ${finger.id}: ${warning}`);
+        console.warn(`[Heart: ${heartLabel}] Finger ${finger.id}: ${warning}`);
       }
     }
   }
