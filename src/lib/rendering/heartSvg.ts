@@ -3,47 +3,96 @@ import type { HeartColors } from '$lib/stores/colors';
 import { computeWeaveData } from '$lib/rendering/svgWeave';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 
-export function computeHeartViewBox(
-	design: HeartDesign,
+type OverlapLike = { left: number; top: number; width: number; height: number };
+
+function normalizeAngle(rad: number): number {
+	const tau = 2 * Math.PI;
+	return ((rad % tau) + tau) % tau;
+}
+
+function angleInRange(rad: number, start: number, end: number): boolean {
+	const t = normalizeAngle(rad);
+	const s = normalizeAngle(start);
+	const e = normalizeAngle(end);
+	if (s <= e) return t >= s && t <= e;
+	// Wrapped interval (not expected for our current use, but keep correct)
+	return t >= s || t <= e;
+}
+
+function rotate45About(p: { x: number; y: number }, o: { x: number; y: number }) {
+	const dx = p.x - o.x;
+	const dy = p.y - o.y;
+	const cos45 = Math.SQRT1_2;
+	const sin45 = Math.SQRT1_2;
+	return {
+		x: o.x + dx * cos45 - dy * sin45,
+		y: o.y + dx * sin45 + dy * cos45
+	};
+}
+
+function circlePoint(c: { x: number; y: number }, r: number, t: number) {
+	return { x: c.x + r * Math.cos(t), y: c.y + r * Math.sin(t) };
+}
+
+function addArcExtremaPoints(
+	points: Array<{ x: number; y: number }>,
+	arc: { center: { x: number; y: number }; radius: number; start: number; end: number }
+) {
+	// For rotation by 45° (clockwise in SVG coords), extrema in x/y on a circle occur at:
+	// t = -a, π-a, π/2-a, 3π/2-a for the full circle (a = π/4). Include those that fall on the arc.
+	const a = Math.PI / 4;
+	const candidates = [-a, Math.PI - a, Math.PI / 2 - a, (3 * Math.PI) / 2 - a, arc.start, arc.end];
+	for (const t of candidates) {
+		if (!angleInRange(t, arc.start, arc.end)) continue;
+		points.push(circlePoint(arc.center, arc.radius, t));
+	}
+}
+
+export function computeHeartViewBoxFromOverlap(
+	overlap: OverlapLike,
 	opts: { paddingRatio?: number; square?: boolean } = {}
 ): { viewBox: string; overlapCenter: { x: number; y: number } } {
 	const paddingRatio = opts.paddingRatio ?? 0.021;
 	const square = opts.square ?? true;
 
-	const { left, top, width, height } = inferOverlapRect(design.fingers, design.gridSize);
+	const left = overlap.left;
+	const top = overlap.top;
+	const width = overlap.width;
+	const height = overlap.height;
+
 	const overlapCenter = { x: left + width / 2, y: top + height / 2 };
 
-	// Bounds of the unrotated lobe union: overlap rect + left ear (extends left) + right ear (extends up).
-	const preRotBounds = {
-		left: left - height / 2,
-		top: top - width / 2,
-		right: left + width,
-		bottom: top + height
-	};
+	const points: Array<{ x: number; y: number }> = [];
 
-	const cos45 = Math.SQRT1_2;
-	const sin45 = Math.SQRT1_2;
+	// Overlap rectangle corners (also cover arc endpoints).
+	points.push(
+		{ x: left, y: top },
+		{ x: left + width, y: top },
+		{ x: left, y: top + height },
+		{ x: left + width, y: top + height }
+	);
 
-	const corners = [
-		{ x: preRotBounds.left, y: preRotBounds.top },
-		{ x: preRotBounds.right, y: preRotBounds.top },
-		{ x: preRotBounds.left, y: preRotBounds.bottom },
-		{ x: preRotBounds.right, y: preRotBounds.bottom }
-	];
-
-	const rotated = corners.map(({ x, y }) => {
-		const dx = x - overlapCenter.x;
-		const dy = y - overlapCenter.y;
-		return {
-			x: dx * cos45 - dy * sin45 + overlapCenter.x,
-			y: dx * sin45 + dy * cos45 + overlapCenter.y
-		};
+	// Left ear: semicircle to the left of x=left (angles π/2..3π/2).
+	addArcExtremaPoints(points, {
+		center: { x: left, y: top + height / 2 },
+		radius: height / 2,
+		start: Math.PI / 2,
+		end: (3 * Math.PI) / 2
 	});
 
-	const minX = Math.min(...rotated.map((c) => c.x));
-	const maxX = Math.max(...rotated.map((c) => c.x));
-	const minY = Math.min(...rotated.map((c) => c.y));
-	const maxY = Math.max(...rotated.map((c) => c.y));
+	// Top ear: semicircle above y=top (angles π..2π).
+	addArcExtremaPoints(points, {
+		center: { x: left + width / 2, y: top },
+		radius: width / 2,
+		start: Math.PI,
+		end: 2 * Math.PI
+	});
+
+	const rotated = points.map((p) => rotate45About(p, overlapCenter));
+	const minX = Math.min(...rotated.map((p) => p.x));
+	const maxX = Math.max(...rotated.map((p) => p.x));
+	const minY = Math.min(...rotated.map((p) => p.y));
+	const maxY = Math.max(...rotated.map((p) => p.y));
 
 	const w = maxX - minX;
 	const h = maxY - minY;
@@ -58,6 +107,14 @@ export function computeHeartViewBox(
 	}
 
 	return { viewBox: `${minX - padding} ${minY - padding} ${w + 2 * padding} ${h + 2 * padding}`, overlapCenter };
+}
+
+export function computeHeartViewBox(
+	design: HeartDesign,
+	opts: { paddingRatio?: number; square?: boolean } = {}
+): { viewBox: string; overlapCenter: { x: number; y: number } } {
+	const { left, top, width, height } = inferOverlapRect(design.fingers, design.gridSize);
+	return computeHeartViewBoxFromOverlap({ left, top, width, height }, opts);
 }
 
 export function renderHeartSvgMarkup(
@@ -99,4 +156,3 @@ export function renderHeartSvgMarkup(
 		`</svg>`
 	].join('');
 }
-

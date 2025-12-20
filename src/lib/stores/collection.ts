@@ -10,6 +10,8 @@ export type HeartCategory = {
   hearts: HeartDesign[];
 };
 
+export type StaticHeartsIndex = { categories: { id: string; hearts: string[] }[] };
+
 export function getUserCollection(): HeartDesign[] {
   if (!browser) return [];
 
@@ -52,51 +54,47 @@ export function clearUserCollection(): void {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-export async function loadStaticHearts(): Promise<HeartCategory[]> {
+export async function loadStaticHeartsIndex(): Promise<StaticHeartsIndex['categories']> {
   try {
     const response = await fetch('/hearts/index.json');
     if (!response.ok) {
       trackHeartLoadError('index', `Failed to load index.json: ${response.status}`);
       return [];
     }
-
-    const index: { categories: { id: string; hearts: string[] }[] } = await response.json();
-
-    const categories: HeartCategory[] = await Promise.all(
-      index.categories.map(async (cat) => {
-        const designs = await Promise.all(
-          cat.hearts.map(async (id) => {
-            try {
-              const heartResponse = await fetch(`/hearts/${id}.svg`);
-              if (!heartResponse.ok) {
-                trackHeartLoadError(id, `HTTP ${heartResponse.status}`);
-                return null;
-              }
-              const svgText = await heartResponse.text();
-              const design = parseHeartFromSVG(svgText, `${id}.svg`);
-              if (!design) {
-                trackSvgParseError(`${id}.svg`, 'No valid paths found');
-              }
-              return design;
-            } catch (err) {
-              trackHeartLoadError(id, err instanceof Error ? err.message : 'Unknown error');
-              return null;
-            }
-          })
-        );
-
-        return {
-          id: cat.id,
-          hearts: designs.filter((d): d is HeartDesign => d !== null)
-        };
-      })
-    );
-
-    return categories.filter((cat) => cat.hearts.length > 0);
+    const index: StaticHeartsIndex = await response.json();
+    return Array.isArray(index.categories) ? index.categories : [];
   } catch (err) {
     trackHeartLoadError('index', err instanceof Error ? err.message : 'Unknown error');
     return [];
   }
+}
+
+export async function loadStaticHeartById(id: string): Promise<HeartDesign | null> {
+  try {
+    const heartResponse = await fetch(`/hearts/${id}.svg`);
+    if (!heartResponse.ok) {
+      trackHeartLoadError(id, `HTTP ${heartResponse.status}`);
+      return null;
+    }
+    const svgText = await heartResponse.text();
+    const design = parseHeartFromSVG(svgText, `${id}.svg`);
+    if (!design) trackSvgParseError(`${id}.svg`, 'No valid paths found');
+    return design;
+  } catch (err) {
+    trackHeartLoadError(id, err instanceof Error ? err.message : 'Unknown error');
+    return null;
+  }
+}
+
+export async function loadStaticHearts(): Promise<HeartCategory[]> {
+  const indexCategories = await loadStaticHeartsIndex();
+  const categories: HeartCategory[] = await Promise.all(
+    indexCategories.map(async (cat) => {
+      const designs = await Promise.all(cat.hearts.map(loadStaticHeartById));
+      return { id: cat.id, hearts: designs.filter((d): d is HeartDesign => d !== null) };
+    })
+  );
+  return categories.filter((cat) => cat.hearts.length > 0);
 }
 
 export type HeartWithMeta = HeartDesign & { isUserCreated?: boolean };

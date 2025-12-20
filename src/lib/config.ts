@@ -2,7 +2,7 @@
 export const SITE_NAME = 'Juleflet';
 export const SITE_DOMAIN = 'juleflet.dk';
 export const SITE_URL = 'https://juleflet.dk';
-export const SITE_TITLE = 'Juleflet';
+export const SITE_TITLE = 'Juleflet: Flettede Julehjerter Skabeloner og Designer';
 
 // These are used for SEO meta tags (static, Danish-focused for SEO)
 export const SITE_DESCRIPTION =

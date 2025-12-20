@@ -447,7 +447,7 @@
     margin: 0 auto;
   }
 
-  .preview-section :global(canvas) {
+  .preview-section :global(.paper-heart-svg) {
     filter: drop-shadow(0 4px 8px var(--shadow-color));
   }
 
