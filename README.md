@@ -8,6 +8,7 @@
 - [Majbrit og Erik Ginnerskov](http://ginnerskov.dk/hjerter.php) - Anderledes flettede hjerter
 - [Alt Om Hobby](https://www.altomhobby.dk/e-bog/Julehjerte-skabeloner.pdf) - Skabeloner tilflettede julehjerter
 - [Gerth Stølting Brodal](https://cs.au.dk/~gerth/julehjerter/) - Flettede Julehjerter med bogstaver
+- [Papermatrix](https://papermatrix.wordpress.com/links/) - Links til mange andre hjerter
 
 ## License
 
