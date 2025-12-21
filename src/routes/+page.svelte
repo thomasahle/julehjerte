@@ -41,12 +41,14 @@
   ];
 
   type IndexedCategory = { id: string; hearts: string[] };
-  let indexCategories = $state<IndexedCategory[]>([]);
+  
+  let { data } = $props();
+  let indexCategories = $derived(data.indexCategories as IndexedCategory[]);
+  
   let loadedStaticHearts = $state<Record<string, HeartDesign>>({});
   let userHearts = $state<HeartDesign[]>([]);
 
   let selectedIds = $state<Set<string>>(new Set());
-  let loadingIndex = $state(true);
   let loadingStatic = $state(true);
   let generating = $state(false);
   let pdfLayout = $state<LayoutMode>("medium");
@@ -73,7 +75,11 @@
     } else {
       url.searchParams.delete("selected");
     }
-    window.history.replaceState({}, "", url.toString());
+    goto(`?${url.searchParams.toString()}`, {
+      replaceState: true,
+      noScroll: true,
+      keepFocus: true,
+    });
   }
 
   onMount(async () => {
@@ -92,22 +98,26 @@
 
     userHearts = getUserCollection();
 
-    // Load index first so we can render progressively.
-    indexCategories = await loadStaticHeartsIndex();
-    loadingIndex = false;
-
     // Kick off heart loading in background; update UI as each heart arrives.
     const ids = indexCategories.flatMap((c) => c.hearts);
     loadingStatic = true;
     const loaded: Record<string, HeartDesign> = {};
-    await Promise.allSettled(
-      ids.map(async (id) => {
+    // Parsing SVG into heart designs is CPU-heavy; limit concurrency and yield
+    // between parses so the gallery can paint progressively.
+    const CONCURRENCY = 6;
+    let cursor = 0;
+    const workers = Array.from({ length: Math.min(CONCURRENCY, ids.length) }, async () => {
+      while (cursor < ids.length) {
+        const id = ids[cursor++];
         const design = await loadStaticHeartById(id);
-        if (!design) return;
-        loaded[id] = design;
-        loadedStaticHearts = { ...loaded };
-      })
-    );
+        if (design) {
+          loaded[id] = design;
+          loadedStaticHearts = { ...loaded };
+        }
+        await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+      }
+    });
+    await Promise.allSettled(workers);
     loadingStatic = false;
   });
 
@@ -250,9 +260,7 @@
     </div>
   </div>
 
-  {#if loadingIndex}
-    <div class="loading">{t("loadingHearts", lang)}</div>
-  {:else if allHearts.length === 0 && !loadingStatic}
+  {#if allHearts.length === 0 && !loadingStatic}
     <div class="empty">
       <p>{t("noHeartsYet", lang)}</p>
       <p>{t("clickCreateNew", lang)}</p>
@@ -319,11 +327,12 @@
   header {
     text-align: center;
     margin-bottom: 2rem;
+    padding: 3rem 0 1rem 0;
   }
 
   header h1 {
     margin: 0;
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 600;
   }
 
@@ -346,10 +355,25 @@
   }
 
   .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    pointer-events: none;
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin-bottom: 2rem;
+    padding: 1rem 0;
+    background: rgba(170, 205, 216, 0.2);
+    backdrop-filter: blur(4px);
+  }
+
+  .toolbar > :global(*) {
+    pointer-events: auto;
+  }
+
+  .toolbar > :global(*) {
+    pointer-events: auto;
   }
 
   .toolbar :global(button),

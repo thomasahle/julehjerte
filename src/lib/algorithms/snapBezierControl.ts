@@ -1,25 +1,24 @@
-import type paper from 'paper';
-
+import type { PointLike } from '$lib/geometry/pointLike';
 import { bernsteinWeight } from './bezier';
 import { solve2DProjection, type LinearConstraint } from './projection2d';
 import { moveHandleToward } from './snap';
 
 export type SquareBounds = { minX: number; maxX: number; minY: number; maxY: number };
 
-export type SnapResult = { point: paper.Point; iterations: number };
+export type SnapResult<P> = { point: P; iterations: number };
 
-type PointCtor = new (x: number, y: number) => paper.Point;
+type PointCtor<P> = new (x: number, y: number) => P;
 
-function makePoint(seed: paper.Point, x: number, y: number): paper.Point {
-  const ctor = (seed as unknown as { constructor: PointCtor }).constructor;
-  return new ctor(x, y);
+function makePoint<P extends PointLike<P>>(seed: P, x: number, y: number): P {
+  const ctor = (seed as unknown as { constructor: PointCtor<P> }).constructor;
+  return new (ctor as unknown as PointCtor<P>)(x, y);
 }
 
-export function nearestObstacle(
-  point: paper.Point,
-  obstacles: paper.Path[]
-): { point: paper.Point; dist: number } {
-  let best: { point: paper.Point; dist: number } = { point, dist: Infinity };
+export function nearestObstacle<P extends PointLike<P>>(
+  point: P,
+  obstacles: Array<{ getNearestLocation: (p: P) => { point: P; distance: number } | null }>
+): { point: P; dist: number } {
+  let best: { point: P; dist: number } = { point, dist: Infinity };
   for (const path of obstacles) {
     const loc = path.getNearestLocation(point);
     if (!loc) continue;
@@ -41,13 +40,13 @@ function basisCoeffs(t: number): { b0: number; b1: number; b2: number; b3: numbe
   return { b0, b1, b2, b3 };
 }
 
-function affineSample(
+function affineSample<P extends PointLike<P>>(
   control: BezierControlKey,
-  p0: paper.Point,
-  fixedOther: paper.Point,
-  p3: paper.Point,
+  p0: P,
+  fixedOther: P,
+  p3: P,
   t: number
-): { A: paper.Point; w: number } {
+): { A: P; w: number } {
   const { b0, b1, b2, b3 } = basisCoeffs(t);
   const w = bernsteinWeight(control, t);
   const A =
@@ -57,26 +56,26 @@ function affineSample(
   return { A, w };
 }
 
-function affineSampleJunctionPrev(
-  p0: paper.Point,
-  p1: paper.Point,
-  p2: paper.Point,
-  junction0: paper.Point,
+function affineSampleJunctionPrev<P extends PointLike<P>>(
+  p0: P,
+  p1: P,
+  p2: P,
+  junction0: P,
   t: number
-): { A: paper.Point; w: number } {
+): { A: P; w: number } {
   const { b0, b1, b2, b3 } = basisCoeffs(t);
   const w = b2 + b3;
   const A = p0.multiply(b0).add(p1.multiply(b1)).add(p2.subtract(junction0).multiply(b2));
   return { A, w };
 }
 
-function affineSampleJunctionNext(
-  p1: paper.Point,
-  p2: paper.Point,
-  p3: paper.Point,
-  junction0: paper.Point,
+function affineSampleJunctionNext<P extends PointLike<P>>(
+  p1: P,
+  p2: P,
+  p3: P,
+  junction0: P,
   t: number
-): { A: paper.Point; w: number } {
+): { A: P; w: number } {
   const { b0, b1, b2, b3 } = basisCoeffs(t);
   const w = b0 + b1;
   const A = p1.subtract(junction0).multiply(b1).add(p2.multiply(b2)).add(p3.multiply(b3));
@@ -84,28 +83,28 @@ function affineSampleJunctionNext(
 }
 
 // Sampler abstraction: returns affine samples { A, w } for a given t value
-export type AffineSampler = (t: number) => Array<{ A: paper.Point; w: number }>;
+export type AffineSampler<P> = (t: number) => Array<{ A: P; w: number }>;
 
 // Create a sampler for control point (p1 or p2) dragging
-export function createControlSampler(
+export function createControlSampler<P extends PointLike<P>>(
   control: BezierControlKey,
-  p0: paper.Point,
-  fixedOther: paper.Point,
-  p3: paper.Point
-): AffineSampler {
+  p0: P,
+  fixedOther: P,
+  p3: P
+): AffineSampler<P> {
   return (t: number) => [affineSample(control, p0, fixedOther, p3, t)];
 }
 
 // Create a sampler for junction (midpoint) dragging
-export function createJunctionSampler(
-  prevP0: paper.Point,
-  prevP1: paper.Point,
-  prevP2: paper.Point,
-  from: paper.Point,
-  nextP1: paper.Point,
-  nextP2: paper.Point,
-  nextP3: paper.Point
-): AffineSampler {
+export function createJunctionSampler<P extends PointLike<P>>(
+  prevP0: P,
+  prevP1: P,
+  prevP2: P,
+  from: P,
+  nextP1: P,
+  nextP2: P,
+  nextP3: P
+): AffineSampler<P> {
   return (t: number) => [
     affineSampleJunctionPrev(prevP0, prevP1, prevP2, from, t),
     affineSampleJunctionNext(nextP1, nextP2, nextP3, from, t)
@@ -113,23 +112,23 @@ export function createJunctionSampler(
 }
 
 // Unified sequential QP snapping function
-export function snapSequentialQP<TCandidate>(
-  buildCandidateAt: (pos: paper.Point) => TCandidate,
-  from: paper.Point,
-  desired: paper.Point,
+export function snapSequentialQP<TCandidate, P extends PointLike<P>>(
+  buildCandidateAt: (pos: P) => TCandidate,
+  from: P,
+  desired: P,
   isValidCandidate: (candidate: TCandidate) => boolean,
-  sampler: AffineSampler,
-  obstacles: paper.Path[],
+  sampler: AffineSampler<P>,
+  obstacles: Array<{ getNearestLocation: (p: P) => { point: P; distance: number } | null }>,
   square: SquareBounds,
   opts: {
     tSamples?: number[];
     margin?: number;
     iters?: number;
     obstacleThreshold?: number;
-    previousSolution?: paper.Point;
+    previousSolution?: P;
     stickiness?: number;
   } = {}
-): SnapResult {
+): SnapResult<P> {
   let iterations = 0;
   let pt = moveHandleToward(buildCandidateAt, from, desired, isValidCandidate);
   iterations++;
@@ -155,7 +154,7 @@ export function snapSequentialQP<TCandidate>(
   }
 
   for (let k = 0; k < iters; k++) {
-    const constraints: LinearConstraint[] = [];
+    const constraints: Array<LinearConstraint<P>> = [];
 
     for (const t of tSamples) {
       const samples = sampler(t);
@@ -193,16 +192,16 @@ export function snapSequentialQP<TCandidate>(
   return { point: pt, iterations };
 }
 
-export function snapProjectedGradientBezierControl<TCandidate>(
-  buildCandidateAt: (pos: paper.Point) => TCandidate,
-  from: paper.Point,
-  desired: paper.Point,
+export function snapProjectedGradientBezierControl<TCandidate, P extends PointLike<P>>(
+  buildCandidateAt: (pos: P) => TCandidate,
+  from: P,
+  desired: P,
   isValidCandidate: (candidate: TCandidate) => boolean,
   control: BezierControlKey,
-  p0: paper.Point,
-  fixedOther: paper.Point,
-  p3: paper.Point,
-  obstacles: paper.Path[],
+  p0: P,
+  fixedOther: P,
+  p3: P,
+  obstacles: Array<{ getNearestLocation: (p: P) => { point: P; distance: number } | null }>,
   square: SquareBounds,
   opts: {
     tSamples?: number[];
@@ -210,7 +209,7 @@ export function snapProjectedGradientBezierControl<TCandidate>(
     repelGain?: number;
     iters?: number;
   } = {}
-): SnapResult {
+): SnapResult<P> {
   let iterations = 0;
   const zero = from.multiply(0);
 
@@ -268,67 +267,67 @@ export function snapProjectedGradientBezierControl<TCandidate>(
 }
 
 // Wrapper for backward compatibility - delegates to unified snapSequentialQP
-export function snapSequentialQPBezierControl<TCandidate>(
-  buildCandidateAt: (pos: paper.Point) => TCandidate,
-  from: paper.Point,
-  desired: paper.Point,
+export function snapSequentialQPBezierControl<TCandidate, P extends PointLike<P>>(
+  buildCandidateAt: (pos: P) => TCandidate,
+  from: P,
+  desired: P,
   isValidCandidate: (candidate: TCandidate) => boolean,
   control: BezierControlKey,
-  p0: paper.Point,
-  fixedOther: paper.Point,
-  p3: paper.Point,
-  obstacles: paper.Path[],
+  p0: P,
+  fixedOther: P,
+  p3: P,
+  obstacles: Array<{ getNearestLocation: (p: P) => { point: P; distance: number } | null }>,
   square: SquareBounds,
   opts: {
     tSamples?: number[];
     margin?: number;
     iters?: number;
     obstacleThreshold?: number;
-    previousSolution?: paper.Point;
+    previousSolution?: P;
     stickiness?: number;
   } = {}
-): SnapResult {
+): SnapResult<P> {
   const sampler = createControlSampler(control, p0, fixedOther, p3);
   return snapSequentialQP(buildCandidateAt, from, desired, isValidCandidate, sampler, obstacles, square, opts);
 }
 
 // Wrapper for backward compatibility - delegates to unified snapSequentialQP
-export function snapSequentialQPBezierJunction<TCandidate>(
-  buildCandidateAt: (junction: paper.Point) => TCandidate,
-  from: paper.Point,
-  desired: paper.Point,
+export function snapSequentialQPBezierJunction<TCandidate, P extends PointLike<P>>(
+  buildCandidateAt: (junction: P) => TCandidate,
+  from: P,
+  desired: P,
   isValidCandidate: (candidate: TCandidate) => boolean,
-  prevP0: paper.Point,
-  prevP1: paper.Point,
-  prevP2: paper.Point,
-  nextP1: paper.Point,
-  nextP2: paper.Point,
-  nextP3: paper.Point,
-  obstacles: paper.Path[],
+  prevP0: P,
+  prevP1: P,
+  prevP2: P,
+  nextP1: P,
+  nextP2: P,
+  nextP3: P,
+  obstacles: Array<{ getNearestLocation: (p: P) => { point: P; distance: number } | null }>,
   square: SquareBounds,
   opts: {
     tSamples?: number[];
     margin?: number;
     iters?: number;
     obstacleThreshold?: number;
-    previousSolution?: paper.Point;
+    previousSolution?: P;
     stickiness?: number;
   } = {}
-): SnapResult {
+): SnapResult<P> {
   const sampler = createJunctionSampler(prevP0, prevP1, prevP2, from, nextP1, nextP2, nextP3);
   return snapSequentialQP(buildCandidateAt, from, desired, isValidCandidate, sampler, obstacles, square, opts);
 }
 
-export function snapPenalizedNewtonBezierControl<TCandidate>(
-  buildCandidateAt: (pos: paper.Point) => TCandidate,
-  from: paper.Point,
-  desired: paper.Point,
+export function snapPenalizedNewtonBezierControl<TCandidate, P extends PointLike<P>>(
+  buildCandidateAt: (pos: P) => TCandidate,
+  from: P,
+  desired: P,
   isValidCandidate: (candidate: TCandidate) => boolean,
   control: BezierControlKey,
-  p0: paper.Point,
-  fixedOther: paper.Point,
-  p3: paper.Point,
-  obstacles: paper.Path[],
+  p0: P,
+  fixedOther: P,
+  p3: P,
+  obstacles: Array<{ getNearestLocation: (p: P) => { point: P; distance: number } | null }>,
   square: SquareBounds,
   opts: {
     tSamples?: number[];
@@ -339,7 +338,7 @@ export function snapPenalizedNewtonBezierControl<TCandidate>(
     edgeMargin?: number;
     edgeGain?: number;
   } = {}
-): SnapResult {
+): SnapResult<P> {
   let iterations = 0;
   let pt = moveHandleToward(buildCandidateAt, from, desired, isValidCandidate);
   iterations++;

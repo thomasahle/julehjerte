@@ -17,6 +17,7 @@
 	// Props - same interface as PaperHeart.svelte
 	interface Props {
 		readonly?: boolean;
+		idPrefix?: string;
 		initialFingers?: Finger[];
 		initialGridSize?: GridSize | number;
 		initialWeaveParity?: 0 | 1 | number;
@@ -30,6 +31,7 @@
 
 	let {
 		readonly = false,
+		idPrefix = undefined,
 		initialFingers = undefined,
 		initialGridSize = 3,
 		initialWeaveParity = 0,
@@ -37,8 +39,8 @@
 		onFingersChange = undefined
 	}: Props = $props();
 
-	// Generate unique ID for clip paths
-	const componentId = Math.random().toString(36).slice(2, 9);
+	// Stable ID for clip paths (avoid Math.random which breaks SSR/hydration).
+	const componentId = $derived.by(() => (idPrefix && idPrefix.length > 0 ? idPrefix : 'paper-heart'));
 
 	// Colors from store
 	let heartColors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });

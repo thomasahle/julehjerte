@@ -290,6 +290,14 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   const id = typeof r.id === 'string' ? r.id : '';
   const name = typeof r.name === 'string' ? r.name : 'Untitled';
   const author = typeof r.author === 'string' ? r.author : '';
+  const authorUrl =
+    typeof r.authorUrl === 'string' && r.authorUrl.trim() ? r.authorUrl.trim() : undefined;
+  const publisher =
+    typeof r.publisher === 'string' && r.publisher.trim() ? r.publisher.trim() : undefined;
+  const publisherUrl =
+    typeof r.publisherUrl === 'string' && r.publisherUrl.trim() ? r.publisherUrl.trim() : undefined;
+  const source = typeof r.source === 'string' && r.source.trim() ? r.source.trim() : undefined;
+  const date = typeof r.date === 'string' && r.date.trim() ? r.date.trim() : undefined;
   const description = typeof r.description === 'string' ? r.description : undefined;
   const weaveParity = normalizeWeaveParity((r as any).weaveParity);
   const gridSize = normalizeGridSize(r.gridSize);
@@ -318,6 +326,11 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
     id,
     name,
     author,
+    authorUrl,
+    publisher,
+    publisherUrl,
+    source,
+    date,
     description,
     weaveParity,
     gridSize: inferredGrid,
@@ -358,6 +371,11 @@ export function serializeHeartDesign(design: HeartDesign): Omit<HeartDesign, 'fi
     id: design.id,
     name: design.name,
     author: design.author,
+    authorUrl: design.authorUrl,
+    publisher: design.publisher,
+    publisherUrl: design.publisherUrl,
+    source: design.source,
+    date: design.date,
     description: design.description,
     weaveParity: design.weaveParity ?? 0,
     gridSize: design.gridSize,
@@ -443,11 +461,22 @@ export function serializeHeartToSVG(design: HeartDesign): string {
     lines.push('          </cc:Agent>');
     lines.push('        </dc:creator>');
   }
+  if (design.publisher) {
+    lines.push('        <dc:publisher>');
+    if (design.publisherUrl) {
+      lines.push(`          <cc:Agent rdf:about="${escapeXml(design.publisherUrl)}">`);
+    } else {
+      lines.push('          <cc:Agent>');
+    }
+    lines.push(`            <dc:title>${escapeXml(design.publisher)}</dc:title>`);
+    lines.push('          </cc:Agent>');
+    lines.push('        </dc:publisher>');
+  }
   if (design.description) {
     lines.push(`        <dc:description>${escapeXml(design.description)}</dc:description>`);
   }
-  lines.push(`        <dc:source>${SITE_DOMAIN}</dc:source>`);
-  lines.push(`        <dc:date>${new Date().toISOString().split('T')[0]}</dc:date>`);
+  lines.push(`        <dc:source>${escapeXml(design.source ?? SITE_DOMAIN)}</dc:source>`);
+  lines.push(`        <dc:date>${escapeXml(design.date ?? new Date().toISOString().split('T')[0])}</dc:date>`);
   lines.push('      </cc:Work>');
   lines.push('    </rdf:RDF>');
   lines.push('  </metadata>');
@@ -988,27 +1017,51 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
 
   // Dublin Core metadata (used by Inkscape) - need to use namespace-aware methods
   const DC_NS = 'http://purl.org/dc/elements/1.1/';
-  const dcTitles = svg.getElementsByTagNameNS(DC_NS, 'title');
-  const dcDescs = svg.getElementsByTagNameNS(DC_NS, 'description');
   const dcCreators = svg.getElementsByTagNameNS(DC_NS, 'creator');
+  const dcPublishers = svg.getElementsByTagNameNS(DC_NS, 'publisher');
 
-  // Get first DC title that's inside metadata (not the main SVG title)
-  let dcTitle: string | undefined;
-  for (let i = 0; i < dcTitles.length; i++) {
-    const el = dcTitles[i];
+  const CC_NS = 'http://creativecommons.org/ns#';
+  const RDF_NS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+
+  const workEls = svg.getElementsByTagNameNS(CC_NS, 'Work');
+  let workEl: Element | undefined;
+  for (let i = 0; i < workEls.length; i++) {
+    const el = workEls[i];
     if (el.closest('metadata')) {
-      dcTitle = el.textContent?.trim();
+      workEl = el;
       break;
     }
   }
+  workEl = workEl || workEls[0] || undefined;
 
-  // Get DC description
-  const dcDesc = dcDescs[0]?.textContent?.trim();
+  const isWithinAgent = (el: Element, root: Element | undefined): boolean => {
+    let cur: Element | null = el.parentElement;
+    while (cur && cur !== root) {
+      if (cur.namespaceURI === CC_NS && cur.localName === 'Agent') return true;
+      cur = cur.parentElement;
+    }
+    return false;
+  };
+
+  const getDcWorkField = (tagName: string): string | undefined => {
+    if (!workEl) return undefined;
+    const els = workEl.getElementsByTagNameNS(DC_NS, tagName);
+    for (let i = 0; i < els.length; i++) {
+      const el = els[i];
+      if (isWithinAgent(el, workEl)) continue;
+      const text = el.textContent?.trim();
+      if (text) return text;
+    }
+    return undefined;
+  };
+
+  const dcTitle = getDcWorkField('title');
+  const dcDesc = getDcWorkField('description');
+  const dcSource = getDcWorkField('source');
+  const dcDate = getDcWorkField('date');
 
   // Get DC creator (the author name is nested inside cc:Agent > dc:title)
   // Also extract author URL from cc:Agent rdf:about attribute
-  const CC_NS = 'http://creativecommons.org/ns#';
-  const RDF_NS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
   let dcCreator: string | undefined;
   let dcCreatorUrl: string | undefined;
   if (dcCreators[0]) {
@@ -1026,10 +1079,41 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     }
   }
 
+  // Get DC publisher (same structure as creator: dc:publisher > cc:Agent > dc:title)
+  let dcPublisher: string | undefined;
+  let dcPublisherUrl: string | undefined;
+  let publisherEl: Element | undefined;
+  for (let i = 0; i < dcPublishers.length; i++) {
+    const el = dcPublishers[i];
+    if (el.closest('metadata')) {
+      publisherEl = el;
+      break;
+    }
+  }
+  publisherEl = publisherEl || dcPublishers[0] || undefined;
+  if (publisherEl) {
+    const agents = publisherEl.getElementsByTagNameNS(CC_NS, 'Agent');
+    if (agents[0]) {
+      dcPublisherUrl =
+        agents[0].getAttributeNS(RDF_NS, 'about') ||
+        agents[0].getAttribute('rdf:about') ||
+        undefined;
+      const publisherTitles = agents[0].getElementsByTagNameNS(DC_NS, 'title');
+      dcPublisher = publisherTitles[0]?.textContent?.trim();
+    } else {
+      const publisherTitles = publisherEl.getElementsByTagNameNS(DC_NS, 'title');
+      dcPublisher = publisherTitles[0]?.textContent?.trim();
+    }
+  }
+
   const name = titleEl?.textContent?.trim() || dcTitle || 'Untitled';
   const description = descEl?.textContent?.trim() || dcDesc || undefined;
   const author = svg.getAttribute('data-author') || dcCreator || '';
   const authorUrl = dcCreatorUrl || undefined;
+  const publisher = svg.getAttribute('data-publisher') || dcPublisher || undefined;
+  const publisherUrl = dcPublisherUrl || undefined;
+  const source = svg.getAttribute('data-source') || dcSource || undefined;
+  const date = svg.getAttribute('data-date') || dcDate || undefined;
   const weaveParity = normalizeWeaveParity(parseInt(svg.getAttribute('data-weave-parity') || '0', 10));
 
   // Extract id from filename (remove .svg extension)
@@ -1285,6 +1369,10 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     name,
     author,
     authorUrl,
+    publisher,
+    publisherUrl,
+    source,
+    date,
     description,
     weaveParity,
     gridSize: inferredGrid,

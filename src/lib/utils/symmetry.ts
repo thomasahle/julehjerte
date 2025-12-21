@@ -178,28 +178,54 @@ function areLobesMirrored(fingers: Finger[]): boolean {
   const rightFingers = fingers.filter((f) => f.lobe === 'right');
   if (leftFingers.length !== rightFingers.length) return false;
 
-  const check = (anti: boolean): boolean => {
-    // For each left finger, find a matching right finger (greedy matching)
-    const usedRight = new Set<number>();
-    for (const left of leftFingers) {
-      const lSegs = fingerToSegments(left);
+  // Try sorted matching first (works well for simple paths)
+  const sortedMatch = (anti: boolean): boolean => {
+    // Sort left by y of start point (top to bottom)
+    const sortedLeft = leftFingers.slice().sort((a, b) => {
+      const aSegs = fingerToSegments(a);
+      const bSegs = fingerToSegments(b);
+      return (aSegs[0]?.p0.y ?? 0) - (bSegs[0]?.p0.y ?? 0);
+    });
+
+    // Sort right by x of start point (left to right) - diagonal mirror of y
+    const sortedRight = rightFingers.slice().sort((a, b) => {
+      const aSegs = fingerToSegments(a);
+      const bSegs = fingerToSegments(b);
+      return (aSegs[0]?.p0.x ?? 0) - (bSegs[0]?.p0.x ?? 0);
+    });
+
+    for (let i = 0; i < sortedLeft.length; i++) {
+      const lSegs = fingerToSegments(sortedLeft[i]!);
+      const rSegs = fingerToSegments(sortedRight[i]!);
       const mapped = mapSegments(lSegs, (p) => mapPointBetweenLobes(bounds, p, anti), anti);
-      let foundMatch = false;
-      for (let j = 0; j < rightFingers.length; j++) {
-        if (usedRight.has(j)) continue;
-        const rSegs = fingerToSegments(rightFingers[j]!);
-        if (segmentsEqual(mapped, rSegs)) {
-          usedRight.add(j);
-          foundMatch = true;
-          break;
-        }
-      }
-      if (!foundMatch) return false;
+      if (!segmentsEqual(mapped, rSegs)) return false;
     }
     return true;
   };
 
-  return check(false) || check(true);
+  // Try greedy matching as fallback (works for multi-subpath paths)
+  const greedyMatch = (anti: boolean): boolean => {
+    const used = new Set<number>();
+    for (let i = 0; i < leftFingers.length; i++) {
+      const lSegs = fingerToSegments(leftFingers[i]!);
+      const mapped = mapSegments(lSegs, (p) => mapPointBetweenLobes(bounds, p, anti), anti);
+      let found = false;
+      for (let j = 0; j < rightFingers.length; j++) {
+        if (used.has(j)) continue;
+        const rSegs = fingerToSegments(rightFingers[j]!);
+        if (segmentsEqual(mapped, rSegs)) {
+          used.add(j);
+          found = true;
+          break;
+        }
+      }
+      if (!found) return false;
+    }
+    return true;
+  };
+
+  // Try all combinations: sorted/greedy × normal/anti
+  return sortedMatch(false) || sortedMatch(true) || greedyMatch(false) || greedyMatch(true);
 }
 
 // Check if it's a "classic" design (all straight lines, no curves)

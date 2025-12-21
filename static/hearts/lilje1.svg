@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   sodipodi:docname="lilje1.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title1">Lilje 1</title>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.5380313"
+     inkscape:cx="188.87782"
+     inkscape:cy="189.20291"
+     inkscape:window-width="1312"
+     inkscape:window-height="411"
+     inkscape:window-x="395"
+     inkscape:window-y="480"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;stroke:#57e389;stroke-width:0.3;stroke-opacity:0.495935"
+       d="m 0,87.131586 h 32.674581 c 0,0 9.087423,10.285161 19.706332,3.548838 8.333014,-5.286218 9.247682,-14.91185 10.839858,-24.766851 l 4.244782,5.277985 1.648677,-1.908992 h 30.457118"
+       id="path1"
+       sodipodi:nodetypes="ccscccc" />
+    <path
+       style="fill:none;stroke:#57e389;stroke-width:0.3;stroke-opacity:0.495935"
+       d="M 99.484576,63.512199 H 66.120581 l -0.808813,-1.438407 -4.602713,2.308871 -1.86745,-0.118838 c 0,0 -5.758423,2.103747 -7.215828,3.477072 -1.457404,1.373323 -3.951811,5.493295 -4.344188,5.997782 -0.39238,0.504487 -11.266863,10.706323 -11.266863,10.706323 L 33.840251,84.092813 C 31.313104,82.159559 28.918802,80.102824 27.158185,77.690489 H 0.03445985"
+       id="path2"
+       sodipodi:nodetypes="cccccsscccc" />
+    <path
+       style="fill:none;stroke:#57e389;stroke-width:0.3;stroke-opacity:0.495935"
+       d="M 0.3779839,34.870466 H 15.962551 C 18.159504,30.389365 26.797445,27.777182 28.082489,27.688773 38.603245,38.875015 51.583084,47.785397 62.387336,60.640184 62.233982,53.69483 66.047674,49.249257 72.89151,46.713091 L 83.932254,34.870339 c 2.952355,0.601125 5.958066,3.70998 9.006284,8.816679 h 6.699414"
+       id="path3"
+       sodipodi:nodetypes="cccccccc" />
+    <path
+       style="fill:none;stroke:#57e389;stroke-width:0.3;stroke-opacity:0.495935"
+       d="M 99.669551,32.531867 H 86.934348 c 0,0 -5.372168,-7.11349 -13.525227,-5.659845 -8.153058,1.453647 -11.660769,8.756743 -12.482393,10.178788 -0.821627,1.422043 -3.539313,8.342662 -3.539313,8.342662 0,0 -3.915947,-15.334297 -8.77045,-21.842931 C 43.762461,17.04191 39.840517,16.390688 35.276065,16.035049 28.803166,15.530714 21.310662,21.73574 21.35982,21.932373 H 0.21575576"
+       id="path4"
+       sodipodi:nodetypes="ccsscsscc" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1"
+       id="use4" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path2"
+       id="use5" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path3"
+       id="use6" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path4"
+       id="use7" />
+    <rect
+       style="fill:none;stroke:none;stroke-width:0.3;stroke-opacity:0.495935"
+       id="rect7"
+       width="100"
+       height="100"
+       x="-100"
+       y="0"
+       transform="rotate(-90)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1"
+       id="use8"
+       transform="matrix(0,1,1,0,0,0)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path2"
+       id="use9"
+       transform="matrix(0,1,1,0,0,0)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path3"
+       id="use10"
+       transform="matrix(0,1,1,0,0,0)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path4"
+       id="use11"
+       transform="matrix(0,1,1,0,0,0)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#use4"
+       id="use12"
+       transform="matrix(0,1,1,0,0,0)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#use5"
+       id="use13"
+       transform="matrix(0,1,1,0,0,0)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#use6"
+       id="use14"
+       transform="matrix(0,1,1,0,0,0)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#use7"
+       id="use15"
+       transform="matrix(0,1,1,0,0,0)" />
+  </g>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Lilje 1</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Niels Thygesen</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Spejderliv</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

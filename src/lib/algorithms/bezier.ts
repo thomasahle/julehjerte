@@ -1,12 +1,12 @@
-import type paper from 'paper';
+import type { PointLike } from '$lib/geometry/pointLike';
 
-export function bezierPoint(
-  p0: paper.Point,
-  p1: paper.Point,
-  p2: paper.Point,
-  p3: paper.Point,
+export function bezierPoint<P extends PointLike<P>>(
+  p0: PointLike<P>,
+  p1: PointLike<P>,
+  p2: PointLike<P>,
+  p3: PointLike<P>,
   t: number
-): paper.Point {
+): P {
   const u = 1 - t;
   const b0 = u * u * u;
   const b1 = 3 * u * u * t;

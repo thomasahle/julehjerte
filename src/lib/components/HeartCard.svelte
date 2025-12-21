@@ -76,6 +76,7 @@
     {#if previewReady}
       <PaperHeartSVG
         readonly
+        idPrefix={"card-" + design.id}
         initialFingers={design.fingers}
         initialGridSize={design.gridSize}
         initialWeaveParity={design.weaveParity ?? 0}

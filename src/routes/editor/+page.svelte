@@ -18,6 +18,7 @@
   import XIcon from '@lucide/svelte/icons/x';
   import { Button } from '$lib/components/ui/button';
   import * as Tooltip from '$lib/components/ui/tooltip';
+  import { tick } from 'svelte';
 
   // Help modal state
   let showHelp = $state(false);
@@ -58,6 +59,7 @@
   let description = $state(urlDesign?.description ?? '');
   let lang = $state<Language>('da');
   let colors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
+  let editorEl: HTMLDivElement | null = $state(null);
 
   onMount(() => {
     // Initialize language
@@ -75,6 +77,37 @@
     } else if (!heartName) {
       heartName = t('myHeart', lang);
     }
+
+    if (!editorEl) return;
+
+    let ro: ResizeObserver | null = null;
+    let resizeListener: (() => void) | null = null;
+
+    const updateHeaderHeightVar = async () => {
+      await tick();
+      const headerEl = editorEl?.querySelector(':scope > .page-header') as HTMLElement | null;
+      if (!headerEl || !editorEl) return;
+      const headerHeight = headerEl.getBoundingClientRect().height;
+      editorEl.style.setProperty('--editor-header-height', `${Math.round(headerHeight)}px`);
+    };
+
+    updateHeaderHeightVar();
+
+    if ('ResizeObserver' in window) {
+      ro = new ResizeObserver(() => {
+        updateHeaderHeightVar();
+      });
+      const headerEl = editorEl.querySelector(':scope > .page-header') as HTMLElement | null;
+      if (headerEl) ro.observe(headerEl);
+    } else {
+      resizeListener = () => updateHeaderHeightVar();
+      window.addEventListener('resize', resizeListener, { passive: true });
+    }
+
+    return () => {
+      ro?.disconnect();
+      if (resizeListener) window.removeEventListener('resize', resizeListener);
+    };
   });
 
   function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
@@ -93,6 +126,11 @@
       id: isEditMode && initialDesign ? initialDesign.id : generateId(),
       name: sanitizeHtml(heartName),
       author: sanitizeHtml(authorName),
+      authorUrl: initialDesign?.authorUrl,
+      publisher: initialDesign?.publisher,
+      publisherUrl: initialDesign?.publisherUrl,
+      source: initialDesign?.source,
+      date: initialDesign?.date,
       description: sanitizeHtml(description) || undefined,
       weaveParity: currentWeaveParity,
       gridSize: currentGridSize,
@@ -166,59 +204,64 @@
   <title>{editingExisting ? t('editHeart', lang) : t('createNewHeartTitle', lang)} - {SITE_TITLE}</title>
 </svelte:head>
 
-<div class="editor">
+<div class="editor" bind:this={editorEl}>
   <PageHeader {lang}>
-    <Button variant="ghost" size="icon" onclick={() => showHelp = true} aria-label={t('helpOpenAriaLabel', lang)}>
+    <Button
+      variant="ghost"
+      size="icon"
+      onclick={() => showHelp = true}
+      aria-label={t('helpOpenAriaLabel', lang)}
+    >
       <CircleHelpIcon size={20} />
     </Button>
   </PageHeader>
 
-  <div class="editor-layout">
-    <main>
-      {#key editorKey}
-        <PaperHeart
-          onFingersChange={handleFingersChange}
-          initialGridSize={currentGridSize}
-          initialFingers={currentFingers}
-          initialWeaveParity={currentWeaveParity}
-        />
-      {/key}
-    </main>
-
-    <aside class="sidebar">
-      <div class="sidebar-section">
-        <h3>{t('heartDetails', lang)}</h3>
-        <div class="form-field">
-          <label for="name">{t('name', lang)}</label>
-          <input id="name" type="text" bind:value={heartName} />
-        </div>
-        <div class="form-field">
-          <label for="author">{t('author', lang)}</label>
-          <input id="author" type="text" bind:value={authorName} placeholder={t('yourName', lang)} />
-        </div>
-        <div class="form-field">
-          <label for="desc">{t('description', lang)}</label>
-          <textarea id="desc" bind:value={description} rows="3" placeholder={t('optionalDescription', lang)}></textarea>
-        </div>
-      </div>
-
-      <div class="sidebar-section">
-        <h3>{t('actions', lang)}</h3>
-        <div class="action-buttons">
-          <button class="btn primary full-width" onclick={showInGallery}>
-            {isEditMode ? t('saveChanges', lang) : t('showInGallery', lang)}
-          </button>
-          <button class="btn secondary full-width" onclick={downloadSVG}>
-            {t('download', lang)}
-          </button>
-          <label class="btn secondary full-width import-btn">
-            {t('import', lang)}
-            <input type="file" accept=".svg" onchange={handleImport} hidden />
-          </label>
-        </div>
-      </div>
-    </aside>
+  <div class="editor-top">
+    {#key editorKey}
+      <PaperHeart
+        fullPage
+        draggableToolbars
+        onFingersChange={handleFingersChange}
+        initialGridSize={currentGridSize}
+        initialFingers={currentFingers}
+        initialWeaveParity={currentWeaveParity}
+      />
+    {/key}
   </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <h3>{t('heartDetails', lang)}</h3>
+      <div class="form-field">
+        <label for="name">{t('name', lang)}</label>
+        <input id="name" type="text" bind:value={heartName} />
+      </div>
+      <div class="form-field">
+        <label for="author">{t('author', lang)}</label>
+        <input id="author" type="text" bind:value={authorName} placeholder={t('yourName', lang)} />
+      </div>
+      <div class="form-field">
+        <label for="desc">{t('description', lang)}</label>
+        <textarea id="desc" bind:value={description} rows="3" placeholder={t('optionalDescription', lang)}></textarea>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>{t('actions', lang)}</h3>
+      <div class="action-buttons">
+        <button class="btn primary full-width" onclick={showInGallery}>
+          {isEditMode ? t('saveChanges', lang) : t('showInGallery', lang)}
+        </button>
+        <button class="btn secondary full-width" onclick={downloadSVG}>
+          {t('download', lang)}
+        </button>
+        <label class="btn secondary full-width import-btn">
+          {t('import', lang)}
+          <input type="file" accept=".svg" onchange={handleImport} hidden />
+        </label>
+      </div>
+    </div>
+  </aside>
 
   {#if showHelp}
     <div
@@ -299,22 +342,27 @@
 
 <style>
   .editor {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 1rem;
+    position: relative;
+    z-index: 1;
+    padding: 0;
+    padding-bottom: 12rem;
+    --editor-header-height: 56px;
   }
 
-  .editor-layout {
+  .editor-top {
+    height: calc(90dvh - var(--editor-header-height));
+    min-height: 360px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
   }
 
-  main {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+  .editor > :global(.page-header) {
+    margin-bottom: 0;
+  }
+
+  .editor-top :global(.paper-heart.fullPage) {
+    flex: 1 1 auto;
+    min-height: 0;
   }
 
   .sidebar {
@@ -322,8 +370,8 @@
     border-radius: 12px;
     padding: 1.25rem;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
+    width: min(760px, calc(100% - 2rem));
+    margin: 1.5rem auto 2rem auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
@@ -453,10 +501,6 @@
   }
 
   @media (max-width: 600px) {
-    .editor {
-      padding: 0.5rem;
-    }
-
     .sidebar {
       grid-template-columns: 1fr;
       max-width: 400px;

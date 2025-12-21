@@ -1,22 +1,29 @@
-import type paper from 'paper';
+import type { PointLike } from '$lib/geometry/pointLike';
 
-export type LinearConstraint = { a: paper.Point; b: number };
+export type LinearConstraint<P> = { a: P; b: number };
 
-export function isFeasiblePoint(p: paper.Point, constraints: LinearConstraint[], eps = 1e-6): boolean {
+export function isFeasiblePoint<P extends PointLike<P>>(
+  p: P,
+  constraints: Array<LinearConstraint<P>>,
+  eps = 1e-6
+): boolean {
   for (const c of constraints) {
     if (c.a.dot(p) + eps < c.b) return false;
   }
   return true;
 }
 
-export function solve2DProjection(desired: paper.Point, constraints: LinearConstraint[]): paper.Point {
+export function solve2DProjection<P extends PointLike<P>>(
+  desired: P,
+  constraints: Array<LinearConstraint<P>>
+): P {
   if (!constraints.length) return desired;
   if (isFeasiblePoint(desired, constraints)) return desired;
 
-  let best: paper.Point | null = null;
+  let best: P | null = null;
   let bestD = Infinity;
 
-  const consider = (p: paper.Point) => {
+  const consider = (p: P) => {
     if (!isFeasiblePoint(p, constraints)) return;
     const d = p.getDistance(desired);
     if (d < bestD) {

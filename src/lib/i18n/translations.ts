@@ -35,6 +35,9 @@ export const translations = {
     heartNotFound: 'Hjertedesign ikke fundet',
     failedToLoad: 'Kunne ikke indlæse hjertedesign',
     by: 'af',
+    publisher: 'Udgiver',
+    source: 'Kilde',
+    date: 'Dato',
     gridSize: 'Gitterstørrelse',
     difficulty: 'Sværhedsgrad',
     difficultyEasy: 'Let',
@@ -132,7 +135,7 @@ export const translations = {
     rightColor: 'Højre farve',
     suggestHeart: 'Foreslå hjerte',
     didntFindHeart: 'Har du et yndlingsjulehjerte vi mangler i galleriet?',
-    madeBy: 'Af',
+    madeBy: '©',
 
     // Error page
     errorTitle: 'Ups! Noget gik galt',
@@ -143,7 +146,7 @@ export const translations = {
   en: {
     // Site
     siteTitle: 'Juleflet',
-    siteDescription: 'Design and print woven Christmas hearts – free templates.',
+    siteDescription: 'Welcome to my website for woven Christmas heart templates! Design your own patterns, print them out, and enjoy weaving!',
 
     // Categories
     categoryKlassiske: 'Classic',
@@ -176,6 +179,9 @@ export const translations = {
     heartNotFound: 'Heart design not found',
     failedToLoad: 'Failed to load heart design',
     by: 'by',
+    publisher: 'Publisher',
+    source: 'Source',
+    date: 'Date',
     gridSize: 'Grid Size',
     difficulty: 'Difficulty',
     difficultyEasy: 'Easy',
@@ -273,7 +279,7 @@ export const translations = {
     rightColor: 'Right color',
     suggestHeart: 'Suggest heart',
     didntFindHeart: "Didn't find the heart you were looking for?",
-    madeBy: 'By',
+    madeBy: '©',
 
     // Error page
     errorTitle: 'Oops! Something went wrong',

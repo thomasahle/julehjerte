@@ -1,7 +1,7 @@
-import type paper from 'paper';
+import type { PointLike } from '$lib/geometry/pointLike';
 
-export function makeDirections(seed: paper.Point, count: number): paper.Point[] {
-  const dirs: paper.Point[] = [];
+export function makeDirections<P extends PointLike<P>>(seed: P, count: number): P[] {
+  const dirs: P[] = [];
   const origin = seed.clone();
   origin.x = 0;
   origin.y = 0;
@@ -15,24 +15,24 @@ export function makeDirections(seed: paper.Point, count: number): paper.Point[] 
   return dirs;
 }
 
-const DIRS_BY_POINT_CLASS = new WeakMap<object, paper.Point[]>();
+const DIRS_BY_POINT_CLASS = new WeakMap<object, unknown>();
 
-function dirs8(seed: paper.Point): paper.Point[] {
+function dirs8<P extends PointLike<P>>(seed: P): P[] {
   const ctor = (seed as unknown as { constructor: object }).constructor;
-  const cached = DIRS_BY_POINT_CLASS.get(ctor);
+  const cached = DIRS_BY_POINT_CLASS.get(ctor) as P[] | undefined;
   if (cached) return cached;
   const dirs = makeDirections(seed, 8);
-  DIRS_BY_POINT_CLASS.set(ctor, dirs);
+  DIRS_BY_POINT_CLASS.set(ctor, dirs as unknown);
   return dirs;
 }
 
-export function moveHandleToward<TCandidate>(
-  buildCandidateAt: (pos: paper.Point) => TCandidate,
-  from: paper.Point,
-  to: paper.Point,
+export function moveHandleToward<TCandidate, P extends PointLike<P>>(
+  buildCandidateAt: (pos: P) => TCandidate,
+  from: P,
+  to: P,
   isValidCandidate: (candidate: TCandidate) => boolean,
   binarySearchSteps = 8
-): paper.Point {
+): P {
   const desired = buildCandidateAt(to);
   if (isValidCandidate(desired)) return to;
 
@@ -57,12 +57,12 @@ export function moveHandleToward<TCandidate>(
   return from.add(delta.multiply(best));
 }
 
-function snapHandlePosition<TCandidate>(
-  buildCandidateAt: (pos: paper.Point) => TCandidate,
-  from: paper.Point,
-  desired: paper.Point,
+function snapHandlePosition<TCandidate, P extends PointLike<P>>(
+  buildCandidateAt: (pos: P) => TCandidate,
+  from: P,
+  desired: P,
   isValidCandidate: (candidate: TCandidate) => boolean
-): paper.Point {
+): P {
   const direct = buildCandidateAt(desired);
   if (isValidCandidate(direct)) return desired;
 
@@ -98,14 +98,14 @@ function snapHandlePosition<TCandidate>(
   return pt;
 }
 
-export function snapHandlePositionWithDirs<TCandidate>(
-  buildCandidateAt: (pos: paper.Point) => TCandidate,
-  from: paper.Point,
-  desired: paper.Point,
+export function snapHandlePositionWithDirs<TCandidate, P extends PointLike<P>>(
+  buildCandidateAt: (pos: P) => TCandidate,
+  from: P,
+  desired: P,
   isValidCandidate: (candidate: TCandidate) => boolean,
-  dirs: paper.Point[],
+  dirs: P[],
   iterPerStep = 4
-): { point: paper.Point; iterations: number } {
+): { point: P; iterations: number } {
   let iterations = 0;
   const direct = buildCandidateAt(desired);
   if (isValidCandidate(direct)) return { point: desired, iterations };

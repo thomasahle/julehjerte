@@ -8,7 +8,7 @@
   import TemplatePreview from "$lib/components/TemplatePreview.svelte";
   import { getUserCollection } from "$lib/stores/collection";
   import { downloadPDF } from "$lib/pdf/template";
-  import { SITE_TITLE, SITE_URL } from "$lib/config";
+  import { SITE_DOMAIN, SITE_TITLE, SITE_URL } from "$lib/config";
   import {
     t,
     translations,
@@ -27,7 +27,7 @@
     serializeHeartDesign,
     parseHeartFromSVG,
   } from "$lib/utils/heartDesign";
-  import type { HeartDesign, Finger, GridSize, Vec } from "$lib/types/heart";
+  import type { HeartDesign } from "$lib/types/heart";
   import {
     trackHeartDownload,
     trackHeartShare,
@@ -38,8 +38,6 @@
   import { Button } from "$lib/components/ui/button";
   import PageHeader from "$lib/components/PageHeader.svelte";
   import * as Carousel from "$lib/components/ui/carousel";
-  import { inferOverlapRect } from "$lib/utils/overlapRect";
-  import { parsePathDataToSegments } from "$lib/geometry/bezierSegments";
 
   let design = $state<HeartDesign | null>(null);
   let isUserCreated = $state(false);
@@ -182,64 +180,19 @@
     return t(labels[level], lang);
   }
 
-  // Symmetry detection for templates
-  function pointsClose(a: Vec, b: Vec, tol = 0.75): boolean {
-    return Math.abs(a.x - b.x) <= tol && Math.abs(a.y - b.y) <= tol;
+  // Check if templates are symmetric (only need one template for both lobes)
+  let isSymmetric = $derived(
+    design ? design.gridSize.x === design.gridSize.y && detectSymmetry(design.fingers).mirrorSymmetry : true
+  );
+
+  function normalizeSource(source: string): string {
+    return source
+      .trim()
+      .toLowerCase()
+      .replace(/^https?:\/\//, '')
+      .replace(/^www\./, '')
+      .replace(/\/+$/, '');
   }
-
-  function mapPointBetweenLobes(p: Vec, rect: { left: number; top: number; width: number; height: number }): Vec {
-    const u = rect.width ? (p.x - rect.left) / rect.width : 0;
-    const v = rect.height ? (p.y - rect.top) / rect.height : 0;
-    return {
-      x: rect.left + v * rect.width,
-      y: rect.top + u * rect.height
-    };
-  }
-
-  function checkTemplateSymmetry(d: HeartDesign): boolean {
-    if (d.gridSize.x !== d.gridSize.y) return false;
-
-    const leftFingers = d.fingers.filter((f: Finger) => f.lobe === 'left');
-    const rightFingers = d.fingers.filter((f: Finger) => f.lobe === 'right');
-
-    if (leftFingers.length !== rightFingers.length) return false;
-
-    const rect = inferOverlapRect(d.fingers, d.gridSize);
-
-    const leftSorted = leftFingers
-      .slice()
-      .sort((a: Finger, b: Finger) => (parsePathDataToSegments(a.pathData)[0]?.p0.y ?? 0) - (parsePathDataToSegments(b.pathData)[0]?.p0.y ?? 0));
-    const rightSorted = rightFingers
-      .slice()
-      .sort((a: Finger, b: Finger) => (parsePathDataToSegments(a.pathData)[0]?.p0.x ?? 0) - (parsePathDataToSegments(b.pathData)[0]?.p0.x ?? 0));
-
-    for (let i = 0; i < leftSorted.length; i++) {
-      const left = leftSorted[i]!;
-      const right = rightSorted[i]!;
-
-      const leftSegs = parsePathDataToSegments(left.pathData);
-      const rightSegs = parsePathDataToSegments(right.pathData);
-      if (leftSegs.length !== rightSegs.length) return false;
-
-      for (let s = 0; s < leftSegs.length; s++) {
-        const l = leftSegs[s]!;
-        const r = rightSegs[s]!;
-        if (
-          !pointsClose(mapPointBetweenLobes(l.p0, rect), r.p0) ||
-          !pointsClose(mapPointBetweenLobes(l.p1, rect), r.p1) ||
-          !pointsClose(mapPointBetweenLobes(l.p2, rect), r.p2) ||
-          !pointsClose(mapPointBetweenLobes(l.p3, rect), r.p3)
-        ) {
-          return false;
-        }
-      }
-    }
-
-    return true;
-  }
-
-  // Reactive symmetry check
-  let isSymmetric = $derived(design ? checkTemplateSymmetry(design) : true);
 </script>
 
 <svelte:head>
@@ -290,6 +243,7 @@
               <div class="slide-content">
                 <PaperHeartSVG
                   readonly
+                  idPrefix={"detail-" + design.id}
                   initialFingers={design.fingers}
                   initialGridSize={design.gridSize}
                   initialWeaveParity={design.weaveParity ?? 0}
@@ -380,6 +334,26 @@
             {/if}
           </p>
         {/if}
+        {#if design.publisher}
+          <p class="publisher">
+            {t("publisher", lang)}:
+            {#if design.publisherUrl}
+              <a href={design.publisherUrl} target="_blank" rel="noopener noreferrer">{design.publisher}</a>
+            {:else}
+              {design.publisher}
+            {/if}
+          </p>
+        {/if}
+        {#if design.date}
+          <p class="meta-line">
+            {t("date", lang)}: {design.date}
+          </p>
+        {/if}
+        {#if design.source && normalizeSource(design.source) !== normalizeSource(SITE_DOMAIN)}
+          <p class="meta-line">
+            {t("source", lang)}: {design.source}
+          </p>
+        {/if}
         {#if design.description}
           <p class="description">{design.description}</p>
         {/if}
@@ -416,7 +390,7 @@
   .template-page {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 0 2rem 2rem 2rem;
   }
 
   .loading,
@@ -539,13 +513,22 @@
     font-size: 1.1rem;
   }
 
-  .author a {
+  .author a,
+  .publisher a {
     color: #4a7c8a;
     text-decoration: none;
   }
 
-  .author a:hover {
+  .author a:hover,
+  .publisher a:hover {
     text-decoration: underline;
+  }
+
+  .publisher,
+  .meta-line {
+    margin: 0.25rem 0 0 0;
+    color: #888;
+    font-size: 1.1rem;
   }
 
   .description {
