@@ -31,9 +31,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate OG images
-        run: npm run render:og
-
       - name: Build
         run: npm run build
         env:
