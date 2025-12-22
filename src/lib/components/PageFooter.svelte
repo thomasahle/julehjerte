@@ -50,6 +50,8 @@
           >
             <input
               type="color"
+              id="left-color"
+              name="left-color"
               value={colors.left || '#ffffff'}
               oninput={(e) =>
                 setLeftColor((e.target as HTMLInputElement).value)}
@@ -68,6 +70,8 @@
           >
             <input
               type="color"
+              id="right-color"
+              name="right-color"
               value={colors.right || '#cc0000'}
               oninput={(e) =>
                 setRightColor((e.target as HTMLInputElement).value)}

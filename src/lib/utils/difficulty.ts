@@ -1,5 +1,6 @@
 import type { HeartDesign, Finger, GridSize } from '$lib/types/heart';
 import { fingerToSegments, type BezierSegment } from '$lib/geometry/bezierSegments';
+import { STRIP_WIDTH } from '$lib/constants';
 import { vecSub, vecLength } from '$lib/geometry/vec';
 
 export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert';
@@ -11,23 +12,26 @@ export interface DifficultyResult {
 
 /**
  * Calculate the difficulty of a heart design based on multiple factors:
- * - Grid size (more strips = harder)
- * - Path complexity (more segments, more curvature = harder)
- * - Non-monotonicity (curves that change direction are harder)
- * - Minimum finger thickness (thinner = harder to cut)
+ * - Number of strips/fingers (more = harder to weave)
+ * - Sharp corners (harder to cut cleanly)
+ * - Curvy paths (harder to cut smoothly)
+ * - Non-monotonicity (paths that change direction are harder)
+ * - Minimum finger thickness (very thin areas are hard to cut; low weight)
  */
 export function calculateDifficulty(design: HeartDesign): DifficultyResult {
-  const gridScore = calculateGridDifficulty(design.gridSize);
-  const pathScore = calculatePathComplexity(design.fingers);
+  const fingerScore = calculateFingerCountDifficulty(design.gridSize);
+  const cornerScore = calculateCornerDifficulty(design.fingers);
+  const curvatureScore = calculatePathCurvature(design.fingers);
   const monotonicityScore = calculateNonMonotonicity(design.fingers);
-  const thicknessScore = calculateThicknessDifficulty(design.fingers, design.gridSize);
+  const thicknessScore = calculateThicknessDifficulty(design.fingers);
 
-  // Weighted combination - non-monotonicity is important for "tricky" curves
+  // Weighted combination: emphasize finger count + corners; thickness is intentionally low weight.
   const score = Math.round(
-    gridScore * 0.25 +
-    pathScore * 0.25 +
-    monotonicityScore * 0.30 +
-    thicknessScore * 0.20
+    fingerScore * 0.35 +
+    cornerScore * 0.30 +
+    curvatureScore * 0.20 +
+    monotonicityScore * 0.10 +
+    thicknessScore * 0.05
   );
 
   const level = scoreToLevel(score);
@@ -36,27 +40,28 @@ export function calculateDifficulty(design: HeartDesign): DifficultyResult {
 }
 
 function scoreToLevel(score: number): DifficultyLevel {
-  if (score < 25) return 'easy';
-  if (score < 50) return 'medium';
-  if (score < 75) return 'hard';
+  // Intentionally bias towards extremes: fewer "hard", more "easy" and "expert".
+  if (score < 30) return 'easy';
+  if (score < 55) return 'medium';
+  if (score < 70) return 'hard';
   return 'expert';
 }
 
 /**
- * Grid size contributes to difficulty: more strips = harder
- * 3x3 = easy, 4x4 = medium, 5x5+ = hard
+ * Strip count contributes to difficulty: more strips = harder.
+ * Use a gentle ramp so a simple 5x5 isn't automatically "hard".
  */
-function calculateGridDifficulty(gridSize: GridSize): number {
+function calculateFingerCountDifficulty(gridSize: GridSize): number {
   const totalStrips = gridSize.x + gridSize.y;
-  // 6 strips (3x3) = 0, 8 strips (4x4) = 40, 10 strips (5x5) = 80
-  return Math.min(100, Math.max(0, (totalStrips - 6) * 20));
+  // 6 strips (3x3) = 0, 10 strips (5x5) ≈ 50, 14 strips (7x7) = 100
+  return Math.min(100, Math.max(0, (totalStrips - 6) * 12.5));
 }
 
 /**
- * Path complexity: how curved/complex are the finger paths?
- * Measures deviation of control points from straight lines
+ * Path curvature: how curvy are the finger paths?
+ * Measures deviation of control points from the chord line.
  */
-function calculatePathComplexity(fingers: Finger[]): number {
+function calculatePathCurvature(fingers: Finger[]): number {
   if (fingers.length === 0) return 0;
 
   let totalCurvature = 0;
@@ -71,18 +76,8 @@ function calculatePathComplexity(fingers: Finger[]): number {
     }
   }
 
-  // Average curvature per segment, normalized
-  // A straight line has curvature 0, a heavily curved segment ~1
   const avgCurvature = totalSegments > 0 ? totalCurvature / totalSegments : 0;
-
-  // Also factor in segment count per finger (more segments = more complex)
-  const avgSegmentsPerFinger = totalSegments / Math.max(1, fingers.length);
-  const segmentComplexity = Math.min(1, (avgSegmentsPerFinger - 1) / 3); // 1 seg = 0, 4+ seg = 1
-
-  // Combine curvature and segment count
-  const complexity = avgCurvature * 0.7 + segmentComplexity * 0.3;
-
-  return Math.min(100, complexity * 100);
+  return Math.min(100, avgCurvature * 100);
 }
 
 /**
@@ -90,28 +85,21 @@ function calculatePathComplexity(fingers: Finger[]): number {
  * Returns 0 for a straight line, higher values for more curved segments
  */
 function measureSegmentCurvature(seg: BezierSegment): number {
-  // Vector from start to end
   const chord = vecSub(seg.p3, seg.p0);
   const chordLength = vecLength(chord);
-
   if (chordLength < 0.001) return 0;
 
-  // Measure how far control points deviate from the chord line
-  // For a straight line, p1 is at 1/3 and p2 is at 2/3 along the chord
-  const expectedP1 = {
-    x: seg.p0.x + chord.x / 3,
-    y: seg.p0.y + chord.y / 3
+  // Perpendicular distance from control points to chord line, normalized by chord length.
+  const pointLineDistance = (p: { x: number; y: number }): number => {
+    const cross = Math.abs((p.x - seg.p0.x) * chord.y - (p.y - seg.p0.y) * chord.x);
+    return cross / chordLength;
   };
-  const expectedP2 = {
-    x: seg.p0.x + (chord.x * 2) / 3,
-    y: seg.p0.y + (chord.y * 2) / 3
-  };
+  const d1 = pointLineDistance(seg.p1) / chordLength;
+  const d2 = pointLineDistance(seg.p2) / chordLength;
 
-  const dev1 = vecLength(vecSub(seg.p1, expectedP1)) / chordLength;
-  const dev2 = vecLength(vecSub(seg.p2, expectedP2)) / chordLength;
-
-  // Average deviation, capped at 1
-  return Math.min(1, (dev1 + dev2) / 2);
+  // Scale so typical gentle curves register, but cap at 1.
+  const deviation = Math.max(d1, d2);
+  return Math.min(1, deviation * 4);
 }
 
 /**
@@ -169,23 +157,62 @@ function calculateNonMonotonicity(fingers: Finger[]): number {
 }
 
 /**
+ * Corner difficulty: sharp direction changes at segment joins are harder to cut cleanly.
+ */
+function calculateCornerDifficulty(fingers: Finger[]): number {
+  let totalSharpness = 0;
+
+  // Ignore tiny bends; focus on corners.
+  const TURN_THRESHOLD = 0.05; // ≈ 25° ( (1 - cosθ)/2 )
+
+  for (const finger of fingers) {
+    const segments = fingerToSegments(finger);
+    if (segments.length < 2) continue;
+
+    for (let i = 0; i < segments.length - 1; i++) {
+      const a = segments[i]!;
+      const b = segments[i + 1]!;
+
+      const v1 = vecSub(a.p3, a.p0);
+      const v2 = vecSub(b.p3, b.p0);
+      const len1 = vecLength(v1);
+      const len2 = vecLength(v2);
+      if (len1 < 0.001 || len2 < 0.001) continue;
+
+      const dot = (v1.x * v2.x + v1.y * v2.y) / (len1 * len2);
+      const clampedDot = Math.max(-1, Math.min(1, dot));
+
+      // 0 = straight, 1 = 180° turn (worst case)
+      const turn = (1 - clampedDot) / 2;
+      if (turn <= TURN_THRESHOLD) continue;
+
+      const sharpness = (turn - TURN_THRESHOLD) / (1 - TURN_THRESHOLD);
+      totalSharpness += sharpness;
+    }
+  }
+
+  // Rough calibration: ~10 sharp corners => 100.
+  return Math.min(100, (totalSharpness / 10) * 100);
+}
+
+/**
  * Thickness difficulty: thinner fingers are harder to cut and weave
  * Measures minimum distance between adjacent finger paths
  */
-function calculateThicknessDifficulty(fingers: Finger[], gridSize: GridSize): number {
+function calculateThicknessDifficulty(fingers: Finger[]): number {
   // Group fingers by lobe
   const leftFingers = fingers.filter(f => f.lobe === 'left');
   const rightFingers = fingers.filter(f => f.lobe === 'right');
 
   // Calculate minimum thickness for each lobe
-  const leftThickness = calculateMinThickness(leftFingers, gridSize);
-  const rightThickness = calculateMinThickness(rightFingers, gridSize);
+  const leftThickness = calculateMinThickness(leftFingers);
+  const rightThickness = calculateMinThickness(rightFingers);
 
   // Use the thinner of the two
   const minThickness = Math.min(leftThickness, rightThickness);
 
   // Expected thickness for a uniform grid
-  const expectedThickness = 100 / Math.max(gridSize.x, gridSize.y);
+  const expectedThickness = STRIP_WIDTH;
 
   // How much thinner than expected? ratio < 1 means thinner
   const ratio = minThickness / expectedThickness;
@@ -200,7 +227,7 @@ function calculateThicknessDifficulty(fingers: Finger[], gridSize: GridSize): nu
 /**
  * Calculate minimum thickness between adjacent fingers of same lobe
  */
-function calculateMinThickness(fingers: Finger[], gridSize: GridSize): number {
+function calculateMinThickness(fingers: Finger[]): number {
   if (fingers.length < 2) return 100; // Only one finger, no thinness issue
 
   // Sample points along each finger and find minimum distance to neighbors

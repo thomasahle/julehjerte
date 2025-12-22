@@ -4,6 +4,7 @@
   import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
   import { onMount } from "svelte";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
+  import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
   import Trash2Icon from "@lucide/svelte/icons/trash-2";
 
   interface Props {
@@ -19,6 +20,18 @@
   let previewReady = $state(false);
   let previewEl: HTMLDivElement | null = null;
   let previewSize = $state(220);
+
+  let difficulty = $derived(calculateDifficulty(design));
+
+  function getDifficultyLabel(level: DifficultyLevel): string {
+    const labels: Record<DifficultyLevel, 'difficultyEasy' | 'difficultyMedium' | 'difficultyHard' | 'difficultyExpert'> = {
+      easy: 'difficultyEasy',
+      medium: 'difficultyMedium',
+      hard: 'difficultyHard',
+      expert: 'difficultyExpert'
+    };
+    return t(labels[level], lang);
+  }
 
   $effect(() => {
     lang = getLanguage();
@@ -97,7 +110,12 @@
     {/if}
   </div>
   <div class="overlay">
-    <span class="title">{design.name}</span>
+    <div class="header-info">
+      <span class="title">{design.name}</span>
+      <span class="difficulty-tag">
+        {getDifficultyLabel(difficulty.level)}
+      </span>
+    </div>
     <button class="details-btn" onclick={handleDetails}>
       {t('details', lang)}
     </button>
@@ -196,6 +214,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s;
+    border-radius: 12px;
   }
 
   .card:hover .overlay {
@@ -203,11 +222,28 @@
     pointer-events: auto;
   }
 
+  .header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    align-items: flex-start;
+  }
+
   .title {
     color: white;
     font-size: 1rem;
     font-weight: 600;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .difficulty-tag {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
 
   .details-btn {

@@ -33,7 +33,7 @@ export const translations = {
     selectHeartsFirst: 'Vælg hjerter først',
 
     // Heart detail
-    backToGallery: '← Tilbage til Galleri',
+    backToGallery: '← Tilbage',
     loadingTemplate: 'Indlæser skabelon...',
     heartNotFound: 'Hjertedesign ikke fundet',
     failedToLoad: 'Kunne ikke indlæse hjertedesign',
@@ -183,7 +183,7 @@ export const translations = {
     selectHeartsFirst: 'Select hearts first',
 
     // Heart detail
-    backToGallery: '← Back to Gallery',
+    backToGallery: '← Back',
     loadingTemplate: 'Loading template...',
     heartNotFound: 'Heart design not found',
     failedToLoad: 'Failed to load heart design',

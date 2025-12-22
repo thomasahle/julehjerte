@@ -128,7 +128,7 @@
       );
       // For user-created hearts, pass edit=true to allow saving over the original
       const editParam = isUserCreated ? "&edit=true" : "";
-      goto(`${base}/editor?design=${designData}${editParam}`);
+      goto(`${base}/editor?design=${designData}${editParam}&returnTo=detail`);
     }
   }
 

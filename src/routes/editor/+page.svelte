@@ -6,7 +6,7 @@
   import { SITE_TITLE } from '$lib/config';
   import { t, tArray, getLanguage, subscribeLanguage, type Language } from '$lib/i18n';
   import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
-  import { saveUserDesign } from '$lib/stores/collection';
+  import { getUserCollection, saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
   import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
   import { sanitizeHtml } from '$lib/utils';
@@ -22,28 +22,30 @@
   let showHelp = $state(false);
 
   // Helper to parse design from URL - called once at initialization
-  function getDesignFromUrl(): { design: HeartDesign | null; isEditMode: boolean } {
-    if (!browser) return { design: null, isEditMode: false };
+  function getDesignFromUrl(): { design: HeartDesign | null; isEditMode: boolean; returnToDetail: boolean } {
+    if (!browser) return { design: null, isEditMode: false, returnToDetail: false };
     const params = new URLSearchParams(window.location.search);
     const designData = params.get('design');
     const isEditMode = params.get('edit') === 'true';
-    if (!designData) return { design: null, isEditMode: false };
+    const returnToDetail = params.get('returnTo') === 'detail';
+    if (!designData) return { design: null, isEditMode: false, returnToDetail };
     try {
       const decoded = JSON.parse(decodeURIComponent(designData)) as unknown;
-      return { design: normalizeHeartDesign(decoded), isEditMode };
+      return { design: normalizeHeartDesign(decoded), isEditMode, returnToDetail };
     } catch (e) {
       console.error('Failed to parse design from URL', e);
-      return { design: null, isEditMode: false };
+      return { design: null, isEditMode: false, returnToDetail: false };
     }
   }
 
   // Parse URL design ONCE at module initialization time
-  const { design: urlDesign, isEditMode: urlEditMode } = getDesignFromUrl();
+  const { design: urlDesign, isEditMode: urlEditMode, returnToDetail: urlReturnToDetail } = getDesignFromUrl();
 
   // State for the loaded design - initialize with URL values
   let initialDesign = $state<HeartDesign | null>(urlDesign);
   let editingExisting = $state(urlDesign !== null);
   let isEditMode = $state(urlEditMode); // true = editing custom heart, false = creating copy
+  let returnToDetail = $state(urlReturnToDetail);
   let editorKey = $state(0); // Key to force PaperHeart remount
 
   // Initialize fingers/gridSize with URL design if available
@@ -133,6 +135,14 @@
     return draftId;
   }
 
+  function getBackDetailId(): string | null {
+    if (isEditMode && initialDesign) return initialDesign.id;
+    if (!draftId) return initialDesign?.id ?? null;
+    const userHearts = getUserCollection();
+    if (userHearts.some((h) => h.id === draftId)) return draftId;
+    return initialDesign?.id ?? draftId;
+  }
+
 	  function createHeartDesign(): HeartDesign {
 	    return {
       // In edit mode, keep the original ID; otherwise generate a new one
@@ -199,6 +209,15 @@
 	    // Navigate to gallery
 	    goto(`${base}/#${makeHeartAnchorId(design.id)}`);
 	  }
+
+  function handleEditorBack(event: MouseEvent) {
+    if (!returnToDetail) return;
+    event.preventDefault();
+    flushAutosave();
+    const backId = getBackDetailId();
+    if (!backId) return;
+    goto(`${base}/hjerte/${backId}`);
+  }
 
   function handleImport(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -267,7 +286,7 @@
 </svelte:head>
 
 <div class="editor" bind:this={editorEl}>
-  <PageHeader {lang}>
+  <PageHeader {lang} onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? `${base}/hjerte/${getBackDetailId()}` : undefined) : undefined}>
     <Button
       variant="ghost"
       size="icon"
@@ -296,15 +315,38 @@
       <h3>{t('heartDetails', lang)}</h3>
       <div class="form-field">
         <label for="name">{t('name', lang)}</label>
-        <input id="name" type="text" bind:value={heartName} oninput={scheduleAutosave} />
+        <input
+          id="name"
+          name="heart-name"
+          type="text"
+          autocomplete="off"
+          bind:value={heartName}
+          oninput={scheduleAutosave}
+        />
       </div>
       <div class="form-field">
         <label for="author">{t('author', lang)}</label>
-        <input id="author" type="text" bind:value={authorName} placeholder={t('yourName', lang)} oninput={scheduleAutosave} />
+        <input
+          id="author"
+          name="author"
+          type="text"
+          autocomplete="name"
+          bind:value={authorName}
+          placeholder={t('yourName', lang)}
+          oninput={scheduleAutosave}
+        />
       </div>
       <div class="form-field">
         <label for="desc">{t('description', lang)}</label>
-        <textarea id="desc" bind:value={description} rows="3" placeholder={t('optionalDescription', lang)} oninput={scheduleAutosave}></textarea>
+        <textarea
+          id="desc"
+          name="description"
+          autocomplete="off"
+          bind:value={description}
+          rows="3"
+          placeholder={t('optionalDescription', lang)}
+          oninput={scheduleAutosave}
+        ></textarea>
       </div>
     </div>
 
@@ -319,7 +361,14 @@
         </button>
         <label class="btn secondary full-width import-btn">
           {t('import', lang)}
-          <input type="file" accept=".svg" onchange={handleImport} hidden />
+          <input
+            id="import-svg"
+            name="import-svg"
+            type="file"
+            accept=".svg"
+            onchange={handleImport}
+            hidden
+          />
         </label>
       </div>
     </div>

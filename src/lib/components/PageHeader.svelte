@@ -7,11 +7,17 @@
   interface Props {
     lang: Language;
     children?: import('svelte').Snippet;
+    backHref?: string;
+    onBack?: (event: MouseEvent) => void;
   }
 
-  let { lang, children }: Props = $props();
+  let { lang, children, backHref, onBack }: Props = $props();
 
   function handleBack(e: MouseEvent) {
+    if (onBack) {
+      onBack(e);
+      return;
+    }
     if (browser && window.history.length > 1 && document.referrer.startsWith(window.location.origin)) {
       e.preventDefault();
       window.history.back();
@@ -24,7 +30,7 @@
     <div class="header-left">
       <Button 
         variant="ghost" 
-        href="{base}/" 
+        href={backHref ?? `${base}/`} 
         class="h-auto p-0 hover:bg-transparent hover:text-red-700"
         onclick={handleBack}
       >
@@ -53,7 +59,7 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: baseline;
-    padding: 0 1rem;
+    padding: .5rem 1rem 0 1rem;
     gap: 1rem;
   }
 

@@ -1,9 +1,9 @@
 <script lang="ts">
 		import { onMount, tick } from 'svelte';
-	import SplitIcon from '@lucide/svelte/icons/split';
+	import AddNodeIcon from '$lib/components/icons/AddNodeIcon.svelte';
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
-		import Undo2Icon from '@lucide/svelte/icons/undo-2';
-		import Redo2Icon from '@lucide/svelte/icons/redo-2';
+	import Undo2Icon from '@lucide/svelte/icons/undo-2';
+	import Redo2Icon from '@lucide/svelte/icons/redo-2';
 	import { Button } from '$lib/components/ui/button';
 	import { Separator } from '$lib/components/ui/separator';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
@@ -258,8 +258,8 @@
 	let dragDirty = $state(false);
 	let dragSnapshot = $state<HistorySnapshot | null>(null);
 	let activePointerId = $state<number | null>(null);
-	let lastPointerPos = $state<Vec | null>(null);
-	let previousSnappedPos: Point | null = null;
+	let dragStartPointer = $state<Vec | null>(null);
+	let dragStartOffset = $state<Vec | null>(null);
 	let lastFingerClickAt = 0;
 	let lastFingerClickId: string | null = null;
 	let lastFingerClickPos: Vec | null = null;
@@ -351,6 +351,11 @@
 
 	function getFingerById(id: string): Finger | undefined {
 		return fingers.find((f) => f.id === id);
+	}
+
+	function getDragBaseFinger(fingerId: string): Finger | null {
+		const base = dragSnapshot?.fingers.find((f) => f.id === fingerId);
+		return base ?? getFingerById(fingerId) ?? null;
 	}
 
 		function clampEndpoints(fingerId: string) {
@@ -1291,11 +1296,16 @@
 		fingers = fingers.map((f) => overrides.get(f.id) ?? f);
 	}
 
-	function applyConstrainedUpdate(fingerId: string, buildCandidate: (current: Finger, fraction: number) => Finger) {
+	function applyConstrainedUpdate(
+		fingerId: string,
+		buildCandidate: (current: Finger, fraction: number) => Finger,
+		base?: Finger
+	) {
 		const current = getFingerById(fingerId);
 		if (!current) return false;
 
-		const desiredPrimary = buildCandidate(current, 1);
+		const root = base ?? current;
+		const desiredPrimary = buildCandidate(root, 1);
 		const desiredOverrides = deriveSymmetryOverrides(desiredPrimary);
 		if (overridesAreValid(desiredOverrides)) {
 			applyOverrides(desiredOverrides);
@@ -1307,7 +1317,7 @@
 		let bestOverrides: Map<string, Finger> | null = null;
 		for (let i = 0; i < 8; i++) {
 			const mid = (lo + hi) / 2;
-			const primaryCandidate = buildCandidate(current, mid);
+			const primaryCandidate = buildCandidate(root, mid);
 			const overrides = deriveSymmetryOverrides(primaryCandidate);
 			if (overridesAreValid(overrides)) {
 				bestOverrides = overrides;
@@ -1390,13 +1400,10 @@
 			obstacles,
 			square,
 			{
-				tSamples,
-				previousSolution: previousSnappedPos ?? undefined,
-				stickiness: 0.3
+				tSamples
 			}
 		);
 
-		previousSnappedPos = out.point;
 		return { x: out.point.x, y: out.point.y };
 	}
 
@@ -1546,14 +1553,9 @@
 				other,
 				p3,
 				obstacles,
-				square,
-				{
-					previousSolution: previousSnappedPos ?? undefined,
-					stickiness: 0.3
-				}
+				square
 			);
 			snapped = { x: out.point.x, y: out.point.y };
-			previousSnappedPos = out.point;
 		} else {
 			if (segmentIndex <= 0) return false;
 			const prevSeg = segments[segmentIndex - 1]!;
@@ -1570,14 +1572,9 @@
 				toPoint(nextSeg.p2),
 				toPoint(nextSeg.p3),
 				obstacles,
-				square,
-				{
-					previousSolution: previousSnappedPos ?? undefined,
-					stickiness: 0.3
-				}
+				square
 			);
 			snapped = { x: out.point.x, y: out.point.y };
-			previousSnappedPos = out.point;
 		}
 
 		const snappedCandidate = buildCandidateAt(snapped);
@@ -2097,7 +2094,10 @@
 			return `translate(${-panX} ${-panY}) translate(${cx} ${cy}) scale(${userZoom}) translate(${-cx} ${-cy})`;
 		});
 
-	let curveUiScale = $derived(1 / userZoom);
+	let curveUiScale = $derived.by(() => {
+		const baseScale = viewBoxRect.width / Math.max(1, effectiveSize);
+		return baseScale / userZoom;
+	});
 
 		function clampPanOffset(offset: { x: number; y: number }): { x: number; y: number } {
 			const rect = svgEl?.getBoundingClientRect?.();
@@ -2387,14 +2387,32 @@
 		dragTarget = target;
 		dragSnapshot = snapshotState();
 		dragDirty = false;
-		previousSnappedPos = null;
-		lastPointerPos = localPointFromClient(e.clientX, e.clientY);
+		dragStartPointer = localPointFromClient(e.clientX, e.clientY);
+		dragStartOffset = null;
+		if (dragStartPointer && target?.kind === 'control') {
+			const baseFinger = getDragBaseFinger(target.fingerId);
+			const baseSegs = baseFinger ? fingerToSegments(baseFinger) : null;
+			if (baseSegs) {
+				if (typeof target.anchorIdx === 'number') {
+					const anchors = getAnchorPositions(baseSegs);
+					const anchor = anchors[target.anchorIdx];
+					if (anchor) dragStartOffset = vecSub(anchor, dragStartPointer);
+				} else if (typeof target.segmentIndex === 'number' && target.handle) {
+					const seg = baseSegs[target.segmentIndex];
+					if (seg) {
+						const handlePos = target.handle === 'p1' ? seg.p1 : seg.p2;
+						dragStartOffset = vecSub(handlePos, dragStartPointer);
+					}
+				}
+			}
+		}
 	}
 
 	function endDrag(pointerId: number) {
 		if (activePointerId !== pointerId) return;
 		activePointerId = null;
-		lastPointerPos = null;
+		dragStartPointer = null;
+		dragStartOffset = null;
 		try {
 			svgEl?.releasePointerCapture?.(pointerId);
 		} catch {}
@@ -2507,14 +2525,16 @@
 		if (activePointerId == null || e.pointerId !== activePointerId) return;
 		if (!dragTarget) return;
 		const p = localPointFromClient(e.clientX, e.clientY);
-		if (!p || !lastPointerPos) return;
-		const delta = vecSub(p, lastPointerPos);
-		lastPointerPos = p;
+		if (!p) return;
 
 		if (dragTarget.kind === 'path') {
-			const finger = getFingerById(dragTarget.fingerId);
+			if (!dragStartPointer) return;
+			const finger = getDragBaseFinger(dragTarget.fingerId);
 			if (!finger) return;
-			const ok = applyConstrainedUpdate(dragTarget.fingerId, (current, fraction) => {
+			const delta = vecSub(p, dragStartPointer);
+			const ok = applyConstrainedUpdate(
+				dragTarget.fingerId,
+				(current, fraction) => {
 				const { left: minX, right: maxX, top: minY, bottom: maxY } = getOverlapRect();
 				const segs = cloneSegments(fingerToSegments(current));
 				if (!segs.length) return current;
@@ -2561,7 +2581,9 @@
 				}
 
 				return updateFingerSegments(current, segs);
-			});
+				},
+				finger
+			);
 			if (!ok) return;
 			dragDirty = true;
 			return;
@@ -2571,13 +2593,14 @@
 			if (typeof dragTarget.anchorIdx === 'number') {
 				const anchorIdx = dragTarget.anchorIdx;
 				const anchorsToMove = selectedAnchors.includes(anchorIdx) ? selectedAnchors : [anchorIdx];
+				const offset = dragStartOffset ?? { x: 0, y: 0 };
 				// If a single internal junction is dragged, use QP snapping (matches Paper editor diamond).
 				if (anchorsToMove.length === 1) {
-					const finger = getFingerById(dragTarget.fingerId);
+					const finger = getDragBaseFinger(dragTarget.fingerId);
 					const segs = finger ? fingerToSegments(finger) : null;
 					const n = segs?.length ?? 0;
 					if (finger && segs && anchorIdx > 0 && anchorIdx < n) {
-						const desired = vecAdd(segs[anchorIdx]!.p0, delta);
+						const desired = vecAdd(p, offset);
 						const ok = updateSegmentControlPoint(dragTarget.fingerId, anchorIdx, 'junction', desired);
 						if (!ok) return;
 						dragDirty = true;
@@ -2585,7 +2608,9 @@
 					}
 				}
 
-				const finger = getFingerById(dragTarget.fingerId);
+				if (!dragStartPointer) return;
+				const delta = vecSub(p, dragStartPointer);
+				const finger = getDragBaseFinger(dragTarget.fingerId);
 				const baseSegs = finger ? fingerToSegments(finger) : null;
 				if (finger && baseSegs && baseSegs.length) {
 					const snappedDelta = snapAnchorDeltaQP(finger, baseSegs, anchorsToMove, anchorIdx, delta);
@@ -2604,28 +2629,28 @@
 					}
 				}
 
-				const ok = applyConstrainedUpdate(dragTarget.fingerId, (current, fraction) => {
-					const segs = cloneSegments(fingerToSegments(current));
-					if (!segs.length) return current;
-					const d = vecScale(delta, fraction);
-					applyDeltaToAnchorsInSegments(current, segs, anchorsToMove, d);
-					if (symmetryWithinCurve) {
-						applyWithinCurveSymmetryForMovedAnchors(current, segs, anchorsToMove, anchorIdx);
-					}
-					return updateFingerSegments(current, segs);
-				});
+				const ok = applyConstrainedUpdate(
+					dragTarget.fingerId,
+					(current, fraction) => {
+						const segs = cloneSegments(fingerToSegments(current));
+						if (!segs.length) return current;
+						const d = vecScale(delta, fraction);
+						applyDeltaToAnchorsInSegments(current, segs, anchorsToMove, d);
+						if (symmetryWithinCurve) {
+							applyWithinCurveSymmetryForMovedAnchors(current, segs, anchorsToMove, anchorIdx);
+						}
+						return updateFingerSegments(current, segs);
+					},
+					finger ?? undefined
+				);
 				if (!ok) return;
 				dragDirty = true;
 				return;
 			}
 
 			if (typeof dragTarget.segmentIndex === 'number' && dragTarget.handle) {
-				const finger = getFingerById(dragTarget.fingerId);
-				if (!finger) return;
-				const seg = fingerToSegments(finger)[dragTarget.segmentIndex];
-				if (!seg) return;
-				const base = dragTarget.handle === 'p1' ? seg.p1 : seg.p2;
-				const desired = vecAdd(base, delta);
+				const offset = dragStartOffset ?? { x: 0, y: 0 };
+				const desired = vecAdd(p, offset);
 				const ok = updateSegmentControlPoint(dragTarget.fingerId, dragTarget.segmentIndex, dragTarget.handle, desired);
 				if (!ok) return;
 				dragDirty = true;
@@ -3128,7 +3153,7 @@
 													<circle
 														cx={seg.p1.x}
 														cy={seg.p1.y}
-														r={3.5 * curveUiScale}
+														r={5 * curveUiScale}
 														fill="#eee"
 														stroke="#111"
 														stroke-width="1"
@@ -3152,7 +3177,7 @@
 													<circle
 														cx={seg.p2.x}
 														cy={seg.p2.y}
-														r={3.5 * curveUiScale}
+														r={5 * curveUiScale}
 														fill="#eee"
 														stroke="#111"
 														stroke-width="1"
@@ -3177,7 +3202,7 @@
 													<circle
 														cx={prev.p2.x}
 														cy={prev.p2.y}
-														r={3.5 * curveUiScale}
+														r={5 * curveUiScale}
 														fill="#eee"
 														stroke="#111"
 														stroke-width="1"
@@ -3199,7 +3224,7 @@
 													<circle
 														cx={next.p1.x}
 														cy={next.p1.y}
-														r={3.5 * curveUiScale}
+														r={5 * curveUiScale}
 														fill="#eee"
 														stroke="#111"
 														stroke-width="1"
@@ -3212,7 +3237,7 @@
 										{/each}
 
 										{#each getAnchorPositions(segs) as a, aIdx (selectedFinger.id + ':a:' + aIdx)}
-											{@const s = (aIdx === 0 || aIdx === n ? 10 : 8) * curveUiScale}
+											{@const s = 10 * curveUiScale}
 											<rect
 												x={a.x - s / 2}
 												y={a.y - s / 2}
@@ -3350,7 +3375,7 @@
 												disabled={!canInsertNode}
 												aria-label="Insert node"
 											>
-												<SplitIcon size={18} aria-hidden="true" />
+												<span aria-hidden="true"><AddNodeIcon /></span>
 											</Button>
 										</span>
 									{/snippet}

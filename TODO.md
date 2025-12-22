@@ -16,3 +16,6 @@
 - [x] Replace parallel selection arrays with a single `Selection` object (anchors/segments + last-hit info).
 - [x] Fix Svelte warnings about `state_referenced_locally` (e.g. `gridSize` / `lastGridSize` patterns).
 - [x] Make `__julefletPaperHeartDebug` dev-only to keep prod global scope clean.
+
+## UI / UX
+- [ ] Add descriptive text below carousel (especially for photos, e.g. photo credit vs template author).
