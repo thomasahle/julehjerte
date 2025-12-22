@@ -27,6 +27,7 @@ export const translations = {
     selected: '✓ Valgt',
     details: 'Detaljer',
     private: 'Privat',
+    delete: 'Slet',
     selectHeartsFirst: 'Vælg hjerter først',
 
     // Heart detail
@@ -83,6 +84,8 @@ export const translations = {
     download: 'Download',
     import: 'Importer',
     cancel: 'Annuller',
+    yes: 'Ja',
+    no: 'Nej',
     myHeart: 'Mit Hjerte',
     copy: '(Kopi)',
     importedHeart: 'Importeret Hjerte',
@@ -172,6 +175,7 @@ export const translations = {
     selected: '✓ Selected',
     details: 'Details',
     private: 'Private',
+    delete: 'Delete',
     selectHeartsFirst: 'Select hearts first',
 
     // Heart detail
@@ -228,6 +232,8 @@ export const translations = {
     download: 'Download',
     import: 'Import',
     cancel: 'Cancel',
+    yes: 'Yes',
+    no: 'No',
     myHeart: 'My Heart',
     copy: '(Copy)',
     importedHeart: 'Imported Heart',

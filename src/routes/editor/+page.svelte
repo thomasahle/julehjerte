@@ -1,15 +1,14 @@
 <script lang="ts">
-  import { page } from '$app/stores';
   import { beforeNavigate, goto } from '$app/navigation';
   import { base } from '$app/paths';
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { SITE_TITLE } from '$lib/config';
   import { t, tArray, getLanguage, subscribeLanguage, type Language } from '$lib/i18n';
   import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
-  import { normalizeHeartDesign, serializeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
+  import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
   import { sanitizeHtml } from '$lib/utils';
   import { trackImportError } from '$lib/analytics';
   import PageHeader from '$lib/components/PageHeader.svelte';
@@ -17,8 +16,6 @@
   import CircleHelpIcon from '@lucide/svelte/icons/circle-help';
   import XIcon from '@lucide/svelte/icons/x';
   import { Button } from '$lib/components/ui/button';
-  import * as Tooltip from '$lib/components/ui/tooltip';
-  import { tick } from 'svelte';
   import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
   // Help modal state
@@ -59,13 +56,12 @@
   let authorName = $state(urlDesign?.author ?? '');
   let description = $state(urlDesign?.description ?? '');
   let lang = $state<Language>('da');
-  let colors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
-  let editorEl: HTMLDivElement | null = $state(null);
-  let draftId = $state<string | null>(null);
-  let lastSavedSnapshot = $state<string | null>(null);
-  let hasUnsavedChanges = $state(false);
-  let beforeUnloadHandler: ((event: BeforeUnloadEvent) => void) | null = null;
-  let skipNextPrompt = $state(false);
+	  let colors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
+	  let editorEl: HTMLDivElement | null = $state(null);
+	  let draftId = $state<string | null>(null);
+	  let autosaveTimeout: ReturnType<typeof setTimeout> | null = null;
+	  let autosaveDirty = false;
+	  const AUTOSAVE_DEBOUNCE_MS = 600;
 
   onMount(() => {
     // Initialize language
@@ -87,13 +83,10 @@
     if (!isEditMode && !draftId) {
       draftId = generateId();
     }
-    lastSavedSnapshot = getDesignSnapshot();
+	    if (!editorEl) return;
 
-    if (!editorEl) return;
-    editorEl.addEventListener('click', handleEditorClick, true);
-
-    let ro: ResizeObserver | null = null;
-    let resizeListener: (() => void) | null = null;
+	    let ro: ResizeObserver | null = null;
+	    let resizeListener: (() => void) | null = null;
 
     const updateHeaderHeightVar = async () => {
       await tick();
@@ -117,23 +110,18 @@
       win.addEventListener('resize', resizeListener, { passive: true });
     }
 
-    return () => {
-      ro?.disconnect();
-      if (resizeListener) win.removeEventListener('resize', resizeListener);
-      editorEl?.removeEventListener('click', handleEditorClick, true);
-    };
-  });
+	    return () => {
+	      ro?.disconnect();
+	      if (resizeListener) win.removeEventListener('resize', resizeListener);
+	    };
+	  });
 
-  $effect(() => {
-    if (!browser || !lastSavedSnapshot) return;
-    hasUnsavedChanges = getDesignSnapshot() !== lastSavedSnapshot;
-  });
-
-  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
-    currentFingers = fingers;
-    currentGridSize = gridSize;
-    currentWeaveParity = weaveParity;
-  }
+	  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
+	    currentFingers = fingers;
+	    currentGridSize = gridSize;
+	    currentWeaveParity = weaveParity;
+	    scheduleAutosave();
+	  }
 
   function generateId(): string {
     return `heart-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -145,8 +133,8 @@
     return draftId;
   }
 
-  function createHeartDesign(): HeartDesign {
-    return {
+	  function createHeartDesign(): HeartDesign {
+	    return {
       // In edit mode, keep the original ID; otherwise generate a new one
       id: getDesignId(),
       name: sanitizeHtml(heartName),
@@ -160,42 +148,30 @@
       weaveParity: currentWeaveParity,
       gridSize: currentGridSize,
       fingers: currentFingers
-    };
-  }
+	    };
+	  }
 
-  function getDesignSnapshot(): string {
-    return JSON.stringify(serializeHeartDesign(createHeartDesign()));
-  }
+	  function flushAutosave(): void {
+	    if (!browser) return;
+	    if (!autosaveDirty) return;
+	    autosaveDirty = false;
+	    try {
+	      saveUserDesign(createHeartDesign());
+	    } catch (err) {
+	      console.error('Autosave failed', err);
+	      autosaveDirty = true;
+	    }
+	  }
 
-  function isDirty(): boolean {
-    if (!lastSavedSnapshot) return false;
-    return getDesignSnapshot() !== lastSavedSnapshot;
-  }
-
-  function shouldHandleBackClick(target: HTMLElement | null): boolean {
-    if (!target) return false;
-    const link = target.closest('a');
-    if (!link) return false;
-    const href = link.getAttribute('href') || '';
-    const expectedHref = `${base}/`;
-    return href === expectedHref || href === '/';
-  }
-
-  function handleEditorClick(event: MouseEvent) {
-    if (!browser || !isDirty()) return;
-    const target = event.target as HTMLElement | null;
-    if (!shouldHandleBackClick(target)) return;
-    event.preventDefault();
-    const shouldSave = window.confirm(t('saveBeforeLeavePrompt', lang));
-    if (shouldSave) {
-      const design = createHeartDesign();
-      saveUserDesign(design);
-      lastSavedSnapshot = getDesignSnapshot();
-      hasUnsavedChanges = false;
-    }
-    skipNextPrompt = true;
-    goto(`${base}/`);
-  }
+	  function scheduleAutosave(): void {
+	    if (!browser) return;
+	    autosaveDirty = true;
+	    if (autosaveTimeout) clearTimeout(autosaveTimeout);
+	    autosaveTimeout = setTimeout(() => {
+	      autosaveTimeout = null;
+	      flushAutosave();
+	    }, AUTOSAVE_DEBOUNCE_MS);
+	  }
 
   function downloadSVG() {
     const design = createHeartDesign();
@@ -212,17 +188,17 @@
     URL.revokeObjectURL(url);
   }
 
-  function showInGallery() {
-    if (!browser) return;
+	  function showInGallery() {
+	    if (!browser) return;
 
-    const design = createHeartDesign();
-    saveUserDesign(design);
-    lastSavedSnapshot = getDesignSnapshot();
-    hasUnsavedChanges = false;
+	    flushAutosave();
 
-    // Navigate to gallery
-    goto(`${base}/#${makeHeartAnchorId(design.id)}`);
-  }
+	    const design = createHeartDesign();
+	    saveUserDesign(design);
+
+	    // Navigate to gallery
+	    goto(`${base}/#${makeHeartAnchorId(design.id)}`);
+	  }
 
   function handleImport(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -246,51 +222,45 @@
         currentGridSize = design.gridSize;
         currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
         heartName = design.name || t('importedHeart', lang);
-        authorName = design.author || '';
-        description = design.description || '';
-        editingExisting = false;
-        initialDesign = design;
-        draftId = generateId();
-        lastSavedSnapshot = getDesignSnapshot();
-        editorKey++;
-      } catch (err) {
-        trackImportError(file.name, err instanceof Error ? err.message : 'Unknown parse error');
-        alert(t('invalidHeartFile', lang));
-      }
+	        authorName = design.author || '';
+	        description = design.description || '';
+	        editingExisting = false;
+          isEditMode = false;
+	        initialDesign = design;
+	        draftId = generateId();
+	        editorKey++;
+	        scheduleAutosave();
+	      } catch (err) {
+	        trackImportError(file.name, err instanceof Error ? err.message : 'Unknown parse error');
+	        alert(t('invalidHeartFile', lang));
+	      }
     };
     reader.readAsText(file);
   }
 
-  $effect(() => {
-    if (!browser) return;
-    beforeUnloadHandler = (event: BeforeUnloadEvent) => {
-      if (!isDirty()) return;
-      event.preventDefault();
-      event.returnValue = '';
-    };
-    window.addEventListener('beforeunload', beforeUnloadHandler);
-    return () => {
-      if (beforeUnloadHandler) window.removeEventListener('beforeunload', beforeUnloadHandler);
-    };
-  });
+	  $effect(() => {
+	    if (!browser) return;
+	    const handler = () => {
+	      if (autosaveTimeout) {
+	        clearTimeout(autosaveTimeout);
+	        autosaveTimeout = null;
+	      }
+	      flushAutosave();
+	    };
+	    window.addEventListener('beforeunload', handler);
+	    return () => window.removeEventListener('beforeunload', handler);
+	  });
 
-  beforeNavigate((navigation) => {
-    if (!browser || !navigation) return;
-    if (skipNextPrompt) {
-      skipNextPrompt = false;
-      return;
-    }
-    if (!isDirty()) return;
-    const shouldSave = window.confirm(t('saveBeforeLeavePrompt', lang));
-    if (shouldSave) {
-      const design = createHeartDesign();
-      saveUserDesign(design);
-      lastSavedSnapshot = getDesignSnapshot();
-      hasUnsavedChanges = false;
-    }
-  });
+	  beforeNavigate((navigation) => {
+	    if (!browser || !navigation) return;
+	    if (autosaveTimeout) {
+	      clearTimeout(autosaveTimeout);
+	      autosaveTimeout = null;
+	    }
+	    flushAutosave();
+	  });
 
-</script>
+	</script>
 
 <svelte:head>
   <title>{editingExisting ? t('editHeart', lang) : t('createNewHeartTitle', lang)} - {SITE_TITLE}</title>
@@ -326,15 +296,15 @@
       <h3>{t('heartDetails', lang)}</h3>
       <div class="form-field">
         <label for="name">{t('name', lang)}</label>
-        <input id="name" type="text" bind:value={heartName} />
+        <input id="name" type="text" bind:value={heartName} oninput={scheduleAutosave} />
       </div>
       <div class="form-field">
         <label for="author">{t('author', lang)}</label>
-        <input id="author" type="text" bind:value={authorName} placeholder={t('yourName', lang)} />
+        <input id="author" type="text" bind:value={authorName} placeholder={t('yourName', lang)} oninput={scheduleAutosave} />
       </div>
       <div class="form-field">
         <label for="desc">{t('description', lang)}</label>
-        <textarea id="desc" bind:value={description} rows="3" placeholder={t('optionalDescription', lang)}></textarea>
+        <textarea id="desc" bind:value={description} rows="3" placeholder={t('optionalDescription', lang)} oninput={scheduleAutosave}></textarea>
       </div>
     </div>
 
@@ -430,7 +400,8 @@
       </div>
     </div>
   {/if}
-</div>
+
+	</div>
 
 <style>
   .editor {

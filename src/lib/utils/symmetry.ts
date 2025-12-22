@@ -130,47 +130,47 @@ function isCurveSymmetric(finger: Finger): boolean {
 }
 
 // Check if all curves within each lobe are symmetric (mirrored around lobe center)
-function areLobesInternallySymmetric(fingers: Finger[]): boolean {
+function areLobesInternallySymmetricUnder(fingers: Finger[], anti: boolean): boolean {
   const bounds = inferSquareBounds(fingers);
   if (!bounds) return false;
 
-  const check = (anti: boolean): boolean => {
-    for (const lobe of ['left', 'right'] as const) {
-      const lobeFingers = fingers.filter((f) => f.lobe === lobe);
-      // For each finger, find its mirror pair within the same lobe
-      const used = new Set<number>();
-      for (let i = 0; i < lobeFingers.length; i++) {
-        if (used.has(i)) continue;
-        const s1 = fingerToSegments(lobeFingers[i]!);
-        const mapped = mapSegments(s1, (p) => mapPointWithinLobe(bounds, lobe, p, anti), anti);
-        // Check if it's self-symmetric
-        if (segmentsEqual(mapped, s1)) {
-          used.add(i);
-          continue;
-        }
-        // Find a matching pair
-        let foundPair = false;
-        for (let j = i + 1; j < lobeFingers.length; j++) {
-          if (used.has(j)) continue;
-          const s2 = fingerToSegments(lobeFingers[j]!);
-          if (segmentsEqual(mapped, s2)) {
-            used.add(i);
-            used.add(j);
-            foundPair = true;
-            break;
-          }
-        }
-        if (!foundPair) return false;
+  for (const lobe of ['left', 'right'] as const) {
+    const lobeFingers = fingers.filter((f) => f.lobe === lobe);
+    // For each finger, find its mirror pair within the same lobe
+    const used = new Set<number>();
+    for (let i = 0; i < lobeFingers.length; i++) {
+      if (used.has(i)) continue;
+      const s1 = fingerToSegments(lobeFingers[i]!);
+      const mapped = mapSegments(s1, (p) => mapPointWithinLobe(bounds, lobe, p, anti), anti);
+      // Check if it's self-symmetric
+      if (segmentsEqual(mapped, s1)) {
+        used.add(i);
+        continue;
       }
+      // Find a matching pair
+      let foundPair = false;
+      for (let j = i + 1; j < lobeFingers.length; j++) {
+        if (used.has(j)) continue;
+        const s2 = fingerToSegments(lobeFingers[j]!);
+        if (segmentsEqual(mapped, s2)) {
+          used.add(i);
+          used.add(j);
+          foundPair = true;
+          break;
+        }
+      }
+      if (!foundPair) return false;
     }
-    return true;
-  };
+  }
+  return true;
+}
 
-  return check(false) || check(true);
+function areLobesInternallySymmetric(fingers: Finger[]): boolean {
+  return areLobesInternallySymmetricUnder(fingers, false) || areLobesInternallySymmetricUnder(fingers, true);
 }
 
 // Check if left and right lobes mirror each other (diagonal symmetry)
-function areLobesMirrored(fingers: Finger[]): boolean {
+function areLobesMirroredUnder(fingers: Finger[], anti: boolean): boolean {
   const bounds = inferSquareBounds(fingers);
   if (!bounds) return false;
 
@@ -179,7 +179,7 @@ function areLobesMirrored(fingers: Finger[]): boolean {
   if (leftFingers.length !== rightFingers.length) return false;
 
   // Try sorted matching first (works well for simple paths)
-  const sortedMatch = (anti: boolean): boolean => {
+  const sortedMatch = (): boolean => {
     // Sort left by y of start point (top to bottom)
     const sortedLeft = leftFingers.slice().sort((a, b) => {
       const aSegs = fingerToSegments(a);
@@ -204,7 +204,7 @@ function areLobesMirrored(fingers: Finger[]): boolean {
   };
 
   // Try greedy matching as fallback (works for multi-subpath paths)
-  const greedyMatch = (anti: boolean): boolean => {
+  const greedyMatch = (): boolean => {
     const used = new Set<number>();
     for (let i = 0; i < leftFingers.length; i++) {
       const lSegs = fingerToSegments(leftFingers[i]!);
@@ -224,8 +224,11 @@ function areLobesMirrored(fingers: Finger[]): boolean {
     return true;
   };
 
-  // Try all combinations: sorted/greedy × normal/anti
-  return sortedMatch(false) || sortedMatch(true) || greedyMatch(false) || greedyMatch(true);
+  return sortedMatch() || greedyMatch();
+}
+
+function areLobesMirrored(fingers: Finger[]): boolean {
+  return areLobesMirroredUnder(fingers, false) || areLobesMirroredUnder(fingers, true);
 }
 
 // Check if it's a "classic" design (all straight lines, no curves)
@@ -271,6 +274,31 @@ export function detectSymmetry(fingers: Finger[]): SymmetryInfo {
     curveSymmetry,
     lobeSymmetry,
     mirrorSymmetry
+  };
+}
+
+export function detectSymmetryModes(fingers: Finger[]): {
+  withinCurveMode: 'off' | 'sym' | 'anti';
+  withinLobeMode: 'off' | 'sym' | 'anti';
+  betweenLobesMode: 'off' | 'sym' | 'anti';
+} {
+  if (!fingers.length) {
+    return { withinCurveMode: 'sym', withinLobeMode: 'sym', betweenLobesMode: 'sym' };
+  }
+
+  const curveSym = fingers.every((f) => isCurveSymmetricUnder(f, false));
+  const curveAnti = !curveSym && fingers.every((f) => isCurveSymmetricUnder(f, true));
+
+  const lobeSym = areLobesInternallySymmetricUnder(fingers, false);
+  const lobeAnti = !lobeSym && areLobesInternallySymmetricUnder(fingers, true);
+
+  const betweenSym = areLobesMirroredUnder(fingers, false);
+  const betweenAnti = !betweenSym && areLobesMirroredUnder(fingers, true);
+
+  return {
+    withinCurveMode: curveSym ? 'sym' : curveAnti ? 'anti' : 'off',
+    withinLobeMode: lobeSym ? 'sym' : lobeAnti ? 'anti' : 'off',
+    betweenLobesMode: betweenSym ? 'sym' : betweenAnti ? 'anti' : 'off'
   };
 }
 

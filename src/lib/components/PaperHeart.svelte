@@ -24,6 +24,7 @@
 	import { bezierBBox, bezierPathBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves } from '$lib/geometry/curves';
 	import { Point } from '$lib/geometry/point';
 	import { snapSequentialQP, snapSequentialQPBezierControl, snapSequentialQPBezierJunction } from '$lib/algorithms/snapBezierControl';
+	import { detectSymmetryModes } from '$lib/utils/symmetry';
 	import {
 		cloneSegments,
 		fingerToSegments,
@@ -259,6 +260,11 @@
 	let activePointerId = $state<number | null>(null);
 	let lastPointerPos = $state<Vec | null>(null);
 	let previousSnappedPos: Point | null = null;
+	let lastFingerClickAt = 0;
+	let lastFingerClickId: string | null = null;
+	let lastFingerClickPos: Vec | null = null;
+	const DOUBLE_CLICK_MS = 350;
+	const DOUBLE_CLICK_DIST = 8;
 
 	let prevWithinCurveMode: SymmetryMode = 'off';
 	let prevWithinLobeMode: SymmetryMode = 'off';
@@ -2052,8 +2058,8 @@
 	});
 
 	// SVG refs + coordinate mapping
-	let svgEl: SVGSVGElement;
-	let rotatedGroup: SVGGElement;
+	let svgEl = $state<SVGSVGElement | null>(null);
+	let rotatedGroup = $state<SVGGElement | null>(null);
 
 	// Zoom/pan (editor mode only)
 	let userZoom = $state(1.0);
@@ -2111,11 +2117,10 @@
 			};
 		}
 
-		type ToolbarKey = 'segment' | 'right';
-			let segmentControlsEl: HTMLDivElement | null = null;
-			let rightPanelEl: HTMLDivElement | null = null;
-			let toolbarPositions = $state<Record<ToolbarKey, { x: number; y: number }> | null>(null);
-		let toolbarDrag = $state<{
+			type ToolbarKey = 'segment' | 'right';
+			let segmentControlsEl = $state<HTMLDivElement | null>(null);
+			let rightPanelEl = $state<HTMLDivElement | null>(null);
+			let toolbarPositions = $state<Record<ToolbarKey, { x: number; y: number }> | null>(null);		let toolbarDrag = $state<{
 			which: ToolbarKey;
 			startClientX: number;
 			startClientY: number;
@@ -2401,6 +2406,28 @@
 		e.stopPropagation();
 		const p = localPointFromClient(e.clientX, e.clientY);
 		if (!p) return;
+		const now = performance.now();
+		if (
+			lastFingerClickId === fingerId &&
+			lastFingerClickPos &&
+			now - lastFingerClickAt <= DOUBLE_CLICK_MS &&
+			vecDist(lastFingerClickPos, p) <= DOUBLE_CLICK_DIST
+		) {
+			lastFingerClickAt = 0;
+			lastFingerClickId = null;
+			lastFingerClickPos = null;
+			selectedFingerId = fingerId;
+			selectedAnchors = [];
+			selectedSegments = [];
+			const hit = computeCurveHit(fingerId, p);
+			if (!hit) return;
+			lastCurveHit = hit;
+			insertNodeAtCurveHit(hit);
+			return;
+		}
+		lastFingerClickAt = now;
+		lastFingerClickId = fingerId;
+		lastFingerClickPos = p;
 		if (selectedFingerId !== fingerId) {
 			selectedAnchors = [];
 			selectedSegments = [];
@@ -2432,20 +2459,6 @@
 			selectedSegments = [];
 		}
 		beginDrag(e, { kind: 'path', fingerId });
-	}
-
-	function handleFingerDoubleClick(e: MouseEvent, fingerId: string) {
-		if (readonly) return;
-		e.stopPropagation();
-		const p = localPointFromClient(e.clientX, e.clientY);
-		if (!p) return;
-		selectedFingerId = fingerId;
-		selectedAnchors = [];
-		selectedSegments = [];
-		const hit = computeCurveHit(fingerId, p);
-		if (!hit) return;
-		lastCurveHit = hit;
-		insertNodeAtCurveHit(hit);
 	}
 
 	const HIT_STROKE_WIDTH = 14;
@@ -2654,16 +2667,25 @@
 	}
 
 	// init from props
-	$effect.pre(() => {
-		if (didInit) return;
-		didInit = true;
-		gridSize = normalizeGridSize(initialGridSize);
+		$effect.pre(() => {
+			if (didInit) return;
+			didInit = true;
+			gridSize = normalizeGridSize(initialGridSize);
 			weaveParity = normalizeWeaveParity(initialWeaveParity);
 			const has = initialFingers && initialFingers.length > 0;
 			fingers = has ? initialFingers!.map(cloneFinger) : createDefaultFingers(gridSize);
 			// Always include the four outer boundary curves (legacy designs omitted them),
 			// and normalize boundary IDs/order to match editor invariants.
 			reconcileBoundaryCurves({ forceRenumber: true });
+			if (has) {
+				const detected = detectSymmetryModes(fingers);
+				withinCurveMode = detected.withinCurveMode;
+				withinLobeMode = detected.withinLobeMode;
+				betweenLobesMode = canSymmetryBetweenLobes() ? detected.betweenLobesMode : 'off';
+				prevWithinCurveMode = withinCurveMode;
+				prevWithinLobeMode = withinLobeMode;
+				prevBetweenLobesMode = betweenLobesMode;
+			}
 		});
 
 	$effect(() => {
@@ -3021,7 +3043,6 @@
 											vector-effect="non-scaling-stroke"
 											style="cursor: crosshair"
 											onpointerdown={(e) => handleFingerPointerDown(e, finger.id)}
-											ondblclick={(e) => handleFingerDoubleClick(e, finger.id)}
 											onpointerenter={() => (hoverFingerId = finger.id)}
 											onpointerleave={() => hoverFingerId === finger.id && (hoverFingerId = null)}
 										/>

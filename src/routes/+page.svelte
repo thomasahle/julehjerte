@@ -4,7 +4,7 @@
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
   import HeartCard from "$lib/components/HeartCard.svelte";
-  import { getUserCollection, loadStaticHeartsIndex, loadStaticHeartById, type HeartCategoryWithMeta } from "$lib/stores/collection";
+  import { deleteUserDesign, getUserCollection, loadStaticHeartById, type HeartCategoryWithMeta } from "$lib/stores/collection";
   import { downloadMultiPDF, type LayoutMode } from "$lib/pdf/template";
   import { SITE_TITLE, SITE_URL, SITE_DESCRIPTION } from "$lib/config";
   import {
@@ -141,6 +141,18 @@
   function handleClick(design: HeartDesign) {
     trackHeartView(design.id, design.name);
     goto(`${base}/hjerte/${design.id}`);
+  }
+
+  function handleDelete(design: HeartDesign) {
+    deleteUserDesign(design.id);
+    userHearts = userHearts.filter((h) => h.id !== design.id);
+
+    if (selectedIds.has(design.id)) {
+      const newSet = new Set(selectedIds);
+      newSet.delete(design.id);
+      selectedIds = newSet;
+      updateUrlWithSelections(newSet);
+    }
   }
 
   let categories = $derived.by(() => {
@@ -309,6 +321,7 @@
                 selected={selectedIds.has(design.id)}
                 onSelect={handleSelect}
                 onClick={handleClick}
+                onDelete={handleDelete}
               />
             {/each}
           {/if}
@@ -394,7 +407,6 @@
     white-space: nowrap;
   }
 
-  .loading,
   .empty {
     text-align: center;
     padding: 4rem 2rem;

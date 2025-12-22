@@ -4,15 +4,17 @@
   import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
   import { onMount } from "svelte";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
+  import Trash2Icon from "@lucide/svelte/icons/trash-2";
 
   interface Props {
     design: HeartDesign & { isUserCreated?: boolean };
     selected?: boolean;
     onSelect?: (design: HeartDesign) => void;
     onClick?: (design: HeartDesign) => void;
+    onDelete?: (design: HeartDesign) => void;
   }
 
-  let { design, selected = false, onSelect, onClick }: Props = $props();
+  let { design, selected = false, onSelect, onClick, onDelete }: Props = $props();
   let lang = $state<Language>('da');
   let previewReady = $state(false);
   let previewEl: HTMLDivElement | null = null;
@@ -57,10 +59,16 @@
   }
 
   function handleKeyDown(e: KeyboardEvent) {
+    if (e.target !== e.currentTarget) return;
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       onSelect?.(design);
     }
+  }
+
+  function handleDelete(e: MouseEvent) {
+    e.stopPropagation();
+    onDelete?.(design);
   }
 </script>
 
@@ -97,9 +105,17 @@
   {#if selected}
     <div class="selected-badge">✓</div>
   {/if}
-  {#if design.isUserCreated}
-    <div class="custom-badge">★</div>
-    <div class="custom-badge-hover">{t('private', lang)}</div>
+  {#if design.isUserCreated && onDelete}
+    <button
+      class="delete-btn"
+      type="button"
+      onclick={handleDelete}
+      onkeydown={(e) => e.stopPropagation()}
+      aria-label={t('delete', lang)}
+      title={t('delete', lang)}
+    >
+      <Trash2Icon class="size-4" />
+    </button>
   {/if}
 </div>
 
@@ -230,40 +246,34 @@
     display: none;
   }
 
-  .custom-badge {
+  .delete-btn {
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%);
+    width: 28px;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.55);
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
   }
 
-  .custom-badge-hover {
-    position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%);
-    color: #333;
-    border-radius: 12px;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    white-space: nowrap;
-    display: none;
+  .delete-btn:hover {
+    background: rgba(204, 0, 0, 0.85);
+    transform: scale(1.02);
   }
 
-  .card:hover .custom-badge {
-    display: none;
+  .delete-btn:active {
+    transform: scale(0.98);
   }
 
-  .card:hover .custom-badge-hover {
-    display: block;
+  .delete-btn:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
   }
 </style>

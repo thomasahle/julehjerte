@@ -27,26 +27,39 @@ export function getUserCollection(): HeartDesign[] {
   }
 }
 
+function readUserCollectionRaw(): unknown[] {
+  if (!browser) return [];
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    const raw = stored ? (JSON.parse(stored) as unknown) : [];
+    return Array.isArray(raw) ? raw : [];
+  } catch {
+    return [];
+  }
+}
+
 export function saveUserDesign(design: HeartDesign): void {
   if (!browser) return;
 
-  const collection = getUserCollection();
-  // Check if design with same ID exists, update it
-  const existingIndex = collection.findIndex((d) => d.id === design.id);
+  const serialized = serializeHeartDesign(design);
+  const raw = readUserCollectionRaw();
+  const existingIndex = raw.findIndex(
+    (d) => d && typeof d === 'object' && 'id' in d && (d as { id?: unknown }).id === serialized.id
+  );
   if (existingIndex >= 0) {
-    collection[existingIndex] = design;
+    raw[existingIndex] = serialized;
   } else {
-    collection.push(design);
+    raw.push(serialized);
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(collection.map(serializeHeartDesign)));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(raw));
 }
 
 export function deleteUserDesign(id: string): void {
   if (!browser) return;
 
-  const collection = getUserCollection();
-  const filtered = collection.filter((d) => d.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered.map(serializeHeartDesign)));
+  const raw = readUserCollectionRaw();
+  const filtered = raw.filter((d) => !(d && typeof d === 'object' && 'id' in d && (d as { id?: unknown }).id === id));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
 }
 
 export function clearUserCollection(): void {
