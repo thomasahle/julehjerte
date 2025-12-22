@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
@@ -143,6 +143,14 @@
     goto(`${base}/hjerte/${design.id}`);
   }
 
+  let deleteCandidate = $state.raw<HeartDesign | null>(null);
+  let cancelDeleteButtonEl = $state.raw<HTMLElement | null>(null);
+
+  $effect(() => {
+    if (!deleteCandidate) return;
+    tick().then(() => cancelDeleteButtonEl?.focus());
+  });
+
   function handleDelete(design: HeartDesign) {
     deleteUserDesign(design.id);
     userHearts = userHearts.filter((h) => h.id !== design.id);
@@ -153,6 +161,20 @@
       selectedIds = newSet;
       updateUrlWithSelections(newSet);
     }
+  }
+
+  function requestDelete(design: HeartDesign) {
+    deleteCandidate = design;
+  }
+
+  function cancelDelete() {
+    deleteCandidate = null;
+  }
+
+  function confirmDelete() {
+    if (!deleteCandidate) return;
+    handleDelete(deleteCandidate);
+    deleteCandidate = null;
   }
 
   let categories = $derived.by(() => {
@@ -321,7 +343,7 @@
                 selected={selectedIds.has(design.id)}
                 onSelect={handleSelect}
                 onClick={handleClick}
-                onDelete={handleDelete}
+                onDelete={requestDelete}
               />
             {/each}
           {/if}
@@ -339,6 +361,38 @@
         {t("suggestHeart", lang)}
         <ExternalLinkIcon class="size-3" />
       </Button>
+    </div>
+  {/if}
+
+  {#if deleteCandidate}
+    <div
+      class="modal-overlay"
+      onclick={cancelDelete}
+      onkeydown={(e) => e.key === 'Escape' && cancelDelete()}
+      role="presentation"
+    >
+      <div
+        class="modal delete-modal"
+        role="dialog"
+        tabindex="-1"
+        aria-modal="true"
+        aria-labelledby="delete-title"
+        onclick={(e) => e.stopPropagation()}
+        onkeydown={(e) => {
+          if (e.key === 'Escape') cancelDelete();
+          e.stopPropagation();
+        }}
+      >
+        <h2 id="delete-title">{t('deleteHeartTitle', lang)}</h2>
+        <p>{t('deleteHeartPrompt', lang)}</p>
+        <p class="delete-heart-name">{deleteCandidate.name}</p>
+        <div class="delete-actions">
+          <Button variant="secondary" onclick={cancelDelete} bind:ref={cancelDeleteButtonEl}>
+            {t('cancel', lang)}
+          </Button>
+          <Button variant="destructive" onclick={confirmDelete}>{t('delete', lang)}</Button>
+        </div>
+      </div>
     </div>
   {/if}
 </div>
@@ -477,6 +531,48 @@
   .suggest-section p {
     margin: 0 0 0.5rem 0;
     font-size: 0.95rem;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 1000;
+  }
+
+  .modal {
+    width: min(520px, 100%);
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .modal h2 {
+    margin: 0 0 0.5rem 0;
+    color: #222;
+  }
+
+  .modal p {
+    margin: 0.5rem 0;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .delete-heart-name {
+    font-weight: 600;
+    color: #222;
+  }
+
+  .delete-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
   }
 
   @media (max-width: 600px) {

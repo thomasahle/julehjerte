@@ -28,6 +28,8 @@ export const translations = {
     details: 'Detaljer',
     private: 'Privat',
     delete: 'Slet',
+    deleteHeartTitle: 'Slet hjerte?',
+    deleteHeartPrompt: 'Er du sikker på at du vil slette dette hjerte? Dette kan ikke fortrydes.',
     selectHeartsFirst: 'Vælg hjerter først',
 
     // Heart detail
@@ -176,6 +178,8 @@ export const translations = {
     details: 'Details',
     private: 'Private',
     delete: 'Delete',
+    deleteHeartTitle: 'Delete heart?',
+    deleteHeartPrompt: 'Are you sure you want to delete this heart? This cannot be undone.',
     selectHeartsFirst: 'Select hearts first',
 
     // Heart detail

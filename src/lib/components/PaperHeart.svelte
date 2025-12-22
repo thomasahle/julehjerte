@@ -2265,10 +2265,13 @@
 	function handleWheel(event: WheelEvent) {
 		if (readonly) return;
 		if (!svgEl) return;
-		// Trackpad pinch gestures fire wheel events with ctrlKey=true
-		if (event.ctrlKey) {
+		// Trackpad pinch gestures fire wheel events with ctrlKey=true.
+		// Mouse wheels often report deltaMode=1 (lines) and should zoom by default.
+		const isLineWheel = event.deltaMode === 1;
+		if (event.ctrlKey || isLineWheel) {
 			event.preventDefault();
-			const delta = -event.deltaY * 0.01;
+			const zoomScale = isLineWheel ? 0.05 : 0.01;
+			const delta = -event.deltaY * zoomScale;
 			const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, userZoom * (1 + delta)));
 			if (newZoom !== userZoom) {
 				const rect = svgEl.getBoundingClientRect();
