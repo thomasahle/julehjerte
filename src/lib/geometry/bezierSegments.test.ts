@@ -3,6 +3,7 @@ import {
 	parsePathDataToSegments,
 	segmentsToPathData,
 	fingerToSegments,
+	fingerFromPathData,
 	cloneSegments,
 	splitBezierAt,
 	type BezierSegment
@@ -157,29 +158,31 @@ describe('segmentsToPathData', () => {
 });
 
 describe('fingerToSegments', () => {
-	it('parses pathData when no internal cache', () => {
-		const finger: Finger = {
+	it('returns the segments stored on the finger', () => {
+		const segments = parsePathDataToSegments('M 0 0 C 10 10 20 20 30 30');
+		const finger: Finger = { id: 'test', lobe: 'left', segments };
+		expect(fingerToSegments(finger)).toBe(segments);
+		expect(fingerToSegments(finger)).toHaveLength(1);
+	});
+
+	it('fingerFromPathData parses pathData into segments', () => {
+		const finger = fingerFromPathData({
 			id: 'test',
 			lobe: 'left',
 			pathData: 'M 0 0 C 10 10 20 20 30 30'
-		};
-		const segments = fingerToSegments(finger);
-
-		expect(segments).toHaveLength(1);
-		expect(segments[0].p0).toEqual({ x: 0, y: 0 });
-		expect(segments[0].p3).toEqual({ x: 30, y: 30 });
+		});
+		expect(finger.segments).toHaveLength(1);
+		expect(finger.segments[0].p0).toEqual({ x: 0, y: 0 });
+		expect(finger.segments[0].p3).toEqual({ x: 30, y: 30 });
 	});
 
 	it('returns same result for same finger', () => {
-		const finger: Finger = {
+		const finger = fingerFromPathData({
 			id: 'test',
 			lobe: 'right',
 			pathData: 'M 100 100 C 150 100 150 200 100 200'
-		};
-		const segments1 = fingerToSegments(finger);
-		const segments2 = fingerToSegments(finger);
-
-		expect(segments1).toEqual(segments2);
+		});
+		expect(fingerToSegments(finger)).toBe(finger.segments);
 	});
 });
 

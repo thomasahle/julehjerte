@@ -4,12 +4,28 @@ export type NodeType = 'corner' | 'smooth' | 'symmetric';
 
 export type GridSize = { x: number; y: number };
 
+export type BezierSegment = {
+  p0: Vec;
+  p1: Vec;
+  p2: Vec;
+  p3: Vec;
+};
+
 export type Finger = {
+  id: string;
+  lobe: LobeId;
+  // Canonical curve representation in editor coordinates.
+  segments: BezierSegment[];
+  // Optional per-anchor node types (Inkscape-like). Keys are anchor indices (0..segmentsLength).
+  nodeTypes?: Record<string, NodeType>;
+};
+
+// On-disk / interchange format for designs and SVG import/export.
+export type FingerPathData = {
   id: string;
   lobe: LobeId;
   // SVG path data using absolute `M` + one or more cubic `C` segments.
   pathData: string;
-  // Optional per-anchor node types (Inkscape-like). Keys are anchor indices (0..segmentsLength).
   nodeTypes?: Record<string, NodeType>;
 };
 
@@ -36,6 +52,4 @@ export interface HeartCollection {
 }
 
 // On-disk format for gallery hearts and shared designs.
-export type HeartDesignJson = Omit<HeartDesign, 'fingers'> & {
-  fingers: Array<{ id: string; lobe: LobeId; pathData: string; nodeTypes?: Record<string, NodeType> }>;
-};
+export type HeartDesignJson = Omit<HeartDesign, 'fingers'> & { fingers: FingerPathData[] };

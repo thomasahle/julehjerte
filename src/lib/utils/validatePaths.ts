@@ -220,9 +220,18 @@ export function validateRawFingers(
   }
 }
 
-// Legacy export for backwards compatibility - validates pixel coordinates
+// Legacy export for backwards compatibility - validates in-editor (pixel) coordinates.
 export function validateFinger(finger: Finger, gridSize: GridSize): ValidationResult {
-  return validateFingerPathData(finger.pathData, finger.lobe, finger.id);
+  const segments = finger.segments;
+  if (segments.length === 0) {
+    return { valid: false, warnings: ['No segments'] };
+  }
+
+  const warnings: string[] = [];
+  warnings.push(...checkContinuity(segments));
+  warnings.push(...checkSelfIntersection(segments));
+
+  return { valid: warnings.length === 0, warnings };
 }
 
 export function validateHeartDesign(

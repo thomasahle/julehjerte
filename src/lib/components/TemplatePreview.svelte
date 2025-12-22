@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { HeartDesign, Finger } from '$lib/types/heart';
+  import { segmentsToPathData } from '$lib/geometry/bezierSegments';
   import { inferOverlapRect } from '$lib/utils/overlapRect';
 
   interface Props {
@@ -124,7 +125,7 @@
   const transformedPaths = $derived(
     lobeFingers.map((finger: Finger) =>
       transformPathData(
-        finger.pathData,
+        segmentsToPathData(finger.segments),
         rect.top,
         rect.left,
         overlapWidth,
@@ -204,6 +205,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    width: 100%;
   }
 
   .template-label {
@@ -215,5 +217,7 @@
   svg {
     background: #fafafa;
     border-radius: 8px;
+    max-width: 100%;
+    height: auto;
   }
 </style>

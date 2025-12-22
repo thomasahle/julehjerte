@@ -39,7 +39,8 @@
   import PageHeader from "$lib/components/PageHeader.svelte";
   import * as Carousel from "$lib/components/ui/carousel";
 
-  let design = $state<HeartDesign | null>(null);
+  // Design geometry is large (segments); keep it out of deeply reactive proxies.
+  let design = $state.raw<HeartDesign | null>(null);
   let isUserCreated = $state(false);
   let loading = $state(true);
   let error = $state<string | null>(null);
@@ -641,6 +642,15 @@
 
     .preview-section {
       order: -1;
+      padding: 0; /* Let carousel go edge-to-edge if needed, or control via carousel-root */
+    }
+
+    .preview-section :global(.carousel-prev) {
+      left: 10px;
+    }
+
+    .preview-section :global(.carousel-next) {
+      right: 10px;
     }
 
     h1 {

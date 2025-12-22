@@ -141,10 +141,10 @@
 		return lobe === 'left' ? size.y : size.x;
 	}
 
-	function createDefaultFingers(sizeInput: GridSize): Finger[] {
-		const size = normalizeGridSize(sizeInput);
-		const width = size.x * STRIP_WIDTH;
-		const height = size.y * STRIP_WIDTH;
+		function createDefaultFingers(sizeInput: GridSize): Finger[] {
+			const size = normalizeGridSize(sizeInput);
+			const width = size.x * STRIP_WIDTH;
+			const height = size.y * STRIP_WIDTH;
 		const left = CENTER.x - width / 2;
 		const top = CENTER.y - height / 2;
 		const right = left + width;
@@ -160,13 +160,13 @@
 			const p0: Vec = { x: right, y };
 			const p3: Vec = { x: left, y };
 
-			const isEdge = i === 0 || i === size.y;
-			const bow = (t - 0.5) * height * 0.12;
-			const p1: Vec = isEdge ? { ...p0 } : { x: p0.x - width * 0.3, y: p0.y + bow };
-			const p2: Vec = isEdge ? { ...p3 } : { x: p3.x + width * 0.3, y: p3.y - bow };
+				const isEdge = i === 0 || i === size.y;
+				const bow = (t - 0.5) * height * 0.12;
+				const p1: Vec = isEdge ? { ...p0 } : { x: p0.x - width * 0.3, y: p0.y + bow };
+				const p2: Vec = isEdge ? { ...p3 } : { x: p3.x + width * 0.3, y: p3.y - bow };
 
-			result.push({ id: `L-${i}`, lobe: 'left', pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) });
-		}
+				result.push({ id: `L-${i}`, lobe: 'left', segments: [{ p0, p1, p2, p3 }] });
+			}
 
 		for (let i = 0; i < boundariesRight; i++) {
 			const t = size.x ? i / size.x : 0;
@@ -174,13 +174,13 @@
 			const p0: Vec = { x, y: bottom };
 			const p3: Vec = { x, y: top };
 
-			const isEdge = i === 0 || i === size.x;
-			const bow = (t - 0.5) * width * 0.12;
-			const p1: Vec = isEdge ? { ...p0 } : { x: p0.x + bow, y: p0.y - height * 0.3 };
-			const p2: Vec = isEdge ? { ...p3 } : { x: p3.x - bow, y: p3.y + height * 0.3 };
+				const isEdge = i === 0 || i === size.x;
+				const bow = (t - 0.5) * width * 0.12;
+				const p1: Vec = isEdge ? { ...p0 } : { x: p0.x + bow, y: p0.y - height * 0.3 };
+				const p2: Vec = isEdge ? { ...p3 } : { x: p3.x - bow, y: p3.y + height * 0.3 };
 
-			result.push({ id: `R-${i}`, lobe: 'right', pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) });
-		}
+				result.push({ id: `R-${i}`, lobe: 'right', segments: [{ p0, p1, p2, p3 }] });
+			}
 
 		return result;
 	}
@@ -195,30 +195,30 @@
 		return { x, y };
 	}
 
-	function makeNewBoundary(lobe: LobeId, pos: number): Finger {
-		const id = `${lobePrefix(lobe)}-tmp-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-		const { left, right, top, bottom } = getOverlapRect();
-		const width = right - left;
+		function makeNewBoundary(lobe: LobeId, pos: number): Finger {
+			const id = `${lobePrefix(lobe)}-tmp-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+			const { left, right, top, bottom } = getOverlapRect();
+			const width = right - left;
 		const height = bottom - top;
 
 		if (lobe === 'right') {
 			const x = pos;
 			const p0: Vec = { x, y: bottom };
 			const p3: Vec = { x, y: top };
-			// Add slight curve like createDefaultFingers (with bow = 0 for neutral curve)
-			const p1: Vec = { x: p0.x, y: p0.y - height * 0.3 };
-			const p2: Vec = { x: p3.x, y: p3.y + height * 0.3 };
-			return { id, lobe, pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) };
-		}
+				// Add slight curve like createDefaultFingers (with bow = 0 for neutral curve)
+				const p1: Vec = { x: p0.x, y: p0.y - height * 0.3 };
+				const p2: Vec = { x: p3.x, y: p3.y + height * 0.3 };
+				return { id, lobe, segments: [{ p0, p1, p2, p3 }] };
+			}
 
 		const y = pos;
 		const p0: Vec = { x: right, y };
 		const p3: Vec = { x: left, y };
-		// Add slight curve like createDefaultFingers (with bow = 0 for neutral curve)
-		const p1: Vec = { x: p0.x - width * 0.3, y: p0.y };
-		const p2: Vec = { x: p3.x + width * 0.3, y: p3.y };
-		return { id, lobe, pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) };
-	}
+			// Add slight curve like createDefaultFingers (with bow = 0 for neutral curve)
+			const p1: Vec = { x: p0.x - width * 0.3, y: p0.y };
+			const p2: Vec = { x: p3.x + width * 0.3, y: p3.y };
+			return { id, lobe, segments: [{ p0, p1, p2, p3 }] };
+		}
 
 	// State
 	let heartColors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
@@ -284,9 +284,9 @@
 	let canUndo = $derived(undoStack.length > 0);
 	let canRedo = $derived(redoStack.length > 0);
 
-	function cloneFinger(f: Finger): Finger {
-		return { id: f.id, lobe: f.lobe, pathData: f.pathData, nodeTypes: f.nodeTypes ? { ...f.nodeTypes } : undefined };
-	}
+		function cloneFinger(f: Finger): Finger {
+			return { id: f.id, lobe: f.lobe, segments: cloneSegments(f.segments), nodeTypes: f.nodeTypes ? { ...f.nodeTypes } : undefined };
+		}
 
 	function snapshotState(): HistorySnapshot {
 		return {
@@ -347,13 +347,13 @@
 		return fingers.find((f) => f.id === id);
 	}
 
-	function clampEndpoints(fingerId: string) {
-		updateFinger(fingerId, (f) => {
-			const segments = fingerToSegments(f);
-			if (!segments.length) return f;
-			const first = segments[0]!;
-			const last = segments[segments.length - 1]!;
-			const nextP0 = projectEndpoint(f, first.p0, 'p0');
+		function clampEndpoints(fingerId: string) {
+			updateFinger(fingerId, (f) => {
+				const segments = cloneSegments(fingerToSegments(f));
+				if (!segments.length) return f;
+				const first = segments[0]!;
+				const last = segments[segments.length - 1]!;
+				const nextP0 = projectEndpoint(f, first.p0, 'p0');
 			if (nextP0.x !== first.p0.x || nextP0.y !== first.p0.y) {
 				const d = vecSub(nextP0, first.p0);
 				first.p0 = nextP0;
@@ -976,14 +976,14 @@
 		reverseDirection = false
 	): Finger {
 		const segments = fingerToSegments(source);
-		let mappedSegments = segments.map((seg) => ({
-			p0: mapPoint(seg.p0),
-			p1: mapPoint(seg.p1),
-			p2: mapPoint(seg.p2),
-			p3: mapPoint(seg.p3)
-		}));
-		const base: Finger = { id: targetId, lobe: targetLobe, pathData: source.pathData };
-		if (!mappedSegments.length) return base;
+			let mappedSegments = segments.map((seg) => ({
+				p0: mapPoint(seg.p0),
+				p1: mapPoint(seg.p1),
+				p2: mapPoint(seg.p2),
+				p3: mapPoint(seg.p3)
+			}));
+			const base: Finger = { id: targetId, lobe: targetLobe, segments: [] };
+			if (!mappedSegments.length) return base;
 
 		if (reverseDirection) {
 			mappedSegments = reverseSegments(mappedSegments);
@@ -2658,13 +2658,13 @@
 		if (didInit) return;
 		didInit = true;
 		gridSize = normalizeGridSize(initialGridSize);
-		weaveParity = normalizeWeaveParity(initialWeaveParity);
-		const has = initialFingers && initialFingers.length > 0;
-		fingers = has ? initialFingers!.map((f) => ({ ...f })) : createDefaultFingers(gridSize);
-		// Always include the four outer boundary curves (legacy designs omitted them),
-		// and normalize boundary IDs/order to match editor invariants.
-		reconcileBoundaryCurves({ forceRenumber: true });
-	});
+			weaveParity = normalizeWeaveParity(initialWeaveParity);
+			const has = initialFingers && initialFingers.length > 0;
+			fingers = has ? initialFingers!.map(cloneFinger) : createDefaultFingers(gridSize);
+			// Always include the four outer boundary curves (legacy designs omitted them),
+			// and normalize boundary IDs/order to match editor invariants.
+			reconcileBoundaryCurves({ forceRenumber: true });
+		});
 
 	$effect(() => {
 		// Only apply when symmetry is enabled/changed (turning off does not mutate).
@@ -2999,21 +2999,22 @@
 
 								{#if !readonly}
 									{#each fingers as finger (finger.id)}
-										{@const isSelected = finger.id === selectedFingerId}
-										{@const isHovered = finger.id === hoverFingerId}
-										{@const hidden = !showCurves}
-										{@const hasIssues = issueFingerIds.has(finger.id)}
-										{@const lobeColor = finger.lobe === 'left' ? '#00ddff' : '#ff8800'}
-										{@const strokeColor = hasIssues ? '#ff0000' : isSelected ? '#111111' : lobeColor}
-										{@const outlineColor = isSelected ? '#ffffff' : '#000000'}
+											{@const isSelected = finger.id === selectedFingerId}
+											{@const isHovered = finger.id === hoverFingerId}
+											{@const hidden = !showCurves}
+											{@const hasIssues = issueFingerIds.has(finger.id)}
+											{@const lobeColor = finger.lobe === 'left' ? '#00ddff' : '#ff8800'}
+											{@const strokeColor = hasIssues ? '#ff0000' : isSelected ? '#111111' : lobeColor}
+											{@const outlineColor = isSelected ? '#ffffff' : '#000000'}
+											{@const fingerPathData = segmentsToPathData(finger.segments)}
 
 										<!-- Wide (invisible) hit zone for hover/selection -->
 										<!-- svelte-ignore a11y_no_static_element_interactions -->
-										<path
-											d={finger.pathData}
-											fill="none"
-											stroke="#000"
-											stroke-opacity="0.001"
+											<path
+												d={fingerPathData}
+												fill="none"
+												stroke="#000"
+												stroke-opacity="0.001"
 											stroke-width={HIT_STROKE_WIDTH}
 											stroke-linecap="round"
 											stroke-linejoin="round"
@@ -3027,22 +3028,22 @@
 
 										{#if !hidden}
 											<!-- Visible outline for contrast -->
-											<path
-												d={finger.pathData}
-												fill="none"
-												stroke={outlineColor}
-												stroke-width={isSelected ? 6 : 4}
+												<path
+													d={fingerPathData}
+													fill="none"
+													stroke={outlineColor}
+													stroke-width={isSelected ? 6 : 4}
 												stroke-linecap="round"
 												stroke-linejoin="round"
 												vector-effect="non-scaling-stroke"
 												pointer-events="none"
 											/>
 											<!-- Colored stroke on top -->
-											<path
-												d={finger.pathData}
-												fill="none"
-												stroke={strokeColor}
-												stroke-width={isSelected ? 4 : 2}
+												<path
+													d={fingerPathData}
+													fill="none"
+													stroke={strokeColor}
+													stroke-width={isSelected ? 4 : 2}
 												stroke-linecap="round"
 												stroke-linejoin="round"
 												vector-effect="non-scaling-stroke"
@@ -3052,7 +3053,7 @@
 
 										{#if isHovered}
 											<path
-												d={finger.pathData}
+												d={fingerPathData}
 												fill="none"
 												stroke="#000"
 												stroke-opacity={hidden ? 1 : 0.35}

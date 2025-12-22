@@ -12,13 +12,7 @@ import { inferOverlapRect, type OverlapRect } from '$lib/utils/overlapRect';
  * Convert bezier segments to SVG path commands (forward direction).
  */
 function segmentsToForwardPath(segments: BezierSegment[]): string {
-	if (!segments.length) return '';
-
-	let d = `M ${segments[0].p0.x} ${segments[0].p0.y}`;
-	for (const seg of segments) {
-		d += ` C ${seg.p1.x} ${seg.p1.y} ${seg.p2.x} ${seg.p2.y} ${seg.p3.x} ${seg.p3.y}`;
-	}
-	return d;
+	return segmentsToPathData(segments);
 }
 
 /**
@@ -29,16 +23,17 @@ function segmentsToBackwardPath(segments: BezierSegment[]): string {
 	if (!segments.length) return '';
 
 	// Start from the last segment's end point
-	const lastSeg = segments[segments.length - 1];
-	let d = ` L ${lastSeg.p3.x} ${lastSeg.p3.y}`;
+	const lastSeg = segments[segments.length - 1]!;
+	const parts = new Array<string>(segments.length + 1);
+	parts[0] = ` L ${lastSeg.p3.x} ${lastSeg.p3.y}`;
 
 	// Go through segments in reverse, with reversed control points
 	for (let i = segments.length - 1; i >= 0; i--) {
-		const seg = segments[i];
+		const seg = segments[i]!;
 		// Reversed bezier: p3->p2->p1->p0
-		d += ` C ${seg.p2.x} ${seg.p2.y} ${seg.p1.x} ${seg.p1.y} ${seg.p0.x} ${seg.p0.y}`;
+		parts[segments.length - i] = ` C ${seg.p2.x} ${seg.p2.y} ${seg.p1.x} ${seg.p1.y} ${seg.p0.x} ${seg.p0.y}`;
 	}
-	return d;
+	return parts.join('');
 }
 
 /**

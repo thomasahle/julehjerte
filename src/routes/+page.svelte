@@ -45,8 +45,10 @@
   let { data } = $props();
   let indexCategories = $derived(data.indexCategories as IndexedCategory[]);
   
-  let loadedStaticHearts = $state<Record<string, HeartDesign>>({});
-  let userHearts = $state<HeartDesign[]>([]);
+  // Avoid making the full heart geometry (segments) deeply reactive — it's large and
+  // slows down tight geometry loops (e.g. ribbon path building) if proxied.
+  let loadedStaticHearts = $state.raw<Record<string, HeartDesign>>({});
+  let userHearts = $state.raw<HeartDesign[]>([]);
 
   let selectedIds = $state<Set<string>>(new Set());
   let loadingStatic = $state(true);
@@ -54,6 +56,7 @@
   let pdfLayout = $state<LayoutMode>("medium");
   let lang = $state<Language>("da");
   let colors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
+  let pendingAnchorId = $state<string | null>(null);
 
   // Read selections from URL on mount
   function getSelectionsFromUrl(): Set<string> {
@@ -97,6 +100,7 @@
     selectedIds = getSelectionsFromUrl();
 
     userHearts = getUserCollection();
+    pendingAnchorId = browser ? window.location.hash.slice(1) || null : null;
 
     // Kick off heart loading in background; update UI as each heart arrives.
     const ids = indexCategories.flatMap((c) => c.hearts);
@@ -155,6 +159,15 @@
 
   // Flatten loaded hearts (static + user)
   let allHearts = $derived(categories.flatMap((cat) => cat.hearts));
+
+  $effect(() => {
+    const _ = allHearts.length;
+    if (!browser || !pendingAnchorId) return;
+    const target = document.getElementById(pendingAnchorId);
+    if (!target) return;
+    target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    pendingAnchorId = null;
+  });
 
   async function handlePrintSelected() {
     const selected = allHearts.filter((h) => selectedIds.has(h.id));

@@ -87,6 +87,7 @@ export const translations = {
     copy: '(Kopi)',
     importedHeart: 'Importeret Hjerte',
     invalidHeartFile: 'Ugyldig hjertedesign fil',
+    saveBeforeLeavePrompt: 'Gem dine ændringer før du forlader siden?',
 
     // Editor help
     helpOpenAriaLabel: 'Hjælp',
@@ -231,6 +232,7 @@ export const translations = {
     copy: '(Copy)',
     importedHeart: 'Imported Heart',
     invalidHeartFile: 'Invalid heart design file',
+    saveBeforeLeavePrompt: 'Save your changes before leaving this page?',
 
     // Editor help
     helpOpenAriaLabel: 'Help',

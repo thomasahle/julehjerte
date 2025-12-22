@@ -6,7 +6,6 @@
 import type { Finger, GridSize, Vec } from '$lib/types/heart';
 import { STRIP_WIDTH, BASE_CENTER, CENTER } from '$lib/constants';
 import { median } from '$lib/utils/math';
-import { parsePathDataToSegments } from '$lib/geometry/bezierSegments';
 
 export interface OverlapRect {
 	left: number;
@@ -55,7 +54,7 @@ export function inferOverlapRect(
 	const bottomCandidates: number[] = [];
 
 	for (const finger of fingers) {
-		const segs = parsePathDataToSegments(finger.pathData);
+		const segs = finger.segments;
 		if (!segs.length) continue;
 		const start = segs[0]!.p0;
 		const end = segs[segs.length - 1]!.p3;

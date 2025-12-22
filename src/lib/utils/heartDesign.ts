@@ -1,10 +1,11 @@
-import type { Finger, GridSize, HeartDesign, LobeId, NodeType, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, HeartDesign, HeartDesignJson, LobeId, NodeType, Vec } from '$lib/types/heart';
 import { STRIP_WIDTH, BASE_CENTER } from '$lib/constants';
 import { clamp, clampInt } from '$lib/utils/math';
 import {
   type BezierSegment,
   parsePathDataToSegments,
   segmentsToPathData,
+  cloneSegments,
   reverseSegments
 } from '$lib/geometry/bezierSegments';
 import {
@@ -15,8 +16,8 @@ import { validateRawFingers } from '$lib/utils/validatePaths';
 import { SITE_DOMAIN } from '$lib/config';
 import { vecDist } from '$lib/geometry/vec';
 
-type RawFinger = Partial<Finger> & { id?: unknown; lobe?: unknown; pathData?: unknown };
-type RawDesign = Omit<Partial<HeartDesign>, 'gridSize'> & { gridSize?: unknown; fingers?: unknown };
+type RawFinger = { id?: unknown; lobe?: unknown; pathData?: unknown; nodeTypes?: unknown };
+type RawDesign = Omit<Partial<HeartDesignJson>, 'gridSize' | 'fingers'> & { gridSize?: unknown; fingers?: unknown };
 
 // ============================================================================
 // Coordinate Transform: JSON (0-100) ↔ Internal Pixels
@@ -137,7 +138,7 @@ function canonicalizeFingerForGrid(finger: Finger, rect: { left: number; right: 
     return { x, y };
   };
 
-  let segments = parsePathDataToSegments(finger.pathData);
+  let segments = cloneSegments(finger.segments);
   if (!segments.length) return finger;
   let nodeTypes = finger.nodeTypes;
 
@@ -180,7 +181,7 @@ function canonicalizeFingerForGrid(finger: Finger, rect: { left: number; right: 
   return {
     id: finger.id,
     lobe: finger.lobe,
-    pathData: segmentsToPathData(segments),
+    segments,
     nodeTypes
   };
 }
@@ -193,14 +194,14 @@ function makeStraightBoundary(lobe: LobeId, rect: { left: number; right: number;
     const p3: Vec = { x, y: rect.top };
     const p1: Vec = { ...p0 };
     const p2: Vec = { ...p3 };
-    return { id, lobe, pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) };
+    return { id, lobe, segments: [{ p0, p1, p2, p3 }] };
   }
   const y = pos;
   const p0: Vec = { x: rect.right, y };
   const p3: Vec = { x: rect.left, y };
   const p1: Vec = { ...p0 };
   const p2: Vec = { ...p3 };
-  return { id, lobe, pathData: segmentsToPathData([{ p0, p1, p2, p3 }]) };
+  return { id, lobe, segments: [{ p0, p1, p2, p3 }] };
 }
 
 function ensureOuterBoundaries(fingers: Finger[], rect: { left: number; right: number; top: number; bottom: number }): Finger[] {
@@ -208,7 +209,7 @@ function ensureOuterBoundaries(fingers: Finger[], rect: { left: number; right: n
 
   const atTop = (f: Finger) => {
     if (f.lobe !== 'left') return false;
-    const segs = parsePathDataToSegments(f.pathData);
+    const segs = f.segments;
     if (!segs.length) return false;
     const first = segs[0]!;
     const last = segs[segs.length - 1]!;
@@ -216,7 +217,7 @@ function ensureOuterBoundaries(fingers: Finger[], rect: { left: number; right: n
   };
   const atBottom = (f: Finger) => {
     if (f.lobe !== 'left') return false;
-    const segs = parsePathDataToSegments(f.pathData);
+    const segs = f.segments;
     if (!segs.length) return false;
     const first = segs[0]!;
     const last = segs[segs.length - 1]!;
@@ -224,7 +225,7 @@ function ensureOuterBoundaries(fingers: Finger[], rect: { left: number; right: n
   };
   const atLeft = (f: Finger) => {
     if (f.lobe !== 'right') return false;
-    const segs = parsePathDataToSegments(f.pathData);
+    const segs = f.segments;
     if (!segs.length) return false;
     const first = segs[0]!;
     const last = segs[segs.length - 1]!;
@@ -232,7 +233,7 @@ function ensureOuterBoundaries(fingers: Finger[], rect: { left: number; right: n
   };
   const atRight = (f: Finger) => {
     if (f.lobe !== 'right') return false;
-    const segs = parsePathDataToSegments(f.pathData);
+    const segs = f.segments;
     if (!segs.length) return false;
     const first = segs[0]!;
     const last = segs[segs.length - 1]!;
@@ -248,7 +249,7 @@ function ensureOuterBoundaries(fingers: Finger[], rect: { left: number; right: n
 }
 
 export function fingerToPathData(finger: Finger): string {
-  return finger.pathData;
+  return segmentsToPathData(finger.segments);
 }
 
 export function normalizeFinger(raw: unknown, gridSize: GridSize): Finger | null {
@@ -275,7 +276,7 @@ export function normalizeFinger(raw: unknown, gridSize: GridSize): Finger | null
     return {
       id,
       lobe,
-      pathData: segmentsToPathData(pixelSegments),
+      segments: pixelSegments,
       nodeTypes
     };
   }
@@ -340,19 +341,17 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
 
 /** Get the primary coordinate for a finger (y for left lobe, x for right lobe) */
 function getFingerPosition(finger: Finger): number {
-  const segments = parsePathDataToSegments(finger.pathData);
+  const segments = finger.segments;
   if (!segments.length) return 0;
   // For left lobe, position is the y-coordinate (horizontal paths)
   // For right lobe, position is the x-coordinate (vertical paths)
   if (finger.lobe === 'left') {
-    return segments[0].p0.y;
+    return segments[0]!.p0.y;
   }
-  return segments[0].p0.x;
+  return segments[0]!.p0.x;
 }
 
-export function serializeHeartDesign(design: HeartDesign): Omit<HeartDesign, 'fingers'> & {
-  fingers: Array<{ lobe: LobeId; pathData: string; nodeTypes?: Record<string, NodeType> }>;
-} {
+export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
   // Sort fingers by position so boundaries are at correct positions
   const leftFingers = design.fingers
     .filter((f) => f.lobe === 'left')
@@ -381,9 +380,9 @@ export function serializeHeartDesign(design: HeartDesign): Omit<HeartDesign, 'fi
     gridSize: design.gridSize,
     fingers: interiorFingers.map((f) => {
       // Transform from internal pixel coords to JSON 0-100 coords
-      const pixelSegments = parsePathDataToSegments(f.pathData);
-      const jsonSegments = transformSegmentsToJson(pixelSegments, design.gridSize);
+      const jsonSegments = transformSegmentsToJson(f.segments, design.gridSize);
       return {
+        id: f.id,
         lobe: f.lobe,
         pathData: segmentsToPathData(jsonSegments),
         nodeTypes: f.nodeTypes && Object.keys(f.nodeTypes).length ? f.nodeTypes : undefined
@@ -417,13 +416,11 @@ export function serializeHeartToSVG(design: HeartDesign): string {
 
   // Transform to 0-100 coords and keep lobe info
   const leftPaths = interiorLeft.map((f) => {
-    const pixelSegments = parsePathDataToSegments(f.pathData);
-    const jsonSegments = transformSegmentsToJson(pixelSegments, design.gridSize);
+    const jsonSegments = transformSegmentsToJson(f.segments, design.gridSize);
     return segmentsToPathData(jsonSegments);
   });
   const rightPaths = interiorRight.map((f) => {
-    const pixelSegments = parsePathDataToSegments(f.pathData);
-    const jsonSegments = transformSegmentsToJson(pixelSegments, design.gridSize);
+    const jsonSegments = transformSegmentsToJson(f.segments, design.gridSize);
     return segmentsToPathData(jsonSegments);
   });
 
@@ -1337,7 +1334,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     fingers.push({
       id: `L-tmp-${i}`,
       lobe: 'left',
-      pathData: segmentsToPathData(pixelSegments)
+      segments: pixelSegments
     });
   }
 
@@ -1349,7 +1346,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     fingers.push({
       id: `R-tmp-${i}`,
       lobe: 'right',
-      pathData: segmentsToPathData(pixelSegments)
+      segments: pixelSegments
     });
   }
 

@@ -47,7 +47,6 @@
     z-index: 100;
     padding: 0.5rem 0;
     background: #aacdd8;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .header-row {
@@ -55,6 +54,7 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: baseline;
     padding: 0 1rem;
+    gap: 1rem;
   }
 
   .header-left {

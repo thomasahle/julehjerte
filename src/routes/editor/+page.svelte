@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
+  import { beforeNavigate, goto } from '$app/navigation';
   import { base } from '$app/paths';
   import { onMount } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
@@ -9,7 +9,7 @@
   import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
-  import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
+  import { normalizeHeartDesign, serializeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
   import { sanitizeHtml } from '$lib/utils';
   import { trackImportError } from '$lib/analytics';
   import PageHeader from '$lib/components/PageHeader.svelte';
@@ -19,6 +19,7 @@
   import { Button } from '$lib/components/ui/button';
   import * as Tooltip from '$lib/components/ui/tooltip';
   import { tick } from 'svelte';
+  import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
   // Help modal state
   let showHelp = $state(false);
@@ -60,6 +61,11 @@
   let lang = $state<Language>('da');
   let colors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
   let editorEl: HTMLDivElement | null = $state(null);
+  let draftId = $state<string | null>(null);
+  let lastSavedSnapshot = $state<string | null>(null);
+  let hasUnsavedChanges = $state(false);
+  let beforeUnloadHandler: ((event: BeforeUnloadEvent) => void) | null = null;
+  let skipNextPrompt = $state(false);
 
   onMount(() => {
     // Initialize language
@@ -78,7 +84,13 @@
       heartName = t('myHeart', lang);
     }
 
+    if (!isEditMode && !draftId) {
+      draftId = generateId();
+    }
+    lastSavedSnapshot = getDesignSnapshot();
+
     if (!editorEl) return;
+    editorEl.addEventListener('click', handleEditorClick, true);
 
     let ro: ResizeObserver | null = null;
     let resizeListener: (() => void) | null = null;
@@ -93,7 +105,8 @@
 
     updateHeaderHeightVar();
 
-    if ('ResizeObserver' in window) {
+    const win = globalThis as unknown as Window;
+    if ('ResizeObserver' in win) {
       ro = new ResizeObserver(() => {
         updateHeaderHeightVar();
       });
@@ -101,13 +114,19 @@
       if (headerEl) ro.observe(headerEl);
     } else {
       resizeListener = () => updateHeaderHeightVar();
-      window.addEventListener('resize', resizeListener, { passive: true });
+      win.addEventListener('resize', resizeListener, { passive: true });
     }
 
     return () => {
       ro?.disconnect();
-      if (resizeListener) window.removeEventListener('resize', resizeListener);
+      if (resizeListener) win.removeEventListener('resize', resizeListener);
+      editorEl?.removeEventListener('click', handleEditorClick, true);
     };
+  });
+
+  $effect(() => {
+    if (!browser || !lastSavedSnapshot) return;
+    hasUnsavedChanges = getDesignSnapshot() !== lastSavedSnapshot;
   });
 
   function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
@@ -120,10 +139,16 @@
     return `heart-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
   }
 
+  function getDesignId(): string {
+    if (isEditMode && initialDesign) return initialDesign.id;
+    if (!draftId) draftId = generateId();
+    return draftId;
+  }
+
   function createHeartDesign(): HeartDesign {
     return {
       // In edit mode, keep the original ID; otherwise generate a new one
-      id: isEditMode && initialDesign ? initialDesign.id : generateId(),
+      id: getDesignId(),
       name: sanitizeHtml(heartName),
       author: sanitizeHtml(authorName),
       authorUrl: initialDesign?.authorUrl,
@@ -136,6 +161,40 @@
       gridSize: currentGridSize,
       fingers: currentFingers
     };
+  }
+
+  function getDesignSnapshot(): string {
+    return JSON.stringify(serializeHeartDesign(createHeartDesign()));
+  }
+
+  function isDirty(): boolean {
+    if (!lastSavedSnapshot) return false;
+    return getDesignSnapshot() !== lastSavedSnapshot;
+  }
+
+  function shouldHandleBackClick(target: HTMLElement | null): boolean {
+    if (!target) return false;
+    const link = target.closest('a');
+    if (!link) return false;
+    const href = link.getAttribute('href') || '';
+    const expectedHref = `${base}/`;
+    return href === expectedHref || href === '/';
+  }
+
+  function handleEditorClick(event: MouseEvent) {
+    if (!browser || !isDirty()) return;
+    const target = event.target as HTMLElement | null;
+    if (!shouldHandleBackClick(target)) return;
+    event.preventDefault();
+    const shouldSave = window.confirm(t('saveBeforeLeavePrompt', lang));
+    if (shouldSave) {
+      const design = createHeartDesign();
+      saveUserDesign(design);
+      lastSavedSnapshot = getDesignSnapshot();
+      hasUnsavedChanges = false;
+    }
+    skipNextPrompt = true;
+    goto(`${base}/`);
   }
 
   function downloadSVG() {
@@ -158,9 +217,11 @@
 
     const design = createHeartDesign();
     saveUserDesign(design);
+    lastSavedSnapshot = getDesignSnapshot();
+    hasUnsavedChanges = false;
 
     // Navigate to gallery
-    goto(`${base}/`);
+    goto(`${base}/#${makeHeartAnchorId(design.id)}`);
   }
 
   function handleImport(event: Event) {
@@ -189,6 +250,8 @@
         description = design.description || '';
         editingExisting = false;
         initialDesign = design;
+        draftId = generateId();
+        lastSavedSnapshot = getDesignSnapshot();
         editorKey++;
       } catch (err) {
         trackImportError(file.name, err instanceof Error ? err.message : 'Unknown parse error');
@@ -197,6 +260,35 @@
     };
     reader.readAsText(file);
   }
+
+  $effect(() => {
+    if (!browser) return;
+    beforeUnloadHandler = (event: BeforeUnloadEvent) => {
+      if (!isDirty()) return;
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+    return () => {
+      if (beforeUnloadHandler) window.removeEventListener('beforeunload', beforeUnloadHandler);
+    };
+  });
+
+  beforeNavigate((navigation) => {
+    if (!browser || !navigation) return;
+    if (skipNextPrompt) {
+      skipNextPrompt = false;
+      return;
+    }
+    if (!isDirty()) return;
+    const shouldSave = window.confirm(t('saveBeforeLeavePrompt', lang));
+    if (shouldSave) {
+      const design = createHeartDesign();
+      saveUserDesign(design);
+      lastSavedSnapshot = getDesignSnapshot();
+      hasUnsavedChanges = false;
+    }
+  });
 
 </script>
 

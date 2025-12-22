@@ -3,6 +3,7 @@
   import { t, getLanguage, subscribeLanguage, type Language } from "$lib/i18n";
   import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
   import { onMount } from "svelte";
+  import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
 
   interface Props {
     design: HeartDesign & { isUserCreated?: boolean };
@@ -66,6 +67,7 @@
 <div
   class="card"
   class:selected
+  id={makeHeartAnchorId(design.id)}
   onclick={handleClick}
   onkeydown={handleKeyDown}
   role="button"

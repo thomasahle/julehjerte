@@ -66,10 +66,10 @@
 		return v % 2 === 1 ? 1 : 0;
 	}
 
-	// State
-	let gridSize = $state(normalizeGridSize(initialGridSize));
-	let weaveParity = $state<0 | 1>(normalizeWeaveParity(initialWeaveParity));
-	let fingers = $state<Finger[]>(initialFingers ?? []);
+	// Geometry props are large; keep them out of deeply reactive `$state` proxies.
+	let gridSize = $derived(normalizeGridSize(initialGridSize));
+	let weaveParity = $derived<0 | 1>(normalizeWeaveParity(initialWeaveParity));
+	let fingers = $derived<Finger[]>(initialFingers ?? []);
 
 	// Computed weave data
 	let weaveData = $derived.by(() => {
@@ -95,15 +95,6 @@
 
 		const { viewBox } = computeHeartViewBoxFromOverlap(weaveData.overlap, { paddingRatio: 0.021, square: true });
 		return { viewBox, transform: rotationTransform };
-	});
-
-	// Initialize from props
-	$effect.pre(() => {
-		if (initialFingers) {
-			fingers = initialFingers;
-		}
-		gridSize = normalizeGridSize(initialGridSize);
-		weaveParity = normalizeWeaveParity(initialWeaveParity);
 	});
 
 	onMount(() => {
@@ -189,6 +180,8 @@
 <style>
 	.paper-heart-svg {
 		display: block;
+		max-width: 100%;
+		height: auto;
 	}
 
 	.paper-heart-svg.readonly {

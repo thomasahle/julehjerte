@@ -3,7 +3,7 @@ import type { GridSize, HeartDesign, Finger, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
 import { STRIP_WIDTH, CENTER } from '$lib/constants';
-import { type BezierSegment, parsePathDataToSegments } from '$lib/geometry/bezierSegments';
+import { type BezierSegment, segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 
 // A4 dimensions in mm
@@ -81,17 +81,17 @@ function fingersAreSymmetric(leftFingers: Finger[], rightFingers: Finger[], grid
   // This checks that swapping x/y within the overlap square maps left -> right.
   const leftSorted = leftFingers
     .slice()
-    .sort((a, b) => (parsePathDataToSegments(a.pathData)[0]?.p0.y ?? 0) - (parsePathDataToSegments(b.pathData)[0]?.p0.y ?? 0));
+    .sort((a, b) => (a.segments[0]?.p0.y ?? 0) - (b.segments[0]?.p0.y ?? 0));
   const rightSorted = rightFingers
     .slice()
-    .sort((a, b) => (parsePathDataToSegments(a.pathData)[0]?.p0.x ?? 0) - (parsePathDataToSegments(b.pathData)[0]?.p0.x ?? 0));
+    .sort((a, b) => (a.segments[0]?.p0.x ?? 0) - (b.segments[0]?.p0.x ?? 0));
 
   for (let i = 0; i < leftSorted.length; i++) {
     const left = leftSorted[i]!;
     const right = rightSorted[i]!;
 
-    const leftSegs = parsePathDataToSegments(left.pathData);
-    const rightSegs = parsePathDataToSegments(right.pathData);
+    const leftSegs = left.segments;
+    const rightSegs = right.segments;
     if (leftSegs.length !== rightSegs.length) return false;
 
     for (let s = 0; s < leftSegs.length; s++) {
@@ -401,7 +401,7 @@ function drawLobeTemplate(
     const leftFingers = design.fingers.filter((f) => f.lobe === 'left');
     for (const finger of leftFingers) {
       const transformedPath = transformPathData(
-        finger.pathData,
+        segmentsToPathData(finger.segments),
         rect.overlapTop,
         rect.overlapLeft,
         overlapWidth,
@@ -459,7 +459,7 @@ function drawLobeTemplate(
     for (const finger of rightFingers) {
       // Transform pathData to local coordinates
       const transformedPath = transformPathData(
-        finger.pathData,
+        segmentsToPathData(finger.segments),
         rect.overlapTop,
         rect.overlapLeft,
         overlapWidth,

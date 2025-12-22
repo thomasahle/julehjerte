@@ -1,32 +1,7 @@
-import type { Finger, Vec } from '$lib/types/heart';
+import type { Finger, FingerPathData, Vec, BezierSegment } from '$lib/types/heart';
 import { vecLerp } from '$lib/geometry/vec';
 
-export interface BezierSegment {
-  p0: Vec;
-  p1: Vec;
-  p2: Vec;
-  p3: Vec;
-}
-
-type InternalFinger = Finger & { __segments?: BezierSegment[] };
-
-export function getInternalSegments(finger: Finger): BezierSegment[] | null {
-  const internal = finger as InternalFinger;
-  const segs = internal.__segments;
-  if (
-    Array.isArray(segs) &&
-    segs.length &&
-    !Object.prototype.propertyIsEnumerable.call(internal, '__segments')
-  ) {
-    return segs;
-  }
-  return null;
-}
-
-export function setInternalSegments<T extends Finger>(finger: T, segments: BezierSegment[]): T & { __segments: BezierSegment[] } {
-  Object.defineProperty(finger as InternalFinger, '__segments', { value: segments, enumerable: false });
-  return finger as T & { __segments: BezierSegment[] };
-}
+export type { BezierSegment };
 
 export function cloneSegments(segments: BezierSegment[]): BezierSegment[] {
   return segments.map((seg) => ({
@@ -50,18 +25,27 @@ export function reverseSegments(segments: BezierSegment[]): BezierSegment[] {
 }
 
 export function fingerToSegments(finger: Finger): BezierSegment[] {
-  const internalSegs = getInternalSegments(finger);
-  if (internalSegs) return internalSegs;
-  return parsePathDataToSegments(finger.pathData);
+  return finger.segments;
+}
+
+export function fingerToPathData(finger: Finger): string {
+  return segmentsToPathData(finger.segments);
+}
+
+export function fingerFromPathData(finger: FingerPathData): Finger {
+  const segments = parsePathDataToSegments(finger.pathData);
+  return { id: finger.id, lobe: finger.lobe, segments, nodeTypes: finger.nodeTypes };
 }
 
 export function segmentsToPathData(segments: BezierSegment[]): string {
   if (segments.length === 0) return '';
-  let d = `M ${segments[0].p0.x} ${segments[0].p0.y}`;
-  for (const seg of segments) {
-    d += ` C ${seg.p1.x} ${seg.p1.y} ${seg.p2.x} ${seg.p2.y} ${seg.p3.x} ${seg.p3.y}`;
+  const parts = new Array<string>(segments.length + 1);
+  parts[0] = `M ${segments[0]!.p0.x} ${segments[0]!.p0.y}`;
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i]!;
+    parts[i + 1] = ` C ${seg.p1.x} ${seg.p1.y} ${seg.p2.x} ${seg.p2.y} ${seg.p3.x} ${seg.p3.y}`;
   }
-  return d;
+  return parts.join('');
 }
 
 // Convert a line to a cubic bezier (control points at 1/3 and 2/3)
@@ -443,12 +427,7 @@ export function parsePathDataToSegments(pathData: string): BezierSegment[] {
 }
 
 export function updateFingerSegments(finger: Finger, segments: BezierSegment[]): Finger {
-  // Ensure our internal scratch data doesn't leak into stored fingers/JSON.
-  const base = { ...finger } as Finger & { __segments?: unknown };
-  delete (base as unknown as { __segments?: unknown }).__segments;
-
-  if (!segments.length) return base;
-  return { ...base, pathData: segmentsToPathData(segments) };
+  return { ...finger, segments };
 }
 
 export function splitBezierAt(seg: BezierSegment, t: number): [BezierSegment, BezierSegment] {
