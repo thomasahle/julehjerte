@@ -1,16 +1,15 @@
 <script lang="ts">
   import { onMount, tick } from "svelte";
+  import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
   import HeartCard from "$lib/components/HeartCard.svelte";
   import { deleteUserDesign, getUserCollection, loadStaticHeartById, type HeartCategoryWithMeta } from "$lib/stores/collection";
   import { downloadMultiPDF, type LayoutMode } from "$lib/pdf/template";
-  import { SITE_TITLE, SITE_URL, SITE_DESCRIPTION } from "$lib/config";
+  import { SITE_TITLE, SITE_TITLE_EN, SITE_URL } from "$lib/config";
   import {
     t,
-    getLanguage,
-    subscribeLanguage,
     type Language,
   } from "$lib/i18n";
   import {
@@ -54,7 +53,12 @@
   let loadingStatic = $state(true);
   let generating = $state(false);
   let pdfLayout = $state<LayoutMode>("medium");
-  let lang = $state<Language>("da");
+  let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
+  let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
+  let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
+  let canonicalUrl = $derived(`${SITE_URL}${lang === "en" ? "/en/" : "/"}`);
+  let alternateDaUrl = $derived(`${SITE_URL}/`);
+  let alternateEnUrl = $derived(`${SITE_URL}/en/`);
   let colors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
   let pendingAnchorId = $state<string | null>(null);
 
@@ -86,11 +90,7 @@
   }
 
   onMount(async () => {
-    // Initialize language and colors
-    lang = getLanguage();
-    subscribeLanguage((l) => {
-      lang = l;
-    });
+    // Initialize colors
     colors = getColors();
     subscribeColors((c) => {
       colors = c;
@@ -140,7 +140,7 @@
 
   function handleClick(design: HeartDesign) {
     trackHeartView(design.id, design.name);
-    goto(`${base}/hjerte/${design.id}`);
+    goto(`${langBase}/hjerte/${design.id}`);
   }
 
   let deleteCandidate = $state.raw<HeartDesign | null>(null);
@@ -230,33 +230,26 @@
   };
 
   let selectedCount = $derived(selectedIds.size);
-  let remainingStatic = $derived.by(() => {
-    const total = indexCategories.reduce((sum, c) => sum + c.hearts.length, 0);
-    const loaded = Object.keys(loadedStaticHearts).length;
-    return Math.max(0, total - loaded);
-  });
 </script>
 
 <svelte:head>
-  <title>{SITE_TITLE}</title>
-  <meta name="description" content={SITE_DESCRIPTION} />
-  <link rel="canonical" href={SITE_URL} />
-  <meta property="og:url" content={SITE_URL} />
-  <meta property="og:title" content={SITE_TITLE} />
-  <meta property="og:description" content={SITE_DESCRIPTION} />
-  <meta property="og:type" content="website" />
+  <title>{metaTitle}</title>
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" hreflang="da" href={alternateDaUrl} />
+  <link rel="alternate" hreflang="en" href={alternateEnUrl} />
+  <link rel="alternate" hreflang="x-default" href={alternateDaUrl} />
 </svelte:head>
 
 <div class="gallery-page">
   <header>
     <h1>
-      <a class="site-title-link" href="{base}/">{t("siteTitle", lang)}</a>
+      <a class="site-title-link" href="{langBase}/">{t("siteTitle", lang)}</a>
     </h1>
     <p>{t("siteDescription", lang)}</p>
   </header>
 
   <div class="toolbar">
-    <Button href="{base}/editor" variant="destructive" class="shadow-s">
+    <Button href="{langBase}/editor" variant="destructive" class="shadow-s">
       {t("createNewHeart", lang)}
     </Button>
     <div class="inline-flex rounded-md shadow-xs" role="group">
@@ -313,11 +306,6 @@
       <p>{t("clickCreateNew", lang)}</p>
     </div>
   {:else}
-    {#if loadingStatic && remainingStatic > 0}
-      <div class="loading-inline">
-        {t("loadingHearts", lang)} ({remainingStatic})
-      </div>
-    {/if}
     {#each categories as category (category.id)}
       <section class="category-section">
         <h2 class="category-header">{t(categoryTitleKeys[category.id], lang)}</h2>
@@ -328,6 +316,7 @@
                 {@const design = loadedStaticHearts[id]}
                 <HeartCard
                   {design}
+                  {lang}
                   selected={selectedIds.has(design.id)}
                   onSelect={handleSelect}
                   onClick={handleClick}
@@ -340,6 +329,7 @@
             {#each category.hearts as design (design.id)}
               <HeartCard
                 {design}
+                {lang}
                 selected={selectedIds.has(design.id)}
                 onSelect={handleSelect}
                 onClick={handleClick}
@@ -465,13 +455,6 @@
     text-align: center;
     padding: 4rem 2rem;
     color: #888;
-  }
-
-  .loading-inline {
-    text-align: center;
-    color: #666;
-    margin: 0 0 1rem 0;
-    font-size: 0.95rem;
   }
 
   .empty p {

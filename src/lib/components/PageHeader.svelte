@@ -12,6 +12,7 @@
   }
 
   let { lang, children, backHref, onBack }: Props = $props();
+  let langBase = $derived(`${base}${lang === 'en' ? '/en' : ''}`);
 
   function handleBack(e: MouseEvent) {
     if (onBack) {
@@ -30,14 +31,14 @@
     <div class="header-left">
       <Button 
         variant="ghost" 
-        href={backHref ?? `${base}/`} 
+        href={backHref ?? `${langBase}/`} 
         class="h-auto p-0 hover:bg-transparent hover:text-red-700"
         onclick={handleBack}
       >
         {t('backToGallery', lang)}
       </Button>
     </div>
-    <a href="{base}/" class="site-title">{t('siteTitle', lang)}</a>
+    <a href="{langBase}/" class="site-title">{t('siteTitle', lang)}</a>
     <div class="header-right">
       {#if children}
         {@render children()}

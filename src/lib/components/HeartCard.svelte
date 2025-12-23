@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { HeartDesign } from "$lib/types/heart";
-  import { t, getLanguage, subscribeLanguage, type Language } from "$lib/i18n";
+  import { t, type Language } from "$lib/i18n";
   import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
   import { onMount } from "svelte";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
@@ -10,13 +10,13 @@
   interface Props {
     design: HeartDesign & { isUserCreated?: boolean };
     selected?: boolean;
+    lang: Language;
     onSelect?: (design: HeartDesign) => void;
     onClick?: (design: HeartDesign) => void;
     onDelete?: (design: HeartDesign) => void;
   }
 
-  let { design, selected = false, onSelect, onClick, onDelete }: Props = $props();
-  let lang = $state<Language>('da');
+  let { design, selected = false, lang, onSelect, onClick, onDelete }: Props = $props();
   let previewReady = $state(false);
   let previewEl: HTMLDivElement | null = null;
   let previewSize = $state(220);
@@ -32,12 +32,6 @@
     };
     return t(labels[level], lang);
   }
-
-  $effect(() => {
-    lang = getLanguage();
-    const unsubscribe = subscribeLanguage((l) => { lang = l; });
-    return unsubscribe;
-  });
 
   onMount(() => {
     if (!previewEl) return;

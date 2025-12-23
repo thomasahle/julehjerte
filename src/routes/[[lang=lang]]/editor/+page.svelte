@@ -1,14 +1,18 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import { beforeNavigate, goto } from '$app/navigation';
   import { base } from '$app/paths';
   import { onMount, tick } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { SITE_TITLE } from '$lib/config';
-  import { t, tArray, getLanguage, subscribeLanguage, type Language } from '$lib/i18n';
+  import { t, tArray, type Language } from '$lib/i18n';
   import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { getUserCollection, saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
   import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
+  import { detectSymmetry } from '$lib/utils/symmetry';
+  import { serializeTemplateToSVG, type TemplateLobe } from '$lib/utils/templateSvg';
+  import { renderHeartSvgInline } from '$lib/rendering/heartSvg';
   import { sanitizeHtml } from '$lib/utils';
   import { trackImportError } from '$lib/analytics';
   import PageHeader from '$lib/components/PageHeader.svelte';
@@ -57,7 +61,8 @@
   let heartName = $state('');
   let authorName = $state(urlDesign?.author ?? '');
   let description = $state(urlDesign?.description ?? '');
-  let lang = $state<Language>('da');
+  let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
+  let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
 	  let colors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
 	  let editorEl: HTMLDivElement | null = $state(null);
 	  let draftId = $state<string | null>(null);
@@ -66,10 +71,6 @@
 	  const AUTOSAVE_DEBOUNCE_MS = 600;
 
   onMount(() => {
-    // Initialize language
-    lang = getLanguage();
-    subscribeLanguage((l) => { lang = l; });
-
     // Initialize colors
     colors = getColors();
     subscribeColors((c) => { colors = c; });
@@ -198,26 +199,50 @@
     URL.revokeObjectURL(url);
   }
 
-	  function showInGallery() {
-	    if (!browser) return;
+  async function downloadTemplateSVG() {
+    const design = createHeartDesign();
+    const isSymmetric =
+      design.gridSize.x === design.gridSize.y && detectSymmetry(design.fingers).mirrorSymmetry;
+    const lobes: TemplateLobe[] = isSymmetric ? ['left'] : ['left', 'right'];
+    const previewSvgs = lobes.map((lobe, index) =>
+      renderHeartSvgInline(design, colors, {
+        idPrefix: `template-preview-${design.id}-${lobe}-${index}`,
+        outline: { color: '#111' }
+      })
+    );
+    const svg = serializeTemplateToSVG(design, lobes, { previewSvgs });
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${design.name.toLowerCase().replace(/\\s+/g, '-')}-template.svg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+		  function showInGallery() {
+		    if (!browser) return;
 
 	    flushAutosave();
 
 	    const design = createHeartDesign();
-	    saveUserDesign(design);
+		    saveUserDesign(design);
 
-	    // Navigate to gallery
-	    goto(`${base}/#${makeHeartAnchorId(design.id)}`);
-	  }
+		    // Navigate to gallery
+		    goto(`${langBase}/#${makeHeartAnchorId(design.id)}`);
+		  }
 
   function handleEditorBack(event: MouseEvent) {
     if (!returnToDetail) return;
-    event.preventDefault();
-    flushAutosave();
-    const backId = getBackDetailId();
-    if (!backId) return;
-    goto(`${base}/hjerte/${backId}`);
-  }
+	    event.preventDefault();
+	    flushAutosave();
+	    const backId = getBackDetailId();
+	    if (!backId) return;
+	    goto(`${langBase}/hjerte/${backId}`);
+	  }
 
   function handleImport(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -286,7 +311,7 @@
 </svelte:head>
 
 <div class="editor" bind:this={editorEl}>
-  <PageHeader {lang} onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? `${base}/hjerte/${getBackDetailId()}` : undefined) : undefined}>
+	  <PageHeader {lang} onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? `${langBase}/hjerte/${getBackDetailId()}` : undefined) : undefined}>
     <Button
       variant="ghost"
       size="icon"
@@ -357,7 +382,7 @@
           {isEditMode ? t('saveChanges', lang) : t('showInGallery', lang)}
         </button>
         <button class="btn secondary full-width" onclick={downloadSVG}>
-          {t('download', lang)}
+          {t('export', lang)}
         </button>
         <label class="btn secondary full-width import-btn">
           {t('import', lang)}
@@ -370,6 +395,9 @@
             hidden
           />
         </label>
+        <button class="btn secondary full-width" onclick={downloadTemplateSVG}>
+          {t('downloadTemplate', lang)}
+        </button>
       </div>
     </div>
   </aside>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="heart">
+      <!-- Scaled from the classic 16x16 heart -->
+      <path d="M32 56 L8 32 C0 24 0 8 16 8 C24 8 32 16 32 20 C32 16 40 8 48 8 C64 8 64 24 56 32 Z" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#heart)">
+    <!-- Base fill -->
+    <rect x="0" y="0" width="64" height="64" fill="#ffffff" />
+
+    <!-- Right lobe -->
+    <circle cx="48" cy="18" r="16" fill="#cc0000" />
+
+    <!-- 2x2 weave/checker body (rotated like the real hearts) -->
+    <g transform="translate(32 46) rotate(45)">
+      <rect x="-14" y="-14" width="14" height="14" fill="#ffffff" />
+      <rect x="0" y="-14" width="14" height="14" fill="#cc0000" />
+      <rect x="-14" y="0" width="14" height="14" fill="#cc0000" />
+      <rect x="0" y="0" width="14" height="14" fill="#ffffff" />
+    </g>
+  </g>
+
+  <!-- Outline for visibility on light backgrounds -->
+  <path
+    d="M32 56 L8 32 C0 24 0 8 16 8 C24 8 32 16 32 20 C32 16 40 8 48 8 C64 8 64 24 56 32 Z"
+    fill="none"
+    stroke="#999"
+    stroke-width="1.5"
+  />
+</svg>

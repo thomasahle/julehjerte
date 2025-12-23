@@ -10,6 +10,7 @@ import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRe
 const PAGE_WIDTH = 210;
 const PAGE_HEIGHT = 297;
 const MARGIN = 10;
+const PREVIEW_DPI = 300;
 
 // Layout modes for PDF generation
 export type LayoutMode = 'small' | 'medium' | 'large';
@@ -47,6 +48,12 @@ function getTemplateDimensions(layout: LayoutMode) {
   }
 
   return { width, height, cols, rows, margin: COMPACT_MARGIN, footerHeight: FOOTER_HEIGHT };
+}
+
+function previewSizePx(layout: LayoutMode): number {
+  const { width, height } = getTemplateDimensions(layout);
+  const previewSizeMm = Math.min(width * 0.35, height * 0.25);
+  return Math.max(200, Math.round((previewSizeMm / 25.4) * PREVIEW_DPI));
 }
 
 function inferOverlapRect(design: HeartDesign) {
@@ -473,13 +480,14 @@ function drawLobeTemplate(
 }
 
 // Pre-render heart images for all unique designs
-async function prerenderHeartImages(designs: HeartDesign[]): Promise<Map<string, string>> {
+async function prerenderHeartImages(designs: HeartDesign[], layout: LayoutMode): Promise<Map<string, string>> {
   const imageMap = new Map<string, string>();
   const uniqueDesigns = [...new Map(designs.map(d => [d.id, d])).values()];
+  const size = previewSizePx(layout);
 
   for (const design of uniqueDesigns) {
     try {
-      const dataURL = await renderHeartToDataURL(design);
+      const dataURL = await renderHeartToDataURL(design, { size });
       imageMap.set(design.id, dataURL);
     } catch (e) {
       console.error(`Failed to render heart ${design.id}:`, e);
@@ -622,7 +630,7 @@ export async function generatePDF(design: HeartDesign, options: PDFOptions = {})
     format: 'a4'
   });
 
-  const heartImages = await prerenderHeartImages([design]);
+  const heartImages = await prerenderHeartImages([design], layout);
   const templates = collectTemplates([design]);
   addTemplatesPage(pdf, templates, 0, true, heartImages, layout);
 
@@ -638,7 +646,7 @@ export async function generateMultiPDF(designs: HeartDesign[], options: PDFOptio
     format: 'a4'
   });
 
-  const heartImages = await prerenderHeartImages(designs);
+  const heartImages = await prerenderHeartImages(designs, layout);
   const templates = collectTemplates(designs);
   let index = 0;
   let isFirst = true;

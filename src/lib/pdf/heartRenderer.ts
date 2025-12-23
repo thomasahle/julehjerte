@@ -18,7 +18,11 @@ export async function renderHeartToDataURL(
   canvas.width = canvasSize;
   canvas.height = canvasSize;
 
-  const svg = renderHeartSvgMarkup(design, colors, { size: canvasSize, idPrefix: `pdf-${design.id}` });
+  const svg = renderHeartSvgMarkup(design, colors, {
+    size: canvasSize,
+    idPrefix: `pdf-${design.id}`,
+    outline: { color: '#111' }
+  });
   const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
   const url = URL.createObjectURL(blob);
 

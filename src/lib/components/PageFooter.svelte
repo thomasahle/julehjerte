@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import { onMount } from "svelte";
+  import { page } from "$app/stores";
+  import { browser } from "$app/environment";
+  import { base } from "$app/paths";
   import {
     t,
-    getLanguage,
-    setLanguage,
-    subscribeLanguage,
+    langFromPathname,
+    langPrefix,
     type Language,
   } from "$lib/i18n";
   import {
@@ -19,25 +20,29 @@
   import * as Tooltip from "$lib/components/ui/tooltip";
   import GitHubStarsButton from "$lib/components/GitHubStarsButton.svelte";
   
-  let lang = $state<Language>("da");
   let colors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
+  let lang = $derived(langFromPathname($page.url.pathname, base));
+  let toggleHref = $derived.by(() => {
+    const path = $page.url.pathname;
+    const pathWithoutBase = base && path.startsWith(base) ? path.slice(base.length) || '/' : path;
+    const stripped = pathWithoutBase.startsWith('/') ? pathWithoutBase : `/${pathWithoutBase}`;
+
+    const otherLang = lang === 'en' ? 'da' : 'en';
+    const withoutLangPrefix =
+      stripped === '/en' ? '/' : stripped.startsWith('/en/') ? stripped.slice(3) : stripped;
+
+    const targetPath = `${base}${langPrefix(otherLang)}${withoutLangPrefix}`;
+    const search = browser ? $page.url.search : '';
+    const hash = browser ? $page.url.hash : '';
+    return `${targetPath}${search}${hash}`;
+  });
 
   onMount(() => {
-    lang = getLanguage();
-    subscribeLanguage((l) => {
-      lang = l;
-    });
     colors = getColors();
     subscribeColors((c) => {
       colors = c;
     });
   });
-
-  function toggleLanguage() {
-    const newLang = lang === "da" ? "en" : "da";
-    setLanguage(newLang);
-    lang = newLang;
-  }
 </script>
 
 <footer class="page-footer">
@@ -87,7 +92,7 @@
     <Button
       variant="secondary"
       size="sm"
-      onclick={toggleLanguage}
+      href={toggleHref}
       title={lang === "da" ? "Switch to English" : "Skift til dansk"}
       class="rounded-full"
     >

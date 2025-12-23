@@ -12,8 +12,6 @@
   import {
     t,
     translations,
-    getLanguage,
-    subscribeLanguage,
     type Language,
   } from "$lib/i18n";
   import {
@@ -45,17 +43,12 @@
   let loading = $state(true);
   let error = $state<string | null>(null);
   let shareStatus = $state<"idle" | "copied" | "error">("idle");
-  let lang = $state<Language>("da");
+  let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
+  let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
   let colors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
   let photoUrl = $state<string | null>(null);
 
   onMount(async () => {
-    // Initialize language
-    lang = getLanguage();
-    subscribeLanguage((l) => {
-      lang = l;
-    });
-
     // Initialize colors
     colors = getColors();
     subscribeColors((c) => {
@@ -128,7 +121,7 @@
       );
       // For user-created hearts, pass edit=true to allow saving over the original
       const editParam = isUserCreated ? "&edit=true" : "";
-      goto(`${base}/editor?design=${designData}${editParam}&returnTo=detail`);
+      goto(`${langBase}/editor?design=${designData}${editParam}&returnTo=detail`);
     }
   }
 

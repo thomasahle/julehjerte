@@ -40,6 +40,19 @@ export function subscribeLanguage(fn: (lang: Language) => void) {
   return () => subscribers.delete(fn);
 }
 
+export function langFromPathname(pathname: string, basePath = ''): Language {
+  let path = pathname;
+  if (basePath && path.startsWith(basePath)) {
+    path = path.slice(basePath.length) || '/';
+  }
+  if (!path.startsWith('/')) path = `/${path}`;
+  return path === '/en' || path.startsWith('/en/') ? 'en' : 'da';
+}
+
+export function langPrefix(lang: Language): '' | '/en' {
+  return lang === 'en' ? '/en' : '';
+}
+
 export function t(key: TranslationKey, lang?: Language): string {
   const l = lang ?? currentLang;
   const value = translations[l][key];
