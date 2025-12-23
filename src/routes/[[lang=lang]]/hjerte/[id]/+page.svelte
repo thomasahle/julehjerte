@@ -286,6 +286,9 @@
         </Carousel.Root>
 
         <div class="button-group">
+          <button class="btn primary" onclick={handleDownload}>
+            {t("downloadPdfTemplate", lang)}
+          </button>
           <button class="btn secondary" onclick={openInEditor}>
             {t("openInEditor", lang)}
           </button>
@@ -573,6 +576,15 @@
 
   .btn.secondary:hover {
     background: #444;
+  }
+
+  .btn.primary {
+    background: #cc0000;
+    color: white;
+  }
+
+  .btn.primary:hover {
+    background: #aa0000;
   }
 
   .btn.share {

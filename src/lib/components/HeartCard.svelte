@@ -272,10 +272,6 @@
     font-weight: bold;
   }
 
-  .card:hover .selected-badge {
-    display: none;
-  }
-
   .delete-btn {
     position: absolute;
     top: 0.5rem;
