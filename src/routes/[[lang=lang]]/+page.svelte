@@ -59,7 +59,7 @@
   let canonicalUrl = $derived(`${SITE_URL}${lang === "en" ? "/en/" : "/"}`);
   let alternateDaUrl = $derived(`${SITE_URL}/`);
   let alternateEnUrl = $derived(`${SITE_URL}/en/`);
-  let colors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
+  let colors = $state<HeartColors>({ left: "#ffffff", right: "rgb(185, 19, 19)" });
   let pendingAnchorId = $state<string | null>(null);
 
   // Read selections from URL on mount

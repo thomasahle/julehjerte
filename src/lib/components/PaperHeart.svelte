@@ -225,7 +225,7 @@
 		}
 
 	// State
-	let heartColors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
+	let heartColors = $state<HeartColors>({ left: '#ffffff', right: 'rgb(185, 19, 19)' });
 	let gridSize = $state<GridSize>({ x: 3, y: 3 });
 	let weaveParity = $state<0 | 1>(0);
 	let fingers = $state<Finger[]>([]);

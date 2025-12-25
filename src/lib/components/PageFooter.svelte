@@ -20,7 +20,19 @@
   import * as Tooltip from "$lib/components/ui/tooltip";
   import GitHubStarsButton from "$lib/components/GitHubStarsButton.svelte";
   
-  let colors = $state<HeartColors>({ left: "#ffffff", right: "#cc0000" });
+  const DEFAULT_RIGHT_COLOR = "rgb(185, 19, 19)";
+  const DEFAULT_RIGHT_COLOR_HEX = "#b91313";
+  const toHexColor = (value: string | undefined, fallback: string) => {
+    if (!value) return fallback;
+    if (value.startsWith("#")) return value;
+    const match = value.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+    if (!match) return fallback;
+    const toHex = (channel: string) =>
+      Math.max(0, Math.min(255, Number(channel))).toString(16).padStart(2, "0");
+    return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
+  };
+
+  let colors = $state<HeartColors>({ left: "#ffffff", right: DEFAULT_RIGHT_COLOR });
   let lang = $derived(langFromPathname($page.url.pathname, base));
   let toggleHref = $derived.by(() => {
     const path = $page.url.pathname;
@@ -57,7 +69,7 @@
               type="color"
               id="left-color"
               name="left-color"
-              value={colors.left || '#ffffff'}
+              value={toHexColor(colors.left, "#ffffff")}
               oninput={(e) =>
                 setLeftColor((e.target as HTMLInputElement).value)}
               class="w-full h-full border-0 cursor-pointer scale-150"
@@ -77,7 +89,7 @@
               type="color"
               id="right-color"
               name="right-color"
-              value={colors.right || '#cc0000'}
+              value={toHexColor(colors.right, DEFAULT_RIGHT_COLOR_HEX)}
               oninput={(e) =>
                 setRightColor((e.target as HTMLInputElement).value)}
               class="w-full h-full border-0 cursor-pointer scale-150"

@@ -63,7 +63,7 @@
   let description = $state(urlDesign?.description ?? '');
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
   let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
-	  let colors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
+	  let colors = $state<HeartColors>({ left: '#ffffff', right: 'rgb(185, 19, 19)' });
 	  let editorEl: HTMLDivElement | null = $state(null);
 	  let draftId = $state<string | null>(null);
 	  let autosaveTimeout: ReturnType<typeof setTimeout> | null = null;

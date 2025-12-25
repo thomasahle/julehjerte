@@ -7,7 +7,7 @@ export interface HeartColors {
 
 const DEFAULT_COLORS: HeartColors = {
   left: '#ffffff',
-  right: '#cc0000'
+  right: 'rgb(185, 19, 19)'
 };
 
 // Simple module-level state with subscribers

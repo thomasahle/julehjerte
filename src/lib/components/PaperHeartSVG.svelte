@@ -43,7 +43,7 @@
 	const componentId = $derived.by(() => (idPrefix && idPrefix.length > 0 ? idPrefix : 'paper-heart'));
 
 	// Colors from store
-	let heartColors = $state<HeartColors>({ left: '#ffffff', right: '#cc0000' });
+	let heartColors = $state<HeartColors>({ left: '#ffffff', right: 'rgb(185, 19, 19)' });
 
 	function normalizeGridSize(raw: GridSize | number): GridSize {
 		if (typeof raw === 'number' && Number.isFinite(raw)) {
