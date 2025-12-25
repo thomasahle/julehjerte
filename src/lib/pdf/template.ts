@@ -21,7 +21,7 @@ const LAYOUTS = {
   large: { cols: 2, rows: 2 }    // 4 per page
 };
 
-export interface PDFOptions {
+interface PDFOptions {
   layout?: LayoutMode;
 }
 
@@ -621,7 +621,7 @@ function addTemplatesPage(
   return drawn;
 }
 
-export async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promise<jsPDF> {
+async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promise<jsPDF> {
   const layout = options.layout ?? 'medium';
 
   const pdf = new jsPDF({
@@ -637,7 +637,7 @@ export async function generatePDF(design: HeartDesign, options: PDFOptions = {})
   return pdf;
 }
 
-export async function generateMultiPDF(designs: HeartDesign[], options: PDFOptions = {}): Promise<jsPDF> {
+async function generateMultiPDF(designs: HeartDesign[], options: PDFOptions = {}): Promise<jsPDF> {
   const layout = options.layout ?? 'medium';
 
   const pdf = new jsPDF({

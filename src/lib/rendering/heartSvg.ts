@@ -109,7 +109,7 @@ export function computeHeartViewBoxFromOverlap(
 	return { viewBox: `${minX - padding} ${minY - padding} ${w + 2 * padding} ${h + 2 * padding}`, overlapCenter };
 }
 
-export function computeHeartViewBox(
+function computeHeartViewBox(
 	design: HeartDesign,
 	opts: { paddingRatio?: number; square?: boolean } = {}
 ): { viewBox: string; overlapCenter: { x: number; y: number } } {
@@ -131,7 +131,7 @@ function buildHeartOutlinePath(overlap: OverlapLike): string {
 	].join(' ');
 }
 
-export interface HeartSvgContent {
+interface HeartSvgContent {
 	viewBox: string;
 	markup: string;
 }

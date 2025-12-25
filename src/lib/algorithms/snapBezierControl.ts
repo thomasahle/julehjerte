@@ -5,7 +5,7 @@ import { moveHandleToward } from './snap';
 
 export type SquareBounds = { minX: number; maxX: number; minY: number; maxY: number };
 
-export type SnapResult<P> = { point: P; iterations: number };
+type SnapResult<P> = { point: P; iterations: number };
 
 type PointCtor<P> = new (x: number, y: number) => P;
 
@@ -83,7 +83,7 @@ function affineSampleJunctionNext<P extends PointLike<P>>(
 }
 
 // Sampler abstraction: returns affine samples { A, w } for a given t value
-export type AffineSampler<P> = (t: number) => Array<{ A: P; w: number }>;
+type AffineSampler<P> = (t: number) => Array<{ A: P; w: number }>;
 
 // Create a sampler for control point (p1 or p2) dragging
 export function createControlSampler<P extends PointLike<P>>(
@@ -192,80 +192,6 @@ export function snapSequentialQP<TCandidate, P extends PointLike<P>>(
   return { point: pt, iterations };
 }
 
-export function snapProjectedGradientBezierControl<TCandidate, P extends PointLike<P>>(
-  buildCandidateAt: (pos: P) => TCandidate,
-  from: P,
-  desired: P,
-  isValidCandidate: (candidate: TCandidate) => boolean,
-  control: BezierControlKey,
-  p0: P,
-  fixedOther: P,
-  p3: P,
-  obstacles: Array<{ getNearestLocation: (p: P) => { point: P; distance: number } | null }>,
-  square: SquareBounds,
-  opts: {
-    tSamples?: number[];
-    repelRadius?: number;
-    repelGain?: number;
-    iters?: number;
-  } = {}
-): SnapResult<P> {
-  let iterations = 0;
-  const zero = from.multiply(0);
-
-  // Start from the furthest valid point along the drag ray.
-  let pt = moveHandleToward(buildCandidateAt, from, desired, isValidCandidate);
-  iterations++;
-
-  const tSamples = opts.tSamples ?? [0.1, 0.2, 0.35, 0.5, 0.65, 0.8, 0.9];
-  const repelRadius = opts.repelRadius ?? 10;
-  const repelGain = opts.repelGain ?? 2.0;
-  const iters = opts.iters ?? 8;
-
-  for (let k = 0; k < iters; k++) {
-    const toDesired = desired.subtract(pt);
-    const distToDesired = toDesired.length;
-    if (distToDesired < 0.25) break;
-
-    let repulse = zero;
-    for (const t of tSamples) {
-      const { A, w } = affineSample(control, p0, fixedOther, p3, t);
-      if (w < 1e-3) continue;
-
-      const x = A.add(pt.multiply(w));
-      const nearest = nearestObstacle(x, obstacles);
-      const d = nearest.dist;
-      if (d <= repelRadius && Number.isFinite(d) && d >= 1e-6) {
-        const n = x.subtract(nearest.point).normalize();
-        const m = (repelRadius - d) / repelRadius;
-        repulse = repulse.add(n.multiply(m * w));
-      }
-
-      // Soft square repulsion (keeps search stable near edges)
-      const margin = 4;
-      if (x.x < square.minX + margin)
-        repulse = repulse.add(makePoint(from, w * ((square.minX + margin) - x.x) / margin, 0));
-      if (x.x > square.maxX - margin)
-        repulse = repulse.add(makePoint(from, w * ((square.maxX - margin) - x.x) / margin, 0));
-      if (x.y < square.minY + margin)
-        repulse = repulse.add(makePoint(from, 0, w * ((square.minY + margin) - x.y) / margin));
-      if (x.y > square.maxY - margin)
-        repulse = repulse.add(makePoint(from, 0, w * ((square.maxY - margin) - x.y) / margin));
-    }
-
-    const dir = toDesired.add(repulse.multiply(repelGain)).normalize();
-    const step = Math.min(25, Math.max(3, distToDesired));
-    const target = pt.add(dir.multiply(step));
-    const next = moveHandleToward(buildCandidateAt, pt, target, isValidCandidate);
-    iterations++;
-    if (next.getDistance(desired) + 0.01 >= pt.getDistance(desired)) break;
-    if (next.getDistance(pt) < 0.25) break;
-    pt = next;
-  }
-
-  return { point: pt, iterations };
-}
-
 // Wrapper for backward compatibility - delegates to unified snapSequentialQP
 export function snapSequentialQPBezierControl<TCandidate, P extends PointLike<P>>(
   buildCandidateAt: (pos: P) => TCandidate,
@@ -316,112 +242,4 @@ export function snapSequentialQPBezierJunction<TCandidate, P extends PointLike<P
 ): SnapResult<P> {
   const sampler = createJunctionSampler(prevP0, prevP1, prevP2, from, nextP1, nextP2, nextP3);
   return snapSequentialQP(buildCandidateAt, from, desired, isValidCandidate, sampler, obstacles, square, opts);
-}
-
-export function snapPenalizedNewtonBezierControl<TCandidate, P extends PointLike<P>>(
-  buildCandidateAt: (pos: P) => TCandidate,
-  from: P,
-  desired: P,
-  isValidCandidate: (candidate: TCandidate) => boolean,
-  control: BezierControlKey,
-  p0: P,
-  fixedOther: P,
-  p3: P,
-  obstacles: Array<{ getNearestLocation: (p: P) => { point: P; distance: number } | null }>,
-  square: SquareBounds,
-  opts: {
-    tSamples?: number[];
-    iters?: number;
-    penaltyGain?: number;
-    repelRadius?: number;
-    maxStep?: number;
-    edgeMargin?: number;
-    edgeGain?: number;
-  } = {}
-): SnapResult<P> {
-  let iterations = 0;
-  let pt = moveHandleToward(buildCandidateAt, from, desired, isValidCandidate);
-  iterations++;
-
-  const tSamples = opts.tSamples ?? [0.1, 0.2, 0.35, 0.5, 0.65, 0.8, 0.9];
-  const iters = opts.iters ?? 6;
-  const penaltyGain = opts.penaltyGain ?? 10;
-  const repelRadius = opts.repelRadius ?? 10;
-  const maxStepDefault = opts.maxStep ?? 25;
-  const edgeMargin = opts.edgeMargin ?? 4;
-  const edgeGain = opts.edgeGain ?? penaltyGain * 0.25;
-
-  const zero = pt.multiply(0);
-
-  for (let k = 0; k < iters; k++) {
-    const distToDesired = pt.getDistance(desired);
-    if (distToDesired < 0.25) break;
-
-    // Objective: ||p - desired||^2 + penaltyGain * Σ max(0, r - d(x(p)))^2.
-    let g = pt.subtract(desired).multiply(2);
-    let hxx = 2;
-    let hxy = 0;
-    let hyy = 2;
-
-    for (const t of tSamples) {
-      const { A, w } = affineSample(control, p0, fixedOther, p3, t);
-      if (w < 1e-3) continue;
-
-      const x = A.add(pt.multiply(w));
-
-      const nearest = nearestObstacle(x, obstacles);
-      const d = nearest.dist;
-      if (Number.isFinite(d) && d >= 1e-6 && d < repelRadius) {
-        const n = x.subtract(nearest.point).normalize();
-        const slack = repelRadius - d;
-        g = g.add(n.multiply(-2 * penaltyGain * slack * w));
-
-        const hc = 2 * penaltyGain * w * w;
-        hxx += hc * n.x * n.x;
-        hxy += hc * n.x * n.y;
-        hyy += hc * n.y * n.y;
-      }
-
-      // Soft edge penalty at the curve sample points.
-      const leftSlack = square.minX + edgeMargin - x.x;
-      if (leftSlack > 0) {
-        g = g.add(makePoint(zero, -2 * edgeGain * leftSlack * w, 0));
-        hxx += 2 * edgeGain * w * w;
-      }
-      const rightSlack = x.x - (square.maxX - edgeMargin);
-      if (rightSlack > 0) {
-        g = g.add(makePoint(zero, 2 * edgeGain * rightSlack * w, 0));
-        hxx += 2 * edgeGain * w * w;
-      }
-      const topSlack = square.minY + edgeMargin - x.y;
-      if (topSlack > 0) {
-        g = g.add(makePoint(zero, 0, -2 * edgeGain * topSlack * w));
-        hyy += 2 * edgeGain * w * w;
-      }
-      const bottomSlack = x.y - (square.maxY - edgeMargin);
-      if (bottomSlack > 0) {
-        g = g.add(makePoint(zero, 0, 2 * edgeGain * bottomSlack * w));
-        hyy += 2 * edgeGain * w * w;
-      }
-    }
-
-    const det = hxx * hyy - hxy * hxy;
-    if (!Number.isFinite(det) || Math.abs(det) < 1e-9) break;
-
-    // step = -inv(H) * g
-    const step = makePoint(zero, -(hyy * g.x - hxy * g.y) / det, -(-hxy * g.x + hxx * g.y) / det);
-
-    const maxStep = Math.min(maxStepDefault, Math.max(3, distToDesired));
-    const delta = step.length > maxStep ? step.normalize().multiply(maxStep) : step;
-    if (!Number.isFinite(delta.x) || !Number.isFinite(delta.y)) break;
-
-    const target = pt.add(delta);
-    const next = moveHandleToward(buildCandidateAt, pt, target, isValidCandidate);
-    iterations++;
-    if (next.getDistance(pt) < 0.25) break;
-    if (next.getDistance(desired) + 0.01 >= pt.getDistance(desired)) break;
-    pt = next;
-  }
-
-  return { point: pt, iterations };
 }

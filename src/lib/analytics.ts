@@ -4,7 +4,7 @@ import { GA_MEASUREMENT_ID } from './config';
 /**
  * Send an event to Google Analytics
  */
-export function trackEvent(
+function trackEvent(
   eventName: string,
   params?: Record<string, string | number | boolean>
 ) {
@@ -78,14 +78,10 @@ export function trackHeartEdit(heartId: string, heartName: string) {
 /**
  * Track when a new heart is created in the editor
  */
-export function trackHeartCreate() {
-  trackEvent('create_heart');
-}
-
 /**
  * Track an error event for debugging
  */
-export function trackError(
+function trackError(
   errorType: string,
   details: Record<string, string | number | boolean> = {}
 ) {
@@ -135,21 +131,5 @@ export function trackImportError(filename: string, reason: string) {
 }
 
 /**
- * Track thumbnail rendering errors
- */
-export function trackThumbnailError(heartId: string, reason: string) {
-  trackError('thumbnail_error', {
-    heart_id: heartId,
-    reason,
-  });
-}
-
-/**
  * Track PDF generation errors
  */
-export function trackPdfError(heartId: string, reason: string) {
-  trackError('pdf_error', {
-    heart_id: heartId,
-    reason,
-  });
-}

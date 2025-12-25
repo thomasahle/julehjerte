@@ -6,7 +6,7 @@ import {
   updateFingerSegments,
 } from "$lib/geometry/bezierSegments";
 
-export function shiftNodeTypesOnInsert(
+function shiftNodeTypesOnInsert(
   nodeTypes: Record<string, NodeType> | undefined,
   insertedAnchorIdx: number,
 ) {
@@ -61,4 +61,3 @@ export function insertNodeInFinger(
   };
   return { finger: nextFinger, insertedAnchorIdx };
 }
-

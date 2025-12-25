@@ -263,9 +263,9 @@ function inferOverlapRectFromFingers(curFingers, fallbackGridSize) {
   const centeredLeft = CENTER.x - expectedW / 2;
   const centeredTop = CENTER.y - expectedH / 2;
 
-  let left = leftCandidates.length ? median(leftCandidates) : centeredLeft;
+  const left = leftCandidates.length ? median(leftCandidates) : centeredLeft;
   let right = rightCandidates.length ? median(rightCandidates) : centeredLeft + expectedW;
-  let top = topCandidates.length ? median(topCandidates) : centeredTop;
+  const top = topCandidates.length ? median(topCandidates) : centeredTop;
   let bottom = bottomCandidates.length ? median(bottomCandidates) : centeredTop + expectedH;
 
   if (Math.abs(right - left - expectedW) <= 3) right = left + expectedW;

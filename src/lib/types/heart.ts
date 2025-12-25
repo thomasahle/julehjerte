@@ -47,7 +47,7 @@ export interface HeartDesign {
   fingers: Finger[];
 }
 
-export interface HeartCollection {
+interface HeartCollection {
   hearts: HeartDesign[];
 }
 

@@ -71,38 +71,6 @@ function cubicDerivativeRoots(p0: number, p1: number, p2: number, p3: number): n
 }
 
 /**
- * Sample points along a cubic Bézier segment
- */
-function sampleBezier(segment: CubicBezierSegment, steps = 50): Point[] {
-  const points: Point[] = [];
-
-  for (let i = 0; i <= steps; i++) {
-    const t = i / steps;
-    points.push(cubicPointAt(segment, t));
-  }
-
-  return points;
-}
-
-/**
- * Sample points along multiple chained Bézier segments
- */
-export function sampleBezierPath(segments: CubicBezierSegment[], stepsPerSegment = 30): Point[] {
-  const points: Point[] = [];
-
-  for (let i = 0; i < segments.length; i++) {
-    const segmentPoints = sampleBezier(segments[i], stepsPerSegment);
-    // Skip first point of subsequent segments to avoid duplicates
-    const startIdx = i === 0 ? 0 : 1;
-    for (let j = startIdx; j < segmentPoints.length; j++) {
-      points.push(segmentPoints[j]);
-    }
-  }
-
-  return points;
-}
-
-/**
  * Get a point on a Bézier curve at parameter t
  */
 function getPointOnBezier(segment: CubicBezierSegment, t: number): Point {
@@ -126,32 +94,16 @@ function getNormalOnBezier(segment: CubicBezierSegment, t: number): Point {
 }
 
 /**
- * Find intersections between a Bézier curve and a horizontal line
+ * Sample points along a cubic Bézier segment
  */
-export function intersectBezierWithHorizontal(segment: CubicBezierSegment, y: number): Point[] {
-  // Simple numeric root find: sample for sign changes and bisection.
-  const steps = 128;
+function sampleBezier(segment: CubicBezierSegment, steps = 50): Point[] {
   const points: Point[] = [];
-  let prevT = 0;
-  let prevY = getPointOnBezier(segment, 0).y - y;
-  for (let i = 1; i <= steps; i++) {
+
+  for (let i = 0; i <= steps; i++) {
     const t = i / steps;
-    const dy = getPointOnBezier(segment, t).y - y;
-    if (dy === 0 || prevY === 0 || (dy > 0) !== (prevY > 0)) {
-      let lo = prevT;
-      let hi = t;
-      for (let it = 0; it < 30; it++) {
-        const mid = (lo + hi) / 2;
-        const my = getPointOnBezier(segment, mid).y - y;
-        if ((my > 0) === (prevY > 0)) lo = mid;
-        else hi = mid;
-      }
-      const tt = (lo + hi) / 2;
-      points.push(getPointOnBezier(segment, tt));
-    }
-    prevT = t;
-    prevY = dy;
+    points.push(cubicPointAt(segment, t));
   }
+
   return points;
 }
 
@@ -205,7 +157,7 @@ function splitBezier(segment: CubicBezierSegment, t: number): [CubicBezierSegmen
 /**
  * Get the bounding box of a Bézier curve
  */
-export type BBox = { x: number; y: number; width: number; height: number };
+type BBox = { x: number; y: number; width: number; height: number };
 
 export function bezierBBox(segment: CubicBezierSegment): BBox {
   const tx = cubicDerivativeRoots(segment.p0.x, segment.p1.x, segment.p2.x, segment.p3.x);
@@ -328,7 +280,7 @@ export function closestPointOnBezier(segment: CubicBezierSegment, target: Point)
   return { t: bestT, point: { x, y }, distance: Math.sqrt(bestD2) };
 }
 
-export type ClosestPointsBetweenBeziersResult = {
+type ClosestPointsBetweenBeziersResult = {
   u: number;
   v: number;
   pointA: Point;
@@ -336,7 +288,7 @@ export type ClosestPointsBetweenBeziersResult = {
   distance: number;
 };
 
-export type ClosestPointsBetweenBeziersOptions = {
+type ClosestPointsBetweenBeziersOptions = {
   /**
    * Sample count per curve for initial seeding.
    * Total seeds evaluated is `samplesPerCurve^2` (capped by `maxSeeds`).
@@ -406,8 +358,8 @@ export function closestPointsBetweenBeziers(
     let bestT = 0;
     let bestX = C.dx;
     let bestY = C.dy;
-    let dx0 = bestX - px;
-    let dy0 = bestY - py;
+    const dx0 = bestX - px;
+    const dy0 = bestY - py;
     let bestD2 = dx0 * dx0 + dy0 * dy0;
 
     for (let i = 1; i <= coarseSamples; i++) {

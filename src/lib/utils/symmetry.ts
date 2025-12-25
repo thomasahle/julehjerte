@@ -247,7 +247,7 @@ function isClassicDesign(fingers: Finger[]): boolean {
   return true;
 }
 
-export interface SymmetryInfo {
+interface SymmetryInfo {
   isClassic: boolean;
   curveSymmetry: boolean;
   lobeSymmetry: boolean;

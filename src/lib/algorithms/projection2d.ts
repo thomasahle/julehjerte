@@ -2,7 +2,7 @@ import type { PointLike } from '$lib/geometry/pointLike';
 
 export type LinearConstraint<P> = { a: P; b: number };
 
-export function isFeasiblePoint<P extends PointLike<P>>(
+function isFeasiblePoint<P extends PointLike<P>>(
   p: P,
   constraints: Array<LinearConstraint<P>>,
   eps = 1e-6

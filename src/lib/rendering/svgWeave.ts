@@ -41,7 +41,7 @@ function segmentsToBackwardPath(segments: BezierSegment[]): string {
  * Uses actual bezier curves instead of sampled polylines for smooth rendering.
  * The ribbon goes forward along fingerA, then backward along fingerB.
  */
-export function buildRibbonPath(fingerA: Finger, fingerB: Finger): string {
+function buildRibbonPath(fingerA: Finger, fingerB: Finger): string {
 	const segsA = fingerToSegments(fingerA);
 	const segsB = fingerToSegments(fingerB);
 
@@ -62,7 +62,7 @@ export function buildRibbonPath(fingerA: Finger, fingerB: Finger): string {
 /**
  * Get sorted fingers for a given lobe, ordered by their position.
  */
-export function getSortedFingers(fingers: Finger[], lobe: LobeId): Finger[] {
+function getSortedFingers(fingers: Finger[], lobe: LobeId): Finger[] {
 	return fingers
 		.filter(f => f.lobe === lobe)
 		.map(finger => {
@@ -78,7 +78,7 @@ export function getSortedFingers(fingers: Finger[], lobe: LobeId): Finger[] {
  * Build strip paths for a lobe.
  * Returns an array of { index, pathData } for each strip.
  */
-export function buildStrips(
+function buildStrips(
 	fingers: Finger[],
 	lobe: LobeId,
 	parity: 0 | 1 = 0
@@ -105,7 +105,7 @@ export function buildStrips(
  * For the left lobe: ear is on the left side (semi-circle facing left)
  * For the right lobe: ear is on the top (semi-circle facing up)
  */
-export function buildLobeClipPath(
+function buildLobeClipPath(
 	lobe: LobeId,
 	overlap: OverlapRect
 ): string {
@@ -147,7 +147,7 @@ export function buildLobeClipPath(
 /**
  * Compute the overlap rectangle from fingers and grid size.
  */
-export function computeOverlap(fingers: Finger[], gridSize: GridSize): OverlapRect {
+function computeOverlap(fingers: Finger[], gridSize: GridSize): OverlapRect {
 	return inferOverlapRect(fingers, gridSize);
 }
 
@@ -199,7 +199,3 @@ export function computeWeaveData(
 /**
  * Get the SVG path data for a finger curve.
  */
-export function getFingerPathData(finger: Finger): string {
-	const segments = fingerToSegments(finger);
-	return segmentsToPathData(segments);
-}

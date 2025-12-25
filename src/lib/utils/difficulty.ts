@@ -5,7 +5,7 @@ import { vecSub, vecLength } from '$lib/geometry/vec';
 
 export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert';
 
-export interface DifficultyResult {
+interface DifficultyResult {
   level: DifficultyLevel;
   score: number; // 0-100
 }

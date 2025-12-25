@@ -1,8 +1,8 @@
-import type { Finger, GridSize, LobeId, Vec } from '$lib/types/heart';
+import type { LobeId, Vec } from '$lib/types/heart';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import { parsePathDataToSegments } from '$lib/geometry/bezierSegments';
 
-export interface ValidationResult {
+interface ValidationResult {
   valid: boolean;
   warnings: string[];
 }
@@ -162,7 +162,7 @@ function checkSelfIntersection(segments: BezierSegment[], samplesPerSegment: num
 /**
  * Validate a single finger's raw path data (in JSON 0-100 format)
  */
-export function validateFingerPathData(
+function validateFingerPathData(
   pathData: string,
   lobe: LobeId,
   fingerId: string
@@ -217,41 +217,5 @@ export function validateRawFingers(
   if (hasWarnings) {
     const heartLabel = heartName ? `${heartName} (${heartId})` : heartId;
     console.warn(`[Heart: ${heartLabel}] JSON coordinates should be in 0-100 range (overlap area)`);
-  }
-}
-
-// Legacy export for backwards compatibility - validates in-editor (pixel) coordinates.
-export function validateFinger(finger: Finger, gridSize: GridSize): ValidationResult {
-  const segments = finger.segments;
-  if (segments.length === 0) {
-    return { valid: false, warnings: ['No segments'] };
-  }
-
-  const warnings: string[] = [];
-  warnings.push(...checkContinuity(segments));
-  warnings.push(...checkSelfIntersection(segments));
-
-  return { valid: warnings.length === 0, warnings };
-}
-
-export function validateHeartDesign(
-  heartId: string,
-  fingers: Finger[],
-  gridSize: GridSize,
-  heartName?: string
-): void {
-  // This validates pixel coordinates
-  // For proper validation, use validateRawFingers before transformation
-  let hasWarnings = false;
-
-  for (const finger of fingers) {
-    const result = validateFinger(finger, gridSize);
-    if (!result.valid) {
-      hasWarnings = true;
-      const heartLabel = heartName ? `${heartName} (${heartId})` : heartId;
-      for (const warning of result.warnings) {
-        console.warn(`[Heart: ${heartLabel}] Finger ${finger.id}: ${warning}`);
-      }
-    }
   }
 }

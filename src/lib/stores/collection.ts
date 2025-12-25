@@ -5,13 +5,6 @@ import { trackHeartLoadError, trackSvgParseError } from '$lib/analytics';
 
 const STORAGE_KEY = 'julehjerte-collection';
 
-export type HeartCategory = {
-  id: string;
-  hearts: HeartDesign[];
-};
-
-export type StaticHeartsIndex = { categories: { id: string; hearts: string[] }[] };
-
 export function getUserCollection(): HeartDesign[] {
   if (!browser) return [];
 
@@ -62,25 +55,6 @@ export function deleteUserDesign(id: string): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
 }
 
-export function clearUserCollection(): void {
-  if (!browser) return;
-  localStorage.removeItem(STORAGE_KEY);
-}
-
-export async function loadStaticHeartsIndex(): Promise<StaticHeartsIndex['categories']> {
-  try {
-    const response = await fetch('/hearts/index.json');
-    if (!response.ok) {
-      trackHeartLoadError('index', `Failed to load index.json: ${response.status}`);
-      return [];
-    }
-    const index: StaticHeartsIndex = await response.json();
-    return Array.isArray(index.categories) ? index.categories : [];
-  } catch (err) {
-    trackHeartLoadError('index', err instanceof Error ? err.message : 'Unknown error');
-    return [];
-  }
-}
 
 export async function loadStaticHeartById(id: string): Promise<HeartDesign | null> {
   try {
@@ -99,41 +73,9 @@ export async function loadStaticHeartById(id: string): Promise<HeartDesign | nul
   }
 }
 
-export async function loadStaticHearts(): Promise<HeartCategory[]> {
-  const indexCategories = await loadStaticHeartsIndex();
-  const categories: HeartCategory[] = await Promise.all(
-    indexCategories.map(async (cat) => {
-      const designs = await Promise.all(cat.hearts.map(loadStaticHeartById));
-      return { id: cat.id, hearts: designs.filter((d): d is HeartDesign => d !== null) };
-    })
-  );
-  return categories.filter((cat) => cat.hearts.length > 0);
-}
-
-export type HeartWithMeta = HeartDesign & { isUserCreated?: boolean };
+type HeartWithMeta = HeartDesign & { isUserCreated?: boolean };
 
 export type HeartCategoryWithMeta = {
   id: string;
   hearts: HeartWithMeta[];
 };
-
-export async function loadAllHearts(): Promise<HeartCategoryWithMeta[]> {
-  const staticCategories = await loadStaticHearts();
-  const userHearts = getUserCollection();
-
-  // Convert static categories to include metadata
-  const categories: HeartCategoryWithMeta[] = staticCategories.map((cat) => ({
-    id: cat.id,
-    hearts: cat.hearts
-  }));
-
-  // Add user-created hearts as their own category at the end
-  if (userHearts.length > 0) {
-    categories.push({
-      id: 'mine',
-      hearts: userHearts.map((h) => ({ ...h, isUserCreated: true }))
-    });
-  }
-
-  return categories;
-}

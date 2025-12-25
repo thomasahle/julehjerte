@@ -56,13 +56,7 @@ export function setRightColor(color: string) {
   setColors({ ...currentColors, right: color });
 }
 
-export function resetColors() {
-  setColors({ ...DEFAULT_COLORS });
-}
-
 export function subscribeColors(fn: (colors: HeartColors) => void) {
   subscribers.add(fn);
   return () => subscribers.delete(fn);
 }
-
-export { DEFAULT_COLORS };

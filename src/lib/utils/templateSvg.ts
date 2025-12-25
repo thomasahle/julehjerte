@@ -4,7 +4,7 @@ import { inferOverlapRect } from '$lib/utils/overlapRect';
 
 export type TemplateLobe = 'left' | 'right';
 
-export interface TemplateData {
+interface TemplateData {
   lobe: TemplateLobe;
   overlapTop: number;
   overlapLeft: number;
@@ -17,7 +17,7 @@ export interface TemplateData {
   cutPaths: string[];
 }
 
-export interface TemplateSvgOptions {
+interface TemplateSvgOptions {
   previewSvgs?: Array<{ viewBox: string; markup: string }>;
 }
 

@@ -252,7 +252,7 @@ export function fingerToPathData(finger: Finger): string {
   return segmentsToPathData(finger.segments);
 }
 
-export function normalizeFinger(raw: unknown, gridSize: GridSize): Finger | null {
+function normalizeFinger(raw: unknown, gridSize: GridSize): Finger | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as RawFinger;
 

@@ -69,9 +69,9 @@ export function inferOverlapRect(
 	}
 
 	const fallback = getCenteredRectParams(gridSize, center);
-	let left = leftCandidates.length ? median(leftCandidates) : fallback.left;
+	const left = leftCandidates.length ? median(leftCandidates) : fallback.left;
 	let right = rightCandidates.length ? median(rightCandidates) : fallback.right;
-	let top = topCandidates.length ? median(topCandidates) : fallback.top;
+	const top = topCandidates.length ? median(topCandidates) : fallback.top;
 	let bottom = bottomCandidates.length ? median(bottomCandidates) : fallback.bottom;
 
 	// Snap to expected dimensions if within tolerance (3px)

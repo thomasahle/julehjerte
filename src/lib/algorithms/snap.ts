@@ -1,6 +1,6 @@
 import type { PointLike } from '$lib/geometry/pointLike';
 
-export function makeDirections<P extends PointLike<P>>(seed: P, count: number): P[] {
+function makeDirections<P extends PointLike<P>>(seed: P, count: number): P[] {
   const dirs: P[] = [];
   const origin = seed.clone();
   origin.x = 0;
@@ -96,48 +96,4 @@ function snapHandlePosition<TCandidate, P extends PointLike<P>>(
   }
 
   return pt;
-}
-
-export function snapHandlePositionWithDirs<TCandidate, P extends PointLike<P>>(
-  buildCandidateAt: (pos: P) => TCandidate,
-  from: P,
-  desired: P,
-  isValidCandidate: (candidate: TCandidate) => boolean,
-  dirs: P[],
-  iterPerStep = 4
-): { point: P; iterations: number } {
-  let iterations = 0;
-  const direct = buildCandidateAt(desired);
-  if (isValidCandidate(direct)) return { point: desired, iterations };
-
-  let pt = moveHandleToward(buildCandidateAt, from, desired, isValidCandidate);
-  iterations++;
-  let bestDist = pt.getDistance(desired);
-
-  const startStep = Math.min(30, Math.max(4, bestDist));
-  for (let step = startStep; step >= 1; step /= 2) {
-    for (let iter = 0; iter < iterPerStep; iter++) {
-      let improved = false;
-      let bestPt = pt;
-      let bestLocalDist = bestDist;
-
-      for (const dir of dirs) {
-        const target = pt.add(dir.multiply(step));
-        const candPt = moveHandleToward(buildCandidateAt, pt, target, isValidCandidate);
-        iterations++;
-        const d = candPt.getDistance(desired);
-        if (d + 0.1 < bestLocalDist) {
-          bestPt = candPt;
-          bestLocalDist = d;
-          improved = true;
-        }
-      }
-
-      if (!improved) break;
-      pt = bestPt;
-      bestDist = bestLocalDist;
-    }
-  }
-
-  return { point: pt, iterations };
 }

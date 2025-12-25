@@ -6,7 +6,7 @@
     },
     {
       "id": "stjerner",
-      "hearts": ["stjerne", "stjerne-ramme", "5star", "simple-5star", "sun", "explosion", "nihon", "david"]
+      "hearts": ["stjerne", "stjerne-ramme", "5star", "simple-5star", "sun", "explosion", "nihon", "davidsstjerne-circ", "david4", "khatam"]
     },
     {
       "id": "moenstre",
@@ -22,7 +22,7 @@
     },
     {
       "id": "figurer",
-      "hearts": ["juletrae", "flower", "venus", "angel", "snowflake"
+      "hearts": ["juletrae", "flower", "venus", "angel", "snowflake", "santa"
         ]
     },
     {
