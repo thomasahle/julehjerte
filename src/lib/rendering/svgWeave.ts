@@ -115,8 +115,6 @@ function buildLobeClipPath(
 		// Left lobe: semi-circle on the left + overlap rectangle
 		// The ear extends to the LEFT of the rectangle
 		const earRadius = height / 2;
-		const earCenterX = left;
-		const earCenterY = top + height / 2;
 
 		// Path: Start at top of ear, arc to bottom of ear, then rectangle right side
 		// Arc from (left, top) around the left to (left, bottom), large arc, counter-clockwise

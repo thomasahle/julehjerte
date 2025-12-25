@@ -4,7 +4,7 @@
  */
 
 import type { Finger, GridSize, Vec } from '$lib/types/heart';
-import { STRIP_WIDTH, BASE_CENTER, CENTER } from '$lib/constants';
+import { STRIP_WIDTH, CENTER } from '$lib/constants';
 import { median } from '$lib/utils/math';
 
 export interface OverlapRect {

@@ -1,6 +1,5 @@
 import type { Point, CubicBezierSegment } from "../types";
 import { clamp01 } from "$lib/utils/math";
-import { vecDist, vecLerp, normalize } from "./vec";
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
@@ -25,26 +24,6 @@ function cubicPointAt(seg: CubicBezierSegment, t: number): Point {
   };
 }
 
-function cubicDerivativeAt(p0: number, p1: number, p2: number, p3: number, t: number): number {
-  const u = 1 - t;
-  // 3 * quadratic Bézier of the control point deltas
-  return (
-    3 *
-    (u * u * (p1 - p0) +
-      2 * u * t * (p2 - p1) +
-      t * t * (p3 - p2))
-  );
-}
-
-function cubicTangentAt(seg: CubicBezierSegment, t: number): Point {
-  const tt = clamp01(t);
-  return {
-    x: cubicDerivativeAt(seg.p0.x, seg.p1.x, seg.p2.x, seg.p3.x, tt),
-    y: cubicDerivativeAt(seg.p0.y, seg.p1.y, seg.p2.y, seg.p3.y, tt),
-  };
-}
-
-
 function solveQuadratic(a: number, b: number, c: number): number[] {
   const eps = 1e-12;
   if (Math.abs(a) < eps) {
@@ -68,29 +47,6 @@ function cubicDerivativeRoots(p0: number, p1: number, p2: number, p3: number): n
   const b = 2 * (3 * p0 - 6 * p1 + 3 * p2);
   const c = -3 * p0 + 3 * p1;
   return solveQuadratic(a, b, c).filter((t) => t >= 0 && t <= 1);
-}
-
-/**
- * Get a point on a Bézier curve at parameter t
- */
-function getPointOnBezier(segment: CubicBezierSegment, t: number): Point {
-  return cubicPointAt(segment, t);
-}
-
-/**
- * Get the derivative (tangent) at parameter t
- */
-function getTangentOnBezier(segment: CubicBezierSegment, t: number): Point {
-  return cubicTangentAt(segment, t);
-}
-
-/**
- * Get the normal at parameter t
- */
-function getNormalOnBezier(segment: CubicBezierSegment, t: number): Point {
-  const tan = cubicTangentAt(segment, t);
-  const n = normalize({ x: -tan.y, y: tan.x });
-  return n;
 }
 
 /**
@@ -137,24 +93,6 @@ export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezie
 }
 
 /**
- * Split a Bézier curve at parameter t
- */
-function splitBezier(segment: CubicBezierSegment, t: number): [CubicBezierSegment, CubicBezierSegment] {
-  const tt = clamp01(t);
-  const a = vecLerp(segment.p0, segment.p1, tt);
-  const b = vecLerp(segment.p1, segment.p2, tt);
-  const c = vecLerp(segment.p2, segment.p3, tt);
-  const d = vecLerp(a, b, tt);
-  const e = vecLerp(b, c, tt);
-  const p = vecLerp(d, e, tt);
-
-  return [
-    { p0: segment.p0, p1: a, p2: d, p3: p },
-    { p0: p, p1: e, p2: c, p3: segment.p3 },
-  ];
-}
-
-/**
  * Get the bounding box of a Bézier curve
  */
 type BBox = { x: number; y: number; width: number; height: number };
@@ -194,21 +132,6 @@ export function bezierPathBBox(segments: CubicBezierSegment[]): BBox {
     maxY = Math.max(maxY, b.y + b.height);
   }
   return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
-}
-
-/**
- * Get the approximate length of a Bézier curve
- */
-function getBezierLength(segment: CubicBezierSegment): number {
-  const steps = 80;
-  let total = 0;
-  let prev = cubicPointAt(segment, 0);
-  for (let i = 1; i <= steps; i++) {
-    const p = cubicPointAt(segment, i / steps);
-    total += vecDist(prev, p);
-    prev = p;
-  }
-  return total;
 }
 
 /**
@@ -608,49 +531,5 @@ export function closestPointsBetweenBeziers(
     pointA,
     pointB,
     distance: Math.sqrt(bestD2),
-  };
-}
-
-/**
- * Create a simple straight-line Bézier segment between two points
- */
-function createLinearBezier(start: Point, end: Point): CubicBezierSegment {
-  // Control points at 1/3 and 2/3 along the line
-  return {
-    p0: start,
-    p1: {
-      x: start.x + (end.x - start.x) / 3,
-      y: start.y + (end.y - start.y) / 3
-    },
-    p2: {
-      x: start.x + (end.x - start.x) * 2 / 3,
-      y: start.y + (end.y - start.y) * 2 / 3
-    },
-    p3: end
-  };
-}
-
-/**
- * Create a curved Bézier segment between two points with some curvature
- */
-function createCurvedBezier(start: Point, end: Point, curvature = 0.3): CubicBezierSegment {
-  const dx = end.x - start.x;
-  const dy = end.y - start.y;
-
-  // Perpendicular offset for curvature
-  const perpX = -dy * curvature;
-  const perpY = dx * curvature;
-
-  return {
-    p0: start,
-    p1: {
-      x: start.x + dx / 3 + perpX,
-      y: start.y + dy / 3 + perpY
-    },
-    p2: {
-      x: start.x + dx * 2 / 3 + perpX,
-      y: start.y + dy * 2 / 3 + perpY
-    },
-    p3: end
   };
 }

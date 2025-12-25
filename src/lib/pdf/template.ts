@@ -2,14 +2,12 @@ import { jsPDF } from 'jspdf';
 import type { GridSize, HeartDesign, Finger, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
-import { STRIP_WIDTH, CENTER } from '$lib/constants';
-import { type BezierSegment, segmentsToPathData } from '$lib/geometry/bezierSegments';
+import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 
 // A4 dimensions in mm
 const PAGE_WIDTH = 210;
 const PAGE_HEIGHT = 297;
-const MARGIN = 10;
 const PREVIEW_DPI = 300;
 
 // Layout modes for PDF generation
@@ -180,39 +178,6 @@ function drawSVGPath(
       currentX = args[0];
       currentY = args[1];
     }
-  }
-}
-
-// Draw a cubic bezier curve using line segments
-function drawBezier(
-  pdf: jsPDF,
-  p0: Vec,
-  p1: Vec,
-  p2: Vec,
-  p3: Vec,
-  offsetX: number,
-  offsetY: number,
-  scale: number
-) {
-  const segments = 20;
-  const points: Vec[] = [];
-
-  for (let i = 0; i <= segments; i++) {
-    const t = i / segments;
-    const t2 = t * t;
-    const t3 = t2 * t;
-    const mt = 1 - t;
-    const mt2 = mt * mt;
-    const mt3 = mt2 * mt;
-
-    points.push({
-      x: offsetX + (mt3 * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t3 * p3.x) * scale,
-      y: offsetY + (mt3 * p0.y + 3 * mt2 * t * p1.y + 3 * mt * t2 * p2.y + t3 * p3.y) * scale
-    });
-  }
-
-  for (let i = 0; i < points.length - 1; i++) {
-    pdf.line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
   }
 }
 

@@ -8,10 +8,7 @@ import {
   cloneSegments,
   reverseSegments
 } from '$lib/geometry/bezierSegments';
-import {
-  getCenteredRectParams,
-  inferOverlapRect as inferOverlapRectFromFingers
-} from '$lib/utils/overlapRect';
+import { inferOverlapRect as inferOverlapRectFromFingers } from '$lib/utils/overlapRect';
 import { validateRawFingers } from '$lib/utils/validatePaths';
 import { SITE_DOMAIN } from '$lib/config';
 import { vecDist } from '$lib/geometry/vec';
@@ -79,8 +76,7 @@ function normalizeGridSize(raw: unknown): GridSize {
     return { x: n, y: n };
   }
   if (raw && typeof raw === 'object') {
-    const x = (raw as any).x;
-    const y = (raw as any).y;
+    const { x, y } = raw as { x?: unknown; y?: unknown };
     if (typeof x === 'number' && typeof y === 'number' && Number.isFinite(x) && Number.isFinite(y)) {
       return { x: clampInt(x, 2, 8), y: clampInt(y, 2, 8) };
     }
@@ -272,7 +268,7 @@ function normalizeFinger(raw: unknown, gridSize: GridSize): Finger | null {
   if (first && last) {
     // Transform from JSON 0-100 coords to internal pixel coords
     const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize);
-    const nodeTypes = normalizeNodeTypes((r as any).nodeTypes, pixelSegments.length);
+    const nodeTypes = normalizeNodeTypes(r.nodeTypes, pixelSegments.length);
     return {
       id,
       lobe,
@@ -300,7 +296,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   const source = typeof r.source === 'string' && r.source.trim() ? r.source.trim() : undefined;
   const date = typeof r.date === 'string' && r.date.trim() ? r.date.trim() : undefined;
   const description = typeof r.description === 'string' ? r.description : undefined;
-  const weaveParity = normalizeWeaveParity((r as any).weaveParity);
+  const weaveParity = normalizeWeaveParity(r.weaveParity);
   const gridSize = normalizeGridSize(r.gridSize);
 
   const fingersRaw = Array.isArray(r.fingers) ? r.fingers : [];

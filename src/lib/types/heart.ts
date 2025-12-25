@@ -47,9 +47,5 @@ export interface HeartDesign {
   fingers: Finger[];
 }
 
-interface HeartCollection {
-  hearts: HeartDesign[];
-}
-
 // On-disk format for gallery hearts and shared designs.
 export type HeartDesignJson = Omit<HeartDesign, 'fingers'> & { fingers: FingerPathData[] };

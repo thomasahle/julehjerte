@@ -79,7 +79,7 @@ function checkContinuity(segments: BezierSegment[], tolerance: number = 0.1): st
 function checkEndpointAlignment(
   segments: BezierSegment[],
   lobe: LobeId,
-  tolerance: number = 1
+  _tolerance: number = 1
 ): string[] {
   // Skip endpoint alignment checks - many valid designs don't span edge-to-edge
   // The bounds check already ensures coordinates are within 0-100
@@ -165,7 +165,7 @@ function checkSelfIntersection(segments: BezierSegment[], samplesPerSegment: num
 function validateFingerPathData(
   pathData: string,
   lobe: LobeId,
-  fingerId: string
+  _fingerId: string
 ): ValidationResult {
   const warnings: string[] = [];
 

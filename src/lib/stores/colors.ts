@@ -24,7 +24,9 @@ function loadColors(): HeartColors {
       if (parsed.left && parsed.right) {
         return parsed;
       }
-    } catch {}
+    } catch {
+      // Ignore invalid stored colors.
+    }
   }
   return { ...DEFAULT_COLORS };
 }

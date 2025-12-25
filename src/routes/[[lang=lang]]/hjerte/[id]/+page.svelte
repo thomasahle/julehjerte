@@ -13,6 +13,7 @@
     t,
     translations,
     type Language,
+    type TranslationKey,
   } from "$lib/i18n";
   import {
     getColors,
@@ -364,7 +365,7 @@
             <span class="label">{t("symmetry", lang)}</span>
             <span class="value"
               >{getSymmetryDescription(detectSymmetry(design.fingers), (key) =>
-                t(key as any, lang),
+                t(key as TranslationKey, lang),
               )}</span
             >
           </div>

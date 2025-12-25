@@ -13,11 +13,3 @@ export interface CubicBezierSegment {
 }
 
 
-
-// Symmetry settings
-interface SymmetrySettings {
-  // Mirror between left and right lobes (diagonal)
-  betweenLobes: boolean;
-  // Mirror within each lobe (horizontal axis)
-  withinLobe: boolean;
-}
