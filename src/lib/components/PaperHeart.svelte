@@ -2408,14 +2408,18 @@
 				) {
 					toolbarPositions = { segment: seg, right };
 				}
-			} catch {}
+			} catch {
+				// Ignore invalid or corrupted toolbar storage.
+			}
 		}
 
 			function saveToolbarPositions() {
 				if (!canDragToolbars || !toolbarPositions) return;
 				try {
 					localStorage.setItem(toolbarStorageKey(), JSON.stringify(toolbarPositions));
-				} catch {}
+				} catch {
+					// Ignore failed toolbar storage writes.
+				}
 			}
 
 			function ensureDefaultToolbarPositions() {
@@ -2620,7 +2624,9 @@
 		activePointerId = e.pointerId;
 		try {
 			svgEl?.setPointerCapture?.(e.pointerId);
-		} catch {}
+		} catch {
+			// Ignore pointer capture failures.
+		}
 		dragTarget = target;
 		dragSnapshot = snapshotState();
 		dragDirty = false;
@@ -2652,7 +2658,9 @@
 		dragStartOffset = null;
 		try {
 			svgEl?.releasePointerCapture?.(pointerId);
-		} catch {}
+		} catch {
+			// Ignore pointer release failures.
+		}
 		if (dragDirty && dragSnapshot) pushUndo(dragSnapshot);
 		dragSnapshot = null;
 		dragDirty = false;
@@ -3099,7 +3107,9 @@
 
 			try {
 				isMobileLayout = window.matchMedia('(max-width: 900px)').matches;
-			} catch {}
+			} catch {
+				// Ignore invalid cached toolbar offsets.
+			}
 
 			loadToolbarPositions();
 
@@ -3114,7 +3124,9 @@
 		try {
 			ro = new ResizeObserver(measure);
 			if (svgEl) ro.observe(svgEl);
-		} catch {}
+		} catch {
+			// Ignore scroll failures for off-screen targets.
+		}
 
 		(async () => {
 			await tick();
