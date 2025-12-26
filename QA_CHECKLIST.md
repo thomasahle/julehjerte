@@ -7,6 +7,7 @@ Use this for pre-release UI validation. Mark each item Pass/Fail and capture iss
 - [ ] Test in Chromium + one other browser (Safari or Firefox if available).
 - [ ] Clear cache/local storage once to validate first-load state.
 - [ ] Confirm console has no new errors; warnings are reviewed and understood.
+- [ ] Favicon displays correctly in browser tab (2x2 woven heart).
 
 ## Global UI States
 - [ ] Hover/focus/active/disabled styles are visible and consistent.
@@ -49,8 +50,15 @@ Use this for pre-release UI validation. Mark each item Pass/Fail and capture iss
 
 ## Downloads & Rendering
 - [ ] PDF export renders crisp preview with outline (no white-on-white).
+- [ ] PDF download triggers without errors (blob URL created).
 - [ ] SVG template download includes preview heart.
 - [ ] Exported SVG opens in a standalone viewer.
+
+## User Data & Persistence
+- [ ] User-created hearts persist across page reloads.
+- [ ] User hearts appear in "MINE HJERTER" section on home page.
+- [ ] Delete button removes user hearts from collection without page refresh.
+- [ ] Color picker changes persist and apply to all heart previews.
 
 ## Internationalization
 - [ ] All UI strings switch between DA/EN on language toggle.
