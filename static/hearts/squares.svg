@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   sodipodi:docname="squares.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title1">Squares</title>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="2.0338993"
+     inkscape:cx="192.73324"
+     inkscape:cy="195.92907"
+     inkscape:window-width="1560"
+     inkscape:window-height="940"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:none;stroke:none;stroke-width:1;stroke-opacity:0.495935"
+       id="rect1"
+       width="50"
+       height="50"
+       x="50"
+       y="50" />
+    <rect
+       style="fill:none;stroke:none;stroke-width:1;stroke-opacity:0.495935"
+       id="rect2"
+       width="50"
+       height="50"
+       x="-6.0872478e-16"
+       y="50" />
+    <rect
+       style="fill:none;stroke:none;stroke-width:1;stroke-opacity:0.495935"
+       id="rect4"
+       width="50"
+       height="50"
+       x="50"
+       y="0" />
+    <rect
+       style="fill:none;stroke:none;stroke-width:1;stroke-opacity:0.495935"
+       id="rect5"
+       width="50"
+       height="50"
+       x="-6.0872478e-16"
+       y="0" />
+    <rect
+       style="fill:none;stroke:none;stroke-width:0.999998;stroke-opacity:0.495935"
+       id="rect6"
+       width="16.667"
+       height="16.667"
+       x="16.6665"
+       y="16.6665" />
+    <rect
+       style="fill:none;stroke:none;stroke-width:0.999998;stroke-opacity:0.495935"
+       id="rect7"
+       width="16.667"
+       height="16.667"
+       x="66.666496"
+       y="16.6665" />
+    <rect
+       style="fill:none;stroke:none;stroke-width:0.999998;stroke-opacity:0.495935"
+       id="rect8"
+       width="16.667"
+       height="16.667"
+       x="16.6665"
+       y="66.666504" />
+    <rect
+       style="fill:none;stroke:none;stroke-width:0.999998;stroke-opacity:0.495935"
+       id="rect9"
+       width="16.667"
+       height="16.667"
+       x="66.666504"
+       y="66.666504" />
+    <path
+       style="fill:none;stroke:#9141ac;stroke-width:1;stroke-opacity:0.495935"
+       d="M 50,0 V 16.6665 H 33.333499 V 33.333499 L 50,33.3335 V 25 h 16.666496 l -10e-7,-8.3335 H 83.333496 V 33.333499 H 74.999995 L 75,50 h 8.333504 l 0,16.666504 v 16.667 h -16.667 V 66.666504 50 H 50 25 v 16.666504 h 8.3335 v 8.3335 L 50,75 v 25"
+       id="path9"
+       sodipodi:nodetypes="ccccccccccccccccccccccccc" />
+    <path
+       style="fill:none;stroke:#2ec27e;stroke-width:1;stroke-opacity:0.495935"
+       d="M 50,16.6665 V 25 h 16.666496 l -10e-7,8.333495 h 8.3335 L 75,50 h -8.333496 v 16.666504 h 16.667 L 83.333504,50 H 100 M 0,50 h 25 v 16.666504 h -8.3335 v 16.667 h 16.667 v -8.3335 L 50,75 V 50 33.3335 l -16.666501,-10e-7 H 16.6665 V 16.6665 H 33.333499 50"
+       id="path10"
+       sodipodi:nodetypes="cccccccccccccccccccccccccc" />
+  </g>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Squares</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Thomas Ahle</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>Kræver lidt koncentration at flette</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

@@ -2,6 +2,12 @@
 
 Use this for pre-release UI validation. Mark each item Pass/Fail and capture issues with a short note + repro steps.
 
+## Automated Checks
+- [ ] `npm run check` passes (TypeScript and Svelte checks).
+- [ ] `npm run lint` passes with no errors.
+- [ ] `npm run test` passes all unit tests.
+- [ ] `npm run build` completes without errors.
+
 ## Setup
 - [ ] Verify on at least two viewports: 1280x800 and 375x812.
 - [ ] Test in Chromium + one other browser (Safari or Firefox if available).

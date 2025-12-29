@@ -94,8 +94,6 @@ function generateHeartSvg(size, colors, outlineColor = '#666666') {
 
   // Calculate viewBox to fit the rotated heart
   const cx = CENTER, cy = CENTER;
-  const cos45 = Math.SQRT1_2;
-  const sin45 = Math.SQRT1_2;
 
   // Approximate bounding box after 45-degree rotation
   const halfDiag = (overlapWidth + overlapHeight) / 2 * 1.1;
