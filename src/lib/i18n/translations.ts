@@ -149,7 +149,17 @@ export const translations = {
     errorTitle: 'Ups! Noget gik galt',
     errorNotFound: 'Siden blev ikke fundet',
     errorGeneric: 'Der opstod en fejl',
-    errorBackHome: 'Tilbage til forsiden'
+    errorBackHome: 'Tilbage til forsiden',
+
+    // Pages (added 2026-09-06)
+    heartMetaDescription: '{name} - et flettet julehjerte design med {x}x{y} striber.',
+    heartMetaDownload: 'Download PDF skabelon gratis.',
+    shareText: 'Se dette flettede julehjerte: {name}',
+    lobeLeft: 'Venstre',
+    lobeRight: 'Højre',
+    previousSlide: 'Forrige billede',
+    nextSlide: 'Næste billede',
+    selectForPdf: 'Vælg til PDF'
   },
   en: {
     // Site
@@ -301,7 +311,17 @@ export const translations = {
     errorTitle: 'Oops! Something went wrong',
     errorNotFound: 'Page not found',
     errorGeneric: 'An error occurred',
-    errorBackHome: 'Back to home'
+    errorBackHome: 'Back to home',
+
+    // Pages (added 2026-09-06)
+    heartMetaDescription: '{name} - a woven Christmas heart design with a {x}x{y} grid.',
+    heartMetaDownload: 'Download the free PDF template.',
+    shareText: 'Check out this Danish woven heart design: {name}',
+    lobeLeft: 'Left',
+    lobeRight: 'Right',
+    previousSlide: 'Previous slide',
+    nextSlide: 'Next slide',
+    selectForPdf: 'Select for PDF'
   }
 } as const;
 
