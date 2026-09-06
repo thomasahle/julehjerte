@@ -176,7 +176,7 @@
   function handleDownload() {
     if (design) {
       trackHeartDownload(design.id, design.name);
-      downloadPDF(design);
+      downloadPDF(design, { lang });
     }
   }
 
@@ -189,7 +189,7 @@
 
     const shareUrl = window.location.href;
     const shareTitle = pageTitle;
-    const shareText = `Check out this Danish woven heart design: ${info.name}`;
+    const shareText = t("shareText", lang).replace("{name}", info.name);
 
     // Try Web Share API first (works on mobile)
     if (navigator.share) {

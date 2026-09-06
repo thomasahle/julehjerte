@@ -5,6 +5,7 @@ import { SITE_DOMAIN } from '$lib/config';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { t, type Language } from '$lib/i18n';
 
 // A4 dimensions in mm
 const PAGE_WIDTH = 210;
@@ -22,6 +23,7 @@ const LAYOUTS = {
 
 interface PDFOptions {
   layout?: LayoutMode;
+  lang?: Language;
 }
 
 // Calculate template dimensions based on layout mode
@@ -440,7 +442,8 @@ function addTemplatesPage(
   startIndex: number,
   isFirstPage: boolean,
   heartImages: Map<string, string>,
-  layout: LayoutMode = 'medium'
+  layout: LayoutMode = 'medium',
+  lang: Language = 'da'
 ): number {
   if (!isFirstPage) {
     pdf.addPage();
@@ -485,7 +488,7 @@ function addTemplatesPage(
     pdf.setTextColor(0);
     const label = template.lobe === 'both'
       ? template.design.name
-      : `${template.design.name} (${template.lobe === 'left' ? 'Venstre' : 'Højre'})`;
+      : `${template.design.name} (${t(template.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
     pdf.text(label, pos.x, slotTop + HEADER_SPACE, { align: 'center' });
 
     // Calculate template dimensions to position preview inside the ear
@@ -533,6 +536,7 @@ function addTemplatesPage(
 
 async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promise<jsPDF> {
   const layout = options.layout ?? 'medium';
+  const lang = options.lang ?? 'da';
 
   const pdf = new jsPDF({
     orientation: 'portrait',
@@ -542,13 +546,14 @@ async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promi
 
   const heartImages = await prerenderHeartImages([design], layout);
   const templates = collectTemplates([design]);
-  addTemplatesPage(pdf, templates, 0, true, heartImages, layout);
+  addTemplatesPage(pdf, templates, 0, true, heartImages, layout, lang);
 
   return pdf;
 }
 
 async function generateMultiPDF(designs: HeartDesign[], options: PDFOptions = {}): Promise<jsPDF> {
   const layout = options.layout ?? 'medium';
+  const lang = options.lang ?? 'da';
 
   const pdf = new jsPDF({
     orientation: 'portrait',
@@ -562,7 +567,7 @@ async function generateMultiPDF(designs: HeartDesign[], options: PDFOptions = {}
   let isFirst = true;
 
   while (index < templates.length) {
-    const drawn = addTemplatesPage(pdf, templates, index, isFirst, heartImages, layout);
+    const drawn = addTemplatesPage(pdf, templates, index, isFirst, heartImages, layout, lang);
     index += drawn;
     isFirst = false;
   }

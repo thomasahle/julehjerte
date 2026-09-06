@@ -4,6 +4,9 @@
 	import { getEmblaContext } from "./context.js";
 	import { cn } from "$lib/utils.js";
 	import { Button, type Props } from "$lib/components/ui/button/index.js";
+	import { page } from "$app/stores";
+	import { base } from "$app/paths";
+	import { langFromPathname, t } from "$lib/i18n";
 
 	let {
 		ref = $bindable(null),
@@ -12,6 +15,8 @@
 		size = "icon",
 		...restProps
 	}: WithoutChildren<Props> = $props();
+
+	const lang = $derived(langFromPathname($page.url.pathname, base));
 
 	const emblaCtx = getEmblaContext("<Carousel.Previous/>");
 </script>
@@ -34,5 +39,5 @@
 	bind:ref
 >
 	<ArrowLeftIcon class="size-4" />
-	<span class="sr-only">Previous slide</span>
+	<span class="sr-only">{t("previousSlide", lang)}</span>
 </Button>

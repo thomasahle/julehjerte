@@ -212,7 +212,7 @@
           selected.map((h) => h.id),
           selected.length,
         );
-        await downloadMultiPDF(selected, { layout: pdfLayout });
+        await downloadMultiPDF(selected, { layout: pdfLayout, lang });
       } finally {
         generating = false;
       }
@@ -281,7 +281,7 @@
               variant="secondary"
               size="icon"
               class="rounded-l-none"
-              title="PDF Settings"
+              title={t("pdfLayout", lang)}
             >
               <SettingsIcon class="size-4" />
             </Button>
