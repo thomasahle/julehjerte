@@ -6,7 +6,7 @@
   import type { PageProps } from "./$types";
   import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
   import TemplatePreview from "$lib/components/TemplatePreview.svelte";
-  import { getUserCollection } from "$lib/stores/collection";
+  import { getUserCollection, loadStaticHeartById, saveUserDesign } from "$lib/stores/collection";
   import { downloadPDF } from "$lib/pdf/template";
   import {
     SITE_DESCRIPTION,
@@ -29,32 +29,42 @@
   } from "$lib/stores/colors";
   import { detectSymmetry, getSymmetryDescription, lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
-  import {
-    serializeHeartDesign,
-    parseHeartFromSVG,
-  } from "$lib/utils/heartDesign";
+  import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
+  import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl } from "$lib/utils/shareDesign";
+  import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
   import type { HeartDesign } from "$lib/types/heart";
   import {
     trackHeartDownload,
     trackHeartShare,
     trackHeartEdit,
-    trackHeartLoadError,
-    trackSvgParseError,
   } from "$lib/analytics";
   import PageHeader from "$lib/components/PageHeader.svelte";
   import * as Carousel from "$lib/components/ui/carousel";
 
   let { data }: PageProps = $props();
 
-  // Build-time metadata (gallery hearts only) - available at prerender time.
+  // Build-time metadata and precomputed design (gallery hearts only) - both available
+  // at prerender time, so gallery pages render without a loading state.
   let meta = $derived(data.meta);
 
+  // Hearts that only exist in the browser: the user's own (localStorage) and, so old
+  // links keep working, SVGs under /hearts/ that are not in the gallery index.
   // Design geometry is large (segments); keep it out of deeply reactive proxies.
-  let design = $state.raw<HeartDesign | null>(null);
+  let clientDesign = $state.raw<HeartDesign | null>(null);
+  let design = $derived(data.design ?? clientDesign);
   let isUserCreated = $state(false);
-  let loading = $state(true);
+  let clientLoading = $state(true);
+  let loading = $derived(!data.design && clientLoading);
   let error = $state<string | null>(null);
   let shareStatus = $state<"idle" | "copied" | "error">("idle");
+
+  // /hjerte/delt/#design=<payload>: a heart someone shared (see $lib/utils/shareDesign).
+  // It is not in this browser's collection until the visitor saves it.
+  let isShared = $derived(data.shared);
+  let savedShared = $state(false);
+  let saveError = $state<string | null>(null);
+  // User hearts are shared as a self-contained link with the design in the fragment.
+  let userShareUrl = $state<string | null>(null);
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
   let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
   let heartId = $derived($page.params.id ?? '');
@@ -67,39 +77,38 @@
       colors = c;
     });
 
-    const id = $page.params.id;
+    // Gallery hearts arrived with the page data.
+    if (data.design) return;
 
-    // First check user collection
-    const userHearts = getUserCollection();
-    const userDesign = userHearts.find((h) => h.id === id);
+    const id = $page.params.id ?? '';
 
-    if (userDesign) {
-      design = userDesign;
-      isUserCreated = true;
-      loading = false;
+    if (data.shared) {
+      const payload = new URLSearchParams(window.location.hash.slice(1)).get("design");
+      const raw = payload ? await decodeSharedDesign(payload) : null;
+      const shared = raw ? normalizeHeartDesign(raw) : null;
+      if (shared) {
+        clientDesign = shared;
+        savedShared = getUserCollection().some((h) => h.id === shared.id);
+      } else {
+        error = t("sharedLinkInvalid", lang);
+      }
+      clientLoading = false;
       return;
     }
 
-    // Then check static hearts
-    try {
-      const response = await fetch(`/hearts/${id}.svg`);
-      if (response.ok) {
-        const svgText = await response.text();
-        design = parseHeartFromSVG(svgText, `${id}.svg`);
-        if (!design) {
-          trackSvgParseError(`${id}.svg`, 'No valid paths found');
-          error = t("heartNotFound", lang);
-        }
-      } else {
-        trackHeartLoadError(id ?? '', `HTTP ${response.status}`);
-        error = t("heartNotFound", lang);
-      }
-    } catch (err) {
-      trackHeartLoadError(id ?? '', err instanceof Error ? err.message : 'Unknown error');
-      error = t("failedToLoad", lang);
+    // First check user collection
+    const userDesign = getUserCollection().find((h) => h.id === id);
+    if (userDesign) {
+      clientDesign = userDesign;
+      isUserCreated = true;
+      clientLoading = false;
+      return;
     }
 
-    loading = false;
+    // Not in the gallery index or the user's collection: an old link to an unlisted SVG.
+    clientDesign = await loadStaticHeartById(id);
+    if (!clientDesign) error = t("heartNotFound", lang);
+    clientLoading = false;
   });
 
   // Header/detail text. Comes from the build-time metadata for gallery hearts (so it
@@ -146,8 +155,8 @@
   let photo = $derived(isUserCreated ? null : (meta?.photo ?? null));
 
   // Gallery heart descriptions are written in Danish, so they only appear on the Danish
-  // page; a user's own heart shows whatever they wrote.
-  let description = $derived(info?.description && (lang === "da" || isUserCreated) ? info.description : null);
+  // page; a user's own or a shared heart shows whatever its author wrote.
+  let description = $derived(info?.description && (lang === "da" || isUserCreated || isShared) ? info.description : null);
 
   // SEO
   let siteTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
@@ -164,17 +173,48 @@
   let canonicalDa = $derived(`${SITE_URL}/hjerte/${heartId}/`);
   let canonicalEn = $derived(`${SITE_URL}/en/hjerte/${heartId}/`);
   let canonicalUrl = $derived(lang === "en" ? canonicalEn : canonicalDa);
-  const ogImage = `${SITE_URL}/og-image.png`;
+  // Gallery hearts get their own 1200x630 card, built by scripts/generate-heart-data.mjs.
+  let ogImage = $derived(meta ? `${SITE_URL}/og/${heartId}.png` : `${SITE_URL}/og-image.png`);
 
   // Gallery hearts open by id; user-created hearts carry their design in the URL
-  // fragment (never sent to the server, so no request-URI limits).
+  // fragment (never sent to the server, so no request-URI limits). A shared heart that
+  // is not saved here yet is edited as a copy.
   let editHref = $derived.by(() => {
-    if (isUserCreated && design) {
+    if ((isUserCreated || isShared) && design) {
       const payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(design)));
-      return `${langBase}/editor/?edit=true&returnTo=detail#design=${payload}`;
+      const query = isUserCreated || savedShared ? "?edit=true&returnTo=detail" : "";
+      return `${langBase}/editor/${query}#design=${payload}`;
     }
     return `${langBase}/editor/?from=${encodeURIComponent(heartId)}&returnTo=detail`;
   });
+
+  // Build the share link for a user heart as soon as it is loaded, so the share button
+  // can hand it to the clipboard synchronously within the click.
+  $effect(() => {
+    const current = design;
+    if (!current || !isUserCreated) {
+      userShareUrl = null;
+      return;
+    }
+    let cancelled = false;
+    encodeSharedDesign(serializeHeartDesign(current)).then((payload) => {
+      if (!cancelled) userShareUrl = sharedDesignUrl(payload, lang);
+    });
+    return () => {
+      cancelled = true;
+    };
+  });
+
+  function handleSaveShared() {
+    if (!design) return;
+    try {
+      saveUserDesign(design);
+      savedShared = true;
+      saveError = null;
+    } catch {
+      saveError = t("saveFailed", lang);
+    }
+  }
 
   function handleDownload() {
     if (design) {
@@ -190,7 +230,8 @@
   async function handleShare() {
     if (!browser || !info) return;
 
-    const shareUrl = window.location.href;
+    // Gallery hearts and shared links share the page URL itself.
+    const shareUrl = userShareUrl ?? window.location.href;
     const shareTitle = pageTitle;
     const shareText = t("shareText", lang).replace("{name}", info.name);
 
@@ -267,6 +308,9 @@
   <meta name="twitter:title" content={pageTitle} />
   <meta name="twitter:description" content={metaDescription} />
   <meta name="twitter:image" content={ogImage} />
+  {#if isShared}
+    <meta name="robots" content="noindex" />
+  {/if}
 </svelte:head>
 
 <div class="template-page">
@@ -345,6 +389,17 @@
         {/if}
 
         <div class="button-group">
+          {#if isShared && design}
+            {#if savedShared}
+              <a class="btn primary" href="{langBase}/#{makeHeartAnchorId(design.id)}">
+                {t("showInGallery", lang)}
+              </a>
+            {:else}
+              <button class="btn primary" onclick={handleSaveShared}>
+                {t("saveToMyHearts", lang)}
+              </button>
+            {/if}
+          {/if}
           <button class="btn primary" onclick={handleDownload} disabled={!design}>
             {t("downloadPdfTemplate", lang)}
           </button>
@@ -376,9 +431,17 @@
             {/if}
           </button>
         </div>
+        {#if isShared && savedShared}
+          <p class="save-note" role="status">{t("savedToMyHearts", lang)}</p>
+        {:else if saveError}
+          <p class="save-note save-error" role="alert">{saveError}</p>
+        {/if}
       </div>
 
       <div class="info-section">
+        {#if isShared}
+          <p class="shared-note">{t("sharedHeart", lang)}</p>
+        {/if}
         <h1>{info.name}</h1>
         {#if info.author}
           <p class="author">
@@ -688,6 +751,26 @@
     gap: 1rem;
     margin-top: 1rem;
     flex-wrap: wrap;
+  }
+
+  .save-note {
+    margin: 0.75rem 0 0 0;
+    color: #4a7c8a;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .save-error {
+    color: #cc0000;
+  }
+
+  .shared-note {
+    margin: 0 0 0.5rem 0;
+    color: #4a7c8a;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .instructions {

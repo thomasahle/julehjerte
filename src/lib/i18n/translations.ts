@@ -205,7 +205,14 @@ export const translations = {
     editorFirstVisitHint: 'Tip: Træk i en laps yderste kant for at tilføje en stribe, og dobbeltklik på en kurve for at tilføje et punkt.',
     editorDismissHint: 'Skjul tip',
     editorSnapToOpposite: 'Snap til modsat side',
-    editorSnapToOppositeTitle: 'Snap ankerpunkter til den modsatte laps ankerpunkter'
+    editorSnapToOppositeTitle: 'Snap ankerpunkter til den modsatte laps ankerpunkter',
+    // Precompute (added 2026-09-06)
+    selectAll: 'Vælg alle',
+    selectNone: 'Fravælg alle',
+    sharedHeart: 'Et hjerte delt med dig',
+    saveToMyHearts: 'Gem i Mine Hjerter',
+    savedToMyHearts: 'Gemt i Mine Hjerter',
+    sharedLinkInvalid: 'Linket indeholder ikke et gyldigt hjerte.'
   },
   en: {
     // Site
@@ -413,7 +420,14 @@ export const translations = {
     editorFirstVisitHint: "Tip: Drag a lobe's outer edge to add a strip, and double-click a curve to add a node.",
     editorDismissHint: 'Dismiss tip',
     editorSnapToOpposite: 'Snap to opposite lobe',
-    editorSnapToOppositeTitle: "Snap anchor points to the opposite lobe's anchor points"
+    editorSnapToOppositeTitle: "Snap anchor points to the opposite lobe's anchor points",
+    // Precompute (added 2026-09-06)
+    selectAll: 'Select all',
+    selectNone: 'Select none',
+    sharedHeart: 'A heart shared with you',
+    saveToMyHearts: 'Save to My Hearts',
+    savedToMyHearts: 'Saved to My Hearts',
+    sharedLinkInvalid: 'This link does not contain a valid heart.'
   }
 } as const;
 

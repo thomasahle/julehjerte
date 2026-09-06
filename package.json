@@ -5,8 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"generate:heart-meta": "node scripts/generate-heart-meta.mjs",
-		"prebuild": "npm run generate:heart-meta",
+		"generate:heart-data": "node scripts/generate-heart-data.mjs",
+		"prebuild": "npm run generate:heart-data",
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
@@ -19,6 +19,7 @@
 	"devDependencies": {
 		"@eslint/js": "^9.36.0",
 		"@lucide/svelte": "^0.561.0",
+		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/eslint-config": "^8.1.0",
 		"@sveltejs/kit": "^2.48.5",
