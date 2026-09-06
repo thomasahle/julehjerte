@@ -7,7 +7,7 @@
   import { SITE_TITLE } from '$lib/config';
   import { t, tArray, type Language } from '$lib/i18n';
   import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
-  import { getUserCollection, saveUserDesign } from '$lib/stores/collection';
+  import { getUserCollection, loadStaticHeartById, saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
   import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
   import { detectSymmetry } from '$lib/utils/symmetry';
@@ -25,25 +25,85 @@
   // Help modal state
   let showHelp = $state(false);
 
-  // Helper to parse design from URL - called once at initialization
-  function getDesignFromUrl(): { design: HeartDesign | null; isEditMode: boolean; returnToDetail: boolean } {
-    if (!browser) return { design: null, isEditMode: false, returnToDetail: false };
-    const params = new URLSearchParams(window.location.search);
-    const designData = params.get('design');
-    const isEditMode = params.get('edit') === 'true';
-    const returnToDetail = params.get('returnTo') === 'detail';
-    if (!designData) return { design: null, isEditMode: false, returnToDetail };
-    try {
-      const decoded = JSON.parse(decodeURIComponent(designData)) as unknown;
-      return { design: normalizeHeartDesign(decoded), isEditMode, returnToDetail };
-    } catch (e) {
-      console.error('Failed to parse design from URL', e);
-      return { design: null, isEditMode: false, returnToDetail: false };
-    }
+  // Inline status/error message shown in the actions panel (replaces alert()).
+  type StatusKey = 'save' | 'import' | 'load';
+  let statusMessage = $state<{ key: StatusKey; kind: 'error' | 'info'; text: string } | null>(null);
+
+  function showStatus(key: StatusKey, kind: 'error' | 'info', text: string): void {
+    statusMessage = { key, kind, text };
   }
 
-  // Parse URL design ONCE at module initialization time
-  const { design: urlDesign, isEditMode: urlEditMode, returnToDetail: urlReturnToDetail } = getDesignFromUrl();
+  function clearStatus(key?: StatusKey): void {
+    if (key && statusMessage?.key !== key) return;
+    statusMessage = null;
+  }
+
+  function isQuotaExceeded(err: unknown): boolean {
+    if (!(err instanceof DOMException)) return false;
+    return (
+      err.name === 'QuotaExceededError' ||
+      err.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+      err.code === 22 ||
+      err.code === 1014
+    );
+  }
+
+  function reportSaveError(err: unknown): void {
+    console.error('Saving heart failed', err);
+    showStatus('save', 'error', t(isQuotaExceeded(err) ? 'saveStorageFull' : 'saveFailed', lang));
+  }
+
+  // The editor accepts these URL inputs:
+  //   /editor/?from=<gallery-id>   loads /hearts/<id>.svg (like the detail page) and edits a copy
+  //   /editor/#design=<payload>    user-created heart; payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(d)))
+  //   /editor/?design=<payload>    legacy form of the same payload (kept so old links keep working)
+  // edit=true and returnTo=detail are read from the query string (also accepted in the hash).
+  function parseDesignPayload(raw: string): HeartDesign | null {
+    // URLSearchParams has already percent-decoded once; fall back to a second decode for
+    // links that were encoded twice.
+    const candidates = [raw];
+    try {
+      candidates.push(decodeURIComponent(raw));
+    } catch {
+      // Not double-encoded.
+    }
+    for (const candidate of candidates) {
+      try {
+        const design = normalizeHeartDesign(JSON.parse(candidate) as unknown);
+        if (design) return design;
+      } catch {
+        // Try the next candidate.
+      }
+    }
+    console.error('Failed to parse design from URL');
+    return null;
+  }
+
+  function getEditorUrlInput(): {
+    design: HeartDesign | null;
+    fromId: string | null;
+    isEditMode: boolean;
+    returnToDetail: boolean;
+  } {
+    if (!browser) return { design: null, fromId: null, isEditMode: false, returnToDetail: false };
+    const query = new URLSearchParams(window.location.search);
+    const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const get = (key: string) => query.get(key) ?? hash.get(key);
+    const returnToDetail = get('returnTo') === 'detail';
+    const designData = hash.get('design') ?? query.get('design');
+    const design = designData ? parseDesignPayload(designData) : null;
+    const rawFrom = design ? null : get('from');
+    const fromId = rawFrom && /^[A-Za-z0-9_-]+$/.test(rawFrom) ? rawFrom : null;
+    return { design, fromId, isEditMode: design !== null && get('edit') === 'true', returnToDetail };
+  }
+
+  // Parse URL inputs ONCE at module initialization time
+  const {
+    design: urlDesign,
+    fromId: urlFromId,
+    isEditMode: urlEditMode,
+    returnToDetail: urlReturnToDetail
+  } = getEditorUrlInput();
 
   // State for the loaded design - initialize with URL values
   let initialDesign = $state<HeartDesign | null>(urlDesign);
@@ -68,6 +128,9 @@
 	  let draftId = $state<string | null>(null);
 	  let autosaveTimeout: ReturnType<typeof setTimeout> | null = null;
 	  let autosaveDirty = false;
+	  // Serialized design as first emitted by PaperHeart; used to tell real edits from the initial emission.
+	  let designBaseline: string | null = null;
+	  let hasDesignEdits = false;
 	  const AUTOSAVE_DEBOUNCE_MS = 600;
 
   onMount(() => {
@@ -85,6 +148,10 @@
 
     if (!isEditMode && !draftId) {
       draftId = generateId();
+    }
+
+    if (urlFromId) {
+      void loadDesignFromGallery(urlFromId);
     }
 	    if (!editorEl) return;
 
@@ -123,7 +190,43 @@
 	    currentFingers = fingers;
 	    currentGridSize = gridSize;
 	    currentWeaveParity = weaveParity;
+	    // PaperHeart emits once on mount (with reconciled boundary curves). That is not a
+	    // user edit, so only autosave once the design actually differs from that baseline.
+	    if (!hasDesignEdits) {
+	      const snapshot = JSON.stringify({ fingers, gridSize, weaveParity });
+	      if (designBaseline === null || snapshot === designBaseline) {
+	        designBaseline = snapshot;
+	        return;
+	      }
+	      hasDesignEdits = true;
+	    }
 	    scheduleAutosave();
+	  }
+
+	  // Reset the autosave baseline before remounting PaperHeart with a new design.
+	  function resetDesignBaseline(): void {
+	    designBaseline = null;
+	    hasDesignEdits = false;
+	  }
+
+	  // ?from=<gallery-id>: fetch the static heart and edit it as a copy (same flow as ?design= links).
+	  async function loadDesignFromGallery(id: string): Promise<void> {
+	    const design = await loadStaticHeartById(id);
+	    if (!design) {
+	      showStatus('load', 'error', t('heartNotFound', lang));
+	      return;
+	    }
+	    currentFingers = design.fingers;
+	    currentGridSize = design.gridSize;
+	    currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
+	    heartName = `${design.name} ${t('copy', lang)}`;
+	    authorName = design.author ?? '';
+	    description = design.description ?? '';
+	    editingExisting = true;
+	    isEditMode = false;
+	    initialDesign = design;
+	    resetDesignBaseline();
+	    editorKey++;
 	  }
 
   function generateId(): string {
@@ -168,9 +271,10 @@
 	    autosaveDirty = false;
 	    try {
 	      saveUserDesign(createHeartDesign());
+	      clearStatus('save');
 	    } catch (err) {
-	      console.error('Autosave failed', err);
 	      autosaveDirty = true;
+	      reportSaveError(err);
 	    }
 	  }
 
@@ -216,7 +320,7 @@
 
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${design.name.toLowerCase().replace(/\\s+/g, '-')}-template.svg`;
+    a.download = `${design.name.toLowerCase().replace(/\s+/g, '-')}-template.svg`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -229,7 +333,13 @@
 	    flushAutosave();
 
 	    const design = createHeartDesign();
-		    saveUserDesign(design);
+	    try {
+	      saveUserDesign(design);
+	      clearStatus('save');
+	    } catch (err) {
+	      reportSaveError(err);
+	      return;
+	    }
 
 		    // Navigate to gallery
 		    goto(`${langBase}/#${makeHeartAnchorId(design.id)}`);
@@ -258,10 +368,11 @@
 
         if (!design) {
           trackImportError(file.name, 'No valid paths found in SVG');
-          alert(t('invalidHeartFile', lang));
+          showStatus('import', 'error', t('invalidHeartFile', lang));
           return;
         }
 
+        clearStatus('import');
         currentFingers = design.fingers;
         currentGridSize = design.gridSize;
         currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
@@ -272,11 +383,12 @@
           isEditMode = false;
 	        initialDesign = design;
 	        draftId = generateId();
+	        resetDesignBaseline();
 	        editorKey++;
 	        scheduleAutosave();
 	      } catch (err) {
 	        trackImportError(file.name, err instanceof Error ? err.message : 'Unknown parse error');
-	        alert(t('invalidHeartFile', lang));
+	        showStatus('import', 'error', t('invalidHeartFile', lang));
 	      }
     };
     reader.readAsText(file);
@@ -325,6 +437,7 @@
   <div class="editor-top">
     {#key editorKey}
       <PaperHeart
+        {lang}
         fullPage
         draggableToolbars
         onFingersChange={handleFingersChange}
@@ -377,6 +490,19 @@
 
     <div class="sidebar-section">
       <h3>{t('actions', lang)}</h3>
+      {#if statusMessage}
+        <div class={`status-message ${statusMessage.kind}`} role="alert">
+          <span class="status-text">{statusMessage.text}</span>
+          <button
+            type="button"
+            class="status-dismiss"
+            onclick={() => clearStatus()}
+            aria-label={t('dismissMessage', lang)}
+          >
+            <XIcon size={16} />
+          </button>
+        </div>
+      {/if}
       <div class="action-buttons">
         <button class="btn primary full-width" onclick={showInGallery}>
           {isEditMode ? t('saveChanges', lang) : t('showInGallery', lang)}
@@ -571,6 +697,52 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .status-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .status-message.error {
+    background: #fdecec;
+    border: 1px solid #f3b4b4;
+    color: #8a1c1c;
+  }
+
+  .status-message.info {
+    background: #eef4ff;
+    border: 1px solid #c3d4f5;
+    color: #1f3a70;
+  }
+
+  .status-text {
+    flex: 1 1 auto;
+  }
+
+  .status-dismiss {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    margin: -2px -4px 0 0;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .status-dismiss:hover {
+    background: rgba(0, 0, 0, 0.06);
   }
 
   .btn {

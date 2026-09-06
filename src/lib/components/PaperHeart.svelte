@@ -39,10 +39,12 @@
 	import { insertNodeInFinger, shiftNodeTypesOnDelete } from '$lib/editor/commands';
 	import { toggleNumberInList } from '$lib/editor/selection';
 	import { getColors, setColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
+	import { t as translate, type Language, type TranslationKey } from '$lib/i18n';
 
 		interface Props {
 			readonly?: boolean;
 			idPrefix?: string;
+			lang?: Language;
 			initialFingers?: Finger[];
 			initialGridSize?: GridSize | number;
 			initialWeaveParity?: 0 | 1 | number;
@@ -55,6 +57,7 @@
 	let {
 		readonly = false,
 		idPrefix = undefined,
+			lang = 'da',
 			initialFingers,
 			initialGridSize = 3,
 			initialWeaveParity = 0,
@@ -66,6 +69,8 @@
 
 	// Stable ID for clip paths (avoid Math.random which breaks SSR/hydration).
 	const componentId = $derived.by(() => (idPrefix && idPrefix.length > 0 ? idPrefix : 'heart-editor'));
+	// UI strings in the language of the page hosting the editor.
+	const tr = (key: TranslationKey) => translate(key, lang);
 	const HANDLE_COLLAPSE_EPS = 0.25;
 	const HANDLE_SNAP_EPS = 8;
 	const MAX_BEZIER_SEGMENTS_PER_FINGER = 64;
@@ -3059,8 +3064,17 @@
 			})();
 		});
 
+	function isEditableTarget(target: EventTarget | null): boolean {
+		if (!(target instanceof HTMLElement)) return false;
+		if (target.isContentEditable) return true;
+		const tag = target.tagName;
+		return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+	}
+
 	function handleKeyDown(e: KeyboardEvent) {
 		if (readonly) return;
+		// Leave text fields alone: Backspace/Delete/undo/redo there belong to the field.
+		if (isEditableTarget(e.target)) return;
 		if (e.key === 'Escape') {
 			selectedFingerId = null;
 			selectedAnchors = [];
@@ -3231,10 +3245,61 @@
 		window.addEventListener('resize', updateMobileCanvasMinHeight, { passive: true });
 		return () => window.removeEventListener('resize', updateMobileCanvasMinHeight);
 	});
+
+	// Narrow screens (<= 600px) stack the toolbar above and the panels below the canvas.
+	// Measure them so the heart is laid out in the free band between them instead of underneath.
+	let mobileClearance = $state<{ top: number; bottom: number } | null>(null);
+
+	function updateMobileClearance() {
+		if (
+			!fullPage ||
+			readonly ||
+			!canvasAreaEl ||
+			typeof window === 'undefined' ||
+			!window.matchMedia('(max-width: 600px)').matches
+		) {
+			mobileClearance = null;
+			return;
+		}
+		const gap = 8;
+		const top = segmentControlsEl ? segmentControlsEl.offsetTop + segmentControlsEl.offsetHeight + gap : 0;
+		const bottom = rightPanelEl ? canvasAreaEl.clientHeight - rightPanelEl.offsetTop + gap : 0;
+		const next = { top: Math.max(0, Math.round(top)), bottom: Math.max(0, Math.round(bottom)) };
+		if (mobileClearance && mobileClearance.top === next.top && mobileClearance.bottom === next.bottom) return;
+		mobileClearance = next;
+	}
+
+	onMount(() => {
+		if (!fullPage || readonly) return;
+		const schedule = () => {
+			tick().then(updateMobileClearance);
+		};
+		let ro: ResizeObserver | null = null;
+		try {
+			ro = new ResizeObserver(schedule);
+			if (segmentControlsEl) ro.observe(segmentControlsEl);
+			if (rightPanelEl) ro.observe(rightPanelEl);
+			if (canvasAreaEl) ro.observe(canvasAreaEl);
+		} catch {
+			// ResizeObserver unavailable; window resize still updates the clearance.
+		}
+		window.addEventListener('resize', schedule, { passive: true });
+		schedule();
+		return () => {
+			ro?.disconnect();
+			window.removeEventListener('resize', schedule);
+		};
+	});
 </script>
 
 	<TooltipProvider delayDuration={250}>
-		<div class="paper-heart" class:readonly class:fullPage={fullPage}>
+		<div
+			class="paper-heart"
+			class:readonly
+			class:fullPage={fullPage}
+			style:--mobile-top-clearance={mobileClearance ? `${mobileClearance.top}px` : undefined}
+			style:--mobile-bottom-clearance={mobileClearance ? `${mobileClearance.bottom}px` : undefined}
+		>
 			<div class="canvas-area" bind:this={canvasAreaEl} style:min-height={fullPage ? undefined : mobileCanvasMinHeight ?? undefined}>
 				<div class="canvas-wrapper" style:width={fullPage ? '100%' : `${size}px`} style:height={fullPage ? '100%' : `${size}px`}>
 					<svg
@@ -3528,46 +3593,46 @@
 					>
 						<div class="controls">
 							<label class="checkbox">
-								<input type="checkbox" bind:checked={showCurves} aria-label="Show curve outlines" />
-								Outlines
+								<input type="checkbox" bind:checked={showCurves} aria-label={tr('editorShowCurveOutlines')} />
+								{tr('editorOutlines')}
 						</label>
-						<Button variant="secondary" size="sm" onclick={flipLobeColors} title="Flip lobe colors">
-							Flip colors
+						<Button variant="secondary" size="sm" onclick={flipLobeColors} title={tr('editorFlipLobeColors')}>
+							{tr('editorFlipColors')}
 						</Button>
 					</div>
 					<div class="symmetry-panel">
-						<h4 class="symmetry-header">Symmetry</h4>
-						<div class="symmetry-row" aria-label="Within curve symmetry">
-							<span class="symmetry-label">Within curve</span>
+						<h4 class="symmetry-header">{tr('symmetry')}</h4>
+						<div class="symmetry-row" aria-label={tr('editorWithinCurveSymmetry')}>
+							<span class="symmetry-label">{tr('editorWithinCurve')}</span>
 							<ToggleGroup type="single" bind:value={withinCurveMode}>
-								<ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
-								<ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
-								<ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
+								<ToggleGroupItem value="off" title={tr('editorOff')}>{tr('editorOff')}</ToggleGroupItem>
+								<ToggleGroupItem value="sym" title={tr('mirrorSymmetry')}>{tr('editorSym')}</ToggleGroupItem>
+								<ToggleGroupItem value="anti" title={tr('editorAntiSymmetry')}>{tr('editorAnti')}</ToggleGroupItem>
 							</ToggleGroup>
 						</div>
-						<div class="symmetry-row" aria-label="Within lobe symmetry">
-							<span class="symmetry-label">Within lobe</span>
+						<div class="symmetry-row" aria-label={tr('editorWithinLobeSymmetry')}>
+							<span class="symmetry-label">{tr('editorWithinLobe')}</span>
 							<ToggleGroup type="single" bind:value={withinLobeMode}>
-								<ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
-								<ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
-								<ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
+								<ToggleGroupItem value="off" title={tr('editorOff')}>{tr('editorOff')}</ToggleGroupItem>
+								<ToggleGroupItem value="sym" title={tr('mirrorSymmetry')}>{tr('editorSym')}</ToggleGroupItem>
+								<ToggleGroupItem value="anti" title={tr('editorAntiSymmetry')}>{tr('editorAnti')}</ToggleGroupItem>
 							</ToggleGroup>
 						</div>
-						<div class="symmetry-row" aria-label="Between lobes symmetry">
-							<span class="symmetry-label">Between lobes</span>
+						<div class="symmetry-row" aria-label={tr('editorBetweenLobesSymmetry')}>
+							<span class="symmetry-label">{tr('editorBetweenLobes')}</span>
 							<Tooltip>
 								<TooltipTrigger>
 									{#snippet child({ props })}
 										<span class="tooltip-wrapper" {...props}>
 											<ToggleGroup type="single" bind:value={betweenLobesMode} disabled={!canSymmetryBetweenLobes()}>
-												<ToggleGroupItem value="off" title="Off">Off</ToggleGroupItem>
-												<ToggleGroupItem value="sym" title="Mirror symmetry">Sym</ToggleGroupItem>
-												<ToggleGroupItem value="anti" title="Anti-symmetry">Anti</ToggleGroupItem>
+												<ToggleGroupItem value="off" title={tr('editorOff')}>{tr('editorOff')}</ToggleGroupItem>
+												<ToggleGroupItem value="sym" title={tr('mirrorSymmetry')}>{tr('editorSym')}</ToggleGroupItem>
+												<ToggleGroupItem value="anti" title={tr('editorAntiSymmetry')}>{tr('editorAnti')}</ToggleGroupItem>
 											</ToggleGroup>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>{canSymmetryBetweenLobes() ? 'Between lobes symmetry' : 'Requires equal grid size'}</TooltipContent>
+								<TooltipContent>{canSymmetryBetweenLobes() ? tr('editorBetweenLobesSymmetry') : tr('editorRequiresEqualGridSize')}</TooltipContent>
 							</Tooltip>
 						</div>
 					</div>
@@ -3581,39 +3646,39 @@
 						style={
 							canDragToolbars && toolbarPositions ? `left: ${toolbarPositions.segment.x}px; top: ${toolbarPositions.segment.y}px; transform: none;` : ''
 						}
-						aria-label="Curve tools"
+						aria-label={tr('editorCurveTools')}
 						onpointerdown={(e) => beginToolbarDrag(e, 'segment')}
 					>
-							<div class="history-controls" aria-label="History">
+							<div class="history-controls" aria-label={tr('editorHistory')}>
 								<Tooltip>
 									<TooltipTrigger>
 										{#snippet child({ props })}
 										<span class="tooltip-wrapper" {...props}>
-											<Button variant="ghost" size="icon-sm" onclick={undo} disabled={!canUndo} aria-label="Undo">
+											<Button variant="ghost" size="icon-sm" onclick={undo} disabled={!canUndo} aria-label={tr('editorUndo')}>
 												<Undo2Icon size={18} aria-hidden="true" />
 											</Button>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>Undo</TooltipContent>
+								<TooltipContent>{tr('editorUndo')}</TooltipContent>
 							</Tooltip>
 							<Tooltip>
 								<TooltipTrigger>
 									{#snippet child({ props })}
 										<span class="tooltip-wrapper" {...props}>
-											<Button variant="ghost" size="icon-sm" onclick={redo} disabled={!canRedo} aria-label="Redo">
+											<Button variant="ghost" size="icon-sm" onclick={redo} disabled={!canRedo} aria-label={tr('editorRedo')}>
 												<Redo2Icon size={18} aria-hidden="true" />
 											</Button>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>Redo</TooltipContent>
+								<TooltipContent>{tr('editorRedo')}</TooltipContent>
 							</Tooltip>
 						</div>
 						<div class="toolbar-separator" aria-hidden="true">
 							<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
 						</div>
-						<div class="edit-controls" aria-label="Edit">
+						<div class="edit-controls" aria-label={tr('editorEdit')}>
 							<Tooltip>
 								<TooltipTrigger>
 									{#snippet child({ props })}
@@ -3623,14 +3688,14 @@
 												size="icon-sm"
 												onclick={insertNodeBetweenSelectedAnchors}
 												disabled={!canInsertNode}
-												aria-label="Insert node"
+												aria-label={tr('editorInsertNode')}
 											>
 												<span aria-hidden="true"><AddNodeIcon /></span>
 											</Button>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>Insert node</TooltipContent>
+								<TooltipContent>{tr('editorInsertNode')}</TooltipContent>
 							</Tooltip>
 							<Tooltip>
 								<TooltipTrigger>
@@ -3641,20 +3706,20 @@
 												size="icon-sm"
 												onclick={deleteSelectedAnchors}
 												disabled={!canDeleteNode}
-												aria-label="Delete node"
+												aria-label={tr('editorDeleteNode')}
 											>
 												<Trash2Icon size={18} aria-hidden="true" />
 											</Button>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>Delete node</TooltipContent>
+								<TooltipContent>{tr('editorDeleteNode')}</TooltipContent>
 							</Tooltip>
 						</div>
 						<div class="toolbar-separator" aria-hidden="true">
 							<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
 						</div>
-						<div class="node-type-controls" aria-label="Node type">
+						<div class="node-type-controls" aria-label={tr('editorNodeType')}>
 							<Tooltip>
 								<TooltipTrigger>
 									{#snippet child({ props })}
@@ -3665,14 +3730,14 @@
 												class={nodeTypeSelected === 'corner' ? 'bg-[#cc0000]/10 border-[#cc0000]/40' : ''}
 												onclick={() => setSelectedAnchorsNodeType('corner')}
 												disabled={!validAnchors.length}
-												aria-label="Corner node"
+												aria-label={tr('editorCornerNode')}
 											>
 												<span aria-hidden="true"><NodeCornerIcon /></span>
 											</Button>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>Corner</TooltipContent>
+								<TooltipContent>{tr('editorCorner')}</TooltipContent>
 							</Tooltip>
 							<Tooltip>
 								<TooltipTrigger>
@@ -3684,14 +3749,14 @@
 												class={nodeTypeSelected === 'smooth' ? 'bg-[#cc0000]/10 border-[#cc0000]/40' : ''}
 												onclick={() => setSelectedAnchorsNodeType('smooth')}
 												disabled={!validAnchors.length}
-												aria-label="Smooth node"
+												aria-label={tr('editorSmoothNode')}
 											>
 												<span aria-hidden="true"><NodeSmoothIcon /></span>
 											</Button>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>Smooth</TooltipContent>
+								<TooltipContent>{tr('editorSmooth')}</TooltipContent>
 							</Tooltip>
 							<Tooltip>
 								<TooltipTrigger>
@@ -3706,14 +3771,14 @@
 													setSelectedAnchorsNodeType('symmetric');
 												}}
 												disabled={!validAnchors.length}
-												aria-label="Symmetric node"
+												aria-label={tr('editorSymmetricNode')}
 											>
 												<span aria-hidden="true"><NodeSymmetricIcon /></span>
 											</Button>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>Symmetric</TooltipContent>
+								<TooltipContent>{tr('editorSymmetric')}</TooltipContent>
 							</Tooltip>
 							<Tooltip>
 								<TooltipTrigger>
@@ -3724,20 +3789,20 @@
 												size="icon-sm"
 												onclick={makeSelectedAnchorsCurved}
 												disabled={!validAnchors.length}
-												aria-label="Curve node"
+												aria-label={tr('editorCurveNode')}
 											>
 												<span aria-hidden="true"><CurveNodeToolIcon /></span>
 											</Button>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>Curve node</TooltipContent>
+								<TooltipContent>{tr('editorCurveNode')}</TooltipContent>
 							</Tooltip>
 						</div>
 						<div class="toolbar-separator" aria-hidden="true">
 							<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
 						</div>
-						<div class="convert-controls" aria-label="Convert">
+						<div class="convert-controls" aria-label={tr('editorConvert')}>
 							<Tooltip>
 								<TooltipTrigger>
 									{#snippet child({ props })}
@@ -3747,14 +3812,14 @@
 												size="icon-sm"
 												onclick={makeSelectedSegmentsStraight}
 												disabled={!canMakeSegmentsStraight}
-												aria-label="Straight segment"
+												aria-label={tr('editorStraightSegment')}
 											>
 												<span aria-hidden="true"><SegmentLineIcon /></span>
 											</Button>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>Straight segment</TooltipContent>
+								<TooltipContent>{tr('editorStraightSegment')}</TooltipContent>
 							</Tooltip>
 							<Tooltip>
 								<TooltipTrigger>
@@ -3765,14 +3830,14 @@
 												size="icon-sm"
 												onclick={makeSelectedSegmentsCurved}
 												disabled={!canMakeSegmentsCurved}
-												aria-label="Curved segment"
+												aria-label={tr('editorCurvedSegment')}
 											>
 												<span aria-hidden="true"><SegmentCurveIcon /></span>
 											</Button>
 										</span>
 									{/snippet}
 								</TooltipTrigger>
-								<TooltipContent>Curved segment</TooltipContent>
+								<TooltipContent>{tr('editorCurvedSegment')}</TooltipContent>
 							</Tooltip>
 						</div>
 					</div>
@@ -4055,6 +4120,50 @@
 				height: 100% !important;
 				aspect-ratio: unset;
 				max-width: none;
+			}
+		}
+
+		/* Narrow phones: wrap the toolbar, stack the bottom panels, and keep everything inside the viewport. */
+		@media (max-width: 600px) {
+			.segment-controls {
+				flex-wrap: wrap;
+				justify-content: center;
+				overflow: visible;
+				gap: 0.25rem 0.75rem;
+				border-radius: 16px;
+			}
+
+			.paper-heart.fullPage .segment-controls.floating {
+				top: 16px;
+			}
+
+			.toolbar-separator {
+				display: none;
+			}
+
+			/* Balance the two rows: history, edit and convert on the first, node types on the second. */
+			.node-type-controls {
+				order: 1;
+			}
+
+			.right-panel {
+				flex-direction: column;
+				align-items: stretch;
+				gap: 0.5rem;
+			}
+
+			.controls {
+				justify-content: space-between;
+			}
+
+			.symmetry-row {
+				justify-content: space-between;
+			}
+
+			.paper-heart.fullPage:not(.readonly) .canvas-wrapper {
+				top: var(--mobile-top-clearance, 0px);
+				bottom: var(--mobile-bottom-clearance, 0px);
+				height: auto !important;
 			}
 		}
 	</style>
