@@ -203,7 +203,9 @@ export const translations = {
     editorManyStripsHint: 'Over 8 striber kræver stor præcision',
     editorIntersectionWarning: 'Kurverne må ikke krydse hinanden – det ville klippe papirstrimlerne over.',
     editorFirstVisitHint: 'Tip: Træk i en laps yderste kant for at tilføje en stribe, og dobbeltklik på en kurve for at tilføje et punkt.',
-    editorDismissHint: 'Skjul tip'
+    editorDismissHint: 'Skjul tip',
+    editorSnapToOpposite: 'Snap til modsat side',
+    editorSnapToOppositeTitle: 'Snap ankerpunkter til den modsatte laps ankerpunkter'
   },
   en: {
     // Site
@@ -409,7 +411,9 @@ export const translations = {
     editorManyStripsHint: 'More than 8 strips requires great precision',
     editorIntersectionWarning: 'Curves must not cross each other – that would cut the paper strips apart.',
     editorFirstVisitHint: "Tip: Drag a lobe's outer edge to add a strip, and double-click a curve to add a node.",
-    editorDismissHint: 'Dismiss tip'
+    editorDismissHint: 'Dismiss tip',
+    editorSnapToOpposite: 'Snap to opposite lobe',
+    editorSnapToOppositeTitle: "Snap anchor points to the opposite lobe's anchor points"
   }
 } as const;
 

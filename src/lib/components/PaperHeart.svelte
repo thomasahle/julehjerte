@@ -39,6 +39,7 @@
 	import { dot, midpoint, normalize, perp, vecAdd, vecDist, vecLerp, vecScale, vecSub } from '$lib/geometry/vec';
 	import { insertNodeInFinger, shiftNodeTypesOnDelete } from '$lib/editor/commands';
 	import { bezierPointAt, findFingersWithIssues, intersectionMarginPx, segmentsIntersect } from '$lib/editor/curveIssues';
+	import { findNearestOppositeAnchor, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
 	import { toggleNumberInList } from '$lib/editor/selection';
 	import { getColors, setColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
 	import { t as translate, type Language, type TranslationKey } from '$lib/i18n';
@@ -238,6 +239,8 @@
 	type SymmetryMode = 'off' | 'sym' | 'anti';
 
 	let showCurves = $state(true);
+	// Snap dragged anchors to nearby anchors of the opposite lobe (GitHub issue #2). Off by default.
+	let snapToOpposite = $state(false);
 	let withinCurveMode = $state<SymmetryMode>('off');
 	let withinLobeMode = $state<SymmetryMode>('off');
 	let betweenLobesMode = $state<SymmetryMode>('off');
@@ -721,6 +724,27 @@
 		const x = clamp(point.x, minX, maxX);
 		const y = pointKey === 'p0' ? maxY : minY;
 		return { x, y };
+	}
+
+	// The anchor of the other lobe nearest to `pos` within the snap radius, or null. Positions are
+	// the editor's internal coordinates, the same system drag positions are in.
+	function snapTargetForAnchor(lobe: LobeId, pos: Vec): Vec | null {
+		if (!snapToOpposite) return null;
+		const { width, height } = getOverlapRect();
+		return findNearestOppositeAnchor(fingers, lobe, pos, snapOppositeRadiusPx({ width, height }));
+	}
+
+	// Snap a curve endpoint after it has been projected onto its edge: the snap target is
+	// projected onto the same edge, so the projection cannot undo the snap.
+	function snapEndpointAnchor(finger: Finger, segments: BezierSegment[], anchorIdx: number) {
+		const n = segments.length;
+		if (!n || (anchorIdx !== 0 && anchorIdx !== n)) return;
+		const key = anchorIdx === 0 ? 'p0' : 'p3';
+		const current = anchorIdx === 0 ? segments[0]!.p0 : segments[n - 1]!.p3;
+		const target = snapTargetForAnchor(finger.lobe, current);
+		if (!target) return;
+		const projected = projectEndpoint(finger, target, key);
+		applyDeltaToAnchorsInSegments(finger, segments, [anchorIdx], vecSub(projected, current));
 	}
 
 	function applyDeltaToAnchorsInSegments(
@@ -2491,7 +2515,8 @@
 					const segs = finger ? fingerToSegments(finger) : null;
 					const n = segs?.length ?? 0;
 					if (finger && segs && anchorIdx > 0 && anchorIdx < n) {
-						const desired = vecAdd(p, offset);
+						const raw = vecAdd(p, offset);
+						const desired = snapTargetForAnchor(finger.lobe, raw) ?? raw;
 						const ok = updateSegmentControlPoint(dragTarget.fingerId, anchorIdx, 'junction', desired);
 						if (!ok) return;
 						dragDirty = true;
@@ -2527,6 +2552,9 @@
 						if (!segs.length) return current;
 						const d = vecScale(delta, fraction);
 						applyDeltaToAnchorsInSegments(current, segs, anchorsToMove, d);
+						// Snap only the full move of a single endpoint; partial moves come from the
+						// binary search for a valid position and must stay on the pointer's line.
+						if (fraction === 1 && anchorsToMove.length === 1) snapEndpointAnchor(current, segs, anchorIdx);
 						if (symmetryWithinCurve) {
 							applyWithinCurveSymmetryForMovedAnchors(current, segs, anchorsToMove, anchorIdx);
 						}
@@ -3283,6 +3311,10 @@
 					>
 						<div class="controls">
 							<label class="checkbox">
+								<input type="checkbox" bind:checked={snapToOpposite} aria-label={tr('editorSnapToOppositeTitle')} />
+								{tr('editorSnapToOpposite')}
+							</label>
+							<label class="checkbox">
 								<input type="checkbox" bind:checked={showCurves} aria-label={tr('editorShowCurveOutlines')} />
 								{tr('editorOutlines')}
 						</label>
@@ -3842,6 +3874,7 @@
 
 			.controls {
 				flex-direction: row;
+				flex-wrap: wrap;
 				align-items: center;
 			}
 
