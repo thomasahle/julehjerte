@@ -728,6 +728,15 @@ function processPathData(pathData: string): string[] {
  * - Right lobe: vertical paths (large y span)
  * Uses bounding box analysis if endpoints don't provide a clear direction.
  */
+// Closed or zero-length subpaths (decorative shapes, a stray "M x y Z") can never be
+// strip boundaries, which run from one edge of the overlap square to another.
+function isDegeneratePath(segments: BezierSegment[]): boolean {
+  if (!segments.length) return true;
+  const start = segments[0].p0;
+  const end = segments[segments.length - 1].p3;
+  return vecDist(start, end) < 0.01;
+}
+
 function detectLobeFromPath(pathData: string): LobeId | null {
   const segments = parsePathDataToSegments(pathData);
   if (!segments.length) return null;
@@ -1144,10 +1153,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
 
     for (const joinedPath of joinedPaths) {
       const segments = parsePathDataToSegments(joinedPath);
-      if (!segments.length) {
-        console.warn(`[parseHeartFromSVG: ${name}] Skipping path with no segments: ${joinedPath.slice(0, 50)}...`);
-        continue;
-      }
+      if (isDegeneratePath(segments)) continue;
 
       // Detect lobe based on whether path is more horizontal or vertical
       const lobe = detectLobeFromPath(joinedPath);
@@ -1194,10 +1200,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
 
     for (const joinedPath of joinedPaths) {
       const segments = parsePathDataToSegments(joinedPath);
-      if (!segments.length) {
-        console.warn(`[parseHeartFromSVG: ${name}] Skipping <use> path with no segments: ${joinedPath.slice(0, 50)}...`);
-        continue;
-      }
+      if (isDegeneratePath(segments)) continue;
 
       // Detect lobe based on whether path is more horizontal or vertical
       const lobe = detectLobeFromPath(joinedPath);
