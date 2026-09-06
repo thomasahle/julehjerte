@@ -45,6 +45,7 @@ export default [
 		rules: {
 			'@typescript-eslint/no-unused-vars': 'off',
 			'prefer-const': 'off',
+			'no-useless-assignment': 'off',
 			'svelte/no-at-html-tags': 'off',
 			'svelte/no-navigation-without-resolve': 'off',
 			'svelte/no-unused-svelte-ignore': 'off',
