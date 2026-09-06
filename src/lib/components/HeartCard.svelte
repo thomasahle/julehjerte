@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { HeartDesign } from "$lib/types/heart";
+  import { base } from "$app/paths";
   import { t, type Language } from "$lib/i18n";
   import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
-  import { onMount } from "svelte";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
   import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
   import Trash2Icon from "@lucide/svelte/icons/trash-2";
@@ -17,11 +17,14 @@
   }
 
   let { design, selected = false, lang, onSelect, onClick, onDelete }: Props = $props();
-  let previewReady = $state(false);
-  let previewEl: HTMLDivElement | null = null;
-  let previewSize = $state(220);
+
+  // Intrinsic preview size; the SVG scales down with the card (max-width: 100%,
+  // height: auto) and gallery cards are never wider than this.
+  const PREVIEW_SIZE = 400;
 
   let difficulty = $derived(calculateDifficulty(design));
+  // A real link so the detail pages are reachable from the prerendered gallery.
+  let detailsHref = $derived(`${base}${lang === 'en' ? '/en' : ''}/hjerte/${design.id}/`);
 
   function getDifficultyLabel(level: DifficultyLevel): string {
     const labels: Record<DifficultyLevel, 'difficultyEasy' | 'difficultyMedium' | 'difficultyHard' | 'difficultyExpert'> = {
@@ -32,29 +35,6 @@
     };
     return t(labels[level], lang);
   }
-
-  onMount(() => {
-    if (!previewEl) return;
-
-    const updateSize = () => {
-      if (!previewEl) return;
-      // Use offsetWidth instead of getBoundingClientRect to ignore CSS transforms (hover scale)
-      // Cap at 400px max - gallery cards should never be larger than this
-      const width = previewEl.offsetWidth;
-      if (width > 0 && width <= 400) previewSize = width;
-    };
-    updateSize();
-    requestAnimationFrame(updateSize);
-
-    let resizeObserver: ResizeObserver | null = null;
-    if ('ResizeObserver' in window) {
-      resizeObserver = new ResizeObserver(() => updateSize());
-      resizeObserver.observe(previewEl);
-    }
-
-    previewReady = true;
-    return () => resizeObserver?.disconnect();
-  });
 
   function handleDetails() {
     onClick?.(design);
@@ -70,25 +50,21 @@
 </script>
 
 <!--
-  The card is a plain container; PDF selection and "Details" are separate real
-  buttons (no nested interactive content inside a role="button"). The select
+  The card is a plain container; PDF selection is a real button and "Details" a
+  real link (no nested interactive content inside a role="button"). The select
   button covers the whole card, the overlay sits on top of it and only its
-  Details button takes pointer events, so clicks elsewhere still toggle selection.
+  Details link takes pointer events, so clicks elsewhere still toggle selection.
 -->
 <div class="card" class:selected id={makeHeartAnchorId(design.id)}>
-  <div class="preview svg-renderer" bind:this={previewEl}>
-    {#if previewReady}
-      <PaperHeartSVG
-        readonly
-        idPrefix={"card-" + design.id}
-        initialFingers={design.fingers}
-        initialGridSize={design.gridSize}
-        initialWeaveParity={design.weaveParity ?? 0}
-        size={previewSize}
-      />
-    {:else}
-      <div class="thumb-skeleton" aria-hidden="true"></div>
-    {/if}
+  <div class="preview svg-renderer">
+    <PaperHeartSVG
+      readonly
+      idPrefix={"card-" + design.id}
+      initialFingers={design.fingers}
+      initialGridSize={design.gridSize}
+      initialWeaveParity={design.weaveParity ?? 0}
+      size={PREVIEW_SIZE}
+    />
   </div>
   <button
     class="select-btn"
@@ -104,14 +80,14 @@
         {getDifficultyLabel(difficulty.level)}
       </span>
     </div>
-    <button
+    <a
       class="details-btn"
-      type="button"
+      href={detailsHref}
       onclick={handleDetails}
       aria-label="{t('details', lang)}: {design.name}"
     >
       {t('details', lang)}
-    </button>
+    </a>
   </div>
   {#if selected}
     <div class="selected-badge" aria-hidden="true">✓</div>
@@ -175,23 +151,6 @@
   .card:hover .preview :global(canvas),
   .card:hover .preview :global(svg) {
     filter: drop-shadow(0 6px 12px var(--shadow-color-hover));
-  }
-
-  .thumb-skeleton {
-    width: 70%;
-    height: 70%;
-    background: rgba(0, 0, 0, 0.08);
-    border-radius: 50%;
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 0.4;
-    }
-    50% {
-      opacity: 0.7;
-    }
   }
 
   /* Invisible button covering the card: toggles PDF selection */
@@ -267,6 +226,8 @@
 
   .details-btn {
     flex-shrink: 0;
+    display: inline-block;
+    text-decoration: none;
     padding: 0.4rem 0.8rem;
     background: rgba(0, 0, 0, 0.6);
     color: white;

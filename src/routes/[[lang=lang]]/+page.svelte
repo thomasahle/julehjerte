@@ -5,7 +5,7 @@
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
   import HeartCard from "$lib/components/HeartCard.svelte";
-  import { deleteUserDesign, getUserCollection, loadStaticHeartById, type HeartCategoryWithMeta } from "$lib/stores/collection";
+  import { deleteUserDesign, getUserCollection, type HeartCategoryWithMeta } from "$lib/stores/collection";
   import { downloadMultiPDF, type LayoutMode } from "$lib/pdf/template";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import {
@@ -43,14 +43,15 @@
   
   let { data } = $props();
   let indexCategories = $derived(data.indexCategories as IndexedCategory[]);
-  
-  // Avoid making the full heart geometry (segments) deeply reactive — it's large and
-  // slows down tight geometry loops (e.g. ribbon path building) if proxied.
-  let loadedStaticHearts = $state.raw<Record<string, HeartDesign>>({});
+
+  // Gallery hearts come precomputed from the load function (prerendered); user hearts
+  // live in localStorage and are read in the browser. The full heart geometry
+  // (segments) is large and slows down tight geometry loops if proxied, so keep it
+  // out of deeply reactive state.
+  let staticHearts = $derived(data.designs as Record<string, HeartDesign>);
   let userHearts = $state.raw<HeartDesign[]>([]);
 
   let selectedIds = $state<Set<string>>(new Set());
-  let loadingStatic = $state(true);
   let generating = $state(false);
   let pdfLayout = $state<LayoutMode>("medium");
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
@@ -86,7 +87,7 @@
     });
   }
 
-  onMount(async () => {
+  onMount(() => {
     // Initialize colors
     colors = getColors();
     subscribeColors((c) => {
@@ -98,28 +99,6 @@
 
     userHearts = getUserCollection();
     pendingAnchorId = browser ? window.location.hash.slice(1) || null : null;
-
-    // Kick off heart loading in background; update UI as each heart arrives.
-    const ids = indexCategories.flatMap((c) => c.hearts);
-    loadingStatic = true;
-    const loaded: Record<string, HeartDesign> = {};
-    // Parsing SVG into heart designs is CPU-heavy; limit concurrency and yield
-    // between parses so the gallery can paint progressively.
-    const CONCURRENCY = 6;
-    let cursor = 0;
-    const workers = Array.from({ length: Math.min(CONCURRENCY, ids.length) }, async () => {
-      while (cursor < ids.length) {
-        const id = ids[cursor++];
-        const design = await loadStaticHeartById(id);
-        if (design) {
-          loaded[id] = design;
-          loadedStaticHearts = { ...loaded };
-        }
-        await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-      }
-    });
-    await Promise.allSettled(workers);
-    loadingStatic = false;
   });
 
   function handleSelect(design: HeartDesign) {
@@ -135,9 +114,9 @@
     trackHeartSelect(design.id, design.name, !wasSelected);
   }
 
+  // The card's details link navigates; this only records the view.
   function handleClick(design: HeartDesign) {
     trackHeartView(design.id, design.name);
-    goto(`${langBase}/hjerte/${design.id}`);
   }
 
   let deleteCandidate = $state.raw<HeartDesign | null>(null);
@@ -177,7 +156,7 @@
   let categories = $derived.by(() => {
     const cats: HeartCategoryWithMeta[] = indexCategories.map((cat) => ({
       id: cat.id,
-      hearts: cat.hearts.map((id) => loadedStaticHearts[id]).filter(Boolean)
+      hearts: cat.hearts.map((id) => staticHearts[id]).filter(Boolean)
     }));
     if (userHearts.length > 0) {
       cats.push({
@@ -293,7 +272,7 @@
     </div>
   </div>
 
-  {#if allHearts.length === 0 && !loadingStatic}
+  {#if allHearts.length === 0}
     <div class="empty">
       <p>{t("noHeartsYet", lang)}</p>
       <p>{t("clickCreateNew", lang)}</p>
@@ -303,33 +282,16 @@
       <section class="category-section">
         <h2 class="category-header">{t(categoryTitleKeys[category.id], lang)}</h2>
         <div class="gallery svg-renderer">
-          {#if category.id !== 'mine'}
-            {#each (indexCategories.find((c) => c.id === category.id)?.hearts ?? []) as id (id)}
-              {#if loadedStaticHearts[id]}
-                {@const design = loadedStaticHearts[id]}
-                <HeartCard
-                  {design}
-                  {lang}
-                  selected={selectedIds.has(design.id)}
-                  onSelect={handleSelect}
-                  onClick={handleClick}
-                />
-              {:else}
-                <div class="skeleton-card" aria-hidden="true"></div>
-              {/if}
-            {/each}
-          {:else}
-            {#each category.hearts as design (design.id)}
-              <HeartCard
-                {design}
-                {lang}
-                selected={selectedIds.has(design.id)}
-                onSelect={handleSelect}
-                onClick={handleClick}
-                onDelete={requestDelete}
-              />
-            {/each}
-          {/if}
+          {#each category.hearts as design (design.id)}
+            <HeartCard
+              {design}
+              {lang}
+              selected={selectedIds.has(design.id)}
+              onSelect={handleSelect}
+              onClick={handleClick}
+              onDelete={category.id === 'mine' ? requestDelete : undefined}
+            />
+          {/each}
         </div>
       </section>
     {/each}
@@ -484,18 +446,6 @@
   .gallery.svg-renderer {
     gap: 1.5rem;
     padding-top: 0;
-  }
-
-  .skeleton-card {
-    aspect-ratio: 1;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.06);
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.7; }
   }
 
   .suggest-section {
