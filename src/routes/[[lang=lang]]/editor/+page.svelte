@@ -320,7 +320,7 @@
 
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${design.name.toLowerCase().replace(/\\s+/g, '-')}-template.svg`;
+    a.download = `${design.name.toLowerCase().replace(/\s+/g, '-')}-template.svg`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -437,6 +437,7 @@
   <div class="editor-top">
     {#key editorKey}
       <PaperHeart
+        {lang}
         fullPage
         draggableToolbars
         onFingersChange={handleFingersChange}
