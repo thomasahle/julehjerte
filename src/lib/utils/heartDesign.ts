@@ -1124,6 +1124,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   // Get all paths from anywhere in the SVG (handles nested groups from Inkscape, etc.)
   let leftPathData: string[] = [];
   let rightPathData: string[] = [];
+  const ambiguousPathData: string[] = [];
   const POSITION_TOLERANCE = 2; // Consider positions within 2 units as the same strip
 
   // Find all path elements regardless of grouping
@@ -1162,14 +1163,8 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
       } else if (lobe === 'right') {
         rightPathData.push(joinedPath);
       } else {
-        // Path doesn't have a clear horizontal or vertical direction
-        const start = segments[0].p0;
-        const end = segments[segments.length - 1].p3;
-        console.warn(
-          `[parseHeartFromSVG: ${name}] Skipping ambiguous path (neither horizontal nor vertical): ` +
-          `start=(${start.x.toFixed(1)}, ${start.y.toFixed(1)}), end=(${end.x.toFixed(1)}, ${end.y.toFixed(1)}), ` +
-          `path: ${joinedPath.slice(0, 80)}...`
-        );
+        // No clear direction on its own; it may be the tail of a path drawn as several elements
+        ambiguousPathData.push(joinedPath);
       }
     }
   }
@@ -1209,16 +1204,38 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
       } else if (lobe === 'right') {
         rightPathData.push(joinedPath);
       } else {
-        // Path doesn't have a clear horizontal or vertical direction
-        const start = segments[0].p0;
-        const end = segments[segments.length - 1].p3;
-        console.warn(
-          `[parseHeartFromSVG: ${name}] Skipping ambiguous <use> path (neither horizontal nor vertical): ` +
-          `start=(${start.x.toFixed(1)}, ${start.y.toFixed(1)}), end=(${end.x.toFixed(1)}, ${end.y.toFixed(1)}), ` +
-          `path: ${joinedPath.slice(0, 80)}...`
-        );
+        // No clear direction on its own; it may be the tail of a path drawn as several elements
+        ambiguousPathData.push(joinedPath);
       }
     }
+  }
+
+  // A strip boundary is sometimes drawn as several <path> elements laid end to end (Inkscape
+  // can leave the last short segment of a line as its own element). Such a tail has no clear
+  // direction on its own, so attach it to the classified path whose endpoint it touches.
+  const attachTail = (tail: string, paths: string[]): boolean => {
+    for (let i = 0; i < paths.length; i++) {
+      const joined = joinSubpaths([paths[i], tail]);
+      if (joined.length === 1) {
+        paths[i] = joined[0];
+        return true;
+      }
+    }
+    return false;
+  };
+
+  for (const pathData of ambiguousPathData) {
+    if (attachTail(pathData, leftPathData) || attachTail(pathData, rightPathData)) continue;
+
+    // Path doesn't have a clear horizontal or vertical direction
+    const segments = parsePathDataToSegments(pathData);
+    const start = segments[0].p0;
+    const end = segments[segments.length - 1].p3;
+    console.warn(
+      `[parseHeartFromSVG: ${name}] Skipping ambiguous path (neither horizontal nor vertical): ` +
+      `start=(${start.x.toFixed(1)}, ${start.y.toFixed(1)}), end=(${end.x.toFixed(1)}, ${end.y.toFixed(1)}), ` +
+      `path: ${pathData.slice(0, 80)}...`
+    );
   }
 
   // Normalize paths if they don't span 0-100 (e.g., SVGs exported with non-standard coordinate systems)
