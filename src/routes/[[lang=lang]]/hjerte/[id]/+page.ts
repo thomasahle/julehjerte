@@ -7,7 +7,7 @@ export const prerender = true;
 
 export type HeartPhoto = { src: string; width: number; height: number };
 
-// Build-time metadata for a gallery heart (see scripts/generate-heart-meta.mjs).
+// Build-time metadata for a gallery heart (see scripts/generate-heart-data.mjs).
 export type HeartMeta = {
 	name: string;
 	author: string | null;

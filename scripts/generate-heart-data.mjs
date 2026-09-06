@@ -1,15 +1,23 @@
 #!/usr/bin/env node
 /**
- * Generate src/lib/data/heart-meta.json from the gallery SVGs.
+ * Generate the build-time data for the gallery hearts from static/hearts/<id>.svg.
  *
- * For every heart id in src/lib/data/hearts.json this reads static/hearts/<id>.svg
- * with the same parser the site uses (parseHeartFromSVG) and records the
- * metadata the detail page needs at prerender time: name, author, description,
- * date, grid size, difficulty, symmetry classification and which photo (if any)
- * exists in static/hearts/photos. The TypeScript modules are loaded through
- * Vite in SSR mode with jsdom providing DOMParser.
+ * For every heart id in src/lib/data/hearts.json this parses the SVG with the same
+ * parser the site uses (parseHeartFromSVG) and writes:
  *
- * Usage: node scripts/generate-heart-meta.mjs   (also run by `npm run prebuild`)
+ *   src/lib/data/heart-designs.json  the parsed HeartDesign per heart (fingers in
+ *                                    editor pixel coordinates, grid size, weave parity,
+ *                                    metadata), so the gallery and detail pages render
+ *                                    the hearts at prerender time without fetching or
+ *                                    parsing SVG in the browser
+ *   src/lib/data/heart-meta.json     name/author/description/date/grid size/difficulty/
+ *                                    symmetry/photo per heart for head tags and headers
+ *
+ * Coordinates are rounded to 1/1000 px (invisible; the symmetry and overlap checks
+ * use 3-5 px tolerances) so the JSON stays small and diffs stay readable. The
+ * TypeScript modules are loaded through Vite in SSR mode with jsdom providing DOMParser.
+ *
+ * Usage: node scripts/generate-heart-data.mjs   (also run by `npm run prebuild`)
  */
 
 import fs from 'node:fs';
@@ -20,10 +28,12 @@ import { JSDOM } from 'jsdom';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const heartsJsonPath = path.join(root, 'src/lib/data/hearts.json');
-const outputPath = path.join(root, 'src/lib/data/heart-meta.json');
+const metaPath = path.join(root, 'src/lib/data/heart-meta.json');
+const designsPath = path.join(root, 'src/lib/data/heart-designs.json');
 const svgDir = path.join(root, 'static/hearts');
 const photoDir = path.join(root, 'static/hearts/photos');
 const PHOTO_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
+const COORD_DECIMALS = 3;
 
 // Read image dimensions from the file header (PNG, JPEG, WebP) without extra deps.
 function imageSize(file) {
@@ -83,6 +93,57 @@ function findPhoto(id) {
   return null;
 }
 
+function roundCoord(value) {
+  const rounded = Number(value.toFixed(COORD_DECIMALS));
+  return Object.is(rounded, -0) ? 0 : rounded;
+}
+
+// The design as the site will see it: a plain JSON object with rounded coordinates
+// and without undefined fields.
+function roundDesign(design) {
+  return JSON.parse(JSON.stringify(design, (key, value) => (typeof value === 'number' ? roundCoord(value) : value)));
+}
+
+// One heart per block and one bezier segment per line: readable diffs at a third of
+// the size of JSON.stringify(designs, null, 2).
+function formatDesigns(designs) {
+  const lines = ['{'];
+  const ids = Object.keys(designs);
+  ids.forEach((id, i) => {
+    const { fingers, ...rest } = designs[id];
+    lines.push(`  ${JSON.stringify(id)}: {`);
+    for (const [key, value] of Object.entries(rest)) {
+      lines.push(`    ${JSON.stringify(key)}: ${JSON.stringify(value)},`);
+    }
+    lines.push('    "fingers": [');
+    fingers.forEach((finger, j) => {
+      const { segments, ...fingerRest } = finger;
+      const head = Object.entries(fingerRest)
+        .map(([key, value]) => `${JSON.stringify(key)}: ${JSON.stringify(value)}`)
+        .join(', ');
+      lines.push(`      { ${head}, "segments": [`);
+      segments.forEach((segment, k) => {
+        lines.push(`        ${JSON.stringify(segment)}${k < segments.length - 1 ? ',' : ''}`);
+      });
+      lines.push(`      ] }${j < fingers.length - 1 ? ',' : ''}`);
+    });
+    lines.push('    ]');
+    lines.push(`  }${i < ids.length - 1 ? ',' : ''}`);
+  });
+  lines.push('}');
+  const json = `${lines.join('\n')}\n`;
+  if (JSON.stringify(JSON.parse(json)) !== JSON.stringify(designs)) {
+    throw new Error('formatDesigns produced JSON that does not match the designs');
+  }
+  return json;
+}
+
+function writeIfChanged(file, content) {
+  const changed = !fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== content;
+  if (changed) fs.writeFileSync(file, content);
+  return changed;
+}
+
 // The parser expects a browser DOM.
 const dom = new JSDOM('');
 globalThis.DOMParser = dom.window.DOMParser;
@@ -112,16 +173,20 @@ try {
   console.warn = () => {};
 
   const meta = {};
+  const designs = {};
   try {
     for (const id of ids) {
       const svgPath = path.join(svgDir, `${id}.svg`);
       if (!fs.existsSync(svgPath)) {
         throw new Error(`hearts.json lists "${id}" but ${path.relative(root, svgPath)} does not exist`);
       }
-      const design = parseHeartFromSVG(fs.readFileSync(svgPath, 'utf8'), `${id}.svg`);
-      if (!design) {
+      const parsed = parseHeartFromSVG(fs.readFileSync(svgPath, 'utf8'), `${id}.svg`);
+      if (!parsed) {
         throw new Error(`Failed to parse ${path.relative(root, svgPath)}`);
       }
+      // Derive the metadata from the rounded design so both files agree.
+      const design = roundDesign(parsed);
+      designs[id] = design;
       const symmetry = detectSymmetry(design.fingers);
       meta[id] = {
         name: design.name,
@@ -148,12 +213,13 @@ try {
     console.warn = originalWarn;
   }
 
-  const json = `${JSON.stringify(meta, null, 2)}\n`;
-  const changed = !fs.existsSync(outputPath) || fs.readFileSync(outputPath, 'utf8') !== json;
-  if (changed) fs.writeFileSync(outputPath, json);
+  const metaChanged = writeIfChanged(metaPath, `${JSON.stringify(meta, null, 2)}\n`);
+  const designsChanged = writeIfChanged(designsPath, formatDesigns(designs));
   const withPhoto = Object.values(meta).filter((m) => m.photo).length;
   console.log(
-    `heart-meta: ${ids.length} hearts (${withPhoto} with photo) -> ${path.relative(root, outputPath)}${changed ? '' : ' (unchanged)'}`
+    `heart-data: ${ids.length} hearts (${withPhoto} with photo) -> ` +
+      `${path.relative(root, metaPath)}${metaChanged ? '' : ' (unchanged)'}, ` +
+      `${path.relative(root, designsPath)}${designsChanged ? '' : ' (unchanged)'}`
   );
 } finally {
   await server.close();
