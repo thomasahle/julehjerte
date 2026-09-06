@@ -18,6 +18,10 @@
 	// Paths always carry a trailing slash, matching `trailingSlash = 'always'`.
 	let pathname = $derived($page.url.pathname.endsWith("/") ? $page.url.pathname : `${$page.url.pathname}/`);
 	let pageUrl = $derived(`${SITE_URL}${pathname}`);
+	// The same path without the language prefix, e.g. /en/editor/ -> /editor/
+	let langNeutralPath = $derived(lang === "en" ? pathname.slice("/en".length) : pathname);
+	let alternateDaUrl = $derived(`${SITE_URL}${langNeutralPath}`);
+	let alternateEnUrl = $derived(`${SITE_URL}/en${langNeutralPath}`);
 
 	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang and og tags.
 	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);
@@ -53,6 +57,10 @@
 	<!-- Basic SEO -->
 	{#if !isDetailRoute}
 		<meta name="description" content={metaDescription} />
+		<link rel="canonical" href={pageUrl} />
+		<link rel="alternate" hreflang="da" href={alternateDaUrl} />
+		<link rel="alternate" hreflang="en" href={alternateEnUrl} />
+		<link rel="alternate" hreflang="x-default" href={alternateDaUrl} />
 	{/if}
 	<meta name="keywords" content={SITE_KEYWORDS} />
 	<meta name="author" content={SITE_NAME} />

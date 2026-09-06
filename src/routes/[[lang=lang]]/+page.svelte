@@ -7,7 +7,7 @@
   import HeartCard from "$lib/components/HeartCard.svelte";
   import { deleteUserDesign, getUserCollection, loadStaticHeartById, type HeartCategoryWithMeta } from "$lib/stores/collection";
   import { downloadMultiPDF, type LayoutMode } from "$lib/pdf/template";
-  import { SITE_TITLE, SITE_TITLE_EN, SITE_URL } from "$lib/config";
+  import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import {
     t,
     type Language,
@@ -56,9 +56,6 @@
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
   let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
   let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
-  let canonicalUrl = $derived(`${SITE_URL}${lang === "en" ? "/en/" : "/"}`);
-  let alternateDaUrl = $derived(`${SITE_URL}/`);
-  let alternateEnUrl = $derived(`${SITE_URL}/en/`);
   let colors = $state<HeartColors>({ left: "#ffffff", right: "rgb(185, 19, 19)" });
   let pendingAnchorId = $state<string | null>(null);
 
@@ -234,10 +231,6 @@
 
 <svelte:head>
   <title>{metaTitle}</title>
-  <link rel="canonical" href={canonicalUrl} />
-  <link rel="alternate" hreflang="da" href={alternateDaUrl} />
-  <link rel="alternate" hreflang="en" href={alternateEnUrl} />
-  <link rel="alternate" hreflang="x-default" href={alternateDaUrl} />
 </svelte:head>
 
 <div class="gallery-page">
