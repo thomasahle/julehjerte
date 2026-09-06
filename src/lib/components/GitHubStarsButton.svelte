@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { Button } from '$lib/components/ui/button';
-  import GithubIcon from '@lucide/svelte/icons/github';
+  import GithubIcon from '$lib/components/icons/GithubIcon.svelte';
   import StarIcon from '@lucide/svelte/icons/star';
 
   export let repo = 'thomasahle/julehjerte';
