@@ -18,7 +18,7 @@
 	import type { Finger, GridSize, Vec, LobeId, NodeType } from '$lib/types/heart';
 	import { clamp, clampInt } from '$lib/utils/math';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
-	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
+	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, PRECISION_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
 	import { computeWeaveData } from '$lib/rendering/svgWeave';
 	import { computeHeartViewBoxFromOverlap } from '$lib/rendering/heartSvg';
 	import { bezierBBox, bezierPathBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves } from '$lib/geometry/curves';
@@ -3183,6 +3183,8 @@
 	let canMakeSegmentsCurved = $derived(selectedSegs.length > 0);
 	let canAddSegment = $derived(Boolean(selectedFingerId) && selectedSegCount > 0 && selectedSegCount < MAX_BEZIER_SEGMENTS_PER_FINGER);
 	let canRemoveSegment = $derived(Boolean(selectedFingerId) && selectedSegCount > 1);
+	// Strips beyond PRECISION_GRID_SIZE are allowed (up to MAX_GRID_SIZE) but hard to cut accurately.
+	let hasManyStrips = $derived(gridSize.x > PRECISION_GRID_SIZE || gridSize.y > PRECISION_GRID_SIZE);
 	let nodeTypeSelected = $derived.by(() => {
 		if (!selectedFinger || !validAnchors.length) return null;
 		const t0 = getAnchorNodeType(selectedFinger, validAnchors[0]!);
@@ -3249,19 +3251,24 @@
 	// Narrow screens (<= 600px) stack the toolbar above and the panels below the canvas.
 	// Measure them so the heart is laid out in the free band between them instead of underneath.
 	let mobileClearance = $state<{ top: number; bottom: number } | null>(null);
+	// Below 900px the toolbar sits on top of the canvas, so canvas notices go directly under it.
+	let mobileNoticeTop = $state<number | null>(null);
 
 	function updateMobileClearance() {
-		if (
-			!fullPage ||
-			readonly ||
-			!canvasAreaEl ||
-			typeof window === 'undefined' ||
-			!window.matchMedia('(max-width: 600px)').matches
-		) {
+		if (!fullPage || readonly || !canvasAreaEl || typeof window === 'undefined') {
 			mobileClearance = null;
+			mobileNoticeTop = null;
 			return;
 		}
 		const gap = 8;
+		mobileNoticeTop =
+			segmentControlsEl && window.matchMedia('(max-width: 900px)').matches
+				? Math.round(segmentControlsEl.offsetTop + segmentControlsEl.offsetHeight + gap)
+				: null;
+		if (!window.matchMedia('(max-width: 600px)').matches) {
+			mobileClearance = null;
+			return;
+		}
 		const top = segmentControlsEl ? segmentControlsEl.offsetTop + segmentControlsEl.offsetHeight + gap : 0;
 		const bottom = rightPanelEl ? canvasAreaEl.clientHeight - rightPanelEl.offsetTop + gap : 0;
 		const next = { top: Math.max(0, Math.round(top)), bottom: Math.max(0, Math.round(bottom)) };
@@ -3299,6 +3306,7 @@
 			class:fullPage={fullPage}
 			style:--mobile-top-clearance={mobileClearance ? `${mobileClearance.top}px` : undefined}
 			style:--mobile-bottom-clearance={mobileClearance ? `${mobileClearance.bottom}px` : undefined}
+			style:--mobile-notice-top={mobileNoticeTop != null ? `${mobileNoticeTop}px` : undefined}
 		>
 			<div class="canvas-area" bind:this={canvasAreaEl} style:min-height={fullPage ? undefined : mobileCanvasMinHeight ?? undefined}>
 				<div class="canvas-wrapper" style:width={fullPage ? '100%' : `${size}px`} style:height={fullPage ? '100%' : `${size}px`}>
@@ -3583,6 +3591,14 @@
 					{/if}
 				</svg>
 			</div>
+
+			{#if !readonly}
+				<div class="canvas-notices">
+					{#if hasManyStrips}
+						<div class="canvas-notice info" role="status">{tr('editorManyStripsHint')}</div>
+					{/if}
+				</div>
+			{/if}
 
 				{#if !readonly}
 					<div
@@ -3891,6 +3907,40 @@
 			height: 100%;
 		}
 
+		/* Short notices above the heart (strip-count hint, intersection warning, first-visit tip). */
+		.canvas-notices {
+			position: absolute;
+			top: 16px;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 25;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.5rem;
+			width: max-content;
+			max-width: min(560px, calc(100% - 220px));
+			pointer-events: none;
+		}
+
+		.canvas-notice {
+			display: flex;
+			align-items: flex-start;
+			gap: 0.5rem;
+			padding: 0.5rem 0.75rem;
+			border-radius: 0.6rem;
+			font-size: 0.85rem;
+			line-height: 1.4;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+			pointer-events: auto;
+		}
+
+		.canvas-notice.info {
+			background: rgba(255, 255, 255, 0.95);
+			border: 1px solid #ddd;
+			color: #444;
+		}
+
 		.right-panel {
 			position: absolute;
 			right: 24px;
@@ -4031,6 +4081,11 @@
 			.heart-svg {
 				width: 100%;
 				height: 100%;
+			}
+
+			.canvas-notices {
+				top: var(--mobile-notice-top, 16px);
+				max-width: calc(100% - 32px);
 			}
 
 			.segment-controls {

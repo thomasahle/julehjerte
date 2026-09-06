@@ -18,5 +18,12 @@ export const CENTER = { x: BASE_CENTER, y: BASE_CENTER } as const;
 /** Minimum allowed grid size for heart designs */
 export const MIN_GRID_SIZE = 2;
 
-/** Maximum allowed grid size for heart designs (unlimited) */
-export const MAX_GRID_SIZE = Infinity;
+/**
+ * Maximum allowed grid size (strips per lobe) for heart designs.
+ * Single source of truth for every grid clamp; the editor hints that more than
+ * PRECISION_GRID_SIZE strips are hard to cut and weave accurately.
+ */
+export const MAX_GRID_SIZE = 12;
+
+/** Strip counts above this are still allowed but need very precise cutting. */
+export const PRECISION_GRID_SIZE = 8;

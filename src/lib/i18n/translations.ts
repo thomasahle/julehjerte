@@ -197,7 +197,10 @@ export const translations = {
     editorCurveNode: 'Kurvepunkt',
     editorConvert: 'Konverter',
     editorStraightSegment: 'Lige segment',
-    editorCurvedSegment: 'Kurvet segment'
+    editorCurvedSegment: 'Kurvet segment',
+
+    // Editor 2 (added 2026-09-06)
+    editorManyStripsHint: 'Over 8 striber kræver stor præcision'
   },
   en: {
     // Site
@@ -397,7 +400,10 @@ export const translations = {
     editorCurveNode: 'Curve node',
     editorConvert: 'Convert',
     editorStraightSegment: 'Straight segment',
-    editorCurvedSegment: 'Curved segment'
+    editorCurvedSegment: 'Curved segment',
+
+    // Editor 2 (added 2026-09-06)
+    editorManyStripsHint: 'More than 8 strips requires great precision'
   }
 } as const;
 
