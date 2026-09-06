@@ -2,6 +2,7 @@ import type { PageLoad } from './$types';
 import heartsData from '$lib/data/hearts.json';
 import heartMeta from '$lib/data/heart-meta.json';
 import type { DifficultyLevel } from '$lib/utils/difficulty';
+import { SHARED_HEART_ID } from '$lib/utils/shareDesign';
 
 export const prerender = true;
 
@@ -35,10 +36,12 @@ const HEART_META = heartMeta as Record<string, HeartMeta>;
 export function entries() {
 	const allHeartIds = heartsData.categories.flatMap((cat) => cat.hearts);
 
-	// Generate entries for both languages (da = default/no lang, en)
+	// Generate entries for both languages (da = default/no lang, en). /hjerte/delt/
+	// renders a user heart shared in the URL fragment (see $lib/utils/shareDesign).
+	const ids = [...allHeartIds, SHARED_HEART_ID];
 	return [
-		...allHeartIds.map((id) => ({ lang: undefined, id })), // Danish (default)
-		...allHeartIds.map((id) => ({ lang: 'en', id })) // English
+		...ids.map((id) => ({ lang: undefined, id })), // Danish (default)
+		...ids.map((id) => ({ lang: 'en', id })) // English
 	];
 }
 
@@ -50,6 +53,7 @@ export const load: PageLoad = async ({ params }) => {
 	const { getGalleryDesign } = await import('$lib/data/heartDesigns');
 	return {
 		meta: HEART_META[params.id] ?? null,
-		design: getGalleryDesign(params.id)
+		design: getGalleryDesign(params.id),
+		shared: params.id === SHARED_HEART_ID
 	};
 };

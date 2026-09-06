@@ -201,7 +201,11 @@ export const translations = {
 
     // Precompute (added 2026-09-06)
     selectAll: 'Vælg alle',
-    selectNone: 'Fravælg alle'
+    selectNone: 'Fravælg alle',
+    sharedHeart: 'Et hjerte delt med dig',
+    saveToMyHearts: 'Gem i Mine Hjerter',
+    savedToMyHearts: 'Gemt i Mine Hjerter',
+    sharedLinkInvalid: 'Linket indeholder ikke et gyldigt hjerte.'
   },
   en: {
     // Site
@@ -405,7 +409,11 @@ export const translations = {
 
     // Precompute (added 2026-09-06)
     selectAll: 'Select all',
-    selectNone: 'Select none'
+    selectNone: 'Select none',
+    sharedHeart: 'A heart shared with you',
+    saveToMyHearts: 'Save to My Hearts',
+    savedToMyHearts: 'Saved to My Hearts',
+    sharedLinkInvalid: 'This link does not contain a valid heart.'
   }
 } as const;
 
