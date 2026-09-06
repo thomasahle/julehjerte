@@ -1,6 +1,5 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
@@ -164,6 +163,16 @@
   let canonicalUrl = $derived(lang === "en" ? canonicalEn : canonicalDa);
   const ogImage = `${SITE_URL}/og-image.png`;
 
+  // Gallery hearts open by id; user-created hearts carry their design in the URL
+  // fragment (never sent to the server, so no request-URI limits).
+  let editHref = $derived.by(() => {
+    if (isUserCreated && design) {
+      const payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(design)));
+      return `${langBase}/editor/?edit=true&returnTo=detail#design=${payload}`;
+    }
+    return `${langBase}/editor/?from=${encodeURIComponent(heartId)}&returnTo=detail`;
+  });
+
   function handleDownload() {
     if (design) {
       trackHeartDownload(design.id, design.name);
@@ -171,16 +180,8 @@
     }
   }
 
-  function openInEditor() {
-    if (design) {
-      trackHeartEdit(design.id, design.name);
-      const designData = encodeURIComponent(
-        JSON.stringify(serializeHeartDesign(design)),
-      );
-      // For user-created hearts, pass edit=true to allow saving over the original
-      const editParam = isUserCreated ? "&edit=true" : "";
-      goto(`${langBase}/editor?design=${designData}${editParam}&returnTo=detail`);
-    }
+  function handleEdit() {
+    if (info) trackHeartEdit(heartId, info.name);
   }
 
   async function handleShare() {
@@ -344,9 +345,9 @@
           <button class="btn primary" onclick={handleDownload} disabled={!design}>
             {t("downloadPdfTemplate", lang)}
           </button>
-          <button class="btn secondary" onclick={openInEditor} disabled={!design}>
+          <a class="btn secondary" href={editHref} onclick={handleEdit}>
             {t("openInEditor", lang)}
-          </button>
+          </a>
           <button class="btn share" onclick={handleShare} aria-label={t("share", lang)}>
             {#if shareStatus === "copied"}
               {t("copied", lang)}
