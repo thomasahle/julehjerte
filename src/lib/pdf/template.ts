@@ -1,9 +1,10 @@
 import { jsPDF } from 'jspdf';
-import type { GridSize, HeartDesign, Finger, Vec } from '$lib/types/heart';
+import type { HeartDesign, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
+import { lobesShareTemplate } from '$lib/utils/symmetry';
 
 // A4 dimensions in mm
 const PAGE_WIDTH = 210;
@@ -62,58 +63,6 @@ function inferOverlapRect(design: HeartDesign) {
     overlapWidth: rect.width,
     overlapHeight: rect.height
   };
-}
-
-function pointsClose(a: Vec, b: Vec, tol = 0.75): boolean {
-  return Math.abs(a.x - b.x) <= tol && Math.abs(a.y - b.y) <= tol;
-}
-
-function mapPointBetweenLobes(p: Vec, rect: { overlapLeft: number; overlapTop: number; overlapWidth: number; overlapHeight: number }): Vec {
-  const u = rect.overlapWidth ? (p.x - rect.overlapLeft) / rect.overlapWidth : 0;
-  const v = rect.overlapHeight ? (p.y - rect.overlapTop) / rect.overlapHeight : 0;
-  return {
-    x: rect.overlapLeft + v * rect.overlapWidth,
-    y: rect.overlapTop + u * rect.overlapHeight
-  };
-}
-
-// Check if two fingers have the same curve (mirrored between lobes)
-function fingersAreSymmetric(leftFingers: Finger[], rightFingers: Finger[], gridSize: GridSize, rect: { overlapLeft: number; overlapTop: number; overlapWidth: number; overlapHeight: number }): boolean {
-  if (gridSize.x !== gridSize.y) return false;
-  if (leftFingers.length !== rightFingers.length) return false;
-
-  // For symmetric hearts, left finger curves should mirror right finger curves
-  // This checks that swapping x/y within the overlap square maps left -> right.
-  const leftSorted = leftFingers
-    .slice()
-    .sort((a, b) => (a.segments[0]?.p0.y ?? 0) - (b.segments[0]?.p0.y ?? 0));
-  const rightSorted = rightFingers
-    .slice()
-    .sort((a, b) => (a.segments[0]?.p0.x ?? 0) - (b.segments[0]?.p0.x ?? 0));
-
-  for (let i = 0; i < leftSorted.length; i++) {
-    const left = leftSorted[i]!;
-    const right = rightSorted[i]!;
-
-    const leftSegs = left.segments;
-    const rightSegs = right.segments;
-    if (leftSegs.length !== rightSegs.length) return false;
-
-    for (let s = 0; s < leftSegs.length; s++) {
-      const l = leftSegs[s]!;
-      const r = rightSegs[s]!;
-      if (
-        !pointsClose(mapPointBetweenLobes(l.p0, rect), r.p0) ||
-        !pointsClose(mapPointBetweenLobes(l.p1, rect), r.p1) ||
-        !pointsClose(mapPointBetweenLobes(l.p2, rect), r.p2) ||
-        !pointsClose(mapPointBetweenLobes(l.p3, rect), r.p3)
-      ) {
-        return false;
-      }
-    }
-  }
-
-  return true;
 }
 
 // Parse SVG path data and draw it
@@ -472,11 +421,7 @@ function collectTemplates(designs: HeartDesign[]): TemplateSlot[] {
   const templates: TemplateSlot[] = [];
 
   for (const design of designs) {
-    const leftFingers = design.fingers.filter(f => f.lobe === 'left');
-    const rightFingers = design.fingers.filter(f => f.lobe === 'right');
-
-    const rect = inferOverlapRect(design);
-    if (fingersAreSymmetric(leftFingers, rightFingers, design.gridSize, rect)) {
+    if (lobesShareTemplate(design.fingers, design.gridSize)) {
       // Symmetric - only need one template
       templates.push({ design, lobe: 'both' });
     } else {

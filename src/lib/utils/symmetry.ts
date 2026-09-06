@@ -1,4 +1,4 @@
-import type { Finger, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, Vec } from '$lib/types/heart';
 import { fingerToSegments, reverseSegments, type BezierSegment } from '$lib/geometry/bezierSegments';
 import { vecDist } from '$lib/geometry/vec';
 
@@ -62,7 +62,15 @@ function segmentsEqual(a: Segment[], b: Segment[]): boolean {
   return true;
 }
 
-function inferSquareBounds(fingers: Finger[]): { minX: number; maxX: number; minY: number; maxY: number; size: number } | null {
+interface SquareBounds {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+  size: number;
+}
+
+function inferSquareBounds(fingers: Finger[]): SquareBounds | null {
   const endpoints: Vec[] = [];
   for (const finger of fingers) {
     const segs = fingerToSegments(finger);
@@ -97,6 +105,12 @@ function mapPointBetweenLobes(bounds: { minX: number; minY: number; size: number
     return { x: minX + (p.y - minY), y: minY + (p.x - minX) };
   }
   return { x: minX + size - (p.y - minY), y: minY + size - (p.x - minX) };
+}
+
+// Rotate a point 90° clockwise around the centre of the overlap square.
+function mapPointRotatedBetweenLobes(bounds: { minX: number; minY: number; size: number }, p: Vec): Vec {
+  const { minX, minY, size } = bounds;
+  return { x: minX + size - (p.y - minY), y: minY + (p.x - minX) };
 }
 
 function isCurveSymmetricUnder(finger: Finger, anti: boolean): boolean {
@@ -169,8 +183,13 @@ function areLobesInternallySymmetric(fingers: Finger[]): boolean {
   return areLobesInternallySymmetricUnder(fingers, false) || areLobesInternallySymmetricUnder(fingers, true);
 }
 
-// Check if left and right lobes mirror each other (diagonal symmetry)
-function areLobesMirroredUnder(fingers: Finger[], anti: boolean): boolean {
+// Check if every left-lobe finger maps onto a right-lobe finger under `mapPoint`
+// (optionally reversing curve direction, for maps that flip the strip direction).
+function areLobesRelatedUnder(
+  fingers: Finger[],
+  mapPoint: (bounds: SquareBounds, p: Vec) => Vec,
+  reverseDirection: boolean
+): boolean {
   const bounds = inferSquareBounds(fingers);
   if (!bounds) return false;
 
@@ -197,7 +216,7 @@ function areLobesMirroredUnder(fingers: Finger[], anti: boolean): boolean {
     for (let i = 0; i < sortedLeft.length; i++) {
       const lSegs = fingerToSegments(sortedLeft[i]!);
       const rSegs = fingerToSegments(sortedRight[i]!);
-      const mapped = mapSegments(lSegs, (p) => mapPointBetweenLobes(bounds, p, anti), anti);
+      const mapped = mapSegments(lSegs, (p) => mapPoint(bounds, p), reverseDirection);
       if (!segmentsEqual(mapped, rSegs)) return false;
     }
     return true;
@@ -208,7 +227,7 @@ function areLobesMirroredUnder(fingers: Finger[], anti: boolean): boolean {
     const used = new Set<number>();
     for (let i = 0; i < leftFingers.length; i++) {
       const lSegs = fingerToSegments(leftFingers[i]!);
-      const mapped = mapSegments(lSegs, (p) => mapPointBetweenLobes(bounds, p, anti), anti);
+      const mapped = mapSegments(lSegs, (p) => mapPoint(bounds, p), reverseDirection);
       let found = false;
       for (let j = 0; j < rightFingers.length; j++) {
         if (used.has(j)) continue;
@@ -227,8 +246,37 @@ function areLobesMirroredUnder(fingers: Finger[], anti: boolean): boolean {
   return sortedMatch() || greedyMatch();
 }
 
+// Check if left and right lobes mirror each other (diagonal symmetry)
+function areLobesMirroredUnder(fingers: Finger[], anti: boolean): boolean {
+  return areLobesRelatedUnder(fingers, (bounds, p) => mapPointBetweenLobes(bounds, p, anti), anti);
+}
+
 function areLobesMirrored(fingers: Finger[]): boolean {
   return areLobesMirroredUnder(fingers, false) || areLobesMirroredUnder(fingers, true);
+}
+
+// Check if the right lobe is the left lobe rotated 90° clockwise (e.g. two yin-yang curves).
+function areLobesRotated(fingers: Finger[]): boolean {
+  return areLobesRelatedUnder(fingers, mapPointRotatedBetweenLobes, false);
+}
+
+/**
+ * Whether a single printed template can be used for both lobes.
+ *
+ * The right-lobe template is the right lobe translated; the left-lobe template
+ * is the left lobe rotated onto the same orientation. Both pieces come out the
+ * same (allowing the folded piece to be turned over) exactly when the right lobe
+ * is the left lobe mirrored across the square's diagonal or rotated 90°
+ * clockwise. Anti-diagonal mirroring is *not* enough: it swaps the ear and fold
+ * ends of the cut pattern.
+ *
+ * This is the single source of truth for "one template or two" - the detail
+ * page preview and the PDF generator must both use it so they never disagree.
+ */
+export function lobesShareTemplate(fingers: Finger[], gridSize: GridSize): boolean {
+  if (gridSize.x !== gridSize.y) return false;
+  if (fingers.length === 0) return true;
+  return areLobesMirroredUnder(fingers, false) || areLobesRotated(fingers);
 }
 
 // Check if it's a "classic" design (all straight lines, no curves)

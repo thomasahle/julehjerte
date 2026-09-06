@@ -20,7 +20,7 @@
     subscribeColors,
     type HeartColors,
   } from "$lib/stores/colors";
-  import { detectSymmetry, getSymmetryDescription } from "$lib/utils/symmetry";
+  import { detectSymmetry, getSymmetryDescription, lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
   import {
     serializeHeartDesign,
@@ -175,10 +175,8 @@
     return t(labels[level], lang);
   }
 
-  // Check if templates are symmetric (only need one template for both lobes)
-  let isSymmetric = $derived(
-    design ? design.gridSize.x === design.gridSize.y && detectSymmetry(design.fingers).mirrorSymmetry : true
-  );
+  // One template for both lobes? Shared with the PDF generator so preview and PDF agree.
+  let isSymmetric = $derived(design ? lobesShareTemplate(design.fingers, design.gridSize) : true);
 
   function normalizeSource(source: string): string {
     return source
