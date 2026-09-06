@@ -1,0 +1,113 @@
+import { describe, it, expect } from 'vitest';
+import type { Finger, LobeId, Vec } from '$lib/types/heart';
+import { getCenteredRectParams } from '$lib/utils/overlapRect';
+import {
+	INTERSECTION_MARGIN_UNITS,
+	fingerHasIntersectionIssues,
+	findFingersWithIssues,
+	intersectionMarginPx,
+	segmentsIntersect
+} from './curveIssues';
+
+// A 3x3 heart: the overlap square is 225 px, so one heart unit is 2.25 px and the
+// margin is 3.375 px.
+const rect = getCenteredRectParams({ x: 3, y: 3 });
+const margin = intersectionMarginPx(rect);
+
+function straightLeft(id: string, y: number, yEnd = y): Finger {
+	const p0: Vec = { x: rect.right, y };
+	const p3: Vec = { x: rect.left, y: yEnd };
+	return {
+		id,
+		lobe: 'left',
+		segments: [{ p0, p1: { x: p0.x - rect.width / 3, y }, p2: { x: p3.x + rect.width / 3, y: yEnd }, p3 }]
+	};
+}
+
+function straightRight(id: string, x: number): Finger {
+	const p0: Vec = { x, y: rect.bottom };
+	const p3: Vec = { x, y: rect.top };
+	return {
+		id,
+		lobe: 'right',
+		segments: [{ p0, p1: { x, y: p0.y - rect.height / 3 }, p2: { x, y: p3.y + rect.height / 3 }, p3 }]
+	};
+}
+
+// A left-lobe curve at `y` whose middle bows by `bow` px (positive = downwards).
+function bowedLeft(id: string, y: number, bow: number, lobe: LobeId = 'left'): Finger {
+	const p0: Vec = { x: rect.right, y };
+	const p3: Vec = { x: rect.left, y };
+	const cy = y + bow * (4 / 3);
+	return { id, lobe, segments: [{ p0, p1: { x: p0.x - rect.width / 3, y: cy }, p2: { x: p3.x + rect.width / 3, y: cy }, p3 }] };
+}
+
+describe('intersectionMarginPx', () => {
+	it('is 1.5 heart units for any grid', () => {
+		expect(INTERSECTION_MARGIN_UNITS).toBe(1.5);
+		expect(margin).toBeCloseTo(3.375, 6);
+		expect(intersectionMarginPx(getCenteredRectParams({ x: 8, y: 8 }))).toBeCloseTo(9, 6);
+		// Non-square grids use the mean of the two axes.
+		expect(intersectionMarginPx({ width: 225, height: 375 })).toBeCloseTo(4.5, 6);
+	});
+});
+
+describe('fingerHasIntersectionIssues', () => {
+	const mid = rect.top + rect.height / 2;
+
+	it('accepts well separated parallel curves', () => {
+		const fingers = [straightLeft('L-1', mid - 37.5), straightLeft('L-2', mid + 37.5)];
+		expect(findFingersWithIssues(fingers, margin).size).toBe(0);
+	});
+
+	it('flags curves closer than the margin but not curves a few units apart', () => {
+		const near = [straightLeft('L-1', mid), straightLeft('L-2', mid + 2)];
+		expect(findFingersWithIssues(near, margin)).toEqual(new Set(['L-1', 'L-2']));
+
+		// 5 px = 2.2 heart units: allowed now, but the old fixed 6 px threshold flagged it.
+		const apart = [straightLeft('L-1', mid), straightLeft('L-2', mid + 5)];
+		expect(findFingersWithIssues(apart, margin).size).toBe(0);
+		expect(findFingersWithIssues(apart, 6).size).toBe(2);
+	});
+
+	it('flags curves that cross', () => {
+		const fingers = [straightLeft('L-1', mid), bowedLeft('L-2', mid - 30, 60)];
+		expect(fingerHasIntersectionIssues(fingers[0]!, fingers, margin)).toBe(true);
+		expect(fingerHasIntersectionIssues(fingers[1]!, fingers, margin)).toBe(true);
+		expect(segmentsIntersect(fingers[0]!.segments, fingers[1]!.segments)).toBe(true);
+	});
+
+	it('flags curves that share or nearly share a start point on the fold line', () => {
+		// Same start on the right edge, diverging towards the left edge.
+		const shared = [straightLeft('L-1', mid, mid - 40), straightLeft('L-2', mid, mid + 40)];
+		expect(findFingersWithIssues(shared, margin)).toEqual(new Set(['L-1', 'L-2']));
+
+		// Starts 2 px apart on the edge, diverging: the strip between them has no paper at the fold.
+		const nearlyShared = [straightLeft('L-1', mid - 1, mid - 40), straightLeft('L-2', mid + 1, mid + 40)];
+		expect(findFingersWithIssues(nearlyShared, margin)).toEqual(new Set(['L-1', 'L-2']));
+
+		// Starts 10 px apart and diverging is fine.
+		const separate = [straightLeft('L-1', mid - 5, mid - 40), straightLeft('L-2', mid + 5, mid + 40)];
+		expect(findFingersWithIssues(separate, margin).size).toBe(0);
+	});
+
+	it('ignores curves in the other lobe (they are meant to weave through each other)', () => {
+		const fingers = [straightLeft('L-1', mid), straightRight('R-1', rect.left + rect.width / 2)];
+		expect(findFingersWithIssues(fingers, margin).size).toBe(0);
+	});
+
+	it('flags a curve that loops back on itself', () => {
+		const p0: Vec = { x: rect.right, y: mid };
+		const p3: Vec = { x: rect.left, y: mid };
+		const loop: Finger = {
+			id: 'L-1',
+			lobe: 'left',
+			segments: [{ p0, p1: { x: rect.left - 40, y: mid + 60 }, p2: { x: rect.right + 40, y: mid + 60 }, p3 }]
+		};
+		expect(fingerHasIntersectionIssues(loop, [loop], margin)).toBe(true);
+		// A straight curve well away from the loop is fine even though the loop is in its lobe.
+		const other = straightLeft('L-2', mid - 60);
+		expect(fingerHasIntersectionIssues(other, [loop, other], margin)).toBe(false);
+		expect(findFingersWithIssues([loop, other], margin)).toEqual(new Set(['L-1']));
+	});
+});
