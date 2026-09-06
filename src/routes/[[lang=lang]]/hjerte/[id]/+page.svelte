@@ -6,7 +6,7 @@
   import type { PageProps } from "./$types";
   import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
   import TemplatePreview from "$lib/components/TemplatePreview.svelte";
-  import { getUserCollection } from "$lib/stores/collection";
+  import { getUserCollection, loadStaticHeartById } from "$lib/stores/collection";
   import { downloadPDF } from "$lib/pdf/template";
   import {
     SITE_DESCRIPTION,
@@ -29,30 +29,30 @@
   } from "$lib/stores/colors";
   import { detectSymmetry, getSymmetryDescription, lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
-  import {
-    serializeHeartDesign,
-    parseHeartFromSVG,
-  } from "$lib/utils/heartDesign";
+  import { serializeHeartDesign } from "$lib/utils/heartDesign";
   import type { HeartDesign } from "$lib/types/heart";
   import {
     trackHeartDownload,
     trackHeartShare,
     trackHeartEdit,
-    trackHeartLoadError,
-    trackSvgParseError,
   } from "$lib/analytics";
   import PageHeader from "$lib/components/PageHeader.svelte";
   import * as Carousel from "$lib/components/ui/carousel";
 
   let { data }: PageProps = $props();
 
-  // Build-time metadata (gallery hearts only) - available at prerender time.
+  // Build-time metadata and precomputed design (gallery hearts only) - both available
+  // at prerender time, so gallery pages render without a loading state.
   let meta = $derived(data.meta);
 
+  // Hearts that only exist in the browser: the user's own (localStorage) and, so old
+  // links keep working, SVGs under /hearts/ that are not in the gallery index.
   // Design geometry is large (segments); keep it out of deeply reactive proxies.
-  let design = $state.raw<HeartDesign | null>(null);
+  let clientDesign = $state.raw<HeartDesign | null>(null);
+  let design = $derived(data.design ?? clientDesign);
   let isUserCreated = $state(false);
-  let loading = $state(true);
+  let clientLoading = $state(true);
+  let loading = $derived(!data.design && clientLoading);
   let error = $state<string | null>(null);
   let shareStatus = $state<"idle" | "copied" | "error">("idle");
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
@@ -67,39 +67,24 @@
       colors = c;
     });
 
-    const id = $page.params.id;
+    // Gallery hearts arrived with the page data.
+    if (data.design) return;
+
+    const id = $page.params.id ?? '';
 
     // First check user collection
-    const userHearts = getUserCollection();
-    const userDesign = userHearts.find((h) => h.id === id);
-
+    const userDesign = getUserCollection().find((h) => h.id === id);
     if (userDesign) {
-      design = userDesign;
+      clientDesign = userDesign;
       isUserCreated = true;
-      loading = false;
+      clientLoading = false;
       return;
     }
 
-    // Then check static hearts
-    try {
-      const response = await fetch(`/hearts/${id}.svg`);
-      if (response.ok) {
-        const svgText = await response.text();
-        design = parseHeartFromSVG(svgText, `${id}.svg`);
-        if (!design) {
-          trackSvgParseError(`${id}.svg`, 'No valid paths found');
-          error = t("heartNotFound", lang);
-        }
-      } else {
-        trackHeartLoadError(id ?? '', `HTTP ${response.status}`);
-        error = t("heartNotFound", lang);
-      }
-    } catch (err) {
-      trackHeartLoadError(id ?? '', err instanceof Error ? err.message : 'Unknown error');
-      error = t("failedToLoad", lang);
-    }
-
-    loading = false;
+    // Not in the gallery index or the user's collection: an old link to an unlisted SVG.
+    clientDesign = await loadStaticHeartById(id);
+    if (!clientDesign) error = t("heartNotFound", lang);
+    clientLoading = false;
   });
 
   // Header/detail text. Comes from the build-time metadata for gallery hearts (so it

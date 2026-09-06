@@ -42,11 +42,14 @@ export function entries() {
 	];
 }
 
-// Gallery hearts get their metadata at build time so the prerendered HTML has the
-// real title, description and header. User-created hearts (localStorage) have no
-// metadata here and are loaded entirely in the browser.
-export const load: PageLoad = ({ params }) => {
+// Gallery hearts get their metadata and precomputed design at build time so the
+// prerendered HTML has the real title, description, header and preview. User-created
+// hearts (localStorage) have neither here and are loaded entirely in the browser.
+export const load: PageLoad = async ({ params }) => {
+	// Imported lazily so the ~330 KB of design data gets its own cacheable chunk.
+	const { getGalleryDesign } = await import('$lib/data/heartDesigns');
 	return {
-		meta: HEART_META[params.id] ?? null
+		meta: HEART_META[params.id] ?? null,
+		design: getGalleryDesign(params.id)
 	};
 };
