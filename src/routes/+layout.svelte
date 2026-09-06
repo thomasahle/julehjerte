@@ -23,7 +23,7 @@
 	let alternateDaUrl = $derived(`${SITE_URL}${langNeutralPath}`);
 	let alternateEnUrl = $derived(`${SITE_URL}/en${langNeutralPath}`);
 
-	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang and og tags.
+	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang, og and twitter tags.
 	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);
 
 	$effect(() => {
@@ -67,23 +67,23 @@
 	<meta name="robots" content="index, follow" />
 
 	<!-- Open Graph / Facebook -->
-	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content={SITE_NAME} />
 	<meta property="og:locale" content={ogLocale} />
 	{#if !isDetailRoute}
+		<meta property="og:type" content="website" />
 		<meta property="og:url" content={pageUrl} />
 		<meta property="og:title" content={metaTitle} />
 		<meta property="og:description" content={metaDescription} />
-	{/if}
-	<meta property="og:image" content="{SITE_URL}/og-image.png" />
-	<meta property="og:image:width" content="1200" />
-	<meta property="og:image:height" content="630" />
+		<meta property="og:image" content="{SITE_URL}/og-image.png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
 
-	<!-- Twitter Card -->
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content={metaTitle} />
-	<meta name="twitter:description" content={metaDescription} />
-	<meta name="twitter:image" content="{SITE_URL}/og-image.png" />
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={metaTitle} />
+		<meta name="twitter:description" content={metaDescription} />
+		<meta name="twitter:image" content="{SITE_URL}/og-image.png" />
+	{/if}
 </svelte:head>
 
 <Tooltip.Provider>
