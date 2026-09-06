@@ -25,6 +25,34 @@
   // Help modal state
   let showHelp = $state(false);
 
+  // Inline status/error message shown in the actions panel (replaces alert()).
+  type StatusKey = 'save' | 'import' | 'load';
+  let statusMessage = $state<{ key: StatusKey; kind: 'error' | 'info'; text: string } | null>(null);
+
+  function showStatus(key: StatusKey, kind: 'error' | 'info', text: string): void {
+    statusMessage = { key, kind, text };
+  }
+
+  function clearStatus(key?: StatusKey): void {
+    if (key && statusMessage?.key !== key) return;
+    statusMessage = null;
+  }
+
+  function isQuotaExceeded(err: unknown): boolean {
+    if (!(err instanceof DOMException)) return false;
+    return (
+      err.name === 'QuotaExceededError' ||
+      err.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+      err.code === 22 ||
+      err.code === 1014
+    );
+  }
+
+  function reportSaveError(err: unknown): void {
+    console.error('Saving heart failed', err);
+    showStatus('save', 'error', t(isQuotaExceeded(err) ? 'saveStorageFull' : 'saveFailed', lang));
+  }
+
   // Helper to parse design from URL - called once at initialization
   function getDesignFromUrl(): { design: HeartDesign | null; isEditMode: boolean; returnToDetail: boolean } {
     if (!browser) return { design: null, isEditMode: false, returnToDetail: false };
@@ -187,9 +215,10 @@
 	    autosaveDirty = false;
 	    try {
 	      saveUserDesign(createHeartDesign());
+	      clearStatus('save');
 	    } catch (err) {
-	      console.error('Autosave failed', err);
 	      autosaveDirty = true;
+	      reportSaveError(err);
 	    }
 	  }
 
@@ -248,7 +277,13 @@
 	    flushAutosave();
 
 	    const design = createHeartDesign();
-		    saveUserDesign(design);
+	    try {
+	      saveUserDesign(design);
+	      clearStatus('save');
+	    } catch (err) {
+	      reportSaveError(err);
+	      return;
+	    }
 
 		    // Navigate to gallery
 		    goto(`${langBase}/#${makeHeartAnchorId(design.id)}`);
@@ -277,10 +312,11 @@
 
         if (!design) {
           trackImportError(file.name, 'No valid paths found in SVG');
-          alert(t('invalidHeartFile', lang));
+          showStatus('import', 'error', t('invalidHeartFile', lang));
           return;
         }
 
+        clearStatus('import');
         currentFingers = design.fingers;
         currentGridSize = design.gridSize;
         currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
@@ -296,7 +332,7 @@
 	        scheduleAutosave();
 	      } catch (err) {
 	        trackImportError(file.name, err instanceof Error ? err.message : 'Unknown parse error');
-	        alert(t('invalidHeartFile', lang));
+	        showStatus('import', 'error', t('invalidHeartFile', lang));
 	      }
     };
     reader.readAsText(file);
@@ -397,6 +433,19 @@
 
     <div class="sidebar-section">
       <h3>{t('actions', lang)}</h3>
+      {#if statusMessage}
+        <div class={`status-message ${statusMessage.kind}`} role="alert">
+          <span class="status-text">{statusMessage.text}</span>
+          <button
+            type="button"
+            class="status-dismiss"
+            onclick={() => clearStatus()}
+            aria-label={t('dismissMessage', lang)}
+          >
+            <XIcon size={16} />
+          </button>
+        </div>
+      {/if}
       <div class="action-buttons">
         <button class="btn primary full-width" onclick={showInGallery}>
           {isEditMode ? t('saveChanges', lang) : t('showInGallery', lang)}
@@ -591,6 +640,52 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .status-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .status-message.error {
+    background: #fdecec;
+    border: 1px solid #f3b4b4;
+    color: #8a1c1c;
+  }
+
+  .status-message.info {
+    background: #eef4ff;
+    border: 1px solid #c3d4f5;
+    color: #1f3a70;
+  }
+
+  .status-text {
+    flex: 1 1 auto;
+  }
+
+  .status-dismiss {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    margin: -2px -4px 0 0;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .status-dismiss:hover {
+    background: rgba(0, 0, 0, 0.06);
   }
 
   .btn {

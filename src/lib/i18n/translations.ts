@@ -149,7 +149,12 @@ export const translations = {
     errorTitle: 'Ups! Noget gik galt',
     errorNotFound: 'Siden blev ikke fundet',
     errorGeneric: 'Der opstod en fejl',
-    errorBackHome: 'Tilbage til forsiden'
+    errorBackHome: 'Tilbage til forsiden',
+
+    // Editor (added 2026-09-06)
+    saveFailed: 'Hjertet kunne ikke gemmes i browseren. Eksporter det som SVG for ikke at miste det.',
+    saveStorageFull: 'Hjertet kunne ikke gemmes: browserens lager er fuldt. Slet nogle af dine hjerter eller eksporter dette som SVG for ikke at miste det.',
+    dismissMessage: 'Luk besked'
   },
   en: {
     // Site
@@ -301,7 +306,12 @@ export const translations = {
     errorTitle: 'Oops! Something went wrong',
     errorNotFound: 'Page not found',
     errorGeneric: 'An error occurred',
-    errorBackHome: 'Back to home'
+    errorBackHome: 'Back to home',
+
+    // Editor (added 2026-09-06)
+    saveFailed: 'The heart could not be saved in this browser. Export it as SVG so you do not lose it.',
+    saveStorageFull: 'The heart could not be saved: the browser storage is full. Delete some of your hearts or export this one as SVG so you do not lose it.',
+    dismissMessage: 'Dismiss message'
   }
 } as const;
 
