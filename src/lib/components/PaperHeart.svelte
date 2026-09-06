@@ -3245,10 +3245,61 @@
 		window.addEventListener('resize', updateMobileCanvasMinHeight, { passive: true });
 		return () => window.removeEventListener('resize', updateMobileCanvasMinHeight);
 	});
+
+	// Narrow screens (<= 600px) stack the toolbar above and the panels below the canvas.
+	// Measure them so the heart is laid out in the free band between them instead of underneath.
+	let mobileClearance = $state<{ top: number; bottom: number } | null>(null);
+
+	function updateMobileClearance() {
+		if (
+			!fullPage ||
+			readonly ||
+			!canvasAreaEl ||
+			typeof window === 'undefined' ||
+			!window.matchMedia('(max-width: 600px)').matches
+		) {
+			mobileClearance = null;
+			return;
+		}
+		const gap = 8;
+		const top = segmentControlsEl ? segmentControlsEl.offsetTop + segmentControlsEl.offsetHeight + gap : 0;
+		const bottom = rightPanelEl ? canvasAreaEl.clientHeight - rightPanelEl.offsetTop + gap : 0;
+		const next = { top: Math.max(0, Math.round(top)), bottom: Math.max(0, Math.round(bottom)) };
+		if (mobileClearance && mobileClearance.top === next.top && mobileClearance.bottom === next.bottom) return;
+		mobileClearance = next;
+	}
+
+	onMount(() => {
+		if (!fullPage || readonly) return;
+		const schedule = () => {
+			tick().then(updateMobileClearance);
+		};
+		let ro: ResizeObserver | null = null;
+		try {
+			ro = new ResizeObserver(schedule);
+			if (segmentControlsEl) ro.observe(segmentControlsEl);
+			if (rightPanelEl) ro.observe(rightPanelEl);
+			if (canvasAreaEl) ro.observe(canvasAreaEl);
+		} catch {
+			// ResizeObserver unavailable; window resize still updates the clearance.
+		}
+		window.addEventListener('resize', schedule, { passive: true });
+		schedule();
+		return () => {
+			ro?.disconnect();
+			window.removeEventListener('resize', schedule);
+		};
+	});
 </script>
 
 	<TooltipProvider delayDuration={250}>
-		<div class="paper-heart" class:readonly class:fullPage={fullPage}>
+		<div
+			class="paper-heart"
+			class:readonly
+			class:fullPage={fullPage}
+			style:--mobile-top-clearance={mobileClearance ? `${mobileClearance.top}px` : undefined}
+			style:--mobile-bottom-clearance={mobileClearance ? `${mobileClearance.bottom}px` : undefined}
+		>
 			<div class="canvas-area" bind:this={canvasAreaEl} style:min-height={fullPage ? undefined : mobileCanvasMinHeight ?? undefined}>
 				<div class="canvas-wrapper" style:width={fullPage ? '100%' : `${size}px`} style:height={fullPage ? '100%' : `${size}px`}>
 					<svg
@@ -4069,6 +4120,50 @@
 				height: 100% !important;
 				aspect-ratio: unset;
 				max-width: none;
+			}
+		}
+
+		/* Narrow phones: wrap the toolbar, stack the bottom panels, and keep everything inside the viewport. */
+		@media (max-width: 600px) {
+			.segment-controls {
+				flex-wrap: wrap;
+				justify-content: center;
+				overflow: visible;
+				gap: 0.25rem 0.75rem;
+				border-radius: 16px;
+			}
+
+			.paper-heart.fullPage .segment-controls.floating {
+				top: 16px;
+			}
+
+			.toolbar-separator {
+				display: none;
+			}
+
+			/* Balance the two rows: history, edit and convert on the first, node types on the second. */
+			.node-type-controls {
+				order: 1;
+			}
+
+			.right-panel {
+				flex-direction: column;
+				align-items: stretch;
+				gap: 0.5rem;
+			}
+
+			.controls {
+				justify-content: space-between;
+			}
+
+			.symmetry-row {
+				justify-content: space-between;
+			}
+
+			.paper-heart.fullPage:not(.readonly) .canvas-wrapper {
+				top: var(--mobile-top-clearance, 0px);
+				bottom: var(--mobile-bottom-clearance, 0px);
+				height: auto !important;
 			}
 		}
 	</style>
