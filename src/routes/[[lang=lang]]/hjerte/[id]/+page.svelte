@@ -145,6 +145,10 @@
   // Photo of the finished heart (gallery hearts only; resolved at build time).
   let photo = $derived(isUserCreated ? null : (meta?.photo ?? null));
 
+  // Gallery heart descriptions are written in Danish, so they only appear on the Danish
+  // page; a user's own heart shows whatever they wrote.
+  let description = $derived(info?.description && (lang === "da" || isUserCreated) ? info.description : null);
+
   // SEO
   let siteTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
   let pageTitle = $derived(`${info?.name ?? t("template", lang)} - ${siteTitle}`);
@@ -154,8 +158,7 @@
       .replace("{name}", info.name)
       .replace("{x}", String(info.gridSize.x))
       .replace("{y}", String(info.gridSize.y));
-    // Heart descriptions are written in Danish; only use them on the Danish page.
-    const details = lang === "da" && info.description ? info.description.replace(/[.!?]?$/, ".") : null;
+    const details = description ? description.replace(/[.!?]?$/, ".") : null;
     return [intro, details, t("heartMetaDownload", lang)].filter(Boolean).join(" ");
   });
   let canonicalDa = $derived(`${SITE_URL}/hjerte/${heartId}/`);
@@ -407,8 +410,8 @@
             {t("source", lang)}: {info.source}
           </p>
         {/if}
-        {#if info.description}
-          <p class="description">{info.description}</p>
+        {#if description}
+          <p class="description">{description}</p>
         {/if}
 
         <div class="details">
