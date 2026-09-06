@@ -128,8 +128,8 @@
     "date": null,
     "description": "Baseret på et klassisk mønster",
     "gridSize": {
-      "x": 8,
-      "y": 8
+      "x": 9,
+      "y": 9
     },
     "difficulty": "medium",
     "symmetry": {
