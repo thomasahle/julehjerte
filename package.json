@@ -46,7 +46,7 @@
 	"dependencies": {
 		"@types/three": "^0.182.0",
 		"clsx": "^2.1.1",
-		"jspdf": "^3.0.4",
+		"jspdf": "^4.2.1",
 		"tailwind-merge": "^3.4.0",
 		"three": "^0.182.0"
 	}
