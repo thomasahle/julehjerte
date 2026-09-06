@@ -200,7 +200,10 @@ export const translations = {
     editorCurvedSegment: 'Kurvet segment',
 
     // Editor 2 (added 2026-09-06)
-    editorManyStripsHint: 'Over 8 striber kræver stor præcision'
+    editorManyStripsHint: 'Over 8 striber kræver stor præcision',
+    editorIntersectionWarning: 'Kurverne må ikke krydse hinanden – det ville klippe papirstrimlerne over.',
+    editorFirstVisitHint: 'Tip: Træk i en laps yderste kant for at tilføje en stribe, og dobbeltklik på en kurve for at tilføje et punkt.',
+    editorDismissHint: 'Skjul tip'
   },
   en: {
     // Site
@@ -403,7 +406,10 @@ export const translations = {
     editorCurvedSegment: 'Curved segment',
 
     // Editor 2 (added 2026-09-06)
-    editorManyStripsHint: 'More than 8 strips requires great precision'
+    editorManyStripsHint: 'More than 8 strips requires great precision',
+    editorIntersectionWarning: 'Curves must not cross each other – that would cut the paper strips apart.',
+    editorFirstVisitHint: "Tip: Drag a lobe's outer edge to add a strip, and double-click a curve to add a node.",
+    editorDismissHint: 'Dismiss tip'
   }
 } as const;
 

@@ -4,6 +4,7 @@
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
 	import Undo2Icon from '@lucide/svelte/icons/undo-2';
 	import Redo2Icon from '@lucide/svelte/icons/redo-2';
+	import XIcon from '@lucide/svelte/icons/x';
 	import { Button } from '$lib/components/ui/button';
 	import { Separator } from '$lib/components/ui/separator';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
@@ -3107,6 +3108,12 @@
 		const unsub = subscribeColors((c) => (heartColors = c));
 		if (!readonly && typeof window !== 'undefined') {
 			window.addEventListener('keydown', handleKeyDown);
+			try {
+				firstVisitHintDismissed = localStorage.getItem(FIRST_VISIT_HINT_KEY) === '1';
+			} catch {
+				// Storage unavailable: show the tip on every visit.
+				firstVisitHintDismissed = false;
+			}
 		}
 		return () => {
 			if (!readonly && typeof window !== 'undefined') {
@@ -3185,6 +3192,22 @@
 	let canRemoveSegment = $derived(Boolean(selectedFingerId) && selectedSegCount > 1);
 	// Strips beyond PRECISION_GRID_SIZE are allowed (up to MAX_GRID_SIZE) but hard to cut accurately.
 	let hasManyStrips = $derived(gridSize.x > PRECISION_GRID_SIZE || gridSize.y > PRECISION_GRID_SIZE);
+	// Explain the red curves (GitHub issue #7): shown only while a conflict exists.
+	let hasIntersectionIssues = $derived(issueFingerIds.size > 0);
+
+	// First-visit tip on how to add strips and nodes (GitHub issue #7). Dismissal is remembered
+	// per browser; default to dismissed so the server render and hydration agree.
+	const FIRST_VISIT_HINT_KEY = 'paperheart.hintDismissed';
+	let firstVisitHintDismissed = $state(true);
+
+	function dismissFirstVisitHint() {
+		firstVisitHintDismissed = true;
+		try {
+			localStorage.setItem(FIRST_VISIT_HINT_KEY, '1');
+		} catch {
+			// Ignore failed storage writes; the tip simply shows again next time.
+		}
+	}
 	let nodeTypeSelected = $derived.by(() => {
 		if (!selectedFinger || !validAnchors.length) return null;
 		const t0 = getAnchorNodeType(selectedFinger, validAnchors[0]!);
@@ -3594,8 +3617,19 @@
 
 			{#if !readonly}
 				<div class="canvas-notices">
+					{#if hasIntersectionIssues}
+						<div class="canvas-notice warning" role="alert">{tr('editorIntersectionWarning')}</div>
+					{/if}
 					{#if hasManyStrips}
 						<div class="canvas-notice info" role="status">{tr('editorManyStripsHint')}</div>
+					{/if}
+					{#if !firstVisitHintDismissed}
+						<div class="canvas-notice hint" role="note">
+							<span>{tr('editorFirstVisitHint')}</span>
+							<button type="button" class="notice-dismiss" onclick={dismissFirstVisitHint} aria-label={tr('editorDismissHint')}>
+								<XIcon size={16} aria-hidden="true" />
+							</button>
+						</div>
 					{/if}
 				</div>
 			{/if}
@@ -3921,6 +3955,7 @@
 			width: max-content;
 			max-width: min(560px, calc(100% - 220px));
 			pointer-events: none;
+			user-select: none;
 		}
 
 		.canvas-notice {
@@ -3935,10 +3970,36 @@
 			pointer-events: auto;
 		}
 
-		.canvas-notice.info {
+		.canvas-notice.info,
+		.canvas-notice.hint {
 			background: rgba(255, 255, 255, 0.95);
 			border: 1px solid #ddd;
 			color: #444;
+		}
+
+		.canvas-notice.warning {
+			background: #fdecec;
+			border: 1px solid #f3b4b4;
+			color: #8a1c1c;
+		}
+
+		.notice-dismiss {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex: 0 0 auto;
+			width: 24px;
+			height: 24px;
+			margin: -3px -6px -3px 0;
+			border: none;
+			border-radius: 4px;
+			background: transparent;
+			color: inherit;
+			cursor: pointer;
+		}
+
+		.notice-dismiss:hover {
+			background: rgba(0, 0, 0, 0.06);
 		}
 
 		.right-panel {
