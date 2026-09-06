@@ -32,6 +32,8 @@
     return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
   };
 
+  const year = new Date().getFullYear();
+
   let colors = $state<HeartColors>({ left: "#ffffff", right: DEFAULT_RIGHT_COLOR });
   let lang = $derived(langFromPathname($page.url.pathname, base));
   let toggleHref = $derived.by(() => {
@@ -115,7 +117,7 @@
       {t("madeBy", lang)}
       <a href="https://thomasahle.com" target="_blank" rel="noopener"
         >Thomas Ahle</a
-      >, {lang === "da" ? "julen" : "Christmas"} 2025
+      >, {lang === "da" ? "julen" : "Christmas"} {year}
     </span>
   </div>
 </footer>
