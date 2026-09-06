@@ -12,6 +12,10 @@
  *                                    parsing SVG in the browser
  *   src/lib/data/heart-meta.json     name/author/description/date/grid size/difficulty/
  *                                    symmetry/photo per heart for head tags and headers
+ *   static/og/<id>.png               1200x630 Open Graph image per heart (the coloured
+ *                                    preview with the name on the site background),
+ *                                    rendered with @resvg/resvg-js; gitignored, built on
+ *                                    every build
  *
  * Coordinates are rounded to 1/1000 px (invisible; the symmetry and overlap checks
  * use 3-5 px tolerances) so the JSON stays small and diffs stay readable. The
@@ -25,6 +29,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 import { JSDOM } from 'jsdom';
+import { Resvg } from '@resvg/resvg-js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const heartsJsonPath = path.join(root, 'src/lib/data/hearts.json');
@@ -32,8 +37,31 @@ const metaPath = path.join(root, 'src/lib/data/heart-meta.json');
 const designsPath = path.join(root, 'src/lib/data/heart-designs.json');
 const svgDir = path.join(root, 'static/hearts');
 const photoDir = path.join(root, 'static/hearts/photos');
+const ogDir = path.join(root, 'static/og');
 const PHOTO_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 const COORD_DECIMALS = 3;
+
+// Open Graph card: the site's body background (src/routes/+layout.svelte) and the
+// default heart colours (src/lib/stores/colors.ts).
+const OG_WIDTH = 1200;
+const OG_HEIGHT = 630;
+const OG_BACKGROUND = '#aacdd8';
+const OG_COLORS = { left: '#ffffff', right: 'rgb(185, 19, 19)' };
+const OG_FONT = "'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif";
+// Scanning every system font for each render is slow (~0.4 s per image on macOS), so
+// load the first known font files instead. Without any of them the card has no text.
+const OG_FONT_CANDIDATES = [
+  '/System/Library/Fonts/HelveticaNeue.ttc',
+  '/System/Library/Fonts/Helvetica.ttc',
+  '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
+  '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
+  '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+  '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+  '/usr/share/fonts/dejavu/DejaVuSans.ttf',
+  '/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf',
+  'C:\\Windows\\Fonts\\arial.ttf',
+  'C:\\Windows\\Fonts\\arialbd.ttf'
+];
 
 // Read image dimensions from the file header (PNG, JPEG, WebP) without extra deps.
 function imageSize(file) {
@@ -138,6 +166,44 @@ function formatDesigns(designs) {
   return json;
 }
 
+function escapeXml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// The heart on the left, name and author on the right.
+function buildOgSvg(design, heart) {
+  const heartSize = 540;
+  const heartX = 60;
+  const heartY = (OG_HEIGHT - heartSize) / 2;
+  const [minX, minY, viewWidth, viewHeight] = heart.viewBox.split(' ').map(Number);
+  const scale = heartSize / Math.max(viewWidth, viewHeight);
+  const textX = heartX + heartSize + 70;
+  const maxTextWidth = OG_WIDTH - textX - 50;
+  // Fit long names by shrinking the font; glyph widths are approximate (fonts vary).
+  const nameSize = Math.max(40, Math.min(76, Math.floor(maxTextWidth / (0.6 * design.name.length))));
+  const author = design.author ? `af ${design.author}` : '';
+  return [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_WIDTH}" height="${OG_HEIGHT}" viewBox="0 0 ${OG_WIDTH} ${OG_HEIGHT}">`,
+    `<rect width="${OG_WIDTH}" height="${OG_HEIGHT}" fill="${OG_BACKGROUND}"/>`,
+    `<g transform="translate(${heartX - minX * scale} ${heartY - minY * scale}) scale(${scale})">${heart.markup}</g>`,
+    `<text x="${textX}" y="290" font-family="${OG_FONT}" font-size="${nameSize}" font-weight="700" fill="#111">${escapeXml(design.name)}</text>`,
+    author
+      ? `<text x="${textX}" y="340" font-family="${OG_FONT}" font-size="30" fill="#555">${escapeXml(author)}</text>`
+      : '',
+    `<text x="${textX}" y="410" font-family="${OG_FONT}" font-size="30" font-weight="600" fill="#4a7c8a">juleflet.dk</text>`,
+    '</svg>'
+  ].join('');
+}
+
+function renderOgPng(svg, fontFiles) {
+  const resvg = new Resvg(svg, {
+    fitTo: { mode: 'width', value: OG_WIDTH },
+    font: { loadSystemFonts: false, fontFiles },
+    logLevel: 'off'
+  });
+  return resvg.render().asPng();
+}
+
 function writeIfChanged(file, content) {
   const changed = !fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== content;
   if (changed) fs.writeFileSync(file, content);
@@ -164,6 +230,7 @@ try {
   const { parseHeartFromSVG } = await server.ssrLoadModule('/src/lib/utils/heartDesign.ts');
   const { detectSymmetry, lobesShareTemplate } = await server.ssrLoadModule('/src/lib/utils/symmetry.ts');
   const { calculateDifficulty } = await server.ssrLoadModule('/src/lib/utils/difficulty.ts');
+  const { renderHeartSvgInline } = await server.ssrLoadModule('/src/lib/rendering/heartSvg.ts');
 
   const heartsData = JSON.parse(fs.readFileSync(heartsJsonPath, 'utf8'));
   const ids = heartsData.categories.flatMap((category) => category.hearts);
@@ -220,6 +287,24 @@ try {
     `heart-data: ${ids.length} hearts (${withPhoto} with photo) -> ` +
       `${path.relative(root, metaPath)}${metaChanged ? '' : ' (unchanged)'}, ` +
       `${path.relative(root, designsPath)}${designsChanged ? '' : ' (unchanged)'}`
+  );
+
+  // Open Graph images. Not committed (static/og is gitignored); stale files from
+  // renamed hearts are removed so the build output only carries listed hearts.
+  const started = performance.now();
+  const fontFiles = OG_FONT_CANDIDATES.filter((file) => fs.existsSync(file));
+  if (!fontFiles.length) console.warn('heart-data: no known font found, Open Graph images get no text');
+  fs.mkdirSync(ogDir, { recursive: true });
+  for (const file of fs.readdirSync(ogDir)) {
+    if (file.endsWith('.png') && !ids.includes(file.slice(0, -4))) fs.unlinkSync(path.join(ogDir, file));
+  }
+  for (const id of ids) {
+    const heart = renderHeartSvgInline(designs[id], OG_COLORS, { idPrefix: `og-${id}` });
+    fs.writeFileSync(path.join(ogDir, `${id}.png`), renderOgPng(buildOgSvg(designs[id], heart), fontFiles));
+  }
+  console.log(
+    `heart-data: ${ids.length} Open Graph images -> ${path.relative(root, ogDir)}/ ` +
+      `(${((performance.now() - started) / 1000).toFixed(1)}s)`
   );
 } finally {
   await server.close();

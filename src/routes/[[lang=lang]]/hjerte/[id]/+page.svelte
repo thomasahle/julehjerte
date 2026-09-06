@@ -149,7 +149,8 @@
   let canonicalDa = $derived(`${SITE_URL}/hjerte/${heartId}/`);
   let canonicalEn = $derived(`${SITE_URL}/en/hjerte/${heartId}/`);
   let canonicalUrl = $derived(lang === "en" ? canonicalEn : canonicalDa);
-  const ogImage = `${SITE_URL}/og-image.png`;
+  // Gallery hearts get their own 1200x630 card, built by scripts/generate-heart-data.mjs.
+  let ogImage = $derived(meta ? `${SITE_URL}/og/${heartId}.png` : `${SITE_URL}/og-image.png`);
 
   // Gallery hearts open by id; user-created hearts carry their design in the URL
   // fragment (never sent to the server, so no request-URI limits).
