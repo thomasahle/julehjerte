@@ -1975,6 +1975,16 @@
 	let pinchStartDistance = 0;
 	let pinchStartZoom = 1.0;
 	let pinchCenter = { x: 0, y: 0 };
+	let pinchLastCenter = { x: 0, y: 0 };
+
+	// Touch gestures (GitHub issue #12): a second finger turns the gesture into pan/zoom and must
+	// neither continue an edit drag started by the first finger nor start a new one; a single
+	// finger on empty canvas pans the heart (a tap still clears the selection).
+	const touchPointerIds = new Set<number>();
+	let multiTouch = false;
+	let panPointer: { id: number; startX: number; startY: number; startPan: { x: number; y: number }; moved: boolean } | null =
+		null;
+	const PAN_TAP_SLOP = 6;
 
 	type ViewBoxRect = { x: number; y: number; width: number; height: number };
 	function parseViewBoxRect(vb: string): ViewBoxRect {
@@ -2227,7 +2237,8 @@
 	function handleTouchStart(event: TouchEvent) {
 		if (readonly) return;
 		if (!svgEl) return;
-		if (event.touches.length === 2) {
+		if (event.touches.length >= 2) {
+			beginMultiTouch();
 			pinchStartDistance = getTouchDistance(event.touches);
 			pinchStartZoom = userZoom;
 			const rect = svgEl.getBoundingClientRect();
@@ -2236,30 +2247,102 @@
 				x: center.x - rect.left - rect.width / 2,
 				y: center.y - rect.top - rect.height / 2
 			};
+			pinchLastCenter = center;
 		}
 	}
 
 	function handleTouchMove(event: TouchEvent) {
 		if (readonly) return;
+		// (No preventDefault: Svelte registers touch handlers as passive, and the svg's
+		// touch-action: none already keeps the browser from scrolling or zooming the page.)
 		if (event.touches.length === 2 && pinchStartDistance > 0) {
-			event.preventDefault();
 			const currentDistance = getTouchDistance(event.touches);
 			const scale = currentDistance / pinchStartDistance;
 			const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinchStartZoom * scale));
+			// Two fingers also pan: follow the drift of their midpoint.
+			const center = getTouchCenter(event.touches);
+			let next = {
+				x: userPanOffset.x - (center.x - pinchLastCenter.x),
+				y: userPanOffset.y - (center.y - pinchLastCenter.y)
+			};
+			pinchLastCenter = center;
 			if (newZoom !== userZoom) {
 				const zoomDiff = 1 / userZoom - 1 / newZoom;
 				userZoom = newZoom;
-				userPanOffset = clampPanOffset({
-					x: userPanOffset.x + pinchCenter.x * zoomDiff,
-					y: userPanOffset.y + pinchCenter.y * zoomDiff
-				});
+				next = { x: next.x + pinchCenter.x * zoomDiff, y: next.y + pinchCenter.y * zoomDiff };
 			}
+			userPanOffset = clampPanOffset(next);
 		}
 	}
 
 	function handleTouchEnd(event: TouchEvent) {
 		if (readonly) return;
 		if (event.touches.length < 2) pinchStartDistance = 0;
+		// touchend always reaches the element the touch started on, so this is the reliable
+		// place to notice that the whole gesture is over.
+		if (event.touches.length === 0) {
+			touchPointerIds.clear();
+			multiTouch = false;
+		}
+	}
+
+	// Revert whatever an unfinished drag changed (no undo entry) and forget the drag.
+	function cancelActiveDrag() {
+		if (activePointerId == null) return;
+		const pointerId = activePointerId;
+		const snapshot = dragSnapshot;
+		const dirty = dragDirty;
+		activePointerId = null;
+		dragStartPointer = null;
+		dragStartOffset = null;
+		dragSnapshot = null;
+		dragDirty = false;
+		dragTarget = null;
+		try {
+			svgEl?.releasePointerCapture?.(pointerId);
+		} catch {
+			// Ignore pointer release failures.
+		}
+		if (dirty && snapshot) restoreSnapshot(snapshot);
+	}
+
+	function beginMultiTouch() {
+		multiTouch = true;
+		cancelActiveDrag();
+		panPointer = null;
+	}
+
+	// Runs before the curve/anchor/handle handlers (capture phase) so a second finger cannot
+	// select or start dragging anything: from then on the gesture is pan/zoom only.
+	function handleSvgPointerDownCapture(e: PointerEvent) {
+		if (readonly || e.pointerType === 'mouse') return;
+		touchPointerIds.add(e.pointerId);
+		if (touchPointerIds.size >= 2 || multiTouch) {
+			beginMultiTouch();
+			e.stopPropagation();
+		}
+	}
+
+	function beginPan(e: PointerEvent) {
+		panPointer = {
+			id: e.pointerId,
+			startX: e.clientX,
+			startY: e.clientY,
+			startPan: { x: userPanOffset.x, y: userPanOffset.y },
+			moved: false
+		};
+		try {
+			svgEl?.setPointerCapture?.(e.pointerId);
+		} catch {
+			// Ignore pointer capture failures.
+		}
+	}
+
+	function clearSelection() {
+		selectedFingerId = null;
+		selectedAnchors = [];
+		selectedSegments = [];
+		lastCurveHit = null;
 	}
 
 	function localPointFromClient(clientX: number, clientY: number): Vec | null {
@@ -2427,16 +2510,30 @@
 		beginDrag(e, { kind: 'control', fingerId, segmentIndex, handle });
 	}
 
-	function handleSvgPointerDown(_e: PointerEvent) {
+	// Pointer down on empty canvas (curves, anchors and handles stop propagation before this).
+	function handleSvgPointerDown(e: PointerEvent) {
 		if (readonly) return;
-		selectedFingerId = null;
-		selectedAnchors = [];
-		selectedSegments = [];
-		lastCurveHit = null;
+		if (multiTouch) return;
+		if (e.pointerType !== 'mouse') {
+			// One finger on empty canvas pans; whether it was a tap (deselect) is known on release.
+			beginPan(e);
+			return;
+		}
+		clearSelection();
 	}
 
 	function handleSvgPointerMove(e: PointerEvent) {
 		if (readonly) return;
+		if (panPointer && e.pointerId === panPointer.id) {
+			const dx = e.clientX - panPointer.startX;
+			const dy = e.clientY - panPointer.startY;
+			if (!panPointer.moved && dx * dx + dy * dy < PAN_TAP_SLOP * PAN_TAP_SLOP) return;
+			panPointer.moved = true;
+			// Camera-style offset: the content follows the finger.
+			userPanOffset = clampPanOffset({ x: panPointer.startPan.x - dx, y: panPointer.startPan.y - dy });
+			return;
+		}
+		if (multiTouch) return;
 		if (activePointerId == null || e.pointerId !== activePointerId) return;
 		if (!dragTarget) return;
 		const p = localPointFromClient(e.clientX, e.clientY);
@@ -2580,6 +2677,21 @@
 
 	function handleSvgPointerUp(e: PointerEvent) {
 		if (readonly) return;
+		if (e.pointerType !== 'mouse') {
+			touchPointerIds.delete(e.pointerId);
+			if (touchPointerIds.size === 0) multiTouch = false;
+		}
+		if (panPointer && e.pointerId === panPointer.id) {
+			const wasTap = !panPointer.moved;
+			panPointer = null;
+			try {
+				svgEl?.releasePointerCapture?.(e.pointerId);
+			} catch {
+				// Ignore pointer release failures.
+			}
+			if (wasTap && e.type === 'pointerup') clearSelection();
+			return;
+		}
 		if (activePointerId == null || e.pointerId !== activePointerId) return;
 
 		// snap dragged handle to anchor if close
@@ -3013,6 +3125,8 @@
 					ontouchstart={handleTouchStart}
 					ontouchmove={handleTouchMove}
 					ontouchend={handleTouchEnd}
+					ontouchcancel={handleTouchEnd}
+					onpointerdowncapture={handleSvgPointerDownCapture}
 					onpointerdown={handleSvgPointerDown}
 					onpointerleave={() => (hoverFingerId = null)}
 					onpointermove={handleSvgPointerMove}
