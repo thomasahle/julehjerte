@@ -4,44 +4,43 @@ import type { RequestHandler } from './$types';
 
 export const prerender = true;
 
+// Language-neutral paths, always with a trailing slash (the site uses trailingSlash = 'always',
+// so URLs without one 301-redirect on the live site).
+const staticPages = [
+	{ path: '/', priority: '1.0' },
+	{ path: '/editor/', priority: '0.8' }
+];
+
 export const GET: RequestHandler = async () => {
 	const allHeartIds = hearts.categories.flatMap((cat) => cat.hearts);
 
-	const staticPages = ['', '/editor'];
-	const languages = ['', '/en'];
+	const pages = [
+		...staticPages,
+		...allHeartIds.map((heartId) => ({ path: `/hjerte/${heartId}/`, priority: '0.6' }))
+	];
 
-	const urls: { loc: string; priority: string }[] = [];
+	// The site is prerendered, so the build date is the last time any page could have changed.
+	const lastmod = new Date().toISOString().slice(0, 10);
 
-	// Static pages for each language
-	for (const lang of languages) {
-		for (const page of staticPages) {
-			urls.push({
-				loc: `${SITE_URL}${lang}${page}`,
-				priority: page === '' ? '1.0' : '0.8'
-			});
-		}
-	}
-
-	// Heart detail pages for each language
-	for (const lang of languages) {
-		for (const heartId of allHeartIds) {
-			urls.push({
-				loc: `${SITE_URL}${lang}/hjerte/${heartId}`,
-				priority: '0.6'
-			});
-		}
-	}
+	// One <url> per language variant; both variants list the same da/en/x-default alternates.
+	const urls = pages.flatMap(({ path, priority }) => {
+		const daUrl = `${SITE_URL}${path}`;
+		const enUrl = `${SITE_URL}/en${path}`;
+		return [daUrl, enUrl].map(
+			(loc) => `  <url>
+    <loc>${loc}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <priority>${priority}</priority>
+    <xhtml:link rel="alternate" hreflang="da" href="${daUrl}" />
+    <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${daUrl}" />
+  </url>`
+		);
+	});
 
 	const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls
-	.map(
-		(url) => `  <url>
-    <loc>${url.loc}</loc>
-    <priority>${url.priority}</priority>
-  </url>`
-	)
-	.join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${urls.join('\n')}
 </urlset>`;
 
 	return new Response(sitemap, {
