@@ -2,18 +2,29 @@
 	import "../app.css";
 	import { browser, dev } from "$app/environment";
 	import { page } from "$app/stores";
-	import { base } from "$app/paths";
 	import { SITE_NAME, SITE_TITLE, SITE_TITLE_EN, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID } from "$lib/config";
 	import { langFromPathname } from "$lib/i18n";
 	import * as Tooltip from "$lib/components/ui/tooltip";
 	import PageFooter from "$lib/components/PageFooter.svelte";
 
 	let { children } = $props();
-	let lang = $derived(langFromPathname($page.url.pathname, base));
+	let lang = $derived(langFromPathname($page.url.pathname));
 	let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
 	let metaDescription = $derived(lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION);
 	let ogLocale = $derived(lang === "en" ? "en_GB" : "da_DK");
-	let ogUrl = $derived(`${SITE_URL}${base}${lang === "en" ? "/en" : ""}/`);
+
+	// Absolute URLs are built from SITE_URL + the request path, never from `base`: in prerendered
+	// output `base` is a *relative* path ('.', '..'), which produced "https://juleflet.dk../".
+	// Paths always carry a trailing slash, matching `trailingSlash = 'always'`.
+	let pathname = $derived($page.url.pathname.endsWith("/") ? $page.url.pathname : `${$page.url.pathname}/`);
+	let pageUrl = $derived(`${SITE_URL}${pathname}`);
+	// The same path without the language prefix, e.g. /en/editor/ -> /editor/
+	let langNeutralPath = $derived(lang === "en" ? pathname.slice("/en".length) : pathname);
+	let alternateDaUrl = $derived(`${SITE_URL}${langNeutralPath}`);
+	let alternateEnUrl = $derived(`${SITE_URL}/en${langNeutralPath}`);
+
+	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang and og tags.
+	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);
 
 	$effect(() => {
 		if (!browser) return;
@@ -44,18 +55,26 @@
 	<link rel="apple-touch-icon" href="/icon-192.png" />
 
 	<!-- Basic SEO -->
-	<meta name="description" content={metaDescription} />
+	{#if !isDetailRoute}
+		<meta name="description" content={metaDescription} />
+		<link rel="canonical" href={pageUrl} />
+		<link rel="alternate" hreflang="da" href={alternateDaUrl} />
+		<link rel="alternate" hreflang="en" href={alternateEnUrl} />
+		<link rel="alternate" hreflang="x-default" href={alternateDaUrl} />
+	{/if}
 	<meta name="keywords" content={SITE_KEYWORDS} />
 	<meta name="author" content={SITE_NAME} />
 	<meta name="robots" content="index, follow" />
 
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content={ogUrl} />
 	<meta property="og:site_name" content={SITE_NAME} />
-	<meta property="og:title" content={metaTitle} />
-	<meta property="og:description" content={metaDescription} />
 	<meta property="og:locale" content={ogLocale} />
+	{#if !isDetailRoute}
+		<meta property="og:url" content={pageUrl} />
+		<meta property="og:title" content={metaTitle} />
+		<meta property="og:description" content={metaDescription} />
+	{/if}
 	<meta property="og:image" content="{SITE_URL}/og-image.png" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
