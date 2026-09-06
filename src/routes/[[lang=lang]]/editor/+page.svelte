@@ -7,7 +7,7 @@
   import { SITE_TITLE } from '$lib/config';
   import { t, tArray, type Language } from '$lib/i18n';
   import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
-  import { getUserCollection, saveUserDesign } from '$lib/stores/collection';
+  import { getUserCollection, loadStaticHeartById, saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
   import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
   import { detectSymmetry } from '$lib/utils/symmetry';
@@ -53,25 +53,57 @@
     showStatus('save', 'error', t(isQuotaExceeded(err) ? 'saveStorageFull' : 'saveFailed', lang));
   }
 
-  // Helper to parse design from URL - called once at initialization
-  function getDesignFromUrl(): { design: HeartDesign | null; isEditMode: boolean; returnToDetail: boolean } {
-    if (!browser) return { design: null, isEditMode: false, returnToDetail: false };
-    const params = new URLSearchParams(window.location.search);
-    const designData = params.get('design');
-    const isEditMode = params.get('edit') === 'true';
-    const returnToDetail = params.get('returnTo') === 'detail';
-    if (!designData) return { design: null, isEditMode: false, returnToDetail };
+  // The editor accepts these URL inputs:
+  //   /editor/?from=<gallery-id>   loads /hearts/<id>.svg (like the detail page) and edits a copy
+  //   /editor/#design=<payload>    user-created heart; payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(d)))
+  //   /editor/?design=<payload>    legacy form of the same payload (kept so old links keep working)
+  // edit=true and returnTo=detail are read from the query string (also accepted in the hash).
+  function parseDesignPayload(raw: string): HeartDesign | null {
+    // URLSearchParams has already percent-decoded once; fall back to a second decode for
+    // links that were encoded twice.
+    const candidates = [raw];
     try {
-      const decoded = JSON.parse(decodeURIComponent(designData)) as unknown;
-      return { design: normalizeHeartDesign(decoded), isEditMode, returnToDetail };
-    } catch (e) {
-      console.error('Failed to parse design from URL', e);
-      return { design: null, isEditMode: false, returnToDetail: false };
+      candidates.push(decodeURIComponent(raw));
+    } catch {
+      // Not double-encoded.
     }
+    for (const candidate of candidates) {
+      try {
+        const design = normalizeHeartDesign(JSON.parse(candidate) as unknown);
+        if (design) return design;
+      } catch {
+        // Try the next candidate.
+      }
+    }
+    console.error('Failed to parse design from URL');
+    return null;
   }
 
-  // Parse URL design ONCE at module initialization time
-  const { design: urlDesign, isEditMode: urlEditMode, returnToDetail: urlReturnToDetail } = getDesignFromUrl();
+  function getEditorUrlInput(): {
+    design: HeartDesign | null;
+    fromId: string | null;
+    isEditMode: boolean;
+    returnToDetail: boolean;
+  } {
+    if (!browser) return { design: null, fromId: null, isEditMode: false, returnToDetail: false };
+    const query = new URLSearchParams(window.location.search);
+    const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const get = (key: string) => query.get(key) ?? hash.get(key);
+    const returnToDetail = get('returnTo') === 'detail';
+    const designData = hash.get('design') ?? query.get('design');
+    const design = designData ? parseDesignPayload(designData) : null;
+    const rawFrom = design ? null : get('from');
+    const fromId = rawFrom && /^[A-Za-z0-9_-]+$/.test(rawFrom) ? rawFrom : null;
+    return { design, fromId, isEditMode: design !== null && get('edit') === 'true', returnToDetail };
+  }
+
+  // Parse URL inputs ONCE at module initialization time
+  const {
+    design: urlDesign,
+    fromId: urlFromId,
+    isEditMode: urlEditMode,
+    returnToDetail: urlReturnToDetail
+  } = getEditorUrlInput();
 
   // State for the loaded design - initialize with URL values
   let initialDesign = $state<HeartDesign | null>(urlDesign);
@@ -116,6 +148,10 @@
 
     if (!isEditMode && !draftId) {
       draftId = generateId();
+    }
+
+    if (urlFromId) {
+      void loadDesignFromGallery(urlFromId);
     }
 	    if (!editorEl) return;
 
@@ -171,6 +207,26 @@
 	  function resetDesignBaseline(): void {
 	    designBaseline = null;
 	    hasDesignEdits = false;
+	  }
+
+	  // ?from=<gallery-id>: fetch the static heart and edit it as a copy (same flow as ?design= links).
+	  async function loadDesignFromGallery(id: string): Promise<void> {
+	    const design = await loadStaticHeartById(id);
+	    if (!design) {
+	      showStatus('load', 'error', t('heartNotFound', lang));
+	      return;
+	    }
+	    currentFingers = design.fingers;
+	    currentGridSize = design.gridSize;
+	    currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
+	    heartName = `${design.name} ${t('copy', lang)}`;
+	    authorName = design.author ?? '';
+	    description = design.description ?? '';
+	    editingExisting = true;
+	    isEditMode = false;
+	    initialDesign = design;
+	    resetDesignBaseline();
+	    editorKey++;
 	  }
 
   function generateId(): string {
