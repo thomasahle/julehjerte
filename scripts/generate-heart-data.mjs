@@ -47,21 +47,15 @@ const OG_WIDTH = 1200;
 const OG_HEIGHT = 630;
 const OG_BACKGROUND = '#aacdd8';
 const OG_COLORS = { left: '#ffffff', right: 'rgb(185, 19, 19)' };
-const OG_FONT = "'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif";
-// Scanning every system font for each render is slow (~0.4 s per image on macOS), so
-// load the first known font files instead. Without any of them the card has no text.
-const OG_FONT_CANDIDATES = [
-  '/System/Library/Fonts/HelveticaNeue.ttc',
-  '/System/Library/Fonts/Helvetica.ttc',
-  '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
-  '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
-  '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
-  '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
-  '/usr/share/fonts/dejavu/DejaVuSans.ttf',
-  '/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf',
-  'C:\\Windows\\Fonts\\arial.ttf',
-  'C:\\Windows\\Fonts\\arialbd.ttf'
-];
+// The card text is set in a vendored font so the images are byte-identical on every
+// machine and in CI, independent of system fonts. scripts/fonts/ holds a Latin subset of
+// Liberation Sans (SIL OFL 1.1), renamed "Juleflet Sans" as the licence requires for
+// modified versions; see scripts/fonts/README.md for how it was made.
+const OG_FONT_FAMILY = 'Juleflet Sans';
+const OG_FONT = `'${OG_FONT_FAMILY}', sans-serif`;
+const OG_FONT_FILES = ['JulefletSans-Regular.ttf', 'JulefletSans-Bold.ttf'].map((file) =>
+  path.join(root, 'scripts/fonts', file)
+);
 
 // Read image dimensions from the file header (PNG, JPEG, WebP) without extra deps.
 function imageSize(file) {
@@ -198,7 +192,7 @@ function buildOgSvg(design, heart) {
 function renderOgPng(svg, fontFiles) {
   const resvg = new Resvg(svg, {
     fitTo: { mode: 'width', value: OG_WIDTH },
-    font: { loadSystemFonts: false, fontFiles },
+    font: { loadSystemFonts: false, fontFiles, defaultFontFamily: OG_FONT_FAMILY },
     logLevel: 'off'
   });
   return resvg.render().asPng();
@@ -292,8 +286,9 @@ try {
   // Open Graph images. Not committed (static/og is gitignored); stale files from
   // renamed hearts are removed so the build output only carries listed hearts.
   const started = performance.now();
-  const fontFiles = OG_FONT_CANDIDATES.filter((file) => fs.existsSync(file));
-  if (!fontFiles.length) console.warn('heart-data: no known font found, Open Graph images get no text');
+  const fontFiles = OG_FONT_FILES;
+  const missingFont = fontFiles.find((file) => !fs.existsSync(file));
+  if (missingFont) throw new Error(`heart-data: vendored font missing: ${path.relative(root, missingFont)}`);
   fs.mkdirSync(ogDir, { recursive: true });
   for (const file of fs.readdirSync(ogDir)) {
     if (file.endsWith('.png') && !ids.includes(file.slice(0, -4))) fs.unlinkSync(path.join(ogDir, file));
