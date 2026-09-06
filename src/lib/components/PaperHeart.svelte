@@ -3059,8 +3059,17 @@
 			})();
 		});
 
+	function isEditableTarget(target: EventTarget | null): boolean {
+		if (!(target instanceof HTMLElement)) return false;
+		if (target.isContentEditable) return true;
+		const tag = target.tagName;
+		return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+	}
+
 	function handleKeyDown(e: KeyboardEvent) {
 		if (readonly) return;
+		// Leave text fields alone: Backspace/Delete/undo/redo there belong to the field.
+		if (isEditableTarget(e.target)) return;
 		if (e.key === 'Escape') {
 			selectedFingerId = null;
 			selectedAnchors = [];
