@@ -119,6 +119,18 @@
     trackHeartView(design.id, design.name);
   }
 
+  // Select all / none (GitHub issue #11): every heart shown, including the user's own.
+  function handleSelectAll() {
+    const newSet = new Set(allHearts.map((h) => h.id));
+    selectedIds = newSet;
+    updateUrlWithSelections(newSet);
+  }
+
+  function handleSelectNone() {
+    selectedIds = new Set();
+    updateUrlWithSelections(selectedIds);
+  }
+
   let deleteCandidate = $state.raw<HeartDesign | null>(null);
   let cancelDeleteButtonEl = $state.raw<HTMLElement | null>(null);
 
@@ -206,6 +218,7 @@
   };
 
   let selectedCount = $derived(selectedIds.size);
+  let allSelected = $derived(allHearts.length > 0 && allHearts.every((h) => selectedIds.has(h.id)));
 </script>
 
 <svelte:head>
@@ -269,6 +282,24 @@
           </DropdownMenu.RadioGroup>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
+    </div>
+    <div class="inline-flex rounded-md shadow-xs select-group" role="group">
+      <Button
+        variant="secondary"
+        class="rounded-r-none border-r-0"
+        onclick={handleSelectAll}
+        disabled={allSelected || generating}
+      >
+        {t("selectAll", lang)}
+      </Button>
+      <Button
+        variant="secondary"
+        class="rounded-l-none"
+        onclick={handleSelectNone}
+        disabled={selectedCount === 0 || generating}
+      >
+        {t("selectNone", lang)}
+      </Button>
     </div>
   </div>
 
@@ -533,6 +564,10 @@
     }
 
     .toolbar > div[role="group"] > :global(:first-child) :global(button) {
+      flex: 1;
+    }
+
+    .toolbar > .select-group > :global(button) {
       flex: 1;
     }
 

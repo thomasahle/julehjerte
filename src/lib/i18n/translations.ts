@@ -197,7 +197,11 @@ export const translations = {
     editorCurveNode: 'Kurvepunkt',
     editorConvert: 'Konverter',
     editorStraightSegment: 'Lige segment',
-    editorCurvedSegment: 'Kurvet segment'
+    editorCurvedSegment: 'Kurvet segment',
+
+    // Precompute (added 2026-09-06)
+    selectAll: 'Vælg alle',
+    selectNone: 'Fravælg alle'
   },
   en: {
     // Site
@@ -397,7 +401,11 @@ export const translations = {
     editorCurveNode: 'Curve node',
     editorConvert: 'Convert',
     editorStraightSegment: 'Straight segment',
-    editorCurvedSegment: 'Curved segment'
+    editorCurvedSegment: 'Curved segment',
+
+    // Precompute (added 2026-09-06)
+    selectAll: 'Select all',
+    selectNone: 'Select none'
   }
 } as const;
 
