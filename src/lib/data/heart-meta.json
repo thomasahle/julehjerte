@@ -1,0 +1,904 @@
+{
+  "classic-3x3": {
+    "name": "Classic 3x3",
+    "author": "Traditional",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Det traditionelle danske vevne hjerte med 3 striber per side",
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "ramme": {
+    "name": "Ramme",
+    "author": "Thomas",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "En skæv lille ramme",
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "gaver": {
+    "name": "Gaver",
+    "author": "Traditional",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "4 små julegaver",
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "jul": {
+    "name": "JUL",
+    "author": "Gerth Stølting Brodal",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": "2012",
+    "description": "Se https://brodal.dk/julehjerter/ for flere hjerter med tekst",
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "stjerne": {
+    "name": "Stjerne",
+    "author": "Thomas",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Klassisk design",
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/stjerne.jpg",
+      "width": 1536,
+      "height": 2048
+    }
+  },
+  "stjerne-ramme": {
+    "name": "Stjerne Ramme",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Baseret på et klassisk mønster",
+    "gridSize": {
+      "x": 8,
+      "y": 8
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "5star": {
+    "name": "5-Stjerne",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Outline af en 5-takket stjerne",
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/5star.jpg",
+      "width": 2778,
+      "height": 2883
+    }
+  },
+  "simple-5star": {
+    "name": "5-stjerne simpel",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "sun": {
+    "name": "Sol",
+    "author": "Klassisk",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "To yin-yang symboler der sammen giver en roterende sol",
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/sun.jpg",
+      "width": 2448,
+      "height": 3264
+    }
+  },
+  "explosion": {
+    "name": "Eksplosion",
+    "author": "Traditional",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Strålende farver fra midten der skyder ud i alle retninger.",
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "nihon": {
+    "name": "Nihon",
+    "author": "Bjørn",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2025-12-21",
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/nihon.jpeg",
+      "width": 3072,
+      "height": 4080
+    }
+  },
+  "davidsstjerne-circ": {
+    "name": "Davidsstjerne Cirkel",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2025-12-25",
+    "description": null,
+    "gridSize": {
+      "x": 8,
+      "y": 8
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "david4": {
+    "name": "David 4",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2025-12-25",
+    "description": "4x4 Version of the Star of David",
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/david4.jpg",
+      "width": 3072,
+      "height": 4080
+    }
+  },
+  "khatam": {
+    "name": "Khatam",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": "Dec 25, 2025",
+    "description": "A Khatam star is an eight-pointed star prominent in Islamic art and architecture",
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "circle": {
+    "name": "Uret v2",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "A simple clock",
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "balls": {
+    "name": "Polka",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Polka prikker",
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "kogle": {
+    "name": "Kogle",
+    "author": "Thomas",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Et mønster inspireret af en kogles skæl",
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "plus": {
+    "name": "Plus",
+    "author": "Thomas",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "4 røde plusser omrking et enkelt hvidt plus",
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "plus3": {
+    "name": "Plus 3",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": false,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "amy-weave-1": {
+    "name": "Weave 1",
+    "author": "Amy Young",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": "2025-12-20",
+    "description": null,
+    "gridSize": {
+      "x": 8,
+      "y": 7
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "amy-weave-2": {
+    "name": "Weave 2",
+    "author": "Amy Young",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": "2025-12-20",
+    "description": null,
+    "gridSize": {
+      "x": 8,
+      "y": 8
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "amy-rosette": {
+    "name": "Rosette",
+    "author": "Amy Young",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2025-12-20",
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "amy-pattern": {
+    "name": "Klokke",
+    "author": "Amy Young",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2025-12-20",
+    "description": null,
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "amy-flowering": {
+    "name": "Flowering",
+    "author": "Amy Young",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2025-12-20",
+    "description": null,
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "amy-pinecone": {
+    "name": "Pinecone",
+    "author": "Amy",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2025-12-20",
+    "description": null,
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "alhambra": {
+    "name": "Alhambra",
+    "author": "Torben Mogensen",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": "A pattern inspired by the Alhambra tiling. Note that it is somewhat tricky to braid, as the corners tend to snag, so it should not be your first braiding project.",
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/alhambra.png",
+      "width": 1550,
+      "height": 1746
+    }
+  },
+  "squares": {
+    "name": "Squares",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": "Kræver lidt koncentration at flette",
+    "gridSize": {
+      "x": 2,
+      "y": 2
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "juletrae": {
+    "name": "Juletræ",
+    "author": "Thomas",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "flower": {
+    "name": "Blomst",
+    "author": "Klassisk",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "venus": {
+    "name": "Venus",
+    "author": "Torben Ægidius Mogensen",
+    "authorUrl": "https://hjemmesider.diku.dk/~torbenm/",
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": "Et Venus / Kvinde Symbol",
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": {
+      "src": "/hearts/photos/venus.png",
+      "width": 990,
+      "height": 1070
+    }
+  },
+  "angel": {
+    "name": "Engel",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "Klassisk engle motiv",
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "snowflake": {
+    "name": "Snowflake",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": true,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "santa": {
+    "name": "Santa",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "25/12/2025",
+    "description": "Kræver god præcision ved klip",
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "triple-heart": {
+    "name": "Triple Hjerte",
+    "author": "Ukendt",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "h4h2": {
+    "name": "Hjerte i hjerte",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": null,
+    "description": "En variation af det klassiske \"mor og barn\" julehjerte",
+    "gridSize": {
+      "x": 4,
+      "y": 4
+    },
+    "difficulty": "medium",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null
+  },
+  "nemt-hjerte": {
+    "name": "Nemt Hjerte",
+    "author": "Thomas Ahle",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": "juleflet.dk",
+    "date": "2025-12-20",
+    "description": null,
+    "gridSize": {
+      "x": 3,
+      "y": 3
+    },
+    "difficulty": "easy",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": true,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "lilje1": {
+    "name": "Lilje 1",
+    "author": "Niels Thygesen",
+    "authorUrl": null,
+    "publisher": "Spejderliv",
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 5,
+      "y": 5
+    },
+    "difficulty": "hard",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  },
+  "lilje2": {
+    "name": "Lilje 2",
+    "author": "Niels Thygesen",
+    "authorUrl": null,
+    "publisher": "Spejderliv",
+    "publisherUrl": null,
+    "source": null,
+    "date": null,
+    "description": null,
+    "gridSize": {
+      "x": 7,
+      "y": 7
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": true,
+      "sharedTemplate": true
+    },
+    "photo": null
+  }
+}

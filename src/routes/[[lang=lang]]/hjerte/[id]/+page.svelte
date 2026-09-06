@@ -1,14 +1,21 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
+  import type { PageProps } from "./$types";
   import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
   import TemplatePreview from "$lib/components/TemplatePreview.svelte";
   import { getUserCollection } from "$lib/stores/collection";
   import { downloadPDF } from "$lib/pdf/template";
-  import { SITE_DOMAIN, SITE_TITLE, SITE_URL } from "$lib/config";
+  import {
+    SITE_DESCRIPTION,
+    SITE_DESCRIPTION_EN,
+    SITE_DOMAIN,
+    SITE_TITLE,
+    SITE_TITLE_EN,
+    SITE_URL,
+  } from "$lib/config";
   import {
     t,
     translations,
@@ -20,7 +27,7 @@
     subscribeColors,
     type HeartColors,
   } from "$lib/stores/colors";
-  import { detectSymmetry, getSymmetryDescription } from "$lib/utils/symmetry";
+  import { detectSymmetry, getSymmetryDescription, lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
   import {
     serializeHeartDesign,
@@ -34,9 +41,13 @@
     trackHeartLoadError,
     trackSvgParseError,
   } from "$lib/analytics";
-  import { Button } from "$lib/components/ui/button";
   import PageHeader from "$lib/components/PageHeader.svelte";
   import * as Carousel from "$lib/components/ui/carousel";
+
+  let { data }: PageProps = $props();
+
+  // Build-time metadata (gallery hearts only) - available at prerender time.
+  let meta = $derived(data.meta);
 
   // Design geometry is large (segments); keep it out of deeply reactive proxies.
   let design = $state.raw<HeartDesign | null>(null);
@@ -46,8 +57,8 @@
   let shareStatus = $state<"idle" | "copied" | "error">("idle");
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
   let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
+  let heartId = $derived($page.params.id ?? '');
   let colors = $state<HeartColors>({ left: "#ffffff", right: "rgb(185, 19, 19)" });
-  let photoUrl = $state<string | null>(null);
 
   onMount(async () => {
     // Initialize colors
@@ -89,49 +100,96 @@
     }
 
     loading = false;
+  });
 
-    // Check if a photo exists for this heart
-    if (!isUserCreated) {
-      const photoExtensions = ['jpg', 'jpeg', 'png', 'webp'];
-      for (const ext of photoExtensions) {
-        try {
-          const photoResponse = await fetch(`/hearts/photos/${id}.${ext}`, { method: 'HEAD' });
-          if (photoResponse.ok) {
-            photoUrl = `/hearts/photos/${id}.${ext}`;
-            break;
-          }
-        } catch {
-          // Photo doesn't exist, continue
-        }
-      }
+  // Header/detail text. Comes from the build-time metadata for gallery hearts (so it
+  // is in the prerendered HTML) and from the loaded design for user-created hearts.
+  type HeartInfo = {
+    name: string;
+    author: string | null;
+    authorUrl: string | null;
+    publisher: string | null;
+    publisherUrl: string | null;
+    source: string | null;
+    date: string | null;
+    description: string | null;
+    gridSize: { x: number; y: number };
+    difficulty: DifficultyLevel;
+    symmetry: string;
+  };
+
+  let info = $derived.by<HeartInfo | null>(() => {
+    const describe = (symmetry: Parameters<typeof getSymmetryDescription>[0]) =>
+      getSymmetryDescription(symmetry, (key) => t(key as TranslationKey, lang));
+    if (meta) {
+      return { ...meta, symmetry: describe(meta.symmetry) };
     }
+    if (design) {
+      return {
+        name: design.name,
+        author: design.author || null,
+        authorUrl: design.authorUrl ?? null,
+        publisher: design.publisher ?? null,
+        publisherUrl: design.publisherUrl ?? null,
+        source: design.source ?? null,
+        date: design.date ?? null,
+        description: design.description ?? null,
+        gridSize: design.gridSize,
+        difficulty: calculateDifficulty(design).level,
+        symmetry: describe(detectSymmetry(design.fingers)),
+      };
+    }
+    return null;
+  });
+
+  // Photo of the finished heart (gallery hearts only; resolved at build time).
+  let photo = $derived(isUserCreated ? null : (meta?.photo ?? null));
+
+  // SEO
+  let siteTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
+  let pageTitle = $derived(`${info?.name ?? t("template", lang)} - ${siteTitle}`);
+  let metaDescription = $derived.by(() => {
+    if (!info) return lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION;
+    const intro = t("heartMetaDescription", lang)
+      .replace("{name}", info.name)
+      .replace("{x}", String(info.gridSize.x))
+      .replace("{y}", String(info.gridSize.y));
+    // Heart descriptions are written in Danish; only use them on the Danish page.
+    const details = lang === "da" && info.description ? info.description.replace(/[.!?]?$/, ".") : null;
+    return [intro, details, t("heartMetaDownload", lang)].filter(Boolean).join(" ");
+  });
+  let canonicalDa = $derived(`${SITE_URL}/hjerte/${heartId}/`);
+  let canonicalEn = $derived(`${SITE_URL}/en/hjerte/${heartId}/`);
+  let canonicalUrl = $derived(lang === "en" ? canonicalEn : canonicalDa);
+  const ogImage = `${SITE_URL}/og-image.png`;
+
+  // Gallery hearts open by id; user-created hearts carry their design in the URL
+  // fragment (never sent to the server, so no request-URI limits).
+  let editHref = $derived.by(() => {
+    if (isUserCreated && design) {
+      const payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(design)));
+      return `${langBase}/editor/?edit=true&returnTo=detail#design=${payload}`;
+    }
+    return `${langBase}/editor/?from=${encodeURIComponent(heartId)}&returnTo=detail`;
   });
 
   function handleDownload() {
     if (design) {
       trackHeartDownload(design.id, design.name);
-      downloadPDF(design);
+      downloadPDF(design, { lang });
     }
   }
 
-  function openInEditor() {
-    if (design) {
-      trackHeartEdit(design.id, design.name);
-      const designData = encodeURIComponent(
-        JSON.stringify(serializeHeartDesign(design)),
-      );
-      // For user-created hearts, pass edit=true to allow saving over the original
-      const editParam = isUserCreated ? "&edit=true" : "";
-      goto(`${langBase}/editor?design=${designData}${editParam}&returnTo=detail`);
-    }
+  function handleEdit() {
+    if (info) trackHeartEdit(heartId, info.name);
   }
 
   async function handleShare() {
-    if (!browser || !design) return;
+    if (!browser || !info) return;
 
     const shareUrl = window.location.href;
-    const shareTitle = `${design.name} - ${SITE_TITLE}`;
-    const shareText = `Check out this Danish woven heart design: ${design.name}`;
+    const shareTitle = pageTitle;
+    const shareText = t("shareText", lang).replace("{name}", info.name);
 
     // Try Web Share API first (works on mobile)
     if (navigator.share) {
@@ -141,7 +199,7 @@
           text: shareText,
           url: shareUrl,
         });
-        trackHeartShare(design.id, design.name, "native");
+        trackHeartShare(heartId, info.name, "native");
         return;
       } catch (err) {
         // User cancelled or share failed, fall through to clipboard
@@ -152,7 +210,7 @@
     // Fallback: copy to clipboard
     try {
       await navigator.clipboard.writeText(shareUrl);
-      trackHeartShare(design.id, design.name, "clipboard");
+      trackHeartShare(heartId, info.name, "clipboard");
       shareStatus = "copied";
       setTimeout(() => {
         shareStatus = "idle";
@@ -175,10 +233,8 @@
     return t(labels[level], lang);
   }
 
-  // Check if templates are symmetric (only need one template for both lobes)
-  let isSymmetric = $derived(
-    design ? design.gridSize.x === design.gridSize.y && detectSymmetry(design.fingers).mirrorSymmetry : true
-  );
+  // One template for both lobes? Shared with the PDF generator so preview and PDF agree.
+  let isSymmetric = $derived(design ? lobesShareTemplate(design.fingers, design.gridSize) : true);
 
   function normalizeSource(source: string): string {
     return source
@@ -191,108 +247,107 @@
 </script>
 
 <svelte:head>
-  <title>{design?.name ?? "Template"} - {SITE_TITLE}</title>
-  {#if design}
-    <meta
-      name="description"
-      content={design.description ??
-        `${design.name} - et flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} grid. Download PDF skabelon gratis.`}
-    />
-    <link rel="canonical" href="{SITE_URL}/hjerte/{design.id}" />
-    <meta property="og:url" content="{SITE_URL}/hjerte/{design.id}" />
-    <meta property="og:title" content="{design.name} - {SITE_TITLE}" />
-    <meta
-      property="og:description"
-      content={design.description ??
-        `Flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} striber.`}
-    />
-    <meta property="og:image" content="{SITE_URL}/og/{design.id}.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="1200" />
-    <meta property="og:type" content="article" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="{design.name} - {SITE_TITLE}" />
-    <meta
-      name="twitter:description"
-      content={design.description ??
-        `Flettet julehjerte design med ${design.gridSize.x}x${design.gridSize.y} striber.`}
-    />
-    <meta name="twitter:image" content="{SITE_URL}/og/{design.id}.png" />
-  {/if}
+  <title>{pageTitle}</title>
+  <meta name="description" content={metaDescription} />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" hreflang="da" href={canonicalDa} />
+  <link rel="alternate" hreflang="en" href={canonicalEn} />
+  <link rel="alternate" hreflang="x-default" href={canonicalDa} />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={metaDescription} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={metaDescription} />
+  <meta name="twitter:image" content={ogImage} />
 </svelte:head>
 
 <div class="template-page">
   <PageHeader {lang} />
 
-  {#if loading}
-    <div class="loading">{t("loadingTemplate", lang)}</div>
-  {:else if error}
+  {#if error}
     <div class="error">{error}</div>
-  {:else if design}
+  {:else if info}
     <div class="content">
       <div class="preview-section">
-        <Carousel.Root class="carousel-root">
-          <Carousel.Content class="carousel-content">
-            <!-- Slide 1: Colored preview -->
-            <Carousel.Item class="carousel-item">
-              <div class="slide-content">
-                <PaperHeartSVG
-                  readonly
-                  idPrefix={"detail-" + design.id}
-                  initialFingers={design.fingers}
-                  initialGridSize={design.gridSize}
-                  initialWeaveParity={design.weaveParity ?? 0}
-                  size={350}
-                />
-              </div>
-            </Carousel.Item>
-
-            <!-- Photo slide (only if photo exists) -->
-            {#if photoUrl}
+        {#if design}
+          <Carousel.Root class="carousel-root">
+            <Carousel.Content class="carousel-content">
+              <!-- Slide 1: Colored preview -->
               <Carousel.Item class="carousel-item">
-                <div class="slide-content photo-slide">
-                  <img src={photoUrl} alt="{design.name} - {t('photo', lang)}" class="heart-photo" />
+                <div class="slide-content">
+                  <PaperHeartSVG
+                    readonly
+                    idPrefix={"detail-" + design.id}
+                    initialFingers={design.fingers}
+                    initialGridSize={design.gridSize}
+                    initialWeaveParity={design.weaveParity ?? 0}
+                    size={350}
+                  />
                 </div>
               </Carousel.Item>
-            {/if}
 
-            <!-- Slide 2: Template (left or "both" if symmetric) -->
-            <Carousel.Item class="carousel-item">
-              <div class="slide-content template-slide">
-                <TemplatePreview
-                  {design}
-                  lobe="left"
-                  size={350}
-                  label={isSymmetric ? t("template", lang) : t("templateLeft", lang)}
-                />
-              </div>
-            </Carousel.Item>
+              <!-- Photo slide (only if photo exists) -->
+              {#if photo}
+                <Carousel.Item class="carousel-item">
+                  <div class="slide-content photo-slide">
+                    <img
+                      src={photo.src}
+                      width={photo.width}
+                      height={photo.height}
+                      loading="lazy"
+                      decoding="async"
+                      alt="{info.name} - {t('photo', lang)}"
+                      class="heart-photo"
+                    />
+                  </div>
+                </Carousel.Item>
+              {/if}
 
-            <!-- Slide 3: Right template (only if asymmetric) -->
-            {#if !isSymmetric}
+              <!-- Slide 2: Template (left or "both" if symmetric) -->
               <Carousel.Item class="carousel-item">
                 <div class="slide-content template-slide">
                   <TemplatePreview
                     {design}
-                    lobe="right"
+                    lobe="left"
                     size={350}
-                    label={t("templateRight", lang)}
+                    label={isSymmetric ? t("template", lang) : t("templateLeft", lang)}
                   />
                 </div>
               </Carousel.Item>
-            {/if}
-          </Carousel.Content>
-          <Carousel.Previous class="carousel-prev" />
-          <Carousel.Next class="carousel-next" />
-        </Carousel.Root>
+
+              <!-- Slide 3: Right template (only if asymmetric) -->
+              {#if !isSymmetric}
+                <Carousel.Item class="carousel-item">
+                  <div class="slide-content template-slide">
+                    <TemplatePreview
+                      {design}
+                      lobe="right"
+                      size={350}
+                      label={t("templateRight", lang)}
+                    />
+                  </div>
+                </Carousel.Item>
+              {/if}
+            </Carousel.Content>
+            <Carousel.Previous class="carousel-prev" />
+            <Carousel.Next class="carousel-next" />
+          </Carousel.Root>
+        {:else}
+          <div class="loading preview-placeholder">{t("loadingTemplate", lang)}</div>
+        {/if}
 
         <div class="button-group">
-          <button class="btn primary" onclick={handleDownload}>
+          <button class="btn primary" onclick={handleDownload} disabled={!design}>
             {t("downloadPdfTemplate", lang)}
           </button>
-          <button class="btn secondary" onclick={openInEditor}>
+          <a class="btn secondary" href={editHref} onclick={handleEdit}>
             {t("openInEditor", lang)}
-          </button>
+          </a>
           <button class="btn share" onclick={handleShare} aria-label={t("share", lang)}>
             {#if shareStatus === "copied"}
               {t("copied", lang)}
@@ -321,53 +376,49 @@
       </div>
 
       <div class="info-section">
-        <h1>{design.name}</h1>
-        {#if design.author}
+        <h1>{info.name}</h1>
+        {#if info.author}
           <p class="author">
             {t("by", lang)}
-            {#if design.authorUrl}
-              <a href={design.authorUrl} target="_blank" rel="noopener noreferrer">{design.author}</a>
+            {#if info.authorUrl}
+              <a href={info.authorUrl} target="_blank" rel="noopener noreferrer">{info.author}</a>
             {:else}
-              {design.author}
+              {info.author}
             {/if}
           </p>
         {/if}
-        {#if design.publisher}
+        {#if info.publisher}
           <p class="publisher">
             {t("publisher", lang)}:
-            {#if design.publisherUrl}
-              <a href={design.publisherUrl} target="_blank" rel="noopener noreferrer">{design.publisher}</a>
+            {#if info.publisherUrl}
+              <a href={info.publisherUrl} target="_blank" rel="noopener noreferrer">{info.publisher}</a>
             {:else}
-              {design.publisher}
+              {info.publisher}
             {/if}
           </p>
         {/if}
-        {#if design.date}
+        {#if info.date}
           <p class="meta-line">
-            {t("date", lang)}: {design.date}
+            {t("date", lang)}: {info.date}
           </p>
         {/if}
-        {#if design.source && normalizeSource(design.source) !== normalizeSource(SITE_DOMAIN)}
+        {#if info.source && normalizeSource(info.source) !== normalizeSource(SITE_DOMAIN)}
           <p class="meta-line">
-            {t("source", lang)}: {design.source}
+            {t("source", lang)}: {info.source}
           </p>
         {/if}
-        {#if design.description}
-          <p class="description">{design.description}</p>
+        {#if info.description}
+          <p class="description">{info.description}</p>
         {/if}
 
         <div class="details">
           <div class="detail">
             <span class="label">{t("difficulty", lang)}</span>
-            <span class="value">{getDifficultyLabel(calculateDifficulty(design).level)}</span>
+            <span class="value">{getDifficultyLabel(info.difficulty)}</span>
           </div>
           <div class="detail">
             <span class="label">{t("symmetry", lang)}</span>
-            <span class="value"
-              >{getSymmetryDescription(detectSymmetry(design.fingers), (key) =>
-                t(key as TranslationKey, lang),
-              )}</span
-            >
+            <span class="value">{info.symmetry}</span>
           </div>
         </div>
 
@@ -381,6 +432,8 @@
         </div>
       </div>
     </div>
+  {:else if loading}
+    <div class="loading">{t("loadingTemplate", lang)}</div>
   {/if}
 </div>
 
@@ -417,6 +470,16 @@
     padding: 1rem;
     max-width: 450px;
     margin: 0 auto;
+  }
+
+  /* Reserve the carousel's space while the design loads */
+  .preview-placeholder {
+    width: 100%;
+    max-width: 400px;
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .preview-section :global(.paper-heart-svg) {
@@ -570,6 +633,17 @@
     transition: background 0.2s;
   }
 
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  a.btn {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
   .btn.secondary {
     background: #555;
     color: white;
@@ -584,7 +658,7 @@
     color: white;
   }
 
-  .btn.primary:hover {
+  .btn.primary:hover:not(:disabled) {
     background: #aa0000;
   }
 

@@ -56,39 +56,26 @@
     return () => resizeObserver?.disconnect();
   });
 
-  function handleDetails(e: MouseEvent) {
-    e.stopPropagation();
+  function handleDetails() {
     onClick?.(design);
   }
 
-  function handleClick() {
+  function handleSelect() {
     onSelect?.(design);
   }
 
-  function handleKeyDown(e: KeyboardEvent) {
-    if (e.target !== e.currentTarget) return;
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onSelect?.(design);
-    }
-  }
-
-  function handleDelete(e: MouseEvent) {
-    e.stopPropagation();
+  function handleDelete() {
     onDelete?.(design);
   }
 </script>
 
-<div
-  class="card"
-  class:selected
-  id={makeHeartAnchorId(design.id)}
-  onclick={handleClick}
-  onkeydown={handleKeyDown}
-  role="button"
-  tabindex="0"
-  aria-label="{design.name}{selected ? ` - ${t('selected', lang)}` : ''}"
->
+<!--
+  The card is a plain container; PDF selection and "Details" are separate real
+  buttons (no nested interactive content inside a role="button"). The select
+  button covers the whole card, the overlay sits on top of it and only its
+  Details button takes pointer events, so clicks elsewhere still toggle selection.
+-->
+<div class="card" class:selected id={makeHeartAnchorId(design.id)}>
   <div class="preview svg-renderer" bind:this={previewEl}>
     {#if previewReady}
       <PaperHeartSVG
@@ -103,6 +90,13 @@
       <div class="thumb-skeleton" aria-hidden="true"></div>
     {/if}
   </div>
+  <button
+    class="select-btn"
+    type="button"
+    onclick={handleSelect}
+    aria-pressed={selected}
+    aria-label="{t('selectForPdf', lang)}: {design.name}"
+  ></button>
   <div class="overlay">
     <div class="header-info">
       <span class="title">{design.name}</span>
@@ -110,19 +104,23 @@
         {getDifficultyLabel(difficulty.level)}
       </span>
     </div>
-    <button class="details-btn" onclick={handleDetails}>
+    <button
+      class="details-btn"
+      type="button"
+      onclick={handleDetails}
+      aria-label="{t('details', lang)}: {design.name}"
+    >
       {t('details', lang)}
     </button>
   </div>
   {#if selected}
-    <div class="selected-badge">✓</div>
+    <div class="selected-badge" aria-hidden="true">✓</div>
   {/if}
   {#if design.isUserCreated && onDelete}
     <button
       class="delete-btn"
       type="button"
       onclick={handleDelete}
-      onkeydown={(e) => e.stopPropagation()}
       aria-label={t('delete', lang)}
       title={t('delete', lang)}
     >
@@ -137,7 +135,6 @@
     aspect-ratio: 1;
     background: transparent;
     border-radius: 12px;
-    cursor: pointer;
     transition: transform 0.2s;
     overflow: visible; /* Allow SVG hearts to overflow when scaled */
   }
@@ -197,23 +194,49 @@
     }
   }
 
+  /* Invisible button covering the card: toggles PDF selection */
+  .select-btn {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .select-btn:focus-visible {
+    outline: 3px solid #4a7c8a;
+    outline-offset: 2px;
+  }
+
   .overlay {
     position: absolute;
     inset: 0;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-end;
+    gap: 0.25rem;
     padding: 0.75rem;
     opacity: 0;
-    pointer-events: none;
+    overflow: hidden; /* Never let the overlay widen the page */
+    pointer-events: none; /* Let clicks fall through to the select button */
     transition: opacity 0.2s;
     border-radius: 12px;
   }
 
-  .card:hover .overlay {
+  /* Visible on hover, while any control in the card has focus, and always on touch devices */
+  .card:hover .overlay,
+  .card:focus-within .overlay {
     opacity: 1;
-    pointer-events: auto;
+  }
+
+  @media (hover: none) {
+    .overlay {
+      opacity: 1;
+    }
   }
 
   .header-info {
@@ -221,6 +244,7 @@
     flex-direction: column;
     gap: 0.1rem;
     align-items: flex-start;
+    min-width: 0;
   }
 
   .title {
@@ -228,6 +252,7 @@
     font-size: 1rem;
     font-weight: 600;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    overflow-wrap: anywhere;
   }
 
   .difficulty-tag {
@@ -241,6 +266,7 @@
   }
 
   .details-btn {
+    flex-shrink: 0;
     padding: 0.4rem 0.8rem;
     background: rgba(0, 0, 0, 0.6);
     color: white;
@@ -249,11 +275,17 @@
     font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
+    pointer-events: auto;
     transition: background 0.2s;
   }
 
   .details-btn:hover {
     background: rgba(0, 0, 0, 0.8);
+  }
+
+  .details-btn:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
   }
 
   .selected-badge {
@@ -270,6 +302,7 @@
     justify-content: center;
     font-size: 0.9rem;
     font-weight: bold;
+    pointer-events: none;
   }
 
   .delete-btn {

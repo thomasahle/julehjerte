@@ -1,9 +1,11 @@
 import { jsPDF } from 'jspdf';
-import type { GridSize, HeartDesign, Finger, Vec } from '$lib/types/heart';
+import type { HeartDesign, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
+import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { t, type Language } from '$lib/i18n';
 
 // A4 dimensions in mm
 const PAGE_WIDTH = 210;
@@ -21,6 +23,7 @@ const LAYOUTS = {
 
 interface PDFOptions {
   layout?: LayoutMode;
+  lang?: Language;
 }
 
 // Calculate template dimensions based on layout mode
@@ -62,58 +65,6 @@ function inferOverlapRect(design: HeartDesign) {
     overlapWidth: rect.width,
     overlapHeight: rect.height
   };
-}
-
-function pointsClose(a: Vec, b: Vec, tol = 0.75): boolean {
-  return Math.abs(a.x - b.x) <= tol && Math.abs(a.y - b.y) <= tol;
-}
-
-function mapPointBetweenLobes(p: Vec, rect: { overlapLeft: number; overlapTop: number; overlapWidth: number; overlapHeight: number }): Vec {
-  const u = rect.overlapWidth ? (p.x - rect.overlapLeft) / rect.overlapWidth : 0;
-  const v = rect.overlapHeight ? (p.y - rect.overlapTop) / rect.overlapHeight : 0;
-  return {
-    x: rect.overlapLeft + v * rect.overlapWidth,
-    y: rect.overlapTop + u * rect.overlapHeight
-  };
-}
-
-// Check if two fingers have the same curve (mirrored between lobes)
-function fingersAreSymmetric(leftFingers: Finger[], rightFingers: Finger[], gridSize: GridSize, rect: { overlapLeft: number; overlapTop: number; overlapWidth: number; overlapHeight: number }): boolean {
-  if (gridSize.x !== gridSize.y) return false;
-  if (leftFingers.length !== rightFingers.length) return false;
-
-  // For symmetric hearts, left finger curves should mirror right finger curves
-  // This checks that swapping x/y within the overlap square maps left -> right.
-  const leftSorted = leftFingers
-    .slice()
-    .sort((a, b) => (a.segments[0]?.p0.y ?? 0) - (b.segments[0]?.p0.y ?? 0));
-  const rightSorted = rightFingers
-    .slice()
-    .sort((a, b) => (a.segments[0]?.p0.x ?? 0) - (b.segments[0]?.p0.x ?? 0));
-
-  for (let i = 0; i < leftSorted.length; i++) {
-    const left = leftSorted[i]!;
-    const right = rightSorted[i]!;
-
-    const leftSegs = left.segments;
-    const rightSegs = right.segments;
-    if (leftSegs.length !== rightSegs.length) return false;
-
-    for (let s = 0; s < leftSegs.length; s++) {
-      const l = leftSegs[s]!;
-      const r = rightSegs[s]!;
-      if (
-        !pointsClose(mapPointBetweenLobes(l.p0, rect), r.p0) ||
-        !pointsClose(mapPointBetweenLobes(l.p1, rect), r.p1) ||
-        !pointsClose(mapPointBetweenLobes(l.p2, rect), r.p2) ||
-        !pointsClose(mapPointBetweenLobes(l.p3, rect), r.p3)
-      ) {
-        return false;
-      }
-    }
-  }
-
-  return true;
 }
 
 // Parse SVG path data and draw it
@@ -472,11 +423,7 @@ function collectTemplates(designs: HeartDesign[]): TemplateSlot[] {
   const templates: TemplateSlot[] = [];
 
   for (const design of designs) {
-    const leftFingers = design.fingers.filter(f => f.lobe === 'left');
-    const rightFingers = design.fingers.filter(f => f.lobe === 'right');
-
-    const rect = inferOverlapRect(design);
-    if (fingersAreSymmetric(leftFingers, rightFingers, design.gridSize, rect)) {
+    if (lobesShareTemplate(design.fingers, design.gridSize)) {
       // Symmetric - only need one template
       templates.push({ design, lobe: 'both' });
     } else {
@@ -495,7 +442,8 @@ function addTemplatesPage(
   startIndex: number,
   isFirstPage: boolean,
   heartImages: Map<string, string>,
-  layout: LayoutMode = 'medium'
+  layout: LayoutMode = 'medium',
+  lang: Language = 'da'
 ): number {
   if (!isFirstPage) {
     pdf.addPage();
@@ -540,7 +488,7 @@ function addTemplatesPage(
     pdf.setTextColor(0);
     const label = template.lobe === 'both'
       ? template.design.name
-      : `${template.design.name} (${template.lobe === 'left' ? 'Venstre' : 'Højre'})`;
+      : `${template.design.name} (${t(template.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
     pdf.text(label, pos.x, slotTop + HEADER_SPACE, { align: 'center' });
 
     // Calculate template dimensions to position preview inside the ear
@@ -588,6 +536,7 @@ function addTemplatesPage(
 
 async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promise<jsPDF> {
   const layout = options.layout ?? 'medium';
+  const lang = options.lang ?? 'da';
 
   const pdf = new jsPDF({
     orientation: 'portrait',
@@ -597,13 +546,14 @@ async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promi
 
   const heartImages = await prerenderHeartImages([design], layout);
   const templates = collectTemplates([design]);
-  addTemplatesPage(pdf, templates, 0, true, heartImages, layout);
+  addTemplatesPage(pdf, templates, 0, true, heartImages, layout, lang);
 
   return pdf;
 }
 
 async function generateMultiPDF(designs: HeartDesign[], options: PDFOptions = {}): Promise<jsPDF> {
   const layout = options.layout ?? 'medium';
+  const lang = options.lang ?? 'da';
 
   const pdf = new jsPDF({
     orientation: 'portrait',
@@ -617,7 +567,7 @@ async function generateMultiPDF(designs: HeartDesign[], options: PDFOptions = {}
   let isFirst = true;
 
   while (index < templates.length) {
-    const drawn = addTemplatesPage(pdf, templates, index, isFirst, heartImages, layout);
+    const drawn = addTemplatesPage(pdf, templates, index, isFirst, heartImages, layout, lang);
     index += drawn;
     isFirst = false;
   }

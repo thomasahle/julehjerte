@@ -32,7 +32,20 @@
     return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
   };
 
+  const year = new Date().getFullYear();
+
   let colors = $state<HeartColors>({ left: "#ffffff", right: DEFAULT_RIGHT_COLOR });
+  let leftInput = $state<HTMLInputElement | null>(null);
+  let rightInput = $state<HTMLInputElement | null>(null);
+
+  // The inputs carry static default values so the prerendered markup is valid; the
+  // stored colours are applied here. A dynamic `value` attribute would be stripped
+  // by Svelte during hydration, which makes Chrome warn about a colour input
+  // momentarily holding "".
+  $effect(() => {
+    if (leftInput) leftInput.value = toHexColor(colors.left, "#ffffff");
+    if (rightInput) rightInput.value = toHexColor(colors.right, DEFAULT_RIGHT_COLOR_HEX);
+  });
   let lang = $derived(langFromPathname($page.url.pathname, base));
   let toggleHref = $derived.by(() => {
     const path = $page.url.pathname;
@@ -69,7 +82,8 @@
               type="color"
               id="left-color"
               name="left-color"
-              value={toHexColor(colors.left, "#ffffff")}
+              value="#ffffff"
+              bind:this={leftInput}
               oninput={(e) =>
                 setLeftColor((e.target as HTMLInputElement).value)}
               class="w-full h-full border-0 cursor-pointer scale-150"
@@ -89,7 +103,8 @@
               type="color"
               id="right-color"
               name="right-color"
-              value={toHexColor(colors.right, DEFAULT_RIGHT_COLOR_HEX)}
+              value="#b91313"
+              bind:this={rightInput}
               oninput={(e) =>
                 setRightColor((e.target as HTMLInputElement).value)}
               class="w-full h-full border-0 cursor-pointer scale-150"
@@ -115,7 +130,7 @@
       {t("madeBy", lang)}
       <a href="https://thomasahle.com" target="_blank" rel="noopener"
         >Thomas Ahle</a
-      >, {lang === "da" ? "julen" : "Christmas"} 2025
+      >, {lang === "da" ? "julen" : "Christmas"} {year}
     </span>
   </div>
 </footer>
