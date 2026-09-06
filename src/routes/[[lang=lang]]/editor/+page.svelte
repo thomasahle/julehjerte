@@ -68,6 +68,9 @@
 	  let draftId = $state<string | null>(null);
 	  let autosaveTimeout: ReturnType<typeof setTimeout> | null = null;
 	  let autosaveDirty = false;
+	  // Serialized design as first emitted by PaperHeart; used to tell real edits from the initial emission.
+	  let designBaseline: string | null = null;
+	  let hasDesignEdits = false;
 	  const AUTOSAVE_DEBOUNCE_MS = 600;
 
   onMount(() => {
@@ -123,7 +126,23 @@
 	    currentFingers = fingers;
 	    currentGridSize = gridSize;
 	    currentWeaveParity = weaveParity;
+	    // PaperHeart emits once on mount (with reconciled boundary curves). That is not a
+	    // user edit, so only autosave once the design actually differs from that baseline.
+	    if (!hasDesignEdits) {
+	      const snapshot = JSON.stringify({ fingers, gridSize, weaveParity });
+	      if (designBaseline === null || snapshot === designBaseline) {
+	        designBaseline = snapshot;
+	        return;
+	      }
+	      hasDesignEdits = true;
+	    }
 	    scheduleAutosave();
+	  }
+
+	  // Reset the autosave baseline before remounting PaperHeart with a new design.
+	  function resetDesignBaseline(): void {
+	    designBaseline = null;
+	    hasDesignEdits = false;
 	  }
 
   function generateId(): string {
@@ -272,6 +291,7 @@
           isEditMode = false;
 	        initialDesign = design;
 	        draftId = generateId();
+	        resetDesignBaseline();
 	        editorKey++;
 	        scheduleAutosave();
 	      } catch (err) {
