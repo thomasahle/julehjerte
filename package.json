@@ -5,6 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
+		"generate:heart-meta": "node scripts/generate-heart-meta.mjs",
+		"prebuild": "npm run generate:heart-meta",
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",

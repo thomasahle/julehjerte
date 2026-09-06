@@ -114,8 +114,8 @@
     },
     "photo": {
       "src": "/hearts/photos/stjerne.jpg",
-      "width": 1536,
-      "height": 2048
+      "width": 900,
+      "height": 1200
     }
   },
   "stjerne-ramme": {
@@ -164,8 +164,8 @@
     },
     "photo": {
       "src": "/hearts/photos/5star.jpg",
-      "width": 2778,
-      "height": 2883
+      "width": 1156,
+      "height": 1200
     }
   },
   "simple-5star": {
@@ -214,8 +214,8 @@
     },
     "photo": {
       "src": "/hearts/photos/sun.jpg",
-      "width": 2448,
-      "height": 3264
+      "width": 900,
+      "height": 1200
     }
   },
   "explosion": {
@@ -264,8 +264,8 @@
     },
     "photo": {
       "src": "/hearts/photos/nihon.jpeg",
-      "width": 3072,
-      "height": 4080
+      "width": 904,
+      "height": 1200
     }
   },
   "davidsstjerne-circ": {
@@ -314,8 +314,8 @@
     },
     "photo": {
       "src": "/hearts/photos/david4.jpg",
-      "width": 3072,
-      "height": 4080
+      "width": 904,
+      "height": 1200
     }
   },
   "khatam": {
@@ -617,8 +617,8 @@
     },
     "photo": {
       "src": "/hearts/photos/alhambra.png",
-      "width": 1550,
-      "height": 1746
+      "width": 1065,
+      "height": 1200
     }
   },
   "squares": {
