@@ -4,6 +4,7 @@
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
 	import Undo2Icon from '@lucide/svelte/icons/undo-2';
 	import Redo2Icon from '@lucide/svelte/icons/redo-2';
+	import XIcon from '@lucide/svelte/icons/x';
 	import { Button } from '$lib/components/ui/button';
 	import { Separator } from '$lib/components/ui/separator';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
@@ -18,10 +19,10 @@
 	import type { Finger, GridSize, Vec, LobeId, NodeType } from '$lib/types/heart';
 	import { clamp, clampInt } from '$lib/utils/math';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
-	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
+	import { BASE_CANVAS_SIZE, CENTER, MAX_GRID_SIZE, MIN_GRID_SIZE, PRECISION_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
 	import { computeWeaveData } from '$lib/rendering/svgWeave';
 	import { computeHeartViewBoxFromOverlap } from '$lib/rendering/heartSvg';
-	import { bezierBBox, bezierPathBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves } from '$lib/geometry/curves';
+	import { bezierPathBBox, closestPointOnBezier } from '$lib/geometry/curves';
 	import { Point } from '$lib/geometry/point';
 	import { snapSequentialQP, snapSequentialQPBezierControl, snapSequentialQPBezierJunction } from '$lib/algorithms/snapBezierControl';
 	import { detectSymmetryModes } from '$lib/utils/symmetry';
@@ -37,6 +38,8 @@
 	} from '$lib/geometry/bezierSegments';
 	import { dot, midpoint, normalize, perp, vecAdd, vecDist, vecLerp, vecScale, vecSub } from '$lib/geometry/vec';
 	import { insertNodeInFinger, shiftNodeTypesOnDelete } from '$lib/editor/commands';
+	import { bezierPointAt, findFingersWithIssues, intersectionMarginPx, segmentsIntersect } from '$lib/editor/curveIssues';
+	import { findNearestOppositeAnchor, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
 	import { toggleNumberInList } from '$lib/editor/selection';
 	import { getColors, setColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
 	import { t as translate, type Language, type TranslationKey } from '$lib/i18n';
@@ -74,9 +77,6 @@
 	const HANDLE_COLLAPSE_EPS = 0.25;
 	const HANDLE_SNAP_EPS = 8;
 	const MAX_BEZIER_SEGMENTS_PER_FINGER = 64;
-	const INTERSECTION_EPS = 0.5;
-	const MAX_INTERSECTION_DEPTH = 18;
-	const SELF_INTERSECTION_EPS = 0.2;
 	const OUTER_EDGE_TOL = 0.75;
 	const OUTER_EDGE_REMOVE_TOL = 5;
 
@@ -239,6 +239,8 @@
 	type SymmetryMode = 'off' | 'sym' | 'anti';
 
 	let showCurves = $state(true);
+	// Snap dragged anchors to nearby anchors of the opposite lobe (GitHub issue #2). Off by default.
+	let snapToOpposite = $state(false);
 	let withinCurveMode = $state<SymmetryMode>('off');
 	let withinLobeMode = $state<SymmetryMode>('off');
 	let betweenLobesMode = $state<SymmetryMode>('off');
@@ -724,6 +726,27 @@
 		return { x, y };
 	}
 
+	// The anchor of the other lobe nearest to `pos` within the snap radius, or null. Positions are
+	// the editor's internal coordinates, the same system drag positions are in.
+	function snapTargetForAnchor(lobe: LobeId, pos: Vec): Vec | null {
+		if (!snapToOpposite) return null;
+		const { width, height } = getOverlapRect();
+		return findNearestOppositeAnchor(fingers, lobe, pos, snapOppositeRadiusPx({ width, height }));
+	}
+
+	// Snap a curve endpoint after it has been projected onto its edge: the snap target is
+	// projected onto the same edge, so the projection cannot undo the snap.
+	function snapEndpointAnchor(finger: Finger, segments: BezierSegment[], anchorIdx: number) {
+		const n = segments.length;
+		if (!n || (anchorIdx !== 0 && anchorIdx !== n)) return;
+		const key = anchorIdx === 0 ? 'p0' : 'p3';
+		const current = anchorIdx === 0 ? segments[0]!.p0 : segments[n - 1]!.p3;
+		const target = snapTargetForAnchor(finger.lobe, current);
+		if (!target) return;
+		const projected = projectEndpoint(finger, target, key);
+		applyDeltaToAnchorsInSegments(finger, segments, [anchorIdx], vecSub(projected, current));
+	}
+
 	function applyDeltaToAnchorsInSegments(
 		finger: Finger,
 		segments: BezierSegment[],
@@ -1099,369 +1122,11 @@
 		return overrides;
 	}
 
-	function bboxesOverlap(a: { x: number; y: number; width: number; height: number }, b: { x: number; y: number; width: number; height: number }): boolean {
-		return a.x <= b.x + b.width && a.x + a.width >= b.x && a.y <= b.y + b.height && a.y + a.height >= b.y;
-	}
-
-	function bboxDistanceSq(a: { x: number; y: number; width: number; height: number }, b: { x: number; y: number; width: number; height: number }): number {
-		const ax0 = a.x;
-		const ay0 = a.y;
-		const ax1 = a.x + a.width;
-		const ay1 = a.y + a.height;
-		const bx0 = b.x;
-		const by0 = b.y;
-		const bx1 = b.x + b.width;
-		const by1 = b.y + b.height;
-
-		let dx = 0;
-		if (ax1 < bx0) dx = bx0 - ax1;
-		else if (bx1 < ax0) dx = ax0 - bx1;
-
-		let dy = 0;
-		if (ay1 < by0) dy = by0 - ay1;
-		else if (by1 < ay0) dy = ay0 - by1;
-
-		return dx * dx + dy * dy;
-	}
-
-	function segmentsIntersect(
-		a: BezierSegment[],
-		b: BezierSegment[],
-		opts: { skipAdjacent?: boolean } = {}
-	): boolean {
-		const same = a === b;
-		const skipAdjacent = opts.skipAdjacent ?? false;
-		for (let i = 0; i < a.length; i++) {
-			const sa = a[i]!;
-			const ba = bezierBBox(sa);
-			const start = same ? i + (skipAdjacent ? 2 : 1) : 0;
-			for (let j = start; j < b.length; j++) {
-				const sb = b[j]!;
-				const bb = bezierBBox(sb);
-				if (!bboxesOverlap(ba, bb)) continue;
-				if (intersectBezierCurves(sa, sb).length > 0) return true;
-			}
-		}
-		return false;
-	}
-
-	function bezierPointAt(seg: BezierSegment, t: number): Vec {
-		const tt = Math.max(0, Math.min(1, t));
-		const u = 1 - tt;
-		const b0 = u * u * u;
-		const b1 = 3 * u * u * tt;
-		const b2 = 3 * u * tt * tt;
-		const b3 = tt * tt * tt;
-		return {
-			x: b0 * seg.p0.x + b1 * seg.p1.x + b2 * seg.p2.x + b3 * seg.p3.x,
-			y: b0 * seg.p0.y + b1 * seg.p1.y + b2 * seg.p2.y + b3 * seg.p3.y
-		};
-	}
-
-	function cross(a: Vec, b: Vec): number {
-		return a.x * b.y - a.y * b.x;
-	}
-
-	function cubicDerivativeAt(seg: BezierSegment, t: number): Vec {
-		const tt = Math.max(0, Math.min(1, t));
-		const ax = -seg.p0.x + 3 * seg.p1.x - 3 * seg.p2.x + seg.p3.x;
-		const bx = 3 * seg.p0.x - 6 * seg.p1.x + 3 * seg.p2.x;
-		const cx = -3 * seg.p0.x + 3 * seg.p1.x;
-		const ay = -seg.p0.y + 3 * seg.p1.y - 3 * seg.p2.y + seg.p3.y;
-		const by = 3 * seg.p0.y - 6 * seg.p1.y + 3 * seg.p2.y;
-		const cy = -3 * seg.p0.y + 3 * seg.p1.y;
-		return { x: (3 * ax * tt + 2 * bx) * tt + cx, y: (3 * ay * tt + 2 * by) * tt + cy };
-	}
-
-	const GAUSS_5_X = [-0.9061798459, -0.5384693101, 0, 0.5384693101, 0.9061798459];
-	const GAUSS_5_W = [0.2369268851, 0.4786286705, 0.5688888889, 0.4786286705, 0.2369268851];
-
-	function cubicArcLength(seg: BezierSegment, t0: number, t1: number): number {
-		if (t0 === t1) return 0;
-		let a = t0;
-		let b = t1;
-		if (a > b) [a, b] = [b, a];
-		const half = (b - a) / 2;
-		const mid = (a + b) / 2;
-		let sum = 0;
-		for (let i = 0; i < GAUSS_5_X.length; i++) {
-			const t = mid + half * GAUSS_5_X[i]!;
-			const d = cubicDerivativeAt(seg, t);
-			sum += GAUSS_5_W[i]! * Math.hypot(d.x, d.y);
-		}
-		return sum * half;
-	}
-
-	function cubicSelfIntersectionParams(seg: BezierSegment): { t1: number; t2: number } | null {
-		const a = {
-			x: -seg.p0.x + 3 * seg.p1.x - 3 * seg.p2.x + seg.p3.x,
-			y: -seg.p0.y + 3 * seg.p1.y - 3 * seg.p2.y + seg.p3.y
-		};
-		const b = {
-			x: 3 * seg.p0.x - 6 * seg.p1.x + 3 * seg.p2.x,
-			y: 3 * seg.p0.y - 6 * seg.p1.y + 3 * seg.p2.y
-		};
-		const c = { x: -3 * seg.p0.x + 3 * seg.p1.x, y: -3 * seg.p0.y + 3 * seg.p1.y };
-		const ab = cross(a, b);
-		if (Math.abs(ab) < 1e-9) return null;
-		const u = -cross(a, c) / ab;
-		let v: number | null = null;
-		if (Math.abs(a.x) > 1e-9) v = u * u + (b.x * u + c.x) / a.x;
-		else if (Math.abs(a.y) > 1e-9) v = u * u + (b.y * u + c.y) / a.y;
-		if (v == null) return null;
-		const disc = u * u - 4 * v;
-		if (disc <= 1e-9) return null;
-		const root = Math.sqrt(disc);
-		const t1 = 0.5 * (u - root);
-		const t2 = 0.5 * (u + root);
-		if (t1 <= 0 || t1 >= 1 || t2 <= 0 || t2 >= 1) return null;
-		if (Math.abs(t1 - t2) < 1e-4) return null;
-		return { t1, t2 };
-	}
-
-	function cubicSelfIntersectionLoopSize(seg: BezierSegment): number | null {
-		const params = cubicSelfIntersectionParams(seg);
-		if (!params) return null;
-		const p1 = bezierPointAt(seg, params.t1);
-		const p2 = bezierPointAt(seg, params.t2);
-		if (vecDist(p1, p2) > SELF_INTERSECTION_EPS) return null;
-		const t1 = Math.min(params.t1, params.t2);
-		const t2 = Math.max(params.t1, params.t2);
-		const total = cubicArcLength(seg, 0, 1);
-		if (total <= 0) return null;
-		const part = cubicArcLength(seg, t1, t2);
-		return Math.min(part, total - part);
-	}
-
-	function splitBezierSegment(seg: BezierSegment, t: number): [BezierSegment, BezierSegment] {
-		const tt = Math.max(0, Math.min(1, t));
-		const a = vecLerp(seg.p0, seg.p1, tt);
-		const b = vecLerp(seg.p1, seg.p2, tt);
-		const c = vecLerp(seg.p2, seg.p3, tt);
-		const d = vecLerp(a, b, tt);
-		const e = vecLerp(b, c, tt);
-		const p = vecLerp(d, e, tt);
-		return [
-			{ p0: seg.p0, p1: a, p2: d, p3: p },
-			{ p0: p, p1: e, p2: c, p3: seg.p3 }
-		];
-	}
-
-	function lineSegmentIntersection(p1: Vec, p2: Vec, p3: Vec, p4: Vec): Vec | null {
-		const den = (p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y);
-		if (Math.abs(den) < 1e-12) return null;
-		const ua = ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x)) / den;
-		const ub = ((p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x)) / den;
-		if (ua < 0 || ua > 1 || ub < 0 || ub > 1) return null;
-		return { x: p1.x + ua * (p2.x - p1.x), y: p1.y + ua * (p2.y - p1.y) };
-	}
-
-	function hasAdjacentIntersection(segA: BezierSegment, segB: BezierSegment, join: Vec, minDist: number): boolean {
-		const stack: Array<{ a: BezierSegment; b: BezierSegment; depth: number }> = [{ a: segA, b: segB, depth: 0 }];
-		while (stack.length) {
-			const next = stack.pop();
-			if (!next) break;
-			const { a, b, depth } = next;
-			const ba = bezierBBox(a);
-			const bb = bezierBBox(b);
-			if (!bboxesOverlap(ba, bb)) continue;
-
-			const sizeA = Math.max(ba.width, ba.height);
-			const sizeB = Math.max(bb.width, bb.height);
-			if (depth >= MAX_INTERSECTION_DEPTH || (sizeA <= INTERSECTION_EPS && sizeB <= INTERSECTION_EPS)) {
-				const hit = lineSegmentIntersection(a.p0, a.p3, b.p0, b.p3);
-				if (!hit) continue;
-				if (vecDist(hit, join) < minDist) continue;
-				return true;
-			}
-
-			if (sizeA >= sizeB) {
-				const [a0, a1] = splitBezierSegment(a, 0.5);
-				stack.push({ a: a0, b, depth: depth + 1 }, { a: a1, b, depth: depth + 1 });
-			} else {
-				const [b0, b1] = splitBezierSegment(b, 0.5);
-				stack.push({ a, b: b0, depth: depth + 1 }, { a, b: b1, depth: depth + 1 });
-			}
-		}
-		return false;
-	}
-
-	function curveLoopSizeBetween(
-		segs: BezierSegment[],
-		prefixLengths: number[],
-		idxA: number,
-		tA: number,
-		idxB: number,
-		tB: number
-	): number | null {
-		if (prefixLengths.length !== segs.length + 1) return null;
-		const total = prefixLengths[prefixLengths.length - 1]!;
-		if (total <= 0) return null;
-		let i = idxA;
-		let j = idxB;
-		let ti = tA;
-		let tj = tB;
-		if (i > j) {
-			[i, j] = [j, i];
-			[ti, tj] = [tj, ti];
-		}
-		if (i === j || i < 0 || j >= segs.length) return null;
-		let forward = cubicArcLength(segs[i]!, ti, 1);
-		if (j > i + 1) {
-			forward += prefixLengths[j]! - prefixLengths[i + 1]!;
-		}
-		forward += cubicArcLength(segs[j]!, 0, tj);
-		const other = Math.max(0, total - forward);
-		return Math.min(forward, other);
-	}
-
-	function segmentsHaveIssues(
-		segsA: BezierSegment[],
-		bboxesA: Array<{ x: number; y: number; width: number; height: number }>,
-		endpointsA: { start: Vec; end: Vec },
-		segsB: BezierSegment[],
-		bboxesB: Array<{ x: number; y: number; width: number; height: number }>,
-		endpointsB: { start: Vec; end: Vec },
-		opts: {
-			minDistance: number;
-			endpointTolerance: number;
-			proximityEndpointTolerance: number;
-			skipAdjacent?: boolean;
-			intersectionLoopThreshold?: number;
-		}
-	): boolean {
-		const same = segsA === segsB;
-		const skipAdjacent = opts.skipAdjacent ?? false;
-		const minDist2 = opts.minDistance * opts.minDistance;
-		const loopThreshold = same ? opts.intersectionLoopThreshold : undefined;
-		const intersectionEps = loopThreshold != null ? 0.2 : INTERSECTION_EPS;
-		let prefixLengths: number[] | null = null;
-		if (loopThreshold != null) {
-			prefixLengths = [0];
-			let total = 0;
-			for (const seg of segsA) {
-				total += cubicArcLength(seg, 0, 1);
-				prefixLengths.push(total);
-			}
-		}
-		for (let i = 0; i < segsA.length; i++) {
-			const sa = segsA[i]!;
-			const ba = bboxesA[i]!;
-			const start = same ? i + (skipAdjacent ? 2 : 1) : 0;
-			for (let j = start; j < segsB.length; j++) {
-				const sb = segsB[j]!;
-				const bb = bboxesB[j]!;
-				if (bboxesOverlap(ba, bb)) {
-					const ix = intersectBezierCurves(sa, sb);
-					for (const pt of ix) {
-						if (loopThreshold != null && prefixLengths) {
-							const hitA = closestPointOnBezier(sa, pt);
-							if (hitA.distance > intersectionEps) continue;
-							const hitB = closestPointOnBezier(sb, pt);
-							if (hitB.distance > intersectionEps) continue;
-							if (vecDist(hitA.point, hitB.point) > intersectionEps) continue;
-							const atEndpoint =
-								vecDist(hitA.point, endpointsA.start) < opts.endpointTolerance ||
-								vecDist(hitA.point, endpointsA.end) < opts.endpointTolerance ||
-								vecDist(hitB.point, endpointsB.start) < opts.endpointTolerance ||
-								vecDist(hitB.point, endpointsB.end) < opts.endpointTolerance;
-							if (atEndpoint) continue;
-							const loopSize = curveLoopSizeBetween(segsA, prefixLengths, i, hitA.t, j, hitB.t);
-							if (loopSize != null && loopSize < loopThreshold) continue;
-							return true;
-						}
-						const atEndpoint =
-							vecDist(pt, endpointsA.start) < opts.endpointTolerance ||
-							vecDist(pt, endpointsA.end) < opts.endpointTolerance ||
-							vecDist(pt, endpointsB.start) < opts.endpointTolerance ||
-							vecDist(pt, endpointsB.end) < opts.endpointTolerance;
-						if (!atEndpoint) return true;
-					}
-				}
-
-				if (bboxDistanceSq(ba, bb) >= minDist2) continue;
-				const hit = closestPointsBetweenBeziers(sa, sb, { samplesPerCurve: 5, maxSeeds: 8, newtonIterations: 10 });
-				if (vecDist(hit.pointA, endpointsA.start) < opts.proximityEndpointTolerance) continue;
-				if (vecDist(hit.pointA, endpointsA.end) < opts.proximityEndpointTolerance) continue;
-				if (vecDist(hit.pointB, endpointsB.start) < opts.proximityEndpointTolerance) continue;
-				if (vecDist(hit.pointB, endpointsB.end) < opts.proximityEndpointTolerance) continue;
-				if (hit.distance < opts.minDistance) return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Check whether a finger has problematic intersections/proximity, including
-	 * self/adjacent loops and other curves in the same lobe.
-	 */
-	function fingerHasIntersectionIssues(finger: Finger): boolean {
-		const ENDPOINT_TOLERANCE = 2;
-		const MIN_CURVE_DISTANCE = 6;
-		const SELF_MIN_CURVE_DISTANCE = 6.0;
-
-		const segs = fingerToSegments(finger);
-		const n = segs.length;
-		if (!n) return false;
-		const start = segs[0]!.p0;
-		const end = segs[n - 1]!.p3;
-		const endpointTol = ENDPOINT_TOLERANCE * 2;
-		const segBBoxes = segs.map(bezierBBox);
-		const endpoints = { start, end };
-
-		for (const seg of segs) {
-			const loopSize = cubicSelfIntersectionLoopSize(seg);
-			if (loopSize != null && loopSize >= MIN_CURVE_DISTANCE) return true;
-		}
-
-		for (let i = 0; i < n - 1; i++) {
-			const join = segs[i]!.p3;
-			if (hasAdjacentIntersection(segs[i]!, segs[i + 1]!, join, MIN_CURVE_DISTANCE)) return true;
-		}
-
-		if (
-			segmentsHaveIssues(segs, segBBoxes, endpoints, segs, segBBoxes, endpoints, {
-				minDistance: SELF_MIN_CURVE_DISTANCE,
-				endpointTolerance: ENDPOINT_TOLERANCE,
-				proximityEndpointTolerance: endpointTol,
-				skipAdjacent: true,
-				intersectionLoopThreshold: MIN_CURVE_DISTANCE
-			})
-		) {
-			return true;
-		}
-
-		for (const other of fingers) {
-			if (other.id === finger.id) continue;
-			if (other.lobe !== finger.lobe) continue;
-			const otherSegs = fingerToSegments(other);
-			const m = otherSegs.length;
-			if (!m) continue;
-			const otherStart = otherSegs[0]!.p0;
-			const otherEnd = otherSegs[m - 1]!.p3;
-			const otherBBoxes = otherSegs.map(bezierBBox);
-			const otherEndpoints = { start: otherStart, end: otherEnd };
-			if (
-				segmentsHaveIssues(segs, segBBoxes, endpoints, otherSegs, otherBBoxes, otherEndpoints, {
-					minDistance: MIN_CURVE_DISTANCE,
-					endpointTolerance: ENDPOINT_TOLERANCE,
-					proximityEndpointTolerance: endpointTol
-				})
-			) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
+	// Curves that cross, touch or come within the physical margin of another curve in their lobe.
+	// (Uses inferOverlapRect directly: weaveData is declared further down, which matters for SSR.)
 	let issueFingerIds = $derived.by(() => {
 		if (readonly || !showCurves) return new Set<string>();
-		const set = new Set<string>();
-		for (const finger of fingers) {
-			if (fingerHasIntersectionIssues(finger)) set.add(finger.id);
-		}
-		return set;
+		return findFingersWithIssues(fingers, intersectionMarginPx(inferOverlapRect(fingers, gridSize)));
 	});
 
 		function candidateIsValid(fingerId: string, candidate: Finger, overrides?: Map<string, Finger>): boolean {
@@ -2310,6 +1975,16 @@
 	let pinchStartDistance = 0;
 	let pinchStartZoom = 1.0;
 	let pinchCenter = { x: 0, y: 0 };
+	let pinchLastCenter = { x: 0, y: 0 };
+
+	// Touch gestures (GitHub issue #12): a second finger turns the gesture into pan/zoom and must
+	// neither continue an edit drag started by the first finger nor start a new one; a single
+	// finger on empty canvas pans the heart (a tap still clears the selection).
+	const touchPointerIds = new Set<number>();
+	let multiTouch = false;
+	let panPointer: { id: number; startX: number; startY: number; startPan: { x: number; y: number }; moved: boolean } | null =
+		null;
+	const PAN_TAP_SLOP = 6;
 
 	type ViewBoxRect = { x: number; y: number; width: number; height: number };
 	function parseViewBoxRect(vb: string): ViewBoxRect {
@@ -2562,7 +2237,8 @@
 	function handleTouchStart(event: TouchEvent) {
 		if (readonly) return;
 		if (!svgEl) return;
-		if (event.touches.length === 2) {
+		if (event.touches.length >= 2) {
+			beginMultiTouch();
 			pinchStartDistance = getTouchDistance(event.touches);
 			pinchStartZoom = userZoom;
 			const rect = svgEl.getBoundingClientRect();
@@ -2571,30 +2247,102 @@
 				x: center.x - rect.left - rect.width / 2,
 				y: center.y - rect.top - rect.height / 2
 			};
+			pinchLastCenter = center;
 		}
 	}
 
 	function handleTouchMove(event: TouchEvent) {
 		if (readonly) return;
+		// (No preventDefault: Svelte registers touch handlers as passive, and the svg's
+		// touch-action: none already keeps the browser from scrolling or zooming the page.)
 		if (event.touches.length === 2 && pinchStartDistance > 0) {
-			event.preventDefault();
 			const currentDistance = getTouchDistance(event.touches);
 			const scale = currentDistance / pinchStartDistance;
 			const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinchStartZoom * scale));
+			// Two fingers also pan: follow the drift of their midpoint.
+			const center = getTouchCenter(event.touches);
+			let next = {
+				x: userPanOffset.x - (center.x - pinchLastCenter.x),
+				y: userPanOffset.y - (center.y - pinchLastCenter.y)
+			};
+			pinchLastCenter = center;
 			if (newZoom !== userZoom) {
 				const zoomDiff = 1 / userZoom - 1 / newZoom;
 				userZoom = newZoom;
-				userPanOffset = clampPanOffset({
-					x: userPanOffset.x + pinchCenter.x * zoomDiff,
-					y: userPanOffset.y + pinchCenter.y * zoomDiff
-				});
+				next = { x: next.x + pinchCenter.x * zoomDiff, y: next.y + pinchCenter.y * zoomDiff };
 			}
+			userPanOffset = clampPanOffset(next);
 		}
 	}
 
 	function handleTouchEnd(event: TouchEvent) {
 		if (readonly) return;
 		if (event.touches.length < 2) pinchStartDistance = 0;
+		// touchend always reaches the element the touch started on, so this is the reliable
+		// place to notice that the whole gesture is over.
+		if (event.touches.length === 0) {
+			touchPointerIds.clear();
+			multiTouch = false;
+		}
+	}
+
+	// Revert whatever an unfinished drag changed (no undo entry) and forget the drag.
+	function cancelActiveDrag() {
+		if (activePointerId == null) return;
+		const pointerId = activePointerId;
+		const snapshot = dragSnapshot;
+		const dirty = dragDirty;
+		activePointerId = null;
+		dragStartPointer = null;
+		dragStartOffset = null;
+		dragSnapshot = null;
+		dragDirty = false;
+		dragTarget = null;
+		try {
+			svgEl?.releasePointerCapture?.(pointerId);
+		} catch {
+			// Ignore pointer release failures.
+		}
+		if (dirty && snapshot) restoreSnapshot(snapshot);
+	}
+
+	function beginMultiTouch() {
+		multiTouch = true;
+		cancelActiveDrag();
+		panPointer = null;
+	}
+
+	// Runs before the curve/anchor/handle handlers (capture phase) so a second finger cannot
+	// select or start dragging anything: from then on the gesture is pan/zoom only.
+	function handleSvgPointerDownCapture(e: PointerEvent) {
+		if (readonly || e.pointerType === 'mouse') return;
+		touchPointerIds.add(e.pointerId);
+		if (touchPointerIds.size >= 2 || multiTouch) {
+			beginMultiTouch();
+			e.stopPropagation();
+		}
+	}
+
+	function beginPan(e: PointerEvent) {
+		panPointer = {
+			id: e.pointerId,
+			startX: e.clientX,
+			startY: e.clientY,
+			startPan: { x: userPanOffset.x, y: userPanOffset.y },
+			moved: false
+		};
+		try {
+			svgEl?.setPointerCapture?.(e.pointerId);
+		} catch {
+			// Ignore pointer capture failures.
+		}
+	}
+
+	function clearSelection() {
+		selectedFingerId = null;
+		selectedAnchors = [];
+		selectedSegments = [];
+		lastCurveHit = null;
 	}
 
 	function localPointFromClient(clientX: number, clientY: number): Vec | null {
@@ -2762,16 +2510,30 @@
 		beginDrag(e, { kind: 'control', fingerId, segmentIndex, handle });
 	}
 
-	function handleSvgPointerDown(_e: PointerEvent) {
+	// Pointer down on empty canvas (curves, anchors and handles stop propagation before this).
+	function handleSvgPointerDown(e: PointerEvent) {
 		if (readonly) return;
-		selectedFingerId = null;
-		selectedAnchors = [];
-		selectedSegments = [];
-		lastCurveHit = null;
+		if (multiTouch) return;
+		if (e.pointerType !== 'mouse') {
+			// One finger on empty canvas pans; whether it was a tap (deselect) is known on release.
+			beginPan(e);
+			return;
+		}
+		clearSelection();
 	}
 
 	function handleSvgPointerMove(e: PointerEvent) {
 		if (readonly) return;
+		if (panPointer && e.pointerId === panPointer.id) {
+			const dx = e.clientX - panPointer.startX;
+			const dy = e.clientY - panPointer.startY;
+			if (!panPointer.moved && dx * dx + dy * dy < PAN_TAP_SLOP * PAN_TAP_SLOP) return;
+			panPointer.moved = true;
+			// Camera-style offset: the content follows the finger.
+			userPanOffset = clampPanOffset({ x: panPointer.startPan.x - dx, y: panPointer.startPan.y - dy });
+			return;
+		}
+		if (multiTouch) return;
 		if (activePointerId == null || e.pointerId !== activePointerId) return;
 		if (!dragTarget) return;
 		const p = localPointFromClient(e.clientX, e.clientY);
@@ -2850,7 +2612,8 @@
 					const segs = finger ? fingerToSegments(finger) : null;
 					const n = segs?.length ?? 0;
 					if (finger && segs && anchorIdx > 0 && anchorIdx < n) {
-						const desired = vecAdd(p, offset);
+						const raw = vecAdd(p, offset);
+						const desired = snapTargetForAnchor(finger.lobe, raw) ?? raw;
 						const ok = updateSegmentControlPoint(dragTarget.fingerId, anchorIdx, 'junction', desired);
 						if (!ok) return;
 						dragDirty = true;
@@ -2886,6 +2649,9 @@
 						if (!segs.length) return current;
 						const d = vecScale(delta, fraction);
 						applyDeltaToAnchorsInSegments(current, segs, anchorsToMove, d);
+						// Snap only the full move of a single endpoint; partial moves come from the
+						// binary search for a valid position and must stay on the pointer's line.
+						if (fraction === 1 && anchorsToMove.length === 1) snapEndpointAnchor(current, segs, anchorIdx);
 						if (symmetryWithinCurve) {
 							applyWithinCurveSymmetryForMovedAnchors(current, segs, anchorsToMove, anchorIdx);
 						}
@@ -2911,6 +2677,21 @@
 
 	function handleSvgPointerUp(e: PointerEvent) {
 		if (readonly) return;
+		if (e.pointerType !== 'mouse') {
+			touchPointerIds.delete(e.pointerId);
+			if (touchPointerIds.size === 0) multiTouch = false;
+		}
+		if (panPointer && e.pointerId === panPointer.id) {
+			const wasTap = !panPointer.moved;
+			panPointer = null;
+			try {
+				svgEl?.releasePointerCapture?.(e.pointerId);
+			} catch {
+				// Ignore pointer release failures.
+			}
+			if (wasTap && e.type === 'pointerup') clearSelection();
+			return;
+		}
 		if (activePointerId == null || e.pointerId !== activePointerId) return;
 
 		// snap dragged handle to anchor if close
@@ -3107,6 +2888,12 @@
 		const unsub = subscribeColors((c) => (heartColors = c));
 		if (!readonly && typeof window !== 'undefined') {
 			window.addEventListener('keydown', handleKeyDown);
+			try {
+				firstVisitHintDismissed = localStorage.getItem(FIRST_VISIT_HINT_KEY) === '1';
+			} catch {
+				// Storage unavailable: show the tip on every visit.
+				firstVisitHintDismissed = false;
+			}
 		}
 		return () => {
 			if (!readonly && typeof window !== 'undefined') {
@@ -3183,6 +2970,24 @@
 	let canMakeSegmentsCurved = $derived(selectedSegs.length > 0);
 	let canAddSegment = $derived(Boolean(selectedFingerId) && selectedSegCount > 0 && selectedSegCount < MAX_BEZIER_SEGMENTS_PER_FINGER);
 	let canRemoveSegment = $derived(Boolean(selectedFingerId) && selectedSegCount > 1);
+	// Strips beyond PRECISION_GRID_SIZE are allowed (up to MAX_GRID_SIZE) but hard to cut accurately.
+	let hasManyStrips = $derived(gridSize.x > PRECISION_GRID_SIZE || gridSize.y > PRECISION_GRID_SIZE);
+	// Explain the red curves (GitHub issue #7): shown only while a conflict exists.
+	let hasIntersectionIssues = $derived(issueFingerIds.size > 0);
+
+	// First-visit tip on how to add strips and nodes (GitHub issue #7). Dismissal is remembered
+	// per browser; default to dismissed so the server render and hydration agree.
+	const FIRST_VISIT_HINT_KEY = 'paperheart.hintDismissed';
+	let firstVisitHintDismissed = $state(true);
+
+	function dismissFirstVisitHint() {
+		firstVisitHintDismissed = true;
+		try {
+			localStorage.setItem(FIRST_VISIT_HINT_KEY, '1');
+		} catch {
+			// Ignore failed storage writes; the tip simply shows again next time.
+		}
+	}
 	let nodeTypeSelected = $derived.by(() => {
 		if (!selectedFinger || !validAnchors.length) return null;
 		const t0 = getAnchorNodeType(selectedFinger, validAnchors[0]!);
@@ -3249,19 +3054,24 @@
 	// Narrow screens (<= 600px) stack the toolbar above and the panels below the canvas.
 	// Measure them so the heart is laid out in the free band between them instead of underneath.
 	let mobileClearance = $state<{ top: number; bottom: number } | null>(null);
+	// Below 900px the toolbar sits on top of the canvas, so canvas notices go directly under it.
+	let mobileNoticeTop = $state<number | null>(null);
 
 	function updateMobileClearance() {
-		if (
-			!fullPage ||
-			readonly ||
-			!canvasAreaEl ||
-			typeof window === 'undefined' ||
-			!window.matchMedia('(max-width: 600px)').matches
-		) {
+		if (!fullPage || readonly || !canvasAreaEl || typeof window === 'undefined') {
 			mobileClearance = null;
+			mobileNoticeTop = null;
 			return;
 		}
 		const gap = 8;
+		mobileNoticeTop =
+			segmentControlsEl && window.matchMedia('(max-width: 900px)').matches
+				? Math.round(segmentControlsEl.offsetTop + segmentControlsEl.offsetHeight + gap)
+				: null;
+		if (!window.matchMedia('(max-width: 600px)').matches) {
+			mobileClearance = null;
+			return;
+		}
 		const top = segmentControlsEl ? segmentControlsEl.offsetTop + segmentControlsEl.offsetHeight + gap : 0;
 		const bottom = rightPanelEl ? canvasAreaEl.clientHeight - rightPanelEl.offsetTop + gap : 0;
 		const next = { top: Math.max(0, Math.round(top)), bottom: Math.max(0, Math.round(bottom)) };
@@ -3299,6 +3109,7 @@
 			class:fullPage={fullPage}
 			style:--mobile-top-clearance={mobileClearance ? `${mobileClearance.top}px` : undefined}
 			style:--mobile-bottom-clearance={mobileClearance ? `${mobileClearance.bottom}px` : undefined}
+			style:--mobile-notice-top={mobileNoticeTop != null ? `${mobileNoticeTop}px` : undefined}
 		>
 			<div class="canvas-area" bind:this={canvasAreaEl} style:min-height={fullPage ? undefined : mobileCanvasMinHeight ?? undefined}>
 				<div class="canvas-wrapper" style:width={fullPage ? '100%' : `${size}px`} style:height={fullPage ? '100%' : `${size}px`}>
@@ -3314,6 +3125,8 @@
 					ontouchstart={handleTouchStart}
 					ontouchmove={handleTouchMove}
 					ontouchend={handleTouchEnd}
+					ontouchcancel={handleTouchEnd}
+					onpointerdowncapture={handleSvgPointerDownCapture}
 					onpointerdown={handleSvgPointerDown}
 					onpointerleave={() => (hoverFingerId = null)}
 					onpointermove={handleSvgPointerMove}
@@ -3584,6 +3397,25 @@
 				</svg>
 			</div>
 
+			{#if !readonly}
+				<div class="canvas-notices">
+					{#if hasIntersectionIssues}
+						<div class="canvas-notice warning" role="alert">{tr('editorIntersectionWarning')}</div>
+					{/if}
+					{#if hasManyStrips}
+						<div class="canvas-notice info" role="status">{tr('editorManyStripsHint')}</div>
+					{/if}
+					{#if !firstVisitHintDismissed}
+						<div class="canvas-notice hint" role="note">
+							<span>{tr('editorFirstVisitHint')}</span>
+							<button type="button" class="notice-dismiss" onclick={dismissFirstVisitHint} aria-label={tr('editorDismissHint')}>
+								<XIcon size={16} aria-hidden="true" />
+							</button>
+						</div>
+					{/if}
+				</div>
+			{/if}
+
 				{#if !readonly}
 					<div
 						bind:this={rightPanelEl}
@@ -3592,6 +3424,10 @@
 						onpointerdown={(e) => beginToolbarDrag(e, 'right')}
 					>
 						<div class="controls">
+							<label class="checkbox">
+								<input type="checkbox" bind:checked={snapToOpposite} aria-label={tr('editorSnapToOppositeTitle')} />
+								{tr('editorSnapToOpposite')}
+							</label>
 							<label class="checkbox">
 								<input type="checkbox" bind:checked={showCurves} aria-label={tr('editorShowCurveOutlines')} />
 								{tr('editorOutlines')}
@@ -3891,6 +3727,67 @@
 			height: 100%;
 		}
 
+		/* Short notices above the heart (strip-count hint, intersection warning, first-visit tip). */
+		.canvas-notices {
+			position: absolute;
+			top: 16px;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 25;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.5rem;
+			width: max-content;
+			max-width: min(560px, calc(100% - 220px));
+			pointer-events: none;
+			user-select: none;
+		}
+
+		.canvas-notice {
+			display: flex;
+			align-items: flex-start;
+			gap: 0.5rem;
+			padding: 0.5rem 0.75rem;
+			border-radius: 0.6rem;
+			font-size: 0.85rem;
+			line-height: 1.4;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+			pointer-events: auto;
+		}
+
+		.canvas-notice.info,
+		.canvas-notice.hint {
+			background: rgba(255, 255, 255, 0.95);
+			border: 1px solid #ddd;
+			color: #444;
+		}
+
+		.canvas-notice.warning {
+			background: #fdecec;
+			border: 1px solid #f3b4b4;
+			color: #8a1c1c;
+		}
+
+		.notice-dismiss {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex: 0 0 auto;
+			width: 24px;
+			height: 24px;
+			margin: -3px -6px -3px 0;
+			border: none;
+			border-radius: 4px;
+			background: transparent;
+			color: inherit;
+			cursor: pointer;
+		}
+
+		.notice-dismiss:hover {
+			background: rgba(0, 0, 0, 0.06);
+		}
+
 		.right-panel {
 			position: absolute;
 			right: 24px;
@@ -4033,6 +3930,11 @@
 				height: 100%;
 			}
 
+			.canvas-notices {
+				top: var(--mobile-notice-top, 16px);
+				max-width: calc(100% - 32px);
+			}
+
 			.segment-controls {
 				position: static;
 				transform: none;
@@ -4086,6 +3988,7 @@
 
 			.controls {
 				flex-direction: row;
+				flex-wrap: wrap;
 				align-items: center;
 			}
 

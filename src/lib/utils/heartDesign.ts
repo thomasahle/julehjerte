@@ -1,5 +1,5 @@
 import type { Finger, GridSize, HeartDesign, HeartDesignJson, LobeId, NodeType, Vec } from '$lib/types/heart';
-import { STRIP_WIDTH, BASE_CENTER } from '$lib/constants';
+import { STRIP_WIDTH, BASE_CENTER, MIN_GRID_SIZE, MAX_GRID_SIZE } from '$lib/constants';
 import { clamp, clampInt } from '$lib/utils/math';
 import {
   type BezierSegment,
@@ -72,13 +72,13 @@ function transformSegmentsToJson(segments: BezierSegment[], gridSize: GridSize):
 
 function normalizeGridSize(raw: unknown): GridSize {
   if (typeof raw === 'number' && Number.isFinite(raw)) {
-    const n = clampInt(raw, 2, 8);
+    const n = clampInt(raw, MIN_GRID_SIZE, MAX_GRID_SIZE);
     return { x: n, y: n };
   }
   if (raw && typeof raw === 'object') {
     const { x, y } = raw as { x?: unknown; y?: unknown };
     if (typeof x === 'number' && typeof y === 'number' && Number.isFinite(x) && Number.isFinite(y)) {
-      return { x: clampInt(x, 2, 8), y: clampInt(y, 2, 8) };
+      return { x: clampInt(x, MIN_GRID_SIZE, MAX_GRID_SIZE), y: clampInt(y, MIN_GRID_SIZE, MAX_GRID_SIZE) };
     }
   }
   return { x: 3, y: 3 };
@@ -315,8 +315,8 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   fingers = ensureOuterBoundaries(fingers, rect);
 
   const inferredGrid: GridSize = {
-    x: clampInt(fingers.filter((f) => f.lobe === 'right').length - 1, 2, 8),
-    y: clampInt(fingers.filter((f) => f.lobe === 'left').length - 1, 2, 8)
+    x: clampInt(fingers.filter((f) => f.lobe === 'right').length - 1, MIN_GRID_SIZE, MAX_GRID_SIZE),
+    y: clampInt(fingers.filter((f) => f.lobe === 'left').length - 1, MIN_GRID_SIZE, MAX_GRID_SIZE)
   };
 
   return {
@@ -1335,8 +1335,8 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
 
   // Infer grid size from path counts (interior cuts = strips - 1)
   const gridSize: GridSize = {
-    x: clampInt(rightPathData.length + 1, 2, 8),
-    y: clampInt(leftPathData.length + 1, 2, 8)
+    x: clampInt(rightPathData.length + 1, MIN_GRID_SIZE, MAX_GRID_SIZE),
+    y: clampInt(leftPathData.length + 1, MIN_GRID_SIZE, MAX_GRID_SIZE)
   };
 
   // Convert paths to fingers
@@ -1373,8 +1373,8 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
 
   // Recalculate grid size from final finger count
   const inferredGrid: GridSize = {
-    x: clampInt(finalFingers.filter((f) => f.lobe === 'right').length - 1, 2, 8),
-    y: clampInt(finalFingers.filter((f) => f.lobe === 'left').length - 1, 2, 8)
+    x: clampInt(finalFingers.filter((f) => f.lobe === 'right').length - 1, MIN_GRID_SIZE, MAX_GRID_SIZE),
+    y: clampInt(finalFingers.filter((f) => f.lobe === 'left').length - 1, MIN_GRID_SIZE, MAX_GRID_SIZE)
   };
 
   return {
