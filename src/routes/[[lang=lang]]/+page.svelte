@@ -44,6 +44,7 @@
     pickRandomHeartIds,
   } from "$lib/utils/randomHearts";
   import { FIR_FILLS } from "$lib/landscape";
+  import { WIDE_FRAME_QUERY } from "$lib/breakpoints";
   import type { HeartDesign } from "$lib/types/heart";
   import {
     trackHeartView,
@@ -165,7 +166,7 @@
   $effect(() => {
     if (!browser || !galleryWrapEl) return;
     const el = galleryWrapEl;
-    const wideEnough = window.matchMedia("(min-width: 1400px)");
+    const wideEnough = window.matchMedia(WIDE_FRAME_QUERY);
     const measure = () => {
       frameHeight = wideEnough.matches ? Math.round(el.getBoundingClientRect().height) : 0;
     };
@@ -715,7 +716,7 @@
   .split {
     display: inline-flex;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgb(31 51 41 / 0.12);
+    box-shadow: 0 2px 8px rgb(var(--deep-rgb) / 0.12);
   }
 
   .split-main,
@@ -818,7 +819,7 @@
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background: rgb(28 51 41 / 0.45);
+    background: var(--scrim);
   }
 
   .modal {
@@ -826,7 +827,7 @@
     padding: 22px;
     border-radius: 14px;
     background: var(--white);
-    box-shadow: 0 10px 30px rgb(28 51 41 / 0.25);
+    box-shadow: var(--shadow-modal);
   }
 
   .modal h2 {

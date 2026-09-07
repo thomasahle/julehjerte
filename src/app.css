@@ -40,10 +40,49 @@
   --nav-height: 62px;
   --nav-height-sm: 58px;
 
+  /* --deep as bare channels, so shadows and scrims can pick their own alpha
+     without re-typing the triplet. Every tinted overlay in the site derives
+     from this; never write `rgb(28 51 41 / …)` out by hand. */
+  --deep-rgb: 28 51 41;
+
   /* Drop shadow under hanging hearts and previews. */
-  --shadow-color: rgb(28 51 41 / 0.16);
-  --shadow-color-hover: rgb(28 51 41 / 0.26);
+  --shadow-color: rgb(var(--deep-rgb) / 0.16);
+  --shadow-color-hover: rgb(var(--deep-rgb) / 0.26);
+
+  /* The four shadows the chrome actually uses, from flattest to deepest. */
+  --shadow-chip: 0 2px 6px rgb(var(--deep-rgb) / 0.25);   /* badges on a heart */
+  --shadow-nav: 0 10px 20px rgb(var(--deep-rgb) / 0.08);  /* open mobile nav */
+  --shadow-panel: 0 10px 30px rgb(var(--deep-rgb) / 0.12);/* floating editor panels */
+  --shadow-modal: 0 10px 30px rgb(var(--deep-rgb) / 0.25);/* dialogs */
+
+  /* Dimmer behind a modal dialog. */
+  --scrim: rgb(var(--deep-rgb) / 0.45);
+  /* Hover wash for transparent icon buttons sitting on a light surface. */
+  --hover-wash: rgb(var(--deep-rgb) / 0.06);
+
+  /* Inline warning / error notices — the editor's canvas hint and the route's
+     status message use the same three. Not in the spec palette; they are the
+     one place the chrome needs a red that reads as an alert, not a button. */
+  --alert-bg: #fdecec;
+  --alert-border: #f3b4b4;
+  --alert-ink: #8a1c1c;
 }
+
+/* ---------------------------------------------------------------------------
+   Breakpoints — docs/redesign/DESIGN.md §2. Six, and only these six:
+
+       1400  gallery frame decoration appears (written `min-width: 1400px`)
+       1200  wide desktop → desktop      (written `max-width: 1199px`)
+       1100  desktop → narrow desktop    (written `max-width: 1099px`)
+        900  desktop → tablet / stacked  (written `max-width: 899px`)
+        700  tablet → large phone        (written `max-width: 699px`)
+        600  phone                       (written `max-width: 599px`)
+
+   Max-width queries are written one pixel below the breakpoint so the pair
+   `max-width: 899px` / `min-width: 900px` meets exactly once. JavaScript that
+   has to switch on the same pixel imports the query string from
+   $lib/breakpoints.ts rather than re-typing it.
+--------------------------------------------------------------------------- */
 
 /* The shadcn-svelte components (button, tooltip, dropdown-menu, …) read these
    Tailwind theme tokens. They are repointed at the redesign palette so those

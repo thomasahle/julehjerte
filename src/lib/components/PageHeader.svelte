@@ -292,7 +292,7 @@
 		padding: 10px 16px 16px;
 		background: var(--page);
 		border-bottom: 1px solid var(--line);
-		box-shadow: 0 10px 20px rgb(28 51 41 / 0.08);
+		box-shadow: var(--shadow-nav);
 	}
 
 	.menu-link {

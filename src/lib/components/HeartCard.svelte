@@ -283,7 +283,7 @@
 		font-weight: 700;
 		line-height: 28px;
 		text-align: center;
-		box-shadow: 0 2px 6px rgb(31 51 41 / 0.25);
+		box-shadow: var(--shadow-chip);
 		pointer-events: none;
 	}
 
@@ -296,7 +296,7 @@
 		align-items: center;
 		padding: 7px 13px;
 		border-radius: 8px;
-		background: rgb(28 51 41 / 0.84);
+		background: rgb(var(--deep-rgb) / 0.84);
 		color: var(--white);
 		font-size: 13px;
 		font-weight: 600;
@@ -309,7 +309,7 @@
 	}
 
 	.details:hover {
-		background: rgb(28 51 41 / 0.96);
+		background: rgb(var(--deep-rgb) / 0.96);
 		color: var(--white);
 	}
 

@@ -23,6 +23,7 @@
 		SegmentLineIcon
 	} from '$lib/components/editor/icons';
 
+	import { NARROW_QUERY } from '$lib/breakpoints';
 	import type { Finger, GridSize, Vec, LobeId, NodeType } from '$lib/types/heart';
 	import { clamp, clampInt } from '$lib/utils/math';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
@@ -2809,7 +2810,7 @@
 				if (!fullPage) return;
 
 			try {
-				isMobileLayout = window.matchMedia('(max-width: 900px)').matches;
+				isMobileLayout = window.matchMedia(NARROW_QUERY).matches;
 			} catch {
 				// matchMedia unavailable: assume the desktop layout.
 			}
@@ -2929,7 +2930,7 @@
 	function updateMobileCanvasMinHeight() {
 		if (!canvasAreaEl) return;
 		if (typeof window === 'undefined') return;
-		isMobileLayout = window.matchMedia('(max-width: 900px)').matches;
+		isMobileLayout = window.matchMedia(NARROW_QUERY).matches;
 		if (!isMobileLayout) {
 			mobileCanvasMinHeight = null;
 			return;
@@ -2960,12 +2961,12 @@
 		}
 		const gap = 8;
 		mobileNoticeTop =
-			segmentControlsEl && window.matchMedia('(max-width: 900px)').matches
+			segmentControlsEl && window.matchMedia(NARROW_QUERY).matches
 				? Math.round(segmentControlsEl.offsetTop + segmentControlsEl.offsetHeight + gap)
 				: null;
 		// The stacked layout starts at 900px, not 600px: the panels are opaque cards
 		// painted over the canvas, so the heart needs the free band from here down.
-		if (!window.matchMedia('(max-width: 900px)').matches) {
+		if (!window.matchMedia(NARROW_QUERY).matches) {
 			mobileClearance = null;
 			return;
 		}
@@ -3724,7 +3725,7 @@
 			border-radius: 10px;
 			font-size: 13px;
 			line-height: 1.4;
-			box-shadow: 0 10px 30px rgb(28 51 41 / 0.12);
+			box-shadow: var(--shadow-panel);
 			pointer-events: auto;
 		}
 
@@ -3736,9 +3737,9 @@
 		}
 
 		.canvas-notice.warning {
-			background: #fdecec;
-			border: 1px solid #f3b4b4;
-			color: #8a1c1c;
+			background: var(--alert-bg);
+			border: 1px solid var(--alert-border);
+			color: var(--alert-ink);
 		}
 
 		.notice-dismiss {
@@ -3757,7 +3758,7 @@
 		}
 
 		.notice-dismiss:hover {
-			background: rgb(28 51 41 / 0.06);
+			background: var(--hover-wash);
 		}
 
 		.right-panel {
@@ -3810,7 +3811,7 @@
 			padding: 6px;
 			border: 1px solid var(--line);
 			border-radius: 12px;
-			box-shadow: 0 10px 30px rgb(28 51 41 / 0.12);
+			box-shadow: var(--shadow-panel);
 			position: absolute;
 			left: 32px;
 			top: 50%;
@@ -4041,7 +4042,7 @@
 		   the editor keeps its existing stacked layout, so this is the only place
 		   the three-column grid is switched on.
 		   ------------------------------------------------------------------ */
-		@media (min-width: 901px) {
+		@media (min-width: 900px) {
 			.paper-heart.fullPage .canvas-area {
 				display: grid;
 				grid-template-columns: 64px minmax(0, 1fr) 340px;
@@ -4118,7 +4119,7 @@
 			}
 		}
 
-		@media (max-width: 900px) {
+		@media (max-width: 899px) {
 			.canvas-area {
 				--mobile-controls-clearance: 220px;
 				flex-direction: column;
@@ -4205,7 +4206,7 @@
 				min-width: 0;
 				padding: 12px;
 				gap: 8px;
-				box-shadow: 0 10px 30px rgb(28 51 41 / 0.12);
+				box-shadow: var(--shadow-panel);
 			}
 
 			/* Collapsing belongs to the desktop layout only. */
@@ -4258,7 +4259,7 @@
 		}
 
 		/* Narrow phones: wrap the toolbar, stack the bottom panels, and keep everything inside the viewport. */
-		@media (max-width: 600px) {
+		@media (max-width: 599px) {
 			.segment-controls {
 				flex-wrap: wrap;
 				justify-content: center;

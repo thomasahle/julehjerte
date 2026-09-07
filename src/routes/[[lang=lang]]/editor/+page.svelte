@@ -25,6 +25,7 @@
     SaveIcon,
     UploadIcon
   } from '$lib/components/icons';
+  import { NARROW_QUERY } from '$lib/breakpoints';
   import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
   // Help modal state. The dialog declares aria-modal, so it also has to behave
@@ -186,8 +187,8 @@
 
   // Below 900px the editor keeps its old stacked layout: the heart panels go under the
   // canvas instead of into PaperHeart's right-hand column (docs/redesign/DESIGN.md §7).
-  // Same breakpoint PaperHeart uses; set in onMount so SSR and hydration agree.
-  const NARROW_QUERY = '(max-width: 900px)';
+  // NARROW_QUERY is the same string PaperHeart and the stylesheets switch on; set in
+  // onMount so SSR and hydration agree.
   let isNarrow = $state(false);
 
   // The page's own heading. The top bar is a back link, the wordmark and three
@@ -761,7 +762,7 @@
   }
 
   /* Desktop: the tool fills the viewport, so the page itself never scrolls. */
-  @media (min-width: 901px) {
+  @media (min-width: 900px) {
     .editor {
       padding-bottom: 0;
     }
@@ -893,9 +894,9 @@
   }
 
   .status-message.error {
-    background: #fdecec;
-    border: 1px solid #f3b4b4;
-    color: #8a1c1c;
+    background: var(--alert-bg);
+    border: 1px solid var(--alert-border);
+    color: var(--alert-ink);
   }
 
   .status-message.info {
@@ -924,7 +925,7 @@
   }
 
   .status-dismiss:hover {
-    background: rgb(28 51 41 / 0.06);
+    background: var(--hover-wash);
   }
 
   /* Below 900px the panels sit under the canvas, as they always have. */
@@ -946,7 +947,7 @@
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgb(28 51 41 / 0.45);
+    background: var(--scrim);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -962,7 +963,7 @@
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 20px 50px rgb(28 51 41 / 0.25);
+    box-shadow: 0 20px 50px rgb(var(--deep-rgb) / 0.25);
   }
 
   .help-modal {
