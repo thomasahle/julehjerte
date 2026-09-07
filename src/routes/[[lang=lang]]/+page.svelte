@@ -33,7 +33,7 @@
   } from "$lib/components/front/heroSlots";
   import { DownloadIcon, GearIcon, PencilIcon, ArrowRightIcon } from "$lib/components/icons";
   import { deleteUserDesign, getUserCollection } from "$lib/stores/collection";
-  import { downloadMultiPDF, type LayoutMode } from "$lib/pdf/template";
+  import type { LayoutMode } from "$lib/pdf/template";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { t, type Language } from "$lib/i18n";
   import { href as routeHref } from "$lib/i18n/routes";
@@ -262,7 +262,8 @@
     if (!browser || !pendingAnchorId) return;
     const target = document.getElementById(pendingAnchorId);
     if (!target) return;
-    target.scrollIntoView({ block: "center", behavior: "smooth" });
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
     pendingAnchorId = null;
   });
 
@@ -275,6 +276,9 @@
           selected.map((h) => h.id),
           selected.length,
         );
+        // jsPDF is 140 KB gzipped and nothing needs it until this click, so it is
+        // loaded here instead of in the front page's initial bundle.
+        const { downloadMultiPDF } = await import("$lib/pdf/template");
         await downloadMultiPDF(selected, { layout: pdfLayout, lang });
       } finally {
         generating = false;
@@ -287,6 +291,9 @@
   }
 
   let selectedCount = $derived(selectedIds.size);
+  // aria-disabled rather than `disabled`: a disabled button is not focusable, so
+  // the tooltip explaining why ("Vælg hjerter først") was mouse-only.
+  let printDisabled = $derived(selectedCount === 0 || generating);
   let allSelected = $derived(allHearts.length > 0 && allHearts.every((h) => selectedIds.has(h.id)));
 </script>
 
@@ -296,6 +303,7 @@
 
 <PageHeader {lang} active="templates" />
 
+<main id="main-content" tabindex="-1">
 <section class="hero">
   <!-- The landscape is inlined once per page; every <Fir>/<Star> below is a
        <use> of an id in its <defs>. -->
@@ -407,8 +415,9 @@
                 {...props}
                 type="button"
                 class="split-main"
-                onclick={handlePrintSelected}
-                disabled={selectedCount === 0 || generating}
+                onclick={() => { if (!printDisabled) handlePrintSelected(); }}
+                aria-disabled={printDisabled}
+                aria-describedby={printDisabled ? "print-selected-hint" : undefined}
               >
                 <DownloadIcon size={18} />
                 {generating ? t("generating", lang) : t("printSelected", lang)}
@@ -422,6 +431,9 @@
             <p>{t("selectHeartsFirst", lang)}</p>
           </Tooltip.Content>
         </Tooltip.Root>
+        {#if printDisabled}
+          <span id="print-selected-hint" class="sr-only">{t("selectHeartsFirst", lang)}</span>
+        {/if}
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             {#snippet child({ props })}
@@ -514,6 +526,7 @@
     </section>
   </div>
 </div>
+</main>
 
 {#if deleteCandidate}
   <div
@@ -619,6 +632,9 @@
   .hero-text h2 {
     margin: 0;
     font-size: 24px;
+    /* The mockup leaves the h2 at the default line-height; the inherited 1.5
+       pushed the paragraph — and the whole page below it — down by 7px. */
+    line-height: normal;
     font-weight: 500;
     color: var(--green);
   }
@@ -628,7 +644,8 @@
     max-width: 480px;
     font-size: 17px;
     line-height: 1.55;
-    color: var(--muted);
+    /* --muted is 4.02:1 on the hero's --sky, under the AA minimum for body text. */
+    color: var(--muted-on-sky);
   }
 
   .hero-btns {
@@ -732,13 +749,14 @@
     border-left: 1px solid rgb(255 255 255 / 0.35);
   }
 
-  .split-main:hover:not(:disabled),
+  .split-main:hover:not([aria-disabled="true"]),
   .split-gear:hover:not(:disabled) {
     background: var(--red-hover);
   }
 
-  .split-main:disabled {
-    opacity: 0.5;
+  /* Dimmed, but the red still has to read as the toolbar's anchor. */
+  .split-main[aria-disabled="true"] {
+    opacity: 0.75;
     cursor: not-allowed;
   }
 

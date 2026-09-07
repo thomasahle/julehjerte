@@ -108,6 +108,24 @@
 		return () => observer.disconnect();
 	});
 
+	// The sway is an infinite animation on a rotated, drop-shadowed layer, so every
+	// card keeps a filtered render surface alive for the life of the tab — and 38 of
+	// the front page's 43 hanging hearts are below the fold. Pause the ones nobody
+	// is looking at. `offscreen` starts false so the first paint is never paused.
+	let offscreen = $state(false);
+
+	onMount(() => {
+		if (!browser || !cardEl || typeof IntersectionObserver === 'undefined') return;
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) offscreen = !entry.isIntersecting;
+			},
+			{ rootMargin: '200px 0px' }
+		);
+		observer.observe(cardEl);
+		return () => observer.disconnect();
+	});
+
 	// Drop the animation once it has played: an animation with fill-mode would
 	// otherwise keep overriding the card's hover transform.
 	function handleAnimationEnd(event: AnimationEvent) {
@@ -133,6 +151,7 @@
 	class:is-selected={selected}
 	class:pending={phase === 'pending'}
 	class:revealed={phase === 'revealed'}
+	class:offscreen
 	id={makeHeartAnchorId(design.id)}
 	style="height: {SIZE + 136}px; --stagger: {stagger * 55}ms;"
 	onanimationend={handleAnimationEnd}
@@ -189,6 +208,10 @@
 
 	.card:hover {
 		transform: scale(1.02);
+	}
+
+	.card.offscreen :global(.hang) {
+		animation-play-state: paused;
 	}
 
 	/* Waiting to scroll into view — only ever set from the browser. */

@@ -38,7 +38,7 @@
 
 <PageHeader {lang} active="howto" />
 
-<div class="how-to">
+<main class="how-to" id="main-content" tabindex="-1">
 	<header class="intro">
 		<h1>{t('howToTitle', lang)}</h1>
 		<p>{t('howToIntro', lang)}</p>
@@ -48,7 +48,7 @@
 		{#each steps as step, i (i)}
 			<li class="card">
 				<div class="art">
-					<GuideStep step={i + 1} />
+					<GuideStep step={i + 1} {lang} />
 				</div>
 				<div class="caption">
 					<span class="number" aria-hidden="true">{i + 1}</span>
@@ -80,7 +80,7 @@
 			{t('createNewHeart', lang)}
 		</a>
 	</div>
-</div>
+</main>
 
 <style>
 	.how-to {
@@ -211,18 +211,6 @@
 		flex-wrap: wrap;
 		gap: 12px;
 		padding-top: 4px;
-	}
-
-	.sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
 	}
 
 	@media (max-width: 899px) {

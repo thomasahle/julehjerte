@@ -29,6 +29,10 @@
   --red-hover: #a91824;
   --green-hover: #24402f;
 
+  /* --muted is 5.14:1 on --page but only 4.02:1 on --sky, so the hero and the
+     detail scene use this darker shade for secondary text. AA needs 4.5:1. */
+  --muted-on-sky: #4d594f;
+
   --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* Chrome metrics shared by the nav and by pages that offset for it. Keep
@@ -111,6 +115,9 @@
   :focus-visible {
     outline: 3px solid var(--blue);
     outline-offset: 2px;
+    /* --blue is only 2.60:1 on --sky. The 2px --page ring fills the offset gap so
+       one of the indicator's two edges always clears 3:1 (SC 1.4.11). */
+    box-shadow: 0 0 0 2px var(--page);
   }
 }
 

@@ -14,18 +14,21 @@
   than the SVG namespace.
 
   The drawings are decorative — the numbered step text beside them carries the
-  meaning — so the <svg> is aria-hidden. The generator's small annotation labels
-  ("stiplet linje på folden", "fra folden", "over/under") are deliberately left
-  out: they are user-facing text and have no translation keys.
+  meaning — so the <svg> is aria-hidden, exactly as in the generator. The small
+  annotation labels it draws ("stiplet linje på folden", "fra folden",
+  "over/under") are part of the drawing and come from the translations.
 -->
 <script lang="ts">
+	import { t, type Language } from '$lib/i18n';
+
 	interface Props {
 		/** Which of the five steps to draw, 1-5. */
 		step: number;
+		lang: Language;
 		class?: string;
 	}
 
-	let { step, class: className = undefined }: Props = $props();
+	let { step, lang, class: className = undefined }: Props = $props();
 
 	/**
 	 * A printed template: the silhouette as the PDF prints it (rounded top,
@@ -105,6 +108,7 @@
 			x2={ON_FOLD.fold.x2}
 			y2={ON_FOLD.fold.y}
 		/>
+		<text class="label" x="160" y="170">{t('guideLabelFoldLine', lang)}</text>
 	{:else if step === 3}
 		<!-- Cut the outline, through both layers. -->
 		<rect class="paper" x="70" y="92" width="100" height="70" rx="2" />
@@ -144,6 +148,7 @@
 		</g>
 		<path class="arrow" d="M192 150 V 84" />
 		<path class="arrow" d="m186 92 6-8 6 8" />
+		<text class="label" x="192" y="72">{t('guideLabelFromFold', lang)}</text>
 	{:else}
 		<!-- Weave: alternately over and under, with one white strip still to go. -->
 		<path class="lobe-white" d="M {X0} {Y0} A {WEAVE / 2} {WEAVE / 2} 0 0 0 {X0} {Y0 + WEAVE} Z" />
@@ -168,6 +173,10 @@
 		/>
 		<path class="arrow" d="M{X0 + WEAVE + 46} {Y0 + 2.5 * CELL} h -14" />
 		<path class="arrow" d="m{X0 + WEAVE + 40} {Y0 + 2.5 * CELL - 5} -6 5 6 5" />
+		<!-- The instruction the drawing exists to teach: over, under, over. -->
+		<text class="label small" x={X0 + 0.5 * CELL} y={Y0 + 2 * CELL + 8}>{t('guideLabelOver', lang)}</text>
+		<text class="label small" x={X0 + 1.5 * CELL} y={Y0 + 2 * CELL + 8}>{t('guideLabelUnder', lang)}</text>
+		<text class="label small" x={X0 + 2.5 * CELL} y={Y0 + 2 * CELL + 8}>{t('guideLabelOver', lang)}</text>
 	{/if}
 </svg>
 
@@ -284,5 +293,17 @@
 	.weave-seam {
 		stroke: var(--line);
 		stroke-width: 1;
+	}
+
+	/* The generator's annotation labels: 10.5px muted, 9px on the weave. */
+	.label {
+		fill: var(--muted);
+		font-family: inherit;
+		font-size: 10.5px;
+		text-anchor: middle;
+	}
+
+	.label.small {
+		font-size: 9px;
 	}
 </style>

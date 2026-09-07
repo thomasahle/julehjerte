@@ -1,9 +1,5 @@
 export const translations = {
   da: {
-    // Site
-    siteTitle: 'Juleflet.dk',
-    siteDescription: 'Velkommen til min hjemmeside med skabeloner til julefletning! Design dine egne mønstre, print dem ud, og god fornøjelse med julefletningen!',
-
     // Categories
     categoryKlassiske: 'Klassiske',
     categoryStjerner: 'Stjerner',
@@ -17,8 +13,6 @@ export const translations = {
     printSelected: 'Hent skabeloner',
     generating: 'Genererer...',
     loadingHearts: 'Indlæser hjerter...',
-    noHeartsYet: 'Ingen hjertedesigns endnu!',
-    clickCreateNew: 'Klik "Lav nyt hjerte" for at designe dit første hjerte.',
     pdfLayout: 'PDF-layout',
     layoutSmall: 'Små (16 per side)',
     layoutMedium: 'Mellem (9 per side)',
@@ -33,7 +27,6 @@ export const translations = {
     selectHeartsFirst: 'Vælg hjerter først',
 
     // Heart detail
-    backToGallery: 'Tilbage',
     loadingTemplate: 'Indlæser skabelon...',
     heartNotFound: 'Hjertedesign ikke fundet',
     failedToLoad: 'Kunne ikke indlæse hjertedesign',
@@ -83,7 +76,6 @@ export const translations = {
     actions: 'Handlinger',
     saveChanges: 'Gem ændringer',
     showInGallery: 'Vis i galleri',
-    export: 'Eksporter',
     download: 'Download',
     import: 'Importer',
     downloadTemplate: 'Download skabelon',
@@ -142,7 +134,6 @@ export const translations = {
     leftColor: 'Venstre farve',
     rightColor: 'Højre farve',
     suggestHeart: 'Foreslå et hjerte',
-    didntFindHeart: 'Har du et yndlingsjulehjerte vi mangler i galleriet?',
     madeBy: '©',
 
     // Error page
@@ -167,7 +158,6 @@ export const translations = {
     dismissMessage: 'Luk besked',
     editorOutlines: 'Konturer',
     editorShowCurveOutlines: 'Vis kurvernes konturer',
-    editorFlipColors: 'Byt farver',
     editorFlipLobeColors: 'Byt lappernes farver',
     editorWithinCurve: 'Inden i kurve',
     editorWithinLobe: 'Inden i lap',
@@ -221,6 +211,13 @@ export const translations = {
     navAbout: 'Om',
     navOpenMenu: 'Åbn menu',
     navCloseMenu: 'Luk menu',
+    skipToContent: 'Spring til indhold',
+
+    // Labels drawn inside the "Sådan gør du" illustrations (guideSvg() in the mockup generator)
+    guideLabelFoldLine: 'stiplet linje på folden',
+    guideLabelFromFold: 'fra folden',
+    guideLabelOver: 'over',
+    guideLabelUnder: 'under',
     switchLanguage: 'Switch to English',
     back: 'Tilbage',
     backToTemplates: 'Tilbage til skabeloner',
@@ -288,7 +285,6 @@ export const translations = {
     aboutMetaDescription: 'Om Juleflet.dk: gratis skabeloner til flettede julehjerter, en editor til dine egne mønstre, og links til andre gode sider om julehjerter.',
 
     // Editor chrome
-    editorTools: 'Værktøjer',
     editorHidePanel: 'Skjul panel',
     editorShowPanel: 'Vis panel',
     editorCanvasHint: 'Træk i en kurve for at forme striberne · dobbeltklik for at sætte et punkt · træk i kanten for at tilføje en stribe',
@@ -306,10 +302,6 @@ export const translations = {
     swapColors: 'Byt farver'
   },
   en: {
-    // Site
-    siteTitle: 'Juleflet',
-    siteDescription: 'Welcome to my website for woven Christmas heart templates! Design your own patterns, print them out, and enjoy weaving!',
-
     // Categories
     categoryKlassiske: 'Classic',
     categoryStjerner: 'Stars',
@@ -323,8 +315,6 @@ export const translations = {
     printSelected: 'Download templates',
     generating: 'Generating...',
     loadingHearts: 'Loading hearts...',
-    noHeartsYet: 'No heart designs yet!',
-    clickCreateNew: 'Click "Create new heart" to design your first heart.',
     pdfLayout: 'PDF layout',
     layoutSmall: 'Small (16 per page)',
     layoutMedium: 'Medium (9 per page)',
@@ -339,7 +329,6 @@ export const translations = {
     selectHeartsFirst: 'Select hearts first',
 
     // Heart detail
-    backToGallery: 'Back',
     loadingTemplate: 'Loading template...',
     heartNotFound: 'Heart design not found',
     failedToLoad: 'Failed to load heart design',
@@ -389,7 +378,6 @@ export const translations = {
     actions: 'Actions',
     saveChanges: 'Save changes',
     showInGallery: 'Show in gallery',
-    export: 'Export',
     download: 'Download',
     import: 'Import',
     downloadTemplate: 'Download Template',
@@ -448,7 +436,6 @@ export const translations = {
     leftColor: 'Left color',
     rightColor: 'Right color',
     suggestHeart: 'Suggest a heart',
-    didntFindHeart: "Didn't find the heart you were looking for?",
     madeBy: '©',
 
     // Error page
@@ -473,7 +460,6 @@ export const translations = {
     dismissMessage: 'Dismiss message',
     editorOutlines: 'Outlines',
     editorShowCurveOutlines: 'Show curve outlines',
-    editorFlipColors: 'Flip colors',
     editorFlipLobeColors: 'Flip lobe colors',
     editorWithinCurve: 'Within curve',
     editorWithinLobe: 'Within lobe',
@@ -527,6 +513,13 @@ export const translations = {
     navAbout: 'About',
     navOpenMenu: 'Open menu',
     navCloseMenu: 'Close menu',
+    skipToContent: 'Skip to content',
+
+    // Labels drawn inside the "How to" illustrations (guideSvg() in the mockup generator)
+    guideLabelFoldLine: 'dashed line on the fold',
+    guideLabelFromFold: 'from the fold',
+    guideLabelOver: 'over',
+    guideLabelUnder: 'under',
     switchLanguage: 'Skift til dansk',
     back: 'Back',
     backToTemplates: 'Back to templates',
@@ -594,7 +587,6 @@ export const translations = {
     aboutMetaDescription: 'About Juleflet.dk: free templates for woven Christmas hearts, an editor for your own patterns, and links to other good sites about woven hearts.',
 
     // Editor chrome
-    editorTools: 'Tools',
     editorHidePanel: 'Hide panel',
     editorShowPanel: 'Show panel',
     editorCanvasHint: 'Drag a curve to shape the strips · double-click to add a node · drag the edge to add a strip',

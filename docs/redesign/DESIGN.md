@@ -32,6 +32,13 @@ Define as CSS custom properties on `:root` (replace the current blue/teal palett
 | `--white` | `#ffffff` | cards, buttons |
 | `--gold` | `#e0b75a` | stars |
 | `--blue` | `#4a90b8` | focus rings only |
+| `--muted-on-sky` | `#4d594f` | secondary text painted on `--sky` (see below) |
+
+`--muted` on `--sky` measures 4.02:1, under the WCAG AA 4.5:1 minimum for body text, so text that sits on the
+hero/detail sky uses `--muted-on-sky` (5.4:1) instead; `--muted` is unchanged everywhere else. For the same
+reason the focus ring is `outline: 3px solid var(--blue)` **plus** `box-shadow: 0 0 0 2px var(--page)`:
+`--blue` alone is 2.60:1 against `--sky`, and the pale inner ring keeps one edge of the indicator above the
+3:1 that SC 1.4.11 asks for on every background.
 
 Font stays `'Helvetica Neue', Helvetica, Arial, sans-serif`, antialiased. Headings weight 600, h1 line-height 1.05.
 Buttons: height 44, padding 0 20, radius 10, 15px/600, icon 18px + 8px gap. Kinds: primary (red bg, white text),
@@ -88,6 +95,10 @@ editor, outline "Se skabeloner" (arrow icon) → `#skabeloner`.
 Right column: a 640×560 block with five hanging hearts at absolute positions, DOM order as listed so long
 ribbons pass behind shorter hearts: (left 230, size 96, ribbon 300, delay 4.4s), (470, 125, 240, 3.5s),
 (300, 170, 120, 1.4s), (40, 220, 40, 0s), (500, 140, 26, 2.6s).
+Both hero blocks (the five-heart desktop set and the three-heart stacked set) stay in the markup at every
+width and are switched with `display: none`, deliberately: the server render and the first client render have
+to be identical, so the choice cannot be made from a media-query store. It costs eight prerendered hearts.
+
 **Random hearts:** the page is prerendered with the fixed set `nemt-hjerte, snowflake, jul, classic-3x3,
 stjerne`; after hydration pick five distinct random gallery hearts and cross-fade them (opacity, ~400ms) into
 the same slots. Sizes and positions never change, so there is no layout shift. Never repeat a heart within
@@ -124,7 +135,9 @@ The heart itself is the existing `PaperHeartSVG` (read-only render), white + red
 `id="skabeloner"`. Heading "Skabeloner" 32px/600 (26 < 900). **No help text.**
 
 Toolbar (sticky top 0, z-index 5, `--page` background, flex-wrap, gap 12, padding 14px 0): red split button
-"Hent skabeloner (n)" + gear (PDF settings) with `0 2px 8px rgb(31 51 41 / .12)` shadow; ghost buttons
+"Hent skabeloner (n)" + gear (PDF settings) with `0 2px 8px rgb(31 51 41 / .12)` shadow; with nothing selected
+the split button is `aria-disabled` rather than `disabled` (so it stays focusable and its "Vælg hjerter først"
+hint is reachable from the keyboard) and dims to .75, not .5, so the red still reads as the toolbar's anchor; ghost buttons
 "Vælg alle", "Fravælg alle"; at the right end (`margin-left:auto`) the three steps, each a link to the guide page:
 printer icon "Vælg og print" / "I 100% størrelse på A4"; scissors "Klip og fold" / "Følg de fem trin"; weave
 (hash) icon "Flet" / "Skiftevis over og under". Step = icon 24px green + title 14px/600 `--deep` + hint 12px
@@ -181,7 +194,10 @@ Left column: a 600px-tall stage (480 below 1100) with the hanging heart (size 34
 so it hangs on the big fir; under it a row of four 104px thumbnails (white, radius 12, 1.5px `--line`, active
 2.5px red) with captions in light pills (`rgb(255 255 255 / .8)`, radius 999, 13px, nowrap): **Hjerte**,
 **Foto** (the design's photo, only if it exists), **Skabelon venstre**, **Skabelon højre** (the template previews);
-clicking a thumbnail swaps the big view. Buttons: primary "Download PDF-skabelon", outline "Rediger i editor",
+clicking a thumbnail swaps the big view. The mockup's four-up row is the maximum, not the norm: a heart whose
+lobes mirror each other needs one template, so most hearts show three tiles (Hjerte · Foto · Skabelon) and a
+heart with no photo shows two. Only an asymmetric heart *with* a photo would draw four, and no gallery heart
+is currently both (`jul` renders Skabelon venstre + Skabelon højre, `stjerne` renders Hjerte · Foto · Skabelon). Buttons: primary "Download PDF-skabelon", outline "Rediger i editor",
 ghost "Del" (share, existing hash-link sharing).
 
 Right column: panel `rgb(255 255 255 / .55)`, radius 16, padding 24px 28px, gap 22: h1 name 44px/600; meta
@@ -205,7 +221,10 @@ The five steps (Danish; write natural English versions):
 
 Nav link "Sådan gør du" (active). Intro line, then five guide cards in `repeat(auto-fill, minmax(220px, 1fr))`,
 gap 24: each card is white, radius 14, 1px `--line`, with an SVG drawing on top and the numbered step text
-below. Port the five drawings from `guideSvg(step)` in the generator (arch outline + template marks, the fold,
+below. (The mockup draws the tinted panel on its own, with the step text on `--page` and no card around it;
+this spec text is the decision — the site keeps the card.) Port the drawings' small annotation labels too:
+"stiplet linje på folden" under step 2, "fra folden" beside step 4's arrow, and over / under / over on step
+5's woven strip — 10.5px (9px on step 5) `--muted`, centred on the coordinates `guideSvg()` uses. Port the five drawings from `guideSvg(step)` in the generator (arch outline + template marks, the fold,
 cutting the outline through both layers, cutting the strips from the fold, weaving over/under) as a
 `GuideStep.svelte` component. Below the cards: short tips (paper, sizes, glue) and a link back to the gallery.
 Add to the sitemap.
