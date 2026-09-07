@@ -20,6 +20,11 @@
 		initialGridSize?: GridSize | number;
 		initialWeaveParity?: 0 | 1 | number;
 		size?: number;
+		/**
+		 * The heart's own colours (`HeartDesign.colors`), when it has any. Without
+		 * them the heart follows the site-wide colour store, as gallery hearts do.
+		 */
+		colors?: HeartColors;
 	}
 
 	let {
@@ -28,14 +33,16 @@
 		initialFingers = undefined,
 		initialGridSize = 3,
 		initialWeaveParity = 0,
-		size = 800
+		size = 800,
+		colors = undefined
 	}: Props = $props();
 
 	// Stable ID for clip paths (avoid Math.random which breaks SSR/hydration).
 	const componentId = $derived.by(() => (idPrefix && idPrefix.length > 0 ? idPrefix : 'paper-heart'));
 
-	// Colors from store
-	let heartColors = $state<HeartColors>({ ...DEFAULT_COLORS });
+	// The site-wide pair, and what this heart actually paints with.
+	let storeColors = $state<HeartColors>({ ...DEFAULT_COLORS });
+	let heartColors = $derived(colors ?? storeColors);
 
 	function normalizeGridSize(raw: GridSize | number): GridSize {
 		if (typeof raw === 'number' && Number.isFinite(raw)) {
@@ -91,9 +98,9 @@
 
 	onMount(() => {
 		// Initialize colors from store and subscribe to changes
-		heartColors = getColors();
+		storeColors = getColors();
 		const unsubscribe = subscribeColors((c) => {
-			heartColors = c;
+			storeColors = c;
 		});
 
 		return () => {
