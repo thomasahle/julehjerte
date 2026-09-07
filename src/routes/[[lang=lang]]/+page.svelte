@@ -23,6 +23,7 @@
   import type { LayoutMode } from "$lib/pdf/template";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { t, type Language } from "$lib/i18n";
+  import { parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
   import type { HeartDesign } from "$lib/types/heart";
   import {
     trackHeartView,
@@ -49,27 +50,15 @@
   let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
   let pendingAnchorId = $state<string | null>(null);
 
-  // Read selections from URL on mount
-  function getSelectionsFromUrl(): Set<string> {
-    if (!browser) return new Set();
-    const params = new URLSearchParams(window.location.search);
-    const selected = params.get("selected");
-    if (selected) {
-      return new Set(selected.split(",").filter(Boolean));
-    }
-    return new Set();
-  }
-
-  // Update URL with current selections (without adding to history)
+  /** Mirror the ticked hearts into `?selected=`, without adding to history. */
   function updateUrlWithSelections(ids: Set<string>) {
     if (!browser) return;
     const url = new URL(window.location.href);
-    if (ids.size > 0) {
-      url.searchParams.set("selected", Array.from(ids).join(","));
-    } else {
-      url.searchParams.delete("selected");
-    }
-    goto(`?${url.searchParams.toString()}`, {
+    // Rebuilt from the whole URL, not just its query: the hash carries the
+    // `#heart-<id>` anchor a visitor arrived on, and ticking a card must not
+    // throw it away.
+    const search = selectionSearch(url.searchParams, ids);
+    goto(`${url.pathname}${search}${url.hash}`, {
       replaceState: true,
       noScroll: true,
       keepFocus: true,
@@ -77,23 +66,15 @@
   }
 
   onMount(() => {
-    // Load selections from URL first
-    selectedIds = getSelectionsFromUrl();
-
+    selectedIds = parseSelected(window.location.search);
     userHearts = getUserCollection();
     pendingAnchorId = window.location.hash.slice(1) || null;
   });
 
   function handleSelect(design: HeartDesign) {
-    const newSet = new Set(selectedIds);
-    const wasSelected = newSet.has(design.id);
-    if (wasSelected) {
-      newSet.delete(design.id);
-    } else {
-      newSet.add(design.id);
-    }
-    selectedIds = newSet;
-    updateUrlWithSelections(newSet);
+    const wasSelected = selectedIds.has(design.id);
+    selectedIds = toggleSelected(selectedIds, design.id);
+    updateUrlWithSelections(selectedIds);
     trackHeartSelect(design.id, design.name, !wasSelected);
   }
 
@@ -104,9 +85,8 @@
 
   // Select all / none (GitHub issue #11): every heart shown, including the user's own.
   function handleSelectAll() {
-    const newSet = new Set(allHearts.map((h) => h.id));
-    selectedIds = newSet;
-    updateUrlWithSelections(newSet);
+    selectedIds = new Set(allHearts.map((h) => h.id));
+    updateUrlWithSelections(selectedIds);
   }
 
   function handleSelectNone() {
@@ -127,10 +107,8 @@
     userHearts = userHearts.filter((h) => h.id !== design.id);
 
     if (selectedIds.has(design.id)) {
-      const newSet = new Set(selectedIds);
-      newSet.delete(design.id);
-      selectedIds = newSet;
-      updateUrlWithSelections(newSet);
+      selectedIds = toggleSelected(selectedIds, design.id);
+      updateUrlWithSelections(selectedIds);
     }
   }
 
