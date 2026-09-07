@@ -193,6 +193,19 @@
     flex: none;
   }
 
+  /* Two modifiers, so the 40px button is declared here rather than invented per
+     route: .btn-sm is the shorter size, .btn-icon squares a glyph-only button
+     off at whatever height applies. They combine. */
+  .btn-sm {
+    height: 40px;
+    padding: 0 16px;
+  }
+
+  .btn-icon {
+    aspect-ratio: 1;
+    padding: 0;
+  }
+
   .btn:disabled,
   .btn[aria-disabled="true"] {
     opacity: 0.5;

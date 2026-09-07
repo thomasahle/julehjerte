@@ -29,7 +29,6 @@
     trackHeartSelect,
     trackMultiDownload,
   } from "$lib/analytics";
-  import { Button } from "$lib/components/ui/button";
 
   type IndexedCategory = { id: string; hearts: string[] };
 
@@ -116,7 +115,7 @@
   }
 
   let deleteCandidate = $state.raw<HeartDesign | null>(null);
-  let cancelDeleteButtonEl = $state.raw<HTMLElement | null>(null);
+  let cancelDeleteButtonEl = $state.raw<HTMLButtonElement | null>(null);
 
   $effect(() => {
     if (!deleteCandidate) return;
@@ -245,10 +244,17 @@
       <p>{t('deleteHeartPrompt', lang)}</p>
       <p class="delete-heart-name">{deleteCandidate.name}</p>
       <div class="delete-actions">
-        <Button variant="secondary" onclick={cancelDelete} bind:ref={cancelDeleteButtonEl}>
+        <button
+          type="button"
+          class="btn btn-ghost"
+          onclick={cancelDelete}
+          bind:this={cancelDeleteButtonEl}
+        >
           {t('cancel', lang)}
-        </Button>
-        <Button variant="destructive" onclick={confirmDelete}>{t('delete', lang)}</Button>
+        </button>
+        <button type="button" class="btn btn-primary" onclick={confirmDelete}>
+          {t('delete', lang)}
+        </button>
       </div>
     </div>
   </div>

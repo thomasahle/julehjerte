@@ -25,7 +25,7 @@
     <h1 class="error-code">{status}</h1>
     <h2 class="error-message">{message}</h2>
     <p class="error-description">{t('errorTitle', lang)}</p>
-    <a href="{langBase}/" class="back-button">
+    <a href="{langBase}/" class="btn btn-primary">
       {t('errorBackHome', lang)}
     </a>
   </div>
@@ -64,21 +64,5 @@
   .error-description {
     color: var(--muted);
     margin-bottom: 2rem;
-  }
-
-  .back-button {
-    display: inline-block;
-    background: var(--red);
-    color: var(--white);
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background 0.2s;
-  }
-
-  .back-button:hover {
-    background: var(--red-hover);
-    color: var(--white);
   }
 </style>

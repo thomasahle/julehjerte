@@ -62,7 +62,7 @@
 					<button
 						{...props}
 						type="button"
-						class="split-main"
+						class="btn btn-primary split-main"
 						onclick={() => {
 							if (!printDisabled) onPrint();
 						}}
@@ -90,7 +90,7 @@
 					<button
 						{...props}
 						type="button"
-						class="split-gear"
+						class="btn btn-primary btn-icon split-gear"
 						aria-label={t('pdfSettings', lang)}
 						title={t('pdfLayout', lang)}
 					>
@@ -143,50 +143,38 @@
 		background: var(--page);
 	}
 
-	/* "Hent skabeloner (n)" and its PDF settings gear, as one red split button. */
+	/* "Hent skabeloner (n)" and its PDF settings gear are two .btn-primary halves
+	   butted together; all that is left here is the shared corner radii, the
+	   square gear and the divider between them. */
 	.split {
 		display: inline-flex;
 		border-radius: 10px;
 		box-shadow: 0 2px 8px rgb(var(--deep-rgb) / 0.12);
 	}
 
+	/* No border: .btn-primary's 1px would push the label a pixel inwards and add
+	   a second edge next to the divider. */
 	.split-main,
 	.split-gear {
-		display: inline-flex;
-		align-items: center;
-		height: 44px;
 		border: none;
-		background: var(--red);
-		color: var(--white);
-		font-family: inherit;
-		font-size: 15px;
-		font-weight: 600;
-		line-height: 1;
-		white-space: nowrap;
-		cursor: pointer;
-		transition: background-color 0.15s;
 	}
 
 	.split-main {
-		gap: 8px;
 		padding: 0 18px;
 		border-radius: 10px 0 0 10px;
 	}
 
 	.split-gear {
-		justify-content: center;
-		width: 44px;
-		padding: 0;
 		border-radius: 0 10px 10px 0;
 		border-left: 1px solid rgb(255 255 255 / 0.35);
 	}
 
-	.split-main:hover:not([aria-disabled="true"]),
-	.split-gear:hover:not(:disabled) {
-		background: var(--red-hover);
+	.split-main:hover[aria-disabled="true"] {
+		background: var(--red);
 	}
 
-	/* Dimmed, but the red still has to read as the toolbar's anchor. */
+	/* Dimmed, but the red still has to read as the toolbar's anchor — .btn's own
+	   0.5 would wash it out. */
 	.split-main[aria-disabled="true"] {
 		opacity: 0.75;
 		cursor: not-allowed;

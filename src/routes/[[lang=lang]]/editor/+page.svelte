@@ -597,7 +597,7 @@
   <PageHeader {lang} variant="editor" onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? `${langBase}/hjerte/${getBackDetailId()}/` : undefined) : undefined}>
     <button
       type="button"
-      class="icon-button"
+      class="btn btn-sm btn-ghost btn-icon icon-button"
       bind:this={helpButtonEl}
       onclick={openHelp}
       aria-haspopup="dialog"
@@ -608,7 +608,7 @@
     </button>
     <button
       type="button"
-      class="btn btn-primary top-action"
+      class="btn btn-sm btn-primary top-action"
       onclick={downloadTemplatePDF}
       title={t('editorDownloadPdf', lang)}
       aria-label={t('editorDownloadPdf', lang)}
@@ -618,7 +618,7 @@
     </button>
     <button
       type="button"
-      class="btn btn-dark top-action"
+      class="btn btn-sm btn-dark top-action"
       onclick={showInGallery}
       title={isEditMode ? t('saveChanges', lang) : t('saveToMyHearts', lang)}
       aria-label={isEditMode ? t('saveChanges', lang) : t('saveToMyHearts', lang)}
@@ -676,7 +676,7 @@
       >
         <div class="help-header">
           <h2 id="help-title">{t('helpTitle', lang)}</h2>
-          <button type="button" class="icon-button" onclick={closeHelp} aria-label={t('helpCloseAriaLabel', lang)}>
+          <button type="button" class="btn btn-sm btn-ghost btn-icon icon-button" onclick={closeHelp} aria-label={t('helpCloseAriaLabel', lang)}>
             <CloseIcon size={20} />
           </button>
         </div>
@@ -772,29 +772,12 @@
     }
   }
 
-  /* Top bar (docs/redesign/DESIGN.md §7): Help, Download PDF, Gem. */
+  /* Top bar (docs/redesign/DESIGN.md §7): Help, Download PDF, Gem. The three
+     are .btn-sm / .btn-icon; only the help button's white fill (it sits on the
+     header's own background, not on the page) is left to say here. */
   .icon-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
     flex: none;
-    border: 1.5px solid var(--line);
-    border-radius: 10px;
     background: var(--white);
-    color: var(--green);
-    cursor: pointer;
-    transition: background-color 0.15s;
-  }
-
-  .icon-button:hover {
-    background: var(--cream2);
-  }
-
-  .top-action {
-    height: 40px;
-    padding: 0 16px;
   }
 
   /* Phones: the two actions become icon buttons so the bar still fits next to
