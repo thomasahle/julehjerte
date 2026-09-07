@@ -8,7 +8,7 @@ const engines=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 const origin=process.env.INVERSE_TEST_URL||'http://127.0.0.1:4173';
 const source=process.env.INVERSE_HUNODAN_CASES;if(!source)throw new Error('Set INVERSE_HUNODAN_CASES to the photograph corpus cases.json');
 const catalog=JSON.parse(await fs.readFile(source)),scope=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/scope.json'));
-const ids=(process.env.INVERSE_HUNODAN_IDS||'hjcur-02,hjcur-04,hjfla-01').split(','),output=`tmp/inverse-browser/${new Date().toISOString().replace(/[:.]/g,'-')}-hunodan`,results=[];
+const ids=(process.env.INVERSE_HUNODAN_IDS||'hjcur-02,hjcur-04,hjfla-01').split(','),output=`tmp/inverse-browser/${new Date().toISOString().replace(/[:.]/g,'-')}-${process.pid}-hunodan`,results=[];
 await fs.mkdir(output,{recursive:true});
 for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',')){
  const browser=await engines[name].launch({headless:true});
