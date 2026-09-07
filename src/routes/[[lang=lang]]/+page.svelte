@@ -310,7 +310,9 @@
     </div>
   {:else}
     {#each categories as category (category.id)}
-      <section class="category-section">
+      <!-- The category id doubles as the front page anchor the detail page's
+           "Se alle N {kategori}" link points at — docs/redesign/DESIGN.md §3. -->
+      <section id={category.id} class="category-section">
         <h2 class="category-header">{t(categoryTitleKeys[category.id], lang)}</h2>
         <div class="gallery svg-renderer">
           {#each category.hearts as design (design.id)}
