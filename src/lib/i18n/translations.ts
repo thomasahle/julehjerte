@@ -73,6 +73,7 @@ export const translations = {
     by: 'af',
     publisher: 'Udgiver',
     source: 'Kilde',
+    sourcePage: 'side {n}',
     date: 'Dato',
     gridSize: 'Gitterstørrelse',
     difficulty: 'Sværhedsgrad',
@@ -124,7 +125,6 @@ export const translations = {
     stripsCount: '{n} striber',
     symmetryOneTemplate: 'Spejlsymmetri – én skabelon til begge sider',
     symmetryTwoTemplates: 'Ingen spejlsymmetri – én skabelon til hver side',
-    seeIllustratedGuide: 'Se den illustrerede vejledning',
     /** {category} = lower-case category name */
     moreInCategory: 'Flere {category}',
     /** {n} = hearts in the category, {category} = lower-case category name */
@@ -365,6 +365,7 @@ export const translations = {
     by: 'by',
     publisher: 'Publisher',
     source: 'Source',
+    sourcePage: 'page {n}',
     date: 'Date',
     gridSize: 'Grid Size',
     difficulty: 'Difficulty',
@@ -416,7 +417,6 @@ export const translations = {
     stripsCount: '{n} strips',
     symmetryOneTemplate: 'Mirror symmetry – one template for both sides',
     symmetryTwoTemplates: 'No mirror symmetry – one template for each side',
-    seeIllustratedGuide: 'See the illustrated guide',
     /** {category} = lower-case category name */
     moreInCategory: 'More {category}',
     /** {n} = hearts in the category, {category} = lower-case category name */

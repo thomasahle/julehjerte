@@ -310,10 +310,22 @@
     if (info.publisher) rows.push({ label: t("publisher", lang), value: info.publisher, url: info.publisherUrl });
     if (info.date) rows.push({ label: t("date", lang), value: info.date, url: null });
     if (info.source && normalizeSource(info.source) !== normalizeSource(SITE_DOMAIN)) {
-      rows.push({ label: t("source", lang), value: info.source, url: null });
+      rows.push(sourceRow(info.source));
     }
     return rows;
   });
+
+  // A source that is a URL becomes a link. It reads as the address without the
+  // scheme or fragment, and a "#page=N" fragment (a PDF booklet, e.g. Torben
+  // Mogensen's) is spelled out as "side N" so the reader knows where to look.
+  function sourceRow(source: string): { label: string; value: string; url: string | null } {
+    const label = t("source", lang);
+    if (!/^https?:\/\//i.test(source)) return { label, value: source, url: null };
+    let value = source.replace(/^https?:\/\//i, "").replace(/#.*$/, "").replace(/\/+$/, "");
+    const page = /#page=(\d+)/i.exec(source)?.[1];
+    if (page) value += `, ${t("sourcePage", lang, { n: page })}`;
+    return { label, value, url: source };
+  }
 </script>
 
 <svelte:head>

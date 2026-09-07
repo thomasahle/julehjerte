@@ -11,9 +11,7 @@
 -->
 <script lang="ts">
 	import DifficultyDots from '$lib/components/DifficultyDots.svelte';
-	import { ArrowRightIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
-	import { href as routeHref } from '$lib/i18n/routes';
 	import type { HeartInfo } from '$lib/types/heart';
 
 	/** One "Udgiver: …" row under the credit line, optionally a link. */
@@ -84,17 +82,11 @@
 		{/if}
 	</div>
 
-	<!-- The link belongs to the description, so it sits closer to it than the
-	     panel's own 22px rhythm; it stays even when a heart has no description. -->
-	<div class="about">
-		{#if description}
+	{#if description}
+		<div class="about">
 			<p class="description">{description}</p>
-		{/if}
-		<a class="guide-link" href={routeHref('howTo', lang)}>
-			{t('seeIllustratedGuide', lang)}
-			<ArrowRightIcon size={16} />
-		</a>
-	</div>
+		</div>
+	{/if}
 
 	<div class="facts">
 		<div class="fact">
@@ -212,20 +204,7 @@
 		color: var(--ink);
 	}
 
-	.guide-link {
-		display: inline-flex;
-		align-items: center;
-		align-self: flex-start;
-		gap: 6px;
-		font-size: 14px;
-		font-weight: 600;
-		color: var(--green);
-		text-decoration: none;
-	}
 
-	.guide-link:hover {
-		color: var(--red);
-	}
 
 	/* Below 1100 the panel stacks under the stage and grows down into the
 	   landscape drawing at the foot of the scene: firs, deer and gold stars came

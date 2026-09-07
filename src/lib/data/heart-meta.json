@@ -597,10 +597,10 @@
   "alhambra": {
     "name": "Alhambra",
     "author": "Torben Mogensen",
-    "authorUrl": null,
+    "authorUrl": "https://hjemmesider.diku.dk/~torbenm/",
     "publisher": null,
     "publisherUrl": null,
-    "source": null,
+    "source": "https://hjemmesider.diku.dk/~torbenm/hearts.pdf#page=9",
     "date": null,
     "description": "A pattern inspired by the Alhambra tiling. Note that it is somewhat tricky to braid, as the corners tend to snag, so it should not be your first braiding project.",
     "gridSize": {

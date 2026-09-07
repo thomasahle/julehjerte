@@ -81,4 +81,4 @@
          d="M 66.953577,-0.0436661 60.818488,10.938358 75.200877,18.323774 60.783904,46.577128 75.210953,53.947599 60.802379,82.195113 75.045294,89.485112 69.03395,100.13439"
          id="path10" /></g></g><metadata
      id="metadata10"><rdf:RDF><cc:Work
-         rdf:about=""><dc:title>Alhambra</dc:title><dc:creator><cc:Agent><dc:title>Torben Mogensen</dc:title></cc:Agent></dc:creator><dc:description>A pattern inspired by the Alhambra tiling. Note that it is somewhat tricky to braid, as the corners tend to snag, so it should not be your first braiding project.</dc:description></cc:Work></rdf:RDF></metadata></svg>
+         rdf:about=""><dc:title>Alhambra</dc:title><dc:creator><cc:Agent rdf:about="https://hjemmesider.diku.dk/~torbenm/"><dc:title>Torben Mogensen</dc:title></cc:Agent></dc:creator><dc:description>A pattern inspired by the Alhambra tiling. Note that it is somewhat tricky to braid, as the corners tend to snag, so it should not be your first braiding project.</dc:description><dc:source>https://hjemmesider.diku.dk/~torbenm/hearts.pdf#page=9</dc:source></cc:Work></rdf:RDF></metadata></svg>
