@@ -14,6 +14,7 @@ export const translations = {
 
     // Gallery
     createNewHeart: 'Lav Nyt Hjerte',
+    imageToHeart: 'Fra billede til hjerte',
     printSelected: 'Hent Skabeloner',
     generating: 'Genererer...',
     loadingHearts: 'Indlæser hjerter...',
@@ -229,6 +230,7 @@ export const translations = {
 
     // Gallery
     createNewHeart: 'Create New Heart',
+    imageToHeart: 'Image to heart',
     printSelected: 'Print Selected',
     generating: 'Generating...',
     loadingHearts: 'Loading hearts...',

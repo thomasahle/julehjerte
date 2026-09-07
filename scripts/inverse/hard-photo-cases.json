@@ -1,0 +1,1373 @@
+{
+  "description": "All 40 collage instances, with fresh visual overlap-crop review. Frames with unobserved corners remain incomplete. Reviewed corners are approximate photo annotations, not ground truth.",
+  "source": {
+    "file": "tmp/inverse-robustness/hard-cases-srgb.png",
+    "rgbaFile": "tmp/inverse-robustness/hard-cases-srgb.rgba",
+    "width": 1482,
+    "height": 1112
+  },
+  "cases": [
+    {
+      "id": "oval-figure",
+      "label": "R1C1",
+      "row": 1,
+      "column": 1,
+      "clippedByFrame": true,
+      "roi": [
+        1,
+        0,
+        260,
+        163
+      ],
+      "quad": [
+        [
+          148,
+          -67
+        ],
+        [
+          233,
+          39
+        ],
+        [
+          113,
+          153
+        ],
+        [
+          28,
+          47
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "eight-point-star",
+      "label": "R1C2",
+      "row": 1,
+      "column": 2,
+      "clippedByFrame": true,
+      "roi": [
+        220,
+        0,
+        480,
+        148
+      ],
+      "quad": [
+        [
+          359,
+          -42
+        ],
+        [
+          453,
+          38
+        ],
+        [
+          341,
+          140
+        ],
+        [
+          247,
+          60
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "small-figure",
+      "label": "R1C3",
+      "row": 1,
+      "column": 3,
+      "clippedByFrame": true,
+      "roi": [
+        448,
+        0,
+        672,
+        140
+      ],
+      "quad": [
+        [
+          565,
+          -42
+        ],
+        [
+          649,
+          40
+        ],
+        [
+          555,
+          132
+        ],
+        [
+          471,
+          50
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "deer",
+      "label": "R1C4",
+      "row": 1,
+      "column": 4,
+      "clippedByFrame": true,
+      "roi": [
+        621,
+        0,
+        864,
+        154
+      ],
+      "quad": [
+        [
+          746,
+          -47
+        ],
+        [
+          839,
+          34
+        ],
+        [
+          739,
+          145
+        ],
+        [
+          646,
+          64
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "top-checker",
+      "label": "R1C5",
+      "row": 1,
+      "column": 5,
+      "clippedByFrame": true,
+      "roi": [
+        803,
+        0,
+        1042,
+        151
+      ],
+      "quad": [
+        [
+          924,
+          -37
+        ],
+        [
+          1017,
+          43
+        ],
+        [
+          921,
+          143
+        ],
+        [
+          828,
+          63
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "top-candle",
+      "label": "R1C6",
+      "row": 1,
+      "column": 6,
+      "clippedByFrame": true,
+      "roi": [
+        985,
+        0,
+        1243,
+        149
+      ],
+      "quad": [
+        [
+          1114,
+          -40
+        ],
+        [
+          1216,
+          38
+        ],
+        [
+          1114,
+          141
+        ],
+        [
+          1012,
+          63
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "top-tree",
+      "label": "R1C7",
+      "row": 1,
+      "column": 7,
+      "clippedByFrame": true,
+      "roi": [
+        1187,
+        0,
+        1459,
+        151
+      ],
+      "quad": [
+        [
+          1325,
+          -29
+        ],
+        [
+          1431,
+          53
+        ],
+        [
+          1321,
+          143
+        ],
+        [
+          1215,
+          61
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "partial-top-right",
+      "label": "R1C8",
+      "row": 1,
+      "column": 8,
+      "clippedByFrame": true,
+      "roi": [
+        1410,
+        0,
+        1482,
+        146
+      ],
+      "quad": [
+        [
+          1533,
+          -40
+        ],
+        [
+          1630,
+          42
+        ],
+        [
+          1532,
+          138
+        ],
+        [
+          1435,
+          56
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "partial-left-checker",
+      "label": "R2C1",
+      "row": 2,
+      "column": 1,
+      "clippedByFrame": true,
+      "roi": [
+        0,
+        140,
+        145,
+        369
+      ],
+      "quad": [
+        [
+          6,
+          191
+        ],
+        [
+          118,
+          270
+        ],
+        [
+          26,
+          361
+        ],
+        [
+          -86,
+          282
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "nested-squares",
+      "label": "R2C2",
+      "row": 2,
+      "column": 2,
+      "clippedByFrame": false,
+      "roi": [
+        100,
+        132,
+        336,
+        339
+      ],
+      "quad": [
+        [
+          235,
+          188
+        ],
+        [
+          320,
+          261
+        ],
+        [
+          195,
+          334
+        ],
+        [
+          110,
+          261
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "outline-star",
+      "label": "R2C3",
+      "row": 2,
+      "column": 3,
+      "clippedByFrame": false,
+      "roi": [
+        314,
+        123,
+        539,
+        346
+      ],
+      "quad": [
+        [
+          430,
+          180
+        ],
+        [
+          520,
+          266
+        ],
+        [
+          402,
+          343
+        ],
+        [
+          318,
+          265
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "floral-checker",
+      "label": "R2C4",
+      "row": 2,
+      "column": 4,
+      "clippedByFrame": false,
+      "roi": [
+        492,
+        118,
+        745,
+        333
+      ],
+      "quad": [
+        [
+          634,
+          183
+        ],
+        [
+          728,
+          257
+        ],
+        [
+          627,
+          325
+        ],
+        [
+          516,
+          251
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "dense-checker",
+      "label": "R2C5",
+      "row": 2,
+      "column": 5,
+      "clippedByFrame": false,
+      "roi": [
+        696,
+        120,
+        965,
+        345
+      ],
+      "quad": [
+        [
+          833,
+          177
+        ],
+        [
+          940,
+          251
+        ],
+        [
+          839,
+          339
+        ],
+        [
+          727,
+          251
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "bird",
+      "label": "R2C6",
+      "row": 2,
+      "column": 6,
+      "clippedByFrame": false,
+      "roi": [
+        917,
+        108,
+        1168,
+        323
+      ],
+      "quad": [
+        [
+          1028,
+          148
+        ],
+        [
+          1141,
+          238
+        ],
+        [
+          1040,
+          321
+        ],
+        [
+          937,
+          244
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "leaf",
+      "label": "R2C7",
+      "row": 2,
+      "column": 7,
+      "clippedByFrame": false,
+      "roi": [
+        1125,
+        87,
+        1360,
+        325
+      ],
+      "quad": [
+        [
+          1230,
+          165
+        ],
+        [
+          1324,
+          245
+        ],
+        [
+          1253,
+          307
+        ],
+        [
+          1149,
+          235
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "partial-right-checker",
+      "label": "R2C8",
+      "row": 2,
+      "column": 8,
+      "clippedByFrame": true,
+      "roi": [
+        1316,
+        84,
+        1482,
+        320
+      ],
+      "quad": [
+        [
+          1449,
+          137
+        ],
+        [
+          1560,
+          221
+        ],
+        [
+          1455,
+          312
+        ],
+        [
+          1344,
+          228
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "partial-left-abstract",
+      "label": "R3C1",
+      "row": 3,
+      "column": 1,
+      "clippedByFrame": true,
+      "roi": [
+        0,
+        366,
+        179,
+        602
+      ],
+      "quad": [
+        [
+          44,
+          419
+        ],
+        [
+          151,
+          509
+        ],
+        [
+          42,
+          594
+        ],
+        [
+          -65,
+          504
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "gift",
+      "label": "R3C2",
+      "row": 3,
+      "column": 2,
+      "clippedByFrame": false,
+      "roi": [
+        122,
+        353,
+        351,
+        559
+      ],
+      "quad": [
+        [
+          238,
+          388
+        ],
+        [
+          328,
+          471
+        ],
+        [
+          222,
+          553
+        ],
+        [
+          136,
+          473
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "gingerbread",
+      "label": "R3C3",
+      "row": 3,
+      "column": 3,
+      "clippedByFrame": false,
+      "roi": [
+        314,
+        367,
+        545,
+        582
+      ],
+      "quad": [
+        [
+          435,
+          414
+        ],
+        [
+          517,
+          489
+        ],
+        [
+          422,
+          574
+        ],
+        [
+          337,
+          491
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "white-birds",
+      "label": "R3C4",
+      "row": 3,
+      "column": 4,
+      "clippedByFrame": false,
+      "roi": [
+        498,
+        368,
+        724,
+        588
+      ],
+      "quad": [
+        [
+          622,
+          413
+        ],
+        [
+          703,
+          489
+        ],
+        [
+          614,
+          570
+        ],
+        [
+          516,
+          491
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "flower",
+      "label": "R3C5",
+      "row": 3,
+      "column": 5,
+      "clippedByFrame": false,
+      "roi": [
+        678,
+        330,
+        929,
+        577
+      ],
+      "quad": [
+        [
+          794,
+          393
+        ],
+        [
+          901,
+          470
+        ],
+        [
+          809,
+          572
+        ],
+        [
+          704,
+          484
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "warped-checker",
+      "label": "R3C6",
+      "row": 3,
+      "column": 6,
+      "clippedByFrame": false,
+      "roi": [
+        878,
+        323,
+        1127,
+        552
+      ],
+      "quad": [
+        [
+          1004,
+          372
+        ],
+        [
+          1100,
+          465
+        ],
+        [
+          1009,
+          545
+        ],
+        [
+          909,
+          457
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "round-checker",
+      "label": "R3C7",
+      "row": 3,
+      "column": 7,
+      "clippedByFrame": false,
+      "roi": [
+        1078,
+        338,
+        1314,
+        556
+      ],
+      "quad": [
+        [
+          1194,
+          389
+        ],
+        [
+          1291,
+          467
+        ],
+        [
+          1208,
+          551
+        ],
+        [
+          1107,
+          467
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "santa",
+      "label": "R3C8",
+      "row": 3,
+      "column": 8,
+      "clippedByFrame": false,
+      "roi": [
+        1248,
+        321,
+        1474,
+        544
+      ],
+      "quad": [
+        [
+          1344,
+          379
+        ],
+        [
+          1444,
+          465
+        ],
+        [
+          1364,
+          544
+        ],
+        [
+          1274,
+          452
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "partial-left-diamonds",
+      "label": "R4C1",
+      "row": 4,
+      "column": 1,
+      "clippedByFrame": true,
+      "roi": [
+        0,
+        624,
+        138,
+        852
+      ],
+      "quad": [
+        [
+          23,
+          675
+        ],
+        [
+          113,
+          755
+        ],
+        [
+          14,
+          844
+        ],
+        [
+          -76,
+          764
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "fine-checker",
+      "label": "R4C2",
+      "row": 4,
+      "column": 2,
+      "clippedByFrame": false,
+      "roi": [
+        83,
+        589,
+        335,
+        809
+      ],
+      "quad": [
+        [
+          227,
+          636
+        ],
+        [
+          312,
+          708
+        ],
+        [
+          201,
+          795
+        ],
+        [
+          108,
+          730
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "orb",
+      "label": "R4C3",
+      "row": 4,
+      "column": 3,
+      "clippedByFrame": false,
+      "roi": [
+        282,
+        610,
+        533,
+        838
+      ],
+      "quad": [
+        [
+          410,
+          646
+        ],
+        [
+          504,
+          735
+        ],
+        [
+          376,
+          828
+        ],
+        [
+          309,
+          735
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "stacked-hearts",
+      "label": "R4C4",
+      "row": 4,
+      "column": 4,
+      "clippedByFrame": false,
+      "roi": [
+        480,
+        598,
+        729,
+        839
+      ],
+      "quad": [
+        [
+          613,
+          646
+        ],
+        [
+          709,
+          740
+        ],
+        [
+          607,
+          832
+        ],
+        [
+          505,
+          737
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "jigsaw",
+      "label": "R4C5",
+      "row": 4,
+      "column": 5,
+      "clippedByFrame": false,
+      "roi": [
+        681,
+        590,
+        914,
+        832
+      ],
+      "quad": [
+        [
+          786,
+          636
+        ],
+        [
+          890,
+          716
+        ],
+        [
+          804,
+          823
+        ],
+        [
+          707,
+          732
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "candle",
+      "label": "R4C6",
+      "row": 4,
+      "column": 6,
+      "clippedByFrame": false,
+      "roi": [
+        879,
+        549,
+        1141,
+        809
+      ],
+      "quad": [
+        [
+          999,
+          618
+        ],
+        [
+          1106,
+          712
+        ],
+        [
+          1005,
+          806
+        ],
+        [
+          907,
+          708
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "maple-leaf",
+      "label": "R4C7",
+      "row": 4,
+      "column": 7,
+      "clippedByFrame": false,
+      "roi": [
+        1068,
+        581,
+        1310,
+        822
+      ],
+      "quad": [
+        [
+          1184,
+          638
+        ],
+        [
+          1291,
+          731
+        ],
+        [
+          1188,
+          818
+        ],
+        [
+          1095,
+          718
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "crown",
+      "label": "R4C8",
+      "row": 4,
+      "column": 8,
+      "clippedByFrame": false,
+      "roi": [
+        1261,
+        582,
+        1482,
+        800
+      ],
+      "quad": [
+        [
+          1370,
+          646
+        ],
+        [
+          1464,
+          723
+        ],
+        [
+          1373,
+          797
+        ],
+        [
+          1284,
+          727
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "partial-bottom-left",
+      "label": "R5C1",
+      "row": 5,
+      "column": 1,
+      "clippedByFrame": true,
+      "roi": [
+        0,
+        888,
+        107,
+        1112
+      ],
+      "quad": [
+        [
+          -7,
+          940
+        ],
+        [
+          83,
+          1027
+        ],
+        [
+          -12,
+          1114
+        ],
+        [
+          -102,
+          1027
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "bottom-diamonds",
+      "label": "R5C2",
+      "row": 5,
+      "column": 2,
+      "clippedByFrame": true,
+      "roi": [
+        48,
+        883,
+        311,
+        1112
+      ],
+      "quad": [
+        [
+          177,
+          937
+        ],
+        [
+          284,
+          1023
+        ],
+        [
+          182,
+          1116
+        ],
+        [
+          75,
+          1030
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "crossed-ribbons",
+      "label": "R5C3",
+      "row": 5,
+      "column": 3,
+      "clippedByFrame": false,
+      "roi": [
+        261,
+        856,
+        524,
+        1112
+      ],
+      "quad": [
+        [
+          405,
+          935
+        ],
+        [
+          502,
+          1031
+        ],
+        [
+          380,
+          1109
+        ],
+        [
+          282,
+          1021
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "bauble",
+      "label": "R5C4",
+      "row": 5,
+      "column": 4,
+      "clippedByFrame": false,
+      "roi": [
+        456,
+        860,
+        711,
+        1112
+      ],
+      "quad": [
+        [
+          570,
+          940
+        ],
+        [
+          683,
+          1019
+        ],
+        [
+          580,
+          1104
+        ],
+        [
+          471,
+          1018
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "glare-motif",
+      "label": "R5C5",
+      "row": 5,
+      "column": 5,
+      "clippedByFrame": false,
+      "occlusionNote": "Strong glare over the motif",
+      "roi": [
+        656,
+        858,
+        920,
+        1112
+      ],
+      "quad": [
+        [
+          779,
+          936
+        ],
+        [
+          884,
+          1030
+        ],
+        [
+          781,
+          1115
+        ],
+        [
+          682,
+          1017
+        ]
+      ],
+      "cropStatus": "obscured",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "bottom-flower",
+      "label": "R5C6",
+      "row": 5,
+      "column": 6,
+      "clippedByFrame": true,
+      "roi": [
+        874,
+        859,
+        1155,
+        1112
+      ],
+      "quad": [
+        [
+          1011,
+          919
+        ],
+        [
+          1127,
+          1016
+        ],
+        [
+          1025,
+          1108
+        ],
+        [
+          912,
+          1005
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "faceted-star",
+      "label": "R5C7",
+      "row": 5,
+      "column": 7,
+      "clippedByFrame": false,
+      "roi": [
+        1105,
+        852,
+        1354,
+        1111
+      ],
+      "quad": [
+        [
+          1208,
+          929
+        ],
+        [
+          1329,
+          1004
+        ],
+        [
+          1232,
+          1097
+        ],
+        [
+          1133,
+          1005
+        ]
+      ],
+      "cropStatus": "visually_reviewed",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    },
+    {
+      "id": "partial-bottom-right",
+      "label": "R5C8",
+      "row": 5,
+      "column": 8,
+      "clippedByFrame": true,
+      "occlusionNote": "App icon overlays the lower right of this heart",
+      "roi": [
+        1310,
+        856,
+        1482,
+        1112
+      ],
+      "quad": [
+        [
+          1425,
+          915
+        ],
+        [
+          1526,
+          1006
+        ],
+        [
+          1436,
+          1113
+        ],
+        [
+          1335,
+          1022
+        ]
+      ],
+      "cropStatus": "incomplete",
+      "review": "Assistant visual review of source contours; no cutting paths or solver feedback used.",
+      "cropInsetFraction": 0.015
+    }
+  ]
+}

@@ -8,7 +8,8 @@ export const prerender = true;
 // so URLs without one 301-redirect on the live site).
 const staticPages = [
 	{ path: '/', priority: '1.0' },
-	{ path: '/editor/', priority: '0.8' }
+	{ path: '/editor/', priority: '0.8' },
+	{ path: '/generate/', priority: '0.7' }
 ];
 
 export const GET: RequestHandler = async () => {

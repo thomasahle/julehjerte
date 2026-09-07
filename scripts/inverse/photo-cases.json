@@ -1,0 +1,167 @@
+{
+  "description": "Visible finished-heart photos suggested during integration. Crop corners are manually selected from photos, clockwise from the notch. No cutting templates are inputs.",
+  "cases": [
+    {
+      "id": "bibel-star-8",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_5.jpg",
+      "quad": [
+        [
+          537,
+          142
+        ],
+        [
+          764,
+          370
+        ],
+        [
+          535,
+          600
+        ],
+        [
+          305,
+          370
+        ]
+      ],
+      "cropInsetFraction": 0.03
+    },
+    {
+      "id": "bibel-star-curved",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_6.jpg",
+      "quad": [
+        [
+          515,
+          137
+        ],
+        [
+          750,
+          365
+        ],
+        [
+          514,
+          607
+        ],
+        [
+          286,
+          370
+        ]
+      ],
+      "cropInsetFraction": 0.04
+    },
+    {
+      "id": "bibel-star-outline",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_7.jpg",
+      "quad": [
+        [
+          507,
+          147
+        ],
+        [
+          730,
+          376
+        ],
+        [
+          495,
+          605
+        ],
+        [
+          275,
+          376
+        ]
+      ],
+      "cropInsetFraction": 0.02
+    },
+    {
+      "id": "bibel-cross",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_8.jpg",
+      "quad": [
+        [
+          508,
+          140
+        ],
+        [
+          750,
+          377
+        ],
+        [
+          524,
+          621
+        ],
+        [
+          286,
+          381
+        ]
+      ],
+      "cropInsetFraction": 0
+    },
+    {
+      "id": "flettede-puppy",
+      "url": "https://flettedehjerter.dk/wp-content/uploads/2018/12/hundehvalp-hjerte.jpg",
+      "quad": [
+        [
+          396,
+          315
+        ],
+        [
+          655,
+          585
+        ],
+        [
+          388,
+          843
+        ],
+        [
+          153,
+          606
+        ]
+      ],
+      "cropInsetFraction": 0
+    },
+    {
+      "id": "flettede-stonehenge",
+      "url": "https://flettedehjerter.dk/wp-content/uploads/2015/12/stonehenge-julehjerte.jpg",
+      "quad": [
+        [
+          319,
+          103
+        ],
+        [
+          510,
+          349
+        ],
+        [
+          295,
+          568
+        ],
+        [
+          74,
+          333
+        ]
+      ],
+      "cropInsetFraction": 0
+    },
+    {
+      "id": "flettede-viking",
+      "url": "https://flettedehjerter.dk/wp-content/uploads/2020/12/vikingeskibshjerte.jpg",
+      "quad": [
+        [
+          727,
+          326
+        ],
+        [
+          1277,
+          849
+        ],
+        [
+          737,
+          1393
+        ],
+        [
+          231,
+          874
+        ]
+      ],
+      "cropInsetFraction": 0.01
+    }
+  ],
+  "cropNotes": "The listed inset removes photographed outer paper/background fringes. Both presets use the same effective crop. It is recorded as part of the target, not an alignment to reference cuts."
+}

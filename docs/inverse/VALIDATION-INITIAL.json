@@ -1,0 +1,759 @@
+{
+  "recordedAt": "2026-09-07T09:11:19.300039+00:00",
+  "branch": "codex/integrate-juleflet",
+  "baseCommit": "dcc481b25466c074623b5156793d667bf0d40483",
+  "state": "Uncommitted working tree; not pushed or deployed",
+  "checks": [
+    {
+      "command": "npm run check",
+      "status": "pass",
+      "errors": 0,
+      "warnings": 8,
+      "warningNote": "Pre-existing accessibility warnings in PaperHeart.svelte"
+    },
+    {
+      "command": "npm run lint",
+      "status": "pass"
+    },
+    {
+      "command": "npm test",
+      "status": "pass",
+      "websiteAndWorkerTests": 127,
+      "engineAndIntegrationTests": 55,
+      "total": 182
+    },
+    {
+      "command": "npm run build",
+      "status": "pass",
+      "adapter": "static",
+      "routes": [
+        "/generate/",
+        "/en/generate/"
+      ]
+    },
+    {
+      "command": "npm run test:inverse:browser",
+      "status": "pass",
+      "origin": "http://127.0.0.1:4174",
+      "evidence": "tmp/inverse-browser/2026-09-07T09-08-23-459Z/results.json",
+      "evidenceSha256": "e2eb30be30dd2def7401ee283bcd8046acb7ebb79e31fa2c025a7ed982d7ba39",
+      "browsers": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "gallery navigation to English generator",
+            "HTTP modules and WASM match source bytes; missing WASM returns 404",
+            "fresh SVG \u2192 worker/WASM solve \u2192 checked pair",
+            "ZIP CRCs, SVG dimensions, print download and responsive layout",
+            "settings invalidate downloads; cancellation and worker restart",
+            "uploaded PNG \u2192 tracing \u2192 fresh checked templates",
+            "four-corner crop validation and rectification",
+            "simplification preset reprepares the artwork and exposes junction merging in mm",
+            "Star is explicitly a saved-template audit (uncertain)",
+            "JUL is explicitly a saved-template audit (pass)",
+            "unsafe upload rejected; stale previews and exports removed",
+            "fresh search timeout is reported separately from infeasibility",
+            "Danish direct route, preparation, gallery return and existing editor"
+          ],
+          "pageErrors": [],
+          "consoleErrors": [
+            "Failed to load resource: net::ERR_FAILED",
+            "Failed to load resource: net::ERR_FAILED",
+            "Failed to load resource: net::ERR_FAILED",
+            "Failed to load resource: net::ERR_FAILED"
+          ],
+          "savedStarAudit": "uncertain",
+          "savedJULAudit": "pass",
+          "shortSearchTermination": "time_limit"
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "gallery navigation to English generator",
+            "HTTP modules and WASM match source bytes; missing WASM returns 404",
+            "fresh SVG \u2192 worker/WASM solve \u2192 checked pair",
+            "ZIP CRCs, SVG dimensions, print download and responsive layout",
+            "settings invalidate downloads; cancellation and worker restart",
+            "uploaded PNG \u2192 tracing \u2192 fresh checked templates",
+            "four-corner crop validation and rectification",
+            "simplification preset reprepares the artwork and exposes junction merging in mm",
+            "Star is explicitly a saved-template audit (uncertain)",
+            "JUL is explicitly a saved-template audit (pass)",
+            "unsafe upload rejected; stale previews and exports removed",
+            "fresh search timeout is reported separately from infeasibility",
+            "Danish direct route, preparation, gallery return and existing editor"
+          ],
+          "pageErrors": [],
+          "consoleErrors": [
+            "[JavaScript Error: \"Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://api.github.com/repos/thomasahle/julehjerte. (Reason: CORS request did not succeed). Status code: (null).\"]",
+            "[JavaScript Error: \"Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://api.github.com/repos/thomasahle/julehjerte. (Reason: CORS request did not succeed). Status code: (null).\"]"
+          ],
+          "savedStarAudit": "uncertain",
+          "savedJULAudit": "pass",
+          "shortSearchTermination": "time_limit"
+        }
+      ]
+    }
+  ],
+  "photoComparison": {
+    "command": "npm run benchmark:inverse:photos",
+    "evidence": "tmp/inverse-photo-benchmark/2026-09-07T09-03-24-418Z/results.json",
+    "evidenceSha256": "4b6803553f3cbe2706bdbf16dfb77326a37ccdcfc7a1f4603fa4d940bfbb6dad",
+    "timeLimitSeconds": 5,
+    "checkedPairs": {
+      "detailed": 2,
+      "simplified": 3,
+      "cases": 7
+    },
+    "cases": [
+      {
+        "id": "bibel-star-8",
+        "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_5.jpg",
+        "inputSha256": "735e43ac6eef524e762ce37d5b408a78c22874242b3f4b7cf79f619dd8384207",
+        "quad": [
+          [
+            537,
+            142
+          ],
+          [
+            764,
+            370
+          ],
+          [
+            535,
+            600
+          ],
+          [
+            305,
+            370
+          ]
+        ],
+        "cropInsetFraction": 0.03,
+        "effectiveQuad": [
+          [
+            536.9475,
+            148.85500000000002
+          ],
+          [
+            757.1375,
+            370.015
+          ],
+          [
+            535.0075,
+            593.115
+          ],
+          [
+            311.9075,
+            370.015
+          ]
+        ],
+        "runs": {
+          "detailed": {
+            "status": "checked_pair",
+            "curves": 53,
+            "totalSeconds": 4.6326451660000005,
+            "traceChangeFraction": 0.0065625,
+            "mergedJunctions": 0,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 0.5,
+              "smoothRadius": 0,
+              "snapRadius": 0,
+              "maxSpan": 15,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            }
+          },
+          "simplified": {
+            "status": "checked_pair",
+            "curves": 27,
+            "totalSeconds": 2.780390375,
+            "traceChangeFraction": 0.0116625,
+            "mergedJunctions": 0,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 1.5,
+              "smoothRadius": 0.6,
+              "snapRadius": 1.5,
+              "maxSpan": 30,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            }
+          }
+        }
+      },
+      {
+        "id": "bibel-star-curved",
+        "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_6.jpg",
+        "inputSha256": "cceb1e74d82374b5391dd1246e95cb6fb046f3e8aafa95165228590cf4642429",
+        "quad": [
+          [
+            515,
+            137
+          ],
+          [
+            750,
+            365
+          ],
+          [
+            514,
+            607
+          ],
+          [
+            286,
+            370
+          ]
+        ],
+        "cropInsetFraction": 0.04,
+        "effectiveQuad": [
+          [
+            515.05,
+            146.31
+          ],
+          [
+            740.65,
+            365.19
+          ],
+          [
+            514.09,
+            597.51
+          ],
+          [
+            295.21000000000004,
+            369.99
+          ]
+        ],
+        "runs": {
+          "detailed": {
+            "status": "time_limit",
+            "curves": 115,
+            "totalSeconds": 5.279791667,
+            "traceChangeFraction": 0.01204375,
+            "mergedJunctions": 0,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 0.5,
+              "smoothRadius": 0,
+              "snapRadius": 0,
+              "maxSpan": 15,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            },
+            "message": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "simplified": {
+            "status": "checked_pair",
+            "curves": 70,
+            "totalSeconds": 1.434293416999999,
+            "traceChangeFraction": 0.02426875,
+            "mergedJunctions": 8,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 1.5,
+              "smoothRadius": 0.6,
+              "snapRadius": 1.5,
+              "maxSpan": 30,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            }
+          }
+        }
+      },
+      {
+        "id": "bibel-star-outline",
+        "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_7.jpg",
+        "inputSha256": "2514f8564d301bf6ca89a03b4c4e29a57f6128072edab622ff171946aeca3855",
+        "quad": [
+          [
+            507,
+            147
+          ],
+          [
+            730,
+            376
+          ],
+          [
+            495,
+            605
+          ],
+          [
+            275,
+            376
+          ]
+        ],
+        "cropInsetFraction": 0.02,
+        "effectiveQuad": [
+          [
+            506.895,
+            151.58
+          ],
+          [
+            725.435,
+            376
+          ],
+          [
+            495.135,
+            600.42
+          ],
+          [
+            279.53499999999997,
+            376
+          ]
+        ],
+        "runs": {
+          "detailed": {
+            "status": "candidate_graph_exhausted",
+            "curves": 92,
+            "totalSeconds": 0.5161290829999998,
+            "traceChangeFraction": 0.01063125,
+            "mergedJunctions": 0,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 0.5,
+              "smoothRadius": 0,
+              "snapRadius": 0,
+              "maxSpan": 15,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            },
+            "message": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "simplified": {
+            "status": "candidate_graph_exhausted",
+            "curves": 58,
+            "totalSeconds": 0.3307416669999984,
+            "traceChangeFraction": 0.0383125,
+            "mergedJunctions": 0,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 1.5,
+              "smoothRadius": 0.6,
+              "snapRadius": 1.5,
+              "maxSpan": 30,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            },
+            "message": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          }
+        }
+      },
+      {
+        "id": "bibel-cross",
+        "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_8.jpg",
+        "inputSha256": "c72d1f7310255114e02a5d72f9450a07eaee2cc9ae1edc48d83d56ed9f202807",
+        "quad": [
+          [
+            508,
+            140
+          ],
+          [
+            750,
+            377
+          ],
+          [
+            524,
+            621
+          ],
+          [
+            286,
+            381
+          ]
+        ],
+        "cropInsetFraction": 0,
+        "effectiveQuad": [
+          [
+            508,
+            140
+          ],
+          [
+            750,
+            377
+          ],
+          [
+            524,
+            621
+          ],
+          [
+            286,
+            381
+          ]
+        ],
+        "runs": {
+          "detailed": {
+            "status": "checked_pair",
+            "curves": 48,
+            "totalSeconds": 4.325917208999999,
+            "traceChangeFraction": 0.00579375,
+            "mergedJunctions": 0,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 0.5,
+              "smoothRadius": 0,
+              "snapRadius": 0,
+              "maxSpan": 15,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            }
+          },
+          "simplified": {
+            "status": "checked_pair",
+            "curves": 24,
+            "totalSeconds": 1.7888794589999997,
+            "traceChangeFraction": 0.0142125,
+            "mergedJunctions": 0,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 1.5,
+              "smoothRadius": 0.6,
+              "snapRadius": 1.5,
+              "maxSpan": 30,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            }
+          }
+        }
+      },
+      {
+        "id": "flettede-puppy",
+        "url": "https://flettedehjerter.dk/wp-content/uploads/2018/12/hundehvalp-hjerte.jpg",
+        "inputSha256": "acf2fadd164affc89636b151de8325d0c8dd3abec6caf104f94b7092244b45ef",
+        "quad": [
+          [
+            396,
+            315
+          ],
+          [
+            655,
+            585
+          ],
+          [
+            388,
+            843
+          ],
+          [
+            153,
+            606
+          ]
+        ],
+        "cropInsetFraction": 0,
+        "effectiveQuad": [
+          [
+            396,
+            315
+          ],
+          [
+            655,
+            585
+          ],
+          [
+            388,
+            843
+          ],
+          [
+            153,
+            606
+          ]
+        ],
+        "runs": {
+          "detailed": {
+            "status": "error",
+            "curves": 79,
+            "totalSeconds": 0.2706582079999971,
+            "traceChangeFraction": 0.00635,
+            "mergedJunctions": 0,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 0.5,
+              "smoothRadius": 0,
+              "snapRadius": 0,
+              "maxSpan": 15,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            },
+            "message": "Sheet A has 1 start transitions but 3 end transitions. Opposite borders must agree."
+          },
+          "simplified": {
+            "status": "error",
+            "curves": 47,
+            "totalSeconds": 0.16388895799999956,
+            "traceChangeFraction": 0.01295625,
+            "mergedJunctions": 5,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 1.5,
+              "smoothRadius": 0.6,
+              "snapRadius": 1.5,
+              "maxSpan": 30,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            },
+            "message": "Sheet A has 1 start transitions but 3 end transitions. Opposite borders must agree."
+          }
+        }
+      },
+      {
+        "id": "flettede-stonehenge",
+        "url": "https://flettedehjerter.dk/wp-content/uploads/2015/12/stonehenge-julehjerte.jpg",
+        "inputSha256": "80a705792f8bd691bc300edd552cc88d5e76d9a6c791730bd3f8f5d33709ae3f",
+        "quad": [
+          [
+            319,
+            103
+          ],
+          [
+            510,
+            349
+          ],
+          [
+            295,
+            568
+          ],
+          [
+            74,
+            333
+          ]
+        ],
+        "cropInsetFraction": 0,
+        "effectiveQuad": [
+          [
+            319,
+            103
+          ],
+          [
+            510,
+            349
+          ],
+          [
+            295,
+            568
+          ],
+          [
+            74,
+            333
+          ]
+        ],
+        "runs": {
+          "detailed": {
+            "status": "error",
+            "curves": 155,
+            "totalSeconds": 0.2409857919999995,
+            "traceChangeFraction": 0.01098125,
+            "mergedJunctions": 0,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 0.5,
+              "smoothRadius": 0,
+              "snapRadius": 0,
+              "maxSpan": 15,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            },
+            "message": "Sheet A has 2 start transitions but 1 end transitions. Opposite borders must agree."
+          },
+          "simplified": {
+            "status": "error",
+            "curves": 99,
+            "totalSeconds": 0.21441291700000148,
+            "traceChangeFraction": 0.02420625,
+            "mergedJunctions": 3,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 1.5,
+              "smoothRadius": 0.6,
+              "snapRadius": 1.5,
+              "maxSpan": 30,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            },
+            "message": "Sheet A has 2 start transitions but 1 end transitions. Opposite borders must agree."
+          }
+        }
+      },
+      {
+        "id": "flettede-viking",
+        "url": "https://flettedehjerter.dk/wp-content/uploads/2020/12/vikingeskibshjerte.jpg",
+        "inputSha256": "cb201b4d025b7b1ed4d1a977ba9f09fd042ec848046373279ca209552395458b",
+        "quad": [
+          [
+            727,
+            326
+          ],
+          [
+            1277,
+            849
+          ],
+          [
+            737,
+            1393
+          ],
+          [
+            231,
+            874
+          ]
+        ],
+        "cropInsetFraction": 0.01,
+        "effectiveQuad": [
+          [
+            727.16,
+            331.345
+          ],
+          [
+            1271.6599999999999,
+            849.115
+          ],
+          [
+            737.06,
+            1387.675
+          ],
+          [
+            236.12,
+            873.865
+          ]
+        ],
+        "runs": {
+          "detailed": {
+            "status": "candidate_graph_exhausted",
+            "curves": 141,
+            "totalSeconds": 0.7198855409999997,
+            "traceChangeFraction": 0.0125375,
+            "mergedJunctions": 0,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 0.5,
+              "smoothRadius": 0,
+              "snapRadius": 0,
+              "maxSpan": 15,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            },
+            "message": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          },
+          "simplified": {
+            "status": "candidate_graph_exhausted",
+            "curves": 80,
+            "totalSeconds": 0.4225265419999996,
+            "traceChangeFraction": 0.0287875,
+            "mergedJunctions": 6,
+            "settings": {
+              "width": 100,
+              "resolution": 400,
+              "fitTolerance": 1.5,
+              "smoothRadius": 0.6,
+              "snapRadius": 1.5,
+              "maxSpan": 30,
+              "timeLimit": 5,
+              "trials": 0,
+              "roundHidden": false,
+              "requireMaterialCore": true,
+              "seed": 1729
+            },
+            "message": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible."
+          }
+        }
+      }
+    ],
+    "limitations": [
+      "Manually cropped photo targets; recorded insets exclude outer paper/background fringes.",
+      "No reference cutting templates used or recovered-cut fidelity score computed.",
+      "Zero perturbation trials and no physical assembly test.",
+      "Two cases still have inconsistent opposite-border transition counts and two exhaust the finite candidate graph.",
+      "Original bell source file was unavailable; screenshot diagnostics do not establish an exact reproduction.",
+      "Pinterest collages are visual references, not scored cases.",
+      "Full 38-design handoff reconstruction benchmark remains incomplete."
+    ]
+  },
+  "evidenceNotes": "Timestamped local tmp directories preserve successes and failures, including earlier failed browser/photo attempts. They are ignored by Git. Scripts, settings, URLs, source hashes and outcome summaries are retained here for reproduction.",
+  "runtimeAndTestSha256": {
+    "package.json": "d443ee60500adf7c0931776eece0446adbce4c5840c6f09057837fdeabd213a5",
+    "scripts/inverse/browser-test.mjs": "ef9909e88c28e137a9b8775b2db3699b9a958ead34c01c6a92eea04d610d0f3e",
+    "scripts/inverse/core.test.mjs": "fcd6a4cd4444a805339e4978ad080c217379e8bfe7452a63fd142c5ac18adb1e",
+    "scripts/inverse/fixtures.mjs": "ee22b89d9f049e502e391bd9491b778c9cd76f319237733c8e5fc578be0b998f",
+    "scripts/inverse/integration.test.mjs": "cc86d35235e2d5af67be5774936e92122a2e5c48a789261e9c1f2a3d28c7d548",
+    "scripts/inverse/photo-benchmark.mjs": "e599d00825f102140bf917def4fadd6044441086c20557fd14637e07c438c588",
+    "scripts/inverse/photo-cases.json": "074102f6b6eb49c69ff2a853173cdb743fa042ffa8a0401e0caf7f7bbb668f69",
+    "src/lib/i18n/translations.ts": "a20746cf2a848b998443ec43e1642b6466d0677b7d372d290138d570f38b3454",
+    "src/lib/inverse/SvgPreview.svelte": "adddc669237b716f55d148b0a05a316057ca17c14e27eb5ec423190f68b6987c",
+    "src/lib/inverse/client.test.ts": "3874c5965c80c9cbe560c34fd867645dc5ce24209a33067ac707180469ac3925",
+    "src/lib/inverse/client.ts": "972c06023a4839718c6a74defc629c46b4e4d982572696c348b290cc6191006d",
+    "src/lib/inverse/messages.ts": "672988e137eb5973380a0336eb66b13d6825e6b1e06cbe505fb92f765a3b40a8",
+    "src/routes/[[lang=lang]]/+page.svelte": "69403cc66dfa4c9df0ae0d621910b3d9652684dc853f3425bdade3b3a45e3d22",
+    "src/routes/[[lang=lang]]/generate/+page.svelte": "4848c6ef28af85d8fd7edbae03e662bdd60056ffffa093ebf315101851e34578",
+    "src/routes/[[lang=lang]]/generate/+page.ts": "dd3e843290dc953e0e5096febbd8c1502cf6324cf6a414f207e6c360df08629a",
+    "src/routes/sitemap.xml/+server.ts": "02447789037576564b7a7cea680471759de7bab2baad4f43801f1d5fb21ece28",
+    "static/inverse/LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+    "static/inverse/THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/engine.js": "aecd6ea69fea86b116010571fb94793d5fd79a41c0d7b41e87027fca7b2df14b",
+    "static/inverse/core/export.js": "eb9c4eb5b563f095b294e4f8da6c4c485ca58ba657ed74c08bb21db8b7beabcd",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "fc0102d90275f6243abfaf8c4a2b30fcdf7728d0744782395354069ca0d52e77",
+    "static/inverse/core/input.js": "5dadb4aee2f26af1940b94b34a1a8f3a1ce9f4f98b55ed4673c1afbcef5223ac",
+    "static/inverse/core/material.js": "1cba84ccd183e847f94f1b5a0e2aee64b20d8cb0d3686d238964375f46a2e120",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "d96ee2bee0b3d52a29a23144059970da7fce0c8bccd5e30ccff27f02af3cbb44",
+    "static/inverse/core/solver.js": "a44a55908b50f77adfdbaac5ea6b97ff03e2d0f50befd8723ab435974d97d467",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+    "static/inverse/examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+    "static/inverse/examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+    "static/inverse/vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+    "static/inverse/vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+    "static/inverse/vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036",
+    "static/inverse/vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+    "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+    "static/inverse/worker.js": "1ed016f4714b1f3fb0644027c12f142df6c0950a43e2f13f374c155d1d2cb02e"
+  }
+}

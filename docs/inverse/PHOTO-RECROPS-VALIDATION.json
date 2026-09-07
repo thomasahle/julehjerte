@@ -1,0 +1,464 @@
+{
+  "recordedAt": "2026-09-07T16:38:52.839904+00:00",
+  "archive": "/Users/ahle/Downloads/heart_recrop_reconstruction.zip",
+  "archiveSha256": "a38010ddf67f0788c24f55ccfd6e34a920e1ad5a5228781c22fd4f6ffd8eb021",
+  "originalFileChecksumsVerified": 837,
+  "localArchiveUntouched": true,
+  "scope": "Red/white photographic preparation and bounded border-noise robustness integrated; Python direct optimizer remains outside browser runtime.",
+  "sourceCodeSha256": {
+    "code/unmix.py": "8ed4de07e392ea72e435ea3ee852a139cf4721f4ae67879047c80cf63ca61d7c",
+    "code/calibrate.py": "da28b9e9b55090bdfa0d4c82ba7a99162da4cf8aa2f0cff7af63acc54d199477",
+    "code/targets.py": "f9e5973225c4cc71f9d053b8ecd37487dc85781aa1f29eef2069ea9f7f6321f0",
+    "code/boundary_loss.py": "5c5d81268c4cdef6b7f5c612f43ad05021c7747080c7fc43da53405bc67bf2ee"
+  },
+  "colorParity": [
+    {
+      "id": "checkerboard",
+      "maximumProbabilityDifference": 1.1827232215586123e-16,
+      "maskDisagreementPixels": 0,
+      "knownPaletteMaximumProbabilityDifference": 1.1827232215586123e-16,
+      "paletteDelta": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "six_point_star",
+      "maximumProbabilityDifference": 0,
+      "maskDisagreementPixels": 0,
+      "knownPaletteMaximumProbabilityDifference": 0,
+      "paletteDelta": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "flower",
+      "maximumProbabilityDifference": 0,
+      "maskDisagreementPixels": 0,
+      "knownPaletteMaximumProbabilityDifference": 0,
+      "paletteDelta": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "framed_tree",
+      "maximumProbabilityDifference": 0,
+      "maskDisagreementPixels": 0,
+      "knownPaletteMaximumProbabilityDifference": 0,
+      "paletteDelta": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "three_hearts",
+      "maximumProbabilityDifference": 0,
+      "maskDisagreementPixels": 0,
+      "knownPaletteMaximumProbabilityDifference": 0,
+      "paletteDelta": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    }
+  ],
+  "archivePythonTests": {
+    "passed": 37,
+    "failed": 1,
+    "failure": "test_reusable_unmix_matches_frozen_targets[checkerboard] exact equality for six near-zero values, maximum absolute difference 1.183e-16; binary targets identical",
+    "gradientTests": "all pass",
+    "originalTestsModified": false,
+    "log": "/tmp/juleflet-recrop-pinned-tests.log"
+  },
+  "archiveCropperTests": {
+    "passed": 6,
+    "log": "/tmp/juleflet-recrop-js-tests.log"
+  },
+  "suppliedExportValidation": {
+    "cases": [
+      {
+        "case": "checkerboard",
+        "fresh_audit_pass": true,
+        "svg_scalar_coordinates_checked": 1144,
+        "svg_shapely_mismatch_percent_768": 0.03848605685763889,
+        "max_allowed_percent": 0.25,
+        "raster_difference_interpretation": "includes Cairo antialias threshold vs vector pixel-center sampling and 0.005 mm adaptive flattening; not an exact-area certificate"
+      },
+      {
+        "case": "six_point_star",
+        "fresh_audit_pass": true,
+        "svg_scalar_coordinates_checked": 918,
+        "svg_shapely_mismatch_percent_768": 0.016445583767361112,
+        "max_allowed_percent": 0.25,
+        "raster_difference_interpretation": "includes Cairo antialias threshold vs vector pixel-center sampling and 0.005 mm adaptive flattening; not an exact-area certificate"
+      },
+      {
+        "case": "flower",
+        "fresh_audit_pass": true,
+        "svg_scalar_coordinates_checked": 846,
+        "svg_shapely_mismatch_percent_768": 0.01593695746527778,
+        "max_allowed_percent": 0.25,
+        "raster_difference_interpretation": "includes Cairo antialias threshold vs vector pixel-center sampling and 0.005 mm adaptive flattening; not an exact-area certificate"
+      },
+      {
+        "case": "framed_tree",
+        "fresh_audit_pass": true,
+        "svg_scalar_coordinates_checked": 1294,
+        "svg_shapely_mismatch_percent_768": 0.025770399305555556,
+        "max_allowed_percent": 0.25,
+        "raster_difference_interpretation": "includes Cairo antialias threshold vs vector pixel-center sampling and 0.005 mm adaptive flattening; not an exact-area certificate"
+      },
+      {
+        "case": "three_hearts",
+        "fresh_audit_pass": true,
+        "svg_scalar_coordinates_checked": 612,
+        "svg_shapely_mismatch_percent_768": 0.017293294270833336,
+        "max_allowed_percent": 0.25,
+        "raster_difference_interpretation": "includes Cairo antialias threshold vs vector pixel-center sampling and 0.005 mm adaptive flattening; not an exact-area certificate"
+      }
+    ],
+    "python_suite": "results/TEST_RESULTS.txt",
+    "js_cropper_suite": "results/CROPPER_TEST_RESULTS.txt",
+    "photograph_crop_during_inverse_fit": "fixed",
+    "input_templates_used": false,
+    "physical_assembly_tested": false,
+    "fresh_replay": null,
+    "all_release_checks_passed": true
+  },
+  "freshReplay": {
+    "directory": "tmp/inverse-recrop-pinned-all",
+    "savedTemplateInputs": false,
+    "wallSeconds": 348.6066675420152,
+    "timingNote": "Includes process startup, preparation, fitting and measurement on this Mac while other QA was running; not an isolated speed comparison.",
+    "coordinateIdentityToLinuxArchive": false,
+    "cases": [
+      {
+        "case": "checkerboard",
+        "slits": [
+          7,
+          7
+        ],
+        "maskAgreementPercent": 99.09210205078125,
+        "minimumSpacingMm": 1.7878817233036288,
+        "minimumOuterClearanceMm": 8.660742160323784,
+        "auditAt1_5mm": true,
+        "pythonAuditAtAppNominalWidth": false,
+        "appNominalWidthMm": 2.50501002004008,
+        "isActualAppAudit": false,
+        "coordinatesEqualToArchive": false,
+        "scalarCoordinates": 1456
+      },
+      {
+        "case": "flower",
+        "slits": [
+          3,
+          3
+        ],
+        "maskAgreementPercent": 99.560546875,
+        "minimumSpacingMm": 3.2424995343673806,
+        "minimumOuterClearanceMm": 2.2554420326458837,
+        "auditAt1_5mm": true,
+        "pythonAuditAtAppNominalWidth": false,
+        "appNominalWidthMm": 2.50501002004008,
+        "isActualAppAudit": false,
+        "coordinatesEqualToArchive": false,
+        "scalarCoordinates": 824
+      },
+      {
+        "case": "framed_tree",
+        "slits": [
+          4,
+          4
+        ],
+        "maskAgreementPercent": 98.3551025390625,
+        "minimumSpacingMm": 1.5059304486552105,
+        "minimumOuterClearanceMm": 1.7566879579798593,
+        "auditAt1_5mm": true,
+        "pythonAuditAtAppNominalWidth": false,
+        "appNominalWidthMm": 2.50501002004008,
+        "isActualAppAudit": false,
+        "coordinatesEqualToArchive": false,
+        "scalarCoordinates": 1592
+      },
+      {
+        "case": "six_point_star",
+        "slits": [
+          3,
+          3
+        ],
+        "maskAgreementPercent": 99.29351806640625,
+        "minimumSpacingMm": 1.6959186370837358,
+        "minimumOuterClearanceMm": 3.6758638290883305,
+        "auditAt1_5mm": true,
+        "pythonAuditAtAppNominalWidth": false,
+        "appNominalWidthMm": 2.50501002004008,
+        "isActualAppAudit": false,
+        "coordinatesEqualToArchive": false,
+        "scalarCoordinates": 1320
+      },
+      {
+        "case": "three_hearts",
+        "slits": [
+          3,
+          3
+        ],
+        "maskAgreementPercent": 99.530029296875,
+        "minimumSpacingMm": 10.78673102519097,
+        "minimumOuterClearanceMm": 1.8506628184009015,
+        "auditAt1_5mm": true,
+        "pythonAuditAtAppNominalWidth": false,
+        "appNominalWidthMm": 2.50501002004008,
+        "isActualAppAudit": false,
+        "coordinatesEqualToArchive": false,
+        "scalarCoordinates": 704
+      }
+    ],
+    "independentExports": {
+      "cases": [
+        {
+          "case": "checkerboard",
+          "fresh_audit_pass": true,
+          "svg_scalar_coordinates_checked": 1120,
+          "svg_shapely_mismatch_percent_768": 0.03916422526041667,
+          "max_allowed_percent": 0.25,
+          "raster_difference_interpretation": "includes Cairo antialias threshold vs vector pixel-center sampling and 0.005 mm adaptive flattening; not an exact-area certificate"
+        },
+        {
+          "case": "six_point_star",
+          "fresh_audit_pass": true,
+          "svg_scalar_coordinates_checked": 1002,
+          "svg_shapely_mismatch_percent_768": 0.017123752170138888,
+          "max_allowed_percent": 0.25,
+          "raster_difference_interpretation": "includes Cairo antialias threshold vs vector pixel-center sampling and 0.005 mm adaptive flattening; not an exact-area certificate"
+        },
+        {
+          "case": "flower",
+          "fresh_audit_pass": true,
+          "svg_scalar_coordinates_checked": 630,
+          "svg_shapely_mismatch_percent_768": 0.017293294270833336,
+          "max_allowed_percent": 0.25,
+          "raster_difference_interpretation": "includes Cairo antialias threshold vs vector pixel-center sampling and 0.005 mm adaptive flattening; not an exact-area certificate"
+        },
+        {
+          "case": "framed_tree",
+          "fresh_audit_pass": true,
+          "svg_scalar_coordinates_checked": 1210,
+          "svg_shapely_mismatch_percent_768": 0.025431315104166668,
+          "max_allowed_percent": 0.25,
+          "raster_difference_interpretation": "includes Cairo antialias threshold vs vector pixel-center sampling and 0.005 mm adaptive flattening; not an exact-area certificate"
+        },
+        {
+          "case": "three_hearts",
+          "fresh_audit_pass": true,
+          "svg_scalar_coordinates_checked": 540,
+          "svg_shapely_mismatch_percent_768": 0.020345052083333336,
+          "max_allowed_percent": 0.25,
+          "raster_difference_interpretation": "includes Cairo antialias threshold vs vector pixel-center sampling and 0.005 mm adaptive flattening; not an exact-area certificate"
+        }
+      ],
+      "python_suite": "results/TEST_RESULTS.txt",
+      "js_cropper_suite": "results/CROPPER_TEST_RESULTS.txt",
+      "photograph_crop_during_inverse_fit": "fixed",
+      "input_templates_used": false,
+      "physical_assembly_tested": false,
+      "fresh_replay": null,
+      "all_release_checks_passed": true
+    },
+    "svgScalarCoordinatesChecked": 4502,
+    "maxIndependentRendererMismatchPercent": 0.03916422526041667,
+    "report": "tmp/inverse-recrop-integration/index.html"
+  },
+  "earlierLocalReplayAttempts": [
+    {
+      "directory": "tmp/inverse-recrop-fresh-flower",
+      "status": "stopped by missing Cairo library lookup; resolved using Homebrew library path"
+    },
+    {
+      "directory": "tmp/inverse-recrop-fresh-all",
+      "status": "stopped intentionally during checkerboard refinement; Python 3.9 selected older Shapely 2.0. Restarted source-only with Python 3.12 and supplied numerical dependency versions."
+    }
+  ],
+  "broaderPhotoRuns": {
+    "general": {
+      "directory": "tmp/inverse-hard-photos/2026-09-07T16-23-34-522Z",
+      "caseStatuses": {
+        "incomplete": 15,
+        "failed": 28,
+        "obscured": 1,
+        "validated": 3
+      },
+      "attemptStatuses": {
+        "border_mismatch": 23,
+        "candidate_graph_exhausted": 5,
+        "validated": 3
+      },
+      "resultsSha256": "f5485584a53ef0cf120f1ccba5bd7b585aef704623b86eada629e1064c68110b"
+    },
+    "collageMixture": {
+      "directory": "tmp/inverse-hard-photos/2026-09-07T16-24-44-753Z",
+      "caseStatuses": {
+        "failed": 24
+      },
+      "attemptStatuses": {
+        "border_mismatch": 20,
+        "candidate_graph_exhausted": 3,
+        "time_limit": 1
+      },
+      "resultsSha256": "6db9ee213f8302afa8eeca5f6b9592cae6b55249a0d52c98846cb472f1b9a055"
+    },
+    "fixedRecrops": {
+      "directory": "tmp/inverse-hard-photos/2026-09-07T16-23-33-116Z",
+      "caseStatuses": {
+        "failed": 5
+      },
+      "attemptStatuses": {
+        "time_limit": 4,
+        "border_mismatch": 6
+      },
+      "resultsSha256": "a91071e2d99c8d27311319b2077d2b335fb937dbd552925c734e3076a7bb6c3f"
+    },
+    "perturbations": {
+      "directory": "tmp/inverse-hard-photos/2026-09-07T16-06-34-261Z",
+      "caseStatuses": {
+        "validated": 10,
+        "failed": 2
+      },
+      "attemptStatuses": {
+        "validated": 10,
+        "time_limit": 2
+      },
+      "resultsSha256": "c11d297d059f127beea211275465e43562baa46b65a3c37f5717d268a6681260"
+    },
+    "crossRetry": {
+      "directory": "tmp/inverse-hard-photos/2026-09-07T16-31-40-262Z",
+      "caseStatuses": {
+        "validated": 1
+      },
+      "attemptStatuses": {
+        "validated": 1
+      },
+      "resultsSha256": "6cbc01dce9e355e657ced3e930785395df76992055052dc94f1935d1c6fc4720"
+    },
+    "curvedStarRetry": {
+      "directory": "tmp/inverse-hard-photos/2026-09-07T16-31-41-371Z",
+      "caseStatuses": {
+        "failed": 1
+      },
+      "attemptStatuses": {
+        "round_limit": 1
+      },
+      "resultsSha256": "f25d075e73f3df94ca5c3e9723bb9fabc35a297db9532e571395a75ee272e774"
+    },
+    "borderDiagnostics": {
+      "directory": "tmp/inverse-hard-photos/2026-09-07T16-08-12-857Z",
+      "caseStatuses": {
+        "failed": 8
+      },
+      "attemptStatuses": {
+        "candidate_graph_exhausted": 14,
+        "time_limit": 2
+      },
+      "resultsSha256": "4149ae28614151f8595884a396f0690e6e5a76e2a758ff7fd53a4803e0dd99d4"
+    },
+    "whiteBirdsRetry": {
+      "directory": "tmp/inverse-hard-photos/2026-09-07T16-06-32-941Z",
+      "caseStatuses": {
+        "failed": 1
+      },
+      "attemptStatuses": {
+        "time_limit": 1
+      },
+      "resultsSha256": "8364c4f95763a806036bc3d0698c4eb4fed8ebfaba06c2aad9a79abb4538887a"
+    }
+  },
+  "checks": [
+    {
+      "command": "npm run check",
+      "status": "pass",
+      "errors": 0,
+      "warnings": 8,
+      "warningNote": "Existing PaperHeart.svelte accessibility warnings"
+    },
+    {
+      "command": "npm run lint",
+      "status": "pass"
+    },
+    {
+      "command": "npm test",
+      "status": "pass",
+      "websiteAndWorkerTests": 127,
+      "engineAndIntegrationTests": 90,
+      "total": 217
+    },
+    {
+      "command": "npm run build",
+      "status": "pass",
+      "adapter": "static"
+    },
+    {
+      "command": "npm run test:inverse:mixture:browser",
+      "status": "pass",
+      "origin": "http://127.0.0.1:4174",
+      "browsers": [
+        "chromium",
+        "firefox"
+      ],
+      "checks": 16,
+      "evidence": "tmp/inverse-browser/2026-09-07T16-35-24-170Z-mixture/results.json"
+    },
+    {
+      "command": "npm run test:inverse:examples:browser",
+      "status": "pass",
+      "origin": "http://127.0.0.1:4174",
+      "browsers": [
+        "chromium",
+        "firefox"
+      ],
+      "checks": 22,
+      "evidence": "tmp/inverse-browser/2026-09-07T16-30-51-115Z-examples/results.json"
+    }
+  ],
+  "browserChecks": 38,
+  "physicalAssemblyTested": false
+}

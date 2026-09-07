@@ -1,0 +1,29 @@
+{
+  "description": "Image-only tests from the user's bell and hard-case collage. Corners are selected visually without cutting templates or solver feedback. Top/bottom and left/right hearts clipped by the screenshot frame are excluded.",
+  "bell": { "file": "tmp/inverse-robustness/bell-source.png", "quad": [[488,115],[873,494],[489,873],[106,495]] },
+  "collage": {
+    "file": "tmp/inverse-robustness/hard-cases.png",
+    "dimensions": [1482,1112],
+    "cases": [
+      { "id": "nested-squares", "quad": [[214,178],[312,260],[213,332],[124,249]] },
+      { "id": "outline-star", "quad": [[422,173],[516,253],[427,339],[337,258]] },
+      { "id": "floral-checker", "quad": [[620,166],[719,244],[625,326],[518,247]] },
+      { "id": "dense-checker", "quad": [[825,170],[937,250],[836,337],[724,252]] },
+      { "id": "bird", "quad": [[1033,156],[1142,234],[1040,316],[943,241]] },
+      { "id": "leaf", "quad": [[1226,140],[1336,225],[1251,317],[1149,238]] },
+      { "id": "gift", "quad": [[231,399],[327,476],[237,552],[146,471]] },
+      { "id": "gingerbread", "quad": [[430,415],[521,487],[427,575],[338,492]] },
+      { "id": "white-birds", "quad": [[614,417],[701,487],[622,581],[521,493]] },
+      { "id": "flower", "quad": [[794,385],[903,469],[811,569],[704,481]] },
+      { "id": "warped-checker", "quad": [[993,374],[1101,464],[1008,544],[904,463]] },
+      { "id": "round-checker", "quad": [[1190,387],[1290,465],[1202,549],[1102,471]] },
+      { "id": "santa", "quad": [[1355,371],[1451,456],[1371,537],[1271,461]] },
+      { "id": "orb", "quad": [[407,661],[507,737],[386,830],[308,749]] },
+      { "id": "stacked-hearts", "quad": [[603,652],[703,735],[603,831],[506,741]] },
+      { "id": "jigsaw", "quad": [[787,644],[890,724],[798,824],[705,741]] },
+      { "id": "candle", "quad": [[999,607],[1114,700],[1008,800],[906,707]] },
+      { "id": "maple-leaf", "quad": [[1182,635],[1285,721],[1181,814],[1093,726]] },
+      { "id": "crown", "quad": [[1370,631],[1459,710],[1375,793],[1284,717]] }
+    ]
+  }
+}

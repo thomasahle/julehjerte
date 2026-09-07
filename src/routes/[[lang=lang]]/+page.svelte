@@ -237,6 +237,9 @@
     <Button href="{langBase}/editor" variant="destructive" class="shadow-s">
       {t("createNewHeart", lang)}
     </Button>
+    <Button href="{langBase}/generate/" variant="secondary">
+      {t("imageToHeart", lang)}
+    </Button>
     <div class="inline-flex rounded-md shadow-xs" role="group">
       <Tooltip.Root disabled={selectedCount > 0 || generating}>
         <Tooltip.Trigger>
