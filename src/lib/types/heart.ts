@@ -1,3 +1,4 @@
+import type { DifficultyLevel } from '$lib/utils/difficulty';
 export type Vec = { x: number; y: number };
 export type LobeId = 'left' | 'right';
 export type NodeType = 'corner' | 'smooth' | 'symmetric';
@@ -49,3 +50,22 @@ export interface HeartDesign {
 
 // On-disk format for gallery hearts and shared designs.
 export type HeartDesignJson = Omit<HeartDesign, 'fingers'> & { fingers: FingerPathData[] };
+
+/**
+ * The credit and facts the heart detail page shows beside the drawing.
+ *
+ * Assembled from the build-time metadata for a gallery heart (so it is in the
+ * prerendered HTML) and from the loaded design for one the visitor drew.
+ */
+export interface HeartInfo {
+	name: string;
+	author: string | null;
+	authorUrl: string | null;
+	publisher: string | null;
+	publisherUrl: string | null;
+	source: string | null;
+	date: string | null;
+	description: string | null;
+	gridSize: { x: number; y: number };
+	difficulty: DifficultyLevel;
+}

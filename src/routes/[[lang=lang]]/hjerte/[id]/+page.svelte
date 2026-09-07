@@ -17,20 +17,14 @@
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
   import type { PageProps } from "./$types";
+  import HeartActions from "$lib/components/detail/HeartActions.svelte";
+  import HeartPanel from "$lib/components/detail/HeartPanel.svelte";
   import HeartStage from "$lib/components/detail/HeartStage.svelte";
   import RelatedHearts from "$lib/components/detail/RelatedHearts.svelte";
-  import StepList from "$lib/components/detail/StepList.svelte";
-  import DifficultyDots from "$lib/components/DifficultyDots.svelte";
   import Fir from "$lib/components/Fir.svelte";
   import Scene from "$lib/components/Scene.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
-  import {
-    ArrowLeftIcon,
-    ArrowRightIcon,
-    DownloadIcon,
-    PencilIcon,
-    ShareIcon,
-  } from "$lib/components/icons";
+  import { ArrowLeftIcon } from "$lib/components/icons";
   import { FIR_FILLS } from "$lib/landscape";
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from "$lib/stores/collection";
   import {
@@ -49,11 +43,11 @@
     href as routeHref,
   } from "$lib/i18n/routes";
   import { lobesShareTemplate } from "$lib/utils/symmetry";
-  import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
+  import { calculateDifficulty } from "$lib/utils/difficulty";
   import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
   import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl } from "$lib/utils/shareDesign";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
-  import type { HeartDesign } from "$lib/types/heart";
+  import type { HeartDesign, HeartInfo } from "$lib/types/heart";
   import {
     trackHeartDownload,
     trackHeartShare,
@@ -140,21 +134,6 @@
     if (!clientDesign) error = t("heartNotFound", lang);
     clientLoading = false;
   });
-
-  // Header/detail text. Comes from the build-time metadata for gallery hearts (so it
-  // is in the prerendered HTML) and from the loaded design for user-created hearts.
-  type HeartInfo = {
-    name: string;
-    author: string | null;
-    authorUrl: string | null;
-    publisher: string | null;
-    publisherUrl: string | null;
-    source: string | null;
-    date: string | null;
-    description: string | null;
-    gridSize: { x: number; y: number };
-    difficulty: DifficultyLevel;
-  };
 
   let info = $derived.by<HeartInfo | null>(() => {
     if (meta) {
@@ -398,112 +377,31 @@
         <div class="stage-col">
           <HeartStage {design} {photo} {sharedTemplate} {lang} idPrefix={heartId} />
 
-          <div class="actions">
-            {#if isShared && design}
-              {#if savedShared}
-                <a class="btn btn-dark" href={homeAnchorHref(makeHeartAnchorId(design.id), lang)}>
-                  {t('showInGallery', lang)}
-                </a>
-              {:else}
-                <button class="btn btn-dark" type="button" onclick={handleSaveShared}>
-                  {t('saveToMyHearts', lang)}
-                </button>
-              {/if}
-            {/if}
-            <button class="btn btn-primary" type="button" onclick={handleDownload} disabled={!design}>
-              <DownloadIcon size={18} />
-              {t('downloadPdfTemplate', lang)}
-            </button>
-            <a class="btn btn-outline" href={editHref} onclick={handleEdit}>
-              <PencilIcon size={18} />
-              {t('openInEditor', lang)}
-            </a>
-            <button
-              class="btn btn-ghost"
-              type="button"
-              onclick={handleShare}
-              aria-label={t('share', lang)}
-            >
-              {#if shareStatus === 'copied'}
-                {t('copied', lang)}
-              {:else if shareStatus === 'error'}
-                {t('failed', lang)}
-              {:else}
-                <ShareIcon size={18} />
-                {t('share', lang)}
-              {/if}
-            </button>
-          </div>
-
-          {#if isShared && savedShared}
-            <p class="save-note" role="status">{t('savedToMyHearts', lang)}</p>
-          {:else if saveError}
-            <p class="save-note save-error" role="alert">{saveError}</p>
-          {/if}
+          <HeartActions
+            {lang}
+            hasDesign={design !== null}
+            {editHref}
+            {isShared}
+            {savedShared}
+            errorNote={saveError}
+            galleryHref={design ? homeAnchorHref(makeHeartAnchorId(design.id), lang) : ''}
+            {shareStatus}
+            onDownload={handleDownload}
+            onEdit={handleEdit}
+            onShare={handleShare}
+            onSaveShared={handleSaveShared}
+          />
         </div>
 
-        <div class="panel">
-          {#if isShared}
-            <p class="shared-note">{t('sharedHeart', lang)}</p>
-          {/if}
-
-          <div class="panel-head">
-            <h1>{info.name}</h1>
-            <p class="credit">
-              {#if info.author}
-                {t('by', lang)}
-                {#if info.authorUrl}
-                  <a href={info.authorUrl} target="_blank" rel="noopener noreferrer">{info.author}</a>
-                {:else}
-                  {info.author}
-                {/if}
-                &middot;
-              {/if}
-              {stripsLabel}
-            </p>
-            {#if extraMeta.length}
-              <p class="credit-extra">
-                {#each extraMeta as row, i (row.label)}
-                  {#if i > 0}&middot;{/if}
-                  <span>
-                    {row.label}:
-                    {#if row.url}
-                      <a href={row.url} target="_blank" rel="noopener noreferrer">{row.value}</a>
-                    {:else}
-                      {row.value}
-                    {/if}
-                  </span>
-                {/each}
-              </p>
-            {/if}
-          </div>
-
-          {#if description}
-            <p class="description">{description}</p>
-          {/if}
-
-          <div class="facts">
-            <div class="fact">
-              <span class="fact-label">{t('difficulty', lang)}</span>
-              <DifficultyDots level={info.difficulty} {lang} size={10} />
-            </div>
-            <div class="fact">
-              <span class="fact-label">{t('symmetry', lang)}</span>
-              <span class="fact-value">
-                {sharedTemplate ? t('symmetryOneTemplate', lang) : t('symmetryTwoTemplates', lang)}
-              </span>
-            </div>
-          </div>
-
-          <div class="how-to">
-            <h2>{t('howToMake', lang)}</h2>
-            <StepList {lang} />
-            <a class="guide-link" href={routeHref('howTo', lang)}>
-              {t('seeIllustratedGuide', lang)}
-              <ArrowRightIcon size={16} />
-            </a>
-          </div>
-        </div>
+        <HeartPanel
+          {lang}
+          {info}
+          {stripsLabel}
+          {description}
+          {extraMeta}
+          {sharedTemplate}
+          {isShared}
+        />
       {:else if loading}
         <div class="detail-message">
           <p class="message-card">{t('loadingTemplate', lang)}</p>
@@ -608,146 +506,6 @@
     gap: 18px;
   }
 
-  .actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding-top: 6px;
-  }
-
-  .save-note {
-    margin: 0;
-    color: var(--green);
-    font-size: 14px;
-  }
-
-  .save-error {
-    color: var(--red);
-  }
-
-  /* the translucent text panel */
-  .panel {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-    padding: 24px 28px;
-    border-radius: 16px;
-    background: rgb(255 255 255 / 0.55);
-  }
-
-  .shared-note {
-    margin: 0;
-    color: var(--green);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .panel-head {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .panel h1 {
-    margin: 0;
-    font-size: 44px;
-    font-weight: 600;
-    line-height: 1.05;
-    color: var(--deep);
-  }
-
-  .credit {
-    margin: 0;
-    font-size: 16px;
-    color: var(--muted);
-  }
-
-  .credit-extra {
-    margin: 0;
-    font-size: 14px;
-    color: var(--muted);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .credit a,
-  .credit-extra a {
-    color: var(--green);
-    text-decoration: none;
-  }
-
-  .credit a:hover,
-  .credit-extra a:hover {
-    color: var(--red);
-    text-decoration: underline;
-  }
-
-  .description {
-    margin: 0;
-    font-size: 17px;
-    line-height: 1.5;
-    color: var(--ink);
-  }
-
-  .facts {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    padding: 16px 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .fact {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .fact-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .fact-value {
-    font-size: 15px;
-    color: var(--ink);
-  }
-
-  .how-to {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .how-to h2 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--deep);
-  }
-
-  .guide-link {
-    display: inline-flex;
-    align-items: center;
-    align-self: flex-start;
-    gap: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--green);
-    text-decoration: none;
-  }
-
-  .guide-link:hover {
-    color: var(--red);
-  }
-
   /* Stacked below 1100: the big fir has no room next to the text. */
   @media (max-width: 1099px) {
     .detail-main {
@@ -769,9 +527,6 @@
       padding: 12px 24px 32px;
     }
 
-    .panel h1 {
-      font-size: 36px;
-    }
   }
 
   @media (max-width: 599px) {
@@ -783,21 +538,5 @@
       padding: 12px 16px 28px;
     }
 
-    .panel {
-      padding: 20px 18px;
-      gap: 18px;
-    }
-
-    .panel h1 {
-      font-size: 30px;
-    }
-
-    .description {
-      font-size: 16px;
-    }
-
-    .facts {
-      grid-template-columns: minmax(0, 1fr);
-    }
   }
 </style>
