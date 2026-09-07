@@ -296,6 +296,15 @@ re-centres it. The band is measured, not assumed: it is a real element next to t
 ResizeObserver, and where there is none (the fixed-size instance, the mobile editor) the fit falls back to the
 surface itself.
 
+**Gem** means something. A heart that is already in "Mine hjerter" keeps autosaving into it, so re-opening one
+and nudging a curve needs no button. A heart that is *not* — a blank editor, a copy of a gallery heart
+(`?from=`), a shared `#design=` link — writes nothing to the collection until "Gem" is pressed; otherwise every
+stray colour click would leave a "Mit hjerte" card behind. Its work in progress goes to one draft in
+localStorage instead (`paperheart.draft`: the design, where it came from, when it was written), on the same
+debounced path autosave uses. Open the editor as a new heart with a draft waiting and it is offered back in a
+canvas notice — "Du har en kladde fra sidst. Fortsæt hvor du slap?", *Fortsæt* / *Start forfra* — read after
+mount, never during render. Saving the heart, discarding the draft, or starting another one clears it.
+
 Colours belong to the heart, not to the browser: a design may carry `colors: { left, right }` (two hex values),
 and the Farver section edits them with two real colour inputs plus "Byt". Gallery hearts carry none and follow
 the site-wide colour store as before; a heart the visitor draws stores what was picked, and saving, sharing and

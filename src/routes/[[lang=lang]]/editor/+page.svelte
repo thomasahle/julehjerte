@@ -7,6 +7,14 @@
   import { t, tArray, type Language } from '$lib/i18n';
   import { DEFAULT_COLORS, getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from '$lib/stores/collection';
+  import {
+    clearDraft,
+    gallerySource,
+    readDraft,
+    writeDraft,
+    type DraftSource,
+    type EditorDraft
+  } from '$lib/editor/draft';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
   import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
   import { detectSymmetry } from '$lib/utils/symmetry';
@@ -154,6 +162,19 @@
   let draftId = $state<string | null>(null);
   let autosaveTimeout: ReturnType<typeof setTimeout> | null = null;
   let autosaveDirty = false;
+  // Where autosave writes. Only a heart that is already in "Mine hjerter" goes
+  // straight back into the collection; anything new (a blank editor, a copy of a
+  // gallery heart, a shared link) is kept as the single editor draft until the
+  // visitor presses "Gem", so a stray colour click leaves no card behind.
+  let savesToCollection = $state(false);
+  let draftSource = $state<DraftSource>(
+    urlFromId ? gallerySource(urlFromId) : urlDesign ? 'shared' : 'blank'
+  );
+  // A draft found at mount, offered above the canvas until it is taken or dropped.
+  let pendingDraft = $state<EditorDraft | null>(null);
+  // Restoring a draft cancels a ?from= fetch that is still in flight, so the
+  // gallery heart cannot land on top of the restored one.
+  let galleryLoadSuperseded = false;
   // Serialized design as first emitted by PaperHeart; used to tell real edits from the initial emission.
   let designBaseline: string | null = null;
   let hasDesignEdits = false;
@@ -185,6 +206,18 @@
 
     if (!isEditMode && !draftId) {
       draftId = generateId();
+    }
+
+    // An existing heart is one that is already in "Mine hjerter". Only the detail
+    // page of such a heart builds an ?edit=true link, but the collection is asked
+    // as well: a hand-made link, or a heart deleted in another tab meanwhile,
+    // must start a draft rather than resurrect a card.
+    const editedId = isEditMode ? initialDesign?.id : undefined;
+    savesToCollection = editedId ? getUserCollection().some((h) => h.id === editedId) : false;
+
+    // Stored state is read after mount, never during render (see $lib/editor/draft).
+    if (!savesToCollection) {
+      pendingDraft = readDraft();
     }
 
     if (urlFromId) {
@@ -265,6 +298,8 @@
   // ?from=<gallery-id>: fetch the static heart and edit it as a copy (same flow as ?design= links).
   async function loadDesignFromGallery(id: string): Promise<void> {
     const design = await loadStaticHeartById(id);
+    // The visitor restored a draft while this was loading: leave their heart alone.
+    if (galleryLoadSuperseded) return;
     if (!design) {
       showStatus('load', 'error', t('heartNotFound', lang));
       return;
@@ -326,8 +361,16 @@
     if (!browser) return;
     if (!autosaveDirty) return;
     autosaveDirty = false;
+    const design = createHeartDesign();
+    if (!savesToCollection) {
+      // Not saved yet: the work in progress goes to the draft, not to "Mine
+      // hjerter". A failure there costs only persistence, so it stays silent —
+      // unlike a failed save, which the visitor has asked for and must hear about.
+      writeDraft({ design, source: draftSource, savedAt: Date.now() });
+      return;
+    }
     try {
-      saveUserDesign(createHeartDesign());
+      saveUserDesign(design);
       clearStatus('save');
     } catch (err) {
       autosaveDirty = true;
@@ -335,14 +378,50 @@
     }
   }
 
+  function clearAutosaveTimer(): void {
+    if (!autosaveTimeout) return;
+    clearTimeout(autosaveTimeout);
+    autosaveTimeout = null;
+  }
+
   function scheduleAutosave(): void {
     if (!browser) return;
     autosaveDirty = true;
-    if (autosaveTimeout) clearTimeout(autosaveTimeout);
+    clearAutosaveTimer();
     autosaveTimeout = setTimeout(() => {
       autosaveTimeout = null;
       flushAutosave();
     }, AUTOSAVE_DEBOUNCE_MS);
+  }
+
+  // "Fortsæt": take the draft up where it was left, in place of whatever the URL
+  // asked for. The heart keeps the draft's id, so pressing "Gem" saves one card.
+  function continueDraft(): void {
+    const draft = pendingDraft;
+    pendingDraft = null;
+    if (!draft) return;
+    galleryLoadSuperseded = true;
+    const design = draft.design;
+    currentFingers = design.fingers;
+    currentGridSize = design.gridSize;
+    currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
+    designColors = design.colors ?? null;
+    heartName = design.name;
+    authorName = design.author ?? '';
+    description = design.description ?? '';
+    draftId = design.id || generateId();
+    draftSource = draft.source;
+    isEditMode = false;
+    initialDesign = design;
+    resetDesignBaseline();
+    editorKey++;
+  }
+
+  // "Start forfra": the draft is abandoned in favour of the heart on screen, which
+  // becomes the draft itself as soon as it is edited.
+  function discardDraft(): void {
+    pendingDraft = null;
+    clearDraft();
   }
 
   function downloadSVG() {
@@ -399,7 +478,9 @@
   function showInGallery() {
     if (!browser) return;
 
-    flushAutosave();
+    // The save below writes exactly what the pending autosave would have.
+    clearAutosaveTimer();
+    autosaveDirty = false;
 
     const design = createHeartDesign();
     try {
@@ -409,6 +490,12 @@
       reportSaveError(err);
       return;
     }
+
+    // The heart is in "Mine hjerter" now, so it is an existing heart from here on
+    // and autosaves; the draft that stood in for it has been spent.
+    clearDraft();
+    pendingDraft = null;
+    savesToCollection = true;
 
     // Back where the visitor came from. Arriving from a heart's page via
     // "Rediger i editor" (?returnTo=detail), "Tilbage" returns to that heart —
@@ -456,6 +543,11 @@
         isEditMode = false;
         initialDesign = design;
         draftId = generateId();
+        // An imported file is another new heart: it replaces the draft on the next
+        // autosave, and it stays out of "Mine hjerter" until "Gem".
+        savesToCollection = false;
+        draftSource = 'import';
+        pendingDraft = null;
         resetDesignBaseline();
         editorKey++;
         scheduleAutosave();
@@ -470,10 +562,7 @@
   $effect(() => {
     if (!browser) return;
     const handler = () => {
-      if (autosaveTimeout) {
-        clearTimeout(autosaveTimeout);
-        autosaveTimeout = null;
-      }
+      clearAutosaveTimer();
       flushAutosave();
     };
     window.addEventListener('beforeunload', handler);
@@ -482,10 +571,7 @@
 
   beforeNavigate((navigation) => {
     if (!browser || !navigation) return;
-    if (autosaveTimeout) {
-      clearTimeout(autosaveTimeout);
-      autosaveTimeout = null;
-    }
+    clearAutosaveTimer();
     flushAutosave();
   });
 </script>
@@ -500,6 +586,24 @@
   one "Skjul panel" control; below 900px the same snippet is rendered under the canvas.
   It is authored here, so the styles below reach it in both places.
 -->
+<!--
+  The draft prompt, handed to PaperHeart so it joins the stack of notices above the
+  heart. PaperHeart supplies the notice box; only the row inside it is styled here.
+-->
+{#snippet draftNotice()}
+  <div class="draft-notice">
+    <span>{t('editorDraftPrompt', lang)}</span>
+    <span class="draft-notice-actions">
+      <button type="button" class="btn btn-sm btn-outline" onclick={continueDraft}>
+        {t('editorDraftContinue', lang)}
+      </button>
+      <button type="button" class="btn btn-sm btn-ghost" onclick={discardDraft}>
+        {t('editorDraftStartOver', lang)}
+      </button>
+    </span>
+  </div>
+{/snippet}
+
 {#snippet heartPanels()}
   <section class="editor-panel">
     <h2 class="panel-title">{t('heartDetails', lang)}</h2>
@@ -632,6 +736,7 @@
         initialWeaveParity={currentWeaveParity}
         initialColors={designColors ?? undefined}
         panelExtra={isNarrow ? undefined : heartPanels}
+        notice={pendingDraft ? draftNotice : undefined}
       />
     {/key}
   </div>
@@ -762,6 +867,21 @@
     .top-action-label {
       display: none;
     }
+  }
+
+  /* The draft prompt inside PaperHeart's notice box: one quiet line, its two
+     actions wrapping under the question when the canvas is narrow. */
+  .draft-notice {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.75rem;
+  }
+
+  .draft-notice-actions {
+    display: flex;
+    flex: none;
+    gap: 0.4rem;
   }
 
   /* .editor-panel and .panel-title come from src/app.css; .field is this
