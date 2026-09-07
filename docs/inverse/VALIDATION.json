@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-09-07T20:09:04.913353+00:00",
+  "recordedAt": "2026-09-07T20:50:07.673088+00:00",
   "branch": "codex/integrate-juleflet",
   "baseCommit": "dcc481b25466c074623b5156793d667bf0d40483",
   "state": "Committed on codex/integrate-juleflet; not pushed or deployed",
@@ -8,10 +8,10 @@
     {
       "command": "npm test",
       "status": "pass",
+      "total": 236,
       "websiteAndWorkerTests": 127,
-      "engineAndIntegrationTests": 108,
-      "total": 235,
-      "log": "/tmp/juleflet-qa-tests-release.log"
+      "engineAndIntegrationTests": 109,
+      "log": "/tmp/juleflet-automatic-star-tests.log"
     },
     {
       "command": "npm run check",
@@ -19,62 +19,59 @@
       "errors": 0,
       "warnings": 8,
       "warningNote": "Existing PaperHeart.svelte accessibility warnings",
-      "log": "/tmp/juleflet-qa-check-final.log"
+      "log": "/tmp/juleflet-automatic-star-check.log"
     },
     {
       "command": "npm run lint",
       "status": "pass",
-      "log": "/tmp/juleflet-qa-lint-release.log"
+      "log": "/tmp/juleflet-automatic-star-lint.log"
     },
     {
       "command": "npm run build",
       "status": "pass",
-      "log": "/tmp/juleflet-qa-build-release.log"
+      "log": "/tmp/juleflet-automatic-star-build.log"
+    },
+    {
+      "command": "npm run test:inverse:automatic-star:browser",
+      "status": "pass",
+      "origin": "http://127.0.0.1:4174",
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-732Z-automatic-star/results.json",
+      "browsers": [
+        "chromium"
+      ],
+      "checks": 10
+    },
+    {
+      "command": "npm run test:inverse:automatic-star:browser",
+      "status": "pass",
+      "origin": "http://127.0.0.1:4174",
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-727Z-automatic-star/results.json",
+      "browsers": [
+        "firefox"
+      ],
+      "checks": 10
+    },
+    {
+      "command": "npm run test:inverse:automatic-star:browser",
+      "status": "pass",
+      "origin": "http://127.0.0.1:4174",
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-724Z-automatic-star/results.json",
+      "browsers": [
+        "webkit"
+      ],
+      "checks": 10
     },
     {
       "command": "npm run test:inverse:generator:browser",
       "status": "pass",
-      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-083Z-generator-qa/results.json",
       "origin": "http://127.0.0.1:4174",
-      "checks": 63,
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-724Z-generator-qa/results.json",
       "browsers": [
         "chromium",
         "firefox",
         "webkit"
-      ]
-    },
-    {
-      "command": "npm run test:inverse:locator:browser",
-      "status": "pass",
-      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-085Z-locator/results.json",
-      "origin": "http://127.0.0.1:4174",
-      "checks": 14,
-      "browsers": [
-        "chromium",
-        "firefox"
-      ]
-    },
-    {
-      "command": "npm run test:inverse:examples:browser",
-      "status": "pass",
-      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-082Z-examples/results.json",
-      "origin": "http://127.0.0.1:4174",
-      "checks": 22,
-      "browsers": [
-        "chromium",
-        "firefox"
-      ]
-    },
-    {
-      "command": "npm run test:inverse:direct:browser",
-      "status": "pass",
-      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-085Z-direct/results.json",
-      "origin": "http://127.0.0.1:4174",
-      "checks": 14,
-      "browsers": [
-        "chromium",
-        "firefox"
-      ]
+      ],
+      "checks": 63
     }
   ],
   "photoComparison": {
@@ -12149,7 +12146,7 @@
   },
   "evidenceNotes": "Timestamped local tmp directories retain all attempts. Upload-ready 400-pixel PNG crops are supplied separately from the original run contact-sheet thumbnails. Source photos are not bundled into the website.",
   "runtimeAndTestSha256": {
-    "scripts/inverse/border.test.mjs": "3f039dc0445a3139fc9f4499e68c64d295800087e832fa1ae7efa20e12e148e2",
+    "scripts/inverse/border.test.mjs": "95501f20d0ce25fafa1165c77277733175267f7a6546d4ce3e324758aab5fbbc",
     "scripts/inverse/browser-test.mjs": "d08bffd319c0ca863e2b19fd7c496fb53d595249d1b342dbe1311df42eb9ea70",
     "scripts/inverse/core.test.mjs": "fcd6a4cd4444a805339e4978ad080c217379e8bfe7452a63fd142c5ac18adb1e",
     "scripts/inverse/crop-fixture.mjs": "29d35f169e1c599ebdea6a20147d7cd8fddf22f0d53aaa3a8d690156161307bd",
@@ -12182,8 +12179,8 @@
     "src/lib/inverse/client.test.ts": "3874c5965c80c9cbe560c34fd867645dc5ce24209a33067ac707180469ac3925",
     "src/lib/inverse/client.ts": "e23ede851dc09961cbcd26ea74033e6f18ec66dda736b3b83bf3b166388bca00",
     "src/lib/inverse/messages.ts": "ffdb4384cdd2ef72cf201309484a436fe0ea90a6a0d19216aa3820913093c42d",
-    "src/lib/inverse/presets.js": "ed523de633437df50216610701b568cc327eb261571a6bc2b1596d2c6cf5036b",
-    "src/routes/[[lang=lang]]/generate/+page.svelte": "3e3e992abb01d3a1497f5c0727215643d1c2506f76cea9d9d702f116943ffca5",
+    "src/lib/inverse/presets.js": "fc8be11f0472bc642f2969d958ef4b826fca07effe1c9ecb5590860db8a165ec",
+    "src/routes/[[lang=lang]]/generate/+page.svelte": "a84112ce6eaf9e6ea7defee6ca91368faa0d8a498779cfdb53381f0cf29e1923",
     "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
     "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
     "static/inverse/core/crop.js": "8ccbf040d18d6a450099beebf398a3958845012fc19bc83cd2c9ca8ce6e087cc",
@@ -12219,9 +12216,11 @@
     "scripts/inverse/direct.test.mjs": "7b49684c68781bb0876d88b8ca904e326daf08612fd232870e35cd369d5afc5f",
     "scripts/inverse/direct-browser-test.mjs": "4ee35ffc28ff34977b318faa66f81a483bf07bc8ba28c68777fb1f825ead5aa3",
     "static/inverse/locator/palette.js": "7d8d7468c0d98a01376238aa9a0a2bb9d7f9b70092dea10a74064b8eb9a1940c",
-    "scripts/inverse/generator-qa-browser-test.mjs": "b3acfec2864fb04549750d1b84c391913fc34cb2a7ec6b04dbdaba3b08cee861",
+    "scripts/inverse/generator-qa-browser-test.mjs": "5d6bfd6f6a1e0aabdf46d0fe96cb053285f991d730b6ccba9c80095ada8fc315",
     "scripts/inverse/palette-photo-benchmark.mjs": "2474a676b666f57535a5643ab9482b0c01bb7b8d22d3f2c654e3bf5fd2eba381",
-    "package.json": "682fb8d3268dafbe2e4e5628ea511174978e861b92c74b06f47ab96f47a51e5b"
+    "package.json": "6a5f9e79417e7f40681795ae25f8133929714be5242a8038eb1cff8e2706cf0e",
+    "scripts/inverse/automatic-star-benchmark.mjs": "616d4e83f488388f788f10382ebcd258187ec4821327f81995f8e5bfcb042635",
+    "scripts/inverse/automatic-star-browser-test.mjs": "9b83413271a96cfe9d3d83aee606f74e772eae1d84072daf4f1ad01b61d69450"
   },
   "fullCollageLocator": {
     "instances": 40,
@@ -19242,6 +19241,82 @@
           "evidence": "tmp/inverse-browser/2026-09-07T16-30-51-115Z-examples/results.json"
         }
       ]
+    },
+    {
+      "recordedAt": "2026-09-07T20:09:04.913353+00:00",
+      "checks": [
+        {
+          "command": "npm test",
+          "status": "pass",
+          "websiteAndWorkerTests": 127,
+          "engineAndIntegrationTests": 108,
+          "total": 235,
+          "log": "/tmp/juleflet-qa-tests-release.log"
+        },
+        {
+          "command": "npm run check",
+          "status": "pass",
+          "errors": 0,
+          "warnings": 8,
+          "warningNote": "Existing PaperHeart.svelte accessibility warnings",
+          "log": "/tmp/juleflet-qa-check-final.log"
+        },
+        {
+          "command": "npm run lint",
+          "status": "pass",
+          "log": "/tmp/juleflet-qa-lint-release.log"
+        },
+        {
+          "command": "npm run build",
+          "status": "pass",
+          "log": "/tmp/juleflet-qa-build-release.log"
+        },
+        {
+          "command": "npm run test:inverse:generator:browser",
+          "status": "pass",
+          "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-083Z-generator-qa/results.json",
+          "origin": "http://127.0.0.1:4174",
+          "checks": 63,
+          "browsers": [
+            "chromium",
+            "firefox",
+            "webkit"
+          ]
+        },
+        {
+          "command": "npm run test:inverse:locator:browser",
+          "status": "pass",
+          "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-085Z-locator/results.json",
+          "origin": "http://127.0.0.1:4174",
+          "checks": 14,
+          "browsers": [
+            "chromium",
+            "firefox"
+          ]
+        },
+        {
+          "command": "npm run test:inverse:examples:browser",
+          "status": "pass",
+          "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-082Z-examples/results.json",
+          "origin": "http://127.0.0.1:4174",
+          "checks": 22,
+          "browsers": [
+            "chromium",
+            "firefox"
+          ]
+        },
+        {
+          "command": "npm run test:inverse:direct:browser",
+          "status": "pass",
+          "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-085Z-direct/results.json",
+          "origin": "http://127.0.0.1:4174",
+          "checks": 14,
+          "browsers": [
+            "chromium",
+            "firefox"
+          ]
+        }
+      ]
     }
   ],
   "generatorQA": {
@@ -19254,5 +19329,17 @@
     "photoAttempts": 28,
     "unadjustedYellowStarExportAllowed": false,
     "devPort4173": "Four automatic corners, no page errors"
+  },
+  "automaticStar": {
+    "recordedAt": "2026-09-07T20:50:07.673088+00:00",
+    "details": "AUTOMATIC-STAR-VALIDATION.json",
+    "report": "AUTOMATIC-STAR-QA.md",
+    "automatedTests": 236,
+    "browserChecks": 93,
+    "originalPhotosPassed": 2,
+    "browserEngines": 3,
+    "perturbationsPassed": 13,
+    "perturbationsTested": 18,
+    "port4173": "Uploaded original photo, automatic crop, fresh solve and ZIP download passed"
   }
 }

@@ -1,5 +1,7 @@
 # Yellow curved-star photo regression
 
+The later [automatic-star follow-up](AUTOMATIC-STAR-QA.md) covers automatic corners, the photographed edge-fringe failure and real template downloads in three browser engines. It retains and reruns this historical manual-crop regression. The 1.5 mm border setting described below was replaced with 3 mm in the General and Simplify presets.
+
 The 17:01 failure screenshot showed a yellow/olive woven heart reaching the search limit. Previous browser QA for this photo covered crop preview and preparation, but did not attempt reconstruction. That coverage was insufficient.
 
 The repair works on raw pixel-boundary chains before Bézier fitting. It finds nearby opposed bends, checks that they form four distinct arms, and joins them at a shared vertex. Curve fitting then preserves that vertex. Each edited boundary point moves by at most the selected junction radius; moves are recorded in the report. Straight parallel boundaries and acute motif tips are excluded. Original classified pixels remain the reference for the 3% export-fidelity gate. Geometry, minimum strip width, cutting allowance and paper-core checks remain enabled.

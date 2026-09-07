@@ -1,5 +1,7 @@
 # Generator and automatic-crop QA — 2026-09-07 evening
 
+Follow-up: [AUTOMATIC-STAR-QA.md](AUTOMATIC-STAR-QA.md) fixes the black rectangular overlays missed by this QA and the default automatic-star reconstruction failure recorded below. It adds actual automatic-crop → solve → template-download checks for both source photos in three browsers. The results below describe the earlier build and retain its failures.
+
 The reported yellow/gold star now produces four editable overlap corners on upload. The original detector assumed red/white paper, so it found no usable foreground. A palette fallback alone was insufficient: the photograph's lobes are deeper than the fixed semicircles in the supplied model, which pulled the estimated overlap corners away from the motif.
 
 The supplemental model estimates a plain background and two paper colours, then fits independent lobe depths together with the overlap geometry. It uses the outer foreground outline rather than interior motif boundaries to measure lobe support. Unsupported shapes are rejected. Among candidate fits it prefers those that explain both lobes and their colours; this fixes a resampling failure where a slightly lower image objective displaced a valid alternative. Input pixels remain unchanged, and proposals retain their review status and diagnostic evidence.

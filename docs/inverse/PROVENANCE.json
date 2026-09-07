@@ -269,5 +269,21 @@
     "report": "GENERATOR-QA.md",
     "codeCommit": "a28216b",
     "userPhotographsPublished": false
+  },
+  "automaticStarRepair": {
+    "recordedAt": "2026-09-07T20:50:07.673088+00:00",
+    "commits": [
+      "dbd6d5a",
+      "918bd06"
+    ],
+    "details": "AUTOMATIC-STAR-VALIDATION.json",
+    "report": "AUTOMATIC-STAR-QA.md",
+    "changes": [
+      "Avoid Tailwind outline class collision on SVG crop arcs.",
+      "Increase the visible General/Simplify border allowance to 3 mm to read beyond photographic fringes.",
+      "Require actual automatic-crop template downloads and independent rendering in the new browser regression."
+    ],
+    "cropCoordinatesChangedByRepair": false,
+    "imageFidelityLimitChanged": false
   }
 }
