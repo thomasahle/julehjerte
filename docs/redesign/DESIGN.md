@@ -281,9 +281,18 @@ right edge ("Vis panel") brings it back; remember the choice in localStorage. Ad
 checkbox and a one-line hint above the canvas. The mobile editor keeps its existing stacked panels.
 
 The canvas fills the whole area under the top bar — full width and height, no three-column grid — and the tool
-rail and the panel **float over it** as white cards with `--shadow-panel`. Zoom, pan and "Tilpas visning" work
-on that full-size canvas; the drawing area itself keeps a horizontal inset the width of the rail and of the
-panel, so nothing the visitor draws hides underneath them, and collapsing the panel hands that width back.
+rail and the panel **float over it** as white cards with `--shadow-panel`. So does the drawing surface: the SVG
+is the whole canvas area (`inset: 0`), so a zoomed or panned heart carries on under the rail and the panel and
+out to the window edges. Clipping it at their edges was the one thing that gave the floating away.
+
+The rail's and the panel's widths survive as two insets (`--editor-rail-inset`, `--editor-panel-inset`; the
+panel's drops to 60px while it is collapsed) with exactly two jobs: they place the canvas chrome (hint,
+selection chip, strip count, notices), and they size the **fit band** — an unpainted box, `.canvas-fit-band`,
+16px in from the top and bottom and inset by the two widths, which is what the default zoom and "Tilpas
+visning" target. So the heart at rest is whole and clear of both, and collapsing the panel widens the band and
+re-centres it. The band is measured, not assumed: it is a real element next to the SVG, watched by the same
+ResizeObserver, and where there is none (the fixed-size instance, the mobile editor) the fit falls back to the
+surface itself.
 
 Colours belong to the heart, not to the browser: a design may carry `colors: { left, right }` (two hex values),
 and the Farver section edits them with two real colour inputs plus "Byt". Gallery hearts carry none and follow

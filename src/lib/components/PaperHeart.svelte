@@ -1948,33 +1948,65 @@
 		let viewBoxRect = $derived.by(() => parseViewBoxRect(viewBox));
 		let measuredSize = $state<number | null>(null);
 		let effectiveSize = $derived(measuredSize ?? size);
+
+		// The drawing surface is the whole canvas area, so a zoomed heart carries on
+		// under the floating rail and panel instead of being cut off at their edges.
+		// The band those two leave free is measured separately (.canvas-fit-band) and
+		// is what the *fit* targets: at zoom 1 the heart fills that band and is
+		// centred in it, not in the canvas. Everything below is that band expressed
+		// against the SVG's own box — a scale and a screen-pixel offset that are 1
+		// and 0 whenever there is no band (the fixed-size instance, the mobile
+		// editor, before the first measurement).
+		let fitBandEl = $state<HTMLDivElement | null>(null);
+		let canvasBox = $state<{ width: number; height: number } | null>(null);
+		let fitBandRect = $state<{ left: number; top: number; width: number; height: number } | null>(
+			null
+		);
+		let fitScale = $derived.by(() => {
+			if (!fitBandRect) return 1;
+			const band = Math.max(1, Math.min(fitBandRect.width, fitBandRect.height));
+			return band / Math.max(1, effectiveSize);
+		});
+		/** Screen px from the canvas' centre to the fit band's centre. */
+		let fitOffset = $derived.by(() => {
+			if (!fitBandRect || !canvasBox) return { x: 0, y: 0 };
+			return {
+				x: fitBandRect.left + fitBandRect.width / 2 - canvasBox.width / 2,
+				y: fitBandRect.top + fitBandRect.height / 2 - canvasBox.height / 2
+			};
+		});
+
 		let viewTransform = $derived.by(() => {
 			const { x, y, width, height } = viewBoxRect;
 			const cx = x + width / 2;
 			const cy = y + height / 2;
 			const scaleX = width / effectiveSize;
 			const scaleY = height / effectiveSize;
-			const panX = userPanOffset.x * scaleX;
-			const panY = userPanOffset.y * scaleY;
-			return `translate(${-panX} ${-panY}) translate(${cx} ${cy}) scale(${userZoom}) translate(${-cx} ${-cy})`;
+			// Pan is measured from the band's centre, which is where the heart rests.
+			const panX = (userPanOffset.x - fitOffset.x) * scaleX;
+			const panY = (userPanOffset.y - fitOffset.y) * scaleY;
+			return `translate(${-panX} ${-panY}) translate(${cx} ${cy}) scale(${userZoom * fitScale}) translate(${-cx} ${-cy})`;
 		});
 
 	let curveUiScale = $derived.by(() => {
 		const baseScale = viewBoxRect.width / Math.max(1, effectiveSize);
-		return baseScale / userZoom;
+		return baseScale / (userZoom * fitScale);
 	});
 
 		function clampPanOffset(offset: { x: number; y: number }): { x: number; y: number } {
 			const rect = svgEl?.getBoundingClientRect?.();
 			if (!rect) return offset;
 
-			// The heart is rendered into a square of side `effectiveSize` inside the SVG viewport.
-			// At zoom=1 it fits exactly in the smaller dimension; panning should be possible in any
-			// "letterboxed" area, and at other zoom levels panning should be clamped so the content
-			// can't be moved completely out of view.
-			const contentSide = effectiveSize * userZoom;
-			const maxX = Math.max(0, Math.abs(contentSide - rect.width) / 2);
-			const maxY = Math.max(0, Math.abs(contentSide - rect.height) / 2);
+			// The heart is rendered into a square that fits the band at zoom 1. Panning
+			// should be possible in any "letterboxed" area of the band, and at other zoom
+			// levels clamped so the content can't be moved completely out of it — the
+			// band, not the canvas, because the canvas now runs on under the rail and the
+			// panel and stopping only at *its* edges would let the heart hide there.
+			const viewWidth = fitBandRect?.width ?? rect.width;
+			const viewHeight = fitBandRect?.height ?? rect.height;
+			const contentSide = effectiveSize * fitScale * userZoom;
+			const maxX = Math.max(0, Math.abs(contentSide - viewWidth) / 2);
+			const maxY = Math.max(0, Math.abs(contentSide - viewHeight) / 2);
 
 			return {
 				x: clamp(offset.x, -maxX, maxX),
@@ -2040,8 +2072,10 @@
 			const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, userZoom * (1 + delta)));
 			if (newZoom !== userZoom) {
 				const rect = svgEl.getBoundingClientRect();
-				const cursorX = event.clientX - rect.left - rect.width / 2;
-				const cursorY = event.clientY - rect.top - rect.height / 2;
+				// Measured from the heart's resting centre (the fit band's), which is
+				// what the pan offset is relative to.
+				const cursorX = event.clientX - rect.left - rect.width / 2 - fitOffset.x;
+				const cursorY = event.clientY - rect.top - rect.height / 2 - fitOffset.y;
 				const zoomDiff = 1 / userZoom - 1 / newZoom;
 				userZoom = newZoom;
 				userPanOffset = clampPanOffset({
@@ -2088,8 +2122,8 @@
 			const rect = svgEl.getBoundingClientRect();
 			const center = getTouchCenter(event.touches);
 			pinchCenter = {
-				x: center.x - rect.left - rect.width / 2,
-				y: center.y - rect.top - rect.height / 2
+				x: center.x - rect.left - rect.width / 2 - fitOffset.x,
+				y: center.y - rect.top - rect.height / 2 - fitOffset.y
 			};
 			pinchLastCenter = center;
 		}
@@ -2758,12 +2792,27 @@
 			if (!rect) return;
 			const px = Math.max(100, Math.min(rect.width, rect.height));
 			measuredSize = px;
+			canvasBox = { width: rect.width, height: rect.height };
+			// Both are read here rather than from the observer's entries: the band's
+			// offset only means anything against the surface it sits in, and the two
+			// can be resized by the same layout change (collapsing the panel).
+			const band = fitBandEl?.getBoundingClientRect?.();
+			fitBandRect =
+				band && band.width > 0 && band.height > 0
+					? {
+							left: band.left - rect.left,
+							top: band.top - rect.top,
+							width: band.width,
+							height: band.height
+						}
+					: null;
 		};
 
 		let ro: ResizeObserver | null = null;
 		try {
 			ro = new ResizeObserver(measure);
 			if (svgEl) ro.observe(svgEl);
+			if (fitBandEl) ro.observe(fitBandEl);
 		} catch {
 			// Ignore scroll failures for off-screen targets.
 		}
@@ -2989,10 +3038,16 @@
 			<div class="canvas-area" bind:this={canvasAreaEl} style:min-height={fullPage ? undefined : mobileCanvasMinHeight ?? undefined}>
 				<div class="canvas-box">
 				<!-- Only the fixed-size instance is sized inline. In the full-page editor the
-				     wrapper is an absolutely positioned box whose insets keep the drawing clear
-				     of the floating rail and panel, and an inline width would over-constrain it
+				     wrapper fills the canvas area, and an inline width would over-constrain it
 				     (a box with left, right *and* width simply ignores `right`). -->
 				<div class="canvas-wrapper" style:width={fullPage ? undefined : `${size}px`} style:height={fullPage ? undefined : `${size}px`}>
+					{#if fullPage}
+						<!-- Never painted: this is the band the fit targets, so the heart at
+						     default zoom sits between the floating rail and panel instead of
+						     under them. The drawing surface itself is the whole canvas — see
+						     the .canvas-fit-band note in the styles. -->
+						<div class="canvas-fit-band" bind:this={fitBandEl} aria-hidden="true"></div>
+					{/if}
 					<svg
 						bind:this={svgEl}
 						viewBox={viewBox}
@@ -3597,6 +3652,19 @@
 			inset: 0;
 		}
 
+		/* Never painted, never hit: a box the size of the area the floating rail and
+		   panel leave free, measured so "Tilpas visning" and the default zoom can put
+		   the heart there. The drawing surface itself covers the whole canvas, so a
+		   zoomed heart carries on under the rail and the panel rather than ending in
+		   a hard edge beside them. Matching the surface by default keeps the fit
+		   unchanged wherever there is no floating chrome (the mobile editor). */
+		.canvas-fit-band {
+			position: absolute;
+			inset: 0;
+			pointer-events: none;
+			visibility: hidden;
+		}
+
 		.heart-svg {
 			display: block;
 			touch-action: none;
@@ -4008,12 +4076,14 @@
 
 		/* ------------------------------------------------------------------
 		   Desktop (DESIGN.md §7): the canvas fills the whole area under the top
-		   bar, and the tool rail and the 340px panel float on top of it. The
-		   drawing itself keeps out from under them: the two insets below are the
-		   rail's and the panel's widths, so what the visitor draws is never
-		   hidden by a panel, while zoom, pan and "Tilpas visning" work on the
-		   full-size canvas. Collapsing the panel gives the drawing that width
-		   back and leaves only the "Vis panel" tab at the edge.
+		   bar, and the tool rail and the 340px panel float on top of it. So does
+		   the drawing surface — a zoomed or panned heart runs on under them and
+		   out to the window edges, because clipping it at their edges was the
+		   one thing that gave the floating away. The two insets below no longer
+		   size the surface; they place the canvas chrome, and they size the band
+		   the fit targets, so the heart at default zoom is still whole and clear
+		   of both. Collapsing the panel widens that band and leaves only the
+		   "Vis panel" tab at the edge.
 
 		   Below 900px the editor keeps its existing stacked layout, so all of
 		   this is switched on here and nowhere else.
@@ -4070,9 +4140,11 @@
 				max-width: min(560px, calc(var(--editor-canvas-width) - 32px));
 			}
 
-			/* The visible drawing area: the full height, and the width that is left
-			   between the two floating columns. */
-			.paper-heart.fullPage .canvas-wrapper {
+			/* The band the fit targets: the full height less a little air, and the
+			   width left between the two floating columns. The drawing surface itself
+			   (.canvas-wrapper, and the SVG filling it) stays on `inset: 0` from the
+			   base rules, so nothing clips the heart but the canvas area. */
+			.paper-heart.fullPage .canvas-fit-band {
 				top: 16px;
 				bottom: 16px;
 				left: var(--editor-rail-inset);
