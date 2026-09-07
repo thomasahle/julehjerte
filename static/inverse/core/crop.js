@@ -9,7 +9,12 @@ export const pixelEdgesToCentres = quad => quad.map(p => p.map(v => v - 0.5));
 export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {} } = {}) {
   if (input.imageWidth * input.imageHeight > 24e6) throw new Error('Image exceeds 24 megapixels.');
   onProgress({ stage: 'detecting' });
-  const proposal = detectMotif({ width: input.imageWidth, height: input.imageHeight, data: input.rgba }, { roi, maxSize: 650 });
+  const image = { width: input.imageWidth, height: input.imageHeight, data: input.rgba };
+  let proposal = detectMotif(image, { roi, maxSize: 650 });
+  if (!proposal.quad) {
+    const adaptive = detectMotif(image, { roi, maxSize: 650, palette: 'adaptive' });
+    if (adaptive.quad || adaptive.status === 'needs_selection') proposal = adaptive;
+  }
   return {
     status: proposal.status,
     reason: proposal.reason,

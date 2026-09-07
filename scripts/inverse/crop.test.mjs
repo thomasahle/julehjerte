@@ -23,6 +23,33 @@ test('blank or transparent images have no heart proposals', () => {
   input.rgba.fill(0);
   assert.deepEqual(detectHeartCrops(input).candidates, []);
 });
+for (const colours of [['#ffe416', '#867309'], ['#080907', '#ac8d3e'], ['#0068bb', '#ce1471'], ['#19ce12', '#897820']]) {
+  test(`plain-background paper palette ${colours.join('/')}: automatic corners and original pixels`, () => {
+    const input = heartPhoto({ colours, background: '#ffffff', lobeDepths: [.66, .61] });
+    const before = input.rgba.slice(), result = detectHeartCrops(input);
+    assert.equal(result.candidates.length, 1);
+    assert.ok(error(result.candidates[0].quad, expected) < 6);
+    assert.equal(result.candidates[0].locator.evidence.palette.method, 'two-paper-colours-on-plain-background');
+    assert.deepEqual(input.rgba, before);
+  });
+}
+test('transparent-background coloured heart uses alpha without classifying transparency as paper', () => {
+  const input = heartPhoto({ background: 'transparent', colours: ['#094ba0', '#efafc0'] });
+  const result = detectHeartCrops(input);
+  assert.equal(result.candidates.length, 1);
+  assert.ok(error(result.candidates[0].quad, expected) < 6);
+});
+test('a plain background does not make two-colour circles or rectangles into heart proposals', () => {
+  for (const shape of ['circle', 'rectangle']) {
+    const canvas = createCanvas(380, 320), ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'white'; ctx.fillRect(0, 0, 380, 320);
+    ctx.save(); ctx.beginPath();
+    if (shape === 'circle') ctx.arc(190, 160, 100, 0, Math.PI * 2);
+    else ctx.rect(90, 60, 200, 200);
+    ctx.clip(); ctx.fillStyle = '#ffde00'; ctx.fillRect(0, 0, 190, 320); ctx.fillStyle = '#856300'; ctx.fillRect(190, 0, 190, 320); ctx.restore();
+    assert.deepEqual(detectHeartCrops({ imageWidth: 380, imageHeight: 320, rgba: ctx.getImageData(0, 0, 380, 320).data }).candidates, []);
+  }
+});
 test('an existing perturbed crop supplies a full-heart region for fitting', () => {
   const initial = expected.map(([x, y]) => [x + 7, y - 5]);
   const result = refineHeartCrop(heartPhoto(), initial);
