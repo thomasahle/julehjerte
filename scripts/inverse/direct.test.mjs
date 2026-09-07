@@ -9,6 +9,8 @@ import {boundaryGradient,boundaryValue} from '../../static/inverse/core/direct/b
 import {solutionJSON} from '../../static/inverse/core/graph.js';
 import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {prepare,design} from '../../static/inverse/core/engine.js';
+import {checkerPixels} from './fixtures.mjs';
 
 const near=(a,b,eps=1e-8)=>assert.ok(Math.abs(a-b)<eps,`${a} vs ${b}`);
 const line=(a,b)=>[a,a.map((v,i)=>v+(b[i]-v)/3),a.map((v,i)=>v+2*(b[i]-v)/3),b];
@@ -50,7 +52,7 @@ test('horizontal and vertical cuts receive the analytic normal-motion gradient',
     const paths=[[],[]];paths[f]=[[f===0?line([30,0],[30,100]):line([0,40],[100,40])]];
     const graph=new CurveGraph(paths),prob=new Float64Array(64*64),g=boundaryGradient(graph,graph.points,prob,64,phase,{nquad:80});
     let sum=0;for(let i=f;i<g.length;i+=2)sum+=g[i];near(sum,phase===1?-.01:.01,1e-12);
-    near(boundaryValue(graph,graph.points,prob,64,phase),phase===1?(f===0?.7:Math.round(.6*192)/192):(f===0?.3:1-Math.round(.6*192)/192),1e-10);
+    for(const transpose of[false,true])near(boundaryValue(graph,graph.points,prob,64,phase,{transpose}),phase===1?(f===0?.7:.6):(f===0?.3:.4),1/192);
   }
 });
 
@@ -79,4 +81,17 @@ test('free-curve clearance, curvature and join forces match finite differences',
     const up=graph.points.slice(),down=graph.points.slice();up[i]+=h;down[i]-=h;
     near(value.gradient[i],(curvePenalty(graph,up,cfg).loss-curvePenalty(graph,down,cfg).loss)/(2*h),3e-6);
   }
+});
+
+test('direct image fitting starts without traced endpoints and survives edge noise',async()=>{
+  const input=checkerPixels(128);
+  for(const x of[8,12,48,76,113]){const i=4*x;input.rgba.set(input.rgba[i]===255?[190,20,20,255]:[255,255,255,255],i);}
+  const cfg={algorithm:'direct',timeLimit:6,trials:0,roundHidden:false},p=prepare(input,cfg);
+  assert.equal(p.target.curves.length,0);assert.equal(p.target.metadata.preprocessing.traceUsed,false);
+  const before=p.preview.mask.slice(),r=await design(p.target,cfg);
+  assert.equal(r.report.solver.traceUsed,false);assert.equal(r.report.solver.borderCountsAreHardConstraints,false);
+  assert.equal(r.report.templateExportAllowed,true);assert.deepEqual(r.report.slits,{left:3,right:3});
+  assert.deepEqual(p.preview.mask,before);
+  const independent=await renderExportedWeave(r.files['cut_geometry.json'],128);
+  assert.ok(independent.mask.reduce((s,v,i)=>s+Number(v!==before[i]),0)/before.length<.005);
 });

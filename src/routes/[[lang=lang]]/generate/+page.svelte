@@ -8,7 +8,7 @@
   import { getColors, setLeftColor, setRightColor, subscribeColors } from '$lib/stores/colors';
   import { InverseWorker, EngineError, searchTimedOut, type ArtworkInput, type PreparedArtwork, type DesignResult, type Point, type CropProposal, type DetectedCrops } from '$lib/inverse/client';
   import { inverseText, type MessageKey } from '$lib/inverse/messages';
-  import { GENERAL_PRESET, MATCHING_GRID_PRESET, SIMPLIFIED_PREPROCESSING } from '$lib/inverse/presets.js';
+  import { GENERAL_PRESET, MATCHING_GRID_PRESET, DIRECT_PRESET, SIMPLIFIED_PREPROCESSING } from '$lib/inverse/presets.js';
   import SvgPreview from '$lib/inverse/SvgPreview.svelte';
 
   let lang = $derived(langFromPathname(page.url.pathname, base));
@@ -71,7 +71,7 @@
 
   function setRoutingPreset(value: string) {
     routingPreset = value;
-    Object.assign(settings, value === 'matching-grid' ? MATCHING_GRID_PRESET : GENERAL_PRESET);
+    Object.assign(settings, value === 'direct' ? DIRECT_PRESET : value === 'matching-grid' ? MATCHING_GRID_PRESET : GENERAL_PRESET);
     invalidate();
   }
 
@@ -346,7 +346,7 @@
         stage = next === 'paper' ? 'paperStage' : next as MessageKey;
       });
       if (disposed) return;
-      if (action === 'prepare') { prepared = value as PreparedArtwork; maskView = false; }
+      if (action === 'prepare') { prepared = value as PreparedArtwork; maskView = settings.algorithm === 'direct'; }
       else { result = value as DesignResult; view = 'heart'; }
     } catch (value) { reportError(value); }
     finally { clearInterval(timer); busy = false; }
@@ -508,7 +508,8 @@
         <section class="panel">
           <h2>{text('settings')}</h2>
           {#if !saved}
-            <label>{text('routingPreset')}<select value={routingPreset} onchange={e => setRoutingPreset(e.currentTarget.value)}><option value="general">{text('generalPreset')}</option><option value="matching-grid">{text('matchingGridPreset')}</option></select></label>
+            <label>{text('routingPreset')}<select value={routingPreset} onchange={e => setRoutingPreset(e.currentTarget.value)}><option value="direct">{text('directPreset')}</option><option value="general">{text('generalPreset')}</option><option value="matching-grid">{text('matchingGridPreset')}</option></select></label>
+            {#if routingPreset === 'direct'}<p class="muted small">{text('directHelp')}</p>{/if}
             {#if routingPreset === 'matching-grid'}<p class="notice">{text('matchingGridHelp')}</p>{/if}
           {/if}
           <div class="field-grid">
@@ -606,22 +607,22 @@
       {:else if prepared}
         <h2>{text('prepared')}</h2>
         <p class="muted">{text('inspectHelp')}</p>
-        <div class="view-buttons" role="group" aria-label={text('prepared')}>
+        {#if !prepared.metadata.direct}<div class="view-buttons" role="group" aria-label={text('prepared')}>
           <button type="button" class:active={!maskView} aria-pressed={!maskView} onclick={() => maskView = false}>{text('vector')}</button>
           <button type="button" class:active={maskView} aria-pressed={maskView} onclick={() => maskView = true}>{text('mask')}</button>
-        </div>
+        </div>{/if}
         {#if maskView}<canvas class="mask" bind:this={maskCanvas} aria-label={text('mask')}></canvas>{:else}<SvgPreview svg={prepared.vector} alt={text('prepared')} />{/if}
-        <p class="muted small">{prepared.metadata.curves} {text('segments')} · {prepared.metadata.width} mm
+        {#if !prepared.metadata.direct}<p class="muted small">{prepared.metadata.curves} {text('segments')} · {prepared.metadata.width} mm
           {#if prepared.metadata.preprocessing} · {(100 * (prepared.metadata.preprocessing.totalChangeFraction ?? prepared.metadata.preprocessing.traceChangeFraction)).toFixed(2)}% {text('traceChange')}{/if}
           {#if prepared.metadata.junctionRepairs?.length} · {prepared.metadata.junctionRepairs.length} {text('merged')}{/if}
-        </p>
+        </p>{/if}
         {#if prepared.metadata.preprocessing && prepared.metadata.preprocessing.sourceMaskComponents !== prepared.metadata.preprocessing.vectorSampleComponents}<p class="notice">{text('topologyChange')}</p>{/if}
         <div class="actions">
           <Button variant="destructive" disabled={busy} onclick={() => run('solve')}>{text('generate')}</Button>
-          <Button variant="secondary" disabled={busy} onclick={() => download('vector_target.svg', prepared?.boundaries)}>{text('downloadTarget')}</Button>
-          {#if input?.type === 'pixels'}<Button variant="secondary" disabled={busy} onclick={simplify}>{text('simplify')}</Button>{/if}
+          {#if !prepared.metadata.direct}<Button variant="secondary" disabled={busy} onclick={() => download('vector_target.svg', prepared?.boundaries)}>{text('downloadTarget')}</Button>{/if}
+          {#if input?.type === 'pixels' && !prepared.metadata.direct}<Button variant="secondary" disabled={busy} onclick={simplify}>{text('simplify')}</Button>{/if}
         </div>
-        {#if input?.type === 'pixels'}<p class="muted small">{text('simplifyHelp')}</p>{/if}
+        {#if input?.type === 'pixels' && !prepared.metadata.direct}<p class="muted small">{text('simplifyHelp')}</p>{/if}
       {:else if !busy && !error}
         <div class="empty">
           <img src="{base}/favicon.svg" alt="" width="96" height="96" />

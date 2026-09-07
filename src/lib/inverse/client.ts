@@ -23,6 +23,7 @@ export interface PreparedArtwork {
   metadata: {
     curves: number;
     width: number;
+    direct?: boolean;
     junctionRepairs?: { from: Point[]; to: Point }[];
     preprocessing?: {
       traceChangeFraction: number;

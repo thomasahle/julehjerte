@@ -47,9 +47,9 @@ export function rgbToLab(rgb){const linear=rgb.map(v=>{v/=255;return v<=.04045?v
 export function otsu(values){const hist=Array(256).fill(0);for(const v of values)hist[v]++;let sum=0;hist.forEach((c,i)=>sum+=c*i);let w0=0,s0=0,best=-1,t=128;for(let i=0;i<256;i++){w0+=hist[i];s0+=i*hist[i];const w1=values.length-w0;if(!w0||!w1)continue;const score=w0*w1*(s0/w0-(sum-s0)/w1)**2;if(score>best){best=score;t=i;}}return t;}
 export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ffffff'],invert=false}={}){
   const n=rgb.length/3,gray=new Uint8Array(n);let chroma=0;for(let i=0;i<n;i++){const c=[rgb[3*i],rgb[3*i+1],rgb[3*i+2]];gray[i]=Math.round(.2126*c[0]+.7152*c[1]+.0722*c[2]);chroma+=Math.max(...c)-Math.min(...c);}if(mode==='auto')mode=chroma/n<5?'otsu':'lab';
-  const mask=new Uint8Array(n);let centers=null,cutoff=null,mixture=null;
+  const mask=new Uint8Array(n);let centers=null,cutoff=null,mixture=null,probability=null;
   if(['threshold','otsu'].includes(mode)){cutoff=mode==='otsu'?otsu(gray):threshold;if(!Number.isFinite(cutoff)||cutoff<0||cutoff>255)throw new Error('Threshold must be 0–255.');for(let i=0;i<n;i++)mask[i]=gray[i]<=cutoff?1:0;}
-  else if(mode==='red-white-mixture'){const result=redWhiteMixture(rgb);mask.set(result.mask);mixture=result.metadata;}
+  else if(mode==='red-white-mixture'){const result=redWhiteMixture(rgb);mask.set(result.mask);mixture=result.metadata;probability=result.probability;}
   else if(mode==='red-white'){for(let i=0;i<n;i++)mask[i]=rgb[3*i]>1.5*rgb[3*i+1]&&rgb[3*i]>1.5*rgb[3*i+2]?1:0;}
   else if(['lab','swatches'].includes(mode)){
     const labs=new Float64Array(n*3);for(let i=0;i<n;i++)labs.set(rgbToLab(Array.from(rgb.slice(i*3,i*3+3))),3*i);
@@ -75,7 +75,7 @@ export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ff
       centers=bestCenters.sort((a,b)=>a[0]-b[0]);}
     for(let i=0;i<n;i++)mask[i]=sq(i,centers[0])<=sq(i,centers[1])?1:0;
   }else throw new Error('Unknown two-colour conversion mode.');
-  if(invert)for(let i=0;i<n;i++)mask[i]^=1;return{mask,metadata:{method:mode,threshold:cutoff,labCenters:centers,...(mixture?{mixture}:{}),inverted:invert,dither:false}};
+  if(invert)for(let i=0;i<n;i++){mask[i]^=1;if(probability)probability[i]=1-probability[i];}return{mask,probability,metadata:{method:mode,threshold:cutoff,labCenters:centers,...(mixture?{mixture}:{}),inverted:invert,dither:false}};
 }
 export function components(mask,n,value){const seen=new Uint8Array(mask.length),out=[];for(let i=0;i<mask.length;i++){if(seen[i]||mask[i]!==value)continue;const pixels=[i];seen[i]=1;let border=false;for(let h=0;h<pixels.length;h++){const p=pixels[h],x=p%n,y=Math.floor(p/n);if(x===0||y===0||x===n-1||y===n-1)border=true;for(const q of[x>0?p-1:-1,x<n-1?p+1:-1,y>0?p-n:-1,y<n-1?p+n:-1])if(q>=0&&!seen[q]&&mask[q]===value){seen[q]=1;pixels.push(q);}}out.push({pixels,border});}return out;}
 export function cleanupMask(mask,n,width,{removeSpecks=0,fillHoles=0,smoothRadius=0}={}){
@@ -106,7 +106,7 @@ export function preprocessPixels({rgba,imageWidth,imageHeight,quad=null,cropProv
   if(!Number.isInteger(requestedResolution)||requestedResolution<32||requestedResolution>600)throw new Error('Tracing resolution must be 32–600.');
   const n=Math.min(requestedResolution,Math.max(32,Math.min(imageWidth,imageHeight))),width=settings.width||100;
   const rgb=rectify(rgba,imageWidth,imageHeight,n,quad,settings.background||'#ffffff'),quantized=quantize(rgb,settings);
-  const target=preprocessMask(quantized.mask,n,{...settings,width},quantized.metadata);
+  const target=settings.algorithm==='direct'?{width,phase:0,curves:[],metadata:{input:'photograph for direct fitting',paperColors:colorsSafe(settings.paperColors),direct:true,preprocessing:{...quantized.metadata,actualResolution:n,traceUsed:false,traceChangeFraction:0,totalChangeFraction:0,sourceMaskComponents:components(quantized.mask,n,1).length,vectorSampleComponents:components(quantized.mask,n,1).length}},sourceImage:{mask:quantized.mask,probability:quantized.probability||Float32Array.from(quantized.mask),resolution:n}}:preprocessMask(quantized.mask,n,{...settings,width},quantized.metadata);
   target.metadata.sourceImage={widthPixels:imageWidth,heightPixels:imageHeight,cropCorners:quad?quad.map(p=>[...p]):null,cropProvenance};
   target.metadata.preprocessing.requestedResolution=requestedResolution;
   return{target,rgb,mask:quantized.mask,n};

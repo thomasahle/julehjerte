@@ -115,7 +115,7 @@ export function gridPaths(model,width=100,floor=.008){
 }
 export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed=0,floor=.008,clearance=0,resolution=96,deadline=Infinity,onProgress=()=>{}}={}){
   const target=resize(prob,size,resolution),model=gridModel(counts,k,seed,initial),adam=new Adam(model.z.length,initial ? .015 : .04);
-  let best={z:model.z.slice(),error:Infinity,step:-1},completed=0;
+  let best={z:model.z.slice(),error:mismatch(gridMask(model,size,phase,floor),prob),step:-1},completed=0;
   for(let step=0;step<steps;step++){
     if(step%10===0&&performance.now()>deadline)break;
     const progress=step/Math.max(1,steps-1),epsilon=initial?.length?(.012*(1-progress)**2+.003):(.035*(1-progress)**2+.004);

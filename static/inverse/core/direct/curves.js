@@ -52,9 +52,8 @@ export class CurveGraph {
 export function polygonIndex(graph,points,ns=24,nbins=128){
   const sampled=graph.sample(points,ns),bins=Array.from({length:nbins},()=>[]),segments=[],w=graph.width;
   function add(ax,ay,bx,by,pi){
-    if(ay===by)return;
     if(ay>by)[ax,ay,bx,by]=[bx,by,ax,ay];
-    const id=segments.length;segments.push([ax,ay,bx,by,pi]);
+    const id=segments.length;segments.push([ax,ay,bx,by,pi]);if(ay===by)return;
     const lo=clamp(Math.floor(ay/w*nbins),0,nbins-1),hi=clamp(Math.floor(by/w*nbins),0,nbins-1);
     for(let i=lo;i<=hi;i++)bins[i].push(id);
   }

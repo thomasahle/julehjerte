@@ -6,9 +6,11 @@ import {boundaryGradient,boundaryValue} from './boundary.js';
 import {renderCurves} from './curves.js';
 import {mismatch} from './grid.js';
 import {validate} from '../validate.js';
+import {materialAudit} from '../material.js';
+export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+.35;}
 
 export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
-  const gradient=new Float64Array(points.length),sample=graph.sample(points,8),s=sample.samples,ds=new Float64Array(s.length),w=graph.width,margin=cfg.nominalWidth+.35,side=cfg.nominalWidth+.35;
+  const gradient=new Float64Array(points.length),sample=graph.sample(points,8),s=sample.samples,ds=new Float64Array(s.length),w=graph.width,margin=fittingMargin(cfg,w),side=margin;
   const total=sample.groups.reduce((v,g)=>v+g.length,0),cells=new Map(),segments=[],arcPositions=[];let loss=0,minRadius=Infinity;
   const key=(x,y,f)=>`${x},${y},${f}`;
   sample.groups.forEach((ids,pi)=>{
@@ -73,15 +75,16 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
   const points=graph.points.slice(),initial=points.slice(),adam=new Adam(points.length,rate*graph.width/100),history=[];
   const clampAxes=new Uint8Array(points.length);
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
-  const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?cfg.nominalWidth+.025:0,clampAxes[i]?graph.width-cfg.nominalWidth-.025:graph.width);};
+  const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);};
   clampPoints();let safe=null,best=null,bestInvalid=null,completed=0;
   const checkpoint=step=>{
     const solution=graph.solution(points,phase,input),check=validate(solution,cfg,{checkImage:false}),error=mismatch(renderCurves(graph,points,phase,n,32),prob);
     const score=(boundaryValue(graph,points,prob,n,phase)+boundaryValue(graph,points,prob,n,phase,{transpose:true,rows:193}))/2;
-    const rec={step,error,score,geometry:check.passed,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec);
-    const value={graph,points:points.slice(),phase,error,score,validation:check};
+    const paper=check.passed?materialAudit(solution,cfg):null;
+    const rec={step,error,score,geometry:check.passed,paper:paper?.status,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec);
+    const value={graph,points:points.slice(),phase,error,score,validation:check,paper:paper?.summary};
     if(!bestInvalid||error<bestInvalid.error)bestInvalid=value;
-    if(check.passed){safe=points.slice();if(!best||score<best.score)best=value;}
+    if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){safe=points.slice();if(!best||score<best.score)best=value;}
     else if(safe){points.set(safe);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.65);}
   };
   checkpoint(-1);
@@ -93,5 +96,5 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     if(step%40===0||step===steps-1)checkpoint(step);
   }
   if(completed&&history.at(-1).step!==completed-1)checkpoint(completed-1);
-  return{...(best||bestInvalid),geometryPassed:!!best,history,steps:completed};
+  return{...(best||bestInvalid),geometryPassed:(best||bestInvalid).validation.passed,paperPassed:!!best,history,steps:completed};
 }

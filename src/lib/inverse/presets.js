@@ -1,6 +1,6 @@
 /** Appearance-based routing presets. No published cutting paths are loaded. */
 export const MATCHING_GRID_PRESET = {
-  polygonal: true, identicalSheets: true, resolution: 600,
+  algorithm: 'trace', polygonal: true, identicalSheets: true, resolution: 600,
   fitTolerance: .35, maxSpan: 40, smoothRadius: 0, snapRadius: 0, borderRadius: 0,
   gridPortals: true, neighbors: 12, connectorVariants: 1,
   junctionBalancePenalty: 300, gridPreference: 500,
@@ -9,7 +9,7 @@ export const MATCHING_GRID_PRESET = {
 };
 
 export const GENERAL_PRESET = {
-  polygonal: false, identicalSheets: false, resolution: 400,
+  algorithm: 'trace', polygonal: false, identicalSheets: false, resolution: 400,
   fitTolerance: .5, maxSpan: 15, smoothRadius: 0, snapRadius: 1.5, borderRadius: 1.5,
   gridPortals: false, neighbors: 16, connectorVariants: 2,
   junctionBalancePenalty: 0, gridPreference: 0,
@@ -26,3 +26,5 @@ export const SIMPLIFIED_PREPROCESSING = {
 Object.freeze(SIMPLIFIED_PREPROCESSING);
 Object.freeze(MATCHING_GRID_PRESET);
 Object.freeze(GENERAL_PRESET);
+
+export const DIRECT_PRESET = Object.freeze({...GENERAL_PRESET, algorithm:'direct', roundHidden:false});
