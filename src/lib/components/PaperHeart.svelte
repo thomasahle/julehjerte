@@ -1,20 +1,20 @@
 <script lang="ts">
-		import { onMount, tick } from 'svelte';
-	import AddNodeIcon from '$lib/components/icons/AddNodeIcon.svelte';
-	import Trash2Icon from '@lucide/svelte/icons/trash-2';
-	import Undo2Icon from '@lucide/svelte/icons/undo-2';
-	import Redo2Icon from '@lucide/svelte/icons/redo-2';
+	import { onMount, tick, type Component, type Snippet } from 'svelte';
+	import type { IconProps } from '$lib/components/icons/types';
 	import XIcon from '@lucide/svelte/icons/x';
-	import { Button } from '$lib/components/ui/button';
 	import { Separator } from '$lib/components/ui/separator';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '$lib/components/ui/tooltip';
-	import CurveNodeToolIcon from '$lib/components/icons/CurveNodeToolIcon.svelte';
-	import NodeCornerIcon from '$lib/components/icons/NodeCornerIcon.svelte';
-	import NodeSmoothIcon from '$lib/components/icons/NodeSmoothIcon.svelte';
-	import NodeSymmetricIcon from '$lib/components/icons/NodeSymmetricIcon.svelte';
-	import SegmentCurveIcon from '$lib/components/icons/SegmentCurveIcon.svelte';
-	import SegmentLineIcon from '$lib/components/icons/SegmentLineIcon.svelte';
+	import { ChevronRightIcon, FitIcon, RedoIcon, SwapIcon, TrashIcon, UndoIcon } from '$lib/components/icons';
+	import {
+		NodeAddIcon,
+		NodeCornerIcon,
+		NodeCurveIcon,
+		NodeSmoothIcon,
+		NodeSymmetricIcon,
+		SegmentCurveIcon,
+		SegmentLineIcon
+	} from '$lib/components/editor/icons';
 
 	import type { Finger, GridSize, Vec, LobeId, NodeType } from '$lib/types/heart';
 	import { clamp, clampInt } from '$lib/utils/math';
@@ -53,7 +53,15 @@
 			initialWeaveParity?: 0 | 1 | number;
 			size?: number;
 			fullPage?: boolean;
-			draggableToolbars?: boolean;
+			/**
+			 * Extra sections for the right-hand panel (docs/redesign/DESIGN.md §7).
+			 * The editor route fills it with "Hjertedetaljer" and "Handlinger" so that
+			 * all five panels share one 340px column and one collapse control. The
+			 * snippet is authored in the route, so the route styles it; this component
+			 * only supplies the column. Below 900px the route renders the same snippet
+			 * itself, under the canvas, and passes nothing here.
+			 */
+			panelExtra?: Snippet;
 			onFingersChange?: (fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) => void;
 		}
 
@@ -66,7 +74,7 @@
 			initialWeaveParity = 0,
 			size = 800,
 			fullPage = false,
-			draggableToolbars = false,
+			panelExtra,
 			onFingersChange
 		}: Props = $props();
 
@@ -2034,153 +2042,34 @@
 			};
 		}
 
-			type ToolbarKey = 'segment' | 'right';
 			let segmentControlsEl = $state<HTMLDivElement | null>(null);
 			let rightPanelEl = $state<HTMLDivElement | null>(null);
-			let toolbarPositions = $state<Record<ToolbarKey, { x: number; y: number }> | null>(null);		let toolbarDrag = $state<{
-			which: ToolbarKey;
-			startClientX: number;
-			startClientY: number;
-			startX: number;
-			startY: number;
-			pointerId: number;
-			didMove: boolean;
-		} | null>(null);
 
-		function toolbarStorageKey() {
-			return `paperheart.toolbarPositions.${componentId}`;
-		}
+		// The floating toolbars used to be draggable, with their offsets kept in
+		// localStorage under `paperheart.toolbarPositions.<componentId>`. The redesign
+		// gives the editor a fixed three-column layout (tool rail · canvas · panel), so
+		// dragging is retired deliberately and the stale key is cleaned up on mount.
+		const LEGACY_TOOLBAR_POSITIONS_KEY = 'paperheart.toolbarPositions.';
 
-		function clampToolbarPos(pos: { x: number; y: number }, el: HTMLElement | null): { x: number; y: number } {
-			const margin = 8;
-			const rect = el?.getBoundingClientRect();
-			const w = rect?.width ?? 0;
-			const h = rect?.height ?? 0;
+		// Collapsing the right panel lets the canvas fill the width (DESIGN.md §7).
+		// The choice is remembered per browser and read in onMount, so the server
+		// render and the first client render agree.
+		const PANEL_COLLAPSED_KEY = 'paperheart.panelCollapsed';
+		let panelCollapsed = $state(false);
 
-			const boundsRect = canvasAreaEl?.getBoundingClientRect?.();
-			const boundsW = boundsRect?.width ?? window.innerWidth;
-			const boundsH = boundsRect?.height ?? window.innerHeight;
-
-			const maxX = boundsW - w - margin;
-			const maxY = boundsH - h - margin;
-			const minY = margin;
-			return {
-				x: clamp(pos.x, margin, Math.max(margin, maxX)),
-				y: clamp(pos.y, minY, Math.max(minY, maxY))
-			};
-		}
-
-			function loadToolbarPositions() {
-				if (!canDragToolbars) return;
-				try {
-					const raw = localStorage.getItem(toolbarStorageKey());
-					if (!raw) return;
-				const parsed = JSON.parse(raw) as Record<string, { x: number; y: number }>;
-				const seg = parsed.segment;
-				const right = parsed.right;
-				if (
-					seg &&
-					right &&
-					Number.isFinite(seg.x) &&
-					Number.isFinite(seg.y) &&
-					Number.isFinite(right.x) &&
-					Number.isFinite(right.y)
-				) {
-					toolbarPositions = { segment: seg, right };
-				}
+		function setPanelCollapsed(next: boolean) {
+			panelCollapsed = next;
+			try {
+				localStorage.setItem(PANEL_COLLAPSED_KEY, next ? '1' : '0');
 			} catch {
-				// Ignore invalid or corrupted toolbar storage.
+				// Storage unavailable: the choice just does not survive a reload.
 			}
 		}
 
-			function saveToolbarPositions() {
-				if (!canDragToolbars || !toolbarPositions) return;
-				try {
-					localStorage.setItem(toolbarStorageKey(), JSON.stringify(toolbarPositions));
-				} catch {
-					// Ignore failed toolbar storage writes.
-				}
-			}
-
-			function ensureDefaultToolbarPositions() {
-				if (!canDragToolbars) return;
-				if (toolbarPositions) return;
-				const segRect = segmentControlsEl?.getBoundingClientRect();
-				const rightRect = rightPanelEl?.getBoundingClientRect();
-				const boundsRect = canvasAreaEl?.getBoundingClientRect?.();
-				const boundsW = boundsRect?.width ?? window.innerWidth;
-				const boundsH = boundsRect?.height ?? window.innerHeight;
-
-				const segH = segRect?.height ?? 0;
-				const rightW = rightRect?.width ?? 260;
-				const rightH = rightRect?.height ?? 260;
-
-				const next = {
-					// Visually center the toolbar vertically.
-					segment: clampToolbarPos({ x: 24, y: (boundsH - segH) / 2 }, segmentControlsEl),
-					// Position the symmetry panel near the bottom (90% down the viewport).
-					right: clampToolbarPos(
-						{
-							x: boundsW - rightW - 24,
-							y: boundsH * 0.9 - rightH
-						},
-						rightPanelEl
-					)
-				};
-				toolbarPositions = next;
-			}
-
-			function beginToolbarDrag(e: PointerEvent, which: ToolbarKey) {
-				if (!canDragToolbars) return;
-				if (e.button !== 0) return;
-				const current = toolbarPositions?.[which];
-				if (!current) return;
-				toolbarDrag = {
-					which,
-					startClientX: e.clientX,
-					startClientY: e.clientY,
-					startX: current.x,
-					startY: current.y,
-					pointerId: e.pointerId,
-					didMove: false
-				};
-			}
-
-		function updateToolbarDrag(e: PointerEvent) {
-			if (!toolbarDrag) return;
-			if (e.pointerId !== toolbarDrag.pointerId) return;
-			const dx = e.clientX - toolbarDrag.startClientX;
-			const dy = e.clientY - toolbarDrag.startClientY;
-			if (!toolbarDrag.didMove) {
-				const threshold = 6;
-				if (dx * dx + dy * dy < threshold * threshold) return;
-				toolbarDrag = { ...toolbarDrag, didMove: true };
-			}
-			e.preventDefault();
-			const which = toolbarDrag.which;
-			const el = which === 'segment' ? segmentControlsEl : rightPanelEl;
-			const nextPos = clampToolbarPos({ x: toolbarDrag.startX + dx, y: toolbarDrag.startY + dy }, el);
-			toolbarPositions = { ...(toolbarPositions ?? { segment: nextPos, right: nextPos }), [which]: nextPos };
-		}
-
-		function endToolbarDrag(e: PointerEvent) {
-			if (!toolbarDrag) return;
-			if (e.pointerId !== toolbarDrag.pointerId) return;
-			const didMove = toolbarDrag.didMove;
-			toolbarDrag = null;
-			if (!didMove) return;
-			saveToolbarPositions();
-
-			const suppressClick = (ev: MouseEvent) => {
-				const target = ev.target as Node | null;
-				if (!target) return;
-				const inToolbar = Boolean(segmentControlsEl?.contains(target) || rightPanelEl?.contains(target));
-				if (!inToolbar) return;
-				ev.preventDefault();
-				ev.stopPropagation();
-				window.removeEventListener('click', suppressClick, true);
-			};
-			window.addEventListener('click', suppressClick, true);
+		/** Reset zoom and pan so the whole heart is back in view. */
+		function fitView() {
+			userZoom = 1;
+			userPanOffset = { x: 0, y: 0 };
 		}
 
 	function handleWheel(event: WheelEvent) {
@@ -2834,17 +2723,6 @@
 			if (onFingersChange) onFingersChange(fingers, gridSize, weaveParity);
 		});
 
-		$effect(() => {
-			if (!fullPage) return;
-			if (!canDragToolbars) return;
-			if (toolbarPositions) return;
-			(async () => {
-				await tick();
-				loadToolbarPositions();
-				ensureDefaultToolbarPositions();
-			})();
-		});
-
 	function isEditableTarget(target: EventTarget | null): boolean {
 		if (!(target instanceof HTMLElement)) return false;
 		if (target.isContentEditable) return true;
@@ -2894,6 +2772,13 @@
 				// Storage unavailable: show the tip on every visit.
 				firstVisitHintDismissed = false;
 			}
+			try {
+				panelCollapsed = localStorage.getItem(PANEL_COLLAPSED_KEY) === '1';
+				// Retired feature: drop the draggable-toolbar offsets if they are still there.
+				localStorage.removeItem(`${LEGACY_TOOLBAR_POSITIONS_KEY}${componentId}`);
+			} catch {
+				// Storage unavailable: start with the panel open.
+			}
 		}
 		return () => {
 			if (!readonly && typeof window !== 'undefined') {
@@ -2909,10 +2794,8 @@
 			try {
 				isMobileLayout = window.matchMedia('(max-width: 900px)').matches;
 			} catch {
-				// Ignore invalid cached toolbar offsets.
+				// matchMedia unavailable: assume the desktop layout.
 			}
-
-			loadToolbarPositions();
 
 		const measure = () => {
 			const rect = svgEl?.getBoundingClientRect?.();
@@ -2932,30 +2815,13 @@
 		(async () => {
 			await tick();
 			measure();
-			ensureDefaultToolbarPositions();
 		})();
 
-				const onResize = () => {
-					measure();
-					if (toolbarPositions && canDragToolbars) {
-						toolbarPositions = {
-							segment: clampToolbarPos(toolbarPositions.segment, segmentControlsEl),
-							right: clampToolbarPos(toolbarPositions.right, rightPanelEl)
-						};
-					}
-				};
-
-			window.addEventListener('pointermove', updateToolbarDrag);
-			window.addEventListener('pointerup', endToolbarDrag);
-			window.addEventListener('pointercancel', endToolbarDrag);
-			window.addEventListener('resize', onResize);
+			window.addEventListener('resize', measure);
 
 			return () => {
 				ro?.disconnect();
-				window.removeEventListener('pointermove', updateToolbarDrag);
-				window.removeEventListener('pointerup', endToolbarDrag);
-				window.removeEventListener('pointercancel', endToolbarDrag);
-				window.removeEventListener('resize', onResize);
+				window.removeEventListener('resize', measure);
 			};
 		});
 
@@ -2995,6 +2861,19 @@
 		return t0;
 	});
 
+	// Canvas chrome (DESIGN.md §7): what is selected, top right, and the strip count,
+	// bottom left. `stripsCount` is the shared '{n} striber' key; the grid fills in '3 × 3'.
+	let selectedNodeTypeLabel = $derived(
+		nodeTypeSelected === 'corner'
+			? tr('editorCornerNode')
+			: nodeTypeSelected === 'smooth'
+				? tr('editorSmoothNode')
+				: nodeTypeSelected === 'symmetric'
+					? tr('editorSymmetricNode')
+					: null
+	);
+	let stripsLabel = $derived(tr('stripsCount').replace('{n}', `${gridSize.x} × ${gridSize.y}`));
+
 	let visibleAnchorSet = $derived.by(() => {
 		const set = new Set<number>();
 		for (const idx of selectedAnchors) {
@@ -3029,7 +2908,6 @@
 		let canvasAreaEl: HTMLDivElement | null = null;
 		let mobileCanvasMinHeight = $state<string | null>(null);
 		let isMobileLayout = $state(false);
-		let canDragToolbars = $derived(fullPage && draggableToolbars && !isMobileLayout);
 
 	function updateMobileCanvasMinHeight() {
 		if (!canvasAreaEl) return;
@@ -3102,16 +2980,58 @@
 	});
 </script>
 
+	<!--
+		One tool-rail button: a 44px icon button with a tooltip (DESIGN.md §7).
+		`pressed` turns it into a toggle (the three node types); the tooltip trigger
+		wraps the button in a span so disabled buttons still show their tooltip.
+	-->
+	{#snippet toolButton(o: {
+		label: string;
+		tip?: string;
+		icon: Component<IconProps>;
+		onclick: () => void;
+		disabled?: boolean;
+		pressed?: boolean;
+	})}
+		{@const Icon = o.icon}
+		<Tooltip>
+			<TooltipTrigger>
+				{#snippet child({ props })}
+					<!-- The wrapper carries the tooltip so a *disabled* button still has one,
+					     and keeps the tabindex the trigger gives it. When the button itself can
+					     take focus, the wrapper steps out of the tab order (spread, so the
+					     attribute is simply absent otherwise) and the rail is one stop per tool. -->
+					<span class="tooltip-wrapper" {...props} {...(o.disabled ? {} : { tabindex: -1 })}>
+						<button
+							type="button"
+							class="tool-btn"
+							class:active={o.pressed}
+							aria-label={o.label}
+							aria-pressed={o.pressed === undefined ? undefined : o.pressed}
+							disabled={o.disabled ?? false}
+							onclick={o.onclick}
+						>
+							<Icon size={20} />
+						</button>
+					</span>
+				{/snippet}
+			</TooltipTrigger>
+			<TooltipContent>{o.tip ?? o.label}</TooltipContent>
+		</Tooltip>
+	{/snippet}
+
 	<TooltipProvider delayDuration={250}>
 		<div
 			class="paper-heart"
 			class:readonly
 			class:fullPage={fullPage}
+			class:panel-collapsed={panelCollapsed}
 			style:--mobile-top-clearance={mobileClearance ? `${mobileClearance.top}px` : undefined}
 			style:--mobile-bottom-clearance={mobileClearance ? `${mobileClearance.bottom}px` : undefined}
 			style:--mobile-notice-top={mobileNoticeTop != null ? `${mobileNoticeTop}px` : undefined}
 		>
 			<div class="canvas-area" bind:this={canvasAreaEl} style:min-height={fullPage ? undefined : mobileCanvasMinHeight ?? undefined}>
+				<div class="canvas-box">
 				<div class="canvas-wrapper" style:width={fullPage ? '100%' : `${size}px`} style:height={fullPage ? '100%' : `${size}px`}>
 					<svg
 						bind:this={svgEl}
@@ -3398,6 +3318,15 @@
 			</div>
 
 			{#if !readonly}
+				<!-- Canvas chrome (DESIGN.md §7): the one-line hint, what is selected and the
+				     strip count. Desktop only — the mobile editor keeps its stacked panels. -->
+				<p class="canvas-hint">{tr('editorCanvasHint')}</p>
+				{#if selectedNodeTypeLabel}
+					<p class="canvas-selection">
+						<span class="canvas-selection-dot" aria-hidden="true"></span>{selectedNodeTypeLabel}
+					</p>
+				{/if}
+				<p class="canvas-strips">{stripsLabel}</p>
 				<div class="canvas-notices">
 					{#if hasIntersectionIssues}
 						<div class="canvas-notice warning" role="alert">{tr('editorIntersectionWarning')}</div>
@@ -3414,30 +3343,114 @@
 						</div>
 					{/if}
 				</div>
-			{/if}
+				{/if}
+				</div>
 
-				{#if !readonly}
-					<div
-						bind:this={rightPanelEl}
-						class={`right-panel ${fullPage ? 'floating' : ''} ${canDragToolbars ? 'draggable' : ''}`}
-						style={canDragToolbars && toolbarPositions ? `left: ${toolbarPositions.right.x}px; top: ${toolbarPositions.right.y}px; right: auto; bottom: auto;` : ''}
-						onpointerdown={(e) => beginToolbarDrag(e, 'right')}
-					>
-						<div class="controls">
-							<label class="checkbox">
-								<input type="checkbox" bind:checked={snapToOpposite} aria-label={tr('editorSnapToOppositeTitle')} />
-								{tr('editorSnapToOpposite')}
-							</label>
-							<label class="checkbox">
-								<input type="checkbox" bind:checked={showCurves} aria-label={tr('editorShowCurveOutlines')} />
-								{tr('editorOutlines')}
-						</label>
-						<Button variant="secondary" size="sm" onclick={flipLobeColors} title={tr('editorFlipLobeColors')}>
-							{tr('editorFlipColors')}
-						</Button>
+			{#if !readonly}
+				<!-- Tool rail. Every tool stays an icon button with a tooltip; nothing is
+				     removed and no labels are printed under the icons (DESIGN.md §7). -->
+				<div bind:this={segmentControlsEl} class="segment-controls" class:floating={fullPage} aria-label={tr('editorCurveTools')}>
+					<div class="history-controls" aria-label={tr('editorHistory')}>
+						{@render toolButton({ label: tr('editorUndo'), icon: UndoIcon, onclick: undo, disabled: !canUndo })}
+						{@render toolButton({ label: tr('editorRedo'), icon: RedoIcon, onclick: redo, disabled: !canRedo })}
 					</div>
-					<div class="symmetry-panel">
-						<h4 class="symmetry-header">{tr('symmetry')}</h4>
+					<div class="toolbar-separator" aria-hidden="true">
+						<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
+					</div>
+					<div class="edit-controls" aria-label={tr('editorEdit')}>
+						{@render toolButton({
+							label: tr('editorInsertNode'),
+							icon: NodeAddIcon,
+							onclick: insertNodeBetweenSelectedAnchors,
+							disabled: !canInsertNode
+						})}
+						{@render toolButton({
+							label: tr('editorDeleteNode'),
+							icon: TrashIcon,
+							onclick: deleteSelectedAnchors,
+							disabled: !canDeleteNode
+						})}
+					</div>
+					<div class="toolbar-separator" aria-hidden="true">
+						<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
+					</div>
+					<div class="node-type-controls" aria-label={tr('editorNodeType')}>
+						{@render toolButton({
+							label: tr('editorCornerNode'),
+							tip: tr('editorCorner'),
+							icon: NodeCornerIcon,
+							onclick: () => setSelectedAnchorsNodeType('corner'),
+							disabled: !validAnchors.length,
+							pressed: nodeTypeSelected === 'corner'
+						})}
+						{@render toolButton({
+							label: tr('editorSmoothNode'),
+							tip: tr('editorSmooth'),
+							icon: NodeSmoothIcon,
+							onclick: () => setSelectedAnchorsNodeType('smooth'),
+							disabled: !validAnchors.length,
+							pressed: nodeTypeSelected === 'smooth'
+						})}
+						{@render toolButton({
+							label: tr('editorSymmetricNode'),
+							tip: tr('editorSymmetric'),
+							icon: NodeSymmetricIcon,
+							onclick: () => {
+								makeSelectedAnchorsCurved();
+								setSelectedAnchorsNodeType('symmetric');
+							},
+							disabled: !validAnchors.length,
+							pressed: nodeTypeSelected === 'symmetric'
+						})}
+						{@render toolButton({
+							label: tr('editorCurveNode'),
+							icon: NodeCurveIcon,
+							onclick: makeSelectedAnchorsCurved,
+							disabled: !validAnchors.length
+						})}
+					</div>
+					<div class="toolbar-separator" aria-hidden="true">
+						<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
+					</div>
+					<div class="convert-controls" aria-label={tr('editorConvert')}>
+						{@render toolButton({
+							label: tr('editorStraightSegment'),
+							icon: SegmentLineIcon,
+							onclick: makeSelectedSegmentsStraight,
+							disabled: !canMakeSegmentsStraight
+						})}
+						{@render toolButton({
+							label: tr('editorCurvedSegment'),
+							icon: SegmentCurveIcon,
+							onclick: makeSelectedSegmentsCurved,
+							disabled: !canMakeSegmentsCurved
+						})}
+					</div>
+					<div class="toolbar-separator view-separator" aria-hidden="true">
+						<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
+					</div>
+					<div class="view-controls" aria-label={tr('editorFitView')}>
+						{@render toolButton({ label: tr('editorFitView'), icon: FitIcon, onclick: fitView })}
+					</div>
+				</div>
+
+				<!-- The 340px panel. Symmetri / Tegning / Farver belong to the editor itself;
+				     the route adds Hjertedetaljer and Handlinger through `panelExtra`. -->
+				<div
+					bind:this={rightPanelEl}
+					class="right-panel"
+					class:floating={fullPage}
+					class:collapsed={panelCollapsed}
+				>
+					<div class="panel-collapse">
+						<button type="button" class="panel-button" onclick={() => setPanelCollapsed(true)}>
+							{tr('editorHidePanel')}
+							<ChevronRightIcon size={14} />
+						</button>
+					</div>
+
+					<section class="editor-panel symmetry-panel">
+						<h2 class="panel-title">{tr('symmetry')}</h2>
 						<div class="symmetry-row" aria-label={tr('editorWithinCurveSymmetry')}>
 							<span class="symmetry-label">{tr('editorWithinCurve')}</span>
 							<ToggleGroup type="single" bind:value={withinCurveMode}>
@@ -3471,213 +3484,42 @@
 								<TooltipContent>{canSymmetryBetweenLobes() ? tr('editorBetweenLobesSymmetry') : tr('editorRequiresEqualGridSize')}</TooltipContent>
 							</Tooltip>
 						</div>
-					</div>
-				</div>
-				{/if}
+					</section>
 
-				{#if !readonly}
-					<div
-						bind:this={segmentControlsEl}
-						class={`segment-controls ${fullPage ? 'floating' : ''} ${canDragToolbars ? 'draggable' : ''}`}
-						style={
-							canDragToolbars && toolbarPositions ? `left: ${toolbarPositions.segment.x}px; top: ${toolbarPositions.segment.y}px; transform: none;` : ''
-						}
-						aria-label={tr('editorCurveTools')}
-						onpointerdown={(e) => beginToolbarDrag(e, 'segment')}
-					>
-							<div class="history-controls" aria-label={tr('editorHistory')}>
-								<Tooltip>
-									<TooltipTrigger>
-										{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<Button variant="ghost" size="icon-sm" onclick={undo} disabled={!canUndo} aria-label={tr('editorUndo')}>
-												<Undo2Icon size={18} aria-hidden="true" />
-											</Button>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{tr('editorUndo')}</TooltipContent>
-							</Tooltip>
-							<Tooltip>
-								<TooltipTrigger>
-									{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<Button variant="ghost" size="icon-sm" onclick={redo} disabled={!canRedo} aria-label={tr('editorRedo')}>
-												<Redo2Icon size={18} aria-hidden="true" />
-											</Button>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{tr('editorRedo')}</TooltipContent>
-							</Tooltip>
+					<section class="editor-panel">
+						<h2 class="panel-title">{tr('editorDrawing')}</h2>
+						<label class="checkbox" title={tr('editorShowCurveOutlines')}>
+							<input type="checkbox" bind:checked={showCurves} />
+							<span>{tr('editorOutlines')}</span>
+						</label>
+						<label class="checkbox" title={tr('editorSnapToOppositeTitle')}>
+							<input type="checkbox" bind:checked={snapToOpposite} />
+							<span>{tr('editorSnapToOpposite')}</span>
+						</label>
+					</section>
+
+					<section class="editor-panel">
+						<h2 class="panel-title">{tr('editorColors')}</h2>
+						<div class="colors-row">
+							<span class="swatch" style:background={heartColors.left} aria-hidden="true"></span>
+							<span class="swatch" style:background={heartColors.right} aria-hidden="true"></span>
+							<button type="button" class="panel-button" onclick={flipLobeColors} title={tr('editorFlipLobeColors')}>
+								<SwapIcon size={14} />
+								{tr('editorSwap')}
+							</button>
 						</div>
-						<div class="toolbar-separator" aria-hidden="true">
-							<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
-						</div>
-						<div class="edit-controls" aria-label={tr('editorEdit')}>
-							<Tooltip>
-								<TooltipTrigger>
-									{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<Button
-												variant="ghost"
-												size="icon-sm"
-												onclick={insertNodeBetweenSelectedAnchors}
-												disabled={!canInsertNode}
-												aria-label={tr('editorInsertNode')}
-											>
-												<span aria-hidden="true"><AddNodeIcon /></span>
-											</Button>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{tr('editorInsertNode')}</TooltipContent>
-							</Tooltip>
-							<Tooltip>
-								<TooltipTrigger>
-									{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<Button
-												variant="ghost"
-												size="icon-sm"
-												onclick={deleteSelectedAnchors}
-												disabled={!canDeleteNode}
-												aria-label={tr('editorDeleteNode')}
-											>
-												<Trash2Icon size={18} aria-hidden="true" />
-											</Button>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{tr('editorDeleteNode')}</TooltipContent>
-							</Tooltip>
-						</div>
-						<div class="toolbar-separator" aria-hidden="true">
-							<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
-						</div>
-						<div class="node-type-controls" aria-label={tr('editorNodeType')}>
-							<Tooltip>
-								<TooltipTrigger>
-									{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<Button
-												variant="ghost"
-												size="icon-sm"
-												class={nodeTypeSelected === 'corner' ? 'bg-[#cc0000]/10 border-[#cc0000]/40' : ''}
-												onclick={() => setSelectedAnchorsNodeType('corner')}
-												disabled={!validAnchors.length}
-												aria-label={tr('editorCornerNode')}
-											>
-												<span aria-hidden="true"><NodeCornerIcon /></span>
-											</Button>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{tr('editorCorner')}</TooltipContent>
-							</Tooltip>
-							<Tooltip>
-								<TooltipTrigger>
-									{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<Button
-												variant="ghost"
-												size="icon-sm"
-												class={nodeTypeSelected === 'smooth' ? 'bg-[#cc0000]/10 border-[#cc0000]/40' : ''}
-												onclick={() => setSelectedAnchorsNodeType('smooth')}
-												disabled={!validAnchors.length}
-												aria-label={tr('editorSmoothNode')}
-											>
-												<span aria-hidden="true"><NodeSmoothIcon /></span>
-											</Button>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{tr('editorSmooth')}</TooltipContent>
-							</Tooltip>
-							<Tooltip>
-								<TooltipTrigger>
-									{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<Button
-												variant="ghost"
-												size="icon-sm"
-												class={nodeTypeSelected === 'symmetric' ? 'bg-[#cc0000]/10 border-[#cc0000]/40' : ''}
-												onclick={() => {
-													makeSelectedAnchorsCurved();
-													setSelectedAnchorsNodeType('symmetric');
-												}}
-												disabled={!validAnchors.length}
-												aria-label={tr('editorSymmetricNode')}
-											>
-												<span aria-hidden="true"><NodeSymmetricIcon /></span>
-											</Button>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{tr('editorSymmetric')}</TooltipContent>
-							</Tooltip>
-							<Tooltip>
-								<TooltipTrigger>
-									{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<Button
-												variant="ghost"
-												size="icon-sm"
-												onclick={makeSelectedAnchorsCurved}
-												disabled={!validAnchors.length}
-												aria-label={tr('editorCurveNode')}
-											>
-												<span aria-hidden="true"><CurveNodeToolIcon /></span>
-											</Button>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{tr('editorCurveNode')}</TooltipContent>
-							</Tooltip>
-						</div>
-						<div class="toolbar-separator" aria-hidden="true">
-							<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
-						</div>
-						<div class="convert-controls" aria-label={tr('editorConvert')}>
-							<Tooltip>
-								<TooltipTrigger>
-									{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<Button
-												variant="ghost"
-												size="icon-sm"
-												onclick={makeSelectedSegmentsStraight}
-												disabled={!canMakeSegmentsStraight}
-												aria-label={tr('editorStraightSegment')}
-											>
-												<span aria-hidden="true"><SegmentLineIcon /></span>
-											</Button>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{tr('editorStraightSegment')}</TooltipContent>
-							</Tooltip>
-							<Tooltip>
-								<TooltipTrigger>
-									{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<Button
-												variant="ghost"
-												size="icon-sm"
-												onclick={makeSelectedSegmentsCurved}
-												disabled={!canMakeSegmentsCurved}
-												aria-label={tr('editorCurvedSegment')}
-											>
-												<span aria-hidden="true"><SegmentCurveIcon /></span>
-											</Button>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{tr('editorCurvedSegment')}</TooltipContent>
-							</Tooltip>
-						</div>
-					</div>
+					</section>
+
+					{#if panelExtra}{@render panelExtra()}{/if}
+				</div>
+
+				{#if panelCollapsed}
+					<button type="button" class="panel-tab" onclick={() => setPanelCollapsed(false)}>
+						<ChevronRightIcon size={14} />
+						<span>{tr('editorShowPanel')}</span>
+					</button>
 				{/if}
+			{/if}
 			</div>
 		</div>
 	</TooltipProvider>
@@ -3715,6 +3557,22 @@
 			background: transparent;
 		}
 
+		/* The drawing surface. Everything that floats over the heart (hint, selection,
+		   strip count, notices) lives inside it, so it is anchored to the canvas and not
+		   to the three-column layout around it. */
+		.canvas-box {
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+		}
+
+		.paper-heart.fullPage .canvas-box {
+			position: absolute;
+			inset: 0;
+		}
+
 		.paper-heart.fullPage .canvas-wrapper {
 			position: absolute;
 			inset: 0;
@@ -3725,6 +3583,61 @@
 			touch-action: none;
 			width: 100%;
 			height: 100%;
+		}
+
+		/* Canvas chrome — DESIGN.md §7. Desktop only: below 900px the editor keeps the
+		   stacked panels it has always had, so these three lines stay hidden there. */
+		.canvas-hint,
+		.canvas-selection,
+		.canvas-strips {
+			display: none;
+			margin: 0;
+			position: absolute;
+			z-index: 22;
+			font-size: 13px;
+			line-height: 1.35;
+			pointer-events: none;
+			user-select: none;
+		}
+
+		.canvas-hint,
+		.canvas-selection {
+			top: 14px;
+			align-items: center;
+			gap: 8px;
+			padding: 8px 12px;
+			border: 1px solid var(--line);
+			border-radius: 10px;
+			background: var(--white);
+		}
+
+		.canvas-hint {
+			left: 16px;
+			max-width: calc(100% - 250px);
+			color: var(--muted);
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.canvas-selection {
+			right: 16px;
+			color: var(--ink);
+			font-weight: 500;
+		}
+
+		.canvas-selection-dot {
+			width: 10px;
+			height: 10px;
+			flex: none;
+			border-radius: 50%;
+			background: var(--red);
+		}
+
+		.canvas-strips {
+			left: 16px;
+			bottom: 14px;
+			color: var(--muted);
 		}
 
 		/* Short notices above the heart (strip-count hint, intersection warning, first-visit tip). */
@@ -3749,18 +3662,18 @@
 			align-items: flex-start;
 			gap: 0.5rem;
 			padding: 0.5rem 0.75rem;
-			border-radius: 0.6rem;
-			font-size: 0.85rem;
+			border-radius: 10px;
+			font-size: 13px;
 			line-height: 1.4;
-			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+			box-shadow: 0 10px 30px rgb(28 51 41 / 0.12);
 			pointer-events: auto;
 		}
 
 		.canvas-notice.info,
 		.canvas-notice.hint {
-			background: rgba(255, 255, 255, 0.95);
-			border: 1px solid #ddd;
-			color: #444;
+			background: var(--white);
+			border: 1px solid var(--line);
+			color: var(--muted);
 		}
 
 		.canvas-notice.warning {
@@ -3785,17 +3698,17 @@
 		}
 
 		.notice-dismiss:hover {
-			background: rgba(0, 0, 0, 0.06);
+			background: rgb(28 51 41 / 0.06);
 		}
 
 		.right-panel {
 			position: absolute;
 			right: 24px;
 			bottom: 24px;
-		z-index: 20;
-		display: flex;
+			z-index: 20;
+			display: flex;
 			flex-direction: column;
-			gap: 0.75rem;
+			gap: 14px;
 			align-items: flex-end;
 		}
 
@@ -3803,16 +3716,43 @@
 			position: absolute;
 		}
 
+		/*
+		  Panel chrome. Declared `:global` under .right-panel on purpose: the editor route
+		  fills the same column with its own Hjertedetaljer / Handlinger sections through
+		  the `panelExtra` snippet, and scoped styles would not reach that markup. The route
+		  repeats these few rules for the copy it renders below the canvas on phones.
+		*/
+		.right-panel :global(.editor-panel) {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+			padding: 16px;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			background: var(--white);
+			box-sizing: border-box;
+		}
+
+		.right-panel :global(.panel-title) {
+			margin: 0;
+			font-size: 12px;
+			font-weight: 600;
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+
 		.segment-controls {
 			display: flex;
 			flex-direction: column;
-			gap: 0.5rem;
-		align-items: center;
-		background: #fff;
-		padding: 0.75rem;
-		border-radius: 12px;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-		position: absolute;
+			gap: 2px;
+			align-items: center;
+			background: var(--white);
+			padding: 6px;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			box-shadow: 0 10px 30px rgb(28 51 41 / 0.12);
+			position: absolute;
 			left: 32px;
 			top: 50%;
 			transform: translateY(-50%);
@@ -3823,90 +3763,300 @@
 			position: absolute;
 		}
 
-		.segment-controls.draggable,
-		.right-panel.draggable {
-			cursor: grab;
-			user-select: none;
-		}
-
-		.segment-controls.draggable:active,
-		.right-panel.draggable:active {
-			cursor: grabbing;
-		}
-
 		.history-controls,
 		.edit-controls,
 		.node-type-controls,
-		.convert-controls {
+		.convert-controls,
+		.view-controls {
 			display: flex;
 			flex-direction: column;
-		align-items: center;
-		gap: 0.25rem;
-	}
-
-	.toolbar-separator {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-	}
-
-		.toolbar-separator :global([data-separator]) {
-			background-color: #e5e5e5;
+			align-items: center;
+			gap: 2px;
 		}
 
-		.controls {
+		/* Every tool is a 44px icon button with a tooltip — no labels under the icons. */
+		.tool-btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 44px;
+			height: 44px;
+			padding: 0;
+			border: none;
+			border-radius: 10px;
+			background: transparent;
+			color: var(--green);
+			cursor: pointer;
+			transition: background-color 0.15s, color 0.15s;
+		}
+
+		.tool-btn:hover:not(:disabled) {
+			background: var(--cream2);
+		}
+
+		.tool-btn.active {
+			background: var(--green);
+			color: var(--white);
+		}
+
+		.tool-btn:disabled {
+			opacity: 0.35;
+			cursor: not-allowed;
+		}
+
+		.toolbar-separator {
 			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			margin: 4px 0;
+			padding: 0 6px;
+			box-sizing: border-box;
+		}
+
+		.toolbar-separator :global([data-separator]) {
+			background-color: var(--line);
+		}
+
+		/* Small pill button used by "Skjul panel" and "Byt". */
+		.panel-button {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 8px 12px;
+			border: 1.5px solid var(--line);
+			border-radius: 8px;
+			background: var(--white);
+			color: var(--green);
+			font-family: inherit;
+			font-size: 13px;
+			font-weight: 600;
+			line-height: 1;
+			cursor: pointer;
+			transition: background-color 0.15s;
+		}
+
+		.panel-button:hover {
+			background: var(--cream2);
+		}
+
+		.panel-collapse {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		/* The slim tab that brings a hidden panel back. */
+		.panel-tab {
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			display: none;
 			flex-direction: column;
-		gap: 0.5rem;
-		align-items: flex-start;
-		background: rgba(255, 255, 255, 0.95);
-		padding: 0.75rem;
-		border-radius: 0.75rem;
-			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+			align-items: center;
+			gap: 8px;
+			padding: 16px 7px;
+			border: 1.5px solid var(--line);
+			border-right: none;
+			border-radius: 10px 0 0 10px;
+			background: var(--white);
+			color: var(--green);
+			font-family: inherit;
+			font-size: 13px;
+			font-weight: 600;
+			cursor: pointer;
+			z-index: 22;
+		}
+
+		.panel-tab span {
+			writing-mode: vertical-rl;
+		}
+
+		.panel-tab :global(svg) {
+			transform: rotate(180deg);
 		}
 
 		.checkbox {
-			display: inline-flex;
-			gap: 0.5rem;
-		align-items: center;
-			font-size: 0.95rem;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			font-size: 14px;
+			color: var(--ink);
+			cursor: pointer;
 		}
 
-		.symmetry-panel {
+		.checkbox input {
+			appearance: none;
+			-webkit-appearance: none;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			flex: none;
+			width: 20px;
+			height: 20px;
+			margin: 0;
+			border: 1.5px solid var(--green);
+			border-radius: 5px;
+			background: var(--white);
+			cursor: pointer;
+		}
+
+		.checkbox input:checked {
+			background: var(--green);
+		}
+
+		.checkbox input:checked::after {
+			content: '';
+			width: 10px;
+			height: 5px;
+			margin-top: -3px;
+			border-left: 2px solid var(--white);
+			border-bottom: 2px solid var(--white);
+			transform: rotate(-45deg);
+		}
+
+		.colors-row {
 			display: flex;
-			flex-direction: column;
-		gap: 0.5rem;
-		background: rgba(255, 255, 255, 0.95);
-		padding: 0.75rem;
-		border-radius: 0.75rem;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-	}
+			align-items: center;
+			gap: 12px;
+		}
 
-	.symmetry-header {
-		margin: 0 0 0.25rem 0;
-		font-size: 0.8rem;
-		font-weight: 600;
-		color: #666;
-		text-transform: uppercase;
-		letter-spacing: 0.5px;
-	}
+		.swatch {
+			width: 34px;
+			height: 34px;
+			flex: none;
+			border: 1.5px solid var(--line);
+			border-radius: 50%;
+		}
 
-	.symmetry-row {
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-		gap: 0.6rem;
-	}
+		.symmetry-row {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 10px;
+		}
 
-	.symmetry-label {
-		color: #444;
-		font-size: 0.85rem;
-		white-space: nowrap;
-	}
+		.symmetry-label {
+			color: var(--ink);
+			font-size: 14px;
+			white-space: nowrap;
+		}
+
+		/* Segmented Fra / Sym / Anti control, restyled from the shadcn ToggleGroup. */
+		.symmetry-row :global([data-slot='toggle-group']) {
+			display: inline-flex;
+			gap: 0;
+			padding: 0;
+			border: 1.5px solid var(--line);
+			border-radius: 8px;
+			overflow: hidden;
+			background: var(--white);
+		}
+
+		.symmetry-row :global([data-slot='toggle-group-item']) {
+			border-radius: 0;
+			padding: 6px 10px;
+			font-size: 13px;
+			font-weight: 600;
+			color: var(--green);
+			background: var(--white);
+			box-shadow: none;
+		}
+
+		.symmetry-row :global([data-slot='toggle-group-item']:hover) {
+			background: var(--cream2);
+			color: var(--green);
+		}
+
+		.symmetry-row :global([data-slot='toggle-group-item'][data-state='on']) {
+			background: var(--green);
+			color: var(--white);
+		}
 
 		.tooltip-wrapper {
 			display: inline-flex;
+		}
+
+		/* ------------------------------------------------------------------
+		   Desktop: tool rail · canvas · 340px panel (DESIGN.md §7). Below 900px
+		   the editor keeps its existing stacked layout, so this is the only place
+		   the three-column grid is switched on.
+		   ------------------------------------------------------------------ */
+		@media (min-width: 901px) {
+			.paper-heart.fullPage .canvas-area {
+				display: grid;
+				grid-template-columns: 64px minmax(0, 1fr) 340px;
+				/* A definite row, so a tall panel scrolls inside its column
+				   instead of stretching the whole layout past the viewport. */
+				grid-template-rows: minmax(0, 1fr);
+				gap: 20px;
+				padding: 20px 24px 28px;
+				box-sizing: border-box;
+				align-items: stretch;
+			}
+
+			.paper-heart.fullPage.panel-collapsed .canvas-area {
+				grid-template-columns: 64px minmax(0, 1fr);
+			}
+
+			.paper-heart.fullPage .canvas-box {
+				position: relative;
+				inset: auto;
+				grid-column: 2;
+				grid-row: 1;
+				min-width: 0;
+				border-radius: 16px;
+				background: var(--cream2);
+				overflow: hidden;
+			}
+
+			.paper-heart.fullPage .canvas-hint,
+			.paper-heart.fullPage .canvas-strips {
+				display: block;
+			}
+
+			.paper-heart.fullPage .canvas-hint,
+			.paper-heart.fullPage .canvas-selection {
+				display: inline-flex;
+			}
+
+			.paper-heart.fullPage .canvas-notices {
+				top: 62px;
+			}
+
+			/* Give the heart a little air inside the cream canvas. */
+			.paper-heart.fullPage .canvas-wrapper {
+				inset: 16px;
+			}
+
+			.paper-heart.fullPage .segment-controls,
+			.paper-heart.fullPage .segment-controls.floating {
+				position: static;
+				transform: none;
+				grid-column: 1;
+				grid-row: 1;
+				align-self: start;
+				box-shadow: none;
+			}
+
+			.paper-heart.fullPage .right-panel,
+			.paper-heart.fullPage .right-panel.floating {
+				position: static;
+				grid-column: 3;
+				grid-row: 1;
+				align-items: stretch;
+				min-height: 0;
+				overflow-y: auto;
+				scrollbar-width: thin;
+			}
+
+			.paper-heart.fullPage .right-panel.collapsed {
+				display: none;
+			}
+
+			.paper-heart.fullPage .panel-tab {
+				display: inline-flex;
+			}
 		}
 
 		@media (max-width: 900px) {
@@ -3986,16 +4136,30 @@
 				position: absolute;
 			}
 
-			.controls {
-				flex-direction: row;
+			.right-panel {
 				flex-wrap: wrap;
-				align-items: center;
+			}
+
+			/* The floating panels sit over the canvas here, so keep them compact and lifted. */
+			.right-panel :global(.editor-panel) {
+				flex: 1 1 200px;
+				min-width: 0;
+				padding: 12px;
+				gap: 8px;
+				box-shadow: 0 10px 30px rgb(28 51 41 / 0.12);
+			}
+
+			/* Collapsing belongs to the desktop layout only. */
+			.panel-collapse,
+			.panel-tab {
+				display: none;
 			}
 
 			.history-controls,
 			.edit-controls,
 			.node-type-controls,
-			.convert-controls {
+			.convert-controls,
+			.view-controls {
 				flex-direction: row;
 			}
 
@@ -4044,23 +4208,31 @@
 				display: none;
 			}
 
+			/* Keep the view tool with the rest instead of alone on the second row. */
+			.view-controls {
+				order: 1;
+			}
+
 			/* Balance the two rows: history, edit and convert on the first, node types on the second. */
 			.node-type-controls {
 				order: 1;
 			}
 
+			/* Two-up: Symmetri across the top, Tegning and Farver beside each other,
+			   so the floating panels leave the heart as much of the screen as before. */
 			.right-panel {
-				flex-direction: column;
-				align-items: stretch;
-				gap: 0.5rem;
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				align-items: start;
+				gap: 8px;
 			}
 
-			.controls {
-				justify-content: space-between;
+			.right-panel :global(.editor-panel) {
+				flex: 0 0 auto;
 			}
 
-			.symmetry-row {
-				justify-content: space-between;
+			.symmetry-panel {
+				grid-column: 1 / -1;
 			}
 
 			.paper-heart.fullPage:not(.readonly) .canvas-wrapper {
