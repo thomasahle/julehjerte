@@ -24,6 +24,7 @@
 	} from '$lib/components/editor/icons';
 
 	import { NARROW_QUERY } from '$lib/breakpoints';
+	import { readPanelCollapsed, writePanelCollapsed } from '$lib/editor/panelState';
 	import type { Finger, GridSize, Vec, LobeId, NodeType } from '$lib/types/heart';
 	import { clamp, clampInt } from '$lib/utils/math';
 	import { inferOverlapRect } from '$lib/utils/overlapRect';
@@ -2060,9 +2061,17 @@
 		const LEGACY_TOOLBAR_POSITIONS_KEY = 'paperheart.toolbarPositions.';
 
 		// Collapsing the right panel lets the canvas fill the width (DESIGN.md §7).
-		// The choice is remembered per browser and read in onMount, so the server
-		// render and the first client render agree.
-		const PANEL_COLLAPSED_KEY = 'paperheart.panelCollapsed';
+		// $lib/editor/panelState owns the persistence rules (default open, read
+		// after mount, storage failures tolerated) and is tested there.
+		//
+		// TODO: the panel *shell* — .right-panel, .panel-collapse and .panel-tab
+		// below — is page chrome and belongs in an EditorPanel.svelte beside this
+		// file. It is still here because its CSS is welded to this component's
+		// layout: the three-column grid sizes the 340px column, `.paper-heart
+		// .panel-collapsed` drives the tab, and three media queries restyle all of
+		// them together. Moving the markup without moving the canvas layout would
+		// replace those rules with a wider :global() contract than the one it
+		// removes; do it when the canvas layout itself is split out.
 		let panelCollapsed = $state(false);
 		// Both controls stay mounted (the tab is hidden with CSS while the panel is
 		// open), so collapsing from the keyboard can hand focus to the other one
@@ -2073,11 +2082,7 @@
 
 		function setPanelCollapsed(next: boolean) {
 			panelCollapsed = next;
-			try {
-				localStorage.setItem(PANEL_COLLAPSED_KEY, next ? '1' : '0');
-			} catch {
-				// Storage unavailable: the choice just does not survive a reload.
-			}
+			writePanelCollapsed(next);
 			// Only chase the focus that the control we just hid was holding.
 			const moving = typeof document !== 'undefined' && document.activeElement;
 			if (moving !== panelCollapseButtonEl && moving !== panelTabEl) return;
@@ -2790,12 +2795,12 @@
 				// Storage unavailable: show the tip on every visit.
 				firstVisitHintDismissed = false;
 			}
+			panelCollapsed = readPanelCollapsed();
 			try {
-				panelCollapsed = localStorage.getItem(PANEL_COLLAPSED_KEY) === '1';
 				// Retired feature: drop the draggable-toolbar offsets if they are still there.
 				localStorage.removeItem(`${LEGACY_TOOLBAR_POSITIONS_KEY}${componentId}`);
 			} catch {
-				// Storage unavailable: start with the panel open.
+				// Storage unavailable: nothing to clean up.
 			}
 		}
 		return () => {
