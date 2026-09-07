@@ -345,7 +345,13 @@
   <main id="main-content" tabindex="-1">
   <Scene>
     <!-- The firs the heart hangs on, drawn over the landscape and anchored to the
-         bottom-left corner. Hidden below 1100, where the columns stack. -->
+         bottom-left corner. Hidden below 1100, where the columns stack.
+
+         The overlay is bottom-anchored, so shortening the scene pulls the tips
+         up with it: the big fir keeps its base (user y 710, on the snow line)
+         and starts 105 lower than it used to, which puts its tip back just
+         under the top of the heart's ribbon. -->
+
     <svg
       class="scene-trees"
       viewBox="0 0 1440 820"
@@ -354,7 +360,7 @@
       focusable="false"
     >
       <Fir x={560} tipY={330} height={330} fill={FIR_FILLS[1]} symbol="pine-b" mirrored widthFactor={0.9} />
-      <Fir x={420} tipY={110} height={600} fill={FIR_FILLS[0]} symbol="pine-c" widthFactor={0.95} />
+      <Fir x={420} tipY={215} height={495} fill={FIR_FILLS[0]} symbol="pine-c" widthFactor={0.95} />
       <Fir x={262} tipY={380} height={300} fill={FIR_FILLS[2]} symbol="pine-a" widthFactor={0.9} />
     </svg>
 

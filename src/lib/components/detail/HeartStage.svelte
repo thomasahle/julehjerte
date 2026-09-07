@@ -120,16 +120,22 @@
 </div>
 
 <style>
+	/* 480 tall at every width, with the heart hung near the top: the hanging block
+	   is 410 (152 ribbon + 340 heart - 82 cleft overlap), so at top 50 it ends 20
+	   short of the stage's bottom edge and can never reach into the thumbnails,
+	   whatever the design's own bounding box looks like. Anything taller left a
+	   band of empty sky between the heart and the thumbnails and pushed the
+	   "Flere <kategori>" row below the fold at 1440x900. */
 	.stage {
 		position: relative;
-		height: 600px;
+		height: 480px;
 	}
 
 	.stage-hang {
 		position: absolute;
 		left: 0;
 		right: 0;
-		top: 130px;
+		top: 50px;
 		display: flex;
 		justify-content: center;
 	}
@@ -260,21 +266,6 @@
 	.thumb-btn.is-active .thumb-label {
 		font-weight: 600;
 		color: var(--deep);
-	}
-
-	/* Below 1100 the columns stack, the big fir behind the stage is hidden and the
-	   stage is 480 tall. The heart is then hung at 70 rather than 130 so the
-	   block (152 ribbon + 340 heart - 82 cleft overlap = 410) ends exactly on the
-	   stage's bottom edge and can never reach into the thumbnails, whatever the
-	   design's own bounding box looks like. */
-	@media (max-width: 1099px) {
-		.stage {
-			height: 480px;
-		}
-
-		.stage-hang {
-			top: 70px;
-		}
 	}
 
 	@media (max-width: 599px) {
