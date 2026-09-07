@@ -51,7 +51,7 @@
 	import { findNearestOppositeAnchor, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
 	import { toggleNumberInList } from '$lib/editor/selection';
 	import { getColors, flipColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
-	import { t as translate, type Language, type TranslationKey } from '$lib/i18n';
+	import { stripsLabel as formatStrips, t as translate, type Language, type TranslationKey } from '$lib/i18n';
 
 		interface Props {
 			readonly?: boolean;
@@ -2895,7 +2895,7 @@
 					? tr('editorSymmetricNode')
 					: null
 	);
-	let stripsLabel = $derived(tr('stripsCount').replace('{n}', `${gridSize.x} × ${gridSize.y}`));
+	let stripsLabel = $derived(formatStrips(gridSize, lang));
 
 	let visibleAnchorSet = $derived.by(() => {
 		const set = new Set<number>();

@@ -42,7 +42,7 @@
     SITE_TITLE_EN,
     SITE_URL,
   } from "$lib/config";
-  import { t, type Language } from "$lib/i18n";
+  import { stripsLabel as formatStrips, t, type Language } from "$lib/i18n";
   import { href as routeHref } from "$lib/i18n/routes";
   import { lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
@@ -178,10 +178,11 @@
   let pageTitle = $derived(`${info?.name ?? t("template", lang)} - ${siteTitle}`);
   let metaDescription = $derived.by(() => {
     if (!info) return lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION;
-    const intro = t("heartMetaDescription", lang)
-      .replace("{name}", info.name)
-      .replace("{x}", String(info.gridSize.x))
-      .replace("{y}", String(info.gridSize.y));
+    const intro = t("heartMetaDescription", lang, {
+      name: info.name,
+      x: info.gridSize.x,
+      y: info.gridSize.y,
+    });
     const details = description ? description.replace(/[.!?]?$/, ".") : null;
     return [intro, details, t("heartMetaDownload", lang)].filter(Boolean).join(" ");
   });
@@ -250,7 +251,7 @@
     // Gallery hearts and shared links share the page URL itself.
     const shareUrl = userShareUrl ?? window.location.href;
     const shareTitle = pageTitle;
-    const shareText = t("shareText", lang).replace("{name}", info.name);
+    const shareText = t("shareText", lang, { name: info.name });
 
     // Try Web Share API first (works on mobile)
     if (navigator.share) {
@@ -291,10 +292,8 @@
     design ? lobesShareTemplate(design.fingers, design.gridSize) : (meta?.symmetry.sharedTemplate ?? true),
   );
 
-  // "af Thomas · 3x3 striber" — the panel's one-line credit (DESIGN.md §4).
-  let stripsLabel = $derived(
-    info ? t("stripsCount", lang).replace("{n}", `${info.gridSize.x}x${info.gridSize.y}`) : "",
-  );
+  // "af Thomas · 3 × 3 striber" — the panel's one-line credit (DESIGN.md §4).
+  let stripsLabel = $derived(info ? formatStrips(info.gridSize, lang) : "");
 
   function normalizeSource(source: string): string {
     return source

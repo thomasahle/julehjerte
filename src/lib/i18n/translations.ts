@@ -1,14 +1,34 @@
+/**
+ * Every string in the site, in Danish and English.
+ *
+ * Grouped by the page or section that shows them, in the order a visitor meets
+ * them, with one comment per group; the two languages carry the same groups in
+ * the same order, and translations.test.ts fails if their key sets diverge or
+ * if a key has no call site left. English is the master for key *names* — a new
+ * key is named after the English wording, never the Danish.
+ *
+ * Strings with `{…}` placeholders document them on the line above and are filled
+ * in through `t(key, lang, params)` in ./index.ts, never by hand.
+ */
 export const translations = {
   da: {
-    // Categories
-    categoryKlassiske: 'Klassiske',
-    categoryStjerner: 'Stjerner',
-    categoryFigurer: 'Figurer',
-    categoryMoenstre: 'Mønstre',
-    categoryHjerter: 'Hjerter',
-    categoryMine: 'Mine hjerter',
+    // Site navigation, the header and the skip link
+    siteNavigation: 'Hovedmenu',
+    navTemplates: 'Skabeloner',
+    navHowTo: 'Sådan gør du',
+    navAbout: 'Om',
+    navOpenMenu: 'Åbn menu',
+    navCloseMenu: 'Luk menu',
+    skipToContent: 'Spring til indhold',
 
-    // Gallery
+    // Front page hero
+    siteWordmark: 'Juleflet.dk',
+    heroTagline: 'Skabeloner til flettede julehjerter',
+    heroIntro: 'Vælg et hjerte, print skabelonen på A4, klip og flet – eller tegn dit eget mønster i editoren.',
+    heroSeeTemplates: 'Se skabeloner',
+    heroScrollHint: 'Scroll for at udforske skabeloner',
+
+    // Gallery: the toolbar, the cards and the three-step strip
     createNewHeart: 'Lav nyt hjerte',
     printSelected: 'Hent skabeloner',
     generating: 'Genererer...',
@@ -23,8 +43,30 @@ export const translations = {
     deleteHeartTitle: 'Slet hjerte?',
     deleteHeartPrompt: 'Er du sikker på at du vil slette dette hjerte? Dette kan ikke fortrydes.',
     selectHeartsFirst: 'Vælg hjerter først',
+    selectForPdf: 'Vælg til PDF',
+    selectAll: 'Vælg alle',
+    selectNone: 'Fravælg alle',
+    galleryHeading: 'Skabeloner',
+    /** {n} = hearts in the category */
+    categoryHeartCount: '{n} hjerter',
+    pdfSettings: 'PDF-indstillinger',
+    stepPrintTitle: 'Vælg og print',
+    stepPrintHint: 'I 100% størrelse på A4',
+    stepCutTitle: 'Klip og fold',
+    stepCutHint: 'Følg de fem trin',
+    stepWeaveTitle: 'Flet',
+    stepWeaveHint: 'Skiftevis over og under',
+    myHeartsEmpty: 'Hjerter du tegner i editoren gemmes her i din browser, så du kan printe og dele dem senere.',
 
-    // Heart detail
+    // Category names; the *Lower forms are for mid-sentence use
+    categoryKlassiske: 'Klassiske',
+    categoryStjerner: 'Stjerner',
+    categoryFigurer: 'Figurer',
+    categoryMoenstre: 'Mønstre',
+    categoryHjerter: 'Hjerter',
+    categoryMine: 'Mine hjerter',
+
+    // Heart detail page, its share/save actions and its meta tags
     loadingTemplate: 'Indlæser skabelon...',
     heartNotFound: 'Hjertedesign ikke fundet',
     by: 'af',
@@ -60,8 +102,37 @@ export const translations = {
       'Klip striberne op fra folden langs de buede linjer',
       'Vend papiret, så farven vender udad, og flet de to halvdele sammen – skiftevis over og under'
     ],
+    /** {name} = heart name, {x}/{y} = grid columns/rows */
+    heartMetaDescription: '{name} - et flettet julehjerte design med {x}x{y} striber.',
+    heartMetaDownload: 'Download PDF skabelon gratis.',
+    /** {name} = heart name */
+    shareText: 'Se dette flettede julehjerte: {name}',
+    lobeLeft: 'Venstre',
+    lobeRight: 'Højre',
+    previousSlide: 'Forrige billede',
+    nextSlide: 'Næste billede',
+    sharedHeart: 'Et hjerte delt med dig',
+    saveToMyHearts: 'Gem i Mine hjerter',
+    savedToMyHearts: 'Gemt i Mine hjerter',
+    sharedLinkInvalid: 'Linket indeholder ikke et gyldigt hjerte.',
+    viewHeart: 'Hjerte',
+    photoAlt: 'Foto af det færdige hjerte',
+    /** {n} = the grid, already formatted as "3 × 3" by formatStrips() */
+    stripsCount: '{n} striber',
+    symmetryOneTemplate: 'Spejlsymmetri – én skabelon til begge sider',
+    symmetryTwoTemplates: 'Ingen spejlsymmetri – én skabelon til hver side',
+    seeIllustratedGuide: 'Se den illustrerede vejledning',
+    /** {category} = lower-case category name */
+    moreInCategory: 'Flere {category}',
+    /** {n} = hearts in the category, {category} = lower-case category name */
+    seeAllInCategory: 'Se alle {n} {category}',
+    categoryKlassiskeLower: 'klassiske',
+    categoryStjernerLower: 'stjerner',
+    categoryMoenstreLower: 'mønstre',
+    categoryFigurerLower: 'figurer',
+    categoryHjerterLower: 'hjerter',
 
-    // Editor
+    // Editor: top bar, tool rail, panels and canvas notices
     editHeart: 'Rediger hjerte',
     createNewHeartTitle: 'Lav nyt hjerte',
     heartDetails: 'Hjertedetaljer',
@@ -75,13 +146,64 @@ export const translations = {
     showInGallery: 'Vis i galleri',
     import: 'Importer',
     downloadTemplate: 'Download skabelon',
-    cancel: 'Annuller',
     myHeart: 'Mit hjerte',
     copy: '(Kopi)',
     importedHeart: 'Importeret hjerte',
     invalidHeartFile: 'Ugyldig hjertedesign fil',
+    saveFailed: 'Hjertet kunne ikke gemmes i browseren. Eksporter det som SVG for ikke at miste det.',
+    saveStorageFull: 'Hjertet kunne ikke gemmes: browserens lager er fuldt. Slet nogle af dine hjerter eller eksporter dette som SVG for ikke at miste det.',
+    dismissMessage: 'Luk besked',
+    editorOutlines: 'Vis omrids',
+    editorShowCurveOutlines: 'Vis kurvernes konturer',
+    editorFlipLobeColors: 'Byt lappernes farver',
+    editorWithinCurve: 'Inden i kurve',
+    editorWithinLobe: 'Inden i lap',
+    editorBetweenLobes: 'Mellem lapper',
+    editorWithinCurveSymmetry: 'Symmetri inden i kurve',
+    editorWithinLobeSymmetry: 'Symmetri inden i lap',
+    editorBetweenLobesSymmetry: 'Symmetri mellem lapper',
+    editorOff: 'Fra',
+    editorSym: 'Sym',
+    editorAnti: 'Anti',
+    editorAntiSymmetry: 'Antisymmetri (punktsymmetri)',
+    editorRequiresEqualGridSize: 'Kræver samme gitterstørrelse',
+    editorCurveTools: 'Kurveværktøjer',
+    editorHistory: 'Historik',
+    editorUndo: 'Fortryd',
+    editorRedo: 'Gentag',
+    editorEdit: 'Rediger',
+    editorInsertNode: 'Indsæt punkt',
+    editorDeleteNode: 'Slet punkt',
+    editorNodeType: 'Punkttype',
+    editorCornerNode: 'Hjørnepunkt',
+    editorCorner: 'Hjørne',
+    editorSmoothNode: 'Blødt punkt',
+    editorSmooth: 'Blød',
+    editorSymmetricNode: 'Symmetrisk punkt',
+    editorSymmetric: 'Symmetrisk',
+    editorCurveNode: 'Kurvepunkt',
+    editorConvert: 'Konverter',
+    editorStraightSegment: 'Lige segment',
+    editorCurvedSegment: 'Kurvet segment',
+    editorManyStripsHint: 'Over 8 striber kræver stor præcision',
+    editorIntersectionWarning: 'Kurverne må ikke krydse hinanden – det ville klippe papirstrimlerne over.',
+    editorFirstVisitHint: 'Tip: Træk i en laps yderste kant for at tilføje en stribe, og dobbeltklik på en kurve for at tilføje et punkt.',
+    editorDismissHint: 'Skjul tip',
+    editorSnapToOpposite: 'Snap til modsat side',
+    editorSnapToOppositeTitle: 'Snap ankerpunkter til den modsatte laps ankerpunkter',
+    editorHidePanel: 'Skjul panel',
+    editorShowPanel: 'Vis panel',
+    editorCanvasHint: 'Træk i en kurve for at forme striberne · dobbeltklik for at sætte et punkt · træk i kanten for at tilføje en stribe',
+    editorDrawing: 'Tegning',
+    editorColors: 'Farver',
+    editorSwap: 'Byt',
+    editorSave: 'Gem',
+    editorDownloadPdf: 'Download PDF',
+    editorExportSvg: 'Eksportér SVG',
+    editorImportSvg: 'Importér SVG',
+    editorFitView: 'Tilpas visning',
 
-    // Editor help
+    // Editor help dialog
     helpOpenAriaLabel: 'Hjælp',
     helpCloseAriaLabel: 'Luk',
     helpTitle: 'Sådan designer du flettede papirhjerter',
@@ -122,90 +244,18 @@ export const translations = {
       'Test dit design ved at downloade PDF\'en og prøve at folde det!'
     ],
 
-    // Footer
-    leftColor: 'Venstre farve',
-    rightColor: 'Højre farve',
-    suggestHeart: 'Foreslå et hjerte',
-    madeBy: '©',
+    // "Sådan gør du" / "How to" page
+    howToTitle: 'Sådan fletter du et julehjerte',
+    howToIntro: 'Alle skabeloner på Juleflet.dk printes i 100% størrelse på A4. Du skal bruge papir i to farver og en saks.',
+    /** {n} = step number, 1-5 */
+    howToStepLabel: 'Trin {n}',
+    howToMetaDescription: 'Illustreret vejledning i fem trin: print skabelonen, fold papiret, klip omridset og striberne, og flet de to halvdele sammen.',
+    tipsTitle: 'Gode råd',
+    tipPaper: 'Brug papir i to farver, 80–120 g. Glanspapir er det klassiske valg, men almindeligt printerpapir fungerer fint.',
+    tipSize: 'Print altid i 100% størrelse. Vil du have et større hjerte, så skalér begge skabeloner lige meget.',
+    tipGlue: 'Lim en strimmel papir på som hank, når hjertet er flettet færdigt.',
 
-    // Error page
-    errorTitle: 'Ups! Noget gik galt',
-    errorNotFound: 'Siden blev ikke fundet',
-    errorGeneric: 'Der opstod en fejl',
-    errorBackHome: 'Tilbage til forsiden',
-
-    // Pages (added 2026-09-06)
-    heartMetaDescription: '{name} - et flettet julehjerte design med {x}x{y} striber.',
-    heartMetaDownload: 'Download PDF skabelon gratis.',
-    shareText: 'Se dette flettede julehjerte: {name}',
-    lobeLeft: 'Venstre',
-    lobeRight: 'Højre',
-    previousSlide: 'Forrige billede',
-    nextSlide: 'Næste billede',
-    selectForPdf: 'Vælg til PDF',
-
-    // Editor (added 2026-09-06)
-    saveFailed: 'Hjertet kunne ikke gemmes i browseren. Eksporter det som SVG for ikke at miste det.',
-    saveStorageFull: 'Hjertet kunne ikke gemmes: browserens lager er fuldt. Slet nogle af dine hjerter eller eksporter dette som SVG for ikke at miste det.',
-    dismissMessage: 'Luk besked',
-    editorOutlines: 'Vis omrids',
-    editorShowCurveOutlines: 'Vis kurvernes konturer',
-    editorFlipLobeColors: 'Byt lappernes farver',
-    editorWithinCurve: 'Inden i kurve',
-    editorWithinLobe: 'Inden i lap',
-    editorBetweenLobes: 'Mellem lapper',
-    editorWithinCurveSymmetry: 'Symmetri inden i kurve',
-    editorWithinLobeSymmetry: 'Symmetri inden i lap',
-    editorBetweenLobesSymmetry: 'Symmetri mellem lapper',
-    editorOff: 'Fra',
-    editorSym: 'Sym',
-    editorAnti: 'Anti',
-    editorAntiSymmetry: 'Antisymmetri (punktsymmetri)',
-    editorRequiresEqualGridSize: 'Kræver samme gitterstørrelse',
-    editorCurveTools: 'Kurveværktøjer',
-    editorHistory: 'Historik',
-    editorUndo: 'Fortryd',
-    editorRedo: 'Gentag',
-    editorEdit: 'Rediger',
-    editorInsertNode: 'Indsæt punkt',
-    editorDeleteNode: 'Slet punkt',
-    editorNodeType: 'Punkttype',
-    editorCornerNode: 'Hjørnepunkt',
-    editorCorner: 'Hjørne',
-    editorSmoothNode: 'Blødt punkt',
-    editorSmooth: 'Blød',
-    editorSymmetricNode: 'Symmetrisk punkt',
-    editorSymmetric: 'Symmetrisk',
-    editorCurveNode: 'Kurvepunkt',
-    editorConvert: 'Konverter',
-    editorStraightSegment: 'Lige segment',
-    editorCurvedSegment: 'Kurvet segment',
-
-    // Editor 2 (added 2026-09-06)
-    editorManyStripsHint: 'Over 8 striber kræver stor præcision',
-    editorIntersectionWarning: 'Kurverne må ikke krydse hinanden – det ville klippe papirstrimlerne over.',
-    editorFirstVisitHint: 'Tip: Træk i en laps yderste kant for at tilføje en stribe, og dobbeltklik på en kurve for at tilføje et punkt.',
-    editorDismissHint: 'Skjul tip',
-    editorSnapToOpposite: 'Snap til modsat side',
-    editorSnapToOppositeTitle: 'Snap ankerpunkter til den modsatte laps ankerpunkter',
-    // Precompute (added 2026-09-06)
-    selectAll: 'Vælg alle',
-    selectNone: 'Fravælg alle',
-    sharedHeart: 'Et hjerte delt med dig',
-    saveToMyHearts: 'Gem i Mine hjerter',
-    savedToMyHearts: 'Gemt i Mine hjerter',
-    sharedLinkInvalid: 'Linket indeholder ikke et gyldigt hjerte.',
-
-    // Site navigation (redesign 2026-09-07)
-    siteNavigation: 'Hovedmenu',
-    navTemplates: 'Skabeloner',
-    navHowTo: 'Sådan gør du',
-    navAbout: 'Om',
-    navOpenMenu: 'Åbn menu',
-    navCloseMenu: 'Luk menu',
-    skipToContent: 'Spring til indhold',
-
-    // Labels drawn inside the "Sådan gør du" illustrations (guideSvg() in the mockup generator)
+    // Labels drawn inside the guide illustrations (guideSvg() in the mockup generator)
     guideLabelFoldLine: 'stiplet linje på folden',
     guideLabelFromFold: 'fra folden',
     guideLabelOver: 'over',
@@ -214,51 +264,7 @@ export const translations = {
     back: 'Tilbage',
     backToTemplates: 'Tilbage til skabeloner',
 
-    // Front page hero
-    siteWordmark: 'Juleflet.dk',
-    heroTagline: 'Skabeloner til flettede julehjerter',
-    heroIntro: 'Vælg et hjerte, print skabelonen på A4, klip og flet – eller tegn dit eget mønster i editoren.',
-    heroSeeTemplates: 'Se skabeloner',
-    heroScrollHint: 'Scroll for at udforske skabeloner',
-
-    // Gallery
-    galleryHeading: 'Skabeloner',
-    categoryHeartCount: '{n} hjerter',
-    pdfSettings: 'PDF-indstillinger',
-    stepPrintTitle: 'Vælg og print',
-    stepPrintHint: 'I 100% størrelse på A4',
-    stepCutTitle: 'Klip og fold',
-    stepCutHint: 'Følg de fem trin',
-    stepWeaveTitle: 'Flet',
-    stepWeaveHint: 'Skiftevis over og under',
-    myHeartsEmpty: 'Hjerter du tegner i editoren gemmes her i din browser, så du kan printe og dele dem senere.',
-
-    // Heart detail
-    viewHeart: 'Hjerte',
-    photoAlt: 'Foto af det færdige hjerte',
-    stripsCount: '{n} striber',
-    symmetryOneTemplate: 'Spejlsymmetri – én skabelon til begge sider',
-    symmetryTwoTemplates: 'Ingen spejlsymmetri – én skabelon til hver side',
-    seeIllustratedGuide: 'Se den illustrerede vejledning',
-    moreInCategory: 'Flere {category}',
-    seeAllInCategory: 'Se alle {n} {category}',
-    categoryKlassiskeLower: 'klassiske',
-    categoryStjernerLower: 'stjerner',
-    categoryMoenstreLower: 'mønstre',
-    categoryFigurerLower: 'figurer',
-    categoryHjerterLower: 'hjerter',
-
-    // "Sådan gør du" page
-    howToTitle: 'Sådan fletter du et julehjerte',
-    howToIntro: 'Alle skabeloner på Juleflet.dk printes i 100% størrelse på A4. Du skal bruge papir i to farver og en saks.',
-    howToStepLabel: 'Trin {n}',
-    howToMetaDescription: 'Illustreret vejledning i fem trin: print skabelonen, fold papiret, klip omridset og striberne, og flet de to halvdele sammen.',
-    tipsTitle: 'Gode råd',
-    tipPaper: 'Brug papir i to farver, 80–120 g. Glanspapir er det klassiske valg, men almindeligt printerpapir fungerer fint.',
-    tipSize: 'Print altid i 100% størrelse. Vil du have et større hjerte, så skalér begge skabeloner lige meget.',
-    tipGlue: 'Lim en strimmel papir på som hank, når hjertet er flettet færdigt.',
-
-    // "Om" page
+    // "Om" / "About" page
     aboutTitle: 'Om Juleflet.dk',
     aboutIntro: 'Juleflet.dk samler skabeloner til flettede julehjerter, så du kan printe dem gratis i 100% størrelse på A4.',
     aboutEditorText: 'I editoren kan du tegne dit eget mønster: træk i kurverne, tilføj striber og hent skabelonen som PDF. Dine hjerter gemmes i din egen browser, og du kan dele dem med et link.',
@@ -276,33 +282,41 @@ export const translations = {
     aboutContactText: 'Spørgsmål, rettelser eller et hjerte du gerne vil have med? Skriv på GitHub eller på thomasahle.com.',
     aboutMetaDescription: 'Om Juleflet.dk: gratis skabeloner til flettede julehjerter, en editor til dine egne mønstre, og links til andre gode sider om julehjerter.',
 
-    // Editor chrome
-    editorHidePanel: 'Skjul panel',
-    editorShowPanel: 'Vis panel',
-    editorCanvasHint: 'Træk i en kurve for at forme striberne · dobbeltklik for at sætte et punkt · træk i kanten for at tilføje en stribe',
-    editorDrawing: 'Tegning',
-    editorColors: 'Farver',
-    editorSwap: 'Byt',
-    editorSave: 'Gem',
-    editorDownloadPdf: 'Download PDF',
-    editorExportSvg: 'Eksportér SVG',
-    editorImportSvg: 'Importér SVG',
-    editorFitView: 'Tilpas visning',
-
     // Footer
+    leftColor: 'Venstre farve',
+    rightColor: 'Højre farve',
+    suggestHeart: 'Foreslå et hjerte',
+    madeBy: '©',
     footerColors: 'Farver',
-    swapColors: 'Byt farver'
+    swapColors: 'Byt farver',
+
+    // Error page
+    errorTitle: 'Ups! Noget gik galt',
+    errorNotFound: 'Siden blev ikke fundet',
+    errorGeneric: 'Der opstod en fejl',
+    errorBackHome: 'Tilbage til forsiden',
+
+    // Used on more than one page
+    cancel: 'Annuller'
   },
   en: {
-    // Categories
-    categoryKlassiske: 'Classic',
-    categoryStjerner: 'Stars',
-    categoryFigurer: 'Figures',
-    categoryMoenstre: 'Patterns',
-    categoryHjerter: 'Hearts',
-    categoryMine: 'My hearts',
+    // Site navigation, the header and the skip link
+    siteNavigation: 'Main navigation',
+    navTemplates: 'Templates',
+    navHowTo: 'How to',
+    navAbout: 'About',
+    navOpenMenu: 'Open menu',
+    navCloseMenu: 'Close menu',
+    skipToContent: 'Skip to content',
 
-    // Gallery
+    // Front page hero
+    siteWordmark: 'Juleflet.dk',
+    heroTagline: 'Templates for woven Christmas hearts',
+    heroIntro: 'Pick a heart, print the template on A4, cut and weave – or draw your own pattern in the editor.',
+    heroSeeTemplates: 'Browse templates',
+    heroScrollHint: 'Scroll to explore templates',
+
+    // Gallery: the toolbar, the cards and the three-step strip
     createNewHeart: 'Create new heart',
     printSelected: 'Download templates',
     generating: 'Generating...',
@@ -317,8 +331,30 @@ export const translations = {
     deleteHeartTitle: 'Delete heart?',
     deleteHeartPrompt: 'Are you sure you want to delete this heart? This cannot be undone.',
     selectHeartsFirst: 'Select hearts first',
+    selectForPdf: 'Select for PDF',
+    selectAll: 'Select all',
+    selectNone: 'Select none',
+    galleryHeading: 'Templates',
+    /** {n} = hearts in the category */
+    categoryHeartCount: '{n} hearts',
+    pdfSettings: 'PDF settings',
+    stepPrintTitle: 'Pick and print',
+    stepPrintHint: 'At 100% size on A4',
+    stepCutTitle: 'Cut and fold',
+    stepCutHint: 'Follow the five steps',
+    stepWeaveTitle: 'Weave',
+    stepWeaveHint: 'Alternating over and under',
+    myHeartsEmpty: 'Hearts you draw in the editor are saved here in your browser, so you can print and share them later.',
 
-    // Heart detail
+    // Category names; the *Lower forms are for mid-sentence use
+    categoryKlassiske: 'Classic',
+    categoryStjerner: 'Stars',
+    categoryFigurer: 'Figures',
+    categoryMoenstre: 'Patterns',
+    categoryHjerter: 'Hearts',
+    categoryMine: 'My hearts',
+
+    // Heart detail page, its share/save actions and its meta tags
     loadingTemplate: 'Loading template...',
     heartNotFound: 'Heart design not found',
     by: 'by',
@@ -354,8 +390,37 @@ export const translations = {
       'Cut the strips up from the fold along the curved lines',
       'Turn the paper so the colour faces out and weave the two halves together – alternating over and under'
     ],
+    /** {name} = heart name, {x}/{y} = grid columns/rows */
+    heartMetaDescription: '{name} - a woven Christmas heart design with a {x}x{y} grid.',
+    heartMetaDownload: 'Download the free PDF template.',
+    /** {name} = heart name */
+    shareText: 'Check out this Danish woven heart design: {name}',
+    lobeLeft: 'Left',
+    lobeRight: 'Right',
+    previousSlide: 'Previous slide',
+    nextSlide: 'Next slide',
+    sharedHeart: 'A heart shared with you',
+    saveToMyHearts: 'Save to My hearts',
+    savedToMyHearts: 'Saved to My hearts',
+    sharedLinkInvalid: 'This link does not contain a valid heart.',
+    viewHeart: 'Heart',
+    photoAlt: 'Photo of the finished heart',
+    /** {n} = the grid, already formatted as "3 × 3" by formatStrips() */
+    stripsCount: '{n} strips',
+    symmetryOneTemplate: 'Mirror symmetry – one template for both sides',
+    symmetryTwoTemplates: 'No mirror symmetry – one template for each side',
+    seeIllustratedGuide: 'See the illustrated guide',
+    /** {category} = lower-case category name */
+    moreInCategory: 'More {category}',
+    /** {n} = hearts in the category, {category} = lower-case category name */
+    seeAllInCategory: 'See all {n} {category}',
+    categoryKlassiskeLower: 'classic hearts',
+    categoryStjernerLower: 'stars',
+    categoryMoenstreLower: 'patterns',
+    categoryFigurerLower: 'figures',
+    categoryHjerterLower: 'hearts',
 
-    // Editor
+    // Editor: top bar, tool rail, panels and canvas notices
     editHeart: 'Edit heart',
     createNewHeartTitle: 'Create new heart',
     heartDetails: 'Heart details',
@@ -369,13 +434,64 @@ export const translations = {
     showInGallery: 'Show in gallery',
     import: 'Import',
     downloadTemplate: 'Download Template',
-    cancel: 'Cancel',
     myHeart: 'My heart',
     copy: '(Copy)',
     importedHeart: 'Imported heart',
     invalidHeartFile: 'Invalid heart design file',
+    saveFailed: 'The heart could not be saved in this browser. Export it as SVG so you do not lose it.',
+    saveStorageFull: 'The heart could not be saved: the browser storage is full. Delete some of your hearts or export this one as SVG so you do not lose it.',
+    dismissMessage: 'Dismiss message',
+    editorOutlines: 'Show outline',
+    editorShowCurveOutlines: 'Show curve outlines',
+    editorFlipLobeColors: 'Flip lobe colors',
+    editorWithinCurve: 'Within curve',
+    editorWithinLobe: 'Within lobe',
+    editorBetweenLobes: 'Between lobes',
+    editorWithinCurveSymmetry: 'Within curve symmetry',
+    editorWithinLobeSymmetry: 'Within lobe symmetry',
+    editorBetweenLobesSymmetry: 'Between lobes symmetry',
+    editorOff: 'Off',
+    editorSym: 'Sym',
+    editorAnti: 'Anti',
+    editorAntiSymmetry: 'Anti-symmetry',
+    editorRequiresEqualGridSize: 'Requires equal grid size',
+    editorCurveTools: 'Curve tools',
+    editorHistory: 'History',
+    editorUndo: 'Undo',
+    editorRedo: 'Redo',
+    editorEdit: 'Edit',
+    editorInsertNode: 'Insert node',
+    editorDeleteNode: 'Delete node',
+    editorNodeType: 'Node type',
+    editorCornerNode: 'Corner node',
+    editorCorner: 'Corner',
+    editorSmoothNode: 'Smooth node',
+    editorSmooth: 'Smooth',
+    editorSymmetricNode: 'Symmetric node',
+    editorSymmetric: 'Symmetric',
+    editorCurveNode: 'Curve node',
+    editorConvert: 'Convert',
+    editorStraightSegment: 'Straight segment',
+    editorCurvedSegment: 'Curved segment',
+    editorManyStripsHint: 'More than 8 strips requires great precision',
+    editorIntersectionWarning: 'Curves must not cross each other – that would cut the paper strips apart.',
+    editorFirstVisitHint: "Tip: Drag a lobe's outer edge to add a strip, and double-click a curve to add a node.",
+    editorDismissHint: 'Dismiss tip',
+    editorSnapToOpposite: 'Snap to opposite lobe',
+    editorSnapToOppositeTitle: "Snap anchor points to the opposite lobe's anchor points",
+    editorHidePanel: 'Hide panel',
+    editorShowPanel: 'Show panel',
+    editorCanvasHint: 'Drag a curve to shape the strips · double-click to add a node · drag the edge to add a strip',
+    editorDrawing: 'Drawing',
+    editorColors: 'Colours',
+    editorSwap: 'Swap',
+    editorSave: 'Save',
+    editorDownloadPdf: 'Download PDF',
+    editorExportSvg: 'Export SVG',
+    editorImportSvg: 'Import SVG',
+    editorFitView: 'Fit to view',
 
-    // Editor help
+    // Editor help dialog
     helpOpenAriaLabel: 'Help',
     helpCloseAriaLabel: 'Close',
     helpTitle: 'How to Design Paper Hearts',
@@ -416,90 +532,18 @@ export const translations = {
       'Test your design by downloading the PDF and trying to fold it!'
     ],
 
-    // Footer
-    leftColor: 'Left color',
-    rightColor: 'Right color',
-    suggestHeart: 'Suggest a heart',
-    madeBy: '©',
+    // "Sådan gør du" / "How to" page
+    howToTitle: 'How to weave a Christmas heart',
+    howToIntro: 'Every template on Juleflet.dk prints at 100% size on A4. You need paper in two colours and a pair of scissors.',
+    /** {n} = step number, 1-5 */
+    howToStepLabel: 'Step {n}',
+    howToMetaDescription: 'An illustrated five-step guide: print the template, fold the paper, cut the outline and the strips, and weave the two halves together.',
+    tipsTitle: 'Tips',
+    tipPaper: 'Use paper in two colours, 80–120 gsm. Glossy paper is the classic choice, but ordinary printer paper works fine.',
+    tipSize: 'Always print at 100% size. For a bigger heart, scale both templates by the same amount.',
+    tipGlue: 'Glue on a strip of paper as a handle once the heart is woven.',
 
-    // Error page
-    errorTitle: 'Oops! Something went wrong',
-    errorNotFound: 'Page not found',
-    errorGeneric: 'An error occurred',
-    errorBackHome: 'Back to home',
-
-    // Pages (added 2026-09-06)
-    heartMetaDescription: '{name} - a woven Christmas heart design with a {x}x{y} grid.',
-    heartMetaDownload: 'Download the free PDF template.',
-    shareText: 'Check out this Danish woven heart design: {name}',
-    lobeLeft: 'Left',
-    lobeRight: 'Right',
-    previousSlide: 'Previous slide',
-    nextSlide: 'Next slide',
-    selectForPdf: 'Select for PDF',
-
-    // Editor (added 2026-09-06)
-    saveFailed: 'The heart could not be saved in this browser. Export it as SVG so you do not lose it.',
-    saveStorageFull: 'The heart could not be saved: the browser storage is full. Delete some of your hearts or export this one as SVG so you do not lose it.',
-    dismissMessage: 'Dismiss message',
-    editorOutlines: 'Show outline',
-    editorShowCurveOutlines: 'Show curve outlines',
-    editorFlipLobeColors: 'Flip lobe colors',
-    editorWithinCurve: 'Within curve',
-    editorWithinLobe: 'Within lobe',
-    editorBetweenLobes: 'Between lobes',
-    editorWithinCurveSymmetry: 'Within curve symmetry',
-    editorWithinLobeSymmetry: 'Within lobe symmetry',
-    editorBetweenLobesSymmetry: 'Between lobes symmetry',
-    editorOff: 'Off',
-    editorSym: 'Sym',
-    editorAnti: 'Anti',
-    editorAntiSymmetry: 'Anti-symmetry',
-    editorRequiresEqualGridSize: 'Requires equal grid size',
-    editorCurveTools: 'Curve tools',
-    editorHistory: 'History',
-    editorUndo: 'Undo',
-    editorRedo: 'Redo',
-    editorEdit: 'Edit',
-    editorInsertNode: 'Insert node',
-    editorDeleteNode: 'Delete node',
-    editorNodeType: 'Node type',
-    editorCornerNode: 'Corner node',
-    editorCorner: 'Corner',
-    editorSmoothNode: 'Smooth node',
-    editorSmooth: 'Smooth',
-    editorSymmetricNode: 'Symmetric node',
-    editorSymmetric: 'Symmetric',
-    editorCurveNode: 'Curve node',
-    editorConvert: 'Convert',
-    editorStraightSegment: 'Straight segment',
-    editorCurvedSegment: 'Curved segment',
-
-    // Editor 2 (added 2026-09-06)
-    editorManyStripsHint: 'More than 8 strips requires great precision',
-    editorIntersectionWarning: 'Curves must not cross each other – that would cut the paper strips apart.',
-    editorFirstVisitHint: "Tip: Drag a lobe's outer edge to add a strip, and double-click a curve to add a node.",
-    editorDismissHint: 'Dismiss tip',
-    editorSnapToOpposite: 'Snap to opposite lobe',
-    editorSnapToOppositeTitle: "Snap anchor points to the opposite lobe's anchor points",
-    // Precompute (added 2026-09-06)
-    selectAll: 'Select all',
-    selectNone: 'Select none',
-    sharedHeart: 'A heart shared with you',
-    saveToMyHearts: 'Save to My hearts',
-    savedToMyHearts: 'Saved to My hearts',
-    sharedLinkInvalid: 'This link does not contain a valid heart.',
-
-    // Site navigation (redesign 2026-09-07)
-    siteNavigation: 'Main navigation',
-    navTemplates: 'Templates',
-    navHowTo: 'How to',
-    navAbout: 'About',
-    navOpenMenu: 'Open menu',
-    navCloseMenu: 'Close menu',
-    skipToContent: 'Skip to content',
-
-    // Labels drawn inside the "How to" illustrations (guideSvg() in the mockup generator)
+    // Labels drawn inside the guide illustrations (guideSvg() in the mockup generator)
     guideLabelFoldLine: 'dashed line on the fold',
     guideLabelFromFold: 'from the fold',
     guideLabelOver: 'over',
@@ -508,51 +552,7 @@ export const translations = {
     back: 'Back',
     backToTemplates: 'Back to templates',
 
-    // Front page hero
-    siteWordmark: 'Juleflet.dk',
-    heroTagline: 'Templates for woven Christmas hearts',
-    heroIntro: 'Pick a heart, print the template on A4, cut and weave – or draw your own pattern in the editor.',
-    heroSeeTemplates: 'Browse templates',
-    heroScrollHint: 'Scroll to explore templates',
-
-    // Gallery
-    galleryHeading: 'Templates',
-    categoryHeartCount: '{n} hearts',
-    pdfSettings: 'PDF settings',
-    stepPrintTitle: 'Pick and print',
-    stepPrintHint: 'At 100% size on A4',
-    stepCutTitle: 'Cut and fold',
-    stepCutHint: 'Follow the five steps',
-    stepWeaveTitle: 'Weave',
-    stepWeaveHint: 'Alternating over and under',
-    myHeartsEmpty: 'Hearts you draw in the editor are saved here in your browser, so you can print and share them later.',
-
-    // Heart detail
-    viewHeart: 'Heart',
-    photoAlt: 'Photo of the finished heart',
-    stripsCount: '{n} strips',
-    symmetryOneTemplate: 'Mirror symmetry – one template for both sides',
-    symmetryTwoTemplates: 'No mirror symmetry – one template for each side',
-    seeIllustratedGuide: 'See the illustrated guide',
-    moreInCategory: 'More {category}',
-    seeAllInCategory: 'See all {n} {category}',
-    categoryKlassiskeLower: 'classic hearts',
-    categoryStjernerLower: 'stars',
-    categoryMoenstreLower: 'patterns',
-    categoryFigurerLower: 'figures',
-    categoryHjerterLower: 'hearts',
-
-    // "Sådan gør du" page
-    howToTitle: 'How to weave a Christmas heart',
-    howToIntro: 'Every template on Juleflet.dk prints at 100% size on A4. You need paper in two colours and a pair of scissors.',
-    howToStepLabel: 'Step {n}',
-    howToMetaDescription: 'An illustrated five-step guide: print the template, fold the paper, cut the outline and the strips, and weave the two halves together.',
-    tipsTitle: 'Tips',
-    tipPaper: 'Use paper in two colours, 80–120 gsm. Glossy paper is the classic choice, but ordinary printer paper works fine.',
-    tipSize: 'Always print at 100% size. For a bigger heart, scale both templates by the same amount.',
-    tipGlue: 'Glue on a strip of paper as a handle once the heart is woven.',
-
-    // "Om" page
+    // "Om" / "About" page
     aboutTitle: 'About Juleflet.dk',
     aboutIntro: 'Juleflet.dk collects templates for woven Christmas hearts so you can print them for free at 100% size on A4.',
     aboutEditorText: 'In the editor you can draw your own pattern: drag the curves, add strips and download the template as a PDF. Your hearts are saved in your own browser and you can share them with a link.',
@@ -570,22 +570,22 @@ export const translations = {
     aboutContactText: 'Questions, corrections or a heart you would like added? Get in touch on GitHub or at thomasahle.com.',
     aboutMetaDescription: 'About Juleflet.dk: free templates for woven Christmas hearts, an editor for your own patterns, and links to other good sites about woven hearts.',
 
-    // Editor chrome
-    editorHidePanel: 'Hide panel',
-    editorShowPanel: 'Show panel',
-    editorCanvasHint: 'Drag a curve to shape the strips · double-click to add a node · drag the edge to add a strip',
-    editorDrawing: 'Drawing',
-    editorColors: 'Colours',
-    editorSwap: 'Swap',
-    editorSave: 'Save',
-    editorDownloadPdf: 'Download PDF',
-    editorExportSvg: 'Export SVG',
-    editorImportSvg: 'Import SVG',
-    editorFitView: 'Fit to view',
-
     // Footer
+    leftColor: 'Left color',
+    rightColor: 'Right color',
+    suggestHeart: 'Suggest a heart',
+    madeBy: '©',
     footerColors: 'Colours',
-    swapColors: 'Swap colours'
+    swapColors: 'Swap colours',
+
+    // Error page
+    errorTitle: 'Oops! Something went wrong',
+    errorNotFound: 'Page not found',
+    errorGeneric: 'An error occurred',
+    errorBackHome: 'Back to home',
+
+    // Used on more than one page
+    cancel: 'Cancel'
   }
 } as const;
 

@@ -73,9 +73,9 @@
 		};
 	});
 
-	/** "12 hjerter" — {n} is the number of hearts in the row. */
+	/** "12 hjerter" — the row's heart count. */
 	function heartCount(n: number): string {
-		return t('categoryHeartCount', lang).replace('{n}', String(n));
+		return t('categoryHeartCount', lang, { n });
 	}
 </script>
 

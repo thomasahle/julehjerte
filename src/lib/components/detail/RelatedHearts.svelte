@@ -29,11 +29,9 @@
 	const RIBBONS = [26, 54, 38, 66, 44];
 
 	let categoryName = $derived(categoryTitleLower(categoryId, lang));
-	let heading = $derived(t('moreInCategory', lang).replace('{category}', categoryName));
+	let heading = $derived(t('moreInCategory', lang, { category: categoryName }));
 	let seeAll = $derived(
-		t('seeAllInCategory', lang)
-			.replace('{n}', String(categoryCount))
-			.replace('{category}', categoryName)
+		t('seeAllInCategory', lang, { n: categoryCount, category: categoryName })
 	);
 </script>
 

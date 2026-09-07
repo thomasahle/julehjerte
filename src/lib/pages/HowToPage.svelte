@@ -53,7 +53,7 @@
 				<div class="caption">
 					<span class="number" aria-hidden="true">{i + 1}</span>
 					<p>
-						<span class="sr-only">{t('howToStepLabel', lang).replace('{n}', String(i + 1))}: </span
+						<span class="sr-only">{t('howToStepLabel', lang, { n: i + 1 })}: </span
 						>{step}
 					</p>
 				</div>
