@@ -89,6 +89,18 @@
 		flex-wrap: wrap;
 	}
 
+	/* Under the panel the row crosses the landscape drawing, and a fully
+	   transparent ghost button lost its label wherever a dark fir came through.
+	   The same translucent white the thumbnails' captions wear keeps it readable
+	   without turning it into a second outline button. */
+	.actions .btn-ghost {
+		background: rgb(255 255 255 / 0.8);
+	}
+
+	.actions .btn-ghost:hover {
+		background: var(--cream2);
+	}
+
 	.save-note {
 		margin: 0;
 		color: var(--green);

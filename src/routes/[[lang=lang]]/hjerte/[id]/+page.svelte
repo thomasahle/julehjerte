@@ -349,7 +349,7 @@
 
          The overlay is bottom-anchored, so shortening the scene pulls the tips
          up with it: the big fir keeps its base (user y 710, on the snow line)
-         and starts 105 lower than it used to, which puts its tip back just
+         and starts 115 lower than it used to, which puts its tip back just
          under the top of the heart's ribbon. -->
 
     <svg
@@ -360,7 +360,7 @@
       focusable="false"
     >
       <Fir x={560} tipY={330} height={330} fill={FIR_FILLS[1]} symbol="pine-b" mirrored widthFactor={0.9} />
-      <Fir x={420} tipY={215} height={495} fill={FIR_FILLS[0]} symbol="pine-c" widthFactor={0.95} />
+      <Fir x={420} tipY={225} height={485} fill={FIR_FILLS[0]} symbol="pine-c" widthFactor={0.95} />
       <Fir x={262} tipY={380} height={300} fill={FIR_FILLS[2]} symbol="pine-a" widthFactor={0.9} />
     </svg>
 
@@ -375,8 +375,8 @@
         </div>
 
         <!-- The buttons belong to the panel, not to the picture: they sit
-             directly under it and flush with its left edge, and when the
-             columns stack below 1100 they follow it down. -->
+             under it and flush with its left edge, and when the columns stack
+             below 1100 they follow it down. -->
         <div class="panel-col">
           <HeartPanel
             {lang}
@@ -388,20 +388,22 @@
             {isShared}
           />
 
-          <HeartActions
-            {lang}
-            hasDesign={design !== null}
-            {editHref}
-            {isShared}
-            {savedShared}
-            errorNote={saveError}
-            galleryHref={design ? homeAnchorHref(makeHeartAnchorId(design.id), lang) : ''}
-            {shareStatus}
-            onDownload={handleDownload}
-            onEdit={handleEdit}
-            onShare={handleShare}
-            onSaveShared={handleSaveShared}
-          />
+          <div class="actions-slot">
+            <HeartActions
+              {lang}
+              hasDesign={design !== null}
+              {editHref}
+              {isShared}
+              {savedShared}
+              errorNote={saveError}
+              galleryHref={design ? homeAnchorHref(makeHeartAnchorId(design.id), lang) : ''}
+              {shareStatus}
+              onDownload={handleDownload}
+              onEdit={handleEdit}
+              onShare={handleShare}
+              onSaveShared={handleSaveShared}
+            />
+          </div>
         </div>
       {:else if loading}
         <div class="detail-message">
@@ -445,7 +447,9 @@
     max-width: 1280px;
     width: 100%;
     margin: 0 auto;
-    padding: 12px 40px 40px;
+    /* The sky above the heart's ribbon and the panel is this padding: both
+       columns start their content on the grid's top edge. */
+    padding: 40px 40px 40px;
     box-sizing: border-box;
     display: grid;
     grid-template-columns: 600px minmax(0, 1fr);
@@ -485,11 +489,23 @@
   }
 
   /* Panel and buttons share one column, so the row of buttons starts on the
-     panel's left edge rather than on its padded text. */
+     panel's left edge rather than on its padded text. The column stretches to
+     the row's height and the buttons are pushed to its foot, which lands them
+     on the same baseline as the thumbnails' captions in the other column: the
+     panel's own height varies with the heart's paragraph, so any fixed gap
+     would leave the two columns ending at different heights. */
   .panel-col {
+    align-self: stretch;
     display: flex;
     flex-direction: column;
     gap: 18px;
+  }
+
+  .actions-slot {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   /* Stacked below 1100: the big fir has no room next to the text. */
@@ -506,13 +522,13 @@
 
   @media (max-width: 899px) {
     .detail-main {
-      padding: 12px 24px 32px;
+      padding: 40px 24px 32px;
     }
   }
 
   @media (max-width: 599px) {
     .detail-main {
-      padding: 12px 16px 28px;
+      padding: 32px 16px 28px;
     }
   }
 </style>

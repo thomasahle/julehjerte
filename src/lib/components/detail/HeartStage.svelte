@@ -120,33 +120,36 @@
 </div>
 
 <style>
-	/* 480 tall at every width, with the heart hung near the top: the hanging block
-	   is 410 (152 ribbon + 340 heart - 82 cleft overlap), so at top 50 it ends 20
-	   short of the stage's bottom edge and can never reach into the thumbnails,
-	   whatever the design's own bounding box looks like. Anything taller left a
-	   band of empty sky between the heart and the thumbnails and pushed the
-	   "Flere <kategori>" row below the fold at 1440x900. */
+	/* Every big view starts at the stage's top edge, so the picture lines up with
+	   the top of the info panel beside it, and the stage is only as tall as the
+	   tallest of them: 410 for the hanging block (152 ribbon + 340 heart - 82
+	   cleft overlap) and 406 for the template card. The sky above the heart is
+	   the grid's own top padding, not slack inside the stage — slack here pushed
+	   the thumbnails, the buttons and the "Flere <kategori>" row below the fold
+	   at 1440x900. */
 	.stage {
 		position: relative;
-		height: 480px;
+		height: 420px;
 	}
 
 	.stage-hang {
 		position: absolute;
 		left: 0;
 		right: 0;
-		top: 50px;
+		top: 0;
 		display: flex;
 		justify-content: center;
 	}
 
+	/* Top-aligned, like the hanging heart: the photo and the template card are
+	   shorter than the stage and would otherwise float away from the panel's
+	   top edge. */
 	.stage-media {
 		position: absolute;
 		inset: 0;
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: center;
-		padding: 24px 0;
 		box-sizing: border-box;
 	}
 
