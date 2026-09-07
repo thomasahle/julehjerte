@@ -183,28 +183,44 @@ with a swap button, EN, GitHub, "© Thomas Ahle".
 
 ## 4. Detail page (`/hjerte/[id]/`)
 
-Nav (Skabeloner active) → breadcrumb link "← Tilbage til skabeloner" (14px/500 green, inside the 1280 column).
+Nav (Skabeloner active) straight into the scene — there is no breadcrumb: the nav's "Skabeloner" link and the
+related row's "Se alle N …" both lead back to the gallery, and the bar only cost the scene vertical space.
 Scene section: `position:relative; overflow:hidden; background: var(--sky)`; the landscape absolutely at the
 bottom, page-wide (same wrapper rules as the hero, `bottom:-1px`); a tree overlay SVG (`viewBox 0 0 1440 820`,
 `xMinYMax meet`, absolute left/bottom, height 820, pointer-events none) with pine-b mirrored at (560,330) h330
-`#3b5d46`, pine-c at (420,110) h600 width .95 `#35503f`, pine-a at (262,380) h300 `#3e5948`; hidden below 1100.
-Main grid `600px minmax(0,1fr)`, gap 56, padding `12px 40px 40px`, max-width 1280 (one column, gap 32, below 1100).
+`#3b5d46`, pine-c at (420,225) h485 width .95 `#35503f`, pine-a at (262,380) h300 `#3e5948`; hidden below 1100.
+Main grid `600px minmax(0,1fr)`, gap 56, padding `40px 40px 40px` (40/24/32 below 900, 32/16/28 below 600),
+max-width 1280 (one column, gap 32, below 1100).
 
-Left column: a 600px-tall stage (480 below 1100) with the hanging heart (size 340, ribbon 70, top 130) centred,
-so it hangs on the big fir; under it a row of four 104px thumbnails (white, radius 12, 1.5px `--line`, active
+The overlay is anchored to the scene's *bottom*, so the firs stand on the landscape whatever the scene's
+height; the big fir's base stays at user y 710 and its tip is placed so it comes out about 15px under the top
+of the heart's ribbon. Shorten or lengthen the columns and the tip has to be retuned with them.
+
+The two columns start and end together at ≥ 1100: the top of the big view sits on the grid's top edge, level
+with the panel's, and the buttons under the panel are pushed to the foot of a stretched right column so they
+end level with the thumbnails' captions (at 1440 both columns run 102 → 672, and the "Flere …" heading lands
+at 720, above the fold at 1440×900). The sky above the heart is the grid's top padding, not slack inside the
+stage. Below 1200 the text column is simply the taller of the two and sets the row height.
+
+Left column: a 420px-tall stage — the height of the tallest big view (410 for the hanging block, 406 for the
+template card), so nothing floats — with the hanging heart (size 340, ribbon 70) at `top: 0`, hanging on the
+big fir; the photo and template views are top-aligned in the same box. Under it a row of four 104px
+thumbnails (white, radius 12, 1.5px `--line`, active
 2.5px red) with captions in light pills (`rgb(255 255 255 / .8)`, radius 999, 13px, nowrap): **Hjerte**,
 **Foto** (the design's photo, only if it exists), **Skabelon venstre**, **Skabelon højre** (the template previews);
 clicking a thumbnail swaps the big view. The mockup's four-up row is the maximum, not the norm: a heart whose
 lobes mirror each other needs one template, so most hearts show three tiles (Hjerte · Foto · Skabelon) and a
 heart with no photo shows two. Only an asymmetric heart *with* a photo would draw four, and no gallery heart
-is currently both (`jul` renders Skabelon venstre + Skabelon højre, `stjerne` renders Hjerte · Foto · Skabelon). Buttons: primary "Download PDF-skabelon", outline "Rediger i editor",
-ghost "Del" (share, existing hash-link sharing).
+is currently both (`jul` renders Skabelon venstre + Skabelon højre, `stjerne` renders Hjerte · Foto · Skabelon).
 
 Right column: panel `rgb(255 255 255 / .55)`, radius 16, padding 24px 28px, gap 22: h1 name 44px/600; meta
 "af {author} · {grid} striber" 16px muted; the heart's own description paragraph with the link
 "Se den illustrerede vejledning →" to the guide page 12px under it; two-column block bordered top/bottom by
 `--line`: SVÆRHEDSGRAD (dots + label) and SYMMETRI ("Spejlsymmetri – én skabelon til begge sider" or the
-asymmetric equivalent).
+asymmetric equivalent). Under the panel, flush with its left edge and wrapping when the column narrows, the
+button row: primary "Download PDF-skabelon", outline "Rediger i editor", ghost "Del" (share, existing
+hash-link sharing) — the ghost one on `rgb(255 255 255 / .8)`, since the row crosses the landscape drawing.
+When the columns stack below 1100 the buttons follow the panel down.
 
 The panel used to repeat the five weaving steps as numbered green circles. It does not any more (the owner's
 decision): the steps live only on `/saadan-goer-du/`, and every gallery heart carries a written paragraph of
