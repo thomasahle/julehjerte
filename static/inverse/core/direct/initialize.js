@@ -94,7 +94,7 @@ export function borderGrid(counts,evidence,{k=16,floor=.008,resolution=96}={}){
   }
   return supported?model:null;
 }
-export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,deadline=Infinity}={}){
+export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=size,deadline=Infinity}={}){
   const n=resolution,target=resize(prob,size,n),model=gridModel(counts,k,0,initial);if(!initial)model.z.fill(0);
   let best={z:model.z.slice(),error:mismatch(gridMask(model,n,phase,floor),target)},completed=0;
   for(let round=0;round<rounds;round++){
@@ -115,5 +115,6 @@ export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k
     completed++;const error=mismatch(gridMask(model,n,phase,floor),target);
     if(error<best.error)best={z:model.z.slice(),error};
   }
-  model.z=best.z;return{model,phase,floor,error:mismatch(gridMask(model,size,phase,floor),prob),steps:completed};
+  model.z=best.z;const error=scoreResolution===n?best.error:mismatch(gridMask(model,scoreResolution,phase,floor),resize(prob,size,scoreResolution));
+  return{model,phase,floor,error,steps:completed};
 }

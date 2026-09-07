@@ -6,4 +6,4 @@ These are regression-test inputs requested by the user, kept outside the public 
 
 The two flag designs include different templates for the two sheets. Some other templates have cuts ending inside the paper; the current full-length-slit model must not label those references impossible merely because opposite-border endpoint counts differ.
 
-The user excluded patterns with interior slit endpoints from the required score. See `scope.json`: all 27 sources remain available, with 23 regular designs required.
+The user excluded patterns with interior slit endpoints from the required score. See `scope.json`: all 27 sources remain available, with 22 regular designs required.

@@ -52,8 +52,8 @@ function refloor(result,floor){
   }});return z;
 }
 export function fitDirect(input,cfg,onProgress=()=>{}){
-  const source=input.sourceImage,n=Math.min(256,source.resolution),prob=resize(source.probability||Float32Array.from(source.mask),source.resolution,n),start=performance.now(),deadline=start+cfg.timeLimit*1000;
-  const evidence=borderEvidence(prob,n),attempts=[],timings=[],options=[],seen=new Set();
+  const source=input.sourceImage,fullProb=source.probability||Float32Array.from(source.mask),n=Math.min(256,source.resolution),prob=resize(fullProb,source.resolution,n),gridTarget=resize(fullProb,source.resolution,96),start=performance.now(),deadline=start+cfg.timeLimit*1000;
+  const evidence=borderEvidence(fullProb,source.resolution),attempts=[],timings=[],options=[],seen=new Set();
   const add=(counts,phase)=>{if(counts.some(c=>c<1||c>8||(c+1)*(cfg.nominalWidth+.35)>=cfg.width))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
   for(let count=1;count<=8;count++)for(const phase of[1,-1])add([count,count],phase);
   const modes=sides=>{const counts=new Map();for(const r of evidence)if(sides.includes(r.side)&&r.count>=1&&r.count<=8)counts.set(r.count,(counts.get(r.count)||0)+1);return[...counts].sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]);};
@@ -64,6 +64,8 @@ export function fitDirect(input,cfg,onProgress=()=>{}){
   if(!options.length)throw new Error('The requested strip width leaves no room for a woven grid.');
   const stage=(name,run)=>{const at=performance.now();onProgress({stage:name});const value=run();timings.push({stage:name,seconds:(performance.now()-at)/1000});return value;};
   const coarse=stage('directInitializing',()=>{
+    // Finish the small, fixed-size initialization for every count and phase.
+    // A shared deadline here starves late candidates on slower browser engines.
     const seeds=[];
     for(const o of options){
       const uniform=gridModel(o.counts);uniform.z.fill(0);
@@ -71,11 +73,13 @@ export function fitDirect(input,cfg,onProgress=()=>{}){
       const choices=[raw];
       // Keep both uniform and border-informed proposals: photographed endpoints
       // are useful evidence, but must not eliminate a better interior layout.
-      for(const initial of[null,borderGrid(o.counts,evidence)?.z,separableGrid(prob,n,o.counts,o.phase).z].filter(v=>v!==undefined)){
-        const result=initializeGrid(prob,n,o.counts,o.phase,{initial,deadline:start+cfg.timeLimit*120});
+      for(const initial of[null,borderGrid(o.counts,evidence)?.z,separableGrid(fullProb,source.resolution,o.counts,o.phase).z].filter(v=>v!==undefined)){
+        const result=initializeGrid(fullProb,source.resolution,o.counts,o.phase,{initial,scoreResolution:96});
+        result.error=mismatch(gridMask(result.model,n,result.phase,result.floor),prob);
         choices.push(result);
       }
-      choices.sort((a,b)=>a.error-b.error);seeds.push({...choices[0],seedKind:choices[0]===raw?'uniform':'row-dynamic-programming'});
+      const initializationRounds=choices.filter(r=>r!==raw).map(r=>r.steps);
+      choices.sort((a,b)=>a.error-b.error);seeds.push({...choices[0],initializationRounds,seedKind:choices[0]===raw?'uniform':'row-dynamic-programming'});
     }
     seeds.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
     // Every count/phase receives an image-only candidate even if gradient time
@@ -83,23 +87,23 @@ export function fitDirect(input,cfg,onProgress=()=>{}){
     const results=[];
     for(const seed of seeds){
       const at=performance.now(),r=performance.now()<start+cfg.timeLimit*280
-        ?fitGrid(prob,n,seed.model.counts,seed.phase,{steps:280,initial:seed.seedKind==='uniform'?null:seed.model.z,deadline:start+cfg.timeLimit*300,seed:0})
+        ?fitGrid(prob,n,seed.model.counts,seed.phase,{optimizationTarget:gridTarget,steps:280,initial:seed.seedKind==='uniform'?null:seed.model.z,deadline:start+cfg.timeLimit*300,seed:0})
         :seed;
       const best=r.error<seed.error?r:seed;
-      attempts.push({stage:'coarse',counts:seed.model.counts,phase:seed.phase,error:best.error,initialError:seed.error,initializer:seed.seedKind,steps:r.steps,seconds:(performance.now()-at)/1000});results.push(best);
+      attempts.push({stage:'coarse',counts:seed.model.counts,phase:seed.phase,error:best.error,initialError:seed.error,initializer:seed.seedKind,initializationRounds:seed.initializationRounds,steps:r.steps,seconds:(performance.now()-at)/1000});results.push(best);
       onProgress({stage:'directInitializing',counts:seed.model.counts,error:best.error});
     }
     return results.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
   });
   const fine=stage('directFitting',()=>gridFinalists(coarse,evidence).map(r=>{
-    const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{steps:900,initial:r.model.z,deadline:start+cfg.timeLimit*480});
+    const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{optimizationTarget:gridTarget,steps:900,initial:r.model.z,deadline:start+cfg.timeLimit*480});
     attempts.push({stage:'fine',counts:r.model.counts,phase:r.phase,error:next.error,steps:next.steps,seconds:(performance.now()-at)/1000});return next.error<r.error?next:r;
   }).sort((a,b)=>a.error-b.error));
   const floor=fittingMargin(cfg,cfg.width)/cfg.width,candidates=[];
   for(let i=0;i<fine.length;i++){
     if(i&&performance.now()>start+cfg.timeLimit*900)break;
     const selected=fine[i],remaining=deadline-performance.now(),allocation=remaining/(fine.length-i),end=Math.min(deadline-1000,performance.now()+allocation);
-    const clear=stage('directClearance',()=>fitGrid(prob,n,selected.model.counts,selected.phase,{steps:800,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+allocation*.25}));
+    const clear=stage('directClearance',()=>fitGrid(prob,n,selected.model.counts,selected.phase,{optimizationTarget:gridTarget,steps:800,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+allocation*.25}));
     attempts.push({stage:'clearance',counts:clear.model.counts,phase:clear.phase,error:clear.error,steps:clear.steps});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
     const candidate=stage('directRefining',()=>refineCurves(graph,prob,n,clear.phase,cfg,{deadline:end,input,onProgress:r=>onProgress({stage:'directRefining',counts:clear.model.counts,...r})}));
@@ -111,7 +115,7 @@ export function fitDirect(input,cfg,onProgress=()=>{}){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper=stage('paper',()=>materialAudit(solution,cfg));
   solution.report={algorithm:'direct-bezier',imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.error>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    optimizationResolution:n,sourceResolution:source.resolution,initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
+    optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:false,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

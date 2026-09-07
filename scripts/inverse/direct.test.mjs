@@ -120,6 +120,12 @@ test('direct image fitting starts without traced endpoints and survives edge noi
   const before=p.preview.mask.slice(),r=await design(p.target,cfg);
   assert.equal(r.report.solver.traceUsed,false);assert.equal(r.report.solver.borderCountsAreHardConstraints,false);
   assert.equal(r.report.templateExportAllowed,true);assert.deepEqual(r.report.slits,{left:3,right:3});
+  for(let count=1;count<=8;count++)for(const phase of[1,-1]){
+    const attempt=r.report.solver.attempts.find(a=>a.stage==='coarse'&&a.counts[0]===count&&a.counts[1]===count&&a.phase===phase);
+    assert.ok(attempt,`Missing count ${count}, phase ${phase}`);
+    assert.ok(attempt.initializationRounds.length>=2);
+    assert.ok(attempt.initializationRounds.every(n=>n===18),'A short budget must not starve later count/phase initializations');
+  }
   assert.deepEqual(p.preview.mask,before);
   const independent=await renderExportedWeave(r.files['cut_geometry.json'],128);
   assert.ok(independent.mask.reduce((s,v,i)=>s+Number(v!==before[i]),0)/before.length<.005);
