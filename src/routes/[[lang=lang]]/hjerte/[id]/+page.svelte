@@ -4,8 +4,8 @@
   A page-wide winter scene: the landscape drawing runs edge to edge along the
   bottom, three firs are drawn over it on the left, and the heart hangs from the
   big one on a stage whose four thumbnails swap the big view. The translucent
-  panel on the right carries the name, the facts and the five steps; below the
-  scene the rest of the category is offered as "Flere {kategori}".
+  panel on the right carries the name, the paragraph about this heart and the
+  facts; below the scene the rest of the category is offered as "Flere {kategori}".
 
   Behaviour that must survive any restyling: /hjerte/delt/ (a heart shared in the
   URL fragment, noindex, "Gem i Mine hjerter"), the editor hand-off in editHref,
@@ -47,6 +47,7 @@
   import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
   import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl } from "$lib/utils/shareDesign";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
+  import { firstSentence } from "$lib/utils/text";
   import type { HeartDesign, HeartInfo } from "$lib/types/heart";
   import {
     trackHeartDownload,
@@ -170,9 +171,10 @@
   // Photo of the finished heart (gallery hearts only; resolved at build time).
   let photo = $derived(isUserCreated ? null : (meta?.photo ?? null));
 
-  // Gallery heart descriptions are written in Danish, so they only appear on the Danish
-  // page; a user's own or a shared heart shows whatever its author wrote.
-  let description = $derived(info?.description && (lang === "da" || isUserCreated || isShared) ? info.description : null);
+  // A gallery heart's paragraph is written in both languages and resolved in +page.ts.
+  // Anything else — a heart the visitor drew, one shared by link, an unlisted SVG under
+  // /hearts/ — shows whatever description its maker typed, in whatever language that is.
+  let description = $derived(data.description ?? (meta ? null : (info?.description ?? null)));
 
   // SEO
   let siteTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
@@ -184,7 +186,9 @@
       x: info.gridSize.x,
       y: info.gridSize.y,
     });
-    const details = description ? description.replace(/[.!?]?$/, ".") : null;
+    // Only the opening sentence: the panel's paragraph runs to four of them, and a
+    // search result shows about 160 characters.
+    const details = description ? firstSentence(description).replace(/[.!?]?$/, ".") : null;
     return [intro, details, t("heartMetaDownload", lang)].filter(Boolean).join(" ");
   });
   let canonicalDa = $derived(`${SITE_URL}${heartPath(heartId, "da")}`);

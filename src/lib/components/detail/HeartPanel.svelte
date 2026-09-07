@@ -1,13 +1,16 @@
 <!--
   The detail page's right-hand text panel — docs/redesign/DESIGN.md §4.
 
-  Name and credit, the description, the two facts (difficulty and symmetry), and
-  the five weaving steps with a link on to the illustrated guide. A translucent
-  white card, because it sits on the scene's sky.
+  Name and credit, the paragraph about this heart, the two facts (difficulty and
+  symmetry) and a link on to the illustrated guide. A translucent white card,
+  because it sits on the scene's sky.
+
+  The five weaving steps used to be repeated here; they now live only on
+  /saadan-goer-du/ (the guide the link leads to), and every gallery heart has a
+  written description of its own instead — $lib/data/heartDescriptions.
 -->
 <script lang="ts">
 	import DifficultyDots from '$lib/components/DifficultyDots.svelte';
-	import StepList from './StepList.svelte';
 	import { ArrowRightIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
 	import { href as routeHref } from '$lib/i18n/routes';
@@ -81,9 +84,17 @@
 		{/if}
 	</div>
 
-	{#if description}
-		<p class="description">{description}</p>
-	{/if}
+	<!-- The link belongs to the description, so it sits closer to it than the
+	     panel's own 22px rhythm; it stays even when a heart has no description. -->
+	<div class="about">
+		{#if description}
+			<p class="description">{description}</p>
+		{/if}
+		<a class="guide-link" href={routeHref('howTo', lang)}>
+			{t('seeIllustratedGuide', lang)}
+			<ArrowRightIcon size={16} />
+		</a>
+	</div>
 
 	<div class="facts">
 		<div class="fact">
@@ -96,15 +107,6 @@
 				{sharedTemplate ? t('symmetryOneTemplate', lang) : t('symmetryTwoTemplates', lang)}
 			</span>
 		</div>
-	</div>
-
-	<div class="how-to">
-		<h2>{t('howToMake', lang)}</h2>
-		<StepList {lang} />
-		<a class="guide-link" href={routeHref('howTo', lang)}>
-			{t('seeIllustratedGuide', lang)}
-			<ArrowRightIcon size={16} />
-		</a>
 	</div>
 </div>
 
@@ -168,6 +170,13 @@
 		text-decoration: underline;
 	}
 
+	.about {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+	}
+
 	.description {
 		margin: 0;
 		font-size: 17px;
@@ -201,19 +210,6 @@
 	.fact-value {
 		font-size: 15px;
 		color: var(--ink);
-	}
-
-	.how-to {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-	}
-
-	.how-to h2 {
-		margin: 0;
-		font-size: 18px;
-		font-weight: 600;
-		color: var(--deep);
 	}
 
 	.guide-link {

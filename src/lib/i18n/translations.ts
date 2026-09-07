@@ -95,7 +95,6 @@ export const translations = {
     templateLeft: 'Skabelon venstre',
     templateRight: 'Skabelon højre',
     photo: 'Foto',
-    howToMake: 'Sådan gør du',
     instructions: [
       'Print skabelonen i 100% størrelse på A4',
       'Fold et stykke farvet papir på midten, og læg skabelonen med den stiplede linje langs folden',
@@ -384,7 +383,6 @@ export const translations = {
     templateLeft: 'Template left',
     templateRight: 'Template right',
     photo: 'Photo',
-    howToMake: 'How to Make',
     instructions: [
       'Print the template at 100% size on A4',
       'Fold a sheet of coloured paper in half and place the template with the dashed line along the fold',
