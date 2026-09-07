@@ -6,10 +6,7 @@
 		subscribeColors,
 		type HeartColors
 	} from '$lib/stores/colors';
-	import {
-		computeWeaveData,
-		type WeaveData
-	} from '$lib/rendering/svgWeave';
+	import { computeWeaveData } from '$lib/rendering/svgWeave';
 	import { BASE_CANVAS_SIZE, BASE_CENTER, MIN_GRID_SIZE, MAX_GRID_SIZE } from '$lib/constants';
 	import { clampInt } from '$lib/utils/math';
 	import { computeHeartViewBoxFromOverlap } from '$lib/rendering/heartSvg';
@@ -22,11 +19,6 @@
 		initialGridSize?: GridSize | number;
 		initialWeaveParity?: 0 | 1 | number;
 		size?: number;
-		onFingersChange?: (
-			fingers: Finger[],
-			gridSize: GridSize,
-			weaveParity: 0 | 1
-		) => void;
 	}
 
 	let {
@@ -35,8 +27,7 @@
 		initialFingers = undefined,
 		initialGridSize = 3,
 		initialWeaveParity = 0,
-		size = 800,
-		onFingersChange = undefined
+		size = 800
 	}: Props = $props();
 
 	// Stable ID for clip paths (avoid Math.random which breaks SSR/hydration).

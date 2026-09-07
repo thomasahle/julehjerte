@@ -44,7 +44,12 @@ export default [
 			}
 		},
 		rules: {
-			'@typescript-eslint/no-unused-vars': 'off',
+			// Components are where dead imports and stale bindings accumulate, so
+			// this stays on; `_`-prefixed names remain legal for deliberate discards.
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{ argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }
+			],
 			'prefer-const': 'off',
 			'no-useless-assignment': 'off',
 			'svelte/no-at-html-tags': 'off',

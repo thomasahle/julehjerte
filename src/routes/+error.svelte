@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { base } from '$app/paths';
-  import { t, langFromPathname, type Language } from '$lib/i18n';
+  import { t, langFromPathname } from '$lib/i18n';
   import { href as routeHref } from '$lib/i18n/routes';
   import { SITE_TITLE } from '$lib/config';
   import PageHeader from '$lib/components/PageHeader.svelte';

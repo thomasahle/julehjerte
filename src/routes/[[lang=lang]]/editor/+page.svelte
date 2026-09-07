@@ -46,7 +46,7 @@
   }
 
   // Inline status/error message shown in the actions panel (replaces alert()).
-  type StatusKey = 'save' | 'import' | 'load';
+  type StatusKey = 'save' | 'import' | 'load' | 'pdf';
   let statusMessage = $state<{ key: StatusKey; kind: 'error' | 'info'; text: string } | null>(null);
 
   function showStatus(key: StatusKey, kind: 'error' | 'info', text: string): void {
@@ -144,6 +144,7 @@
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
   let colors = $state<HeartColors>({ left: '#ffffff', right: 'rgb(185, 19, 19)' });
   let editorEl: HTMLDivElement | null = $state(null);
+  let headerEl: HTMLElement | null = $state(null);
   let importInput: HTMLInputElement | null = $state(null);
   let draftId = $state<string | null>(null);
   let autosaveTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -189,9 +190,10 @@
     let ro: ResizeObserver | null = null;
     let resizeListener: (() => void) | null = null;
 
+    // The canvas fills the viewport minus the header, so the header's real
+    // height becomes a custom property. headerEl is bound from <PageHeader>.
     const updateHeaderHeightVar = async () => {
       await tick();
-      const headerEl = editorEl?.querySelector(':scope > header') as HTMLElement | null;
       if (!headerEl || !editorEl) return;
       const headerHeight = headerEl.getBoundingClientRect().height;
       editorEl.style.setProperty('--editor-header-height', `${Math.round(headerHeight)}px`);
@@ -204,7 +206,6 @@
       ro = new ResizeObserver(() => {
         updateHeaderHeightVar();
       });
-      const headerEl = editorEl.querySelector(':scope > header') as HTMLElement | null;
       if (headerEl) ro.observe(headerEl);
     } else {
       resizeListener = () => updateHeaderHeightVar();
@@ -375,6 +376,7 @@
       await downloadPDF(createHeartDesign(), { lang });
     } catch (err) {
       console.error('Generating the PDF failed', err);
+      showStatus('pdf', 'error', t('pdfFailed', lang));
     }
   }
 
@@ -562,7 +564,7 @@
 <div class="editor" bind:this={editorEl}>
   <!-- variant="editor" is the back-link + logo bar; the site nav links and the
        EN/GitHub pills belong on content pages, not in the full-screen tool. -->
-  <PageHeader {lang} variant="editor" onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? heartHref(getBackDetailId()!, lang) : undefined) : undefined}>
+  <PageHeader bind:ref={headerEl} {lang} variant="editor" onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? heartHref(getBackDetailId()!, lang) : undefined) : undefined}>
     <button
       type="button"
       class="btn btn-sm btn-ghost btn-icon icon-button"

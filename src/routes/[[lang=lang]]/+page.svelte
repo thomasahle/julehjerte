@@ -12,7 +12,7 @@
   in $lib/components/front.
 -->
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, untrack } from "svelte";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
@@ -31,17 +31,15 @@
     trackHeartSelect,
     trackMultiDownload,
   } from "$lib/analytics";
+  import type { PageProps } from "./$types";
 
-  type IndexedCategory = { id: string; hearts: string[] };
-
-  let { data } = $props();
-  let indexCategories = $derived(data.indexCategories as IndexedCategory[]);
+  let { data }: PageProps = $props();
 
   // Gallery hearts come precomputed from the load function (prerendered); user hearts
   // live in localStorage and are read in the browser. The full heart geometry
   // (segments) is large and slows down tight geometry loops if proxied, so keep it
   // out of deeply reactive state.
-  let staticHearts = $derived(data.designs as Record<string, HeartDesign>);
+  let staticHearts = $derived(data.designs);
   let userHearts = $state.raw<HeartDesign[]>([]);
 
   let selectedIds = $state<Set<string>>(new Set());
@@ -123,7 +121,7 @@
   }
 
   let galleryCategories = $derived(
-    indexCategories.map((category) => ({
+    data.indexCategories.map((category) => ({
       id: category.id,
       hearts: category.hearts.map((id) => staticHearts[id]).filter(Boolean),
     })),
@@ -137,14 +135,19 @@
     ...myHearts,
   ]);
 
+  // The detail page links back to `#heart-<id>`. That card may only exist once
+  // localStorage has been read, so the scroll waits for the list to grow: the
+  // `allHearts.length` read below is this effect's dependency, and the id is
+  // read and cleared outside it so the effect does not depend on itself.
   $effect(() => {
-    const _ = allHearts.length;
-    if (!browser || !pendingAnchorId) return;
-    const target = document.getElementById(pendingAnchorId);
+    void allHearts.length;
+    const anchorId = untrack(() => pendingAnchorId);
+    if (!browser || !anchorId) return;
+    const target = document.getElementById(anchorId);
     if (!target) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     target.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
-    pendingAnchorId = null;
+    untrack(() => (pendingAnchorId = null));
   });
 
   async function handlePrintSelected() {
@@ -160,6 +163,9 @@
         // loaded here instead of in the front page's initial bundle.
         const { downloadMultiPDF } = await import("$lib/pdf/template");
         await downloadMultiPDF(selected, { layout: pdfLayout, lang });
+      } catch (err) {
+        // The toolbar has no message slot; at least do not fail silently.
+        console.error("Generating the multi-heart PDF failed", err);
       } finally {
         generating = false;
       }

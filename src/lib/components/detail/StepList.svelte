@@ -6,7 +6,7 @@
   detail page and the illustrated guide always tell the same story.
 -->
 <script lang="ts">
-	import { translations, type Language } from '$lib/i18n';
+	import { tArray, type Language } from '$lib/i18n';
 
 	interface Props {
 		lang: Language;
@@ -14,7 +14,7 @@
 
 	let { lang }: Props = $props();
 
-	let steps = $derived(translations[lang].instructions);
+	let steps = $derived(tArray('instructions', lang));
 </script>
 
 <ol class="steps">

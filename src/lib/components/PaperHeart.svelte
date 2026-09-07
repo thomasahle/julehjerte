@@ -41,7 +41,6 @@
 		mergeBezierSegments,
 		reverseSegments,
 		segmentsToPathData,
-		splitBezierAt,
 		updateFingerSegments,
 		type BezierSegment
 	} from '$lib/geometry/bezierSegments';
@@ -93,7 +92,6 @@
 	const tr = (key: TranslationKey) => translate(key, lang);
 	const HANDLE_COLLAPSE_EPS = 0.25;
 	const HANDLE_SNAP_EPS = 8;
-	const MAX_BEZIER_SEGMENTS_PER_FINGER = 64;
 	const OUTER_EDGE_TOL = 0.75;
 	const OUTER_EDGE_REMOVE_TOL = 5;
 
@@ -113,28 +111,6 @@
 	function normalizeWeaveParity(raw: unknown): 0 | 1 {
 		const v = typeof raw === 'number' && Number.isFinite(raw) ? Math.round(raw) : 0;
 		return v % 2 === 1 ? 1 : 0;
-	}
-
-	function setGridSizeN(raw: number) {
-		if (readonly) return;
-		const n = clampInt(raw, MIN_GRID_SIZE, MAX_GRID_SIZE);
-		const next: GridSize = { x: n, y: n };
-		if (next.x === gridSize.x && next.y === gridSize.y) return;
-		const before = snapshotState();
-		gridSize = next;
-		fingers = createDefaultFingers(next);
-		selectedFingerId = null;
-		selectedAnchors = [];
-		selectedSegments = [];
-		lastCurveHit = null;
-		pushUndo(before);
-	}
-
-	function toggleWeaveParity() {
-		if (readonly) return;
-		const before = snapshotState();
-		weaveParity = weaveParity === 0 ? 1 : 0;
-		pushUndo(before);
 	}
 
 	// The swap itself lives in the colour store, so the footer's swap button and
@@ -161,10 +137,6 @@
 	function boundaryCurveCount(size: GridSize, lobe: LobeId) {
 		const strips = lobe === 'left' ? size.y : size.x;
 		return Math.max(0, strips + 1);
-	}
-
-	function stripsForLobe(size: GridSize, lobe: LobeId): number {
-		return lobe === 'left' ? size.y : size.x;
 	}
 
 		function createDefaultFingers(sizeInput: GridSize): Finger[] {
@@ -702,29 +674,6 @@
 		return anchors;
 	}
 
-	function clampBoundaryMove(lobe: LobeId, boundaryIdx: number, desired: Vec): Vec {
-		const overlap = inferOverlapRect(fingers, gridSize);
-		const minX = overlap.left;
-		const maxX = overlap.left + overlap.width;
-		const minY = overlap.top;
-		const maxY = overlap.top + overlap.height;
-		const orderEps = 1;
-
-		if (lobe === 'left') {
-			const prev = getFingerById(idForBoundary('left', boundaryIdx - 1));
-			const next = getFingerById(idForBoundary('left', boundaryIdx + 1));
-			const prevY = prev ? fingerToSegments(prev)[0]!.p0.y + orderEps : minY;
-			const nextY = next ? fingerToSegments(next)[0]!.p0.y - orderEps : maxY;
-			return { x: desired.x, y: clamp(desired.y, prevY, nextY) };
-		}
-
-		const prev = getFingerById(idForBoundary('right', boundaryIdx - 1));
-		const next = getFingerById(idForBoundary('right', boundaryIdx + 1));
-		const prevX = prev ? fingerToSegments(prev)[0]!.p0.x + orderEps : minX;
-		const nextX = next ? fingerToSegments(next)[0]!.p0.x - orderEps : maxX;
-		return { x: clamp(desired.x, prevX, nextX), y: desired.y };
-	}
-
 	function getOverlapRect(size: GridSize = gridSize) {
 		return weaveData?.overlap ?? inferOverlapRect(fingers, size);
 	}
@@ -1000,14 +949,6 @@
 
 	function oppositeLobe(lobe: LobeId): LobeId {
 		return lobe === 'left' ? 'right' : 'left';
-	}
-
-	function mirrorPointWithinLobe(lobe: LobeId, p: Vec): Vec {
-		return mirrorPointWithinLobeWithMode(lobe, p, antiWithinLobe);
-	}
-
-	function swapPointBetweenLobes(p: Vec): Vec {
-		return swapPointBetweenLobesWithMode(p, antiBetweenLobes);
 	}
 
 	function swapPointBetweenLobesWithMode(p: Vec, anti = false): Vec {
@@ -1519,46 +1460,6 @@
 		return true;
 	}
 
-	function addSegmentToFinger(fingerId: string) {
-		const finger = getFingerById(fingerId);
-		if (!finger) return;
-		const segments = fingerToSegments(finger);
-		if (segments.length >= MAX_BEZIER_SEGMENTS_PER_FINGER) return;
-
-		const before = snapshotState();
-		const segs = cloneSegments(segments);
-		const oldLen = segs.length;
-		const lastIdx = segs.length - 1;
-		const [s1, s2] = splitBezierAt(segs[lastIdx]!, 0.5);
-		segs.splice(lastIdx, 1, s1, s2);
-
-		updateFinger(fingerId, (f) => updateFingerSegments(f, segs));
-		if (selectedFingerId === fingerId) selectedAnchors = selectedAnchors.map((idx) => (idx === oldLen ? oldLen + 1 : idx));
-		pushUndo(before);
-	}
-
-	function removeSegmentFromFinger(fingerId: string) {
-		const finger = getFingerById(fingerId);
-		if (!finger) return;
-		const segments = fingerToSegments(finger);
-		if (segments.length <= 1) return;
-
-		const before = snapshotState();
-		const segs = cloneSegments(segments);
-		const oldLen = segs.length;
-		const lastIdx = segs.length - 1;
-		const merged = mergeBezierSegments(segs[lastIdx - 1]!, segs[lastIdx]!);
-		segs.splice(lastIdx - 1, 2, merged);
-
-		updateFinger(fingerId, (f) => updateFingerSegments(f, segs));
-		if (selectedFingerId === fingerId) {
-			const removedAnchor = oldLen - 1;
-			const newLen = oldLen - 1;
-			selectedAnchors = selectedAnchors.filter((idx) => idx !== removedAnchor).map((idx) => (idx === oldLen ? newLen : idx));
-		}
-		pushUndo(before);
-	}
-
 	function deleteSelectedAnchors() {
 		if (readonly) return;
 		const fingerId = selectedFingerId;
@@ -1615,12 +1516,6 @@
 		selectedSegments = [];
 		lastCurveHit = null;
 		pushUndo(before);
-	}
-
-	function insertNodeAtLastCurveHit() {
-		if (readonly) return;
-		if (!lastCurveHit) return;
-		insertNodeAtCurveHit(lastCurveHit);
 	}
 
 	function insertNodeBetweenSelectedAnchors() {
@@ -2857,8 +2752,6 @@
 	let selectedSegs = $derived(getSelectedSegmentIndexes(selectedSegCount));
 	let canMakeSegmentsStraight = $derived(selectedSegs.length > 0);
 	let canMakeSegmentsCurved = $derived(selectedSegs.length > 0);
-	let canAddSegment = $derived(Boolean(selectedFingerId) && selectedSegCount > 0 && selectedSegCount < MAX_BEZIER_SEGMENTS_PER_FINGER);
-	let canRemoveSegment = $derived(Boolean(selectedFingerId) && selectedSegCount > 1);
 	// Strips beyond PRECISION_GRID_SIZE are allowed (up to MAX_GRID_SIZE) but hard to cut accurately.
 	let hasManyStrips = $derived(gridSize.x > PRECISION_GRID_SIZE || gridSize.y > PRECISION_GRID_SIZE);
 	// Explain the red curves (GitHub issue #7): shown only while a conflict exists.

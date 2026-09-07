@@ -34,6 +34,12 @@
 		variant?: 'site' | 'editor';
 		backHref?: string;
 		onBack?: (event: MouseEvent) => void;
+		/**
+		 * The <header> element, for a page that has to measure it. Bind to it
+		 * rather than reaching in with a selector: the markup inside is ours to
+		 * change.
+		 */
+		ref?: HTMLElement | null;
 		children?: Snippet;
 	}
 
@@ -43,6 +49,7 @@
 		variant = 'site',
 		backHref = undefined,
 		onBack = undefined,
+		ref = $bindable(null),
 		children
 	}: Props = $props();
 
@@ -96,7 +103,7 @@
      route marks its own <main id="main-content">. -->
 <a class="skip-link" href="#main-content">{t('skipToContent', lang)}</a>
 
-<header class="nav" class:editor={variant === 'editor'}>
+<header bind:this={ref} class="nav" class:editor={variant === 'editor'}>
 	<div class="nav-start">
 		{#if variant === 'editor'}
 			<a class="back-link" href={backHref ?? homeHref} onclick={handleBack}>

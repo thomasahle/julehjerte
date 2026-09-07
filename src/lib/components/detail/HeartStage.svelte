@@ -50,24 +50,24 @@
 		return list;
 	});
 
+	/** Which thumbnail was clicked. What is *shown* is `shownView` below. */
 	let view = $state<ViewId>('heart');
 
 	// A user heart's design only arrives after hydration, and a symmetric heart
-	// drops the "right" view: fall back rather than showing an empty stage.
-	$effect(() => {
-		if (!views.some((v) => v.id === view)) view = 'heart';
-	});
+	// drops the "right" view, so the clicked view can stop existing. Deriving the
+	// fallback rather than writing `view` back keeps the click state pure.
+	let shownView = $derived(views.some((v) => v.id === view) ? view : 'heart');
 </script>
 
 <div class="stage">
 	{#if !design}
 		<p class="stage-loading">{t('loadingTemplate', lang)}</p>
-	{:else if view === 'heart'}
+	{:else if shownView === 'heart'}
 		<!-- Positioned so the heart hangs from the big fir behind it. -->
 		<div class="stage-hang">
 			<HangingHeart {design} size={340} ribbon={70} idPrefix="stage-{idPrefix}" />
 		</div>
-	{:else if view === 'photo' && photo}
+	{:else if shownView === 'photo' && photo}
 		<div class="stage-media">
 			<img
 				class="stage-photo"
@@ -82,7 +82,7 @@
 	{:else}
 		<div class="stage-media">
 			<div class="stage-template">
-				<TemplatePreview {design} lobe={view === 'right' ? 'right' : 'left'} size={380} />
+				<TemplatePreview {design} lobe={shownView === 'right' ? 'right' : 'left'} size={380} />
 			</div>
 		</div>
 	{/if}
@@ -93,8 +93,8 @@
 		<button
 			type="button"
 			class="thumb-btn"
-			class:is-active={view === v.id}
-			aria-pressed={view === v.id}
+			class:is-active={shownView === v.id}
+			aria-pressed={shownView === v.id}
 			onclick={() => (view = v.id)}
 		>
 			<span class="thumb">

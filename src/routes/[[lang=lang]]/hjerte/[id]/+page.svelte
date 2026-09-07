@@ -77,6 +77,25 @@
   let error = $state<string | null>(null);
   let shareStatus = $state<"idle" | "copied" | "error">("idle");
 
+  // The "Kopieret" / "Kunne ikke kopiere" note clears itself after two seconds.
+  // The handle is kept so a second share does not race the first one's timer,
+  // and so navigating away does not leave a timer writing to a dead component.
+  const SHARE_STATUS_MS = 2000;
+  let shareStatusTimer: ReturnType<typeof setTimeout> | null = null;
+
+  function resetShareStatusSoon(status: "copied" | "error"): void {
+    shareStatus = status;
+    if (shareStatusTimer !== null) clearTimeout(shareStatusTimer);
+    shareStatusTimer = setTimeout(() => {
+      shareStatus = "idle";
+      shareStatusTimer = null;
+    }, SHARE_STATUS_MS);
+  }
+
+  $effect(() => () => {
+    if (shareStatusTimer !== null) clearTimeout(shareStatusTimer);
+  });
+
   // /hjerte/delt/#design=<payload>: a heart someone shared (see $lib/utils/shareDesign).
   // It is not in this browser's collection until the visitor saves it.
   let isShared = $derived(data.shared);
@@ -240,8 +259,14 @@
   async function handleDownload() {
     if (!design) return;
     trackHeartDownload(design.id, design.name);
-    const { downloadPDF } = await import("$lib/pdf/template");
-    await downloadPDF(design, { lang });
+    try {
+      const { downloadPDF } = await import("$lib/pdf/template");
+      await downloadPDF(design, { lang });
+    } catch (err) {
+      // Without this the download simply did nothing, with no sign of why.
+      console.error("Generating the PDF failed", err);
+      saveError = t("pdfFailed", lang);
+    }
   }
 
   function handleEdit() {
@@ -276,15 +301,9 @@
     try {
       await navigator.clipboard.writeText(shareUrl);
       trackHeartShare(heartId, info.name, "clipboard");
-      shareStatus = "copied";
-      setTimeout(() => {
-        shareStatus = "idle";
-      }, 2000);
+      resetShareStatusSoon("copied");
     } catch {
-      shareStatus = "error";
-      setTimeout(() => {
-        shareStatus = "idle";
-      }, 2000);
+      resetShareStatusSoon("error");
     }
   }
 
