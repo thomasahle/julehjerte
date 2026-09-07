@@ -1,12 +1,12 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { base } from '$app/paths';
-  import { t, langFromPathname, langPrefix, type Language } from '$lib/i18n';
+  import { t, langFromPathname, type Language } from '$lib/i18n';
+  import { href as routeHref } from '$lib/i18n/routes';
   import { SITE_TITLE } from '$lib/config';
   import PageHeader from '$lib/components/PageHeader.svelte';
 
   let lang = $derived(langFromPathname($page.url.pathname, base));
-  let langBase = $derived(`${base}${langPrefix(lang)}`);
 
   let status = $derived($page.status);
   let message = $derived(
@@ -25,7 +25,7 @@
     <h1 class="error-code">{status}</h1>
     <h2 class="error-message">{message}</h2>
     <p class="error-description">{t('errorTitle', lang)}</p>
-    <a href="{langBase}/" class="btn btn-primary">
+    <a href={routeHref('home', lang)} class="btn btn-primary">
       {t('errorBackHome', lang)}
     </a>
   </div>

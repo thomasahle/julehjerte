@@ -4,7 +4,10 @@ import {
 	ROUTE_KEYS,
 	alternatePaths,
 	categoryHref,
+	editorHref,
+	heartHref,
 	heartPath,
+	homeAnchorHref,
 	href,
 	otherLanguage,
 	otherLanguageUrl,
@@ -43,6 +46,33 @@ describe('route table', () => {
 		expect(heartPath('stjerne', 'da')).toBe('/hjerte/stjerne/');
 		expect(heartPath('stjerne', 'en')).toBe('/en/hjerte/stjerne/');
 		expect(categoryHref('stjerner', 'en')).toBe('/en/#stjerner');
+	});
+
+	it('builds heart links with a trailing slash in both languages', () => {
+		// The editor used to reach the detail page as `/hjerte/<id>` from one
+		// place and `/hjerte/<id>/` from another, which are two URLs under
+		// trailingSlash: 'always'.
+		expect(heartHref('jul', 'da')).toBe('/hjerte/jul/');
+		expect(heartHref('jul', 'en')).toBe('/en/hjerte/jul/');
+		for (const lang of ['da', 'en'] as const) {
+			expect(heartHref('jul', lang).endsWith('/')).toBe(true);
+		}
+	});
+
+	it('builds front-page anchors', () => {
+		expect(homeAnchorHref('heart-jul', 'da')).toBe('/#heart-jul');
+		expect(homeAnchorHref('heart-jul', 'en')).toBe('/en/#heart-jul');
+		// The category link is the same shape, so the two cannot drift apart.
+		expect(categoryHref('stjerner', 'da')).toBe(homeAnchorHref('stjerner', 'da'));
+	});
+
+	it('builds editor links with their query and fragment', () => {
+		expect(editorHref('da')).toBe('/editor/');
+		expect(editorHref('en')).toBe('/en/editor/');
+		expect(editorHref('da', '?from=jul&returnTo=detail')).toBe(
+			'/editor/?from=jul&returnTo=detail'
+		);
+		expect(editorHref('en', '?edit=true#design=abc')).toBe('/en/editor/?edit=true#design=abc');
 	});
 });
 

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { beforeNavigate, goto } from '$app/navigation';
-  import { base } from '$app/paths';
   import { onMount, tick } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { SITE_TITLE, SITE_TITLE_EN } from '$lib/config';
@@ -26,6 +25,7 @@
     UploadIcon
   } from '$lib/components/icons';
   import { NARROW_QUERY } from '$lib/breakpoints';
+  import { heartHref, homeAnchorHref } from '$lib/i18n/routes';
   import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
   // Help modal state. The dialog declares aria-modal, so it also has to behave
@@ -173,7 +173,6 @@
   let authorName = $state(urlDesign?.author ?? '');
   let description = $state(urlDesign?.description ?? '');
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
-  let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
   let colors = $state<HeartColors>({ left: '#ffffff', right: 'rgb(185, 19, 19)' });
   let editorEl: HTMLDivElement | null = $state(null);
   let importInput: HTMLInputElement | null = $state(null);
@@ -425,7 +424,7 @@
     }
 
     // Navigate to gallery
-    goto(`${langBase}/#${makeHeartAnchorId(design.id)}`);
+    goto(homeAnchorHref(makeHeartAnchorId(design.id), lang));
   }
 
   function handleEditorBack(event: MouseEvent) {
@@ -434,7 +433,7 @@
     flushAutosave();
     const backId = getBackDetailId();
     if (!backId) return;
-    goto(`${langBase}/hjerte/${backId}`);
+    goto(heartHref(backId, lang));
   }
 
   function handleImport(event: Event) {
@@ -594,7 +593,7 @@
 <div class="editor" bind:this={editorEl}>
   <!-- variant="editor" is the back-link + logo bar; the site nav links and the
        EN/GitHub pills belong on content pages, not in the full-screen tool. -->
-  <PageHeader {lang} variant="editor" onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? `${langBase}/hjerte/${getBackDetailId()}/` : undefined) : undefined}>
+  <PageHeader {lang} variant="editor" onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? heartHref(getBackDetailId()!, lang) : undefined) : undefined}>
     <button
       type="button"
       class="btn btn-sm btn-ghost btn-icon icon-button"

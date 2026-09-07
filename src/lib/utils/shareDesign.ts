@@ -1,6 +1,6 @@
 import type { HeartDesignJson } from '$lib/types/heart';
 import type { Language } from '$lib/i18n';
-import { langPrefix } from '$lib/i18n';
+import { heartPath } from '$lib/i18n/routes';
 import { SITE_URL } from '$lib/config';
 
 /**
@@ -128,5 +128,5 @@ function safeDecodeUriComponent(text: string): string | null {
 
 /** The absolute share link for an encoded payload, in the given language. */
 export function sharedDesignUrl(payload: string, lang: Language): string {
-  return `${SITE_URL}${langPrefix(lang)}/hjerte/${SHARED_HEART_ID}/#design=${payload}`;
+  return `${SITE_URL}${heartPath(SHARED_HEART_ID, lang)}#design=${payload}`;
 }

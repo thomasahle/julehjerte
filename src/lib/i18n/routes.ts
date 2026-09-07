@@ -51,12 +51,28 @@ export function heartHref(id: string, lang: Language): string {
 }
 
 /**
+ * A link to an anchor on the front page, e.g. `/#stjerner` or
+ * `/en/#heart-jul`. The detail page and the editor both link back this way.
+ */
+export function homeAnchorHref(anchor: string, lang: Language): string {
+	return `${href('home', lang)}#${anchor}`;
+}
+
+/**
  * A link to one gallery category on the front page, e.g. `/#stjerner`.
  * The category ids are the ones in hearts.json and are the same in both
  * languages (klassiske, stjerner, moenstre, figurer, hjerter).
  */
 export function categoryHref(categoryId: string, lang: Language): string {
-	return `${href('home', lang)}#${categoryId}`;
+	return homeAnchorHref(categoryId, lang);
+}
+
+/**
+ * A link into the editor, e.g. `/en/editor/?from=jul` — `suffix` is the query
+ * string and/or `#design=` fragment the editor reads its input from.
+ */
+export function editorHref(lang: Language, suffix = ''): string {
+	return `${href('editor', lang)}${suffix}`;
 }
 
 export function otherLanguage(lang: Language): Language {

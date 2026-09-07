@@ -16,7 +16,6 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
-  import { base } from "$app/paths";
   import type { PageProps } from "./$types";
   import HeartStage from "$lib/components/detail/HeartStage.svelte";
   import RelatedHearts from "$lib/components/detail/RelatedHearts.svelte";
@@ -43,7 +42,12 @@
     SITE_URL,
   } from "$lib/config";
   import { stripsLabel as formatStrips, t, type Language } from "$lib/i18n";
-  import { href as routeHref } from "$lib/i18n/routes";
+  import {
+    editorHref,
+    heartPath,
+    homeAnchorHref,
+    href as routeHref,
+  } from "$lib/i18n/routes";
   import { lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
   import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
@@ -81,7 +85,6 @@
   // User hearts are shared as a self-contained link with the design in the fragment.
   let userShareUrl = $state<string | null>(null);
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
-  let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
   let heartId = $derived($page.params.id ?? '');
 
   onMount(async () => {
@@ -186,8 +189,8 @@
     const details = description ? description.replace(/[.!?]?$/, ".") : null;
     return [intro, details, t("heartMetaDownload", lang)].filter(Boolean).join(" ");
   });
-  let canonicalDa = $derived(`${SITE_URL}/hjerte/${heartId}/`);
-  let canonicalEn = $derived(`${SITE_URL}/en/hjerte/${heartId}/`);
+  let canonicalDa = $derived(`${SITE_URL}${heartPath(heartId, "da")}`);
+  let canonicalEn = $derived(`${SITE_URL}${heartPath(heartId, "en")}`);
   let canonicalUrl = $derived(lang === "en" ? canonicalEn : canonicalDa);
   // Gallery hearts get their own 1200x630 card, built by scripts/generate-heart-data.mjs.
   let ogImage = $derived(meta ? `${SITE_URL}/og/${heartId}.png` : `${SITE_URL}/og-image.png`);
@@ -199,9 +202,9 @@
     if ((isUserCreated || isShared) && design) {
       const payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(design)));
       const query = isUserCreated || savedShared ? "?edit=true&returnTo=detail" : "";
-      return `${langBase}/editor/${query}#design=${payload}`;
+      return editorHref(lang, `${query}#design=${payload}`);
     }
-    return `${langBase}/editor/?from=${encodeURIComponent(heartId)}&returnTo=detail`;
+    return editorHref(lang, `?from=${encodeURIComponent(heartId)}&returnTo=detail`);
   });
 
   // Build the share link for a user heart as soon as it is loaded, so the share button
@@ -379,7 +382,7 @@
           <div class="actions">
             {#if isShared && design}
               {#if savedShared}
-                <a class="btn btn-dark" href="{langBase}/#{makeHeartAnchorId(design.id)}">
+                <a class="btn btn-dark" href={homeAnchorHref(makeHeartAnchorId(design.id), lang)}>
                   {t('showInGallery', lang)}
                 </a>
               {:else}

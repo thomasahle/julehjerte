@@ -12,10 +12,6 @@ export function langFromPathname(pathname: string, basePath = ''): Language {
   return path === '/en' || path.startsWith('/en/') ? 'en' : 'da';
 }
 
-export function langPrefix(lang: Language): '' | '/en' {
-  return lang === 'en' ? '/en' : '';
-}
-
 /**
  * Values for a string's `{…}` placeholders. Which placeholders a key takes is
  * documented next to the key in translations.ts.
