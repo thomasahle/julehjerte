@@ -13,13 +13,19 @@
   import { detectSymmetry } from '$lib/utils/symmetry';
   import { serializeTemplateToSVG, type TemplateLobe } from '$lib/utils/templateSvg';
   import { renderHeartSvgInline } from '$lib/rendering/heartSvg';
+  import { downloadPDF } from '$lib/pdf/template';
   import { sanitizeHtml } from '$lib/utils';
   import { trackImportError } from '$lib/analytics';
   import PageHeader from '$lib/components/PageHeader.svelte';
   import { browser } from '$app/environment';
-  import CircleHelpIcon from '@lucide/svelte/icons/circle-help';
-  import XIcon from '@lucide/svelte/icons/x';
-  import { Button } from '$lib/components/ui/button';
+  import {
+    CloseIcon,
+    DownloadIcon,
+    HelpIcon,
+    PrinterIcon,
+    SaveIcon,
+    UploadIcon
+  } from '$lib/components/icons';
   import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
   // Help modal state
@@ -123,15 +129,22 @@
   let description = $state(urlDesign?.description ?? '');
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
   let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
-	  let colors = $state<HeartColors>({ left: '#ffffff', right: 'rgb(185, 19, 19)' });
-	  let editorEl: HTMLDivElement | null = $state(null);
-	  let draftId = $state<string | null>(null);
-	  let autosaveTimeout: ReturnType<typeof setTimeout> | null = null;
-	  let autosaveDirty = false;
-	  // Serialized design as first emitted by PaperHeart; used to tell real edits from the initial emission.
-	  let designBaseline: string | null = null;
-	  let hasDesignEdits = false;
-	  const AUTOSAVE_DEBOUNCE_MS = 600;
+  let colors = $state<HeartColors>({ left: '#ffffff', right: 'rgb(185, 19, 19)' });
+  let editorEl: HTMLDivElement | null = $state(null);
+  let importInput: HTMLInputElement | null = $state(null);
+  let draftId = $state<string | null>(null);
+  let autosaveTimeout: ReturnType<typeof setTimeout> | null = null;
+  let autosaveDirty = false;
+  // Serialized design as first emitted by PaperHeart; used to tell real edits from the initial emission.
+  let designBaseline: string | null = null;
+  let hasDesignEdits = false;
+  const AUTOSAVE_DEBOUNCE_MS = 600;
+
+  // Below 900px the editor keeps its old stacked layout: the heart panels go under the
+  // canvas instead of into PaperHeart's right-hand column (docs/redesign/DESIGN.md §7).
+  // Same breakpoint PaperHeart uses; set in onMount so SSR and hydration agree.
+  const NARROW_QUERY = '(max-width: 900px)';
+  let isNarrow = $state(false);
 
   onMount(() => {
     // Initialize colors
@@ -153,14 +166,14 @@
     if (urlFromId) {
       void loadDesignFromGallery(urlFromId);
     }
-	    if (!editorEl) return;
+    if (!editorEl) return;
 
-	    let ro: ResizeObserver | null = null;
-	    let resizeListener: (() => void) | null = null;
+    let ro: ResizeObserver | null = null;
+    let resizeListener: (() => void) | null = null;
 
     const updateHeaderHeightVar = async () => {
       await tick();
-      const headerEl = editorEl?.querySelector(':scope > .page-header') as HTMLElement | null;
+      const headerEl = editorEl?.querySelector(':scope > header') as HTMLElement | null;
       if (!headerEl || !editorEl) return;
       const headerHeight = headerEl.getBoundingClientRect().height;
       editorEl.style.setProperty('--editor-header-height', `${Math.round(headerHeight)}px`);
@@ -173,61 +186,69 @@
       ro = new ResizeObserver(() => {
         updateHeaderHeightVar();
       });
-      const headerEl = editorEl.querySelector(':scope > .page-header') as HTMLElement | null;
+      const headerEl = editorEl.querySelector(':scope > header') as HTMLElement | null;
       if (headerEl) ro.observe(headerEl);
     } else {
       resizeListener = () => updateHeaderHeightVar();
       win.addEventListener('resize', resizeListener, { passive: true });
     }
 
-	    return () => {
-	      ro?.disconnect();
-	      if (resizeListener) win.removeEventListener('resize', resizeListener);
-	    };
-	  });
+    return () => {
+      ro?.disconnect();
+      if (resizeListener) win.removeEventListener('resize', resizeListener);
+    };
+  });
 
-	  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
-	    currentFingers = fingers;
-	    currentGridSize = gridSize;
-	    currentWeaveParity = weaveParity;
-	    // PaperHeart emits once on mount (with reconciled boundary curves). That is not a
-	    // user edit, so only autosave once the design actually differs from that baseline.
-	    if (!hasDesignEdits) {
-	      const snapshot = JSON.stringify({ fingers, gridSize, weaveParity });
-	      if (designBaseline === null || snapshot === designBaseline) {
-	        designBaseline = snapshot;
-	        return;
-	      }
-	      hasDesignEdits = true;
-	    }
-	    scheduleAutosave();
-	  }
+  onMount(() => {
+    const mq = window.matchMedia(NARROW_QUERY);
+    const sync = () => (isNarrow = mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  });
 
-	  // Reset the autosave baseline before remounting PaperHeart with a new design.
-	  function resetDesignBaseline(): void {
-	    designBaseline = null;
-	    hasDesignEdits = false;
-	  }
+  function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
+    currentFingers = fingers;
+    currentGridSize = gridSize;
+    currentWeaveParity = weaveParity;
+    // PaperHeart emits once on mount (with reconciled boundary curves). That is not a
+    // user edit, so only autosave once the design actually differs from that baseline.
+    if (!hasDesignEdits) {
+      const snapshot = JSON.stringify({ fingers, gridSize, weaveParity });
+      if (designBaseline === null || snapshot === designBaseline) {
+        designBaseline = snapshot;
+        return;
+      }
+      hasDesignEdits = true;
+    }
+    scheduleAutosave();
+  }
 
-	  // ?from=<gallery-id>: fetch the static heart and edit it as a copy (same flow as ?design= links).
-	  async function loadDesignFromGallery(id: string): Promise<void> {
-	    const design = await loadStaticHeartById(id);
-	    if (!design) {
-	      showStatus('load', 'error', t('heartNotFound', lang));
-	      return;
-	    }
-	    currentFingers = design.fingers;
-	    currentGridSize = design.gridSize;
-	    currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-	    heartName = `${design.name} ${t('copy', lang)}`;
-	    authorName = design.author ?? '';
-	    description = design.description ?? '';
-	    editingExisting = true;
-	    isEditMode = false;
-	    initialDesign = design;
-	    resetDesignBaseline();
-	    editorKey++;
-	  }
+  // Reset the autosave baseline before remounting PaperHeart with a new design.
+  function resetDesignBaseline(): void {
+    designBaseline = null;
+    hasDesignEdits = false;
+  }
+
+  // ?from=<gallery-id>: fetch the static heart and edit it as a copy (same flow as ?design= links).
+  async function loadDesignFromGallery(id: string): Promise<void> {
+    const design = await loadStaticHeartById(id);
+    if (!design) {
+      showStatus('load', 'error', t('heartNotFound', lang));
+      return;
+    }
+    currentFingers = design.fingers;
+    currentGridSize = design.gridSize;
+    currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
+    heartName = `${design.name} ${t('copy', lang)}`;
+    authorName = design.author ?? '';
+    description = design.description ?? '';
+    editingExisting = true;
+    isEditMode = false;
+    initialDesign = design;
+    resetDesignBaseline();
+    editorKey++;
+  }
 
   function generateId(): string {
     return `heart-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -247,8 +268,8 @@
     return initialDesign?.id ?? draftId;
   }
 
-	  function createHeartDesign(): HeartDesign {
-	    return {
+  function createHeartDesign(): HeartDesign {
+    return {
       // In edit mode, keep the original ID; otherwise generate a new one
       id: getDesignId(),
       name: sanitizeHtml(heartName),
@@ -262,31 +283,31 @@
       weaveParity: currentWeaveParity,
       gridSize: currentGridSize,
       fingers: currentFingers
-	    };
-	  }
+    };
+  }
 
-	  function flushAutosave(): void {
-	    if (!browser) return;
-	    if (!autosaveDirty) return;
-	    autosaveDirty = false;
-	    try {
-	      saveUserDesign(createHeartDesign());
-	      clearStatus('save');
-	    } catch (err) {
-	      autosaveDirty = true;
-	      reportSaveError(err);
-	    }
-	  }
+  function flushAutosave(): void {
+    if (!browser) return;
+    if (!autosaveDirty) return;
+    autosaveDirty = false;
+    try {
+      saveUserDesign(createHeartDesign());
+      clearStatus('save');
+    } catch (err) {
+      autosaveDirty = true;
+      reportSaveError(err);
+    }
+  }
 
-	  function scheduleAutosave(): void {
-	    if (!browser) return;
-	    autosaveDirty = true;
-	    if (autosaveTimeout) clearTimeout(autosaveTimeout);
-	    autosaveTimeout = setTimeout(() => {
-	      autosaveTimeout = null;
-	      flushAutosave();
-	    }, AUTOSAVE_DEBOUNCE_MS);
-	  }
+  function scheduleAutosave(): void {
+    if (!browser) return;
+    autosaveDirty = true;
+    if (autosaveTimeout) clearTimeout(autosaveTimeout);
+    autosaveTimeout = setTimeout(() => {
+      autosaveTimeout = null;
+      flushAutosave();
+    }, AUTOSAVE_DEBOUNCE_MS);
+  }
 
   function downloadSVG() {
     const design = createHeartDesign();
@@ -327,32 +348,41 @@
     URL.revokeObjectURL(url);
   }
 
-		  function showInGallery() {
-		    if (!browser) return;
+  // Top bar: the A4 template as a PDF, the same generator the gallery and detail pages use.
+  async function downloadTemplatePDF() {
+    try {
+      await downloadPDF(createHeartDesign(), { lang });
+    } catch (err) {
+      console.error('Generating the PDF failed', err);
+    }
+  }
 
-	    flushAutosave();
+  function showInGallery() {
+    if (!browser) return;
 
-	    const design = createHeartDesign();
-	    try {
-	      saveUserDesign(design);
-	      clearStatus('save');
-	    } catch (err) {
-	      reportSaveError(err);
-	      return;
-	    }
+    flushAutosave();
 
-		    // Navigate to gallery
-		    goto(`${langBase}/#${makeHeartAnchorId(design.id)}`);
-		  }
+    const design = createHeartDesign();
+    try {
+      saveUserDesign(design);
+      clearStatus('save');
+    } catch (err) {
+      reportSaveError(err);
+      return;
+    }
+
+    // Navigate to gallery
+    goto(`${langBase}/#${makeHeartAnchorId(design.id)}`);
+  }
 
   function handleEditorBack(event: MouseEvent) {
     if (!returnToDetail) return;
-	    event.preventDefault();
-	    flushAutosave();
-	    const backId = getBackDetailId();
-	    if (!backId) return;
-	    goto(`${langBase}/hjerte/${backId}`);
-	  }
+    event.preventDefault();
+    flushAutosave();
+    const backId = getBackDetailId();
+    if (!backId) return;
+    goto(`${langBase}/hjerte/${backId}`);
+  }
 
   function handleImport(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -377,63 +407,169 @@
         currentGridSize = design.gridSize;
         currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
         heartName = design.name || t('importedHeart', lang);
-	        authorName = design.author || '';
-	        description = design.description || '';
-	        editingExisting = false;
-          isEditMode = false;
-	        initialDesign = design;
-	        draftId = generateId();
-	        resetDesignBaseline();
-	        editorKey++;
-	        scheduleAutosave();
-	      } catch (err) {
-	        trackImportError(file.name, err instanceof Error ? err.message : 'Unknown parse error');
-	        showStatus('import', 'error', t('invalidHeartFile', lang));
-	      }
+        authorName = design.author || '';
+        description = design.description || '';
+        editingExisting = false;
+        isEditMode = false;
+        initialDesign = design;
+        draftId = generateId();
+        resetDesignBaseline();
+        editorKey++;
+        scheduleAutosave();
+      } catch (err) {
+        trackImportError(file.name, err instanceof Error ? err.message : 'Unknown parse error');
+        showStatus('import', 'error', t('invalidHeartFile', lang));
+      }
     };
     reader.readAsText(file);
   }
 
-	  $effect(() => {
-	    if (!browser) return;
-	    const handler = () => {
-	      if (autosaveTimeout) {
-	        clearTimeout(autosaveTimeout);
-	        autosaveTimeout = null;
-	      }
-	      flushAutosave();
-	    };
-	    window.addEventListener('beforeunload', handler);
-	    return () => window.removeEventListener('beforeunload', handler);
-	  });
+  $effect(() => {
+    if (!browser) return;
+    const handler = () => {
+      if (autosaveTimeout) {
+        clearTimeout(autosaveTimeout);
+        autosaveTimeout = null;
+      }
+      flushAutosave();
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  });
 
-	  beforeNavigate((navigation) => {
-	    if (!browser || !navigation) return;
-	    if (autosaveTimeout) {
-	      clearTimeout(autosaveTimeout);
-	      autosaveTimeout = null;
-	    }
-	    flushAutosave();
-	  });
-
-	</script>
+  beforeNavigate((navigation) => {
+    if (!browser || !navigation) return;
+    if (autosaveTimeout) {
+      clearTimeout(autosaveTimeout);
+      autosaveTimeout = null;
+    }
+    flushAutosave();
+  });
+</script>
 
 <svelte:head>
   <title>{editingExisting ? t('editHeart', lang) : t('createNewHeartTitle', lang)} - {SITE_TITLE}</title>
 </svelte:head>
 
+<!--
+  Hjertedetaljer + Handlinger. On desktop this snippet is handed to PaperHeart, which
+  renders it at the bottom of the 340px panel so all five sections share one column and
+  one "Skjul panel" control; below 900px the same snippet is rendered under the canvas.
+  It is authored here, so the styles below reach it in both places.
+-->
+{#snippet heartPanels()}
+  <section class="editor-panel">
+    <h2 class="panel-title">{t('heartDetails', lang)}</h2>
+    <label class="field" for="name">
+      {t('name', lang)}
+      <input
+        id="name"
+        name="heart-name"
+        type="text"
+        autocomplete="off"
+        bind:value={heartName}
+        oninput={scheduleAutosave}
+      />
+    </label>
+    <label class="field" for="author">
+      {t('author', lang)}
+      <input
+        id="author"
+        name="author"
+        type="text"
+        autocomplete="name"
+        bind:value={authorName}
+        placeholder={t('yourName', lang)}
+        oninput={scheduleAutosave}
+      />
+    </label>
+    <label class="field" for="desc">
+      {t('description', lang)}
+      <textarea
+        id="desc"
+        name="description"
+        autocomplete="off"
+        bind:value={description}
+        rows="3"
+        placeholder={t('optionalDescription', lang)}
+        oninput={scheduleAutosave}
+      ></textarea>
+    </label>
+  </section>
+
+  <section class="editor-panel">
+    <h2 class="panel-title">{t('actions', lang)}</h2>
+    {#if statusMessage}
+      <div class={`status-message ${statusMessage.kind}`} role="alert">
+        <span class="status-text">{statusMessage.text}</span>
+        <button
+          type="button"
+          class="status-dismiss"
+          onclick={() => clearStatus()}
+          aria-label={t('dismissMessage', lang)}
+        >
+          <CloseIcon size={16} />
+        </button>
+      </div>
+    {/if}
+    <div class="action-buttons">
+      <button type="button" class="btn btn-ghost action" onclick={downloadSVG}>
+        <DownloadIcon size={16} />
+        {t('editorExportSvg', lang)}
+      </button>
+      <button type="button" class="btn btn-ghost action" onclick={() => importInput?.click()}>
+        <UploadIcon size={16} />
+        {t('editorImportSvg', lang)}
+      </button>
+      <input
+        bind:this={importInput}
+        id="import-svg"
+        name="import-svg"
+        type="file"
+        accept=".svg"
+        onchange={handleImport}
+        hidden
+      />
+      <button type="button" class="btn btn-ghost action" onclick={downloadTemplateSVG}>
+        <PrinterIcon size={16} />
+        {t('downloadTemplate', lang)}
+      </button>
+    </div>
+  </section>
+{/snippet}
+
 <div class="editor" bind:this={editorEl}>
-	  <!-- variant="editor" is the back-link + logo bar; the site nav links and the
-	       EN/GitHub pills belong on content pages, not in the full-screen tool. -->
-	  <PageHeader {lang} variant="editor" onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? `${langBase}/hjerte/${getBackDetailId()}/` : undefined) : undefined}>
-    <Button
-      variant="ghost"
-      size="icon"
+  <!-- variant="editor" is the back-link + logo bar; the site nav links and the
+       EN/GitHub pills belong on content pages, not in the full-screen tool. -->
+  <PageHeader {lang} variant="editor" onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? `${langBase}/hjerte/${getBackDetailId()}/` : undefined) : undefined}>
+    <button
+      type="button"
+      class="icon-button"
       onclick={() => showHelp = true}
       aria-label={t('helpOpenAriaLabel', lang)}
     >
-      <CircleHelpIcon size={20} />
-    </Button>
+      <HelpIcon size={20} />
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary top-action"
+      onclick={downloadTemplatePDF}
+      title={t('editorDownloadPdf', lang)}
+      aria-label={t('editorDownloadPdf', lang)}
+    >
+      <DownloadIcon size={18} />
+      <span class="top-action-label">{t('editorDownloadPdf', lang)}</span>
+    </button>
+    <button
+      type="button"
+      class="btn btn-dark top-action"
+      onclick={showInGallery}
+      title={isEditMode ? t('saveChanges', lang) : t('saveToMyHearts', lang)}
+      aria-label={isEditMode ? t('saveChanges', lang) : t('saveToMyHearts', lang)}
+    >
+      <SaveIcon size={18} />
+      <span class="top-action-label">{t('editorSave', lang)}</span>
+    </button>
   </PageHeader>
 
   <div class="editor-top">
@@ -441,94 +577,20 @@
       <PaperHeart
         {lang}
         fullPage
-        draggableToolbars
         onFingersChange={handleFingersChange}
         initialGridSize={currentGridSize}
         initialFingers={currentFingers}
         initialWeaveParity={currentWeaveParity}
+        panelExtra={isNarrow ? undefined : heartPanels}
       />
     {/key}
   </div>
 
-  <aside class="sidebar">
-    <div class="sidebar-section">
-      <h3>{t('heartDetails', lang)}</h3>
-      <div class="form-field">
-        <label for="name">{t('name', lang)}</label>
-        <input
-          id="name"
-          name="heart-name"
-          type="text"
-          autocomplete="off"
-          bind:value={heartName}
-          oninput={scheduleAutosave}
-        />
-      </div>
-      <div class="form-field">
-        <label for="author">{t('author', lang)}</label>
-        <input
-          id="author"
-          name="author"
-          type="text"
-          autocomplete="name"
-          bind:value={authorName}
-          placeholder={t('yourName', lang)}
-          oninput={scheduleAutosave}
-        />
-      </div>
-      <div class="form-field">
-        <label for="desc">{t('description', lang)}</label>
-        <textarea
-          id="desc"
-          name="description"
-          autocomplete="off"
-          bind:value={description}
-          rows="3"
-          placeholder={t('optionalDescription', lang)}
-          oninput={scheduleAutosave}
-        ></textarea>
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <h3>{t('actions', lang)}</h3>
-      {#if statusMessage}
-        <div class={`status-message ${statusMessage.kind}`} role="alert">
-          <span class="status-text">{statusMessage.text}</span>
-          <button
-            type="button"
-            class="status-dismiss"
-            onclick={() => clearStatus()}
-            aria-label={t('dismissMessage', lang)}
-          >
-            <XIcon size={16} />
-          </button>
-        </div>
-      {/if}
-      <div class="action-buttons">
-        <button class="btn primary full-width" onclick={showInGallery}>
-          {isEditMode ? t('saveChanges', lang) : t('showInGallery', lang)}
-        </button>
-        <button class="btn secondary full-width" onclick={downloadSVG}>
-          {t('export', lang)}
-        </button>
-        <label class="btn secondary full-width import-btn">
-          {t('import', lang)}
-          <input
-            id="import-svg"
-            name="import-svg"
-            type="file"
-            accept=".svg"
-            onchange={handleImport}
-            hidden
-          />
-        </label>
-        <button class="btn secondary full-width" onclick={downloadTemplateSVG}>
-          {t('downloadTemplate', lang)}
-        </button>
-      </div>
-    </div>
-  </aside>
+  {#if isNarrow}
+    <aside class="sidebar">
+      {@render heartPanels()}
+    </aside>
+  {/if}
 
   {#if showHelp}
     <div
@@ -548,8 +610,8 @@
       >
         <div class="help-header">
           <h2 id="help-title">{t('helpTitle', lang)}</h2>
-          <button class="close-button" onclick={() => showHelp = false} aria-label={t('helpCloseAriaLabel', lang)}>
-            <XIcon size={20} />
+          <button class="icon-button" onclick={() => showHelp = false} aria-label={t('helpCloseAriaLabel', lang)}>
+            <CloseIcon size={20} />
           </button>
         </div>
         <div class="help-content">
@@ -605,16 +667,16 @@
       </div>
     </div>
   {/if}
-
-	</div>
+</div>
 
 <style>
   .editor {
     position: relative;
     z-index: 1;
     padding: 0;
-    padding-bottom: 12rem;
-    --editor-header-height: 56px;
+    padding-bottom: 3rem;
+    background: var(--page);
+    --editor-header-height: var(--nav-height);
   }
 
   .editor-top {
@@ -624,7 +686,7 @@
     flex-direction: column;
   }
 
-  .editor > :global(.page-header) {
+  .editor > :global(header) {
     margin-bottom: 0;
   }
 
@@ -633,82 +695,135 @@
     min-height: 0;
   }
 
-  .sidebar {
-    background: white;
+  /* Desktop: the tool fills the viewport, so the page itself never scrolls. */
+  @media (min-width: 901px) {
+    .editor {
+      padding-bottom: 0;
+    }
+
+    .editor-top {
+      height: calc(100dvh - var(--editor-header-height));
+    }
+  }
+
+  /* Top bar (docs/redesign/DESIGN.md §7): Help, Download PDF, Gem. */
+  .icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex: none;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: var(--white);
+    color: var(--green);
+    cursor: pointer;
+    transition: background-color 0.15s;
+  }
+
+  .icon-button:hover {
+    background: var(--cream2);
+  }
+
+  .top-action {
+    height: 40px;
+    padding: 0 16px;
+  }
+
+  /* Phones: the two actions become icon buttons so the bar still fits next to
+     the back link and the wordmark. Their names live on aria-label/title. */
+  @media (max-width: 599px) {
+    .top-action {
+      width: 40px;
+      padding: 0;
+    }
+
+    .top-action-label {
+      display: none;
+    }
+  }
+
+  /*
+    Panel chrome for the two sections above. PaperHeart declares the same rules
+    `:global` inside its right-hand column; these cover the copy rendered under the
+    canvas on phones (and keep the scoped classes here in use).
+  */
+  .editor-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 1.25rem;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-    width: min(760px, calc(100% - 2rem));
-    margin: 1.5rem auto 2rem auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-
-  .sidebar-section {
-    margin-bottom: 0;
-  }
-
-  .sidebar-section h3 {
-    margin: 0 0 0.75rem 0;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #888;
-  }
-
-  .form-field {
-    margin-bottom: 0.75rem;
-  }
-
-  .form-field:last-child {
-    margin-bottom: 0;
-  }
-
-  .form-field label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-weight: 500;
-    font-size: 0.9rem;
-    color: #555;
-  }
-
-  .form-field input,
-  .form-field textarea {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 0.95rem;
+    background: var(--white);
     box-sizing: border-box;
-    transition: border-color 0.2s;
   }
 
-  .form-field input:focus,
-  .form-field textarea:focus {
-    outline: none;
-    border-color: #cc0000;
+  .panel-title {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 
-  .form-field textarea {
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    height: 38px;
+    padding: 8px 10px;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    background: var(--white);
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+
+  .field textarea {
+    height: 64px;
+    min-height: 64px;
     resize: vertical;
-    min-height: 60px;
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    border-color: var(--green);
   }
 
   .action-buttons {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 8px;
+  }
+
+  .action {
+    height: 40px;
+    width: 100%;
+    font-size: 14px;
   }
 
   .status-message {
     display: flex;
     align-items: flex-start;
     gap: 0.5rem;
-    margin-bottom: 0.75rem;
     padding: 0.5rem 0.6rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
+    border-radius: 8px;
+    font-size: 13px;
     line-height: 1.4;
   }
 
@@ -719,9 +834,9 @@
   }
 
   .status-message.info {
-    background: #eef4ff;
-    border: 1px solid #c3d4f5;
-    color: #1f3a70;
+    background: var(--cream2);
+    border: 1px solid var(--line);
+    color: var(--green);
   }
 
   .status-text {
@@ -744,54 +859,29 @@
   }
 
   .status-dismiss:hover {
-    background: rgba(0, 0, 0, 0.06);
+    background: rgb(28 51 41 / 0.06);
   }
 
-  .btn {
-    padding: 0.6rem 1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background 0.2s, transform 0.1s;
-    text-align: center;
+  /* Below 900px the panels sit under the canvas, as they always have. */
+  .sidebar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: min(760px, calc(100% - 2rem));
+    margin: 1.5rem auto 0 auto;
   }
 
-  .btn:active {
-    transform: scale(0.98);
-  }
-
-  .btn.primary {
-    background: #cc0000;
-    color: white;
-  }
-
-  .btn.primary:hover {
-    background: #aa0000;
-  }
-
-  .btn.secondary {
-    background: #f0f0f0;
-    color: #333;
-  }
-
-  .btn.secondary:hover {
-    background: #e0e0e0;
-  }
-
-  .btn.full-width {
-    width: 100%;
-  }
-
-  .import-btn {
-    display: block;
-    cursor: pointer;
+  @media (max-width: 599px) {
+    .sidebar {
+      grid-template-columns: 1fr;
+      max-width: 420px;
+    }
   }
 
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgb(28 51 41 / 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -803,22 +893,11 @@
     width: min(900px, 100%);
     max-height: 90vh;
     overflow: auto;
-    background: white;
-    border-radius: 12px;
-    padding: 1.25rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  }
-
-  .modal h2 {
-    margin: 0 0 0.5rem 0;
-    color: #222;
-  }
-
-  @media (max-width: 600px) {
-    .sidebar {
-      grid-template-columns: 1fr;
-      max-width: 400px;
-    }
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgb(28 51 41 / 0.25);
   }
 
   .help-modal {
@@ -832,35 +911,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 1rem;
+    gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 16px;
     flex-shrink: 0;
   }
 
   .help-header h2 {
     margin: 0;
-    font-size: 1.4rem;
-    color: #222;
-  }
-
-  .close-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: none;
-    border-radius: 6px;
-    background: transparent;
-    color: #666;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .close-button:hover {
-    background: #f0f0f0;
-    color: #333;
+    font-size: 22px;
+    color: var(--deep);
   }
 
   .help-content {
@@ -878,21 +939,21 @@
 
   .help-content h3 {
     margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
-    color: #333;
+    font-size: 17px;
+    color: var(--deep);
   }
 
   .help-content p {
     margin: 0 0 0.75rem 0;
     line-height: 1.6;
-    color: #555;
+    color: var(--ink);
   }
 
   .help-content ul {
     margin: 0;
     padding-left: 1.25rem;
     line-height: 1.6;
-    color: #555;
+    color: var(--ink);
   }
 
   .help-content li {
@@ -900,10 +961,10 @@
   }
 
   .help-content :global(em) {
-    color: #666;
+    color: var(--muted);
   }
 
   .help-content :global(strong) {
-    color: #333;
+    color: var(--deep);
   }
 </style>
