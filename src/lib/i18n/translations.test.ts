@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { translations, type Language, type TranslationKey } from './translations';
 
 describe('translations', () => {
@@ -27,6 +29,31 @@ describe('translations', () => {
         }
       }
     }
+  });
+
+  it('has no key without a call site', () => {
+    // Guidance 7: no dead code. Eight keys had drifted out of use by the time
+    // this was written, one of which had even been re-translated meanwhile.
+    // A key is "used" if its name appears anywhere in src outside this file —
+    // quoted for t('…'), or after a dot for translations.da.x — which is loose
+    // enough that a false pass is possible and a false failure is not.
+    const sources: string[] = [];
+    const walk = (dir: string) => {
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        const full = join(dir, entry.name);
+        if (entry.isDirectory()) walk(full);
+        else if (/\.(svelte|ts|js)$/.test(entry.name) && !full.endsWith('i18n/translations.ts'))
+          sources.push(readFileSync(full, 'utf8'));
+      }
+    };
+    walk('src');
+    const haystack = sources.join('\n');
+    const unused = Object.keys(translations.da).filter(
+      (key) => !new RegExp(`['"\`.\\[]${key}\\b`).test(haystack)
+    );
+    expect(unused, 'translation keys with no call site — delete them from both languages').toEqual(
+      []
+    );
   });
 
   it('instructions array has same length in both languages', () => {
