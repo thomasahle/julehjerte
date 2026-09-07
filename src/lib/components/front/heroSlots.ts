@@ -9,6 +9,8 @@
  * Slots are listed in DOM order, i.e. longest ribbon first, so a long ribbon
  * passes *behind* the hearts that hang higher up.
  */
+import type { Placed } from '$lib/landscape';
+
 export interface HeroSlot {
 	/** Absolute placement inside the hearts block (which is position: relative). */
 	style: string;
@@ -37,7 +39,7 @@ export const HERO_SLOTS_MOBILE: readonly HeroSlot[] = [
 ];
 
 /** Gold stars in the stacked hero's sky overlay: [x, y, scale] in a 420x300 box. */
-export const HERO_SKY_STARS: readonly (readonly [number, number, number])[] = [
+export const HERO_SKY_STARS: readonly Placed[] = [
 	[40, 42, 0.5],
 	[112, 22, 0.38],
 	[332, 30, 0.5],
@@ -48,7 +50,7 @@ export const HERO_SKY_STARS: readonly (readonly [number, number, number])[] = [
 ];
 
 /** White snow dots in the same overlay: [cx, cy, r]. */
-export const HERO_SKY_DOTS: readonly (readonly [number, number, number])[] = [
+export const HERO_SKY_DOTS: readonly Placed[] = [
 	[150, 30, 2.5],
 	[300, 62, 2],
 	[28, 172, 2],

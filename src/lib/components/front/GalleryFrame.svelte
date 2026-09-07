@@ -14,8 +14,8 @@
 -->
 <script lang="ts">
 	import Fir from '$lib/components/Fir.svelte';
-	import Star from '$lib/components/Star.svelte';
-	import { FIR_FILLS, type PineSymbol } from '$lib/landscape';
+	import SkyDecor from './SkyDecor.svelte';
+	import { FIR_FILLS, type PineSymbol, type Placed } from '$lib/landscape';
 
 	interface Props {
 		/** Height of the gallery in px; the SVG is drawn on a 1440-wide grid. */
@@ -47,14 +47,14 @@
 		{ x: 1470, tipY: 2860, h: 300, fill: FIR_FILLS[1], symbol: 'pine-c', mirrored: true, widthFactor: 0.9 }
 	];
 
-	const HOLLY: (readonly [number, number, number])[] = [
+	const HOLLY: Placed[] = [
 		[82, 640, 1],
 		[1338, 640, 1],
 		[84, 2380, 1],
 		[1336, 2340, 1]
 	];
 
-	const STARS: (readonly [number, number, number])[] = [
+	const STARS: Placed[] = [
 		[320, 370, 0.42],
 		[560, 380, 0.36],
 		[770, 372, 0.42],
@@ -69,7 +69,7 @@
 		[1240, 2620, 0.36]
 	];
 
-	const SNOW_DOTS: (readonly [number, number, number])[] = [
+	const SNOW_DOTS: Placed[] = [
 		[1100, 300, 3],
 		[180, 640, 3],
 		[1290, 1240, 3],
@@ -119,13 +119,7 @@
 			</g>
 		{/each}
 
-		{#each STARS as [x, y, scale] (`${x}-${y}`)}
-			<Star {x} {y} {scale} />
-		{/each}
-
-		{#each SNOW_DOTS as [cx, cy, r] (`${cx}-${cy}`)}
-			<circle {cx} {cy} {r} fill="#fff" opacity="0.85" />
-		{/each}
+		<SkyDecor stars={STARS} dots={SNOW_DOTS} />
 	</svg>
 {/if}
 

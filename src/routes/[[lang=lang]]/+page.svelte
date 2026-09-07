@@ -5,46 +5,24 @@
   toolbar, categories, "Mine hjerter") → footer, as one fluid document with the
   redesign's 1400 / 1200 / 900 / 700 / 600 breakpoints.
 
-  Everything that made the old page work is still here: PDF selection mirrored
-  into `?selected=`, the multi-heart PDF and its layout menu, select all / none,
-  the delete confirmation for user hearts, the `#heart-<id>` anchor the detail
-  page links back to, and the analytics events.
+  The route composes those sections and holds only what spans them: which hearts
+  are ticked (mirrored into `?selected=`), the multi-heart PDF and its layout,
+  the delete confirmation for the visitor's own hearts, and the `#heart-<id>`
+  anchor the detail page links back to. Everything with markup of its own lives
+  in $lib/components/front.
 -->
 <script lang="ts">
   import { onMount, tick } from "svelte";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
-  import HeartCard from "$lib/components/HeartCard.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
-  import Scene from "$lib/components/Scene.svelte";
-  import Fir from "$lib/components/Fir.svelte";
-  import Star from "$lib/components/Star.svelte";
-  import HeroHearts from "$lib/components/front/HeroHearts.svelte";
-  import ScrollHint from "$lib/components/front/ScrollHint.svelte";
-  import StepsStrip from "$lib/components/front/StepsStrip.svelte";
-  import GalleryFrame from "$lib/components/front/GalleryFrame.svelte";
-  import MyHeartsEmpty from "$lib/components/front/MyHeartsEmpty.svelte";
-  import {
-    HERO_SLOTS_DESKTOP,
-    HERO_SLOTS_MOBILE,
-    HERO_SKY_STARS,
-    HERO_SKY_DOTS,
-  } from "$lib/components/front/heroSlots";
-  import { DownloadIcon, GearIcon, PencilIcon, ArrowRightIcon } from "$lib/components/icons";
+  import Hero from "$lib/components/front/Hero.svelte";
+  import Gallery from "$lib/components/front/Gallery.svelte";
   import { deleteUserDesign, getUserCollection } from "$lib/stores/collection";
   import type { LayoutMode } from "$lib/pdf/template";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { t, type Language } from "$lib/i18n";
-  import { href as routeHref } from "$lib/i18n/routes";
-  import { categoryTitle, MY_HEARTS_CATEGORY_ID } from "$lib/data/categories";
-  import {
-    HERO_HEART_IDS,
-    HERO_HEART_IDS_MOBILE,
-    pickRandomHeartIds,
-  } from "$lib/utils/randomHearts";
-  import { FIR_FILLS } from "$lib/landscape";
-  import { WIDE_FRAME_QUERY } from "$lib/breakpoints";
   import type { HeartDesign } from "$lib/types/heart";
   import {
     trackHeartView,
@@ -52,18 +30,6 @@
     trackMultiDownload,
   } from "$lib/analytics";
   import { Button } from "$lib/components/ui/button";
-  import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
-  import * as Tooltip from "$lib/components/ui/tooltip";
-
-  // Layout options for PDF generation
-  const LAYOUT_OPTIONS: {
-    value: LayoutMode;
-    labelKey: "layoutSmall" | "layoutMedium" | "layoutLarge";
-  }[] = [
-    { value: "small", labelKey: "layoutSmall" },
-    { value: "medium", labelKey: "layoutMedium" },
-    { value: "large", labelKey: "layoutLarge" },
-  ];
 
   type IndexedCategory = { id: string; hearts: string[] };
 
@@ -83,22 +49,6 @@
   let lang = $derived(($page.params.lang === "en" ? "en" : "da") as Language);
   let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
   let pendingAnchorId = $state<string | null>(null);
-
-  // ---- hero -------------------------------------------------------------
-  // Prerendered with a fixed set of hearts; after hydration a random set
-  // cross-fades into the same slots, so nothing moves. The two layers are drawn
-  // on top of each other during the fade and the outgoing one is then dropped.
-  const HERO_FADE_MS = 400;
-  let heroRandomIds = $state.raw<string[] | null>(null);
-  let heroSwapped = $state(false);
-  let heroDropInitial = $state(false);
-  let heroMobileIds = $derived(heroRandomIds ? heroRandomIds.slice(0, HERO_SLOTS_MOBILE.length) : []);
-
-  // ---- gallery frame ----------------------------------------------------
-  // Decorative only, and only drawn from 1400px up, so it is measured in the
-  // browser rather than guessed at prerender time.
-  let galleryWrapEl = $state.raw<HTMLElement | null>(null);
-  let frameHeight = $state(0);
 
   // Read selections from URL on mount
   function getSelectionsFromUrl(): Set<string> {
@@ -133,50 +83,6 @@
 
     userHearts = getUserCollection();
     pendingAnchorId = window.location.hash.slice(1) || null;
-
-    // Swap the hero's prerendered hearts for a random set.
-    const picked = pickRandomHeartIds(HERO_SLOTS_DESKTOP.length);
-    if (picked.length < HERO_SLOTS_DESKTOP.length) return;
-    heroRandomIds = picked;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      heroSwapped = true;
-      heroDropInitial = true;
-      return;
-    }
-
-    // Two frames so the incoming layer is painted at opacity 0 before it rises.
-    let inner = 0;
-    const outer = requestAnimationFrame(() => {
-      inner = requestAnimationFrame(() => {
-        heroSwapped = true;
-      });
-    });
-    const timer = setTimeout(() => {
-      heroDropInitial = true;
-    }, HERO_FADE_MS + 300);
-
-    return () => {
-      cancelAnimationFrame(outer);
-      cancelAnimationFrame(inner);
-      clearTimeout(timer);
-    };
-  });
-
-  $effect(() => {
-    if (!browser || !galleryWrapEl) return;
-    const el = galleryWrapEl;
-    const wideEnough = window.matchMedia(WIDE_FRAME_QUERY);
-    const measure = () => {
-      frameHeight = wideEnough.matches ? Math.round(el.getBoundingClientRect().height) : 0;
-    };
-    const observer = new ResizeObserver(measure);
-    observer.observe(el);
-    wideEnough.addEventListener("change", measure);
-    return () => {
-      observer.disconnect();
-      wideEnough.removeEventListener("change", measure);
-    };
   });
 
   function handleSelect(design: HeartDesign) {
@@ -287,14 +193,6 @@
     }
   }
 
-  function heartCount(n: number): string {
-    return t("categoryHeartCount", lang).replace("{n}", String(n));
-  }
-
-  let selectedCount = $derived(selectedIds.size);
-  // aria-disabled rather than `disabled`: a disabled button is not focusable, so
-  // the tooltip explaining why ("Vælg hjerter først") was mouse-only.
-  let printDisabled = $derived(selectedCount === 0 || generating);
   let allSelected = $derived(allHearts.length > 0 && allHearts.every((h) => selectedIds.has(h.id)));
 </script>
 
@@ -305,226 +203,23 @@
 <PageHeader {lang} active="templates" />
 
 <main id="main-content" tabindex="-1">
-<!-- <Scene> inlines the landscape once for the whole page; every <Fir>/<Star>
-     below is a <use> of an id in its <defs>. -->
-<Scene class="hero" band={230}>
-  <svg
-    class="hero-sky-m"
-    viewBox="0 0 420 300"
-    preserveAspectRatio="xMidYMin meet"
-    aria-hidden="true"
-    focusable="false"
-  >
-    {#each HERO_SKY_STARS as [x, y, scale] (`${x}-${y}`)}
-      <Star {x} {y} {scale} />
-    {/each}
-    {#each HERO_SKY_DOTS as [cx, cy, r] (`${cx}-${cy}`)}
-      <circle {cx} {cy} {r} fill="#fff" opacity="0.85" />
-    {/each}
-  </svg>
+  <Hero {lang} designs={staticHearts} />
 
-  <svg
-    class="hero-tree-m"
-    viewBox="0 0 390 230"
-    preserveAspectRatio="xMinYMax meet"
-    aria-hidden="true"
-    focusable="false"
-  >
-    <Fir x={70} tipY={128} height={100} fill={FIR_FILLS[1]} symbol="pine-b" widthFactor={0.9} />
-    <Fir x={20} tipY={52} height={178} fill={FIR_FILLS[0]} symbol="pine-c" widthFactor={0.85} />
-  </svg>
-
-  <div class="hero-inner">
-    <div class="hero-hearts hero-hearts-m">
-      {#if !heroDropInitial}
-        <HeroHearts
-          slots={HERO_SLOTS_MOBILE}
-          ids={HERO_HEART_IDS_MOBILE}
-          designs={staticHearts}
-          idPrefix="hero-m-a"
-          faded={heroSwapped}
-        />
-      {/if}
-      {#if heroRandomIds}
-        <HeroHearts
-          slots={HERO_SLOTS_MOBILE}
-          ids={heroMobileIds}
-          designs={staticHearts}
-          idPrefix="hero-m-b"
-          faded={!heroSwapped}
-        />
-      {/if}
-    </div>
-
-    <div class="hero-text">
-      <h1>{t("siteWordmark", lang)}</h1>
-      <h2>{t("heroTagline", lang)}</h2>
-      <p>{t("heroIntro", lang)}</p>
-      <div class="hero-btns">
-        <a class="btn btn-primary" href={routeHref("editor", lang)}>
-          <PencilIcon size={18} />
-          {t("createNewHeart", lang)}
-        </a>
-        <a class="btn btn-outline hero-btn-secondary" href="#skabeloner">
-          <ArrowRightIcon size={18} />
-          {t("heroSeeTemplates", lang)}
-        </a>
-      </div>
-    </div>
-
-    <div class="hero-hearts hero-hearts-d">
-      {#if !heroDropInitial}
-        <HeroHearts
-          slots={HERO_SLOTS_DESKTOP}
-          ids={HERO_HEART_IDS}
-          designs={staticHearts}
-          idPrefix="hero-d-a"
-          faded={heroSwapped}
-        />
-      {/if}
-      {#if heroRandomIds}
-        <HeroHearts
-          slots={HERO_SLOTS_DESKTOP}
-          ids={heroRandomIds}
-          designs={staticHearts}
-          idPrefix="hero-d-b"
-          faded={!heroSwapped}
-        />
-      {/if}
-    </div>
-  </div>
-
-  <ScrollHint {lang} />
-</Scene>
-
-<div class="gallery-wrap" bind:this={galleryWrapEl}>
-  <GalleryFrame height={frameHeight} />
-
-  <div class="gallery" id="skabeloner">
-    <div class="gallery-head">
-      <h2>{t("galleryHeading", lang)}</h2>
-    </div>
-
-    <div class="toolbar">
-      <span class="split">
-        <Tooltip.Root disabled={selectedCount > 0 || generating}>
-          <Tooltip.Trigger>
-            {#snippet child({ props })}
-              <button
-                {...props}
-                type="button"
-                class="split-main"
-                onclick={() => { if (!printDisabled) handlePrintSelected(); }}
-                aria-disabled={printDisabled}
-                aria-describedby={printDisabled ? "print-selected-hint" : undefined}
-              >
-                <DownloadIcon size={18} />
-                {generating ? t("generating", lang) : t("printSelected", lang)}
-                {#if !generating}
-                  <span class="split-count">{selectedCount}</span>
-                {/if}
-              </button>
-            {/snippet}
-          </Tooltip.Trigger>
-          <Tooltip.Content>
-            <p>{t("selectHeartsFirst", lang)}</p>
-          </Tooltip.Content>
-        </Tooltip.Root>
-        {#if printDisabled}
-          <span id="print-selected-hint" class="sr-only">{t("selectHeartsFirst", lang)}</span>
-        {/if}
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
-            {#snippet child({ props })}
-              <button
-                {...props}
-                type="button"
-                class="split-gear"
-                aria-label={t("pdfSettings", lang)}
-                title={t("pdfLayout", lang)}
-              >
-                <GearIcon size={18} />
-              </button>
-            {/snippet}
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content align="end" class="border-0">
-            <DropdownMenu.RadioGroup bind:value={pdfLayout}>
-              {#each LAYOUT_OPTIONS as option (option.value)}
-                <DropdownMenu.RadioItem value={option.value}>
-                  {t(option.labelKey, lang)}
-                </DropdownMenu.RadioItem>
-              {/each}
-            </DropdownMenu.RadioGroup>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      </span>
-
-      <button
-        type="button"
-        class="btn btn-ghost"
-        onclick={handleSelectAll}
-        disabled={allSelected || generating}
-      >
-        {t("selectAll", lang)}
-      </button>
-      <button
-        type="button"
-        class="btn btn-ghost"
-        onclick={handleSelectNone}
-        disabled={selectedCount === 0 || generating}
-      >
-        {t("selectNone", lang)}
-      </button>
-
-      <StepsStrip {lang} />
-    </div>
-
-    {#each galleryCategories as category, i (category.id)}
-      <section class="cat" id={category.id} style="padding-top: {i === 0 ? 8 : 44}px;">
-        <div class="cat-head">
-          <h3>{categoryTitle(category.id, lang)}</h3>
-          <span>{heartCount(category.hearts.length)}</span>
-        </div>
-        <div class="cat-grid">
-          {#each category.hearts as design, index (design.id)}
-            <HeartCard
-              {design}
-              {lang}
-              {index}
-              selected={selectedIds.has(design.id)}
-              onSelect={handleSelect}
-              onClick={handleClick}
-            />
-          {/each}
-        </div>
-      </section>
-    {/each}
-
-    <section class="cat mine" id={MY_HEARTS_CATEGORY_ID}>
-      <!-- No count here: the mockup's "Mine hjerter" row is the heading alone. -->
-      <div class="cat-head">
-        <h3>{categoryTitle(MY_HEARTS_CATEGORY_ID, lang)}</h3>
-      </div>
-      {#if myHearts.length === 0}
-        <MyHeartsEmpty {lang} />
-      {:else}
-        <div class="cat-grid">
-          {#each myHearts as design, index (design.id)}
-            <HeartCard
-              {design}
-              {lang}
-              {index}
-              selected={selectedIds.has(design.id)}
-              onSelect={handleSelect}
-              onClick={handleClick}
-              onDelete={requestDelete}
-            />
-          {/each}
-        </div>
-      {/if}
-    </section>
-  </div>
-</div>
+  <Gallery
+    {lang}
+    categories={galleryCategories}
+    {myHearts}
+    {selectedIds}
+    {generating}
+    {allSelected}
+    bind:pdfLayout
+    onPrint={handlePrintSelected}
+    onSelectAll={handleSelectAll}
+    onSelectNone={handleSelectNone}
+    onSelect={handleSelect}
+    onClick={handleClick}
+    onDelete={requestDelete}
+  />
 </main>
 
 {#if deleteCandidate}
@@ -560,230 +255,6 @@
 {/if}
 
 <style>
-  /* ---------------------------------------------------------------- hero -- */
-  /* The sky panel, its snow strip and the landscape band all come from
-     <Scene band={230}>; what is left here is what hangs in front of them. */
-  .hero-sky-m,
-  .hero-tree-m {
-    display: none;
-    position: absolute;
-    pointer-events: none;
-  }
-
-  /* A flex container paints absolutely positioned children in order-modified
-     document order, and the landscape is order: 10 below 900px — so the corner
-     firs need a stacking order of their own to stay on top of it. */
-  .hero-tree-m {
-    z-index: 1;
-  }
-
-  .hero-inner {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 640px;
-    gap: 40px;
-    align-items: start;
-    height: 660px;
-    padding: 0 40px 0 80px;
-    box-sizing: border-box;
-  }
-
-  .hero-text {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    max-width: 560px;
-    padding-top: 88px;
-  }
-
-  .hero-text h1 {
-    margin: 0;
-    font-size: 56px;
-    font-weight: 600;
-    line-height: 1.05;
-    color: var(--deep);
-  }
-
-  .hero-text h2 {
-    margin: 0;
-    font-size: 24px;
-    /* The mockup leaves the h2 at the default line-height; the inherited 1.5
-       pushed the paragraph — and the whole page below it — down by 7px. */
-    line-height: normal;
-    font-weight: 500;
-    color: var(--green);
-  }
-
-  .hero-text p {
-    margin: 0;
-    max-width: 480px;
-    font-size: 17px;
-    line-height: 1.55;
-    /* --muted is 4.02:1 on the hero's --sky, under the AA minimum for body text. */
-    color: var(--muted-on-sky);
-  }
-
-  .hero-btns {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding-top: 8px;
-  }
-
-  .hero-hearts {
-    position: relative;
-  }
-
-  .hero-hearts-d {
-    height: 560px;
-  }
-
-  .hero-hearts-m {
-    display: none;
-  }
-
-  /* ------------------------------------------------------------- gallery -- */
-  .gallery-wrap {
-    position: relative;
-  }
-
-  .gallery {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    max-width: 1280px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 24px 40px 56px;
-    box-sizing: border-box;
-  }
-
-  .gallery-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-    padding-bottom: 6px;
-  }
-
-  .gallery-head h2 {
-    margin: 0;
-    font-size: 32px;
-    font-weight: 600;
-    color: var(--deep);
-  }
-
-  .toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 0;
-    background: var(--page);
-  }
-
-  /* "Hent skabeloner (n)" and its PDF settings gear, as one red split button. */
-  .split {
-    display: inline-flex;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgb(var(--deep-rgb) / 0.12);
-  }
-
-  .split-main,
-  .split-gear {
-    display: inline-flex;
-    align-items: center;
-    height: 44px;
-    border: none;
-    background: var(--red);
-    color: var(--white);
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background-color 0.15s;
-  }
-
-  .split-main {
-    gap: 8px;
-    padding: 0 18px;
-    border-radius: 10px 0 0 10px;
-  }
-
-  .split-gear {
-    justify-content: center;
-    width: 44px;
-    padding: 0;
-    border-radius: 0 10px 10px 0;
-    border-left: 1px solid rgb(255 255 255 / 0.35);
-  }
-
-  .split-main:hover:not([aria-disabled="true"]),
-  .split-gear:hover:not(:disabled) {
-    background: var(--red-hover);
-  }
-
-  /* Dimmed, but the red still has to read as the toolbar's anchor. */
-  .split-main[aria-disabled="true"] {
-    opacity: 0.75;
-    cursor: not-allowed;
-  }
-
-  .split-count {
-    padding: 1px 9px;
-    border-radius: 999px;
-    background: rgb(255 255 255 / 0.22);
-    font-size: 13px;
-  }
-
-  .cat {
-    display: flex;
-    flex-direction: column;
-    /* The toolbar is sticky, so a category anchor must not land underneath it. */
-    scroll-margin-top: 78px;
-  }
-
-  .cat-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    padding-bottom: 4px;
-    margin-bottom: 10px;
-  }
-
-  .cat-head h3 {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--green);
-  }
-
-  .cat-head span {
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .cat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
-    column-gap: 24px;
-    row-gap: 40px;
-  }
-
-  .mine {
-    padding-top: 48px;
-    gap: 12px;
-  }
-
   /* --------------------------------------------------------------- modal -- */
   .modal-overlay {
     position: fixed;
@@ -826,138 +297,5 @@
     justify-content: flex-end;
     gap: 12px;
     margin-top: 20px;
-  }
-
-  /* --------------------------------------------------------- breakpoints -- */
-  @media (max-width: 1199px) {
-    .hero-inner {
-      grid-template-columns: minmax(0, 1fr) 480px;
-      height: 600px;
-      padding: 0 32px 0 56px;
-    }
-
-    .hero-hearts-d {
-      width: 640px;
-      height: 420px;
-      transform: scale(0.75);
-      transform-origin: 0 0;
-    }
-
-    .hero-text {
-      padding-top: 72px;
-    }
-
-    .hero-text h1 {
-      font-size: 48px;
-    }
-
-    .hero-text h2 {
-      font-size: 21px;
-    }
-  }
-
-  @media (max-width: 899px) {
-    .hero-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      height: auto;
-      padding: 0 24px 22px;
-    }
-
-    .hero-hearts-d {
-      display: none;
-    }
-
-    .hero-hearts-m {
-      display: block;
-      width: 100%;
-      max-width: 420px;
-      height: 250px;
-    }
-
-    .hero-text {
-      align-items: center;
-      max-width: 520px;
-      padding-top: 10px;
-      gap: 12px;
-    }
-
-    .hero-text h1 {
-      font-size: 44px;
-    }
-
-    .hero-text h2 {
-      font-size: 19px;
-    }
-
-    .hero-text p {
-      font-size: 15px;
-    }
-
-    .hero-btns {
-      justify-content: center;
-    }
-
-    .hero-sky-m {
-      display: block;
-      left: 0;
-      right: 0;
-      top: 0;
-      width: 100%;
-      height: 300px;
-    }
-
-    .gallery {
-      padding: 16px 24px 40px;
-    }
-
-    .gallery-head h2 {
-      font-size: 26px;
-    }
-
-    .cat {
-      scroll-margin-top: 70px;
-    }
-  }
-
-  @media (max-width: 699px) {
-    .toolbar {
-      gap: 8px;
-      padding: 10px 0;
-    }
-  }
-
-  @media (max-width: 599px) {
-    .hero-text h1 {
-      font-size: 38px;
-    }
-
-    .hero-text h2 {
-      font-size: 17px;
-    }
-
-    .hero-btn-secondary {
-      display: none;
-    }
-
-    .hero-tree-m {
-      display: block;
-      left: 0;
-      bottom: -1px;
-      width: 100%;
-      height: 230px;
-    }
-
-    .gallery {
-      padding: 16px 16px 32px;
-    }
-
-    .cat-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 14px;
-      row-gap: 32px;
-    }
   }
 </style>

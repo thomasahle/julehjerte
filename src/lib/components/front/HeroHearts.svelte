@@ -49,7 +49,9 @@
 	.layer {
 		position: absolute;
 		inset: 0;
-		transition: opacity 0.4s ease;
+		/* Hero.svelte sets --hero-fade from the same constant its timer uses, so
+		   the outgoing layer is never dropped mid-transition. */
+		transition: opacity var(--hero-fade, 400ms) ease;
 	}
 
 	.layer.faded {

@@ -36,6 +36,13 @@ export const PINE_BASE_HEIGHT = 202;
 export type PineSymbol = 'pine-a' | 'pine-b' | 'pine-c';
 
 /**
+ * A decoration placed on a drawing's own coordinate grid: position plus one
+ * size number — `scale` for a star, `r` for a snow dot. Used by the hero's sky
+ * overlay and by the gallery frame, which draw the same two loops.
+ */
+export type Placed = readonly [x: number, y: number, k: number];
+
+/**
  * The drawing's markup without its outer <svg> element, <title> and <desc>:
  * the payload `Landscape.svelte` re-wraps in an aria-hidden <svg>. Computed once
  * at module load, not per component instance.
