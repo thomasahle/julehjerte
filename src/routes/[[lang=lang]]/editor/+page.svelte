@@ -13,6 +13,7 @@
   import { serializeTemplateToSVG, type TemplateLobe } from '$lib/utils/templateSvg';
   import { renderHeartSvgInline } from '$lib/rendering/heartSvg';
   import { sanitizeHtml } from '$lib/utils';
+  import { slugify } from '$lib/utils/slug';
   import { trackImportError } from '$lib/analytics';
   import Modal from '$lib/components/Modal.svelte';
   import PageHeader from '$lib/components/PageHeader.svelte';
@@ -352,7 +353,7 @@
 
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${design.name.toLowerCase().replace(/\s+/g, '-')}.svg`;
+    a.download = `${slugify(design.name)}.svg`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -376,7 +377,7 @@
 
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${design.name.toLowerCase().replace(/\s+/g, '-')}-template.svg`;
+    a.download = `${slugify(design.name)}-template.svg`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

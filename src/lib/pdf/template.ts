@@ -5,6 +5,7 @@ import { SITE_DOMAIN } from '$lib/config';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { slugify } from '$lib/utils/slug';
 import { t, type Language } from '$lib/i18n';
 
 // A4 dimensions in mm
@@ -575,9 +576,14 @@ async function generateMultiPDF(designs: HeartDesign[], options: PDFOptions = {}
   return pdf;
 }
 
+/** "juletrae-template.pdf" — one heart's template, named after the heart. */
+function singleFilename(design: HeartDesign): string {
+  return `${slugify(design.name)}-template.pdf`;
+}
+
 export async function downloadPDF(design: HeartDesign, options: PDFOptions = {}) {
   const pdf = await generatePDF(design, options);
-  pdf.save(`${design.name.toLowerCase().replace(/\s+/g, '-')}-template.pdf`);
+  pdf.save(singleFilename(design));
 }
 
 export async function downloadMultiPDF(designs: HeartDesign[], options: PDFOptions = {}) {
@@ -585,7 +591,7 @@ export async function downloadMultiPDF(designs: HeartDesign[], options: PDFOptio
 
   const pdf = await generateMultiPDF(designs, options);
   const filename = designs.length === 1
-    ? `${designs[0].name.toLowerCase().replace(/\s+/g, '-')}-template.pdf`
-    : `julehjerter-${designs.length}-templates.pdf`;
+    ? singleFilename(designs[0])
+    : `${t('pdfMultiFilename', options.lang, { n: designs.length })}.pdf`;
   pdf.save(filename);
 }

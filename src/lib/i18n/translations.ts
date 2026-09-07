@@ -87,6 +87,8 @@ export const translations = {
     classic: 'Klassisk',
     downloadPdfTemplate: 'Download PDF-skabelon',
     pdfFailed: 'PDF-skabelonen kunne ikke laves. Prøv igen.',
+    /** Filename (without .pdf) of a multi-heart download; {n} = number of hearts. */
+    pdfMultiFilename: 'julehjerter-{n}-skabeloner',
     openInEditor: 'Rediger i editor',
     share: 'Del',
     copied: 'Kopieret!',
@@ -377,6 +379,8 @@ export const translations = {
     classic: 'Classic',
     downloadPdfTemplate: 'Download PDF template',
     pdfFailed: 'The PDF template could not be generated. Please try again.',
+    /** Filename (without .pdf) of a multi-heart download; {n} = number of hearts. */
+    pdfMultiFilename: 'christmas-hearts-{n}-templates',
     openInEditor: 'Edit in the editor',
     share: 'Share',
     copied: 'Copied!',
