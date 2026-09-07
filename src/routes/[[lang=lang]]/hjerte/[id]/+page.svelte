@@ -1,11 +1,38 @@
+<!--
+  The heart detail page — docs/redesign/DESIGN.md §4.
+
+  A page-wide winter scene: the landscape drawing runs edge to edge along the
+  bottom, three firs are drawn over it on the left, and the heart hangs from the
+  big one on a stage whose four thumbnails swap the big view. The translucent
+  panel on the right carries the name, the facts and the five steps; below the
+  scene the rest of the category is offered as "Flere {kategori}".
+
+  Behaviour that must survive any restyling: /hjerte/delt/ (a heart shared in the
+  URL fragment, noindex, "Gem i Mine hjerter"), the editor hand-off in editHref,
+  navigator.share with a clipboard fallback, downloadPDF() and the three
+  analytics events.
+-->
 <script lang="ts">
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
   import type { PageProps } from "./$types";
-  import PaperHeartSVG from "$lib/components/PaperHeartSVG.svelte";
-  import TemplatePreview from "$lib/components/TemplatePreview.svelte";
+  import HeartStage from "$lib/components/detail/HeartStage.svelte";
+  import RelatedHearts from "$lib/components/detail/RelatedHearts.svelte";
+  import StepList from "$lib/components/detail/StepList.svelte";
+  import DifficultyDots from "$lib/components/DifficultyDots.svelte";
+  import Fir from "$lib/components/Fir.svelte";
+  import Landscape from "$lib/components/Landscape.svelte";
+  import PageHeader from "$lib/components/PageHeader.svelte";
+  import {
+    ArrowLeftIcon,
+    ArrowRightIcon,
+    DownloadIcon,
+    PencilIcon,
+    ShareIcon,
+  } from "$lib/components/icons";
+  import { FIR_FILLS } from "$lib/landscape";
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from "$lib/stores/collection";
   import { downloadPDF } from "$lib/pdf/template";
   import {
@@ -16,18 +43,9 @@
     SITE_TITLE_EN,
     SITE_URL,
   } from "$lib/config";
-  import {
-    t,
-    translations,
-    type Language,
-    type TranslationKey,
-  } from "$lib/i18n";
-  import {
-    getColors,
-    subscribeColors,
-    type HeartColors,
-  } from "$lib/stores/colors";
-  import { detectSymmetry, getSymmetryDescription, lobesShareTemplate } from "$lib/utils/symmetry";
+  import { t, type Language } from "$lib/i18n";
+  import { href as routeHref } from "$lib/i18n/routes";
+  import { lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty, type DifficultyLevel } from "$lib/utils/difficulty";
   import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
   import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl } from "$lib/utils/shareDesign";
@@ -38,8 +56,6 @@
     trackHeartShare,
     trackHeartEdit,
   } from "$lib/analytics";
-  import PageHeader from "$lib/components/PageHeader.svelte";
-  import * as Carousel from "$lib/components/ui/carousel";
 
   let { data }: PageProps = $props();
 
@@ -68,15 +84,8 @@
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
   let langBase = $derived(`${base}${$page.params.lang ? `/${$page.params.lang}` : ''}`);
   let heartId = $derived($page.params.id ?? '');
-  let colors = $state<HeartColors>({ left: "#ffffff", right: "rgb(185, 19, 19)" });
 
   onMount(async () => {
-    // Initialize colors
-    colors = getColors();
-    subscribeColors((c) => {
-      colors = c;
-    });
-
     // Gallery hearts arrived with the page data.
     if (data.design) return;
 
@@ -124,14 +133,22 @@
     description: string | null;
     gridSize: { x: number; y: number };
     difficulty: DifficultyLevel;
-    symmetry: string;
   };
 
   let info = $derived.by<HeartInfo | null>(() => {
-    const describe = (symmetry: Parameters<typeof getSymmetryDescription>[0]) =>
-      getSymmetryDescription(symmetry, (key) => t(key as TranslationKey, lang));
     if (meta) {
-      return { ...meta, symmetry: describe(meta.symmetry) };
+      return {
+        name: meta.name,
+        author: meta.author,
+        authorUrl: meta.authorUrl,
+        publisher: meta.publisher,
+        publisherUrl: meta.publisherUrl,
+        source: meta.source,
+        date: meta.date,
+        description: meta.description,
+        gridSize: meta.gridSize,
+        difficulty: meta.difficulty,
+      };
     }
     if (design) {
       return {
@@ -145,7 +162,6 @@
         description: design.description ?? null,
         gridSize: design.gridSize,
         difficulty: calculateDifficulty(design).level,
-        symmetry: describe(detectSymmetry(design.fingers)),
       };
     }
     return null;
@@ -267,18 +283,17 @@
     }
   }
 
-  function getDifficultyLabel(level: DifficultyLevel): string {
-    const labels: Record<DifficultyLevel, 'difficultyEasy' | 'difficultyMedium' | 'difficultyHard' | 'difficultyExpert'> = {
-      easy: 'difficultyEasy',
-      medium: 'difficultyMedium',
-      hard: 'difficultyHard',
-      expert: 'difficultyExpert'
-    };
-    return t(labels[level], lang);
-  }
+  // One template for both lobes? Shared with the PDF generator so preview and PDF
+  // agree. The build-time metadata carries the same answer for gallery hearts, so
+  // the prerendered page already names the right number of templates.
+  let sharedTemplate = $derived(
+    design ? lobesShareTemplate(design.fingers, design.gridSize) : (meta?.symmetry.sharedTemplate ?? true),
+  );
 
-  // One template for both lobes? Shared with the PDF generator so preview and PDF agree.
-  let isSymmetric = $derived(design ? lobesShareTemplate(design.fingers, design.gridSize) : true);
+  // "af Thomas · 3x3 striber" — the panel's one-line credit (DESIGN.md §4).
+  let stripsLabel = $derived(
+    info ? t("stripsCount", lang).replace("{n}", `${info.gridSize.x}x${info.gridSize.y}`) : "",
+  );
 
   function normalizeSource(source: string): string {
     return source
@@ -288,6 +303,19 @@
       .replace(/^www\./, '')
       .replace(/\/+$/, '');
   }
+
+  // Publisher, date and source are only set on a few gallery hearts; they go on a
+  // small second line rather than in the credit above.
+  let extraMeta = $derived.by(() => {
+    if (!info) return [] as { label: string; value: string; url: string | null }[];
+    const rows: { label: string; value: string; url: string | null }[] = [];
+    if (info.publisher) rows.push({ label: t("publisher", lang), value: info.publisher, url: info.publisherUrl });
+    if (info.date) rows.push({ label: t("date", lang), value: info.date, url: null });
+    if (info.source && normalizeSource(info.source) !== normalizeSource(SITE_DOMAIN)) {
+      rows.push({ label: t("source", lang), value: info.source, url: null });
+    }
+    return rows;
+  });
 </script>
 
 <svelte:head>
@@ -313,519 +341,466 @@
   {/if}
 </svelte:head>
 
-<div class="template-page">
-  <PageHeader {lang} />
+<div class="detail-page">
+  <PageHeader {lang} active="templates" />
 
-  {#if error}
-    <div class="error">{error}</div>
-  {:else if info}
-    <div class="content">
-      <div class="preview-section">
-        {#if design}
-          <Carousel.Root class="carousel-root">
-            <Carousel.Content class="carousel-content">
-              <!-- Slide 1: Colored preview -->
-              <Carousel.Item class="carousel-item">
-                <div class="slide-content">
-                  <PaperHeartSVG
-                    readonly
-                    idPrefix={"detail-" + design.id}
-                    initialFingers={design.fingers}
-                    initialGridSize={design.gridSize}
-                    initialWeaveParity={design.weaveParity ?? 0}
-                    size={350}
-                  />
-                </div>
-              </Carousel.Item>
+  <div class="crumb-row">
+    <a class="crumb" href={routeHref('home', lang)}>
+      <ArrowLeftIcon size={16} />
+      {t('backToTemplates', lang)}
+    </a>
+  </div>
 
-              <!-- Photo slide (only if photo exists) -->
-              {#if photo}
-                <Carousel.Item class="carousel-item">
-                  <div class="slide-content photo-slide">
-                    <img
-                      src={photo.src}
-                      width={photo.width}
-                      height={photo.height}
-                      loading="lazy"
-                      decoding="async"
-                      alt="{info.name} - {t('photo', lang)}"
-                      class="heart-photo"
-                    />
-                  </div>
-                </Carousel.Item>
+  <section class="scene">
+    <!-- The drawing runs the full width of the page, its bottom row on the page
+         background. Rendered once per page: its <defs> ids are global. -->
+    <div class="land-wrap"><Landscape class="land" /></div>
+
+    <!-- The firs the heart hangs on, drawn over the landscape and anchored to the
+         bottom-left corner. Hidden below 1100, where the columns stack. -->
+    <svg
+      class="scene-trees"
+      viewBox="0 0 1440 820"
+      preserveAspectRatio="xMinYMax meet"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <Fir x={560} tipY={330} height={330} fill={FIR_FILLS[1]} symbol="pine-b" mirrored widthFactor={0.9} />
+      <Fir x={420} tipY={110} height={600} fill={FIR_FILLS[0]} symbol="pine-c" widthFactor={0.95} />
+      <Fir x={262} tipY={380} height={300} fill={FIR_FILLS[2]} symbol="pine-a" widthFactor={0.9} />
+    </svg>
+
+    <div class="detail-main">
+      {#if error}
+        <div class="detail-message">
+          <p class="message-card is-error" role="alert">{error}</p>
+        </div>
+      {:else if info}
+        <div class="stage-col">
+          <HeartStage {design} {photo} {sharedTemplate} {lang} idPrefix={heartId} />
+
+          <div class="actions">
+            {#if isShared && design}
+              {#if savedShared}
+                <a class="btn btn-dark" href="{langBase}/#{makeHeartAnchorId(design.id)}">
+                  {t('showInGallery', lang)}
+                </a>
+              {:else}
+                <button class="btn btn-dark" type="button" onclick={handleSaveShared}>
+                  {t('saveToMyHearts', lang)}
+                </button>
               {/if}
-
-              <!-- Slide 2: Template (left or "both" if symmetric) -->
-              <Carousel.Item class="carousel-item">
-                <div class="slide-content template-slide">
-                  <TemplatePreview
-                    {design}
-                    lobe="left"
-                    size={350}
-                    label={isSymmetric ? t("template", lang) : t("templateLeft", lang)}
-                  />
-                </div>
-              </Carousel.Item>
-
-              <!-- Slide 3: Right template (only if asymmetric) -->
-              {#if !isSymmetric}
-                <Carousel.Item class="carousel-item">
-                  <div class="slide-content template-slide">
-                    <TemplatePreview
-                      {design}
-                      lobe="right"
-                      size={350}
-                      label={t("templateRight", lang)}
-                    />
-                  </div>
-                </Carousel.Item>
-              {/if}
-            </Carousel.Content>
-            <Carousel.Previous class="carousel-prev" />
-            <Carousel.Next class="carousel-next" />
-          </Carousel.Root>
-        {:else}
-          <div class="loading preview-placeholder">{t("loadingTemplate", lang)}</div>
-        {/if}
-
-        <div class="button-group">
-          {#if isShared && design}
-            {#if savedShared}
-              <a class="btn primary" href="{langBase}/#{makeHeartAnchorId(design.id)}">
-                {t("showInGallery", lang)}
-              </a>
-            {:else}
-              <button class="btn primary" onclick={handleSaveShared}>
-                {t("saveToMyHearts", lang)}
-              </button>
             {/if}
+            <button class="btn btn-primary" type="button" onclick={handleDownload} disabled={!design}>
+              <DownloadIcon size={18} />
+              {t('downloadPdfTemplate', lang)}
+            </button>
+            <a class="btn btn-outline" href={editHref} onclick={handleEdit}>
+              <PencilIcon size={18} />
+              {t('openInEditor', lang)}
+            </a>
+            <button
+              class="btn btn-ghost"
+              type="button"
+              onclick={handleShare}
+              aria-label={t('share', lang)}
+            >
+              {#if shareStatus === 'copied'}
+                {t('copied', lang)}
+              {:else if shareStatus === 'error'}
+                {t('failed', lang)}
+              {:else}
+                <ShareIcon size={18} />
+                {t('share', lang)}
+              {/if}
+            </button>
+          </div>
+
+          {#if isShared && savedShared}
+            <p class="save-note" role="status">{t('savedToMyHearts', lang)}</p>
+          {:else if saveError}
+            <p class="save-note save-error" role="alert">{saveError}</p>
           {/if}
-          <button class="btn primary" onclick={handleDownload} disabled={!design}>
-            {t("downloadPdfTemplate", lang)}
-          </button>
-          <a class="btn secondary" href={editHref} onclick={handleEdit}>
-            {t("openInEditor", lang)}
-          </a>
-          <button class="btn share" onclick={handleShare} aria-label={t("share", lang)}>
-            {#if shareStatus === "copied"}
-              {t("copied", lang)}
-            {:else if shareStatus === "error"}
-              {t("failed", lang)}
-            {:else}
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-              >
-                <circle cx="18" cy="5" r="3"></circle>
-                <circle cx="6" cy="12" r="3"></circle>
-                <circle cx="18" cy="19" r="3"></circle>
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-              </svg>
-              {t("share", lang)}
-            {/if}
-          </button>
         </div>
-        {#if isShared && savedShared}
-          <p class="save-note" role="status">{t("savedToMyHearts", lang)}</p>
-        {:else if saveError}
-          <p class="save-note save-error" role="alert">{saveError}</p>
-        {/if}
-      </div>
 
-      <div class="info-section">
-        {#if isShared}
-          <p class="shared-note">{t("sharedHeart", lang)}</p>
-        {/if}
-        <h1>{info.name}</h1>
-        {#if info.author}
-          <p class="author">
-            {t("by", lang)}
-            {#if info.authorUrl}
-              <a href={info.authorUrl} target="_blank" rel="noopener noreferrer">{info.author}</a>
-            {:else}
-              {info.author}
-            {/if}
-          </p>
-        {/if}
-        {#if info.publisher}
-          <p class="publisher">
-            {t("publisher", lang)}:
-            {#if info.publisherUrl}
-              <a href={info.publisherUrl} target="_blank" rel="noopener noreferrer">{info.publisher}</a>
-            {:else}
-              {info.publisher}
-            {/if}
-          </p>
-        {/if}
-        {#if info.date}
-          <p class="meta-line">
-            {t("date", lang)}: {info.date}
-          </p>
-        {/if}
-        {#if info.source && normalizeSource(info.source) !== normalizeSource(SITE_DOMAIN)}
-          <p class="meta-line">
-            {t("source", lang)}: {info.source}
-          </p>
-        {/if}
-        {#if description}
-          <p class="description">{description}</p>
-        {/if}
+        <div class="panel">
+          {#if isShared}
+            <p class="shared-note">{t('sharedHeart', lang)}</p>
+          {/if}
 
-        <div class="details">
-          <div class="detail">
-            <span class="label">{t("difficulty", lang)}</span>
-            <span class="value">{getDifficultyLabel(info.difficulty)}</span>
+          <div class="panel-head">
+            <h1>{info.name}</h1>
+            <p class="credit">
+              {#if info.author}
+                {t('by', lang)}
+                {#if info.authorUrl}
+                  <a href={info.authorUrl} target="_blank" rel="noopener noreferrer">{info.author}</a>
+                {:else}
+                  {info.author}
+                {/if}
+                &middot;
+              {/if}
+              {stripsLabel}
+            </p>
+            {#if extraMeta.length}
+              <p class="credit-extra">
+                {#each extraMeta as row, i (row.label)}
+                  {#if i > 0}&middot;{/if}
+                  <span>
+                    {row.label}:
+                    {#if row.url}
+                      <a href={row.url} target="_blank" rel="noopener noreferrer">{row.value}</a>
+                    {:else}
+                      {row.value}
+                    {/if}
+                  </span>
+                {/each}
+              </p>
+            {/if}
           </div>
-          <div class="detail">
-            <span class="label">{t("symmetry", lang)}</span>
-            <span class="value">{info.symmetry}</span>
+
+          {#if description}
+            <p class="description">{description}</p>
+          {/if}
+
+          <div class="facts">
+            <div class="fact">
+              <span class="fact-label">{t('difficulty', lang)}</span>
+              <DifficultyDots level={info.difficulty} {lang} size={10} />
+            </div>
+            <div class="fact">
+              <span class="fact-label">{t('symmetry', lang)}</span>
+              <span class="fact-value">
+                {sharedTemplate ? t('symmetryOneTemplate', lang) : t('symmetryTwoTemplates', lang)}
+              </span>
+            </div>
+          </div>
+
+          <div class="how-to">
+            <h2>{t('howToMake', lang)}</h2>
+            <StepList {lang} />
+            <a class="guide-link" href={routeHref('howTo', lang)}>
+              {t('seeIllustratedGuide', lang)}
+              <ArrowRightIcon size={16} />
+            </a>
           </div>
         </div>
-
-        <div class="instructions">
-          <h3>{t("howToMake", lang)}</h3>
-          <ol>
-            {#each [0, 1, 2, 3, 4] as i}
-              <li>{translations[lang].instructions[i]}</li>
-            {/each}
-          </ol>
+      {:else if loading}
+        <div class="detail-message">
+          <p class="message-card">{t('loadingTemplate', lang)}</p>
         </div>
-      </div>
+      {/if}
     </div>
-  {:else if loading}
-    <div class="loading">{t("loadingTemplate", lang)}</div>
+  </section>
+
+  {#if data.categoryId && data.related.length > 0}
+    <RelatedHearts
+      hearts={data.related}
+      categoryId={data.categoryId}
+      categoryCount={data.categoryCount}
+      {lang}
+    />
   {/if}
 </div>
 
 <style>
-  .template-page {
-    max-width: 1100px;
+  .detail-page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* breadcrumb */
+  .crumb-row {
+    max-width: 1280px;
+    width: 100%;
     margin: 0 auto;
-    padding: 0 2rem 2rem 2rem;
+    padding: 18px 40px 0;
+    box-sizing: border-box;
   }
 
-  .loading,
-  .error {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: #888;
+  .crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: 500;
   }
 
-  .error {
-    color: #cc0000;
+  .crumb:hover {
+    color: var(--red);
   }
 
-  .content {
+  /* the scene: sky, the landscape along the bottom, the firs over it */
+  .scene {
+    position: relative;
+    overflow: hidden;
+    /* The bottom strip is snow-coloured, so a fractional SVG edge never leaves a
+       sky hairline under the drawing. */
+    background: linear-gradient(var(--sky), var(--sky)) 0 0 / 100% calc(100% - 12px) no-repeat
+      var(--page);
+  }
+
+  .land-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    line-height: 0;
+  }
+
+  .land-wrap :global(.land) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2172 / 724;
+  }
+
+  .scene-trees {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 820px;
+    display: block;
+    pointer-events: none;
+  }
+
+  .detail-main {
+    position: relative;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 12px 40px 40px;
+    box-sizing: border-box;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    grid-template-columns: 600px minmax(0, 1fr);
+    gap: 56px;
     align-items: start;
   }
 
-  .preview-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    max-width: 450px;
-    margin: 0 auto;
-  }
-
-  /* Reserve the carousel's space while the design loads */
-  .preview-placeholder {
-    width: 100%;
-    max-width: 400px;
-    min-height: 360px;
+  /* Loading and error states still sit on the scene, so the text gets the panel's
+     translucent backing to stay readable over the drawing. */
+  .detail-message {
+    grid-column: 1 / -1;
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 420px;
   }
 
-  .preview-section :global(.paper-heart-svg) {
-    filter: drop-shadow(0 4px 8px var(--shadow-color));
-  }
-
-  .preview-section :global(.carousel-root) {
-    width: 100%;
-    max-width: 400px;
-  }
-
-  .preview-section :global(.carousel-content) {
-    margin-left: 0;
-  }
-
-  .preview-section :global(.carousel-item) {
-    padding-left: 0;
-  }
-
-  .slide-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 360px;
-  }
-
-  .template-slide {
-    padding: 0.5rem;
-  }
-
-  .photo-slide {
-    padding: 0.5rem;
-  }
-
-  .heart-photo {
-    max-width: 350px;
-    max-height: 350px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  .preview-section :global(.carousel-prev),
-  .preview-section :global(.carousel-next) {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
-    z-index: 10;
-  }
-
-  .preview-section :global(.carousel-prev:hover),
-  .preview-section :global(.carousel-next:hover) {
-    background: white;
-    border-color: #aaa;
-  }
-
-  .preview-section :global(.carousel-prev) {
-    left: -20px;
-  }
-
-  .preview-section :global(.carousel-next) {
-    right: -20px;
-  }
-
-  .info-section {
-    padding: 1rem 0;
-  }
-
-  h1 {
+  .message-card {
     margin: 0;
-    color: #111;
-    font-size: 2.5rem;
-    font-weight: 600;
-    line-height: 1.2;
-  }
-
-  .author {
-    margin: 0.5rem 0 0 0;
-    color: #888;
-    font-size: 1.1rem;
-  }
-
-  .author a,
-  .publisher a {
-    color: #4a7c8a;
-    text-decoration: none;
-  }
-
-  .author a:hover,
-  .publisher a:hover {
-    text-decoration: underline;
-  }
-
-  .publisher,
-  .meta-line {
-    margin: 0.25rem 0 0 0;
-    color: #888;
-    font-size: 1.1rem;
-  }
-
-  .description {
-    margin: 1.5rem 0 0 0;
-    color: #555;
-    font-size: 1.05rem;
-    line-height: 1.6;
-  }
-
-  .details {
-    margin-top: 2rem;
-    display: flex;
-    gap: 2rem;
-  }
-
-  .detail {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .detail .label {
-    font-size: 0.85rem;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .detail .value {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #333;
-  }
-
-  .btn {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.2s;
-  }
-
-  .btn:disabled {
-    opacity: 0.6;
-    cursor: default;
-  }
-
-  a.btn {
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-  }
-
-  .btn.secondary {
-    background: #555;
-    color: white;
-  }
-
-  .btn.secondary:hover {
-    background: #444;
-  }
-
-  .btn.primary {
-    background: #cc0000;
-    color: white;
-  }
-
-  .btn.primary:hover:not(:disabled) {
-    background: #aa0000;
-  }
-
-  .btn.share {
-    background: #f0f0f0;
-    color: #333;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.75rem 1.25rem;
-  }
-
-  .btn.share:hover {
-    background: #e0e0e0;
-  }
-
-  .btn.share svg {
-    flex-shrink: 0;
-  }
-
-  .button-group {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .save-note {
-    margin: 0.75rem 0 0 0;
-    color: #4a7c8a;
-    font-size: 0.95rem;
+    padding: 20px 28px;
+    border-radius: 16px;
+    background: rgb(255 255 255 / 0.7);
+    color: var(--muted);
+    font-size: 16px;
     text-align: center;
   }
 
+  .message-card.is-error {
+    color: var(--red);
+  }
+
+  .stage-col {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 6px;
+  }
+
+  .save-note {
+    margin: 0;
+    color: var(--green);
+    font-size: 14px;
+  }
+
   .save-error {
-    color: #cc0000;
+    color: var(--red);
+  }
+
+  /* the translucent text panel */
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding: 24px 28px;
+    border-radius: 16px;
+    background: rgb(255 255 255 / 0.55);
   }
 
   .shared-note {
-    margin: 0 0 0.5rem 0;
-    color: #4a7c8a;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .instructions {
-    margin-top: 2.5rem;
-    padding-top: 2rem;
-    border-top: 1px solid #eee;
-  }
-
-  .instructions h3 {
-    margin: 0 0 1rem 0;
-    color: #333;
-    font-size: 1.1rem;
-  }
-
-  .instructions ol {
     margin: 0;
-    padding-left: 1.25rem;
-    color: #666;
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
-  .instructions li {
-    margin-bottom: 0.5rem;
+  .panel-head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .panel h1 {
+    margin: 0;
+    font-size: 44px;
+    font-weight: 600;
+    line-height: 1.05;
+    color: var(--deep);
+  }
+
+  .credit {
+    margin: 0;
+    font-size: 16px;
+    color: var(--muted);
+  }
+
+  .credit-extra {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .credit a,
+  .credit-extra a {
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  .credit a:hover,
+  .credit-extra a:hover {
+    color: var(--red);
+    text-decoration: underline;
+  }
+
+  .description {
+    margin: 0;
+    font-size: 17px;
     line-height: 1.5;
+    color: var(--ink);
   }
 
-  @media (max-width: 800px) {
-    .template-page {
-      padding: 1rem;
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .fact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .fact-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .fact-value {
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .how-to {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .how-to h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--deep);
+  }
+
+  .guide-link {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  .guide-link:hover {
+    color: var(--red);
+  }
+
+  /* Stacked below 1100: the big fir has no room next to the text. */
+  @media (max-width: 1099px) {
+    .detail-main {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 32px;
     }
 
-    .content {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+    .scene-trees {
+      display: none;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .crumb-row {
+      padding: 14px 24px 0;
     }
 
-    .preview-section {
-      order: -1;
-      padding: 0; /* Let carousel go edge-to-edge if needed, or control via carousel-root */
+    .detail-main {
+      padding: 12px 24px 32px;
     }
 
-    .preview-section :global(.carousel-prev) {
-      left: 10px;
+    .panel h1 {
+      font-size: 36px;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .crumb-row {
+      padding: 12px 16px 0;
     }
 
-    .preview-section :global(.carousel-next) {
-      right: 10px;
+    .detail-main {
+      padding: 12px 16px 28px;
     }
 
-    h1 {
-      font-size: 1.75rem;
+    .panel {
+      padding: 20px 18px;
+      gap: 18px;
     }
 
-    .details {
-      flex-direction: column;
-      gap: 1rem;
+    .panel h1 {
+      font-size: 30px;
+    }
+
+    .description {
+      font-size: 16px;
+    }
+
+    .facts {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>
