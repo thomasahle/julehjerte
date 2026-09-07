@@ -145,6 +145,33 @@ Editor: a new gesture, starting a cut on an existing cut (snap to it); a tongue 
 made by ending a branch near its parent, and the hinge width is shown while dragging.
 Estimated cost: about two days on top of §11.
 
+## 4c. A different front and back (optional, stage 7)
+
+The two layers of a folded piece need not be mirror images: the "HAT / CAT" heart cuts
+each layer differently, so the front of the finished heart shows one motif and the back
+another. The weave itself is the same on both faces: when a strip of `a` lies over a
+strip of `b`, `a`'s front layer is on the front and `a`'s back layer on the back, so the
+over/under pattern is identical and only the cell shapes differ.
+
+Format: `Piece.cuts` becomes the front layer's cuts and a piece gains an optional
+`backCuts: Curve[]`. Rules: `backCuts` has the same length as `cuts`, and back cut `i`
+starts at the same `u` on the fold as front cut `i` (every cut runs straight through the
+fold, as on the printed sheet); the outline (side edges and lobe) is shared by both
+layers. When `backCuts` is absent the back layer is the mirror of the front, which is
+every heart the site has today.
+
+Geometry (§5): run the same computation twice, front layers of `a` against front layers
+of `b`, and back against back, with the same parity; the back view is mirrored left to
+right. Two paths per colour come out (front, back). Templates (§6): a piece whose layers
+differ prints as the whole unfolded sheet, both halves with their own cuts and the fold
+as a dashed line through the middle; symmetric pieces keep the single half with "fold
+here".
+
+Site: the heart page gets a "Bagside" tile beside "Hjerte" only when the layers differ;
+the gallery, hero and OG images show the front. Editor: a front/back switch, editing one
+layer with the other drawn as ghost lines, and "copy front to back" to start from the
+mirror. Estimated cost: about two days on top of §11.
+
 ## 5. Geometry: from pieces to the picture
 
 All computation happens on flattened curves (polylines with a tolerance of about 0.25
@@ -275,5 +302,4 @@ solver keeps producing default pieces until it is extended; that is fine.
 ## 12. Out of scope
 
 Cut-outs, free over/under matrices, three or more pieces, glued-on shapes, non-straight
-folds, pieces crossing at angles other than 90°. Branching cuts are in (§4b) but as a
-later stage.
+folds, pieces crossing at angles other than 90°. Branching cuts (§4b) and a different front and back (§4c) are in, but as later stages.
