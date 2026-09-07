@@ -53,6 +53,9 @@ for(const name of(process.env.INVERSE_QA_BROWSERS||'chromium,firefox,webkit').sp
     };
     await page.goto(`${origin}/en/generate/`);await idle();
     await upload('yellow-gold-heart.png',photo.canvas);await validCrop();near(await corners(),expected);
+    // SVG outlines must follow the curves; a global CSS outline draws unwanted
+    // rectangles around each arc's bounding box instead.
+    assert.ok(await page.locator('.crop-image polyline').evaluateAll(es=>es.every(e=>getComputedStyle(e).outlineStyle==='none')));
     check('Coloured photo uploads, locates four overlap corners and renders its original crop');
 
     if(hasYellow){

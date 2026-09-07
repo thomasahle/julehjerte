@@ -489,7 +489,7 @@
                 <img src={imageUrl} alt={filename} draggable="false" />
                 <svg viewBox="0 0 {input.imageWidth} {input.imageHeight}" aria-hidden="true">
                   {#if cropMode === 'quad' && selectedCrop >= 0 && proposal}
-                    {#each proposal.outline as arc}<polyline class="outline" points={arc.map(p => p.join(',')).join(' ')} />{/each}
+                    {#each proposal.outline as arc}<polyline class="detected-outline" points={arc.map(p => p.join(',')).join(' ')} />{/each}
                   {/if}
                   {#if cropTool === 'region' && roughRegion}<rect class="region" x={roughRegion[0]} y={roughRegion[1]} width={roughRegion[2] - roughRegion[0]} height={roughRegion[3] - roughRegion[1]} />{/if}
                   {#if cropMode === 'quad' && quad.length > 1 && quad.every(p => p.every(Number.isFinite))}<polyline points={quad.map(p => p.join(',')).join(' ') + (completeCrop ? ` ${quad[0].join(',')}` : '')} />{/if}
@@ -715,7 +715,7 @@
   .crop-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin: .7rem 0; }
   .crop-actions button { font-size: .8rem; padding: .5rem; border: 1px solid #c6d6dc; border-radius: 7px; background: white; cursor: pointer; }
   .crop-actions button.active { background: #294f5e; color: white; }
-  .crop-image .outline { fill: none; stroke: #ffe481; stroke-width: 1px; stroke-dasharray: 4 3; }
+  .crop-image .detected-outline { fill: none; stroke: #ffe481; stroke-width: 1px; stroke-dasharray: 4 3; }
   .crop-image .region { fill: #ffe48133; stroke: #ffe481; stroke-width: 2px; vector-effect: non-scaling-stroke; }
   .photo-preview { margin: 1rem 0; }
   .photo-preview figcaption { font-size: .8rem; margin-bottom: .4rem; }
