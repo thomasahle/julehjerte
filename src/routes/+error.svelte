@@ -9,9 +9,12 @@
   let lang = $derived(langFromPathname($page.url.pathname, base));
 
   let status = $derived($page.status);
-  let message = $derived(
-    status === 404 ? t('errorNotFound', lang) : t('errorGeneric', lang)
-  );
+  let notFound = $derived(status === 404);
+  let message = $derived(t(notFound ? 'errorNotFound' : 'errorGeneric', lang));
+  // Nothing went wrong on a 404 — a URL was mistyped or a link went stale — and
+  // this is also the page GitHub Pages serves for every user-heart and share
+  // link, so "Ups! Noget gik galt" invited a bug report on a routine screen.
+  let description = $derived(t(notFound ? 'errorNotFoundHint' : 'errorTitle', lang));
 </script>
 
 <svelte:head>
@@ -24,7 +27,7 @@
   <div class="error-content">
     <h1 class="error-code">{status}</h1>
     <h2 class="error-message">{message}</h2>
-    <p class="error-description">{t('errorTitle', lang)}</p>
+    <p class="error-description">{description}</p>
     <a href={routeHref('home', lang)} class="btn btn-primary">
       {t('errorBackHome', lang)}
     </a>

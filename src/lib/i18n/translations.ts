@@ -294,6 +294,7 @@ export const translations = {
     // Error page
     errorTitle: 'Ups! Noget gik galt',
     errorNotFound: 'Siden blev ikke fundet',
+    errorNotFoundHint: 'Siden findes ikke – prøv et af hjerterne på forsiden.',
     errorGeneric: 'Der opstod en fejl',
     errorBackHome: 'Tilbage til forsiden',
 
@@ -583,6 +584,7 @@ export const translations = {
     // Error page
     errorTitle: 'Oops! Something went wrong',
     errorNotFound: 'Page not found',
+    errorNotFoundHint: 'That page does not exist — try one of the hearts on the front page.',
     errorGeneric: 'An error occurred',
     errorBackHome: 'Back to home',
 
