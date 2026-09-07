@@ -47,6 +47,9 @@
 	}: Props = $props();
 
 	let menuOpen = $state(false);
+	// Escape closes the menu, which unmounts whatever link had focus — so the
+	// burger takes it back instead of letting it fall to <body>.
+	let burgerEl = $state<HTMLButtonElement | null>(null);
 
 	let homeHref = $derived(routeHref('home', lang));
 	let links = $derived([
@@ -80,11 +83,18 @@
 	}
 
 	function onKeydown(e: KeyboardEvent) {
-		if (e.key === 'Escape' && menuOpen) menuOpen = false;
+		if (e.key !== 'Escape' || !menuOpen) return;
+		menuOpen = false;
+		burgerEl?.focus();
 	}
 </script>
 
 <svelte:window onkeydown={onKeydown} />
+
+<!-- The first focusable element on every page: the front page has 15 stops
+     (logo, nav, pills, hero buttons, toolbar) before the first heart card. Each
+     route marks its own <main id="main-content">. -->
+<a class="skip-link" href="#main-content">{t('skipToContent', lang)}</a>
 
 <header class="nav" class:editor={variant === 'editor'}>
 	<div class="nav-start">
@@ -124,6 +134,7 @@
 			<button
 				type="button"
 				class="nav-burger"
+				bind:this={burgerEl}
 				aria-expanded={menuOpen}
 				aria-controls="nav-menu"
 				aria-label={menuOpen ? t('navCloseMenu', lang) : t('navOpenMenu', lang)}
@@ -159,6 +170,27 @@
 </header>
 
 <style>
+	/* Off screen until it takes focus, then a normal pill at the top-left. */
+	.skip-link {
+		position: absolute;
+		top: 8px;
+		left: 8px;
+		z-index: 60;
+		padding: 10px 16px;
+		border: 1.5px solid var(--green);
+		border-radius: 10px;
+		background: var(--white);
+		color: var(--green);
+		font-size: 14px;
+		font-weight: 600;
+		text-decoration: none;
+		transform: translateY(calc(-100% - 16px));
+	}
+
+	.skip-link:focus {
+		transform: none;
+	}
+
 	.nav {
 		position: relative;
 		z-index: 30;

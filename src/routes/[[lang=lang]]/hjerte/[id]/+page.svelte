@@ -34,7 +34,6 @@
   } from "$lib/components/icons";
   import { FIR_FILLS } from "$lib/landscape";
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from "$lib/stores/collection";
-  import { downloadPDF } from "$lib/pdf/template";
   import {
     SITE_DESCRIPTION,
     SITE_DESCRIPTION_EN,
@@ -232,11 +231,13 @@
     }
   }
 
-  function handleDownload() {
-    if (design) {
-      trackHeartDownload(design.id, design.name);
-      downloadPDF(design, { lang });
-    }
+  // jsPDF is 140 KB gzipped and only this click needs it, so it is loaded here
+  // rather than in the page's initial bundle.
+  async function handleDownload() {
+    if (!design) return;
+    trackHeartDownload(design.id, design.name);
+    const { downloadPDF } = await import("$lib/pdf/template");
+    await downloadPDF(design, { lang });
   }
 
   function handleEdit() {
@@ -344,6 +345,7 @@
 <div class="detail-page">
   <PageHeader {lang} active="templates" />
 
+  <main id="main-content" tabindex="-1">
   <div class="crumb-row">
     <a class="crumb" href={routeHref('home', lang)}>
       <ArrowLeftIcon size={16} />
@@ -501,6 +503,7 @@
       {lang}
     />
   {/if}
+  </main>
 </div>
 
 <style>

@@ -69,7 +69,7 @@
 
 <PageHeader {lang} active="about" />
 
-<div class="about">
+<main class="about" id="main-content" tabindex="-1">
 	<div class="story">
 		<h1>{t('aboutTitle', lang)}</h1>
 		<p>{t('aboutIntro', lang)}</p>
@@ -124,7 +124,7 @@
 			{/each}
 		</ul>
 	</aside>
-</div>
+</main>
 
 <style>
 	.about {

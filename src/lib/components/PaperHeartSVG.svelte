@@ -114,6 +114,12 @@
 	let displayHeight = $derived(size);
 </script>
 
+<!--
+	A read-only heart is decorative: the card's select button, its "Detaljer" link
+	and the visible name all carry the heart's name, so the graphic itself would
+	only add an unnamed `img` node to the accessibility tree (38 of them on the
+	front page). The editor's interactive instance keeps its own semantics.
+-->
 <svg
 	viewBox={heartTransform.viewBox}
 	width={displayWidth}
@@ -123,6 +129,8 @@
 	class:readonly
 	xmlns="http://www.w3.org/2000/svg"
 	style="overflow: visible"
+	aria-hidden={readonly ? 'true' : undefined}
+	focusable={readonly ? 'false' : undefined}
 >
 	{#if weaveData}
 		<g transform={heartTransform.transform}>

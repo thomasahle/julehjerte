@@ -36,7 +36,7 @@ describe('translations', () => {
 
   describe('specific translations', () => {
     const criticalKeys: TranslationKey[] = [
-      'siteTitle',
+      'siteWordmark',
       'createNewHeart',
       'printSelected',
       'select',

@@ -3,6 +3,7 @@
   import { base } from '$app/paths';
   import { t, langFromPathname, langPrefix, type Language } from '$lib/i18n';
   import { SITE_TITLE } from '$lib/config';
+  import PageHeader from '$lib/components/PageHeader.svelte';
 
   let lang = $derived(langFromPathname($page.url.pathname, base));
   let langBase = $derived(`${base}${langPrefix(lang)}`);
@@ -17,7 +18,9 @@
   <title>{message} - {SITE_TITLE}</title>
 </svelte:head>
 
-<div class="error-page">
+<PageHeader {lang} />
+
+<main class="error-page" id="main-content" tabindex="-1">
   <div class="error-content">
     <h1 class="error-code">{status}</h1>
     <h2 class="error-message">{message}</h2>
@@ -26,11 +29,12 @@
       {t('errorBackHome', lang)}
     </a>
   </div>
-</div>
+</main>
 
 <style>
   .error-page {
-    min-height: 100vh;
+    /* The nav and the footer take the rest of the viewport. */
+    min-height: 60vh;
     display: flex;
     align-items: center;
     justify-content: center;

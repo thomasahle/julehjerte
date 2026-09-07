@@ -39,6 +39,16 @@
 					: SITE_DESCRIPTION,
 	);
 
+	// og:title follows the same route table as the description: a link to /om/ or
+	// /saadan-goer-du/ used to preview the page's own summary under the site title.
+	let ogTitle = $derived(
+		routeKey === "howTo"
+			? `${t("howToTitle", lang)} - ${metaTitle}`
+			: routeKey === "about"
+				? `${t("aboutTitle", lang)} - ${metaTitle}`
+				: metaTitle,
+	);
+
 	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang, og and twitter tags.
 	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);
 	// The editor is a full-screen tool: it carries its own colour controls in the
@@ -83,7 +93,9 @@
 	{/if}
 	<meta name="keywords" content={SITE_KEYWORDS} />
 	<meta name="author" content={SITE_NAME} />
-	<meta name="robots" content="index, follow" />
+	{#if !isDetailRoute}
+		<meta name="robots" content="index, follow" />
+	{/if}
 
 	<!-- Open Graph / Facebook -->
 	<meta property="og:site_name" content={SITE_NAME} />
@@ -91,7 +103,7 @@
 	{#if !isDetailRoute}
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={pageUrl} />
-		<meta property="og:title" content={metaTitle} />
+		<meta property="og:title" content={ogTitle} />
 		<meta property="og:description" content={metaDescription} />
 		<meta property="og:image" content="{SITE_URL}/og-image.png" />
 		<meta property="og:image:width" content="1200" />
@@ -99,7 +111,7 @@
 
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={metaTitle} />
+		<meta name="twitter:title" content={ogTitle} />
 		<meta name="twitter:description" content={metaDescription} />
 		<meta name="twitter:image" content="{SITE_URL}/og-image.png" />
 	{/if}
@@ -107,9 +119,12 @@
 
 <Tooltip.Provider>
 	<div class="page-container">
-		<main class="page-content">
+		<!-- Not <main>: every route renders its own <header class="nav"> plus its own
+		     <main id="main-content">, and a <header> nested inside <main> does not map
+		     to the banner landmark. -->
+		<div class="page-content">
 			{@render children()}
-		</main>
+		</div>
 		{#if !isEditorRoute}
 			<PageFooter />
 		{/if}

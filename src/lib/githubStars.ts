@@ -12,8 +12,18 @@ const CACHE_TTL_MS = 60 * 60 * 1000;
 
 const cacheKey = (repo: string) => `github-stars:${repo}`;
 
+/** How long a failure is remembered. Short, because it is usually a rate limit. */
+const FAILURE_TTL_MS = 5 * 60 * 1000;
+
 /** In-memory cache so several components on a page share one request. */
 const inFlight = new Map<string, Promise<number | null>>();
+
+/**
+ * When the request last failed, per repo. Without this a rate-limited or offline
+ * visitor refetches on every client-side navigation: PageHeader mounts per page,
+ * and only a *successful* response is written to localStorage.
+ */
+const lastFailure = new Map<string, number>();
 
 export function formatStars(n: number): string {
 	if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}m`;
@@ -50,17 +60,28 @@ export async function loadStarCount(repo: string): Promise<number | null> {
 	const pending = inFlight.get(repo);
 	if (pending) return pending;
 
+	const failedAt = lastFailure.get(repo);
+	if (failedAt !== undefined && Date.now() - failedAt < FAILURE_TTL_MS) return null;
+
 	const request = (async () => {
 		try {
 			const res = await fetch(`https://api.github.com/repos/${repo}`, {
 				headers: { Accept: 'application/vnd.github+json' }
 			});
-			if (!res.ok) return null;
+			if (!res.ok) {
+				lastFailure.set(repo, Date.now());
+				return null;
+			}
 			const data = (await res.json()) as { stargazers_count?: unknown };
-			if (typeof data.stargazers_count !== 'number') return null;
+			if (typeof data.stargazers_count !== 'number') {
+				lastFailure.set(repo, Date.now());
+				return null;
+			}
 			writeCache(repo, data.stargazers_count);
+			lastFailure.delete(repo);
 			return data.stargazers_count;
 		} catch {
+			lastFailure.set(repo, Date.now());
 			return null;
 		} finally {
 			inFlight.delete(repo);
