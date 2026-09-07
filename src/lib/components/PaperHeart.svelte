@@ -78,6 +78,14 @@
 			 */
 			panelExtra?: Snippet;
 			/**
+			 * One more notice for the stack above the heart, over the ones this
+			 * component raises itself. The editor route uses it for the "continue
+			 * your draft?" prompt. This component supplies the notice box, so an
+			 * extra notice looks like the others; what goes inside it is authored —
+			 * and styled — by the route.
+			 */
+			notice?: Snippet;
+			/**
 			 * The heart's own colours, if it has any (`HeartDesign.colors`). Without
 			 * them the canvas follows the site-wide colour store, and the first pick
 			 * in the Farver section starts from that pair.
@@ -98,6 +106,7 @@
 			size = 800,
 			fullPage = false,
 			panelExtra,
+			notice,
 			initialColors = undefined,
 			onColorsChange,
 			onFingersChange
@@ -3348,6 +3357,11 @@
 				{/if}
 				<p class="canvas-strips">{stripsLabel}</p>
 				<div class="canvas-notices">
+					{#if notice}
+						<!-- role="status": the route's notice appears after mount (it waits on
+						     stored state), so it has to announce itself. -->
+						<div class="canvas-notice hint" role="status">{@render notice()}</div>
+					{/if}
 					{#if hasIntersectionIssues}
 						<div class="canvas-notice warning" role="alert">{tr('editorIntersectionWarning')}</div>
 					{/if}
