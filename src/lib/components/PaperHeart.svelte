@@ -3279,8 +3279,13 @@
 
 			{#if !readonly}
 				<!-- Canvas chrome (DESIGN.md §7): the one-line hint, what is selected and the
-				     strip count. Desktop only — the mobile editor keeps its stacked panels. -->
-				<p class="canvas-hint">{tr('editorCanvasHint')}</p>
+				     strip count. Desktop only — the mobile editor keeps its stacked panels.
+				     The dismissible first-visit tip below says the same three things in other
+				     words and sits right under this line, so on a first visit only the tip
+				     shows and the permanent hint takes over once it has been dismissed. -->
+				{#if firstVisitHintDismissed}
+					<p class="canvas-hint">{tr('editorCanvasHint')}</p>
+				{/if}
 				{#if selectedNodeTypeLabel}
 					<p class="canvas-selection">
 						<span class="canvas-selection-dot" aria-hidden="true"></span>{selectedNodeTypeLabel}
