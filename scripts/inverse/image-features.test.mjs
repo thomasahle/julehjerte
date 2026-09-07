@@ -6,6 +6,15 @@ import {gridModel,gridPaths} from '../../static/inverse/core/direct/grid.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {settings} from '../../static/inverse/core/settings.js';
+import {LinearModel} from '../../static/inverse/core/solver.js';
+
+test('recovery model canonicalization removes floating-point noise while retaining bounds and integrality',()=>{
+  const make=epsilon=>{const m=new LinearModel(),a=m.variable({binary:true,cost:3.14159265+epsilon}),b=m.variable({hi:Infinity});m.row([[a,1.234567890123+epsilon],[b,1]],-Infinity,1.234567890123+epsilon);return m;};
+  const a=make(0),b=make(1e-12);a.canonicalize(1e-7);b.canonicalize(1e-7);
+  assert.deepEqual(a.data(),b.data());assert.equal(a.residual([1,0]),0);
+  assert.equal(a.residual([.5,0]),.5);assert.equal(a.rows[0].lo,-Infinity);
+  assert.throws(()=>a.canonicalize(0),/positive finite/);
+});
 
 test('a missing small interior detail fails even below the overall image-error limit',()=>{
   const model=gridModel([1,1]);model.z.fill(0);
@@ -14,6 +23,8 @@ test('a missing small interior detail fails even below the overall image-error l
   solution.graph.target.sourceImage={mask,resolution:n};
   const cfg=settings({trials:0,roundHidden:false}),result=finish(solution,cfg);
   assert.ok(result.report.imageError.mismatchFraction<.01);
+  assert.equal(result.report.validation.passed,true);
+  assert.equal(result.report.manufacturing.status,'pass');
   assert.equal(result.report.imageFidelity.features.missing.length,1);
   assert.equal(result.report.imageFidelity.features.missing[0].retainedFraction,0);
   assert.equal(result.report.imageFidelity.passed,false);

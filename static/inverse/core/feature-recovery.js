@@ -16,7 +16,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
     target.metadata.sourceImage=input.metadata.sourceImage;
     const graph=buildGraph(target,cfg,{onProgress}),remaining=seconds-(performance.now()-start)/1000;
     if(remaining<=0)throw new Error('Feature recovery used its budget while preparing the candidate graph.');
-    const solution=await solveGraph(graph,{...cfg,timeLimit:remaining},{onProgress,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
+    const solution=await solveGraph(graph,{...cfg,timeLimit:remaining},{onProgress,coefficientQuantum:1e-7,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
     const woven=sampleWeave(solution,source.resolution);
     let mismatch=0,observed=0;for(let i=0;i<woven.length;i++){if(source.validMask&&!source.validMask[i])continue;observed++;mismatch+=woven[i]!==source.mask[i];}
     report.imageError=mismatch/observed;report.features=auditImageFeatures(source,woven,cfg.width);

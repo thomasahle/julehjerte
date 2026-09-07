@@ -1,4 +1,4 @@
-/** Fresh image-to-curve inverse fitting in JavaScript, without a traced graph.
+/** Fresh image-to-curve fitting with optional traced feature recovery.
  * Geometry and paper checks remain those used by the app's other solver.
  */
 import {fitGrid,gridPaths,gridModel,gridMask,gridControls,mismatch} from './grid.js';
@@ -106,7 +106,7 @@ export async function fitDirect(input,cfg,onProgress=()=>{}){
   const features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width);
   let recovery=null;
   if(!features.passed&&deadline-performance.now()>2000){
-    recovery=await recoverImageFeatures(input,cfg,Math.min(10,(deadline-performance.now())/1000*.45),onProgress);
+    recovery=await recoverImageFeatures(input,cfg,Math.min(20,(deadline-performance.now())/1000*.9),onProgress);
     if(recovery.solution){
       const solution=recovery.solution;
       solution.report={algorithm:'hybrid-bezier-trace',imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:true};
