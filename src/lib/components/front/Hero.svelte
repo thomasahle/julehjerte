@@ -72,24 +72,15 @@
 		// prerendered set rather than an empty sky.
 		if (picked.length === HERO_SLOTS_DESKTOP.length) heroRandomIds = picked;
 
-		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-			heroShown = true;
-			return;
-		}
-
-		// Two frames, so the swapped-in hearts are painted at opacity 0 before the
-		// transition to 1 starts — otherwise the browser has nothing to fade from.
-		let inner = 0;
-		const outer = requestAnimationFrame(() => {
-			inner = requestAnimationFrame(() => {
-				heroShown = true;
-			});
-		});
-
-		return () => {
-			cancelAnimationFrame(outer);
-			cancelAnimationFrame(inner);
-		};
+		// Both in the same update, so no frame can exist in which the hearts on
+		// screen are the prerendered ones. Whether that reads as a fade is the
+		// browser's call and either answer is right: if the page has already
+		// painted the empty sky there is an opacity to transition from and the
+		// hearts fade in; if hydration beat the first paint there is nothing to
+		// fade from and they are simply there. What must not happen is making
+		// visibility wait on a frame callback — a page that is never asked to
+		// render (a background tab, a headless browser) would never show them.
+		heroShown = true;
 	});
 </script>
 
