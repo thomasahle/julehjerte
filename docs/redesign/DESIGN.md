@@ -201,16 +201,25 @@ is currently both (`jul` renders Skabelon venstre + Skabelon højre, `stjerne` r
 ghost "Del" (share, existing hash-link sharing).
 
 Right column: panel `rgb(255 255 255 / .55)`, radius 16, padding 24px 28px, gap 22: h1 name 44px/600; meta
-"af {author} · {grid} striber" 16px muted; description; two-column block bordered top/bottom by `--line`:
-SVÆRHEDSGRAD (dots + label) and SYMMETRI ("Spejlsymmetri – én skabelon til begge sider" or the asymmetric
-equivalent); "Sådan gør du" 18px/600 with the five steps as numbered green circles (26px) and the link
-"Se den illustrerede vejledning →" to the guide page.
+"af {author} · {grid} striber" 16px muted; the heart's own description paragraph with the link
+"Se den illustrerede vejledning →" to the guide page 12px under it; two-column block bordered top/bottom by
+`--line`: SVÆRHEDSGRAD (dots + label) and SYMMETRI ("Spejlsymmetri – én skabelon til begge sider" or the
+asymmetric equivalent).
+
+The panel used to repeat the five weaving steps as numbered green circles. It does not any more (the owner's
+decision): the steps live only on `/saadan-goer-du/`, and every gallery heart carries a written paragraph of
+its own instead, in both languages, in `$lib/data/heartDescriptions.ts` — what the woven pattern shows, the
+strip count and whether the cuts are straight or curved, the symmetry, the difficulty and one practical tip,
+in two to four plain sentences. The detail route resolves the paragraph for the URL's language in its `load`,
+so both `/hjerte/<id>/` and `/en/hjerte/<id>/` are prerendered with it, and the page's `<meta name="description">`
+takes its opening sentence. A heart the visitor drew or received by link keeps whatever description its maker
+typed.
 
 Below the scene: "FLERE {KATEGORI}" heading row with "Se alle N {kategori} →" linking to `/#{category-id}`,
 and a grid `repeat(auto-fill, minmax(150px, 1fr))` of the other hearts in the same category as hanging hearts
 (size 120, ribbon `[26,54,38,66,44][i%5] * 0.6`) with their names, each linking to its detail page.
 
-The five steps (Danish; write natural English versions):
+The five steps the guide page below is built from (Danish; write natural English versions):
 1. Print skabelonen i 100% størrelse på A4
 2. Fold et stykke farvet papir på midten, og læg skabelonen med den stiplede linje langs folden
 3. Klip langs de solide ydre linjer – gennem begge lag
