@@ -66,6 +66,8 @@
 
   onMount(() => {
     userHearts = getUserCollection();
+    // Read before the pruning below, which rewrites the URL.
+    pendingAnchorId = window.location.hash.slice(1) || null;
     // `?selected=` is shareable, so it can name hearts this browser does not
     // have (the sender's own, or one since deleted). Drop them now that every
     // heart on the page is known, so the badge, the button and the PDF agree
@@ -73,7 +75,6 @@
     const fromUrl = parseSelected(window.location.search);
     selectedIds = keepKnown(fromUrl, allHearts.map((h) => h.id));
     if (selectedIds.size !== fromUrl.size) updateUrlWithSelections(selectedIds);
-    pendingAnchorId = window.location.hash.slice(1) || null;
   });
 
   function handleSelect(design: HeartDesign) {
