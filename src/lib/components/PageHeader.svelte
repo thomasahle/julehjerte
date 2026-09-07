@@ -367,4 +367,14 @@
 			padding: 8px 16px;
 		}
 	}
+
+	/* The editor's bar carries a back link, three tools and the language pill,
+	   and none of them can go: below 700px that is more than fits next to the
+	   wordmark, which is the one thing there twice — "Tilbage" leads to the same
+	   place. The site variant keeps its wordmark; it only has a burger beside it. */
+	@media (max-width: 699px) {
+		.editor .nav-logo {
+			display: none;
+		}
+	}
 </style>
