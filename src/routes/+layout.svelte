@@ -3,15 +3,14 @@
 	import { browser, dev } from "$app/environment";
 	import { page } from "$app/stores";
 	import { SITE_NAME, SITE_TITLE, SITE_TITLE_EN, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID } from "$lib/config";
-	import { langFromPathname } from "$lib/i18n";
-	import { alternatePaths } from "$lib/i18n/routes";
+	import { langFromPathname, t } from "$lib/i18n";
+	import { alternatePaths, routeKeyFromPathname } from "$lib/i18n/routes";
 	import * as Tooltip from "$lib/components/ui/tooltip";
 	import PageFooter from "$lib/components/PageFooter.svelte";
 
 	let { children } = $props();
 	let lang = $derived(langFromPathname($page.url.pathname));
 	let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
-	let metaDescription = $derived(lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION);
 	let ogLocale = $derived(lang === "en" ? "en_GB" : "da_DK");
 
 	// Absolute URLs are built from SITE_URL + the request path, never from `base`: in prerendered
@@ -24,6 +23,21 @@
 	let alternates = $derived(alternatePaths(pathname));
 	let alternateDaUrl = $derived(`${SITE_URL}${alternates.da}`);
 	let alternateEnUrl = $derived(`${SITE_URL}${alternates.en}`);
+
+	// The description is emitted here for every route except the heart detail
+	// pages (which write their own, per heart). The guide and about pages have
+	// their own description keys, so page components never need a second
+	// <meta name="description"> — two of them would be an SEO smell.
+	let routeKey = $derived(routeKeyFromPathname(pathname));
+	let metaDescription = $derived(
+		routeKey === "howTo"
+			? t("howToMetaDescription", lang)
+			: routeKey === "about"
+				? t("aboutMetaDescription", lang)
+				: lang === "en"
+					? SITE_DESCRIPTION_EN
+					: SITE_DESCRIPTION,
+	);
 
 	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang, og and twitter tags.
 	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);
