@@ -97,7 +97,7 @@
 			aria-pressed={shownView === v.id}
 			onclick={() => (view = v.id)}
 		>
-			<span class="thumb">
+			<span class="thumb" class:thumb-heart={v.id === 'heart'}>
 				{#if v.id === 'heart' && design}
 					<PaperHeartSVG
 						readonly
@@ -220,6 +220,13 @@
 		padding: 8px;
 		overflow: hidden;
 		transition: border-color 0.15s;
+	}
+
+	/* The heart tile is sky-coloured, as in the hero: on white the white lobe
+	   would vanish and the tile show half a heart. Line art and photos keep
+	   the white tile. */
+	.thumb-heart {
+		background: var(--sky);
 	}
 
 	.thumb-btn.is-active .thumb {
