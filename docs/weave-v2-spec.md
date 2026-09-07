@@ -119,6 +119,32 @@ Symmetry:
 The existing intra-piece symmetry toggles (within a cut, within a piece, between the two
 pieces) remain editor conveniences and are still detected from the curves, not stored.
 
+## 4b. Branching cuts and tongues (optional, stage 6)
+
+Some templates (e.g. the "68" heart with semicircular tongues) let a cut start on
+another cut rather than on the fold. The cuts of a piece then form a **tree rooted at
+the fold**: every cut starts on the fold or on an earlier cut, and ends free inside the
+outline. A **tongue** is a branch that curves back towards its parent and stops short,
+leaving a narrow bridge, the **hinge**, as the only attachment.
+
+Format: a cut gains an optional `parent: { cut: number; t: number }` (which cut it starts
+on and where along it); cuts without a parent start on the fold as today. Rules added to
+§4: the cut tree contains no cycle (no loose paper), a branch may not cross its parent,
+and a hinge must be at least 2 mm wide at print size (warning) and 0.5 mm (error).
+
+Geometry (§5): faces are the regions of the outline cut by every curve of the tree; a
+face that touches the fold is a strip and keeps its index by fold order; a face that
+touches no fold interval is a tongue and takes **its parent strip's index plus one**,
+so its parity flips relative to the strip it hangs from. This is a fixed rule, not a
+per-crossing choice: it is what makes a tongue visible at all (a tongue with its
+parent's parity would be indistinguishable from the strip), and it keeps the model free
+of hidden over/under state. Rendering, union per colour and templates need no other
+change.
+
+Editor: a new gesture, starting a cut on an existing cut (snap to it); a tongue is
+made by ending a branch near its parent, and the hinge width is shown while dragging.
+Estimated cost: about two days on top of §11.
+
 ## 5. Geometry: from pieces to the picture
 
 All computation happens on flattened curves (polylines with a tolerance of about 0.25
@@ -249,4 +275,5 @@ solver keeps producing default pieces until it is extended; that is fine.
 ## 12. Out of scope
 
 Cut-outs, free over/under matrices, three or more pieces, glued-on shapes, non-straight
-folds, pieces crossing at angles other than 90°.
+folds, pieces crossing at angles other than 90°. Branching cuts are in (§4b) but as a
+later stage.
