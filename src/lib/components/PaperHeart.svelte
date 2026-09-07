@@ -51,11 +51,12 @@
 	import { toggleNumberInList } from '$lib/editor/selection';
 	import {
 		DEFAULT_COLORS,
-		flipColors,
+		DEFAULT_COLORS_HEX,
 		getColors,
 		subscribeColors,
 		type HeartColors
 	} from '$lib/stores/colors';
+	import { parseHexColor, toHexColors } from '$lib/utils/heartColors';
 	import { stripsLabel as formatStrips, t as translate, type Language, type TranslationKey } from '$lib/i18n';
 
 		interface Props {
@@ -70,12 +71,20 @@
 			/**
 			 * Extra sections for the right-hand panel (docs/redesign/DESIGN.md §7).
 			 * The editor route fills it with "Hjertedetaljer" and "Handlinger" so that
-			 * all five panels share one 340px column and one collapse control. The
-			 * snippet is authored in the route, so the route styles it; this component
-			 * only supplies the column. Below 900px the route renders the same snippet
-			 * itself, under the canvas, and passes nothing here.
+			 * all five panels share one floating 340px column and one collapse
+			 * control. The snippet is authored in the route, so the route styles it;
+			 * this component only supplies the column. Below 900px the route renders
+			 * the same snippet itself, under the canvas, and passes nothing here.
 			 */
 			panelExtra?: Snippet;
+			/**
+			 * The heart's own colours, if it has any (`HeartDesign.colors`). Without
+			 * them the canvas follows the site-wide colour store, and the first pick
+			 * in the Farver section starts from that pair.
+			 */
+			initialColors?: HeartColors;
+			/** Told what the visitor picked, so the route saves and shares it. */
+			onColorsChange?: (colors: HeartColors) => void;
 			onFingersChange?: (fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) => void;
 		}
 
@@ -89,6 +98,8 @@
 			size = 800,
 			fullPage = false,
 			panelExtra,
+			initialColors = undefined,
+			onColorsChange,
 			onFingersChange
 		}: Props = $props();
 
@@ -119,9 +130,22 @@
 		return v % 2 === 1 ? 1 : 0;
 	}
 
-	// The swap itself lives in the colour store, so the footer's swap button and
-	// this one cannot drift apart.
-	const flipLobeColors = flipColors;
+	// Touching the Farver section gives the heart colours of its own: from here on
+	// it keeps them wherever it is shown, instead of following the site-wide pair.
+	function setHeartColors(next: HeartColors) {
+		designColors = next;
+		onColorsChange?.(next);
+	}
+
+	function setLobeColor(lobe: LobeId, value: string) {
+		const hex = parseHexColor(value);
+		if (!hex) return;
+		setHeartColors({ ...colorInputs, [lobe]: hex });
+	}
+
+	function flipLobeColors() {
+		setHeartColors({ left: colorInputs.right, right: colorInputs.left });
+	}
 
 	function isHandleCollapsed(handle: Vec, anchor: Vec): boolean {
 		return vecDist(handle, anchor) <= HANDLE_COLLAPSE_EPS;
@@ -225,7 +249,13 @@
 		}
 
 	// State
-	let heartColors = $state<HeartColors>({ ...DEFAULT_COLORS });
+	// The site-wide pair, the heart's own (once it has any), and what is painted.
+	let storeColors = $state<HeartColors>({ ...DEFAULT_COLORS });
+	// Set once from `initialColors` in the init effect below, like the geometry props.
+	let designColors = $state<HeartColors | null>(null);
+	let heartColors = $derived(designColors ?? storeColors);
+	// The two <input type="color"> only speak #rrggbb; the store's red is rgb().
+	let colorInputs = $derived(toHexColors(heartColors, DEFAULT_COLORS_HEX));
 	let gridSize = $state<GridSize>({ x: 3, y: 3 });
 	let weaveParity = $state<0 | 1>(0);
 	let fingers = $state<Finger[]>([]);
@@ -1957,8 +1987,8 @@
 
 		// The floating toolbars used to be draggable, with their offsets kept in
 		// localStorage under `paperheart.toolbarPositions.<componentId>`. The redesign
-		// gives the editor a fixed three-column layout (tool rail · canvas · panel), so
-		// dragging is retired deliberately and the stale key is cleaned up on mount.
+		// gives the rail and the panel fixed places over the canvas, so dragging is
+		// retired deliberately and the stale key is cleaned up on mount.
 		const LEGACY_TOOLBAR_POSITIONS_KEY = 'paperheart.toolbarPositions.';
 
 		// Collapsing the right panel lets the canvas fill the width (DESIGN.md §7).
@@ -1968,11 +1998,12 @@
 		// TODO: the panel *shell* — .right-panel, .panel-collapse and .panel-tab
 		// below — is page chrome and belongs in an EditorPanel.svelte beside this
 		// file. It is still here because its CSS is welded to this component's
-		// layout: the three-column grid sizes the 340px column, `.paper-heart
-		// .panel-collapsed` drives the tab, and three media queries restyle all of
-		// them together. Moving the markup without moving the canvas layout would
-		// replace those rules with a wider :global() contract than the one it
-		// removes; do it when the canvas layout itself is split out.
+		// layout: the panel's width is one of the two insets that keep the drawing
+		// area clear of it, `.paper-heart.panel-collapsed` drives both the tab and
+		// the other inset, and three media queries restyle all of them together.
+		// Moving the markup without moving the canvas layout would replace those
+		// rules with a wider :global() contract than the one it removes; do it when
+		// the canvas layout itself is split out.
 		let panelCollapsed = $state(false);
 		// Both controls stay mounted (the tab is hidden with CSS while the panel is
 		// open), so collapsing from the keyboard can hand focus to the other one
@@ -2544,6 +2575,7 @@
 			didInit = true;
 			gridSize = normalizeGridSize(initialGridSize);
 			weaveParity = normalizeWeaveParity(initialWeaveParity);
+			designColors = initialColors ? { ...initialColors } : null;
 			const has = initialFingers && initialFingers.length > 0;
 			fingers = has ? initialFingers!.map(cloneFinger) : createDefaultFingers(gridSize);
 			// Always include the four outer boundary curves (legacy designs omitted them),
@@ -2686,8 +2718,8 @@
 	}
 
 	onMount(() => {
-		heartColors = getColors();
-		const unsub = subscribeColors((c) => (heartColors = c));
+		storeColors = getColors();
+		const unsub = subscribeColors((c) => (storeColors = c));
 		if (!readonly && typeof window !== 'undefined') {
 			window.addEventListener('keydown', handleKeyDown);
 			try {
@@ -2956,7 +2988,11 @@
 		>
 			<div class="canvas-area" bind:this={canvasAreaEl} style:min-height={fullPage ? undefined : mobileCanvasMinHeight ?? undefined}>
 				<div class="canvas-box">
-				<div class="canvas-wrapper" style:width={fullPage ? '100%' : `${size}px`} style:height={fullPage ? '100%' : `${size}px`}>
+				<!-- Only the fixed-size instance is sized inline. In the full-page editor the
+				     wrapper is an absolutely positioned box whose insets keep the drawing clear
+				     of the floating rail and panel, and an inline width would over-constrain it
+				     (a box with left, right *and* width simply ignores `right`). -->
+				<div class="canvas-wrapper" style:width={fullPage ? undefined : `${size}px`} style:height={fullPage ? undefined : `${size}px`}>
 					<svg
 						bind:this={svgEl}
 						viewBox={viewBox}
@@ -3449,11 +3485,31 @@
 						</label>
 					</section>
 
+					<!-- The two swatches are real colour inputs: the round label is the
+					     swatch, and the input inside it is blown up so its own swatch fills
+					     the circle. The visible name is the label's, so both are reachable
+					     and named from the keyboard. -->
 					<section class="editor-panel">
 						<h2 class="panel-title">{tr('editorColors')}</h2>
 						<div class="colors-row">
-							<span class="swatch" style:background={heartColors.left} aria-hidden="true"></span>
-							<span class="swatch" style:background={heartColors.right} aria-hidden="true"></span>
+							<label class="swatch" title={tr('leftColor')}>
+								<span class="sr-only">{tr('leftColor')}</span>
+								<input
+									type="color"
+									name="heart-color-left"
+									value={colorInputs.left}
+									oninput={(e) => setLobeColor('left', e.currentTarget.value)}
+								/>
+							</label>
+							<label class="swatch" title={tr('rightColor')}>
+								<span class="sr-only">{tr('rightColor')}</span>
+								<input
+									type="color"
+									name="heart-color-right"
+									value={colorInputs.right}
+									oninput={(e) => setLobeColor('right', e.currentTarget.value)}
+								/>
+							</label>
 							<button type="button" class="panel-button" onclick={flipLobeColors} title={tr('editorFlipLobeColors')}>
 								<SwapIcon size={14} />
 								{tr('editorSwap')}
@@ -3517,7 +3573,7 @@
 
 		/* The drawing surface. Everything that floats over the heart (hint, selection,
 		   strip count, notices) lives inside it, so it is anchored to the canvas and not
-		   to the three-column layout around it. */
+		   to the rail and the panel that float above it. */
 		.canvas-box {
 			position: relative;
 			display: flex;
@@ -3867,11 +3923,34 @@
 		}
 
 		.swatch {
+			display: inline-flex;
 			width: 34px;
 			height: 34px;
 			flex: none;
+			padding: 0;
 			border: 1.5px solid var(--line);
 			border-radius: 50%;
+			overflow: hidden;
+			cursor: pointer;
+		}
+
+		/* A colour input paints its swatch inside its own padding box, so it is
+		   blown up and clipped by the round label to fill it edge to edge. */
+		.swatch input {
+			width: 150%;
+			height: 150%;
+			margin: -25%;
+			padding: 0;
+			border: 0;
+			background: none;
+			cursor: pointer;
+		}
+
+		/* The input itself is invisible inside the circle, so the ring goes on the
+		   label — otherwise a keyboard visitor cannot see which swatch is focused. */
+		.swatch:focus-within {
+			outline: 2px solid var(--green);
+			outline-offset: 2px;
 		}
 
 		.symmetry-row {
@@ -3923,34 +4002,33 @@
 		}
 
 		/* ------------------------------------------------------------------
-		   Desktop: tool rail · canvas · 340px panel (DESIGN.md §7). Below 900px
-		   the editor keeps its existing stacked layout, so this is the only place
-		   the three-column grid is switched on.
+		   Desktop (DESIGN.md §7): the canvas fills the whole area under the top
+		   bar, and the tool rail and the 340px panel float on top of it. The
+		   drawing itself keeps out from under them: the two insets below are the
+		   rail's and the panel's widths, so what the visitor draws is never
+		   hidden by a panel, while zoom, pan and "Tilpas visning" work on the
+		   full-size canvas. Collapsing the panel gives the drawing that width
+		   back and leaves only the "Vis panel" tab at the edge.
+
+		   Below 900px the editor keeps its existing stacked layout, so all of
+		   this is switched on here and nowhere else.
 		   ------------------------------------------------------------------ */
 		@media (min-width: 900px) {
-			.paper-heart.fullPage .canvas-area {
-				display: grid;
-				grid-template-columns: 64px minmax(0, 1fr) 340px;
-				/* A definite row, so a tall panel scrolls inside its column
-				   instead of stretching the whole layout past the viewport. */
-				grid-template-rows: minmax(0, 1fr);
-				gap: 20px;
-				padding: 20px 24px 28px;
-				box-sizing: border-box;
-				align-items: stretch;
+			.paper-heart.fullPage {
+				/* 24px gutter + 58px rail + air. */
+				--editor-rail-inset: 104px;
+				/* 24px gutter + 340px panel + air. */
+				--editor-panel-inset: 388px;
+				/* The drawing area between the two, for centring things over it. */
+				--editor-canvas-width: calc(100% - var(--editor-rail-inset) - var(--editor-panel-inset));
 			}
 
-			.paper-heart.fullPage.panel-collapsed .canvas-area {
-				grid-template-columns: 64px minmax(0, 1fr);
+			.paper-heart.fullPage.panel-collapsed {
+				/* Only the "Vis panel" tab is left against the right edge. */
+				--editor-panel-inset: 60px;
 			}
 
 			.paper-heart.fullPage .canvas-box {
-				position: relative;
-				inset: auto;
-				grid-column: 2;
-				grid-row: 1;
-				min-width: 0;
-				border-radius: 16px;
 				background: var(--cream2);
 				overflow: hidden;
 			}
@@ -3965,34 +4043,66 @@
 				display: inline-flex;
 			}
 
+			/* The chrome lines up with the drawing area rather than with the canvas,
+			   so they read against paper instead of against a floating panel. */
+			.paper-heart.fullPage .canvas-hint,
+			.paper-heart.fullPage .canvas-strips {
+				left: var(--editor-rail-inset);
+				max-width: var(--editor-canvas-width);
+			}
+
+			.paper-heart.fullPage .canvas-box:has(.canvas-selection) .canvas-hint {
+				max-width: calc(var(--editor-canvas-width) - 240px);
+			}
+
+			.paper-heart.fullPage .canvas-selection {
+				right: var(--editor-panel-inset);
+			}
+
 			.paper-heart.fullPage .canvas-notices {
 				top: 62px;
+				left: calc(var(--editor-rail-inset) + var(--editor-canvas-width) / 2);
+				max-width: min(560px, calc(var(--editor-canvas-width) - 32px));
 			}
 
-			/* Give the heart a little air inside the cream canvas. */
+			/* The visible drawing area: the full height, and the width that is left
+			   between the two floating columns. */
 			.paper-heart.fullPage .canvas-wrapper {
-				inset: 16px;
+				top: 16px;
+				bottom: 16px;
+				left: var(--editor-rail-inset);
+				right: var(--editor-panel-inset);
 			}
 
-			.paper-heart.fullPage .segment-controls,
+			/* z-index 26: the rail and the panel float over the canvas chrome (22)
+			   and the notices (25), which now share the same full-size canvas. */
 			.paper-heart.fullPage .segment-controls.floating {
-				position: static;
-				transform: none;
-				grid-column: 1;
-				grid-row: 1;
-				align-self: start;
-				box-shadow: none;
+				left: 24px;
+				z-index: 26;
 			}
 
-			.paper-heart.fullPage .right-panel,
+			/* The column scrolls, so it also clips: the 16px padding is what keeps the
+			   cards' shadows from being cut off against its edges. Its own box is that
+			   much wider and closer to the edges, which leaves the cards themselves
+			   where --editor-panel-inset says they are — 24px in, 340px wide. */
 			.paper-heart.fullPage .right-panel.floating {
-				position: static;
-				grid-column: 3;
-				grid-row: 1;
+				top: 4px;
+				bottom: 4px;
+				right: 8px;
+				width: 372px;
+				padding: 16px;
+				box-sizing: border-box;
 				align-items: stretch;
 				min-height: 0;
 				overflow-y: auto;
+				overscroll-behavior: contain;
 				scrollbar-width: thin;
+				z-index: 26;
+			}
+
+			/* The cards float over the drawing, so they are lifted off it. */
+			.paper-heart.fullPage .right-panel :global(.editor-panel) {
+				box-shadow: var(--shadow-panel);
 			}
 
 			.paper-heart.fullPage .right-panel.collapsed {

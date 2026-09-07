@@ -142,7 +142,11 @@
   let authorName = $state(urlDesign?.author ?? '');
   let description = $state(urlDesign?.description ?? '');
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
-  let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
+  // The site-wide pair, the colours this heart carries once the visitor has picked
+  // any (docs/redesign/DESIGN.md §7), and what the heart is actually drawn in.
+  let siteColors = $state<HeartColors>({ ...DEFAULT_COLORS });
+  let designColors = $state<HeartColors | null>(urlDesign?.colors ?? null);
+  let colors = $derived(designColors ?? siteColors);
   let editorEl: HTMLDivElement | null = $state(null);
   let headerEl: HTMLElement | null = $state(null);
   let importInput: HTMLInputElement | null = $state(null);
@@ -167,8 +171,8 @@
 
   onMount(() => {
     // Initialize colors
-    colors = getColors();
-    const unsubscribeColors = subscribeColors((c) => { colors = c; });
+    siteColors = getColors();
+    const unsubscribeColors = subscribeColors((c) => { siteColors = c; });
 
     // Set heart name (needs lang to be initialized)
     if (urlDesign) {
@@ -227,6 +231,13 @@
     return () => mq.removeEventListener('change', sync);
   });
 
+  // Picking a colour is always a real edit, so it autosaves straight away — unlike
+  // the geometry, which PaperHeart also emits once on mount.
+  function handleColorsChange(next: HeartColors) {
+    designColors = next;
+    scheduleAutosave();
+  }
+
   function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
     currentFingers = fingers;
     currentGridSize = gridSize;
@@ -260,6 +271,7 @@
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
+    designColors = design.colors ?? null;
     heartName = `${design.name} ${t('copy', lang)}`;
     authorName = design.author ?? '';
     description = design.description ?? '';
@@ -301,6 +313,9 @@
       date: initialDesign?.date,
       description: sanitizeHtml(description) || undefined,
       weaveParity: currentWeaveParity,
+      // A heart keeps only the colours the visitor picked; one that was never
+      // touched follows the site-wide pair, as the gallery hearts do.
+      colors: designColors ?? undefined,
       gridSize: currentGridSize,
       fingers: currentFingers
     };
@@ -429,6 +444,7 @@
         currentFingers = design.fingers;
         currentGridSize = design.gridSize;
         currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
+        designColors = design.colors ?? null;
         heartName = design.name || t('importedHeart', lang);
         authorName = design.author || '';
         description = design.description || '';
@@ -476,7 +492,7 @@
 
 <!--
   Hjertedetaljer + Handlinger. On desktop this snippet is handed to PaperHeart, which
-  renders it at the bottom of the 340px panel so all five sections share one column and
+  renders it at the bottom of the floating 340px panel so all five sections share one column and
   one "Skjul panel" control; below 900px the same snippet is rendered under the canvas.
   It is authored here, so the styles below reach it in both places.
 -->
@@ -606,9 +622,11 @@
         {lang}
         fullPage
         onFingersChange={handleFingersChange}
+        onColorsChange={handleColorsChange}
         initialGridSize={currentGridSize}
         initialFingers={currentFingers}
         initialWeaveParity={currentWeaveParity}
+        initialColors={designColors ?? undefined}
         panelExtra={isNarrow ? undefined : heartPanels}
       />
     {/key}

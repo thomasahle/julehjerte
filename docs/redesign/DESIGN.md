@@ -256,6 +256,16 @@ Handlinger. A **"Skjul panel"** control collapses the panel so the canvas fills 
 right edge ("Vis panel") brings it back; remember the choice in localStorage. Add a "Snap til modsat side"
 checkbox and a one-line hint above the canvas. The mobile editor keeps its existing stacked panels.
 
+The canvas fills the whole area under the top bar — full width and height, no three-column grid — and the tool
+rail and the panel **float over it** as white cards with `--shadow-panel`. Zoom, pan and "Tilpas visning" work
+on that full-size canvas; the drawing area itself keeps a horizontal inset the width of the rail and of the
+panel, so nothing the visitor draws hides underneath them, and collapsing the panel hands that width back.
+
+Colours belong to the heart, not to the browser: a design may carry `colors: { left, right }` (two hex values),
+and the Farver section edits them with two real colour inputs plus "Byt". Gallery hearts carry none and follow
+the site-wide colour store as before; a heart the visitor draws stores what was picked, and saving, sharing and
+the PDF carry it. Old saved hearts without colours keep rendering in the site-wide pair.
+
 ## 8. Constraints and process
 
 - SvelteKit static adapter, `trailingSlash: 'always'`, everything prerendered; keep it that way.

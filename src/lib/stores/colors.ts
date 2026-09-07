@@ -1,9 +1,10 @@
 import { browser } from '$app/environment';
+import type { HeartColors } from '$lib/types/heart';
 
-export interface HeartColors {
-  left: string;
-  right: string;
-}
+// A heart's colours are a property of a design as much as of the site, so the
+// type lives with the other design types; it is re-exported here because most
+// callers reach for it next to getColors().
+export type { HeartColors };
 
 /**
  * The paper colours a heart starts with: white on the left, the classic red on
@@ -16,8 +17,15 @@ export const DEFAULT_COLORS: HeartColors = {
   right: 'rgb(185, 19, 19)'
 };
 
-/** The same red as a hex value, for an <input type="color">. */
-export const DEFAULT_RIGHT_COLOR_HEX = '#b91313';
+/**
+ * The same pair in hex, which is what `<input type="color">` and a design's own
+ * `colors` field take. The store's red is still spelled `rgb(…)` for the
+ * colours already in visitors' localStorage.
+ */
+export const DEFAULT_COLORS_HEX: HeartColors = {
+  left: '#ffffff',
+  right: '#b91313'
+};
 
 // Simple module-level state with subscribers
 let currentColors: HeartColors = { ...DEFAULT_COLORS };

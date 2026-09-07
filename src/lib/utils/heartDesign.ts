@@ -9,12 +9,17 @@ import {
   reverseSegments
 } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectFromFingers } from '$lib/utils/overlapRect';
+import { parseHeartColors } from '$lib/utils/heartColors';
 import { validateRawFingers } from '$lib/utils/validatePaths';
 import { SITE_DOMAIN } from '$lib/config';
 import { vecDist } from '$lib/geometry/vec';
 
 type RawFinger = { id?: unknown; lobe?: unknown; pathData?: unknown; nodeTypes?: unknown };
-type RawDesign = Omit<Partial<HeartDesignJson>, 'gridSize' | 'fingers'> & { gridSize?: unknown; fingers?: unknown };
+type RawDesign = Omit<Partial<HeartDesignJson>, 'gridSize' | 'fingers' | 'colors'> & {
+  gridSize?: unknown;
+  fingers?: unknown;
+  colors?: unknown;
+};
 
 // ============================================================================
 // Coordinate Transform: JSON (0-100) ↔ Internal Pixels
@@ -297,6 +302,8 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   const date = typeof r.date === 'string' && r.date.trim() ? r.date.trim() : undefined;
   const description = typeof r.description === 'string' ? r.description : undefined;
   const weaveParity = normalizeWeaveParity(r.weaveParity);
+  // Absent or malformed colours leave the heart on the site-wide pair.
+  const colors = parseHeartColors(r.colors);
   const gridSize = normalizeGridSize(r.gridSize);
 
   const fingersRaw = Array.isArray(r.fingers) ? r.fingers : [];
@@ -330,6 +337,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
     date,
     description,
     weaveParity,
+    colors,
     gridSize: inferredGrid,
     fingers
   };
@@ -373,6 +381,7 @@ export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
     date: design.date,
     description: design.description,
     weaveParity: design.weaveParity ?? 0,
+    colors: design.colors,
     gridSize: design.gridSize,
     fingers: interiorFingers.map((f) => {
       // Transform from internal pixel coords to JSON 0-100 coords
@@ -429,6 +438,12 @@ export function serializeHeartToSVG(design: HeartDesign): string {
     'xmlns:dc="http://purl.org/dc/elements/1.1/"',
     `data-weave-parity="${design.weaveParity ?? 0}"`
   ];
+  // The heart's own colours, when it has them. Gallery hearts carry none, so an
+  // exported file only pins the colours if the visitor picked them in the editor.
+  if (design.colors) {
+    attrs.push(`data-color-left="${escapeXml(design.colors.left)}"`);
+    attrs.push(`data-color-right="${escapeXml(design.colors.right)}"`);
+  }
 
   const lines: string[] = [
     `<svg ${attrs.join(' ')}>`,
@@ -1117,6 +1132,10 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   const source = svg.getAttribute('data-source') || dcSource || undefined;
   const date = svg.getAttribute('data-date') || dcDate || undefined;
   const weaveParity = normalizeWeaveParity(parseInt(svg.getAttribute('data-weave-parity') || '0', 10));
+  const colors = parseHeartColors({
+    left: svg.getAttribute('data-color-left'),
+    right: svg.getAttribute('data-color-right')
+  });
 
   // Extract id from filename (remove .svg extension)
   const id = filename ? filename.replace(/\.svg$/i, '') : '';
@@ -1388,6 +1407,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     date,
     description,
     weaveParity,
+    colors,
     gridSize: inferredGrid,
     fingers: finalFingers
   };

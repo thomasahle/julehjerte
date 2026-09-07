@@ -5,6 +5,14 @@ export type NodeType = 'corner' | 'smooth' | 'symmetric';
 
 export type GridSize = { x: number; y: number };
 
+/**
+ * The paper colours of the two lobes, as `#rrggbb`.
+ *
+ * $lib/stores/colors holds the site-wide pair and re-exports this type; a design
+ * may carry its own (see `HeartDesign.colors`).
+ */
+export type HeartColors = { left: string; right: string };
+
 export type BezierSegment = {
   p0: Vec;
   p1: Vec;
@@ -45,6 +53,10 @@ export interface HeartDesign {
   weaveParity?: 0 | 1;
   // Number of strips in the overlap rectangle (x = columns, y = rows).
   gridSize: GridSize;
+  // The heart's own paper colours, as picked in the editor. Absent on gallery
+  // hearts and on everything saved before the editor could set them, and those
+  // follow the site-wide colour store instead ($lib/stores/colors).
+  colors?: HeartColors;
   fingers: Finger[];
 }
 

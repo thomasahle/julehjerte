@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import type { HeartDesignJson } from '$lib/types/heart';
 import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl, SHARED_HEART_ID } from './shareDesign';
+import { normalizeHeartDesign } from './heartDesign';
 
 const design: HeartDesignJson = {
   id: 'heart-123-abc',
@@ -69,6 +70,21 @@ describe('shareDesign', () => {
     expect(await decodeSharedDesign('not base64!')).toBeNull();
     expect(await decodeSharedDesign('AAAA')).toBeNull();
     expect(await decodeSharedDesign('{not json')).toBeNull();
+  });
+
+  it("carries the heart's own colours, and drops invalid ones on the way back", async () => {
+    const colored: HeartDesignJson = { ...design, colors: { left: '#0b3d2c', right: '#f5c518' } };
+    const payload = await encodeSharedDesign(colored);
+    const decoded = await decodeSharedDesign(payload);
+    expect((decoded as HeartDesignJson).colors).toEqual(colored.colors);
+    // The payload is only JSON; validation is normalizeHeartDesign's job.
+    expect(normalizeHeartDesign(decoded)!.colors).toEqual(colored.colors);
+
+    const tampered = await encodeSharedDesign({
+      ...design,
+      colors: { left: 'red', right: '#000000' }
+    } as HeartDesignJson);
+    expect(normalizeHeartDesign(await decodeSharedDesign(tampered))!.colors).toBeUndefined();
   });
 
   it('builds the share URL for both languages', () => {

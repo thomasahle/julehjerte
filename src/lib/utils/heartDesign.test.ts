@@ -81,6 +81,49 @@ describe('heartDesign round trips', () => {
     expectClose(boundaryPositions(parsed!.fingers, 'right'), boundaryPositions(design.fingers, 'right'));
   });
 
+  it("keeps a heart's own colours through JSON and through SVG", () => {
+    const design: HeartDesign = { ...makeGridDesign(3), colors: { left: '#0b3d2c', right: '#f5c518' } };
+
+    const json = serializeHeartDesign(design);
+    expect(json.colors).toEqual({ left: '#0b3d2c', right: '#f5c518' });
+    expect(normalizeHeartDesign(JSON.parse(JSON.stringify(json)) as unknown)!.colors).toEqual(
+      design.colors
+    );
+
+    const svg = serializeHeartToSVG(design);
+    expect(svg).toContain('data-color-left="#0b3d2c"');
+    expect(parseHeartFromSVG(svg, 'grid-test.svg')!.colors).toEqual(design.colors);
+  });
+
+  it('leaves a heart without colours on the site-wide pair', () => {
+    const design = makeGridDesign(3);
+    expect(serializeHeartDesign(design).colors).toBeUndefined();
+    expect(normalizeHeartDesign(serializeHeartDesign(design))!.colors).toBeUndefined();
+
+    const svg = serializeHeartToSVG(design);
+    expect(svg).not.toContain('data-color-left');
+    expect(parseHeartFromSVG(svg, 'grid-test.svg')!.colors).toBeUndefined();
+  });
+
+  it('drops colours a hand-edited link cannot have produced', () => {
+    const json = serializeHeartDesign(makeGridDesign(3));
+    for (const bad of [
+      'red',
+      { left: '#fff' },
+      { left: 'url(#x)', right: '#000000' },
+      { left: '#ffffff', right: '" onload="alert(1)' }
+    ]) {
+      expect(normalizeHeartDesign({ ...json, colors: bad })!.colors, JSON.stringify(bad)).toBeUndefined();
+    }
+
+    // The same for an imported SVG whose attributes were edited by hand.
+    const svg = serializeHeartToSVG(makeGridDesign(3)).replace(
+      '<svg ',
+      '<svg data-color-left="red" data-color-right="#000000" '
+    );
+    expect(parseHeartFromSVG(svg, 'grid-test.svg')!.colors).toBeUndefined();
+  });
+
   it('keeps a MAX_GRID_SIZE design and clamps anything larger', () => {
     const atMax = normalizeHeartDesign(serializeHeartDesign(makeGridDesign(MAX_GRID_SIZE)));
     expect(atMax!.gridSize).toEqual({ x: MAX_GRID_SIZE, y: MAX_GRID_SIZE });

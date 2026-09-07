@@ -12,7 +12,9 @@ export async function renderHeartToDataURL(
   options: { size?: number; colors?: HeartColors } = {}
 ): Promise<string> {
   const canvasSize = options.size ?? DEFAULT_CANVAS_SIZE;
-  const colors = options.colors ?? getColors();
+  // The heart's own colours when it has them, then whatever the caller asked for,
+  // then the site-wide pair — so a printed template matches what is on screen.
+  const colors = options.colors ?? design.colors ?? getColors();
 
   const canvas = document.createElement('canvas');
   canvas.width = canvasSize;

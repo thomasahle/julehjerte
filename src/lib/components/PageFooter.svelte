@@ -15,7 +15,7 @@
 	import { otherLanguageUrl } from '$lib/i18n/routes';
 	import {
 		DEFAULT_COLORS,
-		DEFAULT_RIGHT_COLOR_HEX,
+		DEFAULT_COLORS_HEX,
 		getColors,
 		setLeftColor,
 		setRightColor,
@@ -25,18 +25,7 @@
 	} from '$lib/stores/colors';
 	import { SwapIcon } from '$lib/components/icons';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
-
-
-
-	const toHexColor = (value: string | undefined, fallback: string) => {
-		if (!value) return fallback;
-		if (value.startsWith('#')) return value;
-		const match = value.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
-		if (!match) return fallback;
-		const toHex = (channel: string) =>
-			Math.max(0, Math.min(255, Number(channel))).toString(16).padStart(2, '0');
-		return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
-	};
+	import { toHexColor } from '$lib/utils/heartColors';
 
 	// Baked in at prerender time, like the rest of the page.
 	const year = new Date().getFullYear();
@@ -50,8 +39,8 @@
 	// by Svelte during hydration, which makes Chrome warn about a colour input
 	// momentarily holding "".
 	$effect(() => {
-		if (leftInput) leftInput.value = toHexColor(colors.left, DEFAULT_COLORS.left);
-		if (rightInput) rightInput.value = toHexColor(colors.right, DEFAULT_RIGHT_COLOR_HEX);
+		if (leftInput) leftInput.value = toHexColor(colors.left, DEFAULT_COLORS_HEX.left);
+		if (rightInput) rightInput.value = toHexColor(colors.right, DEFAULT_COLORS_HEX.right);
 	});
 
 	let lang = $derived(langFromPathname($page.url.pathname, base));
