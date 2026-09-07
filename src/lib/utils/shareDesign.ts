@@ -1,3 +1,5 @@
+import { browser } from '$app/environment';
+import { base } from '$app/paths';
 import type { HeartDesignJson } from '$lib/types/heart';
 import type { Language } from '$lib/i18n';
 import { heartPath } from '$lib/i18n/routes';
@@ -126,7 +128,15 @@ function safeDecodeUriComponent(text: string): string | null {
   }
 }
 
-/** The absolute share link for an encoded payload, in the given language. */
+/**
+ * The absolute share link for an encoded payload, in the given language.
+ *
+ * Built from the origin the visitor is actually on, so "Del" on a preview
+ * deploy, a branch build or a reviewer's local server copies a link to *that*
+ * build. SITE_URL stays the fallback for prerendering, where there is no
+ * window to ask.
+ */
 export function sharedDesignUrl(payload: string, lang: Language): string {
-  return `${SITE_URL}${heartPath(SHARED_HEART_ID, lang)}#design=${payload}`;
+  const origin = browser ? `${window.location.origin}${base}` : SITE_URL;
+  return `${origin}${heartPath(SHARED_HEART_ID, lang)}#design=${payload}`;
 }
