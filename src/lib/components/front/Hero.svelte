@@ -109,6 +109,7 @@
 	<div class="hero-inner" style:--hero-fade="{HERO_FADE_MS}ms">
 		<div class="hero-hearts hero-hearts-m">
 			<HeroHearts
+				{lang}
 				slots={HERO_SLOTS_MOBILE}
 				ids={heroMobileIds}
 				{designs}
@@ -135,6 +136,7 @@
 
 		<div class="hero-hearts hero-hearts-d">
 			<HeroHearts
+				{lang}
 				slots={HERO_SLOTS_DESKTOP}
 				ids={heroDesktopIds}
 				{designs}

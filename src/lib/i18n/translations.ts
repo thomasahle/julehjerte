@@ -24,6 +24,7 @@ export const translations = {
     // Front page hero
     siteWordmark: 'Juleflet.dk',
     heroTagline: 'Skabeloner til flettede julehjerter',
+    heroGoToHeart: 'Gå til {name} i galleriet',
     heroIntro: 'Vælg et hjerte, print skabelonen på A4, klip og flet – eller tegn dit eget mønster i editoren.',
     heroSeeTemplates: 'Se skabeloner',
     heroScrollHint: 'Scroll for at udforske skabeloner',
@@ -315,6 +316,7 @@ export const translations = {
     // Front page hero
     siteWordmark: 'Juleflet.dk',
     heroTagline: 'Templates for woven Christmas hearts',
+    heroGoToHeart: 'Go to {name} in the gallery',
     heroIntro: 'Pick a heart, print the template on A4, cut and weave – or draw your own pattern in the editor.',
     heroSeeTemplates: 'Browse templates',
     heroScrollHint: 'Scroll to explore templates',
