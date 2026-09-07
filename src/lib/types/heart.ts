@@ -55,7 +55,10 @@ export type HeartDesignJson = Omit<HeartDesign, 'fingers'> & { fingers: FingerPa
  * The credit and facts the heart detail page shows beside the drawing.
  *
  * Assembled from the build-time metadata for a gallery heart (so it is in the
- * prerendered HTML) and from the loaded design for one the visitor drew.
+ * prerendered HTML) and from the loaded design for one the visitor drew. The
+ * description is not here: a gallery heart's comes from
+ * `$lib/data/heartDescriptions` in the language of the URL, and every other
+ * heart's straight off the design, so the page passes it to the panel itself.
  */
 export interface HeartInfo {
 	name: string;
@@ -65,7 +68,6 @@ export interface HeartInfo {
 	publisherUrl: string | null;
 	source: string | null;
 	date: string | null;
-	description: string | null;
 	gridSize: { x: number; y: number };
 	difficulty: DifficultyLevel;
 }

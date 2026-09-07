@@ -146,7 +146,6 @@
         publisherUrl: meta.publisherUrl,
         source: meta.source,
         date: meta.date,
-        description: meta.description,
         gridSize: meta.gridSize,
         difficulty: meta.difficulty,
       };
@@ -160,7 +159,6 @@
         publisherUrl: design.publisherUrl ?? null,
         source: design.source ?? null,
         date: design.date ?? null,
-        description: design.description ?? null,
         gridSize: design.gridSize,
         difficulty: calculateDifficulty(design).level,
       };
@@ -174,7 +172,7 @@
   // A gallery heart's paragraph is written in both languages and resolved in +page.ts.
   // Anything else — a heart the visitor drew, one shared by link, an unlisted SVG under
   // /hearts/ — shows whatever description its maker typed, in whatever language that is.
-  let description = $derived(data.description ?? (meta ? null : (info?.description ?? null)));
+  let description = $derived(data.description ?? (meta ? null : (design?.description ?? null)));
 
   // SEO
   let siteTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
