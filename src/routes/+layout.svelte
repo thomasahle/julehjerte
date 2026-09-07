@@ -34,19 +34,24 @@
 			? t("howToMetaDescription", lang)
 			: routeKey === "about"
 				? t("aboutMetaDescription", lang)
-				: lang === "en"
-					? SITE_DESCRIPTION_EN
-					: SITE_DESCRIPTION,
+				: routeKey === "editor"
+					? t("editorMetaDescription", lang)
+					: lang === "en"
+						? SITE_DESCRIPTION_EN
+						: SITE_DESCRIPTION,
 	);
 
-	// og:title follows the same route table as the description: a link to /om/ or
-	// /saadan-goer-du/ used to preview the page's own summary under the site title.
+	// og:title follows the same route table as the description: a link to /om/,
+	// /saadan-goer-du/ or /editor/ used to preview the generic front-page card
+	// under the site title while its own tab said something else.
 	let ogTitle = $derived(
 		routeKey === "howTo"
 			? `${t("howToTitle", lang)} - ${metaTitle}`
 			: routeKey === "about"
 				? `${t("aboutTitle", lang)} - ${metaTitle}`
-				: metaTitle,
+				: routeKey === "editor"
+					? `${t("createNewHeartTitle", lang)} - ${metaTitle}`
+					: metaTitle,
 	);
 
 	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang, og and twitter tags.

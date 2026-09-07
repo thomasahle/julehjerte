@@ -135,6 +135,7 @@ export const translations = {
     // Editor: top bar, tool rail, panels and canvas notices
     editHeart: 'Rediger hjerte',
     createNewHeartTitle: 'Lav nyt hjerte',
+    editorMetaDescription: 'Tegn dit eget flettede julehjerte: form striberne, vælg farver og hent skabelonen som PDF i 100% størrelse.',
     heartDetails: 'Hjertedetaljer',
     name: 'Navn',
     author: 'Forfatter',
@@ -423,6 +424,7 @@ export const translations = {
     // Editor: top bar, tool rail, panels and canvas notices
     editHeart: 'Edit heart',
     createNewHeartTitle: 'Create new heart',
+    editorMetaDescription: 'Draw your own woven Christmas heart: shape the strips, pick the colours and download the template as a PDF at 100% size.',
     heartDetails: 'Heart details',
     name: 'Name',
     author: 'Author',
