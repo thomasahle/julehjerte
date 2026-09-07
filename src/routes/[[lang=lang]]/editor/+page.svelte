@@ -14,6 +14,7 @@
   import { renderHeartSvgInline } from '$lib/rendering/heartSvg';
   import { sanitizeHtml } from '$lib/utils';
   import { trackImportError } from '$lib/analytics';
+  import Modal from '$lib/components/Modal.svelte';
   import PageHeader from '$lib/components/PageHeader.svelte';
   import { browser } from '$app/environment';
   import {
@@ -33,7 +34,6 @@
   // it, and focus returns to the button that opened it.
   let showHelp = $state(false);
   let helpButtonEl: HTMLButtonElement | null = $state(null);
-  let helpDialogEl: HTMLDivElement | null = $state(null);
 
   function openHelp(): void {
     showHelp = true;
@@ -43,37 +43,6 @@
     if (!showHelp) return;
     showHelp = false;
     tick().then(() => helpButtonEl?.focus());
-  }
-
-  $effect(() => {
-    if (!showHelp) return;
-    tick().then(() => helpDialogEl?.focus());
-  });
-
-  const FOCUSABLE =
-    'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-  // Keep Tab inside the dialog while it is open.
-  function trapHelpTab(event: KeyboardEvent): void {
-    if (event.key !== 'Tab' || !helpDialogEl) return;
-    const items = Array.from(helpDialogEl.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
-      (el) => el.offsetParent !== null || el === document.activeElement
-    );
-    if (items.length === 0) {
-      event.preventDefault();
-      helpDialogEl.focus();
-      return;
-    }
-    const first = items[0];
-    const last = items[items.length - 1];
-    const active = document.activeElement;
-    if (event.shiftKey && (active === first || active === helpDialogEl)) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && active === last) {
-      event.preventDefault();
-      first.focus();
-    }
   }
 
   // Inline status/error message shown in the actions panel (replaces alert()).
@@ -650,88 +619,71 @@
   {/if}
   </main>
 
-  {#if showHelp}
-    <div
-      class="modal-overlay"
-      onclick={closeHelp}
-      onkeydown={(e) => e.key === 'Escape' && closeHelp()}
-      role="presentation"
-    >
-      <div
-        class="modal help-modal"
-        bind:this={helpDialogEl}
-        onclick={(e) => e.stopPropagation()}
-        onkeydown={(e) => {
-          // Escape first: stopPropagation would otherwise swallow it before the
-          // overlay's handler ever sees it.
-          if (e.key === 'Escape') closeHelp();
-          else trapHelpTab(e);
-          e.stopPropagation();
-        }}
-        role="dialog"
-        tabindex="-1"
-        aria-modal="true"
-        aria-labelledby="help-title"
-      >
-        <div class="help-header">
-          <h2 id="help-title">{t('helpTitle', lang)}</h2>
-          <button type="button" class="btn btn-sm btn-ghost btn-icon icon-button" onclick={closeHelp} aria-label={t('helpCloseAriaLabel', lang)}>
-            <CloseIcon size={20} />
-          </button>
-        </div>
-        <div class="help-content">
-          <section>
-            <h3>{t('helpSectionWhatAreTitle', lang)}</h3>
-            <p>{@html t('helpSectionWhatAreText', lang)}</p>
-          </section>
-
-          <section>
-            <h3>{t('helpSectionBasicStructureTitle', lang)}</h3>
-            <p>{@html t('helpSectionBasicStructureText', lang)}</p>
-          </section>
-
-          <section>
-            <h3>{t('helpSectionEditingCurvesTitle', lang)}</h3>
-            <ul>
-              {#each tArray('helpSectionEditingCurvesBullets', lang) as item}
-                <li>{@html item}</li>
-              {/each}
-            </ul>
-          </section>
-
-          <section>
-            <h3>{t('helpSectionSymmetryTitle', lang)}</h3>
-            <p>{t('helpSectionSymmetryIntro', lang)}</p>
-            <ul>
-              {#each tArray('helpSectionSymmetryBullets', lang) as item}
-                <li>{@html item}</li>
-              {/each}
-            </ul>
-            <p>{@html t('helpSectionSymmetryNote', lang)}</p>
-          </section>
-
-          <section>
-            <h3>{t('helpSectionRequirementsTitle', lang)}</h3>
-            <p>{t('helpSectionRequirementsIntro', lang)}</p>
-            <ul>
-              {#each tArray('helpSectionRequirementsBullets', lang) as item}
-                <li>{@html item}</li>
-              {/each}
-            </ul>
-          </section>
-
-          <section>
-            <h3>{t('helpSectionTipsTitle', lang)}</h3>
-            <ul>
-              {#each tArray('helpSectionTipsBullets', lang) as item}
-                <li>{item}</li>
-              {/each}
-            </ul>
-          </section>
-        </div>
-      </div>
+  <Modal
+    open={showHelp}
+    labelledBy="help-title"
+    width="min(700px, 100%)"
+    maxHeight="85vh"
+    column
+    onClose={closeHelp}
+  >
+    <div class="help-header">
+      <h2 id="help-title">{t('helpTitle', lang)}</h2>
+      <button type="button" class="btn btn-sm btn-ghost btn-icon icon-button" onclick={closeHelp} aria-label={t('helpCloseAriaLabel', lang)}>
+        <CloseIcon size={20} />
+      </button>
     </div>
-  {/if}
+    <div class="help-content">
+      <section>
+        <h3>{t('helpSectionWhatAreTitle', lang)}</h3>
+        <p>{@html t('helpSectionWhatAreText', lang)}</p>
+      </section>
+
+      <section>
+        <h3>{t('helpSectionBasicStructureTitle', lang)}</h3>
+        <p>{@html t('helpSectionBasicStructureText', lang)}</p>
+      </section>
+
+      <section>
+        <h3>{t('helpSectionEditingCurvesTitle', lang)}</h3>
+        <ul>
+          {#each tArray('helpSectionEditingCurvesBullets', lang) as item}
+            <li>{@html item}</li>
+          {/each}
+        </ul>
+      </section>
+
+      <section>
+        <h3>{t('helpSectionSymmetryTitle', lang)}</h3>
+        <p>{t('helpSectionSymmetryIntro', lang)}</p>
+        <ul>
+          {#each tArray('helpSectionSymmetryBullets', lang) as item}
+            <li>{@html item}</li>
+          {/each}
+        </ul>
+        <p>{@html t('helpSectionSymmetryNote', lang)}</p>
+      </section>
+
+      <section>
+        <h3>{t('helpSectionRequirementsTitle', lang)}</h3>
+        <p>{t('helpSectionRequirementsIntro', lang)}</p>
+        <ul>
+          {#each tArray('helpSectionRequirementsBullets', lang) as item}
+            <li>{@html item}</li>
+          {/each}
+        </ul>
+      </section>
+
+      <section>
+        <h3>{t('helpSectionTipsTitle', lang)}</h3>
+        <ul>
+          {#each tArray('helpSectionTipsBullets', lang) as item}
+            <li>{item}</li>
+          {/each}
+        </ul>
+      </section>
+    </div>
+  </Modal>
 </div>
 
 <style>
@@ -899,35 +851,7 @@
     }
   }
 
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--scrim);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    z-index: 1000;
-  }
-
-  .modal {
-    width: min(900px, 100%);
-    max-height: 90vh;
-    overflow: auto;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 20px 50px rgb(var(--deep-rgb) / 0.25);
-  }
-
-  .help-modal {
-    max-width: 700px;
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
-  }
-
+  /* <Modal> owns the scrim and the card; what follows is the help content. */
   .help-header {
     display: flex;
     align-items: center;

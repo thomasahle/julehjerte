@@ -12,10 +12,11 @@
   in $lib/components/front.
 -->
 <script lang="ts">
-  import { onMount, tick } from "svelte";
+  import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
+  import Modal from "$lib/components/Modal.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
   import Hero from "$lib/components/front/Hero.svelte";
   import Gallery from "$lib/components/front/Gallery.svelte";
@@ -96,11 +97,6 @@
 
   let deleteCandidate = $state.raw<HeartDesign | null>(null);
   let cancelDeleteButtonEl = $state.raw<HTMLButtonElement | null>(null);
-
-  $effect(() => {
-    if (!deleteCandidate) return;
-    tick().then(() => cancelDeleteButtonEl?.focus());
-  });
 
   function handleDelete(design: HeartDesign) {
     deleteUserDesign(design.id);
@@ -199,73 +195,39 @@
   />
 </main>
 
-{#if deleteCandidate}
-  <div
-    class="modal-overlay"
-    onclick={cancelDelete}
-    onkeydown={(e) => e.key === 'Escape' && cancelDelete()}
-    role="presentation"
-  >
-    <div
-      class="modal"
-      role="dialog"
-      tabindex="-1"
-      aria-modal="true"
-      aria-labelledby="delete-title"
-      onclick={(e) => e.stopPropagation()}
-      onkeydown={(e) => {
-        if (e.key === 'Escape') cancelDelete();
-        e.stopPropagation();
-      }}
+<Modal
+  open={deleteCandidate !== null}
+  labelledBy="delete-title"
+  initialFocus={cancelDeleteButtonEl}
+  onClose={cancelDelete}
+>
+  <h2 id="delete-title">{t('deleteHeartTitle', lang)}</h2>
+  <p>{t('deleteHeartPrompt', lang)}</p>
+  <p class="delete-heart-name">{deleteCandidate?.name}</p>
+  <div class="delete-actions">
+    <button
+      type="button"
+      class="btn btn-ghost"
+      onclick={cancelDelete}
+      bind:this={cancelDeleteButtonEl}
     >
-      <h2 id="delete-title">{t('deleteHeartTitle', lang)}</h2>
-      <p>{t('deleteHeartPrompt', lang)}</p>
-      <p class="delete-heart-name">{deleteCandidate.name}</p>
-      <div class="delete-actions">
-        <button
-          type="button"
-          class="btn btn-ghost"
-          onclick={cancelDelete}
-          bind:this={cancelDeleteButtonEl}
-        >
-          {t('cancel', lang)}
-        </button>
-        <button type="button" class="btn btn-primary" onclick={confirmDelete}>
-          {t('delete', lang)}
-        </button>
-      </div>
-    </div>
+      {t('cancel', lang)}
+    </button>
+    <button type="button" class="btn btn-primary" onclick={confirmDelete}>
+      {t('delete', lang)}
+    </button>
   </div>
-{/if}
+</Modal>
 
 <style>
-  /* --------------------------------------------------------------- modal -- */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    background: var(--scrim);
-  }
-
-  .modal {
-    width: min(520px, 100%);
-    padding: 22px;
-    border-radius: 14px;
-    background: var(--white);
-    box-shadow: var(--shadow-modal);
-  }
-
-  .modal h2 {
+  /* The delete confirmation's own contents; <Modal> owns the scrim and card. */
+  h2 {
     margin: 0 0 8px;
     font-size: 20px;
     color: var(--deep);
   }
 
-  .modal p {
+  p {
     margin: 8px 0;
     color: var(--muted);
     line-height: 1.5;
