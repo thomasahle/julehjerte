@@ -49,7 +49,13 @@
 	import { bezierPointAt, findFingersWithIssues, intersectionMarginPx, segmentsIntersect } from '$lib/editor/curveIssues';
 	import { findNearestOppositeAnchor, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
 	import { toggleNumberInList } from '$lib/editor/selection';
-	import { getColors, flipColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
+	import {
+		DEFAULT_COLORS,
+		flipColors,
+		getColors,
+		subscribeColors,
+		type HeartColors
+	} from '$lib/stores/colors';
 	import { stripsLabel as formatStrips, t as translate, type Language, type TranslationKey } from '$lib/i18n';
 
 		interface Props {
@@ -219,7 +225,7 @@
 		}
 
 	// State
-	let heartColors = $state<HeartColors>({ left: '#ffffff', right: 'rgb(185, 19, 19)' });
+	let heartColors = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let gridSize = $state<GridSize>({ x: 3, y: 3 });
 	let weaveParity = $state<0 | 1>(0);
 	let fingers = $state<Finger[]>([]);

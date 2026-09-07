@@ -1,3 +1,11 @@
+<!--
+  One lobe's cutting template: the outline, the fold line and the strip cuts,
+  as the detail page's big view and its thumbnails show them.
+
+  Public class hook: `.template-preview` on the wrapper, so a caller can size
+  the flex column it makes (HeartStage's thumbnails do). The <svg> paints no
+  background of its own — the surface belongs to whoever places it.
+-->
 <script lang="ts">
   import type { HeartDesign } from '$lib/types/heart';
   import { getTemplateData } from '$lib/utils/templateSvg';
@@ -98,13 +106,15 @@
   }
 
   .template-label {
-    font-size: 0.9rem;
-    color: #666;
+    font-size: 14px;
+    color: var(--muted);
     font-weight: 500;
   }
 
+  /* No background of its own: the preview is drawn on whatever surface it is
+     placed on (the detail page's stage and its thumbnails both supply one). */
   svg {
-    background: #fafafa;
+    background: transparent;
     border-radius: 8px;
     max-width: 100%;
     height: auto;

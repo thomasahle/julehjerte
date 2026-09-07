@@ -175,10 +175,6 @@
 		box-shadow: 0 8px 20px var(--shadow-color);
 	}
 
-	.stage-template :global(svg) {
-		background: transparent;
-	}
-
 	/* thumbnails */
 	.thumbs {
 		display: flex;
@@ -232,7 +228,6 @@
 		display: block;
 		width: 100%;
 		height: 100%;
-		background: transparent;
 	}
 
 	.thumb :global(.template-preview) {

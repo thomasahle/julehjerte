@@ -5,10 +5,19 @@ export interface HeartColors {
   right: string;
 }
 
-const DEFAULT_COLORS: HeartColors = {
+/**
+ * The paper colours a heart starts with: white on the left, the classic red on
+ * the right. Exported because every component that shows a heart before the
+ * store has been read has to start from the same pair — they used to retype it,
+ * in four places.
+ */
+export const DEFAULT_COLORS: HeartColors = {
   left: '#ffffff',
   right: 'rgb(185, 19, 19)'
 };
+
+/** The same red as a hex value, for an <input type="color">. */
+export const DEFAULT_RIGHT_COLOR_HEX = '#b91313';
 
 // Simple module-level state with subscribers
 let currentColors: HeartColors = { ...DEFAULT_COLORS };

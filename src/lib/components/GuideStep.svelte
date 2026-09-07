@@ -6,8 +6,7 @@
 
   The generator hard-codes the palette as hex; here every fill and stroke comes
   from a class in the <style> block, so the drawings follow the design tokens in
-  src/app.css. The one exception is #a5121d, the shaded top edge of the folded
-  paper: a darker shade of --red with no token of its own.
+  src/app.css — including --red-dark, the shaded top edge of the folded paper.
 
   Everything is written out inline rather than through {#snippet}s: a snippet is
   compiled as its own function and would create its elements in the HTML rather
@@ -219,18 +218,18 @@
 		stroke-dasharray: 4 3;
 	}
 
-	/* The coloured paper. #a5121d is a darker --red for the folded edge. */
+	/* The coloured paper; --red-dark is the shaded fold edge. */
 	.paper {
 		fill: var(--red);
 	}
 
 	.paper-edge {
-		fill: #a5121d;
+		fill: var(--red-dark);
 	}
 
 	.paper-outline {
 		fill: none;
-		stroke: #a5121d;
+		stroke: var(--red-dark);
 		stroke-width: 1.5;
 	}
 

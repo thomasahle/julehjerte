@@ -14,6 +14,8 @@
 	import { t, langFromPathname } from '$lib/i18n';
 	import { otherLanguageUrl } from '$lib/i18n/routes';
 	import {
+		DEFAULT_COLORS,
+		DEFAULT_RIGHT_COLOR_HEX,
 		getColors,
 		setLeftColor,
 		setRightColor,
@@ -24,8 +26,7 @@
 	import { SwapIcon } from '$lib/components/icons';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 
-	const DEFAULT_RIGHT_COLOR = 'rgb(185, 19, 19)';
-	const DEFAULT_RIGHT_COLOR_HEX = '#b91313';
+
 
 	const toHexColor = (value: string | undefined, fallback: string) => {
 		if (!value) return fallback;
@@ -40,7 +41,7 @@
 	// Baked in at prerender time, like the rest of the page.
 	const year = new Date().getFullYear();
 
-	let colors = $state<HeartColors>({ left: '#ffffff', right: DEFAULT_RIGHT_COLOR });
+	let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let leftInput = $state<HTMLInputElement | null>(null);
 	let rightInput = $state<HTMLInputElement | null>(null);
 
@@ -49,7 +50,7 @@
 	// by Svelte during hydration, which makes Chrome warn about a colour input
 	// momentarily holding "".
 	$effect(() => {
-		if (leftInput) leftInput.value = toHexColor(colors.left, '#ffffff');
+		if (leftInput) leftInput.value = toHexColor(colors.left, DEFAULT_COLORS.left);
 		if (rightInput) rightInput.value = toHexColor(colors.right, DEFAULT_RIGHT_COLOR_HEX);
 	});
 
@@ -80,7 +81,7 @@
 					type="color"
 					id="left-color"
 					name="left-color"
-					value="#ffffff"
+					value={DEFAULT_COLORS.left}
 					bind:this={leftInput}
 					oninput={(e) => setLeftColor((e.target as HTMLInputElement).value)}
 				/>
@@ -91,7 +92,7 @@
 					type="color"
 					id="right-color"
 					name="right-color"
-					value="#b91313"
+					value={DEFAULT_RIGHT_COLOR_HEX}
 					bind:this={rightInput}
 					oninput={(e) => setRightColor((e.target as HTMLInputElement).value)}
 				/>

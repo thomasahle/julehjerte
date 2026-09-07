@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { Finger, GridSize } from '$lib/types/heart';
 	import {
+		DEFAULT_COLORS,
 		getColors,
 		subscribeColors,
 		type HeartColors
@@ -34,7 +35,7 @@
 	const componentId = $derived.by(() => (idPrefix && idPrefix.length > 0 ? idPrefix : 'paper-heart'));
 
 	// Colors from store
-	let heartColors = $state<HeartColors>({ left: '#ffffff', right: 'rgb(185, 19, 19)' });
+	let heartColors = $state<HeartColors>({ ...DEFAULT_COLORS });
 
 	function normalizeGridSize(raw: GridSize | number): GridSize {
 		if (typeof raw === 'number' && Number.isFinite(raw)) {

@@ -29,6 +29,11 @@
   --red-hover: #a91824;
   --green-hover: #24402f;
 
+  /* The shaded edge of folded red paper in the guide illustrations. A hair
+     darker than --red-hover, and from the mockup generator, so it is its own
+     token rather than a reuse. */
+  --red-dark: #a5121d;
+
   /* --muted is 5.14:1 on --page but only 4.02:1 on --sky, so the hero and the
      detail scene use this darker shade for secondary text. AA needs 4.5:1. */
   --muted-on-sky: #4d594f;

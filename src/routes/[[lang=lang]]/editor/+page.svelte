@@ -5,7 +5,7 @@
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { SITE_TITLE, SITE_TITLE_EN } from '$lib/config';
   import { t, tArray, type Language } from '$lib/i18n';
-  import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
+  import { DEFAULT_COLORS, getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from '$lib/stores/collection';
   import type { Finger, GridSize, HeartDesign } from '$lib/types/heart';
   import { normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
@@ -142,7 +142,7 @@
   let authorName = $state(urlDesign?.author ?? '');
   let description = $state(urlDesign?.description ?? '');
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
-  let colors = $state<HeartColors>({ left: '#ffffff', right: 'rgb(185, 19, 19)' });
+  let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
   let editorEl: HTMLDivElement | null = $state(null);
   let headerEl: HTMLElement | null = $state(null);
   let importInput: HTMLInputElement | null = $state(null);
