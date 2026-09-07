@@ -24,7 +24,7 @@
   import type { LayoutMode } from "$lib/pdf/template";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { t, type Language } from "$lib/i18n";
-  import { parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
+  import { keepKnown, parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
   import type { HeartDesign } from "$lib/types/heart";
   import {
     trackHeartView,
@@ -65,8 +65,14 @@
   }
 
   onMount(() => {
-    selectedIds = parseSelected(window.location.search);
     userHearts = getUserCollection();
+    // `?selected=` is shareable, so it can name hearts this browser does not
+    // have (the sender's own, or one since deleted). Drop them now that every
+    // heart on the page is known, so the badge, the button and the PDF agree
+    // and the URL stops carrying dead ids.
+    const fromUrl = parseSelected(window.location.search);
+    selectedIds = keepKnown(fromUrl, allHearts.map((h) => h.id));
+    if (selectedIds.size !== fromUrl.size) updateUrlWithSelections(selectedIds);
     pendingAnchorId = window.location.hash.slice(1) || null;
   });
 
@@ -150,8 +156,14 @@
     untrack(() => (pendingAnchorId = null));
   });
 
+  // The ticked hearts, resolved against the page. The toolbar's badge, its
+  // disabled state and the PDF all count these and not the raw ids, so a
+  // `?selected=` naming a heart this browser does not have cannot promise a
+  // template that never arrives.
+  let selectedHearts = $derived(allHearts.filter((h) => selectedIds.has(h.id)));
+
   async function handlePrintSelected() {
-    const selected = allHearts.filter((h) => selectedIds.has(h.id));
+    const selected = selectedHearts;
     if (selected.length > 0) {
       generating = true;
       try {
@@ -172,7 +184,7 @@
     }
   }
 
-  let allSelected = $derived(allHearts.length > 0 && allHearts.every((h) => selectedIds.has(h.id)));
+  let allSelected = $derived(allHearts.length > 0 && selectedHearts.length === allHearts.length);
 </script>
 
 <svelte:head>
@@ -189,6 +201,7 @@
     categories={galleryCategories}
     {myHearts}
     {selectedIds}
+    selectedCount={selectedHearts.length}
     {generating}
     {allSelected}
     bind:pdfLayout

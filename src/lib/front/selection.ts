@@ -26,6 +26,19 @@ export function toggleSelected(selected: ReadonlySet<string>, id: string): Set<s
 }
 
 /**
+ * `selected` with every id this browser has no heart for dropped.
+ *
+ * `?selected=` is shareable, and a link carries ids the recipient cannot
+ * resolve — the sender's own localStorage hearts, or a heart that has since
+ * been deleted. Those must not be counted in the toolbar's badge, so the page
+ * heals the selection once it knows which hearts exist.
+ */
+export function keepKnown(selected: ReadonlySet<string>, knownIds: Iterable<string>): Set<string> {
+	const known = new Set(knownIds);
+	return new Set([...selected].filter((id) => known.has(id)));
+}
+
+/**
  * `search` with `selected` set to `ids` — the query string including its `?`,
  * or '' when nothing is left. Other parameters are kept, in their own order.
  */

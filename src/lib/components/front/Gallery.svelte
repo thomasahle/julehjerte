@@ -27,6 +27,12 @@
 		/** The visitor's own hearts, read from localStorage after mount. */
 		myHearts: HeartDesign[];
 		selectedIds: Set<string>;
+		/**
+		 * Ticked hearts that actually exist on this page. Not `selectedIds.size`:
+		 * a shared `?selected=` can name hearts this browser has no card for, and
+		 * the toolbar must not offer a PDF of them.
+		 */
+		selectedCount: number;
 		generating: boolean;
 		allSelected: boolean;
 		pdfLayout: LayoutMode;
@@ -43,6 +49,7 @@
 		categories,
 		myHearts,
 		selectedIds,
+		selectedCount,
 		generating,
 		allSelected,
 		pdfLayout = $bindable(),
@@ -89,7 +96,7 @@
 
 		<GalleryToolbar
 			{lang}
-			selectedCount={selectedIds.size}
+			{selectedCount}
 			{generating}
 			{allSelected}
 			bind:pdfLayout

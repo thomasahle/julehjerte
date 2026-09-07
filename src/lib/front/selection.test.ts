@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseSelected, selectionSearch, toggleSelected } from './selection';
+import { keepKnown, parseSelected, selectionSearch, toggleSelected } from './selection';
 
 describe('parseSelected', () => {
 	it('is empty when the parameter is absent', () => {
@@ -44,6 +44,31 @@ describe('toggleSelected', () => {
 	it('toggling twice is a round trip', () => {
 		const start = new Set(['jul']);
 		expect(toggleSelected(toggleSelected(start, 'stjerne'), 'stjerne')).toEqual(start);
+	});
+});
+
+describe('keepKnown', () => {
+	it('drops ids no heart on the page has', () => {
+		expect(keepKnown(new Set(['jul', 'does-not-exist']), ['jul', 'stjerne'])).toEqual(
+			new Set(['jul'])
+		);
+	});
+
+	it('keeps every id when they all resolve', () => {
+		expect(keepKnown(new Set(['jul', 'stjerne']), ['jul', 'stjerne'])).toEqual(
+			new Set(['jul', 'stjerne'])
+		);
+	});
+
+	it('is empty when nothing resolves', () => {
+		expect(keepKnown(new Set(['a', 'b']), [])).toEqual(new Set());
+	});
+
+	it('returns a new Set, leaving the old one alone', () => {
+		const before = new Set(['jul', 'gone']);
+		const after = keepKnown(before, ['jul']);
+		expect(after).not.toBe(before);
+		expect(before).toEqual(new Set(['jul', 'gone']));
 	});
 });
 
