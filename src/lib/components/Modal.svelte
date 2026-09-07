@@ -13,6 +13,7 @@
       `maxHeight` are the only per-dialog geometry);
     * Escape and a click on the scrim, both closing;
     * Tab kept inside the dialog while it is open;
+    * the page behind the scrim held still while it is open;
     * focus moved in on open — to `initialFocus` if the caller gives one,
       otherwise to the dialog itself.
 
@@ -63,6 +64,24 @@
 	$effect(() => {
 		if (!open) return;
 		tick().then(() => (initialFocus ?? dialogEl)?.focus());
+	});
+
+	// A dialog that declares aria-modal has to *be* modal: without this the page
+	// behind the scrim still scrolls on a wheel or trackpad gesture and slides
+	// away under a dialog that stays put. The scrollbar's width is handed back as
+	// padding so hiding it does not shift the page sideways.
+	$effect(() => {
+		if (!open) return;
+		const body = document.body;
+		const previousOverflow = body.style.overflow;
+		const previousPadding = body.style.paddingRight;
+		const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+		body.style.overflow = 'hidden';
+		if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
+		return () => {
+			body.style.overflow = previousOverflow;
+			body.style.paddingRight = previousPadding;
+		};
 	});
 
 	/** Keep Tab inside the dialog while it is open. */
