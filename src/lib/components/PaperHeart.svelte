@@ -4108,11 +4108,13 @@
 				flex-direction: row;
 			}
 
-		.toolbar-separator {
-			width: auto;
-			height: auto;
-		}
+			.toolbar-separator {
+				width: auto;
+				height: auto;
+			}
 
+			/* !important beats the Tailwind utilities the shadcn Separator sets on
+			   itself; it has no class hook of its own to target. */
 			.toolbar-separator :global([data-separator]) {
 				width: 1px !important;
 				min-width: 1px !important;
@@ -4120,6 +4122,8 @@
 				height: 24px !important;
 			}
 
+			/* The three !importants below beat the inline width/height
+			   updateCanvasSize() writes on .canvas-wrapper for the desktop layout. */
 			.paper-heart:not(.readonly) .canvas-wrapper {
 				width: 100% !important;
 				height: auto !important;

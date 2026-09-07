@@ -150,7 +150,8 @@
 		align-items: center;
 		justify-content: center;
 		margin: 0;
-		color: var(--muted);
+		/* Sits directly on the scene's --sky, where --muted is only 4.02:1. */
+		color: var(--muted-on-sky);
 		font-size: 15px;
 	}
 

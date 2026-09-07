@@ -89,6 +89,19 @@
    $lib/breakpoints.ts rather than re-typing it.
 --------------------------------------------------------------------------- */
 
+/* ---------------------------------------------------------------------------
+   Stacking order. Every z-index in the site belongs to one of these bands; add
+   a one-line reason next to any value that is not obviously in its band.
+
+       0-5     page content — a card's ribbon and badge, the hero's corner firs,
+               the gallery's sticky toolbar (5)
+       20-29   the editor's canvas chrome: notices, tool rail, panels
+       30      the site nav, and the editor's floating panel over the canvas
+               (different stacking contexts, so they never actually meet)
+       60      the skip link, which has to clear the nav it skips
+       1000    modal dialogs
+--------------------------------------------------------------------------- */
+
 /* The shadcn-svelte components (button, tooltip, dropdown-menu, …) read these
    Tailwind theme tokens. They are repointed at the redesign palette so those
    components blend in; the redesign's own buttons use the .btn classes below. */
