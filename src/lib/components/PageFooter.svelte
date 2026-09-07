@@ -27,8 +27,12 @@
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 	import { toHexColor } from '$lib/utils/heartColors';
 
-	// Baked in at prerender time, like the rest of the page.
+	// Baked in at prerender time, like the rest of the page. The site's first
+	// season was Christmas 2025, so the line reads "julen 2025, 2026" and gains
+	// the current year from then on.
+	const FIRST_SEASON = 2025;
 	const year = new Date().getFullYear();
+	const seasons = year > FIRST_SEASON ? `${FIRST_SEASON}, ${year}` : `${FIRST_SEASON}`;
 
 	let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let leftInput = $state<HTMLInputElement | null>(null);
@@ -111,7 +115,7 @@
 			{t('madeBy', lang)}
 			<a href="https://thomasahle.com" target="_blank" rel="noopener">Thomas Ahle</a>,
 			{lang === 'da' ? 'julen' : 'Christmas'}
-			{year}
+			{seasons}
 		</span>
 	</div>
 </footer>
