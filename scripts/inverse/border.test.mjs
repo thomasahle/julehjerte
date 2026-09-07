@@ -46,6 +46,9 @@ test('fresh solve survives edge-pixel perturbations and reports error against th
   assert.equal(result.report.imageError.resolution, 128);
   assert.equal(result.report.imageError.mismatchPixels, 5);
   assert.equal(result.report.imageError.mismatchFraction, 5 / (128 * 128));
+  assert.equal(result.comparison.resolution, prepared.preview.resolution);
+  const displayedMismatches = result.comparison.wovenMask.reduce((count, v, i) => count + Number(v !== prepared.preview.mask[i]), 0);
+  assert.equal(displayedMismatches, result.report.imageError.mismatchPixels);
 });
 
 test('corner slivers in perpendicular sampling profiles do not create extra slit endpoints', () => {

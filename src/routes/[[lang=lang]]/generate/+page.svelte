@@ -10,6 +10,7 @@
   import { inverseText, type MessageKey } from '$lib/inverse/messages';
   import { GENERAL_PRESET, MATCHING_GRID_PRESET, DIRECT_PRESET, SIMPLIFIED_PREPROCESSING } from '$lib/inverse/presets.js';
   import SvgPreview from '$lib/inverse/SvgPreview.svelte';
+  import ArtworkComparison from '$lib/inverse/ArtworkComparison.svelte';
 
   let lang = $derived(langFromPathname(page.url.pathname, base));
   const text = (key: MessageKey) => inverseText(key, lang);
@@ -49,7 +50,14 @@
   let suppressCropClick = false;
   let maskView = $state(false);
   let maskCanvas = $state<HTMLCanvasElement | null>(null);
-  let view = $state<'heart' | 'leftTemplate' | 'rightTemplate' | 'paper'>('heart');
+  type ResultView = 'heart' | 'leftTemplate' | 'rightTemplate' | 'paper' | 'sourcePaths' | 'sourceMask' | 'comparison';
+  let view = $state<ResultView>('heart');
+  let resultViews = $derived<ResultView[]>([
+    'heart', 'leftTemplate', 'rightTemplate', 'paper',
+    ...(prepared && !prepared.metadata.direct ? ['sourcePaths' as const] : []),
+    ...(prepared ? ['sourceMask' as const] : []),
+    ...(prepared && result?.comparison && result.comparison.resolution === prepared.resolution ? ['comparison' as const] : []),
+  ]);
   let saved = $derived(input?.type === 'json');
   let leftColour = $state('#ffffff');
   let rightColour = $state('#b91313');
@@ -398,7 +406,7 @@
   }
 
   $effect(() => {
-    if (!maskView || !prepared || !maskCanvas) return;
+    if (!(result ? view === 'sourceMask' : maskView) || !prepared || !maskCanvas) return;
     const n = prepared.resolution;
     maskCanvas.width = n;
     maskCanvas.height = n;
@@ -434,7 +442,7 @@
   });
 
   let resultTitle = $derived(result?.report.templateExportAllowed ? 'checked' : result?.report.manufacturing.status === 'uncertain' ? 'uncertain' : 'review');
-  let resultFile = $derived(({ heart: 'weave_preview.svg', leftTemplate: 'template_left.svg', rightTemplate: 'template_right.svg', paper: 'manufacturability_left.svg' })[view]);
+  let resultFile = $derived(({ heart: 'weave_preview.svg', leftTemplate: 'template_left.svg', rightTemplate: 'template_right.svg', paper: 'manufacturability_left.svg', sourcePaths: '', sourceMask: '', comparison: '' })[view]);
 </script>
 
 <svelte:head><title>{text('title')} · Juleflet</title></svelte:head>
@@ -594,14 +602,22 @@
         <p class="eyebrow">{text(result.report.solver.imported ? 'saved' : 'fresh')}</p>
         <h2>{text(resultTitle as MessageKey)}</h2>
         <div class="view-buttons" role="group" aria-label={text('heart')}>
-          {#each ['heart', 'leftTemplate', 'rightTemplate', 'paper'] as tab}
+          {#each resultViews as tab}
             <button class:active={view === tab} type="button" aria-pressed={view === tab} disabled={!result.report.templateExportAllowed && (tab === 'leftTemplate' || tab === 'rightTemplate')} onclick={() => view = tab as typeof view}>{text(tab as MessageKey)}</button>
           {/each}
         </div>
-        <div class:paper-preview={view === 'paper'}>
+        {#if view === 'sourcePaths' && prepared}
+          <SvgPreview svg={prepared.boundaries} alt={text('sourcePaths')} />
+          <p class="muted small">{text('sourcePathsHelp')}</p>
+        {:else if view === 'sourceMask' && prepared}
+          <canvas class="mask" bind:this={maskCanvas} aria-label={text('sourceMask')}></canvas>
+          <p class="muted small">{text('sourceMaskHelp')}</p>
+        {:else if view === 'comparison' && prepared && result.comparison}
+          <ArtworkComparison {prepared} comparison={result.comparison} colours={[leftColour, rightColour]} {lang} />
+        {:else}<div class:paper-preview={view === 'paper'}>
           {#if result.files[resultFile]}<SvgPreview svg={result.files[resultFile]} alt={text(view)} />{/if}
           {#if view === 'paper'}<SvgPreview svg={result.files['manufacturability_right.svg']} alt={text('right')} />{/if}
-        </div>
+        </div>{/if}
         {#if view === 'paper'}<p class="muted small">{text('paperKey')}</p>{/if}
         <div class="metrics">
           <div><strong>{result.report.slits.left} + {result.report.slits.right}</strong><span>{text('slits')}</span></div>

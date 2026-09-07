@@ -36,6 +36,11 @@ export interface PreparedArtwork {
 
 export interface DesignResult {
   files: Record<string, string>;
+  comparison?: {
+    resolution: number;
+    wovenMask: Uint8Array;
+    validMask?: Uint8Array;
+  };
   report: {
     templateExportAllowed: boolean;
     slits: { left: number; right: number };
