@@ -295,6 +295,14 @@
     design ? lobesShareTemplate(design.fingers, design.gridSize) : (meta?.symmetry.sharedTemplate ?? true),
   );
 
+  // Back to the card the visitor came from rather than the top of the hero: the
+  // front page scrolls to `#heart-<id>`, and re-finding one card among 38 after
+  // every visit is the whole cost of getting this wrong. A shared heart has no
+  // card of its own, so it goes back to the gallery itself.
+  let backHref = $derived(
+    isShared ? routeHref('home', lang) : homeAnchorHref(makeHeartAnchorId(heartId), lang),
+  );
+
   // "af Thomas · 3 × 3 striber" — the panel's one-line credit (DESIGN.md §4).
   let stripsLabel = $derived(info ? formatStrips(info.gridSize, lang) : "");
 
@@ -349,7 +357,7 @@
 
   <main id="main-content" tabindex="-1">
   <div class="crumb-row">
-    <a class="crumb" href={routeHref('home', lang)}>
+    <a class="crumb" href={backHref}>
       <ArrowLeftIcon size={16} />
       {t('backToTemplates', lang)}
     </a>
