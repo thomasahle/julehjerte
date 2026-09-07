@@ -24,7 +24,6 @@
   import Fir from "$lib/components/Fir.svelte";
   import Scene from "$lib/components/Scene.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
-  import { ArrowLeftIcon } from "$lib/components/icons";
   import { FIR_FILLS } from "$lib/landscape";
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from "$lib/stores/collection";
   import {
@@ -36,12 +35,7 @@
     SITE_URL,
   } from "$lib/config";
   import { stripsLabel as formatStrips, t, type Language } from "$lib/i18n";
-  import {
-    editorHref,
-    heartPath,
-    homeAnchorHref,
-    href as routeHref,
-  } from "$lib/i18n/routes";
+  import { editorHref, heartPath, homeAnchorHref } from "$lib/i18n/routes";
   import { lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty } from "$lib/utils/difficulty";
   import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
@@ -295,14 +289,6 @@
     design ? lobesShareTemplate(design.fingers, design.gridSize) : (meta?.symmetry.sharedTemplate ?? true),
   );
 
-  // Back to the card the visitor came from rather than the top of the hero: the
-  // front page scrolls to `#heart-<id>`, and re-finding one card among 38 after
-  // every visit is the whole cost of getting this wrong. A shared heart has no
-  // card of its own, so it goes back to the gallery itself.
-  let backHref = $derived(
-    isShared ? routeHref('home', lang) : homeAnchorHref(makeHeartAnchorId(heartId), lang),
-  );
-
   // "af Thomas · 3 × 3 striber" — the panel's one-line credit (DESIGN.md §4).
   let stripsLabel = $derived(info ? formatStrips(info.gridSize, lang) : "");
 
@@ -356,13 +342,6 @@
   <PageHeader {lang} active="templates" />
 
   <main id="main-content" tabindex="-1">
-  <div class="crumb-row">
-    <a class="crumb" href={backHref}>
-      <ArrowLeftIcon size={16} />
-      {t('backToTemplates', lang)}
-    </a>
-  </div>
-
   <Scene>
     <!-- The firs the heart hangs on, drawn over the landscape and anchored to the
          bottom-left corner. Hidden below 1100, where the columns stack. -->
@@ -437,29 +416,6 @@
     flex-direction: column;
   }
 
-  /* breadcrumb */
-  .crumb-row {
-    max-width: 1280px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 18px 40px 0;
-    box-sizing: border-box;
-  }
-
-  .crumb {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    text-decoration: none;
-    color: var(--green);
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  .crumb:hover {
-    color: var(--red);
-  }
-
   /* The sky panel and the landscape along its bottom come from <Scene>; the firs
      the heart hangs on are drawn over them here. */
   .scene-trees {
@@ -529,24 +485,14 @@
   }
 
   @media (max-width: 899px) {
-    .crumb-row {
-      padding: 14px 24px 0;
-    }
-
     .detail-main {
       padding: 12px 24px 32px;
     }
-
   }
 
   @media (max-width: 599px) {
-    .crumb-row {
-      padding: 12px 16px 0;
-    }
-
     .detail-main {
       padding: 12px 16px 28px;
     }
-
   }
 </style>

@@ -265,7 +265,6 @@ export const translations = {
     guideLabelUnder: 'under',
     switchLanguage: 'Switch to English',
     back: 'Tilbage',
-    backToTemplates: 'Tilbage til skabeloner',
 
     // "Om" / "About" page
     aboutTitle: 'Om Juleflet.dk',
@@ -557,7 +556,6 @@ export const translations = {
     guideLabelUnder: 'under',
     switchLanguage: 'Skift til dansk',
     back: 'Back',
-    backToTemplates: 'Back to templates',
 
     // "Om" / "About" page
     aboutTitle: 'About Juleflet.dk',
