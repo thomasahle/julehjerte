@@ -409,8 +409,11 @@
       return;
     }
 
-    // Navigate to gallery
-    goto(homeAnchorHref(makeHeartAnchorId(design.id), lang));
+    // Back where the visitor came from. Arriving from a heart's page via
+    // "Rediger i editor" (?returnTo=detail), "Tilbage" returns to that heart —
+    // so "Gem" must not throw them out to the front page instead.
+    const backId = returnToDetail ? getBackDetailId() : null;
+    goto(backId ? heartHref(backId, lang) : homeAnchorHref(makeHeartAnchorId(design.id), lang));
   }
 
   function handleEditorBack(event: MouseEvent) {
