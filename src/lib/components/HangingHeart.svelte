@@ -1,6 +1,11 @@
 <!--
-  A heart hanging in a red paper ribbon — the redesign's basic display unit
+  A heart hanging in a paper ribbon — the redesign's basic display unit
   (hero, gallery cards, detail stage, related hearts). docs/redesign/DESIGN.md §3.
+
+  The ribbon is cut from the same paper as the heart: it takes the right-hand
+  lobe colour, so it follows the heart's own colours or, failing those, the
+  site-wide pair the footer's swatches edit. A hardcoded red left every
+  blue-and-white heart hanging from a colour used nowhere else on the page.
 
   The block is `size` px wide but shrinks with its container (max-width: 100%);
   the ribbon runs on behind the heart into the cleft between the lobes, so its
@@ -18,8 +23,15 @@
              selection ring or badge on ::before / ::after.
 -->
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import PaperHeartSVG from '$lib/components/PaperHeartSVG.svelte';
 	import { swayAnimationDelay } from '$lib/utils/sway';
+	import {
+		DEFAULT_COLORS,
+		getColors,
+		subscribeColors,
+		type HeartColors
+	} from '$lib/stores/colors';
 	import type { HeartDesign } from '$lib/types/heart';
 
 	interface Props {
@@ -34,7 +46,7 @@
 		 * $lib/utils/sway for why a positive one makes the heart jump.
 		 */
 		delay?: number;
-		/** Ribbon colour. */
+		/** Ribbon colour; by default the heart's own right-hand paper colour. */
 		color?: string;
 		/** Unique id prefix for this instance — see the note above. */
 		idPrefix: string;
@@ -47,10 +59,23 @@
 		size = 168,
 		ribbon = 40,
 		delay = 0,
-		color = 'var(--red)',
+		color = undefined,
 		idPrefix,
 		class: className = undefined
 	}: Props = $props();
+
+	// The site-wide pair, read after mount so the prerendered markup and the
+	// hydrated one agree — the same dance PaperHeartSVG does for the lobes.
+	let storeColors = $state<HeartColors>({ ...DEFAULT_COLORS });
+
+	onMount(() => {
+		storeColors = getColors();
+		return subscribeColors((c) => {
+			storeColors = c;
+		});
+	});
+
+	let ribbonColor = $derived(color ?? design.colors?.right ?? storeColors.right);
 
 	// The ribbon disappears into the cleft between the lobes; the overlap is a
 	// share of the width so it survives the max-width: 100% shrink.
@@ -61,7 +86,7 @@
 <div class="hang {className ?? ''}" style="width: {size}px; animation-delay: {swayAnimationDelay(delay)};">
 	<div
 		class="ribbon"
-		style="width: {ribbonWidth}px; height: {ribbon + dip}px; background: {color};"
+		style="width: {ribbonWidth}px; height: {ribbon + dip}px; background: {ribbonColor};"
 	></div>
 	<div class="heart">
 		<PaperHeartSVG
