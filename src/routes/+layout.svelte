@@ -4,6 +4,7 @@
 	import { page } from "$app/stores";
 	import { SITE_NAME, SITE_TITLE, SITE_TITLE_EN, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID } from "$lib/config";
 	import { langFromPathname } from "$lib/i18n";
+	import { alternatePaths } from "$lib/i18n/routes";
 	import * as Tooltip from "$lib/components/ui/tooltip";
 	import PageFooter from "$lib/components/PageFooter.svelte";
 
@@ -18,10 +19,11 @@
 	// Paths always carry a trailing slash, matching `trailingSlash = 'always'`.
 	let pathname = $derived($page.url.pathname.endsWith("/") ? $page.url.pathname : `${$page.url.pathname}/`);
 	let pageUrl = $derived(`${SITE_URL}${pathname}`);
-	// The same path without the language prefix, e.g. /en/editor/ -> /editor/
-	let langNeutralPath = $derived(lang === "en" ? pathname.slice("/en".length) : pathname);
-	let alternateDaUrl = $derived(`${SITE_URL}${langNeutralPath}`);
-	let alternateEnUrl = $derived(`${SITE_URL}/en${langNeutralPath}`);
+	// The same page in the other language. Goes through the shared route table
+	// because /saadan-goer-du/ and /om/ do not mirror by prefixing /en.
+	let alternates = $derived(alternatePaths(pathname));
+	let alternateDaUrl = $derived(`${SITE_URL}${alternates.da}`);
+	let alternateEnUrl = $derived(`${SITE_URL}${alternates.en}`);
 
 	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang, og and twitter tags.
 	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);

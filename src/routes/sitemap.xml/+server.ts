@@ -1,31 +1,45 @@
 import { SITE_URL } from '$lib/config';
 import hearts from '$lib/data/hearts.json';
+import { ROUTES, heartPath, type RouteKey } from '$lib/i18n/routes';
 import type { RequestHandler } from './$types';
 
 export const prerender = true;
 
-// Language-neutral paths, always with a trailing slash (the site uses trailingSlash = 'always',
+// The static pages, named by their key in the shared route table: the da and en
+// slugs differ for the guide and about pages, so a single language-neutral path
+// is not enough. Paths always carry a trailing slash (trailingSlash = 'always',
 // so URLs without one 301-redirect on the live site).
-const staticPages = [
-	{ path: '/', priority: '1.0' },
-	{ path: '/editor/', priority: '0.8' }
+const staticPages: { key: RouteKey; priority: string }[] = [
+	{ key: 'home', priority: '1.0' },
+	{ key: 'editor', priority: '0.8' },
+	{ key: 'howTo', priority: '0.7' },
+	{ key: 'about', priority: '0.5' }
 ];
 
 export const GET: RequestHandler = async () => {
 	const allHeartIds = hearts.categories.flatMap((cat) => cat.hearts);
 
+	// One entry per page, carrying both language variants of that page.
 	const pages = [
-		...staticPages,
-		...allHeartIds.map((heartId) => ({ path: `/hjerte/${heartId}/`, priority: '0.6' }))
+		...staticPages.map(({ key, priority }) => ({
+			da: ROUTES[key].da,
+			en: ROUTES[key].en,
+			priority
+		})),
+		...allHeartIds.map((heartId) => ({
+			da: heartPath(heartId, 'da'),
+			en: heartPath(heartId, 'en'),
+			priority: '0.6'
+		}))
 	];
 
 	// The site is prerendered, so the build date is the last time any page could have changed.
 	const lastmod = new Date().toISOString().slice(0, 10);
 
 	// One <url> per language variant; both variants list the same da/en/x-default alternates.
-	const urls = pages.flatMap(({ path, priority }) => {
-		const daUrl = `${SITE_URL}${path}`;
-		const enUrl = `${SITE_URL}/en${path}`;
+	const urls = pages.flatMap(({ da, en, priority }) => {
+		const daUrl = `${SITE_URL}${da}`;
+		const enUrl = `${SITE_URL}${en}`;
 		return [daUrl, enUrl].map(
 			(loc) => `  <url>
     <loc>${loc}</loc>
