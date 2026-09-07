@@ -2,6 +2,7 @@ import { jsPDF } from 'jspdf';
 import type { HeartDesign, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
+import { ALL_HEART_IDS } from '$lib/data/categories';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
@@ -437,6 +438,17 @@ function collectTemplates(designs: HeartDesign[]): TemplateSlot[] {
   return templates;
 }
 
+const GALLERY_IDS = new Set<string>(ALL_HEART_IDS);
+
+/**
+ * The address printed under a template's name. A gallery heart has its own page,
+ * which is the shortest way back to exactly this template; a heart the visitor
+ * drew has none, so it gets the site.
+ */
+function templateAddress(design: HeartDesign): string {
+  return GALLERY_IDS.has(design.id) ? `${SITE_DOMAIN}/hjerte/${design.id}` : SITE_DOMAIN;
+}
+
 function addTemplatesPage(
   pdf: jsPDF,
   templates: TemplateSlot[],
@@ -473,7 +485,7 @@ function addTemplatesPage(
 
   // Preview size: scales with template size, max 30% of template width
   const PREVIEW_SIZE = Math.min(TEMPLATE_WIDTH * 0.35, TEMPLATE_HEIGHT * 0.25);
-  const HEADER_SPACE = 4; // Space for name text
+  const HEADER_SPACE = 7; // Two lines: the name, and the template's own address
 
   let drawn = 0;
   for (let i = 0; i < maxPerPage && startIndex + i < templates.length; i++) {
@@ -490,7 +502,12 @@ function addTemplatesPage(
     const label = template.lobe === 'both'
       ? template.design.name
       : `${template.design.name} (${t(template.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
-    pdf.text(label, pos.x, slotTop + HEADER_SPACE, { align: 'center' });
+    pdf.text(label, pos.x, slotTop + 4, { align: 'center' });
+    // A sheet often ends up separated from the rest (a school, a workshop), so
+    // each template carries the address that leads back to it.
+    pdf.setFontSize(6);
+    pdf.setTextColor(128);
+    pdf.text(templateAddress(template.design), pos.x, slotTop + HEADER_SPACE, { align: 'center' });
 
     // Calculate template dimensions to position preview inside the ear
     const templateTop = slotTop + HEADER_SPACE + 2;
