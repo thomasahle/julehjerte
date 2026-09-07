@@ -1,0 +1,1233 @@
+{
+  "recordedAt": "2026-09-07T20:09:04.913353+00:00",
+  "codeCommit": "a28216b",
+  "report": "docs/inverse/GENERATOR-QA.md",
+  "checks": [
+    {
+      "command": "npm test",
+      "status": "pass",
+      "websiteAndWorkerTests": 127,
+      "engineAndIntegrationTests": 108,
+      "total": 235,
+      "log": "/tmp/juleflet-qa-tests-release.log"
+    },
+    {
+      "command": "npm run check",
+      "status": "pass",
+      "errors": 0,
+      "warnings": 8,
+      "warningNote": "Existing PaperHeart.svelte accessibility warnings",
+      "log": "/tmp/juleflet-qa-check-final.log"
+    },
+    {
+      "command": "npm run lint",
+      "status": "pass",
+      "log": "/tmp/juleflet-qa-lint-release.log"
+    },
+    {
+      "command": "npm run build",
+      "status": "pass",
+      "log": "/tmp/juleflet-qa-build-release.log"
+    },
+    {
+      "command": "npm run test:inverse:generator:browser",
+      "status": "pass",
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-083Z-generator-qa/results.json",
+      "origin": "http://127.0.0.1:4174",
+      "checks": 63,
+      "browsers": [
+        "chromium",
+        "firefox",
+        "webkit"
+      ]
+    },
+    {
+      "command": "npm run test:inverse:locator:browser",
+      "status": "pass",
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-085Z-locator/results.json",
+      "origin": "http://127.0.0.1:4174",
+      "checks": 14,
+      "browsers": [
+        "chromium",
+        "firefox"
+      ]
+    },
+    {
+      "command": "npm run test:inverse:examples:browser",
+      "status": "pass",
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-082Z-examples/results.json",
+      "origin": "http://127.0.0.1:4174",
+      "checks": 22,
+      "browsers": [
+        "chromium",
+        "firefox"
+      ]
+    },
+    {
+      "command": "npm run test:inverse:direct:browser",
+      "status": "pass",
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-085Z-direct/results.json",
+      "origin": "http://127.0.0.1:4174",
+      "checks": 14,
+      "browsers": [
+        "chromium",
+        "firefox"
+      ]
+    }
+  ],
+  "automatedTestTotal": 235,
+  "cropTests": 21,
+  "browserCheckTotal": 113,
+  "browser": {
+    "generator": {
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-083Z-generator-qa/results.json",
+      "sha256": "26689cd2dffab59616e18acbb3e217052a6220f2ab354e4f0b84e98c23dd8492",
+      "browsers": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "Coloured photo uploads, locates four overlap corners and renders its original crop",
+            "Reported yellow-star photo locates automatically; uncertain fit remains marked for review",
+            "A square photograph also gets automatic corners instead of silently using the whole image",
+            "Whole-image mode hides the unused crop overlay; returning restores the selection",
+            "Clearing a coordinate invalidates the crop and solve; restoring it recovers preparation",
+            "Crossed corners fail without exports; four manual clicks recover a usable crop",
+            "Failed rectangle detection switches to manual corners; failed refitting preserves explicit edits",
+            "Stopping corner detection permits a fresh upload and ignores the old worker",
+            "unsupported.txt: rejected cleanly; a valid upload recovers",
+            "broken.png: rejected cleanly; a valid upload recovers",
+            "too-large.png: rejected cleanly; a valid upload recovers",
+            "25-megapixel image is rejected before crop processing",
+            "Malformed saved templates report an error without stale downloads",
+            "Fresh direct solve exports a checked ZIP whose curves independently reproduce the source",
+            "The General solver also completes a fresh solve with the real WASM engine",
+            "Changing a cutting constraint removes the previous result and exports",
+            "Tiny square artwork skips the locator and still prepares",
+            "Mobile layout supports manual placement without horizontal overflow",
+            "Danish generator exposes and uses the same crop tools",
+            "A failed worker load reports an error and retries with a fresh worker",
+            "Changing a footer colour during detection cancels safely and permits another fit"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "Coloured photo uploads, locates four overlap corners and renders its original crop",
+            "Reported yellow-star photo locates automatically; uncertain fit remains marked for review",
+            "A square photograph also gets automatic corners instead of silently using the whole image",
+            "Whole-image mode hides the unused crop overlay; returning restores the selection",
+            "Clearing a coordinate invalidates the crop and solve; restoring it recovers preparation",
+            "Crossed corners fail without exports; four manual clicks recover a usable crop",
+            "Failed rectangle detection switches to manual corners; failed refitting preserves explicit edits",
+            "Stopping corner detection permits a fresh upload and ignores the old worker",
+            "unsupported.txt: rejected cleanly; a valid upload recovers",
+            "broken.png: rejected cleanly; a valid upload recovers",
+            "too-large.png: rejected cleanly; a valid upload recovers",
+            "25-megapixel image is rejected before crop processing",
+            "Malformed saved templates report an error without stale downloads",
+            "Fresh direct solve exports a checked ZIP whose curves independently reproduce the source",
+            "The General solver also completes a fresh solve with the real WASM engine",
+            "Changing a cutting constraint removes the previous result and exports",
+            "Tiny square artwork skips the locator and still prepares",
+            "Mobile layout supports manual placement without horizontal overflow",
+            "Danish generator exposes and uses the same crop tools",
+            "A failed worker load reports an error and retries with a fresh worker",
+            "Changing a footer colour during detection cancels safely and permits another fit"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "webkit",
+          "checks": [
+            "Coloured photo uploads, locates four overlap corners and renders its original crop",
+            "Reported yellow-star photo locates automatically; uncertain fit remains marked for review",
+            "A square photograph also gets automatic corners instead of silently using the whole image",
+            "Whole-image mode hides the unused crop overlay; returning restores the selection",
+            "Clearing a coordinate invalidates the crop and solve; restoring it recovers preparation",
+            "Crossed corners fail without exports; four manual clicks recover a usable crop",
+            "Failed rectangle detection switches to manual corners; failed refitting preserves explicit edits",
+            "Stopping corner detection permits a fresh upload and ignores the old worker",
+            "unsupported.txt: rejected cleanly; a valid upload recovers",
+            "broken.png: rejected cleanly; a valid upload recovers",
+            "too-large.png: rejected cleanly; a valid upload recovers",
+            "25-megapixel image is rejected before crop processing",
+            "Malformed saved templates report an error without stale downloads",
+            "Fresh direct solve exports a checked ZIP whose curves independently reproduce the source",
+            "The General solver also completes a fresh solve with the real WASM engine",
+            "Changing a cutting constraint removes the previous result and exports",
+            "Tiny square artwork skips the locator and still prepares",
+            "Mobile layout supports manual placement without horizontal overflow",
+            "Danish generator exposes and uses the same crop tools",
+            "A failed worker load reports an error and retries with a fresh worker",
+            "Changing a footer colour during detection cancels safely and permits another fit"
+          ],
+          "pageErrors": []
+        }
+      ]
+    },
+    "locator": {
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-085Z-locator/results.json",
+      "sha256": "71df0730c597cef94f9c50114153e1da0fc39aeb77c29ea7d0774259136e92c2",
+      "browsers": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "upload → real locator worker → original photo preview agrees with recorded source pixels",
+            "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
+            "counterclockwise manual corners retain their image orientation and prepare successfully",
+            "rough rectangle selects the second heart; pointer dragging moves its corner without resetting the crop",
+            "manual reset clears stale photo and prepared artwork",
+            "user collage uses exactly the benchmark sRGB pixels; a selected photo region yields a reviewable crop",
+            "crop controls and photo preview fit a mobile viewport"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "upload → real locator worker → original photo preview agrees with recorded source pixels",
+            "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
+            "counterclockwise manual corners retain their image orientation and prepare successfully",
+            "rough rectangle selects the second heart; pointer dragging moves its corner without resetting the crop",
+            "manual reset clears stale photo and prepared artwork",
+            "user collage uses exactly the benchmark sRGB pixels; a selected photo region yields a reviewable crop",
+            "crop controls and photo preview fit a mobile viewport"
+          ],
+          "pageErrors": []
+        }
+      ]
+    },
+    "examples": {
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-082Z-examples/results.json",
+      "sha256": "de0b1c42fba12bd7f1138e9fbb82d2bcd09b440c9792071c45e68d7f78b970f3",
+      "browsers": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "Waves · new solve: one click on a fresh page produces a rendered preview",
+            "Star · new solve: one click on a fresh page produces a rendered preview",
+            "JUL · saved templates: one click on a fresh page produces a rendered preview",
+            "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+            "Star · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+            "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+            "example recovers from a rejected upload",
+            "failed example request clears old downloads and offers a working retry",
+            "automatic saved-template check can be stopped; another example starts with a fresh worker",
+            "mobile example scrolls its rendered preview into view without overflow",
+            "Danish example also opens its preview with one click"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "Waves · new solve: one click on a fresh page produces a rendered preview",
+            "Star · new solve: one click on a fresh page produces a rendered preview",
+            "JUL · saved templates: one click on a fresh page produces a rendered preview",
+            "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+            "Star · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+            "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+            "example recovers from a rejected upload",
+            "failed example request clears old downloads and offers a working retry",
+            "automatic saved-template check can be stopped; another example starts with a fresh worker",
+            "mobile example scrolls its rendered preview into view without overflow",
+            "Danish example also opens its preview with one click"
+          ],
+          "pageErrors": []
+        }
+      ]
+    },
+    "direct": {
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-085Z-direct/results.json",
+      "sha256": "21f541b8b7bb8e383bea70486d26f69f646bb0b1741a10b29db085c9e3691ed1",
+      "browsers": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "edge-noise-checker.png: real worker bypasses tracing and shows the source mask",
+            "Stopping terminates the worker without showing a stale result",
+            "edge-noise-checker.png: real worker bypasses tracing and shows the source mask",
+            "checker: valid fresh three-slit pair; independent exported-curve mismatch 0.006%",
+            "rectified.png: real worker bypasses tracing and shows the source mask",
+            "flower: valid fresh three-slit pair; independent exported-curve mismatch 0.520%",
+            "Changing algorithm invalidates the prior result"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "edge-noise-checker.png: real worker bypasses tracing and shows the source mask",
+            "Stopping terminates the worker without showing a stale result",
+            "edge-noise-checker.png: real worker bypasses tracing and shows the source mask",
+            "checker: valid fresh three-slit pair; independent exported-curve mismatch 0.006%",
+            "rectified.png: real worker bypasses tracing and shows the source mask",
+            "flower: valid fresh three-slit pair; independent exported-curve mismatch 0.513%",
+            "Changing algorithm invalidates the prior result"
+          ],
+          "pageErrors": []
+        }
+      ]
+    }
+  },
+  "sourceSha256": {
+    "static/inverse/locator/palette.js": "7d8d7468c0d98a01376238aa9a0a2bb9d7f9b70092dea10a74064b8eb9a1940c",
+    "static/inverse/locator/locator.js": "9ee9f10a8b2eaa22c159371226896a5313faf4d7dae51b7ad943ef1ac52086ae",
+    "static/inverse/core/crop.js": "8ccbf040d18d6a450099beebf398a3958845012fc19bc83cd2c9ca8ce6e087cc",
+    "src/routes/[[lang=lang]]/generate/+page.svelte": "3e3e992abb01d3a1497f5c0727215643d1c2506f76cea9d9d702f116943ffca5",
+    "src/lib/inverse/messages.ts": "ffdb4384cdd2ef72cf201309484a436fe0ea90a6a0d19216aa3820913093c42d",
+    "scripts/inverse/crop-fixture.mjs": "29d35f169e1c599ebdea6a20147d7cd8fddf22f0d53aaa3a8d690156161307bd",
+    "scripts/inverse/crop.test.mjs": "63b1228ae9c78c584b4aa91d7905d0e47cb54589588b85d95c9832b28f41cdba",
+    "scripts/inverse/generator-qa-browser-test.mjs": "b3acfec2864fb04549750d1b84c391913fc34cb2a7ec6b04dbdaba3b08cee861",
+    "scripts/inverse/palette-photo-benchmark.mjs": "2474a676b666f57535a5643ab9482b0c01bb7b8d22d3f2c654e3bf5fd2eba381",
+    "package.json": "682fb8d3268dafbe2e4e5628ea511174978e861b92c74b06f47ab96f47a51e5b"
+  },
+  "photos": {
+    "evidence": "tmp/inverse-palette/2026-09-07T19-56-37-476Z/results.json",
+    "sha256": "e57e90f686b3a0da5fa4fec50561a1a37891c396eff13339cc3adea90e5dcfc8",
+    "proposals": 24,
+    "attempts": 28,
+    "criteria": "Proposal availability and source-coordinate stability only. Original cutting paths/corner ground truth are unknown; inspect the contact sheet.",
+    "results": [
+      {
+        "id": "bibel-star-8",
+        "file": "tmp/inverse-hard-photos/sources/bibel-star-8.png",
+        "sha256": "cc903fba95b57912b6dc588b2bbc1f2885d53ee8d1b96abee3b2ec953d241f2b",
+        "runs": [
+          {
+            "variant": "automatic",
+            "status": "needs_review",
+            "quad": [
+              [
+                535.923635058345,
+                138.08539460374064
+              ],
+              [
+                760.3583639239442,
+                377.85442466426053
+              ],
+              [
+                534.6258578830394,
+                606.1244440267722
+              ],
+              [
+                300.14530487499763,
+                366.7513429315625
+              ]
+            ],
+            "maximumCornerMovement": null,
+            "sourcePixelsSha256": "845f3c6bf9e25e8adc28813289227eb25f3df2fc5cdefcaa2ac9ce7b16a3950e"
+          },
+          {
+            "variant": "rough-roi",
+            "status": "needs_review",
+            "quad": [
+              [
+                537.6059108266219,
+                137.78425106067579
+              ],
+              [
+                762.9117191507419,
+                375.3119252733174
+              ],
+              [
+                534.7741749428849,
+                606.1207481885937
+              ],
+              [
+                300.1660418002314,
+                366.72467738297627
+              ]
+            ],
+            "maximumCornerMovement": 3.6033215325808787,
+            "sourcePixelsSha256": "845f3c6bf9e25e8adc28813289227eb25f3df2fc5cdefcaa2ac9ce7b16a3950e"
+          },
+          {
+            "variant": "jpeg-75",
+            "status": "needs_review",
+            "quad": [
+              [
+                535.7865016703588,
+                138.0296071062148
+              ],
+              [
+                760.2154102200133,
+                378.0206811004517
+              ],
+              [
+                534.6620380350495,
+                606.1432267410723
+              ],
+              [
+                300.16566685212496,
+                366.85697697963633
+              ]
+            ],
+            "maximumCornerMovement": 0.21926459824280578,
+            "sourcePixelsSha256": "bc39ab0e3d600414d220262c23c08385e4b1a6aada57b28e94e37908f49e9adb"
+          },
+          {
+            "variant": "half-resolution",
+            "status": "candidate",
+            "quad": [
+              [
+                536.400843887475,
+                138.6393058987186
+              ],
+              [
+                759.7503170853738,
+                378.6406837421897
+              ],
+              [
+                534.5098818794323,
+                606.173919516989
+              ],
+              [
+                305.67327824781074,
+                372.50479645427623
+              ]
+            ],
+            "maximumCornerMovement": 7.978766637053502,
+            "sourcePixelsSha256": "d0b19ae7bd812361213ec5f8b2d2cbb77dbc7ec4209386d79215a8c9522308dc"
+          }
+        ]
+      },
+      {
+        "id": "bibel-star-curved",
+        "file": "tmp/inverse-hard-photos/sources/bibel-star-curved.png",
+        "sha256": "130b68f82bbfdab2f1b243e4b99e41926c746820bbde527041bc8def514e834b",
+        "runs": [
+          {
+            "variant": "automatic",
+            "status": "needs_review",
+            "quad": [
+              [
+                517.3249083293052,
+                140.57629208153665
+              ],
+              [
+                756.9635254796268,
+                367.17786960756865
+              ],
+              [
+                507.8456057092928,
+                615.7181352484841
+              ],
+              [
+                282.097201645196,
+                367.06038185293716
+              ]
+            ],
+            "maximumCornerMovement": null,
+            "sourcePixelsSha256": "a45a7a5a27d68cb06f064621751954ec7169d9b4565bfdb13c2bbe446982ac77"
+          },
+          {
+            "variant": "rough-roi",
+            "status": "needs_review",
+            "quad": [
+              [
+                516.6880318585838,
+                140.55832024798968
+              ],
+              [
+                753.7041689702271,
+                370.68771011519635
+              ],
+              [
+                508.85868474078046,
+                614.7047078219398
+              ],
+              [
+                278.0808444289337,
+                363.905122272489
+              ]
+            ],
+            "maximumCornerMovement": 5.107522717387765,
+            "sourcePixelsSha256": "a45a7a5a27d68cb06f064621751954ec7169d9b4565bfdb13c2bbe446982ac77"
+          },
+          {
+            "variant": "jpeg-75",
+            "status": "needs_review",
+            "quad": [
+              [
+                519.3053016554096,
+                138.73847181308582
+              ],
+              [
+                757.9022453509655,
+                366.23351473233026
+              ],
+              [
+                507.9518563069208,
+                615.5681615096852
+              ],
+              [
+                281.4458296690434,
+                366.4038789520659
+              ]
+            ],
+            "maximumCornerMovement": 2.7017662861926874,
+            "sourcePixelsSha256": "b70a915f331c5ef5971c13ef995bd18b5abb8b344c56fb6390ba28d10ab7695f"
+          },
+          {
+            "variant": "half-resolution",
+            "status": "candidate",
+            "quad": [
+              [
+                518.4584561211432,
+                139.13919226475042
+              ],
+              [
+                753.8467816637539,
+                370.23423545374266
+              ],
+              [
+                508.0971544409665,
+                616.3901846714728
+              ],
+              [
+                282.6063822333379,
+                367.4790020143801
+              ]
+            ],
+            "maximumCornerMovement": 4.365256487245762,
+            "sourcePixelsSha256": "6c6e233db4c06947e57ed66ef5eea2aaee5fee4d0d049689ff1a44be36cd32e3"
+          }
+        ]
+      },
+      {
+        "id": "bibel-star-outline",
+        "file": "tmp/inverse-hard-photos/sources/bibel-star-outline.png",
+        "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "runs": [
+          {
+            "variant": "automatic",
+            "status": "needs_selection",
+            "maximumCornerMovement": null,
+            "sourcePixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0"
+          },
+          {
+            "variant": "rough-roi",
+            "status": "needs_review",
+            "maximumCornerMovement": null,
+            "sourcePixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0"
+          },
+          {
+            "variant": "jpeg-75",
+            "status": "needs_selection",
+            "maximumCornerMovement": null,
+            "sourcePixelsSha256": "e093340ebd81d3336aebf238865deeb5a7e01ad83dc4034ba78d93776daba239"
+          },
+          {
+            "variant": "half-resolution",
+            "status": "needs_selection",
+            "maximumCornerMovement": null,
+            "sourcePixelsSha256": "a3f47ca756ffccde19b118bf75b4fc68d52a062deacd1e1ac61aa8d28cd387e6"
+          }
+        ]
+      },
+      {
+        "id": "bibel-cross",
+        "file": "tmp/inverse-hard-photos/sources/bibel-cross.png",
+        "sha256": "32ef80dff1690e3db72ae3713d3965b2094ca908e3c7926b8ed08ff534965284",
+        "runs": [
+          {
+            "variant": "automatic",
+            "status": "needs_review",
+            "quad": [
+              [
+                508.4865434555669,
+                130.41910037795816
+              ],
+              [
+                750.3173530933009,
+                376.6521791545595
+              ],
+              [
+                523.6724321443809,
+                623.52268081454
+              ],
+              [
+                273.69487502918184,
+                386.7176995356183
+              ]
+            ],
+            "maximumCornerMovement": null,
+            "sourcePixelsSha256": "33e4d4a76a66856636890091d9aa1b006abf3932c9fce0b7578a77d8c1be1807"
+          },
+          {
+            "variant": "rough-roi",
+            "status": "needs_review",
+            "quad": [
+              [
+                507.24804726909446,
+                130.22194158425913
+              ],
+              [
+                749.8613036103313,
+                377.7622523290848
+              ],
+              [
+                523.3301365972798,
+                622.860436640411
+              ],
+              [
+                272.0550282000864,
+                385.40945373522317
+              ]
+            ],
+            "maximumCornerMovement": 2.0977618304149606,
+            "sourcePixelsSha256": "33e4d4a76a66856636890091d9aa1b006abf3932c9fce0b7578a77d8c1be1807"
+          },
+          {
+            "variant": "jpeg-75",
+            "status": "needs_review",
+            "quad": [
+              [
+                508.04693157978124,
+                130.69809744399888
+              ],
+              [
+                750.2117085874072,
+                376.6740625056727
+              ],
+              [
+                523.6208943419183,
+                623.7666210006918
+              ],
+              [
+                273.9380713333897,
+                386.87061942985844
+              ]
+            ],
+            "maximumCornerMovement": 0.5206706868944257,
+            "sourcePixelsSha256": "8dc2268d904915cf2c34a0662dd3ea59488a1818947cca2f9ab4396d1c8cb76b"
+          },
+          {
+            "variant": "half-resolution",
+            "status": "needs_review",
+            "quad": [
+              [
+                508.43883307201327,
+                130.66768036064926
+              ],
+              [
+                749.6982893850256,
+                377.12456446476597
+              ],
+              [
+                523.6770498919348,
+                623.6766623780762
+              ],
+              [
+                275.072819995049,
+                388.10779937912116
+              ]
+            ],
+            "maximumCornerMovement": 1.9573221257282256,
+            "sourcePixelsSha256": "eec7a757f9509e5eee9fd21603e7d8467ebadc63c5ae9154a1c6cec0da0d09a2"
+          }
+        ]
+      },
+      {
+        "id": "flettede-puppy",
+        "file": "tmp/inverse-hard-photos/sources/flettede-puppy.png",
+        "sha256": "2a26b6c1531efa407da71dba64fe5db6a6f2e4a6c25226c84b6e62213784fad0",
+        "runs": [
+          {
+            "variant": "automatic",
+            "status": "candidate",
+            "quad": [
+              [
+                396.5776133679024,
+                324.65832562544284
+              ],
+              [
+                652.6021087927493,
+                588.9216357580536
+              ],
+              [
+                387.571749427899,
+                849.5427831428264
+              ],
+              [
+                127.08547783119309,
+                578.0487846921233
+              ]
+            ],
+            "maximumCornerMovement": null,
+            "sourcePixelsSha256": "11e4028fec88a190b4c55bbc5d4023654c8044d5be7dd8d6ebab0da72d93460c"
+          },
+          {
+            "variant": "rough-roi",
+            "status": "needs_review",
+            "quad": [
+              [
+                396.4989214869934,
+                324.4482184506234
+              ],
+              [
+                651.3874041345874,
+                589.9701920170132
+              ],
+              [
+                387.4764527603502,
+                850.0710975828915
+              ],
+              [
+                127.9493208307141,
+                579.024774280875
+              ]
+            ],
+            "maximumCornerMovement": 1.6046736848230028,
+            "sourcePixelsSha256": "11e4028fec88a190b4c55bbc5d4023654c8044d5be7dd8d6ebab0da72d93460c"
+          },
+          {
+            "variant": "jpeg-75",
+            "status": "candidate",
+            "quad": [
+              [
+                397.273681597994,
+                324.49031859562893
+              ],
+              [
+                651.4266351571641,
+                590.1651588263579
+              ],
+              [
+                387.5587611710973,
+                849.623913904927
+              ],
+              [
+                128.2079188156242,
+                579.0415374800517
+              ]
+            ],
+            "maximumCornerMovement": 1.711165652226771,
+            "sourcePixelsSha256": "95b84638d7642759e692d1981b9100c2e86f2e6e2d4f01d22c46a07c7d8ea8ba"
+          },
+          {
+            "variant": "half-resolution",
+            "status": "candidate",
+            "quad": [
+              [
+                398.0186163800507,
+                324.42630338907594
+              ],
+              [
+                652.148045516671,
+                589.127326668076
+              ],
+              [
+                388.0693004367323,
+                850.1441042303627
+              ],
+              [
+                127.62145457999532,
+                578.247948711116
+              ]
+            ],
+            "maximumCornerMovement": 1.4595629480050014,
+            "sourcePixelsSha256": "c59764172b1293df526a5326bb54ba4085b73d6314f28b48e9cfc3be77006d71"
+          }
+        ]
+      },
+      {
+        "id": "flettede-stonehenge",
+        "file": "tmp/inverse-hard-photos/sources/flettede-stonehenge.png",
+        "sha256": "b9a1c5a2059b3781aef01b48d21b90110791cd6befc232999113c732c0a6aa24",
+        "runs": [
+          {
+            "variant": "automatic",
+            "status": "candidate",
+            "quad": [
+              [
+                305.48693240482805,
+                109.0576350724948
+              ],
+              [
+                534.9079847214851,
+                345.59656586265584
+              ],
+              [
+                294.8283777095588,
+                574.0026159082922
+              ],
+              [
+                70.52108483639987,
+                330.1175509473197
+              ]
+            ],
+            "maximumCornerMovement": null,
+            "sourcePixelsSha256": "867fdac5181320b2e898b95abb5ee778f6fc8aacab71a78a85be0ed6fa622248"
+          },
+          {
+            "variant": "rough-roi",
+            "status": "candidate",
+            "quad": [
+              [
+                305.66590770295534,
+                109.30141542585322
+              ],
+              [
+                532.7823182604455,
+                347.5562798666833
+              ],
+              [
+                294.7339218857943,
+                574.3160216201005
+              ],
+              [
+                70.0444889193509,
+                329.5005953202408
+              ]
+            ],
+            "maximumCornerMovement": 2.8911826094472266,
+            "sourcePixelsSha256": "867fdac5181320b2e898b95abb5ee778f6fc8aacab71a78a85be0ed6fa622248"
+          },
+          {
+            "variant": "jpeg-75",
+            "status": "needs_review",
+            "quad": [
+              [
+                306.53319670645044,
+                110.68129952168498
+              ],
+              [
+                530.5197559952076,
+                349.8251765353672
+              ],
+              [
+                294.627981889902,
+                573.8019632180637
+              ],
+              [
+                71.72446309359921,
+                331.3358516903544
+              ]
+            ],
+            "maximumCornerMovement": 6.0940708541578426,
+            "sourcePixelsSha256": "2cd7a3d49762118ea201d614ef0b0640f534321936c426eed4e6f68674b6188d"
+          },
+          {
+            "variant": "half-resolution",
+            "status": "needs_review",
+            "quad": [
+              [
+                306.4423551587598,
+                110.8564592240544
+              ],
+              [
+                531.2173477188009,
+                348.6626603680311
+              ],
+              [
+                295.01251549219324,
+                574.1867916624593
+              ],
+              [
+                71.86963608494645,
+                331.80787518252174
+              ]
+            ],
+            "maximumCornerMovement": 4.798097227180252,
+            "sourcePixelsSha256": "fb43269b70f4f4fd97742e99f7f3eb1d7ebb49541f7dd62dd019d5d85ee74c32"
+          }
+        ]
+      },
+      {
+        "id": "flettede-viking",
+        "file": "tmp/inverse-hard-photos/sources/flettede-viking.png",
+        "sha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+        "runs": [
+          {
+            "variant": "automatic",
+            "status": "needs_review",
+            "quad": [
+              [
+                733.2658572231079,
+                322.0368237881053
+              ],
+              [
+                1276.801358416138,
+                850.1820474901941
+              ],
+              [
+                736.4623615949042,
+                1401.620534091447
+              ],
+              [
+                194.5957796518444,
+                857.422504620424
+              ]
+            ],
+            "maximumCornerMovement": null,
+            "sourcePixelsSha256": "ba21ae598da5a5ca06cddf86c716e8cbafef42e1e326af58d35e6bc1435ee075"
+          },
+          {
+            "variant": "rough-roi",
+            "status": "needs_review",
+            "quad": [
+              [
+                726.9678251897178,
+                319.3895129281244
+              ],
+              [
+                1274.6442162555632,
+                852.3357046202779
+              ],
+              [
+                736.4745132651425,
+                1401.9394429568329
+              ],
+              [
+                190.70022088303412,
+                853.4168665577854
+              ]
+            ],
+            "maximumCornerMovement": 6.831797880717821,
+            "sourcePixelsSha256": "ba21ae598da5a5ca06cddf86c716e8cbafef42e1e326af58d35e6bc1435ee075"
+          },
+          {
+            "variant": "jpeg-75",
+            "status": "needs_review",
+            "quad": [
+              [
+                731.1216280271923,
+                320.54375254826
+              ],
+              [
+                1276.0962063433071,
+                850.9363851939653
+              ],
+              [
+                736.6520613304685,
+                1401.725365263902
+              ],
+              [
+                194.59870099245816,
+                857.6424466442205
+              ]
+            ],
+            "maximumCornerMovement": 2.6128491291825875,
+            "sourcePixelsSha256": "8f660dedad94238855bf18e0281f8de204eccd52252d3b95870e1023d2e5440e"
+          },
+          {
+            "variant": "half-resolution",
+            "status": "needs_review",
+            "quad": [
+              [
+                767.0076219374388,
+                349.72201860002565
+              ],
+              [
+                1267.7641307131732,
+                859.3948145334081
+              ],
+              [
+                736.4971345256156,
+                1401.509875184577
+              ],
+              [
+                233.4884350600632,
+                896.6645772196316
+              ]
+            ],
+            "maximumCornerMovement": 55.25014847567321,
+            "sourcePixelsSha256": "8643939ebe8fcd67c7afaafc368ef0c2c1bb2349a746a9fd22bf79d3e7ab4d98"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "The blue/white outline star has no proposal in all four variants.",
+      "The Viking half-resolution proposal moves by 55.25 source pixels and is marked needs_review.",
+      "These are proposal/stability checks, not corner accuracy or reconstruction success."
+    ]
+  },
+  "collageReplay": {
+    "evidence": "tmp/inverse-locator/2026-09-07T19-47-53-948Z/results.json",
+    "proposals": 29,
+    "inventory": 40,
+    "scope": "Original red/white path only. Matches prior proposal count; unknown corner ground truth."
+  },
+  "yellowUnadjustedSolve": {
+    "evidence": "tmp/generator-qa/yellow-solve/results.json",
+    "sha256": "52f8cad60000a9a51522476e1d448ef919529f05e4a2dc8d63b98fd244985323",
+    "results": [
+      {
+        "name": "general",
+        "quad": [
+          [
+            517.3249083293052,
+            140.57629208153665
+          ],
+          [
+            756.9635254796268,
+            367.17786960756865
+          ],
+          [
+            507.8456057092928,
+            615.7181352484841
+          ],
+          [
+            282.097201645196,
+            367.06038185293716
+          ]
+        ],
+        "error": "Sheet A has 5 start transitions but 6 end transitions. Opposite borders must agree.",
+        "templateExportAllowed": null,
+        "geometryPassed": null,
+        "paperStatus": null,
+        "slits": null,
+        "independentImageError": null,
+        "imageFidelity": null
+      },
+      {
+        "name": "matching",
+        "quad": [
+          [
+            517.3249083293052,
+            140.57629208153665
+          ],
+          [
+            756.9635254796268,
+            367.17786960756865
+          ],
+          [
+            507.8456057092928,
+            615.7181352484841
+          ],
+          [
+            282.097201645196,
+            367.06038185293716
+          ]
+        ],
+        "error": "Matching sheets require a motif symmetric across the overlap diagonal. Turn off matching sheets for this artwork.",
+        "templateExportAllowed": null,
+        "geometryPassed": null,
+        "paperStatus": null,
+        "slits": null,
+        "independentImageError": null,
+        "imageFidelity": null
+      },
+      {
+        "name": "direct",
+        "quad": [
+          [
+            517.3249083293052,
+            140.57629208153665
+          ],
+          [
+            756.9635254796268,
+            367.17786960756865
+          ],
+          [
+            507.8456057092928,
+            615.7181352484841
+          ],
+          [
+            282.097201645196,
+            367.06038185293716
+          ]
+        ],
+        "error": null,
+        "templateExportAllowed": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "independentImageError": 0.03726875,
+        "imageFidelity": {
+          "passed": false,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      }
+    ]
+  },
+  "yellowCropSensitivity": {
+    "evidence": "tmp/generator-qa/yellow-crop-sensitivity/results.json",
+    "sha256": "160af3e76a638e0811e7a6bde9f972b7a28681821b2d1c12b319184a426618c8",
+    "results": [
+      {
+        "name": "automatic",
+        "quad": [
+          [
+            517.3249083293052,
+            140.57629208153665
+          ],
+          [
+            756.9635254796268,
+            367.17786960756865
+          ],
+          [
+            507.8456057092928,
+            615.7181352484841
+          ],
+          [
+            282.097201645196,
+            367.06038185293716
+          ]
+        ],
+        "error": "Sheet A has 5 start transitions but 6 end transitions. Opposite borders must agree.",
+        "templateExportAllowed": null,
+        "geometryPassed": null,
+        "paperStatus": null,
+        "slits": null,
+        "independentImageError": null,
+        "imageFidelity": null
+      },
+      {
+        "name": "guide",
+        "quad": [
+          [
+            515,
+            137
+          ],
+          [
+            750,
+            365
+          ],
+          [
+            514,
+            607
+          ],
+          [
+            286,
+            370
+          ]
+        ],
+        "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+        "templateExportAllowed": null,
+        "geometryPassed": null,
+        "paperStatus": null,
+        "slits": null,
+        "independentImageError": null,
+        "imageFidelity": null
+      },
+      {
+        "name": "guideInset4",
+        "quad": [
+          [
+            515.0846248232684,
+            155.85065357581053
+          ],
+          [
+            731.2846248232684,
+            365.61065357581055
+          ],
+          [
+            514.1646248232685,
+            588.2506535758105
+          ],
+          [
+            304.40462482326836,
+            370.2106535758105
+          ]
+        ],
+        "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+        "templateExportAllowed": null,
+        "geometryPassed": null,
+        "paperStatus": null,
+        "slits": null,
+        "independentImageError": null,
+        "imageFidelity": null
+      },
+      {
+        "name": "autoInset1",
+        "quad": [
+          [
+            517.2995663685363,
+            145.21742963385856
+          ],
+          [
+            752.1454111758513,
+            367.2869756093699
+          ],
+          [
+            508.00984980092403,
+            610.856435937467
+          ],
+          [
+            286.7764138181092,
+            367.1718376098311
+          ]
+        ],
+        "error": null,
+        "templateExportAllowed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "independentImageError": 0.01676875,
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      {
+        "name": "autoInset2",
+        "quad": [
+          [
+            517.2742244077672,
+            149.85856718618047
+          ],
+          [
+            747.327296872076,
+            367.39608161117116
+          ],
+          [
+            508.1740938925553,
+            605.99473662645
+          ],
+          [
+            291.4556259910223,
+            367.28329336672493
+          ]
+        ],
+        "error": null,
+        "templateExportAllowed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "independentImageError": 0.0134625,
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      }
+    ]
+  },
+  "devSmoke": {
+    "evidence": "tmp/generator-qa/dev-smoke.json",
+    "origin": "http://127.0.0.1:4173",
+    "coordinates": [
+      517.3249083293052,
+      140.57629208153665,
+      756.9635254796268,
+      367.17786960756865,
+      507.8456057092928,
+      615.7181352484841,
+      282.097201645196,
+      367.06038185293716
+    ],
+    "pageErrors": [],
+    "corners": 4
+  },
+  "localEvidenceNotes": [
+    "Photos and screenshots stay in ignored tmp directories; they are not published with the website.",
+    "Two initial ad hoc development smoke scripts uploaded before hydration, bypassing the disabled file control. Replaying after the fieldset became enabled passed. The full browser suites already wait for that readiness state.",
+    "The 31-heart direct-fitter benchmark was not rerun. No reconstruction-success claim is derived from crop proposals."
+  ]
+}

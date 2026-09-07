@@ -1,54 +1,80 @@
 {
-  "recordedAt": "2026-09-07T16:38:52.839904+00:00",
+  "recordedAt": "2026-09-07T20:09:04.913353+00:00",
   "branch": "codex/integrate-juleflet",
   "baseCommit": "dcc481b25466c074623b5156793d667bf0d40483",
-  "state": "Uncommitted working tree; not pushed or deployed",
+  "state": "Committed on codex/integrate-juleflet; not pushed or deployed",
   "initialValidation": "docs/inverse/VALIDATION-INITIAL.json",
   "checks": [
+    {
+      "command": "npm test",
+      "status": "pass",
+      "websiteAndWorkerTests": 127,
+      "engineAndIntegrationTests": 108,
+      "total": 235,
+      "log": "/tmp/juleflet-qa-tests-release.log"
+    },
     {
       "command": "npm run check",
       "status": "pass",
       "errors": 0,
       "warnings": 8,
-      "warningNote": "Existing PaperHeart.svelte accessibility warnings"
+      "warningNote": "Existing PaperHeart.svelte accessibility warnings",
+      "log": "/tmp/juleflet-qa-check-final.log"
     },
     {
       "command": "npm run lint",
-      "status": "pass"
-    },
-    {
-      "command": "npm test",
       "status": "pass",
-      "websiteAndWorkerTests": 127,
-      "engineAndIntegrationTests": 90,
-      "total": 217
+      "log": "/tmp/juleflet-qa-lint-release.log"
     },
     {
       "command": "npm run build",
       "status": "pass",
-      "adapter": "static"
+      "log": "/tmp/juleflet-qa-build-release.log"
     },
     {
-      "command": "npm run test:inverse:mixture:browser",
+      "command": "npm run test:inverse:generator:browser",
       "status": "pass",
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-083Z-generator-qa/results.json",
       "origin": "http://127.0.0.1:4174",
+      "checks": 63,
+      "browsers": [
+        "chromium",
+        "firefox",
+        "webkit"
+      ]
+    },
+    {
+      "command": "npm run test:inverse:locator:browser",
+      "status": "pass",
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-085Z-locator/results.json",
+      "origin": "http://127.0.0.1:4174",
+      "checks": 14,
       "browsers": [
         "chromium",
         "firefox"
-      ],
-      "checks": 16,
-      "evidence": "tmp/inverse-browser/2026-09-07T16-35-24-170Z-mixture/results.json"
+      ]
     },
     {
       "command": "npm run test:inverse:examples:browser",
       "status": "pass",
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-082Z-examples/results.json",
       "origin": "http://127.0.0.1:4174",
+      "checks": 22,
       "browsers": [
         "chromium",
         "firefox"
-      ],
-      "checks": 22,
-      "evidence": "tmp/inverse-browser/2026-09-07T16-30-51-115Z-examples/results.json"
+      ]
+    },
+    {
+      "command": "npm run test:inverse:direct:browser",
+      "status": "pass",
+      "evidence": "tmp/inverse-browser/2026-09-07T19-58-04-085Z-direct/results.json",
+      "origin": "http://127.0.0.1:4174",
+      "checks": 14,
+      "browsers": [
+        "chromium",
+        "firefox"
+      ]
     }
   ],
   "photoComparison": {
@@ -177,7 +203,7 @@
                   "depthPixels": 4,
                   "editedBandWidthMm": 1,
                   "changedPixels": 5,
-                  "changeFraction": 0.00003125,
+                  "changeFraction": 3.125e-05,
                   "transitionsBefore": [
                     2,
                     2,
@@ -295,7 +321,7 @@
                   "depthPixels": 4,
                   "editedBandWidthMm": 1,
                   "changedPixels": 5,
-                  "changeFraction": 0.00003125,
+                  "changeFraction": 3.125e-05,
                   "transitionsBefore": [
                     2,
                     2,
@@ -12126,8 +12152,8 @@
     "scripts/inverse/border.test.mjs": "3f039dc0445a3139fc9f4499e68c64d295800087e832fa1ae7efa20e12e148e2",
     "scripts/inverse/browser-test.mjs": "d08bffd319c0ca863e2b19fd7c496fb53d595249d1b342dbe1311df42eb9ea70",
     "scripts/inverse/core.test.mjs": "fcd6a4cd4444a805339e4978ad080c217379e8bfe7452a63fd142c5ac18adb1e",
-    "scripts/inverse/crop-fixture.mjs": "aef8704d393ea4e01fc488ff57ecd986b8d223a5f557b930e0d574f6e06ba8ac",
-    "scripts/inverse/crop.test.mjs": "13a30ab0c838982be03155a0eecc62bbece0e5e6d2c12ae86f008c26da03f19d",
+    "scripts/inverse/crop-fixture.mjs": "29d35f169e1c599ebdea6a20147d7cd8fddf22f0d53aaa3a8d690156161307bd",
+    "scripts/inverse/crop.test.mjs": "63b1228ae9c78c584b4aa91d7905d0e47cb54589588b85d95c9832b28f41cdba",
     "scripts/inverse/examples-browser-test.mjs": "530f6126b00de45a61a3dcfd1e1d298382c1631f457e2587408706dfbf14b5ff",
     "scripts/inverse/export-renderer.mjs": "107309a8eaf16c3042f00cb3aa991fbcd05b0415efcba53f80dc72a0cc60e6f2",
     "scripts/inverse/export-renderer.test.mjs": "7dc623440b1f9db11672b20761cae21434e635fc68e99d38d9792d1c1b234c44",
@@ -12135,7 +12161,7 @@
     "scripts/inverse/fixtures/yellow-star-photo.png": "6fbf160ebb7d96e11ce701d5d88410b6f36363ccea23a803870ccedb3c6f3247",
     "scripts/inverse/hard-photo-benchmark.mjs": "52307e6aa3af6bdc10f4390644e082f0e929799ef950adeb778fc433d425c3ad",
     "scripts/inverse/hard-photo-cases.json": "21a4368d75bf355617ae518f200ac450fed860de876a689ed768d29b0ac4bf92",
-    "scripts/inverse/hard-photo-report.mjs": "0dbb71b8e8f3277c1b74d3642f5971c3fab06730083a4731c45af9bfa720cd5a",
+    "scripts/inverse/hard-photo-report.mjs": "b4e682f6afd33ef292f6b9ccd2057ac88e689debe89776975c1aa22a77489efd",
     "scripts/inverse/integration.test.mjs": "cc86d35235e2d5af67be5774936e92122a2e5c48a789261e9c1f2a3d28c7d548",
     "scripts/inverse/junctions.test.mjs": "99b5e4de893d4ac32c749de40fbcc910879336813dfb74b7e0203f4905a88b56",
     "scripts/inverse/locator-benchmark.mjs": "69b387e0a4c4b365e5d2c3285d2b80e1d51bbb409f1359705f4847a3b5fa16d6",
@@ -12154,13 +12180,13 @@
     "scripts/inverse/yellow-star-fixture.mjs": "ee37cc5972245703bf2689551f807814d07944aafa0553086f385884507aa48f",
     "src/lib/inverse/SvgPreview.svelte": "adddc669237b716f55d148b0a05a316057ca17c14e27eb5ec423190f68b6987c",
     "src/lib/inverse/client.test.ts": "3874c5965c80c9cbe560c34fd867645dc5ce24209a33067ac707180469ac3925",
-    "src/lib/inverse/client.ts": "204d1ffae59b88fea1a9a65dcf6f6dcf11158307b75fd650101ddce9503543d4",
-    "src/lib/inverse/messages.ts": "874ef7d9a3a626f0285aaa86eef1702a55157bef2cd3c52c7e836e3e5c7804e6",
+    "src/lib/inverse/client.ts": "e23ede851dc09961cbcd26ea74033e6f18ec66dda736b3b83bf3b166388bca00",
+    "src/lib/inverse/messages.ts": "ffdb4384cdd2ef72cf201309484a436fe0ea90a6a0d19216aa3820913093c42d",
     "src/lib/inverse/presets.js": "ed523de633437df50216610701b568cc327eb261571a6bc2b1596d2c6cf5036b",
-    "src/routes/[[lang=lang]]/generate/+page.svelte": "3fe4dff26707ef2b2d6ae633a693bfdbeb7d9c36ebad0074bbc8b88bdbf9c5e0",
+    "src/routes/[[lang=lang]]/generate/+page.svelte": "3e3e992abb01d3a1497f5c0727215643d1c2506f76cea9d9d702f116943ffca5",
     "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
     "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
-    "static/inverse/core/crop.js": "d8aa2b0fc2a9d06323fda7f72af0c35e9436a02ce68e6c6a03c003f541ad1b7f",
+    "static/inverse/core/crop.js": "8ccbf040d18d6a450099beebf398a3958845012fc19bc83cd2c9ca8ce6e087cc",
     "static/inverse/core/engine.js": "6fe8f13bef3d0c5662e77fa30ca00c33abb49a6be44e767235f8a18d28408ab0",
     "static/inverse/core/export.js": "eb9c4eb5b563f095b294e4f8da6c4c485ca58ba657ed74c08bb21db8b7beabcd",
     "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
@@ -12178,7 +12204,7 @@
     "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
     "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
     "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
-    "static/inverse/locator/locator.js": "dd7d8e0664579392c28b09c74bd8f7cda7ec71debebe6c80db3b8bfbd1b1257f",
+    "static/inverse/locator/locator.js": "9ee9f10a8b2eaa22c159371226896a5313faf4d7dae51b7ad943ef1ac52086ae",
     "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
     "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
     "static/inverse/worker.js": "7d7fcddb3a787b0084fb3bd772b9c2a6185ebc43f3006b5c757a6fa3727d6e1a",
@@ -12191,7 +12217,11 @@
     "static/inverse/core/direct/refine.js": "ec9758a9cf9a84da0fc2b569793deac9b9a35d4a164cc2b8807df7e0c942894f",
     "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a",
     "scripts/inverse/direct.test.mjs": "7b49684c68781bb0876d88b8ca904e326daf08612fd232870e35cd369d5afc5f",
-    "scripts/inverse/direct-browser-test.mjs": "4ee35ffc28ff34977b318faa66f81a483bf07bc8ba28c68777fb1f825ead5aa3"
+    "scripts/inverse/direct-browser-test.mjs": "4ee35ffc28ff34977b318faa66f81a483bf07bc8ba28c68777fb1f825ead5aa3",
+    "static/inverse/locator/palette.js": "7d8d7468c0d98a01376238aa9a0a2bb9d7f9b70092dea10a74064b8eb9a1940c",
+    "scripts/inverse/generator-qa-browser-test.mjs": "b3acfec2864fb04549750d1b84c391913fc34cb2a7ec6b04dbdaba3b08cee861",
+    "scripts/inverse/palette-photo-benchmark.mjs": "2474a676b666f57535a5643ab9482b0c01bb7b8d22d3f2c654e3bf5fd2eba381",
+    "package.json": "682fb8d3268dafbe2e4e5628ea511174978e861b92c74b06f47ab96f47a51e5b"
   },
   "fullCollageLocator": {
     "instances": 40,
@@ -12774,7 +12804,7 @@
                 "totalCutLength": 803.055964679044,
                 "sharpTurns": 0,
                 "sharpLocations": [],
-                "maximumTurn": 0.0000014787793334710982,
+                "maximumTurn": 1.4787793334710982e-06,
                 "bendingEnergy": 0.03625956005895842,
                 "minimumRadius": 82.26339183825752,
                 "hiddenCurvesBelowRadius": 0,
@@ -12785,7 +12815,7 @@
                 "totalCutLength": 803.055964679044,
                 "sharpTurns": 0,
                 "sharpLocations": [],
-                "maximumTurn": 0.0000014787793334710982,
+                "maximumTurn": 1.4787793334710982e-06,
                 "bendingEnergy": 0.03625956005895842,
                 "minimumRadius": 82.26339183825752,
                 "hiddenCurvesBelowRadius": 0,
@@ -12800,7 +12830,7 @@
               "totalCutLength": 803.055964679044,
               "sharpTurns": 0,
               "sharpLocations": [],
-              "maximumTurn": 0.0000014787793334710982,
+              "maximumTurn": 1.4787793334710982e-06,
               "bendingEnergy": 0.03625956005895842,
               "minimumRadius": 82.26339183825752,
               "hiddenCurvesBelowRadius": 0,
@@ -15845,7 +15875,7 @@
                 "totalCutLength": 803.055964679044,
                 "sharpTurns": 0,
                 "sharpLocations": [],
-                "maximumTurn": 8.537736462515939e-7,
+                "maximumTurn": 8.537736462515939e-07,
                 "bendingEnergy": 0.03625956005895842,
                 "minimumRadius": 82.26339183825752,
                 "hiddenCurvesBelowRadius": 0,
@@ -15856,7 +15886,7 @@
                 "totalCutLength": 803.055964679044,
                 "sharpTurns": 0,
                 "sharpLocations": [],
-                "maximumTurn": 8.537736462515939e-7,
+                "maximumTurn": 8.537736462515939e-07,
                 "bendingEnergy": 0.03625956005895842,
                 "minimumRadius": 82.26339183825752,
                 "hiddenCurvesBelowRadius": 0,
@@ -15871,7 +15901,7 @@
               "totalCutLength": 803.055964679044,
               "sharpTurns": 0,
               "sharpLocations": [],
-              "maximumTurn": 8.537736462515939e-7,
+              "maximumTurn": 8.537736462515939e-07,
               "bendingEnergy": 0.03625956005895842,
               "minimumRadius": 82.26339183825752,
               "hiddenCurvesBelowRadius": 0,
@@ -19161,5 +19191,68 @@
         "pageErrors": []
       }
     }
+  },
+  "checksHistory": [
+    {
+      "recordedAt": "2026-09-07T16:38:52.839904+00:00",
+      "checks": [
+        {
+          "command": "npm run check",
+          "status": "pass",
+          "errors": 0,
+          "warnings": 8,
+          "warningNote": "Existing PaperHeart.svelte accessibility warnings"
+        },
+        {
+          "command": "npm run lint",
+          "status": "pass"
+        },
+        {
+          "command": "npm test",
+          "status": "pass",
+          "websiteAndWorkerTests": 127,
+          "engineAndIntegrationTests": 90,
+          "total": 217
+        },
+        {
+          "command": "npm run build",
+          "status": "pass",
+          "adapter": "static"
+        },
+        {
+          "command": "npm run test:inverse:mixture:browser",
+          "status": "pass",
+          "origin": "http://127.0.0.1:4174",
+          "browsers": [
+            "chromium",
+            "firefox"
+          ],
+          "checks": 16,
+          "evidence": "tmp/inverse-browser/2026-09-07T16-35-24-170Z-mixture/results.json"
+        },
+        {
+          "command": "npm run test:inverse:examples:browser",
+          "status": "pass",
+          "origin": "http://127.0.0.1:4174",
+          "browsers": [
+            "chromium",
+            "firefox"
+          ],
+          "checks": 22,
+          "evidence": "tmp/inverse-browser/2026-09-07T16-30-51-115Z-examples/results.json"
+        }
+      ]
+    }
+  ],
+  "generatorQA": {
+    "recordedAt": "2026-09-07T20:09:04.913353+00:00",
+    "details": "GENERATOR-QA-VALIDATION.json",
+    "report": "GENERATOR-QA.md",
+    "unitTests": 235,
+    "browserChecks": 113,
+    "photoProposals": 24,
+    "photoAttempts": 28,
+    "unadjustedYellowStarExportAllowed": false,
+    "devPort4173": "Four automatic corners, no page errors"
   }
 }

@@ -140,7 +140,7 @@
         "modified": false
       },
       "static/inverse/locator/locator.js": {
-        "integrated_sha256": "dd7d8e0664579392c28b09c74bd8f7cda7ec71debebe6c80db3b8bfbd1b1257f",
+        "integrated_sha256": "9ee9f10a8b2eaa22c159371226896a5313faf4d7dae51b7ad943ef1ac52086ae",
         "handoff_sha256": "38a994669ee1b641a9796e12d1513ea07ce70503760716f610b768496207a415",
         "modified": true
       },
@@ -158,14 +158,20 @@
         "integrated_sha256": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
         "handoff_sha256": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
         "modified": false
+      },
+      "static/inverse/locator/palette.js": {
+        "integrated_sha256": "7d8d7468c0d98a01376238aa9a0a2bb9d7f9b70092dea10a74064b8eb9a1940c",
+        "localAddition": true,
+        "description": "Adaptive plain-background/two-paper palette fields; no new dependency."
       }
     },
     "notice": "static/inverse/locator/NOTICE.md",
     "integrationNotes": "docs/inverse/LOCATOR.md",
     "userPhotographsPublished": false,
-    "adapter_sha256": "d8aa2b0fc2a9d06323fda7f72af0c35e9436a02ce68e6c6a03c003f541ad1b7f",
+    "adapter_sha256": "8ccbf040d18d6a450099beebf398a3958845012fc19bc83cd2c9ca8ce6e087cc",
     "localChanges": [
-      "2026-09-07: rectifyMotif accepts either convex perimeter direction, preserving supplied coordinates and image orientation. Detection and fitting remain unchanged."
+      "2026-09-07: rectifyMotif accepts either convex perimeter direction, preserving supplied coordinates and image orientation. Detection and fitting remain unchanged.",
+      "2026-09-07 evening: adaptive two-colour fallback, independent lobe depths and support-aware candidate selection. Original red/white path retained. See GENERATOR-QA.md."
     ]
   },
   "referenceQuality": {
@@ -256,5 +262,12 @@
     },
     "runtime": "JavaScript in the existing Web Worker; no PyTorch or backend service",
     "validation": "DIRECT-FITTER-VALIDATION.json"
+  },
+  "generatorQA": {
+    "recordedAt": "2026-09-07T20:09:04.913353+00:00",
+    "details": "GENERATOR-QA-VALIDATION.json",
+    "report": "GENERATOR-QA.md",
+    "codeCommit": "a28216b",
+    "userPhotographsPublished": false
   }
 }

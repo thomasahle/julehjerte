@@ -30,6 +30,8 @@ No source gallery SVGs, editor routes, homepage layout, domain settings or exist
 
 ## Validation
 
+The September 7 evening corner-detector and generator QA is recorded in [GENERATOR-QA.md](GENERATOR-QA.md). It includes the reported yellow/gold photo, adaptive palette/lobe fitting, manual-tool recovery, 235 automated tests and 113 actual browser checks. The extended generator suite runs in Chromium, Firefox and WebKit; locator, example and direct-fit regression suites additionally run in Chromium and Firefox. Photo proposal counts and reconstruction quality are reported separately.
+
 ```sh
 npm run check
 npm run lint
