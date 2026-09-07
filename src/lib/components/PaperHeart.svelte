@@ -41,7 +41,7 @@
 	import { bezierPointAt, findFingersWithIssues, intersectionMarginPx, segmentsIntersect } from '$lib/editor/curveIssues';
 	import { findNearestOppositeAnchor, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
 	import { toggleNumberInList } from '$lib/editor/selection';
-	import { getColors, setColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
+	import { getColors, flipColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
 	import { t as translate, type Language, type TranslationKey } from '$lib/i18n';
 
 		interface Props {
@@ -120,9 +120,9 @@
 		pushUndo(before);
 	}
 
-	function flipLobeColors() {
-		setColors({ left: heartColors.right, right: heartColors.left });
-	}
+	// The swap itself lives in the colour store, so the footer's swap button and
+	// this one cannot drift apart.
+	const flipLobeColors = flipColors;
 
 	function isHandleCollapsed(handle: Vec, anchor: Vec): boolean {
 		return vecDist(handle, anchor) <= HANDLE_COLLAPSE_EPS;
