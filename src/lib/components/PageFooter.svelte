@@ -75,13 +75,17 @@
 	<div class="footer-row">
 		<span class="colors">
 			<span class="colors-label">{t('footerColors', lang)}</span>
+			<!-- The two `value` attributes are written out rather than read from
+			     DEFAULT_COLORS: a dynamic value on <input type="color"> makes Svelte
+			     set the property and drop the attribute, which loses the no-JS
+			     default. updateInputs() below keeps them in step with the store. -->
 			<label class="swatch" title={t('leftColor', lang)}>
 				<span class="sr-only">{t('leftColor', lang)}</span>
 				<input
 					type="color"
 					id="left-color"
 					name="left-color"
-					value={DEFAULT_COLORS.left}
+					value="#ffffff"
 					bind:this={leftInput}
 					oninput={(e) => setLeftColor((e.target as HTMLInputElement).value)}
 				/>
@@ -92,7 +96,7 @@
 					type="color"
 					id="right-color"
 					name="right-color"
-					value={DEFAULT_RIGHT_COLOR_HEX}
+					value="#b91313"
 					bind:this={rightInput}
 					oninput={(e) => setRightColor((e.target as HTMLInputElement).value)}
 				/>
