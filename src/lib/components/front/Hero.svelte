@@ -7,11 +7,17 @@
   overlay SVGs here are the stacked layout's starry sky and its corner firs, both
   <use>s of ids in that drawing's <defs>.
 
-  The cross-fade lives here because nothing outside the hero can see it: the page
-  is prerendered with a fixed set of hearts (HERO_HEART_IDS) and, after mount,
-  a random set of the same size fades into the same slots, so nothing moves and
-  the server and client markup never disagree. Both layers are drawn at once for
-  the length of the fade and the outgoing one is then dropped.
+  The random swap lives here because nothing outside the hero can see it: the
+  page is prerendered with a fixed set of hearts (HERO_HEART_IDS) — which keeps
+  the server and client markup in agreement, and is what a visitor without
+  JavaScript gets to see — and after mount a random set of the same size takes
+  over the same slots. Nothing moves, because only *which* heart hangs in a slot
+  changes.
+
+  The prerendered set is never shown to a visitor whose browser runs the swap:
+  HeroHearts starts at opacity 0 and is only raised here, once the random hearts
+  are in the DOM. That is also why there is a single layer and no cross-fade —
+  there is nothing to fade out of.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -47,45 +53,34 @@
 
 	let { lang, designs, band = 230 }: Props = $props();
 
-	/** Length of the cross-fade; the layers read it as --hero-fade. */
-	const HERO_FADE_MS = 400;
-	/** Extra wait before the outgoing layer is unmounted, so the fade is over. */
-	const HERO_DROP_DELAY_MS = 300;
+	/** Length of the fade that brings the hearts in; HeroHearts reads --hero-fade. */
+	const HERO_FADE_MS = 300;
 
+	/** The set picked after mount. Null while the prerendered set stands in. */
 	let heroRandomIds = $state.raw<string[] | null>(null);
-	let heroSwapped = $state(false);
-	let heroDropInitial = $state(false);
-	let heroMobileIds = $derived(
-		heroRandomIds ? heroRandomIds.slice(0, HERO_SLOTS_MOBILE.length) : []
+	/** Raises the hearts out of their opacity 0 start. Only ever set in the browser. */
+	let heroShown = $state(false);
+
+	let heroDesktopIds = $derived<readonly string[]>(heroRandomIds ?? HERO_HEART_IDS);
+	let heroMobileIds = $derived<readonly string[]>(
+		heroRandomIds ? heroRandomIds.slice(0, HERO_SLOTS_MOBILE.length) : HERO_HEART_IDS_MOBILE
 	);
 
 	onMount(() => {
 		const picked = pickRandomHeartIds(HERO_SLOTS_DESKTOP.length);
-		if (picked.length < HERO_SLOTS_DESKTOP.length) return;
-		heroRandomIds = picked;
+		// A pool too small to fill the hero would mean a broken build; show the
+		// prerendered set rather than an empty sky.
+		if (picked.length === HERO_SLOTS_DESKTOP.length) heroRandomIds = picked;
 
-		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-			heroSwapped = true;
-			heroDropInitial = true;
-			return;
-		}
-
-		// Two frames so the incoming layer is painted at opacity 0 before it rises.
-		let inner = 0;
-		const outer = requestAnimationFrame(() => {
-			inner = requestAnimationFrame(() => {
-				heroSwapped = true;
-			});
-		});
-		const timer = setTimeout(() => {
-			heroDropInitial = true;
-		}, HERO_FADE_MS + HERO_DROP_DELAY_MS);
-
-		return () => {
-			cancelAnimationFrame(outer);
-			cancelAnimationFrame(inner);
-			clearTimeout(timer);
-		};
+		// Both in the same update, so no frame can exist in which the hearts on
+		// screen are the prerendered ones. Whether that reads as a fade is the
+		// browser's call and either answer is right: if the page has already
+		// painted the empty sky there is an opacity to transition from and the
+		// hearts fade in; if hydration beat the first paint there is nothing to
+		// fade from and they are simply there. What must not happen is making
+		// visibility wait on a frame callback — a page that is never asked to
+		// render (a background tab, a headless browser) would never show them.
+		heroShown = true;
 	});
 </script>
 
@@ -113,24 +108,13 @@
 
 	<div class="hero-inner" style:--hero-fade="{HERO_FADE_MS}ms">
 		<div class="hero-hearts hero-hearts-m">
-			{#if !heroDropInitial}
-				<HeroHearts
-					slots={HERO_SLOTS_MOBILE}
-					ids={HERO_HEART_IDS_MOBILE}
-					{designs}
-					idPrefix="hero-m-a"
-					faded={heroSwapped}
-				/>
-			{/if}
-			{#if heroRandomIds}
-				<HeroHearts
-					slots={HERO_SLOTS_MOBILE}
-					ids={heroMobileIds}
-					{designs}
-					idPrefix="hero-m-b"
-					faded={!heroSwapped}
-				/>
-			{/if}
+			<HeroHearts
+				slots={HERO_SLOTS_MOBILE}
+				ids={heroMobileIds}
+				{designs}
+				idPrefix="hero-m"
+				shown={heroShown}
+			/>
 		</div>
 
 		<div class="hero-text">
@@ -150,24 +134,13 @@
 		</div>
 
 		<div class="hero-hearts hero-hearts-d">
-			{#if !heroDropInitial}
-				<HeroHearts
-					slots={HERO_SLOTS_DESKTOP}
-					ids={HERO_HEART_IDS}
-					{designs}
-					idPrefix="hero-d-a"
-					faded={heroSwapped}
-				/>
-			{/if}
-			{#if heroRandomIds}
-				<HeroHearts
-					slots={HERO_SLOTS_DESKTOP}
-					ids={heroRandomIds}
-					{designs}
-					idPrefix="hero-d-b"
-					faded={!heroSwapped}
-				/>
-			{/if}
+			<HeroHearts
+				slots={HERO_SLOTS_DESKTOP}
+				ids={heroDesktopIds}
+				{designs}
+				idPrefix="hero-d"
+				shown={heroShown}
+			/>
 		</div>
 	</div>
 

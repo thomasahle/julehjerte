@@ -1,10 +1,20 @@
 <!doctype html>
-<html lang="%lang%">
+<html lang="%lang%" class="no-js">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<!--
+			Drop `no-js` while the head is still parsing, i.e. before the body can
+			paint. CSS can then tell the two visitors apart on the very first frame:
+			anything that only exists to serve a visitor without JavaScript hides
+			itself unless the root still carries the class. The hero's prerendered
+			hearts are the case this was added for — see front/HeroHearts.svelte.
+		-->
+		<script>
+			document.documentElement.classList.remove('no-js');
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
