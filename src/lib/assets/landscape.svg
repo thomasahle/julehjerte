@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2172" height="724" viewBox="0 0 2172 724" role="img" aria-labelledby="landscape-title landscape-desc">
+  <title id="landscape-title">Juleflet — winter landscape</title>
+  <desc id="landscape-desc">Hand-drawn vector illustration: sage-green hills, snow-covered firs, five gold stars and a stag beneath a pale winter sun.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="100%">
+      <stop stop-color="#d6e1d0"/><stop offset="1" stop-color="#d7e2d1"/>
+    </linearGradient>
+    <linearGradient id="distant-hill" gradientUnits="userSpaceOnUse" x1="0" y1="390" x2="0" y2="500">
+      <stop stop-color="#b1c1ae"/><stop offset="1" stop-color="#b3c4b2"/>
+    </linearGradient>
+    <linearGradient id="middle-hill" gradientUnits="userSpaceOnUse" x1="0" y1="440" x2="0" y2="580">
+      <stop stop-color="#a4b7a3"/><stop offset="1" stop-color="#9aad9a"/>
+    </linearGradient>
+    <linearGradient id="near-hill" gradientUnits="userSpaceOnUse" x1="0" y1="414" x2="0" y2="609">
+      <stop stop-color="#92a691"/><stop offset="1" stop-color="#879e8b"/>
+    </linearGradient>
+    <linearGradient id="snow" x2="0" y2="100%">
+      <stop stop-color="#f1f4e9"/><stop offset="1" stop-color="#f2f4eb"/>
+    </linearGradient>
+    <g id="pine-a">
+      <path id="pine-a-outline" d="M0 0 C-4 10-8 20-14 30 Q-17 35-9 31 L-6 29 C-12 41-19 49-24 56 Q-29 63-19 59 L-12 55 C-20 72-30 85-34 89 Q-40 96-29 92 L-20 87 C-28 105-39 118-43 123 Q-49 130-37 125 L-27 120 C-36 139-48 151-53 155 Q-59 163-46 158 L-34 152 C-44 169-55 185-63 192 Q-67 197-59 197 Q-27 202 0 199 Q29 203 60 197 Q67 198 62 191 C52 180 44 166 37 155 L49 161 Q61 166 56 158 C43 144 35 131 29 121 L40 126 Q50 131 45 123 C33 109 26 97 21 88 L32 94 Q41 99 36 91 C27 78 20 67 15 56 L23 61 Q32 65 27 58 C18 45 13 34 9 28 L15 33 Q21 36 17 29 C10 17 6 10 0 0Z"/>
+      <path d="M-24 56 Q0 66 27 58 L16 59 Q1 74-18 60Z M-43 123 Q-3 136 45 123 L28 127 Q1 146-29 126Z M-53 155 Q-7 173 56 158 L40 163 Q2 183-42 163Z" clip-path="url(#pine-a-clip)" fill="#203b2a" opacity=".055"/>
+    </g>
+    <g id="pine-b">
+      <path id="pine-b-outline" d="M1 0 C-3 12-9 24-14 34 L-8 32 C-14 45-21 54-27 61 Q-31 67-22 64 L-16 61 C-23 77-32 89-38 96 Q-43 102-32 98 L-24 94 C-31 110-42 125-48 131 Q-52 137-41 133 L-31 128 C-39 145-50 158-58 168 Q-63 174-50 170 L-39 165 C-47 181-56 191-64 199 Q-31 202-1 199 Q32 202 61 198 C53 188 45 179 37 165 L48 170 Q59 175 55 167 C45 154 35 140 29 129 L40 134 Q49 138 45 131 C35 117 26 104 21 94 L31 99 Q41 104 36 96 C26 82 19 70 14 61 L21 65 Q30 69 26 62 C17 47 12 37 8 30 L14 34 Q19 37 16 31 C10 19 5 9 1 0Z"/>
+      <path d="M-27 61 Q-1 72 26 62 L16 63 Q-1 79-18 66Z M-48 131 Q0 145 45 131 L30 134 Q3 154-33 137Z M-58 168 Q-3 184 55 167 L41 175 Q-3 193-43 174Z" clip-path="url(#pine-b-clip)" fill="#203b2a" opacity=".055"/>
+    </g>
+    <g id="pine-c">
+      <path id="pine-c-outline" d="M0 0 C-3 7-6 15-10 22 L-6 20 C-11 29-15 35-18 39 Q-21 43-14 41 L-10 38 C-15 48-23 57-28 61 Q-31 65-23 62 L-17 59 C-23 73-31 84-36 89 Q-40 93-31 90 L-23 86 C-30 101-40 113-44 118 Q-49 123-39 120 L-30 116 C-38 133-50 147-55 152 Q-60 157-48 154 L-36 149 C-44 166-56 181-63 189 Q-68 194-57 191 L-47 186 L-62 200 Q-32 203 0 200 Q33 204 63 198 L50 186 L59 191 Q69 195 64 188 C53 175 45 162 39 151 L49 155 Q61 160 56 152 C44 137 37 126 31 115 L42 120 Q51 124 47 117 C36 104 28 93 23 83 L32 88 Q42 93 38 85 C28 73 23 64 19 56 L26 60 Q34 64 30 57 C22 47 16 36 12 28 L17 31 Q24 35 20 28 C11 17 6 8 0 0Z"/>
+      <path d="M-28 61 Q0 71 30 57 L20 61 Q-1 77-18 64Z M-44 118 Q0 132 47 117 L30 124 Q1 140-32 124Z M-55 152 Q0 168 56 152 L40 160 Q0 177-42 160Z M-63 189 Q0 200 64 188 L50 195 Q0 207-50 195Z" clip-path="url(#pine-c-clip)" fill="#203b2a" opacity=".06"/>
+    </g>
+    <clipPath id="pine-a-clip"><use href="#pine-a-outline"/></clipPath>
+    <clipPath id="pine-b-clip"><use href="#pine-b-outline"/></clipPath>
+    <clipPath id="pine-c-clip"><use href="#pine-c-outline"/></clipPath>
+    <path id="snow-cap" d="M0 0 C-3 10-7 20-13 31 Q-8 28-4 24 L0 12 C2 20 4 27 7 30 L7 22 Q10 27 13 30 C8 19 4 10 0 0Z M-22 60 L-18 57-20 61-25 64Z M28 90 L31 92 34 96 29 94Z"/>
+    <path id="star" d="M0-18 5.29-7.28 17.12-5.56 8.56 2.78 10.58 14.56 0 9-10.58 14.56-8.56 2.78-17.12-5.56-5.29-7.28Z"/>
+  </defs>
+
+  <g id="sky-layer">
+    <path fill="url(#sky)" d="M0 0H2172V724H0Z"/>
+    <g id="stars" fill="#e0b75a">
+      <use href="#star" transform="translate(243 134)"/>
+      <use href="#star" transform="translate(707 253) scale(.83)"/>
+      <use href="#star" transform="translate(1585 95) scale(.96)"/>
+      <use href="#star" transform="translate(1953 207) scale(1.04)"/>
+      <use href="#star" transform="translate(1662 313) scale(.86)"/>
+    </g>
+    <g id="snowflakes" fill="#fff" opacity=".98">
+      <circle cx="86" cy="102" r="6.4"/><circle cx="151" cy="284" r="6.2"/>
+      <circle cx="335" cy="336" r="6.4"/><circle cx="435" cy="218" r="6.3"/>
+      <circle cx="626" cy="316" r="6.3"/><circle cx="1229" cy="297" r="6.4"/>
+      <circle cx="1329" cy="160" r="6.6"/><circle cx="1530" cy="293" r="6.2"/>
+      <circle cx="1833" cy="341" r="6.4"/><circle cx="1883" cy="128" r="6.3"/>
+      <circle cx="2108" cy="106" r="6.4"/>
+    </g>
+    <circle id="winter-sun" cx="1355" cy="432" r="70" fill="#f0f1e1"/>
+  </g>
+
+  <g id="distant-landscape">
+    <g fill="#9caf9b">
+      <g transform="translate(889 348) scale(0.281 0.320)"><use href="#pine-b"/></g>
+    <g transform="translate(920 360) scale(-0.266 0.275)"><use href="#pine-a"/></g>
+    <g transform="translate(951 374) scale(0.219 0.250)"><use href="#pine-b"/></g>
+    <g transform="translate(1007 387) scale(0.203 0.235)"><use href="#pine-a"/></g>
+    </g>
+    <path fill="url(#distant-hill)" d="M0 378 C171 350 327 499 558 438 C681 405 777 383 883 399 C1057 406 1202 473 1347 478 C1453 475 1537 402 1687 409 C1867 409 1953 467 2172 442 V724H0Z"/>
+    <g transform="translate(794 434) scale(0.273 0.295)" fill="#597561"><use href="#pine-b"/></g>
+    <g transform="translate(842 445) scale(-0.266 0.290)" fill="#6c8572"><use href="#pine-a"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(1817 403) scale(0.523 0.525)" fill="#849d84"><use href="#pine-a"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(1873 369) scale(0.648 0.695)" fill="#7c977e"><use href="#pine-b"/></g>
+    <g transform="translate(1925 398) scale(-0.500 0.545)" fill="#829d83"><use href="#pine-a"/></g>
+  </g>
+
+  <g id="middle-landscape">
+    <path fill="url(#middle-hill)" d="M590 568 C791 574 983 489 1185 494 C1318 498 1405 520 1536 509 C1772 495 1881 423 2038 446 C2114 453 2145 464 2172 475 V724H590Z"/>
+    <path fill="url(#near-hill)" d="M0 435 C173 400 326 408 503 429 C780 453 998 525 1247 571 C1396 599 1551 584 1790 589 V724H0Z"/>
+    <g transform="translate(345 394) scale(0.484 0.560)" fill="#9daf9b"><use href="#pine-a"/></g>
+    <g transform="translate(441 427) scale(-0.375 0.450)" fill="#9daf9b"><use href="#pine-b"/></g>
+    <g transform="translate(535 384) scale(0.609 0.720)" fill="#7d9581"><use href="#pine-a"/></g>
+    <g transform="translate(2020 346) scale(0.883 0.905)" fill="#41604b"><use href="#pine-b"/></g>
+    <g transform="translate(2119 229) scale(1.594 1.600)" fill="#365240"><use href="#pine-c"/></g>
+    <g transform="translate(54 235) scale(1.375 1.520)" fill="#3a5745"><use href="#pine-c"/></g>
+    <g transform="translate(132 329) scale(-0.992 0.990)" fill="#425f4b"><use href="#pine-b"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(247 426) scale(0.539 0.470)" fill="#3b5843"><use href="#pine-b"/></g>
+    <g transform="translate(309 404) scale(0.672 0.570)" fill="#3b5643"><use href="#pine-a"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(420 447) scale(0.391 0.350)" fill="#46674f"><use href="#pine-b"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(498 409) scale(-0.641 0.575)" fill="#4f6957"><use href="#pine-a"/></g>
+    <g transform="translate(557 461) scale(0.234 0.300)" fill="#9bb199"><use href="#pine-a"/></g>
+    <g transform="translate(1251 441) scale(0.773 0.740)" fill="#405b48"><use href="#pine-a"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(1309 503) scale(0.500 0.455)" fill="#759174"><use href="#pine-b"/></g>
+    <g transform="translate(1387 440) scale(0.969 0.815)" fill="#3e5c48"><use href="#pine-c"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(1480 474) scale(0.625 0.555)" fill="#527359"><use href="#pine-a"/></g>
+    <g transform="translate(1540 491) scale(0.453 0.420)" fill="#6f8c70"><use href="#pine-b"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(1588 488) scale(0.438 0.405)" fill="#627f65"><use href="#pine-a"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(1623 482) scale(0.414 0.455)" fill="#9aae97"><use href="#pine-b"/></g>
+    <g transform="translate(1808 477) scale(0.398 0.250)" fill="#9bb199"><use href="#pine-b"/></g>
+    <g transform="translate(1873 447) scale(0.406 0.365)" fill="#91a98e"><use href="#pine-a"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(1932 442) scale(0.500 0.470)" fill="#8ca48a"><use href="#pine-b"/></g>
+    <g id="stag" fill="#506d56" transform="translate(1648 433)">
+    <path d="M32 68 37 70 35 84 34 101 30 102 29 85Z M60 68 66 68 70 80 78 89 78 95 73 96 74 90 65 81Z" fill="#49664f"/>
+    <path d="M23 66 30 72 29 82 25 93 26 103 20 104 20 94 24 81Z M76 65 84 65 81 78 91 89 91 95 86 96 86 91 76 81 71 74Z"/>
+    <path d="M18 31 Q14 29 11 31 L5 36 Q4 40 11 39 L16 38 C13 46 12 56 16 65 Q19 72 26 75 C40 79 53 77 64 74 Q75 77 82 69 C85 67 89 65 87 61 Q86 58 82 58 C74 51 69 54 61 54 C47 56 38 51 31 48 C27 43 29 36 25 31 Q23 27 18 31Z"/>
+    <path d="M19 31 Q10 31 9 26 Q16 26 22 30Z M24 31 Q28 26 36 25 Q36 33 25 34Z"/>
+    <g fill="none" stroke="#506d56" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 30 C14 23 12 18 15 9 L17 2 M14 17 Q8 13 9 7 M15 12 22 6 M14 24 Q8 23 7 18"/>
+      <path d="M25 29 C33 24 41 22 44 14 Q46 9 44 4 M35 23 34 15 M42 17 Q39 12 40 7 M45 15 Q51 10 51 5"/>
+    </g>
+  </g>
+  </g>
+
+  <g id="snow-field">
+    <path fill="url(#snow)" d="M0 523 C267 481 476 493 681 533 C870 569 1025 612 1220 601 C1457 593 1679 514 1909 508 C2033 502 2114 511 2172 519 V724H0Z"/>
+  </g>
+
+  <g id="foreground-trees">
+    <g transform="translate(61 415) scale(1.656 1.385)" fill="#35503f"><use href="#pine-c"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(177 527) scale(-0.898 0.785)" fill="#3b5d46"><use href="#pine-b"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(1946 410) scale(1.531 1.245)" fill="#3e5948"><use href="#pine-c"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+    <g transform="translate(2125 414) scale(-1.641 1.245)" fill="#34523f"><use href="#pine-c"/><use href="#snow-cap" fill="#fbfcfa"/></g>
+  </g>
+
+  <g id="foreground-snow">
+    <path fill="#f9f9f3" d="M0 633 C201 638 365 700 548 710 C731 718 878 716 1055 704 C1231 680 1340 655 1499 657 C1693 655 1790 641 1944 624 C2025 615 2110 613 2172 624 V724H0Z"/>
+  </g>
+</svg>

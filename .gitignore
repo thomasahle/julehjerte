@@ -30,3 +30,7 @@ vite.config.ts.timestamp-*
 
 # Local inspiration material, not for publishing
 /static/inspiration/
+
+# Redesign working files (mockups, QA screenshots)
+docs/redesign/mockups/
+docs/redesign/qa/
