@@ -32,6 +32,8 @@
   let elapsed = $state(0);
   let imageUrl = $state('');
   let quad = $state<Point[]>([]);
+  let selectedCornerCount = $derived(quad.filter(p => p.every(Number.isFinite)).length);
+  let completeCrop = $derived(quad.length === 4 && selectedCornerCount === 4);
   let cropMode = $state('quad');
   let cropCandidates = $state.raw<CropProposal[]>([]);
   let selectedCrop = $state(-1);
@@ -121,7 +123,7 @@
     if (value instanceof EngineError && !value.report) prepared = null;
   }
 
-  async function chooseFile(file: File) {
+  async function chooseFile(file: File, autoDetect = true) {
     input = null;
     filename = ''; sourceSha256 = ''; decodedPixelsSha256 = '';
     invalidate();
@@ -163,7 +165,7 @@
     if (input?.type === 'pixels') decodedPixelsSha256 = await digest(input.rgba.slice().buffer);
     if (disposed) return;
     filename = file.name;
-    if (input?.type === 'pixels' && cropMode === 'quad') await detectCrops();
+    if (input?.type === 'pixels' && autoDetect) await detectCrops(false, true);
   }
 
   function useCrop(index: number) {
@@ -177,7 +179,7 @@
     invalidate();
   }
 
-  async function detectCrops(refine = false) {
+  async function detectCrops(refine = false, autoUpload = false) {
     if (input?.type !== 'pixels') return;
     invalidate();
     busy = true;
@@ -192,8 +194,16 @@
       selectedCrop = -1;
       if (cropCandidates.length) useCrop(0);
       else {
-        cropMessage = crops.status === 'needs_selection' ? 'regionHelp' : 'noHearts';
-        if (!quad.length) cropTool = 'region';
+        proposal = null;
+        if (autoUpload && cropMode === 'square') {
+          cropMessage = null; cropTool = 'corners';
+        } else if (completeCrop) {
+          cropMessage = 'cropFitKept'; cropTool = 'corners'; cropEdited = true;
+        } else if (crops.status === 'needs_selection' && !roughRegion) {
+          cropMode = 'quad'; cropMessage = 'regionHelp'; cropTool = 'region';
+        } else {
+          cropMode = 'quad'; cropMessage = 'noHearts'; cropTool = 'corners'; roughRegion = null;
+        }
       }
     } catch (value) { reportError(value); }
     finally { clearInterval(timer); busy = false; }
@@ -259,6 +269,7 @@
   }
 
   function resetCrop() {
+    cropMode = 'quad';
     quad = []; selectedCrop = -1; cropMessage = null; proposal = null;
     cropCandidates = []; cropTool = 'corners'; roughRegion = null; cropEdited = true;
     invalidate();
@@ -287,7 +298,7 @@
       const response = await fetch(asset(`examples/${path}`));
       if (!response.ok) throw new Error(text('loadFailed'));
       const blob = await response.blob();
-      await chooseFile(new File([blob], path, { type: blob.type }));
+      await chooseFile(new File([blob], path, { type: blob.type }), false);
       setRoutingPreset(name === 'star' ? 'matching-grid' : 'general');
       if (name === 'star') cropMode = 'square';
       loaded = !disposed;
@@ -311,8 +322,7 @@
   }
 
   function coordinate(index: number, axis: number, value: number) {
-    if (!Number.isFinite(value)) return;
-    while (quad.length <= index) quad.push([0, 0]);
+    while (quad.length <= index) quad.push([NaN, NaN]);
     quad[index][axis] = value;
     selectedCrop = -1; cropEdited = true;
     invalidate();
@@ -326,7 +336,7 @@
     result = null;
     if (action !== 'solve') prepared = null;
     if (action === 'prepare' && input.type === 'pixels' && cropMode === 'quad') {
-      if (quad.length !== 4) { error = text('cropRequired'); return; }
+      if (!completeCrop) { error = text('cropRequired'); return; }
       payload = { ...input, quad: quad.map(p => [...p] as Point), cropProvenance: {
         ...proposal?.provenance, filename, sourceSha256, decodedPixelsSha256, roughRegion: $state.snapshot(roughRegion) ?? proposal?.provenance.roughRegion ?? null,
         locatorStatus: proposal?.status ?? 'manual', locatorWarnings: proposal?.warnings ?? [],
@@ -469,11 +479,12 @@
               <div class="crop-actions">
                 <button type="button" onclick={() => { roughRegion = null; void detectCrops(); }}>{text('findHearts')}</button>
                 <button type="button" class:active={cropTool === 'region'} onclick={selectRegion}>{text('selectRegion')}</button>
-                {#if quad.length === 4 && cropMode === 'quad'}<button type="button" onclick={() => detectCrops(true)}>{text('refineCrop')}</button>{/if}
+                <button type="button" class:active={cropMode === 'quad' && cropTool === 'corners'} onclick={resetCrop}>{text('placeCorners')}</button>
+                {#if completeCrop && cropMode === 'quad'}<button type="button" onclick={() => detectCrops(true)}>{text('refineCrop')}</button>{/if}
               </div>
               <p class="muted small">{text('locatorHelp')}</p>
               {#if cropMessage}<p class="muted small" role="status">{text(cropMessage)}</p>{/if}
-              {#if cropMode === 'quad'}<p class="muted small">{text('cropHelp')}</p>{/if}
+              {#if cropMode === 'quad' && cropTool === 'corners'}<p class="muted small">{text('cropHelp')}</p>{/if}
               <button type="button" class="crop-image" onclick={selectCorner} onpointerdown={startCornerDrag} onpointermove={moveCorner} onpointerup={endCornerDrag} onpointercancel={endCornerDrag} aria-label={text('crop')} disabled={cropMode !== 'quad'}>
                 <img src={imageUrl} alt={filename} draggable="false" />
                 <svg viewBox="0 0 {input.imageWidth} {input.imageHeight}" aria-hidden="true">
@@ -481,13 +492,13 @@
                     {#each proposal.outline as arc}<polyline class="outline" points={arc.map(p => p.join(',')).join(' ')} />{/each}
                   {/if}
                   {#if cropTool === 'region' && roughRegion}<rect class="region" x={roughRegion[0]} y={roughRegion[1]} width={roughRegion[2] - roughRegion[0]} height={roughRegion[3] - roughRegion[1]} />{/if}
-                  {#if quad.length > 1}<polyline points={quad.map(p => p.join(',')).join(' ') + (quad.length === 4 ? ` ${quad[0].join(',')}` : '')} />{/if}
+                  {#if cropMode === 'quad' && quad.length > 1 && quad.every(p => p.every(Number.isFinite))}<polyline points={quad.map(p => p.join(',')).join(' ') + (completeCrop ? ` ${quad[0].join(',')}` : '')} />{/if}
                 </svg>
-                {#each quad as p, i}<span class="corner" style:left="{100 * p[0] / input.imageWidth}%" style:top="{100 * p[1] / input.imageHeight}%">{i + 1}</span>{/each}
+                {#each quad as p, i}{#if cropMode === 'quad' && p.every(Number.isFinite)}<span class="corner" style:left="{100 * p[0] / input.imageWidth}%" style:top="{100 * p[1] / input.imageHeight}%">{i + 1}</span>{/if}{/each}
               </button>
               {#if cropMode === 'quad'}
-                <div class="crop-status"><span>{quad.length}/4 {text('selectedCorners')}</span><button type="button" onclick={resetCrop}>{text('resetCrop')}</button></div>
-                {#if quad.length === 4}
+                <div class="crop-status"><span>{selectedCornerCount}/4 {text('selectedCorners')}</span><button type="button" onclick={resetCrop}>{text('resetCrop')}</button></div>
+                {#if completeCrop}
                   <figure class="photo-preview"><figcaption>{text('photoCrop')}</figcaption><canvas bind:this={photoCanvas} aria-label={text('photoCrop')}></canvas></figure>
                   {#if photoError}<p class="notice">{text('invalidCrop')}</p>{/if}
                 {/if}
@@ -495,7 +506,7 @@
                   {#each [0, 1, 2, 3] as i}
                     {#each [0, 1] as axis}
                       <label>{text('corner')} {i + 1} · {axis === 0 ? 'x' : 'y'}
-                        <input type="number" min="0" max={axis === 0 ? input.imageWidth : input.imageHeight} step="any" value={quad[i]?.[axis] ?? ''} oninput={e => coordinate(i, axis, e.currentTarget.valueAsNumber)} />
+                        <input type="number" min="0" max={axis === 0 ? input.imageWidth : input.imageHeight} step="any" value={Number.isFinite(quad[i]?.[axis]) ? quad[i][axis] : ''} oninput={e => coordinate(i, axis, e.currentTarget.valueAsNumber)} />
                       </label>
                     {/each}
                   {/each}

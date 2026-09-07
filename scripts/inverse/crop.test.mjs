@@ -23,6 +23,11 @@ test('blank or transparent images have no heart proposals', () => {
   input.rgba.fill(0);
   assert.deepEqual(detectHeartCrops(input).candidates, []);
 });
+test('tiny artwork can skip automatic detection without rejecting the upload', () => {
+  const result = detectHeartCrops({ imageWidth: 16, imageHeight: 16, rgba: new Uint8ClampedArray(16 * 16 * 4) });
+  assert.equal(result.status, 'not_found');
+  assert.deepEqual(result.candidates, []);
+});
 for (const colours of [['#ffe416', '#867309'], ['#080907', '#ac8d3e'], ['#0068bb', '#ce1471'], ['#19ce12', '#897820']]) {
   test(`plain-background paper palette ${colours.join('/')}: automatic corners and original pixels`, () => {
     const input = heartPhoto({ colours, background: '#ffffff', lobeDepths: [.66, .61] });

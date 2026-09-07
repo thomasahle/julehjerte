@@ -8,6 +8,7 @@ export const pixelEdgesToCentres = quad => quad.map(p => p.map(v => v - 0.5));
 
 export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {} } = {}) {
   if (input.imageWidth * input.imageHeight > 24e6) throw new Error('Image exceeds 24 megapixels.');
+  if (input.imageWidth < 24 || input.imageHeight < 24) return { status: 'not_found', reason: 'The image is too small for automatic outline fitting.', candidates: [] };
   onProgress({ stage: 'detecting' });
   const image = { width: input.imageWidth, height: input.imageHeight, data: input.rgba };
   let proposal = detectMotif(image, { roi, maxSize: 650 });
