@@ -17,7 +17,7 @@
   import { browser } from "$app/environment";
   import HeartCard from "$lib/components/HeartCard.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
-  import Landscape from "$lib/components/Landscape.svelte";
+  import Scene from "$lib/components/Scene.svelte";
   import Fir from "$lib/components/Fir.svelte";
   import Star from "$lib/components/Star.svelte";
   import HeroHearts from "$lib/components/front/HeroHearts.svelte";
@@ -305,11 +305,9 @@
 <PageHeader {lang} active="templates" />
 
 <main id="main-content" tabindex="-1">
-<section class="hero">
-  <!-- The landscape is inlined once per page; every <Fir>/<Star> below is a
-       <use> of an id in its <defs>. -->
-  <div class="hero-land-wrap"><Landscape class="hero-land" /></div>
-
+<!-- <Scene> inlines the landscape once for the whole page; every <Fir>/<Star>
+     below is a <use> of an id in its <defs>. -->
+<Scene class="hero" band={230}>
   <svg
     class="hero-sky-m"
     viewBox="0 0 420 300"
@@ -397,7 +395,7 @@
   </div>
 
   <ScrollHint {lang} />
-</section>
+</Scene>
 
 <div class="gallery-wrap" bind:this={galleryWrapEl}>
   <GalleryFrame height={frameHeight} />
@@ -563,32 +561,8 @@
 
 <style>
   /* ---------------------------------------------------------------- hero -- */
-  /* The bottom 12px of the hero is snow-coloured, so a fractional SVG edge can
-     never show a sky-coloured hairline under the drawing. */
-  .hero {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background: linear-gradient(var(--sky), var(--sky)) 0 0 / 100% calc(100% - 12px) no-repeat
-      var(--page);
-  }
-
-  .hero-land-wrap {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    line-height: 0;
-  }
-
-  .hero :global(.hero-land) {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 2172 / 724;
-  }
-
+  /* The sky panel, its snow strip and the landscape band all come from
+     <Scene band={230}>; what is left here is what hangs in front of them. */
   .hero-sky-m,
   .hero-tree-m {
     display: none;
@@ -883,23 +857,6 @@
   }
 
   @media (max-width: 899px) {
-    /* The landscape leaves the absolute layer and becomes a 230px band at the
-       foot of the hero; on phones it shows the right part of the drawing. */
-    .hero-land-wrap {
-      position: relative;
-      top: 1px;
-      order: 10;
-      height: 230px;
-      overflow: hidden;
-    }
-
-    .hero :global(.hero-land) {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      width: max(100%, 720px);
-    }
-
     .hero-inner {
       display: flex;
       flex-direction: column;

@@ -23,7 +23,7 @@
   import StepList from "$lib/components/detail/StepList.svelte";
   import DifficultyDots from "$lib/components/DifficultyDots.svelte";
   import Fir from "$lib/components/Fir.svelte";
-  import Landscape from "$lib/components/Landscape.svelte";
+  import Scene from "$lib/components/Scene.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
   import {
     ArrowLeftIcon,
@@ -353,11 +353,7 @@
     </a>
   </div>
 
-  <section class="scene">
-    <!-- The drawing runs the full width of the page, its bottom row on the page
-         background. Rendered once per page: its <defs> ids are global. -->
-    <div class="land-wrap"><Landscape class="land" /></div>
-
+  <Scene>
     <!-- The firs the heart hangs on, drawn over the landscape and anchored to the
          bottom-left corner. Hidden below 1100, where the columns stack. -->
     <svg
@@ -493,7 +489,7 @@
         </div>
       {/if}
     </div>
-  </section>
+  </Scene>
 
   {#if data.categoryId && data.related.length > 0}
     <RelatedHearts
@@ -535,31 +531,8 @@
     color: var(--red);
   }
 
-  /* the scene: sky, the landscape along the bottom, the firs over it */
-  .scene {
-    position: relative;
-    overflow: hidden;
-    /* The bottom strip is snow-coloured, so a fractional SVG edge never leaves a
-       sky hairline under the drawing. */
-    background: linear-gradient(var(--sky), var(--sky)) 0 0 / 100% calc(100% - 12px) no-repeat
-      var(--page);
-  }
-
-  .land-wrap {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    line-height: 0;
-  }
-
-  .land-wrap :global(.land) {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 2172 / 724;
-  }
-
+  /* The sky panel and the landscape along its bottom come from <Scene>; the firs
+     the heart hangs on are drawn over them here. */
   .scene-trees {
     position: absolute;
     left: 0;
