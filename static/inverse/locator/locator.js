@@ -50,7 +50,11 @@ function fitModel(f,box,lines,{iterations=550}={}){const[x0,y0,x1,y1]=box,w=x1-x
  }
  const starts=[seed,seed.map((v,i)=>v+(i===0?-.025:i===1?.025:0)),seed.map((v,i)=>v+(i===0?.025:i===1?-.025:0))];
  if(f.palette)for(const dy of[.04,.08])starts.push(seed.map((v,i)=>v+(i===1?dy:0)));
- const fits=starts.map(s=>nelderMead(evaluate,s,s.map((_,i)=>i<4?.025:.04),{maxIterations:iterations})).sort((a,b)=>a.f-b.f),best=evaluate(fits[0].x,true);
+ const fits=starts.map(s=>nelderMead(evaluate,s,s.map((_,i)=>i<4?.025:.04),{maxIterations:iterations})).sort((a,b)=>a.f-b.f);
+ const details=fits.map(s=>evaluate(s.x,true)).filter(Boolean);
+ // A slightly lower image objective must not displace a fit that actually
+ // explains both outer lobes. Final support checks still apply independently.
+ const best=(f.palette?details.find(d=>d.arcResiduals.every(a=>mean(a.map(v=>v<Math.max(2,f.w*.012)?1:0))>=.65)&&d.colorLoss.every(v=>v<=.30)):null)||details[0];
  if(!best)return null;return{...best,evaluations:fits.reduce((s,x)=>s+x.evaluations,0),alternatives:fits.map(s=>({score:s.f,quad:evaluate(s.x,true)?.q??null}))};
 }
 /**

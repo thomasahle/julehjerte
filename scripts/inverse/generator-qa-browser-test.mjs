@@ -133,12 +133,17 @@ for(const name of(process.env.INVERSE_QA_BROWSERS||'chromium,firefox,webkit').sp
     const mask=await page.evaluate(()=>Array.from(window.qaPrepared.mask)),render=await renderExportedWeave(cuts,128);
     assert.ok(render.mask.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length<.005);
     check('Fresh direct solve exports a checked ZIP whose curves independently reproduce the source');
+    await page.getByLabel(/^Pattern style/).selectOption('general');
+    await button('Prepare artwork').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();
+    await button('Find cutting templates').click();await page.getByRole('heading',{name:'Template pair checked',exact:true}).waitFor({timeout:60000});
+    check('The General solver also completes a fresh solve with the real WASM engine');
     await page.getByLabel('Minimum strip width (mm)',{exact:true}).fill('2.1');
     assert.equal(await button('Download everything (.zip)').count(),0);assert.equal(await button('Find cutting templates').isDisabled(),true);
     check('Changing a cutting constraint removes the previous result and exports');
 
     const tiny=createCanvas(16,16);tiny.getContext('2d').drawImage(checker,0,0,16,16);
     await upload('tiny-artwork.png',tiny);assert.equal(await page.getByRole('alert').count(),0);
+    await page.getByLabel(/^Pattern style/).selectOption('direct');
     await button('Prepare artwork').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();
     check('Tiny square artwork skips the locator and still prepares');
 

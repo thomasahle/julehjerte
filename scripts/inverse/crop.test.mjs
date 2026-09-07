@@ -44,6 +44,16 @@ test('transparent-background coloured heart uses alpha without classifying trans
   assert.equal(result.candidates.length, 1);
   assert.ok(error(result.candidates[0].quad, expected) < 6);
 });
+test('resampling an asymmetric coloured heart preserves its overlap corners', () => {
+  const input = heartPhoto({ width: 601, height: 601, hearts: [[305,109,229,237,-234,221]], background: '#fff', colours: ['#b89a42','#268cb7'], lobeDepths: [.494,.472] });
+  const guide = [[305,109],[534,346],[300,567],[71,330]];
+  for (const size of [601,301]) {
+    const canvas=createCanvas(size,size),ctx=canvas.getContext('2d');ctx.drawImage(input.canvas,0,0,size,size);
+    const r=detectHeartCrops({ imageWidth:size,imageHeight:size,rgba:ctx.getImageData(0,0,size,size).data });
+    assert.equal(r.candidates.length,1);
+    assert.ok(error(r.candidates[0].quad.map(p=>p.map(v=>v*601/size)),guide)<8);
+  }
+});
 test('a plain background does not make two-colour circles or rectangles into heart proposals', () => {
   for (const shape of ['circle', 'rectangle']) {
     const canvas = createCanvas(380, 320), ctx = canvas.getContext('2d');
