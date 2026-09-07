@@ -46,7 +46,7 @@
     font-size: 8rem;
     font-weight: 700;
     margin: 0;
-    color: #cc0000;
+    color: var(--red);
     line-height: 1;
   }
 
@@ -54,18 +54,18 @@
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0.5rem 0 1rem;
-    color: #333;
+    color: var(--deep);
   }
 
   .error-description {
-    color: #666;
+    color: var(--muted);
     margin-bottom: 2rem;
   }
 
   .back-button {
     display: inline-block;
-    background: #cc0000;
-    color: white;
+    background: var(--red);
+    color: var(--white);
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
     text-decoration: none;
@@ -74,6 +74,7 @@
   }
 
   .back-button:hover {
-    background: #aa0000;
+    background: var(--red-hover);
+    color: var(--white);
   }
 </style>

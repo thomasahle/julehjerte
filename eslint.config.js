@@ -8,6 +8,7 @@ export default [
 	{
 		ignores: [
 			'build/**',
+			'docs/**',
 			'.svelte-kit/**',
 			'node_modules/**',
 			'static/**',

@@ -6,7 +6,7 @@
       </clipPath>
     </defs>
     <path d="M 225 225 L 375 225 L 375 375 L 225 375 A 75 75 0 1 1 225 225 Z" fill="#ffffff" />
-    <path d="M 225 225 A 75 75 0 1 1 375 225 L 375 375 L 225 375 L 225 225 Z" fill="#cc0000" />
+    <path d="M 225 225 A 75 75 0 1 1 375 225 L 375 375 L 225 375 L 225 225 Z" fill="#c41e2a" />
     <g clip-path="url(#overlap-clip)">
       <rect x="225" y="225" width="150" height="150" fill="#ffffff" />
       <path d="
@@ -20,7 +20,7 @@
     L 300 375
     L 225 375
     Z
-  " fill="#cc0000" fill-rule="evenodd" />
+  " fill="#c41e2a" fill-rule="evenodd" />
     </g>
     <path d="M 225 225 A 75 75 0 1 1 375 225 L 375 375 L 225 375 A 75 75 0 1 1 225 225 Z" fill="none" stroke="#999999" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" />
   </g>

@@ -4,8 +4,8 @@
   "description": "Design og print dine egne flettede julehjerter",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#aacdd8",
-  "theme_color": "#cc0000",
+  "background_color": "#f9f9f3",
+  "theme_color": "#c41e2a",
   "orientation": "portrait-primary",
   "icons": [
     {

@@ -1,26 +1,224 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Juleflet redesign palette — docs/redesign/DESIGN.md §1.
+
+   These are plain custom properties on :root, outside every cascade layer, so
+   they win over anything Tailwind emits and are readable from ordinary
+   component `<style>` blocks as `var(--green)` &c. Every colour in the site
+   chrome comes from here; heart *paper* colours are a separate thing and still
+   live in $lib/stores/colors.ts.
+--------------------------------------------------------------------------- */
+:root {
+  --page: #f9f9f3;       /* page background = the landscape's foreground snow */
+  --sky: #d6e1d0;        /* hero / detail scene background */
+  --cream2: #e6ece2;     /* footer, soft panels */
+  --sage: #b5c9b7;       /* inactive dots, dashed borders */
+  --sage-dark: #7f9c86;  /* secondary strokes */
+  --green: #2e5041;      /* nav links, outline buttons, icons, category headings */
+  --deep: #1c3329;       /* headings */
+  --red: #c41e2a;        /* primary buttons, ribbons, selection ring, active nav */
+  --ink: #1e2a25;        /* body text */
+  --muted: #5f6d66;      /* secondary text */
+  --line: #cfd9cf;       /* borders, pills */
+  --white: #ffffff;      /* cards, buttons */
+  --gold: #e0b75a;       /* stars */
+  --blue: #4a90b8;       /* focus rings only */
+
+  /* Hover shades, derived from the palette (not in the spec table). */
+  --red-hover: #a91824;
+  --green-hover: #24402f;
+
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Chrome metrics shared by the nav and by pages that offset for it. Keep
+     these whole pixels: half-pixel offsets blend the landscape's bottom row. */
+  --nav-height: 62px;
+  --nav-height-sm: 58px;
+
+  /* Drop shadow under hanging hearts and previews. */
+  --shadow-color: rgb(28 51 41 / 0.16);
+  --shadow-color-hover: rgb(28 51 41 / 0.26);
+}
+
+/* The shadcn-svelte components (button, tooltip, dropdown-menu, …) read these
+   Tailwind theme tokens. They are repointed at the redesign palette so those
+   components blend in; the redesign's own buttons use the .btn classes below. */
 @theme {
-  --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0.145 0 0);
-  --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.145 0 0);
-  --color-popover: oklch(1 0 0);
-  --color-popover-foreground: oklch(0.145 0 0);
-  --color-primary: oklch(0.205 0 0);
-  --color-primary-foreground: oklch(0.985 0 0);
-  --color-secondary: oklch(0.97 0 0);
-  --color-secondary-foreground: oklch(0.205 0 0);
-  --color-muted: oklch(0.97 0 0);
-  --color-muted-foreground: oklch(0.556 0 0);
-  --color-accent: oklch(0.97 0 0);
-  --color-accent-foreground: oklch(0.205 0 0);
-  --color-destructive: oklch(0.577 0.245 27.325);
-  --color-destructive-foreground: oklch(0.985 0 0);
-  --color-border: oklch(0.922 0 0);
-  --color-input: oklch(0.922 0 0);
-  --color-ring: oklch(0.708 0 0);
+  --color-background: var(--page);
+  --color-foreground: var(--ink);
+  --color-card: var(--white);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--white);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--green);
+  --color-primary-foreground: var(--white);
+  --color-secondary: var(--cream2);
+  --color-secondary-foreground: var(--green);
+  --color-muted: var(--cream2);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--cream2);
+  --color-accent-foreground: var(--green);
+  --color-destructive: var(--red);
+  --color-destructive-foreground: var(--white);
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--blue);
   --radius: 0.625rem;
-  --shadow-color: rgb(0 90 118 / 51%);
-  --shadow-color-hover: rgb(0 90 118 / 51%);
+  --default-font-family: var(--font-sans);
+}
+
+/* ---------------------------------------------------------------------------
+   Global element defaults. In @layer base so Tailwind utility classes (used by
+   the shadcn components) still win over them.
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: var(--page);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    color: var(--green);
+  }
+
+  a:hover {
+    color: var(--red);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    color: var(--deep);
+  }
+
+  h1 {
+    line-height: 1.05;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Shared button and pill classes — docs/redesign/DESIGN.md §1.
+   44px tall, 0 20px padding, radius 10, 15px/600, 18px icon + 8px gap.
+   Four kinds: primary (red), outline (white/green), ghost (transparent),
+   dark (green). Use these instead of the shadcn <Button> for site chrome.
+--------------------------------------------------------------------------- */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 20px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  .btn svg {
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: var(--white);
+    border-color: var(--red);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--red-hover);
+    border-color: var(--red-hover);
+    color: var(--white);
+  }
+
+  .btn-outline {
+    background: var(--white);
+    color: var(--green);
+    border: 1.5px solid var(--green);
+  }
+
+  .btn-outline:hover:not(:disabled) {
+    background: var(--cream2);
+    color: var(--green);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--green);
+    border: 1.5px solid var(--line);
+  }
+
+  .btn-ghost:hover:not(:disabled) {
+    background: var(--cream2);
+    color: var(--green);
+  }
+
+  .btn-dark {
+    background: var(--green);
+    color: var(--white);
+    border-color: var(--green);
+  }
+
+  .btn-dark:hover:not(:disabled) {
+    background: var(--green-hover);
+    border-color: var(--green-hover);
+    color: var(--white);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--green);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .pill:hover {
+    background: var(--cream2);
+    color: var(--green);
+  }
 }

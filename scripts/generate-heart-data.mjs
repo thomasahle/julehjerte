@@ -45,7 +45,7 @@ const COORD_DECIMALS = 3;
 // default heart colours (src/lib/stores/colors.ts).
 const OG_WIDTH = 1200;
 const OG_HEIGHT = 630;
-const OG_BACKGROUND = '#aacdd8';
+const OG_BACKGROUND = '#f9f9f3';
 const OG_COLORS = { left: '#ffffff', right: 'rgb(185, 19, 19)' };
 // The card text is set in a vendored font so the images are byte-identical on every
 // machine and in CI, independent of system fonts. scripts/fonts/ holds a Latin subset of

@@ -51,7 +51,7 @@
 	<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
 	<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
 	<link rel="manifest" href="/manifest.json" />
-	<meta name="theme-color" content="#cc0000" />
+	<meta name="theme-color" content="#c41e2a" />
 	<link rel="apple-touch-icon" href="/icon-192.png" />
 
 	<!-- Basic SEO -->
@@ -96,11 +96,10 @@
 </Tooltip.Provider>
 
 <style>
+	/* The body font, colour and background come from src/app.css. */
 	:global(body) {
-		margin: 0;
-		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		background: #aacdd8;
-		color: #111;
+		background: var(--page);
+		color: var(--ink);
 	}
 
 	.page-container {
