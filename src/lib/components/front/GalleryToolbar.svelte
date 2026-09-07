@@ -6,6 +6,8 @@
   clicked; the selection itself and the PDF generation stay on the page.
 -->
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import { t, type Language } from '$lib/i18n';
 	import { DownloadIcon, GearIcon } from '$lib/components/icons';
 	import type { LayoutMode } from '$lib/pdf/template';
@@ -52,9 +54,27 @@
 	// aria-disabled rather than `disabled`: a disabled button is not focusable, so
 	// the tooltip explaining why ("Vælg hjerter først") was mouse-only.
 	let printDisabled = $derived(selectedCount === 0 || generating);
+
+	// The toolbar starts up on the hero's snow (Gallery.svelte pulls the gallery
+	// over the drawing), where an opaque background would show as a paler
+	// rectangle over the snow hill. So it is transparent until it actually
+	// sticks, which a 1px sentinel just above it detects: the sentinel leaves the
+	// viewport at the same moment the toolbar reaches top: 0.
+	let sentinel = $state.raw<HTMLElement | null>(null);
+	let stuck = $state(false);
+
+	onMount(() => {
+		if (!browser || !sentinel) return;
+		const observer = new IntersectionObserver(([entry]) => {
+			stuck = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+		});
+		observer.observe(sentinel);
+		return () => observer.disconnect();
+	});
 </script>
 
-<div class="toolbar">
+<div class="toolbar-sentinel" bind:this={sentinel} aria-hidden="true"></div>
+<div class="toolbar" class:stuck>
 	<span class="split">
 		<Tooltip.Root disabled={selectedCount > 0 || generating}>
 			<Tooltip.Trigger>
@@ -140,7 +160,16 @@
 		align-items: center;
 		gap: 12px;
 		padding: 14px 0;
+		background: transparent;
+	}
+
+	.toolbar.stuck {
 		background: var(--page);
+	}
+
+	.toolbar-sentinel {
+		height: 1px;
+		margin-top: -1px;
 	}
 
 	/* "Hent skabeloner (n)" and its PDF settings gear are two .btn-primary halves

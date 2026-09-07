@@ -129,18 +129,20 @@
 	   the heading and the toolbar simply carry on over it and the wide empty
 	   band at the foot of the hero disappears.
 
-	   Two things cap the overlap at each width, and both shrink with the
-	   landscape (which is drawn at the page's own width): the heading has to
-	   clear the base of the hero's left-hand firs, and the toolbar's opaque
-	   --page background must not begin above the drawing's front snow edge,
-	   where it would show as a paler rectangle over the snow hill behind it.
-	   Below 900 there is no overlap at all: the landscape is an in-flow band
-	   there, with the scroll hint on it. */
+	   From 1400 up the heading sits in the snow just under the hill line, where
+	   the owner asked for it; the centred 1280 column leaves 100 px or more of
+	   margin there, which clears the hero's left-hand fir. Below 1400 the
+	   column hugs a 40 px margin and that fir's lower branches reach past it,
+	   so the overlap stays small enough for the heading to start below the
+	   fir's base (measured at 1200 and 1024). The toolbar is transparent until
+	   it sticks (see GalleryToolbar), so its background never shows as a paler
+	   rectangle over the snow hill. Below 900 there is no overlap at all: the
+	   landscape is an in-flow band there, with the scroll hint on it. */
 	.gallery-wrap {
 		position: relative;
 		/* Above the hero's scene, which is positioned as well. */
 		z-index: 1;
-		margin-top: -70px;
+		margin-top: -170px;
 	}
 
 	.gallery {
