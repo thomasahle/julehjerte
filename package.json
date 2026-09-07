@@ -28,7 +28,8 @@
 		"benchmark:inverse:yellow-star": "node scripts/inverse/yellow-star-benchmark.mjs",
 		"test:inverse:yellow-star:browser": "node scripts/inverse/yellow-star-browser-test.mjs",
 		"benchmark:inverse:hard-photos": "node scripts/inverse/hard-photo-benchmark.mjs",
-		"test:inverse:mixture:browser": "node scripts/inverse/mixture-browser-test.mjs"
+		"test:inverse:mixture:browser": "node scripts/inverse/mixture-browser-test.mjs",
+		"test:inverse:direct:browser": "node scripts/inverse/direct-browser-test.mjs"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",

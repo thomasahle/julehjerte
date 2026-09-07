@@ -18,6 +18,31 @@ export function borderEvidence(prob,n){
     rows.push({side,inset:fraction,count:transitions.length,transitions});
   }return rows;
 }
+/** Repeated counts are useful evidence, even though a single pixel row is not
+ * a reliable constraint. Require a majority on every opposing edge before
+ * reserving one finalist. Other candidates remain free to disagree.
+ */
+export function supportedBorderCounts(evidence){
+  const counts=[];
+  for(const sides of[[0,2],[1,3]]){
+    const perSide=sides.map(side=>{
+      const rows=evidence.filter(r=>r.side===side),votes=new Map();
+      for(const r of rows)votes.set(r.count,(votes.get(r.count)||0)+1);
+      return[...votes].find(([,n])=>n>rows.length/2)?.[0];
+    });
+    if(!perSide[0]||perSide[0]!==perSide[1])return null;
+    counts.push(perSide[0]);
+  }
+  return counts;
+}
+export function gridFinalists(coarse,evidence,limit=3){
+  const chosen=coarse.slice(0,limit),supported=supportedBorderCounts(evidence);
+  if(supported&&!chosen.some(r=>r.model.counts.every((c,i)=>c===supported[i]))){
+    const reserve=coarse.find(r=>r.model.counts.every((c,i)=>c===supported[i]));
+    if(reserve)chosen[Math.min(limit-1,chosen.length)]=reserve;
+  }
+  return chosen;
+}
 function refloor(result,floor){
   const {model}=result,controls=gridControls(model,result.floor),z=model.z.slice();
   model.counts.forEach((count,f)=>{for(let j=0;j<model.k;j++){
@@ -46,7 +71,7 @@ export function fitDirect(input,cfg,onProgress=()=>{}){
       onProgress({stage:'directInitializing',counts:o.counts,error:r.error});
     }return results.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
   });
-  const fine=stage('directFitting',()=>coarse.slice(0,3).map(r=>{
+  const fine=stage('directFitting',()=>gridFinalists(coarse,evidence).map(r=>{
     const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{steps:900,initial:r.model.z,deadline:start+cfg.timeLimit*480});
     attempts.push({stage:'fine',counts:r.model.counts,phase:r.phase,error:next.error,steps:next.steps,seconds:(performance.now()-at)/1000});return next.error<r.error?next:r;
   }).sort((a,b)=>a.error-b.error));
@@ -67,6 +92,6 @@ export function fitDirect(input,cfg,onProgress=()=>{}){
   const paper=stage('paper',()=>materialAudit(solution,cfg));
   solution.report={algorithm:'direct-bezier',imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.error>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
     optimizationResolution:n,sourceResolution:source.resolution,initialization:'Fresh ordered positive-gap cubic B-spline grids; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
-    borderEvidence:evidence,borderCountsAreHardConstraints:false,traceUsed:false,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
+    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:false,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

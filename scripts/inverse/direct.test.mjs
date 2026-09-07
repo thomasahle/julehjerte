@@ -11,9 +11,38 @@ import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {checkerPixels} from './fixtures.mjs';
+import {supportedBorderCounts,gridFinalists} from '../../static/inverse/core/direct/fit.js';
+import {shareReplacement} from '../../static/inverse/core/direct/share.js';
 
 const near=(a,b,eps=1e-8)=>assert.ok(Math.abs(a-b)<eps,`${a} vs ${b}`);
 const line=(a,b)=>[a,a.map((v,i)=>v+(b[i]-v)/3),a.map((v,i)=>v+2*(b[i]-v)/3),b];
+
+test('inset evidence reserves a count candidate without treating edge noise as extra slits',()=>{
+  const evidence=[];for(let side=0;side<4;side++)for(let inset=0;inset<3;inset++)evidence.push({side,inset,count:side%2?5:3});
+  evidence[0].count=7; evidence[8].count=4;
+  assert.deepEqual(supportedBorderCounts(evidence),[3,5]);
+  const coarse=[[7,7],[6,6],[8,8],[3,5]].map(counts=>({model:{counts}}));
+  assert.deepEqual(gridFinalists(coarse,evidence).map(r=>r.model.counts),[[7,7],[6,6],[3,5]]);
+  // Conflicting opposite sides are uncertain, not an error or forced count.
+  evidence[6].count=2;evidence[7].count=2;
+  assert.equal(supportedBorderCounts(evidence),null);
+  assert.deepEqual(gridFinalists(coarse,evidence),coarse.slice(0,3));
+});
+
+test('shared replacement cancels reverse-running cuts and preserves adjacent endpoints',()=>{
+  const a=[line([25,0],[25,40]),line([25,40],[65,40]),line([65,40],[65,100])];
+  const b=[line([0,40.2],[25,40.2]),line([25,40.2],[65,40.2]),line([65,40.2],[100,40.2])].toReversed().map(c=>c.toReversed());
+  const [aa,bb]=shareReplacement(a,b,{a0:1.1,a1:1.9,b0:1.9,b1:1.1,length:32});
+  assert.deepEqual(aa[0][0],a[0][0]);assert.deepEqual(aa.at(-1)[3],a.at(-1)[3]);
+  assert.deepEqual(bb[0][0],b[0][0]);assert.deepEqual(bb.at(-1)[3],b.at(-1)[3]);
+  for(const path of[aa,bb])for(let i=1;i<path.length;i++)assert.deepEqual(path[i-1][3],path[i][0]);
+  const graph=new CurveGraph([[aa],[bb]],100);
+  const shared=graph.occurrences.map((o,i)=>o.length===2?i:-1).filter(i=>i>=0);
+  assert.ok(shared.length>1);
+  const gradient=boundaryGradient(graph,graph.points,new Float64Array(128*128).fill(.2),128,1);
+  // Interior shared handles belong to the cancelling boundary alone.
+  for(const i of shared)for(const id of graph.edges[i].slice(1,3))for(const axis of[0,1])near(gradient[2*id+axis],0,1e-12);
+});
 
 test('clamped cubic spline basis and exact Bézier conversion agree',()=>{
   const model=gridModel([2,3],8,17),paths=gridPaths(model);

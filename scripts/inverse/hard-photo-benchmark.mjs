@@ -7,7 +7,7 @@ import {GENERAL_PRESET,SIMPLIFIED_PREPROCESSING} from '../../src/lib/inverse/pre
 import {renderExportedWeave} from './export-renderer.mjs';
 import {writeHardPhotoReport} from './hard-photo-report.mjs';
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-const seconds=Number(args.seconds||10),runId=new Date().toISOString().replace(/[:.]/g,'-'),output=`tmp/inverse-hard-photos/${runId}`;
+const seconds=Number(args.seconds||10),runId=new Date().toISOString().replace(/[:.]/g,'-')+(args.shard?`-shard-${args.shard.replace('/','-of-')}`:''),output=`tmp/inverse-hard-photos/${runId}`;
 await fs.mkdir(output,{recursive:true});
 const hash=b=>createHash('sha256').update(b).digest('hex'),collage=JSON.parse(await fs.readFile('scripts/inverse/hard-photo-cases.json')),photos=JSON.parse(await fs.readFile('scripts/inverse/photo-cases.json'));
 const sourceHashes={};async function hashTree(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=`${dir}/${e.name}`;if(e.isDirectory())await hashTree(f);else sourceHashes[f]=hash(await fs.readFile(f));}}await hashTree('static/inverse/core');for(const f of ['scripts/inverse/hard-photo-cases.json','scripts/inverse/photo-cases.json','src/lib/inverse/presets.js'])sourceHashes[f]=hash(await fs.readFile(f));
@@ -17,6 +17,7 @@ if(args.recrops){
   sourceHashes[`${root}/cases.json`]=hash(await fs.readFile(`${root}/cases.json`));
   cases=entries.filter(e=>!args.ids||args.ids.split(',').includes(e.id)).map(e=>({...e,group:'recrop-handoff',label:e.id,cropStatus:'needs_review',file:`${root}/inputs/cases/${e.id}/rectified.png`,quad:[[0,0],[256,0],[256,256],[0,256]],sourceQuad:e.quad,roi:[0,0,256,256],cropNote:'Fixed archive rectification; locator needs_review retained. No extra inset.'}));
 }
+if(args['crop-overrides']){const overrides=JSON.parse(await fs.readFile(args['crop-overrides']));cases=cases.map(e=>{const override=overrides.find(x=>x.id===e.id);return override?{...e,...override,originalQuad:e.quad}:e;});}
 if(args.shard){const[index,count]=args.shard.split('/').map(Number);if(!Number.isInteger(index)||!Number.isInteger(count)||index<0||index>=count)throw new Error('Use --shard=index/count with zero-based index.');cases=cases.filter((_,i)=>i%count===index);}
 if(args.perturb==='true')cases=cases.flatMap(e=>[
   {name:'crop-x-plus-1',dx:1,dy:0},{name:'crop-y-plus-1',dx:0,dy:1},
