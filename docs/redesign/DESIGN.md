@@ -134,6 +134,14 @@ The heart itself is the existing `PaperHeartSVG` (read-only render), white + red
 `main.gallery` max-width 1280, padding `24px 40px 56px` (→ `16px 24px 40px` < 900, `16px 16px 32px` < 600),
 `id="skabeloner"`. Heading "Skabeloner" 32px/600 (26 < 900). **No help text.**
 
+The gallery starts *in* the hero's foreground snow rather than under it: `.gallery-wrap` is pulled up with a
+negative top margin (−70 ≥ 1400, −64 at 1200–1399, −44 at 900–1199, none below 900) and `z-index: 1` so it
+paints over the scene. The drawing's front snow and `--page` are the same colour, so nothing looks cut. Two
+things cap the overlap and both shrink with the landscape, which is drawn at the page's width: the heading has
+to clear the base of the hero's left-hand firs, and the toolbar's opaque `--page` background must not begin
+above the drawing's front snow edge, where it would show as a paler rectangle over the snow hill behind it.
+Below 900 there is no overlap: the landscape is an in-flow band there, with the scroll hint on it.
+
 Toolbar (sticky top 0, z-index 5, `--page` background, flex-wrap, gap 12, padding 14px 0): red split button
 "Hent skabeloner (n)" + gear (PDF settings) with `0 2px 8px rgb(31 51 41 / .12)` shadow; with nothing selected
 the split button is `aria-disabled` rather than `disabled` (so it stays focusable and its "Vælg hjerter først"

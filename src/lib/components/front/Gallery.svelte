@@ -124,8 +124,23 @@
 </div>
 
 <style>
+	/* The gallery starts up in the hero's foreground snow instead of below it.
+	   The drawing's front snow and the page background are the same colour, so
+	   the heading and the toolbar simply carry on over it and the wide empty
+	   band at the foot of the hero disappears.
+
+	   Two things cap the overlap at each width, and both shrink with the
+	   landscape (which is drawn at the page's own width): the heading has to
+	   clear the base of the hero's left-hand firs, and the toolbar's opaque
+	   --page background must not begin above the drawing's front snow edge,
+	   where it would show as a paler rectangle over the snow hill behind it.
+	   Below 900 there is no overlap at all: the landscape is an in-flow band
+	   there, with the scroll hint on it. */
 	.gallery-wrap {
 		position: relative;
+		/* Above the hero's scene, which is positioned as well. */
+		z-index: 1;
+		margin-top: -70px;
 	}
 
 	.gallery {
@@ -155,7 +170,23 @@
 		color: var(--deep);
 	}
 
+	@media (max-width: 1399px) {
+		.gallery-wrap {
+			margin-top: -64px;
+		}
+	}
+
+	@media (max-width: 1199px) {
+		.gallery-wrap {
+			margin-top: -44px;
+		}
+	}
+
 	@media (max-width: 899px) {
+		.gallery-wrap {
+			margin-top: 0;
+		}
+
 		.gallery {
 			padding: 16px 24px 40px;
 		}
