@@ -258,6 +258,34 @@
     color: var(--white);
   }
 
+  /* -------------------------------------------------------------------------
+     The editor's panel primitive — DESIGN.md §7. Declared here, not in
+     PaperHeart, because both fill panels: PaperHeart draws Symmetri / Tegning /
+     Farver in its right-hand column, and the editor route adds Hjertedetaljer
+     and Handlinger through the `panelExtra` snippet and repeats them under the
+     canvas on phones. Position-specific overrides stay with whoever positions
+     the panel.
+     ------------------------------------------------------------------------- */
+  .editor-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--white);
+    box-sizing: border-box;
+  }
+
+  .panel-title {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
   .pill {
     display: inline-flex;
     align-items: center;

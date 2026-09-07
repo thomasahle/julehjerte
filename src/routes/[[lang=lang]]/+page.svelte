@@ -207,7 +207,7 @@
     role="presentation"
   >
     <div
-      class="modal delete-modal"
+      class="modal"
       role="dialog"
       tabindex="-1"
       aria-modal="true"

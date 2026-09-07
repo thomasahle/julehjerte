@@ -133,11 +133,6 @@
 
 <style>
 	/* The body font, colour and background come from src/app.css. */
-	:global(body) {
-		background: var(--page);
-		color: var(--ink);
-	}
-
 	.page-container {
 		display: flex;
 		flex-direction: column;

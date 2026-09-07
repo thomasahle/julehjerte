@@ -3782,31 +3782,12 @@
 		}
 
 		/*
-		  Panel chrome. Declared `:global` under .right-panel on purpose: the editor route
-		  fills the same column with its own Hjertedetaljer / Handlinger sections through
-		  the `panelExtra` snippet, and scoped styles would not reach that markup. The route
-		  repeats these few rules for the copy it renders below the canvas on phones.
+		  .editor-panel and .panel-title themselves live in src/app.css: the editor
+		  route fills this same column with its own Hjertedetaljer / Handlinger
+		  sections through `panelExtra`, and repeats them under the canvas on
+		  phones, so neither component can own them. What is left here and in the
+		  media queries below is how *this* column positions them.
 		*/
-		.right-panel :global(.editor-panel) {
-			display: flex;
-			flex-direction: column;
-			gap: 12px;
-			padding: 16px;
-			border: 1px solid var(--line);
-			border-radius: 12px;
-			background: var(--white);
-			box-sizing: border-box;
-		}
-
-		.right-panel :global(.panel-title) {
-			margin: 0;
-			font-size: 12px;
-			font-weight: 600;
-			letter-spacing: 0.06em;
-			text-transform: uppercase;
-			color: var(--muted);
-		}
-
 		.segment-controls {
 			display: flex;
 			flex-direction: column;

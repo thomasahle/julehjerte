@@ -751,10 +751,6 @@
     flex-direction: column;
   }
 
-  .editor > :global(header) {
-    margin-bottom: 0;
-  }
-
   .editor-top :global(.paper-heart.fullPage) {
     flex: 1 1 auto;
     min-height: 0;
@@ -792,31 +788,8 @@
     }
   }
 
-  /*
-    Panel chrome for the two sections above. PaperHeart declares the same rules
-    `:global` inside its right-hand column; these cover the copy rendered under the
-    canvas on phones (and keep the scoped classes here in use).
-  */
-  .editor-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 16px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--white);
-    box-sizing: border-box;
-  }
-
-  .panel-title {
-    margin: 0;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
+  /* .editor-panel and .panel-title come from src/app.css; .field is this
+     route's own, for the Hjertedetaljer inputs. */
   .field {
     display: flex;
     flex-direction: column;

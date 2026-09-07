@@ -246,11 +246,6 @@
 		cursor: pointer;
 	}
 
-	.card-select:focus-visible {
-		outline: 3px solid var(--blue);
-		outline-offset: 2px;
-	}
-
 	.card-heart {
 		display: flex;
 		justify-content: center;
