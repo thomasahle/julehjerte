@@ -8,6 +8,8 @@ import {recoverShared} from './share.js';
 import {materialAudit} from '../material.js';
 import {resize} from './math.js';
 import {initializeGrid,borderGrid,separableGrid} from './initialize.js';
+import {auditImageFeatures} from '../image-features.js';
+import {recoverImageFeatures} from '../feature-recovery.js';
 
 export function borderEvidence(prob,n){
   const rows=[];
@@ -51,7 +53,7 @@ function refloor(result,floor){
     const sum=gaps.reduce((s,v)=>s+v,0);for(let i=0;i<=count;i++)z[model.offsets[f]+j*(count+1)+i]=Math.log(gaps[i]/sum);
   }});return z;
 }
-export function fitDirect(input,cfg,onProgress=()=>{}){
+export async function fitDirect(input,cfg,onProgress=()=>{}){
   const source=input.sourceImage,fullProb=source.probability||Float32Array.from(source.mask),n=Math.min(256,source.resolution),prob=resize(fullProb,source.resolution,n),gridTarget=resize(fullProb,source.resolution,96),start=performance.now(),deadline=start+cfg.timeLimit*1000;
   const evidence=borderEvidence(fullProb,source.resolution),attempts=[],timings=[],options=[],seen=new Set();
   const add=(counts,phase)=>{if(counts.some(c=>c<1||c>8||(c+1)*(cfg.nominalWidth+.35)>=cfg.width))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
@@ -99,6 +101,18 @@ export function fitDirect(input,cfg,onProgress=()=>{}){
     const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{optimizationTarget:gridTarget,steps:900,initial:r.model.z,deadline:start+cfg.timeLimit*480});
     attempts.push({stage:'fine',counts:r.model.counts,phase:r.phase,error:next.error,steps:next.steps,seconds:(performance.now()-at)/1000});return next.error<r.error?next:r;
   }).sort((a,b)=>a.error-b.error));
+  // A local boundary gradient cannot create a remote missing region. Try an
+  // alternate traced routing while there is still time within this search.
+  const features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width);
+  let recovery=null;
+  if(!features.passed&&deadline-performance.now()>2000){
+    recovery=await recoverImageFeatures(input,cfg,Math.min(10,(deadline-performance.now())/1000*.45),onProgress);
+    if(recovery.solution){
+      const solution=recovery.solution;
+      solution.report={algorithm:'hybrid-bezier-trace',imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:true};
+      return solution;
+    }
+  }
   const floor=fittingMargin(cfg,cfg.width)/cfg.width,candidates=[];
   for(let i=0;i<fine.length;i++){
     if(i&&performance.now()>start+cfg.timeLimit*900)break;
@@ -116,6 +130,6 @@ export function fitDirect(input,cfg,onProgress=()=>{}){
   const paper=stage('paper',()=>materialAudit(solution,cfg));
   solution.report={algorithm:'direct-bezier',imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.error>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
     optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
-    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:false,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
+    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:false,featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

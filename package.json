@@ -36,7 +36,8 @@
 		"test:inverse:comparison:browser": "node scripts/inverse/comparison-browser-test.mjs",
 		"benchmark:inverse:hunodan:prepare": "node scripts/inverse/hunodan-corpus.mjs",
 		"benchmark:inverse:hunodan": "node scripts/inverse/hunodan-benchmark.mjs",
-		"test:inverse:hunodan:browser": "node scripts/inverse/hunodan-browser-test.mjs"
+		"test:inverse:hunodan:browser": "node scripts/inverse/hunodan-browser-test.mjs",
+		"benchmark:inverse:hunodan:report": "node scripts/inverse/hunodan-visual-report.mjs"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
