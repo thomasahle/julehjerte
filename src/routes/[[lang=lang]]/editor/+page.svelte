@@ -492,7 +492,7 @@
 
 <!--
   Hjertedetaljer + Handlinger. On desktop this snippet is handed to PaperHeart, which
-  renders it at the bottom of the 340px panel so all five sections share one column and
+  renders it at the bottom of the floating 340px panel so all five sections share one column and
   one "Skjul panel" control; below 900px the same snippet is rendered under the canvas.
   It is authored here, so the styles below reach it in both places.
 -->

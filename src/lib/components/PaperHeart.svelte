@@ -71,10 +71,10 @@
 			/**
 			 * Extra sections for the right-hand panel (docs/redesign/DESIGN.md §7).
 			 * The editor route fills it with "Hjertedetaljer" and "Handlinger" so that
-			 * all five panels share one 340px column and one collapse control. The
-			 * snippet is authored in the route, so the route styles it; this component
-			 * only supplies the column. Below 900px the route renders the same snippet
-			 * itself, under the canvas, and passes nothing here.
+			 * all five panels share one floating 340px column and one collapse
+			 * control. The snippet is authored in the route, so the route styles it;
+			 * this component only supplies the column. Below 900px the route renders
+			 * the same snippet itself, under the canvas, and passes nothing here.
 			 */
 			panelExtra?: Snippet;
 			/**
@@ -1987,8 +1987,8 @@
 
 		// The floating toolbars used to be draggable, with their offsets kept in
 		// localStorage under `paperheart.toolbarPositions.<componentId>`. The redesign
-		// gives the editor a fixed three-column layout (tool rail · canvas · panel), so
-		// dragging is retired deliberately and the stale key is cleaned up on mount.
+		// gives the rail and the panel fixed places over the canvas, so dragging is
+		// retired deliberately and the stale key is cleaned up on mount.
 		const LEGACY_TOOLBAR_POSITIONS_KEY = 'paperheart.toolbarPositions.';
 
 		// Collapsing the right panel lets the canvas fill the width (DESIGN.md §7).
@@ -1998,11 +1998,12 @@
 		// TODO: the panel *shell* — .right-panel, .panel-collapse and .panel-tab
 		// below — is page chrome and belongs in an EditorPanel.svelte beside this
 		// file. It is still here because its CSS is welded to this component's
-		// layout: the three-column grid sizes the 340px column, `.paper-heart
-		// .panel-collapsed` drives the tab, and three media queries restyle all of
-		// them together. Moving the markup without moving the canvas layout would
-		// replace those rules with a wider :global() contract than the one it
-		// removes; do it when the canvas layout itself is split out.
+		// layout: the panel's width is one of the two insets that keep the drawing
+		// area clear of it, `.paper-heart.panel-collapsed` drives both the tab and
+		// the other inset, and three media queries restyle all of them together.
+		// Moving the markup without moving the canvas layout would replace those
+		// rules with a wider :global() contract than the one it removes; do it when
+		// the canvas layout itself is split out.
 		let panelCollapsed = $state(false);
 		// Both controls stay mounted (the tab is hidden with CSS while the panel is
 		// open), so collapsing from the keyboard can hand focus to the other one
@@ -3572,7 +3573,7 @@
 
 		/* The drawing surface. Everything that floats over the heart (hint, selection,
 		   strip count, notices) lives inside it, so it is anchored to the canvas and not
-		   to the three-column layout around it. */
+		   to the rail and the panel that float above it. */
 		.canvas-box {
 			position: relative;
 			display: flex;
