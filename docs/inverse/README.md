@@ -8,7 +8,7 @@ The new motif-locator addendum provides automatic single-heart fitting, rough re
 
 Example buttons now perform a visible action immediately: Waves and Star prepare editable pattern previews, while JUL runs a saved-template check. On mobile, the preview scrolls into view. Examples clear the prior upload and its error state; failed example requests clear stale exports and permit retry.
 
-The photographic recrop handoff adds an explicit red/white mixture conversion and a broader 47-input inventory. Current app results are 3 accepted pairs among 31 fully visible motifs; the Python direct fitter is a separate experiment. See [PHOTO-RECROPS.md](PHOTO-RECROPS.md) for the port, limitations and reproducible evidence.
+The photographic recrop handoff adds an explicit red/white mixture conversion and a direct JavaScript Bézier fitter. **Fit curves to image** produces 11 accepted pairs among the same 31 fully visible motifs, versus 3 with tracing at the same 60-second budget. Twenty perturbations retain accepted exports, but five change slit counts. See [DIRECT-FITTER.md](DIRECT-FITTER.md) for crop/colour comparisons, remaining visual defects and root-cause experiments; [PHOTO-RECROPS.md](PHOTO-RECROPS.md) records the earlier archive validation.
 
 ## Runtime and changes
 

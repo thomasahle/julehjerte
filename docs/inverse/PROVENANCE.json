@@ -23,7 +23,7 @@
     },
     "static/inverse/core/engine.js": {
       "handoff_sha256": "8215cd0d111015555388a5d204f7399f7f75768ac7b1cade3a69a92cac87c68f",
-      "integrated_sha256": "c37df74a1a402c8b2cbab5281d872f6bc40a441d8d77ed9c83284c028b3faa3f",
+      "integrated_sha256": "6fe8f13bef3d0c5662e77fa30ca00c33abb49a6be44e767235f8a18d28408ab0",
       "modified": true
     },
     "static/inverse/core/export.js": {
@@ -43,7 +43,7 @@
     },
     "static/inverse/core/input.js": {
       "handoff_sha256": "edac0315ad6521febe1298f750e6f472345aeec674580fcc5b2e9acd4a28306f",
-      "integrated_sha256": "ac4960cbe2dc1f1c5cdbf1d779c99a7ec2187559d4229d4f174625f3cdd1a3e4",
+      "integrated_sha256": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
       "modified": true
     },
     "static/inverse/core/material.js": {
@@ -58,7 +58,7 @@
     },
     "static/inverse/core/settings.js": {
       "handoff_sha256": "d96ee2bee0b3d52a29a23144059970da7fce0c8bccd5e30ccff27f02af3cbb44",
-      "integrated_sha256": "1cafe7b3abc1c9388a00826c0ced55b9fa3bdcfc135daabe229de8751198cdf2",
+      "integrated_sha256": "c291f260a683586631bb8ca327d47e121d16ec592662be9315b6a8f51541ec67",
       "modified": true
     },
     "static/inverse/core/solver.js": {
@@ -233,5 +233,28 @@
     },
     "validation": "docs/inverse/PHOTO-RECROPS-VALIDATION.json",
     "pythonOptimizerPorted": false
+  },
+  "directBezierPort": {
+    "archive": "heart_recrop_reconstruction.zip",
+    "archiveSha256": "a38010ddf67f0788c24f55ccfd6e34a920e1ad5a5228781c22fd4f6ffd8eb021",
+    "sourceCodeSha256": {
+      "code/calibrated_direct_fit.py": "08178e8a77b453b54420ed744bfc1ba5a624088d2df44eca7350d872ea32ea61",
+      "code/curve_graph.py": "64e84c1a41a68b44f7747965f24d0c35a4f99f6abc3667306845afed2c0a5c9d",
+      "code/boundary_loss.py": "5c5d81268c4cdef6b7f5c612f43ad05021c7747080c7fc43da53405bc67bf2ee",
+      "code/fit_camera.py": "7489db90c0e7221ea10b6940f6d28f80dd296b04b16be2ccc86f20246a887708",
+      "code/camera_weld.py": "96f5680b34e691f02519b4613fcbcaee5a749db6a080740bbc0c2e909dd0c429",
+      "code/weld_geometry.py": "c68bec0d226bacad699a275b33dc63fe2c617478a9c9297ff8c78444cb915ce1"
+    },
+    "integratedFiles": {
+      "static/inverse/core/direct/boundary.js": "8e6b2957cb13f456c3fe699c332b580976aba544cfca588e726ceda7c4c34043",
+      "static/inverse/core/direct/curves.js": "2cf1ef0da0555bb2db9abf30780fc95ecbbde7dc0c19a691cd57abced21beb52",
+      "static/inverse/core/direct/fit.js": "67d31578f5cee045e14b6256330edbf308f00146f580546be2e91395215d2b0a",
+      "static/inverse/core/direct/grid.js": "46ef29abdc68bf35526f0c73d4129aa1ff061899cc1210a2015610a2cfc2e9f0",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/refine.js": "ec9758a9cf9a84da0fc2b569793deac9b9a35d4a164cc2b8807df7e0c942894f",
+      "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a"
+    },
+    "runtime": "JavaScript in the existing Web Worker; no PyTorch or backend service",
+    "validation": "DIRECT-FITTER-VALIDATION.json"
   }
 }

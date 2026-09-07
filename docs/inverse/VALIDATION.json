@@ -177,7 +177,7 @@
                   "depthPixels": 4,
                   "editedBandWidthMm": 1,
                   "changedPixels": 5,
-                  "changeFraction": 3.125e-05,
+                  "changeFraction": 0.00003125,
                   "transitionsBefore": [
                     2,
                     2,
@@ -295,7 +295,7 @@
                   "depthPixels": 4,
                   "editedBandWidthMm": 1,
                   "changedPixels": 5,
-                  "changeFraction": 3.125e-05,
+                  "changeFraction": 0.00003125,
                   "transitionsBefore": [
                     2,
                     2,
@@ -12133,7 +12133,7 @@
     "scripts/inverse/export-renderer.test.mjs": "7dc623440b1f9db11672b20761cae21434e635fc68e99d38d9792d1c1b234c44",
     "scripts/inverse/fixtures.mjs": "ee22b89d9f049e502e391bd9491b778c9cd76f319237733c8e5fc578be0b998f",
     "scripts/inverse/fixtures/yellow-star-photo.png": "6fbf160ebb7d96e11ce701d5d88410b6f36363ccea23a803870ccedb3c6f3247",
-    "scripts/inverse/hard-photo-benchmark.mjs": "352fbbe332e855982f9fd04b1752a2bfd7e74df4362bc4b4ec6eaeedd185076b",
+    "scripts/inverse/hard-photo-benchmark.mjs": "52307e6aa3af6bdc10f4390644e082f0e929799ef950adeb778fc433d425c3ad",
     "scripts/inverse/hard-photo-cases.json": "21a4368d75bf355617ae518f200ac450fed860de876a689ed768d29b0ac4bf92",
     "scripts/inverse/hard-photo-report.mjs": "0dbb71b8e8f3277c1b74d3642f5971c3fab06730083a4731c45af9bfa720cd5a",
     "scripts/inverse/integration.test.mjs": "cc86d35235e2d5af67be5774936e92122a2e5c48a789261e9c1f2a3d28c7d548",
@@ -12155,22 +12155,22 @@
     "src/lib/inverse/SvgPreview.svelte": "adddc669237b716f55d148b0a05a316057ca17c14e27eb5ec423190f68b6987c",
     "src/lib/inverse/client.test.ts": "3874c5965c80c9cbe560c34fd867645dc5ce24209a33067ac707180469ac3925",
     "src/lib/inverse/client.ts": "204d1ffae59b88fea1a9a65dcf6f6dcf11158307b75fd650101ddce9503543d4",
-    "src/lib/inverse/messages.ts": "1bf6b5dc24b6068fc91acbf35e803e0ef592ccde840684f29d0060c4fd6034e5",
-    "src/lib/inverse/presets.js": "55f6b2b32ea1cb9cca4e5b9e33a0cdeeb6e92d295029e0276515dd4d724badda",
-    "src/routes/[[lang=lang]]/generate/+page.svelte": "e4cc88e78e9a4a6f1c6c5a956540217123e33ada51cf85242ddb6722bede270f",
+    "src/lib/inverse/messages.ts": "874ef7d9a3a626f0285aaa86eef1702a55157bef2cd3c52c7e836e3e5c7804e6",
+    "src/lib/inverse/presets.js": "ed523de633437df50216610701b568cc327eb261571a6bc2b1596d2c6cf5036b",
+    "src/routes/[[lang=lang]]/generate/+page.svelte": "3fe4dff26707ef2b2d6ae633a693bfdbeb7d9c36ebad0074bbc8b88bdbf9c5e0",
     "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
     "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
     "static/inverse/core/crop.js": "d8aa2b0fc2a9d06323fda7f72af0c35e9436a02ce68e6c6a03c003f541ad1b7f",
-    "static/inverse/core/engine.js": "c37df74a1a402c8b2cbab5281d872f6bc40a441d8d77ed9c83284c028b3faa3f",
+    "static/inverse/core/engine.js": "6fe8f13bef3d0c5662e77fa30ca00c33abb49a6be44e767235f8a18d28408ab0",
     "static/inverse/core/export.js": "eb9c4eb5b563f095b294e4f8da6c4c485ca58ba657ed74c08bb21db8b7beabcd",
     "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
     "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
-    "static/inverse/core/input.js": "ac4960cbe2dc1f1c5cdbf1d779c99a7ec2187559d4229d4f174625f3cdd1a3e4",
+    "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
     "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
     "static/inverse/core/material.js": "1cba84ccd183e847f94f1b5a0e2aee64b20d8cb0d3686d238964375f46a2e120",
     "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
     "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
-    "static/inverse/core/settings.js": "1cafe7b3abc1c9388a00826c0ced55b9fa3bdcfc135daabe229de8751198cdf2",
+    "static/inverse/core/settings.js": "c291f260a683586631bb8ca327d47e121d16ec592662be9315b6a8f51541ec67",
     "static/inverse/core/solver.js": "82a772906eeec126973970337b54f698cbc739e9a0da630457b9be0ef44a4b8f",
     "static/inverse/core/symmetry.js": "93736faad375d03110c5d67870872dcc98a5b7559d379feb3983a3321542713d",
     "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
@@ -12182,7 +12182,16 @@
     "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
     "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
     "static/inverse/worker.js": "7d7fcddb3a787b0084fb3bd772b9c2a6185ebc43f3006b5c757a6fa3727d6e1a",
-    "vite.config.ts": "ebafccbdfecffaa2bd934e23d4b7f789212ddddf7a1305a44882977cd26b9ad4"
+    "vite.config.ts": "ebafccbdfecffaa2bd934e23d4b7f789212ddddf7a1305a44882977cd26b9ad4",
+    "static/inverse/core/direct/boundary.js": "8e6b2957cb13f456c3fe699c332b580976aba544cfca588e726ceda7c4c34043",
+    "static/inverse/core/direct/curves.js": "2cf1ef0da0555bb2db9abf30780fc95ecbbde7dc0c19a691cd57abced21beb52",
+    "static/inverse/core/direct/fit.js": "67d31578f5cee045e14b6256330edbf308f00146f580546be2e91395215d2b0a",
+    "static/inverse/core/direct/grid.js": "46ef29abdc68bf35526f0c73d4129aa1ff061899cc1210a2015610a2cfc2e9f0",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/refine.js": "ec9758a9cf9a84da0fc2b569793deac9b9a35d4a164cc2b8807df7e0c942894f",
+    "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a",
+    "scripts/inverse/direct.test.mjs": "7b49684c68781bb0876d88b8ca904e326daf08612fd232870e35cd369d5afc5f",
+    "scripts/inverse/direct-browser-test.mjs": "4ee35ffc28ff34977b318faa66f81a483bf07bc8ba28c68777fb1f825ead5aa3"
   },
   "fullCollageLocator": {
     "instances": 40,
@@ -12256,10 +12265,10 @@
           "checks": [
             "gallery navigation to English generator",
             "HTTP modules and WASM match source bytes; missing WASM returns 404",
-            "fresh SVG \u2192 worker/WASM solve \u2192 checked pair",
+            "fresh SVG → worker/WASM solve → checked pair",
             "ZIP CRCs, SVG dimensions, print download and responsive layout",
             "settings invalidate downloads; cancellation and worker restart",
-            "edge-noisy PNG \u2192 stabilized tracing \u2192 checked templates with original-input error",
+            "edge-noisy PNG → stabilized tracing → checked templates with original-input error",
             "four-corner crop validation and rectification",
             "simplification preset reprepares the artwork and exposes junction merging in mm",
             "Star is explicitly a saved-template audit (uncertain)",
@@ -12765,7 +12774,7 @@
                 "totalCutLength": 803.055964679044,
                 "sharpTurns": 0,
                 "sharpLocations": [],
-                "maximumTurn": 1.4787793334710982e-06,
+                "maximumTurn": 0.0000014787793334710982,
                 "bendingEnergy": 0.03625956005895842,
                 "minimumRadius": 82.26339183825752,
                 "hiddenCurvesBelowRadius": 0,
@@ -12776,7 +12785,7 @@
                 "totalCutLength": 803.055964679044,
                 "sharpTurns": 0,
                 "sharpLocations": [],
-                "maximumTurn": 1.4787793334710982e-06,
+                "maximumTurn": 0.0000014787793334710982,
                 "bendingEnergy": 0.03625956005895842,
                 "minimumRadius": 82.26339183825752,
                 "hiddenCurvesBelowRadius": 0,
@@ -12791,7 +12800,7 @@
               "totalCutLength": 803.055964679044,
               "sharpTurns": 0,
               "sharpLocations": [],
-              "maximumTurn": 1.4787793334710982e-06,
+              "maximumTurn": 0.0000014787793334710982,
               "bendingEnergy": 0.03625956005895842,
               "minimumRadius": 82.26339183825752,
               "hiddenCurvesBelowRadius": 0,
@@ -15329,10 +15338,10 @@
           "checks": [
             "gallery navigation to English generator",
             "HTTP modules and WASM match source bytes; missing WASM returns 404",
-            "fresh SVG \u2192 worker/WASM solve \u2192 checked pair",
+            "fresh SVG → worker/WASM solve → checked pair",
             "ZIP CRCs, SVG dimensions, print download and responsive layout",
             "settings invalidate downloads; cancellation and worker restart",
-            "edge-noisy PNG \u2192 stabilized tracing \u2192 checked templates with original-input error",
+            "edge-noisy PNG → stabilized tracing → checked templates with original-input error",
             "four-corner crop validation and rectification",
             "simplification preset reprepares the artwork and exposes junction merging in mm",
             "Star is explicitly a saved-template audit (uncertain)",
@@ -15836,7 +15845,7 @@
                 "totalCutLength": 803.055964679044,
                 "sharpTurns": 0,
                 "sharpLocations": [],
-                "maximumTurn": 8.537736462515939e-07,
+                "maximumTurn": 8.537736462515939e-7,
                 "bendingEnergy": 0.03625956005895842,
                 "minimumRadius": 82.26339183825752,
                 "hiddenCurvesBelowRadius": 0,
@@ -15847,7 +15856,7 @@
                 "totalCutLength": 803.055964679044,
                 "sharpTurns": 0,
                 "sharpLocations": [],
-                "maximumTurn": 8.537736462515939e-07,
+                "maximumTurn": 8.537736462515939e-7,
                 "bendingEnergy": 0.03625956005895842,
                 "minimumRadius": 82.26339183825752,
                 "hiddenCurvesBelowRadius": 0,
@@ -15862,7 +15871,7 @@
               "totalCutLength": 803.055964679044,
               "sharpTurns": 0,
               "sharpLocations": [],
-              "maximumTurn": 8.537736462515939e-07,
+              "maximumTurn": 8.537736462515939e-7,
               "bendingEnergy": 0.03625956005895842,
               "minimumRadius": 82.26339183825752,
               "hiddenCurvesBelowRadius": 0,
@@ -18434,7 +18443,7 @@
         {
           "browser": "chromium",
           "checks": [
-            "upload \u2192 real locator worker \u2192 original photo preview agrees with recorded source pixels",
+            "upload → real locator worker → original photo preview agrees with recorded source pixels",
             "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
             "rough rectangle selects the second heart; pointer dragging moves its corner without resetting the crop",
             "manual reset clears stale photo and prepared artwork",
@@ -18447,7 +18456,7 @@
         {
           "browser": "firefox",
           "checks": [
-            "upload \u2192 real locator worker \u2192 original photo preview agrees with recorded source pixels",
+            "upload → real locator worker → original photo preview agrees with recorded source pixels",
             "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
             "rough rectangle selects the second heart; pointer dragging moves its corner without resetting the crop",
             "manual reset clears stale photo and prepared artwork",
@@ -18470,7 +18479,7 @@
         {
           "browser": "chromium",
           "checks": [
-            "upload \u2192 real locator worker \u2192 original photo preview agrees with recorded source pixels",
+            "upload → real locator worker → original photo preview agrees with recorded source pixels",
             "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
             "rough rectangle selects the second heart; pointer dragging moves its corner without resetting the crop",
             "manual reset clears stale photo and prepared artwork",
@@ -18483,7 +18492,7 @@
         {
           "browser": "firefox",
           "checks": [
-            "upload \u2192 real locator worker \u2192 original photo preview agrees with recorded source pixels",
+            "upload → real locator worker → original photo preview agrees with recorded source pixels",
             "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
             "rough rectangle selects the second heart; pointer dragging moves its corner without resetting the crop",
             "manual reset clears stale photo and prepared artwork",
@@ -18505,12 +18514,12 @@
         {
           "browser": "chromium",
           "checks": [
-            "Waves \u00b7 new solve: one click on a fresh page produces a rendered preview",
-            "Star \u00b7 saved templates: one click on a fresh page produces a rendered preview",
-            "JUL \u00b7 saved templates: one click on a fresh page produces a rendered preview",
-            "Waves \u00b7 new solve: replaces an uploaded image with an invalid crop and clears its file control",
-            "Star \u00b7 saved templates: replaces an uploaded image with an invalid crop and clears its file control",
-            "JUL \u00b7 saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+            "Waves · new solve: one click on a fresh page produces a rendered preview",
+            "Star · saved templates: one click on a fresh page produces a rendered preview",
+            "JUL · saved templates: one click on a fresh page produces a rendered preview",
+            "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+            "Star · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+            "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
             "example recovers from a rejected upload",
             "failed example request clears old downloads and offers a working retry",
             "automatic saved-template check can be stopped; another example starts with a fresh worker",
@@ -18522,12 +18531,12 @@
         {
           "browser": "firefox",
           "checks": [
-            "Waves \u00b7 new solve: one click on a fresh page produces a rendered preview",
-            "Star \u00b7 saved templates: one click on a fresh page produces a rendered preview",
-            "JUL \u00b7 saved templates: one click on a fresh page produces a rendered preview",
-            "Waves \u00b7 new solve: replaces an uploaded image with an invalid crop and clears its file control",
-            "Star \u00b7 saved templates: replaces an uploaded image with an invalid crop and clears its file control",
-            "JUL \u00b7 saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+            "Waves · new solve: one click on a fresh page produces a rendered preview",
+            "Star · saved templates: one click on a fresh page produces a rendered preview",
+            "JUL · saved templates: one click on a fresh page produces a rendered preview",
+            "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+            "Star · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+            "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
             "example recovers from a rejected upload",
             "failed example request clears old downloads and offers a working retry",
             "automatic saved-template check can be stopped; another example starts with a fresh worker",
@@ -18548,7 +18557,7 @@
         {
           "browser": "chromium",
           "checks": [
-            "upload \u2192 real locator worker \u2192 original photo preview agrees with recorded source pixels",
+            "upload → real locator worker → original photo preview agrees with recorded source pixels",
             "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
             "counterclockwise manual corners retain their image orientation and prepare successfully",
             "user yellow-star image previews and prepares with top/left/bottom/right corners",
@@ -18562,7 +18571,7 @@
         {
           "browser": "firefox",
           "checks": [
-            "upload \u2192 real locator worker \u2192 original photo preview agrees with recorded source pixels",
+            "upload → real locator worker → original photo preview agrees with recorded source pixels",
             "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
             "counterclockwise manual corners retain their image orientation and prepare successfully",
             "user yellow-star image previews and prepares with top/left/bottom/right corners",
@@ -18614,10 +18623,10 @@
           "checks": [
             "gallery navigation to English generator",
             "HTTP modules and WASM match source bytes; missing WASM returns 404",
-            "fresh SVG \u2192 worker/WASM solve \u2192 checked pair",
+            "fresh SVG → worker/WASM solve → checked pair",
             "ZIP CRCs, SVG dimensions, print download and responsive layout",
             "settings invalidate downloads; cancellation and worker restart",
-            "edge-noisy PNG \u2192 stabilized tracing \u2192 checked templates with original-input error",
+            "edge-noisy PNG → stabilized tracing → checked templates with original-input error",
             "four-corner crop validation and rectification",
             "simplification preset reprepares the artwork and exposes junction merging in mm",
             "JUL is explicitly a saved-template audit (pass)",
@@ -18632,10 +18641,10 @@
           "checks": [
             "gallery navigation to English generator",
             "HTTP modules and WASM match source bytes; missing WASM returns 404",
-            "fresh SVG \u2192 worker/WASM solve \u2192 checked pair",
+            "fresh SVG → worker/WASM solve → checked pair",
             "ZIP CRCs, SVG dimensions, print download and responsive layout",
             "settings invalidate downloads; cancellation and worker restart",
-            "edge-noisy PNG \u2192 stabilized tracing \u2192 checked templates with original-input error",
+            "edge-noisy PNG → stabilized tracing → checked templates with original-input error",
             "four-corner crop validation and rectification",
             "simplification preset reprepares the artwork and exposes junction merging in mm",
             "JUL is explicitly a saved-template audit (pass)",
@@ -18658,12 +18667,12 @@
         {
           "browser": "chromium",
           "checks": [
-            "Waves \u00b7 new solve: one click on a fresh page produces a rendered preview",
-            "Star \u00b7 new solve: one click on a fresh page produces a rendered preview",
-            "JUL \u00b7 saved templates: one click on a fresh page produces a rendered preview",
-            "Waves \u00b7 new solve: replaces an uploaded image with an invalid crop and clears its file control",
-            "Star \u00b7 new solve: replaces an uploaded image with an invalid crop and clears its file control",
-            "JUL \u00b7 saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+            "Waves · new solve: one click on a fresh page produces a rendered preview",
+            "Star · new solve: one click on a fresh page produces a rendered preview",
+            "JUL · saved templates: one click on a fresh page produces a rendered preview",
+            "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+            "Star · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+            "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
             "example recovers from a rejected upload",
             "failed example request clears old downloads and offers a working retry",
             "automatic saved-template check can be stopped; another example starts with a fresh worker",
@@ -18675,12 +18684,12 @@
         {
           "browser": "firefox",
           "checks": [
-            "Waves \u00b7 new solve: one click on a fresh page produces a rendered preview",
-            "Star \u00b7 new solve: one click on a fresh page produces a rendered preview",
-            "JUL \u00b7 saved templates: one click on a fresh page produces a rendered preview",
-            "Waves \u00b7 new solve: replaces an uploaded image with an invalid crop and clears its file control",
-            "Star \u00b7 new solve: replaces an uploaded image with an invalid crop and clears its file control",
-            "JUL \u00b7 saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+            "Waves · new solve: one click on a fresh page produces a rendered preview",
+            "Star · new solve: one click on a fresh page produces a rendered preview",
+            "JUL · saved templates: one click on a fresh page produces a rendered preview",
+            "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+            "Star · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+            "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
             "example recovers from a rejected upload",
             "failed example request clears old downloads and offers a working retry",
             "automatic saved-template check can be stopped; another example starts with a fresh worker",
@@ -18702,7 +18711,7 @@
         {
           "browser": "chromium",
           "checks": [
-            "upload \u2192 real locator worker \u2192 original photo preview agrees with recorded source pixels",
+            "upload → real locator worker → original photo preview agrees with recorded source pixels",
             "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
             "counterclockwise manual corners retain their image orientation and prepare successfully",
             "user yellow-star image previews and prepares with top/left/bottom/right corners",
@@ -18716,7 +18725,7 @@
         {
           "browser": "firefox",
           "checks": [
-            "upload \u2192 real locator worker \u2192 original photo preview agrees with recorded source pixels",
+            "upload → real locator worker → original photo preview agrees with recorded source pixels",
             "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
             "counterclockwise manual corners retain their image orientation and prepare successfully",
             "user yellow-star image previews and prepares with top/left/bottom/right corners",
@@ -18800,10 +18809,10 @@
               "checks": [
                 "gallery navigation to English generator",
                 "HTTP modules and WASM match source bytes; missing WASM returns 404",
-                "fresh SVG \u2192 worker/WASM solve \u2192 checked pair",
+                "fresh SVG → worker/WASM solve → checked pair",
                 "ZIP CRCs, SVG dimensions, print download and responsive layout",
                 "settings invalidate downloads; cancellation and worker restart",
-                "edge-noisy PNG \u2192 stabilized tracing \u2192 checked templates with original-input error",
+                "edge-noisy PNG → stabilized tracing → checked templates with original-input error",
                 "four-corner crop validation and rectification",
                 "simplification preset reprepares the artwork and exposes junction merging in mm",
                 "JUL is explicitly a saved-template audit (pass)",
@@ -18818,10 +18827,10 @@
               "checks": [
                 "gallery navigation to English generator",
                 "HTTP modules and WASM match source bytes; missing WASM returns 404",
-                "fresh SVG \u2192 worker/WASM solve \u2192 checked pair",
+                "fresh SVG → worker/WASM solve → checked pair",
                 "ZIP CRCs, SVG dimensions, print download and responsive layout",
                 "settings invalidate downloads; cancellation and worker restart",
-                "edge-noisy PNG \u2192 stabilized tracing \u2192 checked templates with original-input error",
+                "edge-noisy PNG → stabilized tracing → checked templates with original-input error",
                 "four-corner crop validation and rectification",
                 "simplification preset reprepares the artwork and exposes junction merging in mm",
                 "JUL is explicitly a saved-template audit (pass)",
@@ -18843,12 +18852,12 @@
             {
               "browser": "chromium",
               "checks": [
-                "Waves \u00b7 new solve: one click on a fresh page produces a rendered preview",
-                "Star \u00b7 new solve: one click on a fresh page produces a rendered preview",
-                "JUL \u00b7 saved templates: one click on a fresh page produces a rendered preview",
-                "Waves \u00b7 new solve: replaces an uploaded image with an invalid crop and clears its file control",
-                "Star \u00b7 new solve: replaces an uploaded image with an invalid crop and clears its file control",
-                "JUL \u00b7 saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+                "Waves · new solve: one click on a fresh page produces a rendered preview",
+                "Star · new solve: one click on a fresh page produces a rendered preview",
+                "JUL · saved templates: one click on a fresh page produces a rendered preview",
+                "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+                "Star · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+                "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
                 "example recovers from a rejected upload",
                 "failed example request clears old downloads and offers a working retry",
                 "automatic saved-template check can be stopped; another example starts with a fresh worker",
@@ -18860,12 +18869,12 @@
             {
               "browser": "firefox",
               "checks": [
-                "Waves \u00b7 new solve: one click on a fresh page produces a rendered preview",
-                "Star \u00b7 new solve: one click on a fresh page produces a rendered preview",
-                "JUL \u00b7 saved templates: one click on a fresh page produces a rendered preview",
-                "Waves \u00b7 new solve: replaces an uploaded image with an invalid crop and clears its file control",
-                "Star \u00b7 new solve: replaces an uploaded image with an invalid crop and clears its file control",
-                "JUL \u00b7 saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+                "Waves · new solve: one click on a fresh page produces a rendered preview",
+                "Star · new solve: one click on a fresh page produces a rendered preview",
+                "JUL · saved templates: one click on a fresh page produces a rendered preview",
+                "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+                "Star · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+                "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
                 "example recovers from a rejected upload",
                 "failed example request clears old downloads and offers a working retry",
                 "automatic saved-template check can be stopped; another example starts with a fresh worker",
@@ -18886,7 +18895,7 @@
             {
               "browser": "chromium",
               "checks": [
-                "upload \u2192 real locator worker \u2192 original photo preview agrees with recorded source pixels",
+                "upload → real locator worker → original photo preview agrees with recorded source pixels",
                 "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
                 "counterclockwise manual corners retain their image orientation and prepare successfully",
                 "user yellow-star image previews and prepares with top/left/bottom/right corners",
@@ -18900,7 +18909,7 @@
             {
               "browser": "firefox",
               "checks": [
-                "upload \u2192 real locator worker \u2192 original photo preview agrees with recorded source pixels",
+                "upload → real locator worker → original photo preview agrees with recorded source pixels",
                 "numeric edit invalidates preparation; accepted corners and source hashes reach the engine",
                 "counterclockwise manual corners retain their image orientation and prepare successfully",
                 "user yellow-star image previews and prepares with top/left/bottom/right corners",
@@ -19062,5 +19071,95 @@
     "websiteAcceptedPairs": 3,
     "freshPythonCandidates": 5,
     "browserOptimizerPorted": false
+  },
+  "directBezier": {
+    "recordedAt": "2026-09-07T17:43:10.390Z",
+    "details": "DIRECT-FITTER-VALIDATION.json",
+    "accepted": 11,
+    "reviewable": 31,
+    "baselineAcceptedAtSameBudget": 3,
+    "perturbations": {
+      "passed": 20,
+      "tested": 20,
+      "changedCounts": 5,
+      "scope": "Five previously passing collage cases; not every failure or all 31 images"
+    },
+    "verification": {
+      "unitTests": 227,
+      "directTests": 10,
+      "typeErrors": 0,
+      "preexistingAccessibilityWarnings": 8,
+      "lint": "pass",
+      "build": "pass",
+      "browser": {
+        "direct": {
+          "file": "tmp/inverse-browser/2026-09-07T17-41-45-993Z-direct/results.json",
+          "browsers": [
+            {
+              "browser": "chromium",
+              "checks": 7,
+              "pageErrors": [],
+              "error": null
+            },
+            {
+              "browser": "firefox",
+              "checks": 7,
+              "pageErrors": [],
+              "error": null
+            }
+          ]
+        },
+        "examples": {
+          "file": "tmp/inverse-browser/2026-09-07T17-41-45-993Z-examples/results.json",
+          "results": [
+            {
+              "browser": "chromium",
+              "checks": [
+                "Waves · new solve: one click on a fresh page produces a rendered preview",
+                "Star · new solve: one click on a fresh page produces a rendered preview",
+                "JUL · saved templates: one click on a fresh page produces a rendered preview",
+                "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+                "Star · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+                "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+                "example recovers from a rejected upload",
+                "failed example request clears old downloads and offers a working retry",
+                "automatic saved-template check can be stopped; another example starts with a fresh worker",
+                "mobile example scrolls its rendered preview into view without overflow",
+                "Danish example also opens its preview with one click"
+              ],
+              "pageErrors": []
+            },
+            {
+              "browser": "firefox",
+              "checks": [
+                "Waves · new solve: one click on a fresh page produces a rendered preview",
+                "Star · new solve: one click on a fresh page produces a rendered preview",
+                "JUL · saved templates: one click on a fresh page produces a rendered preview",
+                "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+                "Star · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+                "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+                "example recovers from a rejected upload",
+                "failed example request clears old downloads and offers a working retry",
+                "automatic saved-template check can be stopped; another example starts with a fresh worker",
+                "mobile example scrolls its rendered preview into view without overflow",
+                "Danish example also opens its preview with one click"
+              ],
+              "pageErrors": []
+            }
+          ]
+        }
+      },
+      "previewFailure": {
+        "file": "tmp/inverse-browser/2026-09-07T17-36-35-451Z-direct/results.json",
+        "cause": "Preview process retained old entry-module URLs across a build; restarted preview after build, then all direct and example checks passed."
+      },
+      "unitTestLog": "/tmp/juleflet-direct-tests-final.log",
+      "finalSmoke": {
+        "file": "tmp/inverse-direct-study/final-smoke.json",
+        "imagesLoaded": 144,
+        "port4173": "direct mode loaded",
+        "pageErrors": []
+      }
+    }
   }
 }

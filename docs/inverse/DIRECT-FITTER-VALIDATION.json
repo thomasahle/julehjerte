@@ -1,0 +1,2730 @@
+{
+  "recordedAt": "2026-09-07T17:43:10.390Z",
+  "scope": "JavaScript worker direct fitting; fixed-crop photographic benchmark and causal diagnostics",
+  "archiveSha256": "a38010ddf67f0788c24f55ccfd6e34a920e1ad5a5228781c22fd4f6ffd8eb021",
+  "sourceCodeSha256": {
+    "code/calibrated_direct_fit.py": "08178e8a77b453b54420ed744bfc1ba5a624088d2df44eca7350d872ea32ea61",
+    "code/curve_graph.py": "64e84c1a41a68b44f7747965f24d0c35a4f99f6abc3667306845afed2c0a5c9d",
+    "code/boundary_loss.py": "5c5d81268c4cdef6b7f5c612f43ad05021c7747080c7fc43da53405bc67bf2ee",
+    "code/fit_camera.py": "7489db90c0e7221ea10b6940f6d28f80dd296b04b16be2ccc86f20246a887708",
+    "code/camera_weld.py": "96f5680b34e691f02519b4613fcbcaee5a749db6a080740bbc0c2e909dd0c429",
+    "code/weld_geometry.py": "c68bec0d226bacad699a275b33dc63fe2c617478a9c9297ff8c78444cb915ce1"
+  },
+  "runtimeSha256": {
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/crop.js": "d8aa2b0fc2a9d06323fda7f72af0c35e9436a02ce68e6c6a03c003f541ad1b7f",
+    "static/inverse/core/direct/boundary.js": "8e6b2957cb13f456c3fe699c332b580976aba544cfca588e726ceda7c4c34043",
+    "static/inverse/core/direct/curves.js": "2cf1ef0da0555bb2db9abf30780fc95ecbbde7dc0c19a691cd57abced21beb52",
+    "static/inverse/core/direct/fit.js": "67d31578f5cee045e14b6256330edbf308f00146f580546be2e91395215d2b0a",
+    "static/inverse/core/direct/grid.js": "46ef29abdc68bf35526f0c73d4129aa1ff061899cc1210a2015610a2cfc2e9f0",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/refine.js": "ec9758a9cf9a84da0fc2b569793deac9b9a35d4a164cc2b8807df7e0c942894f",
+    "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a",
+    "static/inverse/core/engine.js": "6fe8f13bef3d0c5662e77fa30ca00c33abb49a6be44e767235f8a18d28408ab0",
+    "static/inverse/core/export.js": "eb9c4eb5b563f095b294e4f8da6c4c485ca58ba657ed74c08bb21db8b7beabcd",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/material.js": "1cba84ccd183e847f94f1b5a0e2aee64b20d8cb0d3686d238964375f46a2e120",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "c291f260a683586631bb8ca327d47e121d16ec592662be9315b6a8f51541ec67",
+    "static/inverse/core/solver.js": "82a772906eeec126973970337b54f698cbc739e9a0da630457b9be0ef44a4b8f",
+    "static/inverse/core/symmetry.js": "93736faad375d03110c5d67870872dcc98a5b7559d379feb3983a3321542713d",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "src/lib/inverse/presets.js": "ed523de633437df50216610701b568cc327eb261571a6bc2b1596d2c6cf5036b",
+    "src/lib/inverse/messages.ts": "874ef7d9a3a626f0285aaa86eef1702a55157bef2cd3c52c7e836e3e5c7804e6",
+    "src/routes/[[lang=lang]]/generate/+page.svelte": "3fe4dff26707ef2b2d6ae633a693bfdbeb7d9c36ebad0074bbc8b88bdbf9c5e0",
+    "scripts/inverse/direct.test.mjs": "7b49684c68781bb0876d88b8ca904e326daf08612fd232870e35cd369d5afc5f",
+    "scripts/inverse/direct-browser-test.mjs": "4ee35ffc28ff34977b318faa66f81a483bf07bc8ba28c68777fb1f825ead5aa3",
+    "scripts/inverse/hard-photo-benchmark.mjs": "52307e6aa3af6bdc10f4390644e082f0e929799ef950adeb778fc433d425c3ad"
+  },
+  "initialBenchmarkRuntimeSha256": {
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/crop.js": "d8aa2b0fc2a9d06323fda7f72af0c35e9436a02ce68e6c6a03c003f541ad1b7f",
+    "static/inverse/core/direct/boundary.js": "8e6b2957cb13f456c3fe699c332b580976aba544cfca588e726ceda7c4c34043",
+    "static/inverse/core/direct/curves.js": "2cf1ef0da0555bb2db9abf30780fc95ecbbde7dc0c19a691cd57abced21beb52",
+    "static/inverse/core/direct/fit.js": "959a9f17579ee970345322ed93799cff839b9ffb491a8ae0ea0d33b2b896ad7e",
+    "static/inverse/core/direct/grid.js": "46ef29abdc68bf35526f0c73d4129aa1ff061899cc1210a2015610a2cfc2e9f0",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/refine.js": "ec9758a9cf9a84da0fc2b569793deac9b9a35d4a164cc2b8807df7e0c942894f",
+    "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a",
+    "static/inverse/core/engine.js": "6fe8f13bef3d0c5662e77fa30ca00c33abb49a6be44e767235f8a18d28408ab0",
+    "static/inverse/core/export.js": "eb9c4eb5b563f095b294e4f8da6c4c485ca58ba657ed74c08bb21db8b7beabcd",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/material.js": "1cba84ccd183e847f94f1b5a0e2aee64b20d8cb0d3686d238964375f46a2e120",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "c291f260a683586631bb8ca327d47e121d16ec592662be9315b6a8f51541ec67",
+    "static/inverse/core/solver.js": "82a772906eeec126973970337b54f698cbc739e9a0da630457b9be0ef44a4b8f",
+    "static/inverse/core/symmetry.js": "93736faad375d03110c5d67870872dcc98a5b7559d379feb3983a3321542713d",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "scripts/inverse/hard-photo-cases.json": "21a4368d75bf355617ae518f200ac450fed860de876a689ed768d29b0ac4bf92",
+    "scripts/inverse/photo-cases.json": "074102f6b6eb49c69ff2a853173cdb743fa042ffa8a0401e0caf7f7bbb668f69",
+    "src/lib/inverse/presets.js": "ed523de633437df50216610701b568cc327eb261571a6bc2b1596d2c6cf5036b"
+  },
+  "primary": {
+    "reviewable": 31,
+    "inventory": 47,
+    "collageReviewable": 24,
+    "directPassed": 11,
+    "tracePassed": 3,
+    "secondsPerFit": 60,
+    "colourMode": "auto",
+    "fixedSameCrops": true,
+    "nominalWidth": 2.50501002004008,
+    "maximumImageError": 0.03,
+    "geometryAndGuardedPaperRequired": true,
+    "groundTruthCutsAvailable": false,
+    "physicalAssemblyTested": false,
+    "failedCandidatesWithInteriorMismatchAbove3Percent": 19
+  },
+  "runs": {
+    "direct": "tmp/inverse-hard-photos/2026-09-07T17-15-26-427Z",
+    "trace": "tmp/inverse-hard-photos/2026-09-07T17-24-45-771Z",
+    "alignedCrops": "tmp/inverse-hard-photos/2026-09-07T17-20-00-004Z",
+    "fixedRecrops": "tmp/inverse-hard-photos/2026-09-07T17-11-57-700Z",
+    "supportedCountRetry": "tmp/inverse-hard-photos/2026-09-07T17-32-33-599Z",
+    "perturbationShards": [
+      "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-0-of-3",
+      "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-1-of-3",
+      "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-2-of-3"
+    ],
+    "widthDiagnostics": [
+      "tmp/inverse-hard-photos/2026-09-07T17-34-56-715Z-shard-0-of-2",
+      "tmp/inverse-hard-photos/2026-09-07T17-34-56-715Z-shard-1-of-2"
+    ]
+  },
+  "outcomes": [
+    {
+      "id": "nested-squares",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          234.7,
+          189.095
+        ],
+        [
+          318.425,
+          261
+        ],
+        [
+          195.3,
+          332.905
+        ],
+        [
+          111.575,
+          261
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.10101875,
+        "counts": [
+          7,
+          8
+        ],
+        "solverSeconds": 60.68232475,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 3763,
+          "interiorErrors": 12400,
+          "edgeMismatch": 0.1237828947368421,
+          "interiorMismatch": 0.09567901234567901
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.677157375
+      }
+    },
+    {
+      "id": "outline-star",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          429.8125,
+          181.2525
+        ],
+        [
+          518.4625,
+          265.9625
+        ],
+        [
+          402.2325,
+          341.8075
+        ],
+        [
+          319.4925,
+          264.9775
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.00966875,
+        "counts": [
+          3,
+          3
+        ],
+        "solverSeconds": 48.549305125,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 816,
+          "interiorErrors": 731,
+          "edgeMismatch": 0.026842105263157896,
+          "interiorMismatch": 0.005640432098765432
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "candidate_graph_exhausted",
+        "imageError": null,
+        "seconds": 1.380091959
+      }
+    },
+    {
+      "id": "floral-checker",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          633.88375,
+          184.065
+        ],
+        [
+          726.47375,
+          256.955
+        ],
+        [
+          626.98875,
+          323.935
+        ],
+        [
+          517.65375,
+          251.045
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.06959375,
+        "counts": [
+          7,
+          7
+        ],
+        "solverSeconds": 60.966069666,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 2923,
+          "interiorErrors": 8212,
+          "edgeMismatch": 0.09615131578947368,
+          "interiorMismatch": 0.0633641975308642
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.6901709579999997
+      }
+    },
+    {
+      "id": "dense-checker",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          833.02625,
+          178.1625
+        ],
+        [
+          938.42125,
+          251.0525
+        ],
+        [
+          838.93625,
+          337.7325
+        ],
+        [
+          728.61625,
+          251.0525
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.01813125,
+        "counts": [
+          7,
+          7
+        ],
+        "solverSeconds": 59.665872584000006,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 1426,
+          "interiorErrors": 1475,
+          "edgeMismatch": 0.04690789473684211,
+          "interiorMismatch": 0.011381172839506173
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.6128743340000001
+      }
+    },
+    {
+      "id": "bird",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          1028.1275,
+          149.34625
+        ],
+        [
+          1139.4325,
+          237.99625
+        ],
+        [
+          1039.9475,
+          319.75125
+        ],
+        [
+          938.4925000000001,
+          243.90625
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.0678,
+        "counts": [
+          3,
+          5
+        ],
+        "solverSeconds": 60.70938858400001,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 3186,
+          "interiorErrors": 7662,
+          "edgeMismatch": 0.10480263157894737,
+          "interiorMismatch": 0.05912037037037037
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.5780851250000001
+      }
+    },
+    {
+      "id": "leaf",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          1230.135,
+          166.095
+        ],
+        [
+          1322.725,
+          244.895
+        ],
+        [
+          1252.79,
+          305.96500000000003
+        ],
+        [
+          1150.35,
+          235.045
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.02549375,
+        "counts": [
+          3,
+          3
+        ],
+        "solverSeconds": 55.207361083,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 2360,
+          "interiorErrors": 1719,
+          "edgeMismatch": 0.07763157894736843,
+          "interiorMismatch": 0.01326388888888889
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.5683545000000003
+      }
+    },
+    {
+      "id": "gift",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          237.895,
+          389.24875
+        ],
+        [
+          326.545,
+          471.00375
+        ],
+        [
+          222.135,
+          551.77375
+        ],
+        [
+          137.425,
+          472.97375
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.06046875,
+        "counts": [
+          6,
+          2
+        ],
+        "solverSeconds": 55.425766292,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 2695,
+          "interiorErrors": 6980,
+          "edgeMismatch": 0.08865131578947369,
+          "interiorMismatch": 0.053858024691358024
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.5813917500000007
+      }
+    },
+    {
+      "id": "gingerbread",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          434.89125,
+          415.17
+        ],
+        [
+          515.66125,
+          489.045
+        ],
+        [
+          422.08625,
+          572.77
+        ],
+        [
+          338.36125,
+          491.015
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.05271875,
+        "counts": [
+          2,
+          2
+        ],
+        "solverSeconds": 35.05187504100001,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 3640,
+          "interiorErrors": 4795,
+          "edgeMismatch": 0.11973684210526316,
+          "interiorMismatch": 0.03699845679012346
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "candidate_graph_exhausted",
+        "imageError": null,
+        "seconds": 1.306684792
+      }
+    },
+    {
+      "id": "white-birds",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          621.87625,
+          414.16625
+        ],
+        [
+          701.66125,
+          489.02625
+        ],
+        [
+          613.99625,
+          568.81125
+        ],
+        [
+          517.46625,
+          490.99625
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.0573125,
+        "counts": [
+          4,
+          4
+        ],
+        "solverSeconds": 55.096275791999986,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 2372,
+          "interiorErrors": 6798,
+          "edgeMismatch": 0.07802631578947368,
+          "interiorMismatch": 0.052453703703703704
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "candidate_graph_exhausted",
+        "imageError": null,
+        "seconds": 0.9885705420000004
+      }
+    },
+    {
+      "id": "flower",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          794.12,
+          394.30125
+        ],
+        [
+          899.515,
+          470.14625
+        ],
+        [
+          808.895,
+          570.61625
+        ],
+        [
+          705.47,
+          483.93625
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.02554375,
+        "counts": [
+          4,
+          4
+        ],
+        "solverSeconds": 57.28497437500002,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 855,
+          "interiorErrors": 3232,
+          "edgeMismatch": 0.028125,
+          "interiorMismatch": 0.02493827160493827
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.48528662500000064
+      }
+    },
+    {
+      "id": "warped-checker",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          1004.0225,
+          373.31624999999997
+        ],
+        [
+          1098.5825,
+          464.92125
+        ],
+        [
+          1008.9475,
+          543.72125
+        ],
+        [
+          910.4475,
+          457.04125
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.1132875,
+        "counts": [
+          7,
+          7
+        ],
+        "solverSeconds": 59.920315042,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 5886,
+          "interiorErrors": 12240,
+          "edgeMismatch": 0.19361842105263158,
+          "interiorMismatch": 0.09444444444444444
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.5325404589999998
+      }
+    },
+    {
+      "id": "round-checker",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          1194.09,
+          390.1925
+        ],
+        [
+          1289.635,
+          467.0225
+        ],
+        [
+          1207.88,
+          549.7625
+        ],
+        [
+          1108.395,
+          467.0225
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.03631875,
+        "counts": [
+          5,
+          4
+        ],
+        "solverSeconds": 54.78569029200001,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 1663,
+          "interiorErrors": 4148,
+          "edgeMismatch": 0.05470394736842105,
+          "interiorMismatch": 0.03200617283950617
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.4502096249999995
+      }
+    },
+    {
+      "id": "santa",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          1344.1875,
+          380.21500000000003
+        ],
+        [
+          1442.6875,
+          464.925
+        ],
+        [
+          1363.8875,
+          542.74
+        ],
+        [
+          1275.2375,
+          452.12
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.0953375,
+        "counts": [
+          6,
+          6
+        ],
+        "solverSeconds": 60.70069108400002,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 3013,
+          "interiorErrors": 12241,
+          "edgeMismatch": 0.09911184210526315,
+          "interiorMismatch": 0.09445216049382717
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.5449717089999995
+      }
+    },
+    {
+      "id": "fine-checker",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          226.775,
+          637.21875
+        ],
+        [
+          310.5,
+          708.13875
+        ],
+        [
+          201.165,
+          793.83375
+        ],
+        [
+          109.56,
+          729.80875
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.1205875,
+        "counts": [
+          8,
+          8
+        ],
+        "solverSeconds": 60.472577916000006,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 3599,
+          "interiorErrors": 15695,
+          "edgeMismatch": 0.11838815789473685,
+          "interiorMismatch": 0.12110339506172839
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.5353903329999994
+      }
+    },
+    {
+      "id": "orb",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          409.84625,
+          647.35
+        ],
+        [
+          502.43625,
+          735.015
+        ],
+        [
+          376.35625,
+          826.62
+        ],
+        [
+          310.36125,
+          735.015
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.06445,
+        "counts": [
+          4,
+          7
+        ],
+        "solverSeconds": 60.622727624999996,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 3046,
+          "interiorErrors": 7266,
+          "edgeMismatch": 0.10019736842105263,
+          "interiorMismatch": 0.05606481481481482
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.48300820899999963
+      }
+    },
+    {
+      "id": "stacked-hearts",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          612.9325,
+          647.39125
+        ],
+        [
+          707.4925,
+          739.98125
+        ],
+        [
+          607.0225,
+          830.6012499999999
+        ],
+        [
+          506.5525,
+          737.02625
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.019,
+        "counts": [
+          3,
+          3
+        ],
+        "solverSeconds": 45.09066770799999,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 1181,
+          "interiorErrors": 1859,
+          "edgeMismatch": 0.03884868421052631,
+          "interiorMismatch": 0.014344135802469135
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.4192256669999988
+      }
+    },
+    {
+      "id": "jigsaw",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          786.16125,
+          637.36125
+        ],
+        [
+          888.6012499999999,
+          716.16125
+        ],
+        [
+          803.89125,
+          821.55625
+        ],
+        [
+          708.34625,
+          731.92125
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.016975,
+        "counts": [
+          3,
+          3
+        ],
+        "solverSeconds": 43.66038800000003,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 889,
+          "interiorErrors": 1827,
+          "edgeMismatch": 0.029243421052631578,
+          "interiorMismatch": 0.014097222222222223
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.4867796660000004
+      }
+    },
+    {
+      "id": "candle",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          999.07875,
+          619.395
+        ],
+        [
+          1104.47375,
+          711.985
+        ],
+        [
+          1004.98875,
+          804.575
+        ],
+        [
+          908.45875,
+          708.045
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.0484125,
+        "counts": [
+          3,
+          3
+        ],
+        "solverSeconds": 42.45690512499999,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 3883,
+          "interiorErrors": 3863,
+          "edgeMismatch": 0.12773026315789474,
+          "interiorMismatch": 0.0298070987654321
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.43338233299999956
+      }
+    },
+    {
+      "id": "maple-leaf",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          1184.0825,
+          639.32375
+        ],
+        [
+          1289.4775,
+          730.92875
+        ],
+        [
+          1188.0225,
+          816.62375
+        ],
+        [
+          1096.4175,
+          718.12375
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.06135,
+        "counts": [
+          5,
+          5
+        ],
+        "solverSeconds": 58.18219595800002,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 2319,
+          "interiorErrors": 7497,
+          "edgeMismatch": 0.0762828947368421,
+          "interiorMismatch": 0.057847222222222223
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.4170412500000002
+      }
+    },
+    {
+      "id": "crown",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          1370.04125,
+          647.15875
+        ],
+        [
+          1462.63125,
+          723.00375
+        ],
+        [
+          1372.99625,
+          795.89375
+        ],
+        [
+          1285.33125,
+          726.94375
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.0743,
+        "counts": [
+          4,
+          6
+        ],
+        "solverSeconds": 60.499527207999954,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 3509,
+          "interiorErrors": 8379,
+          "edgeMismatch": 0.11542763157894737,
+          "interiorMismatch": 0.06465277777777778
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.5413698750000003
+      }
+    },
+    {
+      "id": "crossed-ribbons",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          404.80875,
+          936.335
+        ],
+        [
+          500.35375,
+          1030.895
+        ],
+        [
+          380.18375,
+          1107.725
+        ],
+        [
+          283.65375,
+          1021.045
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.0229875,
+        "counts": [
+          3,
+          3
+        ],
+        "solverSeconds": 47.41891812499997,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 954,
+          "interiorErrors": 2724,
+          "edgeMismatch": 0.03138157894736842,
+          "interiorMismatch": 0.02101851851851852
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "candidate_graph_exhausted",
+        "imageError": null,
+        "seconds": 1.1373049170000014
+      }
+    },
+    {
+      "id": "bauble",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          570.09,
+          941.20375
+        ],
+        [
+          681.395,
+          1019.01875
+        ],
+        [
+          579.94,
+          1102.74375
+        ],
+        [
+          472.575,
+          1018.03375
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.0189375,
+        "counts": [
+          3,
+          3
+        ],
+        "solverSeconds": 43.17772891600005,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 2033,
+          "interiorErrors": 997,
+          "edgeMismatch": 0.066875,
+          "interiorMismatch": 0.007692901234567901
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.4412157079999997
+      }
+    },
+    {
+      "id": "bottom-flower",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          1011.11625,
+          920.395
+        ],
+        [
+          1125.37625,
+          1015.94
+        ],
+        [
+          1024.90625,
+          1106.56
+        ],
+        [
+          913.60125,
+          1005.105
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.00695625,
+        "counts": [
+          4,
+          4
+        ],
+        "solverSeconds": 51.552106625000015,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 625,
+          "interiorErrors": 488,
+          "edgeMismatch": 0.02055921052631579,
+          "interiorMismatch": 0.003765432098765432
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.4592856250000004
+      }
+    },
+    {
+      "id": "faceted-star",
+      "group": "collage",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          1208.2625,
+          930.19625
+        ],
+        [
+          1327.4475,
+          1004.07125
+        ],
+        [
+          1231.9025,
+          1095.67625
+        ],
+        [
+          1134.3875,
+          1005.05625
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.06166875,
+        "counts": [
+          5,
+          5
+        ],
+        "solverSeconds": 60.265912208000024,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 2764,
+          "interiorErrors": 7103,
+          "edgeMismatch": 0.09092105263157894,
+          "interiorMismatch": 0.0548070987654321
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.474931083999998
+      }
+    },
+    {
+      "id": "bibel-star-8",
+      "group": "individual",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          536.9475,
+          148.85500000000002
+        ],
+        [
+          757.1375,
+          370.015
+        ],
+        [
+          535.0075,
+          593.115
+        ],
+        [
+          311.9075,
+          370.015
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.00201875,
+        "counts": [
+          2,
+          2
+        ],
+        "solverSeconds": 37.83513420799997,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 2,
+          "interiorErrors": 321,
+          "edgeMismatch": 0.00006578947368421052,
+          "interiorMismatch": 0.002476851851851852
+        }
+      },
+      "trace": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.00705625,
+        "seconds": 23.363265833999996
+      }
+    },
+    {
+      "id": "bibel-star-curved",
+      "group": "individual",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          515.05,
+          146.31
+        ],
+        [
+          740.65,
+          365.19
+        ],
+        [
+          514.09,
+          597.51
+        ],
+        [
+          295.21000000000004,
+          369.99
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.04778125,
+        "counts": [
+          7,
+          7
+        ],
+        "solverSeconds": 60.54066408399999,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 1343,
+          "interiorErrors": 6302,
+          "edgeMismatch": 0.04417763157894737,
+          "interiorMismatch": 0.04862654320987654
+        }
+      },
+      "trace": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.01184375,
+        "seconds": 19.966604958999998
+      }
+    },
+    {
+      "id": "bibel-star-outline",
+      "group": "individual",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          506.895,
+          151.58
+        ],
+        [
+          725.435,
+          376
+        ],
+        [
+          495.135,
+          600.42
+        ],
+        [
+          279.53499999999997,
+          376
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.03269375,
+        "counts": [
+          6,
+          6
+        ],
+        "solverSeconds": 60.335893417000015,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 1219,
+          "interiorErrors": 4012,
+          "edgeMismatch": 0.040098684210526314,
+          "interiorMismatch": 0.03095679012345679
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.4177360420000041
+      }
+    },
+    {
+      "id": "bibel-cross",
+      "group": "individual",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          508,
+          140
+        ],
+        [
+          750,
+          377
+        ],
+        [
+          524,
+          621
+        ],
+        [
+          286,
+          381
+        ]
+      ],
+      "direct": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.0015375,
+        "counts": [
+          2,
+          2
+        ],
+        "solverSeconds": 33.03702391700004,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 9,
+          "interiorErrors": 237,
+          "edgeMismatch": 0.0002960526315789474,
+          "interiorMismatch": 0.0018287037037037037
+        }
+      },
+      "trace": {
+        "passed": true,
+        "status": "validated",
+        "imageError": 0.00571875,
+        "seconds": 7.457118500000004
+      }
+    },
+    {
+      "id": "flettede-puppy",
+      "group": "individual",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          396,
+          315
+        ],
+        [
+          655,
+          585
+        ],
+        [
+          388,
+          843
+        ],
+        [
+          153,
+          606
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.06778125,
+        "counts": [
+          2,
+          4
+        ],
+        "solverSeconds": 48.27916208300006,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 3357,
+          "interiorErrors": 7488,
+          "edgeMismatch": 0.11042763157894737,
+          "interiorMismatch": 0.057777777777777775
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.3500474169999943
+      }
+    },
+    {
+      "id": "flettede-stonehenge",
+      "group": "individual",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          319,
+          103
+        ],
+        [
+          510,
+          349
+        ],
+        [
+          295,
+          568
+        ],
+        [
+          74,
+          333
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.08218125,
+        "counts": [
+          6,
+          6
+        ],
+        "solverSeconds": 60.48210545799998,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 2507,
+          "interiorErrors": 10642,
+          "edgeMismatch": 0.0824671052631579,
+          "interiorMismatch": 0.0821141975308642
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "border_mismatch",
+        "imageError": null,
+        "seconds": 0.4624327499999927
+      }
+    },
+    {
+      "id": "flettede-viking",
+      "group": "individual",
+      "cropStatus": "visually_reviewed",
+      "quad": [
+        [
+          727.16,
+          331.345
+        ],
+        [
+          1271.6599999999999,
+          849.115
+        ],
+        [
+          737.06,
+          1387.675
+        ],
+        [
+          236.12,
+          873.865
+        ]
+      ],
+      "direct": {
+        "passed": false,
+        "status": "image_mismatch",
+        "imageError": 0.0988125,
+        "counts": [
+          6,
+          6
+        ],
+        "solverSeconds": 60.49119212499994,
+        "geometry": true,
+        "paper": "pass",
+        "spatialError": {
+          "bandFraction": 0.05,
+          "edgePixels": 30400,
+          "edgeErrors": 3495,
+          "interiorErrors": 12315,
+          "edgeMismatch": 0.1149671052631579,
+          "interiorMismatch": 0.09502314814814815
+        }
+      },
+      "trace": {
+        "passed": false,
+        "status": "candidate_graph_exhausted",
+        "imageError": null,
+        "seconds": 0.7878218329999945
+      }
+    }
+  ],
+  "cropAlignment": {
+    "method": "SIFT image correspondences with RANSAC, no fitted template coordinates",
+    "matches": 3443,
+    "inliers": 3333,
+    "medianInlierErrorPixels": 0.14740151166915894,
+    "matrix": [
+      [
+        0.9574602018262833,
+        0.00002220069238792972,
+        3.9531550639697253
+      ],
+      [
+        0.000008410139017610455,
+        0.9577584219428195,
+        9.836301017717537
+      ],
+      [
+        2.5382943403991055e-8,
+        -5.6236702049542605e-9,
+        1
+      ]
+    ]
+  },
+  "cropOverrides": [
+    {
+      "id": "dense-checker",
+      "archiveCase": "checkerboard",
+      "quad": [
+        [
+          824.4541625976562,
+          169.22265625
+        ],
+        [
+          925.7097778320312,
+          250.01927185058594
+        ],
+        [
+          837.4286499023438,
+          339.163818359375
+        ],
+        [
+          733.47265625,
+          251.39039611816406
+        ]
+      ],
+      "locatorStatus": "needs_review",
+      "coordinateConvention": "Pixel edges; mapped original pixel-centre crop plus 0.5",
+      "cropInsetFraction": 0,
+      "provenance": "Previously frozen Pro crop, mapped between photographs using SIFT/RANSAC. No inverse controls or fitting scores used."
+    },
+    {
+      "id": "outline-star",
+      "archiveCase": "six_point_star",
+      "quad": [
+        [
+          430.4849853515625,
+          172.355224609375
+        ],
+        [
+          526.658935546875,
+          268.4879455566406
+        ],
+        [
+          401.70404052734375,
+          348.4521789550781
+        ],
+        [
+          318.2294006347656,
+          257.0460205078125
+        ]
+      ],
+      "locatorStatus": "needs_review",
+      "coordinateConvention": "Pixel edges; mapped original pixel-centre crop plus 0.5",
+      "cropInsetFraction": 0,
+      "provenance": "Previously frozen Pro crop, mapped between photographs using SIFT/RANSAC. No inverse controls or fitting scores used."
+    },
+    {
+      "id": "flower",
+      "archiveCase": "flower",
+      "quad": [
+        [
+          794.0697021484375,
+          385.3868713378906
+        ],
+        [
+          907.5615234375,
+          469.8969421386719
+        ],
+        [
+          812.6431274414062,
+          572.3856811523438
+        ],
+        [
+          698.2118530273438,
+          483.3573913574219
+        ]
+      ],
+      "locatorStatus": "needs_review",
+      "coordinateConvention": "Pixel edges; mapped original pixel-centre crop plus 0.5",
+      "cropInsetFraction": 0,
+      "provenance": "Previously frozen Pro crop, mapped between photographs using SIFT/RANSAC. No inverse controls or fitting scores used."
+    },
+    {
+      "id": "gingerbread",
+      "archiveCase": "framed_tree",
+      "quad": [
+        [
+          443.49835205078125,
+          404.11956787109375
+        ],
+        [
+          522.1213989257812,
+          494.7611083984375
+        ],
+        [
+          424.8409423828125,
+          576.4970092773438
+        ],
+        [
+          342.0459289550781,
+          496.6228942871094
+        ]
+      ],
+      "locatorStatus": "needs_review",
+      "coordinateConvention": "Pixel edges; mapped original pixel-centre crop plus 0.5",
+      "cropInsetFraction": 0,
+      "provenance": "Previously frozen Pro crop, mapped between photographs using SIFT/RANSAC. No inverse controls or fitting scores used."
+    },
+    {
+      "id": "stacked-hearts",
+      "archiveCase": "three_hearts",
+      "quad": [
+        [
+          600.0601196289062,
+          643.0031127929688
+        ],
+        [
+          698.5545654296875,
+          740.175048828125
+        ],
+        [
+          596.847900390625,
+          845.0370483398438
+        ],
+        [
+          494.17071533203125,
+          742.09765625
+        ]
+      ],
+      "locatorStatus": "needs_review",
+      "coordinateConvention": "Pixel edges; mapped original pixel-centre crop plus 0.5",
+      "cropInsetFraction": 0,
+      "provenance": "Previously frozen Pro crop, mapped between photographs using SIFT/RANSAC. No inverse controls or fitting scores used."
+    }
+  ],
+  "cropAblation": [
+    {
+      "id": "outline-star",
+      "original": 0.00966875,
+      "cropOnly": 0.00800625,
+      "cropAndMixture": 0.01073125,
+      "originalCounts": [
+        3,
+        3
+      ],
+      "recropCounts": [
+        3,
+        3
+      ],
+      "quad": [
+        [
+          430.4849853515625,
+          172.355224609375
+        ],
+        [
+          526.658935546875,
+          268.4879455566406
+        ],
+        [
+          401.70404052734375,
+          348.4521789550781
+        ],
+        [
+          318.2294006347656,
+          257.0460205078125
+        ]
+      ]
+    },
+    {
+      "id": "dense-checker",
+      "original": 0.01813125,
+      "cropOnly": 0.00844375,
+      "cropAndMixture": 0.009775,
+      "originalCounts": [
+        7,
+        7
+      ],
+      "recropCounts": [
+        7,
+        7
+      ],
+      "quad": [
+        [
+          824.4541625976562,
+          169.22265625
+        ],
+        [
+          925.7097778320312,
+          250.01927185058594
+        ],
+        [
+          837.4286499023438,
+          339.163818359375
+        ],
+        [
+          733.47265625,
+          251.39039611816406
+        ]
+      ]
+    },
+    {
+      "id": "gingerbread",
+      "original": 0.05271875,
+      "cropOnly": 0.0744125,
+      "cropAndMixture": 0.09114375,
+      "originalCounts": [
+        2,
+        2
+      ],
+      "recropCounts": [
+        2,
+        5
+      ],
+      "quad": [
+        [
+          443.49835205078125,
+          404.11956787109375
+        ],
+        [
+          522.1213989257812,
+          494.7611083984375
+        ],
+        [
+          424.8409423828125,
+          576.4970092773438
+        ],
+        [
+          342.0459289550781,
+          496.6228942871094
+        ]
+      ]
+    },
+    {
+      "id": "flower",
+      "original": 0.02554375,
+      "cropOnly": 0.0057875,
+      "cropAndMixture": 0.005375,
+      "originalCounts": [
+        4,
+        4
+      ],
+      "recropCounts": [
+        3,
+        3
+      ],
+      "quad": [
+        [
+          794.0697021484375,
+          385.3868713378906
+        ],
+        [
+          907.5615234375,
+          469.8969421386719
+        ],
+        [
+          812.6431274414062,
+          572.3856811523438
+        ],
+        [
+          698.2118530273438,
+          483.3573913574219
+        ]
+      ]
+    },
+    {
+      "id": "stacked-hearts",
+      "original": 0.019,
+      "cropOnly": 0.0088875,
+      "cropAndMixture": 0.0090625,
+      "originalCounts": [
+        3,
+        3
+      ],
+      "recropCounts": [
+        3,
+        3
+      ],
+      "quad": [
+        [
+          600.0601196289062,
+          643.0031127929688
+        ],
+        [
+          698.5545654296875,
+          740.175048828125
+        ],
+        [
+          596.847900390625,
+          845.0370483398438
+        ],
+        [
+          494.17071533203125,
+          742.09765625
+        ]
+      ]
+    }
+  ],
+  "fixedRecrops": [
+    {
+      "id": "checkerboard",
+      "passed": true,
+      "imageError": 0.0103302001953125,
+      "counts": [
+        7,
+        7
+      ]
+    },
+    {
+      "id": "six_point_star",
+      "passed": true,
+      "imageError": 0.009429931640625,
+      "counts": [
+        3,
+        3
+      ]
+    },
+    {
+      "id": "flower",
+      "passed": true,
+      "imageError": 0.0052337646484375,
+      "counts": [
+        3,
+        3
+      ]
+    },
+    {
+      "id": "framed_tree",
+      "passed": false,
+      "imageError": 0.0908660888671875,
+      "counts": [
+        5,
+        5
+      ]
+    },
+    {
+      "id": "three_hearts",
+      "passed": true,
+      "imageError": 0.008758544921875,
+      "counts": [
+        3,
+        3
+      ]
+    }
+  ],
+  "perturbationSummary": {
+    "passed": 20,
+    "tested": 20,
+    "changedCounts": 5,
+    "scope": "Five previously passing collage cases; not every failure or all 31 images"
+  },
+  "perturbations": [
+    {
+      "id": "outline-star--crop-x-plus-1",
+      "originalId": "outline-star",
+      "passed": true,
+      "imageError": 0.0081875,
+      "counts": [
+        3,
+        3
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-0-of-3"
+    },
+    {
+      "id": "outline-star--crop-y-plus-1",
+      "originalId": "outline-star",
+      "passed": true,
+      "imageError": 0.0185625,
+      "counts": [
+        3,
+        3
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-0-of-3"
+    },
+    {
+      "id": "outline-star--jpeg-75",
+      "originalId": "outline-star",
+      "passed": true,
+      "imageError": 0.02218125,
+      "counts": [
+        3,
+        3
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-0-of-3"
+    },
+    {
+      "id": "outline-star--half-resolution",
+      "originalId": "outline-star",
+      "passed": true,
+      "imageError": 0.0063375,
+      "counts": [
+        3,
+        3
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-0-of-3"
+    },
+    {
+      "id": "stacked-hearts--crop-x-plus-1",
+      "originalId": "stacked-hearts",
+      "passed": true,
+      "imageError": 0.02293125,
+      "counts": [
+        4,
+        3
+      ],
+      "countsChanged": true,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-0-of-3"
+    },
+    {
+      "id": "stacked-hearts--crop-y-plus-1",
+      "originalId": "stacked-hearts",
+      "passed": true,
+      "imageError": 0.0227375,
+      "counts": [
+        4,
+        3
+      ],
+      "countsChanged": true,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-0-of-3"
+    },
+    {
+      "id": "stacked-hearts--jpeg-75",
+      "originalId": "stacked-hearts",
+      "passed": true,
+      "imageError": 0.01763125,
+      "counts": [
+        3,
+        3
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-0-of-3"
+    },
+    {
+      "id": "stacked-hearts--half-resolution",
+      "originalId": "stacked-hearts",
+      "passed": true,
+      "imageError": 0.0139,
+      "counts": [
+        3,
+        3
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-0-of-3"
+    },
+    {
+      "id": "dense-checker--crop-x-plus-1",
+      "originalId": "dense-checker",
+      "passed": true,
+      "imageError": 0.02005,
+      "counts": [
+        7,
+        7
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-1-of-3"
+    },
+    {
+      "id": "dense-checker--crop-y-plus-1",
+      "originalId": "dense-checker",
+      "passed": true,
+      "imageError": 0.029175,
+      "counts": [
+        7,
+        7
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-1-of-3"
+    },
+    {
+      "id": "dense-checker--jpeg-75",
+      "originalId": "dense-checker",
+      "passed": true,
+      "imageError": 0.01825625,
+      "counts": [
+        7,
+        7
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-1-of-3"
+    },
+    {
+      "id": "dense-checker--half-resolution",
+      "originalId": "dense-checker",
+      "passed": true,
+      "imageError": 0.0275875,
+      "counts": [
+        7,
+        7
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-1-of-3"
+    },
+    {
+      "id": "bottom-flower--crop-x-plus-1",
+      "originalId": "bottom-flower",
+      "passed": true,
+      "imageError": 0.007,
+      "counts": [
+        4,
+        4
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-1-of-3"
+    },
+    {
+      "id": "bottom-flower--crop-y-plus-1",
+      "originalId": "bottom-flower",
+      "passed": true,
+      "imageError": 0.00631875,
+      "counts": [
+        4,
+        4
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-1-of-3"
+    },
+    {
+      "id": "bottom-flower--jpeg-75",
+      "originalId": "bottom-flower",
+      "passed": true,
+      "imageError": 0.00745,
+      "counts": [
+        4,
+        4
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-1-of-3"
+    },
+    {
+      "id": "bottom-flower--half-resolution",
+      "originalId": "bottom-flower",
+      "passed": true,
+      "imageError": 0.0067875,
+      "counts": [
+        4,
+        4
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-1-of-3"
+    },
+    {
+      "id": "flower--crop-x-plus-1",
+      "originalId": "flower",
+      "passed": true,
+      "imageError": 0.02783125,
+      "counts": [
+        4,
+        4
+      ],
+      "countsChanged": false,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-2-of-3"
+    },
+    {
+      "id": "flower--crop-y-plus-1",
+      "originalId": "flower",
+      "passed": true,
+      "imageError": 0.02926875,
+      "counts": [
+        3,
+        3
+      ],
+      "countsChanged": true,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-2-of-3"
+    },
+    {
+      "id": "flower--jpeg-75",
+      "originalId": "flower",
+      "passed": true,
+      "imageError": 0.0289875,
+      "counts": [
+        3,
+        3
+      ],
+      "countsChanged": true,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-2-of-3"
+    },
+    {
+      "id": "flower--half-resolution",
+      "originalId": "flower",
+      "passed": true,
+      "imageError": 0.02274375,
+      "counts": [
+        3,
+        3
+      ],
+      "countsChanged": true,
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-27-41-471Z-shard-2-of-3"
+    }
+  ],
+  "supportedCountRetry": [
+    {
+      "id": "white-birds",
+      "passed": false,
+      "imageError": 0.05825,
+      "supportedCounts": [
+        3,
+        3
+      ],
+      "candidates": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "error": 0.0604095458984375,
+          "score": 0.058476237673040554,
+          "geometry": true,
+          "paper": true
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "error": 0.0704803466796875,
+          "score": 0.06916154553970238,
+          "geometry": true,
+          "paper": true
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "error": 0.0133056640625,
+          "score": 0.014829073692383177,
+          "geometry": true,
+          "paper": false
+        }
+      ]
+    },
+    {
+      "id": "bibel-star-curved",
+      "passed": false,
+      "imageError": 0.04605625,
+      "supportedCounts": [
+        5,
+        5
+      ],
+      "candidates": [
+        {
+          "counts": [
+            7,
+            7
+          ],
+          "error": 0.05010986328125,
+          "score": 0.0491282362897473,
+          "geometry": true,
+          "paper": true
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "error": 0.059478759765625,
+          "score": 0.05752695172205885,
+          "geometry": true,
+          "paper": true
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "error": 0.06463623046875,
+          "score": 0.06333597815543932,
+          "geometry": true,
+          "paper": true
+        }
+      ]
+    }
+  ],
+  "widthDiagnostics": [
+    {
+      "id": "nested-squares",
+      "requestedMinimum": 1,
+      "nominalWidth": 1.503006012024048,
+      "passed": false,
+      "imageError": 0.097125,
+      "counts": [
+        8,
+        8
+      ],
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-34-56-715Z-shard-0-of-2"
+    },
+    {
+      "id": "candle",
+      "requestedMinimum": 1,
+      "nominalWidth": 1.503006012024048,
+      "passed": true,
+      "imageError": 0.01435,
+      "counts": [
+        2,
+        2
+      ],
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-34-56-715Z-shard-0-of-2"
+    },
+    {
+      "id": "gingerbread",
+      "requestedMinimum": 1,
+      "nominalWidth": 1.503006012024048,
+      "passed": false,
+      "imageError": 0.043125,
+      "counts": [
+        2,
+        2
+      ],
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-34-56-715Z-shard-1-of-2"
+    },
+    {
+      "id": "faceted-star",
+      "requestedMinimum": 1,
+      "nominalWidth": 1.503006012024048,
+      "passed": false,
+      "imageError": 0.05585,
+      "counts": [
+        5,
+        5
+      ],
+      "evidence": "tmp/inverse-hard-photos/2026-09-07T17-34-56-715Z-shard-1-of-2"
+    }
+  ],
+  "countCapDiagnostic": [
+    {
+      "id": "warped-checker",
+      "coarse": [
+        {
+          "counts": [
+            11,
+            11
+          ],
+          "phase": 1,
+          "error": 0.0999908447265625
+        },
+        {
+          "counts": [
+            10,
+            10
+          ],
+          "phase": 1,
+          "error": 0.1007080078125
+        },
+        {
+          "counts": [
+            10,
+            10
+          ],
+          "phase": -1,
+          "error": 0.1024322509765625
+        },
+        {
+          "counts": [
+            12,
+            12
+          ],
+          "phase": 1,
+          "error": 0.105224609375
+        },
+        {
+          "counts": [
+            8,
+            8
+          ],
+          "phase": 1,
+          "error": 0.1061553955078125
+        },
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "phase": -1,
+          "error": 0.10748291015625
+        },
+        {
+          "counts": [
+            12,
+            12
+          ],
+          "phase": -1,
+          "error": 0.107574462890625
+        },
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "phase": 1,
+          "error": 0.1081695556640625
+        },
+        {
+          "counts": [
+            11,
+            11
+          ],
+          "phase": -1,
+          "error": 0.1121673583984375
+        },
+        {
+          "counts": [
+            8,
+            8
+          ],
+          "phase": -1,
+          "error": 0.1128692626953125
+        }
+      ],
+      "fine": [
+        {
+          "counts": [
+            11,
+            11
+          ],
+          "phase": 1,
+          "error": 0.0911712646484375
+        },
+        {
+          "counts": [
+            10,
+            10
+          ],
+          "phase": 1,
+          "error": 0.0956268310546875
+        },
+        {
+          "counts": [
+            10,
+            10
+          ],
+          "phase": -1,
+          "error": 0.0922088623046875
+        }
+      ],
+      "note": "Unconstrained ordered initializer diagnostic, no free curve or paper validation. Not counted as an accepted template."
+    },
+    {
+      "id": "fine-checker",
+      "coarse": [
+        {
+          "counts": [
+            11,
+            11
+          ],
+          "phase": -1,
+          "error": 0.088623046875
+        },
+        {
+          "counts": [
+            10,
+            10
+          ],
+          "phase": -1,
+          "error": 0.0937652587890625
+        },
+        {
+          "counts": [
+            12,
+            12
+          ],
+          "phase": -1,
+          "error": 0.102813720703125
+        },
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "phase": 1,
+          "error": 0.105987548828125
+        },
+        {
+          "counts": [
+            12,
+            12
+          ],
+          "phase": 1,
+          "error": 0.10968017578125
+        },
+        {
+          "counts": [
+            10,
+            10
+          ],
+          "phase": 1,
+          "error": 0.114013671875
+        },
+        {
+          "counts": [
+            8,
+            8
+          ],
+          "phase": -1,
+          "error": 0.120758056640625
+        },
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "phase": -1,
+          "error": 0.1231689453125
+        },
+        {
+          "counts": [
+            11,
+            11
+          ],
+          "phase": 1,
+          "error": 0.1271209716796875
+        },
+        {
+          "counts": [
+            8,
+            8
+          ],
+          "phase": 1,
+          "error": 0.1570281982421875
+        }
+      ],
+      "fine": [
+        {
+          "counts": [
+            11,
+            11
+          ],
+          "phase": -1,
+          "error": 0.08465576171875
+        },
+        {
+          "counts": [
+            10,
+            10
+          ],
+          "phase": -1,
+          "error": 0.088348388671875
+        },
+        {
+          "counts": [
+            12,
+            12
+          ],
+          "phase": -1,
+          "error": 0.0969085693359375
+        }
+      ],
+      "note": "Unconstrained ordered initializer diagnostic, no free curve or paper validation. Not counted as an accepted template."
+    }
+  ],
+  "initializerAblation": [
+    {
+      "kernel": "area",
+      "seed": "js",
+      "coarse": 0.0855255126953125,
+      "fine": 0.0689544677734375
+    },
+    {
+      "kernel": "area",
+      "seed": "torch",
+      "coarse": 0.077362060546875,
+      "fine": 0.0588226318359375
+    },
+    {
+      "kernel": "area",
+      "seed": "zero",
+      "coarse": 0.0813140869140625,
+      "fine": 0.0657501220703125
+    },
+    {
+      "kernel": "pillow",
+      "seed": "js",
+      "coarse": 0.0859527587890625,
+      "fine": 0.0693511962890625
+    },
+    {
+      "kernel": "pillow",
+      "seed": "torch",
+      "coarse": 0.0785064697265625,
+      "fine": 0.05902099609375
+    },
+    {
+      "kernel": "pillow",
+      "seed": "zero",
+      "coarse": 0.0831756591796875,
+      "fine": 0.0657958984375
+    }
+  ],
+  "numericalParity": {
+    "pythonFirstLoss": 0.3291846811771393,
+    "javascriptFirstLoss": 0.32918466984984524,
+    "maximumGradientDifference": 9.145767909928687e-9,
+    "maximumTenAdamUpdateDifference": 0.0000017624126117388172,
+    "scope": "Identical fixed frame target and initial controls; not bitwise full-pipeline equality"
+  },
+  "verification": {
+    "unitTests": 227,
+    "directTests": 10,
+    "typeErrors": 0,
+    "preexistingAccessibilityWarnings": 8,
+    "lint": "pass",
+    "build": "pass",
+    "browser": {
+      "direct": {
+        "file": "tmp/inverse-browser/2026-09-07T17-41-45-993Z-direct/results.json",
+        "browsers": [
+          {
+            "browser": "chromium",
+            "checks": 7,
+            "pageErrors": [],
+            "error": null
+          },
+          {
+            "browser": "firefox",
+            "checks": 7,
+            "pageErrors": [],
+            "error": null
+          }
+        ]
+      },
+      "examples": {
+        "file": "tmp/inverse-browser/2026-09-07T17-41-45-993Z-examples/results.json",
+        "results": [
+          {
+            "browser": "chromium",
+            "checks": [
+              "Waves · new solve: one click on a fresh page produces a rendered preview",
+              "Star · new solve: one click on a fresh page produces a rendered preview",
+              "JUL · saved templates: one click on a fresh page produces a rendered preview",
+              "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+              "Star · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+              "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+              "example recovers from a rejected upload",
+              "failed example request clears old downloads and offers a working retry",
+              "automatic saved-template check can be stopped; another example starts with a fresh worker",
+              "mobile example scrolls its rendered preview into view without overflow",
+              "Danish example also opens its preview with one click"
+            ],
+            "pageErrors": []
+          },
+          {
+            "browser": "firefox",
+            "checks": [
+              "Waves · new solve: one click on a fresh page produces a rendered preview",
+              "Star · new solve: one click on a fresh page produces a rendered preview",
+              "JUL · saved templates: one click on a fresh page produces a rendered preview",
+              "Waves · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+              "Star · new solve: replaces an uploaded image with an invalid crop and clears its file control",
+              "JUL · saved templates: replaces an uploaded image with an invalid crop and clears its file control",
+              "example recovers from a rejected upload",
+              "failed example request clears old downloads and offers a working retry",
+              "automatic saved-template check can be stopped; another example starts with a fresh worker",
+              "mobile example scrolls its rendered preview into view without overflow",
+              "Danish example also opens its preview with one click"
+            ],
+            "pageErrors": []
+          }
+        ]
+      }
+    },
+    "previewFailure": {
+      "file": "tmp/inverse-browser/2026-09-07T17-36-35-451Z-direct/results.json",
+      "cause": "Preview process retained old entry-module URLs across a build; restarted preview after build, then all direct and example checks passed."
+    },
+    "unitTestLog": "/tmp/juleflet-direct-tests-final.log",
+    "finalSmoke": {
+      "file": "tmp/inverse-direct-study/final-smoke.json",
+      "imagesLoaded": 144,
+      "port4173": "direct mode loaded",
+      "pageErrors": []
+    }
+  },
+  "evidenceNotes": [
+    "The three initial shards shared a timestamp; per-case artifacts survived. The aggregate was rebuilt by rescore-photo-exports.mjs, independently rendering all exported geometry against the saved source masks. Original summary preserved as results-before-rescore.json; unavailable whole-run timings are null. New shard paths are unique.",
+    "The later supported-count selection change affects only white-birds and bibel-star-curved in the recorded coarse candidates. Targeted retries still fail. All other primary outcomes describe the initial full run rather than an invented full rerun.",
+    "Accepted is a numerical criterion; visual inspection still finds false seams in some accepted results. Crop proposals and presumed motif structure are not ground-truth cutting paths.",
+    "Runtime reflects the final port. Each benchmark results.json retains its own runtime/source hashes; targeted diagnostics are not silently substituted into the 11/31 score.",
+    "Mapped crop runs retain locatorStatus=needs_review. Their older aggregate cropStatus and generic source method came from the visual-annotation harness; corrected report display prioritizes locatorStatus. Future override runs record that status, the override file hash and provenance explicitly. Coordinates and fitting results were not changed."
+  ]
+}

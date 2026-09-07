@@ -1,5 +1,7 @@
 # Photographic colour mixtures and broader robustness tests
 
+This document records the initial preparation integration and Python replay. The subsequent **browser direct Bézier port**, 11/31 comparison and root-cause experiments are documented in [DIRECT-FITTER.md](DIRECT-FITTER.md).
+
 The `heart_recrop_reconstruction.zip` handoff contains a fresh-grid Python/PyTorch inverse fitter, a JavaScript cropper, five frozen photographic crops and independently checked candidate templates. It does not contain a browser inverse fitter. The archive's original photo and fitted templates remain local test material under `tmp/inverse-recrops-handoff/`.
 
 ## Integrated preparation
@@ -48,7 +50,7 @@ npm run benchmark:inverse:hard-photos -- \
 
 The archive's crops keep their `needs_review` status. The benchmark uses their saved rectified photo directly, without another inset or optimized crop. See `PHOTO-RECROPS-VALIDATION.json` for concrete run locations.
 
-## Direct fitter verification and remaining integration
+## Original Python fitter verification
 
 All 837 supplied file checksums and six actual JavaScript cropper tests passed locally. Independently rechecking the five supplied exports passed all geometric audits at their stated 1.5 mm threshold and checked 4,814 SVG scalar coordinates. CairoSVG and the separate adaptive geometry renderer agree within the stated raster tolerance.
 
@@ -62,4 +64,4 @@ As a separate diagnostic, running the Python audit at the app's approximately 2.
 
 Browser QA passed 38 checks across Chromium and Firefox: 16 checks for the new colour mode, including all five real crops and a fresh shaded-checker solve/export, plus 22 example-button checks. All 217 repository tests, type checking, lint and the static build passed. Type checking retains eight existing accessibility warnings in `PaperHeart.svelte`.
 
-The browser still uses tracing and MILP. Integrating the direct fitter requires porting its grid/count initialization, boundary-motion derivatives, constrained updates and shared-cut handling. Its horizontal-cut gradient fixtures and separate area/renderer checks are essential acceptance criteria. Simply using the new colour target or fitting longer does not supply that algorithm. The framed motif's visible defects and the stricter app cutting allowance also remain relevant.
+At this initial checkpoint the browser still used tracing and MILP. The subsequent port supplies the grid/count initialization, boundary-motion derivatives, constrained updates and shared-cut handling, including horizontal-cut and independent-render regressions. The framed motif's visible defects and the stricter app cutting allowance remain relevant; see the direct fitter report for the measured results.

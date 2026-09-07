@@ -9,7 +9,7 @@ import {writeHardPhotoReport} from './hard-photo-report.mjs';
 const [directory,inventoryFile,preset='direct']=process.argv.slice(2);
 const inventory=JSON.parse(await fs.readFile(inventoryFile));
 const existing=JSON.parse(await fs.readFile(`${directory}/results.json`));
-await fs.writeFile(`${directory}/results-before-rescore.json`,JSON.stringify(existing,null,2));
+await fs.writeFile(`${directory}/results-before-rescore.json`,JSON.stringify(existing,null,2),{flag:'wx'}).catch(e=>{if(e.code!=='EEXIST')throw e;});
 const results=[];
 for(const entry of inventory.results){
   const row={...entry,runs:[]};results.push(row);

@@ -34,7 +34,8 @@ for(const [name,type]of Object.entries({chromium,firefox})){
       const conversion=page.locator('details').filter({has:page.getByText('Image conversion',{exact:true})});
       if(!(await conversion.evaluate(e=>e.open)))await conversion.locator('summary').click();
       await page.getByLabel(/^Separate source colours/).selectOption('red-white-mixture');
-      await page.getByLabel('Tracing resolution (pixels)',{exact:true}).fill(String(resolution));
+      await page.getByLabel('Image resolution (pixels)',{exact:true}).fill(String(resolution));
+      assert.equal(await page.getByLabel('Merge nearby junctions (mm)',{exact:true}).count(),0);
       await page.getByLabel('Search budget (seconds)',{exact:true}).fill(String(seconds));
       await button('Prepare artwork').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();
       const preview=await page.evaluate(()=>({metadata:window.directPreview.metadata,mask:Array.from(window.directPreview.mask)}));

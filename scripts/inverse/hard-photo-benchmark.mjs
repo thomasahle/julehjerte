@@ -17,7 +17,7 @@ if(args.recrops){
   sourceHashes[`${root}/cases.json`]=hash(await fs.readFile(`${root}/cases.json`));
   cases=entries.filter(e=>!args.ids||args.ids.split(',').includes(e.id)).map(e=>({...e,group:'recrop-handoff',label:e.id,cropStatus:'needs_review',file:`${root}/inputs/cases/${e.id}/rectified.png`,quad:[[0,0],[256,0],[256,256],[0,256]],sourceQuad:e.quad,roi:[0,0,256,256],cropNote:'Fixed archive rectification; locator needs_review retained. No extra inset.'}));
 }
-if(args['crop-overrides']){const overrides=JSON.parse(await fs.readFile(args['crop-overrides']));cases=cases.map(e=>{const override=overrides.find(x=>x.id===e.id);return override?{...e,...override,originalQuad:e.quad}:e;});}
+if(args['crop-overrides']){const overrides=JSON.parse(await fs.readFile(args['crop-overrides']));sourceHashes[args['crop-overrides']]=hash(await fs.readFile(args['crop-overrides']));cases=cases.map(e=>{const override=overrides.find(x=>x.id===e.id);return override?{...e,...override,cropStatus:override.locatorStatus||override.cropStatus||e.cropStatus,originalQuad:e.quad}:e;});}
 if(args.shard){const[index,count]=args.shard.split('/').map(Number);if(!Number.isInteger(index)||!Number.isInteger(count)||index<0||index>=count)throw new Error('Use --shard=index/count with zero-based index.');cases=cases.filter((_,i)=>i%count===index);}
 if(args.perturb==='true')cases=cases.flatMap(e=>[
   {name:'crop-x-plus-1',dx:1,dy:0},{name:'crop-y-plus-1',dx:0,dy:1},
@@ -53,7 +53,7 @@ for(const e of cases){
     for(const name of presets){
       const cfg={...config,...(name==='simplify'?SIMPLIFIED_PREPROCESSING:name==='mixture'?{mode:'red-white-mixture'}:name==='direct'?{algorithm:'direct',roundHidden:false}:name==='direct-mixture'?{algorithm:'direct',roundHidden:false,mode:'red-white-mixture'}:name==='unmerged'?{snapRadius:0}:{}),...(e.diagnostic||{})},r={preset:name,settings:cfg};row.runs.push(r);const start=performance.now();const folder=`${dir}/${name}`;await fs.mkdir(folder);
       try{
-        const p=prepare({type:'pixels',rgba:s.rgba,imageWidth:s.imageWidth,imageHeight:s.imageHeight,quad,cropProvenance:{method:'Fixed visual annotation, not solver-derived',catalog:'scripts/inverse/hard-photo-cases.json',case:e.id}},cfg);
+        const p=prepare({type:'pixels',rgba:s.rgba,imageWidth:s.imageWidth,imageHeight:s.imageHeight,quad,cropProvenance:{method:e.provenance||e.cropNote||'Fixed visual annotation, not solver-derived',catalog:args['crop-overrides']||(args.recrops?`${args.recrops}/cases.json`:e.group==='individual'?'scripts/inverse/photo-cases.json':'scripts/inverse/hard-photo-cases.json'),status:e.locatorStatus||e.cropStatus,case:e.id}},cfg);
         r.direct=!!p.target.metadata.direct;r.curves=p.target.curves.length;r.preprocessing=p.preview.metadata;r.preprocessSeconds=(performance.now()-start)/1000;
         await fs.writeFile(`${dir}/crop.png`,pixelPNG(p.preview.rgb,p.preview.resolution,3));await fs.writeFile(`${folder}/mask.png`,pixelPNG(p.preview.mask,p.preview.resolution));await fs.writeFile(`${folder}/target.svg`,p.preview.vector);
         const result=await design(p.target,cfg),rendered=await renderExportedWeave(result.files['cut_geometry.json'],p.preview.resolution);

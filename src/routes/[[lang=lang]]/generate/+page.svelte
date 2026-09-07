@@ -534,7 +534,8 @@
               {#if settings.mode === 'threshold'}<label>{text('threshold')}<input type="number" min="0" max="255" step="1" bind:value={settings.threshold} required /></label>{/if}
               {#if settings.mode === 'swatches'}<div class="field-grid"><label>{text('swatchA')}<input type="color" bind:value={settings.swatches[0]} /></label><label>{text('swatchB')}<input type="color" bind:value={settings.swatches[1]} /></label></div>{/if}
               <div class="field-grid">
-                <label>{text('resolution')}<input type="number" min="32" max="600" step="1" bind:value={settings.resolution} required /></label>
+                <label>{text(routingPreset === 'direct' ? 'imageResolution' : 'resolution')}<input type="number" min="32" max="600" step="1" bind:value={settings.resolution} required /></label>
+                {#if routingPreset !== 'direct'}
                 <label>{text('fit')}<input type="number" min="0.01" max="3" step="0.01" bind:value={settings.fitTolerance} required /></label>
                 <label>{text('span')}<input type="number" min="2" max="40" step="1" bind:value={settings.maxSpan} required /></label>
                 <label>{text('specks')}<input type="number" min="0" max="100" step="0.1" bind:value={settings.removeSpecks} required /></label>
@@ -542,16 +543,19 @@
                 <label>{text('smooth')}<input type="number" min="0" max="3" step="0.1" bind:value={settings.smoothRadius} required /></label>
                 <label>{text('snap')}<input type="number" min="0" max="3" step="0.1" bind:value={settings.snapRadius} required /></label>
                 <label>{text('border')}<input type="number" min="0" max="3" step="0.25" bind:value={settings.borderRadius} required /></label>
+                {/if}
               </div>
+              {#if routingPreset !== 'direct'}
               <p class="muted small">{text('snapHelp')}</p>
               <p class="muted small">{text('borderHelp')}</p>
+              {/if}
             </details>
           {/if}
           {#if !saved}<label class="checkbox"><input type="checkbox" bind:checked={settings.invert} />{text('invert')}</label>{/if}
           <details>
             <summary>{text('manufacturing')}</summary>
-            <div class="field-grid">{#each numericFields as field}<label>{text(field.label)}<input type="number" min={field.min} max={field.max} step={field.step} bind:value={settings[field.key]} required /></label>{/each}</div>
-            <label class="checkbox"><input type="checkbox" bind:checked={settings.roundHidden} />{text('round')}</label>
+            <div class="field-grid">{#each numericFields.filter(f => routingPreset !== 'direct' || f.key !== 'neighbors') as field}<label>{text(field.label)}<input type="number" min={field.min} max={field.max} step={field.step} bind:value={settings[field.key]} required /></label>{/each}</div>
+            {#if routingPreset !== 'direct'}<label class="checkbox"><input type="checkbox" bind:checked={settings.roundHidden} />{text('round')}</label>{/if}
           </details>
           <div class="actions">
             <Button type="submit" variant="secondary" disabled={!input || busy}>{text(saved ? 'audit' : 'prepare')}</Button>
