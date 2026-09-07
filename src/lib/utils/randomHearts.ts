@@ -5,7 +5,8 @@
  * The hero is prerendered with a fixed set and only randomises **after mount**:
  * randomising during render would make the server and client markup disagree
  * and produce a hydration mismatch. Sizes and positions never change, so the
- * swap is a pure cross-fade with no layout shift.
+ * swap causes no layout shift — and the prerendered set is kept at opacity 0
+ * until it has happened, so it is never seen (see front/HeroHearts.svelte).
  */
 import { ALL_HEART_IDS } from '$lib/data/categories';
 

@@ -4,7 +4,7 @@
  * A slot is a fixed position/size/ribbon/sway-delay inside the hero's hearts
  * block; only *which heart* hangs in it changes (the prerendered set is swapped
  * for a random one after hydration). Because the geometry never moves, the swap
- * is a pure cross-fade with no layout shift.
+ * costs nothing but a fade-in and never shifts the layout.
  *
  * Slots are listed in DOM order, i.e. longest ribbon first, so a long ribbon
  * passes *behind* the hearts that hang higher up.
