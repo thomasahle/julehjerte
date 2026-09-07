@@ -2056,6 +2056,12 @@
 		// render and the first client render agree.
 		const PANEL_COLLAPSED_KEY = 'paperheart.panelCollapsed';
 		let panelCollapsed = $state(false);
+		// Both controls stay mounted (the tab is hidden with CSS while the panel is
+		// open), so collapsing from the keyboard can hand focus to the other one
+		// instead of dropping it on <body>.
+		let panelCollapseButtonEl = $state<HTMLButtonElement | null>(null);
+		let panelTabEl = $state<HTMLButtonElement | null>(null);
+		let panelId = $derived(`editor-panel-${componentId}`);
 
 		function setPanelCollapsed(next: boolean) {
 			panelCollapsed = next;
@@ -2064,6 +2070,10 @@
 			} catch {
 				// Storage unavailable: the choice just does not survive a reload.
 			}
+			// Only chase the focus that the control we just hid was holding.
+			const moving = typeof document !== 'undefined' && document.activeElement;
+			if (moving !== panelCollapseButtonEl && moving !== panelTabEl) return;
+			tick().then(() => (next ? panelTabEl : panelCollapseButtonEl)?.focus());
 		}
 
 		/** Reset zoom and pan so the whole heart is back in view. */
@@ -2929,7 +2939,7 @@
 		return () => window.removeEventListener('resize', updateMobileCanvasMinHeight);
 	});
 
-	// Narrow screens (<= 600px) stack the toolbar above and the panels below the canvas.
+	// Narrow screens (<= 900px) float the tool rail above and the panels below the canvas.
 	// Measure them so the heart is laid out in the free band between them instead of underneath.
 	let mobileClearance = $state<{ top: number; bottom: number } | null>(null);
 	// Below 900px the toolbar sits on top of the canvas, so canvas notices go directly under it.
@@ -2946,7 +2956,9 @@
 			segmentControlsEl && window.matchMedia('(max-width: 900px)').matches
 				? Math.round(segmentControlsEl.offsetTop + segmentControlsEl.offsetHeight + gap)
 				: null;
-		if (!window.matchMedia('(max-width: 600px)').matches) {
+		// The stacked layout starts at 900px, not 600px: the panels are opaque cards
+		// painted over the canvas, so the heart needs the free band from here down.
+		if (!window.matchMedia('(max-width: 900px)').matches) {
 			mobileClearance = null;
 			return;
 		}
@@ -3438,12 +3450,20 @@
 				     the route adds Hjertedetaljer and Handlinger through `panelExtra`. -->
 				<div
 					bind:this={rightPanelEl}
+					id={panelId}
 					class="right-panel"
 					class:floating={fullPage}
 					class:collapsed={panelCollapsed}
 				>
 					<div class="panel-collapse">
-						<button type="button" class="panel-button" onclick={() => setPanelCollapsed(true)}>
+						<button
+							type="button"
+							class="panel-button"
+							bind:this={panelCollapseButtonEl}
+							aria-expanded={!panelCollapsed}
+							aria-controls={panelId}
+							onclick={() => setPanelCollapsed(true)}
+						>
 							{tr('editorHidePanel')}
 							<ChevronRightIcon size={14} />
 						</button>
@@ -3451,29 +3471,48 @@
 
 					<section class="editor-panel symmetry-panel">
 						<h2 class="panel-title">{tr('symmetry')}</h2>
-						<div class="symmetry-row" aria-label={tr('editorWithinCurveSymmetry')}>
+						<!-- The name goes on the ToggleGroup, not on the plain wrapper: a
+						     <div> with no role drops its aria-label from the tree, which left
+						     three interchangeable unnamed radio groups. -->
+						<div class="symmetry-row">
 							<span class="symmetry-label">{tr('editorWithinCurve')}</span>
-							<ToggleGroup type="single" bind:value={withinCurveMode}>
+							<ToggleGroup
+								type="single"
+								role="radiogroup"
+								aria-label={tr('editorWithinCurveSymmetry')}
+								bind:value={withinCurveMode}
+							>
 								<ToggleGroupItem value="off" title={tr('editorOff')}>{tr('editorOff')}</ToggleGroupItem>
 								<ToggleGroupItem value="sym" title={tr('mirrorSymmetry')}>{tr('editorSym')}</ToggleGroupItem>
 								<ToggleGroupItem value="anti" title={tr('editorAntiSymmetry')}>{tr('editorAnti')}</ToggleGroupItem>
 							</ToggleGroup>
 						</div>
-						<div class="symmetry-row" aria-label={tr('editorWithinLobeSymmetry')}>
+						<div class="symmetry-row">
 							<span class="symmetry-label">{tr('editorWithinLobe')}</span>
-							<ToggleGroup type="single" bind:value={withinLobeMode}>
+							<ToggleGroup
+								type="single"
+								role="radiogroup"
+								aria-label={tr('editorWithinLobeSymmetry')}
+								bind:value={withinLobeMode}
+							>
 								<ToggleGroupItem value="off" title={tr('editorOff')}>{tr('editorOff')}</ToggleGroupItem>
 								<ToggleGroupItem value="sym" title={tr('mirrorSymmetry')}>{tr('editorSym')}</ToggleGroupItem>
 								<ToggleGroupItem value="anti" title={tr('editorAntiSymmetry')}>{tr('editorAnti')}</ToggleGroupItem>
 							</ToggleGroup>
 						</div>
-						<div class="symmetry-row" aria-label={tr('editorBetweenLobesSymmetry')}>
+						<div class="symmetry-row">
 							<span class="symmetry-label">{tr('editorBetweenLobes')}</span>
 							<Tooltip>
 								<TooltipTrigger>
 									{#snippet child({ props })}
 										<span class="tooltip-wrapper" {...props}>
-											<ToggleGroup type="single" bind:value={betweenLobesMode} disabled={!canSymmetryBetweenLobes()}>
+											<ToggleGroup
+												type="single"
+												role="radiogroup"
+												aria-label={tr('editorBetweenLobesSymmetry')}
+												bind:value={betweenLobesMode}
+												disabled={!canSymmetryBetweenLobes()}
+											>
 												<ToggleGroupItem value="off" title={tr('editorOff')}>{tr('editorOff')}</ToggleGroupItem>
 												<ToggleGroupItem value="sym" title={tr('mirrorSymmetry')}>{tr('editorSym')}</ToggleGroupItem>
 												<ToggleGroupItem value="anti" title={tr('editorAntiSymmetry')}>{tr('editorAnti')}</ToggleGroupItem>
@@ -3513,12 +3552,19 @@
 					{#if panelExtra}{@render panelExtra()}{/if}
 				</div>
 
-				{#if panelCollapsed}
-					<button type="button" class="panel-tab" onclick={() => setPanelCollapsed(false)}>
-						<ChevronRightIcon size={14} />
-						<span>{tr('editorShowPanel')}</span>
-					</button>
-				{/if}
+				<!-- Always mounted so activating "Skjul panel" has somewhere to send
+				     focus; CSS hides it again while the panel is open. -->
+				<button
+					type="button"
+					class="panel-tab"
+					bind:this={panelTabEl}
+					aria-expanded={!panelCollapsed}
+					aria-controls={panelId}
+					onclick={() => setPanelCollapsed(false)}
+				>
+					<ChevronRightIcon size={14} />
+					<span>{tr('editorShowPanel')}</span>
+				</button>
 			{/if}
 			</div>
 		</div>
@@ -3611,13 +3657,19 @@
 			background: var(--white);
 		}
 
+		/* The hint carries three separate instructions, so it wraps rather than
+		   truncating: `text-overflow` never fires on a flex box, and a flat cut
+		   mid-word lost most of the sentence on every laptop under ~1400px. */
 		.canvas-hint {
 			left: 16px;
-			max-width: calc(100% - 250px);
+			max-width: calc(100% - 32px);
 			color: var(--muted);
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
+		}
+
+		/* The selection chip shares the line, anchored to the right edge; give way
+		   to it only while it is actually on screen. */
+		.canvas-box:has(.canvas-selection) .canvas-hint {
+			max-width: calc(100% - 250px);
 		}
 
 		.canvas-selection {
@@ -4015,7 +4067,7 @@
 				display: block;
 			}
 
-			.paper-heart.fullPage .canvas-hint,
+			/* The hint stays a block so it can wrap; the chip shrink-wraps its text. */
 			.paper-heart.fullPage .canvas-selection {
 				display: inline-flex;
 			}
@@ -4054,7 +4106,7 @@
 				display: none;
 			}
 
-			.paper-heart.fullPage .panel-tab {
+			.paper-heart.fullPage.panel-collapsed .panel-tab {
 				display: inline-flex;
 			}
 		}
@@ -4188,6 +4240,14 @@
 				aspect-ratio: unset;
 				max-width: none;
 			}
+
+			/* Keep the heart in the free band between the floating tool rail and the
+			   floating panels; the clearances are measured in updateMobileClearance(). */
+			.paper-heart.fullPage:not(.readonly) .canvas-wrapper {
+				top: var(--mobile-top-clearance, 0px);
+				bottom: var(--mobile-bottom-clearance, 0px);
+				height: auto !important;
+			}
 		}
 
 		/* Narrow phones: wrap the toolbar, stack the bottom panels, and keep everything inside the viewport. */
@@ -4233,12 +4293,6 @@
 
 			.symmetry-panel {
 				grid-column: 1 / -1;
-			}
-
-			.paper-heart.fullPage:not(.readonly) .canvas-wrapper {
-				top: var(--mobile-top-clearance, 0px);
-				bottom: var(--mobile-bottom-clearance, 0px);
-				height: auto !important;
 			}
 		}
 	</style>

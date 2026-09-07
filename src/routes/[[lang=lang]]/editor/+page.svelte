@@ -4,7 +4,7 @@
   import { base } from '$app/paths';
   import { onMount, tick } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
-  import { SITE_TITLE } from '$lib/config';
+  import { SITE_TITLE, SITE_TITLE_EN } from '$lib/config';
   import { t, tArray, type Language } from '$lib/i18n';
   import { getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from '$lib/stores/collection';
@@ -13,7 +13,6 @@
   import { detectSymmetry } from '$lib/utils/symmetry';
   import { serializeTemplateToSVG, type TemplateLobe } from '$lib/utils/templateSvg';
   import { renderHeartSvgInline } from '$lib/rendering/heartSvg';
-  import { downloadPDF } from '$lib/pdf/template';
   import { sanitizeHtml } from '$lib/utils';
   import { trackImportError } from '$lib/analytics';
   import PageHeader from '$lib/components/PageHeader.svelte';
@@ -28,8 +27,53 @@
   } from '$lib/components/icons';
   import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
-  // Help modal state
+  // Help modal state. The dialog declares aria-modal, so it also has to behave
+  // like one: focus moves in when it opens, Tab stays inside it, Escape closes
+  // it, and focus returns to the button that opened it.
   let showHelp = $state(false);
+  let helpButtonEl: HTMLButtonElement | null = $state(null);
+  let helpDialogEl: HTMLDivElement | null = $state(null);
+
+  function openHelp(): void {
+    showHelp = true;
+  }
+
+  function closeHelp(): void {
+    if (!showHelp) return;
+    showHelp = false;
+    tick().then(() => helpButtonEl?.focus());
+  }
+
+  $effect(() => {
+    if (!showHelp) return;
+    tick().then(() => helpDialogEl?.focus());
+  });
+
+  const FOCUSABLE =
+    'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  // Keep Tab inside the dialog while it is open.
+  function trapHelpTab(event: KeyboardEvent): void {
+    if (event.key !== 'Tab' || !helpDialogEl) return;
+    const items = Array.from(helpDialogEl.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+      (el) => el.offsetParent !== null || el === document.activeElement
+    );
+    if (items.length === 0) {
+      event.preventDefault();
+      helpDialogEl.focus();
+      return;
+    }
+    const first = items[0];
+    const last = items[items.length - 1];
+    const active = document.activeElement;
+    if (event.shiftKey && (active === first || active === helpDialogEl)) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
 
   // Inline status/error message shown in the actions panel (replaces alert()).
   type StatusKey = 'save' | 'import' | 'load';
@@ -146,10 +190,15 @@
   const NARROW_QUERY = '(max-width: 900px)';
   let isNarrow = $state(false);
 
+  // The page's own heading. The top bar is a back link, the wordmark and three
+  // buttons, so the heading is visually hidden — but every other route has an
+  // h1 and heading navigation should not start at the panel titles.
+  let pageHeading = $derived(editingExisting ? t('editHeart', lang) : t('createNewHeartTitle', lang));
+
   onMount(() => {
     // Initialize colors
     colors = getColors();
-    subscribeColors((c) => { colors = c; });
+    const unsubscribeColors = subscribeColors((c) => { colors = c; });
 
     // Set heart name (needs lang to be initialized)
     if (urlDesign) {
@@ -166,7 +215,7 @@
     if (urlFromId) {
       void loadDesignFromGallery(urlFromId);
     }
-    if (!editorEl) return;
+    if (!editorEl) return unsubscribeColors;
 
     let ro: ResizeObserver | null = null;
     let resizeListener: (() => void) | null = null;
@@ -194,6 +243,7 @@
     }
 
     return () => {
+      unsubscribeColors();
       ro?.disconnect();
       if (resizeListener) win.removeEventListener('resize', resizeListener);
     };
@@ -349,8 +399,10 @@
   }
 
   // Top bar: the A4 template as a PDF, the same generator the gallery and detail pages use.
+  // jsPDF is loaded on demand, so it stays out of the editor's initial bundle.
   async function downloadTemplatePDF() {
     try {
+      const { downloadPDF } = await import('$lib/pdf/template');
       await downloadPDF(createHeartDesign(), { lang });
     } catch (err) {
       console.error('Generating the PDF failed', err);
@@ -448,7 +500,7 @@
 </script>
 
 <svelte:head>
-  <title>{editingExisting ? t('editHeart', lang) : t('createNewHeartTitle', lang)} - {SITE_TITLE}</title>
+  <title>{pageHeading} - {lang === 'en' ? SITE_TITLE_EN : SITE_TITLE}</title>
 </svelte:head>
 
 <!--
@@ -545,7 +597,10 @@
     <button
       type="button"
       class="icon-button"
-      onclick={() => showHelp = true}
+      bind:this={helpButtonEl}
+      onclick={openHelp}
+      aria-haspopup="dialog"
+      aria-expanded={showHelp}
       aria-label={t('helpOpenAriaLabel', lang)}
     >
       <HelpIcon size={20} />
@@ -572,6 +627,8 @@
     </button>
   </PageHeader>
 
+  <main id="main-content" tabindex="-1">
+  <h1 class="sr-only">{pageHeading}</h1>
   <div class="editor-top">
     {#key editorKey}
       <PaperHeart
@@ -591,18 +648,26 @@
       {@render heartPanels()}
     </aside>
   {/if}
+  </main>
 
   {#if showHelp}
     <div
       class="modal-overlay"
-      onclick={() => showHelp = false}
-      onkeydown={(e) => e.key === 'Escape' && (showHelp = false)}
+      onclick={closeHelp}
+      onkeydown={(e) => e.key === 'Escape' && closeHelp()}
       role="presentation"
     >
       <div
         class="modal help-modal"
+        bind:this={helpDialogEl}
         onclick={(e) => e.stopPropagation()}
-        onkeydown={(e) => e.stopPropagation()}
+        onkeydown={(e) => {
+          // Escape first: stopPropagation would otherwise swallow it before the
+          // overlay's handler ever sees it.
+          if (e.key === 'Escape') closeHelp();
+          else trapHelpTab(e);
+          e.stopPropagation();
+        }}
         role="dialog"
         tabindex="-1"
         aria-modal="true"
@@ -610,7 +675,7 @@
       >
         <div class="help-header">
           <h2 id="help-title">{t('helpTitle', lang)}</h2>
-          <button class="icon-button" onclick={() => showHelp = false} aria-label={t('helpCloseAriaLabel', lang)}>
+          <button type="button" class="icon-button" onclick={closeHelp} aria-label={t('helpCloseAriaLabel', lang)}>
             <CloseIcon size={20} />
           </button>
         </div>
