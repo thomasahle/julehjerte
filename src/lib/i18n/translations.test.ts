@@ -1,7 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { translations, type Language, type TranslationKey } from './translations';
+
+/** Every source file in src, as text, for the dead-key scan below. */
+const sources = import.meta.glob('/src/**/*.{svelte,ts,js}', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+}) as Record<string, string>;
 
 describe('translations', () => {
   const languages: Language[] = ['da', 'en'];
@@ -37,17 +42,10 @@ describe('translations', () => {
     // A key is "used" if its name appears anywhere in src outside this file —
     // quoted for t('…'), or after a dot for translations.da.x — which is loose
     // enough that a false pass is possible and a false failure is not.
-    const sources: string[] = [];
-    const walk = (dir: string) => {
-      for (const entry of readdirSync(dir, { withFileTypes: true })) {
-        const full = join(dir, entry.name);
-        if (entry.isDirectory()) walk(full);
-        else if (/\.(svelte|ts|js)$/.test(entry.name) && !full.endsWith('i18n/translations.ts'))
-          sources.push(readFileSync(full, 'utf8'));
-      }
-    };
-    walk('src');
-    const haystack = sources.join('\n');
+    const haystack = Object.entries(sources)
+      .filter(([path]) => !path.endsWith('/i18n/translations.ts'))
+      .map(([, text]) => text)
+      .join('\n');
     const unused = Object.keys(translations.da).filter(
       (key) => !new RegExp(`['"\`.\\[]${key}\\b`).test(haystack)
     );
