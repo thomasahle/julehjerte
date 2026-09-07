@@ -227,6 +227,17 @@
 		color: var(--red);
 	}
 
+	/* Below 1100 the panel stacks under the stage and grows down into the
+	   landscape drawing at the foot of the scene: firs, deer and gold stars came
+	   through the 55% white and sat between the lines of the paragraph. Over
+	   plain sky the frosted card is the intended treatment, so only the widths
+	   that share space with the drawing get an opaque ground. */
+	@media (max-width: 1099px) {
+		.panel {
+			background: var(--white);
+		}
+	}
+
 	@media (max-width: 899px) {
 		.panel h1 {
 			font-size: 36px;
