@@ -138,6 +138,8 @@
     "id": "jul",
     "name": "JUL",
     "author": "Gerth Stølting Brodal",
+    "authorUrl": "https://brodal.dk/",
+    "source": "https://cs.au.dk/~gerth/julehjerter/",
     "date": "2012",
     "description": "Se https://brodal.dk/julehjerter/ for flere hjerter med tekst",
     "weaveParity": 0,

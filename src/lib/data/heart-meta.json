@@ -71,10 +71,10 @@
   "jul": {
     "name": "JUL",
     "author": "Gerth Stølting Brodal",
-    "authorUrl": null,
+    "authorUrl": "https://brodal.dk/",
     "publisher": null,
     "publisherUrl": null,
-    "source": null,
+    "source": "https://cs.au.dk/~gerth/julehjerter/",
     "date": "2012",
     "description": "Se https://brodal.dk/julehjerter/ for flere hjerter med tekst",
     "gridSize": {
