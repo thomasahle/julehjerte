@@ -122,7 +122,9 @@ note that a flex container paints absolutely positioned children in order-modifi
 ```
 .hang  { display:flex; flex-direction:column; align-items:center; width:{size}px; max-width:100%;
          transform-origin:50% 0; animation: sway 7s ease-in-out infinite alternate; animation-delay:{delay}s }
-ribbon { width:max(8px, round(size*0.055)px); height:{ribbon + round(size*0.24)}px; background:var(--red) }
+ribbon { width:max(8px, round(size*0.055)px); height:{ribbon + round(size*0.24)}px; background:var(--red);
+         filter: drop-shadow(0 8px 12px rgb(28 51 41 / .16)) }   /* same shadow as the heart; painted first,
+                                                                    so only the length above the cleft shows one */
 .heart { position:relative; width:100%; aspect-ratio:1/1; margin-top:-24% }   /* the ribbon runs on behind the heart into the cleft */
 .heart svg { display:block; width:100%; height:100%; filter: drop-shadow(0 8px 12px rgb(28 51 41 / .16)) }
 @keyframes sway { from { transform: rotate(-1.4deg) } to { transform: rotate(1.4deg) } }

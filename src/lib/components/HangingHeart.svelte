@@ -113,8 +113,13 @@
 		animation: sway 7s ease-in-out infinite alternate;
 	}
 
+	/* The same shadow the heart's SVG carries below, so the strip of paper is lit
+	   the same way. The ribbon is painted first, so where it runs on behind the
+	   heart its shadow is covered by the heart itself and only the length above
+	   the cleft casts one — which is the length that is actually in front. */
 	.ribbon {
 		flex: none;
+		filter: drop-shadow(0 8px 12px var(--shadow-color));
 	}
 
 	.heart {
