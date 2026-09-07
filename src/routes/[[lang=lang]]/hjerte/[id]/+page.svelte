@@ -5,7 +5,8 @@
   bottom, three firs are drawn over it on the left, and the heart hangs from the
   big one on a stage whose four thumbnails swap the big view. The translucent
   panel on the right carries the name, the paragraph about this heart and the
-  facts; below the scene the rest of the category is offered as "Flere {kategori}".
+  facts, with the three action buttons directly under it; below the scene the
+  rest of the category is offered as "Flere {kategori}".
 
   Behaviour that must survive any restyling: /hjerte/delt/ (a heart shared in the
   URL fragment, noindex, "Gem i Mine hjerter"), the editor hand-off in editHref,
@@ -365,6 +366,21 @@
       {:else if info}
         <div class="stage-col">
           <HeartStage {design} {photo} {sharedTemplate} {lang} idPrefix={heartId} />
+        </div>
+
+        <!-- The buttons belong to the panel, not to the picture: they sit
+             directly under it and flush with its left edge, and when the
+             columns stack below 1100 they follow it down. -->
+        <div class="panel-col">
+          <HeartPanel
+            {lang}
+            {info}
+            {stripsLabel}
+            {description}
+            {extraMeta}
+            {sharedTemplate}
+            {isShared}
+          />
 
           <HeartActions
             {lang}
@@ -381,16 +397,6 @@
             onSaveShared={handleSaveShared}
           />
         </div>
-
-        <HeartPanel
-          {lang}
-          {info}
-          {stripsLabel}
-          {description}
-          {extraMeta}
-          {sharedTemplate}
-          {isShared}
-        />
       {:else if loading}
         <div class="detail-message">
           <p class="message-card">{t('loadingTemplate', lang)}</p>
@@ -467,6 +473,14 @@
 
   .stage-col {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* Panel and buttons share one column, so the row of buttons starts on the
+     panel's left edge rather than on its padded text. */
+  .panel-col {
     display: flex;
     flex-direction: column;
     gap: 18px;

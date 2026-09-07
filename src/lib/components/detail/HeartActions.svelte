@@ -1,6 +1,6 @@
 <!--
-  The row of buttons under the detail page's stage — docs/redesign/DESIGN.md §4:
-  download the PDF template, open the heart in the editor, share it, and for a
+  The row of buttons under the detail page's info panel — docs/redesign/DESIGN.md
+  §4: download the PDF template, open the heart in the editor, share it, and for a
   heart someone sent by link, save it to "Mine hjerter".
 
   The note underneath reports how the last save or share went.
@@ -82,11 +82,11 @@
 {/if}
 
 <style>
+	/* The gap to whatever sits above is the parent column's, not ours. */
 	.actions {
 		display: flex;
 		gap: 12px;
 		flex-wrap: wrap;
-		padding-top: 6px;
 	}
 
 	.save-note {
