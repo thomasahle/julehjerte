@@ -58,6 +58,12 @@ export function setRightColor(color: string) {
   setColors({ ...currentColors, right: color });
 }
 
+/** Swap the two lobe colours. Used by the footer's swap button and the editor. */
+export function flipColors() {
+  const { left, right } = getColors();
+  setColors({ left: right, right: left });
+}
+
 export function subscribeColors(fn: (colors: HeartColors) => void) {
   subscribers.add(fn);
   return () => subscribers.delete(fn);

@@ -1,99 +1,323 @@
+<!--
+  The site nav — docs/redesign/DESIGN.md §3 "Nav".
+
+  Two variants:
+    site   (default) logo · Skabeloner / Sådan gør du / Om · EN pill · GitHub pill,
+           collapsing to a 44px burger with a drop-down menu under 900px.
+    editor logo with a back link at the left and the page's own buttons
+           (passed as children) at the right — no nav links, no pills.
+
+  Every page mounts this component, so keep the prop names stable:
+    lang      the page language
+    active    which nav link is current: 'templates' | 'howto' | 'about'
+    variant   'site' | 'editor'
+    backHref  editor variant: where the back link goes (default: the gallery)
+    onBack    editor variant: intercept the back click (the editor returns to
+              the detail page it came from)
+    children  right-hand slot, rendered in both variants
+-->
 <script lang="ts">
-  import { base } from '$app/paths';
-  import { browser } from '$app/environment';
-  import { t, type Language } from '$lib/i18n';
-  import { Button } from '$lib/components/ui/button';
+	import type { Snippet } from 'svelte';
+	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
+	import { afterNavigate } from '$app/navigation';
+	import { t, type Language } from '$lib/i18n';
+	import { href as routeHref, otherLanguageUrl } from '$lib/i18n/routes';
+	import { ArrowLeftIcon, MenuIcon, CloseIcon } from '$lib/components/icons';
+	import GitHubLink from '$lib/components/GitHubLink.svelte';
 
-  interface Props {
-    lang: Language;
-    children?: import('svelte').Snippet;
-    backHref?: string;
-    onBack?: (event: MouseEvent) => void;
-  }
+	type NavSection = 'templates' | 'howto' | 'about';
 
-  let { lang, children, backHref, onBack }: Props = $props();
-  let langBase = $derived(`${base}${lang === 'en' ? '/en' : ''}`);
+	interface Props {
+		lang: Language;
+		active?: NavSection;
+		variant?: 'site' | 'editor';
+		backHref?: string;
+		onBack?: (event: MouseEvent) => void;
+		children?: Snippet;
+	}
 
-  function handleBack(e: MouseEvent) {
-    if (onBack) {
-      onBack(e);
-      return;
-    }
-    if (browser && window.history.length > 1 && document.referrer.startsWith(window.location.origin)) {
-      e.preventDefault();
-      window.history.back();
-    }
-  }
+	let {
+		lang,
+		active = undefined,
+		variant = 'site',
+		backHref = undefined,
+		onBack = undefined,
+		children
+	}: Props = $props();
+
+	let menuOpen = $state(false);
+
+	let homeHref = $derived(routeHref('home', lang));
+	let links = $derived([
+		{ id: 'templates' as NavSection, href: homeHref, label: t('navTemplates', lang) },
+		{ id: 'howto' as NavSection, href: routeHref('howTo', lang), label: t('navHowTo', lang) },
+		{ id: 'about' as NavSection, href: routeHref('about', lang), label: t('navAbout', lang) }
+	]);
+
+	// The same page in the other language. Query and hash only exist client-side.
+	let languageHref = $derived(
+		otherLanguageUrl(
+			$page.url.pathname,
+			browser ? $page.url.search : '',
+			browser ? $page.url.hash : ''
+		)
+	);
+
+	afterNavigate(() => {
+		menuOpen = false;
+	});
+
+	function handleBack(e: MouseEvent) {
+		if (onBack) {
+			onBack(e);
+			return;
+		}
+		if (browser && window.history.length > 1 && document.referrer.startsWith(window.location.origin)) {
+			e.preventDefault();
+			window.history.back();
+		}
+	}
+
+	function onKeydown(e: KeyboardEvent) {
+		if (e.key === 'Escape' && menuOpen) menuOpen = false;
+	}
 </script>
 
-<header class="page-header">
-  <div class="header-row">
-    <div class="header-left">
-      <Button 
-        variant="ghost" 
-        href={backHref ?? `${langBase}/`} 
-        class="h-auto p-0 hover:bg-transparent hover:text-red-700"
-        onclick={handleBack}
-      >
-        {t('backToGallery', lang)}
-      </Button>
-    </div>
-    <a href="{langBase}/" class="site-title">{t('siteTitle', lang)}</a>
-    <div class="header-right">
-      {#if children}
-        {@render children()}
-      {/if}
-    </div>
-  </div>
+<svelte:window onkeydown={onKeydown} />
+
+<header class="nav" class:editor={variant === 'editor'}>
+	<div class="nav-start">
+		{#if variant === 'editor'}
+			<a class="back-link" href={backHref ?? homeHref} onclick={handleBack}>
+				<ArrowLeftIcon size={16} />
+				{t('back', lang)}
+			</a>
+		{/if}
+		<a class="nav-logo" href={homeHref}>{t('siteWordmark', lang)}</a>
+	</div>
+
+	{#if variant === 'site'}
+		<nav class="nav-links" aria-label={t('siteNavigation', lang)}>
+			{#each links as link (link.id)}
+				<a
+					class="nav-link"
+					class:active={active === link.id}
+					href={link.href}
+					aria-current={active === link.id ? 'page' : undefined}
+				>
+					{link.label}
+				</a>
+			{/each}
+		</nav>
+	{/if}
+
+	<div class="nav-actions">
+		{#if children}
+			{@render children()}
+		{/if}
+		{#if variant === 'site'}
+			<a class="pill" href={languageHref} title={t('switchLanguage', lang)}>
+				{lang === 'da' ? 'EN' : 'DA'}
+			</a>
+			<GitHubLink class="nav-github" />
+			<button
+				type="button"
+				class="nav-burger"
+				aria-expanded={menuOpen}
+				aria-controls="nav-menu"
+				aria-label={menuOpen ? t('navCloseMenu', lang) : t('navOpenMenu', lang)}
+				onclick={() => (menuOpen = !menuOpen)}
+			>
+				{#if menuOpen}
+					<CloseIcon size={22} />
+				{:else}
+					<MenuIcon size={22} />
+				{/if}
+			</button>
+		{/if}
+	</div>
+
+	{#if variant === 'site'}
+		<div class="nav-menu" id="nav-menu" hidden={!menuOpen}>
+			{#each links as link (link.id)}
+				<a
+					class="menu-link"
+					class:active={active === link.id}
+					href={link.href}
+					aria-current={active === link.id ? 'page' : undefined}
+				>
+					{link.label}
+				</a>
+			{/each}
+			<a class="menu-link" href={languageHref}>
+				{lang === 'da' ? 'English' : 'Dansk'}
+			</a>
+			<GitHubLink variant="plain" class="menu-link" />
+		</div>
+	{/if}
 </header>
 
 <style>
-  .page-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    padding: 0.5rem 0;
-    background: #aacdd8;
-  }
+	.nav {
+		position: relative;
+		z-index: 30;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		height: var(--nav-height);
+		padding: 0 40px;
+		box-sizing: border-box;
+		background: var(--page);
+		border-bottom: 1px solid var(--line);
+	}
 
-  .header-row {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: baseline;
-    padding: .5rem 1rem 0 1rem;
-    gap: 1rem;
-  }
+	.nav-start {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+		min-width: 0;
+	}
 
-  .header-left {
-    display: flex;
-    align-items: baseline;
-  }
+	.nav-logo {
+		text-decoration: none;
+		font-size: 28px;
+		font-weight: 600;
+		color: var(--deep);
+		line-height: 1;
+		white-space: nowrap;
+	}
 
-  .site-title {
-    text-align: center;
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: #333;
-    text-decoration: none;
-    line-height: 1;
-    transition: color 0.2s;
-  }
+	.nav-logo:hover {
+		color: var(--green);
+	}
 
-  .site-title:hover {
-    color: #cc0000;
-  }
+	.back-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		text-decoration: none;
+		color: var(--green);
+		font-size: 14px;
+		font-weight: 500;
+		white-space: nowrap;
+	}
 
-  :global(.page-header .header-left button),
-  :global(.page-header .header-left a) {
-    font-size: 0.9rem;
-    height: auto;
-    line-height: 1;
-    vertical-align: baseline;
-  }
+	.nav-links {
+		display: flex;
+		align-items: center;
+		gap: 28px;
+	}
 
-  .header-right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: baseline;
-  }
+	.nav-link {
+		text-decoration: none;
+		font-size: 15px;
+		font-weight: 500;
+		color: var(--green);
+		padding: 6px 2px;
+		border-bottom: 2px solid transparent;
+	}
+
+	.nav-link:hover {
+		color: var(--red);
+	}
+
+	.nav-link.active {
+		color: var(--red);
+		border-bottom-color: var(--red);
+	}
+
+	.nav-actions {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.nav-burger {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border-radius: 10px;
+		color: var(--green);
+		background: var(--white);
+		border: 1.5px solid var(--line);
+		cursor: pointer;
+	}
+
+	/* The drop-down under the burger. Absolutely positioned so it covers the
+	   hero rather than pushing the page down. */
+	.nav-menu {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		flex-direction: column;
+		padding: 10px 16px 16px;
+		background: var(--page);
+		border-bottom: 1px solid var(--line);
+		box-shadow: 0 10px 20px rgb(28 51 41 / 0.08);
+	}
+
+	.menu-link {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 2px;
+		text-decoration: none;
+		font-size: 16px;
+		font-weight: 500;
+		color: var(--green);
+		border-bottom: 1px solid var(--line);
+	}
+
+	.menu-link:last-child {
+		border-bottom: 0;
+	}
+
+	.menu-link.active {
+		color: var(--red);
+	}
+
+	.editor {
+		height: auto;
+		min-height: var(--nav-height);
+		padding: 10px 24px;
+	}
+
+	.editor .nav-logo {
+		font-size: 22px;
+	}
+
+	@media (max-width: 899px) {
+		.nav {
+			padding: 0 16px;
+			height: var(--nav-height-sm);
+		}
+
+		.nav-logo {
+			font-size: 24px;
+		}
+
+		.nav-links,
+		.nav-actions :global(.nav-github) {
+			display: none;
+		}
+
+		.nav-burger {
+			display: inline-flex;
+		}
+
+		.nav-menu:not([hidden]) {
+			display: flex;
+		}
+
+		.editor {
+			padding: 8px 16px;
+		}
+	}
 </style>
