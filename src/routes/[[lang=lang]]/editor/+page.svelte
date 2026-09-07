@@ -649,7 +649,7 @@
       <section>
         <h3>{t('helpSectionEditingCurvesTitle', lang)}</h3>
         <ul>
-          {#each tArray('helpSectionEditingCurvesBullets', lang) as item}
+          {#each tArray('helpSectionEditingCurvesBullets', lang) as item, i (i)}
             <li>{@html item}</li>
           {/each}
         </ul>
@@ -659,7 +659,7 @@
         <h3>{t('helpSectionSymmetryTitle', lang)}</h3>
         <p>{t('helpSectionSymmetryIntro', lang)}</p>
         <ul>
-          {#each tArray('helpSectionSymmetryBullets', lang) as item}
+          {#each tArray('helpSectionSymmetryBullets', lang) as item, i (i)}
             <li>{@html item}</li>
           {/each}
         </ul>
@@ -670,7 +670,7 @@
         <h3>{t('helpSectionRequirementsTitle', lang)}</h3>
         <p>{t('helpSectionRequirementsIntro', lang)}</p>
         <ul>
-          {#each tArray('helpSectionRequirementsBullets', lang) as item}
+          {#each tArray('helpSectionRequirementsBullets', lang) as item, i (i)}
             <li>{@html item}</li>
           {/each}
         </ul>
@@ -679,7 +679,7 @@
       <section>
         <h3>{t('helpSectionTipsTitle', lang)}</h3>
         <ul>
-          {#each tArray('helpSectionTipsBullets', lang) as item}
+          {#each tArray('helpSectionTipsBullets', lang) as item, i (i)}
             <li>{item}</li>
           {/each}
         </ul>

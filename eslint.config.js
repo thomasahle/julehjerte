@@ -56,7 +56,7 @@ export default [
 			'svelte/no-navigation-without-resolve': 'off',
 			'svelte/no-unused-svelte-ignore': 'off',
 			'svelte/prefer-svelte-reactivity': 'off',
-			'svelte/require-each-key': 'off'
+			'svelte/require-each-key': 'error'
 		}
 	},
 	{

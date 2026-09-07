@@ -84,7 +84,7 @@
       />
 
       <!-- Cut lines (finger boundaries) -->
-      {#each transformedPaths as pathD}
+      {#each transformedPaths as pathD, i (i)}
         <path
           d={pathD}
           fill="none"
