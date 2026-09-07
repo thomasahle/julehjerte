@@ -423,7 +423,9 @@
 </svelte:head>
 
 <div class="editor" bind:this={editorEl}>
-	  <PageHeader {lang} onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? `${langBase}/hjerte/${getBackDetailId()}` : undefined) : undefined}>
+	  <!-- variant="editor" is the back-link + logo bar; the site nav links and the
+	       EN/GitHub pills belong on content pages, not in the full-screen tool. -->
+	  <PageHeader {lang} variant="editor" onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? `${langBase}/hjerte/${getBackDetailId()}/` : undefined) : undefined}>
     <Button
       variant="ghost"
       size="icon"
