@@ -1,0 +1,196 @@
+{
+  "page": "https://www.hunodan.dk/julehjerter/julehjerter.html",
+  "pageSha256": "2fee80ec415a09515f0c9c4b8a2d3688857b59e26449fa85d94c13278773ad66",
+  "sourceCredit": "The source page credits http://permo.homepage.dk/ for the patterns. Artwork rights remain with the original creators.",
+  "images": [
+    {
+      "id": "hjfig-01",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjfig-01.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjfig-01.jpg",
+      "sha256": "32a7d5c332a2f4262955932c7044991743bdb2b1e8eb1c1c22f6e6d9c315eab6",
+      "bytes": 25856
+    },
+    {
+      "id": "hjfig-02",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjfig-02.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjfig-02.jpg",
+      "sha256": "c5d2c4465ca58e3629abd28b36c6e9e3aed1f5d14b2725459809f5b4ba550276",
+      "bytes": 29806
+    },
+    {
+      "id": "hjfig-03",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjfig-03.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjfig-03.jpg",
+      "sha256": "6f75ea95d5d467f53a8ebfde0bb61bfc74c7c6e6b55a0f6154f4ae273c8c35b2",
+      "bytes": 29040
+    },
+    {
+      "id": "hjfig-04",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjfig-04.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjfig-04.jpg",
+      "sha256": "5ea33117d0208261edaf9e4690757e9711665e434353619bb6859bedb10da244",
+      "bytes": 33014
+    },
+    {
+      "id": "hjfig-05",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjfig-05.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjfig-05.jpg",
+      "sha256": "cc0c4eddf643a41839fadc014400f3353815017883c37a53160a9f4592ec9bd8",
+      "bytes": 23454
+    },
+    {
+      "id": "hjfla-01",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjfla-01.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjfla-01.jpg",
+      "sha256": "4cc2b77e50e1cbedcc14ad962772e22ca9403c274b55f74f49468deadada44c1",
+      "bytes": 61055
+    },
+    {
+      "id": "hjfla-02",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjfla-02.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjfla-02.jpg",
+      "sha256": "b5a247ab3a19ac715421bdb42854364d02f8b83712ed1f5ae209f7e6d90d2b76",
+      "bytes": 59995
+    },
+    {
+      "id": "hjcur-01",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjcur-01.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjcur-01.jpg",
+      "sha256": "4c287c45c503edb0c763d6ce149bd2d475e81391ff8905c89c19d6167349b484",
+      "bytes": 31233
+    },
+    {
+      "id": "hjcur-02",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjcur-02.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjcur-02.jpg",
+      "sha256": "203953eb80e07ef83f467b34f354496e53c9359ff81bc6e5ebd43a51f15ca2c6",
+      "bytes": 30419
+    },
+    {
+      "id": "hjcur-03",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjcur-03.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjcur-03.jpg",
+      "sha256": "bb8390c22770e96257de8dc8d0dc5f7d73ab9bfb1faba028c63fbc1e335779f9",
+      "bytes": 29539
+    },
+    {
+      "id": "hjcur-04",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjcur-04.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjcur-04.jpg",
+      "sha256": "b55c4bd9e33a8b44e7b0a06b75df7dbed932401e3175c2a1920440bdc497e950",
+      "bytes": 36683
+    },
+    {
+      "id": "hjcur-05",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjcur-05.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjcur-05.jpg",
+      "sha256": "fcd46cc3a057f1f826e081932754a86fb970424620eee5eb86dd23eab55eb505",
+      "bytes": 26011
+    },
+    {
+      "id": "hjhih-01",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjhih-01.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjhih-01.jpg",
+      "sha256": "f11704b067941ead5dde1ef74f63d5b70d1f7a50e9c3c7cafb5b852cb0f7d18a",
+      "bytes": 17194
+    },
+    {
+      "id": "hjhih-02",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjhih-02.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjhih-02.jpg",
+      "sha256": "8e1982096d14d9c4db71c782736d56cb711b57e6ee3d482e894022d9fd990b59",
+      "bytes": 17944
+    },
+    {
+      "id": "hjhih-03",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjhih-03.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjhih-03.jpg",
+      "sha256": "2bcdb525dc00d5c0a62d0ce0d07bd50f0dace96013578c77b41661f49a67a4a9",
+      "bytes": 14661
+    },
+    {
+      "id": "hjhih-04",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjhih-04.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjhih-04.jpg",
+      "sha256": "0871c106cf029808a27d67dadc2dd623055727c1145421120f7c9fdfdee1e07e",
+      "bytes": 19132
+    },
+    {
+      "id": "hjhih-05",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjhih-05.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjhih-05.jpg",
+      "sha256": "d1861c472ab65dab1ab65d8279ef789db0f06cf7b56c1159ddae3f14807c1f9b",
+      "bytes": 17111
+    },
+    {
+      "id": "hjstr-01",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjstr-01.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjstr-01.jpg",
+      "sha256": "37fd224b8429524eee4488429070256ddc757641c3f40aac2aeaa4875dc59e88",
+      "bytes": 16578
+    },
+    {
+      "id": "hjstr-02",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjstr-02.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjstr-02.jpg",
+      "sha256": "653d4b726cba91d87e4bda99aac9b47e1ac9ce5780b7c44acbd011066ad63a98",
+      "bytes": 17752
+    },
+    {
+      "id": "hjstr-03",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjstr-03.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjstr-03.jpg",
+      "sha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+      "bytes": 20007
+    },
+    {
+      "id": "hjstr-04",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjstr-04.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjstr-04.jpg",
+      "sha256": "64a728a6b94dce08cf945bea3d9b2ac718dc55a4c7bad0b7b9de061d4bb6d9ff",
+      "bytes": 19969
+    },
+    {
+      "id": "hjstr-05",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjstr-05.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjstr-05.jpg",
+      "sha256": "358216e3c73b0a4f152c58fa567c4459c91084f7ea43e831858101e100f44eb7",
+      "bytes": 20628
+    },
+    {
+      "id": "hjsta-01",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjsta-01.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjsta-01.jpg",
+      "sha256": "a83a175f4d960df6901354a6ea413c519efa2a8b180ca7018b8d09de37583651",
+      "bytes": 15353
+    },
+    {
+      "id": "hjsta-02",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjsta-02.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjsta-02.jpg",
+      "sha256": "02222a5d4b385ed4ea84859bf74df573d786234dd483581771541edabce67e13",
+      "bytes": 15103
+    },
+    {
+      "id": "hjsta-03",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjsta-03.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjsta-03.jpg",
+      "sha256": "9ac7571ed97d991d1d70f7321ae4e3cae0da0dbc91c8a14fa05c0de0b9dfc3b7",
+      "bytes": 18322
+    },
+    {
+      "id": "hjsta-04",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjsta-04.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjsta-04.jpg",
+      "sha256": "5143ab770f070447343a52b1af758b288c310edd6d144effbae1aea9dd2a226d",
+      "bytes": 18764
+    },
+    {
+      "id": "hjsta-05",
+      "url": "https://www.hunodan.dk/julehjerter/img-hjerter/hjsta-05.jpg",
+      "file": "scripts/inverse/fixtures/hunodan/source/hjsta-05.jpg",
+      "sha256": "bde5a6cc6ef440682c90328b8e3830e155a4ddd491d40439f820e5c48df351ea",
+      "bytes": 17833
+    }
+  ]
+}
