@@ -133,10 +133,14 @@
 		{#if children}
 			{@render children()}
 		{/if}
+		<!-- The language toggle belongs on every page type, the editor included:
+		     /editor/ and /en/editor/ both exist, and the editor has neither nav
+		     links nor a footer to reach the other one from. Below 900px the site
+		     variant hides it (see the stylesheet) because the drawer carries it. -->
+		<a class="pill" href={languageHref} title={t('switchLanguage', lang)}>
+			{lang === 'da' ? 'EN' : 'DA'}
+		</a>
 		{#if variant === 'site'}
-			<a class="pill" href={languageHref} title={t('switchLanguage', lang)}>
-				{lang === 'da' ? 'EN' : 'DA'}
-			</a>
 			<GitHubLink class="nav-github" />
 			<button
 				type="button"
@@ -342,7 +346,11 @@
 			font-size: 24px;
 		}
 
+		/* The drawer already lists the language and GitHub, so the bar drops its
+		   own copies rather than showing the same control twice in one viewport.
+		   The editor keeps its pill: it has no drawer to fall back on. */
 		.nav-links,
+		.nav:not(.editor) .pill,
 		.nav-actions :global(.nav-github) {
 			display: none;
 		}
