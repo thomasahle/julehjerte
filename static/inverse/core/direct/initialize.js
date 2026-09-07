@@ -66,9 +66,10 @@ export function separableGrid(prob,size,counts,phase,{resolution=64,k=16,floor=.
     if(row[0]>.5)for(let x=0;x<n;x++)row[x]=1-row[x];
     let cuts=[alternatingRuns(row,counts[0],0,prior[0],{minimum,weight:0}),prior[1]];
     for(let round=0;round<6;round++)for(const f of[1,0]){
-      const profile=new Float64Array(n);
+      const profile=new Float64Array(n),flips=new Uint8Array(n);
+      for(let q=0;q<n;q++){let flip=bit;for(const cut of cuts[1-f])flip^=Number((q+.5)/n>cut);flips[q]=flip;}
       for(let t=0;t<n;t++)for(let q=0;q<n;q++){
-        const flip=(bit+cuts[1-f].filter(c=>(q+.5)/n>c).length)%2,p=target[f?t*n+q:q*n+t];profile[t]+=(flip?1-p:p)/n;
+        const p=target[f?t*n+q:q*n+t];profile[t]+=(flips[q]?1-p:p)/n;
       }
       cuts[f]=alternatingRuns(profile,counts[f],0,cuts[f],{minimum,weight:0});
     }
