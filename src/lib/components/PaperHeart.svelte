@@ -1,11 +1,18 @@
 <script lang="ts">
 	import { onMount, tick, type Component, type Snippet } from 'svelte';
 	import type { IconProps } from '$lib/components/icons/types';
-	import XIcon from '@lucide/svelte/icons/x';
 	import { Separator } from '$lib/components/ui/separator';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '$lib/components/ui/tooltip';
-	import { ChevronRightIcon, FitIcon, RedoIcon, SwapIcon, TrashIcon, UndoIcon } from '$lib/components/icons';
+	import {
+		ChevronRightIcon,
+		CloseIcon,
+		FitIcon,
+		RedoIcon,
+		SwapIcon,
+		TrashIcon,
+		UndoIcon
+	} from '$lib/components/icons';
 	import {
 		NodeAddIcon,
 		NodeCornerIcon,
@@ -3350,7 +3357,7 @@
 						<div class="canvas-notice hint" role="note">
 							<span>{tr('editorFirstVisitHint')}</span>
 							<button type="button" class="notice-dismiss" onclick={dismissFirstVisitHint} aria-label={tr('editorDismissHint')}>
-								<XIcon size={16} aria-hidden="true" />
+								<CloseIcon size={16} aria-hidden="true" />
 							</button>
 						</div>
 					{/if}
