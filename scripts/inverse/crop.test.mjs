@@ -28,7 +28,7 @@ test('tiny artwork can skip automatic detection without rejecting the upload', (
   assert.equal(result.status, 'not_found');
   assert.deepEqual(result.candidates, []);
 });
-for (const colours of [['#ffe416', '#867309'], ['#080907', '#ac8d3e'], ['#0068bb', '#ce1471'], ['#19ce12', '#897820']]) {
+for (const colours of [['#ffe416', '#867309'], ['#080907', '#ac8d3e'], ['#0068bb', '#ce1471'], ['#19ce12', '#897820'], ['#efeccf', '#086207']]) {
   test(`plain-background paper palette ${colours.join('/')}: automatic corners and original pixels`, () => {
     const input = heartPhoto({ colours, background: '#ffffff', lobeDepths: [.66, .61] });
     const before = input.rgba.slice(), result = detectHeartCrops(input);
@@ -130,4 +130,14 @@ for (const fixture of fixtures) test(`known-homography locator fixture ${fixture
   const result = detectHeartCrops({ imageWidth: im.width, imageHeight: im.height, rgba: ctx.getImageData(0, 0, im.width, im.height).data });
   assert.equal(result.candidates.length, 1);
   assert.ok(error(pixelEdgesToCentres(result.candidates[0].quad), fixture.quad) < 6);
+});
+
+test('cream-and-green Hunodan photograph remains detectable on a white background', async () => {
+  const im=await loadImage(new URL('./fixtures/hunodan/source/hjcur-02.jpg',import.meta.url).pathname);
+  const left=Math.floor(im.width*.36),canvas=createCanvas(im.width-left,im.height),ctx=canvas.getContext('2d');ctx.drawImage(im,-left,0);
+  const result=detectHeartCrops({imageWidth:canvas.width,imageHeight:canvas.height,rgba:ctx.getImageData(0,0,canvas.width,canvas.height).data});
+  assert.equal(result.candidates.length,1);
+  assert.equal(result.candidates[0].locator.evidence.palette.pale,true);
+  // Broad photograph landmarks, independent of the template printed beside it.
+  assert.ok(error(result.candidates[0].quad,[[192,44],[339,191],[193,340],[45,193]])<6);
 });

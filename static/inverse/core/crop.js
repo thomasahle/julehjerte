@@ -15,6 +15,12 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
   if (!proposal.quad) {
     const adaptive = detectMotif(image, { roi, maxSize: 650, palette: 'adaptive' });
     if (adaptive.quad || adaptive.status === 'needs_selection') proposal = adaptive;
+    if (!proposal.quad) {
+      // Cream paper on white can be lost by the saturated-paper mask. Retry
+      // with a lower chroma threshold, retaining the same outline checks.
+      const pale = detectMotif(image, { roi, maxSize: 650, palette: 'pale' });
+      if (pale.quad || pale.status === 'needs_selection') proposal = pale;
+    }
   }
   return {
     status: proposal.status,

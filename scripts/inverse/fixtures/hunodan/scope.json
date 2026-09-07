@@ -1,0 +1,11 @@
+{
+  "source": "https://www.hunodan.dk/julehjerter/julehjerter.html",
+  "scope": "All 27 sources are retained. The user explicitly excluded patterns with partial slits from the required reconstruction score on 2026-09-07.",
+  "excluded": {
+    "hjhih-05": "Published template contains additional slits ending inside the overlap body.",
+    "hjstr-04": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
+    "hjstr-05": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper."
+  },
+  "requiredCount": 24,
+  "referenceUse": "Reference images establish validation scope and template fidelity only. They must not supply fitting coordinates, slit counts, phases, or stored candidate geometry."
+}
