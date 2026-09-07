@@ -185,7 +185,17 @@
 		color: var(--red);
 	}
 
+	/* WCAG 2.5.8 wants 24x24 CSS px; "EN" on its own is 19x21, and this is the
+	   control at the end of a long scroll on a phone. Padding rather than a
+	   bigger font, so the row's rhythm is unchanged. */
 	.footer-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 24px;
+		min-height: 24px;
+		padding: 2px 6px;
+		margin: -2px -6px;
 		text-decoration: none;
 		color: var(--green);
 		font-weight: 600;
