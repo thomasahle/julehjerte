@@ -4,8 +4,9 @@
   "excluded": {
     "hjhih-05": "Published template contains additional slits ending inside the overlap body.",
     "hjstr-04": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
-    "hjstr-05": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper."
+    "hjstr-05": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
+    "hjhih-03": "Published template has two shoulder endpoints and four fold endpoints; two inner slits stop at the interior construction line."
   },
-  "requiredCount": 24,
+  "requiredCount": 23,
   "referenceUse": "Reference images establish validation scope and template fidelity only. They must not supply fitting coordinates, slit counts, phases, or stored candidate geometry."
 }

@@ -7,6 +7,7 @@ import {refineCurves,fittingMargin} from './refine.js';
 import {recoverShared} from './share.js';
 import {materialAudit} from '../material.js';
 import {resize} from './math.js';
+import {initializeGrid,borderGrid,separableGrid} from './initialize.js';
 
 export function borderEvidence(prob,n){
   const rows=[];
@@ -63,13 +64,32 @@ export function fitDirect(input,cfg,onProgress=()=>{}){
   if(!options.length)throw new Error('The requested strip width leaves no room for a woven grid.');
   const stage=(name,run)=>{const at=performance.now();onProgress({stage:name});const value=run();timings.push({stage:name,seconds:(performance.now()-at)/1000});return value;};
   const coarse=stage('directInitializing',()=>{
-    const results=[];
+    const seeds=[];
     for(const o of options){
-      if(results.length&&performance.now()>start+cfg.timeLimit*280)break;
-      const at=performance.now(),r=fitGrid(prob,n,o.counts,o.phase,{steps:280,deadline:start+cfg.timeLimit*300,seed:0});
-      attempts.push({stage:'coarse',counts:o.counts,phase:o.phase,error:r.error,steps:r.steps,seconds:(performance.now()-at)/1000});results.push(r);
-      onProgress({stage:'directInitializing',counts:o.counts,error:r.error});
-    }return results.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
+      const uniform=gridModel(o.counts);uniform.z.fill(0);
+      const raw={model:uniform,phase:o.phase,floor:.008,error:mismatch(gridMask(uniform,n,o.phase),prob),steps:0};
+      const choices=[raw];
+      // Keep both uniform and border-informed proposals: photographed endpoints
+      // are useful evidence, but must not eliminate a better interior layout.
+      for(const initial of[null,borderGrid(o.counts,evidence)?.z,separableGrid(prob,n,o.counts,o.phase).z].filter(v=>v!==undefined)){
+        const result=initializeGrid(prob,n,o.counts,o.phase,{initial,deadline:start+cfg.timeLimit*120});
+        choices.push(result);
+      }
+      choices.sort((a,b)=>a.error-b.error);seeds.push({...choices[0],seedKind:choices[0]===raw?'uniform':'row-dynamic-programming'});
+    }
+    seeds.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
+    // Every count/phase receives an image-only candidate even if gradient time
+    // runs out. Larger coordinated updates take milliseconds per candidate.
+    const results=[];
+    for(const seed of seeds){
+      const at=performance.now(),r=performance.now()<start+cfg.timeLimit*280
+        ?fitGrid(prob,n,seed.model.counts,seed.phase,{steps:280,initial:seed.seedKind==='uniform'?null:seed.model.z,deadline:start+cfg.timeLimit*300,seed:0})
+        :seed;
+      const best=r.error<seed.error?r:seed;
+      attempts.push({stage:'coarse',counts:seed.model.counts,phase:seed.phase,error:best.error,initialError:seed.error,initializer:seed.seedKind,steps:r.steps,seconds:(performance.now()-at)/1000});results.push(best);
+      onProgress({stage:'directInitializing',counts:seed.model.counts,error:best.error});
+    }
+    return results.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
   });
   const fine=stage('directFitting',()=>gridFinalists(coarse,evidence).map(r=>{
     const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{steps:900,initial:r.model.z,deadline:start+cfg.timeLimit*480});
@@ -91,7 +111,7 @@ export function fitDirect(input,cfg,onProgress=()=>{}){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper=stage('paper',()=>materialAudit(solution,cfg));
   solution.report={algorithm:'direct-bezier',imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.error>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    optimizationResolution:n,sourceResolution:source.resolution,initialization:'Fresh ordered positive-gap cubic B-spline grids; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
+    optimizationResolution:n,sourceResolution:source.resolution,initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:false,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }
