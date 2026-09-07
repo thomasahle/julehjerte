@@ -4081,10 +4081,17 @@
 				z-index: 26;
 			}
 
+			/* The column scrolls, so it also clips: the 16px padding is what keeps the
+			   cards' shadows from being cut off against its edges. Its own box is that
+			   much wider and closer to the edges, which leaves the cards themselves
+			   where --editor-panel-inset says they are — 24px in, 340px wide. */
 			.paper-heart.fullPage .right-panel.floating {
-				top: 20px;
-				bottom: 20px;
-				width: 340px;
+				top: 4px;
+				bottom: 4px;
+				right: 8px;
+				width: 372px;
+				padding: 16px;
+				box-sizing: border-box;
 				align-items: stretch;
 				min-height: 0;
 				overflow-y: auto;
