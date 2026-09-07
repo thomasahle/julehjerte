@@ -67,6 +67,9 @@ export function entries() {
 export const load: PageLoad = async ({ params }) => {
 	// Imported lazily so the ~330 KB of design data gets its own cacheable chunk.
 	const { getGalleryDesign } = await import('$lib/data/heartDesigns');
+	// Same reason: 38 hearts × two languages of prose belong in that chunk, not in
+	// the bundle every page of the site loads.
+	const { heartDescription } = await import('$lib/data/heartDescriptions');
 
 	const category = categoryOfHeart(params.id);
 	const related: RelatedHeart[] = [];
@@ -79,6 +82,13 @@ export const load: PageLoad = async ({ params }) => {
 	return {
 		meta: HEART_META[params.id] ?? null,
 		design: getGalleryDesign(params.id),
+		/**
+		 * The written paragraph for a gallery heart, already in the language of this
+		 * URL — `/hjerte/<id>/` is Danish and `/en/hjerte/<id>/` English, and both are
+		 * prerendered, so only the one language ends up in each page's data. `null`
+		 * for a user's own or a shared heart; those show what their maker typed.
+		 */
+		description: heartDescription(params.id, params.lang === 'en' ? 'en' : 'da'),
 		shared: params.id === SHARED_HEART_ID,
 		/** The gallery category this heart is in — null for user/shared hearts. */
 		categoryId: (category?.id ?? null) as CategoryId | null,
