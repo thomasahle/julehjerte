@@ -2956,7 +2956,11 @@
 		>
 			<div class="canvas-area" bind:this={canvasAreaEl} style:min-height={fullPage ? undefined : mobileCanvasMinHeight ?? undefined}>
 				<div class="canvas-box">
-				<div class="canvas-wrapper" style:width={fullPage ? '100%' : `${size}px`} style:height={fullPage ? '100%' : `${size}px`}>
+				<!-- Only the fixed-size instance is sized inline. In the full-page editor the
+				     wrapper is an absolutely positioned box whose insets keep the drawing clear
+				     of the floating rail and panel, and an inline width would over-constrain it
+				     (a box with left, right *and* width simply ignores `right`). -->
+				<div class="canvas-wrapper" style:width={fullPage ? undefined : `${size}px`} style:height={fullPage ? undefined : `${size}px`}>
 					<svg
 						bind:this={svgEl}
 						viewBox={viewBox}
@@ -3923,34 +3927,33 @@
 		}
 
 		/* ------------------------------------------------------------------
-		   Desktop: tool rail · canvas · 340px panel (DESIGN.md §7). Below 900px
-		   the editor keeps its existing stacked layout, so this is the only place
-		   the three-column grid is switched on.
+		   Desktop (DESIGN.md §7): the canvas fills the whole area under the top
+		   bar, and the tool rail and the 340px panel float on top of it. The
+		   drawing itself keeps out from under them: the two insets below are the
+		   rail's and the panel's widths, so what the visitor draws is never
+		   hidden by a panel, while zoom, pan and "Tilpas visning" work on the
+		   full-size canvas. Collapsing the panel gives the drawing that width
+		   back and leaves only the "Vis panel" tab at the edge.
+
+		   Below 900px the editor keeps its existing stacked layout, so all of
+		   this is switched on here and nowhere else.
 		   ------------------------------------------------------------------ */
 		@media (min-width: 900px) {
-			.paper-heart.fullPage .canvas-area {
-				display: grid;
-				grid-template-columns: 64px minmax(0, 1fr) 340px;
-				/* A definite row, so a tall panel scrolls inside its column
-				   instead of stretching the whole layout past the viewport. */
-				grid-template-rows: minmax(0, 1fr);
-				gap: 20px;
-				padding: 20px 24px 28px;
-				box-sizing: border-box;
-				align-items: stretch;
+			.paper-heart.fullPage {
+				/* 24px gutter + 58px rail + air. */
+				--editor-rail-inset: 104px;
+				/* 24px gutter + 340px panel + air. */
+				--editor-panel-inset: 388px;
+				/* The drawing area between the two, for centring things over it. */
+				--editor-canvas-width: calc(100% - var(--editor-rail-inset) - var(--editor-panel-inset));
 			}
 
-			.paper-heart.fullPage.panel-collapsed .canvas-area {
-				grid-template-columns: 64px minmax(0, 1fr);
+			.paper-heart.fullPage.panel-collapsed {
+				/* Only the "Vis panel" tab is left against the right edge. */
+				--editor-panel-inset: 60px;
 			}
 
 			.paper-heart.fullPage .canvas-box {
-				position: relative;
-				inset: auto;
-				grid-column: 2;
-				grid-row: 1;
-				min-width: 0;
-				border-radius: 16px;
 				background: var(--cream2);
 				overflow: hidden;
 			}
@@ -3965,34 +3968,59 @@
 				display: inline-flex;
 			}
 
+			/* The chrome lines up with the drawing area rather than with the canvas,
+			   so they read against paper instead of against a floating panel. */
+			.paper-heart.fullPage .canvas-hint,
+			.paper-heart.fullPage .canvas-strips {
+				left: var(--editor-rail-inset);
+				max-width: var(--editor-canvas-width);
+			}
+
+			.paper-heart.fullPage .canvas-box:has(.canvas-selection) .canvas-hint {
+				max-width: calc(var(--editor-canvas-width) - 240px);
+			}
+
+			.paper-heart.fullPage .canvas-selection {
+				right: var(--editor-panel-inset);
+			}
+
 			.paper-heart.fullPage .canvas-notices {
 				top: 62px;
+				left: calc(var(--editor-rail-inset) + var(--editor-canvas-width) / 2);
+				max-width: min(560px, calc(var(--editor-canvas-width) - 32px));
 			}
 
-			/* Give the heart a little air inside the cream canvas. */
+			/* The visible drawing area: the full height, and the width that is left
+			   between the two floating columns. */
 			.paper-heart.fullPage .canvas-wrapper {
-				inset: 16px;
+				top: 16px;
+				bottom: 16px;
+				left: var(--editor-rail-inset);
+				right: var(--editor-panel-inset);
 			}
 
-			.paper-heart.fullPage .segment-controls,
+			/* z-index 26: the rail and the panel float over the canvas chrome (22)
+			   and the notices (25), which now share the same full-size canvas. */
 			.paper-heart.fullPage .segment-controls.floating {
-				position: static;
-				transform: none;
-				grid-column: 1;
-				grid-row: 1;
-				align-self: start;
-				box-shadow: none;
+				left: 24px;
+				z-index: 26;
 			}
 
-			.paper-heart.fullPage .right-panel,
 			.paper-heart.fullPage .right-panel.floating {
-				position: static;
-				grid-column: 3;
-				grid-row: 1;
+				top: 20px;
+				bottom: 20px;
+				width: 340px;
 				align-items: stretch;
 				min-height: 0;
 				overflow-y: auto;
+				overscroll-behavior: contain;
 				scrollbar-width: thin;
+				z-index: 26;
+			}
+
+			/* The cards float over the drawing, so they are lifted off it. */
+			.paper-heart.fullPage .right-panel :global(.editor-panel) {
+				box-shadow: var(--shadow-panel);
 			}
 
 			.paper-heart.fullPage .right-panel.collapsed {
