@@ -19,6 +19,7 @@
 -->
 <script lang="ts">
 	import PaperHeartSVG from '$lib/components/PaperHeartSVG.svelte';
+	import { swayAnimationDelay } from '$lib/utils/sway';
 	import type { HeartDesign } from '$lib/types/heart';
 
 	interface Props {
@@ -27,7 +28,11 @@
 		size?: number;
 		/** Visible ribbon length in px, above the heart. */
 		ribbon?: number;
-		/** Sway animation delay in seconds, to keep neighbours out of step. */
+		/**
+		 * How far into the sway cycle this heart starts, in seconds — used to keep
+		 * neighbours out of step. Spent as a *negative* `animation-delay`; see
+		 * $lib/utils/sway for why a positive one makes the heart jump.
+		 */
 		delay?: number;
 		/** Ribbon colour. */
 		color?: string;
@@ -53,7 +58,7 @@
 	let ribbonWidth = $derived(Math.max(8, Math.round(size * 0.055)));
 </script>
 
-<div class="hang {className ?? ''}" style="width: {size}px; animation-delay: {delay}s;">
+<div class="hang {className ?? ''}" style="width: {size}px; animation-delay: {swayAnimationDelay(delay)};">
 	<div
 		class="ribbon"
 		style="width: {ribbonWidth}px; height: {ribbon + dip}px; background: {color};"
@@ -77,6 +82,8 @@
 		align-items: center;
 		max-width: 100%;
 		transform-origin: 50% 0;
+		/* 7s must match SWAY_DURATION_S in $lib/utils/sway, which turns the `delay`
+		   prop into the negative animation-delay on this element. */
 		animation: sway 7s ease-in-out infinite alternate;
 	}
 

@@ -18,7 +18,7 @@ export interface HeroSlot {
 	size: number;
 	/** Visible ribbon length in px above the heart. */
 	ribbon: number;
-	/** Sway delay in seconds, so neighbours are out of step. */
+	/** How far into the sway cycle the heart starts, in seconds — see $lib/utils/sway. */
 	delay: number;
 }
 
