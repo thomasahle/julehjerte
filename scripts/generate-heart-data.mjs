@@ -47,6 +47,10 @@ const OG_WIDTH = 1200;
 const OG_HEIGHT = 630;
 const OG_BACKGROUND = '#f9f9f3';
 const OG_COLORS = { left: '#ffffff', right: 'rgb(185, 19, 19)' };
+// Card text, from the redesign palette in src/app.css: --deep, --muted, --green.
+const OG_TEXT = '#1c3329';
+const OG_TEXT_MUTED = '#5f6d66';
+const OG_WORDMARK = '#2e5041';
 // The card text is set in a vendored font so the images are byte-identical on every
 // machine and in CI, independent of system fonts. scripts/fonts/ holds a Latin subset of
 // Liberation Sans (SIL OFL 1.1), renamed "Juleflet Sans" as the licence requires for
@@ -180,11 +184,11 @@ function buildOgSvg(design, heart) {
     `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_WIDTH}" height="${OG_HEIGHT}" viewBox="0 0 ${OG_WIDTH} ${OG_HEIGHT}">`,
     `<rect width="${OG_WIDTH}" height="${OG_HEIGHT}" fill="${OG_BACKGROUND}"/>`,
     `<g transform="translate(${heartX - minX * scale} ${heartY - minY * scale}) scale(${scale})">${heart.markup}</g>`,
-    `<text x="${textX}" y="290" font-family="${OG_FONT}" font-size="${nameSize}" font-weight="700" fill="#111">${escapeXml(design.name)}</text>`,
+    `<text x="${textX}" y="290" font-family="${OG_FONT}" font-size="${nameSize}" font-weight="700" fill="${OG_TEXT}">${escapeXml(design.name)}</text>`,
     author
-      ? `<text x="${textX}" y="340" font-family="${OG_FONT}" font-size="30" fill="#555">${escapeXml(author)}</text>`
+      ? `<text x="${textX}" y="340" font-family="${OG_FONT}" font-size="30" fill="${OG_TEXT_MUTED}">${escapeXml(author)}</text>`
       : '',
-    `<text x="${textX}" y="410" font-family="${OG_FONT}" font-size="30" font-weight="600" fill="#4a7c8a">juleflet.dk</text>`,
+    `<text x="${textX}" y="410" font-family="${OG_FONT}" font-size="30" font-weight="600" fill="${OG_WORDMARK}">juleflet.dk</text>`,
     '</svg>'
   ].join('');
 }
