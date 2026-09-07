@@ -30,7 +30,9 @@
 		"benchmark:inverse:hard-photos": "node scripts/inverse/hard-photo-benchmark.mjs",
 		"test:inverse:mixture:browser": "node scripts/inverse/mixture-browser-test.mjs",
 		"test:inverse:direct:browser": "node scripts/inverse/direct-browser-test.mjs",
-		"test:inverse:generator:browser": "node scripts/inverse/generator-qa-browser-test.mjs"
+		"test:inverse:generator:browser": "node scripts/inverse/generator-qa-browser-test.mjs",
+		"benchmark:inverse:automatic-star": "node scripts/inverse/automatic-star-benchmark.mjs",
+		"test:inverse:automatic-star:browser": "node scripts/inverse/automatic-star-browser-test.mjs"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",

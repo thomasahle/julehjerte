@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { stabilizeBorder, borderTransitions } from '../../static/inverse/core/border.js';
 import { prepare, design } from '../../static/inverse/core/engine.js';
 import { checkerPixels } from './fixtures.mjs';
+import { GENERAL_PRESET } from '../../src/lib/inverse/presets.js';
 
 test('border consensus removes isolated edge noise without changing the interior or source mask', () => {
   const n = 128, original = new Uint8Array(n * n);
@@ -79,4 +80,22 @@ test('border denoising retains runs wider than the requested strip allowance', (
   const result = stabilizeBorder(mask, n, 100, 1.5, 2.5);
   assert.deepEqual(result.mask, mask);
   assert.deepEqual(result.metadata.transitionsAfter, [2, 0, 2, 0]);
+});
+
+test('the photo preset recovers strip endpoints behind a blurred background fringe', () => {
+  for (const n of [256, 360, 400]) {
+    const clean = Uint8Array.from({ length: n * n }, (_, i) => (Math.floor((i % n) * 6 / n) + Math.floor(Math.floor(i / n) * 6 / n)) % 2);
+    const noisy = clean.slice(), fringe = Math.floor(2.4 * n / 100);
+    // A photographed outer paper edge can blend into the light background for
+    // several rows, hiding genuine alternating strips from shallow sampling.
+    noisy.fill(0, (n - fringe) * n);
+    const before = noisy.slice();
+    const shallow = stabilizeBorder(noisy, n, 100, 1.5);
+    assert.notDeepEqual(shallow.metadata.transitionsAfter, [5, 5, 5, 5]);
+    const repaired = stabilizeBorder(noisy, n, 100, GENERAL_PRESET.borderRadius);
+    assert.deepEqual(repaired.mask, clean);
+    assert.deepEqual(repaired.metadata.transitionsAfter, [5, 5, 5, 5]);
+    assert.deepEqual(noisy, before);
+    assert.ok(repaired.metadata.editedBandWidthMm <= GENERAL_PRESET.borderRadius);
+  }
 });
