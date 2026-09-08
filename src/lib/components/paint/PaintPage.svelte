@@ -56,7 +56,8 @@
 		record,
 		redo as historyRedo,
 		resetHistory,
-		undo as historyUndo
+		undo as historyUndo,
+		type MaskStep
 	} from '$lib/paint/history';
 	import { BRUSH_RADII, type BrushSize, type PaintAction, type PaintTool } from '$lib/paint/toolset';
 	import { decodeImageFile, maskFromPrepared } from '$lib/paint/importImage';
@@ -184,9 +185,19 @@
 
 	// ---------------------------------------------------------------- painting
 
+	/**
+	 * The mask and the rows it is folded under, which is one state and not two:
+	 * painting under symmetry assumes the mask already matches the rows that are
+	 * on, so an undo step has to put both back together.
+	 */
+	function currentStep(): MaskStep | null {
+		return session.mask ? { mask: session.mask, symmetry: session.symmetry } : null;
+	}
+
 	function onEditStart(): void {
-		if (!session.mask) return;
-		record(history, session.mask);
+		const step = currentStep();
+		if (!step) return;
+		record(history, step);
 		syncHistoryFlags();
 	}
 
@@ -212,25 +223,40 @@
 		if (session.status === 'done') session.status = 'idle';
 	}
 
-	function undo(): void {
-		if (!session.mask) return;
-		const previous = historyUndo(history, session.mask);
-		if (!previous) return;
-		// Assigned rather than passed to `setMask`: this is the same mask coming
-		// back, not a new one, so its source, its "fundet" tags and the heart it
-		// produced all still describe it.
-		session.mask = previous;
+	/**
+	 * Put a step back — the cells and the rows at once.
+	 *
+	 * Assigned rather than passed to `setMask` or `setSymmetry`: this is the same
+	 * mask coming back, not a new one, so its source, its "fundet" tags and the
+	 * heart it produced all still describe it — and it was already folded under
+	 * these very rows when the step was taken, so folding it again would at best
+	 * do nothing and at worst fold it under the rows we are leaving behind.
+	 */
+	function restore(step: MaskStep): void {
+		// The checkbox follows Mellem lapper, as it does when the row is switched by
+		// hand — but only when the row actually moves, so undoing a stroke cannot
+		// quietly re-tick a box the visitor unticked.
+		if (step.symmetry.lobes !== session.symmetry.lobes) {
+			advanced = { ...advanced, matchingSheets: step.symmetry.lobes === 'sym' };
+		}
+		session.mask = step.mask;
+		session.symmetry = { ...step.symmetry };
 		revision++;
 		syncHistoryFlags();
 	}
 
+	function undo(): void {
+		const step = currentStep();
+		if (!step) return;
+		const previous = historyUndo(history, step);
+		if (previous) restore(previous);
+	}
+
 	function redo(): void {
-		if (!session.mask) return;
-		const next = historyRedo(history, session.mask);
-		if (!next) return;
-		session.mask = next;
-		revision++;
-		syncHistoryFlags();
+		const step = currentStep();
+		if (!step) return;
+		const next = historyRedo(history, step);
+		if (next) restore(next);
 	}
 
 	function onShortcut(action: PaintAction): void {
@@ -247,9 +273,11 @@
 
 	function changeSymmetry(next: SymmetrySettings): void {
 		// Switching a row on folds the mask, which is an edit the visitor may want
-		// back — so it goes on the undo stack like any other.
-		if (session.mask) {
-			record(history, session.mask);
+		// back — so it goes on the undo stack like any other, with the rows it was
+		// folded under, which are the ones still in force at this line.
+		const step = currentStep();
+		if (step) {
+			record(history, step);
 			syncHistoryFlags();
 		}
 		setSymmetry(next);

@@ -147,8 +147,11 @@ export function setMask(
  * assumption true, and it is the same fold §5 does before solving.
  *
  * Switching a row off costs nothing: the mask is already symmetric under what is
- * left. The fold does not count as a stroke — it is the visitor's own instruction,
- * not an edit they have yet to notice.
+ * left. The fold does not mark the mask dirty — it is the visitor's own
+ * instruction, not an edit they have yet to notice — but it does change the cells,
+ * so the page puts it on the undo stack, with the rows it was folded under
+ * ($lib/paint/history): the cells and the rows are one state, and putting one back
+ * without the other leaves the next stroke painting on an unfolded mask.
  */
 export function setSymmetry(next: SymmetrySettings): void {
 	session.symmetry = { ...next };
