@@ -16,7 +16,13 @@ import {maskDisagreement} from './prefer-matching.js';
 
 const curveKey=p=>[p,p.toReversed()].map(c=>c.flat().map(v=>Math.round(v*1e7)).join(',')).sort()[0];
 
-function at(path,g,derivative=false){const i=Math.max(0,Math.min(path.length-1,Math.floor(g))),t=Math.max(0,Math.min(1,g-i)),c=new Cubic(path[i]);return derivative?c.derivative(t):c.point(t);}
+function at(path,g,derivative=false,side=1){
+  const knot=Math.round(g);if(Math.abs(g-knot)<1e-8)g=knot;
+  // At a join the derivative belongs to the span being fitted. A preceding
+  // segment must use the incoming handle, even if the next cut turns sharply.
+  const index=derivative&&side<0&&Number.isInteger(g)?g-1:Math.floor(g);
+  const i=Math.max(0,Math.min(path.length-1,index)),t=Math.max(0,Math.min(1,g-i)),c=new Cubic(path[i]);return derivative?c.derivative(t):c.point(t);
+}
 function samples(path,step=.2){
   const curves=path.map(c=>new Cubic(c)),raw=[],params=[],arc=[];
   curves.forEach((c,i)=>{const s=c.flatten(.003,.3,true);s.points.slice(0,-1).forEach((p,j)=>{params.push(i+s.ts[j]);raw.push(p);});});raw.push(path.at(-1)[3]);params.push(path.length);
@@ -56,14 +62,22 @@ export function shareReplacement(pathA,pathB,c){
   const blend=c.blend??.5,mix=(a,b)=>a.map((v,k)=>blend===.5?(v+b[k])/2:(1-blend)*v+blend*b[k]);
   const outward=(path,lo,hi)=>{if(distance(at(path,lo),at(path,Math.floor(lo)))<.65)lo=Math.floor(lo);if(distance(at(path,hi),at(path,Math.ceil(hi)))<.65)hi=Math.ceil(hi);return[lo,hi];};
   [a0,a1]=outward(pathA,a0,a1);if(b1>b0)[b0,b1]=outward(pathB,b0,b1);else[b1,b0]=outward(pathB,b1,b0);
-  const fractions=[0,1];for(let g=Math.ceil(a0);g<=Math.floor(a1);g++)fractions.push((g-a0)/(a1-a0));for(let g=Math.ceil(Math.min(b0,b1));g<=Math.floor(Math.max(b0,b1));g++)fractions.push((g-b0)/(b1-b0));
+  const knotsA=[],knotsB=[];for(let g=Math.ceil(a0);g<=Math.floor(a1);g++)knotsA.push((g-a0)/(a1-a0));for(let g=Math.ceil(Math.min(b0,b1));g<=Math.floor(Math.max(b0,b1));g++)knotsB.push((g-b0)/(b1-b0));
+  const fractions=blend===1?[...knotsB,...knotsA]:[...knotsA,...knotsB];
   const count=Math.max(2,Math.floor(c.length/3)+1);for(let i=0;i<count;i++)fractions.push(i/(count-1));
-  const fs=[...new Set(fractions.map(v=>Math.round(Math.max(0,Math.min(1,v))*1e10)/1e10))].sort((a,b)=>a-b),shared=[];
+  // Nearly equal knot fractions otherwise create microscopic cubics whose
+  // numerical bend radius can reject an otherwise smooth shared span.
+  // Keep the chosen source's actual knots ahead of nearby knots from its mate
+  // or the uniform sampling, so a sharp corner stays a segment boundary.
+  const fs=[0,1],shared=[];
+  const minimumFraction=1e-4/Math.max(1,c.length);
+  for(const fraction of fractions){const v=Math.max(0,Math.min(1,fraction));if(!fs.some(u=>Math.abs(u-v)<=minimumFraction))fs.push(v);}
+  fs.sort((a,b)=>a-b);
   for(let i=1;i<fs.length;i++){
     const aa0=a0+(a1-a0)*fs[i-1],aa1=a0+(a1-a0)*fs[i],bb0=b0+(b1-b0)*fs[i-1],bb1=b0+(b1-b0)*fs[i];
     const p0=mix(at(pathA,aa0),at(pathB,bb0)),p3=mix(at(pathA,aa1),at(pathB,bb1));
     if(distance(p0,p3)<1e-7)continue;
-    const v0=mix(at(pathA,aa0,true).map(v=>(aa1-aa0)*v),at(pathB,bb0,true).map(v=>(bb1-bb0)*v)),v1=mix(at(pathA,aa1,true).map(v=>(aa1-aa0)*v),at(pathB,bb1,true).map(v=>(bb1-bb0)*v));
+    const v0=mix(at(pathA,aa0,true).map(v=>(aa1-aa0)*v),at(pathB,bb0,true,Math.sign(bb1-bb0)).map(v=>(bb1-bb0)*v)),v1=mix(at(pathA,aa1,true,-1).map(v=>(aa1-aa0)*v),at(pathB,bb1,true,Math.sign(bb0-bb1)).map(v=>(bb1-bb0)*v));
     shared.push([p0,p0.map((v,k)=>v+v0[k]/3),p3.map((v,k)=>v-v1[k]/3),p3]);
   }
   if(!shared.length)throw new Error('No common curve span.');
