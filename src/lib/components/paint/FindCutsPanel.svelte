@@ -286,9 +286,13 @@
 		{/if}
 		<!-- A percentage is a number, not a verdict: 0.4 % and 1.7 % read the same to
 		     anyone who has not woven one of these. Past the threshold the panel says
-		     in words that this is close and not right, and offers the one thing that
-		     often fixes it — the same search again, which starts from a different
-		     place and regularly lands better. -->
+		     in words that this is close and not right, and names the three things
+		     that can be done about it — the mask first and a symmetry second,
+		     because those two change what the search is looking for. "Find snit
+		     igen" comes last on purpose: there is no randomness anywhere in the
+		     search, so on an unchanged mask it re-solves to the same heart (the
+		     gallery circle mask lands on 1,6 % every time), and it is worth a press
+		     only once something under it has moved. -->
 		{#if mediocre}
 			<p class="note">{tr('paintFoundMediocre')}</p>
 		{/if}

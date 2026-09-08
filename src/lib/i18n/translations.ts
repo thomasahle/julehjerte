@@ -305,9 +305,15 @@ export const translations = {
     paintFoundMotifSummary: '{motif}% afvigelse i motivet · {mismatch}% i hele firkanten',
     /** {left}, {right} = snit i hver lap; {clearance} = mm */
     paintFoundCuts: '{left} + {right} snit · mindst {clearance} mm mellem snittene',
-    /** Vises, når afvigelsen er over MEDIOCRE_MISMATCH i FindCutsPanel.svelte */
+    /**
+     * Vises, når afvigelsen er over MEDIOCRE_MISMATCH i FindCutsPanel.svelte.
+     *
+     * Rækkefølgen er ikke tilfældig: de to første ændrer det, søgningen leder
+     * efter, og den sidste gør ikke. Søgningen har ingen tilfældighed i sig, så
+     * den samme maske giver det samme hjerte igen.
+     */
     paintFoundMediocre:
-      'Mønsteret er tæt på, men ikke helt: prøv Find snit igen, ret masken, eller slå en symmetri fra.',
+      'Mønsteret er tæt på, men ikke helt: ret masken, slå en symmetri fra, eller prøv Find snit igen.',
     paintFindCutsAgain: 'Find snit igen',
     paintFoundIdentical: 'Begge lapper klippes efter samme skabelon.',
     paintSymmetryNotHeld: 'Symmetrien kunne ikke holdes helt; hjertet vises som motoren fandt det.',
@@ -777,9 +783,15 @@ export const translations = {
     paintFoundMotifSummary: '{motif}% different in the motif · {mismatch}% over the whole square',
     /** {left}, {right} = cuts in each lobe; {clearance} = mm */
     paintFoundCuts: '{left} + {right} cuts · at least {clearance} mm between cuts',
-    /** Shown when the difference is above MEDIOCRE_MISMATCH in FindCutsPanel.svelte */
+    /**
+     * Shown when the difference is above MEDIOCRE_MISMATCH in FindCutsPanel.svelte.
+     *
+     * The order is deliberate: the first two change what the search is looking
+     * for and the last one does not. There is no randomness in the search, so
+     * the same mask hands back the same heart again.
+     */
     paintFoundMediocre:
-      'The pattern is close, but not exact: try Find the cuts again, change the mask, or switch off a symmetry.',
+      'The pattern is close, but not exact: change the mask, switch off a symmetry, or try Find the cuts again.',
     paintFindCutsAgain: 'Find the cuts again',
     paintFoundIdentical: 'Both lobes are cut from the same template.',
     paintSymmetryNotHeld: 'The symmetry could not be held exactly; the heart is shown as the engine found it.',

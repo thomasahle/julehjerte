@@ -147,7 +147,7 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
 - **A mediocre result says so** (owner, 2026-09-08). A percentage is a number, not a verdict: 0,4 % and 1,7 % read
   alike to anyone who has not woven one of these. Above `MEDIOCRE_MISMATCH` (1 %, one named constant in
   `FindCutsPanel.svelte`) the panel adds one plain line under the numbers — "Mønsteret er tæt på, men ikke helt:
-  prøv Find snit igen, ret masken, eller slå en symmetri fra." — and a third, ghost button `Find snit igen` on its
+  ret masken, slå en symmetri fra, eller prøv Find snit igen." — and a third, ghost button `Find snit igen` on its
   own line under the other two, which runs the same search from the mask again. Under 1 % nothing changes. The
   threshold is judged on the motif where there is one and on the whole square where there is not, exactly as the
   summary line is: a large, accurately woven band dilutes an error in the middle (MOTIF-BORDER.md's three-cell house
@@ -157,8 +157,15 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   far our own symmetry correction may move a design (§11), not how far the found heart may sit from the mask, and
   says nothing about this. The verdict is read off the number the panel prints and not off the raw fraction: the
   summary rounds to one decimal, so 0,996 % and 1,004 % are both "1,0%" on screen and must be given the same
-  verdict. "Find snit igen" goes back to the mask before it starts, so nobody watches a progress bar under the
-  heart they were just told was not good enough.
+  verdict.
+- **"Find snit igen" is the last of the three remedies, not the first** (2026-09-09). The search has no randomness
+  in it: on an unchanged mask and unchanged settings it re-solves to the same heart — the gallery circle mask
+  printed "4 + 4 snit · mindst 3,2 mm mellem snittene · 1,6% forskel fra masken" on every run, in review and again
+  here — so the button spends the whole search over to hand back what is already on screen, unless something under
+  it has moved. The line therefore names the mask and the symmetry first and the button last. The button stays
+  because the owner asked for it, and it goes back to the mask before it starts, so nobody watches a progress bar
+  under the heart they were just told was not good enough; giving the re-run something to vary (a seed, a nudged
+  starting point) is an engine question and is **open** — the owner's call.
 - After failure: a notice in the panel: what happened (timed out / no weavable pattern / engine could not load) and
   what to try (paint with fewer thin details, switch off a symmetry, try again), plus `Prøv igen`.
 
