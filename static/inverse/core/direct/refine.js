@@ -77,8 +77,12 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
 export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary'}={}){
   const points=graph.points.slice(),initial=points.slice(),adam=new Adam(points.length,rate*graph.width/100),history=[];
   // Requested symmetries are constraints, not preferences: both the points and
-  // the search direction are projected onto their subspace at every step.
-  const groups=identicalSheets?matchingGroups(graph):null,ties=symmetryTies(graph,cfg.symmetry);let stoppedEarly=false;
+  // the search direction are projected onto their subspace at every step. A
+  // request replaces the identical-sheet projection rather than alternating
+  // with it, which would leave only the last of the two exact: `transpose` is
+  // the request that means identical sheets and ties the same parameters, and
+  // any other request was chosen over that preference in settings().
+  const ties=symmetryTies(graph,cfg.symmetry),groups=identicalSheets&&!ties?matchingGroups(graph):null;let stoppedEarly=false;
   const clampAxes=new Uint8Array(points.length);
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
   const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);if(ties)applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);};
