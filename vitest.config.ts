@@ -12,6 +12,13 @@ export default defineConfig({
     alias: {
       $lib: '/src/lib',
       $app: '/src/app-mocks',
+      // The inverse engine is shipped unbundled under static/ and loaded by URL
+      // at runtime. Tests that check our conversions against the engine's own
+      // answers import it through this alias rather than by relative path, so
+      // that `svelte-check` (checkJs is on) reads the declarations in
+      // src/lib/inverse/engine-modules.d.ts instead of type-checking 4000 lines
+      // of somebody else's minified JavaScript.
+      $inverse: '/static/inverse',
     },
   },
 });
