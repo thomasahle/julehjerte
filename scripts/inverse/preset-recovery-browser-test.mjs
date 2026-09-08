@@ -10,7 +10,7 @@ const origin=process.env.INVERSE_TEST_URL||'http://127.0.0.1:4173';
 const output=`tmp/inverse-browser/${new Date().toISOString().replace(/[:.]/g,'-')}-preset-recovery`,results=[];
 const cases=[
   {id:'flag-screenshot',file:'scripts/inverse/fixtures/preset-recovery/hunodan-flag-screenshot.png'},
-  {id:'blue-stars',file:'scripts/inverse/fixtures/hunodan/source/hjsta-05.jpg'},
+  {id:'blue-stars',file:'scripts/inverse/fixtures/hunodan/source/hjsta-05.jpg',region:[.37,.015,.99,.94]},
 ];
 await fs.mkdir(output,{recursive:true});
 for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',')){
@@ -40,6 +40,16 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
       assert.equal(await page.getByLabel('Prefer matching templates',{exact:true}).isChecked(),true);
       assert.equal(await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).count(),0);
       row.checks.push('A photo upload replaces the star preset with direct fitting and clears its preview');
+      if(await page.locator('.corner').count()===0&&entry.region){
+        // The full source also contains its printed template. Follow the UI's
+        // one-heart selection flow; the locator still estimates all corners.
+        await button('Select one heart').click();
+        await page.locator('.crop-image').scrollIntoViewIfNeeded();
+        const box=await page.locator('.crop-image').boundingBox(),[x,y,x1,y1]=entry.region;
+        await page.mouse.move(box.x+x*box.width,box.y+y*box.height);await page.mouse.down();
+        await page.mouse.move(box.x+x1*box.width,box.y+y1*box.height,{steps:10});await page.mouse.up();await idle();
+        row.checks.push('Selected a rough rectangle around the photographed heart in the combined photo/template image');
+      }
       assert.equal(await page.locator('.corner').count(),4);
       row.quad=await page.locator('.coordinates input').evaluateAll(es=>[0,2,4,6].map(i=>[+es[i].value,+es[i+1].value]));
       await page.locator('.crop-image').screenshot({path:`${output}/${name}-${entry.id}-crop.png`});

@@ -1,0 +1,376 @@
+{
+  "date": "2026-09-08",
+  "criteria": "Validated exported templates; independent renderer agrees with the unchanged classified crop within 3%; substantial image features retained. This is upload/preset QA, not the fixed-crop 10-second release benchmark.",
+  "inputs": [
+    {
+      "file": "scripts/inverse/fixtures/preset-recovery/hunodan-flag-screenshot.png",
+      "sha256": "9f85bc9c876c1aa2f38a24e4846d3700f487ea86be7ce76a54c02acee7414a40"
+    },
+    {
+      "file": "scripts/inverse/fixtures/hunodan/source/hjsta-05.jpg",
+      "sha256": "bde5a6cc6ef440682c90328b8e3830e155a4ddd491d40439f820e5c48df351ea"
+    }
+  ],
+  "attempts": [
+    {
+      "file": "tmp/inverse-browser/2026-09-08T09-37-25-184Z-preset-recovery/results.json",
+      "origin": "http://127.0.0.1:4174",
+      "results": [
+        {
+          "browser": "chromium",
+          "id": "flag-screenshot",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview",
+            "The explicit matching-grid choice recovers with an explanation and unchanged corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "quad": [
+            [
+              454.8032041908942,
+              111.35101762659433
+            ],
+            [
+              746.0365367446833,
+              412.7548795917675
+            ],
+            [
+              435.4104523211221,
+              704.7489121880278
+            ],
+            [
+              154.83548721797553,
+              401.88834268936256
+            ]
+          ],
+          "passed": true,
+          "independentImageError": 0.012375,
+          "solverSeconds": 8.735399999976158,
+          "exportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "minimumIdenticalImageError": 0.2512375,
+          "pageErrors": []
+        },
+        {
+          "browser": "chromium",
+          "id": "blue-stars",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview"
+          ],
+          "passed": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n\n    at file:///Users/ahle/repos/julehjerte/scripts/inverse/preset-recovery-browser-test.mjs:43:14",
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "id": "flag-screenshot",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview",
+            "The explicit matching-grid choice recovers with an explanation and unchanged corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "quad": [
+            [
+              451.69598214844353,
+              111.44646104624408
+            ],
+            [
+              745.7935537279442,
+              412.97047156124665
+            ],
+            [
+              435.6674149925148,
+              704.8599731675666
+            ],
+            [
+              150.4316361697762,
+              397.3369322055761
+            ]
+          ],
+          "passed": true,
+          "independentImageError": 0.01815625,
+          "solverSeconds": 8.627,
+          "exportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "minimumIdenticalImageError": 0.25650625,
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "id": "blue-stars",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview"
+          ],
+          "passed": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n\n    at file:///Users/ahle/repos/julehjerte/scripts/inverse/preset-recovery-browser-test.mjs:43:14",
+          "pageErrors": []
+        },
+        {
+          "browser": "webkit",
+          "id": "flag-screenshot",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview",
+            "The explicit matching-grid choice recovers with an explanation and unchanged corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "quad": [
+            [
+              454.80765784695103,
+              111.23773685462565
+            ],
+            [
+              745.2089102247569,
+              413.5328632098704
+            ],
+            [
+              435.4104523211221,
+              704.7489121880278
+            ],
+            [
+              154.88664283646045,
+              401.94356151382794
+            ]
+          ],
+          "passed": true,
+          "independentImageError": 0.01246875,
+          "solverSeconds": 8.922,
+          "exportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "minimumIdenticalImageError": 0.25140625,
+          "pageErrors": []
+        },
+        {
+          "browser": "webkit",
+          "id": "blue-stars",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview"
+          ],
+          "passed": false,
+          "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n\n    at file:///Users/ahle/repos/julehjerte/scripts/inverse/preset-recovery-browser-test.mjs:43:14",
+          "pageErrors": []
+        }
+      ]
+    },
+    {
+      "file": "tmp/inverse-browser/2026-09-08T09-38-49-192Z-preset-recovery/results.json",
+      "origin": "http://127.0.0.1:4174",
+      "results": [
+        {
+          "browser": "chromium",
+          "id": "flag-screenshot",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview",
+            "The explicit matching-grid choice recovers with an explanation and unchanged corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "quad": [
+            [
+              454.8032041908942,
+              111.35101762659433
+            ],
+            [
+              746.0365367446833,
+              412.7548795917675
+            ],
+            [
+              435.4104523211221,
+              704.7489121880278
+            ],
+            [
+              154.83548721797553,
+              401.88834268936256
+            ]
+          ],
+          "passed": true,
+          "independentImageError": 0.01233125,
+          "solverSeconds": 8.808600000023842,
+          "exportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "minimumIdenticalImageError": 0.2512375,
+          "pageErrors": []
+        },
+        {
+          "browser": "chromium",
+          "id": "blue-stars",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview",
+            "Selected a rough rectangle around the photographed heart in the combined photo/template image",
+            "The explicit matching-grid choice recovers with an explanation and unchanged corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "quad": [
+            [
+              413.4255306448843,
+              51.52152111600339
+            ],
+            [
+              559.2438193105284,
+              198.75740602382427
+            ],
+            [
+              410.6892985398838,
+              347.7028270115499
+            ],
+            [
+              264.91393084437334,
+              199.70442225112427
+            ]
+          ],
+          "passed": true,
+          "independentImageError": 0.011188159198181924,
+          "solverSeconds": 8.7995,
+          "exportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "minimumIdenticalImageError": 0.03998083509766978,
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "id": "flag-screenshot",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview",
+            "The explicit matching-grid choice recovers with an explanation and unchanged corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "quad": [
+            [
+              451.69598214844353,
+              111.44646104624408
+            ],
+            [
+              745.7935537279442,
+              412.97047156124665
+            ],
+            [
+              435.6674149925148,
+              704.8599731675666
+            ],
+            [
+              150.4316361697762,
+              397.3369322055761
+            ]
+          ],
+          "passed": true,
+          "independentImageError": 0.01943125,
+          "solverSeconds": 8.6,
+          "exportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "minimumIdenticalImageError": 0.25650625,
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "id": "blue-stars",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview",
+            "Selected a rough rectangle around the photographed heart in the combined photo/template image",
+            "The explicit matching-grid choice recovers with an explanation and unchanged corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "quad": [
+            [
+              413.57508874195827,
+              51.53486509029222
+            ],
+            [
+              559.3326068563426,
+              198.7787191381977
+            ],
+            [
+              410.8056103176219,
+              347.7896352233865
+            ],
+            [
+              264.86107304443146,
+              199.4448091355376
+            ]
+          ],
+          "passed": true,
+          "independentImageError": 0.013855706414415114,
+          "solverSeconds": 8.672,
+          "exportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "minimumIdenticalImageError": 0.04176783274737939,
+          "pageErrors": []
+        },
+        {
+          "browser": "webkit",
+          "id": "flag-screenshot",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview",
+            "The explicit matching-grid choice recovers with an explanation and unchanged corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "quad": [
+            [
+              454.80765784695103,
+              111.23773685462565
+            ],
+            [
+              745.2089102247569,
+              413.5328632098704
+            ],
+            [
+              435.4104523211221,
+              704.7489121880278
+            ],
+            [
+              154.88664283646045,
+              401.94356151382794
+            ]
+          ],
+          "passed": true,
+          "independentImageError": 0.01246875,
+          "solverSeconds": 8.918,
+          "exportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "minimumIdenticalImageError": 0.25140625,
+          "pageErrors": []
+        },
+        {
+          "browser": "webkit",
+          "id": "blue-stars",
+          "checks": [
+            "A photo upload replaces the star preset with direct fitting and clears its preview",
+            "Selected a rough rectangle around the photographed heart in the combined photo/template image",
+            "The explicit matching-grid choice recovers with an explanation and unchanged corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "quad": [
+            [
+              413.54706655951844,
+              51.52852656300898
+            ],
+            [
+              559.1396315634793,
+              198.84922646102268
+            ],
+            [
+              410.80829205154004,
+              347.85525100665956
+            ],
+            [
+              266.87443572279153,
+              201.49209591072392
+            ]
+          ],
+          "passed": true,
+          "independentImageError": 0.013039903139547683,
+          "solverSeconds": 9.152,
+          "exportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "minimumIdenticalImageError": 0.048313682833815694,
+          "pageErrors": []
+        }
+      ]
+    }
+  ]
+}
