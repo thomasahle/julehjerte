@@ -5,9 +5,59 @@
       "file": "tilted-orange-weave.png",
       "source": "User screenshot supplied 2026-09-08 at 12:02:10 Europe/Copenhagen",
       "description": "Orange and cream curved checker weave, photographed at an angle with glossy paper, shadows, pine needles and a pale background.",
-      "manualGuide": [[447, 160], [845, 574], [350, 921], [55, 451]],
+      "manualGuide": [
+        [
+          447,
+          160
+        ],
+        [
+          845,
+          574
+        ],
+        [
+          350,
+          921
+        ],
+        [
+          55,
+          451
+        ]
+      ],
       "manualGuideUncertaintyPixels": 15,
       "manualGuideNotes": "Visual landmarks in pixel-edge coordinates, ordered notch/right/tip/left. An approximate diagnostic crop, not surveyed geometry or ground truth. Fixed before fitting; never selected using solver error.",
+      "groundTruthTemplates": null
+    },
+    {
+      "id": "orange-upload-1254",
+      "file": "orange-upload-1254.png",
+      "source": "Photograph extracted from the user's September 8 12:54:17 generator screenshot",
+      "screenshotCrop": [
+        225,
+        1099,
+        700,
+        688
+      ],
+      "description": "Same orange motif with different framing, as displayed in the reported upload. The displayed photograph is extracted without UI chrome.",
+      "manualGuide": [
+        [
+          301,
+          124
+        ],
+        [
+          581,
+          416
+        ],
+        [
+          227,
+          663
+        ],
+        [
+          25,
+          336
+        ]
+      ],
+      "manualGuideUncertaintyPixels": 15,
+      "manualGuideNotes": "Approximate visible landmarks for diagnostic comparison only. The partly hidden overlap intersection is not ground truth.",
       "groundTruthTemplates": null
     }
   ]

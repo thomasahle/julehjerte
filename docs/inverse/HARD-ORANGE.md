@@ -1,5 +1,9 @@
 # Tilted orange heart — 2026-09-08
 
+**Follow-up:** automatic cropping is now available for this photo and the
+subsequent upload screenshot. See [ORANGE-CROPPER.md](ORANGE-CROPPER.md). The
+measurements below preserve the earlier investigation and manual-crop baseline.
+
 The supplied photograph is preserved unchanged in
 `scripts/inverse/fixtures/hard-user/tilted-orange-weave.png`. The manifest records
 visual corner landmarks with an estimated 15-pixel uncertainty. They are a fixed

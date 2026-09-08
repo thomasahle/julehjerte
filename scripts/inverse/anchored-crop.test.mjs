@@ -55,3 +55,12 @@ test('the supplied orange photo gets editable corners without a manual selection
   const p=detectHeartCrops(input(padded)).candidates[0];assert.ok(p);assert.ok(error(p.quad.map(q=>q.map(v=>v-60)),baseline.quad)<16);
   const selected=detectHeartCrops(original,{roi:[15,5,990,940]}).candidates[0];assert.ok(selected);assert.ok(error(selected.quad,baseline.quad)<1e-8);
 });
+
+test('the latest upload screenshot also receives a full overlap proposal',async()=>{
+  const im=await loadImage(new URL('./fixtures/hard-user/orange-upload-1254.png',import.meta.url).pathname),canvas=createCanvas(im.width,im.height);
+  canvas.getContext('2d').drawImage(im,0,0);
+  const result=detectHeartCrops(input(canvas));assert.equal(result.candidates.length,1);
+  assert.equal(result.candidates[0].needsReview,true);
+  assert.ok(error(result.candidates[0].quad.slice(1),[[581,416],[227,663],[25,336]])<20);
+  assert.equal(result.candidates[0].provenance.roughRegion,null);
+});

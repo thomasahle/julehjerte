@@ -12,6 +12,7 @@ const cases=[
   {id:'flag-screenshot',file:'scripts/inverse/fixtures/preset-recovery/hunodan-flag-screenshot.png'},
   {id:'blue-stars',file:'scripts/inverse/fixtures/hunodan/source/hjsta-05.jpg',region:[.37,.015,.99,.94]},
   {id:'tilted-orange-weave',file:'scripts/inverse/fixtures/hard-user/tilted-orange-weave.png',dense:true},
+  {id:'orange-upload-1254',file:'scripts/inverse/fixtures/hard-user/orange-upload-1254.png',dense:true},
 ];
 await fs.mkdir(output,{recursive:true});
 for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',')){

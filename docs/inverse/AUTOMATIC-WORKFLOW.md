@@ -53,7 +53,8 @@ count hypotheses, so this extension does not add initialization work to that
 benchmark. Dense cases may use a longer first-candidate refinement budget when
 requested; the 10-second Hunodan measurement is not a promise for this new photo.
 
-See [HARD-ORANGE.md](HARD-ORANGE.md) for the fixed-crop improvement, unresolved
-automatic detection, and the tiny region warning retained in browser fits.
+See [HARD-ORANGE.md](HARD-ORANGE.md) for the initial fixed-crop improvement and the tiny region warning retained in browser
+fits. Automatic detection was subsequently added in
+[ORANGE-CROPPER.md](ORANGE-CROPPER.md).
 The final code passes 269 automated tests, lint, a production build, and type
 checking with zero errors and eight pre-existing warnings.
