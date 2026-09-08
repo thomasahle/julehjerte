@@ -2,13 +2,16 @@
   Mal's right column: "Find snit" (docs/redesign/PAINT.md §2).
 
   One panel with four faces — ask, search, found, failed — because they are one
-  conversation and swapping panels under the visitor would lose their place. The
-  symmetry rows belong here rather than beside the tools (decision 2): they are
-  what the search is asked to hold, not something the brush does.
+  conversation and swapping panels under the visitor would lose their place.
+
+  The three symmetry rows used to be one of those faces. They are what the search
+  is asked to hold (decision 2), but they are also live while painting — a row
+  switched on mirrors every stroke from that moment — so they now stand in their
+  own "Symmetri" panel beside the tools that they change. This panel reads them
+  from the session, as it always did, and no longer offers to set them.
 -->
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import SymmetryRows from '$lib/components/editor/SymmetryRows.svelte';
 	import { ExternalIcon, ScissorsIcon } from '$lib/components/icons';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import {
@@ -22,10 +25,8 @@
 	import type { SymmetrySettings } from '$lib/paint/symmetry';
 
 	interface Props {
+		/** The rows as they stand, for the notice about the ones the heart lost. */
 		symmetry: SymmetrySettings;
-		onSymmetry: (next: SymmetrySettings) => void;
-		/** What detection suggested, for the "fundet" pills. */
-		found: SymmetrySettings | null;
 		status: PaintStatus;
 		error: PaintError | null;
 		result: PaintResult | null;
@@ -59,8 +60,6 @@
 
 	let {
 		symmetry,
-		onSymmetry,
-		found,
 		status,
 		error,
 		result,
@@ -229,7 +228,6 @@
 			</p>
 		{/if}
 		<p class="lead">{tr('paintFindCutsHint')}</p>
-		<SymmetryRows {lang} value={symmetry} onChange={onSymmetry} {found} />
 		<button type="button" class="btn btn-primary find" onclick={onFind} disabled={!canFind}>
 			<ScissorsIcon size={16} />
 			{tr(status === 'failed' ? 'paintTryAgain' : 'paintFindCuts')}

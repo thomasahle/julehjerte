@@ -1,5 +1,5 @@
 /**
- * The five painting tools, the three brush sizes, and the keys that pick them.
+ * The six painting tools, the three brush sizes, and the keys that pick them.
  *
  * `tools.ts` says what an operation does to the cells; this says which of them
  * the visitor has chosen and what a keystroke means. It is plain data and one
@@ -7,7 +7,7 @@
  * being spelled out inside a keydown handler.
  */
 
-export type PaintTool = 'pen' | 'eraser' | 'fill' | 'line' | 'rect';
+export type PaintTool = 'pen' | 'eraser' | 'fill' | 'line' | 'rect' | 'select';
 
 export type BrushSize = 'fine' | 'medium' | 'coarse';
 
@@ -37,7 +37,8 @@ const TOOL_KEYS: Record<string, PaintTool> = {
 	e: 'eraser',
 	f: 'fill',
 	l: 'line',
-	r: 'rect'
+	r: 'rect',
+	m: 'select'
 };
 
 /** The parts of a keyboard event the table reads. */

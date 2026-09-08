@@ -37,6 +37,8 @@ export { default as PrinterIcon } from '@lucide/svelte/icons/printer';
 export { default as RedoIcon } from '@lucide/svelte/icons/redo-2';
 export { default as SaveIcon } from '@lucide/svelte/icons/save';
 export { default as ScissorsIcon } from '@lucide/svelte/icons/scissors';
+/** The marquee of the selection tool. lucide's box-select ships no Svelte build. */
+export { default as SelectIcon } from '@lucide/svelte/icons/square-dashed';
 export { default as ShareIcon } from '@lucide/svelte/icons/share-2';
 export { default as SquareIcon } from '@lucide/svelte/icons/square';
 export { default as StarIcon } from '@lucide/svelte/icons/star';

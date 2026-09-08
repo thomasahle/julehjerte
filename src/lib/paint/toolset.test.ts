@@ -24,6 +24,7 @@ describe('shortcutFor', () => {
 		expect(shortcutFor({ key: 'f' })).toEqual({ kind: 'tool', tool: 'fill' });
 		expect(shortcutFor({ key: 'l' })).toEqual({ kind: 'tool', tool: 'line' });
 		expect(shortcutFor({ key: 'r' })).toEqual({ kind: 'tool', tool: 'rect' });
+		expect(shortcutFor({ key: 'm' })).toEqual({ kind: 'tool', tool: 'select' });
 	});
 
 	it('steps the brush with the bracket keys and swaps the colour with X', () => {

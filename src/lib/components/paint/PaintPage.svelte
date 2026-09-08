@@ -29,6 +29,7 @@
 	} from '$lib/components/icons';
 	import MaskCanvas from './MaskCanvas.svelte';
 	import MaskToolPanel from './MaskToolPanel.svelte';
+	import SymmetryPanel from './SymmetryPanel.svelte';
 	import FindCutsPanel from './FindCutsPanel.svelte';
 	import ImportImageDialog from './ImportImageDialog.svelte';
 	import { SITE_TITLE, SITE_TITLE_EN } from '$lib/config';
@@ -97,6 +98,12 @@
 	let headerEl = $state.raw<HTMLElement | null>(null);
 	let pageEl = $state.raw<HTMLDivElement | null>(null);
 	let helpButtonEl = $state.raw<HTMLButtonElement | null>(null);
+	/** The canvas being painted on, for `settle()` below. */
+	let maskCanvas = $state.raw<ReturnType<typeof MaskCanvas> | null>(null);
+	/** The left column, which scrolls inside itself on a short viewport. */
+	let leftColumnEl = $state.raw<HTMLDivElement | null>(null);
+	/** There is more of the column below its bottom edge. */
+	let leftColumnCut = $state(false);
 
 	let tool = $state<PaintTool>('pen');
 	let brushSize = $state<BrushSize>('medium');
@@ -158,6 +165,14 @@
 	 * `disabled` answers that one — so this gates only the keys.
 	 */
 	let dialogOpen = $derived(showHelp || showImport || confirming !== null);
+	/**
+	 * The found heart is on screen, so there is no mask under the pointer and the
+	 * left column can do nothing at all. It used to stay bright and clickable and
+	 * simply not work, which read as a page that had stopped responding. Not the
+	 * same thing as `busy`: a search leaves the mask on screen and the panel merely
+	 * out of reach for a minute.
+	 */
+	let toolsStandby = $derived(showingResult);
 	let heading = $derived(t('paintPageTitle', lang));
 
 	onMount(() => {
@@ -186,6 +201,19 @@
 		};
 	});
 
+	/**
+	 * Whether the left column has more under its bottom edge.
+	 *
+	 * Read on scroll, on a resize of the column, and after a change that alters what
+	 * is in it — the Markér hint is several lines, and appearing is what pushes the
+	 * last symmetry row under the edge on a 1366 x 768 laptop.
+	 */
+	function measureLeftColumn(): void {
+		const el = leftColumnEl;
+		// A pixel of rounding either way must not make the fade flicker at the end.
+		leftColumnCut = !!el && el.scrollHeight - el.scrollTop - el.clientHeight > 4;
+	}
+
 	/** The canvas fills the viewport under the bar, so the bar's height is a variable. */
 	function measureHeader(): void {
 		void tick().then(() => {
@@ -194,6 +222,20 @@
 			pageEl.style.setProperty('--paint-header-height', `${Math.round(height)}px`);
 		});
 	}
+
+	// The column's own box changes with the viewport; what is inside it changes with
+	// the tool (the Markér hint) and with the result state (the panels stand down).
+	$effect(() => {
+		const el = leftColumnEl;
+		void tool;
+		void toolsStandby;
+		if (!el) return;
+		void tick().then(measureLeftColumn);
+		if (typeof ResizeObserver === 'undefined') return;
+		const observer = new ResizeObserver(measureLeftColumn);
+		observer.observe(el);
+		return () => observer.disconnect();
+	});
 
 	function syncHistoryFlags(): void {
 		canUndo = historyCanUndo(history);
@@ -276,6 +318,18 @@
 		if (next) restore(next);
 	}
 
+	/**
+	 * Put a floating Markér patch down before the page acts on the mask.
+	 *
+	 * The canvas commits on a press anywhere off itself, which covers the mouse.
+	 * Space or Enter on a focused button never goes near a pointer, so Find snit,
+	 * Ryd and an import ask for the mask the visitor is looking at instead of the
+	 * one it was before the move — which would otherwise be lost with no undo.
+	 */
+	function settle(): void {
+		maskCanvas?.commitSelection();
+	}
+
 	function onShortcut(action: PaintAction): void {
 		if (action.kind === 'tool') tool = action.tool;
 		else if (action.kind === 'swapColour') paintValue = paintValue ? 0 : 1;
@@ -301,6 +355,7 @@
 	// -------------------------------------------------------- replacing the mask
 
 	function askToClear(): void {
+		settle();
 		if (maskEmpty) return;
 		confirming = 'clear';
 	}
@@ -326,6 +381,11 @@
 		revision++;
 	}
 
+	function openImport(): void {
+		settle();
+		showImport = true;
+	}
+
 	/** The dialog's answer. A mask with unsaved strokes is confirmed away first. */
 	function onImported(mask: Mask, found: SymmetrySettings, source = 'image'): void {
 		if (session.maskDirty && !maskEmpty) {
@@ -349,6 +409,7 @@
 	 */
 	async function tryStar(): Promise<void> {
 		if (busy) return;
+		settle();
 		session.status = 'importing';
 		notice = null;
 		let decoded: DecodedImage | null = null;
@@ -401,6 +462,7 @@
 	}
 
 	async function find(): Promise<void> {
+		settle();
 		const mask = session.mask;
 		if (!mask || maskEmpty || busy) return;
 		notice = null;
@@ -608,8 +670,14 @@
 								size={520}
 							/>
 						</div>
-						<div class="mask-card">
-							<div class="mask-card-canvas">
+						<!-- The whole card is the way back: it used to carry a "Ret masken"
+						     link of its own next to the panel's "Tilbage til masken", which
+						     read as two different steps and is one. -->
+						<button type="button" class="mask-card" onclick={backToMask}>
+							<!-- The picture is decoration on a button whose one word says what
+							     it does: read out, its own label would put the whole
+							     "400 × 400 celler i to papirfarver" in front of that word. -->
+							<span class="mask-card-canvas" aria-hidden="true">
 								<MaskCanvas
 									{lang}
 									mask={session.mask}
@@ -624,13 +692,12 @@
 									onEditEnd={() => {}}
 									onShortcut={() => {}}
 								/>
-							</div>
-							<button type="button" class="link" onclick={backToMask}>
-								{t('paintEditMask', lang)}
-							</button>
-						</div>
+							</span>
+							<span class="mask-card-label">{t('paintBackToMask', lang)}</span>
+						</button>
 					{:else}
 						<MaskCanvas
+							bind:this={maskCanvas}
 							{lang}
 							mask={session.mask}
 							{colors}
@@ -652,7 +719,7 @@
 									<button
 										type="button"
 										class="btn btn-sm btn-outline"
-										onclick={() => (showImport = true)}
+										onclick={openImport}
 										disabled={busy}
 									>
 										{t('paintImportImage', lang)}
@@ -692,7 +759,15 @@
 				</div>
 
 				{#if !isNarrow}
-					<div class="left-panel">{@render toolPanel()}</div>
+					<div class="left-panel" bind:this={leftColumnEl} onscroll={measureLeftColumn}>
+						{@render toolPanel()}
+						{@render symmetryPanel()}
+					</div>
+					<!-- The column is cut off at the bottom and there is more under the
+					     edge. macOS draws nothing of an overlay scrollbar until a gesture
+					     starts, so without this the third symmetry row is simply not there
+					     as far as anyone can tell. -->
+					<div class="left-fade" class:showing={leftColumnCut} aria-hidden="true"></div>
 					<div class="right-panel" class:collapsed={panelCollapsed} id="paint-panel">
 						<div class="panel-collapse">
 							<button
@@ -725,34 +800,56 @@
 			</div>
 
 			{#if isNarrow}
+				<!-- The same order as the left column above, then the right one: Værktøj,
+				     Symmetri, Find snit. -->
 				<aside class="sidebar">
 					{@render toolPanel()}
+					{@render symmetryPanel()}
 					{@render cutsPanel()}
 				</aside>
 			{/if}
 		</TooltipProvider>
 	</main>
 
-	<!-- The two panels, authored once and rendered either floating over the canvas
+	<!-- The three panels, authored once and rendered either floating over the canvas
 	     or stacked under it. -->
 	{#snippet toolPanel()}
-					<MaskToolPanel
+					<!-- While the found heart is on screen there is no mask to paint on, so
+					     the whole column stands down: every control inside is really
+					     disabled, which is what says so to a screen reader, and the class
+					     mutes what is left on screen. (aria-disabled on this wrapper would
+					     say nothing at all: it is not a global attribute, and a plain div
+					     has no role to hang it on.) "Tilbage til masken" — the panel's
+					     button or the card — brings it back. -->
+					<div class="tool-panel" class:standby={toolsStandby}>
+						<MaskToolPanel
+							{lang}
+							{tool}
+							onTool={(next) => (tool = next)}
+							{brushSize}
+							onBrushSize={(next) => (brushSize = next)}
+							{paintValue}
+							onPaintValue={(next) => (paintValue = next)}
+							{colors}
+							{canUndo}
+							{canRedo}
+							onUndo={undo}
+							onRedo={redo}
+							onImport={openImport}
+							onClear={askToClear}
+							clearDisabled={maskEmpty}
+							disabled={busy || showingResult}
+						/>
+					</div>
+	{/snippet}
+
+	{#snippet symmetryPanel()}
+					<SymmetryPanel
 						{lang}
-						{tool}
-						onTool={(next) => (tool = next)}
-						{brushSize}
-						onBrushSize={(next) => (brushSize = next)}
-						{paintValue}
-						onPaintValue={(next) => (paintValue = next)}
-						{colors}
-						{canUndo}
-						{canRedo}
-						onUndo={undo}
-						onRedo={redo}
-						onImport={() => (showImport = true)}
-						onClear={askToClear}
-						clearDisabled={maskEmpty}
-						disabled={busy}
+						value={session.symmetry}
+						onChange={changeSymmetry}
+						found={session.found}
+						disabled={busy || showingResult}
 					/>
 	{/snippet}
 
@@ -760,8 +857,6 @@
 					<FindCutsPanel
 						{lang}
 						symmetry={session.symmetry}
-						onSymmetry={changeSymmetry}
-						found={session.found}
 						status={session.status}
 						error={session.error}
 						result={session.result}
@@ -874,13 +969,64 @@
 		border-color: var(--green);
 	}
 
+	/* Two panels now, so the column can outgrow a short viewport — a 1366 x 768
+	   laptop lands inside the range where it does. It stays centred while it fits
+	   and scrolls from the top when it does not, which is what `safe center` says;
+	   a browser that does not know the keyword falls back to the top, the same
+	   answer for the case that matters. Centring with a transform instead cut the
+	   column off at *both* ends, with the top out of reach altogether.
+
+	   The padding is for the panels' shadow: `overflow-y: auto` computes overflow-x
+	   to `auto` as well, which clips anything drawn outside the box. */
 	.left-panel {
 		position: absolute;
-		left: 16px;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 300px;
+		left: 10px;
+		top: 4px;
+		bottom: 4px;
+		width: 312px;
+		box-sizing: border-box;
+		padding: 4px 6px;
+		display: flex;
+		flex-direction: column;
+		justify-content: safe center;
+		gap: 14px;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
+		scrollbar-color: var(--sage) transparent;
 		z-index: 26;
+	}
+
+	/* The cut edge, when there is more of the column below it. Its own element
+	   rather than a pseudo of the scroller: a background inside a scroller either
+	   scrolls away with the content or sits behind the opaque panels, and the
+	   scrollbar cannot say it — Chrome ignores `::-webkit-scrollbar` as soon as
+	   `scrollbar-width` is set, and macOS draws an overlay scrollbar that is
+	   invisible until a gesture starts. */
+	.left-fade {
+		position: absolute;
+		left: 10px;
+		bottom: 4px;
+		width: 312px;
+		height: 28px;
+		z-index: 27;
+		opacity: 0;
+		transition: opacity 120ms ease-out;
+		pointer-events: none;
+		background: linear-gradient(to top, var(--page), transparent);
+	}
+
+	.left-fade.showing {
+		opacity: 1;
+	}
+
+	/* The tool column standing down while the found heart is on screen. Every
+	   control inside is disabled for real, which is what mutes them — the heading
+	   is the one thing left that would still read as live, so it goes quiet too.
+	   No opacity on the wrapper: it would multiply with the controls' own and
+	   leave the panel too faint to read at all. */
+	.tool-panel.standby :global(.panel-title) {
+		color: var(--muted);
 	}
 
 	.right-panel {
@@ -1072,24 +1218,37 @@
 		align-items: center;
 		gap: 6px;
 		box-shadow: var(--shadow-panel);
+		font-family: inherit;
+		cursor: pointer;
 	}
 
+	.mask-card:hover {
+		border-color: var(--green);
+	}
+
+	/* Sky, not white: on white the white lobe vanishes and the card shows half a
+	   mask — the same reason the detail page's heart thumbnails are sky. */
 	.mask-card-canvas {
 		position: relative;
+		display: block;
 		width: 120px;
 		height: 120px;
+		border-radius: 8px;
+		background: var(--sky);
+		overflow: hidden;
 	}
 
-	.link {
-		padding: 0;
-		border: 0;
-		background: none;
+	/* The canvas inside the card is a picture on a button, not something to paint
+	   on, so it must not offer the painting cursor. */
+	.mask-card :global(canvas) {
+		cursor: inherit;
+	}
+
+	.mask-card-label {
 		color: var(--green);
-		font-family: inherit;
 		font-size: 12px;
 		font-weight: 600;
 		text-decoration: underline;
-		cursor: pointer;
 	}
 
 	.confirm-title {

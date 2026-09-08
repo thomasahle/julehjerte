@@ -1,7 +1,16 @@
 import { describe, it, expect } from 'vitest';
-import { cloneMask, createMask, get, isEmpty, isEmptyBox, MASK_SIZE, type Mask } from './mask';
-import { disagreement, symmetrize, transformsFor } from './symmetry';
-import { applySymmetric, floodFill, line, rect, stampCircle, stroke } from './tools';
+import { cloneMask, createMask, get, isEmpty, isEmptyBox, MASK_SIZE, type Box, type Mask } from './mask';
+import { disagreement, symmetrize, transformsFor, type Transform } from './symmetry';
+import { commit, lift, moveBy } from './selection';
+import {
+	applySymmetric,
+	applySymmetricEdit,
+	floodFill,
+	line,
+	rect,
+	stampCircle,
+	stroke
+} from './tools';
 
 const PEN = { radius: 2, value: 1 } as const;
 
@@ -254,5 +263,86 @@ describe('applySymmetric', () => {
 		for (let i = 0; i < m.data.length; i++) {
 			if (m.data[i] && !before.data[i]) expect(strokeOnly.data[i]).toBe(1);
 		}
+	});
+});
+
+describe('applySymmetricEdit', () => {
+	/** Move a patch of cells and spread it, as the canvas does on a Markér commit. */
+	function moveAndSpread(m: Mask, from: Box, dx: number, dy: number, transforms: Transform[]): void {
+		const sel = lift(m, from)!;
+		sel.placement = moveBy(sel.placement, dx, dy);
+		const edit = commit(m, sel);
+		applySymmetricEdit(m, edit.box, edit.marks, transforms);
+	}
+
+	/** A blob at each of the four corners, so the mask starts exactly mirrored. */
+	function fourBlobs(): Mask {
+		const m = createMask(0, 16);
+		for (const [x, y] of [
+			[2, 2],
+			[11, 2],
+			[2, 11],
+			[11, 11]
+		]) {
+			rect(m, { x: x!, y: y! }, { x: x! + 2, y: y! + 2 }, 1);
+		}
+		return m;
+	}
+
+	it('mirrors a moved patch instead of rubbing the picture out', () => {
+		const m = fourBlobs();
+		const ink = count(m, 1);
+
+		moveAndSpread(m, { x0: 1, y0: 1, x1: 6, y1: 6 }, 2, 0, ['mirrorX', 'mirrorY']);
+
+		// All four blobs have moved together, and none of them was lost on the way.
+		expect(disagreement(m, 'mirrorX')).toBe(0);
+		expect(disagreement(m, 'mirrorY')).toBe(0);
+		expect(count(m, 1)).toBe(ink);
+		expect(get(m, 5, 3)).toBe(1); // where the patch landed
+		expect(get(m, 3, 3)).toBe(0); // the hole it came from
+		expect(get(m, 10, 3)).toBe(1); // its image under mirrorX
+	});
+
+	it('keeps the patch when it is dropped onto its own reflection', () => {
+		// The gesture that used to blank the whole mask: with Mellem lapper Sym on,
+		// drag a blob across the diagonal and onto the cells its own image stands on.
+		const m = createMask(0, 16);
+		rect(m, { x: 2, y: 6 }, { x: 4, y: 8 }, 1);
+		rect(m, { x: 6, y: 2 }, { x: 8, y: 4 }, 1);
+		const ink = count(m, 1);
+
+		moveAndSpread(m, { x0: 1, y0: 5, x1: 6, y1: 10 }, 4, -4, ['transpose']);
+
+		expect(count(m, 1)).toBe(ink);
+		expect(disagreement(m, 'transpose')).toBe(0);
+		expect(get(m, 6, 2)).toBe(1);
+		expect(get(m, 2, 6)).toBe(1);
+	});
+
+	it('spreads the hole a moved patch leaves behind', () => {
+		const m = createMask(0, 16);
+		rect(m, { x: 2, y: 6 }, { x: 4, y: 8 }, 1);
+		rect(m, { x: 6, y: 2 }, { x: 8, y: 4 }, 1);
+
+		moveAndSpread(m, { x0: 1, y0: 5, x1: 6, y1: 10 }, 0, 5, ['transpose']);
+
+		expect(disagreement(m, 'transpose')).toBe(0);
+		// Both blobs left: the one the patch carried, and its image, which the hole
+		// took with it.
+		expect(get(m, 3, 6)).toBe(0);
+		expect(get(m, 6, 3)).toBe(0);
+		expect(get(m, 3, 11)).toBe(1);
+		expect(get(m, 11, 3)).toBe(1);
+	});
+
+	it('leaves the mask alone with no symmetry on, and returns its own box', () => {
+		const m = createMask(0, 16);
+		const marks = new Uint8Array(m.data.length);
+		const box = { x0: 1, y0: 1, x1: 3, y1: 3 };
+		const changed = applySymmetricEdit(m, box, marks, []);
+		expect(changed).toEqual(box);
+		expect(changed).not.toBe(box);
+		expect(isEmpty(m)).toBe(true);
 	});
 });
