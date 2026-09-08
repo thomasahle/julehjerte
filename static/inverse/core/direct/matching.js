@@ -44,17 +44,34 @@ export function matchingGroups(graph){
   const result=[...groups.values()].filter(g=>g.length>1);cache.set(graph,result);return result;
 }
 
-export function projectMatching(values,groups,fixed=null,original=null){
+/** Groups hold either plain parameter indices (the transposed-sheet ties) or
+ * affine members [index,sign,offset] whose sign*value+offset agree. `tangent`
+ * drops the offsets, which is the projection a gradient needs.
+ */
+export function projectMatching(values,groups,fixed=null,original=null,tangent=false){
   for(const ids of groups){
+    if(typeof ids[0]!=='number'){
+      const held=fixed?ids.find(m=>fixed[m[0]]):undefined;
+      const target=held===undefined?ids.reduce((s,m)=>s+m[1]*values[m[0]]+(tangent?0:m[2]),0)/ids.length:tangent?0:held[1]*original[held[0]]+held[2];
+      for(const m of ids)values[m[0]]=m[1]*(target-(tangent?0:m[2]));
+      continue;
+    }
     const locked=fixed?ids.find(i=>fixed[i]):undefined,mean=locked===undefined?ids.reduce((s,i)=>s+values[i],0)/ids.length:original[locked];
     for(const i of ids)values[i]=mean;
   }
 }
 
-export function matchingPenalty(graph,points,weight=2){
-  const groups=matchingGroups(graph),gradient=new Float64Array(points.length);let loss=0;
+export function matchingPenalty(graph,points,weight=2,groups=matchingGroups(graph)){
+  const gradient=new Float64Array(points.length);let loss=0;
   const scale=weight/Math.max(1,groups.length)/graph.width**2;
-  for(const ids of groups){const mean=ids.reduce((s,i)=>s+points[i],0)/ids.length;for(const i of ids){const d=points[i]-mean;loss+=scale*d*d/ids.length;gradient[i]+=2*scale*d/ids.length;}}
+  for(const ids of groups){
+    if(typeof ids[0]!=='number'){
+      const mean=ids.reduce((s,m)=>s+m[1]*points[m[0]]+m[2],0)/ids.length;
+      for(const m of ids){const d=m[1]*points[m[0]]+m[2]-mean;loss+=scale*d*d/ids.length;gradient[m[0]]+=2*scale*m[1]*d/ids.length;}
+      continue;
+    }
+    const mean=ids.reduce((s,i)=>s+points[i],0)/ids.length;for(const i of ids){const d=points[i]-mean;loss+=scale*d*d/ids.length;gradient[i]+=2*scale*d/ids.length;}
+  }
   return{loss,gradient};
 }
 
