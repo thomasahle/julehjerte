@@ -304,9 +304,7 @@
 			color 0.15s;
 	}
 
-	/* Not on the chosen one: its own rule below is less specific, so hovering the
-	   button that is already pressed would otherwise wash the green out. */
-	.shape-btn:hover:not(:disabled):not(.active) {
+	.shape-btn:hover:not(:disabled) {
 		background: var(--cream2);
 	}
 
@@ -314,6 +312,15 @@
 		background: var(--green);
 		border-color: var(--green);
 		color: var(--white);
+	}
+
+	/* The chosen shape darkens under the pointer like every other chosen control
+	   in the column. It used to be exempted from hover altogether — `:not(.active)`
+	   on the rule above — which kept the green but left the one button the visitor
+	   is pointing at as the only one that answers to nothing. */
+	.shape-btn.active:hover:not(:disabled) {
+		background: var(--green-hover);
+		border-color: var(--green-hover);
 	}
 
 	.shape-btn:disabled {

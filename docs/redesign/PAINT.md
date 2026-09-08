@@ -517,7 +517,9 @@ their benchmark did, by preparing a different target, and is built (`$lib/paint/
   when Fri is chosen. Only the panel's height changes — the frame keeps the shape and the size it had, so Fri brings
   them back exactly as they were — and the sentence a Fast panel used to carry ("Hele firkanten væves, som du har
   malet den.") is the heading's `title`. *Fri* = the search fills the band itself; the band's colours are ignored.
-  The third state
+  The three shape buttons darken to `--green-hover` under the pointer while chosen, like every other chosen control
+  in the column; they were exempt from hover with `:not(.active)` until 2026-09-08, which left the one button the
+  visitor was pointing at as the only one that answered to nothing. The third state
   *Må rettes* — the engine keeps the cells but may change the ones it must, at a cost (loss weight about 0.25 plus
   a penalty on changed cells; Codex's "repair the border") — is **not shown at all** rather than shown disabled:
   an option nobody can pick is a promise, and this one has no date on it.
