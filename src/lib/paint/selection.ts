@@ -341,3 +341,23 @@ export function clear(m: Mask, sel: Selection): Edit {
 	const marks = new Uint8Array(m.data.length);
 	return { box: fill(m, sel.source, 0, marks), marks };
 }
+
+/**
+ * Whether the patch still stands exactly where it was lifted from, in which case
+ * committing it writes the same cells back and changes nothing at all.
+ *
+ * The canvas asks before taking an undo snapshot: framing a patch and pressing
+ * Enter without moving it would otherwise push a step that restores an identical
+ * mask and mark the drawing as changed.
+ */
+export function isUnmoved(sel: Selection): boolean {
+	const home = placementOf(sel.source);
+	const p = sel.placement;
+	return (
+		p.cx === home.cx &&
+		p.cy === home.cy &&
+		p.width === home.width &&
+		p.height === home.height &&
+		p.angle === 0
+	);
+}

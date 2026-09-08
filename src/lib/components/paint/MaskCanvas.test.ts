@@ -443,6 +443,14 @@ describe('Markér', () => {
 		button.remove();
 	});
 
+	it('takes no undo step for a patch that is put down where it was lifted', () => {
+		const c = withBlock();
+		drag(c.canvas, [5, 5], [13, 13]);
+		press('Enter');
+		expect(c.edits).toBe(0);
+		expect(c.cell(8, 8)).toBe(1);
+	});
+
 	it('marks, moves and commits from the keyboard alone', () => {
 		const c = render({ tool: 'select' });
 		// A block in the middle of the mask, which is what the keyboard's own frame

@@ -9,6 +9,7 @@ import {
 	cornerAt,
 	corners,
 	isEmptyRect,
+	isUnmoved,
 	lift,
 	middleRect,
 	moveBy,
@@ -298,6 +299,17 @@ describe('contains and boundsOf', () => {
 		expect(bounds.x0).toBe(Math.floor(5 - reach));
 		expect(bounds.x1).toBe(Math.ceil(5 + reach));
 		expect(corners(p)).toHaveLength(4);
+	});
+});
+
+describe('isUnmoved', () => {
+	it('knows a patch that has not been moved from one that has', () => {
+		const m = maskOf(['####', '####', '####', '####']);
+		const sel = lift(m, { x0: 1, y0: 1, x1: 3, y1: 3 })!;
+		expect(isUnmoved(sel)).toBe(true);
+		expect(isUnmoved({ ...sel, placement: moveBy(sel.placement, 1, 0) })).toBe(false);
+		expect(isUnmoved({ ...sel, placement: { ...sel.placement, angle: 0.1 } })).toBe(false);
+		expect(isUnmoved({ ...sel, placement: { ...sel.placement, width: 9 } })).toBe(false);
 	});
 });
 

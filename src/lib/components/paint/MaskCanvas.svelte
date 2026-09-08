@@ -34,7 +34,8 @@
 		contains,
 		cornerAt,
 		corners,
-			lift,
+		isUnmoved,
+		lift,
 		middleRect,
 		moveBy,
 		rectFrom,
@@ -586,11 +587,15 @@
 	 * Put the selection down (or, with `erase`, throw its cells away). One undo
 	 * snapshot per commit, taken here rather than on pointer down, because every
 	 * drag before this one left the mask exactly as it found it.
+	 *
+	 * A patch still standing where it was lifted from writes back the very cells it
+	 * took, so it takes no snapshot at all: an undo step that restores an identical
+	 * mask is one press of Fortryd that appears to do nothing.
 	 */
 	function endSelection(erase = false): void {
 		const sel = selection;
 		dropSelection();
-		if (sel && mask) {
+		if (sel && mask && (erase || !isUnmoved(sel))) {
 			onEditStart();
 			spread(erase ? clearSelection(mask, sel) : commitCells(mask, sel));
 			announce(t(erase ? 'paintSelectionCleared' : 'paintSelectionPlaced', lang));
