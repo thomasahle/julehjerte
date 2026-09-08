@@ -12,6 +12,12 @@
  *                                    parsing SVG in the browser
  *   src/lib/data/heart-meta.json     name/author/description/date/grid size/difficulty/
  *                                    symmetry/photo per heart for head tags and headers
+ *   src/lib/data/heart-cards.json    the two fields a gallery card needs in the browser,
+ *                                    name and difficulty. A subset of heart-meta.json, so
+ *                                    it cannot drift from it, but a twentieth of the size:
+ *                                    the front page is the one page that downloads it, and
+ *                                    it downloads nothing else about a heart (see
+ *                                    $lib/front/galleryHearts)
  *   static/og/<id>.png               1200x630 Open Graph image per heart (the coloured
  *                                    preview with the name on the site background),
  *                                    rendered with @resvg/resvg-js; gitignored, built on
@@ -34,6 +40,7 @@ import { Resvg } from '@resvg/resvg-js';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const heartsJsonPath = path.join(root, 'src/lib/data/hearts.json');
 const metaPath = path.join(root, 'src/lib/data/heart-meta.json');
+const cardsPath = path.join(root, 'src/lib/data/heart-cards.json');
 const designsPath = path.join(root, 'src/lib/data/heart-designs.json');
 const svgDir = path.join(root, 'static/hearts');
 const photoDir = path.join(root, 'static/hearts/photos');
@@ -278,12 +285,18 @@ try {
     console.warn = originalWarn;
   }
 
+  const cards = Object.fromEntries(
+    ids.map((id) => [id, { name: meta[id].name, difficulty: meta[id].difficulty }])
+  );
+
   const metaChanged = writeIfChanged(metaPath, `${JSON.stringify(meta, null, 2)}\n`);
+  const cardsChanged = writeIfChanged(cardsPath, `${JSON.stringify(cards, null, 2)}\n`);
   const designsChanged = writeIfChanged(designsPath, formatDesigns(designs));
   const withPhoto = Object.values(meta).filter((m) => m.photo).length;
   console.log(
     `heart-data: ${ids.length} hearts (${withPhoto} with photo) -> ` +
       `${path.relative(root, metaPath)}${metaChanged ? '' : ' (unchanged)'}, ` +
+      `${path.relative(root, cardsPath)}${cardsChanged ? '' : ' (unchanged)'}, ` +
       `${path.relative(root, designsPath)}${designsChanged ? '' : ' (unchanged)'}`
   );
 

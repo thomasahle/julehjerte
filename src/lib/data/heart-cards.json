@@ -1,0 +1,154 @@
+{
+  "classic-3x3": {
+    "name": "Classic 3x3",
+    "difficulty": "easy"
+  },
+  "ramme": {
+    "name": "Ramme",
+    "difficulty": "medium"
+  },
+  "gaver": {
+    "name": "Gaver",
+    "difficulty": "medium"
+  },
+  "jul": {
+    "name": "JUL",
+    "difficulty": "hard"
+  },
+  "stjerne": {
+    "name": "Stjerne",
+    "difficulty": "medium"
+  },
+  "stjerne-ramme": {
+    "name": "Stjerne Ramme",
+    "difficulty": "medium"
+  },
+  "5star": {
+    "name": "5-Stjerne",
+    "difficulty": "hard"
+  },
+  "simple-5star": {
+    "name": "5-stjerne simpel",
+    "difficulty": "easy"
+  },
+  "sun": {
+    "name": "Sol",
+    "difficulty": "medium"
+  },
+  "explosion": {
+    "name": "Eksplosion",
+    "difficulty": "easy"
+  },
+  "nihon": {
+    "name": "Nihon",
+    "difficulty": "easy"
+  },
+  "davidsstjerne-circ": {
+    "name": "Davidsstjerne Cirkel",
+    "difficulty": "expert"
+  },
+  "david4": {
+    "name": "David 4",
+    "difficulty": "medium"
+  },
+  "khatam": {
+    "name": "Khatam",
+    "difficulty": "expert"
+  },
+  "circle": {
+    "name": "Uret v2",
+    "difficulty": "hard"
+  },
+  "balls": {
+    "name": "Polka",
+    "difficulty": "expert"
+  },
+  "kogle": {
+    "name": "Kogle",
+    "difficulty": "expert"
+  },
+  "plus": {
+    "name": "Plus",
+    "difficulty": "medium"
+  },
+  "plus3": {
+    "name": "Plus 3",
+    "difficulty": "hard"
+  },
+  "amy-weave-1": {
+    "name": "Weave 1",
+    "difficulty": "medium"
+  },
+  "amy-weave-2": {
+    "name": "Weave 2",
+    "difficulty": "medium"
+  },
+  "amy-rosette": {
+    "name": "Rosette",
+    "difficulty": "medium"
+  },
+  "amy-pattern": {
+    "name": "Klokke",
+    "difficulty": "hard"
+  },
+  "amy-flowering": {
+    "name": "Flowering",
+    "difficulty": "hard"
+  },
+  "amy-pinecone": {
+    "name": "Pinecone",
+    "difficulty": "hard"
+  },
+  "alhambra": {
+    "name": "Alhambra",
+    "difficulty": "expert"
+  },
+  "squares": {
+    "name": "Squares",
+    "difficulty": "medium"
+  },
+  "juletrae": {
+    "name": "Juletræ",
+    "difficulty": "medium"
+  },
+  "flower": {
+    "name": "Blomst",
+    "difficulty": "medium"
+  },
+  "venus": {
+    "name": "Venus",
+    "difficulty": "expert"
+  },
+  "angel": {
+    "name": "Engel",
+    "difficulty": "medium"
+  },
+  "snowflake": {
+    "name": "Snowflake",
+    "difficulty": "medium"
+  },
+  "santa": {
+    "name": "Santa",
+    "difficulty": "hard"
+  },
+  "triple-heart": {
+    "name": "Triple Hjerte",
+    "difficulty": "medium"
+  },
+  "h4h2": {
+    "name": "Hjerte i hjerte",
+    "difficulty": "medium"
+  },
+  "nemt-hjerte": {
+    "name": "Nemt Hjerte",
+    "difficulty": "easy"
+  },
+  "lilje1": {
+    "name": "Lilje 1",
+    "difficulty": "hard"
+  },
+  "lilje2": {
+    "name": "Lilje 2",
+    "difficulty": "expert"
+  }
+}
