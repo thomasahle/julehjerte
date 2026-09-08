@@ -93,6 +93,8 @@ import { FIT_TOLERANCE, simplifyCubicChain } from '$lib/inverse/simplifyCurves';
 import { NO_SYMMETRY, type SymmetryMode, type SymmetrySettings } from '$lib/paint/symmetry';
 import { maskMismatch } from '$lib/paint/mask';
 import { rasterizeDesign } from '$lib/paint/rasterize';
+import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
+import { inferOverlapRect } from '$lib/utils/overlapRect';
 
 /** One cut's ordered reference into `curves`; `reverse` runs the cubic backwards. */
 export type CutReference = { curve: string; reverse: boolean };
@@ -150,6 +152,8 @@ export type CutGeometryOptions = {
   enforceCostLimit?: number;
   /** Fitting tolerance in the 0–100 frame, in millimetres on a 100 mm square. */
   tolerance?: number;
+  /** Keep common cutting spans exactly coincident while simplifying the rest. */
+  preserveShared?: boolean;
 };
 
 export type ConvertedHeart = {
@@ -167,6 +171,8 @@ export type ConvertedHeart = {
    * how little the correction cost.
    */
   symmetryCost?: number;
+  /** Present on results checked for use in the editor. */
+  editorValidation?: { passed: true; tolerance: number };
 };
 
 /** How far an endpoint may sit from its square edge, in the 0–100 frame. */
@@ -316,6 +322,22 @@ function snapToEdges(segments: BezierSegment[], axis: 'x' | 'y'): void {
     first.p0 = { x: first.p0.x, y: SPAN };
     last.p3 = { x: last.p3.x, y: 0 };
   }
+}
+
+/** A curve used by both sheets is one piece of geometry. Refitting the two
+ * surrounding chains independently can turn it into a gap or a crossing.
+ * Keep those cubics, and simplify only runs between the common spans. */
+function simplifySharedChain(segments: BezierSegment[], shared: boolean[], tolerance: number): BezierSegment[] {
+  if (!shared.some(Boolean)) return simplifyCubicChain(segments, tolerance);
+  const result: BezierSegment[] = [];
+  for (let i = 0; i < segments.length;) {
+    if (shared[i]) { result.push(segments[i]!); i++; continue; }
+    let end = i + 1;
+    while (end < segments.length && !shared[end]) end++;
+    result.push(...simplifyCubicChain(segments.slice(i, end), tolerance));
+    i = end;
+  }
+  return result;
 }
 
 // ============================================================================
@@ -475,6 +497,11 @@ export function convertCutGeometry(
   ];
 
   const byLobe: Record<LobeId, BezierSegment[][]> = { left: [], right: [] };
+  const uses = new Map<string, number>();
+  for (const { paths } of families) for (const cut of paths) {
+    if (!Array.isArray(cut)) continue; // resolveChain supplies the typed error.
+    for (const ref of cut) if (ref) uses.set(ref.curve, (uses.get(ref.curve) ?? 0) + 1);
+  }
   for (const family of families) {
     if (family.paths.length < 1) {
       throw new CutGeometryError(
@@ -490,8 +517,12 @@ export function convertCutGeometry(
     }
     const cuts = family.paths.map((cut, i) => {
       const label = `Family ${family.label} cut ${i}`;
-      const chain = orientChain(resolveChain(geometry, cut, scale, label), family.axis, label);
-      const simplified = simplifyCubicChain(chain, opts.tolerance ?? FIT_TOLERANCE);
+      const resolved = resolveChain(geometry, cut, scale, label);
+      const chain = orientChain(resolved, family.axis, label);
+      const shared = (chain === resolved ? cut : cut.slice().reverse()).map(ref => (uses.get(ref.curve) ?? 0) > 1);
+      const simplified = opts.preserveShared === false
+        ? simplifyCubicChain(chain, opts.tolerance ?? FIT_TOLERANCE)
+        : simplifySharedChain(chain, shared, opts.tolerance ?? FIT_TOLERANCE);
       snapToEdges(simplified, family.axis);
       return simplified;
     });
@@ -561,6 +592,31 @@ export function convertCutGeometry(
  */
 export function cutGeometryToDesign(json: string | CutGeometry, opts: CutGeometryOptions): HeartDesign {
   return convertCutGeometry(json, opts).design;
+}
+
+/** Apply the same checks as Tegn to the final geometry, after simplification,
+ * normalisation and symmetry correction. A solver's earlier validation cannot
+ * certify curves changed by any of those operations. Low-level conversion
+ * remains available for inspecting historical or deliberately invalid inputs. */
+export function convertValidatedCutGeometry(json: string | CutGeometry, opts: CutGeometryOptions): ConvertedHeart {
+  const geometry = parseCutGeometry(json);
+  const tolerance = opts.tolerance ?? FIT_TOLERANCE;
+  const legal = (value: ConvertedHeart): boolean => {
+    const d = value.design;
+    return findFingersWithIssues(d.fingers, intersectionMarginPx(inferOverlapRect(d.fingers, d.gridSize))).size === 0;
+  };
+  for (const precision of [...new Set([tolerance, tolerance * 0.4, 0])]) {
+    const options = { ...opts, tolerance: precision, preserveShared: true };
+    const candidate = convertCutGeometry(geometry, options);
+    if (legal(candidate)) return { ...candidate, editorValidation: { passed: true, tolerance: precision } };
+    // A small area error does not make a symmetry correction geometrically
+    // valid. Retain the uncorrected solution when that is the legal candidate.
+    if (Object.values(candidate.honoured).some(mode => mode !== 'off')) {
+      const plain = convertCutGeometry(geometry, { ...options, enforce: NO_SYMMETRY });
+      if (legal(plain)) return { ...plain, symmetryCost: candidate.symmetryCost, editorValidation: { passed: true, tolerance: precision } };
+    }
+  }
+  throw new CutGeometryError('paintErrorGeometryCurves', 'The converted cuts fail the editor’s crossing or minimum-spacing checks, including without simplification.');
 }
 
 /** Cubics per cut after conversion, for the report and the tests. */

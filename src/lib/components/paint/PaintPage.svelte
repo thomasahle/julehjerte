@@ -77,7 +77,7 @@
 		type AdvancedSettings
 	} from '$lib/inverse/engine';
 	import { EngineError, searchTimedOut } from '$lib/inverse/client';
-	import { convertCutGeometry, CutGeometryError } from '$lib/inverse/toHeartDesign';
+	import { convertValidatedCutGeometry, CutGeometryError } from '$lib/inverse/toHeartDesign';
 	import { DEFAULT_COLORS, DEFAULT_COLORS_HEX, getColors, subscribeColors } from '$lib/stores/colors';
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { toHexColors } from '$lib/utils/heartColors';
@@ -430,7 +430,7 @@
 			if (!geometry) {
 				throw new CutGeometryError('paintErrorGeometrySchema', 'The engine returned no geometry.');
 			}
-			const converted = convertCutGeometry(geometry, {
+			const converted = convertValidatedCutGeometry(geometry, {
 				name: session.sourceName ? t('paintHeartFromImage', lang) : t('paintHeartFromMask', lang),
 				colors: toHexColors(colors, DEFAULT_COLORS_HEX),
 				enforce: session.symmetry
