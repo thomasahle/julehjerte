@@ -69,7 +69,10 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
 - While searching: the panel shows a progress row (heart glyph, "Søger efter snit … 12 s", the current stage in
   plain words, a bar) and `Afbryd`. The mask stays editable-looking but pointer input is ignored until done.
 - After success: "Skabelonen er fundet" with the numbers (n + m snit, minimum clearance in mm, difference from the
-  mask in %), and the buttons `Åbn i Tegn` (primary) and `Tilbage til masken` (outline). The canvas shows the found
+  mask in %), and the buttons `Åbn i Tegn` (primary) and `Tilbage til masken` (outline). The difference is measured
+  on the heart we are about to show — `maskMismatch` of `rasterizeDesign(design, 200)` against the session mask
+  resampled to 200 — not taken from the engine's `report.imageError.mismatchFraction`, which describes the solution
+  before simplifying and before `enforce` (§4) moved it. The canvas shows the found
   heart rendered by our own `PaperHeartSVG` (not the engine's preview), and a small card with the mask and a
   "Ret masken" link. Download PDF and Gem in the top bar now work on this heart.
 - After failure: a notice in the panel: what happened (timed out / no weavable pattern / engine could not load) and
@@ -165,7 +168,10 @@ export function rasterizeDesign(design: HeartDesign, size = MASK_SIZE): Mask;
 // src/lib/paint/history.ts — undo/redo as full snapshots capped at 40 (a 160 KB mask × 40 = 6.4 MB, fine)
 
 // src/lib/inverse/toHeartDesign.ts — engine cut geometry -> our heart
-export function cutGeometryToDesign(json: string | CutGeometry, opts: { name: string; author?: string; colors?: HeartColors; enforce?: SymmetrySettings; tolerance?: number }): HeartDesign;
+export type CutGeometryOptions = { name: string; author?: string; colors?: HeartColors; enforce?: SymmetrySettings; tolerance?: number };
+export function cutGeometryToDesign(json: string | CutGeometry, opts: CutGeometryOptions): HeartDesign;
+// the same conversion, plus the symmetry rows the geometry could actually be held to (see the converter notes)
+export function convertCutGeometry(json: string | CutGeometry, opts: CutGeometryOptions): { design: HeartDesign; honoured: SymmetrySettings };
 // src/lib/inverse/simplifyCurves.ts — fit a chain of cubics with fewer cubics within `tolerance` (0–100 units)
 // src/lib/inverse/engine.ts — thin async API over InverseWorker used by the UI:
 export function prepareMask(mask: Mask, colors: HeartColors, onStage: (s: string) => void): Promise<PreparedArtwork>;
@@ -222,15 +228,34 @@ export function cancel(): void;
    `static/inverse/core/graph.js` and `sampleWeave` from `core/validate.js` — they are plain ESM). Mismatch must be
    under 1.5% for both. JUL is asymmetric, so a mirrored or transposed frame fails this test loudly.
 2. Simplification: each engine cut is a chain of 13–31 cubics; the converter fits it with as few cubics as possible
-   within `tolerance` (default 0.6 of the 0–100 range, i.e. 0.6 mm at 100 mm) using least-squares cubic fitting with
-   subdivision (Schneider). Test: after simplification the mismatch in test 1 grows by at most 0.5 points, and the
-   average number of segments per cut is ≤ 4 for the star.
+   within `tolerance` (default **0.25** of the 0–100 range, i.e. 0.25 mm at 100 mm) using least-squares cubic
+   fitting with subdivision (Schneider). Test: after simplification the mismatch in test 1 grows by at most
+   **0.7 points**, and the average number of segments per cut is **≤ 12** for the star, from 20.9 unfitted.
+
+   The three numbers were 0.6, 0.5 points and ≤ 4 when this was written; all three were measured and corrected
+   (2026-09-08). Refitting costs mismatch in proportion to the tolerance — about 3 points of the woven square per
+   unit — so at 0.6 the star drifts 2.115% and jul 1.965%, over test 1's own 1.5% bar; 0.25 costs 0.63 and 0.49
+   points and keeps both well under it, and the half-point contract holds at 0.15 (a test pins that too). The
+   segment count cannot reach 4: the star's eight cuts turn through 67 corners of more than 25°, a corner always
+   costs its own cubic, and even an absurd 4 mm tolerance leaves about nine per cut. 11.75 is the default's answer.
 3. Cuts with more than 13 per family are rejected with a typed error (our grid max is 12 strips), and so are cuts that
    do not run edge to edge (a `CutGeometryError` with a message key the UI can translate).
 4. `enforce`: when a symmetry row is Sym/Anti, the corresponding fingers are made exactly symmetric using the
-   mappings in `$lib/utils/symmetry.ts` (one lobe's fingers copied from the other under the mapping for Mellem
-   lapper; each finger mirrored/point-reflected in place for the two others), so the draw page's own detection
-   (`detectSymmetryModes`) reports them on. Test on the star with all three rows Sym.
+   mappings exported from `$lib/utils/symmetry.ts` — the detector's own functions, not copies of them (one lobe's
+   fingers copied from the other under the mapping for Mellem lapper; each finger mirrored/point-reflected in place
+   for the two others), so the draw page's own detection (`detectSymmetryModes`) reports them on. Test on the star
+   with all three rows Sym.
+
+   Enforcing is a *correction*, not a projection: it assumes the solve nearly holds the symmetry already, which is
+   what the symmetrised mask and `identicalSheets` buy. On a solve that does not hold it, forcing the cuts moves
+   the picture — 11–19% of the woven area per row on the saved examples, 17–24% for all three — and that is
+   unavoidable, because a weave can be symmetric as a picture while its cuts are not. Tests pin those bounds, and
+   check that the correction costs under 0.5 points on a solve that does hold the symmetry.
+
+   Mellem lapper needs the two families to have equally many cuts, and the engine may answer otherwise. The
+   converter then drops the row rather than deform the heart, and says so: `convertCutGeometry` returns
+   `{ design, honoured }`, and the panel sets its toggles from `honoured` (`cutGeometryToDesign` is the same call
+   without it). Test on a family with one cut removed.
 5. Node types: mark every joint between fitted cubics `smooth`, endpoints `corner`.
 
 ### Rasteriser requirements and tests (`src/lib/paint/rasterize.test.ts`)
@@ -277,7 +302,9 @@ off. Run it after import and after "Mal på hjertet"; the result becomes both `s
 Solving with symmetry on: `symmetrize` the mask under the active transforms first (so the target itself is
 symmetric), pass `identicalSheets`/`preferMatchingSheets` for Mellem lapper Sym (the only symmetry the engine
 enforces itself), and give the converter `enforce: session.symmetry` so the resulting fingers are exact. Inden i
-kurve Anti cannot be expressed on the mask; it is passed to the converter only.
+kurve Anti cannot be expressed on the mask; it is passed to the converter only, so it is the one row that always
+reaches a solve that was never asked to hold it — see the note on what enforcing costs in §4. The rows the panel
+shows afterwards are the converter's `honoured`, not what was asked for.
 
 ## 6. Shared symmetry rows
 

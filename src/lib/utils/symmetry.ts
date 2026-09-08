@@ -6,7 +6,16 @@ const TOLERANCE = 5; // pixels
 
 type Segment = BezierSegment;
 
-function reflectAcrossChordBisector(p0: Vec, p3: Vec, p: Vec): Vec {
+// The point maps and `mapSegments` below are exported because the paint mode's
+// converter (`$lib/inverse/toHeartDesign.ts`) has to *enforce* exactly the
+// symmetries this file *detects*: enforcing is only worth anything if
+// `detectSymmetryModes` reports the row on afterwards. Two implementations of
+// the same reflection are two things to keep in step, so there is only one. The
+// maps take their bounds as an argument, so the converter can use them in its
+// own 0–100 frame before `normalizeHeartDesign` moves the heart into pixels.
+
+/** Reflection across the perpendicular bisector of the chord: swaps the ends. */
+export function reflectAcrossChordBisector(p0: Vec, p3: Vec, p: Vec): Vec {
   const mid = { x: (p0.x + p3.x) / 2, y: (p0.y + p3.y) / 2 };
   const dx = p3.x - p0.x;
   const dy = p3.y - p0.y;
@@ -22,7 +31,8 @@ function reflectAcrossChordBisector(p0: Vec, p3: Vec, p: Vec): Vec {
   return { x: mid.x + (-uComp) * ux + vComp * vx, y: mid.y + (-uComp) * uy + vComp * vy };
 }
 
-function pointReflectAcrossMidpoint(p0: Vec, p3: Vec, p: Vec): Vec {
+/** Half turn about the middle of the chord: also swaps the ends. */
+export function pointReflectAcrossMidpoint(p0: Vec, p3: Vec, p: Vec): Vec {
   return { x: p0.x + p3.x - p.x, y: p0.y + p3.y - p.y };
 }
 
@@ -31,7 +41,8 @@ function pointsEqual(a: Vec, b: Vec): boolean {
   return vecDist(a, b) < TOLERANCE;
 }
 
-function mapSegments(
+/** Every control point of a chain under `mapPoint`, optionally end to end. */
+export function mapSegments(
   segments: Segment[],
   mapPoint: (p: Vec) => Vec,
   reverseDirection = false
@@ -91,7 +102,8 @@ function inferSquareBounds(fingers: Finger[]): SquareBounds | null {
   return { minX, maxX, minY, maxY, size };
 }
 
-function mapPointWithinLobe(bounds: { minX: number; maxX: number; minY: number; maxY: number }, lobe: Finger['lobe'], p: Vec, anti = false): Vec {
+/** Inden i lap: a mirror across the lobe's own centre line, or a half turn. */
+export function mapPointWithinLobe(bounds: { minX: number; maxX: number; minY: number; maxY: number }, lobe: Finger['lobe'], p: Vec, anti = false): Vec {
   const cx = (bounds.minX + bounds.maxX) / 2;
   const cy = (bounds.minY + bounds.maxY) / 2;
   if (anti) return { x: 2 * cx - p.x, y: 2 * cy - p.y };
@@ -99,7 +111,8 @@ function mapPointWithinLobe(bounds: { minX: number; maxX: number; minY: number; 
   return { x: 2 * cx - p.x, y: p.y };
 }
 
-function mapPointBetweenLobes(bounds: { minX: number; minY: number; size: number }, p: Vec, anti = false): Vec {
+/** Mellem lapper: the square's diagonal, or its anti-diagonal. */
+export function mapPointBetweenLobes(bounds: { minX: number; minY: number; size: number }, p: Vec, anti = false): Vec {
   const { minX, minY, size } = bounds;
   if (!anti) {
     return { x: minX + (p.y - minY), y: minY + (p.x - minX) };
