@@ -73,7 +73,12 @@ describe('simplifyCubicChain', () => {
     expect(dir(last.p3, last.p2)).toBeCloseTo(dir(S_CURVE.p3, S_CURVE.p2), 6);
   });
 
-  it('stays inside the tolerance it was given, on every cut of the star', () => {
+  // Three tolerances over all eight cuts of the star, each sampled every tenth
+  // of a millimetre: a second or two on its own, and four times that when
+  // vitest is running the rest of the suite on the other cores. The default 5 s
+  // is what it outgrew, not the machine — hence a limit rather than a smaller
+  // sweep, which is the coverage this test is for.
+  it('stays inside the tolerance it was given, on every cut of the star', { timeout: 30000 }, () => {
     for (const tolerance of [0.15, FIT_TOLERANCE, 0.6]) {
       for (const chain of starChains()) {
         const fitted = simplifyCubicChain(chain, tolerance);
