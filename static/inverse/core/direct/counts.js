@@ -89,7 +89,8 @@ export function initializeCounts({options,fullProb,resolution,prob,n,evidence},{
         choices.push(result);
       }
       const initializationRounds=choices.filter(r=>r!==raw).map(r=>r.steps);
-      choices.sort((a,b)=>a.error-b.error);seeds.push({...choices[0],initializationRounds,seedKind:choices[0]===raw?'uniform':'row-dynamic-programming'});
+      const initializationTerminations=choices.filter(r=>r!==raw).map(r=>r.termination);
+      choices.sort((a,b)=>a.error-b.error);seeds.push({...choices[0],initializationRounds,initializationTerminations,seedKind:choices[0]===raw?'uniform':'row-dynamic-programming'});
     }
     seeds.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
   return{seeds,report:{strategy:sharedWork?'shared-work':'all',hypotheses:options.length,fullyInitialized:options.length}};

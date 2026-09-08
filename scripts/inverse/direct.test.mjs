@@ -145,7 +145,8 @@ test('direct image fitting starts without traced endpoints and survives edge noi
     const attempt=r.report.solver.attempts.find(a=>a.stage==='coarse'&&a.counts[0]===count&&a.counts[1]===count&&a.phase===phase);
     assert.ok(attempt,`Missing count ${count}, phase ${phase}`);
     assert.ok(attempt.initializationRounds.length>=2);
-    assert.ok(attempt.initializationRounds.every(n=>n===18),'A short budget must not starve later count/phase initializations');
+    assert.ok(attempt.initializationRounds.every((n,i)=>n===18||attempt.initializationTerminations[i]==='repeated_state'),'Only an exact deterministic cycle may shorten a count/phase initialization');
+    assert.ok(attempt.initializationTerminations.every(reason=>reason!=='deadline'),'A short budget must not starve later count/phase initializations');
   }
   assert.deepEqual(p.preview.mask,before);
   const independent=await renderExportedWeave(r.files['cut_geometry.json'],128);

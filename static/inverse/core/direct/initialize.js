@@ -133,8 +133,9 @@ export function borderGrid(counts,evidence,{k=16,floor=.008,resolution=96,shared
 export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=size,deadline=Infinity,sharedWork=true}={}){
   const n=resolution,target=resize(prob,size,n),model=gridModel(counts,k,0,initial);if(!initial)model.z.fill(0);
   let best={z:model.z.slice(),error:mismatch(gridMask(model,n,phase,floor),target)},completed=0;const previous=[null,null];
+  let termination='round_limit';
   for(let round=0;round<rounds;round++){
-    if(performance.now()>deadline)break;
+    if(performance.now()>deadline){termination='deadline';break;}
     for(const f of round%2?[1,0]:[0,1]){
       const samples=gridSamples(gridControls(model,floor),model,basisTable(n,k),n),count=counts[f],positions=new Float64Array(n*count);
       for(let y=0;y<n;y++){
@@ -154,10 +155,10 @@ export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k
       // Sheet update order alternates. Repetition at the same parity proves a
       // deterministic cycle, so the remaining rounds cannot improve the seed.
       const before=previous[round%2];
-      if(before&&model.z.every((v,i)=>v===before[i]))break;
+      if(before&&model.z.every((v,i)=>v===before[i])){termination='repeated_state';break;}
       previous[round%2]=model.z.slice();
     }
   }
   model.z=best.z;const error=scoreResolution===n?best.error:mismatch(gridMask(model,scoreResolution,phase,floor),resize(prob,size,scoreResolution));
-  return{model,phase,floor,error,steps:completed};
+  return{model,phase,floor,error,steps:completed,termination};
 }

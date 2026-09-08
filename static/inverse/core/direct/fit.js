@@ -78,7 +78,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // Use the fixed-size seed search for every count and phase. Only the
     // strongest candidates need dense grid gradients before free refinement.
     for(const seed of seeds){
-      attempts.push({stage:'coarse',counts:seed.model.counts,phase:seed.phase,error:seed.error,initialError:seed.error,initializer:seed.seedKind,initializationRounds:seed.initializationRounds,steps:seed.steps});
+      attempts.push({stage:'coarse',counts:seed.model.counts,phase:seed.phase,error:seed.error,initialError:seed.error,initializer:seed.seedKind,initializationRounds:seed.initializationRounds,initializationTerminations:seed.initializationTerminations,steps:seed.steps});
       onProgress({stage:'directInitializing',counts:seed.model.counts,error:seed.error});
     }
     return seeds;
