@@ -1,0 +1,360 @@
+{
+  "date": "2026-09-08",
+  "comparison": [
+    {
+      "shape": "hat",
+      "before": {
+        "shape": "hat",
+        "cells": 4,
+        "border": 0.18,
+        "interiorError": 0.009652008310249307,
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "overallError": 0.004288194444444444,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "seconds": 9.324324041,
+        "exportSha256": "70712590c0758ba4a209b8d3db27b774c52ebe30abe65e06ba8b5761892b073e",
+        "exportedSpans": 103,
+        "nonStraightSpans": 103
+      },
+      "after": {
+        "shape": "hat",
+        "cells": 4,
+        "border": 0.18,
+        "interiorError": 0.001644736842105263,
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "overallError": 0.0006944444444444445,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "route": "linear",
+        "tracedSegments": 39,
+        "seconds": 1.403127958000001,
+        "exportSha256": "e5182be43d701492ed1fd323cb21cd72370ee5b4ef5c95b0cbfe79e1acf9b414",
+        "exportedSpans": 60,
+        "nonStraightSpans": 0
+      }
+    },
+    {
+      "shape": "house",
+      "before": {
+        "shape": "house",
+        "cells": 4,
+        "border": 0.18,
+        "interiorError": 0.0008656509695290858,
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "overallError": 0.00036458333333333335,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "seconds": 6.323538,
+        "exportSha256": "80183577756d32545482440b391e884680404032b2465fab629635ef3a390b75",
+        "exportedSpans": 95,
+        "nonStraightSpans": 95
+      },
+      "after": {
+        "shape": "house",
+        "cells": 4,
+        "border": 0.18,
+        "interiorError": 0.000043282548476454294,
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "overallError": 0,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "route": "linear",
+        "tracedSegments": 30,
+        "seconds": 1.1117284579999978,
+        "exportSha256": "5a29530c4ebceb9e2eb298e389313175a7ebcf4b7c8cb2914c20dd5ae3b63b34",
+        "exportedSpans": 49,
+        "nonStraightSpans": 0
+      }
+    }
+  ],
+  "allBorderSeeds": [
+    {
+      "shape": "hat",
+      "cells": 3,
+      "border": 0.18,
+      "interiorError": 0.03267832409972299,
+      "checks": true,
+      "geometry": true,
+      "paper": "pass",
+      "overallError": 0.01326388888888889,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "route": "direct",
+      "tracedSegments": 31,
+      "seconds": 9.921725666999999,
+      "routingAttempts": [
+        {
+          "route": "linear",
+          "accepted": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "time_limit",
+          "seconds": 5.006128666,
+          "history": [
+            {
+              "round": 1,
+              "status": 16,
+              "selfNeckChains": 4
+            },
+            {
+              "round": 2,
+              "status": 16,
+              "selfNeckChains": 4
+            },
+            {
+              "round": 3,
+              "status": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "shape": "hat",
+      "cells": 4,
+      "border": 0.18,
+      "interiorError": 0.001644736842105263,
+      "checks": true,
+      "geometry": true,
+      "paper": "pass",
+      "overallError": 0.0006944444444444445,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "route": "linear",
+      "tracedSegments": 39,
+      "seconds": 1.403127958000001,
+      "routingAttempts": []
+    },
+    {
+      "shape": "hat",
+      "cells": 5,
+      "border": 0.18,
+      "interiorError": 0.0700744459833795,
+      "checks": false,
+      "geometry": true,
+      "paper": "pass",
+      "overallError": 0.04921875,
+      "slits": {
+        "left": 5,
+        "right": 5
+      },
+      "route": "direct",
+      "tracedSegments": 43,
+      "seconds": 9.830413083999998,
+      "routingAttempts": [
+        {
+          "route": "linear",
+          "accepted": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "time_limit",
+          "seconds": 5.005486083,
+          "history": [
+            {
+              "round": 1,
+              "status": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "shape": "house",
+      "cells": 3,
+      "border": 0.18,
+      "interiorError": 0.000043282548476454294,
+      "checks": true,
+      "geometry": true,
+      "paper": "pass",
+      "overallError": 0,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "route": "linear",
+      "tracedSegments": 22,
+      "seconds": 1.4122998750000006,
+      "routingAttempts": []
+    },
+    {
+      "shape": "house",
+      "cells": 4,
+      "border": 0.18,
+      "interiorError": 0.000043282548476454294,
+      "checks": true,
+      "geometry": true,
+      "paper": "pass",
+      "overallError": 0,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "route": "linear",
+      "tracedSegments": 30,
+      "seconds": 1.1117284579999978,
+      "routingAttempts": []
+    },
+    {
+      "shape": "house",
+      "cells": 5,
+      "border": 0.18,
+      "interiorError": 0.030990304709141273,
+      "checks": true,
+      "geometry": true,
+      "paper": "pass",
+      "overallError": 0.015017361111111112,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "route": "direct",
+      "tracedSegments": 34,
+      "seconds": 10.725395708,
+      "routingAttempts": [
+        {
+          "route": "linear",
+          "accepted": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "termination": "candidate_graph_exhausted",
+          "seconds": 4.386305749999999,
+          "history": [
+            {
+              "round": 1,
+              "status": 8
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "browser": {
+    "origin": "http://127.0.0.1:4174",
+    "artifactDirectory": "tmp/inverse-browser/2026-09-08T14-57-54-850Z-straight-artwork",
+    "results": [
+      {
+        "browser": "chromium",
+        "shape": "hat",
+        "solveWallSeconds": 0.762385542,
+        "centreError": 0.001644736842105263,
+        "route": "linear",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "shape": "house",
+        "solveWallSeconds": 0.6181909999999998,
+        "centreError": 0.000043282548476454294,
+        "route": "linear",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "pageErrors": []
+      },
+      {
+        "browser": "firefox",
+        "shape": "hat",
+        "solveWallSeconds": 3.416293583999999,
+        "centreError": 0.001644736842105263,
+        "route": "linear",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "pageErrors": []
+      },
+      {
+        "browser": "firefox",
+        "shape": "house",
+        "solveWallSeconds": 2.30995175,
+        "centreError": 0.000043282548476454294,
+        "route": "linear",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "shape": "hat",
+        "solveWallSeconds": 1.0595342920000004,
+        "centreError": 0.001644736842105263,
+        "route": "linear",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "shape": "house",
+        "solveWallSeconds": 0.9183714590000018,
+        "centreError": 0.000043282548476454294,
+        "route": "linear",
+        "checks": true,
+        "geometry": true,
+        "paper": "pass",
+        "pageErrors": []
+      }
+    ]
+  },
+  "sourceHashes": {
+    "static/inverse/core/input.js": "43a02941275b140c1dc23078b314228770acef6239a9c3b02173b75b60a4c11f",
+    "static/inverse/core/polygonal.js": "dbab845d1b7d328a99825af56b109f8e92275122b66654b6c37b50f9a0693589",
+    "static/inverse/core/automatic.js": "29bd44dc2b7f74b899e5b5cb8e1f94dc9b80fa588b3e8ca76a59c792f22dc66b",
+    "scripts/inverse/straight-artwork.test.mjs": "6f0a6ad7bfd7b12002ce0e0666cd5e61292902cd2ed1002eefb99d1fd8041aaf",
+    "scripts/inverse/straight-artwork-browser-test.mjs": "f989c15062541d0e8a51d9eb5c4a3d40d2f7804cbb17ba56e9bfe6cebe906280",
+    "scripts/inverse/motif-fixture.mjs": "ff63d2c013e89b5e17f7161a9518b6b4c2b1739d487cb37790e53630b4056b39"
+  },
+  "scope": "Synthetic hat and house. Resvg independently renders exported cuts; centre error excludes the generated supporting border. Timings are local and include different stages as named. No physical assembly test.",
+  "checks": {
+    "vitest": {
+      "passed": 132,
+      "failed": 0
+    },
+    "inverseNode": {
+      "passed": 147,
+      "failed": 0
+    },
+    "lint": "pass",
+    "build": "pass",
+    "svelteCheck": {
+      "errors": 0,
+      "existingEditorWarnings": 8
+    },
+    "browser": {
+      "passedReplays": 6,
+      "engines": [
+        "chromium",
+        "firefox",
+        "webkit"
+      ]
+    },
+    "developmentServerReplay": {
+      "origin": "http://127.0.0.1:4173",
+      "engine": "chromium",
+      "passed": 2,
+      "artifactDirectory": "tmp/inverse-browser/2026-09-08T15-01-10-412Z-straight-artwork"
+    }
+  }
+}

@@ -1,0 +1,1309 @@
+{
+  "createdAt": "2026-09-08T14:11:59.256Z",
+  "manifestSha256": "b66dbc577f8f1a7bfc583c5c7a43b3de1299001772427fc7d59667de3de8d156",
+  "gitCommit": "bbc7babdf45e719216f5d095da37e04fd682324b",
+  "scope": "Exploratory Node crop/prepare run; not browser QA or a ground-truth success rate.",
+  "photos": 20,
+  "instances": 44,
+  "prepareCounts": {
+    "prepared_proposal": 29,
+    "no_crop": 15
+  },
+  "visualReview": {
+    "danish-silver-on-tree": "Crop includes the lobe/background and does not isolate the woven square. Glitter also creates speckle in the mask.",
+    "bibel-checker-3": "Green/blue 3x3 weave becomes mostly vertical bands in the classified mask: low mask error cannot certify recovery of the photographed design.",
+    "danish-silver-white": "Crop is plausible; glitter texture becomes many tiny classified holes.",
+    "danish-tree-dots": "Printed dots are classified as motif holes even where the paper layer is continuous.",
+    "danish-red-gold": "Printed gold decoration dominates the binary mask and introduces false weave boundaries.",
+    "gathering-striped-scene-top": "Printed swans/flowers are classified as weave boundaries.",
+    "vissevasse-arranged-r2c3": "Printed stripes create false narrow regions throughout the mask."
+  },
+  "preparedCases": [
+    {
+      "id": "danish-silver-on-tree",
+      "track": "two-colour",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            3675.0587910188187,
+            941.4244039347897
+          ],
+          [
+            4301.216259950508,
+            1879.5657602327528
+          ],
+          [
+            3034.1125140131558,
+            3153.8443551826886
+          ],
+          [
+            2364.6547122436627,
+            2356.256367005722
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 1.012122041
+    },
+    {
+      "id": "danish-green-yellow",
+      "track": "two-colour",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            611.8509148208856,
+            286.35094865143384
+          ],
+          [
+            1004.8751282970562,
+            698.8338468378164
+          ],
+          [
+            587.4186473166446,
+            1089.821108817554
+          ],
+          [
+            190.47614595917133,
+            686.3303532368276
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.2.0"
+      },
+      "observedFraction": 1,
+      "seconds": 1.5604560410000001
+    },
+    {
+      "id": "danish-silver-white",
+      "track": "two-colour",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            599.1693764177503,
+            669.4541660571701
+          ],
+          [
+            1018.0218109494458,
+            1065.963134187527
+          ],
+          [
+            599.5194263054711,
+            1510.9642520211464
+          ],
+          [
+            206.25924170073043,
+            1093.3670462990751
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.5210901670000003
+    },
+    {
+      "id": "danish-red-gold",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            562.0280391257645,
+            706.7566839357997
+          ],
+          [
+            968.5562226976498,
+            1135.5086309851997
+          ],
+          [
+            573.5422312055584,
+            1519.7354477775007
+          ],
+          [
+            175.53439595783598,
+            1088.4367795848705
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.49284799999999995
+    },
+    {
+      "id": "danish-tree-red",
+      "track": "two-colour",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            556.0975766903264,
+            521.5736084705238
+          ],
+          [
+            908.5974861031686,
+            835.6634941021031
+          ],
+          [
+            598.4190381184407,
+            1165.102659683867
+          ],
+          [
+            277.09631098883773,
+            832.2343720900503
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.6220296670000003
+    },
+    {
+      "id": "danish-tree-green",
+      "track": "two-colour",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            613.4629495846865,
+            709.8754165460504
+          ],
+          [
+            991.3479406135674,
+            1101.880332092388
+          ],
+          [
+            589.7733778087984,
+            1526.3403443658829
+          ],
+          [
+            201.96444906745154,
+            1085.6004246480518
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model."
+        ],
+        "locatorVersion": "0.2.0"
+      },
+      "observedFraction": 1,
+      "seconds": 1.066340459
+    },
+    {
+      "id": "danish-tree-dots",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            580.619490138917,
+            603.2344575832992
+          ],
+          [
+            1044.082427083676,
+            1027.6180315158972
+          ],
+          [
+            605.2572739153305,
+            1542.2580832514395
+          ],
+          [
+            155.76190058899786,
+            1049.3581580956206
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.2.0"
+      },
+      "observedFraction": 1,
+      "seconds": 2.084989375
+    },
+    {
+      "id": "gathering-pink-single",
+      "track": "printed-paper",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_selection",
+        "reason": "Crowded frame: select one heart with a rough rectangle",
+        "count": 0
+      },
+      "seconds": 1.8743282079999999
+    },
+    {
+      "id": "bibel-checker-2",
+      "track": "two-colour",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            463.32871077227776,
+            163.52690443466037
+          ],
+          [
+            674.7768124351633,
+            380.0728413983725
+          ],
+          [
+            477.2778856976256,
+            588.0147828851123
+          ],
+          [
+            267.8423056748111,
+            383.1302641627054
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.2.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.9830482499999998
+    },
+    {
+      "id": "bibel-checker-3",
+      "track": "two-colour",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            428.52499957084467,
+            107.94140443033162
+          ],
+          [
+            651.1719003615806,
+            307.87535698407953
+          ],
+          [
+            457.77859974478423,
+            527.5446206961046
+          ],
+          [
+            247.86376696068473,
+            325.5685826170488
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.2.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.8188290840000009
+    },
+    {
+      "id": "bibel-checker-4",
+      "track": "two-colour",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            429.70317261193094,
+            122.10481294430112
+          ],
+          [
+            652.5269364078364,
+            331.6303238738545
+          ],
+          [
+            446.11534233992893,
+            562.4943090857911
+          ],
+          [
+            228.89995848689574,
+            353.5303167050975
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.2.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.9845437919999985
+    },
+    {
+      "id": "bibel-narrow-wide",
+      "track": "two-colour",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            479.4201306253251,
+            106.79662147269192
+          ],
+          [
+            695.726809621462,
+            316.1675646420967
+          ],
+          [
+            492.9391897261545,
+            559.9533150678765
+          ],
+          [
+            258.89314608770366,
+            346.1147488291578
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model."
+        ],
+        "locatorVersion": "0.2.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.9471311670000013
+    },
+    {
+      "id": "bibel-nested-heart-green",
+      "track": "two-colour",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 1.0261122919999999
+    },
+    {
+      "id": "bibel-nested-heart-red",
+      "track": "two-colour",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            474.0910731679586,
+            138.3127622344359
+          ],
+          [
+            688.8053555743762,
+            358.5571722152888
+          ],
+          [
+            511.29773346920297,
+            576.8853021021612
+          ],
+          [
+            267.703177909864,
+            383.3879679813726
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "The pale outline was inferred from colours inside the heart. Review all four overlap corners.",
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous."
+        ],
+        "locatorVersion": "0.3.0"
+      },
+      "observedFraction": 1,
+      "seconds": 1.6490782089999994
+    },
+    {
+      "id": "bibel-angel",
+      "track": "two-colour",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_selection",
+        "reason": "Multiple heart-sized foreground bands",
+        "count": 0
+      },
+      "seconds": 0.9057284999999993
+    },
+    {
+      "id": "danish-tree-group-top",
+      "track": "scene",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 0.40313375000000085
+    },
+    {
+      "id": "danish-tree-group-right",
+      "track": "scene",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            871.2544254255718,
+            467.7289123937367
+          ],
+          [
+            1044.7291801711856,
+            668.5580458263546
+          ],
+          [
+            849.2070483129662,
+            822.1122355074731
+          ],
+          [
+            699.4254176212835,
+            620.439217076691
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.49558454100000016
+    },
+    {
+      "id": "danish-tree-group-left",
+      "track": "scene",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 0.3106422079999975
+    },
+    {
+      "id": "danish-tree-group-bottom",
+      "track": "scene",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 0.26360554200000114
+    },
+    {
+      "id": "gathering-striped-scene-top",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            227.26145453076103,
+            172.19787670243022
+          ],
+          [
+            419.8048673657847,
+            280.583000509495
+          ],
+          [
+            282.83722802140056,
+            482.1675810932244
+          ],
+          [
+            153.54019488167887,
+            367.20451727567905
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+          "Part of a lobe outline is obscured or ambiguous."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.3947410839999975
+    },
+    {
+      "id": "gathering-striped-scene-bottom",
+      "track": "printed-paper",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 0.21754995899999993
+    },
+    {
+      "id": "gathering-hanging-trio-top",
+      "track": "printed-paper",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 1.327785584000001
+    },
+    {
+      "id": "gathering-hanging-trio-middle",
+      "track": "printed-paper",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 0.19082500000000072
+    },
+    {
+      "id": "gathering-hanging-trio-bottom",
+      "track": "printed-paper",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 0.8314859580000011
+    },
+    {
+      "id": "vissevasse-arranged-r1c1",
+      "track": "printed-paper",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 0.13884700000000158
+    },
+    {
+      "id": "vissevasse-arranged-r1c2",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            521.3070301247682,
+            49.751306143306465
+          ],
+          [
+            618.5814576706026,
+            150.4612464853201
+          ],
+          [
+            521.0913237211223,
+            256.2524464859224
+          ],
+          [
+            413.8366990575314,
+            159.39813647274087
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.373979124999998
+    },
+    {
+      "id": "vissevasse-arranged-r1c3",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            808.5235086741088,
+            38.85002427671212
+          ],
+          [
+            897.2387355371662,
+            146.14275626656803
+          ],
+          [
+            791.1310267587257,
+            253.30788159413737
+          ],
+          [
+            674.9189478578589,
+            133.6827120283013
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.33077049999999875
+    },
+    {
+      "id": "vissevasse-arranged-r1c4",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            1061.9572804034103,
+            38.32920578721208
+          ],
+          [
+            1188.4109424477783,
+            136.93590042567195
+          ],
+          [
+            1074.0401667303872,
+            248.71342666646203
+          ],
+          [
+            968.5855171707337,
+            140.2765146051632
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.34704754200000026
+    },
+    {
+      "id": "vissevasse-arranged-r2c1",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            353.5448267631607,
+            242.78585255648534
+          ],
+          [
+            457.5912123293528,
+            348.3336113073291
+          ],
+          [
+            351.5082874352929,
+            456.6105455197329
+          ],
+          [
+            235.41573309258047,
+            346.94643463123214
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.355317500000001
+    },
+    {
+      "id": "vissevasse-arranged-r2c2",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            657.5998979782407,
+            235.2825588647455
+          ],
+          [
+            752.3451267731036,
+            337.59585455769127
+          ],
+          [
+            650.0481309205427,
+            451.7028297682693
+          ],
+          [
+            532.9712284917887,
+            337.57006779033077
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.35495904100000186
+    },
+    {
+      "id": "vissevasse-arranged-r2c3",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            939.2899397565939,
+            242.49348228213674
+          ],
+          [
+            1076.223883469362,
+            329.5846214764511
+          ],
+          [
+            964.8000500055981,
+            434.99022881332223
+          ],
+          [
+            847.6416610633447,
+            306.6681306874159
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.3691575830000002
+    },
+    {
+      "id": "vissevasse-arranged-r3c1",
+      "track": "printed-paper",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 0.14478958399999828
+    },
+    {
+      "id": "vissevasse-arranged-r3c2",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            517.9083929038097,
+            429.9681337834105
+          ],
+          [
+            601.6756995408481,
+            533.5827318605574
+          ],
+          [
+            505.95475136969003,
+            646.5440958366516
+          ],
+          [
+            387.20965540302035,
+            549.1318486775283
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.4084880420000009
+    },
+    {
+      "id": "vissevasse-arranged-r3c3",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            802.32711491473,
+            430.5445937214524
+          ],
+          [
+            892.6043816680483,
+            551.4125776707572
+          ],
+          [
+            795.6284489233648,
+            655.9774970007879
+          ],
+          [
+            670.7820415671293,
+            536.9756782844511
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.3655304160000014
+    },
+    {
+      "id": "vissevasse-arranged-r3c4",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            1099.6838642447037,
+            423.92247861963557
+          ],
+          [
+            1219.6184385415934,
+            528.1685562700704
+          ],
+          [
+            1101.9354833337813,
+            641.0038364226098
+          ],
+          [
+            997.0885094257519,
+            522.8807566568004
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.3966171250000007
+    },
+    {
+      "id": "vissevasse-arranged-r4c1",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            355.4705619216538,
+            633.9595046207497
+          ],
+          [
+            453.32273986789056,
+            745.4467701989108
+          ],
+          [
+            347.4444813612936,
+            859.8855938172553
+          ],
+          [
+            222.0521895561622,
+            743.4756768548864
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.3829122920000009
+    },
+    {
+      "id": "vissevasse-arranged-r4c2",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            634.907436884193,
+            633.001753857641
+          ],
+          [
+            764.4767233413031,
+            725.6575711364306
+          ],
+          [
+            641.20737935274,
+            856.2801333302166
+          ],
+          [
+            527.7148016435635,
+            742.9081636955389
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.3269846249999973
+    },
+    {
+      "id": "vissevasse-arranged-r4c3",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            973.8324976669008,
+            623.3609690971284
+          ],
+          [
+            1065.245186834688,
+            729.0441764470211
+          ],
+          [
+            964.2913473912381,
+            849.4284101717299
+          ],
+          [
+            836.9621647760885,
+            731.8707834087093
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.3630410830000001
+    },
+    {
+      "id": "vissevasse-scattered-pale-fish",
+      "track": "printed-paper",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 0.14783345800000097
+    },
+    {
+      "id": "vissevasse-scattered-yellow-checker",
+      "track": "printed-paper",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+        "count": 0
+      },
+      "seconds": 0.1484128329999985
+    },
+    {
+      "id": "vissevasse-scattered-blue-fish",
+      "track": "printed-paper",
+      "status": "no_crop",
+      "detection": {
+        "status": "needs_review",
+        "reason": "No nondegenerate heart-shape fit",
+        "count": 0
+      },
+      "seconds": 0.14462137500000244
+    },
+    {
+      "id": "vissevasse-scattered-blue-checker",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            918.9800033464423,
+            276.7398574694207
+          ],
+          [
+            1032.5056932094149,
+            339.596195531529
+          ],
+          [
+            929.2438497039642,
+            495.2183196153719
+          ],
+          [
+            882.924249646729,
+            353.3907948550058
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.3810854999999974
+    },
+    {
+      "id": "vissevasse-scattered-green-checker",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            358.9368143020895,
+            453.0518089082537
+          ],
+          [
+            556.7395351031154,
+            564.7315878146013
+          ],
+          [
+            370.36638342367735,
+            711.0691701087104
+          ],
+          [
+            267.7593492256395,
+            575.0208529932322
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.41498220799999763
+    },
+    {
+      "id": "vissevasse-scattered-purple-checker",
+      "track": "printed-paper",
+      "status": "prepared_proposal",
+      "detection": {
+        "status": "needs_review",
+        "count": 1,
+        "quad": [
+          [
+            691.6822476267986,
+            400.23694903527405
+          ],
+          [
+            842.8105664885044,
+            530.7934625112307
+          ],
+          [
+            650.5144410228089,
+            650.1011553404667
+          ],
+          [
+            582.1110324513518,
+            521.1396623071844
+          ]
+        ],
+        "needsReview": true,
+        "warnings": [
+          "Lobe outlines do not closely fit a single flat-heart model.",
+          "One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.",
+          "Part of a lobe outline is obscured or ambiguous.",
+          "Several plausible fits disagree on the corner positions."
+        ],
+        "locatorVersion": "0.1.0"
+      },
+      "observedFraction": 1,
+      "seconds": 0.8653102089999993
+    }
+  ],
+  "solveSmoke": {
+    "cfg": {
+      "algorithm": "auto",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 150,
+      "localNeighborhoodFactor": 3,
+      "roundHidden": false,
+      "width": 100,
+      "timeLimit": 10,
+      "trials": 0
+    },
+    "results": [
+      {
+        "id": "danish-tree-red",
+        "status": "candidate_needs_review",
+        "totalSeconds": 11.584073,
+        "solveAndValidationSeconds": 9.095553417000001,
+        "independentError": {
+          "mismatchFraction": 0.07024375,
+          "mismatchPixels": 11239,
+          "observedPixels": 160000,
+          "renderer": "resvg from exported cut_geometry.json; antialias coverage threshold 0.5"
+        },
+        "geometry": true,
+        "paper": "pass",
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      },
+      {
+        "id": "bibel-checker-3",
+        "status": "candidate_checks_passed",
+        "totalSeconds": 8.111561250000001,
+        "solveAndValidationSeconds": 6.280945875000001,
+        "independentError": {
+          "mismatchFraction": 0.01696875,
+          "mismatchPixels": 2715,
+          "observedPixels": 160000,
+          "renderer": "resvg from exported cut_geometry.json; antialias coverage threshold 0.5"
+        },
+        "geometry": true,
+        "paper": "pass",
+        "slits": {
+          "left": 3,
+          "right": 3
+        }
+      },
+      {
+        "id": "bibel-nested-heart-red",
+        "status": "candidate_checks_passed",
+        "totalSeconds": 11.240743750000002,
+        "solveAndValidationSeconds": 8.712998375,
+        "independentError": {
+          "mismatchFraction": 0.02938125,
+          "mismatchPixels": 4701,
+          "observedPixels": 160000,
+          "renderer": "resvg from exported cut_geometry.json; antialias coverage threshold 0.5"
+        },
+        "geometry": true,
+        "paper": "pass",
+        "slits": {
+          "left": 4,
+          "right": 4
+        }
+      }
+    ]
+  }
+}

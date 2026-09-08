@@ -1,0 +1,1008 @@
+{
+  "version": 1,
+  "description": "Exploratory real-photo regression inputs found online. Rough ROIs select individual hearts; they are not overlap corners or ground truth. Related photographs share a family and must not be counted as independent designs.",
+  "annotation": "Rough rectangles selected by visual inspection of original photos before running any detector or solver. Coordinates are [left, top, right, bottom] in original image pixels. Null means the complete upload.",
+  "rights": "Rights remain with source creators. These are development-test fixtures outside public website assets; no software licence is assigned to the photographs.",
+  "photos": [
+    {
+      "id": "danish-silver-on-tree",
+      "file": "source/danish-silver-on-tree.jpg",
+      "url": "https://danishthings.com/wp-content/uploads/2018/11/julehjerte-0201_1.jpg",
+      "sourcePage": "https://danishthings.com/da/flettede-julehjerter/",
+      "publisher": "Danish Things / Christel Parby",
+      "retrievedAt": "2026-09-08",
+      "sha256": "960a8d2c6b1123b117fc96b13a915e292a67521590f5603dbdd2a7a75a7463fe",
+      "bytes": 363044,
+      "width": 5184,
+      "height": 3456,
+      "family": "danish-silver-checker",
+      "tags": [
+        "glitter",
+        "foliage",
+        "clutter"
+      ],
+      "referenceLinks": [
+        "https://danishthings.com/wp-content/uploads/2016/12/Danish-Things-7-skabeloner-til-flettede-julehjerter.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "danish-green-yellow",
+      "file": "source/danish-green-yellow.jpg",
+      "url": "https://danishthings.com/wp-content/uploads/2022/12/Julehjerte-a-la-HC-Andersen-Danish-Things-1.jpg",
+      "sourcePage": "https://danishthings.com/da/flettede-julehjerter/",
+      "publisher": "Danish Things / Christel Parby",
+      "retrievedAt": "2026-09-08",
+      "sha256": "5957b2a8f5e25981f400cef687784effdb6c8491b8f0886ab5117ea66d610d4f",
+      "bytes": 49314,
+      "width": 1200,
+      "height": 1200,
+      "family": "danish-andersen-checker",
+      "tags": [
+        "green-yellow",
+        "dark-background"
+      ],
+      "referenceLinks": [
+        "https://danishthings.com/wp-content/uploads/2016/12/Danish-Things-7-skabeloner-til-flettede-julehjerter.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "danish-silver-white",
+      "file": "source/danish-silver-white.jpg",
+      "url": "https://danishthings.com/wp-content/uploads/2022/12/Danish-Things-Flettet-julehjerte-1.jpg",
+      "sourcePage": "https://danishthings.com/da/flettede-julehjerter/",
+      "publisher": "Danish Things / Christel Parby",
+      "retrievedAt": "2026-09-08",
+      "sha256": "9a2a6d6fdae42655ec1ee153635ea85556aea24ed79d5960f7837b6bb0a01458",
+      "bytes": 91340,
+      "width": 1200,
+      "height": 1600,
+      "family": "danish-silver-checker",
+      "tags": [
+        "glitter",
+        "low-contrast",
+        "dark-background"
+      ],
+      "referenceLinks": [
+        "https://danishthings.com/wp-content/uploads/2016/12/Danish-Things-7-skabeloner-til-flettede-julehjerter.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "danish-red-gold",
+      "file": "source/danish-red-gold.jpg",
+      "url": "https://danishthings.com/wp-content/uploads/2022/12/Danish-Things-Flettet-julehjerte-2.jpg",
+      "sourcePage": "https://danishthings.com/da/flettede-julehjerter/",
+      "publisher": "Danish Things / Christel Parby",
+      "retrievedAt": "2026-09-08",
+      "sha256": "8de9081d6aad37c1e63600cf1f51f5c205c2d383b89f22a16cb14aab63d36a96",
+      "bytes": 80723,
+      "width": 1200,
+      "height": 1600,
+      "family": "danish-dense-checker",
+      "tags": [
+        "printed-paper",
+        "low-contrast",
+        "dark-background"
+      ],
+      "referenceLinks": [
+        "https://danishthings.com/wp-content/uploads/2016/12/Danish-Things-7-skabeloner-til-flettede-julehjerter.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "danish-tree-red",
+      "file": "source/danish-tree-red.jpg",
+      "url": "https://danishthings.com/wp-content/uploads/2022/11/Saadan-fletter-du-et-julehjerte-med-et-juletrae-Danish-Things-11.jpg",
+      "sourcePage": "https://danishthings.com/da/julehjerte-med-juletrae/",
+      "publisher": "Danish Things / Christel Parby",
+      "retrievedAt": "2026-09-08",
+      "sha256": "6603c4c02f4c45d097a47b06bf003e62d5710ef33ce574b35f2a2e351d274b40",
+      "bytes": 40492,
+      "width": 1200,
+      "height": 1200,
+      "family": "tree-tree",
+      "tags": [
+        "red-white",
+        "dark-background"
+      ],
+      "referenceLinks": [
+        "https://danishthings.com/wp-content/uploads/2022/11/Danish-Things-Julehjerte-med-juletrae-1.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "danish-tree-green",
+      "file": "source/danish-tree-green.jpg",
+      "url": "https://danishthings.com/wp-content/uploads/2022/11/Danish-Things-Saadan-fletter-du-et-julehjerte-med-et-juletrae-5.jpg",
+      "sourcePage": "https://danishthings.com/da/julehjerte-med-juletrae/",
+      "publisher": "Danish Things / Christel Parby",
+      "retrievedAt": "2026-09-08",
+      "sha256": "5a8c872aeae2452165ddc05753a2255effaba318a7eb4b5b57ad9fb4361c1439",
+      "bytes": 52923,
+      "width": 1200,
+      "height": 1600,
+      "family": "tree-tree",
+      "tags": [
+        "green-blue",
+        "low-contrast",
+        "coloured-background"
+      ],
+      "referenceLinks": [
+        "https://danishthings.com/wp-content/uploads/2022/11/Danish-Things-Julehjerte-med-juletrae-1.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "danish-tree-dots",
+      "file": "source/danish-tree-dots.jpg",
+      "url": "https://danishthings.com/wp-content/uploads/2022/11/Saadan-fletter-du-et-julehjerte-med-et-juletrae-Danish-Things-14.jpg",
+      "sourcePage": "https://danishthings.com/da/julehjerte-med-juletrae/",
+      "publisher": "Danish Things / Christel Parby",
+      "retrievedAt": "2026-09-08",
+      "sha256": "b7a0ae1209a1fbc5092b1e1b453dae5a19decc11c33a12e12b345ba9cfb16063",
+      "bytes": 92694,
+      "width": 1200,
+      "height": 1600,
+      "family": "tree-tree",
+      "tags": [
+        "printed-paper",
+        "blue-white",
+        "dark-background"
+      ],
+      "referenceLinks": [
+        "https://danishthings.com/wp-content/uploads/2022/11/Danish-Things-Julehjerte-med-juletrae-1.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "danish-tree-group",
+      "file": "source/danish-tree-group.jpg",
+      "url": "https://danishthings.com/wp-content/uploads/2022/11/Saadan-fletter-du-et-julehjerte-med-et-juletrae-Danish-Things-15.jpg",
+      "sourcePage": "https://danishthings.com/da/julehjerte-med-juletrae/",
+      "publisher": "Danish Things / Christel Parby",
+      "retrievedAt": "2026-09-08",
+      "sha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+      "bytes": 83741,
+      "width": 1200,
+      "height": 1200,
+      "family": "tree-tree",
+      "tags": [
+        "multiple-hearts",
+        "occlusion",
+        "mixed-palettes"
+      ],
+      "referenceLinks": [
+        "https://danishthings.com/wp-content/uploads/2022/11/Danish-Things-Julehjerte-med-juletrae-1.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "gathering-pink-single",
+      "file": "source/gathering-pink-single.jpg",
+      "url": "https://images.squarespace-cdn.com/content/v1/54005a0ce4b0bbe0fce8fac5/1656082958708-QNQSVHJ38PEB7YS7R21D/finished+woven+paper+heart+rec.jpg",
+      "sourcePage": "https://www.gatheringbeauty.com/blog/2018/02/diy-danish-woven-paper-heart-valentine-baskets.html",
+      "publisher": "Gathering Beauty / Emma",
+      "retrievedAt": "2026-09-08",
+      "sha256": "867f0e5852ebeba92db6e89b0d4883f88b12a30226a93bb2042d9bce0e17500b",
+      "bytes": 36402,
+      "width": 750,
+      "height": 500,
+      "family": "gathering-checker",
+      "tags": [
+        "printed-paper",
+        "pink-red",
+        "white-background"
+      ],
+      "referenceLinks": [
+        "https://www.gatheringbeauty.com/s/WOVEN-HEART-TEMPLATE.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "gathering-striped-scene",
+      "file": "source/gathering-striped-scene.jpg",
+      "url": "https://images.squarespace-cdn.com/content/v1/54005a0ce4b0bbe0fce8fac5/1611162988018-JD1NHBY54MM0HOS7N8WE/woven+danish+paper+hearts",
+      "sourcePage": "https://www.gatheringbeauty.com/blog/2018/02/diy-danish-woven-paper-heart-valentine-baskets.html",
+      "publisher": "Gathering Beauty / Emma",
+      "retrievedAt": "2026-09-08",
+      "sha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+      "bytes": 97472,
+      "width": 750,
+      "height": 750,
+      "family": "gathering-checker",
+      "tags": [
+        "printed-paper",
+        "multiple-hearts",
+        "striped-background"
+      ],
+      "referenceLinks": [
+        "https://www.gatheringbeauty.com/s/WOVEN-HEART-TEMPLATE.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "gathering-hanging-trio",
+      "file": "source/gathering-hanging-trio.jpg",
+      "url": "https://images.squarespace-cdn.com/content/v1/54005a0ce4b0bbe0fce8fac5/1611163045593-EG4EUPIHR6VO5GC1NQ8V/woven+paper+heart+basket",
+      "sourcePage": "https://www.gatheringbeauty.com/blog/2018/02/diy-danish-woven-paper-heart-valentine-baskets.html",
+      "publisher": "Gathering Beauty / Emma",
+      "retrievedAt": "2026-09-08",
+      "sha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+      "bytes": 79303,
+      "width": 750,
+      "height": 1125,
+      "family": "gathering-checker",
+      "tags": [
+        "printed-paper",
+        "multiple-hearts",
+        "white-background"
+      ],
+      "referenceLinks": [
+        "https://www.gatheringbeauty.com/s/WOVEN-HEART-TEMPLATE.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "vissevasse-scattered",
+      "file": "source/vissevasse-scattered.jpg",
+      "url": "https://cdn.shopify.com/s/files/1/0207/0642/files/17_dec_julepynt_4.jpg?v=1606304934",
+      "sourcePage": "https://vissevasse.dk/pages/julehjerter-her-far-du-4-gratis-skabeloner",
+      "publisher": "ViSSEVASSE",
+      "retrievedAt": "2026-09-08",
+      "sha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+      "bytes": 263932,
+      "width": 1280,
+      "height": 874,
+      "family": "vissevasse-mixed",
+      "tags": [
+        "printed-paper",
+        "multiple-hearts",
+        "rotation",
+        "occlusion",
+        "dark-background"
+      ],
+      "referenceLinks": [
+        "https://cdn.shopify.com/s/files/1/0207/0642/files/17_dec_julepynt_skabelon.pdf?v=1606140523"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "vissevasse-arranged",
+      "file": "source/vissevasse-arranged.jpg",
+      "url": "https://cdn.shopify.com/s/files/1/0207/0642/files/17_dec_julepynt_2.jpg?v=1606306431",
+      "sourcePage": "https://vissevasse.dk/pages/julehjerter-her-far-du-4-gratis-skabeloner",
+      "publisher": "ViSSEVASSE",
+      "retrievedAt": "2026-09-08",
+      "sha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+      "bytes": 274624,
+      "width": 1280,
+      "height": 874,
+      "family": "vissevasse-mixed",
+      "tags": [
+        "printed-paper",
+        "multiple-hearts",
+        "tan-background"
+      ],
+      "referenceLinks": [
+        "https://cdn.shopify.com/s/files/1/0207/0642/files/17_dec_julepynt_skabelon.pdf?v=1606140523"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "bibel-checker-2",
+      "file": "source/bibel-checker-2.jpg",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_1_0.jpg",
+      "sourcePage": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "publisher": "Bibelselskabet",
+      "retrievedAt": "2026-09-08",
+      "sha256": "d715441c747a0f9d93db029c5b97b4c0a9dff0f5d3bd6480a871ae8285abfb4b",
+      "bytes": 87531,
+      "width": 935,
+      "height": 619,
+      "family": "bibelselskabet-checker-2",
+      "tags": [
+        "blue-grey",
+        "white-background"
+      ],
+      "referenceLinks": [
+        "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_1.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "bibel-checker-3",
+      "file": "source/bibel-checker-3.jpg",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_1.jpg",
+      "sourcePage": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "publisher": "Bibelselskabet",
+      "retrievedAt": "2026-09-08",
+      "sha256": "ca918edf5ebf69b903f8f0c95cf048280c7ed4e1dea135f5e14aca3529decbc7",
+      "bytes": 89834,
+      "width": 889,
+      "height": 563,
+      "family": "bibelselskabet-checker-3",
+      "tags": [
+        "green-blue",
+        "white-background"
+      ],
+      "referenceLinks": [
+        "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_2.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "bibel-checker-4",
+      "file": "source/bibel-checker-4.jpg",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_3.jpg",
+      "sourcePage": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "publisher": "Bibelselskabet",
+      "retrievedAt": "2026-09-08",
+      "sha256": "8552792996b59b8c94b8ef67759ce53f9799c73683f55d673314415cefd9ac87",
+      "bytes": 86361,
+      "width": 896,
+      "height": 591,
+      "family": "bibelselskabet-checker-4",
+      "tags": [
+        "red-blue",
+        "white-background"
+      ],
+      "referenceLinks": [
+        "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_3.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "bibel-narrow-wide",
+      "file": "source/bibel-narrow-wide.jpg",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_4.jpg",
+      "sourcePage": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "publisher": "Bibelselskabet",
+      "retrievedAt": "2026-09-08",
+      "sha256": "f89f56183194d4035b3e4f0864d5ea7642912342a5717da2ad0c6c38da7da194",
+      "bytes": 89419,
+      "width": 978,
+      "height": 593,
+      "family": "bibelselskabet-narrow-wide",
+      "tags": [
+        "pink-red",
+        "low-contrast",
+        "white-background"
+      ],
+      "referenceLinks": [
+        "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_4.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "bibel-nested-heart-green",
+      "file": "source/bibel-nested-heart-green.jpg",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_9.jpg",
+      "sourcePage": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "publisher": "Bibelselskabet",
+      "retrievedAt": "2026-09-08",
+      "sha256": "0c426b93e08995e5daf1714aca5cee453e5126781455e1f284f4f00c42a40990",
+      "bytes": 61213,
+      "width": 1001,
+      "height": 668,
+      "family": "bibelselskabet-nested-heart",
+      "tags": [
+        "green-white",
+        "white-background"
+      ],
+      "referenceLinks": [
+        "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_9.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "bibel-nested-heart-red",
+      "file": "source/bibel-nested-heart-red.jpg",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_10.jpg",
+      "sourcePage": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "publisher": "Bibelselskabet",
+      "retrievedAt": "2026-09-08",
+      "sha256": "2a3c21b4bab08513abb8d5538143dd2670df0ce0fe3048ec16b93359914f97a2",
+      "bytes": 57034,
+      "width": 960,
+      "height": 630,
+      "family": "bibelselskabet-nested-heart",
+      "tags": [
+        "red-white",
+        "white-background"
+      ],
+      "referenceLinks": [
+        "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_10.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    },
+    {
+      "id": "bibel-angel",
+      "file": "source/bibel-angel.jpg",
+      "url": "https://www.bibelselskabet.dk/sites/default/files/2018-04/julehjerte_12.jpg",
+      "sourcePage": "https://www.bibelselskabet.dk/flet-selv-smukke-julehjerter-12-skabeloner-til-fri-download",
+      "publisher": "Bibelselskabet",
+      "retrievedAt": "2026-09-08",
+      "sha256": "524ac9f34366e7db1cdf04687a802e0e89ea36589f8943f72e7fee4d9c6551d9",
+      "bytes": 59507,
+      "width": 1036,
+      "height": 659,
+      "family": "bibelselskabet-angel",
+      "tags": [
+        "gold-white",
+        "white-background"
+      ],
+      "referenceLinks": [
+        "https://www.bibelselskabet.dk/sites/default/files/files/2014_julehjerter_12.pdf"
+      ],
+      "referenceStatus": "Published template links retained; cuts not yet digitized or independently audited."
+    }
+  ],
+  "cases": [
+    {
+      "id": "danish-silver-on-tree",
+      "photo": "danish-silver-on-tree",
+      "roi": null,
+      "motif": "silver-checker",
+      "track": "two-colour",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "danish-green-yellow",
+      "photo": "danish-green-yellow",
+      "roi": null,
+      "motif": "andersen-checker",
+      "track": "two-colour",
+      "regularity": "unreviewed"
+    },
+    {
+      "id": "danish-silver-white",
+      "photo": "danish-silver-white",
+      "roi": null,
+      "motif": "silver-checker",
+      "track": "two-colour",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "danish-red-gold",
+      "photo": "danish-red-gold",
+      "roi": null,
+      "motif": "dense-checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "danish-tree-red",
+      "photo": "danish-tree-red",
+      "roi": null,
+      "motif": "tree",
+      "track": "two-colour",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "danish-tree-green",
+      "photo": "danish-tree-green",
+      "roi": null,
+      "motif": "tree",
+      "track": "two-colour",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "danish-tree-dots",
+      "photo": "danish-tree-dots",
+      "roi": null,
+      "motif": "tree",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "gathering-pink-single",
+      "photo": "gathering-pink-single",
+      "roi": null,
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "bibel-checker-2",
+      "photo": "bibel-checker-2",
+      "roi": null,
+      "motif": "checker-2",
+      "track": "two-colour",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "bibel-checker-3",
+      "photo": "bibel-checker-3",
+      "roi": null,
+      "motif": "checker-3",
+      "track": "two-colour",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "bibel-checker-4",
+      "photo": "bibel-checker-4",
+      "roi": null,
+      "motif": "checker-4",
+      "track": "two-colour",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "bibel-narrow-wide",
+      "photo": "bibel-narrow-wide",
+      "roi": null,
+      "motif": "narrow-wide",
+      "track": "two-colour",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "bibel-nested-heart-green",
+      "photo": "bibel-nested-heart-green",
+      "roi": null,
+      "motif": "nested-heart",
+      "track": "two-colour",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "bibel-nested-heart-red",
+      "photo": "bibel-nested-heart-red",
+      "roi": null,
+      "motif": "nested-heart",
+      "track": "two-colour",
+      "regularity": "full-length-slit-candidate"
+    },
+    {
+      "id": "bibel-angel",
+      "photo": "bibel-angel",
+      "roi": null,
+      "motif": "angel",
+      "track": "two-colour",
+      "regularity": "unreviewed"
+    },
+    {
+      "id": "danish-tree-group-top",
+      "photo": "danish-tree-group",
+      "roi": [
+        300,
+        240,
+        750,
+        650
+      ],
+      "motif": "tree",
+      "track": "scene",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Top green/blue heart; handle excluded from selection."
+    },
+    {
+      "id": "danish-tree-group-right",
+      "photo": "danish-tree-group",
+      "roi": [
+        655,
+        415,
+        1115,
+        835
+      ],
+      "motif": "tree",
+      "track": "scene",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Red/white heart."
+    },
+    {
+      "id": "danish-tree-group-left",
+      "photo": "danish-tree-group",
+      "roi": [
+        5,
+        470,
+        485,
+        885
+      ],
+      "motif": "tree",
+      "track": "scene",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Printed paper; nearby heart partly overlaps its right lobe."
+    },
+    {
+      "id": "danish-tree-group-bottom",
+      "photo": "danish-tree-group",
+      "roi": [
+        285,
+        800,
+        735,
+        1190
+      ],
+      "motif": "tree",
+      "track": "scene",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Cyan/green heart; handle crosses another heart."
+    },
+    {
+      "id": "gathering-striped-scene-top",
+      "photo": "gathering-striped-scene",
+      "roi": [
+        30,
+        85,
+        440,
+        485
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Floral paper on striped background."
+    },
+    {
+      "id": "gathering-striped-scene-bottom",
+      "photo": "gathering-striped-scene",
+      "roi": [
+        335,
+        315,
+        735,
+        710
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Printed red/pink paper on striped background."
+    },
+    {
+      "id": "gathering-hanging-trio-top",
+      "photo": "gathering-hanging-trio",
+      "roi": [
+        170,
+        140,
+        535,
+        485
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Floral paper."
+    },
+    {
+      "id": "gathering-hanging-trio-middle",
+      "photo": "gathering-hanging-trio",
+      "roi": [
+        350,
+        430,
+        710,
+        770
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Printed red/pink paper."
+    },
+    {
+      "id": "gathering-hanging-trio-bottom",
+      "photo": "gathering-hanging-trio",
+      "roi": [
+        110,
+        630,
+        475,
+        980
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Printed red/pink paper."
+    },
+    {
+      "id": "vissevasse-arranged-r1c1",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        50,
+        20,
+        340,
+        285
+      ],
+      "motif": "fish",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r1c2",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        370,
+        10,
+        650,
+        270
+      ],
+      "motif": "dense-checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r1c3",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        650,
+        5,
+        930,
+        260
+      ],
+      "motif": "star",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r1c4",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        930,
+        5,
+        1220,
+        255
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r2c1",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        205,
+        210,
+        490,
+        470
+      ],
+      "motif": "star",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r2c2",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        500,
+        200,
+        790,
+        465
+      ],
+      "motif": "fish",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r2c3",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        800,
+        205,
+        1090,
+        470
+      ],
+      "motif": "dense-checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r3c1",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        35,
+        390,
+        335,
+        660
+      ],
+      "motif": "dense-checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r3c2",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        345,
+        395,
+        635,
+        660
+      ],
+      "motif": "fish",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r3c3",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        645,
+        395,
+        935,
+        665
+      ],
+      "motif": "fish",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r3c4",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        965,
+        390,
+        1245,
+        660
+      ],
+      "motif": "dense-checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r4c1",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        195,
+        605,
+        485,
+        870
+      ],
+      "motif": "star",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r4c2",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        495,
+        600,
+        785,
+        865
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-arranged-r4c3",
+      "photo": "vissevasse-arranged",
+      "roi": [
+        815,
+        600,
+        1100,
+        865
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": ""
+    },
+    {
+      "id": "vissevasse-scattered-pale-fish",
+      "photo": "vissevasse-scattered",
+      "roi": [
+        200,
+        40,
+        475,
+        330
+      ],
+      "motif": "fish",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Rotated; another heart meets lower-right outline."
+    },
+    {
+      "id": "vissevasse-scattered-yellow-checker",
+      "photo": "vissevasse-scattered",
+      "roi": [
+        365,
+        170,
+        645,
+        445
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Part of pale lobe is occluded."
+    },
+    {
+      "id": "vissevasse-scattered-blue-fish",
+      "photo": "vissevasse-scattered",
+      "roi": [
+        5,
+        245,
+        300,
+        540
+      ],
+      "motif": "fish",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Rotated."
+    },
+    {
+      "id": "vissevasse-scattered-blue-checker",
+      "photo": "vissevasse-scattered",
+      "roi": [
+        785,
+        205,
+        1100,
+        495
+      ],
+      "motif": "dense-checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Rotated."
+    },
+    {
+      "id": "vissevasse-scattered-green-checker",
+      "photo": "vissevasse-scattered",
+      "roi": [
+        230,
+        430,
+        550,
+        725
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Rotated."
+    },
+    {
+      "id": "vissevasse-scattered-purple-checker",
+      "photo": "vissevasse-scattered",
+      "roi": [
+        545,
+        365,
+        850,
+        650
+      ],
+      "motif": "checker",
+      "track": "printed-paper",
+      "regularity": "full-length-slit-candidate",
+      "notes": "Rotated; tip points toward lower-left."
+    }
+  ],
+  "excludedCandidates": [
+    {
+      "id": "danish-5",
+      "reason": "Instruction collage with repeated photos."
+    },
+    {
+      "id": "danish-6",
+      "reason": "Instruction collage with repeated photos."
+    },
+    {
+      "id": "danish-14",
+      "reason": "Reframing of the retained silver-white photograph."
+    },
+    {
+      "id": "tree-13",
+      "reason": "Near-duplicate of the retained green-blue tree."
+    },
+    {
+      "id": "gathering-7",
+      "reason": "Repeated views of the single-heart sample."
+    },
+    {
+      "id": "vissevasse-21",
+      "reason": "Cutting templates appear beside the photos; retained cleaner photo-only scenes instead."
+    },
+    {
+      "id": "bibelselskabet-20",
+      "reason": "Four-paper construction outside the current two-sheet model."
+    },
+    {
+      "id": "paper015",
+      "reason": "Multiple-paper spiral construction outside the current two-sheet model."
+    },
+    {
+      "id": "paper018",
+      "reason": "Elongated multi-part construction outside the regular overlap-square model."
+    }
+  ]
+}

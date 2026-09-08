@@ -4,6 +4,7 @@ import {nodeCurves} from './geometry.js';
 import {repairJunctions} from './junctions.js';
 import {stabilizeBorder} from './border.js';
 import {redWhiteMixture} from './unmix.js';
+import {fitPolygonal,fitBoundary} from './polygonal.js';
 export function hexColor(s){if(typeof s!=='string'||!/^#[0-9a-f]{6}$/i.test(s))throw new Error('Use colours in #RRGGBB format.');return [1,3,5].map(i=>parseInt(s.slice(i,i+2),16));}
 export function colorsSafe(colors=['#bd1111','#ffffff']){if(!Array.isArray(colors)||colors.length!==2||colors[0].toLowerCase()===colors[1].toLowerCase())throw new Error('Choose two different paper colours.');colors.forEach(hexColor);return colors;}
 export function parsePath(d){
@@ -86,7 +87,7 @@ export function cleanupMask(mask,n,width,{removeSpecks=0,fillHoles=0,smoothRadiu
   for(let i=0;i<n;i++){out[i]=mask[i];out[(n-1)*n+i]=mask[(n-1)*n+i];out[i*n]=mask[i*n];out[i*n+n-1]=mask[i*n+n-1];}
   let changes=0;for(let i=0;i<out.length;i++)changes+=out[i]!==mask[i];return{mask:out,changes,fraction:changes/out.length};
 }
-export function traceMask(mask,n,{width=100,fitTolerance=.25,maxSpan=12,cornerDegrees=65,polygonal=false,snapRadius=0}={}){
+export function traceMask(mask,n,{width=100,fitTolerance=.25,maxSpan=12,cornerDegrees=65,polygonal=false,snapRadius=0,identicalSheets=false,mixedBoundaries=false}={}){
   if(mask.length!==n*n)throw new Error('Square mask required.');const edges=[],adj=new Map(),point=id=>[id%(n+1),Math.floor(id/(n+1))];const edge=(a,b)=>{const id=edges.length;edges.push([a,b]);if(!adj.has(a))adj.set(a,[]);if(!adj.has(b))adj.set(b,[]);adj.get(a).push(id);adj.get(b).push(id);};
   for(let y=0;y<n;y++)for(let x=0;x<n;x++){if(x<n-1&&mask[y*n+x]!==mask[y*n+x+1])edge(y*(n+1)+x+1,(y+1)*(n+1)+x+1);if(y<n-1&&mask[y*n+x]!==mask[(y+1)*n+x])edge((y+1)*(n+1)+x,(y+1)*(n+1)+x+1);}
   if(edges.length>80000)throw new Error('Artwork is too detailed. Reduce resolution or simplify the two-colour mask.');
@@ -94,13 +95,20 @@ export function traceMask(mask,n,{width=100,fitTolerance=.25,maxSpan=12,cornerDe
   function walk(v,e){const ps=[point(v)];while(!used[e]){used[e]=1;const [a,b]=edges[e];v=v===a?b:a;ps.push(point(v));if(anchors.has(v))break;const next=adj.get(v).find(i=>!used[i]);if(next===undefined)break;e=next;}return ps.map(p=>mul(p,width/n));}
   for(const v of [...anchors].sort((a,b)=>a-b))for(const e of adj.get(v))if(!used[e])chains.push(walk(v,e));edges.forEach(([v],e)=>{if(!used[e])chains.push(walk(v,e));});
   const repaired=repairJunctions(chains,snapRadius,width),fitChains=repaired.chains;
-  const curves=polygonal?fitChains.flatMap(p=>{const q=rdp(p,fitTolerance);return q.slice(1).flatMap((b,i)=>splitLong(Cubic.line(q[i],b),maxSpan));}):fitChains.flatMap(p=>fitPolyline(p,fitTolerance,maxSpan,cornerDegrees,Math.max(2*fitTolerance,2*width/n)));return{width,phase:mask[0],curves,metadata:{input:'raster',traceResolution:n,fitTolerance,polygonal,sourceBoundarySegments:edges.length,tracedChains:chains.length,junctionRepairs:repaired.moves,vectorizationChangesArtwork:true,paperColors:['#bd1111','#ffffff']}};
+  // Strict mirror routing is sensitive to small changes in guide incidence.
+  // Retain its established RDP geometry; refine line positions only when the
+  // routing graph may use independent sheets (matching is still tried later).
+  const polygonFit=identicalSheets?rdp:fitPolygonal;
+  const boundaryFit=mixedBoundaries?fitBoundary:fitPolyline;
+  const curves=polygonal?fitChains.flatMap(p=>{const q=polygonFit(p,fitTolerance);return q.slice(1).flatMap((b,i)=>splitLong(Cubic.line(q[i],b),maxSpan));}):fitChains.flatMap(p=>boundaryFit(p,fitTolerance,maxSpan,cornerDegrees,Math.max(2*fitTolerance,2*width/n)));return{width,phase:mask[0],curves,metadata:{input:'raster',traceResolution:n,fitTolerance,polygonal,straightSpanRefinement:mixedBoundaries||polygonal&&!identicalSheets,sourceBoundarySegments:edges.length,tracedChains:chains.length,junctionRepairs:repaired.moves,vectorizationChangesArtwork:true,paperColors:['#bd1111','#ffffff']}};
 }
+// Left-edge transitions include their lower endpoint (v <= y), matching the
+// half-open interior crossing test. Using v < y inverted whole rows at corners.
 export function targetSampler(target,tol=.01){const segments=[],counts=new Map();for(const c of target.curves){const p=c.flatten(tol);for(let i=1;i<p.length;i++)segments.push([p[i-1],p[i]]);for(const p of[c.p[0],c.p[3]])if(Math.abs(p[0])<1e-6){const key=p[1].toFixed(6);counts.set(key,(counts.get(key)||0)+1);}}
   const left=[...counts].filter(([y,n])=>n%2&&+y>1e-6&&+y<target.width-1e-6).map(([y])=>+y);
-  return (x,y)=>{let color=target.phase;for(const v of left)if(v<y)color^=1;for(const [a,b]of segments)if((a[1]>y)!==(b[1]>y)&&a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1])<x)color^=1;return color;};
+  return (x,y)=>{let color=target.phase;for(const v of left)if(v<=y)color^=1;for(const [a,b]of segments)if((a[1]>y)!==(b[1]>y)&&a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1])<x)color^=1;return color;};
 }
-export function sampleTarget(target,n=200){const mask=new Uint8Array(n*n),tol=.01,ss=[],counts=new Map();for(const c of target.curves){const p=c.flatten(tol);for(let i=1;i<p.length;i++)ss.push([p[i-1],p[i]]);for(const v of[c.p[0],c.p[3]])if(Math.abs(v[0])<1e-6){const key=v[1].toFixed(6);counts.set(key,(counts.get(key)||0)+1);}}const left=[...counts].filter(([y,c])=>c%2&&+y>1e-6&&+y<target.width-1e-6).map(([y])=>+y);for(let j=0;j<n;j++){const y=(j+.5)*target.width/n,xx=[];let c=target.phase;for(const v of left)if(v<y)c^=1;for(const[a,b]of ss)if((a[1]>y)!==(b[1]>y))xx.push(a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1]));xx.sort((a,b)=>a-b);let h=0;for(let i=0;i<n;i++){const x=(i+.5)*target.width/n;while(h<xx.length&&xx[h]<x){c^=1;h++;}mask[j*n+i]=c;}}return mask;}
+export function sampleTarget(target,n=200){const mask=new Uint8Array(n*n),tol=.01,ss=[],counts=new Map();for(const c of target.curves){const p=c.flatten(tol);for(let i=1;i<p.length;i++)ss.push([p[i-1],p[i]]);for(const v of[c.p[0],c.p[3]])if(Math.abs(v[0])<1e-6){const key=v[1].toFixed(6);counts.set(key,(counts.get(key)||0)+1);}}const left=[...counts].filter(([y,c])=>c%2&&+y>1e-6&&+y<target.width-1e-6).map(([y])=>+y);for(let j=0;j<n;j++){const y=(j+.5)*target.width/n,xx=[];let c=target.phase;for(const v of left)if(v<=y)c^=1;for(const[a,b]of ss)if((a[1]>y)!==(b[1]>y))xx.push(a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1]));xx.sort((a,b)=>a-b);let h=0;for(let i=0;i<n;i++){const x=(i+.5)*target.width/n;while(h<xx.length&&xx[h]<x){c^=1;h++;}mask[j*n+i]=c;}}return mask;}
 export function preprocessPixels({rgba,imageWidth,imageHeight,quad=null,cropProvenance=null,settings={}}){
   const requestedResolution=settings.resolution??400;
   if(!Number.isInteger(requestedResolution)||requestedResolution<32||requestedResolution>600)throw new Error('Tracing resolution must be 32–600.');

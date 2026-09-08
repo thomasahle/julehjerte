@@ -70,7 +70,8 @@ test('automatic routing preserves the published star cuts without a preset or fi
   try{
     const ref=await env.load('5star',600),cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0};
     const p=prepare(ref.input,cfg),r=await design(p.target,cfg);
-    assert.equal(p.target.metadata.automatic.route,'angular');
+    assert.equal(p.target.metadata.automatic.route,'direct');
+    assert.equal(r.report.solver.algorithm,'direct-bezier');
     assert.equal(r.report.templateChecksPassed,true);
     assert.equal(r.report.solver.matchingPreference.identical,true);
     const comparison=compareCutPaths(JSON.parse(r.files['cut_geometry.json']),ref.cuts);

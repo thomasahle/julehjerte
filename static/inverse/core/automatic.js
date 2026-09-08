@@ -1,9 +1,8 @@
 /** One public workflow. Choose routing from the artwork, never its filename. */
 import {prepare} from './engine.js';
-import {GENERAL_PRESET,MATCHING_GRID_PRESET,DIRECT_PRESET} from './presets.js';
+import {GENERAL_PRESET,DIRECT_PRESET} from './presets.js';
 import {sampleTarget} from './input.js';
 import {normalizeSymmetry,requestedSymmetry,settings} from './settings.js';
-import {symmetryEvidence} from './direct/matching.js';
 import {maskDisagreement,preferMatchingSolution} from './direct/prefer-matching.js';
 import {fitDirect} from './direct/fit.js';
 import {sampleWeave} from './validate.js';
@@ -11,15 +10,8 @@ import {buildGraph} from './graph.js';
 import {solveGraph} from './solver.js';
 import {materialAudit} from './material.js';
 import {auditImageFeatures} from './image-features.js';
-
-function flatColourFraction(rgb,mask){
-  const sums=[[0,0,0],[0,0,0]],counts=[0,0];
-  for(let i=0;i<mask.length;i++){const c=mask[i];counts[c]++;for(let j=0;j<3;j++)sums[c][j]+=rgb[3*i+j];}
-  if(counts.some(n=>!n))return 0;
-  const means=sums.map((sum,c)=>sum.map(v=>v/counts[c]));let flat=0;
-  for(let i=0;i<mask.length;i++)if(means[mask[i]].every((v,j)=>Math.abs(v-rgb[3*i+j])<12))flat++;
-  return flat/mask.length;
-}
+import {prepareBoundary} from './direct/topology.js';
+import {boundarySVG} from './export.js';
 
 /** Only the direct fitter enforces requested symmetries. transpose is the one
  * the traced routes already reproduce, through their identical-sheet grid; a
@@ -39,20 +31,12 @@ export function prepareAutomatic(input,raw,onProgress){
     value.target.metadata.automatic={route:'vector',reason:'Preserve original vector boundaries'};
   }else{
     value=prepare(input,cfg,onProgress);
-    const source=value.target.sourceImage,flatFraction=flatColourFraction(value.preview.rgb,source.mask);
-    const automatic={route:'direct',flatColourFraction:flatFraction,reason:'Fit the original classified image with soft border evidence'};
-    // Clean, nearly symmetric square artwork benefits from angular MILP routing.
-    // Photographic crops always start with the perturbation-tolerant fitter.
-    if(!input.quad&&!fitterOnly&&flatFraction>=.97&&symmetryEvidence(source).minimumIdenticalImageError<=.005){
-      try{
-        const traced=prepare(input,{...raw,...MATCHING_GRID_PRESET,resolution:source.resolution},onProgress);
-        if(traced.target.curves.length<=160){
-          traced.target.sourceImage=source;
-          value=traced;automatic.route='angular';automatic.reason='Clean symmetric artwork with a small angular routing graph';
-        }
-      }catch(error){automatic.tracingPreparationError=error.message;}
-    }
-    value.target.metadata.automatic=automatic;
+    value.target.metadata.automatic={route:'direct',reason:'Joint cubic and straight-span refinement against the original classified image'};
+    try{
+      value.target.boundarySeed=prepareBoundary(value.target,settings(cfg));
+      value.preview.boundaries=boundarySVG(value.target.boundarySeed);
+      value.preview.metadata.originalBoundariesAvailable=value.target.boundarySeed.curves.length>0;
+    }catch(error){value.target.metadata.automatic.boundaryEvidenceError=error.message;}
   }
   if(fitterOnly)value.target.metadata.automatic={...value.target.metadata.automatic,route:'direct',reason:'Fit the requested symmetry directly; the traced routes cannot constrain mirrored cuts'};
   value.preview.metadata={...value.preview.metadata,automatic:value.target.metadata.automatic};
@@ -62,8 +46,8 @@ export function prepareAutomatic(input,raw,onProgress){
 export async function solveAutomatic(target,cfg,onProgress){
   const start=performance.now(),route=target.metadata.automatic?.route||'direct',attempts=[];
   if(route!=='direct'&&fitterOnlySymmetry(cfg.symmetry))attempts.push({route,accepted:false,reason:'Requested symmetry is enforced by the direct fitter only'});
-  else if(route!=='direct'){
-    const traceCfg=settings({...cfg,...(route==='angular'?MATCHING_GRID_PRESET:GENERAL_PRESET),timeLimit:Math.min(3,cfg.timeLimit*.4)});
+  else if(route==='vector'){
+    const traceCfg=settings({...cfg,...GENERAL_PRESET,timeLimit:Math.max(.1,Math.min(3,cfg.timeLimit*.4))});
     try{
       onProgress({stage:'graph'});
       const graph=buildGraph(target,traceCfg,{onProgress}),solution=await solveGraph(graph,traceCfg,{onProgress,coefficientQuantum:1e-7,coreGate:traceCfg.requireMaterialCore?s=>materialAudit(s,traceCfg):null});

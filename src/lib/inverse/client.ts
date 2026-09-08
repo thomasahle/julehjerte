@@ -27,6 +27,7 @@ export interface PreparedArtwork {
     curves: number;
     width: number;
     direct?: boolean;
+    originalBoundariesAvailable?: boolean;
     junctionRepairs?: { from: Point[]; to: Point }[];
     preprocessing?: {
       traceChangeFraction: number;

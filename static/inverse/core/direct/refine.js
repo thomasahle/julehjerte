@@ -9,7 +9,19 @@ import {validate} from '../validate.js';
 import {materialAudit} from '../material.js';
 import {matchingGroups,matchingPenalty,projectMatching} from './matching.js';
 import {symmetryTies,applyTies} from './symmetry.js';
+import {straightProposal,primitiveComplexity,primitiveCost} from './primitives.js';
 export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+.35;}
+
+const cornerCache=new WeakMap();
+function initialCorners(graph){
+  if(cornerCache.has(graph))return cornerCache.get(graph);
+  const corners=new Set(),p=graph.points;
+  graph.joins.forEach(([[a,ad],[b,bd]],i)=>{
+    const A=graph.edges[a],B=graph.edges[b],aa=A[ad===1?3:0],ah=A[ad===1?2:1],ba=B[bd===1?0:3],bh=B[bd===1?1:2];
+    const ux=p[2*aa]-p[2*ah],uy=p[2*aa+1]-p[2*ah+1],vx=p[2*bh]-p[2*ba],vy=p[2*bh+1]-p[2*ba+1];
+    if((ux*vx+uy*vy)/Math.max(1e-10,Math.hypot(ux,uy)*Math.hypot(vx,vy))<Math.SQRT1_2)corners.add(i);
+  });cornerCache.set(graph,corners);return corners;
+}
 
 export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   const gradient=new Float64Array(points.length),sample=graph.sample(points,8),s=sample.samples,ds=new Float64Array(s.length),w=graph.width,margin=fittingMargin(cfg,w),side=margin;
@@ -57,11 +69,14 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
       for(let k=0;k<4;k++)for(let axis=0;axis<2;axis++)gradient[2*ids[k]+axis]+=D[k]*gv[axis]+DD[k]*ga[axis];
     }
   }
-  const joins=Math.max(1,graph.joins.length);
-  for(const [[a,ad],[b,bd]]of graph.joins){
+  const joins=Math.max(1,graph.joins.length),corners=initialCorners(graph);
+  for(const [join,[[a,ad],[b,bd]]]of graph.joins.entries()){
     const A=graph.edges[a],B=graph.edges[b],anchorA=A[ad===1?3:0],handleA=A[ad===1?2:1],anchorB=B[bd===1?0:3],handleB=B[bd===1?1:2];
-    const ux=points[2*anchorA]-points[2*handleA],uy=points[2*anchorA+1]-points[2*handleA+1],vx=points[2*handleB]-points[2*anchorB],vy=points[2*handleB+1]-points[2*anchorB+1],u=Math.max(1e-5,Math.hypot(ux,uy)),v=Math.max(1e-5,Math.hypot(vx,vy)),dot=clamp((ux*vx+uy*vy)/(u*v),-1,1),dd=(-.015+.06*Math.min(dot,0))/joins;
-    loss+=(.015*(1-dot)+.03*Math.min(dot,0)**2)/joins;
+    const ux=points[2*anchorA]-points[2*handleA],uy=points[2*anchorA+1]-points[2*handleA+1],vx=points[2*handleB]-points[2*anchorB],vy=points[2*handleB+1]-points[2*anchorB+1],u=Math.max(1e-5,Math.hypot(ux,uy)),v=Math.max(1e-5,Math.hypot(vx,vy)),dot=clamp((ux*vx+uy*vy)/(u*v),-1,1);
+    // Smooth small accidental kinks, but do not continuously round an intended
+    // corner. Maximum-turn and paper constraints still validate sharp joins.
+    const corner=corners.has(join)&&dot<Math.SQRT1_2,dd=corner?0:(-.015+.06*Math.min(dot,0))/joins;
+    loss+=(corner?.015*(1-Math.SQRT1_2):.015*(1-dot)+.03*Math.min(dot,0)**2)/joins;
     for(const[axis,uu,vv]of[[0,ux,vx],[1,uy,vy]]){
       const gu=dd*(vv/(u*v)-dot*uu/(u*u)),gv=dd*(uu/(u*v)-dot*vv/(v*v));gradient[2*anchorA+axis]+=gu;gradient[2*handleA+axis]-=gu;gradient[2*handleB+axis]+=gv;gradient[2*anchorB+axis]-=gv;
     }
@@ -88,14 +103,33 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
   const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);if(ties)applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);};
   clampPoints();let safe=null,best=null,bestInvalid=null,completed=0;
   const checkpoint=step=>{
-    const solution=graph.solution(points,phase,input),check=validate(solution,cfg,{checkImage:false}),error=mismatch(renderCurves(graph,points,phase,n,32),prob);
-    const score=(boundaryValue(graph,points,prob,n,phase)+boundaryValue(graph,points,prob,n,phase,{transpose:true,rows:193}))/2+(cfg.preferMatchingSheets?matchingPenalty(graph,points).loss:0);
-    const paper=check.passed?materialAudit(solution,cfg):null;
-    const rec={step,error,score,geometry:check.passed,paper:paper?.status,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec);
-    const value={graph,points:points.slice(),phase,error,score,validation:check,paper:paper?.summary};
-    if(!bestInvalid||error<bestInvalid.error)bestInvalid=value;
-    if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){safe=points.slice();if(!best||(selection==='mask'?error<best.error||error===best.error&&score<best.score:score<best.score))best=value;if(stopWhen&&step>=80&&stopWhen(best))stoppedEarly=true;}
-    else if(safe){points.set(safe);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.65);}
+    const straight=straightProposal(graph,points,n);
+    if(straight&&ties)applyTies(ties,straight,straight,{fixed:graph.fixed,original:initial});
+    if(straight&&groups)projectMatching(straight,groups,graph.fixed,initial);
+    const proposals=[points,...(straight?[straight]:[])].map(p=>{
+      const error=mismatch(renderCurves(graph,p,phase,n,32),prob),imageScore=(boundaryValue(graph,p,prob,n,phase)+boundaryValue(graph,p,prob,n,phase,{transpose:true,rows:193}))/2;
+      const score=imageScore+primitiveCost(graph,p,n)+(cfg.preferMatchingSheets?matchingPenalty(graph,p).loss:0);
+      return{graph,points:p.slice(),phase,error,score,primitives:primitiveComplexity(graph,p),straightened:p===straight};
+    });
+    // A degree reduction must earn its simpler geometry without increasing
+    // the mask error at this checkpoint. Preserve the continuous trajectory.
+    const original=proposals[0];
+    if(proposals[1]?.error>original.error)proposals.pop();
+    proposals.sort((a,b)=>selection==='mask'?a.error-b.error||a.score-b.score:a.score-b.score);
+    let accepted=false;
+    for(const value of proposals){
+      const solution=graph.solution(value.points,phase,input),check=validate(solution,cfg,{checkImage:false}),paper=check.passed?materialAudit(solution,cfg):null;
+      value.validation=check;value.paper=paper?.summary;
+      const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec);
+      if(!bestInvalid||value.error<bestInvalid.error)bestInvalid=value;
+      if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){
+        safe=value.points.slice();accepted=true;
+        if(!best||(selection==='mask'?value.error<best.error||value.error===best.error&&value.score<best.score:value.score<best.score))best=value;
+        if(stopWhen&&step>=80&&stopWhen(best))stoppedEarly=true;
+        break;
+      }
+    }
+    if(!accepted&&safe){points.set(safe);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.65);}
   };
   checkpoint(-1);
   for(let step=0;step<steps;step++){

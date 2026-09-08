@@ -1,4 +1,4 @@
-/** Appearance-based routing presets. No published cutting paths are loaded. */
+/** Internal initialization settings. No published cutting paths are loaded. */
 export const MATCHING_GRID_PRESET = {
   algorithm: 'trace', polygonal: true, identicalSheets: true, resolution: 600,
   fitTolerance: .35, maxSpan: 40, smoothRadius: 0, snapRadius: 0, borderRadius: 0,
@@ -29,7 +29,9 @@ Object.freeze(SIMPLIFIED_PREPROCESSING);
 Object.freeze(MATCHING_GRID_PRESET);
 Object.freeze(GENERAL_PRESET);
 
-export const DIRECT_PRESET = Object.freeze({...GENERAL_PRESET, algorithm:'direct', roundHidden:false});
+export const DIRECT_PRESET = Object.freeze({...GENERAL_PRESET, algorithm:'direct', roundHidden:false,
+  // Use the established corner policy for every candidate, including cubics.
+  maxTurn:MATCHING_GRID_PRESET.maxTurn,localNeighborhoodFactor:MATCHING_GRID_PRESET.localNeighborhoodFactor});
 
-/** The single website workflow; specialized routing stays internal. */
+/** Every raster image uses the same joint cubic and straight-span fitter. */
 export const AUTOMATIC_PRESET = Object.freeze({...DIRECT_PRESET,algorithm:'auto'});

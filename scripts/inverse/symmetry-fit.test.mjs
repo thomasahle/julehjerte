@@ -327,22 +327,21 @@ test('the automatic route sends every symmetry but the transposition to the fitt
   const curved = prepare({ type: 'svg', text }, { ...cfg, symmetry: { withinCurve: 'sym' } });
   assert.equal(curved.preview.metadata.automatic.route, 'direct');
 
-  // Clean woven artwork with identical sheets is what the angular MILP route is
-  // for, and that route reproduces a transposition by itself. A mirror it
-  // cannot hold, so the request moves the artwork to the fitter.
+  // Every raster uses the common fitter, with compatible count hypotheses and
+  // parameter ties for the requested symmetries.
   const grid = wovenPixels(160, [0.2, 0.4, 0.6, 0.8], [0.2, 0.4, 0.6, 0.8]), angular = prepare(grid, cfg);
-  assert.equal(angular.preview.metadata.automatic.route, 'angular');
-  assert.equal(prepare(grid, { ...cfg, symmetry: { transpose: true } }).preview.metadata.automatic.route, 'angular');
+  assert.equal(angular.preview.metadata.automatic.route, 'direct');
+  assert.equal(prepare(grid, { ...cfg, symmetry: { transpose: true } }).preview.metadata.automatic.route, 'direct');
   assert.equal(prepare(grid, { ...cfg, symmetry: { mirrorX: true } }).preview.metadata.automatic.route, 'direct');
 
   // A target prepared before the request was made must not slip through the
   // traced route either: that attempt is rejected before it is solved.
   const mirrored = await design(angular.target, { ...cfg, symmetry: { mirrorX: true } });
   assert.equal(mirrored.report.solver.automatic.selected, 'direct');
-  assert.deepEqual(mirrored.report.solver.automatic.attempts.map((a) => [a.route, a.accepted]), [['angular', false]]);
+  assert.deepEqual(mirrored.report.solver.automatic.attempts, []);
   assert.deepEqual(mirrored.report.symmetry.honoured, ['mirrorX']);
   const tied = await design(angular.target, { ...cfg, symmetry: { transpose: true } });
-  assert.equal(tied.report.solver.automatic.selected, 'angular');
+  assert.equal(tied.report.solver.automatic.selected, 'direct');
   assert.deepEqual(tied.report.symmetry.honoured, ['transpose']);
 });
 
