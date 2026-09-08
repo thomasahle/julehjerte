@@ -446,3 +446,19 @@ mutate for reactivity; the canvas repaints by box), the small fields plain `$sta
 
 **Known flake.** `src/lib/inverse/simplifyCurves.test.ts` has one test that exceeds vitest's 5 s default under a
 parallel full run (11.8 s) and passes alone (3.4 s): give it an explicit timeout or make its sweep cheaper.
+
+**Live search is the stage after the engine symmetry lands** (owner, 2026-09-08, mockup board "mens der søges").
+The engine's progress events already carry the stage, the strip counts being tried with their errors, the
+refinement step, the current mismatch and the validity checks; the UI shows them: a plain-words stage line
+("Tilpasser kurverne … 12 s · 4 + 4 strimler · afvigelse 1,3 % og faldende"), a list of the attempts with their
+errors (done / running / waiting), and the elapsed-time bar. Two things need a small engine change, done as a
+follow-up lane after `paint-engine-symmetry` (it touches the same fit/refine/worker files): (1) each refinement
+checkpoint attaches the current candidate's cut geometry (the same `heartcurves-2` JSON as the result, throttled
+to a few per second) so the canvas draws the candidate's cuts over the mask in the editor's outline colours
+(cyan left, orange right, black halo) and they settle as the search runs; the conversion uses
+`cutGeometryToDesign` with a coarse tolerance and no enforcement; (2) a graceful stop message ("Brug det bedste
+nu") that makes the fitter return the best validated candidate so far instead of terminating the worker, and a
+list of the valid alternatives (counts, error, geometry) in the result so the panel can offer "Prøv 3 + 3 i
+stedet" without searching again. The MILP route shows its rounds and gap and attaches an incumbent when one is
+validated.
+
