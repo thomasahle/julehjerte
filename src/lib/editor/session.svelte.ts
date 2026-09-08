@@ -103,7 +103,12 @@ export const session: PaintSession = new Session();
  *
  * The mask is not dirty afterwards: nothing has been painted on it yet, so leaving
  * for Tegn or importing again may go ahead without asking. Detection results come
- * in here too, because they belong to the mask that arrived with them.
+ * in here too, because they belong to the mask that arrived with them — and so a
+ * caller that has nothing to report clears the "fundet" tags rather than leaving
+ * the last picture's behind, describing a mask that is gone.
+ *
+ * The three rows are the exception: they are the visitor's setting, not a property
+ * of the mask, so they stay as they were unless the caller has a better answer.
  */
 export function setMask(
 	mask: Mask,
@@ -113,15 +118,15 @@ export function setMask(
 	session.maskDirty = false;
 	session.sourceName = options.sourceName ?? null;
 	if (options.symmetry) session.symmetry = { ...options.symmetry };
-	if (options.found !== undefined) session.found = options.found ? { ...options.found } : null;
+	session.found = options.found ? { ...options.found } : null;
 	session.result = null;
 	session.status = 'idle';
 	session.error = null;
 }
 
-/** Ryd: an empty mask, no source, no suggested symmetry to explain. */
+/** Ryd: an empty mask, and nothing left to say about where it came from. */
 export function clearMask(): void {
-	setMask(createMask(0), { sourceName: null, found: null });
+	setMask(createMask(0));
 }
 
 /** Record that the visitor has painted, so the next destructive step asks first. */

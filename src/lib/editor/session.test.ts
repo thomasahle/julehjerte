@@ -36,6 +36,18 @@ describe('the session', () => {
 		expect(session.maskDirty).toBe(false);
 	});
 
+	it('forgets what was found in the old mask when a new one arrives without a detection', () => {
+		// The "fundet" pills describe the picture they were detected in. A mask that
+		// comes with none of its own — "Mal på hjertet", or Ryd — must not keep them:
+		// they would tag the three rows after a mask that is gone. The visitor's own
+		// choice of rows is a setting, not a finding, and does stay.
+		const found = { curve: 'sym', lobe: 'sym', lobes: 'sym' } as const;
+		setMask(createMask(0), { sourceName: 'stjerne.png', symmetry: found, found });
+		setMask(createMask(0));
+		expect(session.found).toBeNull();
+		expect(session.symmetry).toEqual(found);
+	});
+
 	it('forgets the last result when the mask is replaced', () => {
 		session.result = { design, report: { cuts: [4, 4], clearanceMm: 3, mismatch: 0.02, identical: true } };
 		session.status = 'done';
