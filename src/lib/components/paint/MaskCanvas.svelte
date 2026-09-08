@@ -744,6 +744,24 @@
 		onEditEnd();
 	}
 
+	/**
+	 * A press anywhere off the canvas puts the selection down.
+	 *
+	 * "Clicking outside commits" has to mean outside the page's drawing, not just
+	 * outside the marquee: pressing Find snit with a patch still floating would
+	 * otherwise search the mask as it was before the move and then unmount the
+	 * canvas, and the visitor's edit would be gone with no way to ask for it back.
+	 * `pointerdown` runs before the `click` that starts the search, so the engine
+	 * sees the committed mask.
+	 */
+	function onWindowPointerDown(event: PointerEvent): void {
+		if (!selection || disabled) return;
+		// The canvas's own handler has already had this event and decided what it
+		// means — a handle, a move, or the click that commits.
+		if (event.target === canvasEl) return;
+		endSelection();
+	}
+
 	function onKeyDown(event: KeyboardEvent): void {
 		if (disabled || keyboardBusy) return;
 		const target = event.target as HTMLElement | null;
@@ -852,7 +870,7 @@
 	);
 </script>
 
-<svelte:window onkeydown={onKeyDown} />
+<svelte:window onkeydown={onKeyDown} onpointerdown={onWindowPointerDown} />
 
 <!-- The name is on the box rather than on the <canvas>: a canvas already counts
      as an interactive element, so role="img" on it is an invalid override, and

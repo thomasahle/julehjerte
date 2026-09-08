@@ -345,6 +345,19 @@ describe('Markér', () => {
 		expect(c.mask.data).toEqual(before);
 	});
 
+	it('puts the selection down when the pointer goes anywhere else on the page', () => {
+		const c = withBlock();
+		drag(c.canvas, [5, 5], [13, 13]);
+		drag(c.canvas, [8, 8], [28, 8]);
+		// Find snit lives off the canvas, and pressing it with a patch still
+		// floating used to search the mask as it was before the move.
+		document.body.dispatchEvent(new PointerEvent('pointerdown', { pointerId: 2, bubbles: true }));
+		flushSync();
+		expect(c.cell(8, 8)).toBe(0);
+		expect(c.cell(28, 8)).toBe(1);
+		expect(c.edits).toBe(1);
+	});
+
 	it('puts the selection down when the visitor reaches for another tool', () => {
 		const c = withBlock();
 		drag(c.canvas, [5, 5], [13, 13]);
