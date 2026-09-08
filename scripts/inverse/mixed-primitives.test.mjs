@@ -34,3 +34,18 @@ test('the main fitter preserves curved motifs and straight border spans together
   assert.ok(curves.some(c=>c.flatness()<1e-7));assert.ok(curves.some(c=>c.flatness()>1));
   const rendered=await renderExportedWeave(data,240);assert.ok(rendered.mask.reduce((s,v,i)=>s+Number(v!==fixture.mask[i]),0)/fixture.mask.length<.002);
 });
+
+test('resampling an imported mask for Paint does not inflate its topology problem',{timeout:60000},async()=>{
+  for(const shape of ['hat','house','circle']){
+    const fixture=motifFixture(shape),n=400,from=fixture.input.imageWidth,mask=new Uint8Array(n*n),rgba=new Uint8ClampedArray(4*n*n);
+    for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+      const v=fixture.mask[Math.floor((y+.5)*from/n)*from+Math.floor((x+.5)*from/n)];mask[y*n+x]=v;
+      rgba.set(v?[0,0,0,255]:[255,255,255,255],4*(y*n+x));
+    }
+    const cfg={...DIRECT_PRESET,trials:0,timeLimit:10},p=prepare({type:'pixels',rgba,imageWidth:n,imageHeight:n},cfg);
+    const r=await design(p.target,cfg),rendered=await renderExportedWeave(r.files['cut_geometry.json'],n);
+    assert.equal(r.report.templateChecksPassed,true,shape);
+    assert.ok(r.report.solver.topologyInitialization.boundarySegments<=64,shape);
+    assert.ok(rendered.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length<.003,shape);
+  }
+});

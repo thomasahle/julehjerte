@@ -17,7 +17,24 @@ import {symmetryTies} from './symmetry.js';
 
 export function prepareBoundary(input,cfg){
   if(input.boundarySeed?.width===cfg.width)return input.boundarySeed;
-  const source=input.sourceImage,target=preprocessMask(source.mask,source.resolution,{...cfg,fitTolerance:Math.max(.35,1.2*cfg.width/source.resolution),maxSpan:40,smoothRadius:0,snapRadius:0,borderRadius:0,polygonal:false,mixedBoundaries:true},input.metadata.preprocessing);
+  const source=input.sourceImage,tolerance=Math.max(.35,1.2*cfg.width/source.resolution);
+  const trace=fitTolerance=>preprocessMask(source.mask,source.resolution,{...cfg,fitTolerance,maxSpan:40,smoothRadius:0,snapRadius:0,borderRadius:0,polygonal:false,mixedBoundaries:true},input.metadata.preprocessing);
+  let target=trace(tolerance);
+  // Upsampling a binary mask makes its old pixel stairs look like deliberate
+  // tiny corners. Try a smaller graph before handing hundreds of redundant
+  // turns to the MILP. This changes only the initialization, and every proposal
+  // is measured against the original mask, including its small features.
+  if(target.curves.length>64){
+    const attempts=[];
+    for(const fitTolerance of [.005*cfg.width,.0075*cfg.width]){
+      if(fitTolerance<=tolerance)continue;
+      const candidate=trace(fitTolerance),woven=sampleTarget(candidate,source.resolution),error=maskDisagreement(source,woven);
+      const accepted=candidate.curves.length<target.curves.length&&error<=.002&&auditImageFeatures(source,woven,cfg.width).passed;
+      attempts.push({fitTolerance,segments:candidate.curves.length,imageError:error,accepted});
+      if(accepted)target=candidate;
+    }
+    target.metadata.boundarySimplification=attempts;
+  }
   target.sourceImage=source;
   return target;
 }
