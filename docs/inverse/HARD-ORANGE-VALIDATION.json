@@ -1,0 +1,1179 @@
+{
+  "date": "2026-09-08",
+  "source": "scripts/inverse/fixtures/hard-user/tilted-orange-weave.png",
+  "manualGuide": [
+    [
+      447,
+      160
+    ],
+    [
+      845,
+      574
+    ],
+    [
+      350,
+      921
+    ],
+    [
+      55,
+      451
+    ]
+  ],
+  "groundTruthTemplatesAvailable": false,
+  "runs": [
+    {
+      "label": "eight-slit ceiling",
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 150,
+        "localNeighborhoodFactor": 3,
+        "roundHidden": false,
+        "trials": 0,
+        "timeLimit": 60
+      },
+      "seconds": 24.41126075,
+      "independentImageError": 0.14153125,
+      "errorByRegion": {
+        "border": {
+          "pixels": 30400,
+          "errors": 4202
+        },
+        "interior": {
+          "pixels": 129600,
+          "errors": 18443
+        }
+      },
+      "slits": {
+        "left": 8,
+        "right": 8
+      },
+      "templateChecksPassed": false,
+      "validationPassed": true,
+      "paperStatus": "pass",
+      "minimumInterSlitDistanceLower": 3.2752794958464353,
+      "borderEvidence": [
+        {
+          "side": 0,
+          "inset": 0.015,
+          "count": 11,
+          "transitions": [
+            0.0975,
+            0.1325,
+            0.2075,
+            0.3125,
+            0.4225,
+            0.525,
+            0.61,
+            0.7025,
+            0.7875,
+            0.875,
+            0.96
+          ]
+        },
+        {
+          "side": 0,
+          "inset": 0.025,
+          "count": 11,
+          "transitions": [
+            0.1025,
+            0.155,
+            0.205,
+            0.3125,
+            0.42,
+            0.525,
+            0.61,
+            0.7025,
+            0.7875,
+            0.875,
+            0.96
+          ]
+        },
+        {
+          "side": 0,
+          "inset": 0.04,
+          "count": 13,
+          "transitions": [
+            0.1075,
+            0.19,
+            0.2025,
+            0.3125,
+            0.4175,
+            0.4875,
+            0.5175,
+            0.5625,
+            0.61,
+            0.7025,
+            0.7875,
+            0.8775,
+            0.96
+          ]
+        },
+        {
+          "side": 1,
+          "inset": 0.015,
+          "count": 10,
+          "transitions": [
+            0.0975,
+            0.1875,
+            0.2975,
+            0.39,
+            0.465,
+            0.56,
+            0.6525,
+            0.7325,
+            0.83,
+            0.91
+          ]
+        },
+        {
+          "side": 1,
+          "inset": 0.025,
+          "count": 10,
+          "transitions": [
+            0.0975,
+            0.1875,
+            0.295,
+            0.3875,
+            0.465,
+            0.5625,
+            0.65,
+            0.7325,
+            0.83,
+            0.91
+          ]
+        },
+        {
+          "side": 1,
+          "inset": 0.04,
+          "count": 11,
+          "transitions": [
+            0.1175,
+            0.16,
+            0.185,
+            0.295,
+            0.3875,
+            0.465,
+            0.57,
+            0.6475,
+            0.7325,
+            0.83,
+            0.91
+          ]
+        },
+        {
+          "side": 2,
+          "inset": 0.015,
+          "count": 10,
+          "transitions": [
+            0.095,
+            0.2125,
+            0.31,
+            0.4225,
+            0.5025,
+            0.6025,
+            0.6875,
+            0.755,
+            0.8525,
+            0.9275
+          ]
+        },
+        {
+          "side": 2,
+          "inset": 0.025,
+          "count": 10,
+          "transitions": [
+            0.0925,
+            0.2125,
+            0.31,
+            0.4225,
+            0.5025,
+            0.6,
+            0.6875,
+            0.755,
+            0.8525,
+            0.9275
+          ]
+        },
+        {
+          "side": 2,
+          "inset": 0.04,
+          "count": 10,
+          "transitions": [
+            0.0925,
+            0.21,
+            0.31,
+            0.4225,
+            0.505,
+            0.6,
+            0.6875,
+            0.7575,
+            0.8525,
+            0.9275
+          ]
+        },
+        {
+          "side": 3,
+          "inset": 0.015,
+          "count": 9,
+          "transitions": [
+            0.115,
+            0.21,
+            0.32,
+            0.4275,
+            0.5175,
+            0.6175,
+            0.7125,
+            0.815,
+            0.9125
+          ]
+        },
+        {
+          "side": 3,
+          "inset": 0.025,
+          "count": 9,
+          "transitions": [
+            0.115,
+            0.2125,
+            0.32,
+            0.4275,
+            0.5175,
+            0.62,
+            0.7125,
+            0.815,
+            0.9125
+          ]
+        },
+        {
+          "side": 3,
+          "inset": 0.04,
+          "count": 9,
+          "transitions": [
+            0.115,
+            0.2125,
+            0.3225,
+            0.4275,
+            0.5175,
+            0.62,
+            0.7125,
+            0.815,
+            0.9125
+          ]
+        }
+      ],
+      "countsSearched": [
+        {
+          "counts": [
+            8,
+            8
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            8,
+            8
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            7,
+            7
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            7,
+            7
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            1,
+            1
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            1,
+            1
+          ],
+          "phase": -1
+        }
+      ],
+      "artifacts": "tmp/inverse-hard-user/baseline-60"
+    },
+    {
+      "label": "adaptive dense-count search",
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 150,
+        "localNeighborhoodFactor": 3,
+        "roundHidden": false,
+        "trials": 0,
+        "timeLimit": 60
+      },
+      "seconds": 9.566710083,
+      "independentImageError": 0.0171875,
+      "errorByRegion": {
+        "border": {
+          "pixels": 30400,
+          "errors": 1016
+        },
+        "interior": {
+          "pixels": 129600,
+          "errors": 1734
+        }
+      },
+      "slits": {
+        "left": 10,
+        "right": 10
+      },
+      "templateChecksPassed": true,
+      "validationPassed": true,
+      "paperStatus": "pass",
+      "minimumInterSlitDistanceLower": 3.1775053530200483,
+      "borderEvidence": [
+        {
+          "side": 0,
+          "inset": 0.015,
+          "count": 11,
+          "transitions": [
+            0.0975,
+            0.1325,
+            0.2075,
+            0.3125,
+            0.4225,
+            0.525,
+            0.61,
+            0.7025,
+            0.7875,
+            0.875,
+            0.96
+          ]
+        },
+        {
+          "side": 0,
+          "inset": 0.025,
+          "count": 11,
+          "transitions": [
+            0.1025,
+            0.155,
+            0.205,
+            0.3125,
+            0.42,
+            0.525,
+            0.61,
+            0.7025,
+            0.7875,
+            0.875,
+            0.96
+          ]
+        },
+        {
+          "side": 0,
+          "inset": 0.04,
+          "count": 13,
+          "transitions": [
+            0.1075,
+            0.19,
+            0.2025,
+            0.3125,
+            0.4175,
+            0.4875,
+            0.5175,
+            0.5625,
+            0.61,
+            0.7025,
+            0.7875,
+            0.8775,
+            0.96
+          ]
+        },
+        {
+          "side": 1,
+          "inset": 0.015,
+          "count": 10,
+          "transitions": [
+            0.0975,
+            0.1875,
+            0.2975,
+            0.39,
+            0.465,
+            0.56,
+            0.6525,
+            0.7325,
+            0.83,
+            0.91
+          ]
+        },
+        {
+          "side": 1,
+          "inset": 0.025,
+          "count": 10,
+          "transitions": [
+            0.0975,
+            0.1875,
+            0.295,
+            0.3875,
+            0.465,
+            0.5625,
+            0.65,
+            0.7325,
+            0.83,
+            0.91
+          ]
+        },
+        {
+          "side": 1,
+          "inset": 0.04,
+          "count": 11,
+          "transitions": [
+            0.1175,
+            0.16,
+            0.185,
+            0.295,
+            0.3875,
+            0.465,
+            0.57,
+            0.6475,
+            0.7325,
+            0.83,
+            0.91
+          ]
+        },
+        {
+          "side": 2,
+          "inset": 0.015,
+          "count": 10,
+          "transitions": [
+            0.095,
+            0.2125,
+            0.31,
+            0.4225,
+            0.5025,
+            0.6025,
+            0.6875,
+            0.755,
+            0.8525,
+            0.9275
+          ]
+        },
+        {
+          "side": 2,
+          "inset": 0.025,
+          "count": 10,
+          "transitions": [
+            0.0925,
+            0.2125,
+            0.31,
+            0.4225,
+            0.5025,
+            0.6,
+            0.6875,
+            0.755,
+            0.8525,
+            0.9275
+          ]
+        },
+        {
+          "side": 2,
+          "inset": 0.04,
+          "count": 10,
+          "transitions": [
+            0.0925,
+            0.21,
+            0.31,
+            0.4225,
+            0.505,
+            0.6,
+            0.6875,
+            0.7575,
+            0.8525,
+            0.9275
+          ]
+        },
+        {
+          "side": 3,
+          "inset": 0.015,
+          "count": 9,
+          "transitions": [
+            0.115,
+            0.21,
+            0.32,
+            0.4275,
+            0.5175,
+            0.6175,
+            0.7125,
+            0.815,
+            0.9125
+          ]
+        },
+        {
+          "side": 3,
+          "inset": 0.025,
+          "count": 9,
+          "transitions": [
+            0.115,
+            0.2125,
+            0.32,
+            0.4275,
+            0.5175,
+            0.62,
+            0.7125,
+            0.815,
+            0.9125
+          ]
+        },
+        {
+          "side": 3,
+          "inset": 0.04,
+          "count": 9,
+          "transitions": [
+            0.115,
+            0.2125,
+            0.3225,
+            0.4275,
+            0.5175,
+            0.62,
+            0.7125,
+            0.815,
+            0.9125
+          ]
+        }
+      ],
+      "countsSearched": [
+        {
+          "counts": [
+            10,
+            10
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            11,
+            10
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            11,
+            10
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            11,
+            11
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            11,
+            11
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            11,
+            9
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            10,
+            9
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            12,
+            12
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            12,
+            12
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            11,
+            9
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            10,
+            10
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            10,
+            9
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            8,
+            8
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            8,
+            8
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            7,
+            7
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            7,
+            7
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": -1
+        },
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            1,
+            1
+          ],
+          "phase": 1
+        },
+        {
+          "counts": [
+            1,
+            1
+          ],
+          "phase": -1
+        }
+      ],
+      "artifacts": "tmp/inverse-hard-user/dense-60"
+    },
+    {
+      "label": "expanded count search with browser refinement budget",
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 150,
+        "localNeighborhoodFactor": 3,
+        "roundHidden": false,
+        "trials": 0,
+        "timeLimit": 60
+      },
+      "seconds": 19.579927000000026,
+      "independentImageError": 0.01685,
+      "errorByRegion": {
+        "border": {
+          "pixels": 30400,
+          "errors": 1012
+        },
+        "interior": {
+          "pixels": 129600,
+          "errors": 1684
+        }
+      },
+      "slits": {
+        "left": 10,
+        "right": 10
+      },
+      "templateChecksPassed": true,
+      "validationPassed": true,
+      "paperStatus": "pass",
+      "minimumInterSlitDistanceLower": 3.173739735418575,
+      "artifacts": "tmp/inverse-hard-user/dense-final"
+    }
+  ],
+  "sourceSha256": "367d4ffa4595103633123d554ddb7925f874fe4ccdd5f69a10c25362dfaa0a02",
+  "automaticCrop": {
+    "status": "needs_review",
+    "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+    "candidates": 0
+  },
+  "unchangedHunodanSearchCounts": [
+    {
+      "id": "hjfig-01",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjfig-02",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjfig-03",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjfig-04",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjfig-05",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjfla-01",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjcur-01",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjcur-02",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjcur-03",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjcur-04",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjcur-05",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjhih-01",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjhih-02",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjhih-04",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjstr-01",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjstr-02",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjstr-03",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjsta-01",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjsta-02",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjsta-03",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjsta-04",
+      "maximumCount": 8
+    },
+    {
+      "id": "hjsta-05",
+      "maximumCount": 8
+    }
+  ],
+  "browserReplay": {
+    "origin": "http://127.0.0.1:4174",
+    "buildCommit": "7ef2806",
+    "artifacts": "tmp/inverse-browser/2026-09-08T10-50-36-430Z-preset-recovery/results.json",
+    "results": [
+      {
+        "browser": "chromium",
+        "quad": [
+          [
+            447,
+            160
+          ],
+          [
+            845,
+            574
+          ],
+          [
+            350,
+            921
+          ],
+          [
+            55,
+            451
+          ]
+        ],
+        "solverSeconds": 32.20319999998808,
+        "independentImageError": 0.0167,
+        "internalImageError": 0.0161375,
+        "slits": {
+          "left": 10,
+          "right": 10
+        },
+        "templateChecksPassed": false,
+        "templateExportAllowed": true,
+        "validationPassed": true,
+        "paperStatus": "pass",
+        "missingRegions": [
+          {
+            "value": 0,
+            "areaMm2": 3.4375,
+            "centerMm": [
+              91.11590909090908,
+              14.043181818181818
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "independentMissingRegions": [
+          {
+            "value": 0,
+            "areaMm2": 3.4375,
+            "centerMm": [
+              91.11590909090908,
+              14.043181818181818
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "checks": [
+          "A photo upload replaces the example without exposing any fitting or matching options",
+          "The known detector failure recovers through four manual corner clicks and coordinate adjustments",
+          "Automatic preparation preserves the accepted corners and physical settings",
+          "Downloaded templates meet the 3% image target; any remaining tiny highlight warning is retained, with the original mask and comparison available"
+        ],
+        "pageErrors": []
+      },
+      {
+        "browser": "firefox",
+        "quad": [
+          [
+            447,
+            160
+          ],
+          [
+            845,
+            574
+          ],
+          [
+            350,
+            921
+          ],
+          [
+            55,
+            451
+          ]
+        ],
+        "solverSeconds": 16.791,
+        "independentImageError": 0.0189875,
+        "internalImageError": 0.018625,
+        "slits": {
+          "left": 10,
+          "right": 10
+        },
+        "templateChecksPassed": true,
+        "templateExportAllowed": true,
+        "validationPassed": true,
+        "paperStatus": "pass",
+        "missingRegions": [],
+        "independentMissingRegions": [],
+        "checks": [
+          "A photo upload replaces the example without exposing any fitting or matching options",
+          "The known detector failure recovers through four manual corner clicks and coordinate adjustments",
+          "Automatic preparation preserves the accepted corners and physical settings",
+          "Downloaded templates meet the 3% image target; any remaining tiny highlight warning is retained, with the original mask and comparison available"
+        ],
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "quad": [
+          [
+            447,
+            160
+          ],
+          [
+            845,
+            574
+          ],
+          [
+            350,
+            921
+          ],
+          [
+            55,
+            451
+          ]
+        ],
+        "solverSeconds": 33.028,
+        "independentImageError": 0.019925,
+        "internalImageError": 0.0193875,
+        "slits": {
+          "left": 10,
+          "right": 10
+        },
+        "templateChecksPassed": false,
+        "templateExportAllowed": true,
+        "validationPassed": true,
+        "paperStatus": "pass",
+        "missingRegions": [
+          {
+            "value": 0,
+            "areaMm2": 3.375,
+            "centerMm": [
+              91.09722222222223,
+              14.032407407407407
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "independentMissingRegions": [
+          {
+            "value": 0,
+            "areaMm2": 3.375,
+            "centerMm": [
+              91.09722222222223,
+              14.032407407407407
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "checks": [
+          "A photo upload replaces the example without exposing any fitting or matching options",
+          "The known detector failure recovers through four manual corner clicks and coordinate adjustments",
+          "Automatic preparation preserves the accepted corners and physical settings",
+          "Downloaded templates meet the 3% image target; any remaining tiny highlight warning is retained, with the original mask and comparison available"
+        ],
+        "pageErrors": []
+      }
+    ]
+  }
+}

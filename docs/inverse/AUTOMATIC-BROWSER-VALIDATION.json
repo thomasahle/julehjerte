@@ -1,0 +1,301 @@
+{
+  "date": "2026-09-08",
+  "origin": "http://127.0.0.1:4174",
+  "build": "production build after ee28c9b",
+  "suites": {
+    "review": {
+      "artifacts": "tmp/inverse-browser/2026-09-08T10-12-21-742Z-review/results.json",
+      "results": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "A real saved candidate with failing geometry exposes both template views and a complete annotated ZIP",
+            "The 4.37% engine-result fixture explains its image error beside enabled template views and SVG downloads",
+            "Uret v2 renders its cropped photo and Amy Young links to the requested website"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "A real saved candidate with failing geometry exposes both template views and a complete annotated ZIP",
+            "The 4.37% engine-result fixture explains its image error beside enabled template views and SVG downloads",
+            "Uret v2 renders its cropped photo and Amy Young links to the requested website"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "webkit",
+          "checks": [
+            "A real saved candidate with failing geometry exposes both template views and a complete annotated ZIP",
+            "The 4.37% engine-result fixture explains its image error beside enabled template views and SVG downloads",
+            "Uret v2 renders its cropped photo and Amy Young links to the requested website"
+          ],
+          "pageErrors": []
+        }
+      ]
+    },
+    "reference": {
+      "artifacts": "tmp/inverse-browser/2026-09-08T10-13-19-894Z-reference/results.json",
+      "results": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "Star opens raster artwork with automatic fitting and no algorithm chooser",
+            "Downloaded fresh cuts pass geometry, paper, independent image rendering and published-path thresholds",
+            "All four result views render the checked pair",
+            "Waves uses the same automatic workflow",
+            "Danish Star example uses the same fresh image workflow"
+          ],
+          "pageErrors": [],
+          "independentImageError": 0.003
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "Star opens raster artwork with automatic fitting and no algorithm chooser",
+            "Downloaded fresh cuts pass geometry, paper, independent image rendering and published-path thresholds",
+            "All four result views render the checked pair",
+            "Waves uses the same automatic workflow",
+            "Danish Star example uses the same fresh image workflow"
+          ],
+          "pageErrors": [],
+          "independentImageError": 0.003
+        }
+      ]
+    },
+    "matching": {
+      "artifacts": "tmp/inverse-browser/2026-09-08T10-14-04-171Z-matching/results.json",
+      "results": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "The uploaded photo fits below 1% error, explains the identical-template lower bound, and retains its mask and comparison",
+            "The symmetric checker exports exactly identical paths and independently renders the original mask without error"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "The uploaded photo fits below 1% error, explains the identical-template lower bound, and retains its mask and comparison",
+            "The symmetric checker exports exactly identical paths and independently renders the original mask without error"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "webkit",
+          "checks": [
+            "The uploaded photo fits below 1% error, explains the identical-template lower bound, and retains its mask and comparison",
+            "The symmetric checker exports exactly identical paths and independently renders the original mask without error"
+          ],
+          "pageErrors": []
+        }
+      ]
+    },
+    "preset-recovery": {
+      "artifacts": "tmp/inverse-browser/2026-09-08T10-14-52-107Z-preset-recovery/results.json",
+      "results": [
+        {
+          "browser": "chromium",
+          "id": "flag-screenshot",
+          "checks": [
+            "A photo upload replaces the example without exposing any fitting or matching options",
+            "Automatic preparation preserves the accepted corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "pageErrors": [],
+          "independentImageError": 0.0125125
+        },
+        {
+          "browser": "chromium",
+          "id": "blue-stars",
+          "checks": [
+            "A photo upload replaces the example without exposing any fitting or matching options",
+            "Selected a rough rectangle around the photographed heart in the combined photo/template image",
+            "Automatic preparation preserves the accepted corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "pageErrors": [],
+          "independentImageError": 0.010864427739901197
+        },
+        {
+          "browser": "firefox",
+          "id": "flag-screenshot",
+          "checks": [
+            "A photo upload replaces the example without exposing any fitting or matching options",
+            "Automatic preparation preserves the accepted corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "pageErrors": [],
+          "independentImageError": 0.01815625
+        },
+        {
+          "browser": "firefox",
+          "id": "blue-stars",
+          "checks": [
+            "A photo upload replaces the example without exposing any fitting or matching options",
+            "Selected a rough rectangle around the photographed heart in the combined photo/template image",
+            "Automatic preparation preserves the accepted corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "pageErrors": [],
+          "independentImageError": 0.013428380889484556
+        },
+        {
+          "browser": "webkit",
+          "id": "flag-screenshot",
+          "checks": [
+            "A photo upload replaces the example without exposing any fitting or matching options",
+            "Automatic preparation preserves the accepted corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "pageErrors": [],
+          "independentImageError": 0.01246875
+        },
+        {
+          "browser": "webkit",
+          "id": "blue-stars",
+          "checks": [
+            "A photo upload replaces the example without exposing any fitting or matching options",
+            "Selected a rough rectangle around the photographed heart in the combined photo/template image",
+            "Automatic preparation preserves the accepted corners and physical settings",
+            "Downloaded templates pass independent image and feature checks; the original mask and comparison remain available"
+          ],
+          "pageErrors": [],
+          "independentImageError": 0.013473703293643856
+        }
+      ]
+    },
+    "generator-qa": {
+      "artifacts": "tmp/inverse-browser/2026-09-08T10-16-29-393Z-generator-qa/results.json",
+      "results": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "Coloured photo uploads, locates four overlap corners and renders its original crop",
+            "Reported yellow-star photo locates automatically; uncertain fit remains marked for review",
+            "A square photograph also gets automatic corners instead of silently using the whole image",
+            "Whole-image mode hides the unused crop overlay; returning restores the selection",
+            "Clearing a coordinate invalidates the crop and solve; restoring it recovers preparation",
+            "Crossed corners fail without exports; four manual clicks recover a usable crop",
+            "Failed rectangle detection switches to manual corners; failed refitting preserves explicit edits",
+            "Stopping corner detection permits a fresh upload and ignores the old worker",
+            "unsupported.txt: rejected cleanly; a valid upload recovers",
+            "broken.png: rejected cleanly; a valid upload recovers",
+            "too-large.png: rejected cleanly; a valid upload recovers",
+            "25-megapixel image is rejected before crop processing",
+            "Malformed saved templates report an error without stale downloads",
+            "Fresh direct solve exports a checked ZIP whose curves independently reproduce the source",
+            "The automatic solver completes another fresh solve after a budget change",
+            "Changing a cutting constraint removes the previous result and exports",
+            "Tiny square artwork skips the locator and still prepares",
+            "Mobile layout supports manual placement without horizontal overflow",
+            "Danish generator exposes and uses the same crop tools",
+            "A failed worker load reports an error and retries with a fresh worker",
+            "Changing a footer colour during detection cancels safely and permits another fit"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "Coloured photo uploads, locates four overlap corners and renders its original crop",
+            "Reported yellow-star photo locates automatically; uncertain fit remains marked for review",
+            "A square photograph also gets automatic corners instead of silently using the whole image",
+            "Whole-image mode hides the unused crop overlay; returning restores the selection",
+            "Clearing a coordinate invalidates the crop and solve; restoring it recovers preparation",
+            "Crossed corners fail without exports; four manual clicks recover a usable crop",
+            "Failed rectangle detection switches to manual corners; failed refitting preserves explicit edits",
+            "Stopping corner detection permits a fresh upload and ignores the old worker",
+            "unsupported.txt: rejected cleanly; a valid upload recovers",
+            "broken.png: rejected cleanly; a valid upload recovers",
+            "too-large.png: rejected cleanly; a valid upload recovers",
+            "25-megapixel image is rejected before crop processing",
+            "Malformed saved templates report an error without stale downloads",
+            "Fresh direct solve exports a checked ZIP whose curves independently reproduce the source",
+            "The automatic solver completes another fresh solve after a budget change",
+            "Changing a cutting constraint removes the previous result and exports",
+            "Tiny square artwork skips the locator and still prepares",
+            "Mobile layout supports manual placement without horizontal overflow",
+            "Danish generator exposes and uses the same crop tools",
+            "A failed worker load reports an error and retries with a fresh worker",
+            "Changing a footer colour during detection cancels safely and permits another fit"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "webkit",
+          "checks": [
+            "Coloured photo uploads, locates four overlap corners and renders its original crop",
+            "Reported yellow-star photo locates automatically; uncertain fit remains marked for review",
+            "A square photograph also gets automatic corners instead of silently using the whole image",
+            "Whole-image mode hides the unused crop overlay; returning restores the selection",
+            "Clearing a coordinate invalidates the crop and solve; restoring it recovers preparation",
+            "Crossed corners fail without exports; four manual clicks recover a usable crop",
+            "Failed rectangle detection switches to manual corners; failed refitting preserves explicit edits",
+            "Stopping corner detection permits a fresh upload and ignores the old worker",
+            "unsupported.txt: rejected cleanly; a valid upload recovers",
+            "broken.png: rejected cleanly; a valid upload recovers",
+            "too-large.png: rejected cleanly; a valid upload recovers",
+            "25-megapixel image is rejected before crop processing",
+            "Malformed saved templates report an error without stale downloads",
+            "Fresh direct solve exports a checked ZIP whose curves independently reproduce the source",
+            "The automatic solver completes another fresh solve after a budget change",
+            "Changing a cutting constraint removes the previous result and exports",
+            "Tiny square artwork skips the locator and still prepares",
+            "Mobile layout supports manual placement without horizontal overflow",
+            "Danish generator exposes and uses the same crop tools",
+            "A failed worker load reports an error and retries with a fresh worker",
+            "Changing a footer colour during detection cancels safely and permits another fit"
+          ],
+          "pageErrors": []
+        }
+      ]
+    },
+    "comparison": {
+      "artifacts": "tmp/inverse-browser/2026-09-08T10-17-16-540Z-comparison/results.json",
+      "results": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "Original paths and classified mask remain unchanged and accessible after a fresh solve",
+            "Highlighted pixels exactly match the report\u2019s image-error samples",
+            "Blend endpoints reproduce each image, and original paths align as an optional overlay",
+            "Comparison controls fit mobile width and preserve access to result views and downloads",
+            "New artwork clears old comparisons; automatic fitting retains the available source views",
+            "Imported templates do not claim to have an original image for comparison",
+            "Danish SVG workflow retains source views and a working comparison"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "Original paths and classified mask remain unchanged and accessible after a fresh solve",
+            "Highlighted pixels exactly match the report\u2019s image-error samples",
+            "Blend endpoints reproduce each image, and original paths align as an optional overlay",
+            "Comparison controls fit mobile width and preserve access to result views and downloads",
+            "New artwork clears old comparisons; automatic fitting retains the available source views",
+            "Imported templates do not claim to have an original image for comparison",
+            "Danish SVG workflow retains source views and a working comparison"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "webkit",
+          "checks": [
+            "Original paths and classified mask remain unchanged and accessible after a fresh solve",
+            "Highlighted pixels exactly match the report\u2019s image-error samples",
+            "Blend endpoints reproduce each image, and original paths align as an optional overlay",
+            "Comparison controls fit mobile width and preserve access to result views and downloads",
+            "New artwork clears old comparisons; automatic fitting retains the available source views",
+            "Imported templates do not claim to have an original image for comparison",
+            "Danish SVG workflow retains source views and a working comparison"
+          ],
+          "pageErrors": []
+        }
+      ]
+    }
+  }
+}
