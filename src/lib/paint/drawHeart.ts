@@ -169,10 +169,25 @@ function channels(colour: string): Uint8ClampedArray | null {
 		probe = canvas.getContext('2d', { willReadFrequently: true });
 	}
 	if (!probe) return null;
-	probe.clearRect(0, 0, 1, 1);
+	// A value the canvas cannot parse is *ignored* rather than refused, so the
+	// probe would keep the colour it painted last and we would cache that under
+	// this name — the mask drawn in a colour nobody asked for, with nothing to
+	// show that anything went wrong. Two different starting values tell the two
+	// apart: only an assignment that took leaves the same colour behind both
+	// times, and a null answer makes `maskCanvas` bail visibly instead.
+	probe.fillStyle = '#000000';
 	probe.fillStyle = colour;
+	const took = probe.fillStyle;
+	probe.fillStyle = '#ffffff';
+	probe.fillStyle = colour;
+	if (probe.fillStyle !== took) return null;
+	probe.clearRect(0, 0, 1, 1);
 	probe.fillRect(0, 0, 1, 1);
 	const value = probe.getImageData(0, 0, 1, 1).data;
+	// The pair of paper colours is what this is for, but a colour picker dragged
+	// across the wheel would feed it a new value a frame; the cache is emptied
+	// rather than allowed to grow for the life of the page.
+	if (parsed.size >= 64) parsed.clear();
 	parsed.set(colour, value);
 	return value;
 }
