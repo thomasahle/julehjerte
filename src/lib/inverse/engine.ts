@@ -1,14 +1,25 @@
 /**
- * The paint page's side of the inverse engine.
+ * Paint mode's door to the inverse engine — PAINT.md §4.
  *
- * `client.ts` is the typed boundary to the worker: it knows how to ask, not what
- * to ask for. This module knows what to ask for — the settings a hobbyist's
- * heart is solved with, the mask as an image the engine can classify, and the
- * one worker the whole page shares — so that no component has to assemble an
- * engine settings object, and so the mask's colour convention is stated once.
+ * `client.ts` is the wire protocol: a worker, a request id, and the shapes that
+ * travel. This module is the handful of calls the UI actually makes, with the
+ * engine's settings filled in once rather than at every call site — the settings
+ * a hobbyist's heart is solved with, the mask as an image the engine can
+ * classify, and the one worker the whole of Mal shares. The old generator page
+ * carried the whole settings form in its markup and handed all twenty-odd keys
+ * to every button; here the visitor chooses only what §2 offers them, so the
+ * rest lives here, next to the reason it is what it is.
  *
- * The worker is created on the first call, never at import time: the engine is
- * 3.5 MB of WebAssembly and the paint page must open without it (PAINT.md §8).
+ * The worker is made on first use and kept, never at import time: the engine is
+ * 3.5 MB of WebAssembly and both editor pages must open without it (§8), while
+ * the import dialog calls in every time a corner moves.
+ *
+ * One request at a time is the engine's own rule — `InverseWorker.request`
+ * rejects a second outright — and paint mode has callers that race: the import
+ * dialog's corner search, its debounced preview, and Find snit beside them. So
+ * the queue lives here, next to the worker they share, rather than inside
+ * whichever caller was written first; a caller that had to remember to wait
+ * would meet the engine's raw English refusal instead.
  *
  * ## The mask's round trip
  *
@@ -32,13 +43,23 @@ import {
 	type DesignResult,
 	type DetectedCrops,
 	type PixelsInput,
-	type Point,
 	type PreparedArtwork
 } from '$lib/inverse/client';
 import { MASK_SIZE, type Mask } from '$lib/paint/mask';
 import type { SymmetrySettings } from '$lib/paint/symmetry';
 import type { HeartColors } from '$lib/types/heart';
-import { parseHexColor } from '$lib/utils/heartColors';
+import { toHexColor } from '$lib/utils/heartColors';
+
+// The engine's own error and the code that marks the engine itself as what
+// failed, re-exported so a caller can tell "the engine broke" from "this picture
+// cannot be read" without reaching past this door.
+export { EngineError, ENGINE_UNAVAILABLE } from './client';
+
+/** A decoded picture. Only pixels have corners to look for; SVG arrives as text. */
+export type { PixelsInput };
+
+/** The paper pair as the engine wants it: `[right, left]`, six-digit hex. */
+export type PaperPair = [string, string];
 
 /** Where the classic bootstrap worker lives under `static/`. */
 const WORKER_PATH = 'inverse/worker-bootstrap.js';
@@ -60,13 +81,14 @@ export const MAX_TIME_LIMIT_SECONDS = 180;
 /**
  * Whether the engine is asked to hold the symmetry itself.
  *
- * False until the `paint-engine-symmetry` lane lands (PAINT.md §11). The
- * mapping below is written and tested regardless, so switching this to true is
- * the whole change: `symmetrize` on the mask and `enforce` in the converter stay
- * either way, as the safety net for the MILP route and for Inden i kurve Anti,
- * which the mask cannot express at all.
+ * True since the `paint-engine-symmetry` lane landed on `redesign` (PAINT.md
+ * §11): the fitter takes the symmetry group as part of its target and ties the
+ * control points under it, so the answer is exactly symmetric rather than
+ * corrected afterwards. `symmetrize` on the mask and `enforce` in the converter
+ * stay either way, as the safety net for the traced route and for Inden i kurve
+ * Anti, which the mask cannot express at all.
  */
-export const ENGINE_SYMMETRY = false;
+export const ENGINE_SYMMETRY = true;
 
 /** The engine's own name for a symmetry of the woven square. */
 export type EngineSymmetry = {
@@ -79,13 +101,15 @@ export type EngineSymmetry = {
 };
 
 /**
- * The editor's three rows as the engine's symmetry group (PAINT.md §11).
+ * The editor's three rows as the engine's symmetry group (PAINT.md §11, and
+ * docs/inverse/SYMMETRY.md's own table).
  *
  * The same table `transformsFor` uses on the mask, in the engine's vocabulary:
  * Mellem lapper is the transpose or the anti-transpose, Inden i lap is both
  * mirrors or the half turn, and Inden i kurve is the one row that is not a
  * symmetry of the square at all — it is per cut, so it goes over as its own
- * field.
+ * field. Sym there also sends both mirrors: the mask was painted mirrored, so
+ * the fitter has to be told both.
  */
 export function engineSymmetry(rows: SymmetrySettings): EngineSymmetry {
 	const out: EngineSymmetry = {};
@@ -95,22 +119,36 @@ export function engineSymmetry(rows: SymmetrySettings): EngineSymmetry {
 		out.mirrorX = true;
 		out.mirrorY = true;
 	} else if (rows.lobe === 'anti') out.rotate180 = true;
-	if (rows.curve !== 'off') out.withinCurve = rows.curve;
+	if (rows.curve === 'sym') {
+		out.mirrorX = true;
+		out.mirrorY = true;
+		out.withinCurve = 'sym';
+	} else if (rows.curve === 'anti') out.withinCurve = 'anti';
 	return out;
 }
 
 /** How the engine should read a picture's colours; the dialog's three choices. */
 export type ColourMode = 'auto' | 'red-white-mixture' | 'swatches';
 
+/**
+ * What the import dialog lets the visitor decide about a picture: how its
+ * colours become two, and whether the two are the right way round.
+ *
+ * `mode` is a subset of the engine's own list. Automatic picks between a grey
+ * threshold and a two-cluster fit in Lab; the red-white mixture is the model
+ * that knows a photograph of red and white paper has pixels of both in it; and
+ * swatches is the visitor naming the two colours themselves. Where the woven
+ * square sits in the picture is part of the picture (`ArtworkInput.quad`), not
+ * part of this.
+ */
 export type ImportSettings = {
-	/** The paper colours the heart will be drawn in. */
-	colors: HeartColors;
+	/** The paper the mask will be shown on, which the engine draws its preview with. */
+	paperColors: PaperPair;
 	mode?: ColourMode;
-	/** `[right, left]` for `mode: 'swatches'` — the mask's order, not HeartColors'. */
-	swatches?: [string, string];
+	/** The two colours for `mode: 'swatches'`, as `[right, left]` like `paperColors`. */
+	swatches?: PaperPair;
+	/** "Byt farverne": the engine's own `invert`, applied after the classification. */
 	invert?: boolean;
-	/** The four corners of the woven square in the photo; absent means the whole image. */
-	quad?: Point[];
 };
 
 export type FindSettings = {
@@ -177,31 +215,68 @@ let worker: InverseWorker | null = null;
 
 /** The one worker the page shares, made on demand. */
 function engine(): InverseWorker {
+	// The engine is unbundled under static/, so it is addressed by URL and only
+	// ever loaded in a browser — never at build or SSR time (§1).
 	return (worker ??= new InverseWorker(`${base}/${WORKER_PATH}`));
 }
 
+/** The tail of the queue: every call waits for it, and becomes it. */
+let chain: Promise<unknown> = Promise.resolve();
+
 /**
- * Stop whatever the engine is doing — Afbryd, and leaving the page.
+ * Which round of requests we are on. `cancel` moves it on, and work that was
+ * queued before the move is dropped rather than started: the point of Afbryd is
+ * that the engine stops, not that it starts the next 24-megapixel prepare
+ * nobody is waiting for any more.
+ */
+let epoch = 0;
+
+function queue<T>(work: () => Promise<T>): Promise<T> {
+	const mine = epoch;
+	const run = () =>
+		mine === epoch ? work() : Promise.reject<T>(new DOMException('Cancelled', 'AbortError'));
+	const next = chain.then(run, run);
+	// The tail must not carry a rejection nobody handles; callers see their own.
+	chain = next.catch(() => undefined);
+	return next;
+}
+
+/**
+ * Stop the engine: what it is doing now, and what is waiting behind it.
  *
- * The worker is terminated, which is the only way to interrupt a solve, so the
- * artwork prepared inside it is gone too: the next search has to prepare again.
- * `findCuts` is never called on its own, so that costs nothing.
+ * Terminating the worker is the only interruption there is — a solve is one
+ * long synchronous computation inside it — so the request in flight rejects
+ * with an `AbortError` and the next call builds a fresh worker. Afbryd is this,
+ * and so is closing the import dialog on a prepare the visitor no longer wants.
+ * The artwork prepared inside the worker goes with it, so the next search has
+ * to prepare again; `findCuts` is never called on its own, so that costs
+ * nothing.
  */
 export function cancel(): void {
+	epoch++;
 	worker?.stop();
 }
 
 /** The pair every fallback lands on: the site's own default paper. */
 const DEFAULT_HEX = { left: '#ffffff', right: '#b91313' };
 
-/** Both paper colours as `#rrggbb`, which is the only form the engine accepts. */
-function hexPair(colors: HeartColors): { left: string; right: string } {
-	const left = parseHexColor(colors.left) ?? DEFAULT_HEX.left;
-	const right = parseHexColor(colors.right) ?? DEFAULT_HEX.right;
+/**
+ * Both paper colours as the engine's `[right, left]` pair of `#rrggbb`, which is
+ * the only form it accepts.
+ *
+ * `toHexColor` rather than `parseHexColor`: the site's colour store still spells
+ * its default red `rgb(185, 19, 19)`, and a visitor's own pair comes back from
+ * `<input type="color">` as hex, so both forms reach here.
+ */
+export function paperPair(colors: HeartColors): PaperPair {
+	const left = toHexColor(colors.left, DEFAULT_HEX.left);
+	const right = toHexColor(colors.right, DEFAULT_HEX.right);
 	// Two identical colours are refused by `settings()` with a message about
 	// choosing two different ones, which is true but not about anything the
 	// visitor did here — the site's own pair is never equal.
-	return left === right ? DEFAULT_HEX : { left, right };
+	return left.toLowerCase() === right.toLowerCase()
+		? [DEFAULT_HEX.right, DEFAULT_HEX.left]
+		: [right, left];
 }
 
 /**
@@ -211,7 +286,7 @@ function hexPair(colors: HeartColors): { left: string; right: string } {
  * `prepare`; nothing else should need it.
  */
 export function maskToPixels(mask: Mask, colors: HeartColors): PixelsInput {
-	const { left, right } = hexPair(colors);
+	const [right, left] = paperPair(colors);
 	const channels = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 	const paper = [channels(left), channels(right)];
 	const rgba = new Uint8ClampedArray(mask.data.length * 4);
@@ -234,16 +309,16 @@ export function maskToPixels(mask: Mask, colors: HeartColors): PixelsInput {
  * on the settings the page really sends, not on a copy of them.
  */
 export function maskPrepareSettings(colors: HeartColors): Record<string, unknown> {
-	const { left, right } = hexPair(colors);
+	const pair = paperPair(colors);
 	return {
 		...AUTOMATIC_PRESET,
 		width: DEFAULT_WIDTH_MM,
 		resolution: MASK_SIZE,
-		paperColors: [right, left],
+		paperColors: pair,
 		// The two paper colours are the only two in the image, so nearest-swatch
 		// is exact; `auto` would go looking for a threshold it does not need.
 		mode: 'swatches',
-		swatches: [right, left],
+		swatches: pair,
 		invert: false,
 		// The mask is the visitor's drawing, not a photograph: a stray cell is
 		// something they painted, and cleaning it away would be editing it.
@@ -258,44 +333,74 @@ export function prepareMask(
 	colors: HeartColors,
 	onStage: StageListener = () => {}
 ): Promise<PreparedArtwork> {
-	return engine().request<PreparedArtwork>(
-		'prepare',
-		maskToPixels(mask, colors),
-		maskPrepareSettings(colors),
-		onStage
+	return queue(() =>
+		engine().request<PreparedArtwork>(
+			'prepare',
+			maskToPixels(mask, colors),
+			maskPrepareSettings(colors),
+			onStage
+		)
 	);
 }
 
-/** Classify a picture: the import dialog's preview and its "Brug som maske". */
+/**
+ * Turn a picture into the engine's two-colour target: the import dialog's
+ * preview and its "Brug som maske", and "Prøv stjernen" on the empty page.
+ *
+ * Only the keys preparation reads are sent. The solve settings (time limit,
+ * clearances, matching sheets) belong to Find snit and are none of this call's
+ * business — and one of them, a time limit past 180 seconds, would be rejected
+ * by the engine's own validation before a single pixel was classified.
+ */
 export function prepareImage(
 	input: ArtworkInput,
 	settings: ImportSettings,
 	onStage: StageListener = () => {}
 ): Promise<PreparedArtwork> {
-	const { left, right } = hexPair(settings.colors);
-	const payload: ArtworkInput =
-		input.type === 'pixels' && settings.quad ? { ...input, quad: settings.quad } : input;
-	return engine().request<PreparedArtwork>(
-		'prepare',
-		payload,
-		{
-			...AUTOMATIC_PRESET,
-			width: DEFAULT_WIDTH_MM,
-			resolution: MASK_SIZE,
-			paperColors: [right, left],
-			mode: settings.mode ?? 'auto',
-			swatches: settings.swatches ?? [right, left],
-			invert: settings.invert ?? false,
-			removeSpecks: 0,
-			fillHoles: 0
-		},
-		onStage
+	return queue(() =>
+		engine().request<PreparedArtwork>(
+			'prepare',
+			input,
+			{
+				...AUTOMATIC_PRESET,
+				// The woven square is 100 mm wide and the mask has MASK_SIZE cells to a
+				// side, so the prepared mask arrives at the resolution we paint at.
+				width: DEFAULT_WIDTH_MM,
+				minWidth: DEFAULT_MIN_WIDTH_MM,
+				cutError: 0.25,
+				resolution: MASK_SIZE,
+				paperColors: settings.paperColors,
+				mode: settings.mode ?? 'auto',
+				swatches: settings.swatches ?? settings.paperColors,
+				invert: settings.invert ?? false
+			},
+			onStage
+		)
 	);
 }
 
-/** The four corners of the woven square the engine proposes for a photo. */
+/**
+ * Ask the engine where the woven square is in a photograph.
+ *
+ * `roi` is an optional `[x0, y0, x1, y1]` rectangle in image pixels: the visitor
+ * draws it round one heart when a picture holds several, or when the automatic
+ * search found the wrong thing. The answer's `quad` is four corners in the order
+ * the engine expects everywhere — the top cleft first, then clockwise — so it
+ * can go straight back as `ArtworkInput.quad`.
+ */
 export function detectCorners(input: PixelsInput, roi?: number[]): Promise<DetectedCrops> {
-	return engine().request<DetectedCrops>('detect-crops', { ...input, roi }, {});
+	return queue(() => engine().request<DetectedCrops>('detect-crops', { ...input, roi }, {}));
+}
+
+/**
+ * Re-fit corners the visitor has moved, by searching again around them.
+ *
+ * The engine derives the region of interest from the quadrilateral it is given,
+ * so this is "Find igen" once there is something to refine rather than a blind
+ * second look at the whole picture.
+ */
+export function refineCorners(input: PixelsInput): Promise<DetectedCrops> {
+	return queue(() => engine().request<DetectedCrops>('refine-crop', input, {}));
 }
 
 /**
@@ -311,7 +416,6 @@ export function detectCorners(input: PixelsInput, roi?: number[]): Promise<Detec
  * key, read off the raw object by `core/engine.js`, and never reaches a solve.
  */
 export function solveSettings(settings: FindSettings): Record<string, unknown> {
-	const { left, right } = hexPair(settings.colors);
 	return {
 		...AUTOMATIC_PRESET,
 		width: clampAdvanced('widthMm', settings.widthMm ?? DEFAULT_WIDTH_MM),
@@ -319,7 +423,10 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		cutError: 0.25,
 		timeLimit: MAX_TIME_LIMIT_SECONDS,
 		// "Samme skabelon til begge sider" — the checkbox, which follows Mellem
-		// lapper Sym until the visitor says otherwise.
+		// lapper Sym until the visitor says otherwise. A requested symmetry
+		// overrules it inside `settings()`: the transpose implies matching sheets,
+		// and any other mirror rules them out, because the two families are then
+		// each other's images rather than copies.
 		preferMatchingSheets: settings.matchingSheets ?? settings.symmetry.lobes === 'sym',
 		matchingErrorAllowance: 0.01,
 		earlyStop: false,
@@ -331,10 +438,10 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		materialResolution: 360,
 		trials: 12,
 		requireMaterialCore: true,
-		paperColors: [right, left],
+		paperColors: paperPair(settings.colors),
 		resolution: MASK_SIZE,
-		// Sent only once the engine can hold the symmetry itself; until then the
-		// mask is folded before solving and the cuts corrected afterwards.
+		// The engine holds the symmetry itself where it can (§11); the folded mask
+		// and the converter's `enforce` remain the safety net for the rest.
 		...(ENGINE_SYMMETRY ? { symmetry: engineSymmetry(settings.symmetry) } : {})
 	};
 }
@@ -349,5 +456,7 @@ export function findCuts(
 	settings: FindSettings,
 	onStage: StageListener = () => {}
 ): Promise<DesignResult> {
-	return engine().request<DesignResult>('solve', undefined, solveSettings(settings), onStage);
+	return queue(() =>
+		engine().request<DesignResult>('solve', undefined, solveSettings(settings), onStage)
+	);
 }

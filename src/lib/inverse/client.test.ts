@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { InverseWorker, EngineError, searchTimedOut } from './client';
+import { InverseWorker, ENGINE_UNAVAILABLE, searchTimedOut } from './client';
 
 function harness() {
   const workers: Worker[] = [];
@@ -50,7 +50,9 @@ describe('inverse worker lifecycle', () => {
     const { workers, engine } = harness();
     const request = engine.request('prepare', undefined, {});
     await expect(engine.request('solve', undefined, {})).rejects.toThrow('already working');
-    const rejection = expect(request).rejects.toBeInstanceOf(EngineError);
+    // The code is what tells a UI that the engine itself is what failed, rather
+    // than the engine having something to say about the artwork.
+    const rejection = expect(request).rejects.toMatchObject({ name: 'EngineError', code: ENGINE_UNAVAILABLE });
     workers[0].onerror?.call(workers[0], { message: 'Missing worker asset', preventDefault: vi.fn() } as unknown as ErrorEvent);
     await rejection;
     expect(workers[0].terminate).toHaveBeenCalledOnce();

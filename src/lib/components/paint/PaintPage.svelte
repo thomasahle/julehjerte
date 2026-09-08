@@ -66,11 +66,12 @@
 		type PaintAction,
 		type PaintTool
 	} from '$lib/paint/toolset';
-	import { decodeImageFile, maskFromPrepared } from '$lib/paint/importImage';
+	import { decodeImageFile, maskFromPrepared, type DecodedImage } from '$lib/paint/importImage';
 	import {
 		cancel as cancelEngine,
 		defaultAdvanced,
 		findCuts,
+		paperPair,
 		prepareImage,
 		prepareMask,
 		type AdvancedSettings
@@ -350,15 +351,16 @@
 		if (busy) return;
 		session.status = 'importing';
 		notice = null;
+		let decoded: DecodedImage | null = null;
 		try {
 			const response = await fetch(`${base}/inverse/examples/star.png`);
 			if (!response.ok) throw new Error(`star.png: ${response.status}`);
 			const blob = await response.blob();
-			const pixels = await decodeImageFile(
-				new File([blob], 'star.png', { type: 'image/png' })
-			);
-			// The example is square, so the whole picture is the woven square.
-			const prepared = await prepareImage(pixels, { colors });
+			decoded = await decodeImageFile(new File([blob], 'star.png', { type: 'image/png' }));
+			// The example is square, so the whole picture is the woven square: no
+			// quad, and the colour reading left to the engine, exactly as the dialog
+			// does for a square picture taken whole.
+			const prepared = await prepareImage(decoded.input, { paperColors: paperPair(colors) });
 			const mask = maskFromPrepared(prepared);
 			session.status = 'idle';
 			onImported(mask, detectSymmetry(mask), 'star.png');
@@ -366,6 +368,10 @@
 			console.error('Loading the star example failed', err);
 			session.status = 'idle';
 			notice = t('paintImportFailed', lang);
+		} finally {
+			// The decoder hands back an object URL for showing the picture, which
+			// this path never shows; releasing it is the caller's job either way.
+			if (decoded) URL.revokeObjectURL(decoded.url);
 		}
 	}
 

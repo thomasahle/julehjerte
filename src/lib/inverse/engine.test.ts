@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMask, MASK_SIZE, type Mask } from '$lib/paint/mask';
 import { symmetrize } from '$lib/paint/symmetry';
 import {
@@ -8,7 +8,8 @@ import {
 	engineSymmetry,
 	maskPrepareSettings,
 	maskToPixels,
-	solveSettings
+	solveSettings,
+	type ImportSettings
 } from '$lib/inverse/engine';
 // The engine's own `prepare` — the exact call the worker makes for a 'prepare'
 // request. Importing it here is what makes the round trip below a proof rather
@@ -163,11 +164,22 @@ describe('the settings a search is run with', () => {
 });
 
 describe('engineSymmetry', () => {
-	it('is not sent yet', () => {
-		// PAINT.md §11: the engine lane has not landed, so the bridge folds the
-		// mask and corrects the cuts instead. Flipping this constant is the whole
-		// switch-over, which is why it is pinned rather than assumed.
-		expect(ENGINE_SYMMETRY).toBe(false);
+	it('is sent, now that the engine can hold a symmetry itself', () => {
+		// PAINT.md §11: the `paint-engine-symmetry` lane has landed on redesign, so
+		// the request goes to the fitter rather than being corrected afterwards.
+		// The constant is pinned rather than assumed because it decides which of
+		// two very different routes a search takes.
+		expect(ENGINE_SYMMETRY).toBe(true);
+		const asked = solveSettings({
+			colors: COLORS,
+			symmetry: { curve: 'off', lobe: 'off', lobes: 'sym' }
+		});
+		expect(asked.symmetry).toEqual({ transpose: true });
+		// And the engine really reads it: `settings()` normalises the request and
+		// lets the transpose decide the matching sheets for us.
+		const cfg = engineSettings(asked);
+		expect(cfg.symmetry).toMatchObject({ transpose: true, mirrorX: false, withinCurve: 'off' });
+		expect(cfg.preferMatchingSheets).toBe(true);
 	});
 
 	it('maps Mellem lapper to the transpose and the anti-transpose', () => {
@@ -190,9 +202,13 @@ describe('engineSymmetry', () => {
 	});
 
 	it('passes Inden i kurve through as its own field', () => {
-		// The one row that is not a symmetry of the square: it holds per cut, so
-		// there is nothing on the mask it could become.
+		// The one row that is not a symmetry of the square: it holds per cut. Sym
+		// still sends both mirrors, because the mask was painted mirrored and the
+		// fitter has to be told both (docs/inverse/SYMMETRY.md's table); Anti has
+		// no image on the mask at all, so it travels alone.
 		expect(engineSymmetry({ curve: 'sym', lobe: 'off', lobes: 'off' })).toEqual({
+			mirrorX: true,
+			mirrorY: true,
 			withinCurve: 'sym'
 		});
 		expect(engineSymmetry({ curve: 'anti', lobe: 'off', lobes: 'off' })).toEqual({
@@ -211,5 +227,169 @@ describe('engineSymmetry', () => {
 			mirrorY: true,
 			withinCurve: 'sym'
 		});
+	});
+});
+/*
+ * The engine's door is mostly settings, which the engine itself checks. What is
+ * ours to get right is the traffic: one request at a time, in the order it was
+ * asked for, and a cancel that stops the work rather than the caller's interest
+ * in it. Both are module state shared by every caller, so each test starts from
+ * a fresh module and a fresh fake worker.
+ */
+
+type FakeWorker = {
+	postMessage: ReturnType<typeof vi.fn>;
+	terminate: ReturnType<typeof vi.fn>;
+	onmessage: ((event: MessageEvent) => void) | null;
+};
+
+let workers: FakeWorker[] = [];
+
+/** Let the queue's promises settle, so what has been sent is what will be sent. */
+const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+/**
+ * Answer the request a worker was given, by its own id: `InverseWorker` ignores
+ * a message whose id is not the one it is waiting for, and a stopped worker
+ * leaves a gap in the numbering.
+ */
+function reply(worker: FakeWorker, call: number, data: Record<string, unknown>): void {
+	const sent = worker.postMessage.mock.calls[call]![0] as { id: number };
+	worker.onmessage?.({ data: { ...data, id: sent.id } } as MessageEvent);
+}
+
+const SETTINGS: ImportSettings = {
+	mode: 'auto',
+	swatches: ['#b91313', '#ffffff'],
+	invert: false,
+	paperColors: ['#b91313', '#ffffff']
+};
+
+const PICTURE = {
+	type: 'pixels' as const,
+	rgba: new Uint8ClampedArray(4),
+	imageWidth: 1,
+	imageHeight: 1
+};
+
+describe('the engine door', () => {
+	// Only these tests need a worker, so only these tests get a fake one — the
+	// settings above are pure arithmetic and the round trip runs the engine's own
+	// code in this thread.
+	beforeEach(() => {
+		workers = [];
+		vi.resetModules();
+		vi.stubGlobal(
+			'Worker',
+			class {
+				postMessage = vi.fn();
+				terminate = vi.fn();
+				onmessage: ((event: MessageEvent) => void) | null = null;
+				onerror: ((event: ErrorEvent) => void) | null = null;
+				onmessageerror: (() => void) | null = null;
+				constructor() {
+					workers.push(this as unknown as FakeWorker);
+				}
+			}
+		);
+	});
+
+	it('makes a second caller wait instead of meeting the engine’s refusal', async () => {
+		const { prepareImage, detectCorners } = await import('./engine');
+		// The dialog's debounced preview and its corner search race exactly like
+		// this, and `InverseWorker.request` rejects the second outright.
+		const prepared = prepareImage({ type: 'svg', text: '<svg/>' }, SETTINGS);
+		const corners = detectCorners(PICTURE);
+		await settle();
+		expect(workers).toHaveLength(1);
+		expect(workers[0]!.postMessage).toHaveBeenCalledTimes(1);
+
+		reply(workers[0]!, 0, { type: 'prepared', preview: 'the mask' });
+		await expect(prepared).resolves.toBe('the mask');
+		await settle();
+		expect(workers[0]!.postMessage).toHaveBeenCalledTimes(2);
+		reply(workers[0]!, 1, { type: 'crops', crops: 'the corners' });
+		await expect(corners).resolves.toBe('the corners');
+	});
+
+	it('lets the next caller through when the one before it failed', async () => {
+		const { prepareImage, detectCorners } = await import('./engine');
+		const prepared = prepareImage({ type: 'svg', text: '<svg/>' }, SETTINGS);
+		const corners = detectCorners(PICTURE);
+		await settle();
+		reply(workers[0]!, 0, { type: 'error', message: 'Billedet kunne ikke læses' });
+		await expect(prepared).rejects.toMatchObject({ name: 'EngineError' });
+		await settle();
+		reply(workers[0]!, 1, { type: 'crops', crops: 'the corners' });
+		await expect(corners).resolves.toBe('the corners');
+	});
+
+	it('stops the work in flight and drops what was queued behind it', async () => {
+		const { prepareImage, detectCorners, cancel } = await import('./engine');
+		const prepared = prepareImage({ type: 'svg', text: '<svg/>' }, SETTINGS);
+		const corners = detectCorners(PICTURE);
+		await settle();
+
+		cancel();
+		await expect(prepared).rejects.toMatchObject({ name: 'AbortError' });
+		await expect(corners).rejects.toMatchObject({ name: 'AbortError' });
+		expect(workers[0]!.terminate).toHaveBeenCalledOnce();
+		// The point of stopping: the queued request must not start a fresh worker
+		// on a 24-megapixel prepare nobody is waiting for any more.
+		expect(workers).toHaveLength(1);
+		expect(workers[0]!.postMessage).toHaveBeenCalledTimes(1);
+	});
+
+	it('builds a new worker for the next request after a cancel', async () => {
+		const { prepareImage, cancel } = await import('./engine');
+		const stopped = prepareImage({ type: 'svg', text: '<svg/>' }, SETTINGS);
+		await settle();
+		cancel();
+		await expect(stopped).rejects.toMatchObject({ name: 'AbortError' });
+
+		const again = prepareImage({ type: 'svg', text: '<svg/>' }, SETTINGS);
+		await settle();
+		expect(workers).toHaveLength(2);
+		reply(workers[1]!, 0, { type: 'prepared', preview: 'the mask' });
+		await expect(again).resolves.toBe('the mask');
+	});
+
+	it('sends the mask resolution and the visitor’s colour choices, and no solve settings', async () => {
+		const { prepareImage } = await import('./engine');
+		const { MASK_SIZE } = await import('$lib/paint/mask');
+		void prepareImage({ type: 'svg', text: '<svg/>' }, { ...SETTINGS, invert: true });
+		await settle();
+		const [message] = workers[0]!.postMessage.mock.calls[0] as [
+			{ action: string; settings: Record<string, unknown> }
+		];
+		expect(message.action).toBe('prepare');
+		expect(message.settings).toMatchObject({ resolution: MASK_SIZE, mode: 'auto', invert: true });
+		// A time limit past 180 seconds is refused by the engine's own validation
+		// before a pixel is classified, and preparing has no use for one anyway.
+		expect(message.settings.timeLimit).toBeUndefined();
+	});
+
+	it('holds Find snit in the same queue as the dialog', async () => {
+		// The two lanes met here: the dialog's prepare and the page's search share
+		// one worker, so a search started while a preview is in flight has to wait
+		// rather than be refused. It is also why a prepare and its solve stay in
+		// order — the solve reads the artwork the prepare left inside the worker.
+		const { findCuts, prepareMask } = await import('./engine');
+		const { createMask } = await import('$lib/paint/mask');
+		const prepared = prepareMask(createMask(0), COLORS);
+		const cuts = findCuts({ colors: COLORS, symmetry: NO_SYMMETRY });
+		await settle();
+		expect(workers).toHaveLength(1);
+		expect(workers[0]!.postMessage).toHaveBeenCalledTimes(1);
+		expect((workers[0]!.postMessage.mock.calls[0]![0] as { action: string }).action).toBe(
+			'prepare'
+		);
+
+		reply(workers[0]!, 0, { type: 'prepared', preview: 'the mask' });
+		await expect(prepared).resolves.toBe('the mask');
+		await settle();
+		expect((workers[0]!.postMessage.mock.calls[1]![0] as { action: string }).action).toBe('solve');
+		reply(workers[0]!, 1, { type: 'result', result: 'the cuts' });
+		await expect(cuts).resolves.toBe('the cuts');
 	});
 });

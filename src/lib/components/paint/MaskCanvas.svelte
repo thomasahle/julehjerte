@@ -25,6 +25,7 @@
 	import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from '$lib/paint/mask';
 	import { applySymmetric, floodFill, rect, stroke } from '$lib/paint/tools';
 	import { transformsFor, type SymmetrySettings } from '$lib/paint/symmetry';
+	import { colourChannels } from '$lib/paint/drawHeart';
 	import { fitHeart, insideSquare, toMask, type HeartLayout, type Pt } from '$lib/paint/heartLayout';
 	import { shortcutFor, type PaintAction, type PaintTool } from '$lib/paint/toolset';
 
@@ -78,6 +79,12 @@
 	/** Air between the heart and the edges of the drawing band. */
 	const PADDING = 24;
 
+	/** The site's own paper, as the last resort of `channels` below. */
+	const FALLBACK_PAPER = {
+		left: Uint8ClampedArray.of(255, 255, 255, 255),
+		right: Uint8ClampedArray.of(185, 19, 19, 255)
+	};
+
 	let boxEl = $state.raw<HTMLDivElement | null>(null);
 	let canvasEl = $state.raw<HTMLCanvasElement | null>(null);
 	let boxWidth = $state(0);
@@ -91,7 +98,10 @@
 
 	let layout = $derived<HeartLayout>(fitHeart(boxWidth, boxHeight, PADDING));
 	let transforms = $derived(transformsFor(symmetry));
-	let paper = $derived([channels(colors.left), channels(colors.right)]);
+	let paper = $derived([
+		channels(colors.left, FALLBACK_PAPER.left),
+		channels(colors.right, FALLBACK_PAPER.right)
+	]);
 
 	// The gesture in progress. `preview` is the line or rectangle being dragged,
 	// drawn over the mask until the pointer comes up and it is committed.
@@ -118,18 +128,14 @@
 		return chrome;
 	}
 
-	/** A CSS colour as RGB channels, through the browser's own parser. */
-	function channels(colour: string): number[] {
-		if (typeof document === 'undefined') return [0, 0, 0];
-		const probe = document.createElement('canvas').getContext('2d');
-		if (!probe) return [0, 0, 0];
-		probe.fillStyle = colour;
-		const value = probe.fillStyle;
-		if (typeof value === 'string' && value.startsWith('#')) {
-			return [1, 3, 5].map((i) => parseInt(value.slice(i, i + 2), 16));
-		}
-		const parts = String(value).match(/\d+(?:\.\d+)?/g);
-		return parts ? parts.slice(0, 3).map((v) => Math.round(Number(v))) : [0, 0, 0];
+	/**
+	 * The paper a colour is painted with, or the site's own when it cannot be
+	 * read — on the server, or for a colour the browser refuses. The mask has to
+	 * be drawn in *something*, and two hearts in the wrong shade of red are
+	 * better than a hole in the diamond.
+	 */
+	function channels(colour: string, fallback: Uint8ClampedArray): Uint8ClampedArray {
+		return colourChannels(colour) ?? fallback;
 	}
 
 	/** The value the current tool lays down. */
