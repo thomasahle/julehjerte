@@ -83,19 +83,6 @@ export function applyTransform(
 	return mapPoint(ELEMENTS[t], x, y, size);
 }
 
-/** The mask transformed under one named transform, as a new mask. */
-export function transformMask(m: Mask, t: Transform): Mask {
-	const e = ELEMENTS[t];
-	const out = new Uint8Array(m.data.length);
-	for (let y = 0; y < m.size; y++) {
-		for (let x = 0; x < m.size; x++) {
-			const p = mapPoint(e, x, y, m.size);
-			out[p.y * m.size + p.x] = m.data[y * m.size + x]!;
-		}
-	}
-	return { size: m.size, data: out };
-}
-
 /** The fraction of cells that disagree with their image under `t`; 0 means exactly symmetric. */
 export function disagreement(m: Mask, t: Transform): number {
 	const e = ELEMENTS[t];

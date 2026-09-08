@@ -82,12 +82,6 @@ export function get(m: Mask, x: number, y: number): 0 | 1 {
 	return m.data[y * m.size + x] ? 1 : 0;
 }
 
-/** Write a cell; positions outside the mask are dropped. */
-export function set(m: Mask, x: number, y: number, value: 0 | 1): void {
-	if (x < 0 || y < 0 || x >= m.size || y >= m.size) return;
-	m.data[y * m.size + x] = value;
-}
-
 /**
  * Nearest-neighbour resize of raw cells. The engine may answer at a lower
  * resolution than ours, and the mask is two-colour, so interpolation would only

@@ -10,7 +10,6 @@ import {
 	MASK_SIZE,
 	packMask,
 	resample,
-	set,
 	unionBox,
 	unpackMask
 } from './mask';
@@ -32,16 +31,17 @@ describe('createMask', () => {
 	});
 });
 
-describe('get and set', () => {
-	it('treat everything outside the square as the left colour, and drop writes there', () => {
+describe('get', () => {
+	it('treats everything outside the square as the left colour', () => {
+		// Tools ask about neighbours without checking the edge first, so reading past
+		// it has to answer the background rather than wrap to the other side.
 		const m = createMask(0, 8);
-		set(m, 3, 4, 1);
+		m.data[4 * 8 + 3] = 1;
 		expect(get(m, 3, 4)).toBe(1);
 		expect(get(m, -1, 4)).toBe(0);
 		expect(get(m, 8, 4)).toBe(0);
-		set(m, -1, 4, 1);
-		set(m, 8, 4, 1);
-		expect(m.data.filter((v) => v === 1).length).toBe(1);
+		expect(get(m, 3, -1)).toBe(0);
+		expect(get(m, 3, 8)).toBe(0);
 	});
 });
 

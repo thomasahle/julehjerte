@@ -7,7 +7,6 @@ import {
 	disagreement,
 	NO_SYMMETRY,
 	symmetrize,
-	transformMask,
 	transformsFor,
 	type SymmetrySettings,
 	type Transform
@@ -269,20 +268,5 @@ describe('symmetrize', () => {
 		for (const [x, y] of quarters(2, 2)) expect(get(m, x!, y!)).toBe(1);
 		for (const [x, y] of quarters(3, 1)) expect(get(m, x!, y!)).toBe(0);
 		for (const [x, y] of quarters(1, 2)) expect(get(m, x!, y!)).toBe(1);
-	});
-});
-
-describe('transformMask', () => {
-	it('agrees with applyTransform cell by cell', () => {
-		const m = noisyMask(16, 19);
-		for (const t of NAMED) {
-			const moved = transformMask(m, t);
-			for (let y = 0; y < m.size; y++) {
-				for (let x = 0; x < m.size; x++) {
-					const p = applyTransform(t, x, y, m.size);
-					expect(get(moved, p.x, p.y)).toBe(get(m, x, y));
-				}
-			}
-		}
 	});
 });
