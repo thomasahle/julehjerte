@@ -15,6 +15,10 @@ import {
 } from '../../static/inverse/core/direct/symmetry.js';
 import { matchingGroups, projectMatching } from '../../static/inverse/core/direct/matching.js';
 import { gridModel, gridPaths } from '../../static/inverse/core/direct/grid.js';
+import { initializeGrid } from '../../static/inverse/core/direct/initialize.js';
+import { refineCurves } from '../../static/inverse/core/direct/refine.js';
+import { loadBoundaryKernel } from '../../static/inverse/core/direct/native.js';
+import { resize } from '../../static/inverse/core/direct/math.js';
 import { CurveGraph } from '../../static/inverse/core/direct/curves.js';
 import { curvesOf, loadSolutionJSON } from '../../static/inverse/core/graph.js';
 import { sampleWeave } from '../../static/inverse/core/validate.js';
@@ -116,19 +120,52 @@ async function examplePixels(file, size) {
 }
 
 const STAR_SIZE = 200;
+const STAR_BASE = { ...DIRECT_PRESET, resolution: STAR_SIZE, trials: 0, roundHidden: false };
 const starRuns = new Map();
 /** The star example prepared the way the browser's fit-curves-to-image mode
- * prepares it. Fits are memoized: the unconstrained run is the baseline of the
- * constrained ones. */
+ * prepares it, then fitted end to end. Memoized per request. These runs are
+ * budgeted in wall-clock time, so only assertions that hold for any number of
+ * gradient steps — which symmetry the result has — belong on them. */
 async function starFit(symmetry) {
   const key = JSON.stringify(symmetry);
   if (!starRuns.has(key)) {
     const input = await examplePixels('static/inverse/examples/star.png', STAR_SIZE);
-    const cfg = { ...DIRECT_PRESET, resolution: STAR_SIZE, timeLimit: 6, trials: 0, roundHidden: false, symmetry };
+    const cfg = { ...STAR_BASE, timeLimit: 6, symmetry };
     const prepared = prepare(input, cfg);
     starRuns.set(key, design(prepared.target, cfg).then((result) => ({ result, prepared })));
   }
   return starRuns.get(key);
+}
+
+const REFINE_SIZE = 128, REFINE_STEPS = 150;
+let starSeeding = null;
+/** The star's classified target and one fixed initial grid. Comparing the cost
+ * of a constraint needs both fits to do the same work, which a time budget
+ * cannot promise on a loaded machine: refinement from this seed takes a fixed
+ * step count and no deadline, so it is a pure function of its arguments. The
+ * boundary kernel is loaded first, because it is chosen per process and both
+ * runs have to use the same one. */
+async function starSeed() {
+  starSeeding ??= (async () => {
+    await loadBoundaryKernel();
+    const prepared = prepare(await examplePixels('static/inverse/examples/star.png', STAR_SIZE), STAR_BASE);
+    const source = prepared.target.sourceImage, classified = source.probability;
+    return {
+      target: prepared.target,
+      prob: resize(classified, source.resolution, REFINE_SIZE),
+      seed: initializeGrid(classified, source.resolution, [4, 4], 1, { scoreResolution: 96 })
+    };
+  })();
+  return starSeeding;
+}
+/** Refine that one seed against that one target for that one step count, with
+ * nothing but the symmetry request changed. */
+async function equalWorkFit(symmetry) {
+  const { target, prob, seed } = await starSeed(), cfg = settings({ ...STAR_BASE, symmetry });
+  const graph = new CurveGraph(gridPaths(seed.model, cfg.width, seed.floor), cfg.width);
+  const fit = refineCurves(graph, prob, REFINE_SIZE, seed.phase, { ...cfg, preferMatchingSheets: false },
+    { steps: REFINE_STEPS, rate: 0.035, input: target });
+  return { error: fit.error, report: symmetryReport(graph.solution(fit.points, seed.phase, target), cfg.symmetry) };
 }
 
 test('requested symmetries are validated and reconciled with the sheet preference', () => {
@@ -202,10 +239,8 @@ test('the orbit closes the requested generators and averages the picture over it
   assert.deepEqual([...mean.slice(0, 4)], [1.5, 1.5, 1.5, 1.5]);
 });
 
-test('the star example keeps its transposed symmetry exactly and loses no accuracy', { timeout: 60000 }, async () => {
-  const free = await starFit(null);
+test('the star example exports exactly transposed cuts', { timeout: 60000 }, async () => {
   const tied = await starFit({ transpose: true });
-  assert.deepEqual(free.result.report.symmetry, { requested: [], honoured: [], maxDeviationMm: null });
   assert.deepEqual(tied.result.report.symmetry.requested, ['transpose']);
   assert.deepEqual(tied.result.report.symmetry.honoured, ['transpose']);
   assert.ok(tied.result.report.symmetry.maxDeviationMm < TOLERANCE);
@@ -213,12 +248,9 @@ test('the star example keeps its transposed symmetry exactly and loses no accura
   const { cuts, width } = exportedCuts(tied.result.files);
   assert.ok(cuts[0].length > 0 && cuts[1].length > 0);
   assert.ok(deviationOf(cuts, width, 'transpose') < TOLERANCE, 'exported cuts must be transpose-symmetric');
-
-  const gap = tied.result.report.imageError.mismatchFraction - free.result.report.imageError.mismatchFraction;
-  assert.ok(gap <= 0.01, `constrained fit costs ${(100 * gap).toFixed(2)} percentage points`);
 });
 
-test('the star example also fits both mirrors exactly, at a measured cost', { timeout: 60000 }, async () => {
+test('the star example also fits both mirrors exactly', { timeout: 60000 }, async () => {
   const requested = { mirrorX: true, mirrorY: true, transpose: true };
   const { result } = await starFit(requested);
   const symmetry = result.report.symmetry;
@@ -228,10 +260,23 @@ test('the star example also fits both mirrors exactly, at a measured cost', { ti
   const { cuts, width } = exportedCuts(result.files);
   for (const name of symmetry.requested)
     assert.ok(deviationOf(cuts, width, name) < TOLERANCE, `exported cuts must satisfy ${name}`);
-  // The drawing itself is transposed but not mirrored: mirroring is a real
-  // constraint here, so the fit pays for it and the error stays measured.
-  const free = await starFit(null);
-  assert.ok(result.report.imageError.mismatchFraction > free.result.report.imageError.mismatchFraction);
+});
+
+test('the transposed constraint is free on the star and the mirrors are not', { timeout: 60000 }, async () => {
+  const free = await equalWorkFit(null), tied = await equalWorkFit({ transpose: true });
+  const mirrored = await equalWorkFit({ mirrorX: true, mirrorY: true, transpose: true });
+  assert.deepEqual(free.report, { requested: [], honoured: [], maxDeviationMm: null });
+  assert.deepEqual(tied.report.honoured, ['transpose']);
+  assert.deepEqual(mirrored.report.honoured, ['mirrorX', 'mirrorY', 'transpose']);
+  assert.ok(tied.report.maxDeviationMm < TOLERANCE && mirrored.report.maxDeviationMm < TOLERANCE);
+  // Same seed, same target, same number of gradient steps, so this compares the
+  // constraint and not two time budgets. Measured: 4.68% free, 0.74% with the
+  // transposition the drawing already has, 9.20% with both mirrors added.
+  const gap = tied.error - free.error;
+  assert.ok(gap <= 0.01, `the transposed fit costs ${(100 * gap).toFixed(2)} percentage points`);
+  // The drawing is transposed but not mirrored: mirroring is a real constraint
+  // here, so the fit pays for it and the cost stays measured, never hidden.
+  assert.ok(mirrored.error > free.error);
 });
 
 test('an asymmetric drawing with mirrorX fits the orbit mean, not the original', { timeout: 60000 }, async () => {
