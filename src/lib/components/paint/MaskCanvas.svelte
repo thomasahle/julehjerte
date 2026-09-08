@@ -573,6 +573,18 @@
 		schedule();
 	}
 
+	/**
+	 * Put a floating patch down from outside the canvas.
+	 *
+	 * A press anywhere on the page already commits, but a button activated from the
+	 * keyboard never goes near a pointer — so the page calls this before it acts on
+	 * the mask (Find snit, Ryd, an import), or the visitor's move would be searched
+	 * past and then dropped with the canvas.
+	 */
+	export function commitSelection(): void {
+		if (selection) endSelection();
+	}
+
 	/** The selection tool's own gestures; the painting tools never reach this. */
 	function selectPointerDown(event: PointerEvent, point: Pt): void {
 		if (!mask) return;
@@ -761,6 +773,22 @@
 		endSelection();
 	}
 
+	/**
+	 * Whether a keystroke is the canvas's to take, or belongs to something the
+	 * visitor has tabbed to.
+	 *
+	 * Enter on a focused button has to press the button: a floating marquee that
+	 * claims Enter unconditionally swallows the first press of every control on the
+	 * page for as long as it is on screen, and nothing says why.
+	 */
+	function ours(node: EventTarget | null): boolean {
+		// The window itself, which is what a keystroke with nothing focused reports.
+		if (!(node instanceof Element)) return true;
+		if (node === document.body) return true;
+		if (boxEl?.contains(node)) return true;
+		return !node.closest('a[href], button, input, select, textarea, [tabindex], [role="button"]');
+	}
+
 	function onKeyDown(event: KeyboardEvent): void {
 		if (disabled || keyboardBusy) return;
 		const target = event.target as HTMLElement | null;
@@ -771,7 +799,7 @@
 		// A floating selection owns these four keys, and only while it floats: Enter
 		// and Escape mean nothing else on this page, and Backspace would otherwise
 		// walk the browser back a page while the visitor thinks they are erasing.
-		if (selection) {
+		if (selection && ours(event.target)) {
 			if (event.key === 'Enter') {
 				event.preventDefault();
 				endSelection();

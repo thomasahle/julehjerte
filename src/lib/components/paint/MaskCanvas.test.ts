@@ -62,6 +62,7 @@ type Harness = {
 	canvas: HTMLCanvasElement;
 	edits: number;
 	setTool: (tool: PaintTool) => void;
+	commitSelection: () => void;
 	cell: (x: number, y: number) => number;
 	cleanup: () => void;
 };
@@ -114,6 +115,10 @@ function render(
 		},
 		setTool: (tool: PaintTool) => {
 			component.setTool(tool);
+			flushSync();
+		},
+		commitSelection: () => {
+			component.commitSelection();
 			flushSync();
 		},
 		cell: (x: number, y: number) => mask.data[y * SIZE + x]!,
@@ -380,6 +385,18 @@ describe('Markér', () => {
 		expect(c.edits).toBe(1);
 	});
 
+	it('puts the selection down when the page asks, for a button pressed by key', () => {
+		const c = withBlock();
+		drag(c.canvas, [5, 5], [13, 13]);
+		drag(c.canvas, [8, 8], [28, 8]);
+		// Space on a focused Find snit never goes near a pointer, so the page calls
+		// this before it hands the mask to the engine.
+		c.commitSelection();
+		expect(c.cell(8, 8)).toBe(0);
+		expect(c.cell(28, 8)).toBe(1);
+		expect(c.edits).toBe(1);
+	});
+
 	it('mirrors a moved patch under an active symmetry instead of blanking the mask', () => {
 		// Mellem lapper Sym is the transpose, so the block and its image are both
 		// drawn: the mask has to be symmetric before an edit is spread.
@@ -404,5 +421,22 @@ describe('Markér', () => {
 		expect(c.mask.data.reduce((n, v) => n + v, 0)).toBe(ink);
 		expect(c.cell(18, 8)).toBe(1);
 		expect(c.cell(8, 18)).toBe(1);
+	});
+
+	it('leaves Enter to a button the visitor has tabbed to', () => {
+		const c = withBlock();
+		drag(c.canvas, [5, 5], [13, 13]);
+		drag(c.canvas, [8, 8], [28, 8]);
+		const button = document.createElement('button');
+		document.body.appendChild(button);
+		button.focus();
+
+		const event = press('Enter', { on: button });
+
+		// The button gets its own press, and the patch is still floating.
+		expect(event.defaultPrevented).toBe(false);
+		expect(c.cell(8, 8)).toBe(1);
+		expect(c.edits).toBe(0);
+		button.remove();
 	});
 });

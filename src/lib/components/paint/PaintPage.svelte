@@ -98,6 +98,8 @@
 	let headerEl = $state.raw<HTMLElement | null>(null);
 	let pageEl = $state.raw<HTMLDivElement | null>(null);
 	let helpButtonEl = $state.raw<HTMLButtonElement | null>(null);
+	/** The canvas being painted on, for `settle()` below. */
+	let maskCanvas = $state.raw<ReturnType<typeof MaskCanvas> | null>(null);
 
 	let tool = $state<PaintTool>('pen');
 	let brushSize = $state<BrushSize>('medium');
@@ -285,6 +287,18 @@
 		if (next) restore(next);
 	}
 
+	/**
+	 * Put a floating Markér patch down before the page acts on the mask.
+	 *
+	 * The canvas commits on a press anywhere off itself, which covers the mouse.
+	 * Space or Enter on a focused button never goes near a pointer, so Find snit,
+	 * Ryd and an import ask for the mask the visitor is looking at instead of the
+	 * one it was before the move — which would otherwise be lost with no undo.
+	 */
+	function settle(): void {
+		maskCanvas?.commitSelection();
+	}
+
 	function onShortcut(action: PaintAction): void {
 		if (action.kind === 'tool') tool = action.tool;
 		else if (action.kind === 'swapColour') paintValue = paintValue ? 0 : 1;
@@ -310,6 +324,7 @@
 	// -------------------------------------------------------- replacing the mask
 
 	function askToClear(): void {
+		settle();
 		if (maskEmpty) return;
 		confirming = 'clear';
 	}
@@ -335,6 +350,11 @@
 		revision++;
 	}
 
+	function openImport(): void {
+		settle();
+		showImport = true;
+	}
+
 	/** The dialog's answer. A mask with unsaved strokes is confirmed away first. */
 	function onImported(mask: Mask, found: SymmetrySettings, source = 'image'): void {
 		if (session.maskDirty && !maskEmpty) {
@@ -358,6 +378,7 @@
 	 */
 	async function tryStar(): Promise<void> {
 		if (busy) return;
+		settle();
 		session.status = 'importing';
 		notice = null;
 		let decoded: DecodedImage | null = null;
@@ -410,6 +431,7 @@
 	}
 
 	async function find(): Promise<void> {
+		settle();
 		const mask = session.mask;
 		if (!mask || maskEmpty || busy) return;
 		notice = null;
@@ -641,6 +663,7 @@
 						</button>
 					{:else}
 						<MaskCanvas
+							bind:this={maskCanvas}
 							{lang}
 							mask={session.mask}
 							{colors}
@@ -662,7 +685,7 @@
 									<button
 										type="button"
 										class="btn btn-sm btn-outline"
-										onclick={() => (showImport = true)}
+										onclick={openImport}
 										disabled={busy}
 									>
 										{t('paintImportImage', lang)}
@@ -776,7 +799,7 @@
 							{canRedo}
 							onUndo={undo}
 							onRedo={redo}
-							onImport={() => (showImport = true)}
+							onImport={openImport}
 							onClear={askToClear}
 							clearDisabled={maskEmpty}
 							disabled={busy || showingResult}

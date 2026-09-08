@@ -13,6 +13,8 @@
 
 	let { tool, ...rest }: ComponentProps<typeof MaskCanvas> = $props();
 
+	let canvas = $state.raw<ReturnType<typeof MaskCanvas> | null>(null);
+
 	// The prop is the starting tool and nothing more — `setTool` is how it moves
 	// afterwards — so capturing it once is exactly what is wanted here.
 	// svelte-ignore state_referenced_locally
@@ -22,6 +24,11 @@
 	export function setTool(next: PaintTool): void {
 		current = next;
 	}
+
+	/** What the page calls before it acts on the mask; see `commitSelection`. */
+	export function commitSelection(): void {
+		canvas?.commitSelection();
+	}
 </script>
 
-<MaskCanvas {...rest} tool={current} />
+<MaskCanvas bind:this={canvas} {...rest} tool={current} />
