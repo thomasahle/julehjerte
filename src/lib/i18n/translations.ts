@@ -214,6 +214,7 @@ export const translations = {
     paintReplaceMaskTitle: 'Erstat masken?',
     paintReplaceMaskPrompt: 'Du er i gang med at male på en maske. Tager du hjertet med over i Mal, bliver den erstattet.',
     paintReplaceMaskConfirm: 'Erstat masken',
+    paintEngineLicences: 'Motorens licenser',
 
     // Editor help dialog
     helpOpenAriaLabel: 'Hjælp',
@@ -514,6 +515,7 @@ export const translations = {
     paintReplaceMaskTitle: 'Replace the mask?',
     paintReplaceMaskPrompt: 'You are painting on a mask right now. Taking this heart into Paint replaces it.',
     paintReplaceMaskConfirm: 'Replace the mask',
+    paintEngineLicences: 'Engine licences',
 
     // Editor help dialog
     helpOpenAriaLabel: 'Help',
