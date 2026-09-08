@@ -4,6 +4,8 @@ The engine runs in the editor's paint mode, `/editor/mal/` and `/en/editor/paint
 
 Run `npm run test:inverse:paint:browser` against the built app for the actual Paint → Draw → export flow. This checks the final editable geometry as well as the worker's result. The older browser harnesses navigate to the retired `/generate/` page and are historical evidence, not tests of the current UI.
 
+[COUNT-STRATEGIES.md](COUNT-STRATEGIES.md) compares count initialization on the frozen photo dataset, separating the cost of finding initial grids from complete solve time and measured reconstruction quality.
+
 ## Historical integration notes
 
 The sections below record earlier releases and experiments. Their standalone-page controls, browser commands and deployment instructions refer to those releases.

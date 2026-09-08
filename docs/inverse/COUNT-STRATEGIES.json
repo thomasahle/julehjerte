@@ -1,0 +1,5163 @@
+{
+  "screen": {
+    "cases": 91,
+    "repetitions": 2,
+    "policies": [
+      {
+        "policy": "all",
+        "runs": 182,
+        "medianSeconds": 1.067603979000014,
+        "medianPairedTimeRatio": 1,
+        "identicalSeeds": 182,
+        "baselineBestRetained": 182,
+        "baselineFinalistsRetained": 182,
+        "failures": [],
+        "misses": []
+      },
+      {
+        "policy": "border-consensus",
+        "runs": 182,
+        "medianSeconds": 0.9082189584999869,
+        "medianPairedTimeRatio": 0.801481074449488,
+        "identicalSeeds": 100,
+        "baselineBestRetained": 174,
+        "baselineFinalistsRetained": 100,
+        "failures": [],
+        "misses": [
+          {
+            "id": "hjfig-05",
+            "repeat": 0,
+            "scoreChange": 0.015486572265625012,
+            "old": [
+              5,
+              5
+            ],
+            "next": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "hjfig-05-shift-x1",
+            "repeat": 0,
+            "scoreChange": 0.021025512695312512,
+            "old": [
+              5,
+              5
+            ],
+            "next": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "hjfla-01",
+            "repeat": 0,
+            "scoreChange": 0.002989624023437512,
+            "old": [
+              5,
+              5
+            ],
+            "next": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "danish-tree-green",
+            "repeat": 0,
+            "scoreChange": 0.01418847656250001,
+            "old": [
+              5,
+              5
+            ],
+            "next": [
+              3,
+              3
+            ]
+          },
+          {
+            "id": "hjfig-05",
+            "repeat": 1,
+            "scoreChange": 0.015486572265625012,
+            "old": [
+              5,
+              5
+            ],
+            "next": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "hjfig-05-shift-x1",
+            "repeat": 1,
+            "scoreChange": 0.021025512695312512,
+            "old": [
+              5,
+              5
+            ],
+            "next": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "hjfla-01",
+            "repeat": 1,
+            "scoreChange": 0.002989624023437512,
+            "old": [
+              5,
+              5
+            ],
+            "next": [
+              4,
+              4
+            ]
+          },
+          {
+            "id": "danish-tree-green",
+            "repeat": 1,
+            "scoreChange": 0.01418847656250001,
+            "old": [
+              5,
+              5
+            ],
+            "next": [
+              3,
+              3
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "race",
+        "runs": 182,
+        "medianSeconds": 0.6588324789999751,
+        "medianPairedTimeRatio": 0.6418371151843132,
+        "identicalSeeds": 0,
+        "baselineBestRetained": 180,
+        "baselineFinalistsRetained": 156,
+        "failures": [],
+        "misses": [
+          {
+            "id": "danish-tree-dots",
+            "repeat": 0,
+            "scoreChange": 0.004203247070312499,
+            "old": [
+              4,
+              4
+            ],
+            "next": [
+              3,
+              4
+            ]
+          },
+          {
+            "id": "danish-tree-dots",
+            "repeat": 1,
+            "scoreChange": 0.004203247070312499,
+            "old": [
+              4,
+              4
+            ],
+            "next": [
+              3,
+              4
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "shared-work",
+        "runs": 182,
+        "medianSeconds": 0.8793610414999712,
+        "medianPairedTimeRatio": 0.8485550871730914,
+        "identicalSeeds": 182,
+        "baselineBestRetained": 182,
+        "baselineFinalistsRetained": 182,
+        "failures": [],
+        "misses": []
+      },
+      {
+        "policy": "race-shared",
+        "runs": 182,
+        "medianSeconds": 0.5851337289999937,
+        "medianPairedTimeRatio": 0.5863424414889647,
+        "identicalSeeds": 0,
+        "baselineBestRetained": 180,
+        "baselineFinalistsRetained": 156,
+        "failures": [],
+        "misses": [
+          {
+            "id": "danish-tree-dots",
+            "repeat": 0,
+            "scoreChange": 0.004203247070312499,
+            "old": [
+              4,
+              4
+            ],
+            "next": [
+              3,
+              4
+            ]
+          },
+          {
+            "id": "danish-tree-dots",
+            "repeat": 1,
+            "scoreChange": 0.004203247070312499,
+            "old": [
+              4,
+              4
+            ],
+            "next": [
+              3,
+              4
+            ]
+          }
+        ]
+      }
+    ],
+    "sourceHashes": {
+      "static/inverse/core/direct/boundary.js": "1e35a5520ffe879136390980b000df46f39adf3609edc918282e7cd6a3c8d511",
+      "static/inverse/core/direct/counts.js": "374e110933f2bbd8c56317dbc5ef981d818bd7d515fd26d985a173e36e6b1d6b",
+      "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+      "static/inverse/core/direct/fit.js": "1f02c3ee15e3c3dd5c406f631463ee23864c20b6242527ec9f3cc2359e7c7141",
+      "static/inverse/core/direct/grid.js": "5cdec810401481ed1b44f1c96cf248e5ee5dc4c48d7b20c95705054f5eedb328",
+      "static/inverse/core/direct/initialize.js": "05254a73023fd0094690ea84bf42a83b977453722fbf0cb06d9a2ed94cd169ea",
+      "static/inverse/core/direct/matching.js": "67a6b1b77be9948f4570d23238a0441852d64b4832c3333b10877e61fd489a77",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "48435ecb5bea2b58d0b89ae48a358da064031c7d801bcbb477b749625a6719a2",
+      "static/inverse/core/direct/prefer-matching.js": "0c4b48c48f3b48b9687dcd846cc497aa6537bc31c3d53649962ca9a52fb84834",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "93bd43453f36f57cca095bac2cd0817b6b2a992c6ff14ed8ed65b9badfdf6266",
+      "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a",
+      "static/inverse/core/direct/topology.js": "c5b595f81d299ac0bff0ca9973b1f2f8f29fc69dfc4049e01cc60fbb60f6d1e3",
+      "scripts/inverse/count-strategies.mjs": "bca15e739b5ba3119c55e7b29d589b794163e0b37ba303229933c4f8efa2e2b7",
+      "scripts/inverse/count-strategy-benchmark.mjs": "6101ec96e2d85e048113b8f8b5232d892f65d59ee9c0933fdff93655a490070b",
+      "scripts/inverse/count-strategy-data.mjs": "3e2c02647948fa2547337c2ae6dfc07ffef2c1a3947f3ecf6a1bc8629f048d2c",
+      "scripts/inverse/count-strategy.test.mjs": "6d425e3052b3610445273b017d48d831551cf3cb4d857f4cf2b4148928937120"
+    }
+  },
+  "solve": {
+    "cases": 49,
+    "repetitions": 1,
+    "policies": [
+      {
+        "policy": "all",
+        "runs": 49,
+        "passed": 38,
+        "medianSeconds": 8.430221709000005,
+        "totalSeconds": 373.38776629700004,
+        "medianPairedTimeRatio": 1,
+        "lostPasses": [],
+        "gainedPasses": [],
+        "medianValidErrorChange": 0,
+        "maximumValidErrorIncrease": 0,
+        "cases": [
+          {
+            "id": "hjfig-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.329202084,
+            "passed": true,
+            "error": 0.009806222222222221,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-01-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 7.329205166000003,
+            "passed": true,
+            "error": 0.005262222222222222,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.100414249999995,
+            "passed": true,
+            "error": 0.013973333333333334,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.5482754169999975,
+            "passed": true,
+            "error": 0.006634666666666666,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.258604917000005,
+            "passed": true,
+            "error": 0.017102222222222224,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 3.037991041000001,
+            "passed": true,
+            "error": 0.010055560936523171,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjfig-05-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 5.6546451669999955,
+            "passed": true,
+            "error": 0.017170178481804015,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjfla-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.688223291000002,
+            "passed": true,
+            "error": 0.013434516059027778,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.563194667000003,
+            "passed": true,
+            "error": 0.00512,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.341543000000005,
+            "passed": true,
+            "error": 0.005368888888888889,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.163067500000004,
+            "passed": true,
+            "error": 0.004515555555555556,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-03-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 7.7924962919999965,
+            "passed": true,
+            "error": 0.00922311111111111,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.175118790999987,
+            "passed": true,
+            "error": 0.005603555555555555,
+            "errorChange": 0,
+            "counts": {
+              "left": 6,
+              "right": 6
+            }
+          },
+          {
+            "id": "hjcur-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.16182708399999,
+            "passed": true,
+            "error": 0.009429333333333333,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjhih-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.917138959000004,
+            "passed": true,
+            "error": 0.006127681280034363,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjhih-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.624519417000003,
+            "passed": true,
+            "error": 0.0038721376517666627,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjhih-02-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.034358624999994,
+            "passed": true,
+            "error": 0.004212994839422179,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjhih-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.18230258399999,
+            "passed": true,
+            "error": 0.008617731419432952,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjstr-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.097525375000027,
+            "passed": true,
+            "error": 0.007529570614696785,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjstr-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.896196707999975,
+            "passed": true,
+            "error": 0.004181459566074951,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjstr-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.124388916000026,
+            "passed": true,
+            "error": 0.005779041343394622,
+            "errorChange": 0,
+            "counts": {
+              "left": 7,
+              "right": 7
+            }
+          },
+          {
+            "id": "hjstr-03-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.77512512500002,
+            "passed": true,
+            "error": 0.007386544797534276,
+            "errorChange": 0,
+            "counts": {
+              "left": 7,
+              "right": 7
+            }
+          },
+          {
+            "id": "hjsta-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.92636487499997,
+            "passed": true,
+            "error": 0.007915512465373961,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjsta-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.3332567920000296,
+            "passed": true,
+            "error": 0.003573947482638889,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjsta-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.883286542000016,
+            "passed": true,
+            "error": 0.012359481624389013,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjsta-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.84944550000003,
+            "passed": true,
+            "error": 0.005109039500573892,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjsta-04-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 9.656740916999988,
+            "passed": true,
+            "error": 0.005360992133478906,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjsta-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.897190165999927,
+            "passed": true,
+            "error": 0.010805659212327848,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "danish-silver-on-tree",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.234320584000088,
+            "passed": false,
+            "error": 0.03775625,
+            "errorChange": 0,
+            "counts": {
+              "left": 1,
+              "right": 1
+            }
+          },
+          {
+            "id": "danish-tree-red",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.838375,
+            "passed": false,
+            "error": 0.07024375,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "bibel-checker-3",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 6.5732870000000005,
+            "passed": true,
+            "error": 0.01696875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "danish-tree-group-right",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 7.966472959000006,
+            "passed": false,
+            "error": 0.0176,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "vissevasse-arranged-r1c4",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.716594667000011,
+            "passed": true,
+            "error": 0.00926875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "vissevasse-arranged-r3c2",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.895729416999995,
+            "passed": false,
+            "error": 0.07029375,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "vissevasse-arranged-r4c2",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.736232625000005,
+            "passed": false,
+            "error": 0.03785625,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "vissevasse-scattered-purple-checker",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.430221709000005,
+            "passed": false,
+            "error": 0.04591875,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "collage-outline-star",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.789915125,
+            "passed": false,
+            "error": 0.0301375,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "collage-leaf",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.840130208000017,
+            "passed": false,
+            "error": 0.047475,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "collage-flower",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.290177041999996,
+            "passed": true,
+            "error": 0.011525,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "collage-orb",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.946804792000039,
+            "passed": false,
+            "error": 0.0497875,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "collage-maple-leaf",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.824941624999978,
+            "passed": false,
+            "error": 0.0312625,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "collage-bottom-flower",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 9.146795791000011,
+            "passed": true,
+            "error": 0.00965,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "bibel-star-8",
+            "group": "individual",
+            "repeat": 0,
+            "seconds": 4.595008292000042,
+            "passed": true,
+            "error": 0.00319375,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "flettede-puppy",
+            "group": "individual",
+            "repeat": 0,
+            "seconds": 8.636148999999977,
+            "passed": false,
+            "error": 0.00731875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "tilted-orange-weave",
+            "group": "hard-user",
+            "repeat": 0,
+            "seconds": 9.375870708999981,
+            "passed": true,
+            "error": 0.0260625,
+            "errorChange": 0,
+            "counts": {
+              "left": 10,
+              "right": 10
+            }
+          },
+          {
+            "id": "orange-upload-1254",
+            "group": "hard-user",
+            "repeat": 0,
+            "seconds": 9.143562584,
+            "passed": true,
+            "error": 0.0165375,
+            "errorChange": 0,
+            "counts": {
+              "left": 10,
+              "right": 10
+            }
+          },
+          {
+            "id": "motif-hat",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 1.8560029170000343,
+            "passed": true,
+            "error": 0.0006597222222222222,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "motif-house",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 1.7631777500000316,
+            "passed": true,
+            "error": 1.736111111111111e-05,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "motif-circle",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 2.4463473329999834,
+            "passed": true,
+            "error": 0.0010763888888888889,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          }
+        ]
+      },
+      {
+        "policy": "border-consensus",
+        "runs": 49,
+        "passed": 38,
+        "medianSeconds": 8.18067858399998,
+        "totalSeconds": 348.17452341699976,
+        "medianPairedTimeRatio": 0.9804870541316113,
+        "lostPasses": [],
+        "gainedPasses": [],
+        "medianValidErrorChange": 0,
+        "maximumValidErrorIncrease": 0.0016812499999999987,
+        "cases": [
+          {
+            "id": "hjfig-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 4.9671655,
+            "passed": true,
+            "error": 0.009806222222222221,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-01-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 4.857191833000001,
+            "passed": true,
+            "error": 0.005262222222222222,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.347411499999994,
+            "passed": true,
+            "error": 0.013973333333333334,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 4.933987167,
+            "passed": true,
+            "error": 0.006634666666666666,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.282586750000002,
+            "passed": true,
+            "error": 0.014051555555555555,
+            "errorChange": -0.0030506666666666685,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 1.9639171670000068,
+            "passed": true,
+            "error": 0.010055560936523171,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjfig-05-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 2.1687089170000107,
+            "passed": true,
+            "error": 0.017971453477621534,
+            "errorChange": 0.0008012749958175198,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjfla-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.635876917000015,
+            "passed": true,
+            "error": 0.0133056640625,
+            "errorChange": -0.00012885199652777797,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.609203041000001,
+            "passed": true,
+            "error": 0.00512,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.08549129200002,
+            "passed": true,
+            "error": 0.005368888888888889,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.285591625000001,
+            "passed": true,
+            "error": 0.004515555555555556,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-03-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 7.509748458000017,
+            "passed": true,
+            "error": 0.00922311111111111,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.310847125000029,
+            "passed": true,
+            "error": 0.0054755555555555556,
+            "errorChange": -0.00012799999999999964,
+            "counts": {
+              "left": 6,
+              "right": 6
+            }
+          },
+          {
+            "id": "hjcur-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.316259625000006,
+            "passed": true,
+            "error": 0.009429333333333333,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjhih-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.956146125000028,
+            "passed": true,
+            "error": 0.006127681280034363,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjhih-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.490890542000009,
+            "passed": true,
+            "error": 0.0038721376517666627,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjhih-02-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 6.438273583000002,
+            "passed": true,
+            "error": 0.004212994839422179,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjhih-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.919631499999959,
+            "passed": true,
+            "error": 0.008442916431961359,
+            "errorChange": -0.0001748149874715929,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjstr-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.178469042000011,
+            "passed": true,
+            "error": 0.007529570614696785,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjstr-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.351293208999966,
+            "passed": true,
+            "error": 0.0041617357001972385,
+            "errorChange": -1.972386587771255e-05,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjstr-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.946345208999992,
+            "passed": true,
+            "error": 0.005500053140610054,
+            "errorChange": -0.00027898820278456776,
+            "counts": {
+              "left": 7,
+              "right": 7
+            }
+          },
+          {
+            "id": "hjstr-03-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.949846291000023,
+            "passed": true,
+            "error": 0.005533266021893931,
+            "errorChange": -0.0018532787756403444,
+            "counts": {
+              "left": 7,
+              "right": 7
+            }
+          },
+          {
+            "id": "hjsta-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.600126832999988,
+            "passed": true,
+            "error": 0.007915512465373961,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjsta-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.088640167000005,
+            "passed": true,
+            "error": 0.003573947482638889,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjsta-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.154812707999954,
+            "passed": true,
+            "error": 0.012414018774413896,
+            "errorChange": 5.453715002488348e-05,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjsta-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.100434832999948,
+            "passed": true,
+            "error": 0.00500405923686347,
+            "errorChange": -0.0001049802637104226,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjsta-04-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.925431708000017,
+            "passed": true,
+            "error": 0.005395985554715713,
+            "errorChange": 3.4993421236807244e-05,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjsta-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.893214332999895,
+            "passed": true,
+            "error": 0.0107922360331821,
+            "errorChange": -1.3423179145748837e-05,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "danish-silver-on-tree",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.18067858399998,
+            "passed": false,
+            "error": 0.03775625,
+            "errorChange": 0,
+            "counts": {
+              "left": 1,
+              "right": 1
+            }
+          },
+          {
+            "id": "danish-tree-red",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.773194833000002,
+            "passed": false,
+            "error": 0.07024375,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "bibel-checker-3",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 6.691922208000004,
+            "passed": true,
+            "error": 0.01696875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "danish-tree-group-right",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 7.858443625,
+            "passed": false,
+            "error": 0.0176,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "vissevasse-arranged-r1c4",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.650993333999999,
+            "passed": true,
+            "error": 0.0084625,
+            "errorChange": -0.0008062499999999997,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "vissevasse-arranged-r3c2",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 9.035608875000005,
+            "passed": false,
+            "error": 0.07044375,
+            "errorChange": 0.00014999999999999736,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "vissevasse-arranged-r4c2",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.797176584,
+            "passed": false,
+            "error": 0.03785625,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "vissevasse-scattered-purple-checker",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.487418540999991,
+            "passed": false,
+            "error": 0.04591875,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "collage-outline-star",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.754274000000004,
+            "passed": false,
+            "error": 0.0301375,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "collage-leaf",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.89424091600001,
+            "passed": false,
+            "error": 0.047475,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "collage-flower",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.781934542000002,
+            "passed": true,
+            "error": 0.011525,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "collage-orb",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.968928249999998,
+            "passed": false,
+            "error": 0.0497875,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "collage-maple-leaf",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.814716666999972,
+            "passed": false,
+            "error": 0.0312625,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "collage-bottom-flower",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.901887457999983,
+            "passed": true,
+            "error": 0.0096375,
+            "errorChange": -1.2500000000000358e-05,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "bibel-star-8",
+            "group": "individual",
+            "repeat": 0,
+            "seconds": 3.7405431669999962,
+            "passed": true,
+            "error": 0.00319375,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "flettede-puppy",
+            "group": "individual",
+            "repeat": 0,
+            "seconds": 8.578220042000002,
+            "passed": false,
+            "error": 0.00731875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "tilted-orange-weave",
+            "group": "hard-user",
+            "repeat": 0,
+            "seconds": 9.194585707999998,
+            "passed": true,
+            "error": 0.0182875,
+            "errorChange": -0.007774999999999997,
+            "counts": {
+              "left": 10,
+              "right": 10
+            }
+          },
+          {
+            "id": "orange-upload-1254",
+            "group": "hard-user",
+            "repeat": 0,
+            "seconds": 8.986706499999972,
+            "passed": true,
+            "error": 0.01821875,
+            "errorChange": 0.0016812499999999987,
+            "counts": {
+              "left": 10,
+              "right": 10
+            }
+          },
+          {
+            "id": "motif-hat",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 2.2601181250000373,
+            "passed": true,
+            "error": 0.0006597222222222222,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "motif-house",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 1.185163125000021,
+            "passed": true,
+            "error": 1.736111111111111e-05,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "motif-circle",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 1.3702253330000094,
+            "passed": true,
+            "error": 0.0010763888888888889,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          }
+        ]
+      },
+      {
+        "policy": "race-shared",
+        "runs": 49,
+        "passed": 38,
+        "medianSeconds": 8.705658708999982,
+        "totalSeconds": 368.7025096700001,
+        "medianPairedTimeRatio": 0.9908191069946493,
+        "lostPasses": [],
+        "gainedPasses": [],
+        "medianValidErrorChange": 0,
+        "maximumValidErrorIncrease": 0.0011187499999999982,
+        "cases": [
+          {
+            "id": "hjfig-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.197759208,
+            "passed": true,
+            "error": 0.009806222222222221,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-01-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 7.675845208999999,
+            "passed": true,
+            "error": 0.005262222222222222,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 6.955339584000002,
+            "passed": true,
+            "error": 0.013973333333333334,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.318201667000001,
+            "passed": true,
+            "error": 0.006634666666666666,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.051755999999994,
+            "passed": true,
+            "error": 0.014001777777777778,
+            "errorChange": -0.0031004444444444456,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjfig-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 3.467766082999995,
+            "passed": true,
+            "error": 0.010055560936523171,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjfig-05-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 3.48636387500001,
+            "passed": true,
+            "error": 0.017971453477621534,
+            "errorChange": 0.0008012749958175198,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjfla-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.079235874999984,
+            "passed": true,
+            "error": 0.013434516059027778,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.705658708999982,
+            "passed": true,
+            "error": 0.005155555555555556,
+            "errorChange": 3.555555555555517e-05,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.53628245900001,
+            "passed": true,
+            "error": 0.005354666666666666,
+            "errorChange": -1.422222222222276e-05,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.025367834000004,
+            "passed": true,
+            "error": 0.0045297777777777775,
+            "errorChange": 1.4222222222221893e-05,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-03-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 7.311526875000011,
+            "passed": true,
+            "error": 0.00922311111111111,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjcur-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.082289457999984,
+            "passed": true,
+            "error": 0.005496888888888889,
+            "errorChange": -0.00010666666666666637,
+            "counts": {
+              "left": 6,
+              "right": 6
+            }
+          },
+          {
+            "id": "hjcur-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 4.632946082999988,
+            "passed": true,
+            "error": 0.009429333333333333,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjhih-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.934419292000007,
+            "passed": true,
+            "error": 0.006141104459180112,
+            "errorChange": 1.3423179145748837e-05,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjhih-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.346413416999974,
+            "passed": true,
+            "error": 0.0038721376517666627,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjhih-02-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 6.769778250000032,
+            "passed": true,
+            "error": 0.004212994839422179,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjhih-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.057282749999954,
+            "passed": true,
+            "error": 0.007892572952884123,
+            "errorChange": -0.0007251584665488291,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjstr-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 5.827645291999972,
+            "passed": true,
+            "error": 0.007529570614696785,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjstr-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.245164459000051,
+            "passed": true,
+            "error": 0.0041617357001972385,
+            "errorChange": -1.972386587771255e-05,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjstr-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.137536000000022,
+            "passed": true,
+            "error": 0.00550669571686683,
+            "errorChange": -0.00027234562652779255,
+            "counts": {
+              "left": 7,
+              "right": 7
+            }
+          },
+          {
+            "id": "hjstr-03-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.939662208999973,
+            "passed": true,
+            "error": 0.005546551174407482,
+            "errorChange": -0.001839993623126794,
+            "counts": {
+              "left": 7,
+              "right": 7
+            }
+          },
+          {
+            "id": "hjsta-01",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.981866583000054,
+            "passed": true,
+            "error": 0.007915512465373961,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "hjsta-02",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 7.888958166999975,
+            "passed": true,
+            "error": 0.003573947482638889,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "hjsta-03",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.96108820800006,
+            "passed": true,
+            "error": 0.012345847336882793,
+            "errorChange": -1.3634287506220436e-05,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "hjsta-04",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 8.850049750000005,
+            "passed": true,
+            "error": 0.00500405923686347,
+            "errorChange": -0.0001049802637104226,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjsta-04-shift-x1",
+            "group": "perturbation",
+            "repeat": 0,
+            "seconds": 8.957471249999944,
+            "passed": true,
+            "error": 0.005360992133478906,
+            "errorChange": 0,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "hjsta-05",
+            "group": "hunodan",
+            "repeat": 0,
+            "seconds": 9.005386291000061,
+            "passed": true,
+            "error": 0.010825793981046472,
+            "errorChange": 2.0134768718623255e-05,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "danish-silver-on-tree",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.769261167000048,
+            "passed": false,
+            "error": 0.03775625,
+            "errorChange": 0,
+            "counts": {
+              "left": 1,
+              "right": 1
+            }
+          },
+          {
+            "id": "danish-tree-red",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.922994292,
+            "passed": false,
+            "error": 0.07024375,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "bibel-checker-3",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 5.979256333999998,
+            "passed": true,
+            "error": 0.01696875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "danish-tree-group-right",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 7.802846832999996,
+            "passed": false,
+            "error": 0.0176,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "vissevasse-arranged-r1c4",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.796400791000007,
+            "passed": true,
+            "error": 0.0084375,
+            "errorChange": -0.0008312499999999987,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "vissevasse-arranged-r3c2",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.960934625000009,
+            "passed": false,
+            "error": 0.04876875,
+            "errorChange": -0.021525000000000002,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "vissevasse-arranged-r4c2",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.656026208000025,
+            "passed": false,
+            "error": 0.03785625,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "vissevasse-scattered-purple-checker",
+            "group": "web",
+            "repeat": 0,
+            "seconds": 8.914150249999977,
+            "passed": false,
+            "error": 0.04591875,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "collage-outline-star",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 9.702230708000018,
+            "passed": false,
+            "error": 0.0301375,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "collage-leaf",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.964458582999999,
+            "passed": false,
+            "error": 0.047475,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "collage-flower",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 7.90008929199999,
+            "passed": true,
+            "error": 0.011525,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "collage-orb",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.92008258300001,
+            "passed": false,
+            "error": 0.055175,
+            "errorChange": 0.005387500000000003,
+            "counts": {
+              "left": 5,
+              "right": 5
+            }
+          },
+          {
+            "id": "collage-maple-leaf",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.822303916999953,
+            "passed": false,
+            "error": 0.0312625,
+            "errorChange": 0,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "collage-bottom-flower",
+            "group": "collage",
+            "repeat": 0,
+            "seconds": 8.954977083000005,
+            "passed": true,
+            "error": 0.00953125,
+            "errorChange": -0.0001187500000000008,
+            "counts": {
+              "left": 4,
+              "right": 4
+            }
+          },
+          {
+            "id": "bibel-star-8",
+            "group": "individual",
+            "repeat": 0,
+            "seconds": 4.096616791000008,
+            "passed": true,
+            "error": 0.00319375,
+            "errorChange": 0,
+            "counts": {
+              "left": 2,
+              "right": 2
+            }
+          },
+          {
+            "id": "flettede-puppy",
+            "group": "individual",
+            "repeat": 0,
+            "seconds": 8.58355937500001,
+            "passed": false,
+            "error": 0.00731875,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "tilted-orange-weave",
+            "group": "hard-user",
+            "repeat": 0,
+            "seconds": 9.153552416999998,
+            "passed": true,
+            "error": 0.01811875,
+            "errorChange": -0.00794375,
+            "counts": {
+              "left": 10,
+              "right": 10
+            }
+          },
+          {
+            "id": "orange-upload-1254",
+            "group": "hard-user",
+            "repeat": 0,
+            "seconds": 9.768340792000002,
+            "passed": true,
+            "error": 0.01765625,
+            "errorChange": 0.0011187499999999982,
+            "counts": {
+              "left": 10,
+              "right": 10
+            }
+          },
+          {
+            "id": "motif-hat",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 1.537339333000011,
+            "passed": true,
+            "error": 0.0006597222222222222,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "motif-house",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 1.3662282089999644,
+            "passed": true,
+            "error": 1.736111111111111e-05,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          },
+          {
+            "id": "motif-circle",
+            "group": "synthetic",
+            "repeat": 0,
+            "seconds": 1.7017992499999819,
+            "passed": true,
+            "error": 0.0010763888888888889,
+            "errorChange": 0,
+            "counts": {
+              "left": 3,
+              "right": 3
+            }
+          }
+        ]
+      }
+    ],
+    "sourceHashes": {
+      "static/inverse/core/direct/boundary.js": "1e35a5520ffe879136390980b000df46f39adf3609edc918282e7cd6a3c8d511",
+      "static/inverse/core/direct/counts.js": "374e110933f2bbd8c56317dbc5ef981d818bd7d515fd26d985a173e36e6b1d6b",
+      "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+      "static/inverse/core/direct/fit.js": "1f02c3ee15e3c3dd5c406f631463ee23864c20b6242527ec9f3cc2359e7c7141",
+      "static/inverse/core/direct/grid.js": "5cdec810401481ed1b44f1c96cf248e5ee5dc4c48d7b20c95705054f5eedb328",
+      "static/inverse/core/direct/initialize.js": "05254a73023fd0094690ea84bf42a83b977453722fbf0cb06d9a2ed94cd169ea",
+      "static/inverse/core/direct/matching.js": "67a6b1b77be9948f4570d23238a0441852d64b4832c3333b10877e61fd489a77",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "48435ecb5bea2b58d0b89ae48a358da064031c7d801bcbb477b749625a6719a2",
+      "static/inverse/core/direct/prefer-matching.js": "0c4b48c48f3b48b9687dcd846cc497aa6537bc31c3d53649962ca9a52fb84834",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "93bd43453f36f57cca095bac2cd0817b6b2a992c6ff14ed8ed65b9badfdf6266",
+      "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a",
+      "static/inverse/core/direct/topology.js": "c5b595f81d299ac0bff0ca9973b1f2f8f29fc69dfc4049e01cc60fbb60f6d1e3",
+      "scripts/inverse/count-strategies.mjs": "bca15e739b5ba3119c55e7b29d589b794163e0b37ba303229933c4f8efa2e2b7",
+      "scripts/inverse/count-strategy-benchmark.mjs": "7f346770a0e9f7c20e393f4211f93f61f0811e88d1ed6a4685548da05e017bb3",
+      "scripts/inverse/count-strategy-data.mjs": "3e2c02647948fa2547337c2ae6dfc07ffef2c1a3947f3ecf6a1bc8629f048d2c",
+      "scripts/inverse/count-strategy-report.mjs": "4efca40f8a71297fca0909fc3c5f80ea9acba9fa34d88b4b8076f80e09a08fdd",
+      "scripts/inverse/count-strategy.test.mjs": "6d425e3052b3610445273b017d48d831551cf3cb4d857f4cf2b4148928937120"
+    }
+  },
+  "date": "2026-09-08",
+  "metadata": {
+    "screen": {
+      "gitCommit": "4f42839b364b692137c6e255db730f7cc1649c72",
+      "runtime": "v25.6.1",
+      "cpu": "Apple M2 Pro",
+      "manifestSha256": "287b59d411abc43002c1af80f5403df3264c62e1ef32e965b775bb9a6bb9944b",
+      "settings": {
+        "algorithm": "auto",
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 360,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      }
+    },
+    "solve": {
+      "gitCommit": "fffa69a1fb7f030b39c3816471e6000ad334d7fd",
+      "runtime": "v25.6.1",
+      "cpu": "Apple M2 Pro",
+      "manifestSha256": "287b59d411abc43002c1af80f5403df3264c62e1ef32e965b775bb9a6bb9944b",
+      "settings": {
+        "algorithm": "auto",
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 360,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      },
+      "resumes": [
+        {
+          "at": "2026-09-08T18:31:20.740Z",
+          "previousCommit": "983b68d662311ca16e2d6dddc30dc9fc3af92332",
+          "completedRuns": 87
+        }
+      ]
+    }
+  },
+  "corpus": {
+    "method": "Fixed source pixels, crop and classification shared by every policy. Crop proposals and colour estimates are not ground truth. No published templates enter fitting.",
+    "cases": [
+      {
+        "id": "hjfig-01",
+        "group": "hunodan",
+        "file": "hjfig-01.json.gz",
+        "sourceSha256": "32a7d5c332a2f4262955932c7044991743bdb2b1e8eb1c1c22f6e6d9c315eab6",
+        "quad": [
+          [
+            188.65840672286313,
+            50.446388800465265
+          ],
+          [
+            342.05595393044155,
+            195.6523959586842
+          ],
+          [
+            190.76691435038555,
+            347.06851680680785
+          ],
+          [
+            44.80862299146844,
+            199.21246184376056
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "2e34b6f5442c2f3eaf4bbadd88fba10fed78dd10a392e3105f46a7ecaeeb69fc",
+        "fullSolve": true
+      },
+      {
+        "id": "hjfig-01-shift-x1",
+        "group": "perturbation",
+        "file": "hjfig-01-shift-x1.json.gz",
+        "sourceSha256": "32a7d5c332a2f4262955932c7044991743bdb2b1e8eb1c1c22f6e6d9c315eab6",
+        "quad": [
+          [
+            189.65840672286313,
+            50.446388800465265
+          ],
+          [
+            343.05595393044155,
+            195.6523959586842
+          ],
+          [
+            191.76691435038555,
+            347.06851680680785
+          ],
+          [
+            45.80862299146844,
+            199.21246184376056
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "348b9bf27d37f71fe825ffa5fbc43717ded3b620b1c31ec436b00eb97eeac2f5",
+        "fullSolve": true,
+        "variant": "one-source-pixel crop shift"
+      },
+      {
+        "id": "hjfig-02",
+        "group": "hunodan",
+        "file": "hjfig-02.json.gz",
+        "sourceSha256": "c5d2c4465ca58e3629abd28b36c6e9e3aed1f5d14b2725459809f5b4ba550276",
+        "quad": [
+          [
+            194.29301979808054,
+            47.67431831120112
+          ],
+          [
+            343.0654428810814,
+            197.11195681723675
+          ],
+          [
+            196.4575674701016,
+            344.5264550253009
+          ],
+          [
+            48.27147998840894,
+            198.84651153671882
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "b26f3b53599501a3a643aaa603d633dd0bb205df7a8fd6ec0e2f87f15cf2ba0d",
+        "fullSolve": true
+      },
+      {
+        "id": "hjfig-03",
+        "group": "hunodan",
+        "file": "hjfig-03.json.gz",
+        "sourceSha256": "6f75ea95d5d467f53a8ebfde0bb61bfc74c7c6e6b55a0f6154f4ae273c8c35b2",
+        "quad": [
+          [
+            192.39664758267418,
+            43.535512562511656
+          ],
+          [
+            338.2028175594765,
+            191.88044361475224
+          ],
+          [
+            186.02342195434386,
+            341.728261995053
+          ],
+          [
+            45.18920677619988,
+            194.15081895867112
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "f2729b53f0700b8a3dcb4becb7ce1d3111076a49a2228f317510eb383d93438f",
+        "fullSolve": true
+      },
+      {
+        "id": "hjfig-04",
+        "group": "hunodan",
+        "file": "hjfig-04.json.gz",
+        "sourceSha256": "5ea33117d0208261edaf9e4690757e9711665e434353619bb6859bedb10da244",
+        "quad": [
+          [
+            197.2316439885614,
+            42.96350991647984
+          ],
+          [
+            349.3532625975257,
+            184.63886957180316
+          ],
+          [
+            203.74221817945812,
+            338.08948958431125
+          ],
+          [
+            53.66434700347705,
+            192.532408975867
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "39316197bc50b616cf970100dcb331e16902c3a792a8bc6edc58d951288f42c6",
+        "fullSolve": true
+      },
+      {
+        "id": "hjfig-05",
+        "group": "hunodan",
+        "file": "hjfig-05.json.gz",
+        "sourceSha256": "cc0c4eddf643a41839fadc014400f3353815017883c37a53160a9f4592ec9bd8",
+        "quad": [
+          [
+            216.8538757473738,
+            38.328225363387574
+          ],
+          [
+            359.89753198285587,
+            187.87012162871665
+          ],
+          [
+            212.54958628080993,
+            334.34627418104253
+          ],
+          [
+            67.96701146105954,
+            182.82942921221752
+          ]
+        ],
+        "resolution": 337,
+        "preparedSha256": "563b94d19e859c995d788c4efbf4b48edea24a74f844011c8b9fd3482c87de3c",
+        "fullSolve": true
+      },
+      {
+        "id": "hjfig-05-shift-x1",
+        "group": "perturbation",
+        "file": "hjfig-05-shift-x1.json.gz",
+        "sourceSha256": "cc0c4eddf643a41839fadc014400f3353815017883c37a53160a9f4592ec9bd8",
+        "quad": [
+          [
+            217.8538757473738,
+            38.328225363387574
+          ],
+          [
+            360.89753198285587,
+            187.87012162871665
+          ],
+          [
+            213.54958628080993,
+            334.34627418104253
+          ],
+          [
+            68.96701146105954,
+            182.82942921221752
+          ]
+        ],
+        "resolution": 337,
+        "preparedSha256": "7bbea2b6c33344997e7be9fba4e492a07b11e6fbfb4b8641b8bd029265ed376b",
+        "fullSolve": true,
+        "variant": "one-source-pixel crop shift"
+      },
+      {
+        "id": "hjfla-01",
+        "group": "hunodan",
+        "file": "hjfla-01.json.gz",
+        "sourceSha256": "4cc2b77e50e1cbedcc14ad962772e22ca9403c274b55f74f49468deadada44c1",
+        "quad": [
+          [
+            292.39323601496517,
+            57.738078773875756
+          ],
+          [
+            438.0941449375487,
+            208.89102780960795
+          ],
+          [
+            283.1908795446907,
+            354.6771453079949
+          ],
+          [
+            141.8477138031669,
+            202.00972504056293
+          ]
+        ],
+        "resolution": 384,
+        "preparedSha256": "39bbb004a57cf69ac2cf36ced42de32c4afd4802b3960350fb0f1b2b26a4a354",
+        "fullSolve": true
+      },
+      {
+        "id": "hjcur-01",
+        "group": "hunodan",
+        "file": "hjcur-01.json.gz",
+        "sourceSha256": "4c287c45c503edb0c763d6ce149bd2d475e81391ff8905c89c19d6167349b484",
+        "quad": [
+          [
+            189.3096608168546,
+            43.709919844428974
+          ],
+          [
+            332.4881934002591,
+            192.81949779926094
+          ],
+          [
+            185.4163085647945,
+            340.0580997580325
+          ],
+          [
+            41.75016952913069,
+            189.06796025783646
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "12914da57ad4a9595f589a19a403f5462a33b17484fa7bf57ff716fbd69d2c1e",
+        "fullSolve": true
+      },
+      {
+        "id": "hjcur-02",
+        "group": "hunodan",
+        "file": "hjcur-02.json.gz",
+        "sourceSha256": "203953eb80e07ef83f467b34f354496e53c9359ff81bc6e5ebd43a51f15ca2c6",
+        "quad": [
+          [
+            194.65378748297076,
+            44.23339992230309
+          ],
+          [
+            339.67367514119843,
+            190.98638544523556
+          ],
+          [
+            193.29192428448607,
+            341.6245320415693
+          ],
+          [
+            45.47671643716768,
+            194.46654727533422
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "38098de378d67cabd07381846798bb6562d35502754f2d6be757f49f0c4102d4",
+        "fullSolve": true
+      },
+      {
+        "id": "hjcur-03",
+        "group": "hunodan",
+        "file": "hjcur-03.json.gz",
+        "sourceSha256": "bb8390c22770e96257de8dc8d0dc5f7d73ab9bfb1faba028c63fbc1e335779f9",
+        "quad": [
+          [
+            192.91699437321472,
+            44.50524545817953
+          ],
+          [
+            339.69230667005473,
+            191.74644497178232
+          ],
+          [
+            193.504565619557,
+            339.1119442002352
+          ],
+          [
+            47.907480430688935,
+            190.7899197613935
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "efc8692b0ee42165c3932abc9147cbe2d1df89e606090016edf379bff3adbbcf",
+        "fullSolve": true
+      },
+      {
+        "id": "hjcur-03-shift-x1",
+        "group": "perturbation",
+        "file": "hjcur-03-shift-x1.json.gz",
+        "sourceSha256": "bb8390c22770e96257de8dc8d0dc5f7d73ab9bfb1faba028c63fbc1e335779f9",
+        "quad": [
+          [
+            193.91699437321472,
+            44.50524545817953
+          ],
+          [
+            340.69230667005473,
+            191.74644497178232
+          ],
+          [
+            194.504565619557,
+            339.1119442002352
+          ],
+          [
+            48.907480430688935,
+            190.7899197613935
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "7774cac18d2536b17f22a85915d5b7e07d38f5f9be05e1b6c563a81ea7883187",
+        "fullSolve": true,
+        "variant": "one-source-pixel crop shift"
+      },
+      {
+        "id": "hjcur-04",
+        "group": "hunodan",
+        "file": "hjcur-04.json.gz",
+        "sourceSha256": "b55c4bd9e33a8b44e7b0a06b75df7dbed932401e3175c2a1920440bdc497e950",
+        "quad": [
+          [
+            191.11896416727424,
+            45.88792059701687
+          ],
+          [
+            341.0873159394011,
+            191.2984068580547
+          ],
+          [
+            197.00593204212686,
+            340.5161588661794
+          ],
+          [
+            47.43720035962269,
+            197.26037469745123
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "cca823ae0d2d0949a24063c3efd315d77aa16dd74add4c7ee0501155c270b4d3",
+        "fullSolve": true
+      },
+      {
+        "id": "hjcur-05",
+        "group": "hunodan",
+        "file": "hjcur-05.json.gz",
+        "sourceSha256": "fcd46cc3a057f1f826e081932754a86fb970424620eee5eb86dd23eab55eb505",
+        "quad": [
+          [
+            191.5718921769267,
+            41.002447759302676
+          ],
+          [
+            343.2169032469649,
+            184.90280502631018
+          ],
+          [
+            198.85140229323983,
+            339.1694570006557
+          ],
+          [
+            47.783414978700904,
+            192.22189834334512
+          ]
+        ],
+        "resolution": 375,
+        "preparedSha256": "24a87b4e8c1a4eda1acc1849e6ace4d84cd846567f9202d08d60e4a37b2e29d5",
+        "fullSolve": true
+      },
+      {
+        "id": "hjhih-01",
+        "group": "hunodan",
+        "file": "hjhih-01.json.gz",
+        "sourceSha256": "f11704b067941ead5dde1ef74f63d5b70d1f7a50e9c3c7cafb5b852cb0f7d18a",
+        "quad": [
+          [
+            202.3674368892556,
+            48.59748347940166
+          ],
+          [
+            343.3485875149892,
+            197.0361767885677
+          ],
+          [
+            197.99631627152766,
+            344.7008318562862
+          ],
+          [
+            48.39713363046562,
+            196.17346145844522
+          ]
+        ],
+        "resolution": 386,
+        "preparedSha256": "e84c16e9bff7da5a2c6ecd13e315f4193e04a188866d286e6524dae71da1d964",
+        "fullSolve": true
+      },
+      {
+        "id": "hjhih-02",
+        "group": "hunodan",
+        "file": "hjhih-02.json.gz",
+        "sourceSha256": "8e1982096d14d9c4db71c782736d56cb711b57e6ee3d482e894022d9fd990b59",
+        "quad": [
+          [
+            188.30974117601937,
+            50.96916524073435
+          ],
+          [
+            339.6341931275473,
+            196.09932591960958
+          ],
+          [
+            193.5495451122848,
+            347.13449938438606
+          ],
+          [
+            45.606330547136366,
+            202.17162619262066
+          ]
+        ],
+        "resolution": 383,
+        "preparedSha256": "4b6c61cd2643854565db3c806bdc973ffe2843a52fecccb89385bddad42858d3",
+        "fullSolve": true
+      },
+      {
+        "id": "hjhih-02-shift-x1",
+        "group": "perturbation",
+        "file": "hjhih-02-shift-x1.json.gz",
+        "sourceSha256": "8e1982096d14d9c4db71c782736d56cb711b57e6ee3d482e894022d9fd990b59",
+        "quad": [
+          [
+            189.30974117601937,
+            50.96916524073435
+          ],
+          [
+            340.6341931275473,
+            196.09932591960958
+          ],
+          [
+            194.5495451122848,
+            347.13449938438606
+          ],
+          [
+            46.606330547136366,
+            202.17162619262066
+          ]
+        ],
+        "resolution": 383,
+        "preparedSha256": "0058e6ac6e6344e89f5c5ef46aa689f7aa7cafa6952def310fc8c17a16e42c9a",
+        "fullSolve": true,
+        "variant": "one-source-pixel crop shift"
+      },
+      {
+        "id": "hjhih-04",
+        "group": "hunodan",
+        "file": "hjhih-04.json.gz",
+        "sourceSha256": "0871c106cf029808a27d67dadc2dd623055727c1145421120f7c9fdfdee1e07e",
+        "quad": [
+          [
+            200.61465222970472,
+            54.11515840702254
+          ],
+          [
+            343.4005945195555,
+            202.72299292577537
+          ],
+          [
+            193.7893892931023,
+            350.38325136594614
+          ],
+          [
+            47.72031824020348,
+            199.65779445405863
+          ]
+        ],
+        "resolution": 393,
+        "preparedSha256": "4c426f27935a4d8a187345b686c5f86dafe7eec0472e761502728aa3dec4f269",
+        "fullSolve": true
+      },
+      {
+        "id": "hjstr-01",
+        "group": "hunodan",
+        "file": "hjstr-01.json.gz",
+        "sourceSha256": "37fd224b8429524eee4488429070256ddc757641c3f40aac2aeaa4875dc59e88",
+        "quad": [
+          [
+            191.35718595247062,
+            103.88262046442289
+          ],
+          [
+            343.85046746261594,
+            250.2169394187539
+          ],
+          [
+            198.4226972120015,
+            405.96812758830697
+          ],
+          [
+            45.21045375375542,
+            257.6144338993603
+          ]
+        ],
+        "resolution": 381,
+        "preparedSha256": "7e478b85eed2b32feb399073695dc62b05c7b7c9628721537286fbdf66693d02",
+        "fullSolve": true
+      },
+      {
+        "id": "hjstr-02",
+        "group": "hunodan",
+        "file": "hjstr-02.json.gz",
+        "sourceSha256": "653d4b726cba91d87e4bda99aac9b47e1ac9ce5780b7c44acbd011066ad63a98",
+        "quad": [
+          [
+            198.53970825883664,
+            56.91861221524674
+          ],
+          [
+            340.401102574917,
+            206.41140570062836
+          ],
+          [
+            193.49387320044173,
+            353.103709640915
+          ],
+          [
+            45.76141964287936,
+            201.28226651792085
+          ]
+        ],
+        "resolution": 390,
+        "preparedSha256": "26f2484305f3b654fc1b6cc337048ab1a75a8fe04225d8d7a22a65c1054aabb4",
+        "fullSolve": true
+      },
+      {
+        "id": "hjstr-03",
+        "group": "hunodan",
+        "file": "hjstr-03.json.gz",
+        "sourceSha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+        "quad": [
+          [
+            198.0767384478126,
+            48.83345802423042
+          ],
+          [
+            339.75075854262275,
+            193.76882218562517
+          ],
+          [
+            196.19023395819448,
+            342.00139702165603
+          ],
+          [
+            49.884135008919685,
+            193.13927233494536
+          ]
+        ],
+        "resolution": 388,
+        "preparedSha256": "77f45a66b7542db1d9fab0f49ad647d74b14f43fc3c671a0d5816a032a4daa07",
+        "fullSolve": true
+      },
+      {
+        "id": "hjstr-03-shift-x1",
+        "group": "perturbation",
+        "file": "hjstr-03-shift-x1.json.gz",
+        "sourceSha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+        "quad": [
+          [
+            199.0767384478126,
+            48.83345802423042
+          ],
+          [
+            340.75075854262275,
+            193.76882218562517
+          ],
+          [
+            197.19023395819448,
+            342.00139702165603
+          ],
+          [
+            50.884135008919685,
+            193.13927233494536
+          ]
+        ],
+        "resolution": 388,
+        "preparedSha256": "f1ac98791c18bfd6eaf04b0cf0c856598bf60e4786d6843c9fd2c85cdc7afb5e",
+        "fullSolve": true,
+        "variant": "one-source-pixel crop shift"
+      },
+      {
+        "id": "hjsta-01",
+        "group": "hunodan",
+        "file": "hjsta-01.json.gz",
+        "sourceSha256": "a83a175f4d960df6901354a6ea413c519efa2a8b180ca7018b8d09de37583651",
+        "quad": [
+          [
+            195.05439485448392,
+            47.20208591783353
+          ],
+          [
+            340.6664953436871,
+            192.6885347130366
+          ],
+          [
+            196.168411462646,
+            344.4035983631109
+          ],
+          [
+            47.055118952907264,
+            194.67333807919917
+          ]
+        ],
+        "resolution": 380,
+        "preparedSha256": "4998f1a9c9775cf75927cbd067da67e878eec2b75df0f81e26e3c7a082dc35b1",
+        "fullSolve": true
+      },
+      {
+        "id": "hjsta-02",
+        "group": "hunodan",
+        "file": "hjsta-02.json.gz",
+        "sourceSha256": "02222a5d4b385ed4ea84859bf74df573d786234dd483581771541edabce67e13",
+        "quad": [
+          [
+            191.16406799843026,
+            48.32364781659089
+          ],
+          [
+            340.02723897564636,
+            188.05970075260046
+          ],
+          [
+            199.97936496176143,
+            342.58204776083375
+          ],
+          [
+            48.44755619555002,
+            198.55438994750548
+          ]
+        ],
+        "resolution": 384,
+        "preparedSha256": "9b57754df24ba75d4e6fa3ba9d0e06ec89eac1d8149a3d6203ef0ba5e183fa3a",
+        "fullSolve": true
+      },
+      {
+        "id": "hjsta-03",
+        "group": "hunodan",
+        "file": "hjsta-03.json.gz",
+        "sourceSha256": "9ac7571ed97d991d1d70f7321ae4e3cae0da0dbc91c8a14fa05c0de0b9dfc3b7",
+        "quad": [
+          [
+            193.65672679368126,
+            45.04975588659226
+          ],
+          [
+            342.9501305994181,
+            189.66698048576146
+          ],
+          [
+            193.48036649787394,
+            344.79572426897465
+          ],
+          [
+            45.610873631912625,
+            195.13043392991767
+          ]
+        ],
+        "resolution": 383,
+        "preparedSha256": "91bbade50388eafe93aa5e23190f6c48234d5b6d95fcde7f6c6609e6e13a7651",
+        "fullSolve": true
+      },
+      {
+        "id": "hjsta-04",
+        "group": "hunodan",
+        "file": "hjsta-04.json.gz",
+        "sourceSha256": "5143ab770f070447343a52b1af758b288c310edd6d144effbae1aea9dd2a226d",
+        "quad": [
+          [
+            192.8820949412971,
+            40.64326337448036
+          ],
+          [
+            338.7224272496793,
+            186.46827119242013
+          ],
+          [
+            189.2253365301165,
+            332.48276340072863
+          ],
+          [
+            45.11114873361885,
+            184.1413775871979
+          ]
+        ],
+        "resolution": 378,
+        "preparedSha256": "7c15eed4d67ccf34278188e7c7493281539a33fbca588121f2138cad2429572d",
+        "fullSolve": true
+      },
+      {
+        "id": "hjsta-04-shift-x1",
+        "group": "perturbation",
+        "file": "hjsta-04-shift-x1.json.gz",
+        "sourceSha256": "5143ab770f070447343a52b1af758b288c310edd6d144effbae1aea9dd2a226d",
+        "quad": [
+          [
+            193.8820949412971,
+            40.64326337448036
+          ],
+          [
+            339.7224272496793,
+            186.46827119242013
+          ],
+          [
+            190.2253365301165,
+            332.48276340072863
+          ],
+          [
+            46.11114873361885,
+            184.1413775871979
+          ]
+        ],
+        "resolution": 378,
+        "preparedSha256": "4ec63e7661a5b48a201f22fc96115c5cb79e30f34437cabdfeb9e1a91f5cdfa1",
+        "fullSolve": true,
+        "variant": "one-source-pixel crop shift"
+      },
+      {
+        "id": "hjsta-05",
+        "group": "hunodan",
+        "file": "hjsta-05.json.gz",
+        "sourceSha256": "bde5a6cc6ef440682c90328b8e3830e155a4ddd491d40439f820e5c48df351ea",
+        "quad": [
+          [
+            196.5969474661884,
+            51.51935280757243
+          ],
+          [
+            342.30866035747334,
+            198.8625643664934
+          ],
+          [
+            193.80999274262587,
+            348.0238605607671
+          ],
+          [
+            48.248889692101926,
+            199.65485925642955
+          ]
+        ],
+        "resolution": 386,
+        "preparedSha256": "c74d6333241a52a2a006ef5b6ef61ffed03b6fe955a6ab665d8efcdf640af43f",
+        "fullSolve": true
+      },
+      {
+        "id": "danish-silver-on-tree",
+        "group": "web",
+        "file": "danish-silver-on-tree.json.gz",
+        "sourceSha256": "960a8d2c6b1123b117fc96b13a915e292a67521590f5603dbdd2a7a75a7463fe",
+        "quad": [
+          [
+            3675.0587910188187,
+            941.4244039347897
+          ],
+          [
+            4301.216259950508,
+            1879.5657602327528
+          ],
+          [
+            3034.1125140131558,
+            3153.8443551826886
+          ],
+          [
+            2364.6547122436627,
+            2356.256367005722
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "1af32dfabce67195149b20f0d8bdd9651285cc5eb7c4f94c7ca521a09fecbbd2",
+        "family": "danish-silver-checker",
+        "track": "two-colour",
+        "cropStatus": "needs_review",
+        "fullSolve": true
+      },
+      {
+        "id": "danish-green-yellow",
+        "group": "web",
+        "file": "danish-green-yellow.json.gz",
+        "sourceSha256": "5957b2a8f5e25981f400cef687784effdb6c8491b8f0886ab5117ea66d610d4f",
+        "quad": [
+          [
+            611.8509148208856,
+            286.35094865143384
+          ],
+          [
+            1004.8751282970562,
+            698.8338468378164
+          ],
+          [
+            587.4186473166446,
+            1089.821108817554
+          ],
+          [
+            190.47614595917133,
+            686.3303532368276
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "6a00ccde2bbf9df220a1942dda9a62ba3ac3a6baab1ca8248d4375a1a52883c8",
+        "family": "danish-andersen-checker",
+        "track": "two-colour",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "danish-silver-white",
+        "group": "web",
+        "file": "danish-silver-white.json.gz",
+        "sourceSha256": "9a2a6d6fdae42655ec1ee153635ea85556aea24ed79d5960f7837b6bb0a01458",
+        "quad": [
+          [
+            599.1693764177503,
+            669.4541660571701
+          ],
+          [
+            1018.0218109494458,
+            1065.963134187527
+          ],
+          [
+            599.5194263054711,
+            1510.9642520211464
+          ],
+          [
+            206.25924170073043,
+            1093.3670462990751
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "f78dd1a9837a1d8d076dab9c942d6a1f5ed32b97cf2f762ecf7d132ee74a5249",
+        "family": "danish-silver-checker",
+        "track": "two-colour",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "danish-red-gold",
+        "group": "web",
+        "file": "danish-red-gold.json.gz",
+        "sourceSha256": "8de9081d6aad37c1e63600cf1f51f5c205c2d383b89f22a16cb14aab63d36a96",
+        "quad": [
+          [
+            562.0280391257645,
+            706.7566839357997
+          ],
+          [
+            968.5562226976498,
+            1135.5086309851997
+          ],
+          [
+            573.5422312055584,
+            1519.7354477775007
+          ],
+          [
+            175.53439595783598,
+            1088.4367795848705
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "7ecff2b7032c98788d30c9159915597385040359fe6c4c6a2ef43c648bb34bee",
+        "family": "danish-dense-checker",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "danish-tree-red",
+        "group": "web",
+        "file": "danish-tree-red.json.gz",
+        "sourceSha256": "6603c4c02f4c45d097a47b06bf003e62d5710ef33ce574b35f2a2e351d274b40",
+        "quad": [
+          [
+            556.0975766903264,
+            521.5736084705238
+          ],
+          [
+            908.5974861031686,
+            835.6634941021031
+          ],
+          [
+            598.4190381184407,
+            1165.102659683867
+          ],
+          [
+            277.09631098883773,
+            832.2343720900503
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "7dacc7077f83b9d7f64715efbb6bf872d206ed06fb5ccd8a94a590c2f7eeeb2b",
+        "family": "tree-tree",
+        "track": "two-colour",
+        "cropStatus": "needs_review",
+        "fullSolve": true
+      },
+      {
+        "id": "danish-tree-green",
+        "group": "web",
+        "file": "danish-tree-green.json.gz",
+        "sourceSha256": "5a8c872aeae2452165ddc05753a2255effaba318a7eb4b5b57ad9fb4361c1439",
+        "quad": [
+          [
+            613.4629495846865,
+            709.8754165460504
+          ],
+          [
+            991.3479406135674,
+            1101.880332092388
+          ],
+          [
+            589.7733778087984,
+            1526.3403443658829
+          ],
+          [
+            201.96444906745154,
+            1085.6004246480518
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "2e7b0bd452d977e2170ac7c80366eeee3c259848a12236832474578b7bc3c629",
+        "family": "tree-tree",
+        "track": "two-colour",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "danish-tree-dots",
+        "group": "web",
+        "file": "danish-tree-dots.json.gz",
+        "sourceSha256": "b7a0ae1209a1fbc5092b1e1b453dae5a19decc11c33a12e12b345ba9cfb16063",
+        "quad": [
+          [
+            580.619490138917,
+            603.2344575832992
+          ],
+          [
+            1044.082427083676,
+            1027.6180315158972
+          ],
+          [
+            605.2572739153305,
+            1542.2580832514395
+          ],
+          [
+            155.76190058899786,
+            1049.3581580956206
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "632d037e599ad4938392d648b1e8ab94ef425ab1aa4c3640ad0afed6cb53f20b",
+        "family": "tree-tree",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "bibel-checker-2",
+        "group": "web",
+        "file": "bibel-checker-2.json.gz",
+        "sourceSha256": "d715441c747a0f9d93db029c5b97b4c0a9dff0f5d3bd6480a871ae8285abfb4b",
+        "quad": [
+          [
+            463.32871077227776,
+            163.52690443466037
+          ],
+          [
+            674.7768124351633,
+            380.0728413983725
+          ],
+          [
+            477.2778856976256,
+            588.0147828851123
+          ],
+          [
+            267.8423056748111,
+            383.1302641627054
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "d2730323538bcf54031b2e6ce7b768bd747eeea66eeaeda67dc8ff1d5a29aa64",
+        "family": "bibelselskabet-checker-2",
+        "track": "two-colour",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "bibel-checker-3",
+        "group": "web",
+        "file": "bibel-checker-3.json.gz",
+        "sourceSha256": "ca918edf5ebf69b903f8f0c95cf048280c7ed4e1dea135f5e14aca3529decbc7",
+        "quad": [
+          [
+            428.52499957084467,
+            107.94140443033162
+          ],
+          [
+            651.1719003615806,
+            307.87535698407953
+          ],
+          [
+            457.77859974478423,
+            527.5446206961046
+          ],
+          [
+            247.86376696068473,
+            325.5685826170488
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "6622ba23d834308cfd7f2aac0782ecbd7a7b8e6054c71458380c09154502cc4e",
+        "family": "bibelselskabet-checker-3",
+        "track": "two-colour",
+        "cropStatus": "needs_review",
+        "fullSolve": true
+      },
+      {
+        "id": "bibel-checker-4",
+        "group": "web",
+        "file": "bibel-checker-4.json.gz",
+        "sourceSha256": "8552792996b59b8c94b8ef67759ce53f9799c73683f55d673314415cefd9ac87",
+        "quad": [
+          [
+            429.70317261193094,
+            122.10481294430112
+          ],
+          [
+            652.5269364078364,
+            331.6303238738545
+          ],
+          [
+            446.11534233992893,
+            562.4943090857911
+          ],
+          [
+            228.89995848689574,
+            353.5303167050975
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "da89025565255e28379d15744f874a3f2f55373a8fe9e84bc73a4f8481c5826c",
+        "family": "bibelselskabet-checker-4",
+        "track": "two-colour",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "bibel-narrow-wide",
+        "group": "web",
+        "file": "bibel-narrow-wide.json.gz",
+        "sourceSha256": "f89f56183194d4035b3e4f0864d5ea7642912342a5717da2ad0c6c38da7da194",
+        "quad": [
+          [
+            479.4201306253251,
+            106.79662147269192
+          ],
+          [
+            695.726809621462,
+            316.1675646420967
+          ],
+          [
+            492.9391897261545,
+            559.9533150678765
+          ],
+          [
+            258.89314608770366,
+            346.1147488291578
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "716ac4bc27cc0992599c19fafbabadaa496384be9891efc54c997bb49ce624a3",
+        "family": "bibelselskabet-narrow-wide",
+        "track": "two-colour",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "bibel-nested-heart-red",
+        "group": "web",
+        "file": "bibel-nested-heart-red.json.gz",
+        "sourceSha256": "2a3c21b4bab08513abb8d5538143dd2670df0ce0fe3048ec16b93359914f97a2",
+        "quad": [
+          [
+            474.0910731679586,
+            138.3127622344359
+          ],
+          [
+            688.8053555743762,
+            358.5571722152888
+          ],
+          [
+            511.29773346920297,
+            576.8853021021612
+          ],
+          [
+            267.703177909864,
+            383.3879679813726
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "7aae8e06ef7d69bc3d1697becf90b9af60c8fa5cd96c48773c51cf5a80a7e210",
+        "family": "bibelselskabet-nested-heart",
+        "track": "two-colour",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "danish-tree-group-right",
+        "group": "web",
+        "file": "danish-tree-group-right.json.gz",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "quad": [
+          [
+            871.2544254255718,
+            467.7289123937367
+          ],
+          [
+            1044.7291801711856,
+            668.5580458263546
+          ],
+          [
+            849.2070483129662,
+            822.1122355074731
+          ],
+          [
+            699.4254176212835,
+            620.439217076691
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "c055383ae92a3c78dbaf705348fe9905f37c2a2237ce778ad92438a4e5a5925a",
+        "family": "tree-tree",
+        "track": "scene",
+        "cropStatus": "needs_review",
+        "fullSolve": true
+      },
+      {
+        "id": "gathering-striped-scene-top",
+        "group": "web",
+        "file": "gathering-striped-scene-top.json.gz",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "quad": [
+          [
+            227.26145453076103,
+            172.19787670243022
+          ],
+          [
+            419.8048673657847,
+            280.583000509495
+          ],
+          [
+            282.83722802140056,
+            482.1675810932244
+          ],
+          [
+            153.54019488167887,
+            367.20451727567905
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "8404a1dad7f13454783f390c0e9aae7df0e6ab297f91b1a8efc1a58426bcca5d",
+        "family": "gathering-checker",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-arranged-r1c2",
+        "group": "web",
+        "file": "vissevasse-arranged-r1c2.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            521.3070301247682,
+            49.751306143306465
+          ],
+          [
+            618.5814576706026,
+            150.4612464853201
+          ],
+          [
+            521.0913237211223,
+            256.2524464859224
+          ],
+          [
+            413.8366990575314,
+            159.39813647274087
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "d56a7c6220bd7a1fc7b12ff744b859c4154cbc1e0c0cf01a0d7ff44490bbf2ba",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-arranged-r1c3",
+        "group": "web",
+        "file": "vissevasse-arranged-r1c3.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            808.5235086741088,
+            38.85002427671212
+          ],
+          [
+            897.2387355371662,
+            146.14275626656803
+          ],
+          [
+            791.1310267587257,
+            253.30788159413737
+          ],
+          [
+            674.9189478578589,
+            133.6827120283013
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "67c28ac54410df815d75d29a1d8a811547b9d6934d97b4b0c85a55cf3fc79d36",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-arranged-r1c4",
+        "group": "web",
+        "file": "vissevasse-arranged-r1c4.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            1061.9572804034103,
+            38.32920578721208
+          ],
+          [
+            1188.4109424477783,
+            136.93590042567195
+          ],
+          [
+            1074.0401667303872,
+            248.71342666646203
+          ],
+          [
+            968.5855171707337,
+            140.2765146051632
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "9505e1cbe1029dcbdbd353768ac6b6d56b664827cc28f6ddbeab2b4413a3f59f",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": true
+      },
+      {
+        "id": "vissevasse-arranged-r2c1",
+        "group": "web",
+        "file": "vissevasse-arranged-r2c1.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            353.5448267631607,
+            242.78585255648534
+          ],
+          [
+            457.5912123293528,
+            348.3336113073291
+          ],
+          [
+            351.5082874352929,
+            456.6105455197329
+          ],
+          [
+            235.41573309258047,
+            346.94643463123214
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "fc14e9d5131f0429e5c168f576c5d0fabe6523a7a60c1a571ea4a79289023d05",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-arranged-r2c2",
+        "group": "web",
+        "file": "vissevasse-arranged-r2c2.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            657.5998979782407,
+            235.2825588647455
+          ],
+          [
+            752.3451267731036,
+            337.59585455769127
+          ],
+          [
+            650.0481309205427,
+            451.7028297682693
+          ],
+          [
+            532.9712284917887,
+            337.57006779033077
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "a4ea98499fbe0fb962c64f850bee24cea6af9c27e36ec90b5423b64b12497ba2",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-arranged-r2c3",
+        "group": "web",
+        "file": "vissevasse-arranged-r2c3.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            939.2899397565939,
+            242.49348228213674
+          ],
+          [
+            1076.223883469362,
+            329.5846214764511
+          ],
+          [
+            964.8000500055981,
+            434.99022881332223
+          ],
+          [
+            847.6416610633447,
+            306.6681306874159
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "d6d45ae3d4baf01c52caa5c89ea21cb1b5a774170bdd8dc435ce1c7d8b6bfb44",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-arranged-r3c2",
+        "group": "web",
+        "file": "vissevasse-arranged-r3c2.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            517.9083929038097,
+            429.9681337834105
+          ],
+          [
+            601.6756995408481,
+            533.5827318605574
+          ],
+          [
+            505.95475136969003,
+            646.5440958366516
+          ],
+          [
+            387.20965540302035,
+            549.1318486775283
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "6c5e5332fab0fb5d1484d69163122ea8fadf472f6907709b72691455b3e1531a",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": true
+      },
+      {
+        "id": "vissevasse-arranged-r3c3",
+        "group": "web",
+        "file": "vissevasse-arranged-r3c3.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            802.32711491473,
+            430.5445937214524
+          ],
+          [
+            892.6043816680483,
+            551.4125776707572
+          ],
+          [
+            795.6284489233648,
+            655.9774970007879
+          ],
+          [
+            670.7820415671293,
+            536.9756782844511
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "ea73d9d19feb224d98a54a500d82804fad7edaad273c9b52029e1836b6a1a194",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-arranged-r3c4",
+        "group": "web",
+        "file": "vissevasse-arranged-r3c4.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            1099.6838642447037,
+            423.92247861963557
+          ],
+          [
+            1219.6184385415934,
+            528.1685562700704
+          ],
+          [
+            1101.9354833337813,
+            641.0038364226098
+          ],
+          [
+            997.0885094257519,
+            522.8807566568004
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "4e74a8ad5086fe1195339f1866d523bf3b17315f9680dc11559bfc8d3387a81e",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-arranged-r4c1",
+        "group": "web",
+        "file": "vissevasse-arranged-r4c1.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            355.4705619216538,
+            633.9595046207497
+          ],
+          [
+            453.32273986789056,
+            745.4467701989108
+          ],
+          [
+            347.4444813612936,
+            859.8855938172553
+          ],
+          [
+            222.0521895561622,
+            743.4756768548864
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "0371791b97f5166b8f50c9f95423dadbc63c0dcc081e52850978f3d4a5c82371",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-arranged-r4c2",
+        "group": "web",
+        "file": "vissevasse-arranged-r4c2.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            634.907436884193,
+            633.001753857641
+          ],
+          [
+            764.4767233413031,
+            725.6575711364306
+          ],
+          [
+            641.20737935274,
+            856.2801333302166
+          ],
+          [
+            527.7148016435635,
+            742.9081636955389
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "88bfe7bc76d4f8debfad3d1cb4d4832cc8f5789abf6653ce6e784d3d1af17e9f",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": true
+      },
+      {
+        "id": "vissevasse-arranged-r4c3",
+        "group": "web",
+        "file": "vissevasse-arranged-r4c3.json.gz",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "quad": [
+          [
+            973.8324976669008,
+            623.3609690971284
+          ],
+          [
+            1065.245186834688,
+            729.0441764470211
+          ],
+          [
+            964.2913473912381,
+            849.4284101717299
+          ],
+          [
+            836.9621647760885,
+            731.8707834087093
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "f3c18c3de848d6d993aca83efb5c5c0bdcbb90671405a91354d355fa67c10637",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-scattered-blue-checker",
+        "group": "web",
+        "file": "vissevasse-scattered-blue-checker.json.gz",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "quad": [
+          [
+            918.9800033464423,
+            276.7398574694207
+          ],
+          [
+            1032.5056932094149,
+            339.596195531529
+          ],
+          [
+            929.2438497039642,
+            495.2183196153719
+          ],
+          [
+            882.924249646729,
+            353.3907948550058
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "1604e3c09679506af169cb85db227550075c021b3ca86aa7dcb6d81e82db148d",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-scattered-green-checker",
+        "group": "web",
+        "file": "vissevasse-scattered-green-checker.json.gz",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "quad": [
+          [
+            358.9368143020895,
+            453.0518089082537
+          ],
+          [
+            556.7395351031154,
+            564.7315878146013
+          ],
+          [
+            370.36638342367735,
+            711.0691701087104
+          ],
+          [
+            267.7593492256395,
+            575.0208529932322
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "5f0ed9228873cfb9dcceaa2ec9f82d744d8ddbdc27398dcf2cb0785500d8116a",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": false
+      },
+      {
+        "id": "vissevasse-scattered-purple-checker",
+        "group": "web",
+        "file": "vissevasse-scattered-purple-checker.json.gz",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "quad": [
+          [
+            691.6822476267986,
+            400.23694903527405
+          ],
+          [
+            842.8105664885044,
+            530.7934625112307
+          ],
+          [
+            650.5144410228089,
+            650.1011553404667
+          ],
+          [
+            582.1110324513518,
+            521.1396623071844
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "aeea4f61a13b9d5e1184f5de3aff2324a0f99cbe9b09944b4b76867f4598e12e",
+        "family": "vissevasse-mixed",
+        "track": "printed-paper",
+        "cropStatus": "needs_review",
+        "fullSolve": true
+      },
+      {
+        "id": "collage-outline-star",
+        "group": "collage",
+        "file": "collage-outline-star.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            430.32931226516513,
+            171.9092353088924
+          ],
+          [
+            525.2431230765773,
+            267.80938630026435
+          ],
+          [
+            403.3299806510149,
+            349.9830567410715
+          ],
+          [
+            320.83807769917655,
+            259.9176512630082
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "4d352994bf35eb9399af9a29c208f2bc1f264f5ec1dde3b37ec8c83a5c1615bc",
+        "cropStatus": "needs_review",
+        "roi": [
+          314,
+          123,
+          539,
+          346
+        ],
+        "fullSolve": true
+      },
+      {
+        "id": "collage-floral-checker",
+        "group": "collage",
+        "file": "collage-floral-checker.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            637.713936325853,
+            172.55782760328333
+          ],
+          [
+            725.4227705830424,
+            253.30008188828606
+          ],
+          [
+            631.0724913134218,
+            329.0430481823762
+          ],
+          [
+            530.8384533560435,
+            248.12682310994776
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "b963b3e18ca43b0b7fa2a27e691e3a84f56ce908560ff8320d5e366453563235",
+        "cropStatus": "needs_review",
+        "roi": [
+          492,
+          118,
+          745,
+          333
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-dense-checker",
+        "group": "collage",
+        "file": "collage-dense-checker.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            824.3637759965004,
+            169.25568526873215
+          ],
+          [
+            925.6879214394025,
+            250.01664849307951
+          ],
+          [
+            837.5322148453769,
+            339.1106360621789
+          ],
+          [
+            733.4422670902453,
+            251.36690779712663
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "9bc52ef0f6882c8a43071661f15904ced5edb17f9ec0d59cd003004ad99eb817",
+        "cropStatus": "needs_review",
+        "roi": [
+          696,
+          120,
+          965,
+          345
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-bird",
+        "group": "collage",
+        "file": "collage-bird.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1025.6523483686494,
+            145.10074462846222
+          ],
+          [
+            1134.7393673965066,
+            233.36789914703917
+          ],
+          [
+            1039.100544685888,
+            330.8554844326094
+          ],
+          [
+            928.0282102167661,
+            230.46109103450203
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "33b2c3da807d1be45db2a9a5748c4ec45279d9365c2793ff47135a8081d064d2",
+        "cropStatus": "needs_review",
+        "roi": [
+          917,
+          108,
+          1168,
+          323
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-leaf",
+        "group": "collage",
+        "file": "collage-leaf.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1235.5072438016873,
+            145.52072912190997
+          ],
+          [
+            1341.7257925238364,
+            234.1742107665826
+          ],
+          [
+            1244.5550489255436,
+            319.4221884532836
+          ],
+          [
+            1142.1879331018463,
+            219.8564731472379
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "d90b93d22c2b2eb874792a8630b4bab75876c723e8fd61842e94ccae507d1039",
+        "cropStatus": "needs_review",
+        "roi": [
+          1125,
+          87,
+          1360,
+          325
+        ],
+        "fullSolve": true
+      },
+      {
+        "id": "collage-gift",
+        "group": "collage",
+        "file": "collage-gift.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            264.8878818271703,
+            374.174952703159
+          ],
+          [
+            299.4463822705883,
+            491.4192336918708
+          ],
+          [
+            228.13534804554146,
+            580.6628780659917
+          ],
+          [
+            154.01969081220352,
+            477.003346191405
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "2ada8fe07bd147891efb104dc33fa71431af45201707ccced54f2aaa9c85cd3a",
+        "cropStatus": "needs_review",
+        "roi": [
+          122,
+          353,
+          351,
+          559
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-gingerbread",
+        "group": "collage",
+        "file": "collage-gingerbread.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            443.0029450307317,
+            403.12309206077146
+          ],
+          [
+            520.7644264177545,
+            492.12368940741925
+          ],
+          [
+            428.878684685224,
+            578.6245202162964
+          ],
+          [
+            342.8424998954437,
+            497.626789254711
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "73a92c53144b35291b5883c0f85a5e3a6b738f53098aa250d9d9f22b5fe21e19",
+        "cropStatus": "needs_review",
+        "roi": [
+          314,
+          367,
+          545,
+          582
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-white-birds",
+        "group": "collage",
+        "file": "collage-white-birds.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            624.0254916230912,
+            405.64205142364983
+          ],
+          [
+            712.5096523750735,
+            491.97735000877583
+          ],
+          [
+            612.5843983935727,
+            580.7691646421146
+          ],
+          [
+            516.7760511923938,
+            491.8542246246662
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "23f7f5f429a6498aeaf051985d435237661e6be63942ca9bff7a7063a95e813d",
+        "cropStatus": "needs_review",
+        "roi": [
+          498,
+          368,
+          724,
+          588
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-flower",
+        "group": "collage",
+        "file": "collage-flower.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            793.8567114883541,
+            385.4102448391328
+          ],
+          [
+            907.8415931957261,
+            468.36492954624373
+          ],
+          [
+            815.3115076445058,
+            571.9592484245964
+          ],
+          [
+            698.0645010186174,
+            484.2821580070257
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "9165a6ad9bb838dd0229b6b2d017d37422f64ef34ca13470f1fbfe282783025f",
+        "cropStatus": "needs_review",
+        "roi": [
+          678,
+          330,
+          929,
+          577
+        ],
+        "fullSolve": true
+      },
+      {
+        "id": "collage-warped-checker",
+        "group": "collage",
+        "file": "collage-warped-checker.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            998.2530765587323,
+            363.7238980735932
+          ],
+          [
+            1096.3865456915516,
+            461.96008142010237
+          ],
+          [
+            1002.2309362631387,
+            545.1738162267161
+          ],
+          [
+            895.5674576930575,
+            447.165395114315
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "aa1018ad097e0c96c3c7c1fdc7fbc83c1d447b5288aed40a64157edab6ddbf7c",
+        "cropStatus": "needs_review",
+        "roi": [
+          878,
+          323,
+          1127,
+          552
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-round-checker",
+        "group": "collage",
+        "file": "collage-round-checker.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1194.0595585010876,
+            364.6300091866773
+          ],
+          [
+            1299.07960391501,
+            466.81841736513815
+          ],
+          [
+            1183.8286312844448,
+            573.6660684542953
+          ],
+          [
+            1124.6843745420513,
+            484.9777586177245
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "56495fdf8e6767f02acbf619e34663aadc2fbe227b4e869de216e02f0fb131d5",
+        "cropStatus": "needs_review",
+        "roi": [
+          1078,
+          338,
+          1314,
+          556
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-fine-checker",
+        "group": "collage",
+        "file": "collage-fine-checker.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            229.66038288348437,
+            621.0634317239716
+          ],
+          [
+            303.26962840988,
+            706.260228818081
+          ],
+          [
+            203.48424563134648,
+            800.9466783307623
+          ],
+          [
+            121.2368454904982,
+            720.6371610504564
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "685eb2762eea21e7b3e0d545413c05d3d5166312a8aaad9c0781fe5b3c7909b7",
+        "cropStatus": "needs_review",
+        "roi": [
+          83,
+          589,
+          335,
+          809
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-orb",
+        "group": "collage",
+        "file": "collage-orb.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            416.3930211262655,
+            635.9173462975693
+          ],
+          [
+            489.15105358486505,
+            734.2313669731201
+          ],
+          [
+            376.4006422612913,
+            837.1326494217976
+          ],
+          [
+            296.37364713308006,
+            725.4587467825306
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "aef1ead68066d3cb94e985d8eb414777a3cd12eccf2af5c01c145ed32c4afe79",
+        "cropStatus": "needs_review",
+        "roi": [
+          282,
+          610,
+          533,
+          838
+        ],
+        "fullSolve": true
+      },
+      {
+        "id": "collage-stacked-hearts",
+        "group": "collage",
+        "file": "collage-stacked-hearts.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            599.522672607215,
+            643.2369383270188
+          ],
+          [
+            698.9243793902937,
+            739.5198188913346
+          ],
+          [
+            599.4708129405192,
+            843.2547540939129
+          ],
+          [
+            494.7387207708839,
+            742.8638544716312
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "f64d72ec675b9f1a053131ef656db344206494ae59cee55c1bcecdad11d89ac5",
+        "cropStatus": "needs_review",
+        "roi": [
+          480,
+          598,
+          729,
+          839
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-jigsaw",
+        "group": "collage",
+        "file": "collage-jigsaw.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            796.940953842628,
+            631.6593539438662
+          ],
+          [
+            856.2204646604408,
+            748.7890866349005
+          ],
+          [
+            764.8124220376249,
+            864.0519986487432
+          ],
+          [
+            715.8813933469556,
+            745.1522092092067
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "d211c7da51908b312b371576e8f61c1ef510ed75579f66c82a50b4ad9da97947",
+        "cropStatus": "needs_review",
+        "roi": [
+          681,
+          590,
+          914,
+          832
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-candle",
+        "group": "collage",
+        "file": "collage-candle.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1010.9144542590817,
+            589.4652765269831
+          ],
+          [
+            1103.7537578794381,
+            696.2833649430704
+          ],
+          [
+            998.6357722702141,
+            795.1746948683086
+          ],
+          [
+            894.9268445855275,
+            683.6338821954087
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "4d735772fdcbf98e0c8aae72c7bf8a17446785cbef8d876aa1e409438f15420c",
+        "cropStatus": "candidate",
+        "roi": [
+          879,
+          549,
+          1141,
+          809
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-maple-leaf",
+        "group": "collage",
+        "file": "collage-maple-leaf.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1193.0840385692645,
+            615.0513256909322
+          ],
+          [
+            1283.5040566855782,
+            728.2484758290141
+          ],
+          [
+            1177.3970069127552,
+            820.5413443138771
+          ],
+          [
+            1081.4568097234041,
+            701.77683760528
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "28709c29e399992efda12d9b7c0af14d7cc0fa34f3edca7084720a327b1288ed",
+        "cropStatus": "needs_review",
+        "roi": [
+          1068,
+          581,
+          1310,
+          822
+        ],
+        "fullSolve": true
+      },
+      {
+        "id": "collage-crown",
+        "group": "collage",
+        "file": "collage-crown.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1369.931186294376,
+            614.6600876380234
+          ],
+          [
+            1456.5456261395748,
+            725.6051141586194
+          ],
+          [
+            1393.858186598476,
+            815.1919723477054
+          ],
+          [
+            1278.8035113333242,
+            716.3092947707551
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "b1d5e58d63be58f4568f57509af07aabad9649e2f202749d1bd7f7cfe896a700",
+        "cropStatus": "needs_review",
+        "roi": [
+          1261,
+          582,
+          1482,
+          800
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-crossed-ribbons",
+        "group": "collage",
+        "file": "collage-crossed-ribbons.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            402.13745403852283,
+            920.2819656234791
+          ],
+          [
+            482.00372354384695,
+            1030.9815069791907
+          ],
+          [
+            379.5099406019051,
+            1134.274064383248
+          ],
+          [
+            291.35871775582666,
+            1006.9599203709363
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "9ab8984f095c85c44866dff3fb21d38e9aa57dd1feab14cb72e4744df4e9ae73",
+        "cropStatus": "needs_review",
+        "roi": [
+          261,
+          856,
+          524,
+          1112
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-bauble",
+        "group": "collage",
+        "file": "collage-bauble.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            585.124945734859,
+            905.2805093237887
+          ],
+          [
+            680.4272015903496,
+            1020.2331968915895
+          ],
+          [
+            619.5033182277817,
+            1139.311696191154
+          ],
+          [
+            466.440010833398,
+            1022.8877039896092
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "a28bbe282f3a0b192ff0f5728cee8901c0e74f66854a3dd4ab15c7ce363cf009",
+        "cropStatus": "needs_review",
+        "roi": [
+          456,
+          860,
+          711,
+          1112
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "collage-bottom-flower",
+        "group": "collage",
+        "file": "collage-bottom-flower.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1015.9604536919348,
+            902.9558053158482
+          ],
+          [
+            1118.7076323813117,
+            1019.0273885037443
+          ],
+          [
+            1005.2569851136468,
+            1118.474491351782
+          ],
+          [
+            899.4276904817748,
+            997.1422681245042
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "d05e79a0c05f345b46e6b2f6a61223d8f7a24a9975d2bd8d099fd4939b8065ce",
+        "cropStatus": "needs_review",
+        "roi": [
+          874,
+          859,
+          1155,
+          1112
+        ],
+        "fullSolve": true
+      },
+      {
+        "id": "collage-faceted-star",
+        "group": "collage",
+        "file": "collage-faceted-star.json.gz",
+        "sourceSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "quad": [
+          [
+            1222.0323409003954,
+            898.4617259674154
+          ],
+          [
+            1327.6300083571182,
+            996.122950450096
+          ],
+          [
+            1237.0924465795904,
+            1095.456310043363
+          ],
+          [
+            1128.9625245353818,
+            996.6693782741427
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "2e6ba6fa7cc2481992003fe9f862908b06418613eb87bea1a0868050b2675544",
+        "cropStatus": "needs_review",
+        "roi": [
+          1105,
+          852,
+          1354,
+          1111
+        ],
+        "fullSolve": false
+      },
+      {
+        "id": "bibel-star-8",
+        "group": "individual",
+        "file": "bibel-star-8.json.gz",
+        "sourceSha256": "cc903fba95b57912b6dc588b2bbc1f2885d53ee8d1b96abee3b2ec953d241f2b",
+        "quad": [
+          [
+            536.895,
+            155.71
+          ],
+          [
+            750.275,
+            370.03
+          ],
+          [
+            535.015,
+            586.23
+          ],
+          [
+            318.81500000000005,
+            370.03
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "b45f09ccd74821354e531c4a6cec374a301a815ea383875b118c0524bd354c95",
+        "cropStatus": "fixed historical crop",
+        "fullSolve": true
+      },
+      {
+        "id": "bibel-star-curved",
+        "group": "individual",
+        "file": "bibel-star-curved.json.gz",
+        "sourceSha256": "130b68f82bbfdab2f1b243e4b99e41926c746820bbde527041bc8def514e834b",
+        "quad": [
+          [
+            515.1,
+            155.62
+          ],
+          [
+            731.3,
+            365.38
+          ],
+          [
+            514.18,
+            588.02
+          ],
+          [
+            304.41999999999996,
+            369.98
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "ffc8140855c61754aab74ab38e53dc1f5180678224908870c83f293b058c438b",
+        "cropStatus": "fixed historical crop",
+        "fullSolve": false
+      },
+      {
+        "id": "bibel-star-outline",
+        "group": "individual",
+        "file": "bibel-star-outline.json.gz",
+        "sourceSha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "quad": [
+          [
+            506.79,
+            156.16
+          ],
+          [
+            720.87,
+            376
+          ],
+          [
+            495.27,
+            595.84
+          ],
+          [
+            284.07000000000005,
+            376
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "d0f43d9c9d0eba73774b1ca78889380e54f8b0b9add6f4f2a43a9d48c8d94859",
+        "cropStatus": "fixed historical crop",
+        "fullSolve": false
+      },
+      {
+        "id": "bibel-cross",
+        "group": "individual",
+        "file": "bibel-cross.json.gz",
+        "sourceSha256": "32ef80dff1690e3db72ae3713d3965b2094ca908e3c7926b8ed08ff534965284",
+        "quad": [
+          [
+            508,
+            140
+          ],
+          [
+            750,
+            377
+          ],
+          [
+            524,
+            621
+          ],
+          [
+            286,
+            381
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "695f0f71b1276a9ec0b5f5ff000aab4a6a800a45cff8a944b04bd948cb1291eb",
+        "cropStatus": "fixed historical crop",
+        "fullSolve": false
+      },
+      {
+        "id": "flettede-puppy",
+        "group": "individual",
+        "file": "flettede-puppy.json.gz",
+        "sourceSha256": "2a26b6c1531efa407da71dba64fe5db6a6f2e4a6c25226c84b6e62213784fad0",
+        "quad": [
+          [
+            396,
+            315
+          ],
+          [
+            655,
+            585
+          ],
+          [
+            388,
+            843
+          ],
+          [
+            153,
+            606
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "dcc5291edb04c42334f95ad6ac59b09ffb05cb3cb976fe78e691ffb4e0fd894c",
+        "cropStatus": "fixed historical crop",
+        "fullSolve": true
+      },
+      {
+        "id": "flettede-stonehenge",
+        "group": "individual",
+        "file": "flettede-stonehenge.json.gz",
+        "sourceSha256": "b9a1c5a2059b3781aef01b48d21b90110791cd6befc232999113c732c0a6aa24",
+        "quad": [
+          [
+            319,
+            103
+          ],
+          [
+            510,
+            349
+          ],
+          [
+            295,
+            568
+          ],
+          [
+            74,
+            333
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "b8ca37cf59be219e255646063c57f0309a9dfcb7e48465c263362b22ef6d3246",
+        "cropStatus": "fixed historical crop",
+        "fullSolve": false
+      },
+      {
+        "id": "flettede-viking",
+        "group": "individual",
+        "file": "flettede-viking.json.gz",
+        "sourceSha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+        "quad": [
+          [
+            727.32,
+            336.69000000000005
+          ],
+          [
+            1266.32,
+            849.23
+          ],
+          [
+            737.12,
+            1382.35
+          ],
+          [
+            241.24,
+            873.73
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "840aa304e6550876c148780a6d676149aec516f5ff7c3ba8504b64a07aa3f451",
+        "cropStatus": "fixed historical crop",
+        "fullSolve": false
+      },
+      {
+        "id": "tilted-orange-weave",
+        "group": "hard-user",
+        "file": "tilted-orange-weave.json.gz",
+        "sourceSha256": "367d4ffa4595103633123d554ddb7925f874fe4ccdd5f69a10c25362dfaa0a02",
+        "quad": [
+          [
+            469.72435429721304,
+            129.96728654585738
+          ],
+          [
+            852.0188741695723,
+            586.0014000598356
+          ],
+          [
+            350.5483863458043,
+            933.1123126724174
+          ],
+          [
+            51.321027596640675,
+            445.2259143646169
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "bf33a5e16105a92dd8c188515685b09122b1d0e9992651f5631eae8737c66f2a",
+        "cropStatus": "needs_review",
+        "fullSolve": true
+      },
+      {
+        "id": "orange-upload-1254",
+        "group": "hard-user",
+        "file": "orange-upload-1254.json.gz",
+        "sourceSha256": "20e9a43d29df065dfb9f201acec710f86808f4c7abec860b19197dff4618c467",
+        "quad": [
+          [
+            325.9952014925149,
+            100.97801810333502
+          ],
+          [
+            580.234950696136,
+            428.49175300007715
+          ],
+          [
+            232.65346284085797,
+            670.4655277448043
+          ],
+          [
+            21.850107634368808,
+            322.3901758352161
+          ]
+        ],
+        "resolution": 400,
+        "preparedSha256": "53bb20edfa41a753f5bceb03f9fef8af1a69ae14612c5d15785289428d76cdff",
+        "cropStatus": "needs_review",
+        "fullSolve": true
+      },
+      {
+        "id": "motif-hat",
+        "group": "synthetic",
+        "file": "motif-hat.json.gz",
+        "resolution": 240,
+        "preparedSha256": "774c18c5c62cba10a63d89fea4fe826f890cf9e3e3db3e09b20646e32d7728fc",
+        "fullSolve": true
+      },
+      {
+        "id": "motif-house",
+        "group": "synthetic",
+        "file": "motif-house.json.gz",
+        "resolution": 240,
+        "preparedSha256": "1e585ff55b6e787d2f14a910c8745b1afef5af2f47d91061bc4f058ce039af95",
+        "fullSolve": true
+      },
+      {
+        "id": "motif-circle",
+        "group": "synthetic",
+        "file": "motif-circle.json.gz",
+        "resolution": 240,
+        "preparedSha256": "419995b92740022fca5faec1a947f81b2ffec3b0313288952ac61ec60116582e",
+        "fullSolve": true
+      }
+    ],
+    "excluded": [
+      {
+        "id": "gathering-pink-single",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "bibel-nested-heart-green",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "bibel-angel",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "danish-tree-group-top",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "danish-tree-group-left",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "danish-tree-group-bottom",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "gathering-striped-scene-bottom",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "gathering-hanging-trio-top",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "gathering-hanging-trio-middle",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "gathering-hanging-trio-bottom",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "vissevasse-arranged-r1c1",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "vissevasse-arranged-r3c1",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "vissevasse-scattered-pale-fish",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "vissevasse-scattered-yellow-checker",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "vissevasse-scattered-blue-fish",
+        "group": "web",
+        "reason": "No crop proposal in frozen collection baseline"
+      },
+      {
+        "id": "oval-figure",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "eight-point-star",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "small-figure",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "deer",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "top-checker",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "top-candle",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "top-tree",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "partial-top-right",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "partial-left-checker",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "nested-squares",
+        "group": "collage",
+        "reason": "No automatic crop from rough ROI"
+      },
+      {
+        "id": "partial-right-checker",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "partial-left-abstract",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "santa",
+        "group": "collage",
+        "reason": "No automatic crop from rough ROI"
+      },
+      {
+        "id": "partial-left-diamonds",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "partial-bottom-left",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "bottom-diamonds",
+        "group": "collage",
+        "reason": "incomplete"
+      },
+      {
+        "id": "glare-motif",
+        "group": "collage",
+        "reason": "obscured"
+      },
+      {
+        "id": "partial-bottom-right",
+        "group": "collage",
+        "reason": "incomplete"
+      }
+    ]
+  },
+  "decision": "Retain the existing production initializer. The shortlisted pruning policies slightly reduce full-solve time but can increase image error and do not add successes.",
+  "scope": "One serial full-solve repetition per policy and case, with fixed numerical code and rotating policy order. Two repetitions for initialization. Fixed crops and estimated colours are not ground truth. This predates the redesign resampled-boundary fix.",
+  "localEvidenceRoot": "/Users/ahle/repos/julehjerte/tmp/count-strategies"
+}
