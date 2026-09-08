@@ -26,7 +26,14 @@
 	import { applySymmetric, floodFill, rect, stroke } from '$lib/paint/tools';
 	import { transformsFor, type SymmetrySettings } from '$lib/paint/symmetry';
 	import { colourChannels } from '$lib/paint/drawHeart';
-	import { fitHeart, insideSquare, toMask, type HeartLayout, type Pt } from '$lib/paint/heartLayout';
+	import { fitHeart, insideSquare, toMask, toSquare, type HeartLayout, type Pt } from '$lib/paint/heartLayout';
+	import {
+		frameHandles,
+		shapeOutline,
+		sizeFromHandle,
+		type Frame,
+		type FrameAxis
+	} from '$lib/paint/frame';
 	import { shortcutFor, type PaintAction, type PaintTool } from '$lib/paint/toolset';
 
 	interface Props {
@@ -40,6 +47,19 @@
 		paintValue: 0 | 1;
 		/** Bumped by the page when the mask changed other than by painting. */
 		revision: number;
+		/**
+		 * "Kanten": the protected motif and what happens to the band (PAINT.md §11).
+		 *
+		 * Only a free band is drawn. Fast is the canvas as it always was, because
+		 * that is what Fast means — nothing is protected, so an outline saying
+		 * otherwise would be a promise the search never made.
+		 */
+		frame: Frame;
+		/**
+		 * A handle was dragged to a new size. Absent — in the small card beside a
+		 * found heart, say — and the handles are not drawn at all.
+		 */
+		onFrameSize?: (size: number) => void;
 		/** No pointer input while the engine is working (PAINT.md §2). */
 		disabled?: boolean;
 		/**
@@ -68,6 +88,8 @@
 		brush,
 		paintValue,
 		revision,
+		frame,
+		onFrameSize,
 		disabled = false,
 		keyboardBusy = false,
 		onEditStart,
@@ -109,12 +131,29 @@
 	let last: Pt | null = null;
 	let start: Pt | null = null;
 	let preview: { from: Pt; to: Pt } | null = null;
-	let frame = 0;
+	/** The hatch tile, made once and re-transformed per frame. */
+	let hatch: CanvasPattern | null = null;
+	/** The handle being dragged, if any; the frame's size follows the pointer. */
+	let frameAxis: FrameAxis | null = null;
+
+	/** A handle's radius on screen, and how near the pointer has to come to grab it. */
+	const HANDLE_RADIUS = 7;
+	const HANDLE_GRAB = 14;
+
+	// The pending animation frame. Named for what it holds, now that `frame` is
+	// the visitor's own setting and a prop.
+	let rafHandle = 0;
 
 	/** The design tokens the canvas paints with, read once from the document. */
-	let chrome: { outline: string; mirror: string } | null = null;
+	let chrome: {
+		outline: string;
+		mirror: string;
+		frameGround: string;
+		frameHatch: string;
+		frameLine: string;
+	} | null = null;
 
-	function tokens(): { outline: string; mirror: string } {
+	function tokens(): NonNullable<typeof chrome> {
 		if (chrome) return chrome;
 		const style = getComputedStyle(canvasEl ?? document.documentElement);
 		const deep = style.getPropertyValue('--deep-rgb').trim();
@@ -123,7 +162,10 @@
 		// putting a colour on the page that the stylesheet never named.
 		chrome = {
 			outline: deep ? `rgb(${deep} / 0.3)` : 'transparent',
-			mirror: blue || 'transparent'
+			mirror: blue || 'transparent',
+			frameGround: style.getPropertyValue('--cream2').trim() || 'transparent',
+			frameHatch: style.getPropertyValue('--sage-dark').trim() || 'transparent',
+			frameLine: style.getPropertyValue('--green').trim() || 'transparent'
 		};
 		return chrome;
 	}
@@ -189,6 +231,7 @@
 		}
 
 		drawPreview(ctx);
+		drawFreeBand(ctx);
 
 		// A faint edge, so the square reads as the woven part even where the mask
 		// happens to be the same colour as the lobe beside it.
@@ -197,6 +240,101 @@
 		ctx.strokeRect(0, 0, 1, 1);
 
 		drawMirrorLines(ctx);
+		drawFrameOutline(ctx);
+		ctx.restore();
+	}
+
+	/** The protected shape as a path in square units, ready to fill or stroke. */
+	function traceShape(ctx: CanvasRenderingContext2D): void {
+		const outline = shapeOutline(frame.shape, frame.size);
+		if (outline.kind === 'circle') {
+			ctx.moveTo(outline.cx + outline.r, outline.cy);
+			ctx.arc(outline.cx, outline.cy, outline.r, 0, 2 * Math.PI);
+			return;
+		}
+		outline.points.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+		ctx.closePath();
+	}
+
+	/**
+	 * The diagonal hatch, as a pattern tile of a fixed size on screen.
+	 *
+	 * The context draws in square units and turned a quarter of a right angle, so
+	 * the pattern is given the inverse of both: scaled back down by `layout.scale`
+	 * and turned back by 45°, which leaves the tile's own 45° strokes running at
+	 * 45° on the visitor's screen whatever the heart's size.
+	 */
+	function hatchPattern(ctx: CanvasRenderingContext2D): CanvasPattern | null {
+		if (!hatch) {
+			const tile = document.createElement('canvas');
+			tile.width = tile.height = 8;
+			const tileCtx = tile.getContext('2d');
+			if (!tileCtx) return null;
+			tileCtx.strokeStyle = tokens().frameHatch;
+			tileCtx.lineWidth = 1.5;
+			// Two strokes, so the diagonal carries on across the tile's own corners.
+			tileCtx.beginPath();
+			tileCtx.moveTo(-2, 6);
+			tileCtx.lineTo(6, -2);
+			tileCtx.moveTo(2, 10);
+			tileCtx.lineTo(10, 2);
+			tileCtx.stroke();
+			hatch = ctx.createPattern(tile, 'repeat');
+		}
+		hatch?.setTransform(new DOMMatrix().scale(1 / layout.scale).rotate(-45));
+		return hatch;
+	}
+
+	/**
+	 * A free band: a light ground with a hatch over it, covering the mask's own
+	 * colours there.
+	 *
+	 * Covering rather than tinting is the point. The cells under it still exist
+	 * and can still be painted on — they are simply not part of what the search is
+	 * asked for — so showing them in the paper colours would say the opposite.
+	 */
+	function drawFreeBand(ctx: CanvasRenderingContext2D): void {
+		if (frame.mode !== 'free') return;
+		ctx.save();
+		// The square with the shape cut out of it: even-odd, so the second
+		// sub-path is a hole rather than a second island.
+		ctx.beginPath();
+		ctx.rect(0, 0, 1, 1);
+		traceShape(ctx);
+		ctx.clip('evenodd');
+		ctx.fillStyle = tokens().frameGround;
+		ctx.fillRect(0, 0, 1, 1);
+		const pattern = hatchPattern(ctx);
+		if (pattern) {
+			ctx.fillStyle = pattern;
+			ctx.fillRect(0, 0, 1, 1);
+		}
+		ctx.restore();
+	}
+
+	/** The dashed outline of the protected motif, and the four handles on it. */
+	function drawFrameOutline(ctx: CanvasRenderingContext2D): void {
+		if (frame.mode !== 'free') return;
+		const colour = tokens().frameLine;
+		ctx.save();
+		ctx.strokeStyle = colour;
+		ctx.lineWidth = 2 / layout.scale;
+		ctx.setLineDash([6 / layout.scale, 4 / layout.scale]);
+		ctx.beginPath();
+		traceShape(ctx);
+		ctx.stroke();
+		if (onFrameSize) {
+			ctx.setLineDash([]);
+			ctx.lineWidth = 2 / layout.scale;
+			const r = HANDLE_RADIUS / layout.scale;
+			for (const { point } of frameHandles(frame)) {
+				ctx.beginPath();
+				ctx.arc(point.x, point.y, r, 0, 2 * Math.PI);
+				ctx.fillStyle = colors.left;
+				ctx.fill();
+				ctx.stroke();
+			}
+		}
 		ctx.restore();
 	}
 
@@ -252,9 +390,9 @@
 
 	/** One frame per batch of events, never one per event. */
 	function schedule(): void {
-		if (frame) return;
-		frame = requestAnimationFrame(() => {
-			frame = 0;
+		if (rafHandle) return;
+		rafHandle = requestAnimationFrame(() => {
+			rafHandle = 0;
 			paint();
 		});
 	}
@@ -312,8 +450,43 @@
 		schedule();
 	}
 
+	/** Where a pointer event lands, in square units (0…1 across the woven square). */
+	function squareAt(event: { clientX: number; clientY: number }): Pt | null {
+		if (!canvasEl) return null;
+		const bounds = canvasEl.getBoundingClientRect();
+		return toSquare(layout, event.clientX - bounds.left, event.clientY - bounds.top);
+	}
+
+	/** The handle under the pointer, if one is near enough to grab. */
+	function handleAt(event: PointerEvent): FrameAxis | null {
+		if (frame.mode !== 'free' || !onFrameSize) return null;
+		const p = squareAt(event);
+		if (!p) return null;
+		// The grab radius is a distance on screen, so it does not grow with the heart.
+		const reach = HANDLE_GRAB / layout.scale;
+		let nearest: FrameAxis | null = null;
+		let best = reach;
+		for (const { axis, point } of frameHandles(frame)) {
+			const d = Math.hypot(point.x - p.x, point.y - p.y);
+			if (d <= best) {
+				best = d;
+				nearest = axis;
+			}
+		}
+		return nearest;
+	}
+
 	function onPointerDown(event: PointerEvent): void {
 		if (disabled || !mask || pointerId !== null || event.button !== 0) return;
+		// A handle takes the gesture before the brush does: the handles sit on the
+		// square, so a drag that starts on one is a resize and not a stroke.
+		const grabbed = handleAt(event);
+		if (grabbed) {
+			pointerId = event.pointerId;
+			frameAxis = grabbed;
+			canvasEl?.setPointerCapture(event.pointerId);
+			return;
+		}
 		const point = pointAt(event);
 		if (!point || !insideSquare(point, mask.size)) return;
 		pointerId = event.pointerId;
@@ -337,6 +510,12 @@
 
 	function onPointerMove(event: PointerEvent): void {
 		if (pointerId !== event.pointerId || !mask) return;
+		if (frameAxis) {
+			const p = squareAt(event);
+			if (p) onFrameSize?.(sizeFromHandle(frame.shape, frameAxis, p));
+			schedule();
+			return;
+		}
 		if (tool === 'line' || tool === 'rect') {
 			const point = pointAt(event);
 			if (!point || !start) return;
@@ -361,6 +540,10 @@
 
 	function onPointerUp(event: PointerEvent): void {
 		if (pointerId !== event.pointerId || !mask) return;
+		if (frameAxis) {
+			finish();
+			return;
+		}
 		if ((tool === 'line' || tool === 'rect') && start) {
 			const point = pointAt(event) ?? start;
 			const value = toolValue();
@@ -386,12 +569,16 @@
 		if (pointerId !== null && canvasEl?.hasPointerCapture(pointerId)) {
 			canvasEl.releasePointerCapture(pointerId);
 		}
+		const resizing = frameAxis !== null;
 		pointerId = null;
+		frameAxis = null;
 		start = null;
 		last = null;
 		preview = null;
 		schedule();
-		onEditEnd();
+		// Resizing the protected motif changes no cell, so it is not an edit the
+		// undo stack or the found heart have anything to say about.
+		if (!resizing) onEditEnd();
 	}
 
 	function onKeyDown(event: KeyboardEvent): void {
@@ -424,7 +611,7 @@
 		observer.observe(element);
 		return () => {
 			observer.disconnect();
-			if (frame) cancelAnimationFrame(frame);
+			if (rafHandle) cancelAnimationFrame(rafHandle);
 		};
 	});
 
@@ -450,6 +637,9 @@
 		void boxWidth;
 		void boxHeight;
 		void revision;
+		void frame.mode;
+		void frame.shape;
+		void frame.size;
 		untrack(schedule);
 	});
 
