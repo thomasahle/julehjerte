@@ -250,6 +250,16 @@
 		color: var(--white);
 	}
 
+	/* The chosen segment keeps its fill under the pointer. Without this the plain
+	   hover rule above outranks `[data-state='on']` — one pseudo-class more — so
+	   resting the pointer on the option already chosen made the whole control
+	   show nothing as chosen, which reads as having lost the setting. `.btn-dark`
+	   answers the same question with the same token. */
+	.segmented :global([data-slot='toggle-group-item'][data-state='on']:hover:not(:disabled)) {
+		background: var(--green-hover);
+		color: var(--white);
+	}
+
 	.segmented :global([data-slot='toggle-group-item']:disabled) {
 		opacity: 0.35;
 		cursor: not-allowed;
