@@ -151,6 +151,7 @@
 		frameGround: string;
 		frameHatch: string;
 		frameLine: string;
+		frameHandle: string;
 	} | null = null;
 
 	function tokens(): NonNullable<typeof chrome> {
@@ -165,7 +166,8 @@
 			mirror: blue || 'transparent',
 			frameGround: style.getPropertyValue('--cream2').trim() || 'transparent',
 			frameHatch: style.getPropertyValue('--sage-dark').trim() || 'transparent',
-			frameLine: style.getPropertyValue('--green').trim() || 'transparent'
+			frameLine: style.getPropertyValue('--green').trim() || 'transparent',
+			frameHandle: style.getPropertyValue('--white').trim() || 'transparent'
 		};
 		return chrome;
 	}
@@ -330,7 +332,9 @@
 			for (const { point } of frameHandles(frame)) {
 				ctx.beginPath();
 				ctx.arc(point.x, point.y, r, 0, 2 * Math.PI);
-				ctx.fillStyle = colors.left;
+				// The site's own white, not the left paper: a handle is chrome, and a
+				// visitor who picks a dark left paper must not lose it.
+				ctx.fillStyle = tokens().frameHandle;
 				ctx.fill();
 				ctx.stroke();
 			}
