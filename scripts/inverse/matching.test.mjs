@@ -7,6 +7,13 @@ import {prepare,design} from '../../static/inverse/core/engine.js';
 import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
 import {checkerPixels} from './fixtures.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {transposeTarget} from '../../static/inverse/core/symmetry.js';
+
+test('the exact grid rejects asymmetric input with a recoverable code and leaves it untouched',()=>{
+  const target={sourceImage:{mask:Uint8Array.from([0,1,0,0]),resolution:2}},before=structuredClone(target);
+  assert.throws(()=>transposeTarget(target),{code:'IDENTICAL_SHEETS_ASYMMETRIC'});
+  assert.deepEqual(target,before);
+});
 
 test('identical-sheet lower bound counts observed disagreeing pairs once',()=>{
   const mask=Uint8Array.from([0,1,0,0]),source={mask,resolution:2};

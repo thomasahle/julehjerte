@@ -61,9 +61,10 @@
   let saved = $derived(input?.type === 'json');
   let leftColour = $state('#ffffff');
   let rightColour = $state('#b91313');
-  let routingPreset = $state('general');
+  let routingPreset = $state('direct');
+  let routingNotice = $state<MessageKey | null>(null);
   let settings = $state({
-    ...GENERAL_PRESET,
+    ...DIRECT_PRESET,
     width: 100, minWidth: 2, cutError: 0.25, timeLimit: 60, preferMatchingSheets: true, earlyStop: false,
     mode: 'auto', threshold: 128, swatches: ['#b91313', '#ffffff'], invert: false,
     removeSpecks: 0, fillHoles: 0,
@@ -81,6 +82,7 @@
 
   function setRoutingPreset(value: string) {
     routingPreset = value;
+    routingNotice = null;
     Object.assign(settings, value === 'direct' ? DIRECT_PRESET : value === 'matching-grid' ? MATCHING_GRID_PRESET : GENERAL_PRESET);
     invalidate();
   }
@@ -173,6 +175,9 @@
     if (input?.type === 'pixels') decodedPixelsSha256 = await digest(input.rgba.slice().buffer);
     if (disposed) return;
     filename = file.name;
+    // Examples choose their own routing below. A new upload must not inherit
+    // an example's exact symmetry constraint or specialized tracing settings.
+    setRoutingPreset(input?.type === 'pixels' ? 'direct' : 'general');
     if (input?.type === 'pixels' && autoDetect) await detectCrops(false, true);
   }
 
@@ -359,10 +364,23 @@
     const start = performance.now();
     const timer = setInterval(() => { elapsed = Math.floor((performance.now() - start) / 1000); }, 1000);
     try {
-      const cfg = { ...$state.snapshot(settings), paperColors: [rightColour, leftColour], requireMaterialCore: true };
-      const value = await engine.request<PreparedArtwork | DesignResult>(action, payload, cfg, next => {
+      const progress = (next: string) => {
         stage = next === 'paper' ? 'paperStage' : next as MessageKey;
-      });
+      };
+      const request = () => engine.request<PreparedArtwork | DesignResult>(action, payload, {
+        ...$state.snapshot(settings), paperColors: [rightColour, leftColour], requireMaterialCore: true,
+      }, progress);
+      let value: PreparedArtwork | DesignResult;
+      try { value = await request(); }
+      catch (failure) {
+        if (action !== 'prepare' || routingPreset !== 'matching-grid' || !(failure instanceof EngineError) || failure.code !== 'IDENTICAL_SHEETS_ASYMMETRIC') throw failure;
+        setRoutingPreset('direct');
+        routingNotice = 'matchingGridFallback';
+        await tick();
+        // Reuse the exact input, accepted corners and physical settings. Only
+        // the fitting method changes; the original mask remains the reference.
+        value = await request();
+      }
       if (disposed) return;
       if (action === 'prepare') { prepared = value as PreparedArtwork; maskView = settings.algorithm === 'direct'; }
       else { result = value as DesignResult; view = 'heart'; }
@@ -535,6 +553,7 @@
               <label class="checkbox"><input type="checkbox" bind:checked={settings.earlyStop} />{text('stopEarly')}</label>
             {/if}
             {#if routingPreset === 'matching-grid'}<p class="notice">{text('matchingGridHelp')}</p>{/if}
+            {#if routingNotice}<p class="notice" role="status">{text(routingNotice)}</p>{/if}
           {/if}
           <div class="field-grid">
             <label>{text('width')}<input type="number" min="20" max="300" step="1" bind:value={settings.width} required /></label>

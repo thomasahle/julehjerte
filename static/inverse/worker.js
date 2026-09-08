@@ -38,6 +38,6 @@ self.onmessage = async ({ data }) => {
       self.postMessage({ id, type: 'result', result });
     } else throw new Error('Unknown worker action.');
   } catch (error) {
-    self.postMessage({ id, type: 'error', message: error.message || String(error), report: error.report || null });
+    self.postMessage({ id, type: 'error', message: error.message || String(error), code: error.code, report: error.report || null });
   }
 };

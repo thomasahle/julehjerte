@@ -55,4 +55,12 @@ describe('inverse worker lifecycle', () => {
     await rejection;
     expect(workers[0].terminate).toHaveBeenCalledOnce();
   });
+
+  it('preserves the symmetry failure code independently of its translated message', async () => {
+    const { workers, engine, reply } = harness();
+    const request = engine.request('prepare', undefined, {});
+    const rejection = expect(request).rejects.toMatchObject({ name: 'EngineError', code: 'IDENTICAL_SHEETS_ASYMMETRIC' });
+    reply(workers[0], { id: 1, type: 'error', message: 'Udsnittet er ikke symmetrisk', code: 'IDENTICAL_SHEETS_ASYMMETRIC' });
+    await rejection;
+  });
 });

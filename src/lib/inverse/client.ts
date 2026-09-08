@@ -54,7 +54,7 @@ export interface DesignResult {
 }
 
 export class EngineError extends Error {
-  constructor(message: string, public report?: Record<string, unknown>) {
+  constructor(message: string, public report?: Record<string, unknown>, public code?: string) {
     super(message);
     this.name = 'EngineError';
   }
@@ -86,7 +86,7 @@ export class InverseWorker {
             return;
           }
           this.rejectPending = null;
-          if (data.type === 'error') reject(new EngineError(data.message, data.report));
+          if (data.type === 'error') reject(new EngineError(data.message, data.report, data.code));
           else if (data.type === 'prepared') resolve(data.preview as T);
           else if (data.type === 'result') resolve(data.result as T);
           else if (data.type === 'archive') resolve(data.archive as T);

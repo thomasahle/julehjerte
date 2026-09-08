@@ -6,7 +6,11 @@ export function transposeTarget(target, maximumChange = .01) {
   const source = target.sourceImage || { mask: sampleTarget(target, 400), resolution: 400 }, n = source.resolution;
   let difference = 0;
   for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) difference += source.mask[y * n + x] !== source.mask[x * n + y];
-  if (difference / (n * n) > maximumChange) throw new Error('Matching sheets require a motif symmetric across the overlap diagonal. Turn off matching sheets for this artwork.');
+  if (difference / (n * n) > maximumChange) {
+    const error = new Error('This crop is not symmetric enough for the identical-sheet grid. Use direct curve fitting to allow different templates.');
+    error.code = 'IDENTICAL_SHEETS_ASYMMETRIC';
+    throw error;
+  }
   const curves = [];
   for (const c of target.curves) {
     const q = c.p.map(p => p[0] - p[1]);
