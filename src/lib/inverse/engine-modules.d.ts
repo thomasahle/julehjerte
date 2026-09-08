@@ -46,6 +46,16 @@ declare module '$inverse/core/validate.js' {
   export function sampleWeave(solution: EngineSolution, n?: number): Uint8Array;
 }
 
+declare module '$inverse/core/settings.js' {
+  /**
+   * The engine's own reading of a settings object: the keys of its `DEFAULTS`
+   * copied across, every other key dropped without a word, and a throw for a
+   * number outside its bounds. It is the only statement of which settings the
+   * engine accepts, which is why `engine.test.ts` runs ours through it.
+   */
+  export function settings(raw?: Record<string, unknown>): Record<string, unknown>;
+}
+
 declare module '$inverse/core/engine.js' {
   /**
    * Classify artwork into the engine's own two-colour reading of the woven

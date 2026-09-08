@@ -2,18 +2,26 @@ import { describe, it, expect } from 'vitest';
 import { createMask, MASK_SIZE, type Mask } from '$lib/paint/mask';
 import { symmetrize } from '$lib/paint/symmetry';
 import {
+	ADVANCED_LIMITS,
+	clampAdvanced,
 	ENGINE_SYMMETRY,
 	engineSymmetry,
 	maskPrepareSettings,
-	maskToPixels
+	maskToPixels,
+	solveSettings
 } from '$lib/inverse/engine';
 // The engine's own `prepare` — the exact call the worker makes for a 'prepare'
 // request. Importing it here is what makes the round trip below a proof rather
 // than a re-implementation; see engine-modules.d.ts for why it comes in through
 // the `$inverse` alias.
 import { prepare } from '$inverse/core/engine.js';
+// And the engine's own reading of a settings object, which is what says whether
+// a key we send means anything at all.
+import { settings as engineSettings } from '$inverse/core/settings.js';
 
 const COLORS = { left: '#ffffff', right: '#b91313' };
+
+const NO_SYMMETRY = { curve: 'off', lobe: 'off', lobes: 'off' } as const;
 
 /**
  * Send a mask to the engine exactly as `prepareMask` does, and read back the
@@ -94,6 +102,63 @@ describe('the mask round trip', () => {
 		const mask = createMask(0);
 		mask.data[201 * mask.size + 201] = 1;
 		expect(roundTrip(mask)[201 * mask.size + 201]).toBe(1);
+	});
+});
+
+describe('the settings a search is run with', () => {
+	it('sends the checkbox as the key the fitter reads', () => {
+		// `preferMatchingSheets` is in the engine's DEFAULTS and is read by
+		// core/direct/fit.js and core/direct/prefer-matching.js. `identicalSheets`
+		// is neither: it is a prepare-time key, and a solve never sees it.
+		const on = solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY, matchingSheets: true });
+		const off = solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY, matchingSheets: false });
+		expect(on.preferMatchingSheets).toBe(true);
+		expect(off.preferMatchingSheets).toBe(false);
+		// The preset brings its own `identicalSheets`; the checkbox must not ride on
+		// it, and the engine throws it away at solve time in any case.
+		expect(on.identicalSheets).toBe(off.identicalSheets);
+		expect(engineSettings(on)).not.toHaveProperty('identicalSheets');
+	});
+
+	it('follows Mellem lapper: Sym when the visitor has not touched the checkbox', () => {
+		const sym = solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'sym' } });
+		expect(sym.preferMatchingSheets).toBe(true);
+		expect(solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY }).preferMatchingSheets).toBe(
+			false
+		);
+	});
+
+	it('survives the engine’s own settings(), which drops what it does not know', () => {
+		// The proof that the two keys above are not decoration: `settings()` copies
+		// only the keys of its DEFAULTS, so a setting that comes back changed is a
+		// setting the engine really has.
+		const cfg = engineSettings(
+			solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY, matchingSheets: false })
+		);
+		expect(cfg.preferMatchingSheets).toBe(false);
+		expect(cfg.width).toBe(100);
+		expect(cfg.minWidth).toBe(2);
+	});
+
+	it('clamps the two Avanceret numbers instead of letting the engine throw', () => {
+		// `settings()` throws on a width outside [20, 300] — inside the worker, at
+		// solve time, where the page can only report it as an engine that failed to
+		// load. So a typed 5, or an emptied field's 0, is brought into range here.
+		for (const key of ['widthMm', 'minWidthMm'] as const) {
+			const [lo, hi] = ADVANCED_LIMITS[key];
+			expect(clampAdvanced(key, lo - 1)).toBe(lo);
+			expect(clampAdvanced(key, hi + 1)).toBe(hi);
+			expect(clampAdvanced(key, Number.NaN)).toBe(key === 'widthMm' ? 100 : 2);
+		}
+		const extreme = solveSettings({
+			colors: COLORS,
+			symmetry: NO_SYMMETRY,
+			widthMm: 5,
+			minWidthMm: 900
+		});
+		expect(extreme.width).toBe(20);
+		expect(extreme.minWidth).toBe(30);
+		expect(() => engineSettings(extreme)).not.toThrow();
 	});
 });
 

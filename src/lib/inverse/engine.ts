@@ -131,6 +131,36 @@ export type FindSettings = {
  */
 export type AdvancedSettings = { widthMm: number; minWidthMm: number; matchingSheets: boolean };
 
+/** The two settings in it that are numbers, which are the two that have bounds. */
+export type AdvancedNumber = 'widthMm' | 'minWidthMm';
+
+/**
+ * What those two numbers may be.
+ *
+ * `core/settings.js` bounds `width` to [20, 300] and `minWidth` to [0.1, 30] and
+ * *throws* outside them — inside the worker, at solve time, as an `EngineError`
+ * with no report, which the page can only tell the visitor as "the engine could
+ * not be loaded". So a number is clamped rather than passed on. The floor on the
+ * strip width is the panel's own 0.5 mm rather than the engine's 0.1: half a
+ * millimetre is already thinner than anyone can cut by hand.
+ */
+export const ADVANCED_LIMITS: Record<AdvancedNumber, readonly [number, number]> = {
+	widthMm: [20, 300],
+	minWidthMm: [0.5, 30]
+};
+
+const ADVANCED_DEFAULTS: Record<AdvancedNumber, number> = {
+	widthMm: DEFAULT_WIDTH_MM,
+	minWidthMm: DEFAULT_MIN_WIDTH_MM
+};
+
+/** One typed number brought inside the range; a non-number goes back to the default. */
+export function clampAdvanced(key: AdvancedNumber, value: number): number {
+	if (!Number.isFinite(value)) return ADVANCED_DEFAULTS[key];
+	const [lo, hi] = ADVANCED_LIMITS[key];
+	return Math.min(hi, Math.max(lo, value));
+}
+
 /** What Nulstil goes back to; matching sheets follows Mellem lapper: Sym. */
 export function defaultAdvanced(symmetry: SymmetrySettings): AdvancedSettings {
 	return {
@@ -269,6 +299,47 @@ export function detectCorners(input: PixelsInput, roi?: number[]): Promise<Detec
 }
 
 /**
+ * The settings one search is run with.
+ *
+ * Exported so the test can put them through the engine's own `settings()`, which
+ * is the only thing that says which keys the engine accepts: it copies the keys
+ * of its `DEFAULTS` and silently drops everything else. That is how
+ * `identicalSheets` — the obvious name for "cut both lobes from one template",
+ * and the name PAINT.md §4 suggested — sat here doing nothing, while the setting
+ * the fitter really reads (`preferMatchingSheets`, in `core/direct/fit.js` and
+ * `core/direct/prefer-matching.js`) was hard-coded true. It is a `prepare`-time
+ * key, read off the raw object by `core/engine.js`, and never reaches a solve.
+ */
+export function solveSettings(settings: FindSettings): Record<string, unknown> {
+	const { left, right } = hexPair(settings.colors);
+	return {
+		...AUTOMATIC_PRESET,
+		width: clampAdvanced('widthMm', settings.widthMm ?? DEFAULT_WIDTH_MM),
+		minWidth: clampAdvanced('minWidthMm', settings.minWidthMm ?? DEFAULT_MIN_WIDTH_MM),
+		cutError: 0.25,
+		timeLimit: MAX_TIME_LIMIT_SECONDS,
+		// "Samme skabelon til begge sider" — the checkbox, which follows Mellem
+		// lapper Sym until the visitor says otherwise.
+		preferMatchingSheets: settings.matchingSheets ?? settings.symmetry.lobes === 'sym',
+		matchingErrorAllowance: 0.01,
+		earlyStop: false,
+		removeSpecks: 0,
+		fillHoles: 0,
+		minRadius: 0.8,
+		kerf: 0,
+		printShrinkPercent: 0.2,
+		materialResolution: 360,
+		trials: 12,
+		requireMaterialCore: true,
+		paperColors: [right, left],
+		resolution: MASK_SIZE,
+		// Sent only once the engine can hold the symmetry itself; until then the
+		// mask is folded before solving and the cuts corrected afterwards.
+		...(ENGINE_SYMMETRY ? { symmetry: engineSymmetry(settings.symmetry) } : {})
+	};
+}
+
+/**
  * Search for the cuts that weave the prepared artwork. Call after a `prepare`.
  *
  * There is no search-time setting (PAINT.md decision 3): the limit is the
@@ -278,35 +349,5 @@ export function findCuts(
 	settings: FindSettings,
 	onStage: StageListener = () => {}
 ): Promise<DesignResult> {
-	const { left, right } = hexPair(settings.colors);
-	const identicalSheets = settings.matchingSheets ?? settings.symmetry.lobes === 'sym';
-	return engine().request<DesignResult>(
-		'solve',
-		undefined,
-		{
-			...AUTOMATIC_PRESET,
-			width: settings.widthMm ?? DEFAULT_WIDTH_MM,
-			minWidth: settings.minWidthMm ?? DEFAULT_MIN_WIDTH_MM,
-			cutError: 0.25,
-			timeLimit: MAX_TIME_LIMIT_SECONDS,
-			preferMatchingSheets: true,
-			matchingErrorAllowance: 0.01,
-			earlyStop: false,
-			removeSpecks: 0,
-			fillHoles: 0,
-			minRadius: 0.8,
-			kerf: 0,
-			printShrinkPercent: 0.2,
-			materialResolution: 360,
-			trials: 12,
-			requireMaterialCore: true,
-			paperColors: [right, left],
-			resolution: MASK_SIZE,
-			identicalSheets,
-			// Sent only once the engine can hold the symmetry itself; until then the
-			// mask is folded before solving and the cuts corrected afterwards.
-			...(ENGINE_SYMMETRY ? { symmetry: engineSymmetry(settings.symmetry) } : {})
-		},
-		onStage
-	);
+	return engine().request<DesignResult>('solve', undefined, solveSettings(settings), onStage);
 }
