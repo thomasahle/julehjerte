@@ -459,7 +459,7 @@
           <p class="muted small">{text('svgHelp')}</p>
           <p class="eyebrow">{text('examples')}</p>
           <div class="examples">
-            {#each ['waves', 'star', 'jul'] as name}
+            {#each ['waves', 'star', 'jul'] as name (name)}
               <button type="button" onclick={() => example(name as 'waves' | 'star' | 'jul')}>{text(name as MessageKey)}</button>
             {/each}
           </div>
@@ -486,12 +486,12 @@
                 <img src={imageUrl} alt={filename} draggable="false" />
                 <svg viewBox="0 0 {input.imageWidth} {input.imageHeight}" aria-hidden="true">
                   {#if cropMode === 'quad' && selectedCrop >= 0 && proposal}
-                    {#each proposal.outline as arc}<polyline class="detected-outline" points={arc.map(p => p.join(',')).join(' ')} />{/each}
+                    {#each proposal.outline as arc, i (i)}<polyline class="detected-outline" points={arc.map(p => p.join(',')).join(' ')} />{/each}
                   {/if}
                   {#if cropTool === 'region' && roughRegion}<rect class="region" x={roughRegion[0]} y={roughRegion[1]} width={roughRegion[2] - roughRegion[0]} height={roughRegion[3] - roughRegion[1]} />{/if}
                   {#if cropMode === 'quad' && quad.length > 1 && quad.every(p => p.every(Number.isFinite))}<polyline points={quad.map(p => p.join(',')).join(' ') + (completeCrop ? ` ${quad[0].join(',')}` : '')} />{/if}
                 </svg>
-                {#each quad as p, i}{#if cropMode === 'quad' && p.every(Number.isFinite)}<span class="corner" style:left="{100 * p[0] / input.imageWidth}%" style:top="{100 * p[1] / input.imageHeight}%">{i + 1}</span>{/if}{/each}
+                {#each quad as p, i (i)}{#if cropMode === 'quad' && p.every(Number.isFinite)}<span class="corner" style:left="{100 * p[0] / input.imageWidth}%" style:top="{100 * p[1] / input.imageHeight}%">{i + 1}</span>{/if}{/each}
               </button>
               {#if cropMode === 'quad'}
                 <div class="crop-status"><span>{selectedCornerCount}/4 {text('selectedCorners')}</span><button type="button" onclick={resetCrop}>{text('resetCrop')}</button></div>
@@ -500,8 +500,8 @@
                   {#if photoError}<p class="notice">{text('invalidCrop')}</p>{/if}
                 {/if}
                 <div class="field-grid coordinates">
-                  {#each [0, 1, 2, 3] as i}
-                    {#each [0, 1] as axis}
+                  {#each [0, 1, 2, 3] as i (i)}
+                    {#each [0, 1] as axis (axis)}
                       <label>{text('corner')} {i + 1} · {axis === 0 ? 'x' : 'y'}
                         <input type="number" step="any" value={Number.isFinite(quad[i]?.[axis]) ? quad[i][axis] : ''} oninput={e => coordinate(i, axis, e.currentTarget.valueAsNumber)} />
                       </label>
@@ -535,7 +535,7 @@
             <details>
               <summary>{text('conversion')}</summary>
               <label>{text('mode')}<select bind:value={settings.mode}>
-                {#each [['auto', 'auto'], ['lab', 'lab'], ['red-white-mixture', 'redWhitePhoto'], ['threshold', 'thresholdMode'], ['swatches', 'swatchesMode']] as [value, label]}<option {value}>{text(label as MessageKey)}</option>{/each}
+                {#each [['auto', 'auto'], ['lab', 'lab'], ['red-white-mixture', 'redWhitePhoto'], ['threshold', 'thresholdMode'], ['swatches', 'swatchesMode']] as [value, label] (value)}<option {value}>{text(label as MessageKey)}</option>{/each}
               </select></label>
               {#if settings.mode === 'red-white-mixture'}<p class="muted small">{text('mixtureHint')}</p>{/if}
               {#if settings.mode === 'threshold'}<label>{text('threshold')}<input type="number" min="0" max="255" step="1" bind:value={settings.threshold} required /></label>{/if}
@@ -548,7 +548,7 @@
           {#if !saved}<label class="checkbox"><input type="checkbox" bind:checked={settings.invert} />{text('invert')}</label>{/if}
           <details>
             <summary>{text('manufacturing')}</summary>
-            <div class="field-grid">{#each numericFields.filter(f => f.key !== 'neighbors') as field}<label>{text(field.label)}<input type="number" min={field.min} max={field.max} step={field.step} bind:value={settings[field.key]} required /></label>{/each}</div>
+            <div class="field-grid">{#each numericFields.filter(f => f.key !== 'neighbors') as field (field.key)}<label>{text(field.label)}<input type="number" min={field.min} max={field.max} step={field.step} bind:value={settings[field.key]} required /></label>{/each}</div>
           </details>
           <div class="actions">
             <Button type="submit" variant="secondary" disabled={!input || busy}>{text(saved ? 'audit' : 'prepare')}</Button>
@@ -585,7 +585,7 @@
           </p>
         {/if}
         <div class="view-buttons" role="group" aria-label={text('heart')}>
-          {#each resultViews as tab}
+          {#each resultViews as tab (tab)}
             <button class:active={view === tab} type="button" aria-pressed={view === tab} onclick={() => view = tab as typeof view}>{text(tab as MessageKey)}</button>
           {/each}
         </div>
@@ -648,7 +648,7 @@
       {/if}
       {#if result || errorReport}
         <details class="report"><summary>{text('details')}</summary>
-          {#if result?.report.warnings.length}<ul>{#each result.report.warnings as warning}<li>{warning}</li>{/each}</ul>{/if}
+          {#if result?.report.warnings.length}<ul>{#each result.report.warnings as warning, i (i)}<li>{warning}</li>{/each}</ul>{/if}
           <pre>{JSON.stringify(result?.report ?? errorReport, null, 2)}</pre>
           <Button variant="secondary" onclick={() => download('report.json', JSON.stringify(result?.report ?? errorReport, null, 2))}>report.json ↓</Button>
         </details>
