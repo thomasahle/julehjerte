@@ -854,7 +854,14 @@
 
 <div class="editor" bind:this={editorEl}>
   <!-- variant="editor" is the back-link + logo bar; the site nav links and the
-       EN/GitHub pills belong on content pages, not in the full-screen tool. -->
+       EN/GitHub pills belong on content pages, not in the full-screen tool.
+
+       TODO (PAINT.md §1, §2): the Tegn/Mal switch is missing, and until it lands
+       a visitor in Mal has no way back to Tegn from the header. It goes here as
+       mode={{ current: 'draw' }} once PageHeader takes the `mode` prop and
+       /editor/mal/ exists — both belong to the paint page lane, so the one line
+       cannot compile or link anywhere on this branch. §2 asks Tegn for two
+       things; this is the second, and it is not done. -->
   <PageHeader bind:ref={headerEl} {lang} variant="editor" onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? heartHref(getBackDetailId()!, lang) : undefined) : undefined}>
     <button
       type="button"
