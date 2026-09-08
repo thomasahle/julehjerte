@@ -289,10 +289,13 @@
 		     in words that this is close and not right, and names the three things
 		     that can be done about it — the mask first and a symmetry second,
 		     because those two change what the search is looking for. "Find snit
-		     igen" comes last on purpose: there is no randomness anywhere in the
-		     search, so on an unchanged mask it re-solves to the same heart (the
-		     gallery circle mask lands on 1,6 % every time), and it is worth a press
-		     only once something under it has moved. -->
+		     igen" comes last on purpose: it asks the engine the same question over,
+		     and while the answer is not bit-identical — the solve is time-budgeted,
+		     so the clock decides which incumbent it stops on — it differs by less
+		     than the panel prints. Two runs on Uret v2's mask both read "4 + 4 snit
+		     · mindst 3,1 mm", with the difference moving between 2,6 % and 2,7 %
+		     (PAINT.md §11). So it is worth a press only once something under it has
+		     moved. -->
 		{#if mediocre}
 			<p class="note">{tr('paintFoundMediocre')}</p>
 		{/if}

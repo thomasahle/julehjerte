@@ -309,8 +309,9 @@ export const translations = {
      * Vises, når afvigelsen er over MEDIOCRE_MISMATCH i FindCutsPanel.svelte.
      *
      * Rækkefølgen er ikke tilfældig: de to første ændrer det, søgningen leder
-     * efter, og den sidste gør ikke. Søgningen har ingen tilfældighed i sig, så
-     * den samme maske giver det samme hjerte igen.
+     * efter, og den sidste gør ikke. Søgningen har ingen tilfældighed at ryste
+     * på, kun et tidsbudget, så den samme maske giver det samme hjerte igen på
+     * nær sidste decimal (PAINT.md §11).
      */
     paintFoundMediocre:
       'Mønsteret er tæt på, men ikke helt: ret masken, slå en symmetri fra, eller prøv Find snit igen.',
@@ -787,8 +788,9 @@ export const translations = {
      * Shown when the difference is above MEDIOCRE_MISMATCH in FindCutsPanel.svelte.
      *
      * The order is deliberate: the first two change what the search is looking
-     * for and the last one does not. There is no randomness in the search, so
-     * the same mask hands back the same heart again.
+     * for and the last one does not. The search has no seed to shake, only a
+     * time budget, so the same mask hands back the same heart again down to the
+     * last decimal (PAINT.md §11).
      */
     paintFoundMediocre:
       'The pattern is close, but not exact: change the mask, switch off a symmetry, or try Find the cuts again.',

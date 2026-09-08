@@ -160,14 +160,22 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   says nothing about this. The verdict is read off the number the panel prints and not off the raw fraction: the
   summary rounds to one decimal, so 0,996 % and 1,004 % are both "1,0%" on screen and must be given the same
   verdict.
-- **"Find snit igen" is the last of the three remedies, not the first** (2026-09-09). The search has no randomness
-  in it: on an unchanged mask and unchanged settings it re-solves to the same heart — the gallery circle mask
-  printed "4 + 4 snit · mindst 3,2 mm mellem snittene · 1,6% forskel fra masken" on every run, in review and again
-  here — so the button spends the whole search over to hand back what is already on screen, unless something under
-  it has moved. The line therefore names the mask and the symmetry first and the button last. The button stays
-  because the owner asked for it, and it goes back to the mask before it starts, so nobody watches a progress bar
-  under the heart they were just told was not good enough; giving the re-run something to vary (a seed, a nudged
-  starting point) is an engine question and is **open** — the owner's call.
+- **"Find snit igen" is the last of the three remedies, not the first** (2026-09-09). The two before it change what
+  the search is looking for; the button hands the engine the same question over. It does not hand back a
+  bit-identical answer — measured in round 6 on Uret v2's photograph imported whole (`static/hearts/photos/
+  circle.jpg`, 400 × 400, all symmetry rows Fra, Kanten Fast), two searches in one page from the one mask asked the
+  worker the same `solve` message apart from its serial `id` and came back with different `cut_geometry.json`
+  (48 253 against 48 241 bytes). But the difference is the last decimal of a number nobody can weave: both runs
+  printed "4 + 4 snit · mindst 3,1 mm mellem snittene", and the difference from the mask moved between 2,6 % and
+  2,7 % over three runs. There is no seed to vary — the search is a time-budgeted solve, so what moves is which
+  incumbent the clock stops it on, and that is not something a visitor pressing the button is choosing. So the line
+  names the mask and the symmetry first and the button last: it spends the whole search to hand back the same heart
+  to two decimal places, unless something under it has moved. The button stays because the owner asked for it, and
+  it goes back to the mask before it starts, so nobody watches a progress bar under the heart they were just told
+  was not good enough. Two things are **open** — the owner's call: giving the re-run something real to vary (a
+  seed, a nudged starting point, a longer budget) is an engine question, and a mask whose difference sits within a
+  decimal of 1 % can be told "close, but not right" on one run and nothing on the next, since the threshold is read
+  off a printed number that itself moves.
 - After failure: a notice in the panel: what happened (timed out / no weavable pattern / engine could not load) and
   what to try (paint with fewer thin details, switch off a symmetry, try again), plus `Prøv igen`.
 
