@@ -42,6 +42,23 @@ export function supportedBorderCounts(evidence){
   }
   return counts;
 }
+/** Expand the count search only when repeated inset measurements on opposing
+ * edges both indicate a dense family. One noisy row never raises the ceiling.
+ * Counts below the ceiling remain candidates; these are not endpoint rules.
+ */
+export function gridCountLimit(evidence){
+  const repeated=side=>{
+    const rows=evidence.filter(r=>r.side===side),votes=new Map();
+    for(const row of rows)votes.set(row.count,(votes.get(row.count)||0)+1);
+    return [...votes].find(([,n])=>n>rows.length/2)?.[0]??0;
+  };
+  let limit=8;
+  for(const sides of [[0,2],[1,3]]){
+    const counts=sides.map(repeated);
+    if(counts.every(n=>n>8))limit=Math.max(limit,Math.max(...counts)+1);
+  }
+  return Math.min(16,limit);
+}
 export function gridFinalists(coarse,evidence,limit=3){
   const chosen=coarse.slice(0,limit),supported=supportedBorderCounts(evidence);
   if(supported&&!chosen.some(r=>r.model.counts.every((c,i)=>c===supported[i]))){
@@ -69,9 +86,10 @@ async function fitIndependent(input,cfg,onProgress){
   let deadline=start+fastSeconds*1000-Math.min(1300,fastSeconds*200);
   const numericalBackend=await loadBoundaryKernel();
   const sourceFeatures=imageFeatures(source,cfg.width),matchingEvidence=symmetryEvidence(source),evidence=borderEvidence(fullProb,source.resolution),attempts=[],timings=[],options=[],seen=new Set();
-  const add=(counts,phase)=>{if(counts.some(c=>c<1||c>8||(c+1)*(cfg.nominalWidth+.35)>=cfg.width))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
-  for(let count=1;count<=8;count++)for(const phase of[1,-1])add([count,count],phase);
-  const modes=sides=>{const counts=new Map();for(const r of evidence)if(sides.includes(r.side)&&r.count>=1&&r.count<=8)counts.set(r.count,(counts.get(r.count)||0)+1);return[...counts].sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]);};
+  const maximumCount=gridCountLimit(evidence);
+  const add=(counts,phase)=>{if(counts.some(c=>c<1||c>maximumCount||(c+1)*(cfg.nominalWidth+.35)>=cfg.width))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
+  for(let count=1;count<=maximumCount;count++)for(const phase of[1,-1])add([count,count],phase);
+  const modes=sides=>{const counts=new Map();for(const r of evidence)if(sides.includes(r.side)&&r.count>=1&&r.count<=maximumCount)counts.set(r.count,(counts.get(r.count)||0)+1);return[...counts].sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]);};
   for(const a of modes([0,2]))for(const b of modes([1,3]))for(const phase of[1,-1])add([a,b],phase);
   const small=resize(prob,n,64);
   for(const o of options){const model=gridModel(o.counts);model.z.fill(0);o.initialError=mismatch(gridMask(model,64,o.phase),small);}

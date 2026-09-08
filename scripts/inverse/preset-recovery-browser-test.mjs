@@ -1,4 +1,4 @@
-/** Reproduce both Hunodan uploads through the single automatic workflow. */
+/** Reproduce supplied photos through automatic fitting and manual crop recovery. */
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
@@ -11,11 +11,13 @@ const output=`tmp/inverse-browser/${new Date().toISOString().replace(/[:.]/g,'-'
 const cases=[
   {id:'flag-screenshot',file:'scripts/inverse/fixtures/preset-recovery/hunodan-flag-screenshot.png'},
   {id:'blue-stars',file:'scripts/inverse/fixtures/hunodan/source/hjsta-05.jpg',region:[.37,.015,.99,.94]},
+  {id:'tilted-orange-weave',file:'scripts/inverse/fixtures/hard-user/tilted-orange-weave.png',manual:[[447,160],[845,574],[350,921],[55,451]]},
 ];
 await fs.mkdir(output,{recursive:true});
 for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',')){
   const browser=await engines[name].launch({headless:true});
   try{for(const entry of cases){
+    if(process.env.INVERSE_TEST_CASES&&!process.env.INVERSE_TEST_CASES.split(',').includes(entry.id))continue;
     const context=await browser.newContext({viewport:{width:1440,height:1050},acceptDownloads:true});
     const row={browser:name,id:entry.id,checks:[],pageErrors:[]};results.push(row);let page;
     try{
@@ -40,6 +42,19 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
       assert.equal(await page.getByLabel('Prefer matching templates',{exact:true}).count(),0);
       assert.equal(await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).count(),0);
       row.checks.push('A photo upload replaces the example without exposing any fitting or matching options');
+      if(entry.manual){
+        // This photograph remains a known automatic-detection failure. Verify
+        // recovery without pretending the diagnostic landmarks were detected.
+        assert.equal(await page.locator('.corner').count(),0);
+        await button('Place corners').click();
+        for(const p of entry.manual){
+          const el=page.locator('.crop-image');await el.scrollIntoViewIfNeeded();
+          const box=await el.boundingBox(),size=await el.locator('img').evaluate(im=>[im.naturalWidth,im.naturalHeight]);
+          await page.mouse.click(box.x+p[0]/size[0]*box.width,box.y+p[1]/size[1]*box.height);
+        }
+        for(let i=0;i<4;i++)for(let axis=0;axis<2;axis++)await page.locator('.coordinates input').nth(2*i+axis).fill(String(entry.manual[i][axis]));
+        row.checks.push('The known detector failure recovers through four manual corner clicks and coordinate adjustments');
+      }
       if(await page.locator('.corner').count()===0&&entry.region){
         // The full source also contains its printed template. Follow the UI's
         // one-heart selection flow; the locator still estimates all corners.

@@ -11,11 +11,32 @@ import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {checkerPixels} from './fixtures.mjs';
-import {supportedBorderCounts,gridFinalists} from '../../static/inverse/core/direct/fit.js';
+import {supportedBorderCounts,gridFinalists,gridCountLimit} from '../../static/inverse/core/direct/fit.js';
 import {shareReplacement} from '../../static/inverse/core/direct/share.js';
 
 const near=(a,b,eps=1e-8)=>assert.ok(Math.abs(a-b)<eps,`${a} vs ${b}`);
 const line=(a,b)=>[a,a.map((v,i)=>v+(b[i]-v)/3),a.map((v,i)=>v+2*(b[i]-v)/3),b];
+
+test('dense grids expand the search only with repeated evidence on opposite sides',()=>{
+  const rows=counts=>counts.flatMap((values,side)=>values.map(count=>({side,count})));
+  assert.equal(gridCountLimit(rows([[7,7,20],[7,7,7],[7,7,7],[7,7,7]])),8);
+  assert.equal(gridCountLimit(rows([[11,11,13],[5,5,5],[7,7,7],[5,5,5]])),8);
+  assert.equal(gridCountLimit(rows([[11,11,13],[10,10,11],[10,10,10],[9,9,9]])),12);
+  assert.equal(gridCountLimit(rows([[9,9,9],[3,3,3],[9,9,9],[3,3,3]])),10);
+  assert.equal(gridCountLimit(rows([[25,25,25],[3,3,3],[25,25,25],[3,3,3]])),16);
+});
+
+test('a dense direct-fit image can recover ten slits per sheet from fresh grids',async()=>{
+  const model=gridModel([10,10]);model.z.fill(0);
+  const n=220,mask=gridMask(model,n,1),rgba=new Uint8ClampedArray(n*n*4);
+  for(let i=0;i<mask.length;i++)rgba.set(mask[i]?[185,20,20,255]:[255,255,255,255],4*i);
+  const cfg={algorithm:'direct',resolution:n,width:100,trials:0,roundHidden:false,timeLimit:30};
+  const p=prepare({type:'pixels',imageWidth:n,imageHeight:n,rgba},cfg),answer=await design(p.target,cfg);
+  assert.equal(answer.report.templateChecksPassed,true);
+  assert.deepEqual(answer.report.slits,{left:10,right:10});
+  const woven=await renderExportedWeave(answer.files['cut_geometry.json'],n);
+  assert.ok(woven.mask.every((v,i)=>v===p.preview.mask[i]));
+});
 
 test('inset evidence reserves a count candidate without treating edge noise as extra slits',()=>{
   const evidence=[];for(let side=0;side<4;side++)for(let inset=0;inset<3;inset++)evidence.push({side,inset,count:side%2?5:3});
