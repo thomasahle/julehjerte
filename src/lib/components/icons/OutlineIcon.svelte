@@ -10,8 +10,7 @@
 -->
 <script lang="ts">
 	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
-	import type { IconProps } from './types';
-	import { SOFT_OPACITY } from './symmetryIcons';
+	import { SOFT_OPACITY, type IconProps } from './types';
 
 	let { size = 28, class: className = undefined, ...rest }: IconProps = $props();
 </script>

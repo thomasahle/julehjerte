@@ -39,9 +39,6 @@ export interface SymmetryIconPath {
 	accent?: boolean;
 }
 
-/** Opacity of a `soft` shape, as in the source page's `.soft` class. */
-export const SOFT_OPACITY = 0.45;
-
 /**
  * The two lobes of "Mellem lapper" meet at the bottom point of the heart, each
  * turned a quarter turn from the fold, so both cuts are drawn in the same

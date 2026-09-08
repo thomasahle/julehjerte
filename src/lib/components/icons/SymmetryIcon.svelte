@@ -10,9 +10,8 @@
   whole glyph to white on green along with its word.
 -->
 <script lang="ts">
-	import type { IconProps } from './types';
+	import { SOFT_OPACITY, type IconProps } from './types';
 	import {
-		SOFT_OPACITY,
 		SYMMETRY_ICON_PATHS,
 		type SymmetryIconMode,
 		type SymmetryIconRow
@@ -43,16 +42,12 @@
 	class={className}
 	{...rest}
 >
-	{#each paths as path (path.d + (path.transform ?? ''))}
-		<!-- The accent is the second colour a two-coloured glyph uses for the
-		     following cut. It reads --icon-accent so the segment can hand it a
-		     pale tint when it is selected: full --red on the green ground would
-		     be unreadable. -->
-		<path
-			d={path.d}
-			transform={path.transform}
-			opacity={path.soft ? SOFT_OPACITY : undefined}
-			stroke={path.accent ? 'var(--icon-accent, var(--red))' : undefined}
-		/>
+	<!-- Keyed by position, which lint asks for and is all these have: a glyph's
+	     paths are a fixed entry of the table, never reordered or spliced, while
+	     a key on the drawing itself would cost the day two paths of one glyph
+	     share their `d` — a stroke doubled on purpose — a duplicate-key error
+	     instead of a picture. -->
+	{#each paths as path, i (i)}
+		<path d={path.d} transform={path.transform} opacity={path.soft ? SOFT_OPACITY : undefined} />
 	{/each}
 </svg>

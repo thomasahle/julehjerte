@@ -11,7 +11,8 @@
  * and adds `aria-hidden="true"` on its own unless the call site passes an
  * accessible name, so they stay decorative by default.
  *
- * Only glyphs lucide has no equivalent for are kept as files here (WeaveIcon);
+ * Only glyphs lucide has no equivalent for are kept as files here — the ones
+ * drawn by hand, listed after the re-exports and in the same alphabetical order;
  * the editor's node and segment glyphs live in `$lib/components/editor/icons`.
  */
 export { default as ArrowLeftIcon } from '@lucide/svelte/icons/arrow-left';
@@ -44,18 +45,18 @@ export { default as TrashIcon } from '@lucide/svelte/icons/trash-2';
 export { default as UndoIcon } from '@lucide/svelte/icons/undo-2';
 export { default as UploadIcon } from '@lucide/svelte/icons/upload';
 
-/** Paper strips woven into a lattice — no lucide equivalent. */
-export { default as WeaveIcon } from './WeaveIcon.svelte';
-
 /**
  * The editor's symmetry and drawing glyphs — the pictures the owner chose in
  * docs/redesign/symmetri-ikoner.html. They draw cuts, lobes and the woven
  * square, which lucide has nothing for, and they carry a little more line than
  * the rest, so they take `size = 28` and stroke 1.8 rather than 20 and 2.
  */
-export { default as SymmetryIcon } from './SymmetryIcon.svelte';
 export { default as OutlineIcon } from './OutlineIcon.svelte';
 export { default as SnapIcon } from './SnapIcon.svelte';
+export { default as SymmetryIcon } from './SymmetryIcon.svelte';
+
+/** Paper strips woven into a lattice — no lucide equivalent. */
+export { default as WeaveIcon } from './WeaveIcon.svelte';
 
 export type { IconProps } from './types';
 export type { SymmetryIconMode, SymmetryIconRow } from './symmetryIcons';

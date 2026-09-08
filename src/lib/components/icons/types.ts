@@ -11,3 +11,14 @@ import type { LucideProps } from '@lucide/svelte';
  * — and the icon paints with `stroke: currentColor`.
  */
 export type IconProps = LucideProps;
+
+/**
+ * Opacity of the part a hand-drawn glyph holds back — the lobe the cuts sit in,
+ * the frame of the woven square — so the subject is read first.
+ *
+ * It is the `.soft` class of docs/redesign/symmetri-ikoner.html, where all of
+ * these were drawn, and it belongs to that family of glyphs as a whole: the
+ * symmetry table and the two Tegning icons both draw with it, so it sits here
+ * beside IconProps rather than inside one of them.
+ */
+export const SOFT_OPACITY = 0.45;
