@@ -158,6 +158,14 @@
 	 * `disabled` answers that one — so this gates only the keys.
 	 */
 	let dialogOpen = $derived(showHelp || showImport || confirming !== null);
+	/**
+	 * The found heart is on screen, so there is no mask under the pointer and the
+	 * left column can do nothing at all. It used to stay bright and clickable and
+	 * simply not work, which read as a page that had stopped responding. Not the
+	 * same thing as `busy`: a search leaves the mask on screen and the panel merely
+	 * out of reach for a minute.
+	 */
+	let toolsStandby = $derived(showingResult);
 	let heading = $derived(t('paintPageTitle', lang));
 
 	onMount(() => {
@@ -608,8 +616,11 @@
 								size={520}
 							/>
 						</div>
-						<div class="mask-card">
-							<div class="mask-card-canvas">
+						<!-- The whole card is the way back: it used to carry a "Ret masken"
+						     link of its own next to the panel's "Tilbage til masken", which
+						     read as two different steps and is one. -->
+						<button type="button" class="mask-card" onclick={backToMask}>
+							<span class="mask-card-canvas">
 								<MaskCanvas
 									{lang}
 									mask={session.mask}
@@ -624,11 +635,9 @@
 									onEditEnd={() => {}}
 									onShortcut={() => {}}
 								/>
-							</div>
-							<button type="button" class="link" onclick={backToMask}>
-								{t('paintEditMask', lang)}
-							</button>
-						</div>
+							</span>
+							<span class="mask-card-label">{t('paintBackToMask', lang)}</span>
+						</button>
 					{:else}
 						<MaskCanvas
 							{lang}
@@ -736,24 +745,36 @@
 	<!-- The two panels, authored once and rendered either floating over the canvas
 	     or stacked under it. -->
 	{#snippet toolPanel()}
-					<MaskToolPanel
-						{lang}
-						{tool}
-						onTool={(next) => (tool = next)}
-						{brushSize}
-						onBrushSize={(next) => (brushSize = next)}
-						{paintValue}
-						onPaintValue={(next) => (paintValue = next)}
-						{colors}
-						{canUndo}
-						{canRedo}
-						onUndo={undo}
-						onRedo={redo}
-						onImport={() => (showImport = true)}
-						onClear={askToClear}
-						clearDisabled={maskEmpty}
-						disabled={busy}
-					/>
+					<!-- While the found heart is on screen there is no mask to paint on, so
+					     the whole column stands down: aria-disabled says so to a screen
+					     reader in one place rather than control by control, the muting says
+					     it on screen, and every control inside is really disabled so a click
+					     that gets through still does nothing. "Tilbage til masken" — the
+					     panel's button or the card — brings it back. -->
+					<div
+						class="tool-panel"
+						class:standby={toolsStandby}
+						aria-disabled={toolsStandby ? 'true' : undefined}
+					>
+						<MaskToolPanel
+							{lang}
+							{tool}
+							onTool={(next) => (tool = next)}
+							{brushSize}
+							onBrushSize={(next) => (brushSize = next)}
+							{paintValue}
+							onPaintValue={(next) => (paintValue = next)}
+							{colors}
+							{canUndo}
+							{canRedo}
+							onUndo={undo}
+							onRedo={redo}
+							onImport={() => (showImport = true)}
+							onClear={askToClear}
+							clearDisabled={maskEmpty}
+							disabled={busy || showingResult}
+						/>
+					</div>
 	{/snippet}
 
 	{#snippet cutsPanel()}
@@ -881,6 +902,15 @@
 		transform: translateY(-50%);
 		width: 300px;
 		z-index: 26;
+	}
+
+	/* The tool column standing down while the found heart is on screen. Every
+	   control inside is disabled for real, which is what mutes them — the heading
+	   is the one thing left that would still read as live, so it goes quiet too.
+	   No opacity on the wrapper: it would multiply with the controls' own and
+	   leave the panel too faint to read at all. */
+	.tool-panel.standby :global(.panel-title) {
+		color: var(--muted);
 	}
 
 	.right-panel {
@@ -1072,24 +1102,37 @@
 		align-items: center;
 		gap: 6px;
 		box-shadow: var(--shadow-panel);
+		font-family: inherit;
+		cursor: pointer;
 	}
 
+	.mask-card:hover {
+		border-color: var(--green);
+	}
+
+	/* Sky, not white: on white the white lobe vanishes and the card shows half a
+	   mask — the same reason the detail page's heart thumbnails are sky. */
 	.mask-card-canvas {
 		position: relative;
+		display: block;
 		width: 120px;
 		height: 120px;
+		border-radius: 8px;
+		background: var(--sky);
+		overflow: hidden;
 	}
 
-	.link {
-		padding: 0;
-		border: 0;
-		background: none;
+	/* The canvas inside the card is a picture on a button, not something to paint
+	   on, so it must not offer the painting cursor. */
+	.mask-card :global(canvas) {
+		cursor: inherit;
+	}
+
+	.mask-card-label {
 		color: var(--green);
-		font-family: inherit;
 		font-size: 12px;
 		font-weight: 600;
 		text-decoration: underline;
-		cursor: pointer;
 	}
 
 	.confirm-title {
