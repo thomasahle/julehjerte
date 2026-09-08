@@ -7,6 +7,7 @@
   colour panel of their own.
 -->
 <script lang="ts">
+	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { Tooltip, TooltipContent, TooltipTrigger } from '$lib/components/ui/tooltip';
 	import {
 		EraserIcon,
@@ -85,6 +86,18 @@
 		medium: 'paintBrushMedium',
 		coarse: 'paintBrushCoarse'
 	};
+
+	// A single-choice ToggleGroup lets a second click on the chosen item clear the
+	// group, and neither of these two controls has an "off": one brush is always
+	// the brush, one paper is always the paper. So an empty answer keeps what was
+	// there, as the symmetry rows do with the same control.
+	function chooseBrush(next: unknown): void {
+		if (BRUSH_SIZES.includes(next as BrushSize)) onBrushSize(next as BrushSize);
+	}
+
+	function choosePaper(next: unknown): void {
+		if (next === '0' || next === '1') onPaintValue(next === '1' ? 1 : 0);
+	}
 </script>
 
 <div class="tool-column">
@@ -135,41 +148,49 @@
 			{/each}
 		</div>
 
+		<!-- Both of these are one choice out of several, which is a radiogroup: one
+		     tab stop, and the arrow keys to move within it. Declaring the role over
+		     plain buttons was worse than the aria-pressed grid above, because it
+		     promised a keyboard behaviour that was not there. The ToggleGroup the
+		     symmetry rows use brings it, and it is the same control on screen. -->
 		<div class="field">
 			<span class="field-label">{tr('paintBrush')}</span>
-			<div class="segmented" role="radiogroup" aria-label={tr('paintBrush')}>
-				{#each BRUSH_SIZES as size (size)}
-					<button
-						type="button"
-						role="radio"
-						aria-checked={brushSize === size}
-						class:selected={brushSize === size}
-						onclick={() => onBrushSize(size)}
-						{disabled}
-					>
-						{tr(BRUSH_LABELS[size])}
-					</button>
-				{/each}
+			<div class="segmented">
+				<ToggleGroup
+					type="single"
+					role="radiogroup"
+					aria-label={tr('paintBrush')}
+					value={brushSize}
+					onValueChange={chooseBrush}
+					{disabled}
+				>
+					{#each BRUSH_SIZES as size (size)}
+						<ToggleGroupItem value={size}>{tr(BRUSH_LABELS[size])}</ToggleGroupItem>
+					{/each}
+				</ToggleGroup>
 			</div>
 		</div>
 
 		<div class="field">
 			<span class="field-label">{tr('paintsWith')}</span>
-			<div class="swatches" role="radiogroup" aria-label={tr('paintsWith')}>
-				{#each PAPERS as value (value)}
-					<button
-						type="button"
-						role="radio"
-						class="swatch"
-						class:selected={paintValue === value}
-						aria-checked={paintValue === value}
-						aria-label={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
-						title={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
-						style:background={value ? colors.right : colors.left}
-						onclick={() => onPaintValue(value)}
-						{disabled}
-					></button>
-				{/each}
+			<div class="swatches">
+				<ToggleGroup
+					type="single"
+					role="radiogroup"
+					aria-label={tr('paintsWith')}
+					value={String(paintValue)}
+					onValueChange={choosePaper}
+					{disabled}
+				>
+					{#each PAPERS as value (value)}
+						<ToggleGroupItem
+							value={String(value)}
+							aria-label={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
+							title={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
+							style="background: {value ? colors.right : colors.left}"
+						/>
+					{/each}
+				</ToggleGroup>
 			</div>
 		</div>
 
@@ -272,62 +293,72 @@
 		color: var(--muted);
 	}
 
-	.segmented {
-		display: inline-flex;
+	/* Both groups are the shadcn ToggleGroup restyled, so the rules reach through
+	   :global to the elements bits-ui renders — the same way SymmetryRows dresses
+	   the identical control in the panel opposite. */
+	.segmented :global([data-slot='toggle-group']) {
+		display: flex;
+		gap: 0;
+		padding: 0;
 		border: 1.5px solid var(--line);
 		border-radius: 8px;
 		overflow: hidden;
 		background: var(--white);
 	}
 
-	.segmented button {
+	.segmented :global([data-slot='toggle-group-item']) {
 		flex: 1 1 0;
 		padding: 6px 8px;
-		border: 0;
+		border-radius: 0;
 		background: var(--white);
 		color: var(--green);
 		font-family: inherit;
 		font-size: 13px;
 		font-weight: 600;
+		box-shadow: none;
 		cursor: pointer;
 	}
 
-	.segmented button:hover:not(:disabled) {
+	.segmented :global([data-slot='toggle-group-item']:hover:not(:disabled)) {
 		background: var(--cream2);
+		color: var(--green);
 	}
 
-	.segmented button.selected {
+	.segmented :global([data-slot='toggle-group-item'][data-state='on']) {
 		background: var(--green);
 		color: var(--white);
 	}
 
-	.segmented button:disabled {
+	.segmented :global([data-slot='toggle-group-item']:disabled) {
 		opacity: 0.35;
 		cursor: not-allowed;
 	}
 
-	.swatches {
+	.swatches :global([data-slot='toggle-group']) {
 		display: flex;
 		gap: 10px;
+		padding: 0;
+		background: none;
 	}
 
 	/* The chosen paper is ringed rather than ticked: a tick would have to be
 	   drawn in a colour, and the swatch is the colour. */
-	.swatch {
+	.swatches :global([data-slot='toggle-group-item']) {
 		width: 34px;
 		height: 34px;
 		padding: 0;
 		border: 1.5px solid var(--line);
 		border-radius: 50%;
+		box-shadow: none;
 		cursor: pointer;
 	}
 
-	.swatch.selected {
+	.swatches :global([data-slot='toggle-group-item'][data-state='on']) {
 		outline: 2px solid var(--green);
 		outline-offset: 2px;
 	}
 
-	.swatch:disabled {
+	.swatches :global([data-slot='toggle-group-item']:disabled) {
 		opacity: 0.35;
 		cursor: not-allowed;
 	}
