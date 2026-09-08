@@ -3,7 +3,8 @@ import {prepare} from './engine.js';
 import {GENERAL_PRESET,DIRECT_PRESET} from './presets.js';
 import {sampleTarget} from './input.js';
 import {normalizeSymmetry,requestedSymmetry,settings} from './settings.js';
-import {maskDisagreement,preferMatchingSolution} from './direct/prefer-matching.js';
+import {maskDisagreement} from './direct/prefer-matching.js';
+import {finalizeFittedSolution} from './direct/finalize.js';
 import {fitDirect} from './direct/fit.js';
 import {sampleWeave} from './validate.js';
 import {buildGraph} from './graph.js';
@@ -55,7 +56,7 @@ export async function solveAutomatic(target,cfg,onProgress){
       // <=1% is already within the matching allowance of any possible better
       // image fit (whose error cannot be negative). Keep the original mask.
       if(error<=Math.min(.01,cfg.maxImageError)&&auditImageFeatures(target.sourceImage,woven,cfg.width).passed){
-        const selected=preferMatchingSolution(solution,traceCfg,{deadline:start+Math.min(10,cfg.timeLimit)*1000-400,onProgress});
+        const selected=finalizeFittedSolution(solution,traceCfg,{startedAt:start,timeLimit:cfg.timeLimit,onProgress});
         selected.automaticSettings=traceCfg;selected.report.automatic={selected:route,attempts};selected.report.seconds=(performance.now()-start)/1000;
         return selected;
       }

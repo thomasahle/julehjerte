@@ -4,7 +4,8 @@
 import {fitGrid,gridPaths,gridMask,gridControls} from './grid.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves,fittingMargin} from './refine.js';
-import {recoverShared,finalizeShared} from './share.js';
+import {recoverShared} from './share.js';
+import {finalizeFittedSolution} from './finalize.js';
 import {sampleWeave,validate} from '../validate.js';
 import {matchingGrid,matchingSummary,symmetryEvidence} from './matching.js';
 import {applyTies,orbitMean,symmetryOrbit,symmetryTies} from './symmetry.js';
@@ -15,7 +16,7 @@ import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,countH
 import {auditImageFeatures,imageFeatures} from '../image-features.js';
 import {recoverImageFeatures} from '../feature-recovery.js';
 import {loadBoundaryKernel} from './native.js';
-import {preferMatchingSolution,maskDisagreement} from './prefer-matching.js';
+import {maskDisagreement} from './prefer-matching.js';
 import {initializeTopology} from './topology.js';
 import {curvesOf} from '../graph.js';
 
@@ -30,13 +31,7 @@ function refloor(result,floor){
 export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initializeCounts}={}){
   const start=performance.now();
   const solution=await fitIndependent(input,{...cfg,preferMatchingSheets:false},onProgress,countSearch);
-  const matching=preferMatchingSolution(solution,cfg,{deadline:start+Math.min(cfg.timeLimit,10)*1000-400,onProgress});
-  // A narrow seam can score well while still spoiling an invisible shared cut.
-  // Repair the selected pair together, including its matching-sheet constraint.
-  // Keep export time in reserve and bound this pass within the requested budget.
-  const result=finalizeShared(matching,cfg,{deadline:Math.min(start+cfg.timeLimit*1000-1000,performance.now()+2000),onProgress});
-  result.report.seconds=(performance.now()-start)/1000;
-  return result;
+  return finalizeFittedSolution(solution,cfg,{startedAt:start,onProgress});
 }
 async function fitIndependent(input,cfg,onProgress,countSearch){
   // Every per-pixel target the search optimizes is the mean over the requested
