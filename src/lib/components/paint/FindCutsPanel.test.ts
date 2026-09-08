@@ -106,6 +106,34 @@ describe('FindCutsPanel', () => {
 		}
 	});
 
+	// The panel prints one decimal of a percent, so a verdict read off the raw
+	// fraction can disagree with the number beside it: 0.996 % and 1.004 % are both
+	// "1,0%" on screen, and only the second is over 0.01. Two hearts showing the
+	// same number and given different verdicts is the confusion the line exists to
+	// end, so the printed number is what decides.
+	it('agrees with the number it prints on either side of one per cent', () => {
+		for (const mismatch of [0.00996, 0.01004]) {
+			const panel = render({ result: result({ mismatch }) });
+			try {
+				expect(panel.text).toContain('1,0%');
+				expect(panel.text).not.toContain(MEDIOCRE);
+				expect(panel.again).toBeUndefined();
+			} finally {
+				panel.cleanup();
+			}
+		}
+	});
+
+	it('speaks up as soon as the printed number passes one per cent', () => {
+		const panel = render({ result: result({ mismatch: 0.0106 }) });
+		try {
+			expect(panel.text).toContain('1,1%');
+			expect(panel.text).toContain(MEDIOCRE);
+		} finally {
+			panel.cleanup();
+		}
+	});
+
 	it('judges a free band by the motif and not by the whole square', () => {
 		// MOTIF-BORDER.md's three-cell house: the square passes, the middle does not.
 		const panel = render({

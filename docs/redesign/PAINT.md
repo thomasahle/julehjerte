@@ -151,11 +151,14 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   own line under the other two, which runs the same search from the mask again. Under 1 % nothing changes. The
   threshold is judged on the motif where there is one and on the whole square where there is not, exactly as the
   summary line is: a large, accurately woven band dilutes an error in the middle (MOTIF-BORDER.md's three-cell house
-  is 1,89 % over the square and 4,60 % in its centre). 1 % is where the engine's own matching allowance runs out —
-  `enforceCostLimit` is 0.03 for a whole design and a solve the fitter itself calls good lands well under a
-  hundredth — and it is where one cell in a hundred of a 400-cell square becomes a seam you can see in the woven
-  paper. "Find snit igen" goes back to the mask before it starts, so nobody watches a progress bar under the heart
-  they were just told was not good enough.
+  is 1,89 % over the square and 4,60 % in its centre). 1 % is where the difference stops being arithmetic: one cell
+  in a hundred of a 400-cell square is a seam you can see in the woven paper, and that is the moment to be told
+  rather than to find out on the table. There is no engine number behind it — `ENFORCE_COST_LIMIT` (0.03) bounds how
+  far our own symmetry correction may move a design (§11), not how far the found heart may sit from the mask, and
+  says nothing about this. The verdict is read off the number the panel prints and not off the raw fraction: the
+  summary rounds to one decimal, so 0,996 % and 1,004 % are both "1,0%" on screen and must be given the same
+  verdict. "Find snit igen" goes back to the mask before it starts, so nobody watches a progress bar under the
+  heart they were just told was not good enough.
 - After failure: a notice in the panel: what happened (timed out / no weavable pattern / engine could not load) and
   what to try (paint with fewer thin details, switch off a symmetry, try again), plus `Prøv igen`.
 
