@@ -125,7 +125,14 @@
 				<Tooltip>
 					<TooltipTrigger>
 						{#snippet child({ props })}
+							<!-- The tooltip's props go first, as they do in GalleryToolbar: they
+							     carry an `onclick` of their own, and the last spread wins. Put
+							     them last and clicking a tool does nothing at all — only the
+							     keyboard shortcuts still change tools. What we drop by winning is
+							     the tooltip's close-on-click, which its `onpointerdown` has done
+							     a moment earlier anyway. -->
 							<button
+								{...props}
 								type="button"
 								class="tool-btn"
 								class:active={tool === item.id}
@@ -133,7 +140,6 @@
 								aria-label={tr(item.label)}
 								onclick={() => onTool(item.id)}
 								{disabled}
-								{...props}
 							>
 								<!-- The line tool is lucide's minus, stood on the diagonal so it
 								     reads as a line you draw rather than a "remove" glyph. -->

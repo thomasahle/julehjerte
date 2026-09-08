@@ -9,6 +9,10 @@ export default defineConfig({
     globals: true,
   },
   resolve: {
+    // The tests run in jsdom, so a component has to resolve to Svelte's client
+    // build: `mount` exists only there, and without this a component test dies
+    // with `lifecycle_function_unavailable` before it renders anything.
+    conditions: ['browser'],
     alias: {
       $lib: '/src/lib',
       $app: '/src/app-mocks',
