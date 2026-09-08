@@ -23,6 +23,16 @@
 		status: PaintStatus;
 		error: PaintError | null;
 		result: PaintResult | null;
+		/**
+		 * Whether the page is showing the found heart rather than the mask.
+		 *
+		 * The face is the page's to choose, not `status`'s: the canvas swaps between
+		 * the heart and the mask on the same flag, and the two must never disagree.
+		 * Reading it off `status === 'done'` once meant that a visitor who went back
+		 * to the mask kept a summary panel with no Find snit button in it, so the
+		 * page's own loop — paint, find, adjust, find again — could not be walked.
+		 */
+		showingResult: boolean;
 		/** The rows the heart could actually be held to; null until there is one. */
 		honoured: SymmetrySettings | null;
 		/** Whole seconds since the search started. */
@@ -48,6 +58,7 @@
 		status,
 		error,
 		result,
+		showingResult,
 		honoured,
 		elapsed,
 		stage,
@@ -104,7 +115,21 @@
 <section class="editor-panel">
 	<h2 class="panel-title">{tr('paintFindCuts')}</h2>
 
-	{#if status === 'done' && result}
+	{#if searching}
+		<div class="progress-row">
+			<ScissorsIcon size={18} />
+			<span>{t('paintSearching', lang, { seconds: elapsed })}</span>
+		</div>
+		<p class="note">{stageText}</p>
+		<div class="bar" role="progressbar" aria-label={tr('paintFindCuts')}>
+			<span></span>
+		</div>
+		<div class="actions">
+			<button type="button" class="btn btn-sm btn-outline" onclick={onCancel}>
+				{tr('paintCancel')}
+			</button>
+		</div>
+	{:else if showingResult && result}
 		<p class="lead">{tr('paintFound')}</p>
 		<p class="numbers">
 			{t('paintFoundSummary', lang, {
@@ -126,20 +151,6 @@
 			</button>
 			<button type="button" class="btn btn-sm btn-outline" onclick={onBackToMask}>
 				{tr('paintBackToMask')}
-			</button>
-		</div>
-	{:else if searching}
-		<div class="progress-row">
-			<ScissorsIcon size={18} />
-			<span>{t('paintSearching', lang, { seconds: elapsed })}</span>
-		</div>
-		<p class="note">{stageText}</p>
-		<div class="bar" role="progressbar" aria-label={tr('paintFindCuts')}>
-			<span></span>
-		</div>
-		<div class="actions">
-			<button type="button" class="btn btn-sm btn-outline" onclick={onCancel}>
-				{tr('paintCancel')}
 			</button>
 		</div>
 	{:else}

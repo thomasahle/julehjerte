@@ -195,7 +195,21 @@
 		strokes++;
 		// A new stroke is a new picture: whatever heart was found describes the
 		// mask as it was, so the page goes back to the mask.
+		backToMask();
+	}
+
+	/**
+	 * Leave the found heart and go back to the mask — the button, the card's link,
+	 * and the first stroke after a search.
+	 *
+	 * `session.result` stays, so Download PDF and Gem keep working on the heart
+	 * that was found (PAINT.md §1); only `status` goes back, because the search is
+	 * over and the panel has to offer Find snit again. Without that, coming back to
+	 * the page later would open on a result the visitor had already left behind.
+	 */
+	function backToMask(): void {
 		showingResult = false;
+		if (session.status === 'done') session.status = 'idle';
 	}
 
 	function undo(): void {
@@ -542,7 +556,7 @@
 									onShortcut={() => {}}
 								/>
 							</div>
-							<button type="button" class="link" onclick={() => (showingResult = false)}>
+							<button type="button" class="link" onclick={backToMask}>
 								{t('paintEditMask', lang)}
 							</button>
 						</div>
@@ -680,6 +694,7 @@
 						status={session.status}
 						error={session.error}
 						result={session.result}
+						{showingResult}
 						{honoured}
 						{elapsed}
 						{stage}
@@ -690,7 +705,7 @@
 						onFind={find}
 						onCancel={abort}
 						onOpenInDraw={openInDraw}
-						onBackToMask={() => (showingResult = false)}
+						onBackToMask={backToMask}
 					/>
 	{/snippet}
 
