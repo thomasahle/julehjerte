@@ -8,6 +8,8 @@
 	import { alternatePaths, routeKeyFromPathname } from "$lib/i18n/routes";
 	import * as Tooltip from "$lib/components/ui/tooltip";
 	import PageFooter from "$lib/components/PageFooter.svelte";
+	import { markAppStarted } from "$lib/hydration";
+	import { getColors, subscribeColors, type HeartColors } from "$lib/stores/colors";
 
 	let { children } = $props();
 	let lang = $derived(langFromPathname($page.url.pathname));
@@ -64,6 +66,23 @@
 	$effect(() => {
 		if (!browser) return;
 		document.documentElement.lang = lang;
+	});
+
+	// The front page's load function has to know whether it is hydrating the
+	// prerendered HTML or building the page after a navigation; loads run before
+	// the first render, so this is still false the first time round.
+	onMount(() => markAppStarted());
+
+	// Mirror the paper pair into --paper-left / --paper-right (src/app.css). The
+	// hearts in the front page's HTML are prerendered and never re-render, so CSS
+	// is how the footer's swatches still reach their paper — see HangingHeart.
+	onMount(() => {
+		const apply = (colors: HeartColors) => {
+			document.documentElement.style.setProperty("--paper-left", colors.left);
+			document.documentElement.style.setProperty("--paper-right", colors.right);
+		};
+		apply(getColors());
+		return subscribeColors(apply);
 	});
 
 	// Google Analytics is 170 KB over the wire and nothing on the page waits for

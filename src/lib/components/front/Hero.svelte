@@ -7,32 +7,22 @@
   overlay SVGs here are the stacked layout's starry sky and its corner firs, both
   <use>s of ids in that drawing's <defs>.
 
-  The random swap lives here because nothing outside the hero can see it: the
-  page is prerendered with a fixed set of hearts (HERO_HEART_IDS) — which keeps
-  the server and client markup in agreement, and is what a visitor without
-  JavaScript gets to see — and after mount a random set of the same size takes
-  over the same slots. Nothing moves, because only *which* heart hangs in a slot
-  changes.
-
-  The prerendered set is never shown to a visitor whose browser runs the swap:
-  HeroHearts starts at opacity 0 and is only raised here, once the random hearts
-  are in the DOM. That is also why there is a single layer and no cross-fade —
-  there is nothing to fade out of.
+  Which hearts hang here is not decided in this component and not in the browser
+  at all: the page is prerendered with a fixed set (HERO_HEART_IDS), and the
+  inline script emitted after the gallery swaps in a random set cloned from the
+  cards, while the page is still parsing. See $lib/front/heroBootstrap and
+  front/HeroHearts. Nothing moves, because only *which* heart hangs in a slot
+  changes, and the layer stays invisible until the swap has happened, so the
+  fixed set is only ever seen by a visitor without JavaScript.
 -->
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Fir from '$lib/components/Fir.svelte';
 	import Scene from '$lib/components/Scene.svelte';
 	import { FIR_FILLS } from '$lib/landscape';
 	import { t, type Language } from '$lib/i18n';
 	import { href as routeHref } from '$lib/i18n/routes';
 	import { ArrowRightIcon, PencilIcon } from '$lib/components/icons';
-	import {
-		HERO_HEART_IDS,
-		HERO_HEART_IDS_MOBILE,
-		pickRandomHeartIds
-	} from '$lib/utils/randomHearts';
-	import type { HeartDesign } from '$lib/types/heart';
+	import type { HeroHeart } from '$lib/front/galleryHearts';
 	import HeroHearts from './HeroHearts.svelte';
 	import ScrollHint from './ScrollHint.svelte';
 	import SkyDecor from './SkyDecor.svelte';
@@ -45,43 +35,21 @@
 
 	interface Props {
 		lang: Language;
-		/** The gallery hearts, by id — the pool the hero draws its slots from. */
-		designs: Record<string, HeartDesign>;
+		/** The prerendered hearts, one per desktop slot, in slot order. */
+		desktop: readonly (HeroHeart | undefined)[];
+		/** The same for the stacked hero's three slots. */
+		mobile: readonly (HeroHeart | undefined)[];
+		/**
+		 * Show the hearts straight away, without waiting for the bootstrap script
+		 * — true only when this render *is* the one that drew them, i.e. after a
+		 * client-side navigation. See HeroHearts.
+		 */
+		revealed?: boolean;
 		/** Height in px of the landscape band below 900px. */
 		band?: number;
 	}
 
-	let { lang, designs, band = 230 }: Props = $props();
-
-	/** Length of the fade that brings the hearts in; HeroHearts reads --hero-fade. */
-	const HERO_FADE_MS = 300;
-
-	/** The set picked after mount. Null while the prerendered set stands in. */
-	let heroRandomIds = $state.raw<string[] | null>(null);
-	/** Raises the hearts out of their opacity 0 start. Only ever set in the browser. */
-	let heroShown = $state(false);
-
-	let heroDesktopIds = $derived<readonly string[]>(heroRandomIds ?? HERO_HEART_IDS);
-	let heroMobileIds = $derived<readonly string[]>(
-		heroRandomIds ? heroRandomIds.slice(0, HERO_SLOTS_MOBILE.length) : HERO_HEART_IDS_MOBILE
-	);
-
-	onMount(() => {
-		const picked = pickRandomHeartIds(HERO_SLOTS_DESKTOP.length);
-		// A pool too small to fill the hero would mean a broken build; show the
-		// prerendered set rather than an empty sky.
-		if (picked.length === HERO_SLOTS_DESKTOP.length) heroRandomIds = picked;
-
-		// Both in the same update, so no frame can exist in which the hearts on
-		// screen are the prerendered ones. Whether that reads as a fade is the
-		// browser's call and either answer is right: if the page has already
-		// painted the empty sky there is an opacity to transition from and the
-		// hearts fade in; if hydration beat the first paint there is nothing to
-		// fade from and they are simply there. What must not happen is making
-		// visibility wait on a frame callback — a page that is never asked to
-		// render (a background tab, a headless browser) would never show them.
-		heroShown = true;
-	});
+	let { lang, desktop, mobile, revealed = false, band = 230 }: Props = $props();
 </script>
 
 <Scene {band}>
@@ -106,15 +74,14 @@
 		<Fir x={20} tipY={52} height={178} fill={FIR_FILLS[0]} symbol="pine-c" widthFactor={0.85} />
 	</svg>
 
-	<div class="hero-inner" style:--hero-fade="{HERO_FADE_MS}ms">
+	<div class="hero-inner">
 		<div class="hero-hearts hero-hearts-m">
 			<HeroHearts
 				{lang}
 				slots={HERO_SLOTS_MOBILE}
-				ids={heroMobileIds}
-				{designs}
+				hearts={mobile}
 				idPrefix="hero-m"
-				shown={heroShown}
+				{revealed}
 			/>
 		</div>
 
@@ -138,10 +105,9 @@
 			<HeroHearts
 				{lang}
 				slots={HERO_SLOTS_DESKTOP}
-				ids={heroDesktopIds}
-				{designs}
+				hearts={desktop}
 				idPrefix="hero-d"
-				shown={heroShown}
+				{revealed}
 			/>
 		</div>
 	</div>

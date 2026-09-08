@@ -11,24 +11,28 @@
 	import MyHeartsEmpty from './MyHeartsEmpty.svelte';
 	import { categoryTitle, MY_HEARTS_CATEGORY_ID } from '$lib/data/categories';
 	import type { HeartDesign } from '$lib/types/heart';
+	import type { GalleryHeart } from '$lib/front/galleryHearts';
 	import type { Language } from '$lib/i18n';
 
 	interface Props {
 		lang: Language;
-		hearts: HeartDesign[];
+		hearts: GalleryHeart[];
+		/** The designs behind them — a visitor's hearts are always drawn here. */
+		designs: Record<string, HeartDesign>;
 		selectedIds: Set<string>;
-		onSelect: (design: HeartDesign) => void;
-		onClick: (design: HeartDesign) => void;
-		onDelete: (design: HeartDesign) => void;
+		onSelect: (heart: GalleryHeart) => void;
+		onClick: (heart: GalleryHeart) => void;
+		onDelete: (heart: GalleryHeart) => void;
 	}
 
-	let { lang, hearts, selectedIds, onSelect, onClick, onDelete }: Props = $props();
+	let { lang, hearts, designs, selectedIds, onSelect, onClick, onDelete }: Props = $props();
 </script>
 
 <CategorySection
 	id={MY_HEARTS_CATEGORY_ID}
 	title={categoryTitle(MY_HEARTS_CATEGORY_ID, lang)}
 	{hearts}
+	{designs}
 	{lang}
 	{selectedIds}
 	{onSelect}

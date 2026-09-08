@@ -19,13 +19,23 @@
 	import { t, type Language } from '$lib/i18n';
 	import type { LayoutMode } from '$lib/pdf/template';
 	import type { HeartDesign } from '$lib/types/heart';
+	import type { GalleryHeart } from '$lib/front/galleryHearts';
 
 	interface Props {
 		lang: Language;
 		/** The gallery's own rows, in gallery order. */
-		categories: { id: string; hearts: HeartDesign[] }[];
+		categories: { id: string; hearts: GalleryHeart[] }[];
+		/**
+		 * The gallery hearts' finished SVGs, by id, when they are already in the
+		 * prerendered HTML — see $lib/front/galleryHearts.
+		 */
+		markup: Record<string, string> | null;
+		/** The designs to draw them from, by id, when they are not. */
+		designs: Record<string, HeartDesign> | null;
 		/** The visitor's own hearts, read from localStorage after mount. */
-		myHearts: HeartDesign[];
+		myHearts: GalleryHeart[];
+		/** Their designs, by id — they are always drawn in the browser. */
+		myDesigns: Record<string, HeartDesign>;
 		selectedIds: Set<string>;
 		/**
 		 * Ticked hearts that actually exist on this page. Not `selectedIds.size`:
@@ -39,15 +49,18 @@
 		onPrint: () => void;
 		onSelectAll: () => void;
 		onSelectNone: () => void;
-		onSelect: (design: HeartDesign) => void;
-		onClick: (design: HeartDesign) => void;
-		onDelete: (design: HeartDesign) => void;
+		onSelect: (heart: GalleryHeart) => void;
+		onClick: (heart: GalleryHeart) => void;
+		onDelete: (heart: GalleryHeart) => void;
 	}
 
 	let {
 		lang,
 		categories,
+		markup,
+		designs,
 		myHearts,
+		myDesigns,
 		selectedIds,
 		selectedCount,
 		generating,
@@ -111,6 +124,8 @@
 				title={categoryTitle(category.id, lang)}
 				count={heartCount(category.hearts.length)}
 				hearts={category.hearts}
+				{markup}
+				{designs}
 				{lang}
 				{selectedIds}
 				{onSelect}
@@ -119,7 +134,15 @@
 			/>
 		{/each}
 
-		<MyHearts {lang} hearts={myHearts} {selectedIds} {onSelect} {onClick} {onDelete} />
+		<MyHearts
+			{lang}
+			hearts={myHearts}
+			designs={myDesigns}
+			{selectedIds}
+			{onSelect}
+			{onClick}
+			{onDelete}
+		/>
 	</div>
 </div>
 

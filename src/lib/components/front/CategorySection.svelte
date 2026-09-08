@@ -10,6 +10,7 @@
 	import type { Snippet } from 'svelte';
 	import HeartCard from '$lib/components/HeartCard.svelte';
 	import type { HeartDesign } from '$lib/types/heart';
+	import type { GalleryHeart } from '$lib/front/galleryHearts';
 	import type { Language } from '$lib/i18n';
 
 	interface Props {
@@ -18,13 +19,20 @@
 		title: string;
 		/** e.g. "12 hjerter". Omitted for "Mine hjerter", which is the heading alone. */
 		count?: string;
-		hearts: HeartDesign[];
+		hearts: GalleryHeart[];
+		/**
+		 * The hearts' finished SVGs, by id, when they are already in the
+		 * prerendered HTML — see $lib/front/galleryHearts.
+		 */
+		markup?: Record<string, string> | null;
+		/** The designs to draw them from, by id, when they are not. */
+		designs?: Record<string, HeartDesign> | null;
 		lang: Language;
 		selectedIds: Set<string>;
-		onSelect: (design: HeartDesign) => void;
-		onClick: (design: HeartDesign) => void;
+		onSelect: (heart: GalleryHeart) => void;
+		onClick: (heart: GalleryHeart) => void;
 		/** Only the visitor's own hearts can be deleted. */
-		onDelete?: (design: HeartDesign) => void;
+		onDelete?: (heart: GalleryHeart) => void;
 		/** The first row under the toolbar sits closer to it. */
 		first?: boolean;
 		/** "Mine hjerter": set apart from the gallery categories above it. */
@@ -38,6 +46,8 @@
 		title,
 		count,
 		hearts,
+		markup = null,
+		designs = null,
 		lang,
 		selectedIds,
 		onSelect,
@@ -58,12 +68,14 @@
 		{@render empty()}
 	{:else}
 		<div class="cat-grid">
-			{#each hearts as design, index (design.id)}
+			{#each hearts as heart, index (heart.id)}
 				<HeartCard
-					{design}
+					{heart}
+					markup={markup?.[heart.id]}
+					design={designs?.[heart.id]}
 					{lang}
 					{index}
-					selected={selectedIds.has(design.id)}
+					selected={selectedIds.has(heart.id)}
 					{onSelect}
 					{onClick}
 					{onDelete}

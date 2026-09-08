@@ -21,6 +21,11 @@
     .hang    the whole block — sways, sets the width
     .heart   the square heart box, position: relative, so a parent can hang a
              selection ring or badge on ::before / ::after.
+
+  A heart that is already drawn in the prerendered HTML is given as `markup`
+  instead of being drawn from `design` — see $lib/front/galleryHearts. The
+  ribbon is a real element either way, so the footer's colour swatches keep
+  reaching it; the frozen SVG follows them through the --paper-* tokens below.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -35,7 +40,18 @@
 	import type { HeartDesign } from '$lib/types/heart';
 
 	interface Props {
-		design: HeartDesign;
+		/** The design to draw the heart from. Not needed when `markup` is given. */
+		design?: HeartDesign;
+		/**
+		 * The heart's finished SVG, when it is already in the prerendered HTML —
+		 * see $lib/front/galleryHearts. Given, the heart is never drawn here.
+		 */
+		markup?: string;
+		/**
+		 * The heart's own paper colours, when it has any and there is no `design`
+		 * to read them off. They fix the ribbon's colour and the heart's.
+		 */
+		colors?: HeartColors;
 		/** Width of the block in px. The heart box is size x size. */
 		size?: number;
 		/** Visible ribbon length in px, above the heart. */
@@ -46,8 +62,6 @@
 		 * $lib/utils/sway for why a positive one makes the heart jump.
 		 */
 		delay?: number;
-		/** Ribbon colour; by default the heart's own right-hand paper colour. */
-		color?: string;
 		/** Unique id prefix for this instance — see the note above. */
 		idPrefix: string;
 		/** Extra class on the root .hang element. */
@@ -56,10 +70,11 @@
 
 	let {
 		design,
+		markup = undefined,
+		colors = undefined,
 		size = 168,
 		ribbon = 40,
 		delay = 0,
-		color = undefined,
 		idPrefix,
 		class: className = undefined
 	}: Props = $props();
@@ -75,7 +90,13 @@
 		});
 	});
 
-	let ribbonColor = $derived(color ?? design.colors?.right ?? storeColors.right);
+	let ownColors = $derived(colors ?? design?.colors);
+	let ribbonColor = $derived(ownColors?.right ?? storeColors.right);
+
+	// A heart handed over as markup cannot repaint itself, so one that follows the
+	// site-wide pair does it in CSS instead (see the style block). A heart with
+	// its own colours is fixed anyway and is left alone.
+	let sitePaper = $derived(markup !== undefined && ownColors === undefined);
 
 	// The ribbon disappears into the cleft between the lobes; the overlap is a
 	// share of the width so it survives the max-width: 100% shrink.
@@ -88,16 +109,21 @@
 		class="ribbon"
 		style="width: {ribbonWidth}px; height: {ribbon + dip}px; background: {ribbonColor};"
 	></div>
-	<div class="heart">
-		<PaperHeartSVG
-			readonly
-			{idPrefix}
-			initialFingers={design.fingers}
-			initialGridSize={design.gridSize}
-			initialWeaveParity={design.weaveParity ?? 0}
-			colors={design.colors}
-			size={400}
-		/>
+	<div class="heart" class:site-paper={sitePaper}>
+		{#if markup !== undefined}
+			<!-- svelte-ignore hydration_html_changed -->
+			{@html markup}
+		{:else if design}
+			<PaperHeartSVG
+				readonly
+				{idPrefix}
+				initialFingers={design.fingers}
+				initialGridSize={design.gridSize}
+				initialWeaveParity={design.weaveParity ?? 0}
+				colors={design.colors}
+				size={400}
+			/>
+		{/if}
 	</div>
 </div>
 
@@ -128,6 +154,21 @@
 		aspect-ratio: 1 / 1;
 		/* The ribbon runs on behind the heart into the cleft. */
 		margin-top: -24%;
+	}
+
+	/* A prerendered heart is frozen paper: it was drawn once, with the default
+	   pair, and no longer re-renders when the footer's swatches change. A CSS
+	   `fill` beats the `fill` presentation attribute in the markup, so the two
+	   default colours are the hooks the site-wide pair reaches it through
+	   (--paper-left / --paper-right, kept up to date in the root layout). Only
+	   hearts that follow the site's pair carry .site-paper, so a heart with its
+	   own colours is never repainted. */
+	.heart.site-paper :global(svg [fill='#ffffff']) {
+		fill: var(--paper-left);
+	}
+
+	.heart.site-paper :global(svg [fill='rgb(185, 19, 19)']) {
+		fill: var(--paper-right);
 	}
 
 	/* Overrides PaperHeartSVG's own `max-width: 100%; height: auto` so the heart

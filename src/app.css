@@ -38,6 +38,14 @@
      detail scene use this darker shade for secondary text. AA needs 4.5:1. */
   --muted-on-sky: #4d594f;
 
+  /* The site-wide paper pair, mirrored here from $lib/stores/colors by the root
+     layout. The store stays the source of truth — this is only how a heart that
+     is already drawn in the prerendered HTML, and so cannot re-render, still
+     follows the footer's swatches (see HangingHeart). The values are the
+     store's defaults, which is what the prerender paints with. */
+  --paper-left: #ffffff;
+  --paper-right: rgb(185, 19, 19);
+
   --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* Chrome metrics shared by the nav and by pages that offset for it. Keep

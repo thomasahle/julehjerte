@@ -19,8 +19,10 @@
   import Modal from "$lib/components/Modal.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
   import Hero from "$lib/components/front/Hero.svelte";
+  import HeroBootstrap from "$lib/components/front/HeroBootstrap.svelte";
   import Gallery from "$lib/components/front/Gallery.svelte";
   import { deleteUserDesign, getUserCollection } from "$lib/stores/collection";
+  import { toGalleryHeart, type GalleryHeart, type HeroHeart } from "$lib/front/galleryHearts";
   import type { LayoutMode } from "$lib/pdf/template";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { t, type Language } from "$lib/i18n";
@@ -35,11 +37,11 @@
 
   let { data }: PageProps = $props();
 
-  // Gallery hearts come precomputed from the load function (prerendered); user hearts
-  // live in localStorage and are read in the browser. The full heart geometry
-  // (segments) is large and slows down tight geometry loops if proxied, so keep it
-  // out of deeply reactive state.
-  let staticHearts = $derived(data.designs);
+  // The gallery's hearts arrive from the load function as names, difficulties and
+  // finished SVGs — never as geometry, which the browser does not download (see
+  // $lib/front/galleryHearts). Hearts the visitor drew live in localStorage and
+  // are read in the browser; their geometry is large and slows down tight loops
+  // if proxied, so keep it out of deeply reactive state.
   let userHearts = $state.raw<HeartDesign[]>([]);
 
   let selectedIds = $state<Set<string>>(new Set());
@@ -77,16 +79,16 @@
     if (selectedIds.size !== fromUrl.size) updateUrlWithSelections(selectedIds);
   });
 
-  function handleSelect(design: HeartDesign) {
-    const wasSelected = selectedIds.has(design.id);
-    selectedIds = toggleSelected(selectedIds, design.id);
+  function handleSelect(heart: GalleryHeart) {
+    const wasSelected = selectedIds.has(heart.id);
+    selectedIds = toggleSelected(selectedIds, heart.id);
     updateUrlWithSelections(selectedIds);
-    trackHeartSelect(design.id, design.name, !wasSelected);
+    trackHeartSelect(heart.id, heart.name, !wasSelected);
   }
 
   // The card's details link navigates; this only records the view.
-  function handleClick(design: HeartDesign) {
-    trackHeartView(design.id, design.name);
+  function handleClick(heart: GalleryHeart) {
+    trackHeartView(heart.id, heart.name);
   }
 
   // Select all / none (GitHub issue #11): every heart shown, including the user's own.
@@ -100,21 +102,21 @@
     updateUrlWithSelections(selectedIds);
   }
 
-  let deleteCandidate = $state.raw<HeartDesign | null>(null);
+  let deleteCandidate = $state.raw<GalleryHeart | null>(null);
   let cancelDeleteButtonEl = $state.raw<HTMLButtonElement | null>(null);
 
-  function handleDelete(design: HeartDesign) {
-    deleteUserDesign(design.id);
-    userHearts = userHearts.filter((h) => h.id !== design.id);
+  function handleDelete(heart: GalleryHeart) {
+    deleteUserDesign(heart.id);
+    userHearts = userHearts.filter((h) => h.id !== heart.id);
 
-    if (selectedIds.has(design.id)) {
-      selectedIds = toggleSelected(selectedIds, design.id);
+    if (selectedIds.has(heart.id)) {
+      selectedIds = toggleSelected(selectedIds, heart.id);
       updateUrlWithSelections(selectedIds);
     }
   }
 
-  function requestDelete(design: HeartDesign) {
-    deleteCandidate = design;
+  function requestDelete(heart: GalleryHeart) {
+    deleteCandidate = heart;
   }
 
   function cancelDelete() {
@@ -130,11 +132,27 @@
   let galleryCategories = $derived(
     data.indexCategories.map((category) => ({
       id: category.id,
-      hearts: category.hearts.map((id) => staticHearts[id]).filter(Boolean),
+      hearts: category.hearts.map((id) => data.hearts[id]).filter(Boolean),
     })),
   );
 
-  let myHearts = $derived(userHearts.map((h) => ({ ...h, isUserCreated: true })));
+  let myHearts = $derived(userHearts.map(toGalleryHeart));
+  let myDesigns = $derived(Object.fromEntries(userHearts.map((h) => [h.id, h])));
+
+  // The hero's slots, in slot order. Which heart ends up in each is decided by
+  // the inline bootstrap script while the page parses; these are the prerendered
+  // stand-ins it replaces (and what a visitor without JavaScript keeps).
+  function heroHeart(id: string, markup: string | undefined): HeroHeart | undefined {
+    const heart = data.hearts[id];
+    return heart ? { id, name: heart.name, markup, design: data.designs?.[id] } : undefined;
+  }
+
+  let heroDesktop = $derived(
+    data.heroIds.desktop.map((id, i) => heroHeart(id, data.heroMarkup?.desktop[i])),
+  );
+  let heroMobile = $derived(
+    data.heroIds.mobile.map((id, i) => heroHeart(id, data.heroMarkup?.mobile[i])),
+  );
 
   // Every heart on the page (gallery + the visitor's own), for select all and the PDF.
   let allHearts = $derived([
@@ -172,10 +190,18 @@
           selected.map((h) => h.id),
           selected.length,
         );
-        // jsPDF is 140 KB gzipped and nothing needs it until this click, so it is
-        // loaded here instead of in the front page's initial bundle.
-        const { downloadMultiPDF } = await import("$lib/pdf/template");
-        await downloadMultiPDF(selected, { layout: pdfLayout, lang });
+        // jsPDF is 140 KB gzipped and the gallery hearts' geometry another 61 KB
+        // — and the page itself needs neither until this click, since the hearts
+        // it shows come prerendered. Both are fetched here rather than in the
+        // front page's initial bundle.
+        const [{ downloadMultiPDF }, { getGalleryDesign }] = await Promise.all([
+          import("$lib/pdf/template"),
+          import("$lib/data/heartDesigns"),
+        ]);
+        const designs = selected
+          .map((h) => myDesigns[h.id] ?? getGalleryDesign(h.id))
+          .filter((d): d is HeartDesign => Boolean(d));
+        await downloadMultiPDF(designs, { layout: pdfLayout, lang });
       } catch (err) {
         // The toolbar has no message slot; at least do not fail silently.
         console.error("Generating the multi-heart PDF failed", err);
@@ -195,12 +221,20 @@
 <PageHeader {lang} active="templates" />
 
 <main id="main-content" tabindex="-1">
-  <Hero {lang} designs={staticHearts} />
+  <Hero
+    {lang}
+    desktop={heroDesktop}
+    mobile={heroMobile}
+    revealed={data.heroMarkup === null}
+  />
 
   <Gallery
     {lang}
     categories={galleryCategories}
+    markup={data.markup}
+    designs={data.designs}
     {myHearts}
+    {myDesigns}
     {selectedIds}
     selectedCount={selectedHearts.length}
     {generating}
@@ -213,6 +247,11 @@
     onClick={handleClick}
     onDelete={requestDelete}
   />
+
+  <!-- Hangs the hero's hearts while the page is still parsing. It clones them
+       out of the cards above, so it belongs after the gallery and nowhere
+       else — see $lib/front/heroBootstrap. -->
+  <HeroBootstrap script={data.heroScript} />
 </main>
 
 <Modal

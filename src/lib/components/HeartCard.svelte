@@ -16,33 +16,44 @@
   Nothing is nested inside anything else interactive, so the card stays keyboard
   and screen-reader friendly.
 
-  The card has no entrance animation: every heart it shows is already drawn in
-  the HTML the browser is parsing, so a card that fades in as it reaches the
-  viewport is the page pretending to load something it has already got.
+  The card has no entrance animation and nothing to wait for: a gallery heart is
+  handed over as the SVG the prerender already put in the HTML (`markup`, see
+  $lib/front/galleryHearts), so it is finished before this component exists. A
+  heart the visitor drew comes as a `design` and is drawn here.
+
+  `data-heart-id` / `data-heart-name` are the hero's contract with the gallery:
+  its inline bootstrap picks cards by them and clones their SVGs
+  ($lib/front/heroBootstrap). `data-user` marks the ones it must not draw from.
 -->
 <script lang="ts">
 	import type { HeartDesign } from '$lib/types/heart';
+	import type { GalleryHeart } from '$lib/front/galleryHearts';
 	import { t, type Language } from '$lib/i18n';
 	import { heartHref } from '$lib/i18n/routes';
 	import HangingHeart from '$lib/components/HangingHeart.svelte';
 	import DifficultyDots from '$lib/components/DifficultyDots.svelte';
 	import { TrashIcon } from '$lib/components/icons';
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
-	import { calculateDifficulty } from '$lib/utils/difficulty';
 
 	interface Props {
-		design: HeartDesign & { isUserCreated?: boolean };
+		heart: GalleryHeart;
+		/** The heart's SVG, when it is already in the prerendered HTML. */
+		markup?: string;
+		/** The design to draw it from, when it is not. */
+		design?: HeartDesign;
 		selected?: boolean;
 		lang: Language;
-		onSelect?: (design: HeartDesign) => void;
-		onClick?: (design: HeartDesign) => void;
-		onDelete?: (design: HeartDesign) => void;
+		onSelect?: (heart: GalleryHeart) => void;
+		onClick?: (heart: GalleryHeart) => void;
+		onDelete?: (heart: GalleryHeart) => void;
 		/** Position in its category grid — drives the ribbon length and the sway. */
 		index?: number;
 	}
 
 	let {
-		design,
+		heart,
+		markup = undefined,
+		design = undefined,
 		selected = false,
 		lang,
 		onSelect,
@@ -58,26 +69,28 @@
 
 	let ribbon = $derived(RIBBONS[index % RIBBONS.length]);
 	let swayDelay = $derived((index * 0.7) % 5);
-	let difficulty = $derived(calculateDifficulty(design));
-	let detailsHref = $derived(heartHref(design.id, lang));
+	let detailsHref = $derived(heartHref(heart.id, lang));
 
 	function handleDetails() {
-		onClick?.(design);
+		onClick?.(heart);
 	}
 
 	function handleSelect() {
-		onSelect?.(design);
+		onSelect?.(heart);
 	}
 
 	function handleDelete() {
-		onDelete?.(design);
+		onDelete?.(heart);
 	}
 </script>
 
 <article
 	class="card"
 	class:is-selected={selected}
-	id={makeHeartAnchorId(design.id)}
+	id={makeHeartAnchorId(heart.id)}
+	data-heart-id={heart.id}
+	data-heart-name={heart.name}
+	data-user={heart.isUserCreated ? '' : undefined}
 	style="height: {SIZE + 136}px;"
 >
 	<button
@@ -85,29 +98,37 @@
 		type="button"
 		onclick={handleSelect}
 		aria-pressed={selected}
-		aria-label="{t('selectForPdf', lang)}: {design.name}"
+		aria-label="{t('selectForPdf', lang)}: {heart.name}"
 	></button>
 
 	<div class="card-heart">
-		<HangingHeart {design} size={SIZE} {ribbon} delay={swayDelay} idPrefix="card-{design.id}" />
+		<HangingHeart
+			{design}
+			{markup}
+			colors={heart.colors}
+			size={SIZE}
+			{ribbon}
+			delay={swayDelay}
+			idPrefix="card-{heart.id}"
+		/>
 	</div>
 
 	<a
 		class="details"
 		href={detailsHref}
 		onclick={handleDetails}
-		aria-label="{t('details', lang)}: {design.name}"
+		aria-label="{t('details', lang)}: {heart.name}"
 		style="top: {ribbon + SIZE - 30}px;"
 	>
 		{t('details', lang)}
 	</a>
 
 	<div class="card-meta">
-		<span class="name">{design.name}</span>
-		<DifficultyDots level={difficulty.level} {lang} />
+		<span class="name">{heart.name}</span>
+		<DifficultyDots level={heart.difficulty} {lang} />
 	</div>
 
-	{#if design.isUserCreated && onDelete}
+	{#if heart.isUserCreated && onDelete}
 		<button
 			class="delete-btn"
 			type="button"
