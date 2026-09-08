@@ -1,0 +1,56 @@
+{
+  "redistributed": false,
+  "notes": "The attached collage remains local; temporary screenshots may have expired. Attribution beyond the source sites supplied by the user is unknown; no licence is asserted. Reproducible downloaded photo cases are listed separately in scripts/inverse/photo-cases.json.",
+  "references": [
+    {
+      "filename": "7b6ce659cbb28d1adbe2990b5e0a38b6.jpg",
+      "sha256": "24a1cbc63d863851d1f8a35e0085e83c813b6c30a13f1ea698c75429d4177ef6",
+      "description": "User-supplied Pinterest collage of red and white finished hearts",
+      "role": "visual reference; not a scored benchmark input"
+    },
+    {
+      "filename": "Screenshot 2026-09-07 at 10.38.56 AM.png",
+      "description": "Bell processed tracing and timeout feedback",
+      "role": "visual reference; not a scored benchmark input",
+      "availability": "Inspected during integration; original macOS TemporaryItems file no longer available when the final inventory was written."
+    },
+    {
+      "filename": "Screenshot 2026-09-07 at 10.42.30 AM.png",
+      "description": "Bell source and crop selection",
+      "role": "visual reference; not a scored benchmark input",
+      "availability": "Inspected during integration; original macOS TemporaryItems file no longer available when the final inventory was written."
+    },
+    {
+      "filename": "Screenshot 2026-09-07 at 10.48.25 AM.png",
+      "description": "Complex examples from flettedehjerter.dk",
+      "role": "visual reference; not a scored benchmark input",
+      "availability": "Inspected during integration; original macOS TemporaryItems file no longer available when the final inventory was written."
+    },
+    {
+      "filename": "Screenshot 2026-09-07 at 10.48.53 AM.png",
+      "description": "Simpler Bibelselskabet examples",
+      "role": "visual reference; not a scored benchmark input",
+      "availability": "Inspected during integration; original macOS TemporaryItems file no longer available when the final inventory was written."
+    },
+    {
+      "filename": "Screenshot 2026-09-07 at 10.49.52 AM.png",
+      "description": "Pinterest numbered collection",
+      "role": "visual reference; not a scored benchmark input",
+      "availability": "Inspected during integration; original macOS TemporaryItems file no longer available when the final inventory was written."
+    },
+    {
+      "filename": "Screenshot 2026-09-07 at 10.36.46 AM.png",
+      "localSnapshot": "tmp/inverse-robustness/bell-source.png",
+      "sha256": "464ec9832f38aac8732ae39e85635acf4601a7552b6e9e53711de14b9f21c07b",
+      "description": "Clean matching bell diagram from Desktop; original-resolution image input",
+      "role": "Image-only robustness benchmark input; crop hypotheses recorded in scripts/inverse/robustness-cases.json"
+    },
+    {
+      "filename": "Screenshot 2026-09-07 at 11.48.42 AM.png",
+      "localSnapshot": "tmp/inverse-robustness/hard-cases.png",
+      "sha256": "516092bd5acd4dee2d181eb614ebb4a572458dced01ac52ad8446cf840b98790",
+      "description": "New collage captured through the original-resolution image tool; 19 complete hearts manually cropped",
+      "role": "Image-only robustness benchmark input; crop hypotheses recorded in scripts/inverse/robustness-cases.json"
+    }
+  ]
+}

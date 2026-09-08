@@ -1,0 +1,289 @@
+{
+  "archive": "juleflet-codex-handoff.zip",
+  "archive_sha256": "61106a6e150320982327b41bf1a2dcea07ce9482539b94effc29eed571d831cc",
+  "handoff_integrity_check": "384 files verified, zero failures",
+  "website_base_commit": "dcc481b25466c074623b5156793d667bf0d40483",
+  "handoff_benchmark_base": "c7b9fce74fcaa0ee34624ef60031a67f65298201",
+  "source": "Recovered JavaScript v2.2 port; no unrecovered reconstruction patch or Python runtime included",
+  "files": {
+    "static/inverse/LICENSE.txt": {
+      "handoff_sha256": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+      "integrated_sha256": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+      "modified": false
+    },
+    "static/inverse/THIRD_PARTY_NOTICES.txt": {
+      "handoff_sha256": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+      "integrated_sha256": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+      "modified": false
+    },
+    "static/inverse/core/bezier.js": {
+      "handoff_sha256": "00471da3cd3b986a1be9a9e89a2412e834dfd2800f101c46e11e95ed07abf14d",
+      "integrated_sha256": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "modified": true
+    },
+    "static/inverse/core/engine.js": {
+      "handoff_sha256": "8215cd0d111015555388a5d204f7399f7f75768ac7b1cade3a69a92cac87c68f",
+      "integrated_sha256": "6fe8f13bef3d0c5662e77fa30ca00c33abb49a6be44e767235f8a18d28408ab0",
+      "modified": true
+    },
+    "static/inverse/core/export.js": {
+      "handoff_sha256": "eb9c4eb5b563f095b294e4f8da6c4c485ca58ba657ed74c08bb21db8b7beabcd",
+      "integrated_sha256": "eb9c4eb5b563f095b294e4f8da6c4c485ca58ba657ed74c08bb21db8b7beabcd",
+      "modified": false
+    },
+    "static/inverse/core/geometry.js": {
+      "handoff_sha256": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "integrated_sha256": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "modified": false
+    },
+    "static/inverse/core/graph.js": {
+      "handoff_sha256": "fc0102d90275f6243abfaf8c4a2b30fcdf7728d0744782395354069ca0d52e77",
+      "integrated_sha256": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "modified": true
+    },
+    "static/inverse/core/input.js": {
+      "handoff_sha256": "edac0315ad6521febe1298f750e6f472345aeec674580fcc5b2e9acd4a28306f",
+      "integrated_sha256": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+      "modified": true
+    },
+    "static/inverse/core/material.js": {
+      "handoff_sha256": "1cba84ccd183e847f94f1b5a0e2aee64b20d8cb0d3686d238964375f46a2e120",
+      "integrated_sha256": "1cba84ccd183e847f94f1b5a0e2aee64b20d8cb0d3686d238964375f46a2e120",
+      "modified": false
+    },
+    "static/inverse/core/rounding.js": {
+      "handoff_sha256": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "integrated_sha256": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "modified": false
+    },
+    "static/inverse/core/settings.js": {
+      "handoff_sha256": "d96ee2bee0b3d52a29a23144059970da7fce0c8bccd5e30ccff27f02af3cbb44",
+      "integrated_sha256": "c291f260a683586631bb8ca327d47e121d16ec592662be9315b6a8f51541ec67",
+      "modified": true
+    },
+    "static/inverse/core/solver.js": {
+      "handoff_sha256": "9aa81ed940e69c111dca57b4a1d2bcff9341b64fbcbbfed34d8331cd8f8c3aa1",
+      "integrated_sha256": "82a772906eeec126973970337b54f698cbc739e9a0da630457b9be0ef44a4b8f",
+      "modified": true
+    },
+    "static/inverse/core/validate.js": {
+      "handoff_sha256": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "integrated_sha256": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "modified": false
+    },
+    "static/inverse/core/zip.js": {
+      "handoff_sha256": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "integrated_sha256": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "modified": false
+    },
+    "static/inverse/examples/jul.saved.json": {
+      "handoff_sha256": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+      "integrated_sha256": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+      "modified": false
+    },
+    "static/inverse/examples/star.saved.json": {
+      "handoff_sha256": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+      "integrated_sha256": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+      "modified": false
+    },
+    "static/inverse/examples/waves.svg": {
+      "handoff_sha256": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+      "integrated_sha256": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+      "modified": false
+    },
+    "static/inverse/vendor/HIGHS-LICENSE.txt": {
+      "handoff_sha256": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+      "integrated_sha256": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+      "modified": false
+    },
+    "static/inverse/vendor/PROVENANCE.json": {
+      "handoff_sha256": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+      "integrated_sha256": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+      "modified": false
+    },
+    "static/inverse/vendor/highs.mjs": {
+      "handoff_sha256": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036",
+      "integrated_sha256": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036",
+      "modified": false
+    },
+    "static/inverse/vendor/highs.wasm": {
+      "handoff_sha256": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+      "integrated_sha256": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+      "modified": false
+    },
+    "static/inverse/worker-bootstrap.js": {
+      "handoff_sha256": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "integrated_sha256": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "modified": false
+    },
+    "static/inverse/worker.js": {
+      "handoff_sha256": "1a62943432e1d1c8029f42acae2dc9cd377235042d85f3a69423776f8d8ca34f",
+      "integrated_sha256": "7d7fcddb3a787b0084fb3bd772b9c2a6185ebc43f3006b5c757a6fa3727d6e1a",
+      "modified": true
+    },
+    "static/inverse/core/border.js": {
+      "handoff_sha256": null,
+      "origin": "Added in website integration",
+      "integrated_sha256": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "modified": true
+    }
+  },
+  "motif_locator": {
+    "archive": "juleflet-motif-locator.zip",
+    "archive_sha256": "9f59c97ee3a6b4e1d13d1934442a8a4b42fced8589953676f0db9420b4348e06",
+    "verifiedPayloadFiles": 165,
+    "handoffTestsPassed": 66,
+    "files": {
+      "static/inverse/locator/grid-refine.js": {
+        "integrated_sha256": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "handoff_sha256": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "modified": false
+      },
+      "static/inverse/locator/locator.js": {
+        "integrated_sha256": "9ee9f10a8b2eaa22c159371226896a5313faf4d7dae51b7ad943ef1ac52086ae",
+        "handoff_sha256": "38a994669ee1b641a9796e12d1513ea07ce70503760716f610b768496207a415",
+        "modified": true
+      },
+      "static/inverse/locator/fields.js": {
+        "integrated_sha256": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+        "handoff_sha256": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+        "modified": false
+      },
+      "static/inverse/locator/math.js": {
+        "integrated_sha256": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "handoff_sha256": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "modified": false
+      },
+      "static/inverse/locator/NOTICE.md": {
+        "integrated_sha256": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "handoff_sha256": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "modified": false
+      },
+      "static/inverse/locator/palette.js": {
+        "integrated_sha256": "7d8d7468c0d98a01376238aa9a0a2bb9d7f9b70092dea10a74064b8eb9a1940c",
+        "localAddition": true,
+        "description": "Adaptive plain-background/two-paper palette fields; no new dependency."
+      }
+    },
+    "notice": "static/inverse/locator/NOTICE.md",
+    "integrationNotes": "docs/inverse/LOCATOR.md",
+    "userPhotographsPublished": false,
+    "adapter_sha256": "8ccbf040d18d6a450099beebf398a3958845012fc19bc83cd2c9ca8ce6e087cc",
+    "localChanges": [
+      "2026-09-07: rectifyMotif accepts either convex perimeter direction, preserving supplied coordinates and image orientation. Detection and fitting remain unchanged.",
+      "2026-09-07 evening: adaptive two-colour fallback, independent lobe depths and support-aware candidate selection. Original red/white path retained. See GENERATOR-QA.md."
+    ]
+  },
+  "referenceQuality": {
+    "recordedAt": "2026-09-07T14:38:12.647954+00:00",
+    "description": "Fresh raster reconstruction; border guide and corner portals, matching sheets, compact integral turn costs, captured-bound stop check, source-image quality gate. No reference cutting paths are passed to the solver.",
+    "files": {
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/symmetry.js": "93736faad375d03110c5d67870872dcc98a5b7559d379feb3983a3321542713d",
+      "src/lib/inverse/presets.js": "61e5bfab3baedd98824e4e389681130c812e1bff006d770677be91a675468c6c",
+      "static/inverse/examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+      "scripts/inverse/reference.test.mjs": "53ae24b1d44cb9ee0da35fd278ff490b98e01e6c2b0a342933aa5616b5f85c01",
+      "scripts/inverse/reference-benchmark.mjs": "c3eaeb6dc4dbe4a4eacf2d86e13bc096650f6cc68672eb8cf90d6c2bbe3965a8",
+      "scripts/inverse/reference-browser-test.mjs": "2fe2bfc6011c117ac89a1d41dee5c1c5efc595b13c969bfd6417f68ed6f7f11a",
+      "scripts/inverse/reference.mjs": "be096a9d428bddb9832e228493c2e42b53547e0b5b427b6ecddef8efafc051f8"
+    },
+    "starReference": {
+      "file": "static/hearts/5star.svg",
+      "sha256": "52f44887c1396839dc76bb6b9ce952d2ab1d552f1e19f1c2363b7b9f5a84aa72"
+    },
+    "developmentEvidence": [
+      "tmp/inverse-reference-quality/",
+      "tmp/inverse-reference/2026-09-07T14-28-27-102Z/",
+      "tmp/inverse-reference/2026-09-07T14-28-39-305Z/"
+    ],
+    "limitations": "Raster track only; explicit matching-sheet constraint profile; 11/38 gallery designs pass reference-quality thresholds across two presets, not 100%."
+  },
+  "yellowStarRepair": {
+    "recordedAt": "2026-09-07T15:41:48.977Z",
+    "description": "Bounded junction repair on raw boundary chains before curve fitting; deterministic two-start Lab clustering; corner-safe border profiles; General and Simplify preset updates; full photo reconstruction QA.",
+    "documentation": "docs/inverse/YELLOW-STAR.md",
+    "source": {
+      "originalFile": "tmp/inverse-robustness/yellow-star-crop-error.png",
+      "originalSha256": "fe8ba4092acda5d7d85b2b45b117a4443137f43d27b2b8678d3a4ac389bc7430",
+      "fixture": "scripts/inverse/fixtures/yellow-star-photo.png",
+      "fixtureSha256": "6fbf160ebb7d96e11ce701d5d88410b6f36363ccea23a803870ccedb3c6f3247",
+      "conversion": "ColorSync Display P3 to sRGB; manual test crop; no known original cutting paths"
+    },
+    "files": {
+      "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "static/inverse/core/input.js": "8c5bf8ca39ea3f05b557e8a0df624e0007e9cec55b75125f7d45e4f0d66fa9bb",
+      "static/inverse/core/border.js": "fea31918b0fb403629f3c0ffdfceb4f78d9457cdf3b13e538d0da79efcacdfbd",
+      "src/lib/inverse/presets.js": "ab9599645eb1f2e33eda4fec79216b5dbafc0ed0c811f6abb5ae66401d0d6b7c",
+      "src/lib/inverse/messages.ts": "a7fe8c84f2c07ca586bcbfc174ac2f68fc8f6bb9d273608c102859d5cd04b8c4",
+      "src/routes/[[lang=lang]]/generate/+page.svelte": "49c1132fae318da673a5e04eeb681ec010605aedcd39e4ef0d73b69689bde1f9",
+      "scripts/inverse/junctions.test.mjs": "99b5e4de893d4ac32c749de40fbcc910879336813dfb74b7e0203f4905a88b56",
+      "scripts/inverse/border.test.mjs": "effa294f9558d17618dd42e340952eb5e8b526b721535ac52bfa5cc001c5d752",
+      "scripts/inverse/yellow-star-fixture.mjs": "ee37cc5972245703bf2689551f807814d07944aafa0553086f385884507aa48f",
+      "scripts/inverse/yellow-star-benchmark.mjs": "967736adf9762911146508e0495366c05f6758bbee45620d3a83795caebff0ef",
+      "scripts/inverse/yellow-star-browser-test.mjs": "0020806ada25e85f8d6a196d618916e5723dcd286eef74bc8193a1f91ec9b566",
+      "vite.config.ts": "ebafccbdfecffaa2bd934e23d4b7f789212ddddf7a1305a44882977cd26b9ad4"
+    },
+    "evidence": "tmp/inverse-yellow-star/2026-09-07T15-31-15-404Z/results.json"
+  },
+  "photoRecropIntegration": {
+    "archive": "/Users/ahle/Downloads/heart_recrop_reconstruction.zip",
+    "archiveSha256": "a38010ddf67f0788c24f55ccfd6e34a920e1ad5a5228781c22fd4f6ffd8eb021",
+    "sourceFiles": {
+      "code/unmix.py": "8ed4de07e392ea72e435ea3ee852a139cf4721f4ae67879047c80cf63ca61d7c",
+      "code/calibrate.py": "da28b9e9b55090bdfa0d4c82ba7a99162da4cf8aa2f0cff7af63acc54d199477",
+      "code/targets.py": "f9e5973225c4cc71f9d053b8ecd37487dc85781aa1f29eef2069ea9f7f6321f0",
+      "code/boundary_loss.py": "5c5d81268c4cdef6b7f5c612f43ad05021c7747080c7fc43da53405bc67bf2ee"
+    },
+    "portedFiles": {
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf"
+    },
+    "validation": "docs/inverse/PHOTO-RECROPS-VALIDATION.json",
+    "pythonOptimizerPorted": false
+  },
+  "directBezierPort": {
+    "archive": "heart_recrop_reconstruction.zip",
+    "archiveSha256": "a38010ddf67f0788c24f55ccfd6e34a920e1ad5a5228781c22fd4f6ffd8eb021",
+    "sourceCodeSha256": {
+      "code/calibrated_direct_fit.py": "08178e8a77b453b54420ed744bfc1ba5a624088d2df44eca7350d872ea32ea61",
+      "code/curve_graph.py": "64e84c1a41a68b44f7747965f24d0c35a4f99f6abc3667306845afed2c0a5c9d",
+      "code/boundary_loss.py": "5c5d81268c4cdef6b7f5c612f43ad05021c7747080c7fc43da53405bc67bf2ee",
+      "code/fit_camera.py": "7489db90c0e7221ea10b6940f6d28f80dd296b04b16be2ccc86f20246a887708",
+      "code/camera_weld.py": "96f5680b34e691f02519b4613fcbcaee5a749db6a080740bbc0c2e909dd0c429",
+      "code/weld_geometry.py": "c68bec0d226bacad699a275b33dc63fe2c617478a9c9297ff8c78444cb915ce1"
+    },
+    "integratedFiles": {
+      "static/inverse/core/direct/boundary.js": "8e6b2957cb13f456c3fe699c332b580976aba544cfca588e726ceda7c4c34043",
+      "static/inverse/core/direct/curves.js": "2cf1ef0da0555bb2db9abf30780fc95ecbbde7dc0c19a691cd57abced21beb52",
+      "static/inverse/core/direct/fit.js": "67d31578f5cee045e14b6256330edbf308f00146f580546be2e91395215d2b0a",
+      "static/inverse/core/direct/grid.js": "46ef29abdc68bf35526f0c73d4129aa1ff061899cc1210a2015610a2cfc2e9f0",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/refine.js": "ec9758a9cf9a84da0fc2b569793deac9b9a35d4a164cc2b8807df7e0c942894f",
+      "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a"
+    },
+    "runtime": "JavaScript in the existing Web Worker; no PyTorch or backend service",
+    "validation": "DIRECT-FITTER-VALIDATION.json"
+  },
+  "generatorQA": {
+    "recordedAt": "2026-09-07T20:09:04.913353+00:00",
+    "details": "GENERATOR-QA-VALIDATION.json",
+    "report": "GENERATOR-QA.md",
+    "codeCommit": "a28216b",
+    "userPhotographsPublished": false
+  },
+  "automaticStarRepair": {
+    "recordedAt": "2026-09-07T20:50:07.673088+00:00",
+    "commits": [
+      "dbd6d5a",
+      "918bd06"
+    ],
+    "details": "AUTOMATIC-STAR-VALIDATION.json",
+    "report": "AUTOMATIC-STAR-QA.md",
+    "changes": [
+      "Avoid Tailwind outline class collision on SVG crop arcs.",
+      "Increase the visible General/Simplify border allowance to 3 mm to read beyond photographic fringes.",
+      "Require actual automatic-crop template downloads and independent rendering in the new browser regression."
+    ],
+    "cropCoordinatesChangedByRepair": false,
+    "imageFidelityLimitChanged": false
+  }
+}

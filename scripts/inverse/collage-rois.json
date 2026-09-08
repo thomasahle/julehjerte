@@ -1,0 +1,533 @@
+{
+  "description": "All 40 identifiable hearts. These rough instance rectangles include lobes and tip. No overlap corners are supplied to the locator; prior rejected corner hypotheses remain in full-collage-cases.json. Edge fragments remain in the denominator.",
+  "originalFile": "tmp/inverse-robustness/hard-cases.png",
+  "file": "tmp/inverse-robustness/hard-cases-srgb.png",
+  "width": 1482,
+  "height": 1112,
+  "rgbaFile": "tmp/inverse-robustness/hard-cases-srgb.rgba",
+  "colourManagement": "Embedded source ICC converted to sRGB with Pillow ImageCms; original bytes preserved.",
+  "cases": [
+    {
+      "id": "oval-figure",
+      "label": "R1C1",
+      "row": 1,
+      "column": 1,
+      "clippedByFrame": true,
+      "roi": [
+        1,
+        0,
+        260,
+        163
+      ]
+    },
+    {
+      "id": "eight-point-star",
+      "label": "R1C2",
+      "row": 1,
+      "column": 2,
+      "clippedByFrame": true,
+      "roi": [
+        220,
+        0,
+        480,
+        148
+      ]
+    },
+    {
+      "id": "small-figure",
+      "label": "R1C3",
+      "row": 1,
+      "column": 3,
+      "clippedByFrame": true,
+      "roi": [
+        448,
+        0,
+        672,
+        140
+      ]
+    },
+    {
+      "id": "deer",
+      "label": "R1C4",
+      "row": 1,
+      "column": 4,
+      "clippedByFrame": true,
+      "roi": [
+        621,
+        0,
+        864,
+        154
+      ]
+    },
+    {
+      "id": "top-checker",
+      "label": "R1C5",
+      "row": 1,
+      "column": 5,
+      "clippedByFrame": true,
+      "roi": [
+        803,
+        0,
+        1042,
+        151
+      ]
+    },
+    {
+      "id": "top-candle",
+      "label": "R1C6",
+      "row": 1,
+      "column": 6,
+      "clippedByFrame": true,
+      "roi": [
+        985,
+        0,
+        1243,
+        149
+      ]
+    },
+    {
+      "id": "top-tree",
+      "label": "R1C7",
+      "row": 1,
+      "column": 7,
+      "clippedByFrame": true,
+      "roi": [
+        1187,
+        0,
+        1459,
+        151
+      ]
+    },
+    {
+      "id": "partial-top-right",
+      "label": "R1C8",
+      "row": 1,
+      "column": 8,
+      "clippedByFrame": true,
+      "roi": [
+        1410,
+        0,
+        1482,
+        146
+      ]
+    },
+    {
+      "id": "partial-left-checker",
+      "label": "R2C1",
+      "row": 2,
+      "column": 1,
+      "clippedByFrame": true,
+      "roi": [
+        0,
+        140,
+        145,
+        369
+      ]
+    },
+    {
+      "id": "nested-squares",
+      "label": "R2C2",
+      "row": 2,
+      "column": 2,
+      "clippedByFrame": false,
+      "roi": [
+        100,
+        132,
+        336,
+        339
+      ]
+    },
+    {
+      "id": "outline-star",
+      "label": "R2C3",
+      "row": 2,
+      "column": 3,
+      "clippedByFrame": false,
+      "roi": [
+        314,
+        123,
+        539,
+        346
+      ]
+    },
+    {
+      "id": "floral-checker",
+      "label": "R2C4",
+      "row": 2,
+      "column": 4,
+      "clippedByFrame": false,
+      "roi": [
+        492,
+        118,
+        745,
+        333
+      ]
+    },
+    {
+      "id": "dense-checker",
+      "label": "R2C5",
+      "row": 2,
+      "column": 5,
+      "clippedByFrame": false,
+      "roi": [
+        696,
+        120,
+        965,
+        345
+      ]
+    },
+    {
+      "id": "bird",
+      "label": "R2C6",
+      "row": 2,
+      "column": 6,
+      "clippedByFrame": false,
+      "roi": [
+        917,
+        108,
+        1168,
+        323
+      ]
+    },
+    {
+      "id": "leaf",
+      "label": "R2C7",
+      "row": 2,
+      "column": 7,
+      "clippedByFrame": false,
+      "roi": [
+        1125,
+        87,
+        1360,
+        325
+      ]
+    },
+    {
+      "id": "partial-right-checker",
+      "label": "R2C8",
+      "row": 2,
+      "column": 8,
+      "clippedByFrame": true,
+      "roi": [
+        1316,
+        84,
+        1482,
+        320
+      ]
+    },
+    {
+      "id": "partial-left-abstract",
+      "label": "R3C1",
+      "row": 3,
+      "column": 1,
+      "clippedByFrame": true,
+      "roi": [
+        0,
+        366,
+        179,
+        602
+      ]
+    },
+    {
+      "id": "gift",
+      "label": "R3C2",
+      "row": 3,
+      "column": 2,
+      "clippedByFrame": false,
+      "roi": [
+        122,
+        353,
+        351,
+        559
+      ]
+    },
+    {
+      "id": "gingerbread",
+      "label": "R3C3",
+      "row": 3,
+      "column": 3,
+      "clippedByFrame": false,
+      "roi": [
+        314,
+        367,
+        545,
+        582
+      ]
+    },
+    {
+      "id": "white-birds",
+      "label": "R3C4",
+      "row": 3,
+      "column": 4,
+      "clippedByFrame": false,
+      "roi": [
+        498,
+        368,
+        724,
+        588
+      ]
+    },
+    {
+      "id": "flower",
+      "label": "R3C5",
+      "row": 3,
+      "column": 5,
+      "clippedByFrame": false,
+      "roi": [
+        678,
+        330,
+        929,
+        577
+      ]
+    },
+    {
+      "id": "warped-checker",
+      "label": "R3C6",
+      "row": 3,
+      "column": 6,
+      "clippedByFrame": false,
+      "roi": [
+        878,
+        323,
+        1127,
+        552
+      ]
+    },
+    {
+      "id": "round-checker",
+      "label": "R3C7",
+      "row": 3,
+      "column": 7,
+      "clippedByFrame": false,
+      "roi": [
+        1078,
+        338,
+        1314,
+        556
+      ]
+    },
+    {
+      "id": "santa",
+      "label": "R3C8",
+      "row": 3,
+      "column": 8,
+      "clippedByFrame": false,
+      "roi": [
+        1248,
+        321,
+        1474,
+        544
+      ]
+    },
+    {
+      "id": "partial-left-diamonds",
+      "label": "R4C1",
+      "row": 4,
+      "column": 1,
+      "clippedByFrame": true,
+      "roi": [
+        0,
+        624,
+        138,
+        852
+      ]
+    },
+    {
+      "id": "fine-checker",
+      "label": "R4C2",
+      "row": 4,
+      "column": 2,
+      "clippedByFrame": false,
+      "roi": [
+        83,
+        589,
+        335,
+        809
+      ]
+    },
+    {
+      "id": "orb",
+      "label": "R4C3",
+      "row": 4,
+      "column": 3,
+      "clippedByFrame": false,
+      "roi": [
+        282,
+        610,
+        533,
+        838
+      ]
+    },
+    {
+      "id": "stacked-hearts",
+      "label": "R4C4",
+      "row": 4,
+      "column": 4,
+      "clippedByFrame": false,
+      "roi": [
+        480,
+        598,
+        729,
+        839
+      ]
+    },
+    {
+      "id": "jigsaw",
+      "label": "R4C5",
+      "row": 4,
+      "column": 5,
+      "clippedByFrame": false,
+      "roi": [
+        681,
+        590,
+        914,
+        832
+      ]
+    },
+    {
+      "id": "candle",
+      "label": "R4C6",
+      "row": 4,
+      "column": 6,
+      "clippedByFrame": false,
+      "roi": [
+        879,
+        549,
+        1141,
+        809
+      ]
+    },
+    {
+      "id": "maple-leaf",
+      "label": "R4C7",
+      "row": 4,
+      "column": 7,
+      "clippedByFrame": false,
+      "roi": [
+        1068,
+        581,
+        1310,
+        822
+      ]
+    },
+    {
+      "id": "crown",
+      "label": "R4C8",
+      "row": 4,
+      "column": 8,
+      "clippedByFrame": false,
+      "roi": [
+        1261,
+        582,
+        1482,
+        800
+      ]
+    },
+    {
+      "id": "partial-bottom-left",
+      "label": "R5C1",
+      "row": 5,
+      "column": 1,
+      "clippedByFrame": true,
+      "roi": [
+        0,
+        888,
+        107,
+        1112
+      ]
+    },
+    {
+      "id": "bottom-diamonds",
+      "label": "R5C2",
+      "row": 5,
+      "column": 2,
+      "clippedByFrame": true,
+      "roi": [
+        48,
+        883,
+        311,
+        1112
+      ]
+    },
+    {
+      "id": "crossed-ribbons",
+      "label": "R5C3",
+      "row": 5,
+      "column": 3,
+      "clippedByFrame": false,
+      "roi": [
+        261,
+        856,
+        524,
+        1112
+      ]
+    },
+    {
+      "id": "bauble",
+      "label": "R5C4",
+      "row": 5,
+      "column": 4,
+      "clippedByFrame": false,
+      "roi": [
+        456,
+        860,
+        711,
+        1112
+      ]
+    },
+    {
+      "id": "glare-motif",
+      "label": "R5C5",
+      "row": 5,
+      "column": 5,
+      "clippedByFrame": false,
+      "occlusionNote": "Strong glare over the motif",
+      "roi": [
+        656,
+        858,
+        920,
+        1112
+      ]
+    },
+    {
+      "id": "bottom-flower",
+      "label": "R5C6",
+      "row": 5,
+      "column": 6,
+      "clippedByFrame": true,
+      "roi": [
+        874,
+        859,
+        1155,
+        1112
+      ]
+    },
+    {
+      "id": "faceted-star",
+      "label": "R5C7",
+      "row": 5,
+      "column": 7,
+      "clippedByFrame": false,
+      "roi": [
+        1105,
+        852,
+        1354,
+        1111
+      ]
+    },
+    {
+      "id": "partial-bottom-right",
+      "label": "R5C8",
+      "row": 5,
+      "column": 8,
+      "clippedByFrame": true,
+      "occlusionNote": "App icon overlays the lower right of this heart",
+      "roi": [
+        1310,
+        856,
+        1482,
+        1112
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4500 @@
+{
+  "source": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/cases.json",
+  "cfg": {
+    "algorithm": "direct",
+    "polygonal": false,
+    "identicalSheets": false,
+    "resolution": 400,
+    "fitTolerance": 0.5,
+    "maxSpan": 15,
+    "smoothRadius": 0,
+    "snapRadius": 1.5,
+    "borderRadius": 3,
+    "gridPortals": false,
+    "neighbors": 16,
+    "connectorVariants": 2,
+    "junctionBalancePenalty": 0,
+    "gridPreference": 0,
+    "sharpPenalty": 50,
+    "acutePenalty": 30,
+    "turnPenalty": 3,
+    "maxTurn": 150,
+    "localNeighborhoodFactor": 3,
+    "roundHidden": false,
+    "timeLimit": 30,
+    "trials": 0
+  },
+  "scope": {
+    "source": "https://www.hunodan.dk/julehjerter/julehjerter.html",
+    "scope": "All 27 sources are retained. The user explicitly excluded irregular patterns with interior cuts on 2026-09-07. The separate semicircular cutout is treated under that exception, as stated to the user after optional clarification received no reply.",
+    "excluded": {
+      "hjhih-05": "Published template contains additional slits ending inside the overlap body.",
+      "hjstr-04": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
+      "hjstr-05": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
+      "hjhih-03": "Published template has two shoulder endpoints and four fold endpoints; two inner slits stop at the interior construction line.",
+      "hjfla-02": "The bright sheet requires a separate internal semicircular cutout. Assumed covered by the user's irregular/interior-cut exception; retained in auxiliary tests."
+    },
+    "requiredCount": 22,
+    "referenceUse": "Reference images establish validation scope and template fidelity only. They must not supply fitting coordinates, slit counts, phases, or stored candidate geometry."
+  },
+  "criteria": "Image-only fitting; geometry and strict paper validation plus <=3% independently rendered disagreement against original classified crop; every substantial interior region retains at least 60% of its colour. Reference-cut agreement is a separate check.",
+  "results": [
+    {
+      "id": "hjfig-01",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjfig-01-photo.png",
+      "sourceSha256": "32a7d5c332a2f4262955932c7044991743bdb2b1e8eb1c1c22f6e6d9c315eab6",
+      "quad": [
+        [
+          188.65840672286313,
+          50.446388800465265
+        ],
+        [
+          342.05595393044155,
+          195.6523959586842
+        ],
+        [
+          190.76691435038555,
+          347.06851680680785
+        ],
+        [
+          44.80862299146844,
+          199.21246184376056
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 375,
+          "mismatchPixels": 1381,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009820444444444444,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.839041375,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 34.17243857122162,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.009841777777777777,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.499632042,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjfig-01/report.json",
+      "reportSha256": "5db1f90664704b49740a45de90032ee0c12bb282d6a263eb8764f641e8e35bca"
+    },
+    {
+      "id": "hjfig-02",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjfig-02-photo.png",
+      "sourceSha256": "c5d2c4465ca58e3629abd28b36c6e9e3aed1f5d14b2725459809f5b4ba550276",
+      "quad": [
+        [
+          194.29301979808054,
+          47.67431831120112
+        ],
+        [
+          343.0654428810814,
+          197.11195681723675
+        ],
+        [
+          196.4575674701016,
+          344.5264550253009
+        ],
+        [
+          48.27147998840894,
+          198.84651153671882
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 375,
+          "mismatchPixels": 994,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007068444444444444,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.565977125,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2402321658017814,
+          "minimumOuterSideClearance": 9.840433350624824,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.0072106666666666664,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 614.5422222222222,
+            "centerMm": [
+              86.0866774666358,
+              49.79115945383014
+            ],
+            "retainedFraction": 0.9939828743346447
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.224081332999997,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjfig-02/report.json",
+      "reportSha256": "8793c562bf88f340761cf1cae8d7beeb7651ad427efa981aaca3dd84e3b6092b"
+    },
+    {
+      "id": "hjfig-03",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjfig-03-photo.png",
+      "sourceSha256": "6f75ea95d5d467f53a8ebfde0bb61bfc74c7c6e6b55a0f6154f4ae273c8c35b2",
+      "quad": [
+        [
+          192.39664758267418,
+          43.535512562511656
+        ],
+        [
+          338.2028175594765,
+          191.88044361475224
+        ],
+        [
+          186.02342195434386,
+          341.728261995053
+        ],
+        [
+          45.18920677619988,
+          194.15081895867112
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 375,
+          "mismatchPixels": 970,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.006897777777777778,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.603011957999996,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 33.206166854672084,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.007089777777777778,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.374947417,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjfig-03/report.json",
+      "reportSha256": "418caf134728dc80fbe3638e1bc0d38e305bd2da6a1047a840246bafdfdac886"
+    },
+    {
+      "id": "hjfig-04",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjfig-04-photo.png",
+      "sourceSha256": "5ea33117d0208261edaf9e4690757e9711665e434353619bb6859bedb10da244",
+      "quad": [
+        [
+          197.2316439885614,
+          42.96350991647984
+        ],
+        [
+          349.3532625975257,
+          184.63886957180316
+        ],
+        [
+          203.74221817945812,
+          338.08948958431125
+        ],
+        [
+          53.66434700347705,
+          192.532408975867
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 375,
+          "mismatchPixels": 661,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.004700444444444445,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.469248334000003,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 13.304268465364988,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.004771555555555556,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 1729.7066666666667,
+            "centerMm": [
+              68.87085457435728,
+              69.11559502274845
+            ],
+            "retainedFraction": 0.9960121690511429
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.190685125000005,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjfig-04/report.json",
+      "reportSha256": "9c10bfe665b6f952ef552606ec5ce78d178eee42fa3b9db91fa50492afd184e6"
+    },
+    {
+      "id": "hjfig-05",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjfig-05-photo.png",
+      "sourceSha256": "cc0c4eddf643a41839fadc014400f3353815017883c37a53160a9f4592ec9bd8",
+      "quad": [
+        [
+          216.8538757473738,
+          38.328225363387574
+        ],
+        [
+          359.89753198285587,
+          187.87012162871665
+        ],
+        [
+          212.54958628080993,
+          334.34627418104253
+        ],
+        [
+          67.96701146105954,
+          182.82942921221752
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 337,
+          "mismatchPixels": 1963,
+          "observedPixels": 113569,
+          "observedFraction": 1,
+          "mismatchFraction": 0.017284646338349374,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [
+          "Tracing changed the sampled component count. Inspect the processed artwork."
+        ],
+        "solver": {
+          "algorithm": "hybrid-bezier-trace",
+          "termination": "candidate_found",
+          "seconds": 28.81615875,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "traceUsed": true,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18,
+          "featureRecovery": {
+            "accepted": true,
+            "method": "trace-milp",
+            "budgetSeconds": 16.05041595,
+            "seconds": 16.649853541,
+            "imageError": 0.017284646338349374,
+            "coefficientQuantum": 1e-07
+          }
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.668993931218535,
+          "minimumOuterSideClearance": 13.33480367396686,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.01776012820399933,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 673.7754140654579,
+            "centerMm": [
+              49.27363300609139,
+              25.667927238432654
+            ],
+            "retainedFraction": 0.9763460533193936
+          },
+          {
+            "value": 1,
+            "areaMm2": 1038.5756676557862,
+            "centerMm": [
+              32.966478528471676,
+              59.554166567083826
+            ],
+            "retainedFraction": 0.9835523526918186
+          },
+          {
+            "value": 1,
+            "areaMm2": 35.0447745423487,
+            "centerMm": [
+              35.846890237537835,
+              36.380716639577706
+            ],
+            "retainedFraction": 0.9346733668341709
+          },
+          {
+            "value": 1,
+            "areaMm2": 350.71190201551474,
+            "centerMm": [
+              77.40787814085233,
+              47.865483199741334
+            ],
+            "retainedFraction": 0.9964850615114236
+          },
+          {
+            "value": 1,
+            "areaMm2": 707.5874578450104,
+            "centerMm": [
+              82.63703541777137,
+              82.29473304846293
+            ],
+            "retainedFraction": 0.9869337979094077
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.722797291,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjfig-05/report.json",
+      "reportSha256": "ef77dd61758041f9eeb3e4f5269855d7ba7f31b7c78c1efde255df514f47c413"
+    },
+    {
+      "id": "hjfla-01",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjfla-01-photo.png",
+      "sourceSha256": "4cc2b77e50e1cbedcc14ad962772e22ca9403c274b55f74f49468deadada44c1",
+      "quad": [
+        [
+          292.39323601496517,
+          57.738078773875756
+        ],
+        [
+          438.0941449375487,
+          208.89102780960795
+        ],
+        [
+          283.1908795446907,
+          354.6771453079949
+        ],
+        [
+          141.8477138031669,
+          202.00972504056293
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 384,
+          "mismatchPixels": 1985,
+          "observedPixels": 147456,
+          "observedFraction": 1,
+          "mismatchFraction": 0.013461642795138888,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.567453125,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2157539952467618,
+          "minimumOuterSideClearance": 15.41151836957153,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.013509114583333334,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 271.87771267361114,
+            "centerMm": [
+              59.865985127213776,
+              13.517209975471856
+            ],
+            "retainedFraction": 0.9935145921676228
+          },
+          {
+            "value": 1,
+            "areaMm2": 137.93945312500003,
+            "centerMm": [
+              17.459951655195017,
+              39.454661381514256
+            ],
+            "retainedFraction": 0.9945919370698132
+          },
+          {
+            "value": 1,
+            "areaMm2": 244.14062500000006,
+            "centerMm": [
+              32.82009548611111,
+              53.04137731481481
+            ],
+            "retainedFraction": 0.9969444444444444
+          },
+          {
+            "value": 1,
+            "areaMm2": 1466.4035373263891,
+            "centerMm": [
+              65.07693028449644,
+              85.18186050925712
+            ],
+            "retainedFraction": 0.996716459325718
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.404404624999994,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjfla-01/report.json",
+      "reportSha256": "763cbf198137de0cdde030e240f179c7b4a06e884caca0d0ad718bba1b78a367"
+    },
+    {
+      "id": "hjcur-01",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjcur-01-photo.png",
+      "sourceSha256": "4c287c45c503edb0c763d6ce149bd2d475e81391ff8905c89c19d6167349b484",
+      "quad": [
+        [
+          189.3096608168546,
+          43.709919844428974
+        ],
+        [
+          332.4881934002591,
+          192.81949779926094
+        ],
+        [
+          185.4163085647945,
+          340.0580997580325
+        ],
+        [
+          41.75016952913069,
+          189.06796025783646
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 375,
+          "mismatchPixels": 790,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.005617777777777778,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.588470750000006,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2362877007607582,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.005831111111111111,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 166.82666666666665,
+            "centerMm": [
+              63.06007388462632,
+              91.61341290139244
+            ],
+            "retainedFraction": 0.9867860187553282
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 31.484376749999996,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjcur-01/report.json",
+      "reportSha256": "3da00ae04184b4929a3d958b6188b67cb1d06a1f327b1c6d46b1304c512bde3b"
+    },
+    {
+      "id": "hjcur-02",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjcur-02-photo.png",
+      "sourceSha256": "203953eb80e07ef83f467b34f354496e53c9359ff81bc6e5ebd43a51f15ca2c6",
+      "quad": [
+        [
+          194.65378748297076,
+          44.23339992230309
+        ],
+        [
+          339.67367514119843,
+          190.98638544523556
+        ],
+        [
+          193.29192428448607,
+          341.6245320415693
+        ],
+        [
+          45.47671643716768,
+          194.46654727533422
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 375,
+          "mismatchPixels": 770,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0054755555555555556,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.551492957999987,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2158821153939168,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.005745777777777778,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 408.03555555555556,
+            "centerMm": [
+              67.53219472522365,
+              66.7074241896131
+            ],
+            "retainedFraction": 0.996514464970373
+          },
+          {
+            "value": 1,
+            "areaMm2": 502.11555555555555,
+            "centerMm": [
+              49.98092810272389,
+              86.66570363026955
+            ],
+            "retainedFraction": 0.9960345560118963
+          },
+          {
+            "value": 1,
+            "areaMm2": 398.3644444444444,
+            "centerMm": [
+              89.70396287040343,
+              88.89263358324408
+            ],
+            "retainedFraction": 0.9937522313459479
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.768964750000013,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjcur-02/report.json",
+      "reportSha256": "fe8c19f4972525c0246f0c2f7f7b2a4c17129624bfddf8199bf2cb0bce9daedb"
+    },
+    {
+      "id": "hjcur-03",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjcur-03-photo.png",
+      "sourceSha256": "bb8390c22770e96257de8dc8d0dc5f7d73ab9bfb1faba028c63fbc1e335779f9",
+      "quad": [
+        [
+          192.91699437321472,
+          44.50524545817953
+        ],
+        [
+          339.69230667005473,
+          191.74644497178232
+        ],
+        [
+          193.504565619557,
+          339.1119442002352
+        ],
+        [
+          47.907480430688935,
+          190.7899197613935
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 375,
+          "mismatchPixels": 770,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0054755555555555556,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.776814290999987,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.242399300286031,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.005688888888888889,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 644.5511111111111,
+            "centerMm": [
+              84.94977934686673,
+              50.3548984995587
+            ],
+            "retainedFraction": 0.9969108561341571
+          },
+          {
+            "value": 1,
+            "areaMm2": 64.92444444444445,
+            "centerMm": [
+              42.04994523548741,
+              41.886673968601684
+            ],
+            "retainedFraction": 0.9868565169769989
+          },
+          {
+            "value": 1,
+            "areaMm2": 60.586666666666666,
+            "centerMm": [
+              58.26134585289515,
+              42.09546165884194
+            ],
+            "retainedFraction": 0.9835680751173709
+          },
+          {
+            "value": 1,
+            "areaMm2": 55.68,
+            "centerMm": [
+              50.17369093231162,
+              50.136228182205194
+            ],
+            "retainedFraction": 0.9936143039591315
+          },
+          {
+            "value": 1,
+            "areaMm2": 60.30222222222222,
+            "centerMm": [
+              58.15723270440252,
+              58.25094339622642
+            ],
+            "retainedFraction": 0.9905660377358491
+          },
+          {
+            "value": 1,
+            "areaMm2": 608,
+            "centerMm": [
+              49.21222612085769,
+              84.56099805068227
+            ],
+            "retainedFraction": 0.9970760233918129
+          },
+          {
+            "value": 1,
+            "areaMm2": 1077.76,
+            "centerMm": [
+              81.5354798979502,
+              82.23476730887657
+            ],
+            "retainedFraction": 0.9986144101346002
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 31.403981709000014,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjcur-03/report.json",
+      "reportSha256": "bb418efc52c7570d1001a20ac855ff4e7506b22002b8bd2706cd795f78086724"
+    },
+    {
+      "id": "hjcur-04",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjcur-04-photo.png",
+      "sourceSha256": "b55c4bd9e33a8b44e7b0a06b75df7dbed932401e3175c2a1920440bdc497e950",
+      "quad": [
+        [
+          191.11896416727424,
+          45.88792059701687
+        ],
+        [
+          341.0873159394011,
+          191.2984068580547
+        ],
+        [
+          197.00593204212686,
+          340.5161588661794
+        ],
+        [
+          47.43720035962269,
+          197.26037469745123
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 6,
+          "right": 6
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 375,
+          "mismatchPixels": 903,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.006421333333333334,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.92660791699996,
+          "selectedCounts": [
+            6,
+            6
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.242860126923684,
+          "minimumOuterSideClearance": 5.894791530062759,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.006492444444444445,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 365.29777777777775,
+            "centerMm": [
+              45.13319057815846,
+              10.342300953864122
+            ],
+            "retainedFraction": 0.9935760171306209
+          },
+          {
+            "value": 1,
+            "areaMm2": 657.1377777777777,
+            "centerMm": [
+              18.60458103379865,
+              40.25646575045991
+            ],
+            "retainedFraction": 0.9970782382858998
+          },
+          {
+            "value": 1,
+            "areaMm2": 684.5155555555556,
+            "centerMm": [
+              59.62520950204308,
+              81.36654892998129
+            ],
+            "retainedFraction": 0.9941824226054435
+          },
+          {
+            "value": 1,
+            "areaMm2": 132.4088888888889,
+            "centerMm": [
+              29.463945578231293,
+              85.46136770497672
+            ],
+            "retainedFraction": 0.9946294307196563
+          },
+          {
+            "value": 1,
+            "areaMm2": 128.28444444444443,
+            "centerMm": [
+              20.536733185513675,
+              93.83621581670363
+            ],
+            "retainedFraction": 0.9933481152993349
+          },
+          {
+            "value": 1,
+            "areaMm2": 118.82666666666667,
+            "centerMm": [
+              49.87775782964293,
+              95.82054657889488
+            ],
+            "retainedFraction": 0.9850388988629563
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.649234375,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjcur-04/report.json",
+      "reportSha256": "791243bf58f5613e915a63b2bff1c3416c53a04917854686303ff47115a57a2c"
+    },
+    {
+      "id": "hjcur-05",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjcur-05-photo.png",
+      "sourceSha256": "fcd46cc3a057f1f826e081932754a86fb970424620eee5eb86dd23eab55eb505",
+      "quad": [
+        [
+          191.5718921769267,
+          41.002447759302676
+        ],
+        [
+          343.2169032469649,
+          184.90280502631018
+        ],
+        [
+          198.85140229323983,
+          339.1694570006557
+        ],
+        [
+          47.783414978700904,
+          192.22189834334512
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 375,
+          "mismatchPixels": 1365,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009706666666666667,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.31351995799999,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 18,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2060566323093234,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.009820444444444444,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 256,
+            "centerMm": [
+              50.93918518518519,
+              49.712222222222216
+            ],
+            "retainedFraction": 0.9908333333333333
+          },
+          {
+            "value": 1,
+            "areaMm2": 1435.6622222222222,
+            "centerMm": [
+              81.113140819258,
+              79.79843148909472
+            ],
+            "retainedFraction": 0.9962851057506563
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 29.93455708399997,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjcur-05/report.json",
+      "reportSha256": "569ece74ae84707736a1c7319bc2f97dad25862542166bcdb8946e33be8057b4"
+    },
+    {
+      "id": "hjhih-01",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjhih-01-photo.png",
+      "sourceSha256": "f11704b067941ead5dde1ef74f63d5b70d1f7a50e9c3c7cafb5b852cb0f7d18a",
+      "quad": [
+        [
+          202.3674368892556,
+          48.59748347940166
+        ],
+        [
+          343.3485875149892,
+          197.0361767885677
+        ],
+        [
+          197.99631627152766,
+          344.7008318562862
+        ],
+        [
+          48.39713363046562,
+          196.17346145844522
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 386,
+          "mismatchPixels": 1042,
+          "observedPixels": 148996,
+          "observedFraction": 1,
+          "mismatchFraction": 0.006993476334935166,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 30.235608041000027,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2055241882715944,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.007107573357674032,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 233.76466482321666,
+            "centerMm": [
+              27.780343905780708,
+              7.688602970162997
+            ],
+            "retainedFraction": 0.9928222796439851
+          },
+          {
+            "value": 0,
+            "areaMm2": 222.82477381943133,
+            "centerMm": [
+              44.66461701729197,
+              30.483254260565577
+            ],
+            "retainedFraction": 0.9921686746987952
+          },
+          {
+            "value": 0,
+            "areaMm2": 221.81803538350016,
+            "centerMm": [
+              29.183957420457308,
+              46.82805139018444
+            ],
+            "retainedFraction": 0.9954614220877458
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.953441707999968,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjhih-01/report.json",
+      "reportSha256": "9f4a68958995ecf5bb0ba98edbf5600789e52f44da2895a008a35dce02e4ed67"
+    },
+    {
+      "id": "hjhih-02",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjhih-02-photo.png",
+      "sourceSha256": "8e1982096d14d9c4db71c782736d56cb711b57e6ee3d482e894022d9fd990b59",
+      "quad": [
+        [
+          188.30974117601937,
+          50.96916524073435
+        ],
+        [
+          339.6341931275473,
+          196.09932591960958
+        ],
+        [
+          193.5495451122848,
+          347.13449938438606
+        ],
+        [
+          45.606330547136366,
+          202.17162619262066
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 383,
+          "mismatchPixels": 631,
+          "observedPixels": 146689,
+          "observedFraction": 1,
+          "mismatchFraction": 0.004301617708212613,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.72561174999998,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.234742201946381,
+          "minimumOuterSideClearance": 5.973313145501595,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.004369789145743716,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 388.0318224270396,
+            "centerMm": [
+              8.788295239161187,
+              37.257137038103956
+            ],
+            "retainedFraction": 0.9938510189739986
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.364213749999994,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjhih-02/report.json",
+      "reportSha256": "18148df1fc6911e7f035e969eeeb0fb8563a8c89cad88b3cc6a3ac1354c440da"
+    },
+    {
+      "id": "hjhih-04",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjhih-04-photo.png",
+      "sourceSha256": "0871c106cf029808a27d67dadc2dd623055727c1145421120f7c9fdfdee1e07e",
+      "quad": [
+        [
+          200.61465222970472,
+          54.11515840702254
+        ],
+        [
+          343.4005945195555,
+          202.72299292577537
+        ],
+        [
+          193.7893892931023,
+          350.38325136594614
+        ],
+        [
+          47.72031824020348,
+          199.65779445405863
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 393,
+          "mismatchPixels": 1479,
+          "observedPixels": 154449,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009575976535943904,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 30.23370091700001,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 20,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2346567893389238,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.009679570602593737,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 1277.8328121256857,
+            "centerMm": [
+              25.200199890462503,
+              62.950707610174405
+            ],
+            "retainedFraction": 0.9933117146331577
+          },
+          {
+            "value": 0,
+            "areaMm2": 52.83297399141465,
+            "centerMm": [
+              2.741917377638078,
+              68.08517936436661
+            ],
+            "retainedFraction": 0.9877450980392157
+          },
+          {
+            "value": 1,
+            "areaMm2": 86.50104565261026,
+            "centerMm": [
+              81.3714174704027,
+              3.8548856485502276
+            ],
+            "retainedFraction": 0.9902694610778443
+          },
+          {
+            "value": 1,
+            "areaMm2": 86.95426969420328,
+            "centerMm": [
+              53.82172001083746,
+              4.464294172592218
+            ],
+            "retainedFraction": 0.9865971705137752
+          },
+          {
+            "value": 1,
+            "areaMm2": 321.9185621143549,
+            "centerMm": [
+              67.51487720548046,
+              17.646965500441148
+            ],
+            "retainedFraction": 0.9935639581657281
+          },
+          {
+            "value": 1,
+            "areaMm2": 157.7219664743702,
+            "centerMm": [
+              93.1039705519832,
+              67.37738001228394
+            ],
+            "retainedFraction": 0.9942528735632183
+          },
+          {
+            "value": 1,
+            "areaMm2": 320.170412239639,
+            "centerMm": [
+              73.96143841801806,
+              86.54988589497192
+            ],
+            "retainedFraction": 0.9927199191102123
+          },
+          {
+            "value": 1,
+            "areaMm2": 162.38369947361267,
+            "centerMm": [
+              93.06280969599572,
+              92.82357524623495
+            ],
+            "retainedFraction": 0.9920255183413078
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.985697082999977,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjhih-04/report.json",
+      "reportSha256": "1684ab9109fc84c3a34f67cb944efbf9a00175cde9895c30959e7cb43df1770a"
+    },
+    {
+      "id": "hjstr-01",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjstr-01-photo.png",
+      "sourceSha256": "37fd224b8429524eee4488429070256ddc757641c3f40aac2aeaa4875dc59e88",
+      "quad": [
+        [
+          191.35718595247062,
+          103.88262046442289
+        ],
+        [
+          343.85046746261594,
+          250.2169394187539
+        ],
+        [
+          198.4226972120015,
+          405.96812758830697
+        ],
+        [
+          45.21045375375542,
+          257.6144338993603
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 381,
+          "mismatchPixels": 1186,
+          "observedPixels": 145161,
+          "observedFraction": 1,
+          "mismatchFraction": 0.008170238562699347,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.651892584000016,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 18,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2213336049375423,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.008177127465366042,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 288.02502049448543,
+            "centerMm": [
+              89.85270198077669,
+              60.53371677021597
+            ],
+            "retainedFraction": 0.9942597464721359
+          },
+          {
+            "value": 1,
+            "areaMm2": 276.6583310944399,
+            "centerMm": [
+              73.68348129790549,
+              73.03509060869384
+            ],
+            "retainedFraction": 0.9952689243027888
+          },
+          {
+            "value": 1,
+            "areaMm2": 294.5694780278449,
+            "centerMm": [
+              60.93332989597067,
+              89.04420448379406
+            ],
+            "retainedFraction": 0.9934518241347053
+          },
+          {
+            "value": 1,
+            "areaMm2": 230.15823809425393,
+            "centerMm": [
+              91.35661207569046,
+              90.80072526103346
+            ],
+            "retainedFraction": 0.9865309787488776
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.272431708999967,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjstr-01/report.json",
+      "reportSha256": "30cabc8903da1492f36bfa85830c3bfd7d1ec3cb048062a0829b5e9050852289"
+    },
+    {
+      "id": "hjstr-02",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjstr-02-photo.png",
+      "sourceSha256": "653d4b726cba91d87e4bda99aac9b47e1ac9ce5780b7c44acbd011066ad63a98",
+      "quad": [
+        [
+          198.53970825883664,
+          56.91861221524674
+        ],
+        [
+          340.401102574917,
+          206.41140570062836
+        ],
+        [
+          193.49387320044173,
+          353.103709640915
+        ],
+        [
+          45.76141964287936,
+          201.28226651792085
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 390,
+          "mismatchPixels": 667,
+          "observedPixels": 152100,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0043852728468113085,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.477643374999985,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.242270831371275,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.004464168310322156,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 122.28796844181457,
+            "centerMm": [
+              43.96912048524952,
+              6.074993107251172
+            ],
+            "retainedFraction": 0.9903225806451613
+          },
+          {
+            "value": 1,
+            "areaMm2": 727.8763971071662,
+            "centerMm": [
+              24.67420078792132,
+              25.212613689264398
+            ],
+            "retainedFraction": 0.9975611959172613
+          },
+          {
+            "value": 1,
+            "areaMm2": 316.3708086785009,
+            "centerMm": [
+              55.38120510689089,
+              25.510902231600486
+            ],
+            "retainedFraction": 0.9989609310058188
+          },
+          {
+            "value": 1,
+            "areaMm2": 257.9224194608809,
+            "centerMm": [
+              49.561919514761726,
+              50.547298313038816
+            ],
+            "retainedFraction": 0.9977058373693601
+          },
+          {
+            "value": 1,
+            "areaMm2": 298.15910585141347,
+            "centerMm": [
+              74.5463206400362,
+              45.158086676278515
+            ],
+            "retainedFraction": 0.9960308710033076
+          },
+          {
+            "value": 1,
+            "areaMm2": 297.370151216305,
+            "centerMm": [
+              24.667851494073027,
+              55.952170388385284
+            ],
+            "retainedFraction": 0.9957992482865354
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.157841499999982,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjstr-02/report.json",
+      "reportSha256": "f3b8ae7eddc89434e1ab5f3c8082ec7597ebd333148c9754bce0f247254d7f8a"
+    },
+    {
+      "id": "hjstr-03",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjstr-03-photo.png",
+      "sourceSha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+      "quad": [
+        [
+          198.0767384478126,
+          48.83345802423042
+        ],
+        [
+          339.75075854262275,
+          193.76882218562517
+        ],
+        [
+          196.19023395819448,
+          342.00139702165603
+        ],
+        [
+          49.884135008919685,
+          193.13927233494536
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 7,
+          "right": 7
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 388,
+          "mismatchPixels": 1099,
+          "observedPixels": 150544,
+          "observedFraction": 1,
+          "mismatchFraction": 0.007300191306196195,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.633020667000032,
+          "selectedCounts": [
+            7,
+            7
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2239879509065155,
+          "minimumOuterSideClearance": 12.38873875954907,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.007439685407588479,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 79.31236050589858,
+            "centerMm": [
+              46.32181526187639,
+              30.9841734445423
+            ],
+            "retainedFraction": 0.9865996649916248
+          },
+          {
+            "value": 1,
+            "areaMm2": 157.6947603358486,
+            "centerMm": [
+              30.640247874308447,
+              31.152454858909667
+            ],
+            "retainedFraction": 0.9966301600673968
+          },
+          {
+            "value": 1,
+            "areaMm2": 36.6005951748326,
+            "centerMm": [
+              40.02914101820495,
+              40.579686418320954
+            ],
+            "retainedFraction": 0.9872958257713249
+          },
+          {
+            "value": 1,
+            "areaMm2": 36.534169412264845,
+            "centerMm": [
+              52.75585754451734,
+              40.4639175257732
+            ],
+            "retainedFraction": 0.990909090909091
+          },
+          {
+            "value": 1,
+            "areaMm2": 39.7890317780848,
+            "centerMm": [
+              46.402724472058246,
+              46.73876564032839
+            ],
+            "retainedFraction": 0.993322203672788
+          },
+          {
+            "value": 1,
+            "areaMm2": 39.523328727813784,
+            "centerMm": [
+              58.91341072511478,
+              46.58689248895435
+            ],
+            "retainedFraction": 0.9798319327731092
+          },
+          {
+            "value": 1,
+            "areaMm2": 74.46327983845252,
+            "centerMm": [
+              68.30345236671971,
+              52.76757221552921
+            ],
+            "retainedFraction": 0.9946476360392507
+          },
+          {
+            "value": 1,
+            "areaMm2": 34.873525348070984,
+            "centerMm": [
+              52.73514972999509,
+              53.10235640648012
+            ],
+            "retainedFraction": 0.9923809523809524
+          },
+          {
+            "value": 1,
+            "areaMm2": 39.25762567754277,
+            "centerMm": [
+              58.96152772690006,
+              59.29034311929806
+            ],
+            "retainedFraction": 0.9864636209813875
+          },
+          {
+            "value": 1,
+            "areaMm2": 39.65618025294929,
+            "centerMm": [
+              46.316850575903565,
+              59.44132172891952
+            ],
+            "retainedFraction": 0.9932998324958124
+          },
+          {
+            "value": 1,
+            "areaMm2": 144.2103305345945,
+            "centerMm": [
+              68.24928651816114,
+              68.63297591969115
+            ],
+            "retainedFraction": 0.9958544449562413
+          },
+          {
+            "value": 1,
+            "areaMm2": 72.20480391114889,
+            "centerMm": [
+              52.682000967383985,
+              68.72540046851734
+            ],
+            "retainedFraction": 0.9963201471941122
+          },
+          {
+            "value": 1,
+            "areaMm2": 608.8585396960356,
+            "centerMm": [
+              86.78441843568004,
+              87.15698536275927
+            ],
+            "retainedFraction": 0.9968361335369845
+          },
+          {
+            "value": 1,
+            "areaMm2": 155.30343288340947,
+            "centerMm": [
+              58.8815006217315,
+              87.17733898917922
+            ],
+            "retainedFraction": 0.9965782720273738
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.435120666999953,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjstr-03/report.json",
+      "reportSha256": "b8cf4898e52df4ca451368f826508b21ffffa2d2342e3d5d72a8988a56e69636"
+    },
+    {
+      "id": "hjsta-01",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjsta-01-photo.png",
+      "sourceSha256": "a83a175f4d960df6901354a6ea413c519efa2a8b180ca7018b8d09de37583651",
+      "quad": [
+        [
+          195.05439485448392,
+          47.20208591783353
+        ],
+        [
+          340.6664953436871,
+          192.6885347130366
+        ],
+        [
+          196.168411462646,
+          344.4035983631109
+        ],
+        [
+          47.055118952907264,
+          194.67333807919917
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 380,
+          "mismatchPixels": 1173,
+          "observedPixels": 144400,
+          "observedFraction": 1,
+          "mismatchFraction": 0.008123268698060942,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.915704665999918,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 21.895223431405164,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.008206371191135734,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 1059.4875346260387,
+            "centerMm": [
+              49.75551377627021,
+              50.077206628572206
+            ],
+            "retainedFraction": 0.9923524413360351
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 31.645636708999984,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjsta-01/report.json",
+      "reportSha256": "cd258878bd3187a6cdb87cddfd5dd2ff11bc9780f45ac5b80f90cafec630d49c"
+    },
+    {
+      "id": "hjsta-02",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjsta-02-photo.png",
+      "sourceSha256": "02222a5d4b385ed4ea84859bf74df573d786234dd483581771541edabce67e13",
+      "quad": [
+        [
+          191.16406799843026,
+          48.32364781659089
+        ],
+        [
+          340.02723897564636,
+          188.05970075260046
+        ],
+        [
+          199.97936496176143,
+          342.58204776083375
+        ],
+        [
+          48.44755619555002,
+          198.55438994750548
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 384,
+          "mismatchPixels": 553,
+          "observedPixels": 147456,
+          "observedFraction": 1,
+          "mismatchFraction": 0.003750271267361111,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.50777662499994,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2382873886418966,
+          "minimumOuterSideClearance": 17.295301741992912,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.003851996527777778,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 293.24001736111114,
+            "centerMm": [
+              61.149193936941096,
+              38.90621386447734
+            ],
+            "retainedFraction": 0.9960684551341351
+          },
+          {
+            "value": 1,
+            "areaMm2": 1509.2637803819448,
+            "centerMm": [
+              72.73338037332435,
+              72.17791062869767
+            ],
+            "retainedFraction": 0.9971242417434284
+          },
+          {
+            "value": 1,
+            "areaMm2": 274.65820312500006,
+            "centerMm": [
+              40.44077932098765,
+              59.731931584362144
+            ],
+            "retainedFraction": 0.994320987654321
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.68203729200002,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjsta-02/report.json",
+      "reportSha256": "56530b8ece6e6104f617d2fdccd38d5a78f1f428fddf037650e07d0a2075c743"
+    },
+    {
+      "id": "hjsta-03",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjsta-03-photo.png",
+      "sourceSha256": "9ac7571ed97d991d1d70f7321ae4e3cae0da0dbc91c8a14fa05c0de0b9dfc3b7",
+      "quad": [
+        [
+          193.65672679368126,
+          45.04975588659226
+        ],
+        [
+          342.9501305994181,
+          189.66698048576146
+        ],
+        [
+          193.48036649787394,
+          344.79572426897465
+        ],
+        [
+          45.610873631912625,
+          195.13043392991767
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 383,
+          "mismatchPixels": 1852,
+          "observedPixels": 146689,
+          "observedFraction": 1,
+          "mismatchFraction": 0.012625350230760316,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 30.418762209000064,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.1750280671708118,
+          "minimumOuterSideClearance": 3.2678471206992734,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.0126798873807852,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 142.61464731506797,
+            "centerMm": [
+              19.75772431593188,
+              19.651513411778804
+            ],
+            "retainedFraction": 0.972753346080306
+          },
+          {
+            "value": 1,
+            "areaMm2": 1755.5508593009704,
+            "centerMm": [
+              51.02625809387311,
+              50.80360814582476
+            ],
+            "retainedFraction": 0.9947965206585896
+          },
+          {
+            "value": 1,
+            "areaMm2": 291.43289544546633,
+            "centerMm": [
+              4.180507840532576,
+              51.00193913853389
+            ],
+            "retainedFraction": 0.9812865497076023
+          },
+          {
+            "value": 1,
+            "areaMm2": 139.4787611886372,
+            "centerMm": [
+              82.9002141349484,
+              81.71098673077952
+            ],
+            "retainedFraction": 0.9794721407624634
+          },
+          {
+            "value": 1,
+            "areaMm2": 131.29818868490483,
+            "centerMm": [
+              18.80885179852994,
+              83.00255674038645
+            ],
+            "retainedFraction": 0.9823468328141225
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 32.15319849999994,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjsta-03/report.json",
+      "reportSha256": "7bde5911ac715bbc8f5f544770f31e776abdfcc3494964be9ba66fab4e1fa2b6"
+    },
+    {
+      "id": "hjsta-04",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjsta-04-photo.png",
+      "sourceSha256": "5143ab770f070447343a52b1af758b288c310edd6d144effbae1aea9dd2a226d",
+      "quad": [
+        [
+          192.8820949412971,
+          40.64326337448036
+        ],
+        [
+          338.7224272496793,
+          186.46827119242013
+        ],
+        [
+          189.2253365301165,
+          332.48276340072863
+        ],
+        [
+          45.11114873361885,
+          184.1413775871979
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 378,
+          "mismatchPixels": 855,
+          "observedPixels": 142884,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0059838750314940795,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 29.56603933399997,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2432823080842215,
+          "minimumOuterSideClearance": 3.2678471206992725,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.006172839506172839,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 194.7733826040704,
+            "centerMm": [
+              20.86900436702808,
+              44.142108074914404
+            ],
+            "retainedFraction": 0.996406755300036
+          },
+          {
+            "value": 1,
+            "areaMm2": 94.55222418185379,
+            "centerMm": [
+              95.06313175817247,
+              93.90016801193705
+            ],
+            "retainedFraction": 0.9851961509992598
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 30.61151412499999,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjsta-04/report.json",
+      "reportSha256": "6171aadb153956c5fa7219352f655162124a09d801e50dc58437a3b41ea2147e"
+    },
+    {
+      "id": "hjsta-05",
+      "method": "direct",
+      "sourcePhoto": "tmp/inverse-hunodan/2026-09-07T22-30-01-534Z-crops/hjsta-05-photo.png",
+      "sourceSha256": "bde5a6cc6ef440682c90328b8e3830e155a4ddd491d40439f820e5c48df351ea",
+      "quad": [
+        [
+          196.5969474661884,
+          51.51935280757243
+        ],
+        [
+          342.30866035747334,
+          198.8625643664934
+        ],
+        [
+          193.80999274262587,
+          348.0238605607671
+        ],
+        [
+          48.248889692101926,
+          199.65485925642955
+        ]
+      ],
+      "report": {
+        "templateExportAllowed": true,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 386,
+          "mismatchPixels": 1880,
+          "observedPixels": 148996,
+          "observedFraction": 1,
+          "mismatchFraction": 0.012617788397003947,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "settings": {
+          "algorithm": "direct",
+          "width": 100,
+          "maxImageError": 0.03,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "geometryTolerance": 0.01,
+          "sharpTurn": 60,
+          "sharpPenalty": 50,
+          "turnPenalty": 3,
+          "bendingPenalty": 0.15,
+          "acutePenalty": 30,
+          "maxTurn": 150,
+          "connectorPenalty": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "minRadius": 0.8,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "timeLimit": 30,
+          "relativeGap": 0.02,
+          "maxRounds": 12,
+          "localNeighborhoodFactor": 3,
+          "requireMaterialCore": true,
+          "materialResolution": 360,
+          "minFeatureArea": 0.25,
+          "roundHidden": false,
+          "trials": 0,
+          "registration": 0.4,
+          "rotation": 0.3,
+          "relativeScalePercent": 0.2,
+          "seed": 1729,
+          "paperColors": [
+            "#bd1111",
+            "#ffffff"
+          ],
+          "nominalWidth": 2.50501002004008
+        },
+        "warnings": [],
+        "solver": {
+          "algorithm": "direct-bezier",
+          "termination": "candidate_found",
+          "seconds": 30.10901899999997,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "traceUsed": false,
+          "initializedCountPhaseCandidates": 16,
+          "minimumInitializationRounds": 18
+        },
+        "validation": {
+          "passed": true,
+          "issues": [],
+          "nominalWidthRequired": 2.50501002004008,
+          "minimumInterSlitDistanceLower": 3.2380338375920092,
+          "minimumOuterSideClearance": 3.2678471206992734,
+          "boundaryParityMatches": true,
+          "forwardSampleMismatchPixels": 0,
+          "forwardSampleResolution": 101,
+          "sharedCurvesStoredOnce": true
+        },
+        "manufacturing": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658
+        },
+        "imageFidelity": {
+          "passed": true,
+          "maximumMismatchFraction": 0.03,
+          "referenceAvailable": true
+        }
+      },
+      "independentImageError": 0.012731885419742812,
+      "independentFeatures": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 296.45091143386395,
+            "centerMm": [
+              24.819644074178782,
+              25.76212842280356
+            ],
+            "retainedFraction": 0.989812089653611
+          },
+          {
+            "value": 1,
+            "areaMm2": 309.00158393513914,
+            "centerMm": [
+              49.27119017929892,
+              50.7144046852703
+            ],
+            "retainedFraction": 0.9856646394439618
+          },
+          {
+            "value": 1,
+            "areaMm2": 304.77328250422823,
+            "centerMm": [
+              74.30204138916241,
+              74.77082722415116
+            ],
+            "retainedFraction": 0.9872274829332746
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded."
+      },
+      "passed": true,
+      "seconds": 31.203949625000007,
+      "reportFile": "tmp/inverse-hunodan/2026-09-08-release/hjsta-05/report.json",
+      "reportSha256": "bfd4117568968019cedea6cbe610aecb3140a475210ed2454f1cba453f9ae10f"
+    }
+  ],
+  "validationSources": [
+    {
+      "directory": "tmp/inverse-hunodan/2026-09-07T22-49-07-208Z-direct",
+      "commit": "6081719",
+      "engineSha256": {
+        "static/inverse/core/engine.js": "90993a297a6c11cd12ebdb4b8803e23fe32038c2559398e7db2027247ef19953",
+        "static/inverse/core/image-features.js": "50aca7d2d526148986335907ae8d124b1c74155fdd4d5371c714130c099da46e",
+        "static/inverse/core/feature-recovery.js": "cf95ba8e0865ebf69ddb93a4492c38c4a120c9bce4c1515a23860d18adb76cd3",
+        "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+        "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+        "static/inverse/core/direct/fit.js": "a8520f19673cf3ce3e900268dc3b193b723939a6a5d77f89685470d1add467ff",
+        "static/inverse/core/direct/initialize.js": "f97212c380fdadca61d492106f7ecc9eb564ecc1cf81537c327b7293cb5da7a8",
+        "static/inverse/core/direct/grid.js": "b69ebf00f121cd095aae98f73c1dacd21de5af734065fd911f6ee7e97e29b4e6",
+        "src/lib/inverse/presets.js": "fc8be11f0472bc642f2969d958ef4b826fca07effe1c9ecb5590860db8a165ec"
+      },
+      "cases": [
+        "hjfig-01",
+        "hjfig-02",
+        "hjfig-03",
+        "hjfig-04",
+        "hjfla-01",
+        "hjcur-01",
+        "hjcur-02",
+        "hjcur-03",
+        "hjcur-04",
+        "hjcur-05",
+        "hjhih-01",
+        "hjhih-02",
+        "hjhih-04",
+        "hjstr-01",
+        "hjstr-02",
+        "hjstr-03",
+        "hjsta-01",
+        "hjsta-02",
+        "hjsta-03",
+        "hjsta-04",
+        "hjsta-05"
+      ]
+    },
+    {
+      "directory": "tmp/inverse-hunodan/2026-09-07T23-03-44-896Z-direct",
+      "commit": "04269b1",
+      "engineSha256": {
+        "static/inverse/core/engine.js": "c4162cc80003d2d4b3986f11e3b0951511e83ab84581de103db9f89867cc58bf",
+        "static/inverse/core/solver.js": "128bdf6cc2ad85861491e1e5e95de5b89caacaa2cdb7e3ee3fac4d9a9fb32180",
+        "static/inverse/core/image-features.js": "50aca7d2d526148986335907ae8d124b1c74155fdd4d5371c714130c099da46e",
+        "static/inverse/core/feature-recovery.js": "232564bfd4400d9215cee0d176942d6d84eb140d6c9cd37c644f212a74b1d799",
+        "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+        "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+        "static/inverse/core/direct/fit.js": "c3a584893724e4ceeaf3bf55c88824de399bcde8acdf95909b741b0c5f3d640d",
+        "static/inverse/core/direct/initialize.js": "f97212c380fdadca61d492106f7ecc9eb564ecc1cf81537c327b7293cb5da7a8",
+        "static/inverse/core/direct/grid.js": "b69ebf00f121cd095aae98f73c1dacd21de5af734065fd911f6ee7e97e29b4e6",
+        "src/lib/inverse/presets.js": "fc8be11f0472bc642f2969d958ef4b826fca07effe1c9ecb5590860db8a165ec"
+      },
+      "cases": [
+        "hjfig-05"
+      ]
+    }
+  ],
+  "replayNote": "Complete 22-case run, followed by a fresh replay of the only case invoking feature recovery after its browser-specific coefficient/budget fix. The other 21 cases do not execute that branch. All source crops and fitting settings are identical.",
+  "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release",
+  "score": {
+    "passed": 22,
+    "required": 22,
+    "independentErrorRange": [
+      0.003851996527777778,
+      0.01776012820399933
+    ],
+    "medianIndependentError": 0.0071591200121703495,
+    "minimumRegionRetention": 0.9346733668341709
+  },
+  "referenceDiagnostics": {
+    "limitations": "Ink proximity includes construction guides and lettering. It is a diagnostic, not an exact geometric ground-truth score. Reference counts and overlays require visual review.",
+    "scope": {
+      "source": "https://www.hunodan.dk/julehjerter/julehjerter.html",
+      "scope": "All 27 sources are retained. The user explicitly excluded irregular patterns with interior cuts on 2026-09-07. The separate semicircular cutout is treated under that exception, as stated to the user after optional clarification received no reply.",
+      "excluded": {
+        "hjhih-05": "Published template contains additional slits ending inside the overlap body.",
+        "hjstr-04": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
+        "hjstr-05": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
+        "hjhih-03": "Published template has two shoulder endpoints and four fold endpoints; two inner slits stop at the interior construction line.",
+        "hjfla-02": "The bright sheet requires a separate internal semicircular cutout. Assumed covered by the user's irregular/interior-cut exception; retained in auxiliary tests."
+      },
+      "requiredCount": 22,
+      "referenceUse": "Reference images establish validation scope and template fidelity only. They must not supply fitting coordinates, slit counts, phases, or stored candidate geometry."
+    },
+    "results": [
+      {
+        "id": "hjfig-01",
+        "benchmarkPassed": true,
+        "photoError": 0.009841777777777777,
+        "actualCounts": [
+          2,
+          2
+        ],
+        "referenceCounts": [
+          2,
+          2
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 2.8756506624758007,
+            "p95InkDistanceMm": 5.927041873123317,
+            "mirroredHorizontally": false
+          },
+          {
+            "meanInkDistanceMm": 3.562596394942191,
+            "p95InkDistanceMm": 5.74238849779049,
+            "mirroredHorizontally": false
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjfig-01"
+      },
+      {
+        "id": "hjfig-02",
+        "benchmarkPassed": true,
+        "photoError": 0.0072106666666666664,
+        "actualCounts": [
+          2,
+          2
+        ],
+        "referenceCounts": [
+          2,
+          2
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.8206660124798569,
+            "p95InkDistanceMm": 2.5402092461397405,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 0.7518411058070247,
+            "p95InkDistanceMm": 3.514890756728544,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjfig-02"
+      },
+      {
+        "id": "hjfig-03",
+        "benchmarkPassed": true,
+        "photoError": 0.007089777777777778,
+        "actualCounts": [
+          2,
+          2
+        ],
+        "referenceCounts": [
+          2,
+          2
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 1.8949450251745246,
+            "p95InkDistanceMm": 6.346268045935227,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 1.5840471541436005,
+            "p95InkDistanceMm": 4.099647819700706,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjfig-03"
+      },
+      {
+        "id": "hjfig-04",
+        "benchmarkPassed": true,
+        "photoError": 0.004771555555555556,
+        "actualCounts": [
+          2,
+          2
+        ],
+        "referenceCounts": [
+          2,
+          2
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.34364580614399787,
+            "p95InkDistanceMm": 1.1308965355274545,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 0.373796284546607,
+            "p95InkDistanceMm": 0.9089019702043554,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjfig-04"
+      },
+      {
+        "id": "hjfig-05",
+        "benchmarkPassed": true,
+        "photoError": 0.01776012820399933,
+        "actualCounts": [
+          4,
+          4
+        ],
+        "referenceCounts": [
+          4,
+          4
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.7283483792706659,
+            "p95InkDistanceMm": 4.589467551976777,
+            "mirroredHorizontally": false
+          },
+          {
+            "meanInkDistanceMm": 0.7036819391599454,
+            "p95InkDistanceMm": 3.574788274519374,
+            "mirroredHorizontally": false
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjfig-05"
+      },
+      {
+        "id": "hjcur-01",
+        "benchmarkPassed": true,
+        "photoError": 0.005831111111111111,
+        "actualCounts": [
+          4,
+          4
+        ],
+        "referenceCounts": [
+          4,
+          4
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 2.115499777411427,
+            "p95InkDistanceMm": 4.564938578533293,
+            "mirroredHorizontally": false
+          },
+          {
+            "meanInkDistanceMm": 1.8648205855954259,
+            "p95InkDistanceMm": 3.3736426599974982,
+            "mirroredHorizontally": false
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjcur-01"
+      },
+      {
+        "id": "hjcur-02",
+        "benchmarkPassed": true,
+        "photoError": 0.005745777777777778,
+        "actualCounts": [
+          4,
+          4
+        ],
+        "referenceCounts": [
+          4,
+          4
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 1.2392828809750007,
+            "p95InkDistanceMm": 2.5995962659887266,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 0.9028300225573858,
+            "p95InkDistanceMm": 2.051551679892226,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjcur-02"
+      },
+      {
+        "id": "hjcur-03",
+        "benchmarkPassed": true,
+        "photoError": 0.005688888888888889,
+        "actualCounts": [
+          4,
+          4
+        ],
+        "referenceCounts": [
+          4,
+          4
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.9134575536717675,
+            "p95InkDistanceMm": 2.297669842089099,
+            "mirroredHorizontally": false
+          },
+          {
+            "meanInkDistanceMm": 0.6466297585344637,
+            "p95InkDistanceMm": 1.4092538376019523,
+            "mirroredHorizontally": false
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjcur-03"
+      },
+      {
+        "id": "hjcur-04",
+        "benchmarkPassed": true,
+        "photoError": 0.006492444444444445,
+        "actualCounts": [
+          6,
+          6
+        ],
+        "referenceCounts": [
+          6,
+          6
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 2.296970574401722,
+            "p95InkDistanceMm": 4.486117474852154,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 2.5134697906467087,
+            "p95InkDistanceMm": 4.388845704829004,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjcur-04"
+      },
+      {
+        "id": "hjcur-05",
+        "benchmarkPassed": true,
+        "photoError": 0.009820444444444444,
+        "actualCounts": [
+          2,
+          2
+        ],
+        "referenceCounts": [
+          2,
+          2
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 1.6463719580544685,
+            "p95InkDistanceMm": 3.17410997457174,
+            "mirroredHorizontally": false
+          },
+          {
+            "meanInkDistanceMm": 1.5861791136889765,
+            "p95InkDistanceMm": 2.574734255791267,
+            "mirroredHorizontally": false
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjcur-05"
+      },
+      {
+        "id": "hjhih-01",
+        "benchmarkPassed": true,
+        "photoError": 0.007107573357674032,
+        "actualCounts": [
+          4,
+          4
+        ],
+        "referenceCounts": [
+          4,
+          4
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.6720789330862005,
+            "p95InkDistanceMm": 1.876743636775494,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 0.7603659676235351,
+            "p95InkDistanceMm": 2.0925124633084446,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjhih-01"
+      },
+      {
+        "id": "hjhih-02",
+        "benchmarkPassed": true,
+        "photoError": 0.004369789145743716,
+        "actualCounts": [
+          3,
+          3
+        ],
+        "referenceCounts": [
+          3,
+          3
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.6786957129384291,
+            "p95InkDistanceMm": 1.8606610537691255,
+            "mirroredHorizontally": false
+          },
+          {
+            "meanInkDistanceMm": 0.612635587541147,
+            "p95InkDistanceMm": 1.578436112573723,
+            "mirroredHorizontally": false
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjhih-02"
+      },
+      {
+        "id": "hjhih-04",
+        "benchmarkPassed": true,
+        "photoError": 0.009679570602593737,
+        "actualCounts": [
+          5,
+          5
+        ],
+        "referenceCounts": [
+          5,
+          5
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.4393501249031454,
+            "p95InkDistanceMm": 2.0578184162136606,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 0.6305321185399965,
+            "p95InkDistanceMm": 1.818582482524078,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjhih-04"
+      },
+      {
+        "id": "hjstr-01",
+        "benchmarkPassed": true,
+        "photoError": 0.008177127465366042,
+        "actualCounts": [
+          3,
+          3
+        ],
+        "referenceCounts": [
+          3,
+          3
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.22730219091690357,
+            "p95InkDistanceMm": 0.6007907168412816,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 0.7181272889258533,
+            "p95InkDistanceMm": 1.5918278341516088,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjstr-01"
+      },
+      {
+        "id": "hjstr-02",
+        "benchmarkPassed": true,
+        "photoError": 0.004464168310322156,
+        "actualCounts": [
+          5,
+          5
+        ],
+        "referenceCounts": [
+          5,
+          5
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.3033860693293073,
+            "p95InkDistanceMm": 1.2231958819066315,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 0.4125314420020365,
+            "p95InkDistanceMm": 1.291012466001893,
+            "mirroredHorizontally": false
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjstr-02"
+      },
+      {
+        "id": "hjstr-03",
+        "benchmarkPassed": true,
+        "photoError": 0.007439685407588479,
+        "actualCounts": [
+          7,
+          7
+        ],
+        "referenceCounts": [
+          7,
+          7
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.5426898736096606,
+            "p95InkDistanceMm": 1.3126323989075945,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 0.6035003110104897,
+            "p95InkDistanceMm": 1.529518738818501,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjstr-03"
+      },
+      {
+        "id": "hjsta-01",
+        "benchmarkPassed": true,
+        "photoError": 0.008206371191135734,
+        "actualCounts": [
+          2,
+          2
+        ],
+        "referenceCounts": [
+          2,
+          2
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.41690437079381304,
+            "p95InkDistanceMm": 1.026879350600854,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 0.2748111872911495,
+            "p95InkDistanceMm": 0.7790196810069375,
+            "mirroredHorizontally": false
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjsta-01"
+      },
+      {
+        "id": "hjsta-02",
+        "benchmarkPassed": true,
+        "photoError": 0.003851996527777778,
+        "actualCounts": [
+          3,
+          3
+        ],
+        "referenceCounts": [
+          3,
+          3
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.2963238095819145,
+            "p95InkDistanceMm": 0.7353296387769096,
+            "mirroredHorizontally": false
+          },
+          {
+            "meanInkDistanceMm": 0.3353404875282788,
+            "p95InkDistanceMm": 1.2004628420246415,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjsta-02"
+      },
+      {
+        "id": "hjsta-03",
+        "benchmarkPassed": true,
+        "photoError": 0.0126798873807852,
+        "actualCounts": [
+          4,
+          4
+        ],
+        "referenceCounts": [
+          4,
+          4
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.5053278904140209,
+            "p95InkDistanceMm": 1.230085600676891,
+            "mirroredHorizontally": false
+          },
+          {
+            "meanInkDistanceMm": 0.6541327023723713,
+            "p95InkDistanceMm": 1.4624295717672118,
+            "mirroredHorizontally": false
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjsta-03"
+      },
+      {
+        "id": "hjsta-04",
+        "benchmarkPassed": true,
+        "photoError": 0.006172839506172839,
+        "actualCounts": [
+          5,
+          5
+        ],
+        "referenceCounts": [
+          5,
+          5
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.2977735705592636,
+            "p95InkDistanceMm": 0.7349802568909136,
+            "mirroredHorizontally": false
+          },
+          {
+            "meanInkDistanceMm": 0.3430425512505967,
+            "p95InkDistanceMm": 0.8695851849220816,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjsta-04"
+      },
+      {
+        "id": "hjsta-05",
+        "benchmarkPassed": true,
+        "photoError": 0.012731885419742812,
+        "actualCounts": [
+          4,
+          4
+        ],
+        "referenceCounts": [
+          4,
+          4
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          0
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 2.3883341939237797,
+            "p95InkDistanceMm": 6.136035652542002,
+            "mirroredHorizontally": true
+          },
+          {
+            "meanInkDistanceMm": 2.5400724401126027,
+            "p95InkDistanceMm": 6.323895399064847,
+            "mirroredHorizontally": false
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjsta-05"
+      },
+      {
+        "id": "hjfla-01",
+        "benchmarkPassed": true,
+        "photoError": 0.013509114583333334,
+        "actualCounts": [
+          4,
+          4
+        ],
+        "referenceCounts": [
+          4,
+          4
+        ],
+        "countAgreement": true,
+        "referenceAssignment": [
+          0,
+          1
+        ],
+        "inkDiagnostics": [
+          {
+            "meanInkDistanceMm": 0.6447418719547787,
+            "p95InkDistanceMm": 1.589452115870913,
+            "mirroredHorizontally": false
+          },
+          {
+            "meanInkDistanceMm": 0.23822252803348107,
+            "p95InkDistanceMm": 0.758222508450726,
+            "mirroredHorizontally": true
+          }
+        ],
+        "artifactDirectory": "tmp/inverse-hunodan/2026-09-08-release/hjfla-01"
+      }
+    ]
+  },
+  "cropReplay": {
+    "static/inverse/core/crop.js": "62cdf5cd36981600f5e952fee5f0647baebbb5d1682980886c97b02d4cd57936",
+    "static/inverse/locator/locator.js": "354b592c3701ae45b3c1bed7688368476cbdae3c60a9617188386df52f918336",
+    "static/inverse/locator/palette.js": "502affe56bd94f932f115d637085979ae466da0da951a1a7258f33d8810394e1",
+    "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "scripts/inverse/hunodan-corpus.mjs": "65b709f1938f979211fb88df7569023008b19de571d0420e50f004f419bc4ade"
+  },
+  "fullReportNote": "Tracked per-case reports are compact summaries. Full reports and exported files are retained at reportFile, with SHA-256 hashes."
+}

@@ -1,0 +1,13 @@
+{
+  "source": "https://www.hunodan.dk/julehjerter/julehjerter.html",
+  "scope": "All 27 sources are retained. The user explicitly excluded irregular patterns with interior cuts on 2026-09-07. The separate semicircular cutout is treated under that exception, as stated to the user after optional clarification received no reply.",
+  "excluded": {
+    "hjhih-05": "Published template contains additional slits ending inside the overlap body.",
+    "hjstr-04": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
+    "hjstr-05": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
+    "hjhih-03": "Published template has two shoulder endpoints and four fold endpoints; two inner slits stop at the interior construction line.",
+    "hjfla-02": "The bright sheet requires a separate internal semicircular cutout. Assumed covered by the user's irregular/interior-cut exception; retained in auxiliary tests."
+  },
+  "requiredCount": 22,
+  "referenceUse": "Reference images establish validation scope and template fidelity only. They must not supply fitting coordinates, slit counts, phases, or stored candidate geometry."
+}

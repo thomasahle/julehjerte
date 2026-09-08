@@ -1,0 +1,1035 @@
+{
+  "description": "All 40 identifiable woven-heart regions in the supplied collage, including edge fragments and clipped hearts. Bare lobe fragments without an identifiable woven region are not separate cases. Crops are visual hypotheses; inferred corners outside the image are explicit.",
+  "bell": {
+    "file": "tmp/inverse-robustness/bell-source.png",
+    "quad": [
+      [
+        488,
+        115
+      ],
+      [
+        873,
+        494
+      ],
+      [
+        489,
+        873
+      ],
+      [
+        106,
+        495
+      ]
+    ]
+  },
+  "collage": {
+    "file": "tmp/inverse-robustness/hard-cases.png",
+    "dimensions": [
+      1482,
+      1112
+    ],
+    "cases": [
+      {
+        "id": "oval-figure",
+        "quad": [
+          [
+            148,
+            -67
+          ],
+          [
+            233,
+            39
+          ],
+          [
+            113,
+            153
+          ],
+          [
+            28,
+            47
+          ]
+        ],
+        "label": "R1C1",
+        "row": 1,
+        "column": 1,
+        "clippedByFrame": true
+      },
+      {
+        "id": "eight-point-star",
+        "quad": [
+          [
+            359,
+            -42
+          ],
+          [
+            453,
+            38
+          ],
+          [
+            341,
+            140
+          ],
+          [
+            247,
+            60
+          ]
+        ],
+        "label": "R1C2",
+        "row": 1,
+        "column": 2,
+        "clippedByFrame": true
+      },
+      {
+        "id": "small-figure",
+        "quad": [
+          [
+            565,
+            -42
+          ],
+          [
+            649,
+            40
+          ],
+          [
+            555,
+            132
+          ],
+          [
+            471,
+            50
+          ]
+        ],
+        "label": "R1C3",
+        "row": 1,
+        "column": 3,
+        "clippedByFrame": true
+      },
+      {
+        "id": "deer",
+        "quad": [
+          [
+            746,
+            -47
+          ],
+          [
+            839,
+            34
+          ],
+          [
+            739,
+            145
+          ],
+          [
+            646,
+            64
+          ]
+        ],
+        "label": "R1C4",
+        "row": 1,
+        "column": 4,
+        "clippedByFrame": true
+      },
+      {
+        "id": "top-checker",
+        "quad": [
+          [
+            924,
+            -37
+          ],
+          [
+            1017,
+            43
+          ],
+          [
+            921,
+            143
+          ],
+          [
+            828,
+            63
+          ]
+        ],
+        "label": "R1C5",
+        "row": 1,
+        "column": 5,
+        "clippedByFrame": true
+      },
+      {
+        "id": "top-candle",
+        "quad": [
+          [
+            1114,
+            -40
+          ],
+          [
+            1216,
+            38
+          ],
+          [
+            1114,
+            141
+          ],
+          [
+            1012,
+            63
+          ]
+        ],
+        "label": "R1C6",
+        "row": 1,
+        "column": 6,
+        "clippedByFrame": true
+      },
+      {
+        "id": "top-tree",
+        "quad": [
+          [
+            1325,
+            -29
+          ],
+          [
+            1431,
+            53
+          ],
+          [
+            1321,
+            143
+          ],
+          [
+            1215,
+            61
+          ]
+        ],
+        "label": "R1C7",
+        "row": 1,
+        "column": 7,
+        "clippedByFrame": true
+      },
+      {
+        "id": "partial-top-right",
+        "quad": [
+          [
+            1533,
+            -40
+          ],
+          [
+            1630,
+            42
+          ],
+          [
+            1532,
+            138
+          ],
+          [
+            1435,
+            56
+          ]
+        ],
+        "label": "R1C8",
+        "row": 1,
+        "column": 8,
+        "clippedByFrame": true
+      },
+      {
+        "id": "partial-left-checker",
+        "quad": [
+          [
+            6,
+            191
+          ],
+          [
+            118,
+            270
+          ],
+          [
+            26,
+            361
+          ],
+          [
+            -86,
+            282
+          ]
+        ],
+        "label": "R2C1",
+        "row": 2,
+        "column": 1,
+        "clippedByFrame": true
+      },
+      {
+        "id": "nested-squares",
+        "quad": [
+          [
+            214,
+            178
+          ],
+          [
+            312,
+            260
+          ],
+          [
+            213,
+            332
+          ],
+          [
+            124,
+            249
+          ]
+        ],
+        "label": "R2C2",
+        "row": 2,
+        "column": 2,
+        "clippedByFrame": false
+      },
+      {
+        "id": "outline-star",
+        "quad": [
+          [
+            422,
+            173
+          ],
+          [
+            516,
+            253
+          ],
+          [
+            427,
+            339
+          ],
+          [
+            337,
+            258
+          ]
+        ],
+        "label": "R2C3",
+        "row": 2,
+        "column": 3,
+        "clippedByFrame": false
+      },
+      {
+        "id": "floral-checker",
+        "quad": [
+          [
+            620,
+            166
+          ],
+          [
+            719,
+            244
+          ],
+          [
+            625,
+            326
+          ],
+          [
+            518,
+            247
+          ]
+        ],
+        "label": "R2C4",
+        "row": 2,
+        "column": 4,
+        "clippedByFrame": false
+      },
+      {
+        "id": "dense-checker",
+        "quad": [
+          [
+            825,
+            170
+          ],
+          [
+            937,
+            250
+          ],
+          [
+            836,
+            337
+          ],
+          [
+            724,
+            252
+          ]
+        ],
+        "label": "R2C5",
+        "row": 2,
+        "column": 5,
+        "clippedByFrame": false
+      },
+      {
+        "id": "bird",
+        "quad": [
+          [
+            1033,
+            156
+          ],
+          [
+            1142,
+            234
+          ],
+          [
+            1040,
+            316
+          ],
+          [
+            943,
+            241
+          ]
+        ],
+        "label": "R2C6",
+        "row": 2,
+        "column": 6,
+        "clippedByFrame": false
+      },
+      {
+        "id": "leaf",
+        "quad": [
+          [
+            1226,
+            140
+          ],
+          [
+            1336,
+            225
+          ],
+          [
+            1251,
+            317
+          ],
+          [
+            1149,
+            238
+          ]
+        ],
+        "label": "R2C7",
+        "row": 2,
+        "column": 7,
+        "clippedByFrame": false
+      },
+      {
+        "id": "partial-right-checker",
+        "quad": [
+          [
+            1449,
+            137
+          ],
+          [
+            1560,
+            221
+          ],
+          [
+            1455,
+            312
+          ],
+          [
+            1344,
+            228
+          ]
+        ],
+        "label": "R2C8",
+        "row": 2,
+        "column": 8,
+        "clippedByFrame": true
+      },
+      {
+        "id": "partial-left-abstract",
+        "quad": [
+          [
+            44,
+            419
+          ],
+          [
+            151,
+            509
+          ],
+          [
+            42,
+            594
+          ],
+          [
+            -65,
+            504
+          ]
+        ],
+        "label": "R3C1",
+        "row": 3,
+        "column": 1,
+        "clippedByFrame": true
+      },
+      {
+        "id": "gift",
+        "quad": [
+          [
+            231,
+            399
+          ],
+          [
+            327,
+            476
+          ],
+          [
+            237,
+            552
+          ],
+          [
+            146,
+            471
+          ]
+        ],
+        "label": "R3C2",
+        "row": 3,
+        "column": 2,
+        "clippedByFrame": false
+      },
+      {
+        "id": "gingerbread",
+        "quad": [
+          [
+            430,
+            415
+          ],
+          [
+            521,
+            487
+          ],
+          [
+            427,
+            575
+          ],
+          [
+            338,
+            492
+          ]
+        ],
+        "label": "R3C3",
+        "row": 3,
+        "column": 3,
+        "clippedByFrame": false
+      },
+      {
+        "id": "white-birds",
+        "quad": [
+          [
+            614,
+            417
+          ],
+          [
+            701,
+            487
+          ],
+          [
+            622,
+            581
+          ],
+          [
+            521,
+            493
+          ]
+        ],
+        "label": "R3C4",
+        "row": 3,
+        "column": 4,
+        "clippedByFrame": false
+      },
+      {
+        "id": "flower",
+        "quad": [
+          [
+            794,
+            385
+          ],
+          [
+            903,
+            469
+          ],
+          [
+            811,
+            569
+          ],
+          [
+            704,
+            481
+          ]
+        ],
+        "label": "R3C5",
+        "row": 3,
+        "column": 5,
+        "clippedByFrame": false
+      },
+      {
+        "id": "warped-checker",
+        "quad": [
+          [
+            993,
+            374
+          ],
+          [
+            1101,
+            464
+          ],
+          [
+            1008,
+            544
+          ],
+          [
+            904,
+            463
+          ]
+        ],
+        "label": "R3C6",
+        "row": 3,
+        "column": 6,
+        "clippedByFrame": false
+      },
+      {
+        "id": "round-checker",
+        "quad": [
+          [
+            1190,
+            387
+          ],
+          [
+            1290,
+            465
+          ],
+          [
+            1202,
+            549
+          ],
+          [
+            1102,
+            471
+          ]
+        ],
+        "label": "R3C7",
+        "row": 3,
+        "column": 7,
+        "clippedByFrame": false
+      },
+      {
+        "id": "santa",
+        "quad": [
+          [
+            1355,
+            371
+          ],
+          [
+            1451,
+            456
+          ],
+          [
+            1371,
+            537
+          ],
+          [
+            1271,
+            461
+          ]
+        ],
+        "label": "R3C8",
+        "row": 3,
+        "column": 8,
+        "clippedByFrame": false
+      },
+      {
+        "id": "partial-left-diamonds",
+        "quad": [
+          [
+            23,
+            675
+          ],
+          [
+            113,
+            755
+          ],
+          [
+            14,
+            844
+          ],
+          [
+            -76,
+            764
+          ]
+        ],
+        "label": "R4C1",
+        "row": 4,
+        "column": 1,
+        "clippedByFrame": true
+      },
+      {
+        "id": "fine-checker",
+        "quad": [
+          [
+            215,
+            638
+          ],
+          [
+            309,
+            712
+          ],
+          [
+            203,
+            802
+          ],
+          [
+            109,
+            728
+          ]
+        ],
+        "label": "R4C2",
+        "row": 4,
+        "column": 2,
+        "clippedByFrame": false
+      },
+      {
+        "id": "orb",
+        "quad": [
+          [
+            407,
+            661
+          ],
+          [
+            507,
+            737
+          ],
+          [
+            386,
+            830
+          ],
+          [
+            308,
+            749
+          ]
+        ],
+        "label": "R4C3",
+        "row": 4,
+        "column": 3,
+        "clippedByFrame": false
+      },
+      {
+        "id": "stacked-hearts",
+        "quad": [
+          [
+            603,
+            652
+          ],
+          [
+            703,
+            735
+          ],
+          [
+            603,
+            831
+          ],
+          [
+            506,
+            741
+          ]
+        ],
+        "label": "R4C4",
+        "row": 4,
+        "column": 4,
+        "clippedByFrame": false
+      },
+      {
+        "id": "jigsaw",
+        "quad": [
+          [
+            787,
+            644
+          ],
+          [
+            890,
+            724
+          ],
+          [
+            798,
+            824
+          ],
+          [
+            705,
+            741
+          ]
+        ],
+        "label": "R4C5",
+        "row": 4,
+        "column": 5,
+        "clippedByFrame": false
+      },
+      {
+        "id": "candle",
+        "quad": [
+          [
+            999,
+            607
+          ],
+          [
+            1114,
+            700
+          ],
+          [
+            1008,
+            800
+          ],
+          [
+            906,
+            707
+          ]
+        ],
+        "label": "R4C6",
+        "row": 4,
+        "column": 6,
+        "clippedByFrame": false
+      },
+      {
+        "id": "maple-leaf",
+        "quad": [
+          [
+            1182,
+            635
+          ],
+          [
+            1285,
+            721
+          ],
+          [
+            1181,
+            814
+          ],
+          [
+            1093,
+            726
+          ]
+        ],
+        "label": "R4C7",
+        "row": 4,
+        "column": 7,
+        "clippedByFrame": false
+      },
+      {
+        "id": "crown",
+        "quad": [
+          [
+            1370,
+            631
+          ],
+          [
+            1459,
+            710
+          ],
+          [
+            1375,
+            793
+          ],
+          [
+            1284,
+            717
+          ]
+        ],
+        "label": "R4C8",
+        "row": 4,
+        "column": 8,
+        "clippedByFrame": false
+      },
+      {
+        "id": "partial-bottom-left",
+        "quad": [
+          [
+            -7,
+            940
+          ],
+          [
+            83,
+            1027
+          ],
+          [
+            -12,
+            1114
+          ],
+          [
+            -102,
+            1027
+          ]
+        ],
+        "label": "R5C1",
+        "row": 5,
+        "column": 1,
+        "clippedByFrame": true
+      },
+      {
+        "id": "bottom-diamonds",
+        "quad": [
+          [
+            177,
+            937
+          ],
+          [
+            284,
+            1023
+          ],
+          [
+            182,
+            1116
+          ],
+          [
+            75,
+            1030
+          ]
+        ],
+        "label": "R5C2",
+        "row": 5,
+        "column": 2,
+        "clippedByFrame": true
+      },
+      {
+        "id": "crossed-ribbons",
+        "quad": [
+          [
+            399,
+            915
+          ],
+          [
+            497,
+            1004
+          ],
+          [
+            386,
+            1111
+          ],
+          [
+            288,
+            1022
+          ]
+        ],
+        "label": "R5C3",
+        "row": 5,
+        "column": 3,
+        "clippedByFrame": false
+      },
+      {
+        "id": "bauble",
+        "quad": [
+          [
+            581,
+            918
+          ],
+          [
+            685,
+            1001
+          ],
+          [
+            586,
+            1112
+          ],
+          [
+            482,
+            1029
+          ]
+        ],
+        "label": "R5C4",
+        "row": 5,
+        "column": 4,
+        "clippedByFrame": false
+      },
+      {
+        "id": "glare-motif",
+        "quad": [
+          [
+            779,
+            916
+          ],
+          [
+            893,
+            1009
+          ],
+          [
+            797,
+            1110
+          ],
+          [
+            683,
+            1017
+          ]
+        ],
+        "label": "R5C5",
+        "row": 5,
+        "column": 5,
+        "clippedByFrame": false,
+        "occlusionNote": "Strong glare over the motif"
+      },
+      {
+        "id": "bottom-flower",
+        "quad": [
+          [
+            1007,
+            918
+          ],
+          [
+            1126,
+            1000
+          ],
+          [
+            1022,
+            1116
+          ],
+          [
+            903,
+            1034
+          ]
+        ],
+        "label": "R5C6",
+        "row": 5,
+        "column": 6,
+        "clippedByFrame": true
+      },
+      {
+        "id": "faceted-star",
+        "quad": [
+          [
+            1218,
+            910
+          ],
+          [
+            1328,
+            1003
+          ],
+          [
+            1241,
+            1102
+          ],
+          [
+            1131,
+            1009
+          ]
+        ],
+        "label": "R5C7",
+        "row": 5,
+        "column": 7,
+        "clippedByFrame": false
+      },
+      {
+        "id": "partial-bottom-right",
+        "quad": [
+          [
+            1425,
+            915
+          ],
+          [
+            1526,
+            1006
+          ],
+          [
+            1436,
+            1113
+          ],
+          [
+            1335,
+            1022
+          ]
+        ],
+        "label": "R5C8",
+        "row": 5,
+        "column": 8,
+        "clippedByFrame": true,
+        "occlusionNote": "App icon overlays the lower right of this heart"
+      }
+    ]
+  }
+}

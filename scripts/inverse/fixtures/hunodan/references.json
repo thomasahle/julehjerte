@@ -1,0 +1,376 @@
+{
+  "purpose": "Validation annotations only. Never loaded by preparation or reconstruction.",
+  "coordinateConvention": "Original JPEG pixels; rectangle from shoulder line to fold, excluding the upper cap.",
+  "annotationMethod": "Body rectangles located from long greyscale frame lines, inspected in a contact sheet; flag rectangles annotated from their two separately printed templates. Slit counts transcribed from the published drawings.",
+  "limitations": "The printed drawings include dimensions and construction guides. Ink proximity is a diagnostic, not proof that cuts agree. A physically equivalent reconstruction can route concealed cuts differently.",
+  "cases": [
+    {
+      "id": "hjfig-01",
+      "templates": [
+        {
+          "bodyPixels": [
+            19,
+            130,
+            225,
+            335
+          ],
+          "fullSlits": 2
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjfig-02",
+      "templates": [
+        {
+          "bodyPixels": [
+            17,
+            127,
+            224,
+            333
+          ],
+          "fullSlits": 2
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjfig-03",
+      "templates": [
+        {
+          "bodyPixels": [
+            13,
+            130,
+            220,
+            337
+          ],
+          "fullSlits": 2
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjfig-04",
+      "templates": [
+        {
+          "bodyPixels": [
+            19,
+            123,
+            224,
+            329
+          ],
+          "fullSlits": 2
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjfig-05",
+      "templates": [
+        {
+          "bodyPixels": [
+            47,
+            117,
+            251,
+            323
+          ],
+          "fullSlits": 4
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjcur-01",
+      "templates": [
+        {
+          "bodyPixels": [
+            11,
+            120,
+            218,
+            326
+          ],
+          "fullSlits": 4
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjcur-02",
+      "templates": [
+        {
+          "bodyPixels": [
+            12,
+            123,
+            218,
+            331
+          ],
+          "fullSlits": 4
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjcur-03",
+      "templates": [
+        {
+          "bodyPixels": [
+            19,
+            123,
+            226,
+            329
+          ],
+          "fullSlits": 4
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjcur-04",
+      "templates": [
+        {
+          "bodyPixels": [
+            8,
+            123,
+            215,
+            330
+          ],
+          "fullSlits": 6
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjcur-05",
+      "templates": [
+        {
+          "bodyPixels": [
+            14,
+            121,
+            219,
+            327
+          ],
+          "fullSlits": 2
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjhih-01",
+      "templates": [
+        {
+          "bodyPixels": [
+            10,
+            121,
+            217,
+            327
+          ],
+          "fullSlits": 4
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjhih-02",
+      "templates": [
+        {
+          "bodyPixels": [
+            8,
+            127,
+            214,
+            334
+          ],
+          "fullSlits": 3
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjhih-04",
+      "templates": [
+        {
+          "bodyPixels": [
+            21,
+            126,
+            228,
+            333
+          ],
+          "fullSlits": 5
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjstr-01",
+      "templates": [
+        {
+          "bodyPixels": [
+            10,
+            180,
+            217,
+            387
+          ],
+          "fullSlits": 3
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjstr-02",
+      "templates": [
+        {
+          "bodyPixels": [
+            24,
+            126,
+            229,
+            334
+          ],
+          "fullSlits": 5
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjstr-03",
+      "templates": [
+        {
+          "bodyPixels": [
+            18,
+            127,
+            225,
+            334
+          ],
+          "fullSlits": 7
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjsta-01",
+      "templates": [
+        {
+          "bodyPixels": [
+            10,
+            118,
+            216,
+            325
+          ],
+          "fullSlits": 2
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjsta-02",
+      "templates": [
+        {
+          "bodyPixels": [
+            11,
+            117,
+            217,
+            324
+          ],
+          "fullSlits": 3
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjsta-03",
+      "templates": [
+        {
+          "bodyPixels": [
+            11,
+            116,
+            219,
+            323
+          ],
+          "fullSlits": 4
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjsta-04",
+      "templates": [
+        {
+          "bodyPixels": [
+            15,
+            116,
+            222,
+            323
+          ],
+          "fullSlits": 5
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjsta-05",
+      "templates": [
+        {
+          "bodyPixels": [
+            14,
+            120,
+            220,
+            327
+          ],
+          "fullSlits": 4
+        }
+      ],
+      "sameReferenceForBothSheets": true
+    },
+    {
+      "id": "hjfla-01",
+      "templates": [
+        {
+          "bodyPixels": [
+            57,
+            132,
+            264,
+            340
+          ],
+          "fullSlits": 4,
+          "sheet": "dark"
+        },
+        {
+          "bodyPixels": [
+            322,
+            132,
+            529,
+            340
+          ],
+          "fullSlits": 4,
+          "sheet": "bright"
+        }
+      ],
+      "sameReferenceForBothSheets": false
+    },
+    {
+      "id": "hjfla-02",
+      "templates": [
+        {
+          "bodyPixels": [
+            57,
+            137,
+            263,
+            343
+          ],
+          "fullSlits": 3,
+          "sheet": "dark"
+        },
+        {
+          "bodyPixels": [
+            323,
+            137,
+            529,
+            343
+          ],
+          "fullSlits": 2,
+          "sheet": "bright"
+        }
+      ],
+      "sameReferenceForBothSheets": false,
+      "additionalReferenceCuts": "The bright sheet also has an interior semicircular cutout. Full-slit counts alone do not verify that cutout or the circular motif."
+    }
+  ]
+}

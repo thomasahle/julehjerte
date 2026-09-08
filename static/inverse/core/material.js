@@ -1,0 +1,64 @@
+/** Unfolded-sheet rolling-disk support test.
+ * The JavaScript port uses a guarded raster of disk centres, with exact
+ * polyline distances near the threshold. It reports PASS / FAIL / UNCERTAIN,
+ * not an unsupported claim that a discretized mask proves tensile strength.
+ */
+import {pathPolyline,distance,mix,segmentDistance,Cubic,add,mul} from './bezier.js';
+import {curvesOf} from './graph.js';
+import {segments,lineSimple,lineDistance,keyPoint,pointInRing} from './geometry.js';
+import {closedRings,sampleRings} from './validate.js';
+export function distanceTransform(seeds,nx,ny){
+  const count=nx*ny,big=1e12,first=new Float64Array(count),out=new Float64Array(count),size=Math.max(nx,ny),f=new Float64Array(size),d=new Float64Array(size),v=new Int32Array(size),z=new Float64Array(size+1);
+  function edt(n){let k=0;v[0]=0;z[0]=-Infinity;z[1]=Infinity;for(let q=1;q<n;q++){let s=((f[q]+q*q)-(f[v[k]]+v[k]*v[k]))/(2*(q-v[k]));while(s<=z[k]&&k>0){k--;s=((f[q]+q*q)-(f[v[k]]+v[k]*v[k]))/(2*(q-v[k]));}k++;v[k]=q;z[k]=s;z[k+1]=Infinity;}k=0;for(let q=0;q<n;q++){while(z[k+1]<q)k++;d[q]=(q-v[k])**2+f[v[k]];}}
+  for(let x=0;x<nx;x++){for(let y=0;y<ny;y++)f[y]=seeds[y*nx+x]?0:big;edt(ny);for(let y=0;y<ny;y++)first[y*nx+x]=d[y];}
+  for(let y=0;y<ny;y++){for(let x=0;x<nx;x++)f[x]=first[y*nx+x];edt(nx);for(let x=0;x<nx;x++)out[y*nx+x]=d[x];}return out;
+}
+export function unfoldedPolylines(solution,k,tol=.01){const w=solution.graph.target.width;return solution.paths[k].map((_,i)=>{let p=pathPolyline(curvesOf(solution,k,i),tol);if(k===1)p=p.map(([x,y])=>[y,x]);return[...p,...p.slice(0,-1).reverse().map(([x,y])=>[x,2*w-y])];});}
+function labelCore(mask,nx,ny,originY,h,w,offset,minArea){
+  const labels=new Int32Array(mask.length),queue=new Int32Array(mask.length),parts=[];let id=0;
+  for(let i=0;i<mask.length;i++){
+    if(!mask[i]||labels[i])continue;
+    id++;let tail=1;queue[0]=i;labels[i]=id;let anchored=false;
+    for(let head=0;head<tail;head++){
+      const p=queue[head],x=p%nx,y=Math.floor(p/nx),yy=originY+(y+.5)*h;
+      if(yy<-offset*1.1||yy>2*w+offset*1.1)anchored=true;
+      let q=p-1;if(x>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+      q=p+1;if(x<nx-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+      q=p-nx;if(y>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+      q=p+nx;if(y<ny-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+    }
+    parts.push({id,anchored,area:tail*h*h,significant:tail*h*h>=minArea});
+  }
+  const anchors=new Set(parts.filter(p=>p.anchored).map(p=>p.id)),floating=parts.filter(p=>!p.anchored&&p.significant);
+  return{labels,parts,anchors,floating};
+}
+function materialFamily(solution,k,cfg,includeMap){
+  const w=solution.graph.target.width,nx=cfg.materialResolution,ny=3*nx,h=w/nx,originY=-w/2,tol=cfg.geometryTolerance,R=cfg.nominalWidth/2,guard=Math.SQRT2*h/2+tol,lines=unfoldedPolylines(solution,k,tol),ss=lines.flatMap(segments),seeds=new Uint8Array(nx*ny),cell=Math.max(R+5*h,4*h),tiles=new Map();
+  for(let si=0;si<ss.length;si++){const s=ss[si],steps=Math.max(1,Math.ceil(distance(s.a,s.b)/(h/3)));for(let t=0;t<=steps;t++){const p=mix(s.a,s.b,t/steps),ix=Math.round(p[0]/h-.5),iy=Math.round((p[1]-originY)/h-.5);if(ix>=0&&ix<nx&&iy>=0&&iy<ny)seeds[iy*nx+ix]=1;}const[ax,ay,bx,by]=s.box;for(let ty=Math.floor(ay/cell);ty<=Math.floor(by/cell);ty++)for(let tx=Math.floor(ax/cell);tx<=Math.floor(bx/cell);tx++){const key=tx+','+ty;if(!tiles.has(key))tiles.set(key,[]);tiles.get(key).push(si);}}
+  const neighborTiles=new Map();
+  const edt=distanceTransform(seeds,nx,ny),certain=new Uint8Array(nx*ny),possible=new Uint8Array(nx*ny),paper=includeMap?new Uint8Array(nx*ny):null;
+  for(let y=0;y<ny;y++)for(let x=0;x<nx;x++){const i=y*nx+x,xx=(x+.5)*h,yy=originY+(y+.5)*h,distOutline=w/2-Math.hypot(xx-w/2,Math.max(0,-yy,yy-2*w));if(paper&&distOutline>0)paper[i]=1;if(distOutline<R-guard)continue;let d=Math.sqrt(edt[i])*h;
+    // EDT is only an accelerator. Recompute chord distance near either
+    // threshold, so lattice seeding does not determine a narrow-neck decision.
+    if(ss.length&&Math.abs(d-R)<4*h+2*tol){d=Infinity;const tx=Math.floor(xx/cell),ty=Math.floor(yy/cell),key=tx+','+ty;let near=neighborTiles.get(key);if(!near){const seen=new Set();for(let j=-1;j<=1;j++)for(let l=-1;l<=1;l++)for(const si of tiles.get((tx+l)+','+(ty+j))||[])seen.add(si);near=[...seen];neighborTiles.set(key,near);}const p=[xx,yy];for(const si of near)d=Math.min(d,segmentDistance(p,ss[si].a,ss[si].b));}
+    const clearance=Math.min(distOutline,d);if(clearance>R+guard)certain[i]=1;if(clearance>R-guard)possible[i]=1;
+  }
+  const c=labelCore(certain,nx,ny,originY,h,w,R,cfg.minFeatureArea),p=labelCore(possible,nx,ny,originY,h,w,R,cfg.minFeatureArea),foldY=Math.min(ny-1,Math.round((w-originY)/h-.5)),foldCuts=[0,w,...solution.paths[k].map((_,i)=>{const cc=curvesOf(solution,k,i).at(-1);return cc.p[3][k===0?0:1];})].sort((a,b)=>a-b),fold=[];
+  for(let j=1;j<foldCuts.length;j++){let certainLength=0,possibleLength=0;for(let x=0;x<nx;x++){const xx=(x+.5)*h;if(xx<=foldCuts[j-1]||xx>=foldCuts[j])continue;const index=foldY*nx+x;if(c.anchors.has(c.labels[index]))certainLength+=h;if(p.anchors.has(p.labels[index]))possibleLength+=h;}fold.push({interval:[foldCuts[j-1],foldCuts[j]],certainCoreLength:certainLength,possibleCoreLength:possibleLength});}
+  const certainBad=c.floating.length+fold.filter(f=>f.certainCoreLength<h/2).length,possibleBad=p.floating.length+fold.filter(f=>f.possibleCoreLength<h/2).length,status=possibleBad?'fail':certainBad?'uncertain':'pass';
+  let map=null;if(includeMap){map=new Uint8Array(nx*ny);for(let i=0;i<map.length;i++){if(!paper[i])continue;if(certain[i])map[i]=c.anchors.has(c.labels[i])?1:3;else if(possible[i])map[i]=2;else map[i]=4;}}
+  return{family:k,status,detachedCertainCoreIslands:c.floating.length,detachedPossibleCoreIslands:p.floating.length,detachedPossibleArea:p.floating.reduce((s,x)=>s+x.area,0),foldIntervals:fold,gridSpacing:h,clearanceGuard:guard,resolution:[nx,ny],originY,map,minimumDiameter:cfg.nominalWidth};
+}
+export function materialAudit(solution,cfg,{includeMaps=false}={}){const start=performance.now(),families=[0,1].map(k=>materialFamily(solution,k,cfg,includeMaps)),status=families.some(f=>f.status==='fail')?'fail':families.some(f=>f.status==='uncertain')?'uncertain':'pass';return{passed:status==='pass',status,families,summary:{status,requiredRemainingWidth:cfg.minWidth,nominalDiameter:cfg.nominalWidth,gridSpacing:families[0].gridSpacing,clearanceGuard:families[0].clearanceGuard,families:families.map(({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})=>({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})),method:'Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.',seconds:(performance.now()-start)/1000,limitations:['This replaces the Python GEOS offset implementation; numerical results are not identical.','Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.','Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.','Small tips and features below the explicitly stated area threshold are not certified.']}};}
+export function seededRandom(seed=1729){let a=seed>>>0;return()=>{a+=0x6D2B79F5;let t=Math.imul(a^(a>>>15),1|a);t^=t+Math.imul(t^(t>>>7),61|t);return((t^(t>>>14))>>>0)/4294967296;};}
+export function perturbationAudit(solution,cfg,{onProgress=()=>{},resolution=121}={}){
+  const w=solution.graph.target.width,baseRings=closedRings(solution,cfg.geometryTolerance),phase=solution.graph.target.phase^(solution.paths[0].length%2)^(solution.paths[1].length%2),baseline=sampleRings(baseRings.flat(),w,phase,resolution),random=seededRandom(cfg.seed),trials=[];let worst=null;
+  const offset=()=>{const r=cfg.cutError*Math.sqrt(random()),t=random()*Math.PI*2;return[r*Math.cos(t),r*Math.sin(t)];};
+  for(let trial=0;trial<cfg.trials;trial++){const transformed=[],allLines=[],issues=[],dx=(2*random()-1)*cfg.registration,dy=(2*random()-1)*cfg.registration,rot=(2*random()-1)*cfg.rotation*Math.PI/180,scale=1+(2*random()-1)*cfg.relativeScalePercent/100,transform=p=>{const x=(p[0]-w/2)*scale,y=(p[1]-w/2)*scale;return[w/2+dx+x*Math.cos(rot)-y*Math.sin(rot),w/2+dy+x*Math.sin(rot)+y*Math.cos(rot)];};
+    for(const k of[0,1]){const nodeOffsets=new Map(),family=[];for(let pi=0;pi<solution.paths[k].length;pi++){const cs=curvesOf(solution,k,pi).map(c=>new Cubic(c.p.map((p,i)=>{let d;if(i===0||i===3){const key=keyPoint(p,6);if(!nodeOffsets.has(key))nodeOffsets.set(key,offset());d=nodeOffsets.get(key).slice();const axis=k===0?1:0;if(Math.abs(p[axis])<1e-5||Math.abs(p[axis]-w)<1e-5)d[axis]=0;}else d=offset();return add(p,d);}))),line=pathPolyline(cs,cfg.geometryTolerance);if(!lineSimple(line))issues.push({type:'self_intersection',family:k,slit:pi});family.push(line);const ring=[[0,0],...line,k===0?[0,w]:[w,0],[0,0]];transformed.push(k===1?ring.map(transform):ring);}for(let a=0;a<family.length;a++)for(let b=a+1;b<family.length;b++){const d=lineDistance(family[a],family[b]);if(d<1e-8)issues.push({type:'slit_intersection',family:k});else if(d<cfg.minWidth)issues.push({type:'spacing_below_remaining_target',family:k,distance:d});}allLines.push(family);}
+    const invalid=issues.some(x=>x.type.endsWith('intersection')),entry={trial:trial+1,invalidTopology:invalid,issues,translation:[dx,dy],rotationDegrees:rot*180/Math.PI,relativeScale:scale};
+    if(!invalid){const sample=sampleRings(transformed,w,phase,resolution),bSquare=[[0,0],[w,0],[w,w],[0,w]].map(transform);let mismatch=0,uncovered=0,covered=0;const difference=new Uint8Array(baseline.length);for(let y=0;y<resolution;y++)for(let x=0;x<resolution;x++){const i=y*resolution+x,p=[(x+.5)*w/resolution,(y+.5)*w/resolution];if(!pointInRing(p,bSquare)){uncovered++;difference[i]=2;}else{covered++;if(sample[i]!==baseline[i]){mismatch++;difference[i]=1;}}}entry.overlapMismatchFraction=covered?mismatch/covered:null;entry.uncoveredSquareFraction=uncovered/baseline.length;if(!worst||mismatch+uncovered>worst.score)worst={trial:trial+1,score:mismatch+uncovered,map:difference,resolution};}
+    trials.push(entry);onProgress({stage:'tolerances',trial:trial+1,total:cfg.trials});
+  }
+  const valid=trials.filter(t=>!t.invalidTopology);return{summary:{trials:cfg.trials,seed:cfg.seed,invalidTopologyTrials:trials.length-valid.length,validTopologyTrials:valid.length,maximumSampledOverlapMismatchFraction:valid.length?Math.max(...valid.map(t=>t.overlapMismatchFraction||0)):null,maximumSampledUncoveredFraction:valid.length?Math.max(...valid.map(t=>t.uncoveredSquareFraction)):null,measurementResolution:resolution,cutError:cfg.cutError,registration:cfg.registration,kerfAppliedInWidthAllowanceNotDriftSimulation:true,limitations:['Finite synthetic samples, not probabilities or a worst-case robustness proof.','Independent control-point drift on the two physical sheets. Shared nominal cuts are not artificially kept identical.','Invalid topology is a failed trial, not zero image error.','Misregistration is relative rigid placement of sheet B; it does not reduce within-sheet paper width.']},trials,worst};
+}

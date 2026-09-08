@@ -1,0 +1,62 @@
+{
+  "origin": "http://127.0.0.1:4174",
+  "results": [
+    {
+      "browser": "chromium",
+      "checks": [
+        "Original paths and classified mask remain unchanged and accessible after a fresh solve",
+        "Highlighted pixels exactly match the report’s image-error samples",
+        "Blend endpoints reproduce each image, and original paths align as an optional overlay",
+        "Comparison controls fit mobile width and preserve access to result views and downloads",
+        "New artwork clears old comparisons; direct fitting offers the source mask without invented traced paths",
+        "Imported templates do not claim to have an original image for comparison",
+        "Danish SVG workflow retains source views and a working comparison"
+      ],
+      "pageErrors": [],
+      "difference": {
+        "highlighted": 3095,
+        "wrong": 0,
+        "expected": 3095,
+        "resolution": 360
+      }
+    },
+    {
+      "browser": "firefox",
+      "checks": [
+        "Original paths and classified mask remain unchanged and accessible after a fresh solve",
+        "Highlighted pixels exactly match the report’s image-error samples",
+        "Blend endpoints reproduce each image, and original paths align as an optional overlay",
+        "Comparison controls fit mobile width and preserve access to result views and downloads",
+        "New artwork clears old comparisons; direct fitting offers the source mask without invented traced paths",
+        "Imported templates do not claim to have an original image for comparison",
+        "Danish SVG workflow retains source views and a working comparison"
+      ],
+      "pageErrors": [],
+      "difference": {
+        "highlighted": 3095,
+        "wrong": 0,
+        "expected": 3095,
+        "resolution": 360
+      }
+    },
+    {
+      "browser": "webkit",
+      "checks": [
+        "Original paths and classified mask remain unchanged and accessible after a fresh solve",
+        "Highlighted pixels exactly match the report’s image-error samples",
+        "Blend endpoints reproduce each image, and original paths align as an optional overlay",
+        "Comparison controls fit mobile width and preserve access to result views and downloads",
+        "New artwork clears old comparisons; direct fitting offers the source mask without invented traced paths",
+        "Imported templates do not claim to have an original image for comparison",
+        "Danish SVG workflow retains source views and a working comparison"
+      ],
+      "pageErrors": [],
+      "difference": {
+        "highlighted": 3095,
+        "wrong": 0,
+        "expected": 3095,
+        "resolution": 360
+      }
+    }
+  ]
+}

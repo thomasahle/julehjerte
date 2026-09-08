@@ -362,7 +362,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null
+    "photo": {
+      "src": "/hearts/photos/circle.jpg",
+      "width": 1000,
+      "height": 1000
+    }
   },
   "balls": {
     "name": "Polka",
@@ -528,7 +532,7 @@
   "amy-pattern": {
     "name": "Klokke",
     "author": "Amy Young",
-    "authorUrl": null,
+    "authorUrl": "https://www.amydesign.co/",
     "publisher": null,
     "publisherUrl": null,
     "source": "juleflet.dk",

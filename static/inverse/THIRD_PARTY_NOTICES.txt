@@ -1,0 +1,35 @@
+# Third-party notices and binary provenance
+
+The application code is MIT-licensed; see LICENSE. User-supplied example artwork remains subject to its own rights.
+
+## HiGHS / highs-js
+
+The locally vendored JavaScript wrapper and WebAssembly binary are from `lovasoa/highs-js`, with the original package license reproduced in `site/vendor/HIGHS-LICENSE.txt`.
+
+- Wrapper package version: **1.15.3-pre.4** (a prerelease wrapper; explicitly pinned, not a claim of a stable or latest release).
+- Embedded solver: **HiGHS 1.15.1**, runtime git hash `04024d7`.
+- Wrapper source commit: `2e1c35cbd40e415bc797c642e659cd19a54ab47e`.
+- GitHub workflow run: `30268821970`; artifact `8654056245`, named `npm-package`.
+- Artifact downloaded through the GitHub connector, then extracted without changing the WASM or wrapper files.
+- No npm registry request, remote script CDN, or external solver service is made when running the app.
+
+The browser port uses the persistent sparse-model interface in this precise wrapper. Do not replace only the WASM file, silently switch to a floating CDN release, or assume a different wrapper has the same API. Choose a dependency update deliberately, update both files and notices, and rerun the numerical and browser tests before public deployment.
+
+SHA-256 hashes are recorded below and in `docs/DEPENDENCY_PROVENANCE.json`. Hashes establish the identity of the tested files; they are not a malware audit or a reproducible-source-build proof.
+
+- `vendor/highs.mjs`
+  `f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036`
+- `vendor/HIGHS-LICENSE.txt`
+  `9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa`
+- `vendor/highs.wasm`
+  `528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840`
+
+## Technical primary references
+
+- HiGHS JavaScript project: https://github.com/lovasoa/highs-js
+- HiGHS-JS documentation: https://lovasoa.github.io/highs-js/docs/
+- SVG path specification: https://www.w3.org/TR/SVG/paths.html
+- Web Worker usage: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
+- WASM streaming MIME requirement: https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/instantiateStreaming_static
+
+No third-party font files are included. All interface typography uses system fonts. No new artwork license is inferred from the software license.

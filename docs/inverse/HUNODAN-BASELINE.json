@@ -1,0 +1,1909 @@
+{
+  "scope": {
+    "source": "https://www.hunodan.dk/julehjerter/julehjerter.html",
+    "scope": "All 27 sources are retained. The user explicitly excluded patterns with partial slits from the required reconstruction score on 2026-09-07.",
+    "excluded": {
+      "hjhih-05": "Published template contains additional slits ending inside the overlap body.",
+      "hjstr-04": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
+      "hjstr-05": "Published template has four shoulder endpoints and eight fold endpoints; additional slits stop inside the paper.",
+      "hjhih-03": "Published template has two shoulder endpoints and four fold endpoints; two inner slits stop at the interior construction line."
+    },
+    "requiredCount": 23,
+    "referenceUse": "Reference images establish validation scope and template fidelity only. They must not supply fitting coordinates, slit counts, phases, or stored candidate geometry."
+  },
+  "notes": [
+    "The first direct baseline was interrupted after hjhih-02. The next process ran the remaining identifiers from fresh grids; no completed case was overwritten.",
+    "The targeted coordinated-initialization run preceded the additional separable-grid proposal. A fresh full replay of that final algorithm is still required.",
+    "These measurements validate photo agreement and exported geometry, not exact agreement with published cutting paths."
+  ],
+  "runs": [
+    {
+      "source": "tmp/inverse-hunodan/2026-09-07T21-18-03-265Z-crops/cases.json",
+      "cfg": {
+        "algorithm": "trace",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.75,
+        "maxSpan": 30,
+        "smoothRadius": 0.3,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 150,
+        "localNeighborhoodFactor": 3,
+        "roundHidden": true,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "engineSha256": {
+        "static/inverse/core/engine.js": "fc0106e3ebc341e0f94e037b0ca95d457573b98cbdbf0eb6d6874daa5d7ba283",
+        "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+        "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+        "static/inverse/core/direct/fit.js": "67d31578f5cee045e14b6256330edbf308f00146f580546be2e91395215d2b0a",
+        "src/lib/inverse/presets.js": "fc8be11f0472bc642f2969d958ef4b826fca07effe1c9ecb5590860db8a165ec"
+      },
+      "criteria": "Image-only fitting; geometry and strict paper validation plus <=3% independently rendered disagreement against original classified crop. Reference-cut agreement is a separate check.",
+      "artifactDirectory": "tmp/inverse-hunodan/2026-09-07T21-20-33-810Z-simplified",
+      "results": [
+        {
+          "id": "hjfig-01",
+          "passed": true,
+          "independentImageError": 0.019164444444444446,
+          "seconds": 11.319462417,
+          "quad": [
+            [
+              188.65840672286313,
+              50.446388800465265
+            ],
+            [
+              342.05595393044155,
+              195.6523959586842
+            ],
+            [
+              190.76691435038555,
+              347.06851680680785
+            ],
+            [
+              44.80862299146844,
+              199.21246184376056
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjfig-02",
+          "passed": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "seconds": 10.378839874999999,
+          "quad": [
+            [
+              194.29301979808054,
+              47.67431831120112
+            ],
+            [
+              343.0654428810814,
+              197.11195681723675
+            ],
+            [
+              196.4575674701016,
+              344.5264550253009
+            ],
+            [
+              48.27147998840894,
+              198.84651153671882
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjfig-03",
+          "passed": true,
+          "independentImageError": 0.020053333333333333,
+          "seconds": 11.934912832999995,
+          "quad": [
+            [
+              192.39664758267418,
+              43.535512562511656
+            ],
+            [
+              338.2028175594765,
+              191.88044361475224
+            ],
+            [
+              186.02342195434386,
+              341.728261995053
+            ],
+            [
+              45.18920677619988,
+              194.15081895867112
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjfig-04",
+          "passed": true,
+          "independentImageError": 0.015296,
+          "seconds": 4.406629166999999,
+          "quad": [
+            [
+              197.2316439885614,
+              42.96350991647984
+            ],
+            [
+              349.3532625975257,
+              184.63886957180316
+            ],
+            [
+              203.74221817945812,
+              338.08948958431125
+            ],
+            [
+              53.66434700347705,
+              192.532408975867
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjfig-05",
+          "passed": true,
+          "independentImageError": 0.01776012820399933,
+          "seconds": 12.603227500000001,
+          "quad": [
+            [
+              216.8538757473738,
+              38.328225363387574
+            ],
+            [
+              359.89753198285587,
+              187.87012162871665
+            ],
+            [
+              212.54958628080993,
+              334.34627418104253
+            ],
+            [
+              67.96701146105954,
+              182.82942921221752
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjfla-01",
+          "passed": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "seconds": 0.3195925839999982,
+          "quad": [
+            [
+              292.39323601496517,
+              57.738078773875756
+            ],
+            [
+              438.0941449375487,
+              208.89102780960795
+            ],
+            [
+              283.1908795446907,
+              354.6771453079949
+            ],
+            [
+              141.8477138031669,
+              202.00972504056293
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjfla-02",
+          "passed": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "seconds": 0.4049072500000038,
+          "quad": [
+            [
+              289.11842214508636,
+              50.98270488961175
+            ],
+            [
+              438.2816832703652,
+              195.37668448592115
+            ],
+            [
+              291.1898065325916,
+              345.3119395873022
+            ],
+            [
+              143.0340613611411,
+              198.47115475221187
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjcur-01",
+          "passed": true,
+          "independentImageError": 0.024042666666666667,
+          "seconds": 1.6038698749999967,
+          "quad": [
+            [
+              189.3096608168546,
+              43.709919844428974
+            ],
+            [
+              332.4881934002591,
+              192.81949779926094
+            ],
+            [
+              185.4163085647945,
+              340.0580997580325
+            ],
+            [
+              41.75016952913069,
+              189.06796025783646
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjcur-02",
+          "passed": false,
+          "error": "No automatic crop proposal",
+          "seconds": 5.8417000000190454e-05,
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjcur-03",
+          "passed": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "seconds": 0.4137497499999954,
+          "quad": [
+            [
+              192.91699437321472,
+              44.50524545817953
+            ],
+            [
+              339.69230667005473,
+              191.74644497178232
+            ],
+            [
+              193.504565619557,
+              339.1119442002352
+            ],
+            [
+              47.907480430688935,
+              190.7899197613935
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjcur-04",
+          "passed": true,
+          "independentImageError": 0.02913422222222222,
+          "seconds": 1.2778519589999997,
+          "quad": [
+            [
+              191.11896416727424,
+              45.88792059701687
+            ],
+            [
+              341.0873159394011,
+              191.2984068580547
+            ],
+            [
+              197.00593204212686,
+              340.5161588661794
+            ],
+            [
+              47.43720035962269,
+              197.26037469745123
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjcur-05",
+          "passed": true,
+          "independentImageError": 0.026844444444444445,
+          "seconds": 0.9638341250000012,
+          "quad": [
+            [
+              191.5718921769267,
+              41.002447759302676
+            ],
+            [
+              343.2169032469649,
+              184.90280502631018
+            ],
+            [
+              198.85140229323983,
+              339.1694570006557
+            ],
+            [
+              47.783414978700904,
+              192.22189834334512
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjhih-01",
+          "passed": true,
+          "independentImageError": 0.020369674353673924,
+          "seconds": 8.829060375000001,
+          "quad": [
+            [
+              202.3674368892556,
+              48.59748347940166
+            ],
+            [
+              343.3485875149892,
+              197.0361767885677
+            ],
+            [
+              197.99631627152766,
+              344.7008318562862
+            ],
+            [
+              48.39713363046562,
+              196.17346145844522
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjhih-02",
+          "passed": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "seconds": 0.5354993329999997,
+          "quad": [
+            [
+              188.30974117601937,
+              50.96916524073435
+            ],
+            [
+              339.6341931275473,
+              196.09932591960958
+            ],
+            [
+              193.5495451122848,
+              347.13449938438606
+            ],
+            [
+              45.606330547136366,
+              202.17162619262066
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjhih-03",
+          "passed": true,
+          "independentImageError": 0.02273313023308067,
+          "seconds": 11.850257791999997,
+          "quad": [
+            [
+              196.69315944171993,
+              50.64929803933658
+            ],
+            [
+              344.8572733984497,
+              197.4710240560254
+            ],
+            [
+              197.0814441517266,
+              348.29698904163337
+            ],
+            [
+              48.43682178221067,
+              198.8982038028954
+            ]
+          ],
+          "required": false,
+          "counts": null
+        },
+        {
+          "id": "hjhih-04",
+          "passed": false,
+          "independentImageError": 0.03168683513651756,
+          "seconds": 3.0861930830000057,
+          "quad": [
+            [
+              200.61465222970472,
+              54.11515840702254
+            ],
+            [
+              343.4005945195555,
+              202.72299292577537
+            ],
+            [
+              193.7893892931023,
+              350.38325136594614
+            ],
+            [
+              47.72031824020348,
+              199.65779445405863
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjhih-05",
+          "passed": false,
+          "error": "Sheet A has 1 start transitions but 6 end transitions. Opposite borders must agree.",
+          "seconds": 0.27451487500000804,
+          "quad": [
+            [
+              196.84991051612118,
+              43.34565905806219
+            ],
+            [
+              339.88146247504324,
+              192.9757491159136
+            ],
+            [
+              197.04653057705704,
+              338.55489769408393
+            ],
+            [
+              48.283480511926825,
+              188.88130101866585
+            ]
+          ],
+          "required": false,
+          "counts": null
+        },
+        {
+          "id": "hjstr-01",
+          "passed": false,
+          "independentImageError": 0.030958728584123834,
+          "seconds": 0.9740875419999938,
+          "quad": [
+            [
+              191.35718595247062,
+              103.88262046442289
+            ],
+            [
+              343.85046746261594,
+              250.2169394187539
+            ],
+            [
+              198.4226972120015,
+              405.96812758830697
+            ],
+            [
+              45.21045375375542,
+              257.6144338993603
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjstr-02",
+          "passed": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "seconds": 0.208929999999993,
+          "quad": [
+            [
+              198.53970825883664,
+              56.91861221524674
+            ],
+            [
+              340.401102574917,
+              206.41140570062836
+            ],
+            [
+              193.49387320044173,
+              353.103709640915
+            ],
+            [
+              45.76141964287936,
+              201.28226651792085
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjstr-03",
+          "passed": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "seconds": 0.30620612500001154,
+          "quad": [
+            [
+              198.0767384478126,
+              48.83345802423042
+            ],
+            [
+              339.75075854262275,
+              193.76882218562517
+            ],
+            [
+              196.19023395819448,
+              342.00139702165603
+            ],
+            [
+              49.884135008919685,
+              193.13927233494536
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjstr-04",
+          "passed": false,
+          "error": "Sheet A has 4 start transitions but 8 end transitions. Opposite borders must agree.",
+          "seconds": 0.2695428749999992,
+          "quad": [
+            [
+              198.97462161918082,
+              44.33964874400781
+            ],
+            [
+              345.97016298267835,
+              192.45771553157306
+            ],
+            [
+              196.3263981684274,
+              342.0210174221257
+            ],
+            [
+              48.27335134619247,
+              192.46767641274715
+            ]
+          ],
+          "required": false,
+          "counts": null
+        },
+        {
+          "id": "hjstr-05",
+          "passed": false,
+          "error": "Sheet A has 4 start transitions but 8 end transitions. Opposite borders must agree.",
+          "seconds": 0.25278087499999674,
+          "quad": [
+            [
+              206.00884154300712,
+              52.39624001654454
+            ],
+            [
+              360.56206654007735,
+              193.88493076072368
+            ],
+            [
+              219.91683422153372,
+              349.89359356169757
+            ],
+            [
+              67.51753278423115,
+              210.60922806625996
+            ]
+          ],
+          "required": false,
+          "counts": null
+        },
+        {
+          "id": "hjsta-01",
+          "passed": true,
+          "independentImageError": 0.01672437673130194,
+          "seconds": 13.132992958000003,
+          "quad": [
+            [
+              195.05439485448392,
+              47.20208591783353
+            ],
+            [
+              340.6664953436871,
+              192.6885347130366
+            ],
+            [
+              196.168411462646,
+              344.4035983631109
+            ],
+            [
+              47.055118952907264,
+              194.67333807919917
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjsta-02",
+          "passed": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "seconds": 0.46357687499999883,
+          "quad": [
+            [
+              191.16406799843026,
+              48.32364781659089
+            ],
+            [
+              340.02723897564636,
+              188.05970075260046
+            ],
+            [
+              199.97936496176143,
+              342.58204776083375
+            ],
+            [
+              48.44755619555002,
+              198.55438994750548
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjsta-03",
+          "passed": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "seconds": 0.5440498329999973,
+          "quad": [
+            [
+              193.65672679368126,
+              45.04975588659226
+            ],
+            [
+              342.9501305994181,
+              189.66698048576146
+            ],
+            [
+              193.48036649787394,
+              344.79572426897465
+            ],
+            [
+              45.610873631912625,
+              195.13043392991767
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjsta-04",
+          "passed": false,
+          "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+          "seconds": 0.5271696670000092,
+          "quad": [
+            [
+              192.8820949412971,
+              40.64326337448036
+            ],
+            [
+              338.7224272496793,
+              186.46827119242013
+            ],
+            [
+              189.2253365301165,
+              332.48276340072863
+            ],
+            [
+              45.11114873361885,
+              184.1413775871979
+            ]
+          ],
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjsta-05",
+          "passed": false,
+          "independentImageError": 0.033323042229321594,
+          "seconds": 16.659057916000005,
+          "quad": [
+            [
+              196.5969474661884,
+              51.51935280757243
+            ],
+            [
+              342.30866035747334,
+              198.8625643664934
+            ],
+            [
+              193.80999274262587,
+              348.0238605607671
+            ],
+            [
+              48.248889692101926,
+              199.65485925642955
+            ]
+          ],
+          "required": true,
+          "counts": null
+        }
+      ]
+    },
+    {
+      "source": "tmp/inverse-hunodan/2026-09-07T21-18-03-265Z-crops/cases.json",
+      "cfg": {
+        "algorithm": "direct",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 150,
+        "localNeighborhoodFactor": 3,
+        "roundHidden": false,
+        "timeLimit": 30,
+        "trials": 0
+      },
+      "engineSha256": {
+        "static/inverse/core/engine.js": "fc0106e3ebc341e0f94e037b0ca95d457573b98cbdbf0eb6d6874daa5d7ba283",
+        "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+        "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+        "static/inverse/core/direct/fit.js": "67d31578f5cee045e14b6256330edbf308f00146f580546be2e91395215d2b0a",
+        "src/lib/inverse/presets.js": "fc8be11f0472bc642f2969d958ef4b826fca07effe1c9ecb5590860db8a165ec"
+      },
+      "criteria": "Image-only fitting; geometry and strict paper validation plus <=3% independently rendered disagreement against original classified crop. Reference-cut agreement is a separate check.",
+      "artifactDirectory": "tmp/inverse-hunodan/2026-09-07T21-20-34-942Z-direct",
+      "results": [
+        {
+          "id": "hjfig-01",
+          "passed": true,
+          "independentImageError": 0.011854222222222223,
+          "seconds": 31.531763083999998,
+          "quad": [
+            [
+              188.65840672286313,
+              50.446388800465265
+            ],
+            [
+              342.05595393044155,
+              195.6523959586842
+            ],
+            [
+              190.76691435038555,
+              347.06851680680785
+            ],
+            [
+              44.80862299146844,
+              199.21246184376056
+            ]
+          ],
+          "required": true,
+          "counts": [
+            2,
+            2
+          ]
+        },
+        {
+          "id": "hjfig-02",
+          "passed": true,
+          "independentImageError": 0.007459555555555555,
+          "seconds": 31.807510333,
+          "quad": [
+            [
+              194.29301979808054,
+              47.67431831120112
+            ],
+            [
+              343.0654428810814,
+              197.11195681723675
+            ],
+            [
+              196.4575674701016,
+              344.5264550253009
+            ],
+            [
+              48.27147998840894,
+              198.84651153671882
+            ]
+          ],
+          "required": true,
+          "counts": [
+            2,
+            2
+          ]
+        },
+        {
+          "id": "hjfig-03",
+          "passed": true,
+          "independentImageError": 0.010304,
+          "seconds": 30.907732958999993,
+          "quad": [
+            [
+              192.39664758267418,
+              43.535512562511656
+            ],
+            [
+              338.2028175594765,
+              191.88044361475224
+            ],
+            [
+              186.02342195434386,
+              341.728261995053
+            ],
+            [
+              45.18920677619988,
+              194.15081895867112
+            ]
+          ],
+          "required": true,
+          "counts": [
+            2,
+            2
+          ]
+        },
+        {
+          "id": "hjfig-04",
+          "passed": true,
+          "independentImageError": 0.010218666666666666,
+          "seconds": 31.782486749999997,
+          "quad": [
+            [
+              197.2316439885614,
+              42.96350991647984
+            ],
+            [
+              349.3532625975257,
+              184.63886957180316
+            ],
+            [
+              203.74221817945812,
+              338.08948958431125
+            ],
+            [
+              53.66434700347705,
+              192.532408975867
+            ]
+          ],
+          "required": true,
+          "counts": [
+            2,
+            2
+          ]
+        },
+        {
+          "id": "hjfig-05",
+          "passed": true,
+          "independentImageError": 0.015417939754686577,
+          "seconds": 32.796021708999994,
+          "quad": [
+            [
+              216.8538757473738,
+              38.328225363387574
+            ],
+            [
+              359.89753198285587,
+              187.87012162871665
+            ],
+            [
+              212.54958628080993,
+              334.34627418104253
+            ],
+            [
+              67.96701146105954,
+              182.82942921221752
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        },
+        {
+          "id": "hjfla-01",
+          "passed": false,
+          "independentImageError": 0.033440483940972224,
+          "seconds": 32.140365792,
+          "quad": [
+            [
+              292.39323601496517,
+              57.738078773875756
+            ],
+            [
+              438.0941449375487,
+              208.89102780960795
+            ],
+            [
+              283.1908795446907,
+              354.6771453079949
+            ],
+            [
+              141.8477138031669,
+              202.00972504056293
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        },
+        {
+          "id": "hjfla-02",
+          "passed": true,
+          "independentImageError": 0.010857476128472222,
+          "seconds": 32.11281262500002,
+          "quad": [
+            [
+              289.11842214508636,
+              50.98270488961175
+            ],
+            [
+              438.2816832703652,
+              195.37668448592115
+            ],
+            [
+              291.1898065325916,
+              345.3119395873022
+            ],
+            [
+              143.0340613611411,
+              198.47115475221187
+            ]
+          ],
+          "required": true,
+          "counts": [
+            3,
+            2
+          ]
+        },
+        {
+          "id": "hjcur-01",
+          "passed": true,
+          "independentImageError": 0.01946311111111111,
+          "seconds": 32.246445957999995,
+          "quad": [
+            [
+              189.3096608168546,
+              43.709919844428974
+            ],
+            [
+              332.4881934002591,
+              192.81949779926094
+            ],
+            [
+              185.4163085647945,
+              340.0580997580325
+            ],
+            [
+              41.75016952913069,
+              189.06796025783646
+            ]
+          ],
+          "required": true,
+          "counts": [
+            5,
+            5
+          ]
+        },
+        {
+          "id": "hjcur-02",
+          "passed": false,
+          "error": "No automatic crop proposal",
+          "seconds": 0.00032874999998603016,
+          "required": true,
+          "counts": null
+        },
+        {
+          "id": "hjcur-03",
+          "passed": false,
+          "independentImageError": 0.04562488888888889,
+          "seconds": 32.319899082999996,
+          "quad": [
+            [
+              192.91699437321472,
+              44.50524545817953
+            ],
+            [
+              339.69230667005473,
+              191.74644497178232
+            ],
+            [
+              193.504565619557,
+              339.1119442002352
+            ],
+            [
+              47.907480430688935,
+              190.7899197613935
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        },
+        {
+          "id": "hjcur-04",
+          "passed": false,
+          "independentImageError": 0.07773866666666666,
+          "seconds": 32.44143508299999,
+          "quad": [
+            [
+              191.11896416727424,
+              45.88792059701687
+            ],
+            [
+              341.0873159394011,
+              191.2984068580547
+            ],
+            [
+              197.00593204212686,
+              340.5161588661794
+            ],
+            [
+              47.43720035962269,
+              197.26037469745123
+            ]
+          ],
+          "required": true,
+          "counts": [
+            8,
+            8
+          ]
+        },
+        {
+          "id": "hjcur-05",
+          "passed": true,
+          "independentImageError": 0.009891555555555556,
+          "seconds": 30.618151458000007,
+          "quad": [
+            [
+              191.5718921769267,
+              41.002447759302676
+            ],
+            [
+              343.2169032469649,
+              184.90280502631018
+            ],
+            [
+              198.85140229323983,
+              339.1694570006557
+            ],
+            [
+              47.783414978700904,
+              192.22189834334512
+            ]
+          ],
+          "required": true,
+          "counts": [
+            2,
+            2
+          ]
+        },
+        {
+          "id": "hjhih-01",
+          "passed": true,
+          "independentImageError": 0.00707401540980966,
+          "seconds": 31.506383249999956,
+          "quad": [
+            [
+              202.3674368892556,
+              48.59748347940166
+            ],
+            [
+              343.3485875149892,
+              197.0361767885677
+            ],
+            [
+              197.99631627152766,
+              344.7008318562862
+            ],
+            [
+              48.39713363046562,
+              196.17346145844522
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        },
+        {
+          "id": "hjhih-02",
+          "passed": true,
+          "independentImageError": 0.004342520570731275,
+          "seconds": 31.775574000000024,
+          "quad": [
+            [
+              188.30974117601937,
+              50.96916524073435
+            ],
+            [
+              339.6341931275473,
+              196.09932591960958
+            ],
+            [
+              193.5495451122848,
+              347.13449938438606
+            ],
+            [
+              45.606330547136366,
+              202.17162619262066
+            ]
+          ],
+          "required": true,
+          "counts": [
+            3,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "source": "tmp/inverse-hunodan/2026-09-07T21-18-03-265Z-crops/cases.json",
+      "cfg": {
+        "algorithm": "direct",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 150,
+        "localNeighborhoodFactor": 3,
+        "roundHidden": false,
+        "timeLimit": 30,
+        "trials": 0
+      },
+      "engineSha256": {
+        "static/inverse/core/engine.js": "fc0106e3ebc341e0f94e037b0ca95d457573b98cbdbf0eb6d6874daa5d7ba283",
+        "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+        "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+        "static/inverse/core/direct/fit.js": "67d31578f5cee045e14b6256330edbf308f00146f580546be2e91395215d2b0a",
+        "src/lib/inverse/presets.js": "fc8be11f0472bc642f2969d958ef4b826fca07effe1c9ecb5590860db8a165ec"
+      },
+      "criteria": "Image-only fitting; geometry and strict paper validation plus <=3% independently rendered disagreement against original classified crop. Reference-cut agreement is a separate check.",
+      "artifactDirectory": "tmp/inverse-hunodan/2026-09-07T21-28-19-472Z-direct",
+      "results": [
+        {
+          "id": "hjhih-03",
+          "passed": true,
+          "independentImageError": 0.014849227800503566,
+          "seconds": 32.13942775,
+          "quad": [
+            [
+              196.69315944171993,
+              50.64929803933658
+            ],
+            [
+              344.8572733984497,
+              197.4710240560254
+            ],
+            [
+              197.0814441517266,
+              348.29698904163337
+            ],
+            [
+              48.43682178221067,
+              198.8982038028954
+            ]
+          ],
+          "required": false,
+          "counts": [
+            2,
+            2
+          ]
+        },
+        {
+          "id": "hjhih-04",
+          "passed": false,
+          "independentImageError": 0.06374272413547515,
+          "seconds": 32.189417833,
+          "quad": [
+            [
+              200.61465222970472,
+              54.11515840702254
+            ],
+            [
+              343.4005945195555,
+              202.72299292577537
+            ],
+            [
+              193.7893892931023,
+              350.38325136594614
+            ],
+            [
+              47.72031824020348,
+              199.65779445405863
+            ]
+          ],
+          "required": true,
+          "counts": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "hjhih-05",
+          "passed": false,
+          "independentImageError": 0.08761393151497386,
+          "seconds": 32.216956959,
+          "quad": [
+            [
+              196.84991051612118,
+              43.34565905806219
+            ],
+            [
+              339.88146247504324,
+              192.9757491159136
+            ],
+            [
+              197.04653057705704,
+              338.55489769408393
+            ],
+            [
+              48.283480511926825,
+              188.88130101866585
+            ]
+          ],
+          "required": false,
+          "counts": [
+            5,
+            5
+          ]
+        },
+        {
+          "id": "hjstr-01",
+          "passed": false,
+          "independentImageError": 0.03514029250280723,
+          "seconds": 31.72293433399999,
+          "quad": [
+            [
+              191.35718595247062,
+              103.88262046442289
+            ],
+            [
+              343.85046746261594,
+              250.2169394187539
+            ],
+            [
+              198.4226972120015,
+              405.96812758830697
+            ],
+            [
+              45.21045375375542,
+              257.6144338993603
+            ]
+          ],
+          "required": true,
+          "counts": [
+            3,
+            4
+          ]
+        },
+        {
+          "id": "hjstr-02",
+          "passed": true,
+          "independentImageError": 0.004575936883629192,
+          "seconds": 32.06755908300001,
+          "quad": [
+            [
+              198.53970825883664,
+              56.91861221524674
+            ],
+            [
+              340.401102574917,
+              206.41140570062836
+            ],
+            [
+              193.49387320044173,
+              353.103709640915
+            ],
+            [
+              45.76141964287936,
+              201.28226651792085
+            ]
+          ],
+          "required": true,
+          "counts": [
+            5,
+            5
+          ]
+        },
+        {
+          "id": "hjstr-03",
+          "passed": false,
+          "independentImageError": 0.07251700499521735,
+          "seconds": 32.93867516700001,
+          "quad": [
+            [
+              198.0767384478126,
+              48.83345802423042
+            ],
+            [
+              339.75075854262275,
+              193.76882218562517
+            ],
+            [
+              196.19023395819448,
+              342.00139702165603
+            ],
+            [
+              49.884135008919685,
+              193.13927233494536
+            ]
+          ],
+          "required": true,
+          "counts": [
+            5,
+            5
+          ]
+        },
+        {
+          "id": "hjstr-04",
+          "passed": false,
+          "independentImageError": 0.07273662015826739,
+          "seconds": 32.793324166000005,
+          "quad": [
+            [
+              198.97462161918082,
+              44.33964874400781
+            ],
+            [
+              345.97016298267835,
+              192.45771553157306
+            ],
+            [
+              196.3263981684274,
+              342.0210174221257
+            ],
+            [
+              48.27335134619247,
+              192.46767641274715
+            ]
+          ],
+          "required": false,
+          "counts": [
+            7,
+            7
+          ]
+        },
+        {
+          "id": "hjstr-05",
+          "passed": false,
+          "independentImageError": 0.08650034090048231,
+          "seconds": 32.481983125,
+          "quad": [
+            [
+              206.00884154300712,
+              52.39624001654454
+            ],
+            [
+              360.56206654007735,
+              193.88493076072368
+            ],
+            [
+              219.91683422153372,
+              349.89359356169757
+            ],
+            [
+              67.51753278423115,
+              210.60922806625996
+            ]
+          ],
+          "required": false,
+          "counts": [
+            8,
+            8
+          ]
+        },
+        {
+          "id": "hjsta-01",
+          "passed": true,
+          "independentImageError": 0.008642659279778394,
+          "seconds": 31.851969500000006,
+          "quad": [
+            [
+              195.05439485448392,
+              47.20208591783353
+            ],
+            [
+              340.6664953436871,
+              192.6885347130366
+            ],
+            [
+              196.168411462646,
+              344.4035983631109
+            ],
+            [
+              47.055118952907264,
+              194.67333807919917
+            ]
+          ],
+          "required": true,
+          "counts": [
+            2,
+            2
+          ]
+        },
+        {
+          "id": "hjsta-02",
+          "passed": true,
+          "independentImageError": 0.004041883680555556,
+          "seconds": 31.206101417,
+          "quad": [
+            [
+              191.16406799843026,
+              48.32364781659089
+            ],
+            [
+              340.02723897564636,
+              188.05970075260046
+            ],
+            [
+              199.97936496176143,
+              342.58204776083375
+            ],
+            [
+              48.44755619555002,
+              198.55438994750548
+            ]
+          ],
+          "required": true,
+          "counts": [
+            3,
+            3
+          ]
+        },
+        {
+          "id": "hjsta-03",
+          "passed": false,
+          "independentImageError": 0.07654970720367581,
+          "seconds": 32.242107832999956,
+          "quad": [
+            [
+              193.65672679368126,
+              45.04975588659226
+            ],
+            [
+              342.9501305994181,
+              189.66698048576146
+            ],
+            [
+              193.48036649787394,
+              344.79572426897465
+            ],
+            [
+              45.610873631912625,
+              195.13043392991767
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        },
+        {
+          "id": "hjsta-04",
+          "passed": true,
+          "independentImageError": 0.006067859242462417,
+          "seconds": 31.389309583999975,
+          "quad": [
+            [
+              192.8820949412971,
+              40.64326337448036
+            ],
+            [
+              338.7224272496793,
+              186.46827119242013
+            ],
+            [
+              189.2253365301165,
+              332.48276340072863
+            ],
+            [
+              45.11114873361885,
+              184.1413775871979
+            ]
+          ],
+          "required": true,
+          "counts": [
+            5,
+            5
+          ]
+        },
+        {
+          "id": "hjsta-05",
+          "passed": true,
+          "independentImageError": 0.014027222207307578,
+          "seconds": 31.943320167,
+          "quad": [
+            [
+              196.5969474661884,
+              51.51935280757243
+            ],
+            [
+              342.30866035747334,
+              198.8625643664934
+            ],
+            [
+              193.80999274262587,
+              348.0238605607671
+            ],
+            [
+              48.248889692101926,
+              199.65485925642955
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "source": "tmp/inverse-hunodan/2026-09-07T21-32-32-000Z-crops/cases.json",
+      "cfg": {
+        "algorithm": "direct",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 150,
+        "localNeighborhoodFactor": 3,
+        "roundHidden": false,
+        "timeLimit": 30,
+        "trials": 0
+      },
+      "engineSha256": {
+        "static/inverse/core/engine.js": "fc0106e3ebc341e0f94e037b0ca95d457573b98cbdbf0eb6d6874daa5d7ba283",
+        "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+        "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+        "static/inverse/core/direct/fit.js": "15d72231e8e2520ec9019a2750e13cd66822fd22034d94b7fe303f14f224d6c2",
+        "src/lib/inverse/presets.js": "fc8be11f0472bc642f2969d958ef4b826fca07effe1c9ecb5590860db8a165ec"
+      },
+      "criteria": "Image-only fitting; geometry and strict paper validation plus <=3% independently rendered disagreement against original classified crop. Reference-cut agreement is a separate check.",
+      "artifactDirectory": "tmp/inverse-hunodan/2026-09-07T21-34-47-278Z-direct",
+      "results": [
+        {
+          "id": "hjfla-01",
+          "passed": true,
+          "independentImageError": 0.023091634114583332,
+          "seconds": 31.565328167,
+          "quad": [
+            [
+              292.39323601496517,
+              57.738078773875756
+            ],
+            [
+              438.0941449375487,
+              208.89102780960795
+            ],
+            [
+              283.1908795446907,
+              354.6771453079949
+            ],
+            [
+              141.8477138031669,
+              202.00972504056293
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        },
+        {
+          "id": "hjcur-02",
+          "passed": true,
+          "independentImageError": 0.0059804444444444445,
+          "seconds": 30.656047833000006,
+          "quad": [
+            [
+              194.65378748297076,
+              44.23339992230309
+            ],
+            [
+              339.67367514119843,
+              190.98638544523556
+            ],
+            [
+              193.29192428448607,
+              341.6245320415693
+            ],
+            [
+              45.47671643716768,
+              194.46654727533422
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        },
+        {
+          "id": "hjcur-03",
+          "passed": true,
+          "independentImageError": 0.005667555555555556,
+          "seconds": 31.38125937500001,
+          "quad": [
+            [
+              192.91699437321472,
+              44.50524545817953
+            ],
+            [
+              339.69230667005473,
+              191.74644497178232
+            ],
+            [
+              193.504565619557,
+              339.1119442002352
+            ],
+            [
+              47.907480430688935,
+              190.7899197613935
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        },
+        {
+          "id": "hjcur-04",
+          "passed": true,
+          "independentImageError": 0.006563555555555556,
+          "seconds": 31.898468958,
+          "quad": [
+            [
+              191.11896416727424,
+              45.88792059701687
+            ],
+            [
+              341.0873159394011,
+              191.2984068580547
+            ],
+            [
+              197.00593204212686,
+              340.5161588661794
+            ],
+            [
+              47.43720035962269,
+              197.26037469745123
+            ]
+          ],
+          "required": true,
+          "counts": [
+            6,
+            6
+          ]
+        },
+        {
+          "id": "hjhih-04",
+          "passed": true,
+          "independentImageError": 0.009621298940103206,
+          "seconds": 31.68623479199999,
+          "quad": [
+            [
+              200.61465222970472,
+              54.11515840702254
+            ],
+            [
+              343.4005945195555,
+              202.72299292577537
+            ],
+            [
+              193.7893892931023,
+              350.38325136594614
+            ],
+            [
+              47.72031824020348,
+              199.65779445405863
+            ]
+          ],
+          "required": true,
+          "counts": [
+            5,
+            5
+          ]
+        },
+        {
+          "id": "hjstr-01",
+          "passed": true,
+          "independentImageError": 0.007922238066698355,
+          "seconds": 31.54027570900001,
+          "quad": [
+            [
+              191.35718595247062,
+              103.88262046442289
+            ],
+            [
+              343.85046746261594,
+              250.2169394187539
+            ],
+            [
+              198.4226972120015,
+              405.96812758830697
+            ],
+            [
+              45.21045375375542,
+              257.6144338993603
+            ]
+          ],
+          "required": true,
+          "counts": [
+            3,
+            3
+          ]
+        },
+        {
+          "id": "hjstr-03",
+          "passed": true,
+          "independentImageError": 0.00752603889892656,
+          "seconds": 31.647044708999978,
+          "quad": [
+            [
+              198.0767384478126,
+              48.83345802423042
+            ],
+            [
+              339.75075854262275,
+              193.76882218562517
+            ],
+            [
+              196.19023395819448,
+              342.00139702165603
+            ],
+            [
+              49.884135008919685,
+              193.13927233494536
+            ]
+          ],
+          "required": true,
+          "counts": [
+            7,
+            7
+          ]
+        },
+        {
+          "id": "hjsta-03",
+          "passed": true,
+          "independentImageError": 0.013218441737280914,
+          "seconds": 32.03190512500002,
+          "quad": [
+            [
+              193.65672679368126,
+              45.04975588659226
+            ],
+            [
+              342.9501305994181,
+              189.66698048576146
+            ],
+            [
+              193.48036649787394,
+              344.79572426897465
+            ],
+            [
+              45.610873631912625,
+              195.13043392991767
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        },
+        {
+          "id": "hjsta-04",
+          "passed": true,
+          "independentImageError": 0.006333809243862154,
+          "seconds": 31.624068457999964,
+          "quad": [
+            [
+              192.8820949412971,
+              40.64326337448036
+            ],
+            [
+              338.7224272496793,
+              186.46827119242013
+            ],
+            [
+              189.2253365301165,
+              332.48276340072863
+            ],
+            [
+              45.11114873361885,
+              184.1413775871979
+            ]
+          ],
+          "required": true,
+          "counts": [
+            5,
+            5
+          ]
+        },
+        {
+          "id": "hjsta-05",
+          "passed": true,
+          "independentImageError": 0.012778866546752933,
+          "seconds": 30.820564124999976,
+          "quad": [
+            [
+              196.5969474661884,
+              51.51935280757243
+            ],
+            [
+              342.30866035747334,
+              198.8625643664934
+            ],
+            [
+              193.80999274262587,
+              348.0238605607671
+            ],
+            [
+              48.248889692101926,
+              199.65485925642955
+            ]
+          ],
+          "required": true,
+          "counts": [
+            4,
+            4
+          ]
+        }
+      ]
+    }
+  ]
+}

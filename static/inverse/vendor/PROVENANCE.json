@@ -1,0 +1,17 @@
+{
+  "wrapperPackage": "highs",
+  "wrapperVersion": "1.15.3-pre.4",
+  "embeddedHiGHS": "1.15.1",
+  "embeddedGitHash": "04024d7",
+  "sourceRepository": "lovasoa/highs-js",
+  "sourceCommit": "2e1c35cbd40e415bc797c642e659cd19a54ab47e",
+  "githubWorkflowRun": 30268821970,
+  "githubArtifact": 8654056245,
+  "artifactName": "npm-package",
+  "artifactZipSha256": "a0e76491e2fa7079acfee871eb1c0e79a9bee365ebdda4192b1ae49e23ac7392",
+  "files": {
+    "vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036",
+    "vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+    "vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840"
+  }
+}

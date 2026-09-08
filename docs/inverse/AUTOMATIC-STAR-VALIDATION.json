@@ -1,0 +1,1262 @@
+{
+  "recordedAt": "2026-09-07T20:50:07.673088+00:00",
+  "codeCommits": [
+    "dbd6d5a",
+    "918bd06"
+  ],
+  "report": "AUTOMATIC-STAR-QA.md",
+  "checks": [
+    {
+      "command": "npm test",
+      "status": "pass",
+      "total": 236,
+      "websiteAndWorkerTests": 127,
+      "engineAndIntegrationTests": 109,
+      "log": "/tmp/juleflet-automatic-star-tests.log"
+    },
+    {
+      "command": "npm run check",
+      "status": "pass",
+      "errors": 0,
+      "warnings": 8,
+      "warningNote": "Existing PaperHeart.svelte accessibility warnings",
+      "log": "/tmp/juleflet-automatic-star-check.log"
+    },
+    {
+      "command": "npm run lint",
+      "status": "pass",
+      "log": "/tmp/juleflet-automatic-star-lint.log"
+    },
+    {
+      "command": "npm run build",
+      "status": "pass",
+      "log": "/tmp/juleflet-automatic-star-build.log"
+    },
+    {
+      "command": "npm run test:inverse:automatic-star:browser",
+      "status": "pass",
+      "origin": "http://127.0.0.1:4174",
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-732Z-automatic-star/results.json",
+      "browsers": [
+        "chromium"
+      ],
+      "checks": 10
+    },
+    {
+      "command": "npm run test:inverse:automatic-star:browser",
+      "status": "pass",
+      "origin": "http://127.0.0.1:4174",
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-727Z-automatic-star/results.json",
+      "browsers": [
+        "firefox"
+      ],
+      "checks": 10
+    },
+    {
+      "command": "npm run test:inverse:automatic-star:browser",
+      "status": "pass",
+      "origin": "http://127.0.0.1:4174",
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-724Z-automatic-star/results.json",
+      "browsers": [
+        "webkit"
+      ],
+      "checks": 10
+    },
+    {
+      "command": "npm run test:inverse:generator:browser",
+      "status": "pass",
+      "origin": "http://127.0.0.1:4174",
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-724Z-generator-qa/results.json",
+      "browsers": [
+        "chromium",
+        "firefox",
+        "webkit"
+      ],
+      "checks": 63
+    }
+  ],
+  "browserCheckTotal": 93,
+  "browser": {
+    "chromium": {
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-732Z-automatic-star/results.json",
+      "sha256": "33816fbd45dd4d83ade17f9c4f2d76527e0ce7c994a6db674b6d2684374f7201",
+      "results": [
+        {
+          "browser": "chromium",
+          "id": "user",
+          "file": "scripts/inverse/fixtures/yellow-star-photo.png",
+          "checks": [
+            "Upload finds all four corners without manual edits and without black bounding boxes",
+            "Automatic crop prepares with unchanged General defaults",
+            "Fresh solve downloads a validated five-slit pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original classified crop within 2.430%",
+            "Woven heart, both cutting templates and paper support render"
+          ],
+          "pageErrors": [],
+          "quad": [
+            [
+              288.03922158762185,
+              79.86167968935169
+            ],
+            [
+              420.1547832901624,
+              208.14551145023893
+            ],
+            [
+              282.9261695138435,
+              344.7286229063367
+            ],
+            [
+              156.96400146596653,
+              205.8998507632119
+            ]
+          ],
+          "independentImageError": 0.024297839506172838,
+          "templateExportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "border": {
+            "radiusMm": 3,
+            "depthPixels": 10,
+            "profileNoiseRadiusMm": 1.1111111111111112,
+            "profilePixelsChanged": 0,
+            "editedBandWidthMm": 2.7777777777777777,
+            "changedPixels": 1217,
+            "changeFraction": 0.009390432098765432,
+            "transitionsBefore": [
+              5,
+              6,
+              0,
+              3
+            ],
+            "transitionsAfter": [
+              5,
+              5,
+              5,
+              5
+            ],
+            "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+          },
+          "imageError": {
+            "reference": "Classified input crop before border repair, cleanup or tracing",
+            "resolution": 360,
+            "mismatchPixels": 3095,
+            "observedPixels": 129600,
+            "observedFraction": 1,
+            "mismatchFraction": 0.023881172839506172,
+            "method": "Forward sampling of both slit families at input resolution",
+            "independentExportRenderer": false
+          }
+        },
+        {
+          "browser": "chromium",
+          "id": "web",
+          "file": "tmp/inverse-hard-photos/sources/bibel-star-curved.png",
+          "checks": [
+            "Upload finds all four corners without manual edits and without black bounding boxes",
+            "Automatic crop prepares with unchanged General defaults",
+            "Fresh solve downloads a validated five-slit pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original classified crop within 2.394%",
+            "Woven heart, both cutting templates and paper support render"
+          ],
+          "pageErrors": [],
+          "quad": [
+            [
+              517.3249083293052,
+              140.57629208153665
+            ],
+            [
+              756.9635254796268,
+              367.17786960756865
+            ],
+            [
+              507.8456057092928,
+              615.7181352484841
+            ],
+            [
+              282.097201645196,
+              367.06038185293716
+            ]
+          ],
+          "independentImageError": 0.02394375,
+          "templateExportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "border": {
+            "radiusMm": 3,
+            "depthPixels": 12,
+            "profileNoiseRadiusMm": 1.25,
+            "profilePixelsChanged": 0,
+            "editedBandWidthMm": 3,
+            "changedPixels": 1720,
+            "changeFraction": 0.01075,
+            "transitionsBefore": [
+              3,
+              24,
+              0,
+              3
+            ],
+            "transitionsAfter": [
+              5,
+              5,
+              5,
+              5
+            ],
+            "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+          },
+          "imageError": {
+            "reference": "Classified input crop before border repair, cleanup or tracing",
+            "resolution": 400,
+            "mismatchPixels": 3763,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.02351875,
+            "method": "Forward sampling of both slit families at input resolution",
+            "independentExportRenderer": false
+          }
+        }
+      ]
+    },
+    "firefox": {
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-727Z-automatic-star/results.json",
+      "sha256": "f4c814b6c4e85510ab9418eedcaa6fc03beec81f0f3726eba1ee195478eede21",
+      "results": [
+        {
+          "browser": "firefox",
+          "id": "user",
+          "file": "scripts/inverse/fixtures/yellow-star-photo.png",
+          "checks": [
+            "Upload finds all four corners without manual edits and without black bounding boxes",
+            "Automatic crop prepares with unchanged General defaults",
+            "Fresh solve downloads a validated five-slit pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original classified crop within 2.430%",
+            "Woven heart, both cutting templates and paper support render"
+          ],
+          "pageErrors": [],
+          "quad": [
+            [
+              288.03922158762185,
+              79.86167968935169
+            ],
+            [
+              420.1547832901624,
+              208.14551145023893
+            ],
+            [
+              282.9261695138435,
+              344.7286229063367
+            ],
+            [
+              156.96400146596653,
+              205.8998507632119
+            ]
+          ],
+          "independentImageError": 0.024297839506172838,
+          "templateExportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "border": {
+            "radiusMm": 3,
+            "depthPixels": 10,
+            "profileNoiseRadiusMm": 1.1111111111111112,
+            "profilePixelsChanged": 0,
+            "editedBandWidthMm": 2.7777777777777777,
+            "changedPixels": 1217,
+            "changeFraction": 0.009390432098765432,
+            "transitionsBefore": [
+              5,
+              6,
+              0,
+              3
+            ],
+            "transitionsAfter": [
+              5,
+              5,
+              5,
+              5
+            ],
+            "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+          },
+          "imageError": {
+            "reference": "Classified input crop before border repair, cleanup or tracing",
+            "resolution": 360,
+            "mismatchPixels": 3095,
+            "observedPixels": 129600,
+            "observedFraction": 1,
+            "mismatchFraction": 0.023881172839506172,
+            "method": "Forward sampling of both slit families at input resolution",
+            "independentExportRenderer": false
+          }
+        },
+        {
+          "browser": "firefox",
+          "id": "web",
+          "file": "tmp/inverse-hard-photos/sources/bibel-star-curved.png",
+          "checks": [
+            "Upload finds all four corners without manual edits and without black bounding boxes",
+            "Automatic crop prepares with unchanged General defaults",
+            "Fresh solve downloads a validated five-slit pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original classified crop within 2.396%",
+            "Woven heart, both cutting templates and paper support render"
+          ],
+          "pageErrors": [],
+          "quad": [
+            [
+              517.3249083293052,
+              140.57629208153665
+            ],
+            [
+              756.9635254796268,
+              367.17786960756865
+            ],
+            [
+              507.8456057092928,
+              615.7181352484841
+            ],
+            [
+              282.097201645196,
+              367.06038185293716
+            ]
+          ],
+          "independentImageError": 0.0239625,
+          "templateExportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "border": {
+            "radiusMm": 3,
+            "depthPixels": 12,
+            "profileNoiseRadiusMm": 1.25,
+            "profilePixelsChanged": 0,
+            "editedBandWidthMm": 3,
+            "changedPixels": 1720,
+            "changeFraction": 0.01075,
+            "transitionsBefore": [
+              3,
+              24,
+              0,
+              3
+            ],
+            "transitionsAfter": [
+              5,
+              5,
+              5,
+              5
+            ],
+            "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+          },
+          "imageError": {
+            "reference": "Classified input crop before border repair, cleanup or tracing",
+            "resolution": 400,
+            "mismatchPixels": 3766,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.0235375,
+            "method": "Forward sampling of both slit families at input resolution",
+            "independentExportRenderer": false
+          }
+        }
+      ]
+    },
+    "webkit": {
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-724Z-automatic-star/results.json",
+      "sha256": "e91d92fa0d8f86f58586a2c1be1f2f979b605a12fd83ee472685e48f39079851",
+      "results": [
+        {
+          "browser": "webkit",
+          "id": "user",
+          "file": "scripts/inverse/fixtures/yellow-star-photo.png",
+          "checks": [
+            "Upload finds all four corners without manual edits and without black bounding boxes",
+            "Automatic crop prepares with unchanged General defaults",
+            "Fresh solve downloads a validated five-slit pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original classified crop within 2.430%",
+            "Woven heart, both cutting templates and paper support render"
+          ],
+          "pageErrors": [],
+          "quad": [
+            [
+              288.03922158762185,
+              79.86167968935169
+            ],
+            [
+              420.1547832901624,
+              208.14551145023893
+            ],
+            [
+              282.9261695138435,
+              344.7286229063367
+            ],
+            [
+              156.96400146596653,
+              205.8998507632119
+            ]
+          ],
+          "independentImageError": 0.024297839506172838,
+          "templateExportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "border": {
+            "radiusMm": 3,
+            "depthPixels": 10,
+            "profileNoiseRadiusMm": 1.1111111111111112,
+            "profilePixelsChanged": 0,
+            "editedBandWidthMm": 2.7777777777777777,
+            "changedPixels": 1217,
+            "changeFraction": 0.009390432098765432,
+            "transitionsBefore": [
+              5,
+              6,
+              0,
+              3
+            ],
+            "transitionsAfter": [
+              5,
+              5,
+              5,
+              5
+            ],
+            "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+          },
+          "imageError": {
+            "reference": "Classified input crop before border repair, cleanup or tracing",
+            "resolution": 360,
+            "mismatchPixels": 3095,
+            "observedPixels": 129600,
+            "observedFraction": 1,
+            "mismatchFraction": 0.023881172839506172,
+            "method": "Forward sampling of both slit families at input resolution",
+            "independentExportRenderer": false
+          }
+        },
+        {
+          "browser": "webkit",
+          "id": "web",
+          "file": "tmp/inverse-hard-photos/sources/bibel-star-curved.png",
+          "checks": [
+            "Upload finds all four corners without manual edits and without black bounding boxes",
+            "Automatic crop prepares with unchanged General defaults",
+            "Fresh solve downloads a validated five-slit pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original classified crop within 2.396%",
+            "Woven heart, both cutting templates and paper support render"
+          ],
+          "pageErrors": [],
+          "quad": [
+            [
+              517.3249083293052,
+              140.57629208153665
+            ],
+            [
+              756.9635254796268,
+              367.17786960756865
+            ],
+            [
+              507.8456057092928,
+              615.7181352484841
+            ],
+            [
+              282.097201645196,
+              367.06038185293716
+            ]
+          ],
+          "independentImageError": 0.0239625,
+          "templateExportAllowed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "border": {
+            "radiusMm": 3,
+            "depthPixels": 12,
+            "profileNoiseRadiusMm": 1.25,
+            "profilePixelsChanged": 0,
+            "editedBandWidthMm": 3,
+            "changedPixels": 1720,
+            "changeFraction": 0.01075,
+            "transitionsBefore": [
+              3,
+              24,
+              0,
+              3
+            ],
+            "transitionsAfter": [
+              5,
+              5,
+              5,
+              5
+            ],
+            "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+          },
+          "imageError": {
+            "reference": "Classified input crop before border repair, cleanup or tracing",
+            "resolution": 400,
+            "mismatchPixels": 3766,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.0235375,
+            "method": "Forward sampling of both slit families at input resolution",
+            "independentExportRenderer": false
+          }
+        }
+      ]
+    },
+    "generator": {
+      "evidence": "tmp/inverse-browser/2026-09-07T20-43-26-724Z-generator-qa/results.json",
+      "sha256": "7ff837c6f01da68b0a1a0ffb6d2eea93b7402b0ff47a9f6d48d646e6b2a925a1",
+      "results": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "Coloured photo uploads, locates four overlap corners and renders its original crop",
+            "Reported yellow-star photo locates automatically; uncertain fit remains marked for review",
+            "A square photograph also gets automatic corners instead of silently using the whole image",
+            "Whole-image mode hides the unused crop overlay; returning restores the selection",
+            "Clearing a coordinate invalidates the crop and solve; restoring it recovers preparation",
+            "Crossed corners fail without exports; four manual clicks recover a usable crop",
+            "Failed rectangle detection switches to manual corners; failed refitting preserves explicit edits",
+            "Stopping corner detection permits a fresh upload and ignores the old worker",
+            "unsupported.txt: rejected cleanly; a valid upload recovers",
+            "broken.png: rejected cleanly; a valid upload recovers",
+            "too-large.png: rejected cleanly; a valid upload recovers",
+            "25-megapixel image is rejected before crop processing",
+            "Malformed saved templates report an error without stale downloads",
+            "Fresh direct solve exports a checked ZIP whose curves independently reproduce the source",
+            "The General solver also completes a fresh solve with the real WASM engine",
+            "Changing a cutting constraint removes the previous result and exports",
+            "Tiny square artwork skips the locator and still prepares",
+            "Mobile layout supports manual placement without horizontal overflow",
+            "Danish generator exposes and uses the same crop tools",
+            "A failed worker load reports an error and retries with a fresh worker",
+            "Changing a footer colour during detection cancels safely and permits another fit"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "Coloured photo uploads, locates four overlap corners and renders its original crop",
+            "Reported yellow-star photo locates automatically; uncertain fit remains marked for review",
+            "A square photograph also gets automatic corners instead of silently using the whole image",
+            "Whole-image mode hides the unused crop overlay; returning restores the selection",
+            "Clearing a coordinate invalidates the crop and solve; restoring it recovers preparation",
+            "Crossed corners fail without exports; four manual clicks recover a usable crop",
+            "Failed rectangle detection switches to manual corners; failed refitting preserves explicit edits",
+            "Stopping corner detection permits a fresh upload and ignores the old worker",
+            "unsupported.txt: rejected cleanly; a valid upload recovers",
+            "broken.png: rejected cleanly; a valid upload recovers",
+            "too-large.png: rejected cleanly; a valid upload recovers",
+            "25-megapixel image is rejected before crop processing",
+            "Malformed saved templates report an error without stale downloads",
+            "Fresh direct solve exports a checked ZIP whose curves independently reproduce the source",
+            "The General solver also completes a fresh solve with the real WASM engine",
+            "Changing a cutting constraint removes the previous result and exports",
+            "Tiny square artwork skips the locator and still prepares",
+            "Mobile layout supports manual placement without horizontal overflow",
+            "Danish generator exposes and uses the same crop tools",
+            "A failed worker load reports an error and retries with a fresh worker",
+            "Changing a footer colour during detection cancels safely and permits another fit"
+          ],
+          "pageErrors": []
+        },
+        {
+          "browser": "webkit",
+          "checks": [
+            "Coloured photo uploads, locates four overlap corners and renders its original crop",
+            "Reported yellow-star photo locates automatically; uncertain fit remains marked for review",
+            "A square photograph also gets automatic corners instead of silently using the whole image",
+            "Whole-image mode hides the unused crop overlay; returning restores the selection",
+            "Clearing a coordinate invalidates the crop and solve; restoring it recovers preparation",
+            "Crossed corners fail without exports; four manual clicks recover a usable crop",
+            "Failed rectangle detection switches to manual corners; failed refitting preserves explicit edits",
+            "Stopping corner detection permits a fresh upload and ignores the old worker",
+            "unsupported.txt: rejected cleanly; a valid upload recovers",
+            "broken.png: rejected cleanly; a valid upload recovers",
+            "too-large.png: rejected cleanly; a valid upload recovers",
+            "25-megapixel image is rejected before crop processing",
+            "Malformed saved templates report an error without stale downloads",
+            "Fresh direct solve exports a checked ZIP whose curves independently reproduce the source",
+            "The General solver also completes a fresh solve with the real WASM engine",
+            "Changing a cutting constraint removes the previous result and exports",
+            "Tiny square artwork skips the locator and still prepares",
+            "Mobile layout supports manual placement without horizontal overflow",
+            "Danish generator exposes and uses the same crop tools",
+            "A failed worker load reports an error and retries with a fresh worker",
+            "Changing a footer colour during detection cancels safely and permits another fit"
+          ],
+          "pageErrors": []
+        }
+      ]
+    }
+  },
+  "sourceSha256": {
+    "src/lib/inverse/presets.js": "fc8be11f0472bc642f2969d958ef4b826fca07effe1c9ecb5590860db8a165ec",
+    "src/routes/[[lang=lang]]/generate/+page.svelte": "a84112ce6eaf9e6ea7defee6ca91368faa0d8a498779cfdb53381f0cf29e1923",
+    "scripts/inverse/border.test.mjs": "95501f20d0ce25fafa1165c77277733175267f7a6546d4ce3e324758aab5fbbc",
+    "scripts/inverse/generator-qa-browser-test.mjs": "5d6bfd6f6a1e0aabdf46d0fe96cb053285f991d730b6ccba9c80095ada8fc315",
+    "scripts/inverse/automatic-star-benchmark.mjs": "616d4e83f488388f788f10382ebcd258187ec4821327f81995f8e5bfcb042635",
+    "scripts/inverse/automatic-star-browser-test.mjs": "9b83413271a96cfe9d3d83aee606f74e772eae1d84072daf4f1ad01b61d69450",
+    "package.json": "6a5f9e79417e7f40681795ae25f8133929714be5242a8038eb1cff8e2706cf0e",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+    "static/inverse/core/crop.js": "8ccbf040d18d6a450099beebf398a3958845012fc19bc83cd2c9ca8ce6e087cc",
+    "static/inverse/locator/locator.js": "9ee9f10a8b2eaa22c159371226896a5313faf4d7dae51b7ad943ef1ac52086ae",
+    "static/inverse/locator/palette.js": "7d8d7468c0d98a01376238aa9a0a2bb9d7f9b70092dea10a74064b8eb9a1940c"
+  },
+  "automaticPerturbations": {
+    "evidence": "tmp/inverse-automatic-star/2026-09-07T20-40-23-220Z/results.json",
+    "sha256": "6f1c69f1bc59e6e6c1980dfcfa9a6d9dfb303208a33051efafdb55012a556d35",
+    "settings": {
+      "algorithm": "trace",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 150,
+      "localNeighborhoodFactor": 3,
+      "roundHidden": true,
+      "timeLimit": 30,
+      "trials": 0
+    },
+    "sources": [
+      {
+        "id": "user",
+        "file": "scripts/inverse/fixtures/yellow-star-photo.png",
+        "sha256": "6fbf160ebb7d96e11ce701d5d88410b6f36363ccea23a803870ccedb3c6f3247"
+      },
+      {
+        "id": "web",
+        "file": "tmp/inverse-hard-photos/sources/bibel-star-curved.png",
+        "sha256": "130b68f82bbfdab2f1b243e4b99e41926c746820bbde527041bc8def514e834b"
+      }
+    ],
+    "passed": 13,
+    "attempted": 18,
+    "results": [
+      {
+        "id": "user",
+        "variant": "original",
+        "quad": [
+          [
+            288.03922158762185,
+            79.86167968935169
+          ],
+          [
+            420.1547832901624,
+            208.14551145023893
+          ],
+          [
+            282.9261695138435,
+            344.7286229063367
+          ],
+          [
+            156.96400146596653,
+            205.8998507632119
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.024297839506172838,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 7.263447167000001
+      },
+      {
+        "id": "user",
+        "variant": "left",
+        "quad": [
+          [
+            287.03922158762185,
+            79.86167968935169
+          ],
+          [
+            419.1547832901624,
+            208.14551145023893
+          ],
+          [
+            281.9261695138435,
+            344.7286229063367
+          ],
+          [
+            155.96400146596653,
+            205.8998507632119
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.02472993827160494,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 3.5529325
+      },
+      {
+        "id": "user",
+        "variant": "right",
+        "quad": [
+          [
+            289.03922158762185,
+            79.86167968935169
+          ],
+          [
+            421.1547832901624,
+            208.14551145023893
+          ],
+          [
+            283.9261695138435,
+            344.7286229063367
+          ],
+          [
+            157.96400146596653,
+            205.8998507632119
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.021080246913580247,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 5.998003999999999
+      },
+      {
+        "id": "user",
+        "variant": "up",
+        "quad": [
+          [
+            288.03922158762185,
+            78.86167968935169
+          ],
+          [
+            420.1547832901624,
+            207.14551145023893
+          ],
+          [
+            282.9261695138435,
+            343.7286229063367
+          ],
+          [
+            156.96400146596653,
+            204.8998507632119
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.022199074074074072,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 3.4815796249999984
+      },
+      {
+        "id": "user",
+        "variant": "down",
+        "quad": [
+          [
+            288.03922158762185,
+            80.86167968935169
+          ],
+          [
+            420.1547832901624,
+            209.14551145023893
+          ],
+          [
+            282.9261695138435,
+            345.7286229063367
+          ],
+          [
+            156.96400146596653,
+            206.8998507632119
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.022847222222222224,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 4.470201125
+      },
+      {
+        "id": "user",
+        "variant": "brighter",
+        "quad": [
+          [
+            288.55805930661904,
+            80.04928952098818
+          ],
+          [
+            423.58098288202666,
+            204.73467756100305
+          ],
+          [
+            283.08701850074436,
+            344.7962628753519
+          ],
+          [
+            156.9227104176618,
+            205.91387393566254
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.02675925925925926,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 3.7015752090000023
+      },
+      {
+        "id": "user",
+        "variant": "darker",
+        "quad": [
+          [
+            288.0379708464636,
+            79.8451618865616
+          ],
+          [
+            420.19167193806544,
+            208.10879632086935
+          ],
+          [
+            282.9261695138435,
+            344.7286229063367
+          ],
+          [
+            156.96526852563915,
+            205.9012472486909
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.024390432098765433,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 3.535204084000001
+      },
+      {
+        "id": "user",
+        "variant": "jpeg",
+        "quad": [
+          [
+            291.44174830311215,
+            79.25834183906656
+          ],
+          [
+            421.16132050908675,
+            207.02387269306607
+          ],
+          [
+            282.7232420230571,
+            344.63108013226343
+          ],
+          [
+            156.8779375419182,
+            205.77558918131788
+          ]
+        ],
+        "passed": false,
+        "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+        "seconds": 14.642439875
+      },
+      {
+        "id": "user",
+        "variant": "half",
+        "quad": [
+          [
+            144.84332432108485,
+            40.130996381302694
+          ],
+          [
+            210.97793084636916,
+            103.1472380237795
+          ],
+          [
+            141.6483305823648,
+            172.71415814276932
+          ],
+          [
+            77.93497811466207,
+            102.28994298351499
+          ]
+        ],
+        "passed": false,
+        "error": "Candidate graph too large. Reduce connection neighbours or image detail.",
+        "seconds": 0.6938067499999961
+      },
+      {
+        "id": "web",
+        "variant": "original",
+        "quad": [
+          [
+            517.3249083293052,
+            140.57629208153665
+          ],
+          [
+            756.9635254796268,
+            367.17786960756865
+          ],
+          [
+            507.8456057092928,
+            615.7181352484841
+          ],
+          [
+            282.097201645196,
+            367.06038185293716
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.02394375,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 34.295480916
+      },
+      {
+        "id": "web",
+        "variant": "left",
+        "quad": [
+          [
+            516.3249083293052,
+            140.57629208153665
+          ],
+          [
+            755.9635254796268,
+            367.17786960756865
+          ],
+          [
+            506.8456057092928,
+            615.7181352484841
+          ],
+          [
+            281.097201645196,
+            367.06038185293716
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.02345625,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 32.76934179199999
+      },
+      {
+        "id": "web",
+        "variant": "right",
+        "quad": [
+          [
+            518.3249083293052,
+            140.57629208153665
+          ],
+          [
+            757.9635254796268,
+            367.17786960756865
+          ],
+          [
+            508.8456057092928,
+            615.7181352484841
+          ],
+          [
+            283.097201645196,
+            367.06038185293716
+          ]
+        ],
+        "passed": false,
+        "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+        "seconds": 30.319881708999993
+      },
+      {
+        "id": "web",
+        "variant": "up",
+        "quad": [
+          [
+            517.3249083293052,
+            139.57629208153665
+          ],
+          [
+            756.9635254796268,
+            366.17786960756865
+          ],
+          [
+            507.8456057092928,
+            614.7181352484841
+          ],
+          [
+            282.097201645196,
+            366.06038185293716
+          ]
+        ],
+        "passed": false,
+        "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+        "seconds": 30.31825537499998
+      },
+      {
+        "id": "web",
+        "variant": "down",
+        "quad": [
+          [
+            517.3249083293052,
+            141.57629208153665
+          ],
+          [
+            756.9635254796268,
+            368.17786960756865
+          ],
+          [
+            507.8456057092928,
+            616.7181352484841
+          ],
+          [
+            282.097201645196,
+            368.06038185293716
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.02434375,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 33.92008470899999
+      },
+      {
+        "id": "web",
+        "variant": "brighter",
+        "quad": [
+          [
+            519.7163396405543,
+            137.93812206309929
+          ],
+          [
+            752.0449199934268,
+            372.08186073912805
+          ],
+          [
+            507.86644476929933,
+            615.7410890933434
+          ],
+          [
+            278.0099392945974,
+            362.5583368535427
+          ]
+        ],
+        "passed": false,
+        "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+        "seconds": 31.944665917000005
+      },
+      {
+        "id": "web",
+        "variant": "darker",
+        "quad": [
+          [
+            519.042397795502,
+            137.2128180848849
+          ],
+          [
+            751.5487488667094,
+            372.5725664403921
+          ],
+          [
+            507.91657070369155,
+            615.8230829919898
+          ],
+          [
+            282.5517810987633,
+            367.6258056635399
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.0251875,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 33.78502641700002
+      },
+      {
+        "id": "web",
+        "variant": "jpeg",
+        "quad": [
+          [
+            519.3053016554096,
+            138.73847181308582
+          ],
+          [
+            757.9022453509655,
+            366.23351473233026
+          ],
+          [
+            507.9518563069208,
+            615.5681615096852
+          ],
+          [
+            281.4458296690434,
+            366.4038789520659
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.026275,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 33.266330041999986
+      },
+      {
+        "id": "web",
+        "variant": "half",
+        "quad": [
+          [
+            259.48362377015013,
+            69.56959613237521
+          ],
+          [
+            377.29328621051474,
+            185.11711772687133
+          ],
+          [
+            254.29788887624426,
+            308.1950923357364
+          ],
+          [
+            141.44185960647923,
+            183.73950100719006
+          ]
+        ],
+        "passed": true,
+        "independentImageError": 0.02419504759071981,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "seconds": 17.547848667000014
+      }
+    ],
+    "failureTerminations": [
+      {
+        "id": "user",
+        "variant": "jpeg",
+        "termination": "round_limit"
+      },
+      {
+        "id": "user",
+        "variant": "half",
+        "termination": "Candidate graph too large. Reduce connection neighbours or image detail."
+      },
+      {
+        "id": "web",
+        "variant": "right",
+        "termination": "time_limit"
+      },
+      {
+        "id": "web",
+        "variant": "up",
+        "termination": "time_limit"
+      },
+      {
+        "id": "web",
+        "variant": "brighter",
+        "termination": "time_limit"
+      }
+    ]
+  },
+  "manualRegression": {
+    "evidence": "tmp/inverse-yellow-star/2026-09-07T20-40-24-543Z/results.json",
+    "sha256": "afff3aeb716600afbf43e9a1a156f2805e1470ef41ef9306a7efebe917ed9398",
+    "passed": 7,
+    "attempted": 7,
+    "independentImageErrorRange": [
+      0.016311728395061727,
+      0.017800925925925925
+    ]
+  },
+  "diagnostics": {
+    "borderProfiles": "tmp/generator-qa/star-boundary/profiles.json",
+    "radiusComparison": "tmp/generator-qa/star-boundary/solve-results.json",
+    "borderPerturbations": "tmp/generator-qa/star-boundary/perturb-results.json",
+    "cssBefore": "tmp/generator-qa/outline-boxes/before.json",
+    "cssAfter": "tmp/generator-qa/outline-boxes/after.json"
+  },
+  "devSmoke": {
+    "evidence": "tmp/generator-qa/star-boundary/dev-smoke.json",
+    "sha256": "4ab0bfe07b6d951db2e7a9bd9462dcd9e81c793936d5e9b4abd6e881dc9cad58",
+    "origin": "http://127.0.0.1:4173",
+    "pageErrors": [],
+    "templateExportAllowed": true,
+    "slits": {
+      "left": 5,
+      "right": 5
+    },
+    "screenshot": "tmp/generator-qa/star-boundary/port-4173.png",
+    "zip": "tmp/generator-qa/star-boundary/port-4173.zip"
+  },
+  "notes": [
+    "The automatic benchmark intentionally exits nonzero for its five preserved search/complexity failures; original photos pass.",
+    "The UI change increases the explicit General/Simplify border setting from 1.5 to 3 mm; crop coordinates and image-fidelity limits are unchanged.",
+    "The 93 browser checks belong to this follow-up. Earlier example/locator/direct suites were not added to this count.",
+    "An initial ad hoc port-4173 smoke used an ambiguous selector for two equivalent Find cutting templates buttons; the corrected first-button selector passed. The committed browser suite already used the unambiguous selector.",
+    "The 31-heart direct-fitter benchmark was not rerun."
+  ]
+}
