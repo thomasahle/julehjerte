@@ -305,6 +305,14 @@ rail and the panel **float over it** as white cards with `--shadow-panel`. So do
 is the whole canvas area (`inset: 0`), so a zoomed or panned heart carries on under the rail and the panel and
 out to the window edges. Clipping it at their edges was the one thing that gave the floating away.
 
+The canvas is not a flat colour: it is the hero's scene again (§2) — `--sky` with the winter landscape along
+the bottom edge — behind the drawing surface, the rail and the panel, taking no pointer events and never
+panning or zooming with the heart. A 40% sheet of `--sky` over it leaves the drawing at an effective 60%, so
+the heart stays the subject; washing the scene rather than fading the drawing keeps the drawing's snow and the
+strip under it the same colour, so the bottom edge has no seam. This is the editor page's one inlined copy of
+the landscape, so the page must not grow a second. Below 900px the wash goes opaque and the canvas keeps the
+sky alone: the short box there hid the drawing behind the floating panels and left a torn strip of firs.
+
 The rail's and the panel's widths survive as two insets (`--editor-rail-inset`, `--editor-panel-inset`; the
 panel's drops to 60px while it is collapsed) with exactly two jobs: they place the canvas chrome (hint,
 selection chip, strip count, notices), and they size the **fit band** — an unpainted box, `.canvas-fit-band`,

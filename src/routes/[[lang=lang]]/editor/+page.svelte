@@ -23,6 +23,7 @@
   import { sanitizeHtml } from '$lib/utils';
   import { slugify } from '$lib/utils/slug';
   import { trackImportError } from '$lib/analytics';
+  import CanvasBackdrop from '$lib/components/editor/CanvasBackdrop.svelte';
   import Modal from '$lib/components/Modal.svelte';
   import PageHeader from '$lib/components/PageHeader.svelte';
   import { browser } from '$app/environment';
@@ -725,6 +726,11 @@
   <main id="main-content" tabindex="-1">
   <h1 class="sr-only">{pageHeading}</h1>
   <div class="editor-top">
+    <!-- The canvas' sky and landscape. It belongs to the page, not to the editor
+         component: the drawing may be inlined only once per page, and this is the
+         editor page's one copy (it has no <Scene>). Outside {#key}, so remounting
+         the editor with another heart does not re-inline the drawing's ids. -->
+    <CanvasBackdrop />
     {#key editorKey}
       <PaperHeart
         {lang}
@@ -825,7 +831,10 @@
     --editor-header-height: var(--nav-height);
   }
 
+  /* position: relative so <CanvasBackdrop> can fill exactly this box — the canvas
+     area and nothing else. */
   .editor-top {
+    position: relative;
     height: calc(90dvh - var(--editor-header-height));
     min-height: 360px;
     display: flex;

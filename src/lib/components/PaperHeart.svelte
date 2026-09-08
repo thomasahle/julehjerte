@@ -4117,8 +4117,10 @@
 				--editor-panel-inset: 60px;
 			}
 
+			/* No fill of its own: the drawing surface is glass, so whatever the page
+			   puts behind the editor (the editor route's sky-and-landscape backdrop)
+			   shows through under the heart. */
 			.paper-heart.fullPage .canvas-box {
-				background: var(--cream2);
 				overflow: hidden;
 			}
 
