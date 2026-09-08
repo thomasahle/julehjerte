@@ -7,6 +7,7 @@
   what the search is asked to hold, not something the brush does.
 -->
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { base } from '$app/paths';
 	import SymmetryRows from '$lib/components/editor/SymmetryRows.svelte';
 	import { ExternalIcon, ScissorsIcon } from '$lib/components/icons';
@@ -98,6 +99,28 @@
 	let searching = $derived(status === 'searching');
 	let stageText = $derived(tr(STAGES[stage] ?? 'paintStageWorking'));
 
+	/** Which of the three faces is on screen; the effect below watches it. */
+	let face = $derived(searching ? 'searching' : showingResult && result ? 'found' : 'ask');
+
+	let headingEl = $state.raw<HTMLHeadingElement | null>(null);
+	let settled = false;
+
+	// A face swap replaces the whole panel, the pressed button included, so focus
+	// would fall to <body> and a keyboard visitor would have to tab in from the top
+	// of the page to reach Afbryd or Åbn i Tegn. The heading is where the new face
+	// begins, so that is where focus goes — never on the first render, which nobody
+	// asked for.
+	$effect(() => {
+		void face;
+		untrack(() => {
+			if (!settled) {
+				settled = true;
+				return;
+			}
+			headingEl?.focus();
+		});
+	});
+
 	// The rows the converter honoured differ from what was asked: the solve did
 	// not hold the symmetry closely enough to be corrected into it (§11).
 	let symmetryDropped = $derived(
@@ -113,14 +136,19 @@
 </script>
 
 <section class="editor-panel">
-	<h2 class="panel-title">{tr('paintFindCuts')}</h2>
+	<!-- tabindex="-1" so the effect above can put focus here when the face swaps,
+	     the way every page on the site takes focus to its <main>. -->
+	<h2 class="panel-title" bind:this={headingEl} tabindex="-1">{tr('paintFindCuts')}</h2>
 
 	{#if searching}
 		<div class="progress-row">
 			<ScissorsIcon size={18} />
 			<span>{t('paintSearching', lang, { seconds: elapsed })}</span>
 		</div>
-		<p class="note">{stageText}</p>
+		<!-- role="status" on the stage and not on the seconds: the search can run for
+		     two minutes, and a stage that changes a handful of times is news, while a
+		     counter ticking every second is noise. -->
+		<p class="note" role="status">{stageText}</p>
 		<div class="bar" role="progressbar" aria-label={tr('paintFindCuts')}>
 			<span></span>
 		</div>
@@ -130,15 +158,19 @@
 			</button>
 		</div>
 	{:else if showingResult && result}
-		<p class="lead">{tr('paintFound')}</p>
-		<p class="numbers">
-			{t('paintFoundSummary', lang, {
-				left: result.report.cuts[0],
-				right: result.report.cuts[1],
-				clearance: result.report.clearanceMm.toFixed(1),
-				mismatch: (100 * result.report.mismatch).toFixed(1)
-			})}
-		</p>
+		<!-- The answer to a wait that may have lasted a minute or two: it has to say
+		     so on its own, not only to whoever is watching the panel. -->
+		<div class="summary" role="status">
+			<p class="lead">{tr('paintFound')}</p>
+			<p class="numbers">
+				{t('paintFoundSummary', lang, {
+					left: result.report.cuts[0],
+					right: result.report.cuts[1],
+					clearance: result.report.clearanceMm.toFixed(1),
+					mismatch: (100 * result.report.mismatch).toFixed(1)
+				})}
+			</p>
+		</div>
 		{#if result.report.identical}
 			<p class="note">{tr('paintFoundIdentical')}</p>
 		{/if}
@@ -224,6 +256,14 @@
 		font-size: 14px;
 		line-height: 1.5;
 		color: var(--ink);
+	}
+
+	/* The two lines of the answer are one live region, so they need one box; the
+	   gap is the panel's own, so the wrapper changes nothing on screen. */
+	.summary {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
 	}
 
 	.note {
