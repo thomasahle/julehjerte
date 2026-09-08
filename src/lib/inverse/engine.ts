@@ -199,7 +199,8 @@ export type FindSettings = {
 };
 
 /**
- * The three engine knobs the "Avanceret" disclosure offers (PAINT.md §2).
+ * What the "Avanceret" disclosure offers (PAINT.md §2 and §11): three knobs on
+ * the engine, and one on the target the engine is given.
  *
  * Everything else the engine can be told is either meaningless to a hobbyist or
  * a way to get a template that cannot be cut, so it is not offered.
@@ -224,7 +225,7 @@ export type AdvancedSettings = {
 export type AdvancedNumber = 'widthMm' | 'minWidthMm' | 'frameCells';
 
 /**
- * What those two numbers may be.
+ * What each of those numbers may be.
  *
  * `core/settings.js` bounds `width` to [20, 300] and `minWidth` to [0.1, 30] and
  * *throws* outside them — inside the worker, at solve time, as an `EngineError`
