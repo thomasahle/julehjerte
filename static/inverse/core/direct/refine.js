@@ -7,6 +7,7 @@ import {renderCurves} from './curves.js';
 import {mismatch} from './grid.js';
 import {validate} from '../validate.js';
 import {materialAudit} from '../material.js';
+import {matchingGroups,matchingPenalty,projectMatching} from './matching.js';
 export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+.35;}
 
 export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
@@ -71,30 +72,33 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null}={}){
   const points=graph.points.slice(),initial=points.slice(),adam=new Adam(points.length,rate*graph.width/100),history=[];
+  const groups=identicalSheets?matchingGroups(graph):null;let stoppedEarly=false;
   const clampAxes=new Uint8Array(points.length);
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
-  const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);};
+  const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);if(groups)projectMatching(points,groups,graph.fixed,initial);};
   clampPoints();let safe=null,best=null,bestInvalid=null,completed=0;
   const checkpoint=step=>{
     const solution=graph.solution(points,phase,input),check=validate(solution,cfg,{checkImage:false}),error=mismatch(renderCurves(graph,points,phase,n,32),prob);
-    const score=(boundaryValue(graph,points,prob,n,phase)+boundaryValue(graph,points,prob,n,phase,{transpose:true,rows:193}))/2;
+    const score=(boundaryValue(graph,points,prob,n,phase)+boundaryValue(graph,points,prob,n,phase,{transpose:true,rows:193}))/2+(cfg.preferMatchingSheets?matchingPenalty(graph,points).loss:0);
     const paper=check.passed?materialAudit(solution,cfg):null;
     const rec={step,error,score,geometry:check.passed,paper:paper?.status,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec);
     const value={graph,points:points.slice(),phase,error,score,validation:check,paper:paper?.summary};
     if(!bestInvalid||error<bestInvalid.error)bestInvalid=value;
-    if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){safe=points.slice();if(!best||score<best.score)best=value;}
+    if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){safe=points.slice();if(!best||score<best.score)best=value;if(stopWhen&&step>=80&&stopWhen(best))stoppedEarly=true;}
     else if(safe){points.set(safe);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.65);}
   };
   checkpoint(-1);
   for(let step=0;step<steps;step++){
-    if(step%5===0&&performance.now()>deadline)break;
+    if(stoppedEarly||(step%5===0&&performance.now()>deadline))break;
     const g=boundaryGradient(graph,points,prob,n,phase),penalty=curvePenalty(graph,points,cfg);
+    if(cfg.preferMatchingSheets&&!identicalSheets){const matching=matchingPenalty(graph,points);for(let i=0;i<g.length;i++)g[i]+=matching.gradient[i];}
     for(let i=0;i<g.length;i++)g[i]=graph.fixed[i]?0:g[i]+penalty.gradient[i]+.000004*(points[i]-initial[i])/points.length;
+    if(groups)projectMatching(g,groups,graph.fixed,new Float64Array(g.length));
     adam.update(points,g,1);clampPoints();completed++;
     if(step%40===0||step===steps-1)checkpoint(step);
   }
   if(completed&&history.at(-1).step!==completed-1)checkpoint(completed-1);
-  return{...(best||bestInvalid),geometryPassed:(best||bestInvalid).validation.passed,paperPassed:!!best,history,steps:completed};
+  return{...(best||bestInvalid),geometryPassed:(best||bestInvalid).validation.passed,paperPassed:!!best,history,steps:completed,stoppedEarly};
 }

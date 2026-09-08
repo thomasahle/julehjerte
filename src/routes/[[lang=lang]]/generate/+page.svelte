@@ -64,7 +64,7 @@
   let routingPreset = $state('general');
   let settings = $state({
     ...GENERAL_PRESET,
-    width: 100, minWidth: 2, cutError: 0.25, timeLimit: 60,
+    width: 100, minWidth: 2, cutError: 0.25, timeLimit: 60, preferMatchingSheets: true, earlyStop: false,
     mode: 'auto', threshold: 128, swatches: ['#b91313', '#ffffff'], invert: false,
     removeSpecks: 0, fillHoles: 0,
     minRadius: 0.8, kerf: 0, printShrinkPercent: 0.2,
@@ -528,7 +528,12 @@
           <h2>{text('settings')}</h2>
           {#if !saved}
             <label>{text('routingPreset')}<select value={routingPreset} onchange={e => setRoutingPreset(e.currentTarget.value)}><option value="direct">{text('directPreset')}</option><option value="general">{text('generalPreset')}</option><option value="matching-grid">{text('matchingGridPreset')}</option></select></label>
-            {#if routingPreset === 'direct'}<p class="muted small">{text('directHelp')}</p>{/if}
+            {#if routingPreset === 'direct'}
+              <p class="muted small">{text('directHelp')}</p>
+              <label class="checkbox"><input type="checkbox" bind:checked={settings.preferMatchingSheets} />{text('preferMatching')}</label>
+              <p class="muted small">{text('preferMatchingHelp')}</p>
+              <label class="checkbox"><input type="checkbox" bind:checked={settings.earlyStop} />{text('stopEarly')}</label>
+            {/if}
             {#if routingPreset === 'matching-grid'}<p class="notice">{text('matchingGridHelp')}</p>{/if}
           {/if}
           <div class="field-grid">
@@ -624,6 +629,12 @@
           <div><strong>{Number.isFinite(result.report.validation.minimumInterSlitDistanceLower) ? result.report.validation.minimumInterSlitDistanceLower.toFixed(2) : '—'}</strong><span>{text('clearance')}</span></div>
           {#if result.report.imageError}<div><strong>{(100 * result.report.imageError.mismatchFraction).toFixed(2)}%</strong><span>{text('imageError')}</span></div>{/if}
         </div>
+        {#if result.report.solver.matchingPreference?.enabled}
+          {#if result.report.solver.matchingPreference.identical}<p class="notice">{text('matchingIdentical')}</p>
+          {:else if result.report.solver.matchingPreference.minimumIdenticalImageError > (result.report.settings.maxImageError ?? .03)}
+            <p class="muted small">{text('matchingLimited').replace('{minimum}', (100 * result.report.solver.matchingPreference.minimumIdenticalImageError).toFixed(2)).replace('{limit}', (100 * (result.report.settings.maxImageError ?? .03)).toFixed(2))}</p>
+          {/if}
+        {/if}
         {#if !result.report.templateExportAllowed}<p class="notice">{text('withheld')}</p>{/if}
         <p class="muted small">{text('assembly')}</p>
         <div class="actions downloads">

@@ -44,12 +44,12 @@ export interface DesignResult {
   report: {
     templateExportAllowed: boolean;
     slits: { left: number; right: number };
-    solver: { imported?: boolean; status?: string; mipGap?: number };
+    solver: { imported?: boolean; status?: string; mipGap?: number; matchingPreference?: { enabled: boolean; identical: boolean; minimumIdenticalImageError: number } };
     validation: { passed: boolean; minimumInterSlitDistanceLower: number };
     manufacturing: { status: 'pass' | 'fail' | 'uncertain' };
     warnings: string[];
     imageError?: { mismatchFraction: number; resolution: number } | null;
-    settings: { width: number; paperColors: [string, string] };
+    settings: { width: number; maxImageError?: number; paperColors: [string, string] };
   };
 }
 
