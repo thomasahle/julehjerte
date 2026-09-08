@@ -7,3 +7,4 @@ cd "$(dirname "$0")/../.."
   -Wl,--export=__heap_base -Wl,--export-memory -Wl,--initial-memory=1048576 \
   -o static/inverse/core/direct/native/boundary.wasm \
   static/inverse/core/direct/native/boundary.c
+chmod 644 static/inverse/core/direct/native/boundary.wasm

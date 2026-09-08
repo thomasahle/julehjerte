@@ -8,6 +8,6 @@
   "sha256": {
     "static/inverse/core/direct/native/boundary.c": "7798b37aa8ff54104fedd8506d2b46b1a4968f0ca4d3fa440717ac63557eedfc",
     "static/inverse/core/direct/native/boundary.wasm": "0b8f321550f82dbac9bff6a5cc58d63f540099b80f0ca1c7f9305738370e0207",
-    "scripts/inverse/build-boundary-kernel.sh": "311fa414b946722c34940fd8973562dcde3dbe30f937b867b1d12cc6b708c6c0"
+    "scripts/inverse/build-boundary-kernel.sh": "20b904960af3d00a50e62e2a004b9f4baefe6636a21a95a3984873eca1cfead1"
   }
 }

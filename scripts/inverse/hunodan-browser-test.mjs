@@ -21,7 +21,7 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
    await context.route('**/*',r=>new URL(r.request().url()).origin===new URL(origin).origin?r.continue():r.abort());
    await context.addInitScript(()=>{const Base=window.Worker;window.hunodanTimes={};window.Worker=class extends Base{
      postMessage(message,...args){if(message.action==='prepare'||message.action==='solve')window.hunodanTimes[message.action]=performance.now();super.postMessage(message,...args);}
-     constructor(...args){super(...args);this.addEventListener('message',e=>{if(e.data.type==='prepared'){window.hunodanPrepared=e.data.preview;window.hunodanTimes.prepared=performance.now();}if(e.data.type==='result'){window.hunodanResult=e.data.result;window.hunodanTimes.result=performance.now();}});}
+     constructor(...args){super(...args);this.addEventListener('message',e=>{if(e.data.type==='progress'&&e.data.event.stage==='preprocessing')window.hunodanTimes.preprocessing=performance.now();if(e.data.type==='prepared'){window.hunodanPrepared=e.data.preview;window.hunodanTimes.prepared=performance.now();}if(e.data.type==='result'){window.hunodanResult=e.data.result;window.hunodanTimes.result=performance.now();}});}
    };});
    page=await context.newPage();page.on('pageerror',e=>row.pageErrors.push(e.message));
    await page.goto(`${origin}/en/generate/`);const idle=()=>page.waitForFunction(()=>document.querySelector('fieldset')?.disabled===false),button=t=>page.getByRole('button',{name:t,exact:true}).first();await idle();
@@ -47,7 +47,7 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
    const rendered=await renderExportedWeave(cuts,prepared.resolution);row.independentImageError=rendered.mask.reduce((s,v,i)=>s+Number(v!==prepared.mask[i]),0)/prepared.mask.length;assert.ok(row.independentImageError<=.03,`${100*row.independentImageError}% independent difference`);
    row.independentFeatures=auditImageFeatures(prepared,rendered.mask);assert.equal(row.independentFeatures.passed,true);
    if(speed){
-     row.seconds=await page.evaluate(()=>{const t=window.hunodanTimes;return(t.prepared-t.prepare+t.result-t.solve)/1000;});
+     row.workerTimes=await page.evaluate(()=>window.hunodanTimes);const t=row.workerTimes;row.prepareSeconds=(t.prepared-t.prepare)/1000;row.solveSeconds=(t.result-t.solve)/1000;row.seconds=row.prepareSeconds+row.solveSeconds;
      row.baselineError=baseline.results.find(r=>r.id===id).independentImageError;
      row.qualityPassed=row.independentImageError<=row.baselineError+1e-12;row.speedPassed=row.seconds<=10;
      assert.ok(row.qualityPassed,`${100*row.independentImageError}% exceeds release error ${100*row.baselineError}%`);

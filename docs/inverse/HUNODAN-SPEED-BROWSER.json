@@ -1,0 +1,698 @@
+{
+  "scope": "Full Chromium benchmark at 10-second budget and zero perturbation trials; Firefox/WebKit four-case smoke tests use 12 perturbation trials. Matching UI tests cover all three engines. Each downloaded ZIP is checked by the separate export renderer.",
+  "timingCaveat": "First Chromium batch: 20/22 under 10 seconds, all 22 at release error or better. hjcur-02 (10.134s) and hjhih-04 (11.541s) passed replays in 6.886s and 9.070s. Timing depends on machine load.",
+  "recoveryCaveat": "The first Firefox anchor run ran out of MILP time and withheld templates. Retrying with fewer optional connectors passed all three engines with unchanged image error.",
+  "sources": {
+    "fullChromium": {
+      "path": "tmp/inverse-browser/2026-09-08T07-08-09-854Z-15723-hunodan/results.json",
+      "sha256": "8fcf51c66d51535457c919e36cee6301dc8f800ec6e0a94fa5ac2e7162dfda4e",
+      "results": [
+        {
+          "browser": "chromium",
+          "id": "hjfig-01",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 6.789 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.981%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 6.789300000011921,
+          "baselineError": 0.009841777777777777,
+          "independentImageError": 0.009806222222222221,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.009841777777777777,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjfig-02",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 8.991 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.720%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 8.990700000047683,
+          "baselineError": 0.0072106666666666664,
+          "independentImageError": 0.007203555555555556,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.007168,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjfig-03",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 8.622 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.664%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 8.621600000023841,
+          "baselineError": 0.007089777777777778,
+          "independentImageError": 0.006641777777777778,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.006592,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjfig-04",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 7.749 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.444%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 7.749,
+          "baselineError": 0.004771555555555556,
+          "independentImageError": 0.0044444444444444444,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.0043946666666666665,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjfig-05",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 3.715 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 1.776%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 3.7146000000238417,
+          "baselineError": 0.01776012820399933,
+          "independentImageError": 0.01776012820399933,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.017284646338349374,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjfla-01",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 9.924 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 1.343%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 9.924300000011922,
+          "baselineError": 0.013509114583333334,
+          "independentImageError": 0.013434516059027778,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.013332790798611112,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjcur-01",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 9.378 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.514%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 9.378,
+          "baselineError": 0.005831111111111111,
+          "independentImageError": 0.005141333333333334,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.004942222222222222,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjcur-02",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop"
+          ],
+          "error": "AssertionError [ERR_ASSERTION]: 10.134 seconds exceeds 10 seconds\n    at file:///Users/ahle/repos/julehjerte/scripts/inverse/hunodan-browser-test.mjs:54:13",
+          "seconds": 10.134199999988079,
+          "baselineError": 0.005745777777777778,
+          "independentImageError": 0.005127111111111111,
+          "qualityPassed": true,
+          "speedPassed": false,
+          "templateExportAllowed": true,
+          "imageError": 0.004920888888888889,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjcur-03",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 8.254 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.448%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 8.2535,
+          "baselineError": 0.005688888888888889,
+          "independentImageError": 0.00448,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.004216888888888889,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjcur-04",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 9.207 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.554%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 9.206699999988079,
+          "baselineError": 0.006492444444444445,
+          "independentImageError": 0.005539555555555555,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.005383111111111111,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjcur-05",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 6.076 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.945%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 6.076399999976158,
+          "baselineError": 0.009820444444444444,
+          "independentImageError": 0.009450666666666666,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.00927288888888889,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjhih-01",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 9.040 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.617%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 9.0395,
+          "baselineError": 0.007107573357674032,
+          "independentImageError": 0.006174662407044484,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.00592633359284813,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjhih-02",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 7.334 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.383%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 7.334199999988079,
+          "baselineError": 0.004369789145743716,
+          "independentImageError": 0.003831234789248001,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.0037630633517168974,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjhih-04",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop"
+          ],
+          "error": "AssertionError [ERR_ASSERTION]: 11.541 seconds exceeds 10 seconds\n    at file:///Users/ahle/repos/julehjerte/scripts/inverse/hunodan-browser-test.mjs:54:13",
+          "seconds": 11.540600000083446,
+          "baselineError": 0.009679570602593737,
+          "independentImageError": 0.00794436998620904,
+          "qualityPassed": true,
+          "speedPassed": false,
+          "templateExportAllowed": true,
+          "imageError": 0.0077242325945781455,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjstr-01",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 7.989 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.753%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 7.989,
+          "baselineError": 0.008177127465366042,
+          "independentImageError": 0.007529570614696785,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.007240236702695628,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjstr-02",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 9.064 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.414%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 9.063800000011922,
+          "baselineError": 0.004464168310322156,
+          "independentImageError": 0.004142011834319527,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.004122287968441814,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjstr-03",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 9.126 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.549%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 9.125800000011921,
+          "baselineError": 0.007439685407588479,
+          "independentImageError": 0.005486767988096503,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.005407057073015198,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjsta-01",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 6.659 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.794%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 6.659199999988079,
+          "baselineError": 0.008206371191135734,
+          "independentImageError": 0.007943213296398893,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.007867036011080332,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjsta-02",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 7.616 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.360%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 7.616199999988079,
+          "baselineError": 0.003851996527777778,
+          "independentImageError": 0.00360107421875,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.003485785590277778,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjsta-03",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 9.102 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 1.235%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 9.102099999964237,
+          "baselineError": 0.0126798873807852,
+          "independentImageError": 0.012352664480635904,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.011984538717967945,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjsta-04",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 8.722 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.499%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 8.722100000023842,
+          "baselineError": 0.006172839506172839,
+          "independentImageError": 0.004990061868368746,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.004843089499174155,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjsta-05",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 8.844 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 1.066%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 8.844300000011922,
+          "baselineError": 0.012731885419742812,
+          "independentImageError": 0.01065800424172461,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.010436521785819754,
+          "paperStatus": "pass"
+        }
+      ]
+    },
+    "timingReplays": {
+      "path": "tmp/inverse-browser/2026-09-08T07-17-38-083Z-44361-hunodan/results.json",
+      "sha256": "5027381a0909afd6d2307c9a7125e4b94da22ce52c7859690a6c139797c0123a",
+      "results": [
+        {
+          "browser": "chromium",
+          "id": "hjcur-02",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 6.886 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.513%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 6.88569999998808,
+          "prepareSeconds": 0.1682999999523163,
+          "solveSeconds": 6.717400000035763,
+          "baselineError": 0.005745777777777778,
+          "independentImageError": 0.005127111111111111,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.004920888888888889,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "chromium",
+          "id": "hjhih-04",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 9.070 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 0.789%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 9.070399999976157,
+          "prepareSeconds": 0.18689999997615814,
+          "solveSeconds": 8.8835,
+          "baselineError": 0.009679570602593737,
+          "independentImageError": 0.00788609832371851,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.007717757965412531,
+          "paperStatus": "pass"
+        }
+      ]
+    },
+    "additionalEngines": {
+      "path": "tmp/inverse-browser/2026-09-08T07-19-19-149Z-48044-hunodan/results.json",
+      "sha256": "6742e0456af9bf3301cf3207781f4e2718b145de92c6e44d7b219ad2ac65a87c",
+      "results": [
+        {
+          "browser": "firefox",
+          "id": "hjfig-05",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates"
+          ],
+          "error": "AssertionError [ERR_ASSERTION]: Generated from artwork\n\nThis pair needs attention\nWoven heart\nLeft template\nRight template\nPaper support\nOriginal mask\nCompare\n4 + 4\nleft + right cuts\n7.03\nmm minimum clearance estimate\n4.34%\ndifference from input image\n\nCutting templates are withheld until image, geometry and paper checks pass. Diagnostics remain available.\n\nThese are numerical geometry checks. Try a paper prototype: strength and physical weaving have not been tested.\n\nDownload diagnostics (.zip)\nTechnical report (English)\n\n0 !== 1\n\n    at file:///Users/ahle/repos/julehjerte/scripts/inverse/hunodan-browser-test.mjs:42:11",
+          "templateExportAllowed": false,
+          "imageError": 0.043427343729362765,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "firefox",
+          "id": "hjfla-01",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original mask within 1.326%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "independentImageError": 0.013258192274305556,
+          "templateExportAllowed": true,
+          "imageError": 0.013170030381944444,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "firefox",
+          "id": "hjhih-04",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original mask within 1.544%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "independentImageError": 0.015441990559990676,
+          "templateExportAllowed": true,
+          "imageError": 0.015513211480812436,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "firefox",
+          "id": "hjsta-02",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original mask within 0.371%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "independentImageError": 0.0037095811631944445,
+          "templateExportAllowed": true,
+          "imageError": 0.0036485460069444445,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "webkit",
+          "id": "hjfig-05",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original mask within 1.776%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "independentImageError": 0.01776012820399933,
+          "templateExportAllowed": true,
+          "imageError": 0.017284646338349374,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "webkit",
+          "id": "hjfla-01",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original mask within 1.323%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "independentImageError": 0.013231065538194444,
+          "templateExportAllowed": true,
+          "imageError": 0.01318359375,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "webkit",
+          "id": "hjhih-04",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original mask within 0.866%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "independentImageError": 0.008656579194426639,
+          "templateExportAllowed": true,
+          "imageError": 0.008410543286133287,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "webkit",
+          "id": "hjsta-02",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Downloaded curves independently match the original mask within 0.363%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "independentImageError": 0.003628200954861111,
+          "templateExportAllowed": true,
+          "imageError": 0.0035264756944444445,
+          "paperStatus": "pass"
+        }
+      ]
+    },
+    "sparseRecovery": {
+      "path": "tmp/inverse-browser/2026-09-08T07-28-59-071Z-74671-hunodan/results.json",
+      "sha256": "b1f73e43262d6ad89b87ed57ee1e12929d91abf8a9b984a06105386dcb8071f8",
+      "results": [
+        {
+          "browser": "chromium",
+          "id": "hjfig-05",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 2.567 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 1.776%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 2.566600000023842,
+          "prepareSeconds": 0.16210000002384187,
+          "solveSeconds": 2.4045,
+          "baselineError": 0.01776012820399933,
+          "independentImageError": 0.01776012820399933,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.017284646338349374,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "firefox",
+          "id": "hjfig-05",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 6.057 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 1.776%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 6.057,
+          "prepareSeconds": 0.248,
+          "solveSeconds": 5.809,
+          "baselineError": 0.01776012820399933,
+          "independentImageError": 0.01776012820399933,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.017284646338349374,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "webkit",
+          "id": "hjfig-05",
+          "checks": [
+            "Uploaded photograph finds four automatic corners without manual coordinates",
+            "Fresh direct fit exports a validated pair from the unchanged automatic crop",
+            "Prepare, solve, validation and export finish in 2.806 seconds at release error or better",
+            "Downloaded curves independently match the original mask within 1.776%",
+            "Original mask and measured difference remain inspectable"
+          ],
+          "seconds": 2.806,
+          "prepareSeconds": 0.368,
+          "solveSeconds": 2.438,
+          "baselineError": 0.01776012820399933,
+          "independentImageError": 0.01776012820399933,
+          "qualityPassed": true,
+          "speedPassed": true,
+          "templateExportAllowed": true,
+          "imageError": 0.017284646338349374,
+          "paperStatus": "pass"
+        }
+      ]
+    },
+    "matchingControls": {
+      "path": "tmp/inverse-browser/2026-09-08T07-06-08-184Z-matching/results.json",
+      "sha256": "438dfd1973ac50e579869f9ff710b8113a37e1bde88469769d9786589e6d6fbf",
+      "results": [
+        {
+          "browser": "chromium",
+          "checks": [
+            "The uploaded photo fits below 1% error, explains the identical-template lower bound, and retains its mask and comparison",
+            "Changing the preference invalidates the previous preparation and result",
+            "The symmetric checker exports exactly identical paths and independently renders the original mask without error"
+          ],
+          "templateExportAllowed": true,
+          "imageError": 0.00671875,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "firefox",
+          "checks": [
+            "The uploaded photo fits below 1% error, explains the identical-template lower bound, and retains its mask and comparison",
+            "Changing the preference invalidates the previous preparation and result",
+            "The symmetric checker exports exactly identical paths and independently renders the original mask without error"
+          ],
+          "templateExportAllowed": true,
+          "imageError": 0.00895625,
+          "paperStatus": "pass"
+        },
+        {
+          "browser": "webkit",
+          "checks": [
+            "The uploaded photo fits below 1% error, explains the identical-template lower bound, and retains its mask and comparison",
+            "Changing the preference invalidates the previous preparation and result",
+            "The symmetric checker exports exactly identical paths and independently renders the original mask without error"
+          ],
+          "templateExportAllowed": true,
+          "imageError": 0.00763125,
+          "paperStatus": "pass"
+        }
+      ]
+    }
+  }
+}

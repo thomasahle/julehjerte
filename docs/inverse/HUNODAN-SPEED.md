@@ -3,7 +3,7 @@
 The target is **each of the 22 regular designs within 10 seconds**, with each
 independently rendered image error at or below its release baseline in
 `HUNODAN-VALIDATION.json`. Geometry, guarded paper-core and substantial feature
-checks still apply. The integrated Node replay meets this target; browser verification is in progress.
+checks still apply. The integrated Node replay meets this target; browser validation and follow-up timing replays are complete.
 
 The reproducible driver decodes the committed source photographs, crops out
 the printed references, checks pixel hashes, and uses the frozen quadrilaterals
@@ -96,4 +96,56 @@ fixed. This reduced the anchor replay to 3.47 seconds at unchanged error. Its
 reported MILP gap remains explicit; first feasibility is not claimed optimal.
 
 All 258 tests pass. Type checking has zero errors and eight pre-existing
-warnings; lint passes. Browser and production-build QA follow this checkpoint.
+warnings; lint passes. The production build and browser QA also pass, with the timing qualifications below.
+
+## Browser QA and final connector refinement
+
+The full Chromium batch met all error, geometry and paper requirements on
+22/22 designs. Twenty finished below 10 seconds. Two timing overruns (10.13 s
+and 11.54 s) passed replays at 6.89 s and 9.07 s. These are observed local
+timings, not a guarantee for every machine or background workload. The first
+batch and replays are both retained in `HUNODAN-SPEED-BROWSER.json`.
+
+Firefox initially exhausted its short anchor MILP budget. Keeping the original
+60 visible edges and first trying eight connector neighbors with one variant
+reduces that graph from 1,002 to 564 binary variables. The complete graph
+remains a fallback. This differs from the rejected experiment that coarsened
+the visible contours. The final anchor passes at unchanged error in 2.57 s
+(Chromium), 6.06 s (Firefox), and 2.81 s (WebKit). Its Node replay takes 2.63 s.
+The other 21 Node cases retain their full-run records; all 22 remain below
+9.50 s and at baseline error or better.
+
+Additional flag, nested-heart and star uploads pass the standard geometry,
+paper and 3% image gates in Firefox and WebKit. Those smoke tests are not a
+claim that the full 22-case speed/error benchmark passes in every engine.
+
+The user's screenshot is retained as a photograph-only fixture. All three
+engines reconstruct it below 1% error, explain the identical-template bound,
+and retain its original mask and comparison. Preference changes clear old
+results, and the symmetric checker exports identical curves that reproduce
+every original mask pixel. All downloaded test ZIPs were independently checked.
+
+| Design | Time (s) | Previous error | New error |
+| --- | ---: | ---: | ---: |
+| hjfig-01 | 6.74 | 0.984% | 0.981% |
+| hjfig-02 | 7.59 | 0.721% | 0.720% |
+| hjfig-03 | 5.91 | 0.709% | 0.663% |
+| hjfig-04 | 5.45 | 0.477% | 0.446% |
+| hjfig-05 | 2.63 | 1.776% | 1.776% |
+| hjfla-01 | 7.66 | 1.351% | 1.343% |
+| hjcur-01 | 7.83 | 0.583% | 0.512% |
+| hjcur-02 | 7.23 | 0.575% | 0.537% |
+| hjcur-03 | 7.69 | 0.569% | 0.452% |
+| hjcur-04 | 9.19 | 0.649% | 0.553% |
+| hjcur-05 | 7.41 | 0.982% | 0.943% |
+| hjhih-01 | 9.36 | 0.711% | 0.630% |
+| hjhih-02 | 7.00 | 0.437% | 0.387% |
+| hjhih-04 | 9.14 | 0.968% | 0.829% |
+| hjstr-01 | 6.57 | 0.818% | 0.753% |
+| hjstr-02 | 9.15 | 0.446% | 0.419% |
+| hjstr-03 | 9.36 | 0.744% | 0.559% |
+| hjsta-01 | 7.70 | 0.821% | 0.792% |
+| hjsta-02 | 6.33 | 0.385% | 0.357% |
+| hjsta-03 | 9.19 | 1.268% | 1.235% |
+| hjsta-04 | 9.08 | 0.617% | 0.509% |
+| hjsta-05 | 9.49 | 1.273% | 1.079% |
