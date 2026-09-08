@@ -12,7 +12,12 @@
 	import SymmetryRows from '$lib/components/editor/SymmetryRows.svelte';
 	import { ExternalIcon, ScissorsIcon } from '$lib/components/icons';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
-	import type { AdvancedSettings } from '$lib/inverse/engine';
+	import {
+		ADVANCED_LIMITS,
+		clampAdvanced,
+		type AdvancedNumber,
+		type AdvancedSettings
+	} from '$lib/inverse/engine';
 	import type { PaintError, PaintResult, PaintStatus } from '$lib/editor/session.svelte';
 	import type { SymmetrySettings } from '$lib/paint/symmetry';
 
@@ -99,6 +104,17 @@
 	let searching = $derived(status === 'searching');
 	let stageText = $derived(tr(STAGES[stage] ?? 'paintStageWorking'));
 
+	/**
+	 * One decimal in the visitor's own notation: Danish writes 3,9 mm and 1,3 %
+	 * where `toFixed` writes a point.
+	 */
+	function decimal(value: number): string {
+		return value.toLocaleString(lang === 'en' ? 'en' : 'da', {
+			minimumFractionDigits: 1,
+			maximumFractionDigits: 1
+		});
+	}
+
 	/** Which of the three faces is on screen; the effect below watches it. */
 	let face = $derived(searching ? 'searching' : showingResult && result ? 'found' : 'ask');
 
@@ -128,10 +144,31 @@
 			(['curve', 'lobe', 'lobes'] as const).some((row) => honoured[row] !== symmetry[row])
 	);
 
-	function setNumber(key: 'widthMm' | 'minWidthMm', raw: string): void {
+	/**
+	 * A typed number, passed on only once it is already in range.
+	 *
+	 * `min` and `max` on a number input constrain the spinner, not the keyboard,
+	 * and an emptied field parses as 0 — while the engine *throws* on a width
+	 * outside [20, 300], inside the worker, at solve time, where the page can only
+	 * report it as an engine that failed to load. Clamping on every keystroke would
+	 * rewrite the field under the cursor (a 5 on its way to 50 would turn into 20),
+	 * so a value outside the range waits for `commitNumber` instead.
+	 */
+	function setNumber(key: AdvancedNumber, raw: string): void {
 		const value = Number(raw);
-		if (!Number.isFinite(value)) return;
+		const [lo, hi] = ADVANCED_LIMITS[key];
+		if (!raw.trim() || !Number.isFinite(value) || value < lo || value > hi) return;
 		onAdvanced({ ...advanced, [key]: value });
+	}
+
+	/** Leaving the field: whatever stands in it becomes a number the engine takes. */
+	function commitNumber(key: AdvancedNumber, input: HTMLInputElement): void {
+		const next = input.value.trim() ? clampAdvanced(key, Number(input.value)) : advanced[key];
+		if (next !== advanced[key]) onAdvanced({ ...advanced, [key]: next });
+		// Written back directly as well: when the clamp lands on the value the
+		// settings already hold, nothing changes and the field would otherwise keep
+		// the text that was refused.
+		input.value = String(next);
 	}
 </script>
 
@@ -166,8 +203,8 @@
 				{t('paintFoundSummary', lang, {
 					left: result.report.cuts[0],
 					right: result.report.cuts[1],
-					clearance: result.report.clearanceMm.toFixed(1),
-					mismatch: (100 * result.report.mismatch).toFixed(1)
+					clearance: decimal(result.report.clearanceMm),
+					mismatch: decimal(100 * result.report.mismatch)
 				})}
 			</p>
 		</div>
@@ -209,6 +246,7 @@
 					step="5"
 					value={advanced.widthMm}
 					oninput={(e) => setNumber('widthMm', e.currentTarget.value)}
+					onblur={(e) => commitNumber('widthMm', e.currentTarget)}
 				/>
 			</label>
 			<label class="field">
@@ -220,6 +258,7 @@
 					step="0.5"
 					value={advanced.minWidthMm}
 					oninput={(e) => setNumber('minWidthMm', e.currentTarget.value)}
+					onblur={(e) => commitNumber('minWidthMm', e.currentTarget)}
 				/>
 			</label>
 			<label class="checkbox">
