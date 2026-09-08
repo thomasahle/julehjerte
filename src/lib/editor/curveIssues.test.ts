@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import type { Finger, LobeId, Vec } from '$lib/types/heart';
+import { vecLerp } from '$lib/geometry/vec';
 import { getCenteredRectParams } from '$lib/utils/overlapRect';
 import {
 	INTERSECTION_MARGIN_UNITS,
@@ -94,6 +95,49 @@ describe('fingerHasIntersectionIssues', () => {
 	it('ignores curves in the other lobe (they are meant to weave through each other)', () => {
 		const fingers = [straightLeft('L-1', mid), straightRight('R-1', rect.left + rect.width / 2)];
 		expect(findFingersWithIssues(fingers, margin).size).toBe(0);
+	});
+
+	it('ignores two parts of one curve that a short segment holds apart', () => {
+		// What a converted engine cut looks like at a corner: two long segments with
+		// a two-pixel one between them. The ends either side of the runt are closer
+		// than the margin, and nothing has doubled back — the paper there is one
+		// piece, not a sliver. Skipping only the neighbouring segment misses this.
+		const y = mid;
+		const b: Vec = { x: rect.left + rect.width / 2 + 1, y };
+		const c: Vec = { x: rect.left + rect.width / 2 - 1, y };
+		const straightish = (p0: Vec, p3: Vec) => ({
+			p0,
+			p1: vecLerp(p0, p3, 1 / 3),
+			p2: vecLerp(p0, p3, 2 / 3),
+			p3
+		});
+		const runt: Finger = {
+			id: 'L-1',
+			lobe: 'left',
+			segments: [
+				straightish({ x: rect.right, y }, b),
+				straightish(b, c),
+				straightish(c, { x: rect.left, y })
+			]
+		};
+		expect(fingerHasIntersectionIssues(runt, [runt], margin)).toBe(false);
+	});
+
+	it('still flags a curve that comes back on itself after a longer detour', () => {
+		// The same closeness, reached the other way: the cut swings out and returns
+		// two pixels from where it left, which leaves a neck of paper that tears.
+		const out: Vec = { x: rect.left + 40, y: mid };
+		const back: Vec = { x: rect.left + 40, y: mid + 2 };
+		const hairpin: Finger = {
+			id: 'L-1',
+			lobe: 'left',
+			segments: [
+				{ p0: { x: rect.right, y: mid - 30 }, p1: { x: rect.right - 30, y: mid - 20 }, p2: { x: out.x + 30, y: mid }, p3: out },
+				{ p0: out, p1: { x: rect.left + 5, y: mid - 2 }, p2: { x: rect.left + 5, y: mid + 4 }, p3: back },
+				{ p0: back, p1: { x: out.x + 30, y: mid + 2 }, p2: { x: rect.right - 30, y: mid + 22 }, p3: { x: rect.right, y: mid + 32 } }
+			]
+		};
+		expect(fingerHasIntersectionIssues(hairpin, [hairpin], margin)).toBe(true);
 	});
 
 	it('flags a curve that loops back on itself', () => {

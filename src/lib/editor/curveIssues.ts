@@ -211,7 +211,12 @@ function hasAdjacentIntersection(segA: BezierSegment, segB: BezierSegment, join:
 	return false;
 }
 
-function curveLoopSizeBetween(
+/**
+ * How far apart two points of one curve are *along* it, following the curve from
+ * the earlier to the later. Null when the two are in the same segment or the
+ * lengths do not describe these segments.
+ */
+function curveArcSeparation(
 	segs: BezierSegment[],
 	prefixLengths: number[],
 	idxA: number,
@@ -220,8 +225,6 @@ function curveLoopSizeBetween(
 	tB: number
 ): number | null {
 	if (prefixLengths.length !== segs.length + 1) return null;
-	const total = prefixLengths[prefixLengths.length - 1]!;
-	if (total <= 0) return null;
 	let i = idxA;
 	let j = idxB;
 	let ti = tA;
@@ -236,6 +239,22 @@ function curveLoopSizeBetween(
 		forward += prefixLengths[j]! - prefixLengths[i + 1]!;
 	}
 	forward += cubicArcLength(segs[j]!, 0, tj);
+	return forward;
+}
+
+function curveLoopSizeBetween(
+	segs: BezierSegment[],
+	prefixLengths: number[],
+	idxA: number,
+	tA: number,
+	idxB: number,
+	tB: number
+): number | null {
+	const total = prefixLengths[prefixLengths.length - 1] ?? 0;
+	if (total <= 0) return null;
+	const forward = curveArcSeparation(segs, prefixLengths, idxA, tA, idxB, tB);
+	if (forward == null) return null;
+	// A crossing cuts the curve into two loops; the smaller one is the sliver.
 	const other = Math.max(0, total - forward);
 	return Math.min(forward, other);
 }
@@ -261,7 +280,7 @@ function segmentsHaveIssues(
 	const loopThreshold = same ? opts.intersectionLoopThreshold : undefined;
 	const intersectionEps = loopThreshold != null ? 0.2 : INTERSECTION_EPS;
 	let prefixLengths: number[] | null = null;
-	if (loopThreshold != null) {
+	if (same) {
 		prefixLengths = [0];
 		let total = 0;
 		for (const seg of segsA) {
@@ -310,7 +329,22 @@ function segmentsHaveIssues(
 			if (vecDist(hit.pointA, endpointsA.end) < opts.proximityEndpointTolerance) continue;
 			if (vecDist(hit.pointB, endpointsB.start) < opts.proximityEndpointTolerance) continue;
 			if (vecDist(hit.pointB, endpointsB.end) < opts.proximityEndpointTolerance) continue;
-			if (hit.distance < opts.minDistance) return true;
+			if (hit.distance < opts.minDistance) {
+				// Two points of one curve that are also close *along* it are not a
+				// sliver of paper: they are the same cut, seen from either side of a
+				// short segment between them. Only a curve that comes back on itself
+				// after travelling further than the margin leaves a neck of paper
+				// that can tear. Skipping the neighbouring segment is not enough —
+				// converted engine cuts carry the odd two-pixel segment at a corner,
+				// and the segments either side of one are a couple of pixels apart
+				// without the cut having doubled back at all. The crossing check
+				// above already measures the same way (`intersectionLoopThreshold`).
+				if (same && prefixLengths) {
+					const along = curveArcSeparation(segsA, prefixLengths, i, hit.u, j, hit.v);
+					if (along != null && along < opts.minDistance) continue;
+				}
+				return true;
+			}
 		}
 	}
 	return false;
