@@ -233,8 +233,15 @@ export const translations = {
     paintLine: 'Linje',
     paintRect: 'Rektangel',
     paintSelect: 'Markér',
-    paintSelectionHint: 'Træk en ramme. Flyt indeni, skalér i hjørnerne, drej i håndtaget foroven. Enter lægger den fast, Esc fortryder, Delete rydder.',
-    paintSelectionKeys: 'Uden mus: gå til tegningen med tabulator, Enter markerer midten, piletaster flytter, Skift og en piletast skalerer, komma og punktum drejer.',
+    /** Den ene linje under værktøjerne; resten står i Hjælp (paintHelpBullets). */
+    paintSelectionShort: 'Træk en ramme; Enter lægger den fast, Esc fortryder.',
+    /**
+     * Lægges til tegningens eget navn, så længe Markér er valgt. Linjen ovenfor
+     * beskriver et træk med musen, og tegningen er netop kun et tabulatorstop
+     * for den, der ikke har nogen; vejen frem skal stå der, hvor man står.
+     */
+    paintSelectionKeyboard:
+      'Markér uden mus: Enter markerer midten, piletaster flytter, Skift og en piletast skalerer, komma og punktum drejer.',
     /** {width} × {height} = markeringens størrelse i celler */
     paintSelectionLifted: 'Markering, {width} × {height} felter',
     paintSelectionPlaced: 'Markeringen er lagt fast',
@@ -298,6 +305,16 @@ export const translations = {
     paintFoundMotifSummary: '{motif}% afvigelse i motivet · {mismatch}% i hele firkanten',
     /** {left}, {right} = snit i hver lap; {clearance} = mm */
     paintFoundCuts: '{left} + {right} snit · mindst {clearance} mm mellem snittene',
+    /**
+     * Vises, når afvigelsen er over MEDIOCRE_MISMATCH i FindCutsPanel.svelte.
+     *
+     * Rækkefølgen er ikke tilfældig: de to første ændrer det, søgningen leder
+     * efter, og den sidste gør ikke. Søgningen har ingen tilfældighed i sig, så
+     * den samme maske giver det samme hjerte igen.
+     */
+    paintFoundMediocre:
+      'Mønsteret er tæt på, men ikke helt: ret masken, slå en symmetri fra, eller prøv Find snit igen.',
+    paintFindCutsAgain: 'Find snit igen',
     paintFoundIdentical: 'Begge lapper klippes efter samme skabelon.',
     paintSymmetryNotHeld: 'Symmetrien kunne ikke holdes helt; hjertet vises som motoren fandt det.',
     paintOpenInDraw: 'Åbn i Tegn',
@@ -313,8 +330,10 @@ export const translations = {
     paintHelpBullets: [
       'Mal på den flettede firkant midt i hjertet. De to lapper uden om viser papirfarverne.',
       'Vælg værktøj med P (pen), E (viskelæder), F (fyld), L (linje), R (rektangel) og M (markér); X bytter farve, og [ og ] skifter penselstørrelse.',
-      'Med Markér trækker du en ramme om et stykke af mønsteret og flytter, skalerer eller drejer det. Enter lægger det fast, Esc fortryder.',
-      'Slå en symmetri til, hvis mønsteret skal spejles. Alt du maler, spejles med.',
+      'Med Markér trækker du en ramme om et stykke af mønsteret. Flyt indeni, skalér i hjørnerne, drej i håndtaget foroven. Enter lægger den fast, Esc fortryder, Delete rydder.',
+      'Markér uden mus: gå til tegningen med tabulator, Enter markerer midten, piletaster flytter, Skift og en piletast skalerer, komma og punktum drejer.',
+      'Slå en symmetri til, hvis mønsteret skal spejles. Det, der er fundet i masken, er slået til på forhånd, og alt du maler, spejles med.',
+      'Kanten siger, hvor meget af firkanten der er dit. Fast væver hele firkanten, som du har malet den. Fri holder motivet inden i formen, og uden om vælger maskinen selv et vævet mønster.',
       'Tryk Find snit. Det tager typisk et halvt til et par minutter, og du kan afbryde undervejs.',
       'Åbn resultatet i Tegn for at rette kurverne, eller hent skabelonen som PDF.'
     ],
@@ -692,8 +711,15 @@ export const translations = {
     paintLine: 'Line',
     paintRect: 'Rectangle',
     paintSelect: 'Select',
-    paintSelectionHint: 'Drag a frame. Move inside it, scale at the corners, turn with the handle above. Enter puts it down, Esc undoes it, Delete clears it.',
-    paintSelectionKeys: 'Without a mouse: tab to the drawing, Enter marks the middle, the arrow keys move it, Shift and an arrow key scale it, comma and full stop turn it.',
+    /** The one line under the tools; the rest is in Help (paintHelpBullets). */
+    paintSelectionShort: 'Drag a frame; Enter puts it down, Esc undoes it.',
+    /**
+     * Added to the drawing's own name while Select is the tool. The line above
+     * describes a drag of the mouse, and the drawing is a tab stop precisely for
+     * the visitor who has none; the way in has to be where they are standing.
+     */
+    paintSelectionKeyboard:
+      'Select without a mouse: Enter marks the middle, the arrow keys move it, Shift and an arrow key scale it, comma and full stop turn it.',
     /** {width} × {height} = the size of the selection in cells */
     paintSelectionLifted: 'Selection, {width} × {height} cells',
     paintSelectionPlaced: 'The selection is put down',
@@ -757,6 +783,16 @@ export const translations = {
     paintFoundMotifSummary: '{motif}% different in the motif · {mismatch}% over the whole square',
     /** {left}, {right} = cuts in each lobe; {clearance} = mm */
     paintFoundCuts: '{left} + {right} cuts · at least {clearance} mm between cuts',
+    /**
+     * Shown when the difference is above MEDIOCRE_MISMATCH in FindCutsPanel.svelte.
+     *
+     * The order is deliberate: the first two change what the search is looking
+     * for and the last one does not. There is no randomness in the search, so
+     * the same mask hands back the same heart again.
+     */
+    paintFoundMediocre:
+      'The pattern is close, but not exact: change the mask, switch off a symmetry, or try Find the cuts again.',
+    paintFindCutsAgain: 'Find the cuts again',
     paintFoundIdentical: 'Both lobes are cut from the same template.',
     paintSymmetryNotHeld: 'The symmetry could not be held exactly; the heart is shown as the engine found it.',
     paintOpenInDraw: 'Open in Draw',
@@ -772,8 +808,10 @@ export const translations = {
     paintHelpBullets: [
       'Paint on the woven square in the middle of the heart. The two lobes around it show the paper colours.',
       'Pick a tool with P (pen), E (eraser), F (fill), L (line), R (rectangle) and M (select); X swaps the colour, and [ and ] change the brush size.',
-      'With Select you drag a frame around a piece of the pattern and move, scale or turn it. Enter puts it down, Esc undoes it.',
-      'Switch a symmetry on if the pattern should be mirrored. Everything you paint is mirrored with it.',
+      'With Select you drag a frame around a piece of the pattern. Move inside it, scale at the corners, turn with the handle above. Enter puts it down, Esc undoes it, Delete clears it.',
+      'Select without a mouse: tab to the drawing, Enter marks the middle, the arrow keys move it, Shift and an arrow key scale it, comma and full stop turn it.',
+      'Switch a symmetry on if the pattern should be mirrored. Whatever was found in the mask is switched on already, and everything you paint is mirrored with it.',
+      'The border says how much of the square is yours. Fixed weaves the whole square exactly as you painted it. Free keeps the motif inside the shape, and around it the machine chooses a woven pattern of its own.',
       'Press Find the cuts. It usually takes half a minute to a couple of minutes, and you can stop it on the way.',
       'Open the result in Draw to reshape the curves, or download the template as a PDF.'
     ],

@@ -60,9 +60,19 @@ of an overlay scrollbar until a gesture starts):
 - Panel "Værktøj": tools Pen, Viskelæder, Fyld, Linje, Rektangel, Markér as 40px icon buttons (lucide: pencil,
   eraser, paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); brush size segmented
   control Fin / Mellem / Grov (radius 2 / 6 / 14 cells); "Maler med" two swatches (the current paper colours, the
-  chosen one ringed). Viskelæder always paints 0. Undo / redo buttons (lucide undo-2 / redo-2) and Cmd/Ctrl+Z,
-  Shift+Cmd/Ctrl+Z. Markér adds a line of help under the grid while it is the tool in hand, because its gestures
-  cannot be read off its glyph.
+  chosen one ringed). Viskelæder always paints 0. Undo / redo (lucide undo-2 / redo-2) are two 40px icon buttons —
+  the tools' own square (`.tool-btn`, not the site's `.btn-icon`: the two differ by a glyph size, a ground and a
+  disabled opacity, and two nearly-identical squares in one panel is worse than one local name), with the words in
+  the same `Tooltip` the tools wear and in `aria-label` — set at the right-hand end of the swatches' row rather than
+  in a labelled row of their own, which the column has no line to spare for. They are a sibling of the "Maler med"
+  field inside that row, not inside it: a label reading "Maler med" must not appear to head them. The keys are
+  Cmd/Ctrl+Z and Shift+Cmd/Ctrl+Z as before. Markér adds **one** line of help under the grid while it is the tool in
+  hand ("Træk en ramme; Enter lægger den fast, Esc fortryder."), because its gestures cannot be read off its
+  glyph; the five lines it used to be — the handles, the turner, and the whole keyboard route — are in the Hjælp
+  dialog, which is where there is room to read them. That one line describes a drag, which is the single route a
+  keyboard visitor has not got, so the keyboard route rides on the drawing's own `aria-label` while Markér is in
+  hand (`paintSelectionKeyboard`): the drawing is a tab stop for exactly that visitor, and the sentence costs the
+  column no line at all.
 - **Markér** (owner, 2026-09-08): drag a frame on the mask to lift a rectangle of cells; a dashed marquee with four
   corner handles and a turner above it. Dragging inside moves the cells (what they leave becomes paper 0), a corner
   scales — uniform, and free with Shift — and the turner turns about the centre by any angle. Enter or a click
@@ -78,10 +88,13 @@ of an overlay scrollbar until a gesture starts):
   arrow keys move the patch, Shift and an arrow size it, and `,` / `.` turn it 15° at a time; a live region reports
   the patch as it is lifted, sized, put down and cleared. The geometry is `src/lib/paint/selection.ts`, pure and
   tested; the interaction is in `MaskCanvas`.
-- Panel "Symmetri" (owner, 2026-09-08 — moved out of Find snit): the one-line explanation "Fundet i masken og slået
-  til; alt du maler, spejles med." and the three symmetry rows (the shared component, §6), with the "fundet" tags.
-  They live here rather than with the search because they are live while painting: a row switched on mirrors every
-  stroke from that moment, so they belong beside the brush they change. Find snit still reads them from the session.
+- Panel "Symmetri" (owner, 2026-09-08 — moved out of Find snit): the three symmetry rows (the shared component, §6)
+  with the "fundet" tags, and nothing else. The explanation "Fundet i masken og slået til; alt du maler, spejles
+  med." is the panel heading's `title` and a bullet in Hjælp: it is worth reading once and never again, and at 300px
+  it cost the column two lines on every visit. The rows keep their label above their control, and the segments keep
+  their words beside their icons (owner, 2026-09-08). They live here rather than with the search because they are
+  live while painting: a row switched on mirrors every stroke from that moment, so they belong beside the brush they
+  change. Find snit still reads them from the session.
   All three panels in the column stand down — every control inside really disabled, which is what a screen reader
   reads — while the found heart is on screen, because there is no mask under the pointer then; "Tilbage til masken"
   brings them back.
@@ -91,10 +104,30 @@ of an overlay scrollbar until a gesture starts):
 
 Below 900px the columns stack under the heart in the order they read: Værktøj, Symmetri, Kanten, Find snit.
 
-Three panels are taller than a desktop viewport, so above 900px the left column scrolls inside itself as a rule
-rather than as an exception. It is centred while it fits and starts at the top when it does not, and a fade over
-whichever edge it runs past says there is more that way — macOS draws nothing of an overlay scrollbar until a
-gesture starts, so a panel out of sight would otherwise not be there as far as anyone can tell.
+**The default column fits a desktop window** (owner, 2026-09-08). Three panels at their first-drawn heights did
+not: 1006px against the 880 a 1440 × 950 window leaves, so Kanten hung below the edge on a screen nobody would call
+small. It is 726px now — Kanten collapsed to its one row (§11), Fortryd and Gentag folded into the swatches' row
+(and out of the "Maler med" field, which took another 6px off), and the Markér, Symmetri and Kanten explanations
+moved to `title` and Hjælp — which leaves Kanten's bottom at 865px, 85px clear of a 950px viewport. Nothing was
+removed to get there, and nothing was moved to a `title` alone: a `title` on a
+heading is mouse-only, so every sentence that left the column has a bullet in the Hjælp dialog to be found on
+purpose, on a phone and from the keyboard.
+
+The column still scrolls inside itself where it has to: a short window (1440 × 700 leaves 630, so the same 726px
+overflows by about 95), and Kanten expanded under Fri, which adds 213px. It is centred while it fits and starts at
+the top when it does not, and a fade over whichever edge it runs past says there is more that way — macOS draws
+nothing of an overlay scrollbar until a gesture starts, so a panel out of sight would otherwise not be there as far
+as anyone can tell. The fade is measured by a `ResizeObserver` over the column **and every panel in it**: the column
+itself is pinned top and bottom, so its own box never changes height and it can only report the viewport; the panels
+are what grow and shrink. It used to name each content change by hand (`void tool; void toolsStandby; void
+session.frame.mode`), and that list went stale the first time a panel learned a new height.
+
+Choosing Fri scrolls Kanten's own bottom into view (`scrollIntoView({ block: 'nearest' })` in `FramePanel`).
+Measured at 1440 × 950 without it, the revealed Størrelse slider landed under the bottom fade and the Fri hint
+wholly outside the column's box, with nothing scrolled: the visitor asks for exactly those three controls and two of
+them arrive where they cannot be read. `nearest` scrolls the least that puts the panel on screen and does nothing
+when it is already there, so a tall window is untouched and the narrow layout — where the page scrolls rather than
+the column — is served by the same line.
 
 Right floating panel (340px, collapsible with the same "Skjul panel" control as Tegn):
 
@@ -113,6 +146,28 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   it, which read as two different steps and is one — and the mask in it is drawn on `--sky`, as the detail page's
   heart thumbnails are, because on white a white lobe disappears. Download PDF and Gem in the top bar now work on
   this heart.
+- **A mediocre result says so** (owner, 2026-09-08). A percentage is a number, not a verdict: 0,4 % and 1,7 % read
+  alike to anyone who has not woven one of these. Above `MEDIOCRE_MISMATCH` (1 %, one named constant in
+  `FindCutsPanel.svelte`) the panel adds one plain line under the numbers — "Mønsteret er tæt på, men ikke helt:
+  ret masken, slå en symmetri fra, eller prøv Find snit igen." — and a third, ghost button `Find snit igen` on its
+  own line under the other two, which runs the same search from the mask again. Under 1 % nothing changes. The
+  threshold is judged on the motif where there is one and on the whole square where there is not, exactly as the
+  summary line is: a large, accurately woven band dilutes an error in the middle (MOTIF-BORDER.md's three-cell house
+  is 1,89 % over the square and 4,60 % in its centre). 1 % is where the difference stops being arithmetic: one cell
+  in a hundred of a 400-cell square is a seam you can see in the woven paper, and that is the moment to be told
+  rather than to find out on the table. There is no engine number behind it — `ENFORCE_COST_LIMIT` (0.03) bounds how
+  far our own symmetry correction may move a design (§11), not how far the found heart may sit from the mask, and
+  says nothing about this. The verdict is read off the number the panel prints and not off the raw fraction: the
+  summary rounds to one decimal, so 0,996 % and 1,004 % are both "1,0%" on screen and must be given the same
+  verdict.
+- **"Find snit igen" is the last of the three remedies, not the first** (2026-09-09). The search has no randomness
+  in it: on an unchanged mask and unchanged settings it re-solves to the same heart — the gallery circle mask
+  printed "4 + 4 snit · mindst 3,2 mm mellem snittene · 1,6% forskel fra masken" on every run, in review and again
+  here — so the button spends the whole search over to hand back what is already on screen, unless something under
+  it has moved. The line therefore names the mask and the symmetry first and the button last. The button stays
+  because the owner asked for it, and it goes back to the mask before it starts, so nobody watches a progress bar
+  under the heart they were just told was not good enough; giving the re-run something to vary (a seed, a nudged
+  starting point) is an engine question and is **open** — the owner's call.
 - After failure: a notice in the panel: what happened (timed out / no weavable pattern / engine could not load) and
   what to try (paint with fewer thin details, switch off a symmetry, try again), plus `Prøv igen`.
 
@@ -497,7 +552,17 @@ their benchmark did, by preparing a different target, and is built (`$lib/paint/
 
 - The band outside a protected shape has a segmented control "Kanten: Fast / Fri" in a panel of its own in Mal's
   left column, under Værktøj and Symmetri. *Fast* = as painted, which is what a heart made without thinking about
-  the frame still is. *Fri* = the search fills the band itself; the band's colours are ignored. The third state
+  the frame still is. **Under Fast the panel is that row and nothing else** (owner, 2026-09-08): the shape buttons,
+  the Størrelse slider and the hint say what would happen to a motif nobody has asked to protect, and they appear
+  when Fri is chosen. Only the panel's height changes — the frame keeps the shape and the size it had, so Fri brings
+  them back exactly as they were — and the sentence a Fast panel used to carry ("Hele firkanten væves, som du har
+  malet den.") is the heading's `title` **and** a bullet in Hjælp, because a `title` never fires on touch or on
+  keyboard focus and Kanten is otherwise two words with nothing to explain them. Choosing Fri scrolls the panel's
+  bottom into view, since the three controls it reveals otherwise land below the column's bottom edge (§2).
+  *Fri* = the search fills the band itself; the band's colours are ignored.
+  The three shape buttons darken to `--green-hover` under the pointer while chosen, like every other chosen control
+  in the column; they were exempt from hover with `:not(.active)` until 2026-09-08, which left the one button the
+  visitor was pointing at as the only one that answered to nothing. The third state
   *Må rettes* — the engine keeps the cells but may change the ones it must, at a cost (loss weight about 0.25 plus
   a penalty on changed cells; Codex's "repair the border") — is **not shown at all** rather than shown disabled:
   an option nobody can pick is a promise, and this one has no date on it.

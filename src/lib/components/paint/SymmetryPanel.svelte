@@ -37,10 +37,16 @@
 	let { value, onChange, found, disabled = false, lang }: Props = $props();
 </script>
 
+<!--
+  The two lines of explanation that used to head the panel body are the heading's
+  title instead: they say what a row does, which is worth reading once and then
+  never again, and at 300px they cost the column two lines on every visit. The
+  same sentence is in the Hjælp dialog, where it can be found on purpose. The
+  "fundet" tags stay in the body — they are about this mask, not about symmetry.
+-->
 <section class="editor-panel">
-	<h2 class="panel-title">{t('paintSymmetry', lang)}</h2>
+	<h2 class="panel-title" title={t('paintSymmetryHint', lang)}>{t('paintSymmetry', lang)}</h2>
 	<fieldset class="rows" {disabled}>
-		<p class="lead">{t('paintSymmetryHint', lang)}</p>
 		<SymmetryRows {lang} {value} onChange={onChange} {found} />
 	</fieldset>
 </section>
@@ -60,12 +66,5 @@
 
 	.rows:disabled {
 		opacity: 0.45;
-	}
-
-	.lead {
-		margin: 0;
-		font-size: 13px;
-		line-height: 1.5;
-		color: var(--muted);
 	}
 </style>
