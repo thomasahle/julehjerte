@@ -129,24 +129,50 @@ function drawMaskCells(
 
 /** The mask as an image of its two paper colours, one pixel per cell. */
 function maskCanvas(mask: Mask, colors: HeartColors): HTMLCanvasElement | null {
+	const left = channels(colors.left);
+	const right = channels(colors.right);
+	if (!left || !right) return null;
 	const canvas = document.createElement('canvas');
 	canvas.width = mask.size;
 	canvas.height = mask.size;
 	const ctx = canvas.getContext('2d');
 	if (!ctx) return null;
-	// Filling with the two colours and reading them back is what keeps this
-	// honest about CSS colour syntax: the store's red is `rgb(185, 19, 19)` and
-	// a heart's own colours are hex, and the canvas parses both where a hand-rolled
-	// hex reader would take one and drop the other.
-	const rgba = [colors.left, colors.right].map((colour) => {
-		ctx.fillStyle = colour;
-		ctx.fillRect(0, 0, 1, 1);
-		return ctx.getImageData(0, 0, 1, 1).data;
-	});
 	const image = ctx.createImageData(mask.size, mask.size);
 	for (let i = 0; i < mask.data.length; i++) {
-		image.data.set(rgba[mask.data[i] ? 1 : 0]!, i * 4);
+		image.data.set(mask.data[i] ? right : left, i * 4);
 	}
 	ctx.putImageData(image, 0, 0);
 	return canvas;
+}
+
+/** One pixel to paint a colour on and read it back from; see `channels`. */
+let probe: CanvasRenderingContext2D | null | undefined;
+const parsed = new Map<string, Uint8ClampedArray>();
+
+/**
+ * A CSS colour as its four channels.
+ *
+ * Painting it and reading it back is what keeps this honest about colour syntax:
+ * the site's store spells its red `rgb(185, 19, 19)` while a heart's own colours
+ * are hex, and the canvas parses both where a hand-rolled hex reader would take
+ * one and drop the other. The answers are cached because the paint canvas draws
+ * on every frame of a stroke, and a readback per frame is what makes browsers
+ * warn about `willReadFrequently`.
+ */
+function channels(colour: string): Uint8ClampedArray | null {
+	const known = parsed.get(colour);
+	if (known) return known;
+	if (probe === undefined) {
+		const canvas = document.createElement('canvas');
+		canvas.width = 1;
+		canvas.height = 1;
+		probe = canvas.getContext('2d', { willReadFrequently: true });
+	}
+	if (!probe) return null;
+	probe.clearRect(0, 0, 1, 1);
+	probe.fillStyle = colour;
+	probe.fillRect(0, 0, 1, 1);
+	const value = probe.getImageData(0, 0, 1, 1).data;
+	parsed.set(colour, value);
+	return value;
 }
