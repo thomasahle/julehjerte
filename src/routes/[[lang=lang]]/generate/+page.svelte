@@ -503,7 +503,7 @@
                   {#each [0, 1, 2, 3] as i}
                     {#each [0, 1] as axis}
                       <label>{text('corner')} {i + 1} · {axis === 0 ? 'x' : 'y'}
-                        <input type="number" min="0" max={axis === 0 ? input.imageWidth : input.imageHeight} step="any" value={Number.isFinite(quad[i]?.[axis]) ? quad[i][axis] : ''} oninput={e => coordinate(i, axis, e.currentTarget.valueAsNumber)} />
+                        <input type="number" step="any" value={Number.isFinite(quad[i]?.[axis]) ? quad[i][axis] : ''} oninput={e => coordinate(i, axis, e.currentTarget.valueAsNumber)} />
                       </label>
                     {/each}
                   {/each}
