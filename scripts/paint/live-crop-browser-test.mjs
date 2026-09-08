@@ -11,7 +11,9 @@
  * So this drags a corner over a real photograph of a real woven heart and reads
  * the preview canvas back: many colours while the pointer is down (a
  * photograph), the paper pair once it is up (a mask), and the last good frame
- * kept when the corners are dragged into a crop that folds over.
+ * kept when the corners are dragged into a crop that folds over. What the page
+ * asks the engine is counted at the worker, so "not asked until the corner
+ * lands" is read off the requests themselves rather than off a status line.
  *
  * Run it against a built site:
  *
@@ -61,6 +63,24 @@ const SAMPLE = `(() => {
   return { colours, total: colours.reduce((n, [, c]) => n + c, 0) };
 })()`;
 
+/**
+ * Count what the page asks the engine, by action.
+ *
+ * "The engine is idle during the drag" is the requirement, and the engine is a
+ * worker: one `postMessage` per request (`InverseWorker.request`). Reading that
+ * directly says what a status line cannot — a hint that merely failed to render
+ * would pass for silence — and it tells a corner search apart from a prepare,
+ * which is what the debounce is about.
+ */
+const COUNT_ENGINE_CALLS = () => {
+	window.__enginePosts = [];
+	const post = Worker.prototype.postMessage;
+	Worker.prototype.postMessage = function (...args) {
+		window.__enginePosts.push(args[0]?.action ?? '?');
+		return post.apply(this, args);
+	};
+};
+
 const results = [];
 function check(name, ok, detail) {
 	results.push({ name, ok: !!ok });
@@ -81,36 +101,56 @@ const browser = await playwright.chromium.launch({
 try {
 	const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 	page.on('pageerror', (e) => console.log('  [pageerror]', String(e).slice(0, 200)));
+	page.on('console', (m) => m.type() === 'error' && console.log('  [console]', m.text().slice(0, 200)));
+	await page.addInitScript(COUNT_ENGINE_CALLS);
+
+	/** What the page has asked the engine so far, oldest first. */
+	const engineCalls = () => page.evaluate('window.__enginePosts.slice()');
+
+	/** Open the import dialog on a picture, as the visitor does. */
+	async function openWith(file) {
+		await page.getByRole('button', { name: 'Importér billede' }).first().click();
+		await page.locator('#paint-import-title').waitFor();
+		await page.locator('input[type=file]').setInputFiles(file);
+		await page.locator('.photo img').waitFor();
+	}
+
+	/**
+	 * The same, left with four corners on the picture.
+	 *
+	 * The engine's corner search runs in a worker and may find nothing in a
+	 * photograph this cluttered; either way the visitor ends with four corners,
+	 * so the fallback is the dialog's own "Sæt selv" and the test carries on.
+	 */
+	async function openWithFourCorners() {
+		await openWith(photo);
+		let found = 0;
+		for (let i = 0; i < 60 && found !== 4; i++) {
+			await sleep(500);
+			found = await page.locator('.photo .corner').count();
+		}
+		if (found !== 4) {
+			console.log(
+				`  (no automatic corners — "${await page.locator('.picture .hint').innerText()}")`
+			);
+			await page.getByRole('button', { name: 'Sæt selv' }).click();
+			const box = await page.locator('.photo').boundingBox();
+			for (const [fx, fy] of [
+				[0.5, 0.08],
+				[0.93, 0.5],
+				[0.5, 0.95],
+				[0.06, 0.5]
+			]) {
+				await page.mouse.click(box.x + fx * box.width, box.y + fy * box.height);
+				await sleep(120);
+			}
+			found = await page.locator('.photo .corner').count();
+		}
+		return found;
+	}
 
 	await page.goto(`${origin}/editor/mal/`, { waitUntil: 'networkidle' });
-	await page.getByRole('button', { name: 'Importér billede' }).first().click();
-	await page.locator('#paint-import-title').waitFor();
-	await page.locator('input[type=file]').setInputFiles(photo);
-	await page.locator('.photo img').waitFor();
-
-	// The engine's corner search runs in a worker and may find nothing in a
-	// photograph this cluttered; either way the visitor ends with four corners,
-	// so the fallback is the dialog's own "Sæt selv" and the test carries on.
-	let corners = 0;
-	for (let i = 0; i < 60 && corners !== 4; i++) {
-		await sleep(500);
-		corners = await page.locator('.photo .corner').count();
-	}
-	if (corners !== 4) {
-		console.log(`  (no automatic corners — "${await page.locator('.picture .hint').innerText()}")`);
-		await page.getByRole('button', { name: 'Sæt selv' }).click();
-		const box = await page.locator('.photo').boundingBox();
-		for (const [fx, fy] of [
-			[0.5, 0.08],
-			[0.93, 0.5],
-			[0.5, 0.95],
-			[0.06, 0.5]
-		]) {
-			await page.mouse.click(box.x + fx * box.width, box.y + fy * box.height);
-			await sleep(120);
-		}
-		corners = await page.locator('.photo .corner').count();
-	}
+	const corners = await openWithFourCorners();
 	check('four corners on the picture', corners === 4, `${corners}`);
 
 	// Four corners is a crop, so the crop is already showing — this is the same
@@ -130,6 +170,7 @@ try {
 	const picture = await page.locator('.photo').boundingBox();
 	const from = { x: marker.x + marker.width / 2, y: marker.y + marker.height / 2 };
 	const before = await page.evaluate(SAMPLE);
+	const askedBeforeDrag = (await engineCalls()).length;
 
 	await page.mouse.move(from.x, from.y);
 	await page.mouse.down();
@@ -151,10 +192,11 @@ try {
 		dragged.colours.length > 8,
 		`${dragged.colours.length} distinct colours`
 	);
+	const askedDuringDrag = (await engineCalls()).slice(askedBeforeDrag);
 	check(
 		'the engine is not asked while the corner is held',
-		!/Beregner/.test(await page.locator('.controls .hint[role=status]').innerText()),
-		'no "Beregner …" under the preview'
+		askedDuringDrag.length === 0,
+		`${askedDuringDrag.length} worker requests across ${during.length} moves`
 	);
 
 	// --- Let go: the engine is asked once, and its mask replaces the crop. ---
@@ -168,6 +210,13 @@ try {
 	const after = await page.evaluate(SAMPLE);
 	await page.locator('.preview').screenshot({ path: shot('3-mask') });
 	await page.screenshot({ path: shot('4-dialog') });
+
+	const askedOnRelease = (await engineCalls()).slice(askedBeforeDrag);
+	check(
+		'and it is asked once the corner lands',
+		askedOnRelease.filter((a) => a === 'prepare').length === 1,
+		askedOnRelease.join(', ') || 'nothing'
+	);
 
 	// Only colours covering a real share of the samples count as paper: the rims
 	// of the lobes are antialiased against the panel and would otherwise read as
@@ -201,6 +250,7 @@ try {
 		`${folded?.colours.length} distinct colours still drawn`
 	);
 	check('and the picture says the corners are wrong', /uden knæk/.test(says), JSON.stringify(says.slice(0, 60)));
+
 } finally {
 	await browser.close();
 }
