@@ -1,0 +1,14 @@
+{
+  "cases": [
+    {
+      "id": "tilted-orange-weave",
+      "file": "tilted-orange-weave.png",
+      "source": "User screenshot supplied 2026-09-08 at 12:02:10 Europe/Copenhagen",
+      "description": "Orange and cream curved checker weave, photographed at an angle with glossy paper, shadows, pine needles and a pale background.",
+      "manualGuide": [[447, 160], [845, 574], [350, 921], [55, 451]],
+      "manualGuideUncertaintyPixels": 15,
+      "manualGuideNotes": "Visual landmarks in pixel-edge coordinates, ordered notch/right/tip/left. An approximate diagnostic crop, not surveyed geometry or ground truth. Fixed before fitting; never selected using solver error.",
+      "groundTruthTemplates": null
+    }
+  ]
+}
