@@ -17,7 +17,7 @@ import type { Language } from './translations';
  * 'always'). They do NOT include SvelteKit's `base`; use href()/heartHref() for
  * link targets, and the raw paths for absolute URLs built from SITE_URL.
  */
-export type RouteKey = 'home' | 'editor' | 'paint' | 'generate' | 'howTo' | 'about';
+export type RouteKey = 'home' | 'editor' | 'paint' | 'howTo' | 'about';
 
 export const ROUTES: Record<RouteKey, Record<Language, string>> = {
 	home: { da: '/', en: '/en/' },
@@ -25,9 +25,6 @@ export const ROUTES: Record<RouteKey, Record<Language, string>> = {
 	// The editor's second mode (docs/redesign/PAINT.md §1). The two slugs differ,
 	// so the language toggle and the hreflang alternates have to read them here.
 	paint: { da: '/editor/mal/', en: '/en/editor/paint/' },
-	// The image-to-heart generator, reachable by URL only for now: it has no nav
-	// link, but it is prerendered in both languages and belongs in the sitemap.
-	generate: { da: '/generate/', en: '/en/generate/' },
 	howTo: { da: '/saadan-goer-du/', en: '/en/how-to/' },
 	about: { da: '/om/', en: '/en/about/' }
 };
