@@ -2,7 +2,7 @@
 import {prepare} from './engine.js';
 import {GENERAL_PRESET,MATCHING_GRID_PRESET,DIRECT_PRESET} from './presets.js';
 import {sampleTarget} from './input.js';
-import {settings} from './settings.js';
+import {normalizeSymmetry,requestedSymmetry,settings} from './settings.js';
 import {symmetryEvidence} from './direct/matching.js';
 import {maskDisagreement,preferMatchingSolution} from './direct/prefer-matching.js';
 import {fitDirect} from './direct/fit.js';
@@ -21,8 +21,15 @@ function flatColourFraction(rgb,mask){
   return flat/mask.length;
 }
 
+/** Only the direct fitter enforces requested symmetries. transpose is the one
+ * the traced routes already reproduce, through their identical-sheet grid; a
+ * mirror, anti-transpose, half turn or within-curve request always routes to
+ * the fitter, since the MILP route selects cuts from a traced candidate graph
+ * that holds no mirrored partner to constrain. */
+export const fitterOnlySymmetry=spec=>requestedSymmetry(spec).some(name=>name!=='transpose');
+
 export function prepareAutomatic(input,raw,onProgress){
-  const cfg={...DIRECT_PRESET,...raw,algorithm:'direct'};
+  const cfg={...DIRECT_PRESET,...raw,algorithm:'direct'},fitterOnly=fitterOnlySymmetry(normalizeSymmetry(raw.symmetry));
   let value;
   if(input.type==='svg'){
     value=prepare(input,{...GENERAL_PRESET,...raw,algorithm:'trace',identicalSheets:false},onProgress);
@@ -36,7 +43,7 @@ export function prepareAutomatic(input,raw,onProgress){
     const automatic={route:'direct',flatColourFraction:flatFraction,reason:'Fit the original classified image with soft border evidence'};
     // Clean, nearly symmetric square artwork benefits from angular MILP routing.
     // Photographic crops always start with the perturbation-tolerant fitter.
-    if(!input.quad&&flatFraction>=.97&&symmetryEvidence(source).minimumIdenticalImageError<=.005){
+    if(!input.quad&&!fitterOnly&&flatFraction>=.97&&symmetryEvidence(source).minimumIdenticalImageError<=.005){
       try{
         const traced=prepare(input,{...raw,...MATCHING_GRID_PRESET,resolution:source.resolution},onProgress);
         if(traced.target.curves.length<=160){
@@ -47,13 +54,15 @@ export function prepareAutomatic(input,raw,onProgress){
     }
     value.target.metadata.automatic=automatic;
   }
+  if(fitterOnly)value.target.metadata.automatic={...value.target.metadata.automatic,route:'direct',reason:'Fit the requested symmetry directly; the traced routes cannot constrain mirrored cuts'};
   value.preview.metadata={...value.preview.metadata,automatic:value.target.metadata.automatic};
   return value;
 }
 
 export async function solveAutomatic(target,cfg,onProgress){
   const start=performance.now(),route=target.metadata.automatic?.route||'direct',attempts=[];
-  if(route!=='direct'){
+  if(route!=='direct'&&fitterOnlySymmetry(cfg.symmetry))attempts.push({route,accepted:false,reason:'Requested symmetry is enforced by the direct fitter only'});
+  else if(route!=='direct'){
     const traceCfg=settings({...cfg,...(route==='angular'?MATCHING_GRID_PRESET:GENERAL_PRESET),timeLimit:Math.min(3,cfg.timeLimit*.4)});
     try{
       onProgress({stage:'graph'});

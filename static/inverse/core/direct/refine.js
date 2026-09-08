@@ -8,6 +8,7 @@ import {mismatch} from './grid.js';
 import {validate} from '../validate.js';
 import {materialAudit} from '../material.js';
 import {matchingGroups,matchingPenalty,projectMatching} from './matching.js';
+import {symmetryTies,applyTies} from './symmetry.js';
 export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+.35;}
 
 export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
@@ -75,10 +76,16 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
 
 export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary'}={}){
   const points=graph.points.slice(),initial=points.slice(),adam=new Adam(points.length,rate*graph.width/100),history=[];
-  const groups=identicalSheets?matchingGroups(graph):null;let stoppedEarly=false;
+  // Requested symmetries are constraints, not preferences: both the points and
+  // the search direction are projected onto their subspace at every step. A
+  // request replaces the identical-sheet projection rather than alternating
+  // with it, which would leave only the last of the two exact: `transpose` is
+  // the request that means identical sheets and ties the same parameters, and
+  // any other request was chosen over that preference in settings().
+  const ties=symmetryTies(graph,cfg.symmetry),groups=identicalSheets&&!ties?matchingGroups(graph):null;let stoppedEarly=false;
   const clampAxes=new Uint8Array(points.length);
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
-  const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);if(groups)projectMatching(points,groups,graph.fixed,initial);};
+  const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);if(ties)applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);};
   clampPoints();let safe=null,best=null,bestInvalid=null,completed=0;
   const checkpoint=step=>{
     const solution=graph.solution(points,phase,input),check=validate(solution,cfg,{checkImage:false}),error=mismatch(renderCurves(graph,points,phase,n,32),prob);
@@ -96,6 +103,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     const g=boundaryGradient(graph,points,prob,n,phase),penalty=curvePenalty(graph,points,cfg);
     if(cfg.preferMatchingSheets&&!identicalSheets){const matching=matchingPenalty(graph,points);for(let i=0;i<g.length;i++)g[i]+=matching.gradient[i];}
     for(let i=0;i<g.length;i++)g[i]=graph.fixed[i]?0:g[i]+penalty.gradient[i]+.000004*(points[i]-initial[i])/points.length;
+    if(ties)applyTies(ties,g,points,{fixed:graph.fixed,tangent:true});
     if(groups)projectMatching(g,groups,graph.fixed,new Float64Array(g.length));
     adam.update(points,g,1);clampPoints();completed++;
     if(step%40===0||step===steps-1)checkpoint(step);

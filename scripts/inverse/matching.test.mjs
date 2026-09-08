@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {symmetryEvidence,matchingGrid,matchingPaths,matchingGroups,projectMatching,matchingPenalty,matchingSummary} from '../../static/inverse/core/direct/matching.js';
 import {gridModel,gridPaths} from '../../static/inverse/core/direct/grid.js';
+import {symmetryTies} from '../../static/inverse/core/direct/symmetry.js';
+import {settings} from '../../static/inverse/core/settings.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
@@ -35,6 +37,23 @@ test('matching preference has an analytic gradient on both sheet families',()=>{
   const projected=p.slice();projectMatching(projected,matchingGroups(graph));
   assert.ok(matchingPenalty(graph,projected).loss<1e-20);
   assert.equal(matchingSummary(graph.solution(projected,1)).identical,true);
+});
+
+test('the same preference over affine ties keeps its gradient and its projection',()=>{
+  // The transposed ties are plain indices; a mirror ties x to w-x. Requested
+  // symmetries take the hard projection, so this soft path is only ever a
+  // preference over the same groups; its gradient still has to be the real one.
+  const graph=new CurveGraph(gridPaths(gridModel([2,2],8,7),100),100),p=graph.points,h=1e-4;
+  const {groups}=symmetryTies(graph,settings({symmetry:{mirrorX:true}}).symmetry);
+  assert.ok(groups.length>1&&groups.every(g=>typeof g[0]!=='number'));
+  const g=matchingPenalty(graph,p,2,groups).gradient;
+  for(const i of groups.slice(0,6).map(members=>members[0][0])){
+    const a=p.slice(),b=p.slice();a[i]+=h;b[i]-=h;
+    const finite=(matchingPenalty(graph,a,2,groups).loss-matchingPenalty(graph,b,2,groups).loss)/(2*h);
+    assert.ok(Math.abs(finite-g[i])<1e-10,`gradient at ${i}: ${finite} vs ${g[i]}`);
+  }
+  const projected=p.slice();projectMatching(projected,groups);
+  assert.ok(matchingPenalty(graph,projected,2,groups).loss<1e-20);
 });
 
 test('identical proposals preserve exact transposition and reject unequal counts',()=>{
