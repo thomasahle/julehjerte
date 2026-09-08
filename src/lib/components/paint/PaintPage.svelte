@@ -536,11 +536,16 @@
 		>
 			<HelpIcon size={20} />
 		</button>
+		<!-- aria-disabled, not `disabled`: a disabled button takes no focus, so the
+		     "Find snit først" that explains it was mouse-only and unannounced. Both
+		     handlers already do nothing without a heart (GalleryToolbar.svelte and
+		     DESIGN.md §3 took the same decision for the same reason). -->
 		<button
 			type="button"
 			class="btn btn-sm btn-primary top-action"
 			onclick={downloadPdf}
-			disabled={!session.result}
+			aria-disabled={!session.result}
+			aria-describedby={session.result ? undefined : 'paint-needs-heart'}
 			title={session.result ? t('editorDownloadPdf', lang) : t('paintNeedsHeart', lang)}
 			aria-label={t('editorDownloadPdf', lang)}
 		>
@@ -551,13 +556,17 @@
 			type="button"
 			class="btn btn-sm btn-dark top-action"
 			onclick={save}
-			disabled={!session.result}
+			aria-disabled={!session.result}
+			aria-describedby={session.result ? undefined : 'paint-needs-heart'}
 			title={session.result ? t('saveToMyHearts', lang) : t('paintNeedsHeart', lang)}
 			aria-label={t('saveToMyHearts', lang)}
 		>
 			<SaveIcon size={18} />
 			<span class="top-action-label">{t('editorSave', lang)}</span>
 		</button>
+		{#if !session.result}
+			<span id="paint-needs-heart" class="sr-only">{t('paintNeedsHeart', lang)}</span>
+		{/if}
 	</PageHeader>
 
 	<main id="main-content" tabindex="-1">
@@ -624,6 +633,7 @@
 										type="button"
 										class="btn btn-sm btn-outline"
 										onclick={() => (showImport = true)}
+										disabled={busy}
 									>
 										{t('paintImportImage', lang)}
 									</button>
@@ -829,6 +839,19 @@
 	.icon-button {
 		flex: none;
 		background: var(--white);
+	}
+
+	/* `.btn`'s own hover rules exempt `:disabled` alone, and these two are
+	   aria-disabled so their hint stays reachable — so the hover that would say
+	   "press me" has to be turned off here instead. */
+	.top-action[aria-disabled='true']:hover {
+		background: var(--red);
+		border-color: var(--red);
+	}
+
+	.btn-dark.top-action[aria-disabled='true']:hover {
+		background: var(--green);
+		border-color: var(--green);
 	}
 
 	.left-panel {
