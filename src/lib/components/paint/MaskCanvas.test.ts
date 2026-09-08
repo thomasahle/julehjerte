@@ -60,6 +60,8 @@ function at(x: number, y: number): { clientX: number; clientY: number } {
 type Harness = {
 	mask: Mask;
 	canvas: HTMLCanvasElement;
+	/** The wrapper that carries the label and, under Markér, the tab stop. */
+	box: HTMLElement;
 	edits: number;
 	setTool: (tool: PaintTool) => void;
 	commitSelection: () => void;
@@ -110,6 +112,7 @@ function render(
 	return {
 		mask,
 		canvas,
+		box: target.querySelector<HTMLElement>('.mask-canvas')!,
 		get edits() {
 			return harness.edits;
 		},
@@ -438,5 +441,49 @@ describe('Markér', () => {
 		expect(c.cell(8, 8)).toBe(1);
 		expect(c.edits).toBe(0);
 		button.remove();
+	});
+
+	it('marks, moves and commits from the keyboard alone', () => {
+		const c = render({ tool: 'select' });
+		// A block in the middle of the mask, which is what the keyboard's own frame
+		// takes hold of.
+		for (let y = 18; y < 22; y++) for (let x = 18; x < 22; x++) c.mask.data[y * SIZE + x] = 1;
+		c.box.focus();
+		expect(c.box.tabIndex).toBe(0);
+
+		press('Enter');
+		for (let i = 0; i < 6; i++) press('ArrowRight');
+		press('Enter');
+
+		expect(c.cell(20, 20)).toBe(0);
+		expect(c.cell(26, 20)).toBe(1);
+		expect(c.edits).toBe(1);
+	});
+
+	it('sizes with Shift and an arrow and turns with the turn keys', () => {
+		const c = render({ tool: 'select' });
+		for (let y = 18; y < 22; y++) for (let x = 18; x < 22; x++) c.mask.data[y * SIZE + x] = 1;
+		c.box.focus();
+		press('Enter');
+		// Ten cells wider, then a quarter turn: three presses of the turn key are 45°,
+		// six are 90°, and the block comes back to itself either way — what has to be
+		// true is that the keys are taken and the commit is one edit.
+		for (let i = 0; i < 10; i++) press('ArrowRight', { shiftKey: true });
+		for (let i = 0; i < 6; i++) expect(press('.').defaultPrevented).toBe(true);
+		press('Enter');
+		expect(c.edits).toBe(1);
+		expect(c.mask.data.some((v) => v === 1)).toBe(true);
+	});
+
+	it('leaves the arrow keys alone when the drawing is not the focused thing', () => {
+		const c = withBlock();
+		const before = new Uint8Array(c.mask.data);
+		drag(c.canvas, [5, 5], [13, 13]);
+		// The tool panel's radio group and the page's own scrolling own the arrow
+		// keys everywhere but on the drawing itself.
+		const event = press('ArrowRight');
+		expect(event.defaultPrevented).toBe(false);
+		press('Enter');
+		expect(c.mask.data).toEqual(before);
 	});
 });

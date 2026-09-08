@@ -8,14 +8,18 @@ import {
 	contains,
 	cornerAt,
 	corners,
+	isEmptyRect,
 	lift,
+	middleRect,
 	moveBy,
 	placementOf,
 	rectFrom,
+	resizeBy,
 	rotateHandleAt,
 	rotateTo,
 	scaleTo,
-	stamp
+	stamp,
+	turnBy
 } from './selection';
 import { EDIT_CLEARED, EDIT_LAID, EDIT_NONE } from './tools';
 
@@ -294,5 +298,26 @@ describe('contains and boundsOf', () => {
 		expect(bounds.x0).toBe(Math.floor(5 - reach));
 		expect(bounds.x1).toBe(Math.ceil(5 + reach));
 		expect(corners(p)).toHaveLength(4);
+	});
+});
+
+describe('the keyboard’s own gestures', () => {
+	it('sizes about the centre and never through zero', () => {
+		const p = placementOf({ x0: 2, y0: 2, x1: 6, y1: 6 });
+		const wider = resizeBy(p, 2, 0);
+		expect([wider.width, wider.height, wider.cx, wider.cy]).toEqual([6, 4, p.cx, p.cy]);
+		expect(resizeBy(p, -99, -99).width).toBe(MIN_SIZE);
+	});
+
+	it('turns by a step and leaves everything else alone', () => {
+		const p = { cx: 5, cy: 5, width: 4, height: 2, angle: 0.5 };
+		expect(turnBy(p, -0.25)).toEqual({ ...p, angle: 0.25 });
+	});
+
+	it('starts a keyboard selection over the middle of the mask', () => {
+		const m = createMask(0, 40);
+		expect(middleRect(m)).toEqual({ x0: 10, y0: 10, x1: 30, y1: 30 });
+		// However small the mask, the frame has cells in it.
+		expect(isEmptyRect(middleRect(createMask(0, 3)))).toBe(false);
 	});
 });

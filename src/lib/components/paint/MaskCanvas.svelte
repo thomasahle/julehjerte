@@ -35,11 +35,14 @@
 		cornerAt,
 		corners,
 			lift,
+		middleRect,
 		moveBy,
 		rectFrom,
+		resizeBy,
 		rotateHandleAt,
 		rotateTo,
 		scaleTo,
+		turnBy,
 		type Edit,
 		type Handle,
 		type Placement,
@@ -100,6 +103,9 @@
 	/** Air between the heart and the edges of the drawing band. */
 	const PADDING = 24;
 
+	/** How far one press of a turn key turns the patch: a twelfth of a half turn. */
+	const TURN_STEP = Math.PI / 12;
+
 	/** The site's own paper, as the last resort of `channels` below. */
 	const FALLBACK_PAPER = {
 		left: Uint8ClampedArray.of(255, 255, 255, 255),
@@ -150,6 +156,12 @@
 	// dragging it around costs no more than dragging an image around.
 	let patch: HTMLCanvasElement | null = null;
 	let patchFor: Selection | null = null;
+
+	/**
+	 * What the marquee last did, for a visitor who cannot see it. Empty until
+	 * something happens, so the live region says nothing on the way in.
+	 */
+	let selectionNote = $state('');
 
 	/** The design tokens the canvas paints with, read once from the document. */
 	let chrome: { outline: string; mirror: string; marquee: string; paper: string } | null = null;
@@ -555,6 +567,21 @@
 		patchFor = null;
 	}
 
+	/** Say what the marquee just did, in the live region under the canvas. */
+	function announce(note: string): void {
+		selectionNote = note;
+	}
+
+	/** The marquee as it stands, in whole cells, for the live region to read out. */
+	function announceSelection(sel: Selection): void {
+		announce(
+			t('paintSelectionLifted', lang, {
+				width: Math.round(sel.placement.width),
+				height: Math.round(sel.placement.height)
+			})
+		);
+	}
+
 	/**
 	 * Put the selection down (or, with `erase`, throw its cells away). One undo
 	 * snapshot per commit, taken here rather than on pointer down, because every
@@ -566,10 +593,12 @@
 		if (sel && mask) {
 			onEditStart();
 			spread(erase ? clearSelection(mask, sel) : commitCells(mask, sel));
+			announce(t(erase ? 'paintSelectionCleared' : 'paintSelectionPlaced', lang));
 			schedule();
 			onEditEnd();
 			return;
 		}
+		if (sel) announce(t('paintSelectionPlaced', lang));
 		schedule();
 	}
 
@@ -639,6 +668,7 @@
 			selection = tiny ? null : lift(mask, framed);
 			patch = null;
 			patchFor = null;
+			if (selection) announceSelection(selection);
 		}
 		selectionDrag = null;
 		releasePointer();
@@ -789,6 +819,67 @@
 		return !node.closest('a[href], button, input, select, textarea, [tabindex], [role="button"]');
 	}
 
+	/** Whether the drawing itself has the keyboard — what the nudge keys need. */
+	function focused(): boolean {
+		return !!boxEl && typeof document !== 'undefined' && boxEl.contains(document.activeElement);
+	}
+
+	/**
+	 * Markér from the keyboard, so the tool is not pointer-only: a frame over the
+	 * middle to start from, the arrow keys to move it, Shift and an arrow to size
+	 * it, and the two turn keys. Returns whether the keystroke was used up.
+	 *
+	 * The three keys that end a selection are taken wherever the canvas owns the
+	 * keyboard — they are what the hint promises after a pointer gesture, and
+	 * Backspace would otherwise walk the browser back a page while the visitor
+	 * thinks they are erasing. The rest need the drawing to be the focused thing,
+	 * because the arrow keys belong to the tool panel's radio group and to the
+	 * page's own scrolling everywhere else.
+	 */
+	function selectionKey(event: KeyboardEvent): boolean {
+		if (!mask) return false;
+		const sel = selection;
+		if (!sel) {
+			if (!focused() || event.key !== 'Enter') return false;
+			selection = lift(mask, middleRect(mask));
+			patch = null;
+			patchFor = null;
+			if (selection) announceSelection(selection);
+			schedule();
+			return true;
+		}
+		if (event.key === 'Enter') {
+			endSelection();
+			return true;
+		}
+		if (event.key === 'Escape') {
+			dropSelection();
+			announce(t('paintSelectionDropped', lang));
+			schedule();
+			return true;
+		}
+		if (event.key === 'Delete' || event.key === 'Backspace') {
+			endSelection(true);
+			return true;
+		}
+		if (!focused()) return false;
+		const p = sel.placement;
+		// Shift means size rather than position, as it does on the corner handles.
+		const sizing = event.shiftKey;
+		if (event.key === 'ArrowLeft') sel.placement = sizing ? resizeBy(p, -1, 0) : moveBy(p, -1, 0);
+		else if (event.key === 'ArrowRight') sel.placement = sizing ? resizeBy(p, 1, 0) : moveBy(p, 1, 0);
+		else if (event.key === 'ArrowUp') sel.placement = sizing ? resizeBy(p, 0, -1) : moveBy(p, 0, -1);
+		else if (event.key === 'ArrowDown') sel.placement = sizing ? resizeBy(p, 0, 1) : moveBy(p, 0, 1);
+		else if (event.key === ',') sel.placement = turnBy(p, -TURN_STEP);
+		else if (event.key === '.') sel.placement = turnBy(p, TURN_STEP);
+		else return false;
+		// A size the visitor cannot see is worth saying; a nudge of one cell would
+		// be read out on every press and drown the rest.
+		if (sizing) announceSelection(sel);
+		schedule();
+		return true;
+	}
+
 	function onKeyDown(event: KeyboardEvent): void {
 		if (disabled || keyboardBusy) return;
 		const target = event.target as HTMLElement | null;
@@ -796,26 +887,9 @@
 		if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) {
 			return;
 		}
-		// A floating selection owns these four keys, and only while it floats: Enter
-		// and Escape mean nothing else on this page, and Backspace would otherwise
-		// walk the browser back a page while the visitor thinks they are erasing.
-		if (selection && ours(event.target)) {
-			if (event.key === 'Enter') {
-				event.preventDefault();
-				endSelection();
-				return;
-			}
-			if (event.key === 'Escape') {
-				event.preventDefault();
-				dropSelection();
-				schedule();
-				return;
-			}
-			if (event.key === 'Delete' || event.key === 'Backspace') {
-				event.preventDefault();
-				endSelection(true);
-				return;
-			}
+		if (tool === 'select' && ours(event.target) && selectionKey(event)) {
+			event.preventDefault();
+			return;
 		}
 		const action = shortcutFor(event);
 		if (!action) return;
@@ -901,8 +975,19 @@
 
 <!-- The name is on the box rather than on the <canvas>: a canvas already counts
      as an interactive element, so role="img" on it is an invalid override, and
-     the accessible name belongs on something that is only a picture. -->
-<div class="mask-canvas" bind:this={boxEl} role="img" aria-label={label}>
+     the accessible name belongs on something that is only a picture.
+
+     Markér makes the box a tab stop, because its whole gesture set is otherwise
+     pointer-only: with the box focused, Enter marks the middle, the arrow keys
+     move, Shift and an arrow size, and comma and full stop turn. -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<div
+	class="mask-canvas"
+	bind:this={boxEl}
+	role="img"
+	aria-label={label}
+	tabindex={tool === 'select' && !disabled ? 0 : undefined}
+>
 	<canvas
 		bind:this={canvasEl}
 		class:disabled
@@ -913,11 +998,23 @@
 		onpointercancel={onPointerCancel}
 	></canvas>
 </div>
+<!-- Outside the box on purpose: role="img" is a leaf, so anything inside it is
+     hidden from the very readers this line is for. -->
+<p class="sr-only" role="status">{selectionNote}</p>
 
 <style>
 	.mask-canvas {
 		position: absolute;
 		inset: 0;
+	}
+
+	/* The box is a tab stop while Markér is in hand, so it has to show that it has
+	   the keyboard — inset, because the box is the whole drawing band and a ring
+	   on its outer edge would sit under the two floating columns. */
+	.mask-canvas:focus-visible {
+		outline: 2px solid var(--blue);
+		outline-offset: -4px;
+		border-radius: 8px;
 	}
 
 	canvas {

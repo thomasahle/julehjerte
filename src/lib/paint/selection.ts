@@ -180,6 +180,34 @@ export function moveBy(p: Placement, dx: number, dy: number): Placement {
 }
 
 /**
+ * Grow or shrink about the patch's own centre — what Shift and an arrow key do.
+ * Free rather than uniform, because one arrow names one axis; the centre stays
+ * put so that the patch does not wander while it is being sized.
+ */
+export function resizeBy(p: Placement, du: number, dv: number): Placement {
+	return {
+		...p,
+		width: Math.max(MIN_SIZE, p.width + du),
+		height: Math.max(MIN_SIZE, p.height + dv)
+	};
+}
+
+/** Turn by a fixed step, the keyboard's answer to dragging the turner. */
+export function turnBy(p: Placement, radians: number): Placement {
+	return { ...p, angle: p.angle + radians };
+}
+
+/**
+ * A frame over the middle of the mask: where a keyboard selection starts, since
+ * there is no drag to cut one out with. Half the mask across, which is large
+ * enough to hold something worth moving and small enough to move it.
+ */
+export function middleRect(m: Mask): CellRect {
+	const quarter = Math.max(1, Math.round(m.size / 4));
+	return clampBox(m, quarter, quarter, m.size - quarter, m.size - quarter);
+}
+
+/**
  * Drag one corner to `point`.
  *
  * The opposite corner is the anchor and does not move, which is what makes a

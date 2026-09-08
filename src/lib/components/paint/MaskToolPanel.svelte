@@ -157,10 +157,15 @@
 		</div>
 
 		<!-- Markér is the one tool whose gestures cannot be guessed from its glyph:
-		     the frame, the handles and the three keys that end it. So it says so,
-		     and only while it is the tool in hand. -->
+		     the frame, the handles, the three keys that end it, and the keyboard's
+		     own way through the lot. So it says so, and only while it is the tool in
+		     hand. role="status" because M can pick the tool without a pointer ever
+		     coming near it, and the one piece of help there is has to be heard. -->
 		{#if tool === 'select'}
-			<p class="tool-hint">{tr('paintSelectionHint')}</p>
+			<p class="tool-hint" role="status">
+				{tr('paintSelectionHint')}
+				{tr('paintSelectionKeys')}
+			</p>
 		{/if}
 
 		<!-- Both of these are one choice out of several, which is a radiogroup: one
