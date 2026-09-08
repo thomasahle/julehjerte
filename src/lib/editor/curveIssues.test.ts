@@ -140,6 +140,19 @@ describe('fingerHasIntersectionIssues', () => {
 		expect(fingerHasIntersectionIssues(hairpin, [hairpin], margin)).toBe(true);
 	});
 
+	it('does not turn a right angle into a conflict when its legs are subdivided', () => {
+		const corner = { x: rect.left + 50, y: mid };
+		const from = { x: corner.x + 30, y: corner.y };
+		const to = { x: corner.x, y: corner.y + 30 };
+		const a = { x: corner.x + margin * 0.6, y: corner.y };
+		const b = { x: corner.x, y: corner.y + margin * 0.6 };
+		const line = (p0: Vec, p3: Vec) => ({ p0, p1: vecLerp(p0, p3, 1 / 3), p2: vecLerp(p0, p3, 2 / 3), p3 });
+		const whole: Finger = { id: 'corner', lobe: 'left', segments: [line(from, corner), line(corner, to)] };
+		const split: Finger = { ...whole, segments: [line(from, a), line(a, corner), line(corner, b), line(b, to)] };
+		expect(fingerHasIntersectionIssues(whole, [whole], margin)).toBe(false);
+		expect(fingerHasIntersectionIssues(split, [split], margin)).toBe(false);
+	});
+
 	it('flags a curve that loops back on itself', () => {
 		const p0: Vec = { x: rect.right, y: mid };
 		const p3: Vec = { x: rect.left, y: mid };

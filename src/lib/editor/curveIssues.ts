@@ -259,6 +259,33 @@ function curveLoopSizeBetween(
 	return Math.min(forward, other);
 }
 
+/** A minimum on a segment is not necessarily a minimum on the whole cut:
+ * moving through a subdivision point may keep reducing the distance. Only
+ * a local minimum on both sides can represent two nearby returning parts of
+ * one cut. Ordinary bends have a descent direction towards their own join.
+ * At a corner test both one-sided tangents, rather than averaging them away. */
+function isLocalDistanceMinimum(segs: BezierSegment[], index: number, t: number, delta: Vec): boolean {
+	const directions: Array<{ tangent: Vec; sign: number }> = [];
+	const add = (seg: BezierSegment, at: number, sign: number) => {
+		let tangent = cubicDerivativeAt(seg, at);
+		if (Math.hypot(tangent.x, tangent.y) < 1e-9) {
+			const a = bezierPointAt(seg, Math.max(0, at - 1e-4));
+			const b = bezierPointAt(seg, Math.min(1, at + 1e-4));
+			tangent = { x: b.x - a.x, y: b.y - a.y };
+		}
+		directions.push({ tangent, sign });
+	};
+	if (t > 1e-5) add(segs[index]!, t, -1);
+	else if (index > 0) add(segs[index - 1]!, 1, -1);
+	if (t < 1 - 1e-5) add(segs[index]!, t, 1);
+	else if (index + 1 < segs.length) add(segs[index + 1]!, 0, 1);
+	return directions.every(({ tangent, sign }) => {
+		const derivative = sign * (delta.x * tangent.x + delta.y * tangent.y);
+		const scale = Math.hypot(delta.x, delta.y) * Math.hypot(tangent.x, tangent.y);
+		return derivative >= -1e-3 * scale;
+	});
+}
+
 function segmentsHaveIssues(
 	segsA: BezierSegment[],
 	bboxesA: BBox[],
@@ -342,6 +369,13 @@ function segmentsHaveIssues(
 				if (same && prefixLengths) {
 					const along = curveArcSeparation(segsA, prefixLengths, i, hit.u, j, hit.v);
 					if (along != null && along < opts.minDistance) continue;
+					const delta = { x: hit.pointA.x - hit.pointB.x, y: hit.pointA.y - hit.pointB.y };
+					// Limit the subdivision exemption to a nearby bend. A remote
+					// return still uses the full proximity check, even if its
+					// approximate closest point has not converged to a stationary pair.
+					if (along != null && along < 2 * opts.minDistance &&
+						(!isLocalDistanceMinimum(segsA, i, hit.u, delta) ||
+						 !isLocalDistanceMinimum(segsA, j, hit.v, { x: -delta.x, y: -delta.y }))) continue;
 				}
 				return true;
 			}

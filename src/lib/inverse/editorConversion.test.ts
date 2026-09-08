@@ -13,10 +13,8 @@ const issues = (d: HeartDesign) => findFingersWithIssues(d.fingers, intersection
 const symmetry = { curve: 'off', lobe: 'off', lobes: 'sym' } as const;
 
 describe('the final editable heart', () => {
-  it('reproduces the old simplification regression on a valid solver result', () => {
+  it('accepts the original solver geometry before simplifying it', () => {
     expect(issues(convertCutGeometry(geometry, { name: 'raw', tolerance: 0 }).design).size).toBe(0);
-    const old = convertCutGeometry(geometry, { name: 'old', preserveShared: false, enforce: symmetry });
-    expect([...issues(old.design)]).toEqual(['L-cut-1', 'R-cut-1']);
   });
 
   it('passes the editor’s own rules after simplification and symmetry correction', () => {
