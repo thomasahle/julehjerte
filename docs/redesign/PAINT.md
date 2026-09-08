@@ -101,8 +101,10 @@ Below 900px the columns stack under the heart in the order they read: Værktøj,
 **The default column fits a desktop window** (owner, 2026-09-08). Three panels at their first-drawn heights did
 not: 1006px against the 880 a 1440 × 950 window leaves, so Kanten hung below the edge on a screen nobody would call
 small. It is 732px now — Kanten collapsed to its one row (§11), Fortryd and Gentag folded into the swatches' row,
-and the Markér and Symmetri explanations moved to `title` and Hjælp — which leaves Kanten's bottom 82px clear of
-the viewport. Nothing was removed to get there.
+and the Markér, Symmetri and Kanten explanations moved to `title` and Hjælp — which leaves Kanten's bottom 82px
+clear of the viewport. Nothing was removed to get there, and nothing was moved to a `title` alone: a `title` on a
+heading is mouse-only, so every sentence that left the column has a bullet in the Hjælp dialog to be found on
+purpose, on a phone and from the keyboard.
 
 The column still scrolls inside itself where it has to: a short window (1440 × 700 leaves 630, so the same 732px
 overflows by about 100), and Kanten expanded under Fri, which adds 213px. It is centred while it fits and starts at
@@ -110,6 +112,13 @@ the top when it does not, and a fade over whichever edge it runs past says there
 nothing of an overlay scrollbar until a gesture starts, so a panel out of sight would otherwise not be there as far
 as anyone can tell. The fade is measured after every change that alters what is *in* the column — the tool, the
 result state, and the band, since the column's own box is pinned top and bottom and never changes height itself.
+
+Choosing Fri scrolls Kanten's own bottom into view (`scrollIntoView({ block: 'nearest' })` in `FramePanel`).
+Measured at 1440 × 950 without it, the revealed Størrelse slider landed under the bottom fade and the Fri hint
+wholly outside the column's box, with nothing scrolled: the visitor asks for exactly those three controls and two of
+them arrive where they cannot be read. `nearest` scrolls the least that puts the panel on screen and does nothing
+when it is already there, so a tall window is untouched and the narrow layout — where the page scrolls rather than
+the column — is served by the same line.
 
 Right floating panel (340px, collapsible with the same "Skjul panel" control as Tegn):
 
@@ -528,7 +537,10 @@ their benchmark did, by preparing a different target, and is built (`$lib/paint/
   the Størrelse slider and the hint say what would happen to a motif nobody has asked to protect, and they appear
   when Fri is chosen. Only the panel's height changes — the frame keeps the shape and the size it had, so Fri brings
   them back exactly as they were — and the sentence a Fast panel used to carry ("Hele firkanten væves, som du har
-  malet den.") is the heading's `title`. *Fri* = the search fills the band itself; the band's colours are ignored.
+  malet den.") is the heading's `title` **and** a bullet in Hjælp, because a `title` never fires on touch or on
+  keyboard focus and Kanten is otherwise two words with nothing to explain them. Choosing Fri scrolls the panel's
+  bottom into view, since the three controls it reveals otherwise land below the column's bottom edge (§2).
+  *Fri* = the search fills the band itself; the band's colours are ignored.
   The three shape buttons darken to `--green-hover` under the pointer while chosen, like every other chosen control
   in the column; they were exempt from hover with `:not(.active)` until 2026-09-08, which left the one button the
   visitor was pointing at as the only one that answered to nothing. The third state

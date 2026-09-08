@@ -18,6 +18,7 @@
   way the visitor will see it and cannot drift from what is drawn.
 -->
 <script lang="ts">
+	import { tick, untrack } from 'svelte';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import {
@@ -97,6 +98,39 @@
 		onFrameStart?.();
 	}
 
+	/** The panel itself, so that opening it can bring what it opened into view. */
+	let sectionEl = $state.raw<HTMLElement | null>(null);
+	/** The first run of the effect below is the render, not a choice. */
+	let settled = false;
+
+	/**
+	 * Choosing Fri brings the panel's own bottom into view.
+	 *
+	 * Kanten is the last panel of a column that already fills the window, so the
+	 * three controls Fri reveals — the shapes, Størrelse, and the sentence saying
+	 * what the band becomes — appear below the column's bottom edge: measured at
+	 * 1440 × 950, the slider landed under the fade and the hint entirely outside
+	 * the box, with nothing scrolled. The cut-edge fade says there is more down
+	 * there, but a visitor who has just asked for exactly these controls should
+	 * not have to go looking for them. `block: 'nearest'` scrolls the least that
+	 * puts the panel on screen and does nothing when it is already there, so a
+	 * tall window is left alone — and the narrow layout, where the page scrolls
+	 * rather than the column, is served by the same line.
+	 */
+	$effect(() => {
+		const free = frame.mode === 'free';
+		untrack(() => {
+			if (!settled) {
+				settled = true;
+				return;
+			}
+			if (!free) return;
+			// After the fields exist: the panel is measured to its new height, not
+			// the one it had while it was a single row.
+			void tick().then(() => sectionEl?.scrollIntoView?.({ block: 'nearest' }));
+		});
+	});
+
 	/** One shape as an SVG path in the unit square, for the button glyphs. */
 	function glyphPath(shape: FrameShape): string {
 		const outline = shapeOutline(shape, 0.68);
@@ -118,9 +152,11 @@
 
   The sentence that used to stand under a Fast panel is the heading's title: it
   says what Fast means, and it is the one thing here that is not already on the
-  segment's own two words.
+  segment's own two words. A title is mouse-only, so the same sentence is also a
+  bullet in the Hjælp dialog — where a visitor on a phone, or on the keyboard,
+  can still find it — exactly as Symmetri's explanation is.
 -->
-<section class="editor-panel">
+<section class="editor-panel" bind:this={sectionEl}>
 	<h2 class="panel-title" title={frame.mode === 'free' ? undefined : tr('paintFrameHintFixed')}>
 		{tr('paintFrame')}
 	</h2>

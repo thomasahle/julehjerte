@@ -320,6 +320,7 @@ export const translations = {
       'Med Markér trækker du en ramme om et stykke af mønsteret. Flyt indeni, skalér i hjørnerne, drej i håndtaget foroven. Enter lægger den fast, Esc fortryder, Delete rydder.',
       'Markér uden mus: gå til tegningen med tabulator, Enter markerer midten, piletaster flytter, Skift og en piletast skalerer, komma og punktum drejer.',
       'Slå en symmetri til, hvis mønsteret skal spejles. Det, der er fundet i masken, er slået til på forhånd, og alt du maler, spejles med.',
+      'Kanten siger, hvor meget af firkanten der er dit. Fast væver hele firkanten, som du har malet den. Fri holder motivet inden i formen, og uden om vælger maskinen selv et vævet mønster.',
       'Tryk Find snit. Det tager typisk et halvt til et par minutter, og du kan afbryde undervejs.',
       'Åbn resultatet i Tegn for at rette kurverne, eller hent skabelonen som PDF.'
     ],
@@ -784,6 +785,7 @@ export const translations = {
       'With Select you drag a frame around a piece of the pattern. Move inside it, scale at the corners, turn with the handle above. Enter puts it down, Esc undoes it, Delete clears it.',
       'Select without a mouse: tab to the drawing, Enter marks the middle, the arrow keys move it, Shift and an arrow key scale it, comma and full stop turn it.',
       'Switch a symmetry on if the pattern should be mirrored. Whatever was found in the mask is switched on already, and everything you paint is mirrored with it.',
+      'The border says how much of the square is yours. Fixed weaves the whole square exactly as you painted it. Free keeps the motif inside the shape, and around it the machine chooses a woven pattern of its own.',
       'Press Find the cuts. It usually takes half a minute to a couple of minutes, and you can stop it on the way.',
       'Open the result in Draw to reshape the curves, or download the template as a PDF.'
     ],
