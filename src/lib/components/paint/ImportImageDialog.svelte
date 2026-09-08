@@ -190,8 +190,17 @@
 		const photo = livePhoto;
 		if (!canvas || (!mask && !photo)) return;
 		const ratio = window.devicePixelRatio || 1;
-		canvas.width = Math.round(PREVIEW_SIZE * ratio);
-		canvas.height = Math.round(PREVIEW_SIZE * ratio);
+		const side = Math.round(PREVIEW_SIZE * ratio);
+		// Assigning `width` clears and reallocates the backing store even when the
+		// value is the one already there. That was once per prepared mask; with the
+		// live crop it is once per animation frame for the whole of a drag, which on
+		// the phone this feature is most for is a 600 px canvas thrown away sixty
+		// times a second. The transform is set every time regardless: it costs
+		// nothing, and a resize is what clears it.
+		if (canvas.width !== side || canvas.height !== side) {
+			canvas.width = side;
+			canvas.height = side;
+		}
 		const ctx = canvas.getContext('2d');
 		if (!ctx) return;
 		ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
