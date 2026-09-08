@@ -479,7 +479,10 @@ their benchmark did, by preparing a different target, and is built (`$lib/paint/
   lays the outline over the found heart. The third number — the share of band cells the engine changed — belongs
   to the soft state and arrives with it.
 - The "Kanten" panel lives in Mal only, not in the import dialog: it applies to painted and imported masks
-  alike. After a photo import the panel may default to Må rettes, once that state exists.
+  alike. After a photo import the panel may default to Må rettes, once that state exists. The dialog does not
+  detect symmetry itself, though: it is handed the page's `detectOn`, so an imported mask's rows are judged on the
+  protected motif exactly as a painted one's are — a crop's corners are the untrustworthy part, and the reason the
+  band exists, so they must not decide the rows that are about to fold the picture.
 
 `frameWeights(mask, frame)` in `$lib/inverse/engine` returns the per-cell weights (1 inside, 0 in a free band) and
 is **sent nowhere**: the fitter's loss has no per-cell weight to take. It is written and tested now so that the day

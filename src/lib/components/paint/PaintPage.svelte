@@ -343,9 +343,11 @@
 	 * What the mask is symmetric under, judged on the visitor's own motif.
 	 *
 	 * With a free band the band is about to be replaced by a woven pattern, so its
-	 * colours must not decide whether the picture is symmetric (PAINT.md §11). The
-	 * import dialog has no "Kanten" panel and does its own detection over the whole
-	 * square; this is the page's own answer, for "Prøv stjernen".
+	 * colours must not decide whether the picture is symmetric (PAINT.md §11).
+	 * Every mask that arrives is judged here — "Prøv stjernen" and the import
+	 * dialog alike, which is why the dialog is handed this function rather than
+	 * calling `detectSymmetry` itself: a photo crop's corners are exactly the part
+	 * a free band throws away, so they must not decide the rows either.
 	 */
 	function detectOn(mask: Mask): SymmetrySettings {
 		const region =
@@ -893,6 +895,7 @@
 	<ImportImageDialog
 		{lang}
 		open={showImport}
+		detect={detectOn}
 		onClose={() => (showImport = false)}
 		onUse={(mask, found) => onImported(mask, found)}
 	/>

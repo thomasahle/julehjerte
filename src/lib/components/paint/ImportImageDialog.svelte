@@ -47,11 +47,22 @@
 		orderQuad,
 		type DecodedImage
 	} from '$lib/paint/importImage';
-	import { detectSymmetry, NO_SYMMETRY, type SymmetrySettings } from '$lib/paint/symmetry';
+	import { NO_SYMMETRY, type SymmetrySettings } from '$lib/paint/symmetry';
 
 	interface Props {
 		open: boolean;
 		onClose: () => void;
+		/**
+		 * What the prepared mask is symmetric under.
+		 *
+		 * Asked of the page rather than worked out here, because the answer depends
+		 * on "Kanten", which lives in Mal and not in this dialog: while the band is
+		 * free the rows are judged on the protected motif alone (PAINT.md §11), and
+		 * a photo crop's corners — the untrustworthy part, and the reason the band
+		 * exists at all — must not decide them. It is the same function that judges
+		 * "Prøv stjernen", so what this dialog reports is what the page adopts.
+		 */
+		detect: (mask: Mask) => SymmetrySettings;
 		/**
 		 * The prepared mask and the symmetry detected in it, for the session store.
 		 * The dialog closes itself afterwards, so this only has to store them.
@@ -60,7 +71,7 @@
 		lang: Language;
 	}
 
-	let { open, onClose, onUse, lang }: Props = $props();
+	let { open, onClose, detect, onUse, lang }: Props = $props();
 
 	const tr = (key: TranslationKey, params?: Record<string, string | number>) =>
 		t(key, lang, params);
@@ -405,7 +416,7 @@
 			if (mine !== generation) return;
 			const mask = maskFromPrepared(prepared);
 			previewMask = mask;
-			previewFound = detectSymmetry(mask);
+			previewFound = detect(mask);
 		} catch (error) {
 			if (mine !== generation) return;
 			previewError = engineFailed(error) ? 'paintFailedEngine' : 'paintPreviewFailed';
