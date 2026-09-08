@@ -114,6 +114,8 @@
 	let leftColumnEl = $state.raw<HTMLDivElement | null>(null);
 	/** There is more of the column below its bottom edge. */
 	let leftColumnCut = $state(false);
+	/** There is more of the column above its top edge. */
+	let leftColumnCutTop = $state(false);
 
 	let tool = $state<PaintTool>('pen');
 	let brushSize = $state<BrushSize>('medium');
@@ -214,16 +216,17 @@
 	});
 
 	/**
-	 * Whether the left column has more under its bottom edge.
+	 * Whether the left column has more of itself past either edge.
 	 *
 	 * Read on scroll, on a resize of the column, and after a change that alters what
 	 * is in it — the Markér hint is several lines, and appearing is what pushes the
-	 * last symmetry row under the edge on a 1366 x 768 laptop.
+	 * panel below it under the edge.
 	 */
 	function measureLeftColumn(): void {
 		const el = leftColumnEl;
-		// A pixel of rounding either way must not make the fade flicker at the end.
+		// A pixel of rounding either way must not make a fade flicker at the end.
 		leftColumnCut = !!el && el.scrollHeight - el.scrollTop - el.clientHeight > 4;
+		leftColumnCutTop = !!el && el.scrollTop > 4;
 	}
 
 	/** The canvas fills the viewport under the bar, so the bar's height is a variable. */
@@ -870,11 +873,16 @@
 					<div class="left-panel" bind:this={leftColumnEl} onscroll={measureLeftColumn}>
 						{@render toolPanel()}
 						{@render symmetryPanel()}
+						{@render framePanel()}
 					</div>
-					<!-- The column is cut off at the bottom and there is more under the
-					     edge. macOS draws nothing of an overlay scrollbar until a gesture
-					     starts, so without this the third symmetry row is simply not there
-					     as far as anyone can tell. -->
+					<!-- The column runs past one edge or the other and there is more of it
+					     out of sight. macOS draws nothing of an overlay scrollbar until a
+					     gesture starts, so without these a panel is simply not there as far
+					     as anyone can tell. Both edges, not just the bottom: with three
+					     panels the column overflows on every desktop height, so a visitor
+					     who has scrolled down to Kanten needs to be told Værktøj is up
+					     there as much as they needed to be told Kanten was below. -->
+					<div class="left-fade top" class:showing={leftColumnCutTop} aria-hidden="true"></div>
 					<div class="left-fade" class:showing={leftColumnCut} aria-hidden="true"></div>
 					<div class="right-panel" class:collapsed={panelCollapsed} id="paint-panel">
 						<div class="panel-collapse">
@@ -913,6 +921,7 @@
 				<aside class="sidebar">
 					{@render toolPanel()}
 					{@render symmetryPanel()}
+					{@render framePanel()}
 					{@render cutsPanel()}
 				</aside>
 			{/if}
@@ -959,9 +968,13 @@
 						found={session.found}
 						disabled={busy || showingResult}
 					/>
-					<!-- Kanten sits under Værktøj in the same column (PAINT.md §11): it is
-					     about the picture, not about the search, and the visitor sets it
-					     while they paint. -->
+	{/snippet}
+
+	<!-- Kanten sits under Symmetri in the same column (PAINT.md §11): it is about
+	     the picture, not about the search, and the visitor sets it while they
+	     paint. A snippet of its own, so each one is named for the panel it draws
+	     and the two layouts below stay a plain list of the column's contents. -->
+	{#snippet framePanel()}
 					<FramePanel
 						{lang}
 						frame={session.frame}
@@ -1091,12 +1104,14 @@
 		border-color: var(--green);
 	}
 
-	/* Two panels now, so the column can outgrow a short viewport — a 1366 x 768
-	   laptop lands inside the range where it does. It stays centred while it fits
-	   and scrolls from the top when it does not, which is what `safe center` says;
-	   a browser that does not know the keyword falls back to the top, the same
-	   answer for the case that matters. Centring with a transform instead cut the
-	   column off at *both* ends, with the top out of reach altogether.
+	/* Three panels now (Værktøj, Symmetri, Kanten), which is taller than any
+	   desktop viewport — measured at 240px over on a 1440 x 950 window — so the
+	   column scrolls as a rule rather than only on a short laptop. It stays centred
+	   while it fits and scrolls from the top when it does not, which is what
+	   `safe center` says; a browser that does not know the keyword falls back to
+	   the top, the same answer for the case that matters. Centring with a transform
+	   instead cut the column off at *both* ends, with the top out of reach
+	   altogether.
 
 	   The padding is for the panels' shadow: `overflow-y: auto` computes overflow-x
 	   to `auto` as well, which clips anything drawn outside the box. */
@@ -1119,10 +1134,10 @@
 		z-index: 26;
 	}
 
-	/* The cut edge, when there is more of the column below it. Its own element
-	   rather than a pseudo of the scroller: a background inside a scroller either
-	   scrolls away with the content or sits behind the opaque panels, and the
-	   scrollbar cannot say it — Chrome ignores `::-webkit-scrollbar` as soon as
+	/* A cut edge, when there is more of the column past it. Its own element rather
+	   than a pseudo of the scroller: a background inside a scroller either scrolls
+	   away with the content or sits behind the opaque panels, and the scrollbar
+	   cannot say it — Chrome ignores `::-webkit-scrollbar` as soon as
 	   `scrollbar-width` is set, and macOS draws an overlay scrollbar that is
 	   invisible until a gesture starts. */
 	.left-fade {
@@ -1136,6 +1151,13 @@
 		transition: opacity 120ms ease-out;
 		pointer-events: none;
 		background: linear-gradient(to top, var(--page), transparent);
+	}
+
+	/* The same edge at the top, drawn the other way up. */
+	.left-fade.top {
+		top: 4px;
+		bottom: auto;
+		background: linear-gradient(to bottom, var(--page), transparent);
 	}
 
 	.left-fade.showing {

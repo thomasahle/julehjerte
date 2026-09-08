@@ -82,13 +82,19 @@ of an overlay scrollbar until a gesture starts):
   til; alt du maler, spejles med." and the three symmetry rows (the shared component, §6), with the "fundet" tags.
   They live here rather than with the search because they are live while painting: a row switched on mirrors every
   stroke from that moment, so they belong beside the brush they change. Find snit still reads them from the session.
-  Both panels stand down — every control inside really disabled, which is what a screen reader reads — while the
-  found heart is on screen, because there is no mask under the pointer then; "Tilbage til masken" brings them back.
+  All three panels in the column stand down — every control inside really disabled, which is what a screen reader
+  reads — while the found heart is on screen, because there is no mask under the pointer then; "Tilbage til masken"
+  brings them back.
 - Keyboard: P pen, E eraser, F fill, L line, R rectangle, M select, X swaps the painting colour, `[`/`]` brush size.
   A floating Markér patch owns Enter, Escape and Delete, but only where the canvas has the keyboard: Enter on a
   control the visitor has tabbed to presses the control, and pressing one by key puts the patch down first.
 
 Below 900px the columns stack under the heart in the order they read: Værktøj, Symmetri, Kanten, Find snit.
+
+Three panels are taller than a desktop viewport, so above 900px the left column scrolls inside itself as a rule
+rather than as an exception. It is centred while it fits and starts at the top when it does not, and a fade over
+whichever edge it runs past says there is more that way — macOS draws nothing of an overlay scrollbar until a
+gesture starts, so a panel out of sight would otherwise not be there as far as anyone can tell.
 
 Right floating panel (340px, collapsible with the same "Skjul panel" control as Tegn):
 
