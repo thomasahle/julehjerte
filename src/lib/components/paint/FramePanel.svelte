@@ -60,13 +60,18 @@
 	/** The slider works in whole percent; the frame keeps the share of the square. */
 	let percent = $derived(Math.round(frame.size * 100));
 
+	// A click that changes nothing — the mode or the shape already chosen — says
+	// nothing: a gesture announced here ends in an undo step, and a step that puts
+	// back exactly what is there is one the visitor has to press through for no
+	// reason. `SymmetryRows` guards its rows the same way.
 	function setMode(next: unknown): void {
-		if (next !== 'fixed' && next !== 'free') return;
+		if ((next !== 'fixed' && next !== 'free') || next === frame.mode) return;
 		onFrameStart?.();
 		onFrame({ ...frame, mode: next });
 	}
 
 	function setShape(shape: FrameShape): void {
+		if (shape === frame.shape) return;
 		onFrameStart?.();
 		onFrame({ ...frame, shape });
 	}
