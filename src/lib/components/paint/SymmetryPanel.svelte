@@ -56,6 +56,20 @@
 		opacity: 0.45;
 	}
 
+	/* The rows were drawn for the 372px right column. This one is 300px, and
+	   "Mellem lapper" with its "fundet" pill beside a three-segment control does
+	   not fit on one line there — the "Anti" end ran off the panel. So the label
+	   may wrap here and the control may not shrink. SymmetryRows is shared with
+	   Tegn, where the wider column still puts every row on one line, so the fix
+	   belongs to this panel rather than to the component. */
+	.rows :global(.symmetry-label) {
+		white-space: normal;
+	}
+
+	.rows :global([data-slot='toggle-group']) {
+		flex: none;
+	}
+
 	.lead {
 		margin: 0;
 		font-size: 13px;
