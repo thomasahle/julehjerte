@@ -1190,8 +1190,19 @@
 		untrack(schedule);
 	});
 
+	/**
+	 * The drawing's name, and — while Markér is in hand — the way through it
+	 * without a pointer.
+	 *
+	 * The one line of help the panel has room for describes a drag of the mouse,
+	 * which is the single route a keyboard visitor has not got; the rest is in the
+	 * Hjælp dialog with nothing on the page pointing there. The box is a tab stop
+	 * for exactly that visitor, so the sentence rides on its own name: no line of
+	 * the column is spent on it, and it is read out where they are standing.
+	 */
 	let label = $derived(
-		mask ? t('paintCanvasLabel', lang, { size: mask.size }) : t('paintCanvasEmptyLabel', lang)
+		(mask ? t('paintCanvasLabel', lang, { size: mask.size }) : t('paintCanvasEmptyLabel', lang)) +
+			(tool === 'select' && !disabled ? `. ${t('paintSelectionKeyboard', lang)}` : '')
 	);
 </script>
 

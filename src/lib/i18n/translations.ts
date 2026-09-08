@@ -235,6 +235,13 @@ export const translations = {
     paintSelect: 'Markér',
     /** Den ene linje under værktøjerne; resten står i Hjælp (paintHelpBullets). */
     paintSelectionShort: 'Træk en ramme; Enter lægger den fast, Esc fortryder.',
+    /**
+     * Lægges til tegningens eget navn, så længe Markér er valgt. Linjen ovenfor
+     * beskriver et træk med musen, og tegningen er netop kun et tabulatorstop
+     * for den, der ikke har nogen; vejen frem skal stå der, hvor man står.
+     */
+    paintSelectionKeyboard:
+      'Markér uden mus: Enter markerer midten, piletaster flytter, Skift og en piletast skalerer, komma og punktum drejer.',
     /** {width} × {height} = markeringens størrelse i celler */
     paintSelectionLifted: 'Markering, {width} × {height} felter',
     paintSelectionPlaced: 'Markeringen er lagt fast',
@@ -700,6 +707,13 @@ export const translations = {
     paintSelect: 'Select',
     /** The one line under the tools; the rest is in Help (paintHelpBullets). */
     paintSelectionShort: 'Drag a frame; Enter puts it down, Esc undoes it.',
+    /**
+     * Added to the drawing's own name while Select is the tool. The line above
+     * describes a drag of the mouse, and the drawing is a tab stop precisely for
+     * the visitor who has none; the way in has to be where they are standing.
+     */
+    paintSelectionKeyboard:
+      'Select without a mouse: Enter marks the middle, the arrow keys move it, Shift and an arrow key scale it, comma and full stop turn it.',
     /** {width} × {height} = the size of the selection in cells */
     paintSelectionLifted: 'Selection, {width} × {height} cells',
     paintSelectionPlaced: 'The selection is put down',

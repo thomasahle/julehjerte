@@ -69,7 +69,10 @@ of an overlay scrollbar until a gesture starts):
   Cmd/Ctrl+Z and Shift+Cmd/Ctrl+Z as before. Markér adds **one** line of help under the grid while it is the tool in
   hand ("Træk en ramme; Enter lægger den fast, Esc fortryder."), because its gestures cannot be read off its
   glyph; the five lines it used to be — the handles, the turner, and the whole keyboard route — are in the Hjælp
-  dialog, which is where there is room to read them.
+  dialog, which is where there is room to read them. That one line describes a drag, which is the single route a
+  keyboard visitor has not got, so the keyboard route rides on the drawing's own `aria-label` while Markér is in
+  hand (`paintSelectionKeyboard`): the drawing is a tab stop for exactly that visitor, and the sentence costs the
+  column no line at all.
 - **Markér** (owner, 2026-09-08): drag a frame on the mask to lift a rectangle of cells; a dashed marquee with four
   corner handles and a turner above it. Dragging inside moves the cells (what they leave becomes paper 0), a corner
   scales — uniform, and free with Shift — and the turner turns about the centre by any angle. Enter or a click
