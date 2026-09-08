@@ -63,7 +63,7 @@ test('fitted free paths can propose one reusable pattern without changing their 
 
 test('a symmetric image exports one identical cutting pattern and stops before using the budget',async()=>{
   const input=checkerPixels(128),cfg={algorithm:'direct',timeLimit:30,trials:0,roundHidden:false,preferMatchingSheets:true,earlyStop:true},p=prepare(input,cfg),r=await design(p.target,cfg);
-  assert.equal(r.report.templateExportAllowed,true);assert.equal(r.report.solver.matchingPreference.identical,true);
+  assert.equal(r.report.templateChecksPassed,true);assert.equal(r.report.solver.matchingPreference.identical,true);
   assert.equal(r.report.solver.stoppedEarly,true);
   assert.equal(matchingSummary(loadSolutionJSON(r.files['cut_geometry.json'])).identical,true);
   const independent=await renderExportedWeave(r.files['cut_geometry.json'],128);

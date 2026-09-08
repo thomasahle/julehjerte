@@ -77,7 +77,7 @@ for (const name of names) {
     execFileSync('unzip', ['-t', zipPath]);
     const report = JSON.parse(execFileSync('unzip', ['-p', zipPath, 'report.json'], { encoding: 'utf8' }));
     assert.equal(report.solver.status, 'solved');
-    assert.equal(report.templateExportAllowed, true);
+    assert.equal(report.templateChecksPassed, true);
     assert.equal(report.validation.forwardSampleMismatchPixels, 0);
     assert.equal(report.solver.imported, undefined);
     record.freshReport = report;

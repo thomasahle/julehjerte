@@ -63,7 +63,7 @@ for (const entry of cases) {
         const prepared = prepare(input, cfg); run.preprocessing = prepared.preview.metadata;
         await fs.writeFile(path.join(output, `${entry.id}-${label}-target.svg`), prepared.preview.vector);
         const result = await design(prepared.target, cfg); run.report = result.report;
-        run.status = result.report.templateExportAllowed ? 'checked_pair' : 'review_required';
+        run.status = result.report.templateChecksPassed ? 'checked_pair' : 'review_required';
         const directory = path.join(output, `${entry.id}-${label}`); await fs.mkdir(directory);
         for (const [name, bytes] of Object.entries(result.files)) await fs.writeFile(path.join(directory, name), bytes);
         const rendered = await renderExportedWeave(result.files['cut_geometry.json'], prepared.preview.resolution);

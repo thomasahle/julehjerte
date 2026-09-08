@@ -19,20 +19,16 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
     page=await context.newPage();page.on('pageerror',e=>row.pageErrors.push(e.message));
     const idle=()=>page.waitForFunction(()=>document.querySelector('fieldset')?.disabled===false),button=s=>page.getByRole('button',{name:s,exact:true}).first();
     const solve=async()=>{await button('Prepare artwork').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();await button('Find cutting templates').click();await page.getByRole('heading',{name:'Template pair checked',exact:true}).waitFor({timeout:90000});};
-    await page.goto(`${origin}/en/generate/`);await idle();await page.getByLabel(/^Pattern style/).selectOption('direct');
-    assert.equal(await page.getByLabel('Prefer matching templates',{exact:true}).isChecked(),true);
+    await page.goto(`${origin}/en/generate/`);await idle();assert.equal(await page.getByLabel(/^Pattern style/).count(),0);
+    assert.equal(await page.getByLabel('Prefer matching templates',{exact:true}).count(),0);
     await page.getByText('Cutting and search settings',{exact:true}).click();await page.getByLabel('Simulated cutting-error trials',{exact:true}).fill('0');
     await page.locator('input[type=file]').setInputFiles('scripts/inverse/fixtures/matching/user-symmetric-hearts.png');await idle();await solve();
-    row.photoReport=await page.evaluate(()=>window.matchResult.report);assert.equal(row.photoReport.templateExportAllowed,true);assert.equal(row.photoReport.solver.numericalBackend.backend,'wasm');
+    row.photoReport=await page.evaluate(()=>window.matchResult.report);assert.equal(row.photoReport.templateChecksPassed,true);assert.equal(row.photoReport.solver.numericalBackend.backend,'wasm');
     assert.ok(row.photoReport.imageError.mismatchFraction<.01);
     assert.ok(await page.getByText(/Identical templates would differ from this crop by at least/).isVisible());
     await button('Compare').click();await page.locator('.comparison-view').screenshot({path:`${output}/${name}-photo-comparison.png`});
     await button('Original mask').click();await page.locator('canvas.mask').waitFor();
     row.checks.push('The uploaded photo fits below 1% error, explains the identical-template lower bound, and retains its mask and comparison');
-    await page.getByLabel('Prefer matching templates',{exact:true}).uncheck();
-    assert.equal(await page.getByRole('heading',{name:'Template pair checked',exact:true}).count(),0);
-    assert.equal(await button('Find cutting templates').isDisabled(),true);row.checks.push('Changing the preference invalidates the previous preparation and result');
-    await page.getByLabel('Prefer matching templates',{exact:true}).check();
     const c=createCanvas(128,128),cx=c.getContext('2d');for(let y=0;y<4;y++)for(let x=0;x<4;x++){cx.fillStyle=(x+y)%2?'#b91313':'#ffffff';cx.fillRect(x*32,y*32,32,32);}
     await page.locator('input[type=file]').setInputFiles({name:'symmetric-checker.png',mimeType:'image/png',buffer:c.toBuffer('image/png')});await idle();await solve();
     assert.ok(await page.getByText('Both sheets use the same cutting pattern.',{exact:true}).isVisible());

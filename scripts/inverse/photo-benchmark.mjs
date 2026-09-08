@@ -46,7 +46,7 @@ for (const entry of catalogue.cases) {
         run.preprocessing = prepared.preview.metadata;
         await fs.writeFile(path.join(output, `${entry.id}-${preset}-target.svg`), prepared.preview.vector);
         const result = await design(prepared.target, config);
-        run.status = result.report.templateExportAllowed ? 'checked_pair' : 'review_required';
+        run.status = result.report.templateChecksPassed ? 'checked_pair' : 'review_required';
         run.report = result.report;
         const folder = path.join(output, `${entry.id}-${preset}`);
         await fs.mkdir(folder);

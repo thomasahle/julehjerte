@@ -74,7 +74,7 @@ for(const name of(process.env.INVERSE_QA_BROWSERS||'chromium,firefox,webkit').sp
     await page.getByLabel(/^Image area/).selectOption('quad');await validCrop();
     check('Whole-image mode hides the unused crop overlay; returning restores the selection');
 
-    await page.getByLabel(/^Pattern style/).selectOption('direct');
+    assert.equal(await page.getByLabel(/^Pattern style/).count(),0);
     await button('Prepare artwork').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();
     const coordinate=page.locator('.coordinates input').first(),value=await coordinate.inputValue();await coordinate.fill('');
     assert.equal(await page.locator('.photo-preview').count(),0);assert.equal(await button('Find cutting templates').isDisabled(),true);
@@ -125,28 +125,28 @@ for(const name of(process.env.INVERSE_QA_BROWSERS||'chromium,firefox,webkit').sp
     await button('Check saved templates').click();await page.getByRole('alert').waitFor();await idle();
     assert.equal(await button('Download everything (.zip)').count(),0);check('Malformed saved templates report an error without stale downloads');
 
-    await upload('woven-square.png',checker);await page.getByLabel(/^Pattern style/).selectOption('direct');
+    await upload('woven-square.png',checker);assert.equal(await page.getByLabel(/^Pattern style/).count(),0);
     assert.equal(await page.getByLabel(/^Image area/).inputValue(),'square');
     await page.getByLabel('Search budget (seconds)',{exact:true}).fill('10');
     await button('Prepare artwork').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();
     await button('Find cutting templates').click();await page.getByRole('heading',{name:'Template pair checked',exact:true}).waitFor({timeout:60000});
     const pending=page.waitForEvent('download');await button('Download everything (.zip)').click();const zip=`${output}/${name}.zip`;await(await pending).saveAs(zip);
     const report=JSON.parse(execFileSync('unzip',['-p',zip,'report.json'],{encoding:'utf8'})),cuts=JSON.parse(execFileSync('unzip',['-p',zip,'cut_geometry.json'],{encoding:'utf8'}));
-    assert.equal(report.templateExportAllowed,true);assert.equal(report.manufacturing.status,'pass');assert.deepEqual(report.slits,{left:3,right:3});
+    assert.equal(report.templateChecksPassed,true);assert.equal(report.manufacturing.status,'pass');assert.deepEqual(report.slits,{left:3,right:3});
     const mask=await page.evaluate(()=>Array.from(window.qaPrepared.mask)),render=await renderExportedWeave(cuts,128);
     assert.ok(render.mask.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length<.005);
     check('Fresh direct solve exports a checked ZIP whose curves independently reproduce the source');
-    await page.getByLabel(/^Pattern style/).selectOption('general');
+    await page.getByLabel('Search budget (seconds)',{exact:true}).fill('12');
     await button('Prepare artwork').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();
     await button('Find cutting templates').click();await page.getByRole('heading',{name:'Template pair checked',exact:true}).waitFor({timeout:60000});
-    check('The General solver also completes a fresh solve with the real WASM engine');
+    check('The automatic solver completes another fresh solve after a budget change');
     await page.getByLabel('Minimum strip width (mm)',{exact:true}).fill('2.1');
     assert.equal(await button('Download everything (.zip)').count(),0);assert.equal(await button('Find cutting templates').isDisabled(),true);
     check('Changing a cutting constraint removes the previous result and exports');
 
     const tiny=createCanvas(16,16);tiny.getContext('2d').drawImage(checker,0,0,16,16);
     await upload('tiny-artwork.png',tiny);assert.equal(await page.getByRole('alert').count(),0);
-    await page.getByLabel(/^Pattern style/).selectOption('direct');
+    assert.equal(await page.getByLabel(/^Pattern style/).count(),0);
     await button('Prepare artwork').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();
     check('Tiny square artwork skips the locator and still prepares');
 

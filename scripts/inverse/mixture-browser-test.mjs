@@ -58,7 +58,7 @@ for (const [name, type] of Object.entries({ chromium, firefox })) {
     const zip = `${output}/${name}.zip`; await (await pending).saveAs(zip);
     const report = JSON.parse(execFileSync('unzip', ['-p', zip, 'report.json'], { encoding: 'utf8' }));
     const cuts = JSON.parse(execFileSync('unzip', ['-p', zip, 'cut_geometry.json'], { encoding: 'utf8' }));
-    assert.equal(report.templateExportAllowed, true); assert.equal(report.manufacturing.status, 'pass');
+    assert.equal(report.templateChecksPassed, true); assert.equal(report.manufacturing.status, 'pass');
     assert.deepEqual(report.slits, { left: 3, right: 3 });
     assert.equal(report.input.preprocessing.method, 'red-white-mixture');
     const independent = await renderExportedWeave(cuts, 128);

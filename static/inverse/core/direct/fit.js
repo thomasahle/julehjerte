@@ -6,13 +6,14 @@ import {CurveGraph} from './curves.js';
 import {refineCurves,fittingMargin} from './refine.js';
 import {recoverShared} from './share.js';
 import {sampleWeave,validate} from '../validate.js';
-import {matchingGrid,matchingPaths,matchingSummary,symmetryEvidence} from './matching.js';
+import {matchingGrid,matchingSummary,symmetryEvidence} from './matching.js';
 import {materialAudit} from '../material.js';
 import {resize} from './math.js';
 import {initializeGrid,borderGrid,separableGrid} from './initialize.js';
 import {auditImageFeatures,imageFeatures} from '../image-features.js';
 import {recoverImageFeatures} from '../feature-recovery.js';
 import {loadBoundaryKernel} from './native.js';
+import {preferMatchingSolution} from './prefer-matching.js';
 
 export function borderEvidence(prob,n){
   const rows=[];
@@ -57,6 +58,13 @@ function refloor(result,floor){
   }});return z;
 }
 export async function fitDirect(input,cfg,onProgress=()=>{}){
+  const start=performance.now();
+  const solution=await fitIndependent(input,{...cfg,preferMatchingSheets:false},onProgress);
+  const result=preferMatchingSolution(solution,cfg,{deadline:start+Math.min(cfg.timeLimit,10)*1000-400,onProgress});
+  result.report.seconds=(performance.now()-start)/1000;
+  return result;
+}
+async function fitIndependent(input,cfg,onProgress){
   const source=input.sourceImage,fullProb=source.probability||Float32Array.from(source.mask),n=Math.min(256,source.resolution),prob=resize(fullProb,source.resolution,n),gridTarget=resize(fullProb,source.resolution,96),start=performance.now(),fastSeconds=Math.min(cfg.timeLimit,10),maxDeadline=start+cfg.timeLimit*1000;
   let deadline=start+fastSeconds*1000-Math.min(1300,fastSeconds*200);
   const numericalBackend=await loadBoundaryKernel();
@@ -169,19 +177,6 @@ export async function fitDirect(input,cfg,onProgress=()=>{}){
     const graph=new CurveGraph(candidate.graph.nested(candidate.points),cfg.width);
     const polished=stage('directPolishing',()=>refineCurves(graph,Float64Array.from(source.mask),source.resolution,candidate.phase,{...cfg,preferMatchingSheets:false},{input,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false}));
     if(assess(polished)&&polished.originalImageError<=candidate.originalImageError)candidate={...polished,counts:candidate.counts,sharing:candidate.sharing};
-  }
-  if(cfg.preferMatchingSheets&&matchingEvidence.minimumIdenticalImageError<=candidate.originalImageError&&performance.now()<deadline-500){
-    const proposals=[];
-    for(const blend of[0,.5,1]){
-      const paths=matchingPaths(candidate.graph.nested(candidate.points),blend);if(!paths)continue;
-      const graph=new CurveGraph(paths,cfg.width),proposal={graph,points:graph.points,phase:candidate.phase,geometryPassed:true,paperPassed:true};
-      assess(proposal);proposals.push(proposal);
-    }
-    proposals.sort((a,b)=>a.originalImageError-b.originalImageError);
-    if(proposals[0]?.originalImageError<=candidate.originalImageError+.002){
-      const c=stage('directMatching',()=>refineCurves(proposals[0].graph,Float64Array.from(source.mask),source.resolution,candidate.phase,cfg,{input,identicalSheets:true,steps:120,rate:.008,deadline:deadline-250,selection:'mask'}));
-      if(assess(c)&&c.originalImageError<=candidate.originalImageError)candidate={...c,counts:candidate.counts,sharing:candidate.sharing};
-    }
   }
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};

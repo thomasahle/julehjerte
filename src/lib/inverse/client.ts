@@ -43,8 +43,9 @@ export interface DesignResult {
   };
   report: {
     templateExportAllowed: boolean;
+    templateChecksPassed: boolean;
     slits: { left: number; right: number };
-    solver: { imported?: boolean; status?: string; mipGap?: number; matchingPreference?: { enabled: boolean; identical: boolean; minimumIdenticalImageError: number } };
+    solver: { imported?: boolean; status?: string; mipGap?: number; matchingPreference?: { enabled: boolean; identical: boolean; minimumIdenticalImageError: number; maximumMatchingImageError?: number; baselineImageError?: number; additionalImageError?: number; maximumAdditionalImageError?: number } };
     validation: { passed: boolean; minimumInterSlitDistanceLower: number };
     manufacturing: { status: 'pass' | 'fail' | 'uncertain' };
     warnings: string[];

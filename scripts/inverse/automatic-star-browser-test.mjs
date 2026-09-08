@@ -37,7 +37,7 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
       assert.equal(await page.getByRole('heading',{name:'Template pair checked',exact:true}).count(),1,await page.locator('.preview-panel').innerText());
       const pending=page.waitForEvent('download');await button('Download everything (.zip)').click();const zip=`${output}/${name}-${id}.zip`;await(await pending).saveAs(zip);
       const report=JSON.parse(execFileSync('unzip',['-p',zip,'report.json'],{encoding:'utf8'})),cuts=JSON.parse(execFileSync('unzip',['-p',zip,'cut_geometry.json'],{encoding:'utf8'}));row.report=report;
-      assert.equal(report.solver.imported,undefined);assert.equal(report.templateExportAllowed,true);assert.equal(report.validation.passed,true);assert.equal(report.manufacturing.status,'pass');assert.deepEqual(report.slits,{left:5,right:5});assert.deepEqual(report.input.sourceImage.cropCorners,row.quad);
+      assert.equal(report.solver.imported,undefined);assert.equal(report.templateChecksPassed,true);assert.equal(report.validation.passed,true);assert.equal(report.manufacturing.status,'pass');assert.deepEqual(report.slits,{left:5,right:5});assert.deepEqual(report.input.sourceImage.cropCorners,row.quad);
       assert.equal(report.input.sourceImage.cropProvenance.manuallyEdited,false);
       check('Fresh solve downloads a validated five-slit pair from the unchanged automatic crop');
       const source=await page.evaluate(()=>window.starSource),n=report.input.traceResolution;

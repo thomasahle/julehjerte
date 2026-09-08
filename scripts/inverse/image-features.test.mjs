@@ -28,7 +28,7 @@ test('a missing small interior detail fails even below the overall image-error l
   assert.equal(result.report.imageFidelity.features.missing.length,1);
   assert.equal(result.report.imageFidelity.features.missing[0].retainedFraction,0);
   assert.equal(result.report.imageFidelity.passed,false);
-  assert.equal(result.report.templateExportAllowed,false);
+  assert.equal(result.report.templateChecksPassed,false);
   assert.ok(result.report.warnings.some(s=>s.includes('interior artwork')));
 });
 

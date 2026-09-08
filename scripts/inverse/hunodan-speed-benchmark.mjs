@@ -23,7 +23,7 @@ for(const name of await fs.readdir('static/inverse/core',{recursive:true}))if(/\
   const file=`static/inverse/core/${name}`;engineSha256[file]=hash(await fs.readFile(file));
 }
 if(experiment)engineSha256[experiment]=hash(await fs.readFile(experiment));
-const report={experiment:experiment||'production',cfg,engineSha256,baselineSha256:hash(await fs.readFile('docs/inverse/HUNODAN-VALIDATION.json')),criteria:'Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.',runtime:process.version,platform:process.platform,cpu:cpus()[0]?.model,results};
+const report={experiment:experiment||'production',cfg,engineSha256,baselineSha256:hash(await fs.readFile('docs/inverse/HUNODAN-VALIDATION.json')),criteria:'Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.',runtime:process.version,platform:process.platform,cpu:cpus()[0]?.model,results};
 for(const e of catalog.cases){
   if(process.env.INVERSE_HUNODAN_IDS&&!process.env.INVERSE_HUNODAN_IDS.split(',').includes(e.id))continue;
   const r={id:e.id};results.push(r);
@@ -36,12 +36,13 @@ for(const e of catalog.cases){
     const start=performance.now(),p=prepare(input,cfg),prepared=performance.now();r.prepareSeconds=(prepared-start)/1000;
     const answer=fitter?finish(await fitter(p.target,settings(cfg)),settings(cfg)):await design(p.target,cfg);
     r.seconds=(performance.now()-start)/1000;r.solver=answer.report.solver;r.postprocessSeconds=answer.report.postprocessSeconds;
-    r.exportAllowed=answer.report.templateExportAllowed;
+    r.exportAllowed=answer.report.templateChecksPassed;
     const replayStart=performance.now(),woven=await renderExportedWeave(answer.files['cut_geometry.json'],p.preview.resolution);
     r.error=woven.mask.reduce((s,v,i)=>s+Number(v!==p.preview.mask[i]),0)/woven.mask.length;
     r.features=auditImageFeatures(p.target.sourceImage,woven.mask,cfg.width||100);r.externalReplaySeconds=(performance.now()-replayStart)/1000;
     r.baselineError=baseline.results.find(b=>b.id===e.id).independentImageError;
-    r.qualityPassed=r.exportAllowed&&r.features.passed&&r.error<=r.baselineError+1e-12;r.speedPassed=r.seconds<=10;r.passed=r.qualityPassed&&r.speedPassed;
+    r.matchingAllowance=answer.report.solver.matchingPreference?.identical?(cfg.matchingErrorAllowance??.01):0;
+    r.qualityPassed=r.exportAllowed&&r.features.passed&&r.error<=Math.min(.03,r.baselineError+r.matchingAllowance)+1e-12;r.speedPassed=r.seconds<=10;r.passed=r.qualityPassed&&r.speedPassed;
     const dir=`${out}/${e.id}`;await fs.mkdir(dir,{recursive:true});
     for(const[name,data]of Object.entries(answer.files))await fs.writeFile(`${dir}/${name}`,data);
     await fs.writeFile(`${dir}/independent.png`,woven.png);

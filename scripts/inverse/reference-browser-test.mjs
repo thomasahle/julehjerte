@@ -19,16 +19,16 @@ for(const [name,type] of Object.entries({chromium,firefox})) {
     await page.goto(`${origin}/en/generate/`);await page.waitForFunction(()=>document.querySelector('fieldset')?.disabled===false);
     const button=t=>page.getByRole('button',{name:t,exact:true}).first();
     await button('Star · new solve').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();
-    assert.equal(await page.getByRole('combobox',{name:/^Pattern style/}).inputValue(),'matching-grid');
+    assert.equal(await page.getByRole('combobox',{name:/^Pattern style/}).count(),0);
     assert.equal(await page.locator('.filename').innerText(),'star.png');
     assert.equal(await page.getByLabel('Minimum strip width (mm)',{exact:true}).inputValue(),'2');
-    row.checks.push('Star opens raster artwork with the explicitly described matching-sheet preset');
+    row.checks.push('Star opens raster artwork with automatic fitting and no algorithm chooser');
     await button('Find cutting templates').click();await page.getByRole('heading',{name:'Template pair checked',exact:true}).waitFor({timeout:90000});
     const pending=page.waitForEvent('download');await button('Download everything (.zip)').click();const item=await pending;
     const zip=`${output}/${name}.zip`;await item.saveAs(zip);
     const report=JSON.parse(execFileSync('unzip',['-p',zip,'report.json'],{encoding:'utf8'}));
     const cuts=JSON.parse(execFileSync('unzip',['-p',zip,'cut_geometry.json'],{encoding:'utf8'}));
-    assert.equal(report.solver.imported,undefined);assert.equal(report.templateExportAllowed,true);assert.equal(report.manufacturing.status,'pass');
+    assert.notEqual(report.solver.imported,true);assert.equal(report.templateChecksPassed,true);assert.equal(report.manufacturing.status,'pass');
     assert.ok(report.solver.graph.guidePortals>0);
     row.report=report;row.paths=compareCutPaths(cuts,ref.cuts);assert.equal(row.paths.unmatchedSlits,0);assert.ok(row.paths.symmetricMeanMm<.1);assert.ok(row.paths.sampledMaximumMm+row.paths.maximumSamplingErrorBoundMm<.5);
     const rendered=await renderExportedWeave(cuts,600);row.independentImageError=rendered.mask.reduce((s,c,i)=>s+Number(c!==Number(ref.input.rgba[4*i]<128)),0)/rendered.mask.length;assert.ok(row.independentImageError<.005);
@@ -36,9 +36,9 @@ for(const [name,type] of Object.entries({chromium,firefox})) {
     row.checks.push('Downloaded fresh cuts pass geometry, paper, independent image rendering and published-path thresholds');
     for(const tab of ['Woven heart','Left template','Right template','Paper support']){await button(tab).click();await page.waitForFunction(()=>Array.from(document.querySelectorAll('.preview-panel img')).every(i=>i.complete&&i.naturalWidth>0));await page.screenshot({path:`${output}/${name}-${tab.replaceAll(' ','-')}.png`,fullPage:true});}
     row.checks.push('All four result views render the checked pair');
-    await button('Waves · new solve').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();assert.equal(await page.getByRole('combobox',{name:/^Pattern style/}).inputValue(),'general');
-    row.checks.push('Waves resets matching-sheet assumptions and sharp-corner settings');
-    await page.goto(`${origin}/generate/`);await page.waitForFunction(()=>document.querySelector('fieldset')?.disabled===false);await button('Stjerne · ny beregning').click();await page.getByRole('heading',{name:'Se dit mønster efter',exact:true}).waitFor();assert.equal(await page.getByRole('combobox',{name:/^Mønstertype/}).inputValue(),'matching-grid');
+    await button('Waves · new solve').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();assert.equal(await page.getByRole('combobox',{name:/^Pattern style/}).count(),0);
+    row.checks.push('Waves uses the same automatic workflow');
+    await page.goto(`${origin}/generate/`);await page.waitForFunction(()=>document.querySelector('fieldset')?.disabled===false);await button('Stjerne · ny beregning').click();await page.getByRole('heading',{name:'Se dit mønster efter',exact:true}).waitFor();assert.equal(await page.getByRole('combobox',{name:/^Mønstertype/}).count(),0);
     row.checks.push('Danish Star example uses the same fresh image workflow');
     assert.deepEqual(row.pageErrors,[]);
   }catch(e){row.error=e.stack;process.exitCode=1;if(page)await page.screenshot({path:`${output}/${name}-failure.png`,fullPage:true});console.error(e);}

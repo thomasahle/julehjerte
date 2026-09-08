@@ -8,7 +8,7 @@
   import { getColors, setLeftColor, setRightColor, subscribeColors } from '$lib/stores/colors';
   import { InverseWorker, EngineError, searchTimedOut, type ArtworkInput, type PreparedArtwork, type DesignResult, type Point, type CropProposal, type DetectedCrops } from '$lib/inverse/client';
   import { inverseText, type MessageKey } from '$lib/inverse/messages';
-  import { GENERAL_PRESET, MATCHING_GRID_PRESET, DIRECT_PRESET, SIMPLIFIED_PREPROCESSING } from '$lib/inverse/presets.js';
+  import { AUTOMATIC_PRESET } from '$lib/inverse/presets.js';
   import SvgPreview from '$lib/inverse/SvgPreview.svelte';
   import ArtworkComparison from '$lib/inverse/ArtworkComparison.svelte';
 
@@ -61,11 +61,9 @@
   let saved = $derived(input?.type === 'json');
   let leftColour = $state('#ffffff');
   let rightColour = $state('#b91313');
-  let routingPreset = $state('direct');
-  let routingNotice = $state<MessageKey | null>(null);
   let settings = $state({
-    ...DIRECT_PRESET,
-    width: 100, minWidth: 2, cutError: 0.25, timeLimit: 60, preferMatchingSheets: true, earlyStop: false,
+    ...AUTOMATIC_PRESET,
+    width: 100, minWidth: 2, cutError: 0.25, timeLimit: 60, preferMatchingSheets: true, matchingErrorAllowance: .01, earlyStop: false,
     mode: 'auto', threshold: 128, swatches: ['#b91313', '#ffffff'], invert: false,
     removeSpecks: 0, fillHoles: 0,
     minRadius: 0.8, kerf: 0, printShrinkPercent: 0.2,
@@ -79,13 +77,6 @@
     { key: 'materialResolution', label: 'materialResolution', min: 80, max: 700, step: 1 },
     { key: 'trials', label: 'trials', min: 0, max: 100, step: 1 },
   ];
-
-  function setRoutingPreset(value: string) {
-    routingPreset = value;
-    routingNotice = null;
-    Object.assign(settings, value === 'direct' ? DIRECT_PRESET : value === 'matching-grid' ? MATCHING_GRID_PRESET : GENERAL_PRESET);
-    invalidate();
-  }
 
   function toHex(value: string, fallback: string): string {
     if (/^#[0-9a-f]{6}$/i.test(value)) return value;
@@ -175,9 +166,6 @@
     if (input?.type === 'pixels') decodedPixelsSha256 = await digest(input.rgba.slice().buffer);
     if (disposed) return;
     filename = file.name;
-    // Examples choose their own routing below. A new upload must not inherit
-    // an example's exact symmetry constraint or specialized tracing settings.
-    setRoutingPreset(input?.type === 'pixels' ? 'direct' : 'general');
     if (input?.type === 'pixels' && autoDetect) await detectCrops(false, true);
   }
 
@@ -312,7 +300,6 @@
       if (!response.ok) throw new Error(text('loadFailed'));
       const blob = await response.blob();
       await chooseFile(new File([blob], path, { type: blob.type }), false);
-      setRoutingPreset(name === 'star' ? 'matching-grid' : 'general');
       if (name === 'star') cropMode = 'square';
       loaded = !disposed;
     } catch (value) { reportError(value); }
@@ -370,19 +357,9 @@
       const request = () => engine.request<PreparedArtwork | DesignResult>(action, payload, {
         ...$state.snapshot(settings), paperColors: [rightColour, leftColour], requireMaterialCore: true,
       }, progress);
-      let value: PreparedArtwork | DesignResult;
-      try { value = await request(); }
-      catch (failure) {
-        if (action !== 'prepare' || routingPreset !== 'matching-grid' || !(failure instanceof EngineError) || failure.code !== 'IDENTICAL_SHEETS_ASYMMETRIC') throw failure;
-        setRoutingPreset('direct');
-        routingNotice = 'matchingGridFallback';
-        await tick();
-        // Reuse the exact input, accepted corners and physical settings. Only
-        // the fitting method changes; the original mask remains the reference.
-        value = await request();
-      }
+      const value = await request();
       if (disposed) return;
-      if (action === 'prepare') { prepared = value as PreparedArtwork; maskView = settings.algorithm === 'direct'; }
+      if (action === 'prepare') { prepared = value as PreparedArtwork; maskView = !!prepared.metadata.direct; }
       else { result = value as DesignResult; view = 'heart'; }
     } catch (value) { reportError(value); }
     finally { clearInterval(timer); busy = false; }
@@ -392,12 +369,6 @@
     engine.stop();
     prepared = null;
     result = null;
-  }
-
-  async function simplify() {
-    Object.assign(settings, SIMPLIFIED_PREPROCESSING);
-    invalidate();
-    await run('prepare');
   }
 
   function download(name: string, value?: string | Uint8Array<ArrayBuffer>) {
@@ -459,7 +430,7 @@
     return () => { cancelled = true; cancelAnimationFrame(frame); };
   });
 
-  let resultTitle = $derived(result?.report.templateExportAllowed ? 'checked' : result?.report.manufacturing.status === 'uncertain' ? 'uncertain' : 'review');
+  let resultTitle = $derived(result?.report.templateChecksPassed ? 'checked' : result?.report.manufacturing.status === 'uncertain' ? 'uncertain' : 'review');
   let resultFile = $derived(({ heart: 'weave_preview.svg', leftTemplate: 'template_left.svg', rightTemplate: 'template_right.svg', paper: 'manufacturability_left.svg', sourcePaths: '', sourceMask: '', comparison: '' })[view]);
 </script>
 
@@ -545,15 +516,8 @@
         <section class="panel">
           <h2>{text('settings')}</h2>
           {#if !saved}
-            <label>{text('routingPreset')}<select value={routingPreset} onchange={e => setRoutingPreset(e.currentTarget.value)}><option value="direct">{text('directPreset')}</option><option value="general">{text('generalPreset')}</option><option value="matching-grid">{text('matchingGridPreset')}</option></select></label>
-            {#if routingPreset === 'direct'}
-              <p class="muted small">{text('directHelp')}</p>
-              <label class="checkbox"><input type="checkbox" bind:checked={settings.preferMatchingSheets} />{text('preferMatching')}</label>
-              <p class="muted small">{text('preferMatchingHelp')}</p>
-              <label class="checkbox"><input type="checkbox" bind:checked={settings.earlyStop} />{text('stopEarly')}</label>
-            {/if}
-            {#if routingPreset === 'matching-grid'}<p class="notice">{text('matchingGridHelp')}</p>{/if}
-            {#if routingNotice}<p class="notice" role="status">{text(routingNotice)}</p>{/if}
+            <p class="muted small">{text('automaticHelp')}</p>
+            <p class="muted small">{text('matchingPolicy')}</p>
           {/if}
           <div class="field-grid">
             <label>{text('width')}<input type="number" min="20" max="300" step="1" bind:value={settings.width} required /></label>
@@ -577,28 +541,14 @@
               {#if settings.mode === 'threshold'}<label>{text('threshold')}<input type="number" min="0" max="255" step="1" bind:value={settings.threshold} required /></label>{/if}
               {#if settings.mode === 'swatches'}<div class="field-grid"><label>{text('swatchA')}<input type="color" bind:value={settings.swatches[0]} /></label><label>{text('swatchB')}<input type="color" bind:value={settings.swatches[1]} /></label></div>{/if}
               <div class="field-grid">
-                <label>{text(routingPreset === 'direct' ? 'imageResolution' : 'resolution')}<input type="number" min="32" max="600" step="1" bind:value={settings.resolution} required /></label>
-                {#if routingPreset !== 'direct'}
-                <label>{text('fit')}<input type="number" min="0.01" max="3" step="0.01" bind:value={settings.fitTolerance} required /></label>
-                <label>{text('span')}<input type="number" min="2" max="40" step="1" bind:value={settings.maxSpan} required /></label>
-                <label>{text('specks')}<input type="number" min="0" max="100" step="0.1" bind:value={settings.removeSpecks} required /></label>
-                <label>{text('holes')}<input type="number" min="0" max="100" step="0.1" bind:value={settings.fillHoles} required /></label>
-                <label>{text('smooth')}<input type="number" min="0" max="3" step="0.1" bind:value={settings.smoothRadius} required /></label>
-                <label>{text('snap')}<input type="number" min="0" max="3" step="0.1" bind:value={settings.snapRadius} required /></label>
-                <label>{text('border')}<input type="number" min="0" max="3" step="0.25" bind:value={settings.borderRadius} required /></label>
-                {/if}
+                <label>{text('imageResolution')}<input type="number" min="32" max="600" step="1" bind:value={settings.resolution} required /></label>
               </div>
-              {#if routingPreset !== 'direct'}
-              <p class="muted small">{text('snapHelp')}</p>
-              <p class="muted small">{text('borderHelp')}</p>
-              {/if}
             </details>
           {/if}
           {#if !saved}<label class="checkbox"><input type="checkbox" bind:checked={settings.invert} />{text('invert')}</label>{/if}
           <details>
             <summary>{text('manufacturing')}</summary>
-            <div class="field-grid">{#each numericFields.filter(f => routingPreset !== 'direct' || f.key !== 'neighbors') as field}<label>{text(field.label)}<input type="number" min={field.min} max={field.max} step={field.step} bind:value={settings[field.key]} required /></label>{/each}</div>
-            {#if routingPreset !== 'direct'}<label class="checkbox"><input type="checkbox" bind:checked={settings.roundHidden} />{text('round')}</label>{/if}
+            <div class="field-grid">{#each numericFields.filter(f => f.key !== 'neighbors') as field}<label>{text(field.label)}<input type="number" min={field.min} max={field.max} step={field.step} bind:value={settings[field.key]} required /></label>{/each}</div>
           </details>
           <div class="actions">
             <Button type="submit" variant="secondary" disabled={!input || busy}>{text(saved ? 'audit' : 'prepare')}</Button>
@@ -625,9 +575,16 @@
       {#if result}
         <p class="eyebrow">{text(result.report.solver.imported ? 'saved' : 'fresh')}</p>
         <h2>{text(resultTitle as MessageKey)}</h2>
+        {#if !result.report.templateChecksPassed}
+          <p class="notice" role="status">
+            {#if result.report.imageError && result.report.imageError.mismatchFraction > (result.report.settings.maxImageError ?? .03)}
+              {text('reviewImageError').replace('{error}', (100 * result.report.imageError.mismatchFraction).toFixed(2)).replace('{limit}', (100 * (result.report.settings.maxImageError ?? .03)).toFixed(2))}
+            {:else}{text('reviewTemplate')}{/if}
+          </p>
+        {/if}
         <div class="view-buttons" role="group" aria-label={text('heart')}>
           {#each resultViews as tab}
-            <button class:active={view === tab} type="button" aria-pressed={view === tab} disabled={!result.report.templateExportAllowed && (tab === 'leftTemplate' || tab === 'rightTemplate')} onclick={() => view = tab as typeof view}>{text(tab as MessageKey)}</button>
+            <button class:active={view === tab} type="button" aria-pressed={view === tab} onclick={() => view = tab as typeof view}>{text(tab as MessageKey)}</button>
           {/each}
         </div>
         {#if view === 'sourcePaths' && prepared}
@@ -650,21 +607,18 @@
         </div>
         {#if result.report.solver.matchingPreference?.enabled}
           {#if result.report.solver.matchingPreference.identical}<p class="notice">{text('matchingIdentical')}</p>
-          {:else if result.report.solver.matchingPreference.minimumIdenticalImageError > (result.report.settings.maxImageError ?? .03)}
-            <p class="muted small">{text('matchingLimited').replace('{minimum}', (100 * result.report.solver.matchingPreference.minimumIdenticalImageError).toFixed(2)).replace('{limit}', (100 * (result.report.settings.maxImageError ?? .03)).toFixed(2))}</p>
+          {:else if result.report.solver.matchingPreference.minimumIdenticalImageError > (result.report.solver.matchingPreference.maximumMatchingImageError ?? result.report.settings.maxImageError ?? .03)}
+            <p class="muted small">{text('matchingLimited').replace('{minimum}', (100 * result.report.solver.matchingPreference.minimumIdenticalImageError).toFixed(2)).replace('{limit}', (100 * (result.report.solver.matchingPreference.maximumMatchingImageError ?? result.report.settings.maxImageError ?? .03)).toFixed(2))}</p>
           {/if}
         {/if}
-        {#if !result.report.templateExportAllowed}<p class="notice">{text('withheld')}</p>{/if}
         <p class="muted small">{text('assembly')}</p>
         <div class="actions downloads">
-          <Button variant="destructive" disabled={busy} onclick={downloadZip}>{text(result.report.templateExportAllowed ? 'downloadZip' : 'downloadDiagnostics')}</Button>
-          {#if result.report.templateExportAllowed}
-            <Button variant="secondary" onclick={() => download('template_left.svg')}>{text('downloadLeft')}</Button>
-            <Button variant="secondary" onclick={() => download('template_right.svg')}>{text('downloadRight')}</Button>
-            <Button variant="secondary" onclick={() => download('print_templates.html')}>{text('downloadPrint')}</Button>
-          {/if}
+          <Button variant="destructive" disabled={busy} onclick={downloadZip}>{text('downloadZip')}</Button>
+          <Button variant="secondary" onclick={() => download('template_left.svg')}>{text('downloadLeft')}</Button>
+          <Button variant="secondary" onclick={() => download('template_right.svg')}>{text('downloadRight')}</Button>
+          <Button variant="secondary" onclick={() => download('print_templates.html')}>{text('downloadPrint')}</Button>
         </div>
-        {#if result.report.templateExportAllowed}<p class="muted small">{text('printHelp')}</p>{/if}
+        <p class="muted small">{text('printHelp')}</p>
       {:else if prepared}
         <h2>{text('prepared')}</h2>
         <p class="muted">{text('inspectHelp')}</p>
@@ -681,9 +635,7 @@
         <div class="actions">
           <Button variant="destructive" disabled={busy} onclick={() => run('solve')}>{text('generate')}</Button>
           {#if !prepared.metadata.direct}<Button variant="secondary" disabled={busy} onclick={() => download('vector_target.svg', prepared?.boundaries)}>{text('downloadTarget')}</Button>{/if}
-          {#if input?.type === 'pixels' && !prepared.metadata.direct}<Button variant="secondary" disabled={busy} onclick={simplify}>{text('simplify')}</Button>{/if}
         </div>
-        {#if input?.type === 'pixels' && !prepared.metadata.direct}<p class="muted small">{text('simplifyHelp')}</p>{/if}
       {:else if !busy && !error}
         <div class="empty">
           <img src="{base}/favicon.svg" alt="" width="96" height="96" />

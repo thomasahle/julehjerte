@@ -45,7 +45,7 @@ for (const entry of locator.results) {
       let mismatches = 0, observed = 0;
       for (let i = 0; i < valid.length; i++) if (valid[i]) { observed++; mismatches += rendered.mask[i] !== prepared.preview.mask[i]; }
       run.independentImageError = { renderer: rendered.renderer, resolution: n, observedPixels: observed, mismatchPixels: mismatches, mismatchFraction: mismatches / observed, reference: 'Original classified crop before repairs; out-of-frame samples excluded' };
-      run.passesNumericalCriteria = result.report.templateExportAllowed && mismatches / observed <= criteria.maximumIndependentImageError;
+      run.passesNumericalCriteria = result.report.templateChecksPassed && mismatches / observed <= criteria.maximumIndependentImageError;
       run.status = run.passesNumericalCriteria ? 'provisional_pair' : 'criteria_failed';
       const directory = path.join(output, `${entry.id}-${preset}`); await fs.mkdir(directory);
       for (const [name, bytes] of Object.entries(result.files)) await fs.writeFile(path.join(directory, name), bytes);

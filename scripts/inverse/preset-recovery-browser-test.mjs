@@ -1,4 +1,4 @@
-/** Reproduce the two Hunodan uploads after an example and an explicit grid choice. */
+/** Reproduce both Hunodan uploads through the single automatic workflow. */
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
@@ -32,14 +32,14 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
       const button=s=>page.getByRole('button',{name:s,exact:true}).first();
       await page.goto(`${origin}/en/generate/`);await idle();
       const style=page.getByLabel(/^Pattern style/);
-      assert.equal(await style.inputValue(),'direct');
+      assert.equal(await style.count(),0);
       await button('Star · new solve').click();await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).waitFor();
-      assert.equal(await style.inputValue(),'matching-grid');
+      assert.equal(await style.count(),0);
       await page.locator('input[type=file]').setInputFiles(entry.file);await idle();
-      assert.equal(await style.inputValue(),'direct');
-      assert.equal(await page.getByLabel('Prefer matching templates',{exact:true}).isChecked(),true);
+      assert.equal(await style.count(),0);
+      assert.equal(await page.getByLabel('Prefer matching templates',{exact:true}).count(),0);
       assert.equal(await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).count(),0);
-      row.checks.push('A photo upload replaces the star preset with direct fitting and clears its preview');
+      row.checks.push('A photo upload replaces the example without exposing any fitting or matching options');
       if(await page.locator('.corner').count()===0&&entry.region){
         // The full source also contains its printed template. Follow the UI's
         // one-heart selection flow; the locator still estimates all corners.
@@ -54,27 +54,23 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
       row.quad=await page.locator('.coordinates input').evaluateAll(es=>[0,2,4,6].map(i=>[+es[i].value,+es[i+1].value]));
       await page.locator('.crop-image').screenshot({path:`${output}/${name}-${entry.id}-crop.png`});
 
-      // Choosing the old option explicitly must also recover, without moving
-      // corners, relaxing physical checks or accidentally solving the example.
-      await style.selectOption('matching-grid');
       await page.evaluate(()=>{window.recoveryRequests=[];window.recoveryResult=null;});
       await button('Prepare artwork').click();await idle();
       assert.equal(await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).count(),1,await page.locator('.preview-panel').innerText());
-      assert.equal(await style.inputValue(),'direct');
-      assert.equal(await page.getByText(/This crop has differences between its two halves/).isVisible(),true);
+      assert.equal(await style.count(),0);
       assert.equal(await page.getByRole('alert').count(),0);
       const prepared=await page.evaluate(()=>({mask:Array.from(window.recoveryPrepared.mask),resolution:window.recoveryPrepared.resolution}));
       row.requests=await page.evaluate(()=>window.recoveryRequests);
-      assert.deepEqual(row.requests.map(r=>r.settings.algorithm),['trace','direct']);
+      assert.deepEqual(row.requests.map(r=>r.settings.algorithm),['auto']);
       for(const r of row.requests){
         assert.deepEqual(r.quad,row.quad);
         for(const key of['width','minWidth','cutError','timeLimit','paperColors','trials','requireMaterialCore'])assert.deepEqual(r.settings[key],row.requests[0].settings[key]);
       }
-      row.checks.push('The explicit matching-grid choice recovers with an explanation and unchanged corners and physical settings');
+      row.checks.push('Automatic preparation preserves the accepted corners and physical settings');
       await button('Find cutting templates').click();
       await page.waitForFunction(()=>!!window.recoveryResult||!!document.querySelector('[role=alert]'),{},{timeout:90000});
       row.report=await page.evaluate(()=>window.recoveryResult?.report);
-      assert.equal(row.report?.templateExportAllowed,true,await page.locator('.preview-panel').innerText());
+      assert.equal(row.report?.templateChecksPassed,true,await page.locator('.preview-panel').innerText());
       assert.equal(row.report.validation.passed,true);assert.equal(row.report.manufacturing.status,'pass');
       assert.deepEqual(row.report.input.sourceImage.cropCorners,row.quad);
       const pending=page.waitForEvent('download');await button('Download everything (.zip)').click();

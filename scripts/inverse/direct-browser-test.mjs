@@ -27,10 +27,11 @@ for(const [name,type]of Object.entries({chromium,firefox})){
     await page.goto(`${origin}/en/generate/`);
     const button=label=>page.getByRole('button',{name:label,exact:true}).first();
     const idle=()=>page.waitForFunction(()=>document.querySelector('fieldset')?.disabled===false);
-    await idle();await page.getByLabel(/^Pattern style/).selectOption('direct');
+    await idle();assert.equal(await page.getByLabel(/^Pattern style/).count(),0);
     const prepare=async(file,resolution,seconds)=>{
       await page.locator('input[type=file]').setInputFiles(file);await idle();
-      await page.getByLabel(/^Image area/).selectOption('square');
+      await page.getByLabel(/^Image area/).selectOption('quad');
+      for(let i=0;i<4;i++)for(let a=0;a<2;a++)await page.locator('.coordinates input').nth(2*i+a).fill(String([[0,0],[resolution,0],[resolution,resolution],[0,resolution]][i][a]));
       const conversion=page.locator('details').filter({has:page.getByText('Image conversion',{exact:true})});
       if(!(await conversion.evaluate(e=>e.open)))await conversion.locator('summary').click();
       await page.getByLabel(/^Separate source colours/).selectOption('red-white-mixture');
@@ -60,7 +61,7 @@ for(const [name,type]of Object.entries({chromium,firefox})){
       const report=JSON.parse(execFileSync('unzip',['-p',zip,'report.json'],{encoding:'utf8'}));
       const cuts=JSON.parse(execFileSync('unzip',['-p',zip,'cut_geometry.json'],{encoding:'utf8'}));
       assert.equal(report.solver.algorithm,'direct-bezier');assert.equal(report.solver.traceUsed,false);
-      assert.equal(report.templateExportAllowed,true);assert.equal(report.manufacturing.status,'pass');
+      assert.equal(report.templateChecksPassed,true);assert.equal(report.manufacturing.status,'pass');
       assert.deepEqual(report.slits,c.counts);
       const rendered=await renderExportedWeave(cuts,c.resolution);
       const mismatch=rendered.mask.reduce((s,v,i)=>s+Number(v!==preview.mask[i]),0)/preview.mask.length;
@@ -68,9 +69,9 @@ for(const [name,type]of Object.entries({chromium,firefox})){
       await fs.writeFile(`${output}/${name}-${c.name}-report.json`,JSON.stringify(report,null,2));
       await page.screenshot({path:`${output}/${name}-${c.name}.png`,fullPage:true});
     }
-    await page.getByLabel(/^Pattern style/).selectOption('general');
+    await page.getByLabel('Search budget (seconds)',{exact:true}).fill('12');
     assert.equal(await page.getByRole('heading',{name:'Template pair checked',exact:true}).count(),0);
-    row.checks.push('Changing algorithm invalidates the prior result');
+    row.checks.push('Changing the budget invalidates the prior result');
     assert.deepEqual(row.pageErrors,[]);
   }catch(e){row.error=e.stack;process.exitCode=1;console.error(e);if(page)await page.screenshot({path:`${output}/${name}-failure.png`,fullPage:true});}
   finally{await browser.close();await fs.writeFile(`${output}/results.json`,JSON.stringify({origin,results},null,2));}

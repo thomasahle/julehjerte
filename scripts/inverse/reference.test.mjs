@@ -46,11 +46,11 @@ test('the optimization gap uses the captured bound after adding rows invalidates
   try{native.options.set({output_flag:false});native.run();native.addRow(-Infinity,1,{indices:[x],values:[1]});assert.equal(objectiveGap(100,60),.4);assert.equal(objectiveGap(100,100),0);assert.equal(objectiveGap(100,-Infinity),Infinity);}finally{native.dispose();}
 });
 
-test('an otherwise valid pair is withheld when it fails original-image fidelity', () => {
+test('a pair that fails image fidelity remains downloadable with its measured error', () => {
   const solution=fixture('straight'); const mask=sampleTarget(solution.graph.target,80).map(c=>1-c);
   solution.graph.target.sourceImage={mask,resolution:80};
   const result=finish(solution,settings({width:60,trials:0,roundHidden:false,cutError:0,printShrinkPercent:0,materialResolution:120}));
-  assert.equal(result.report.validation.passed,true);assert.equal(result.report.imageFidelity.passed,false);assert.equal(result.report.templateExportAllowed,false);assert.equal(result.files['template_left.svg'],undefined);
+  assert.equal(result.report.validation.passed,true);assert.equal(result.report.imageFidelity.passed,false);assert.equal(result.report.templateChecksPassed,false);assert.ok(result.files['template_left.svg'].includes('Needs review'));assert.equal(result.report.templateExportAllowed,true);
 });
 
 test('reference metrics ignore cubic subdivision and path direction but detect displaced cuts', () => {
@@ -70,7 +70,7 @@ test('blind star reconstruction matches published cuts and independent rendering
   try {
     const ref=await env.load('5star',600), cfg={...MATCHING_GRID_PRESET,timeLimit:10,trials:0};
     const {target}=prepare(ref.input,cfg), result=await design(target,cfg), cuts=JSON.parse(result.files['cut_geometry.json']);
-    assert.equal(result.report.solver.imported,undefined);assert.equal(result.report.templateExportAllowed,true);
+    assert.equal(result.report.solver.imported,undefined);assert.equal(result.report.templateChecksPassed,true);
     const comparison=compareCutPaths(cuts,ref.cuts);
     assert.equal(comparison.unmatchedSlits,0);assert.ok(comparison.symmetricMeanMm<.1);assert.ok(comparison.sampledMaximumMm+comparison.maximumSamplingErrorBoundMm<.5);
     const rendered=await renderExportedWeave(cuts,600), error=rendered.mask.reduce((s,c,i)=>s+Number(c!==target.sourceImage.mask[i]),0)/rendered.mask.length;

@@ -41,7 +41,7 @@ test('fresh solve survives edge-pixel perturbations and reports error against th
   assert.ok(borderTransitions(prepared.preview.mask, 128)[0] > 3);
   assert.equal(prepared.preview.metadata.preprocessing.border.changedPixels, 5);
   const result = await design(prepared.target, { timeLimit: 5, trials: 0, roundHidden: false });
-  assert.equal(result.report.templateExportAllowed, true);
+  assert.equal(result.report.templateChecksPassed, true);
   assert.deepEqual(result.report.slits, { left: 3, right: 3 });
   assert.equal(result.report.imageError.resolution, 128);
   assert.equal(result.report.imageError.mismatchPixels, 5);

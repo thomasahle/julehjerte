@@ -25,7 +25,7 @@ for(const[name,type]of Object.entries({chromium,firefox})){
     console.log(name,'solving');await button('Find cutting templates').click();await page.getByRole('heading',{name:'Template pair checked',exact:true}).waitFor({timeout:120000});
     const pending=page.waitForEvent('download');await button('Download everything (.zip)').click();const zip=`${output}/${name}.zip`;await(await pending).saveAs(zip);
     const report=JSON.parse(execFileSync('unzip',['-p',zip,'report.json'],{encoding:'utf8'})),cuts=JSON.parse(execFileSync('unzip',['-p',zip,'cut_geometry.json'],{encoding:'utf8'}));row.report=report;
-    assert.equal(report.solver.imported,undefined);assert.equal(report.templateExportAllowed,true);assert.equal(report.validation.passed,true);assert.equal(report.manufacturing.status,'pass');assert.deepEqual(report.slits,{left:5,right:5});assert.ok(report.input.junctionRepairs.length>=15);
+    assert.equal(report.solver.imported,undefined);assert.equal(report.templateChecksPassed,true);assert.equal(report.validation.passed,true);assert.equal(report.manufacturing.status,'pass');assert.deepEqual(report.slits,{left:5,right:5});assert.ok(report.input.junctionRepairs.length>=15);
     row.checks.push('Fresh worker solve and ZIP export pass geometry and paper checks with five slits per sheet');
     const source=await page.evaluate(()=>window.yellowStarSource);assert.ok(source,'Captured the actual colour-managed browser input');
     const n=report.input.traceResolution,mask=quantize(rectify(Uint8ClampedArray.from(source.rgba),source.imageWidth,source.imageHeight,n,report.input.sourceImage.cropCorners),{mode:'auto'}).mask,rendered=await renderExportedWeave(cuts,n);

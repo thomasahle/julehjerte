@@ -31,7 +31,7 @@ for(const[id,file]of Object.entries(files)){
       row.quad=input.quad;row.decodedPixelsSha256=hash(input.rgba);
       const prepared=prepare(input,settings),result=await design(prepared.target,settings),rendered=await renderExportedWeave(result.files['cut_geometry.json'],prepared.preview.resolution);
       row.independentImageError=rendered.mask.reduce((s,v,i)=>s+Number(v!==prepared.preview.mask[i]),0)/rendered.mask.length;
-      row.passed=result.report.templateExportAllowed&&row.independentImageError<=.03;row.slits=result.report.slits;row.geometryPassed=result.report.validation.passed;row.paperStatus=result.report.manufacturing.status;row.border=result.report.input.preprocessing.border;
+      row.passed=result.report.templateChecksPassed&&row.independentImageError<=.03;row.slits=result.report.slits;row.geometryPassed=result.report.validation.passed;row.paperStatus=result.report.manufacturing.status;row.border=result.report.input.preprocessing.border;
       const dir=`${output}/${id}-${variant}`;await fs.mkdir(dir);for(const[p,data]of Object.entries(result.files))await fs.writeFile(`${dir}/${p}`,data);await fs.writeFile(`${dir}/independent.png`,rendered.png);
     }catch(e){row.passed=false;row.error=e.message;row.report=e.report;}
     row.seconds=(performance.now()-start)/1000;console.log(id,variant,row.passed,row.independentImageError,row.error||'',row.seconds.toFixed(2));await save();

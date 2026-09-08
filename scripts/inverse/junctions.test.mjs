@@ -30,7 +30,7 @@ test('junction repair preserves parallel cuts and intentional acute tips',()=>{
 });
 test('yellow photo solves using app defaults and exported curves reproduce the original classified crop',async()=>{
   const cfg={...GENERAL_PRESET,timeLimit:10,trials:0},p=prepare(await yellowStarInput(),cfg),r=await design(p.target,cfg);
-  assert.ok(p.target.metadata.junctionRepairs.length>=15);assert.equal(r.report.templateExportAllowed,true);assert.equal(r.report.validation.passed,true);assert.equal(r.report.manufacturing.status,'pass');assert.deepEqual(r.report.slits,{left:5,right:5});
+  assert.ok(p.target.metadata.junctionRepairs.length>=15);assert.equal(r.report.templateChecksPassed,true);assert.equal(r.report.validation.passed,true);assert.equal(r.report.manufacturing.status,'pass');assert.deepEqual(r.report.slits,{left:5,right:5});
   const independent=await renderExportedWeave(r.files['cut_geometry.json'],p.preview.resolution),error=independent.mask.reduce((s,v,i)=>s+Number(v!==p.preview.mask[i]),0)/independent.mask.length;
   assert.ok(error<.02,`Independent input-image error: ${error}`);
 });

@@ -45,7 +45,7 @@ try {
       const stem = `${output}/${id}-${variant.name}-${profile}`;
       if (variantIndex===0) {
         const audit=inspectSaved(JSON.stringify(reference.cuts),cfg);
-        row.referenceAudit={pass:audit.report.templateExportAllowed,issues:audit.report.validation.issues,paper:audit.report.manufacturing.status};
+        row.referenceAudit={pass:audit.report.templateChecksPassed,issues:audit.report.validation.issues,paper:audit.report.manufacturing.status};
         const alignment=await renderExportedWeave(reference.cuts,600);
         row.referenceRendererMismatchFraction=alignment.mask.reduce((s,c,i)=>s+Number(c!==Number(reference.input.rgba[4*i]<128)),0)/alignment.mask.length;
       }
@@ -57,7 +57,7 @@ try {
         row.independentImageError=independent.mask.reduce((s,c,i)=>s+Number(c!==target.sourceImage.mask[i]),0)/independent.mask.length;
         row.paths=compareCutPaths(exported,reference.cuts);
         row.geometryPass=result.report.validation.passed; row.paper=result.report.manufacturing.status;
-        row.exportAllowed=result.report.templateExportAllowed;
+        row.exportAllowed=result.report.templateChecksPassed;
         row.pass=row.exportAllowed&&row.independentImageError<=criteria.imageMismatchFraction&&row.paths.unmatchedSlits===0&&row.paths.symmetricMeanMm<=criteria.cutMeanMm&&row.paths.sampledMaximumMm+row.paths.maximumSamplingErrorBoundMm<=criteria.cutMaximumUpperMm;
         row.status=row.pass?'reference_quality_pass':'reference_quality_failed';
         await fs.writeFile(`${stem}-cuts.json`,JSON.stringify(exported,null,2));

@@ -48,7 +48,7 @@ test('default tracing preserves small raster junctions and yields a fresh valida
   assert.equal(preview.metadata.preprocessing.traceChangedPixels, 0);
   const result = await design(target, { timeLimit: 5, trials: 0, roundHidden: false });
   assert.equal(result.report.validation.passed, true);
-  assert.equal(result.report.templateExportAllowed, true);
+  assert.equal(result.report.templateChecksPassed, true);
   assert.equal(result.report.validation.forwardSampleMismatchPixels, 0);
   assert.deepEqual(result.report.slits, { left: 3, right: 3 });
 });

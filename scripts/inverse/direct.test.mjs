@@ -119,7 +119,7 @@ test('direct image fitting starts without traced endpoints and survives edge noi
   assert.equal(p.target.curves.length,0);assert.equal(p.target.metadata.preprocessing.traceUsed,false);
   const before=p.preview.mask.slice(),r=await design(p.target,cfg);
   assert.equal(r.report.solver.traceUsed,false);assert.equal(r.report.solver.borderCountsAreHardConstraints,false);
-  assert.equal(r.report.templateExportAllowed,true);assert.deepEqual(r.report.slits,{left:3,right:3});
+  assert.equal(r.report.templateChecksPassed,true);assert.deepEqual(r.report.slits,{left:3,right:3});
   for(let count=1;count<=8;count++)for(const phase of[1,-1]){
     const attempt=r.report.solver.attempts.find(a=>a.stage==='coarse'&&a.counts[0]===count&&a.counts[1]===count&&a.phase===phase);
     assert.ok(attempt,`Missing count ${count}, phase ${phase}`);

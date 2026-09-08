@@ -26,7 +26,7 @@ for(const entry of inventory.results){
     edgePixels+=edge;if(edge)edgeErrors+=miss;else interiorErrors+=miss;
   }
   const independentImageError=(edgeErrors+interiorErrors)/mask.length;
-  const passed=report.templateExportAllowed&&independentImageError<=.03;
+  const passed=report.templateChecksPassed&&independentImageError<=.03;
   const prior=existing.results.find(x=>x.id===row.id)?.runs.find(x=>x.preset===preset);
   row.effectiveQuad=report.input.sourceImage.cropCorners;
   row.runs=[{...prior,preset,direct:true,curves:0,settings:report.settings,report,

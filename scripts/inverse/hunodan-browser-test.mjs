@@ -25,7 +25,7 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
    };});
    page=await context.newPage();page.on('pageerror',e=>row.pageErrors.push(e.message));
    await page.goto(`${origin}/en/generate/`);const idle=()=>page.waitForFunction(()=>document.querySelector('fieldset')?.disabled===false),button=t=>page.getByRole('button',{name:t,exact:true}).first();await idle();
-   await page.getByLabel(/^Pattern style/).selectOption('direct');
+   assert.equal(await page.getByLabel(/^Pattern style/).count(),0);
    await page.locator('input[type=file]').setInputFiles(entry.photoFile);
    await page.waitForFunction(()=>document.querySelectorAll('.corner').length===4&&!document.querySelector('fieldset').disabled);
    row.quad=await page.locator('.coordinates input').evaluateAll(es=>[0,2,4,6].map(i=>[+es[i].value,+es[i+1].value]));
@@ -42,7 +42,7 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
    assert.equal(await page.getByRole('heading',{name:'Template pair checked',exact:true}).count(),1,await page.locator('.preview-panel').innerText());
    const pending=page.waitForEvent('download');await button('Download everything (.zip)').click();const zip=`${output}/${name}-${id}.zip`;await(await pending).saveAs(zip);
    const report=JSON.parse(execFileSync('unzip',['-p',zip,'report.json'],{encoding:'utf8'})),cuts=JSON.parse(execFileSync('unzip',['-p',zip,'cut_geometry.json'],{encoding:'utf8'}));row.report=report;
-   assert.equal(report.templateExportAllowed,true);assert.equal(report.validation.passed,true);assert.equal(report.manufacturing.status,'pass');assert.ok(['direct-bezier','hybrid-bezier-trace'].includes(report.solver.algorithm));assert.equal(report.input.sourceImage.cropProvenance.manuallyEdited,false);
+   assert.equal(report.templateChecksPassed,true);assert.equal(report.validation.passed,true);assert.equal(report.manufacturing.status,'pass');assert.ok(['direct-bezier','hybrid-bezier-trace'].includes(report.solver.algorithm));assert.equal(report.input.sourceImage.cropProvenance.manuallyEdited,false);
    assert.deepEqual(report.input.sourceImage.cropCorners,row.quad);check('Fresh direct fit exports a validated pair from the unchanged automatic crop');
    const rendered=await renderExportedWeave(cuts,prepared.resolution);row.independentImageError=rendered.mask.reduce((s,v,i)=>s+Number(v!==prepared.mask[i]),0)/prepared.mask.length;assert.ok(row.independentImageError<=.03,`${100*row.independentImageError}% independent difference`);
    row.independentFeatures=auditImageFeatures(prepared,rendered.mask);assert.equal(row.independentFeatures.passed,true);
