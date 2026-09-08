@@ -6,12 +6,13 @@ import {CurveGraph} from './curves.js';
 import {refineCurves,fittingMargin} from './refine.js';
 import {recoverShared} from './share.js';
 import {sampleWeave,validate} from '../validate.js';
-import {matchingGrid,matchingSummary,symmetryEvidence} from './matching.js';
+import {matchingGrid,matchingPaths,matchingSummary,symmetryEvidence} from './matching.js';
 import {materialAudit} from '../material.js';
 import {resize} from './math.js';
 import {initializeGrid,borderGrid,separableGrid} from './initialize.js';
-import {auditImageFeatures} from '../image-features.js';
+import {auditImageFeatures,imageFeatures} from '../image-features.js';
 import {recoverImageFeatures} from '../feature-recovery.js';
+import {loadBoundaryKernel} from './native.js';
 
 export function borderEvidence(prob,n){
   const rows=[];
@@ -56,8 +57,10 @@ function refloor(result,floor){
   }});return z;
 }
 export async function fitDirect(input,cfg,onProgress=()=>{}){
-  const source=input.sourceImage,fullProb=source.probability||Float32Array.from(source.mask),n=Math.min(256,source.resolution),prob=resize(fullProb,source.resolution,n),gridTarget=resize(fullProb,source.resolution,96),start=performance.now(),deadline=start+cfg.timeLimit*1000,initializationBudget=Math.min(cfg.timeLimit,30);
-  const matchingEvidence=symmetryEvidence(source),evidence=borderEvidence(fullProb,source.resolution),attempts=[],timings=[],options=[],seen=new Set();
+  const source=input.sourceImage,fullProb=source.probability||Float32Array.from(source.mask),n=Math.min(256,source.resolution),prob=resize(fullProb,source.resolution,n),gridTarget=resize(fullProb,source.resolution,96),start=performance.now(),fastSeconds=Math.min(cfg.timeLimit,10),maxDeadline=start+cfg.timeLimit*1000;
+  let deadline=start+fastSeconds*1000-Math.min(1300,fastSeconds*200);
+  const numericalBackend=await loadBoundaryKernel();
+  const sourceFeatures=imageFeatures(source,cfg.width),matchingEvidence=symmetryEvidence(source),evidence=borderEvidence(fullProb,source.resolution),attempts=[],timings=[],options=[],seen=new Set();
   const add=(counts,phase)=>{if(counts.some(c=>c<1||c>8||(c+1)*(cfg.nominalWidth+.35)>=cfg.width))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
   for(let count=1;count<=8;count++)for(const phase of[1,-1])add([count,count],phase);
   const modes=sides=>{const counts=new Map();for(const r of evidence)if(sides.includes(r.side)&&r.count>=1&&r.count<=8)counts.set(r.count,(counts.get(r.count)||0)+1);return[...counts].sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]);};
@@ -89,40 +92,35 @@ export async function fitDirect(input,cfg,onProgress=()=>{}){
     seeds.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
     // A nearly exact, fully validated seed needs no gradient search. Still
     // finish and report every count/phase initialization before accepting it.
-    if(cfg.earlyStop&&seeds[0].error<=Math.min(.005,cfg.maxImageError)){
+    if(seeds[0].error===0||cfg.earlyStop&&seeds[0].error<=Math.min(.005,cfg.maxImageError)){
       const seed=seeds[0],model=cfg.preferMatchingSheets?matchingGrid(seed.model):seed.model;
       if(model){
         const graph=new CurveGraph(gridPaths(model,cfg.width,seed.floor),cfg.width),solution=graph.solution(graph.points,seed.phase,input),woven=sampleWeave(solution,source.resolution);
         let observed=0,errors=0;for(let i=0;i<woven.length;i++){if(source.validMask&&!source.validMask[i])continue;observed++;errors+=woven[i]!==source.mask[i];}
         const error=errors/observed;
-        if(error<=Math.min(.005,cfg.maxImageError)&&auditImageFeatures(source,woven,cfg.width).passed&&validate(solution,cfg).passed&&(!cfg.requireMaterialCore||materialAudit(solution,cfg).passed))initialWinner={solution,counts:seed.model.counts,error};
+        if(error<=(cfg.earlyStop?Math.min(.005,cfg.maxImageError):0)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed&&validate(solution,cfg).passed&&(!cfg.requireMaterialCore||materialAudit(solution,cfg).passed))initialWinner={solution,counts:seed.model.counts,error};
       }
     }
-    // Every count/phase receives an image-only candidate even if gradient time
-    // runs out. Larger coordinated updates take milliseconds per candidate.
-    const results=[];
+    // Use the fixed-size seed search for every count and phase. Only the
+    // strongest candidates need dense grid gradients before free refinement.
     for(const seed of seeds){
-      const at=performance.now(),r=!initialWinner&&performance.now()<start+initializationBudget*280
-        ?fitGrid(prob,n,seed.model.counts,seed.phase,{optimizationTarget:gridTarget,steps:280,initial:seed.seedKind==='uniform'?null:seed.model.z,deadline:start+initializationBudget*300,seed:0})
-        :seed;
-      const best=r.error<seed.error?r:seed;
-      attempts.push({stage:'coarse',counts:seed.model.counts,phase:seed.phase,error:best.error,initialError:seed.error,initializer:seed.seedKind,initializationRounds:seed.initializationRounds,steps:r.steps,seconds:(performance.now()-at)/1000});results.push(best);
-      onProgress({stage:'directInitializing',counts:seed.model.counts,error:best.error});
+      attempts.push({stage:'coarse',counts:seed.model.counts,phase:seed.phase,error:seed.error,initialError:seed.error,initializer:seed.seedKind,initializationRounds:seed.initializationRounds,steps:seed.steps});
+      onProgress({stage:'directInitializing',counts:seed.model.counts,error:seed.error});
     }
-    return results.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
+    return seeds;
   });
   if(initialWinner){
     const {solution,counts,error}=initialWinner;
-    solution.report={algorithm:'direct-bezier',imported:false,termination:'validated_initial_grid',stoppedEarly:true,seconds:(performance.now()-start)/1000,traceUsed:false,borderCountsAreHardConstraints:false,selectedCounts:counts,attempts,stages:timings,estimatedMaskMismatch:error,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:.0075}};
+    solution.report={algorithm:'direct-bezier',numericalBackend,imported:false,termination:'validated_initial_grid',stoppedEarly:true,seconds:(performance.now()-start)/1000,traceUsed:false,borderCountsAreHardConstraints:false,selectedCounts:counts,attempts,stages:timings,estimatedMaskMismatch:error,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0}};
     return solution;
   }
   const fine=stage('directFitting',()=>gridFinalists(coarse,evidence).map(r=>{
-    const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{optimizationTarget:gridTarget,steps:900,initial:r.model.z,deadline:start+initializationBudget*480});
+    const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{optimizationTarget:gridTarget,steps:150,initial:r.model.z,deadline:performance.now()+800});
     attempts.push({stage:'fine',counts:r.model.counts,phase:r.phase,error:next.error,steps:next.steps,seconds:(performance.now()-at)/1000});return next.error<r.error?next:r;
-  }).sort((a,b)=>a.error-b.error));
+  }).sort((a,b)=>a.error+.005*(a.model.counts[0]+a.model.counts[1])-b.error-.005*(b.model.counts[0]+b.model.counts[1])));
   // A local boundary gradient cannot create a remote missing region. Try an
   // alternate traced routing while there is still time within this search.
-  const features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width);
+  const features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width,sourceFeatures);
   let recovery=null;
   if(!features.passed&&deadline-performance.now()>2000){
     recovery=await recoverImageFeatures(input,cfg,Math.min(20,(deadline-performance.now())/1000*.9),onProgress);
@@ -137,7 +135,7 @@ export async function fitDirect(input,cfg,onProgress=()=>{}){
     if(!c.geometryPassed||!c.paperPassed)return false;
     const s=c.graph.solution(c.points,c.phase,input),woven=sampleWeave(s,source.resolution);
     let mismatch=0,observed=0;for(let i=0;i<woven.length;i++){if(source.validMask&&!source.validMask[i])continue;observed++;mismatch+=woven[i]!==source.mask[i];}
-    c.originalImageError=mismatch/observed;c.originalFeatures=auditImageFeatures(source,woven,cfg.width);
+    c.originalImageError=mismatch/observed;c.originalFeatures=auditImageFeatures(source,woven,cfg.width,sourceFeatures);
     return c.originalImageError<=cfg.maxImageError&&c.originalFeatures.passed;
   };
   const goodEnough=c=>{
@@ -147,36 +145,48 @@ export async function fitDirect(input,cfg,onProgress=()=>{}){
   };
   const addCandidate=c=>{
     c.matching=matchingSummary(c.graph.solution(c.points,c.phase,input));c.imagePassed=assess(c);
-    c.selectionScore=c.score+.001*(c.counts[0]+c.counts[1])-(cfg.preferMatchingSheets&&c.matching.identical ? .0075 : 0);
+    c.selectionScore=c.originalImageError??Infinity;
     candidates.push(c);
   };
-  if(cfg.preferMatchingSheets&&matchingEvidence.minimumIdenticalImageError<=cfg.maxImageError&&performance.now()<deadline-1500){
-    const proposals=[];
-    for(const r of fine)for(const blend of[0,.5,1]){const model=matchingGrid(r.model,blend);if(model)proposals.push({...r,model,error:mismatch(gridMask(model,n,r.phase,r.floor),prob)});}
-    proposals.sort((a,b)=>a.error-b.error);
-    if(proposals.length&&proposals[0].error<=cfg.maxImageError+.025){
-      const r=proposals[0],graph=new CurveGraph(gridPaths(r.model,cfg.width,r.floor),cfg.width);
-      const c=stage('directMatching',()=>refineCurves(graph,prob,n,r.phase,cfg,{input,identicalSheets:true,steps:240,deadline:Math.min(deadline-1000,performance.now()+Math.min(4000,(deadline-performance.now())*.2)),stopWhen:goodEnough}));
-      c.counts=r.model.counts;addCandidate(c);
-    }
-  }
-  let stoppedEarly=!!(cfg.earlyStop&&candidates.some(c=>c.imagePassed&&c.originalImageError<=Math.min(.015,cfg.maxImageError*.5)));
+  let stoppedEarly=false;
   for(let i=0;i<fine.length&&!stoppedEarly;i++){
-    if(i&&performance.now()>start+cfg.timeLimit*900)break;
-    const selected=fine[i],remaining=deadline-performance.now(),allocation=remaining/(fine.length-i),end=Math.min(deadline-1000,performance.now()+allocation);
-    const clear=stage('directClearance',()=>fitGrid(prob,n,selected.model.counts,selected.phase,{optimizationTarget:gridTarget,steps:800,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+allocation*.25}));
+    if(i){if(performance.now()>maxDeadline-1000)break;deadline=Math.min(maxDeadline-1300,performance.now()+8700);}
+    const selected=fine[i],remaining=deadline-performance.now(),allocation=remaining,end=Math.min(deadline-1700,performance.now()+allocation);
+    const clear=stage('directClearance',()=>fitGrid(prob,n,selected.model.counts,selected.phase,{optimizationTarget:gridTarget,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15)}));
     attempts.push({stage:'clearance',counts:clear.model.counts,phase:clear.phase,error:clear.error,steps:clear.steps});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
-    const candidate=stage('directRefining',()=>refineCurves(graph,prob,n,clear.phase,cfg,{deadline:end,input,stopWhen:goodEnough,onProgress:r=>onProgress({stage:'directRefining',counts:clear.model.counts,...r})}));
+    const candidate=stage('directRefining',()=>refineCurves(graph,prob,n,clear.phase,{...cfg,preferMatchingSheets:false},{deadline:end,input,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:r=>onProgress({stage:'directRefining',counts:clear.model.counts,...r})}));
     candidate.counts=clear.model.counts;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop);
+    if(candidate.imagePassed)break;
   }
   candidates.sort((a,b)=>Number(b.paperPassed)-Number(a.paperPassed)||Number(b.geometryPassed)-Number(a.geometryPassed)||Number(b.imagePassed)-Number(a.imagePassed)||a.selectionScore-b.selectionScore);
   let candidate=candidates[0];
-  if(!candidate.matching?.identical&&candidate.paperPassed&&performance.now()<deadline)candidate=stage('directSharing',()=>recoverShared(candidate,prob,n,cfg,{deadline,input}));
+  if(!candidate.matching?.identical&&candidate.paperPassed&&performance.now()<deadline-1300){
+    const shared=stage('directSharing',()=>recoverShared(candidate,prob,n,cfg,{deadline:deadline-1300,input}));
+    if(assess(shared)&&shared.originalImageError<=candidate.originalImageError)candidate=shared;
+  }
+  if(candidate.paperPassed&&performance.now()<deadline-450){
+    const graph=new CurveGraph(candidate.graph.nested(candidate.points),cfg.width);
+    const polished=stage('directPolishing',()=>refineCurves(graph,Float64Array.from(source.mask),source.resolution,candidate.phase,{...cfg,preferMatchingSheets:false},{input,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false}));
+    if(assess(polished)&&polished.originalImageError<=candidate.originalImageError)candidate={...polished,counts:candidate.counts,sharing:candidate.sharing};
+  }
+  if(cfg.preferMatchingSheets&&matchingEvidence.minimumIdenticalImageError<=candidate.originalImageError&&performance.now()<deadline-500){
+    const proposals=[];
+    for(const blend of[0,.5,1]){
+      const paths=matchingPaths(candidate.graph.nested(candidate.points),blend);if(!paths)continue;
+      const graph=new CurveGraph(paths,cfg.width),proposal={graph,points:graph.points,phase:candidate.phase,geometryPassed:true,paperPassed:true};
+      assess(proposal);proposals.push(proposal);
+    }
+    proposals.sort((a,b)=>a.originalImageError-b.originalImageError);
+    if(proposals[0]?.originalImageError<=candidate.originalImageError+.002){
+      const c=stage('directMatching',()=>refineCurves(proposals[0].graph,Float64Array.from(source.mask),source.resolution,candidate.phase,cfg,{input,identicalSheets:true,steps:120,rate:.008,deadline:deadline-250,selection:'mask'}));
+      if(assess(c)&&c.originalImageError<=candidate.originalImageError)candidate={...c,counts:candidate.counts,sharing:candidate.sharing};
+    }
+  }
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
-  const paper=stage('paper',()=>materialAudit(solution,cfg));
-  solution.report={algorithm:'direct-bezier',imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.error>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    stoppedEarly,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:.0075},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
+  const paper={passed:candidate.paperPassed};
+  solution.report={algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
+    stoppedEarly,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:false,featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

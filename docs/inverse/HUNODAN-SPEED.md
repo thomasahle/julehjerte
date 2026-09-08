@@ -3,7 +3,7 @@
 The target is **each of the 22 regular designs within 10 seconds**, with each
 independently rendered image error at or below its release baseline in
 `HUNODAN-VALIDATION.json`. Geometry, guarded paper-core and substantial feature
-checks still apply. The target is not yet met.
+checks still apply. The integrated Node replay meets this target; browser verification is in progress.
 
 The reproducible driver decodes the committed source photographs, crops out
 the printed references, checks pixel hashes, and uses the frozen quadrilaterals
@@ -64,3 +64,36 @@ preserve necessary routing choices before this approach can be reliable.
 Complete experiment records are in `HUNODAN-COARSE-MILP.json`. The module is an
 experiment and is not selected by the website. Further seed ranking,
 original-resolution refinement and timing work is ongoing.
+
+## Integrated Node replay
+
+All 22 cases pass in `tmp/inverse-speed/native-integrated`: 3.47–9.49 seconds,
+median 7.67 seconds. Every case retains or improves its release error; the
+maximum is unchanged at 1.776%, and median error is 0.647%. All 22 keep their
+release slit counts and pass geometry, guarded paper and feature checks.
+`HUNODAN-SPEED-VALIDATION.json` records every result and its provenance.
+
+The final policy completes every count/phase seed, gives the best three a short
+grid refinement, then concentrates free-curve fitting on the strongest one.
+Other candidates remain available if validation fails. A final original-mask
+pass recovers detail lost at the smaller fitting scale. Shared-cut proposals
+and matching templates must not increase original-mask error. The normal fast
+attempt is capped at ten seconds even with a larger user budget; difficult
+failed candidates can use the remaining budget for alternative initializations.
+
+A 1,776-byte repository-owned WebAssembly kernel accelerates the unchanged
+continuous boundary gradient. It uses double precision without fast-math, and
+regressions compare both phases, backward handles and exactly shared curves
+against JavaScript. The isolated calculation fell from 1.68 to 0.89 ms. A
+JavaScript fallback remains available, and the result records its backend.
+The geometry checks and external exported-curve renderer do not use the kernel.
+Build source, command and checksums are in
+`static/inverse/core/direct/native/PROVENANCE.json`.
+
+Feature recovery returns the first fully validated HiGHS incumbent: optimizing
+further changes hidden-cut complexity, while the traced visible mask stays
+fixed. This reduced the anchor replay to 3.47 seconds at unchanged error. Its
+reported MILP gap remains explicit; first feasibility is not claimed optimal.
+
+All 258 tests pass. Type checking has zero errors and eight pre-existing
+warnings; lint passes. Browser and production-build QA follow this checkpoint.

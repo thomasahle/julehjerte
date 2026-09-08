@@ -7,7 +7,7 @@ import {reindex} from '../graph.js';
 
 export class CurveGraph {
   constructor(paths,width=100){
-    this.width=width;this.edges=[];this.occurrences=[];this.paths=[];this.families=[[],[]];this.family=[];this.joins=[];
+    this.sampleTables=new Map();this.width=width;this.edges=[];this.occurrences=[];this.paths=[];this.families=[[],[]];this.family=[];this.joins=[];
     const points=[],pm=new Map(),em=new Map();
     const point=p=>{const key=p.map(v=>Math.round(v*1e7)).join(',');if(!pm.has(key)){pm.set(key,points.length/2);points.push(...p);}return pm.get(key);};
     paths.forEach((family,f)=>family.forEach(path=>{
@@ -28,13 +28,20 @@ export class CurveGraph {
   nested(points=this.points){return this.families.map(f=>f.map(pi=>this.paths[pi].map(([e,d])=>(d===1?this.edges[e]:this.edges[e].toReversed()).map(id=>[points[2*id],points[2*id+1]]))));}
   controls(points=this.points){return this.edges.map(ids=>ids.map(i=>[points[2*i],points[2*i+1]]));}
   sample(points=this.points,ns=16){
-    const bases=Array.from({length:ns+1},(_,i)=>bernstein(i/ns)),samples=new Float64Array(this.edges.length*(ns+1)*2);
+    let table=this.sampleTables.get(ns);
+    if(!table){
+      const bases=Array.from({length:ns+1},(_,i)=>bernstein(i/ns));
+      const groups=this.paths.map(occ=>{
+        const ids=[];for(const[e,d]of occ)for(let j=0;j<ns;j++)ids.push(e*(ns+1)+(d===1?j:ns-j));
+        const[e,d]=occ.at(-1);ids.push(e*(ns+1)+(d===1?ns:0));return ids;
+      });
+      table={bases,groups};this.sampleTables.set(ns,table);
+    }
+    const {bases,groups}=table,samples=new Float64Array(this.edges.length*(ns+1)*2);
     this.edges.forEach((ids,e)=>{for(let j=0;j<=ns;j++)for(let k=0;k<4;k++){const b=bases[j][k],i=2*(e*(ns+1)+j);samples[i]+=b*points[2*ids[k]];samples[i+1]+=b*points[2*ids[k]+1];}});
-    const groups=this.paths.map(occ=>{
-      const ids=[];for(const[e,d]of occ)for(let j=0;j<ns;j++)ids.push(e*(ns+1)+(d===1?j:ns-j));
-      const[e,d]=occ.at(-1);ids.push(e*(ns+1)+(d===1?ns:0));return ids;
-    });return{samples,groups,bases,ns};
+    return{samples,groups,bases,ns};
   }
+
   solution(points,phase,input={}){
     const edges=this.edges.map((ids,e)=>({curve:new Cubic(ids.map(id=>[points[2*id],points[2*id+1]])),visible:this.visible[e]}));
     const w=this.width;

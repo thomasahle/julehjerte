@@ -13,7 +13,7 @@ export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*widt
 export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   const gradient=new Float64Array(points.length),sample=graph.sample(points,8),s=sample.samples,ds=new Float64Array(s.length),w=graph.width,margin=fittingMargin(cfg,w),side=margin;
   const total=sample.groups.reduce((v,g)=>v+g.length,0),cells=new Map(),segments=[],arcPositions=[];let loss=0,minRadius=Infinity;
-  const key=(x,y,f)=>`${x},${y},${f}`;
+  const stride=Math.ceil(w/margin)+3,key=(x,y,f)=>x>=-1&&y>=-1&&x<stride-1&&y<stride-1?(f*stride+x+1)*stride+y+1:`${x},${y},${f}`;
   sample.groups.forEach((ids,pi)=>{
     const arcs=[0];for(let j=1;j<ids.length;j++){
       const a=ids[j-1],b=ids[j],len=Math.hypot(s[2*a]-s[2*b],s[2*a+1]-s[2*b+1]),id=segments.length;
@@ -22,10 +22,11 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
       for(let x=loX;x<=hiX;x++)for(let y=loY;y<=hiY;y++){const k=key(x,y,f);if(!cells.has(k))cells.set(k,[]);cells.get(k).push(id);}
     }arcPositions.push(arcs);
   });
+  const nearest=new Map();
   sample.groups.forEach((ids,pi)=>{
     const f=graph.family[pi];
     for(let j=0;j<ids.length;j++){
-      const id=ids[j],px=s[2*id],py=s[2*id+1],nearest=new Map();
+      const id=ids[j],px=s[2*id],py=s[2*id+1];nearest.clear();
       for(const e of cells.get(key(Math.floor(px/margin),Math.floor(py/margin),f))||[]){
         const seg=segments[e];if(seg.pi===pi&&Math.abs(arcPositions[pi][j]-seg.arc)-seg.half<=cfg.localNeighborhoodFactor*cfg.nominalWidth)continue;
         const{a,b}=seg,ux=s[2*a],uy=s[2*a+1],vx=s[2*b]-ux,vy=s[2*b+1]-uy,t=clamp(((px-ux)*vx+(py-uy)*vy)/Math.max(1e-12,vx*vx+vy*vy),0,1),dx=px-ux-t*vx,dy=py-uy-t*vy,d=dx*dx+dy*dy;
@@ -72,7 +73,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary'}={}){
   const points=graph.points.slice(),initial=points.slice(),adam=new Adam(points.length,rate*graph.width/100),history=[];
   const groups=identicalSheets?matchingGroups(graph):null;let stoppedEarly=false;
   const clampAxes=new Uint8Array(points.length);
@@ -86,7 +87,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     const rec={step,error,score,geometry:check.passed,paper:paper?.status,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec);
     const value={graph,points:points.slice(),phase,error,score,validation:check,paper:paper?.summary};
     if(!bestInvalid||error<bestInvalid.error)bestInvalid=value;
-    if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){safe=points.slice();if(!best||score<best.score)best=value;if(stopWhen&&step>=80&&stopWhen(best))stoppedEarly=true;}
+    if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){safe=points.slice();if(!best||(selection==='mask'?error<best.error||error===best.error&&score<best.score:score<best.score))best=value;if(stopWhen&&step>=80&&stopWhen(best))stoppedEarly=true;}
     else if(safe){points.set(safe);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.65);}
   };
   checkpoint(-1);

@@ -1,11 +1,17 @@
 # Matching templates and the speed target
 
-Direct fitting now prefers matching sheets with a small coordinate penalty and
-an explicit identical-sheet candidate. Exact candidates share transposed control
-coordinates during optimization. A 0.0075 objective bonus favors an identical
-candidate among candidates that pass the image and manufacturing checks. This
-is a preference, not a requirement that changes the classified target.
+Direct fitting proposes an identical pair from the fitted free curves. Exact
+candidates share transposed control coordinates during optimization and are
+accepted only without increasing measured original-mask error, with the same
+geometry and paper checks. The matching option is enabled by default.
 
+The initial experiment put a coordinate penalty inside fitting and awarded a
+0.0075 image-objective bonus to an identical candidate. The speed study exposed
+accuracy regressions from both: the penalty could push cuts toward a narrow
+paper neck, and the bonus could select a worse image. Those mechanisms are no
+longer applied to the image fit. Matching is evaluated after fitting against
+the unchanged source, and an accepted identical pair stays tied during further
+refinement.
 There is also an optional early acceptance setting. It is **off by default**:
 the initial shortcut preserved all 22 regular Hunodan export passes, but raised
 many per-case errors relative to the validated release. That does not meet the
@@ -37,4 +43,4 @@ ongoing.
 Validation for the matching changes: all 254 tests passed, including five new
 tests for symmetry bounds, constraint projection, analytic gradients and exact
 export identity. Type checking has zero errors and eight existing warnings;
-lint passes. Browser validation and speed experiments are still pending.
+lint passes. The updated pipeline passes a 22-case experimental speed replay; integrated browser validation is in progress.

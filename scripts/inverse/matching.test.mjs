@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {symmetryEvidence,matchingGrid,matchingGroups,projectMatching,matchingPenalty,matchingSummary} from '../../static/inverse/core/direct/matching.js';
+import {symmetryEvidence,matchingGrid,matchingPaths,matchingGroups,projectMatching,matchingPenalty,matchingSummary} from '../../static/inverse/core/direct/matching.js';
 import {gridModel,gridPaths} from '../../static/inverse/core/direct/grid.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {prepare,design} from '../../static/inverse/core/engine.js';
@@ -40,6 +40,18 @@ test('matching projection respects a locked scalar with index zero',()=>{
   const points=Float64Array.from([1,9,7]),fixed=Uint8Array.from([1,0,0]);
   projectMatching(points,[[0,1,2]],fixed,Float64Array.from([1,9,7]));
   assert.deepEqual([...points],[1,1,1]);
+});
+
+test('fitted free paths can propose one reusable pattern without changing their input',()=>{
+  const paths=gridPaths(gridModel([2,2],8,19)),before=structuredClone(paths);
+  // Include a backward-running handle, which an ordered grid cannot encode.
+  paths[0][0][2][1][1]-=20;before[0][0][2][1][1]-=20;
+  for(const blend of[0,.5,1]){
+    const paired=matchingPaths(paths,blend),graph=new CurveGraph(paired);
+    assert.equal(matchingSummary(graph.solution(graph.points,1)).identical,true);
+    assert.deepEqual(paths,before);
+  }
+  assert.equal(matchingPaths([paths[0],paths[1].slice(1)]),null);
 });
 
 test('a symmetric image exports one identical cutting pattern and stops before using the budget',async()=>{

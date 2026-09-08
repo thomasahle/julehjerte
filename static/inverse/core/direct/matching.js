@@ -19,6 +19,13 @@ export function matchingGrid(model,blend=.5){
   return out;
 }
 
+/** Match already fitted free curves in local sheet coordinates. */
+export function matchingPaths(paths,blend=.5){
+  const [A,B]=paths;if(A.length!==B.length||A.some((p,i)=>p.length!==B[i].length))return null;
+  const first=A.map((p,i)=>p.map((c,j)=>c.map((v,k)=>v.map((x,axis)=>(1-blend)*x+blend*B[i][j][k][1-axis]))));
+  return[first,first.map(p=>p.map(c=>c.map(([x,y])=>[y,x])))];
+}
+
 const cache=new WeakMap();
 export function matchingGroups(graph){
   if(cache.has(graph))return cache.get(graph);

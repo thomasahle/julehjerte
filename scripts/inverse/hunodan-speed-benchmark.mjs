@@ -2,6 +2,7 @@
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
+import {cpus} from 'node:os';
 import {createCanvas,loadImage} from 'canvas';
 import {prepare,design,finish} from '../../static/inverse/core/engine.js';
 import {settings} from '../../static/inverse/core/settings.js';
@@ -17,7 +18,12 @@ const cfg={...DIRECT_PRESET,timeLimit:Number(process.env.INVERSE_SPEED_SECONDS||
 const out=process.env.INVERSE_SPEED_OUT||`tmp/inverse-speed/${new Date().toISOString().replace(/[:.]/g,'-')}`;
 await fs.mkdir(out,{recursive:true});
 const results=[],hash=v=>createHash('sha256').update(v).digest('hex');
-const report={experiment:experiment||'production',cfg,criteria:'Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.',runtime:process.version,platform:process.platform,results};
+const engineSha256={};
+for(const name of await fs.readdir('static/inverse/core',{recursive:true}))if(/\.(js|wasm|c)$/.test(name)){
+  const file=`static/inverse/core/${name}`;engineSha256[file]=hash(await fs.readFile(file));
+}
+if(experiment)engineSha256[experiment]=hash(await fs.readFile(experiment));
+const report={experiment:experiment||'production',cfg,engineSha256,baselineSha256:hash(await fs.readFile('docs/inverse/HUNODAN-VALIDATION.json')),criteria:'Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.',runtime:process.version,platform:process.platform,cpu:cpus()[0]?.model,results};
 for(const e of catalog.cases){
   if(process.env.INVERSE_HUNODAN_IDS&&!process.env.INVERSE_HUNODAN_IDS.split(',').includes(e.id))continue;
   const r={id:e.id};results.push(r);

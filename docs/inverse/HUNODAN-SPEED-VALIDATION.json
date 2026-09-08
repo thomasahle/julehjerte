@@ -1,0 +1,545 @@
+{
+  "experiment": "production",
+  "cfg": {
+    "algorithm": "direct",
+    "polygonal": false,
+    "identicalSheets": false,
+    "resolution": 400,
+    "fitTolerance": 0.5,
+    "maxSpan": 15,
+    "smoothRadius": 0,
+    "snapRadius": 1.5,
+    "borderRadius": 3,
+    "gridPortals": false,
+    "neighbors": 16,
+    "connectorVariants": 2,
+    "junctionBalancePenalty": 0,
+    "gridPreference": 0,
+    "sharpPenalty": 50,
+    "acutePenalty": 30,
+    "turnPenalty": 3,
+    "maxTurn": 150,
+    "localNeighborhoodFactor": 3,
+    "roundHidden": false,
+    "timeLimit": 10,
+    "trials": 0,
+    "earlyStop": false
+  },
+  "engineSha256": {
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/crop.js": "62cdf5cd36981600f5e952fee5f0647baebbb5d1682980886c97b02d4cd57936",
+    "static/inverse/core/engine.js": "c4162cc80003d2d4b3986f11e3b0951511e83ab84581de103db9f89867cc58bf",
+    "static/inverse/core/export.js": "eb9c4eb5b563f095b294e4f8da6c4c485ca58ba657ed74c08bb21db8b7beabcd",
+    "static/inverse/core/feature-recovery.js": "27a6f4d9af916c3e97eb8e870ab17fc71e79510562709d416e4d818396cd3184",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "50aca7d2d526148986335907ae8d124b1c74155fdd4d5371c714130c099da46e",
+    "static/inverse/core/input.js": "8d5371e1f3be10b998e1daa594529f7476d580697d16a807b9b9b1685cdfdf24",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/material.js": "945fed7196f52c3b54e140d9ac47a6ce8ef111376c2c73d7288c2401bad197fb",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "3423ee9c5e9b6c16bba3c442839802d73d14419fe753353da73c233e76a5fd16",
+    "static/inverse/core/solver.js": "1021b7b30bc82ff02f99849c6c84535ee6128f6dea23e7366f2aa028ffaec041",
+    "static/inverse/core/symmetry.js": "93736faad375d03110c5d67870872dcc98a5b7559d379feb3983a3321542713d",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "1e35a5520ffe879136390980b000df46f39adf3609edc918282e7cd6a3c8d511",
+    "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+    "static/inverse/core/direct/fit.js": "087fb439705cfff01965e79e7840cfd3d0a2ae579920f40d20c3c0bc6c5fdcd4",
+    "static/inverse/core/direct/grid.js": "5cdec810401481ed1b44f1c96cf248e5ee5dc4c48d7b20c95705054f5eedb328",
+    "static/inverse/core/direct/initialize.js": "2fa802c99f96b78e9e9a6d951e8ad3ba3500f3e8c8ad65c002b00ab80ee33717",
+    "static/inverse/core/direct/matching.js": "67a6b1b77be9948f4570d23238a0441852d64b4832c3333b10877e61fd489a77",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "48435ecb5bea2b58d0b89ae48a358da064031c7d801bcbb477b749625a6719a2",
+    "static/inverse/core/direct/refine.js": "6fee31f31e746fb79b977ba4312be60f3aee74688c78f72dedf5eba3403cfdd0",
+    "static/inverse/core/direct/share.js": "46a7ba6dac920ea143f6666d02a5f0d4e9442c023c8a351f7046c9e66136e72a"
+  },
+  "baselineSha256": "4ef7307beb4f436d6bc2ee760bc870cf41ca070b4581da58a7dd71497c3281af",
+  "criteria": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case\u2019s validated release error; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.",
+  "runtime": "v25.6.1",
+  "platform": "darwin",
+  "cpu": "Apple M2 Pro",
+  "results": [
+    {
+      "id": "hjfig-01",
+      "seconds": 6.737367416,
+      "error": 0.009806222222222221,
+      "baselineError": 0.009841777777777777,
+      "passed": true,
+      "counts": [
+        2,
+        2
+      ],
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjfig-01/report.json"
+    },
+    {
+      "id": "hjfig-02",
+      "seconds": 7.589497583999999,
+      "error": 0.007203555555555556,
+      "baselineError": 0.0072106666666666664,
+      "passed": true,
+      "counts": [
+        2,
+        2
+      ],
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjfig-02/report.json"
+    },
+    {
+      "id": "hjfig-03",
+      "seconds": 5.913505000000001,
+      "error": 0.006634666666666666,
+      "baselineError": 0.007089777777777778,
+      "passed": true,
+      "counts": [
+        2,
+        2
+      ],
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjfig-03/report.json"
+    },
+    {
+      "id": "hjfig-04",
+      "seconds": 5.453551999999999,
+      "error": 0.004458666666666666,
+      "baselineError": 0.004771555555555556,
+      "passed": true,
+      "counts": [
+        2,
+        2
+      ],
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjfig-04/report.json"
+    },
+    {
+      "id": "hjfig-05",
+      "seconds": 3.471903791000001,
+      "error": 0.01776012820399933,
+      "baselineError": 0.01776012820399933,
+      "passed": true,
+      "counts": [
+        4,
+        4
+      ],
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjfig-05/report.json"
+    },
+    {
+      "id": "hjfla-01",
+      "seconds": 7.656045125000004,
+      "error": 0.013434516059027778,
+      "baselineError": 0.013509114583333334,
+      "passed": true,
+      "counts": [
+        4,
+        4
+      ],
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjfla-01/report.json"
+    },
+    {
+      "id": "hjcur-01",
+      "seconds": 7.832390082999998,
+      "error": 0.00512,
+      "baselineError": 0.005831111111111111,
+      "passed": true,
+      "counts": [
+        4,
+        4
+      ],
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjcur-01/report.json"
+    },
+    {
+      "id": "hjcur-02",
+      "seconds": 7.22829625,
+      "error": 0.005368888888888889,
+      "baselineError": 0.005745777777777778,
+      "passed": true,
+      "counts": [
+        4,
+        4
+      ],
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjcur-02/report.json"
+    },
+    {
+      "id": "hjcur-03",
+      "seconds": 7.685621625000007,
+      "error": 0.004515555555555556,
+      "baselineError": 0.005688888888888889,
+      "passed": true,
+      "counts": [
+        4,
+        4
+      ],
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjcur-03/report.json"
+    },
+    {
+      "id": "hjcur-04",
+      "seconds": 9.187023166999992,
+      "error": 0.0055253333333333335,
+      "baselineError": 0.006492444444444445,
+      "passed": true,
+      "counts": [
+        6,
+        6
+      ],
+      "baselineCounts": [
+        6,
+        6
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjcur-04/report.json"
+    },
+    {
+      "id": "hjcur-05",
+      "seconds": 7.414703249999992,
+      "error": 0.009429333333333333,
+      "baselineError": 0.009820444444444444,
+      "passed": true,
+      "counts": [
+        2,
+        2
+      ],
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjcur-05/report.json"
+    },
+    {
+      "id": "hjhih-01",
+      "seconds": 9.36482095899999,
+      "error": 0.006302182608929099,
+      "baselineError": 0.007107573357674032,
+      "passed": true,
+      "counts": [
+        4,
+        4
+      ],
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjhih-01/report.json"
+    },
+    {
+      "id": "hjhih-02",
+      "seconds": 7.000193333000003,
+      "error": 0.0038721376517666627,
+      "baselineError": 0.004369789145743716,
+      "passed": true,
+      "counts": [
+        3,
+        3
+      ],
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjhih-02/report.json"
+    },
+    {
+      "id": "hjhih-04",
+      "seconds": 9.136178959000011,
+      "error": 0.00828752533198661,
+      "baselineError": 0.009679570602593737,
+      "passed": true,
+      "counts": [
+        5,
+        5
+      ],
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjhih-04/report.json"
+    },
+    {
+      "id": "hjstr-01",
+      "seconds": 6.565455875,
+      "error": 0.007529570614696785,
+      "baselineError": 0.008177127465366042,
+      "passed": true,
+      "counts": [
+        3,
+        3
+      ],
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjstr-01/report.json"
+    },
+    {
+      "id": "hjstr-02",
+      "seconds": 9.147369584000014,
+      "error": 0.004188034188034188,
+      "baselineError": 0.004464168310322156,
+      "passed": true,
+      "counts": [
+        5,
+        5
+      ],
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjstr-02/report.json"
+    },
+    {
+      "id": "hjstr-03",
+      "seconds": 9.361696999999985,
+      "error": 0.00559304920820491,
+      "baselineError": 0.007439685407588479,
+      "passed": true,
+      "counts": [
+        7,
+        7
+      ],
+      "baselineCounts": [
+        7,
+        7
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjstr-03/report.json"
+    },
+    {
+      "id": "hjsta-01",
+      "seconds": 7.696787000000011,
+      "error": 0.007915512465373961,
+      "baselineError": 0.008206371191135734,
+      "passed": true,
+      "counts": [
+        2,
+        2
+      ],
+      "baselineCounts": [
+        2,
+        2
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjsta-01/report.json"
+    },
+    {
+      "id": "hjsta-02",
+      "seconds": 6.325974625000002,
+      "error": 0.003573947482638889,
+      "baselineError": 0.003851996527777778,
+      "passed": true,
+      "counts": [
+        3,
+        3
+      ],
+      "baselineCounts": [
+        3,
+        3
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjsta-02/report.json"
+    },
+    {
+      "id": "hjsta-03",
+      "seconds": 9.194916583000014,
+      "error": 0.012345847336882793,
+      "baselineError": 0.0126798873807852,
+      "passed": true,
+      "counts": [
+        4,
+        4
+      ],
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjsta-03/report.json"
+    },
+    {
+      "id": "hjsta-04",
+      "seconds": 9.076708041000005,
+      "error": 0.005088043447831808,
+      "baselineError": 0.006172839506172839,
+      "passed": true,
+      "counts": [
+        5,
+        5
+      ],
+      "baselineCounts": [
+        5,
+        5
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjsta-04/report.json"
+    },
+    {
+      "id": "hjsta-05",
+      "seconds": 9.491543209000024,
+      "error": 0.0107922360331821,
+      "baselineError": 0.012731885419742812,
+      "passed": true,
+      "counts": [
+        4,
+        4
+      ],
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "countAgreement": true,
+      "templateExportAllowed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "reportFile": "tmp/inverse-speed/native-integrated/hjsta-05/report.json"
+    }
+  ],
+  "sourceResults": "tmp/inverse-speed/native-integrated/results.json",
+  "sourceResultsSha256": "4f6f3fe77a0732c9b76586f86250682643711c92097b56d2a5a9316c9ba9ff8c",
+  "nativeKernel": {
+    "implementation": "Repository-owned continuous boundary derivative, matching boundary.js; no third-party solver code.",
+    "compiler": "Homebrew clang 22.1.6",
+    "target": "wasm32",
+    "floatingPoint": "float64; no fast-math; -ffp-contract=off",
+    "build": "WASM_CLANG=/path/to/llvm/bin/clang bash scripts/inverse/build-boundary-kernel.sh",
+    "imports": [],
+    "sha256": {
+      "static/inverse/core/direct/native/boundary.c": "7798b37aa8ff54104fedd8506d2b46b1a4968f0ca4d3fa440717ac63557eedfc",
+      "static/inverse/core/direct/native/boundary.wasm": "0b8f321550f82dbac9bff6a5cc58d63f540099b80f0ca1c7f9305738370e0207",
+      "scripts/inverse/build-boundary-kernel.sh": "311fa414b946722c34940fd8973562dcde3dbe30f937b867b1d12cc6b708c6c0"
+    }
+  },
+  "browserValidation": "Pending at this checkpoint; see subsequent browser records."
+}

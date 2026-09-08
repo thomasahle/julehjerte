@@ -5,10 +5,14 @@
  */
 import {bernstein,dbernstein,bilinear} from './math.js';
 import {polygonIndex} from './curves.js';
+import {nativeBoundaryGradient} from './native.js';
 
-export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24}={}){
+const quadratureTables=new Map();
+export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24,native=true}={}){
   const index=polygonIndex(graph,points,maskSamples),gradient=new Float64Array(points.length),w=graph.width;
-  const B=Array.from({length:nquad},(_,j)=>bernstein((j+.5)/nquad)),D=Array.from({length:nquad},(_,j)=>dbernstein((j+.5)/nquad));
+  if(!quadratureTables.has(nquad))quadratureTables.set(nquad,{B:Array.from({length:nquad},(_,j)=>bernstein((j+.5)/nquad)),D:Array.from({length:nquad},(_,j)=>dbernstein((j+.5)/nquad))});
+  const {B,D}=quadratureTables.get(nquad);
+  if(native){const result=nativeBoundaryGradient(graph,points,prob,n,phase,index,quadratureTables.get(nquad));if(result)return result;}
   graph.edges.forEach((ids,e)=>{
     if(!graph.visible[e])return;const[pi,f,direction]=graph.occurrences[e][0];
     for(let j=0;j<nquad;j++){

@@ -1,0 +1,25 @@
+{
+  "id": "user-symmetric-hearts",
+  "photoFile": "scripts/inverse/fixtures/matching/user-symmetric-hearts.png",
+  "sha256": "a9fc6ffb6c468ac2214b55182277169f99361f7c67a12684f4713dd28898f847",
+  "description": "Photograph-only crop from the user-provided September 8 07:56 screenshot. The printed reference template at the left was excluded; only photograph pixels are input to fitting.",
+  "quad": [
+    [
+      308.1636895329935,
+      99.52748230267733
+    ],
+    [
+      535.3338626880759,
+      335.1033919131138
+    ],
+    [
+      302.1665619221326,
+      572.7003372275221
+    ],
+    [
+      61.942128486977765,
+      335.1737977074096
+    ]
+  ],
+  "cropStatus": "needs_review"
+}
