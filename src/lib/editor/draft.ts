@@ -30,9 +30,9 @@ export const DRAFT_KEY = 'paperheart.draft';
 
 /**
  * Where the heart in the draft came from. `'blank'` for an empty editor,
- * `'shared'` for a `#design=` link, `'import'` for an imported SVG, and
- * `gallery:<id>` for a copy of a gallery heart — prefixed so that a gallery id
- * can never be mistaken for one of the fixed words.
+ * `'shared'` for a `#design=` link, `'import'` for an imported SVG, `'paint'`
+ * for the heart Mal found, and `gallery:<id>` for a copy of a gallery heart —
+ * prefixed so that a gallery id can never be mistaken for one of the fixed words.
  */
 export type DraftSource = string;
 

@@ -92,6 +92,7 @@
 
   // The editor accepts these URL inputs:
   //   /editor/?from=<gallery-id>   loads /hearts/<id>.svg (like the detail page) and edits a copy
+  //   /editor/?from=session        takes the heart Mal found out of the editor session (PAINT.md §3)
   //   /editor/#design=<payload>    user-created heart; payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(d)))
   //   /editor/?design=<payload>    legacy form of the same payload (kept so old links keep working)
   // edit=true and returnTo=detail are read from the query string (also accepted in the hash).
@@ -119,10 +120,12 @@
   function getEditorUrlInput(): {
     design: HeartDesign | null;
     fromId: string | null;
+    fromSession: boolean;
     isEditMode: boolean;
     returnToDetail: boolean;
   } {
-    if (!browser) return { design: null, fromId: null, isEditMode: false, returnToDetail: false };
+    if (!browser)
+      return { design: null, fromId: null, fromSession: false, isEditMode: false, returnToDetail: false };
     const query = new URLSearchParams(window.location.search);
     const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
     const get = (key: string) => query.get(key) ?? hash.get(key);
@@ -130,14 +133,24 @@
     const designData = hash.get('design') ?? query.get('design');
     const design = designData ? parseDesignPayload(designData) : null;
     const rawFrom = design ? null : get('from');
-    const fromId = rawFrom && /^[A-Za-z0-9_-]+$/.test(rawFrom) ? rawFrom : null;
-    return { design, fromId, isEditMode: design !== null && get('edit') === 'true', returnToDetail };
+    // `session` is Mal handing over the heart it found: the design waits in the
+    // editor session, not in the gallery, so it must not be looked up as an id.
+    const fromSession = rawFrom === 'session';
+    const fromId = !fromSession && rawFrom && /^[A-Za-z0-9_-]+$/.test(rawFrom) ? rawFrom : null;
+    return {
+      design,
+      fromId,
+      fromSession,
+      isEditMode: design !== null && get('edit') === 'true',
+      returnToDetail
+    };
   }
 
   // Parse URL inputs ONCE at module initialization time
   const {
     design: urlDesign,
     fromId: urlFromId,
+    fromSession: urlFromSession,
     isEditMode: urlEditMode,
     returnToDetail: urlReturnToDetail
   } = getEditorUrlInput();
@@ -180,9 +193,9 @@
   );
   // A draft found at mount, offered above the canvas until it is taken or dropped.
   let pendingDraft = $state<EditorDraft | null>(null);
-  // Restoring a draft cancels a ?from= fetch that is still in flight, so the
-  // gallery heart cannot land on top of the restored one.
-  let galleryLoadSuperseded = false;
+  // Restoring a draft cancels whatever ?from= is still fetching or importing, so
+  // neither the gallery heart nor Mal's can land on top of the restored one.
+  let pendingLoadSuperseded = false;
   // Serialized design as first emitted by PaperHeart; used to tell real edits from the initial emission.
   let designBaseline: string | null = null;
   let hasDesignEdits = false;
@@ -230,6 +243,8 @@
 
     if (urlFromId) {
       void loadDesignFromGallery(urlFromId);
+    } else if (urlFromSession) {
+      void takePaintHandoff();
     }
     if (!editorEl) return unsubscribeColors;
 
@@ -307,7 +322,7 @@
   async function loadDesignFromGallery(id: string): Promise<void> {
     const design = await loadStaticHeartById(id);
     // The visitor restored a draft while this was loading: leave their heart alone.
-    if (galleryLoadSuperseded) return;
+    if (pendingLoadSuperseded) return;
     if (!design) {
       showStatus('load', 'error', t('heartNotFound', lang));
       return;
@@ -327,11 +342,46 @@
   }
 
   /**
+   * ?from=session: the heart Mal found, opened as a new unsaved heart.
+   *
+   * The session is loaded on demand rather than imported at the top of the file,
+   * because it reaches the mask modules and those must stay out of the draw
+   * page's bundle (PAINT.md §8). The handoff is taken exactly once, so a reload
+   * of this URL finds nothing — and then the blank editor already on screen is
+   * the right answer, not an error about a heart the visitor never asked for.
+   */
+  async function takePaintHandoff(): Promise<void> {
+    const { takeHandoff } = await import('$lib/editor/session.svelte');
+    const design = takeHandoff();
+    if (!design || pendingLoadSuperseded) return;
+    currentFingers = design.fingers;
+    currentGridSize = design.gridSize;
+    currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
+    designColors = design.colors ?? null;
+    // Mal names the heart after what the mask came from; a heart with no name is
+    // still a new heart, so it gets the same name a blank editor would give it.
+    heartName = design.name || t('myHeart', lang);
+    authorName = design.author ?? '';
+    description = design.description ?? '';
+    editingExisting = false;
+    isEditMode = false;
+    initialDesign = design;
+    draftId = generateId();
+    // Like an imported SVG: a new heart that owns the draft from here on and
+    // stays out of "Mine hjerter" until the visitor presses "Gem".
+    savesToCollection = false;
+    draftSource = 'paint';
+    pendingDraft = null;
+    resetDesignBaseline();
+    editorKey++;
+    scheduleAutosave();
+  }
+
+  /**
    * "Mal på hjertet": this heart as a mask, and over to Mal (PAINT.md §2).
    *
-   * The rasteriser, the mask and the session are loaded on the click rather than
-   * imported at the top of the file, because they are Mal's modules and the draw
-   * page's bundle must not grow for a mode most visitors never open (§8).
+   * The rasteriser, the mask and the session are loaded here for the same reason
+   * as above — a visitor who never presses the button never downloads them.
    */
   async function openInPaint(): Promise<void> {
     const [{ rasterizeDesign }, { detectSymmetry: detectMaskSymmetry }, { setMask }] =
@@ -453,7 +503,7 @@
     const draft = pendingDraft;
     pendingDraft = null;
     if (!draft) return;
-    galleryLoadSuperseded = true;
+    pendingLoadSuperseded = true;
     const design = draft.design;
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
