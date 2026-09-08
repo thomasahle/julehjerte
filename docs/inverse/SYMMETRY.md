@@ -80,15 +80,33 @@ behind `preferMatchingSheets`. With only `transpose` requested, the projection
 produces bit-identical values to the existing identical-sheet projection; a
 regression test asserts that.
 
-### Counts
+### Counts, and one deliberate narrowing
 
 A mirrored cut set repaints the woven colours when the mirrored family holds an
 **odd** number of cuts, because the count of cuts left of `x` becomes `n` minus
-itself. So `mirrorX` admits only even A counts, `mirrorY` only even B counts,
+itself (`sampleWeave` reads the colour as `phase ^ #A right of x ^ #B below y`).
+So `mirrorX` admits only even A counts, `mirrorY` only even B counts,
 `rotate180` only an even total, and `transpose`/`antiTranspose` any equal
-counts. The grid-count search skips the pairs it cannot reproduce; the skipped
-counts cannot hold the answer, since their woven picture would be the requested
-one with its colours swapped.
+counts. `symmetricCounts` skips the other pairs, and the grid-count search never
+offers them.
+
+This is narrower than the pairing table needs: an odd family mirrors onto itself
+perfectly well, with the middle cut pinned to the midline, and the union-find
+builds those ties (a test asserts it). The narrowing is a statement about the
+**target**, not about the cut set. The orbit mean the fitter optimizes is
+invariant under the request by construction, and an odd mirrored family always
+weaves the colour-swapped picture, so such counts could only ever score about
+50% — they are pruned because they cannot win, not because they cannot be tied.
+
+The case this closes is the *anti-invariant* drawing, whose mirror image is its
+own colour swap; its correct answer really is an odd mirrored family. That case
+is unsupported anyway (the orbit mean of such a drawing is a flat 0.5 with no
+usable gradient), so pruning takes away nothing that currently works. Supporting
+it means giving the target a sign as well as an orbit — averaging `mask` against
+`1 - mirror(mask)` — and letting `symmetricCounts` invert the parity rule for the
+requested transform. **Revisit this rule together with that feature, and not
+before**; on its own, dropping the rule only spends the count search's budget on
+candidates that cannot be right.
 
 ### The editor's three rows
 
@@ -101,13 +119,17 @@ eight symmetries of the square). The engine request that carries each row:
 | --- | --- | --- |
 | Mellem lapper (between lobes) | `transpose` | `antiTranspose` |
 | Inden i lap (within a lobe) | `mirrorX` + `mirrorY` | `rotate180` |
-| Inden i kurve (within a curve) | `withinCurve: 'sym'` | `withinCurve: 'anti'` |
+| Inden i kurve (within a curve) | `mirrorX` + `mirrorY` + `withinCurve: 'sym'` | `withinCurve: 'anti'` |
 
 The last row is the one the mask cannot express — a per-cut chord symmetry is
-not a symmetry of the square — so the editor paints it as the closest mask
-symmetry while the engine holds it exactly on the cuts. Sending both the row's
-mask transforms and its `withinCurve` mode is consistent: the union-find merges
-them, and the report measures each separately.
+not a symmetry of the square. `transformsFor` in `src/lib/paint/symmetry.ts`
+therefore paints `Inden i kurve` Sym with the same two mirrors as `Inden i lap`
+Sym, and paints its Anti with no mask transform at all, while the engine holds
+the chord symmetry exactly on the cuts in both cases. Send the row's mask
+transforms **and** its `withinCurve` mode: asking for `withinCurve` alone would
+leave the fitter free of the mirrors the editor has already painted into the
+mask. Sending both is consistent — the union-find merges them, and the report
+measures each separately.
 
 ## Which stage sees which target
 
@@ -146,11 +168,21 @@ Nothing rewrites the visitor's mask.
    `preferMatchingSheets` off**, even if the caller passed it explicitly. That
    preference copies or averages one sheet onto the other, which would break
    the requested pairing after the fact.
-3. No symmetry requested: `preferMatchingSheets`, `identicalSheets` and the
+3. A request also **replaces the refiner's identical-sheet projection**. Stages
+   that ask for one (the polish stage, the matching-preference refinement) get
+   it only when no symmetry is requested; otherwise the requested ties are the
+   single projection applied. Two hard projections applied in turn leave only
+   the last one exact, and the one the caller asked for has to be the exact one.
+   Nothing is lost: `transpose` ties the very same parameters to the very same
+   values, and rule 2 already chose the request over the preference.
+4. No symmetry requested: `preferMatchingSheets`, `identicalSheets` and the
    trace route behave exactly as before.
 
 `identicalSheets` remains a preparation option of the traced route
-(`transposeTarget` reflects the traced artwork) and is untouched.
+(`transposeTarget` reflects the traced artwork) and is untouched. Rules 1 and 2
+can flip `preferMatchingSheets` under a caller who set it explicitly; what that
+preference does when it is on is described in
+[MATCHING-TEMPLATES.md](MATCHING-TEMPLATES.md).
 
 ## Routing, and what is not enforced
 
@@ -171,11 +203,12 @@ Nothing rewrites the visitor's mask.
   fitter produces no hidden curves once sharing is skipped, so this only
   matters for imported or traced geometry; the measured `honoured` list will
   show it if rounding breaks a tie.
-- **Combined requests use alternating projections.** Within-curve ties are
-  applied first and the square's ties last, so a combined request leaves the
-  square symmetries exact and the chord symmetry within floating-point
+- **A combined `withinCurve` request uses alternating projections.** Within-curve
+  ties are applied first and the square's ties last, so such a request leaves
+  the square symmetries exact and the chord symmetry within floating-point
   rounding (about 1e-14 mm in practice, far inside the 1e-6 mm report
-  tolerance).
+  tolerance). The identical-sheet projection never joins that alternation; see
+  rule 3 of the precedence above.
 - **Adam's per-coordinate scaling** preserves a sign-flipped tie exactly, but
   not a chord reflection that mixes x and y; the projection after every update
   removes that drift rather than relying on the step to respect it.
@@ -195,14 +228,22 @@ solution (unequal counts, or paired cuts subdivided differently). Every other
 report field is unchanged. `withinCurve` appears as `withinCurve:sym` or
 `withinCurve:anti`.
 
+A requested transform missing from `honoured` also raises a **warning** in
+`report.warnings`, naming the transforms that were dropped and the deviation
+measured. That is the field the app already shows and the only one a caller who
+sets `algorithm: 'trace'` by hand will see: the automatic route protects the
+product path, but a direct trace call cannot enforce a request at all and must
+say so rather than return an asymmetric result in silence.
+
 ## Limits
 
 - The orbit mean assumes the painting is **invariant** under the requested
   transforms, not anti-invariant. A drawing whose mirror is its own colour
   swap averages to a flat 0.5 target with no usable gradient; the count parity
-  rule above is the same statement seen from the cut side. Requesting a mirror
-  for such a drawing is not supported, and the resulting error is reported
-  honestly rather than repaired.
+  rule above is the same statement seen from the cut side, and "Counts, and one
+  deliberate narrowing" says what supporting the case would take. Requesting a
+  mirror for such a drawing is not supported, and the resulting error is
+  reported honestly rather than repaired.
 - A request is a hard constraint, so a drawing that is not symmetric pays for
   it in image error. The star example fits its `transpose` symmetry for free
   (the drawing has it) and pays several percentage points for both mirrors (it
@@ -214,4 +255,5 @@ report field is unchanged. `withinCurve` appears as `withinCurve:sym` or
   add new routing moves.
 - `conflicts` from the union-find and `skipped` transforms are held on the tie
   structure for diagnosis; the report exposes their consequence through the
-  measured `honoured` list rather than as separate fields.
+  measured `honoured` list and the warning that accompanies it, rather than as
+  separate fields.
