@@ -1,5 +1,10 @@
 # Measuring cut-count search strategies
 
+**Follow-up:** shared projection work is now enabled without pruning counts.
+The new 91-input equivalence check and separate 49-case solve comparison are in
+[SHARED-INITIALIZATION.md](SHARED-INITIALIZATION.md). The experiment below
+remains the historical comparison of count-selection policies.
+
 **Border consensus is the fastest of the three full-solve policies tested**, but
 the median paired saving is only 2.0% (6.8% across total elapsed solve time).
 It solves the same cases as the baseline and can increase image error by
