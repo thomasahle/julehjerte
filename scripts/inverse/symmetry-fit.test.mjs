@@ -160,11 +160,11 @@ async function starSeed() {
 }
 /** Refine that one seed against that one target for that one step count, with
  * nothing but the symmetry request changed. */
-async function equalWorkFit(symmetry) {
+async function equalWorkFit(symmetry, options = {}) {
   const { target, prob, seed } = await starSeed(), cfg = settings({ ...STAR_BASE, symmetry });
   const graph = new CurveGraph(gridPaths(seed.model, cfg.width, seed.floor), cfg.width);
   const fit = refineCurves(graph, prob, REFINE_SIZE, seed.phase, { ...cfg, preferMatchingSheets: false },
-    { steps: REFINE_STEPS, rate: 0.035, input: target });
+    { steps: REFINE_STEPS, rate: 0.035, input: target, ...options });
   return { error: fit.error, report: symmetryReport(graph.solution(fit.points, seed.phase, target), cfg.symmetry) };
 }
 
@@ -278,6 +278,16 @@ test('the transposed constraint is free on the star and the mirrors are not', { 
   // The drawing is transposed but not mirrored: mirroring is a real constraint
   // here, so the fit pays for it and the cost stays measured, never hidden.
   assert.ok(mirrored.error > free.error);
+});
+
+test('a requested mirror is exact even when the caller also wants identical sheets', { timeout: 60000 }, async () => {
+  // The polish stage asks for identical sheets whenever the candidate already
+  // has them. Two hard projections in turn leave only the last exact, and the
+  // very first snapshot is taken after a single clamp, so the request has to be
+  // the projection that runs — not the transposition nobody asked for here.
+  const mirrored = await equalWorkFit({ mirrorX: true }, { steps: 1, identicalSheets: true });
+  assert.deepEqual(mirrored.report.honoured, ['mirrorX']);
+  assert.ok(mirrored.report.maxDeviationMm < TOLERANCE, `mirrorX deviates by ${mirrored.report.maxDeviationMm} mm`);
 });
 
 test('an asymmetric drawing with mirrorX fits the orbit mean, not the original', { timeout: 60000 }, async () => {
