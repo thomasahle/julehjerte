@@ -1,0 +1,545 @@
+<title>Symmetri-ikoner</title>
+<style>
+  :root {
+    --page: #f9f9f3; --sky: #d6e1d0; --cream2: #e6ece2; --line: #cfd9cf;
+    --green: #2e5041; --deep: #1c3329; --ink: #1e2a25; --muted: #5f6d66; --red: #c41e2a; --white: #fff;
+  }
+  body { background: var(--page); color: var(--ink); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; }
+  main { max-width: 1040px; margin: 0 auto; padding: 40px 32px 72px; }
+  h1 { font-size: 30px; font-weight: 600; color: var(--deep); margin: 0 0 6px; text-wrap: balance; }
+  .lede { font-size: 16px; line-height: 1.5; color: var(--muted); max-width: 62ch; margin: 0 0 36px; }
+  h2 { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--green); margin: 40px 0 12px; }
+  h2 + p { margin: 0 0 16px; color: var(--muted); font-size: 15px; line-height: 1.5; max-width: 66ch; }
+  .sheet { display: grid; grid-template-columns: 150px repeat(3, 1fr); gap: 0;
+  }
+  .sheet.alt { grid-template-columns: 190px repeat(3, 110px) 1fr; }
+  .sheet.alt > :nth-last-child(-n+5) { border-bottom: 0; }
+  .seg-cell { justify-content: flex-end; }
+  .sheet.tegning { grid-template-columns: 220px 120px 1fr; }
+  .sheet.tegning > :nth-last-child(-n+4) { border-bottom: 1px solid var(--line); }
+  .sheet.tegning > :nth-last-child(-n+3) { border-bottom: 0; }
+  .check { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink); }
+  .check .box { width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--green); background: var(--white); display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
+  .check .box.on { background: var(--green); }
+  .check .check-icon { width: 28px; height: 28px; }
+  .sheet { border: 1px solid var(--line); border-radius: 14px; background: var(--white); overflow: hidden; }
+  .sheet > * { padding: 16px 18px; border-bottom: 1px solid var(--line); }
+  .sheet > .head { padding: 10px 18px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--cream2); }
+  .sheet > .row-label { display: flex; flex-direction: column; justify-content: center; gap: 4px; font-size: 15px; font-weight: 600; color: var(--deep); }
+  .sheet > .row-label small { font-weight: 400; color: var(--muted); font-size: 13px; line-height: 1.4; }
+  .sheet > .cell { display: flex; align-items: center; gap: 18px; }
+  .sheet > :nth-last-child(-n+4) { border-bottom: 0; }
+  .icon { width: 64px; height: 64px; color: var(--green); flex: none; }
+  .icon.small { width: 24px; height: 24px; }
+  .cell .note { font-size: 13px; color: var(--muted); line-height: 1.4; }
+  .axis { stroke: currentColor; opacity: .38; stroke-dasharray: 2 2; }
+  .dot { fill: currentColor; opacity: .55; }
+  .soft { opacity: .45; }
+
+  /* the editor's segmented control, as on the site */
+  .mock { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .panel { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .panel h3 { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
+  .panel .variant { font-size: 13px; color: var(--muted); margin: 0 0 14px; line-height: 1.4; }
+  .srow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 0; font-size: 14px; color: var(--ink); }
+  .seg { display: inline-flex; border: 1.5px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--white); }
+  .seg button { display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 12px; border: 0; background: transparent; color: var(--green); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button { --slit: #fff; --accent: #c41e2a; }
+  .seg button.on { background: var(--green); color: #fff; --slit: var(--green); --accent: #f3b3b8; }
+  .sheet { --slit: #fff; --accent: #c41e2a; }
+  .seg button:focus-visible { outline: 3px solid #4a90b8; outline-offset: -3px; }
+  .seg .icon { width: 28px; height: 28px; color: currentColor; }
+  .caption { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+  .verdict { margin-top: 36px; padding: 18px 20px; border-radius: 12px; background: var(--cream2); font-size: 15px; line-height: 1.55; }
+  .verdict strong { color: var(--deep); }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Family A, row 1: one cut, midpoint symmetry -->
+    <symbol id="a-curve-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22 C12 20 15.5 19 15.5 17 C15.5 15 12 15 12 13 C12 11 13.5 10 13.5 8 C13.5 6 12 4 12 2"/>
+    </symbol>
+    <symbol id="a-curve-sym" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22 C12 20.5 16.5 19.5 16.5 17 C16.5 14.5 12 14 12 12 C12 10 16.5 9.5 16.5 7 C16.5 4.5 12 3.5 12 2"/>
+    </symbol>
+    <symbol id="a-curve-anti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22 C12 20.5 16.5 19.5 16.5 17 C16.5 14.5 12 14 12 12 C12 10 7.5 9.5 7.5 7 C7.5 4.5 12 3.5 12 2"/>
+    </symbol>
+
+    <!-- Family A, row 2: one piece (fold at the bottom, lobe on top) with two cuts -->
+    <symbol id="a-lobe-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path class="soft" d="M4 22 V9 A8 8 0 0 1 20 9 V22"/>
+      <path d="M9 22 V18 C9 16.5 7 16 7 14.5 C7 13 9 12.5 9 11"/>
+      <path d="M15 22 V11"/>
+    </symbol>
+    <symbol id="a-lobe-sym" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path class="soft" d="M4 22 V9 A8 8 0 0 1 20 9 V22"/>
+      <path d="M9 22 V18 C9 16.5 7 16 7 14.5 C7 13 9 12.5 9 11"/>
+      <path d="M15 22 V18 C15 16.5 17 16 17 14.5 C17 13 15 12.5 15 11"/>
+    </symbol>
+    <symbol id="a-lobe-anti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path class="soft" d="M4 22 V9 A8 8 0 0 1 20 9 V22"/>
+      <path d="M9 22 V18 C9 16.5 7 16 7 14.5 C7 13 9 12.5 9 11"/>
+      <path d="M15 11 V15 C15 16.5 17 17 17 18.5 C17 20 15 20.5 15 22"/>
+    </symbol>
+
+    <!-- Family A, row 3: the two pieces tilted as in the heart; square bodies, lobes where the other piece ends -->
+    <symbol id="a-both-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-4 0 V-9.5"/></g>
+    </symbol>
+    <symbol id="a-both-sym" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-4 0 V-2 C-4 -4 -1 -4.5 -1 -6.5 C-1 -8.5 -4 -9 -4 -9.5"/></g>
+    </symbol>
+    <symbol id="a-both-anti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-6 0 V-3 C-6 -5 -9 -5.5 -9 -7.5 C-9 -9 -6 -9.3 -6 -9.5"/></g>
+    </symbol>
+
+    <symbol id="c-both-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M10 0 V-10 A5 5 0 0 0 0 -10 V0 Z" fill="currentColor" opacity=".26" stroke="none"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-10 0 V-10 A5 5 0 0 1 0 -10 V0 Z" fill="currentColor" opacity=".5" stroke="none"/></g>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5" stroke="var(--slit, #fff)" stroke-width="1.7"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-4 0 V-9.5" stroke="var(--slit, #fff)" stroke-width="1.7"/></g>
+    </symbol>
+    <symbol id="c-both-sym" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M10 0 V-10 A5 5 0 0 0 0 -10 V0 Z" fill="currentColor" opacity=".26" stroke="none"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-10 0 V-10 A5 5 0 0 1 0 -10 V0 Z" fill="currentColor" opacity=".5" stroke="none"/></g>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5" stroke="var(--slit, #fff)" stroke-width="1.7"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-4 0 V-2 C-4 -4 -1 -4.5 -1 -6.5 C-1 -8.5 -4 -9 -4 -9.5" stroke="var(--slit, #fff)" stroke-width="1.7"/></g>
+    </symbol>
+    <symbol id="c-both-anti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M10 0 V-10 A5 5 0 0 0 0 -10 V0 Z" fill="currentColor" opacity=".26" stroke="none"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-10 0 V-10 A5 5 0 0 1 0 -10 V0 Z" fill="currentColor" opacity=".5" stroke="none"/></g>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5" stroke="var(--slit, #fff)" stroke-width="1.7"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-6 0 V-3 C-6 -5 -9 -5.5 -9 -7.5 C-9 -9 -6 -9.3 -6 -9.5" stroke="var(--slit, #fff)" stroke-width="1.7"/></g>
+    </symbol>
+    <symbol id="j-both-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      
+      <path d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z" fill="currentColor" opacity=".16" stroke="none"/>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5" stroke-width="2.3"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-4 0 V-9.5" stroke-width="2.3"/></g>
+    </symbol>
+    <symbol id="j-both-sym" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z" fill="currentColor" opacity=".16" stroke="none"/>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5" stroke-width="2.3"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-4 0 V-2 C-4 -4 -1 -4.5 -1 -6.5 C-1 -8.5 -4 -9 -4 -9.5" stroke-width="2.3"/></g>
+    </symbol>
+    <symbol id="j-both-anti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z" fill="currentColor" opacity=".16" stroke="none"/>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5" stroke-width="2.3"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-6 0 V-3 C-6 -5 -9 -5.5 -9 -7.5 C-9 -9 -6 -9.3 -6 -9.5" stroke-width="2.3"/></g>
+    </symbol>
+    <symbol id="e-both-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      
+      <g transform="translate(12 21) rotate(-45)"><path d="M0 0 H12 V-12 H0 Z" fill="currentColor" opacity=".14" stroke="none"/><path d="M0 0 H12" class="axis" stroke-width="1.6"/></g>
+      <g transform="translate(12 21) rotate(45)"><path d="M0 0 H-12" class="axis" stroke-width="1.6"/></g>
+      <g transform="translate(12 21) rotate(-45)"><path d="M4.8 0 V-2.4 C4.8 -4.8 1.2 -5.4 1.2 -7.8 C1.2 -10.2 4.8 -10.8 4.8 -11.4" stroke-width="2"/></g>
+      <g transform="translate(12 21) rotate(45)"><path d="M-4.8 0 V-11.4" stroke-width="2"/></g>
+    </symbol>
+    <symbol id="e-both-sym" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="translate(12 21) rotate(-45)"><path d="M0 0 H12 V-12 H0 Z" fill="currentColor" opacity=".14" stroke="none"/><path d="M0 0 H12" class="axis" stroke-width="1.6"/></g>
+      <g transform="translate(12 21) rotate(45)"><path d="M0 0 H-12" class="axis" stroke-width="1.6"/></g>
+      <g transform="translate(12 21) rotate(-45)"><path d="M4.8 0 V-2.4 C4.8 -4.8 1.2 -5.4 1.2 -7.8 C1.2 -10.2 4.8 -10.8 4.8 -11.4" stroke-width="2"/></g>
+      <g transform="translate(12 21) rotate(45)"><path d="M-4.8 0 V-2.4 C-4.8 -4.8 -1.2 -5.4 -1.2 -7.8 C-1.2 -10.2 -4.8 -10.8 -4.8 -11.4" stroke-width="2"/></g>
+    </symbol>
+    <symbol id="e-both-anti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="translate(12 21) rotate(-45)"><path d="M0 0 H12 V-12 H0 Z" fill="currentColor" opacity=".14" stroke="none"/><path d="M0 0 H12" class="axis" stroke-width="1.6"/></g>
+      <g transform="translate(12 21) rotate(45)"><path d="M0 0 H-12" class="axis" stroke-width="1.6"/></g>
+      <g transform="translate(12 21) rotate(-45)"><path d="M4.8 0 V-2.4 C4.8 -4.8 1.2 -5.4 1.2 -7.8 C1.2 -10.2 4.8 -10.8 4.8 -11.4" stroke-width="2"/></g>
+      <g transform="translate(12 21) rotate(45)"><path d="M-7.2 0 V-3.6 C-7.2 -6 -10.8 -6.6 -10.8 -9 C-10.8 -10.8 -7.2 -11.2 -7.2 -11.4" stroke-width="2"/></g>
+    </symbol>
+    <symbol id="h-both-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      
+      <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-4 0 V-9.5" stroke="var(--accent, #c41e2a)"/></g>
+    </symbol>
+    <symbol id="h-both-sym" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-4 0 V-2 C-4 -4 -1 -4.5 -1 -6.5 C-1 -8.5 -4 -9 -4 -9.5" stroke="var(--accent, #c41e2a)"/></g>
+    </symbol>
+    <symbol id="h-both-anti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-6 0 V-3 C-6 -5 -9 -5.5 -9 -7.5 C-9 -9 -6 -9.3 -6 -9.5" stroke="var(--accent, #c41e2a)"/></g>
+    </symbol>
+
+    <!-- Tegning: show outlines / snap to the other side -->
+    <symbol id="t-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5" transform="translate(-0.85 0)" stroke-width="1.2"/><path d="M4 0 V-2 C4 -4 1 -4.5 1 -6.5 C1 -8.5 4 -9 4 -9.5" transform="translate(0.85 0)" stroke-width="1.2"/></g>
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path d="M-4 0 V-2 C-4 -4 -1 -4.5 -1 -6.5 C-1 -8.5 -4 -9 -4 -9.5" transform="translate(-0.85 0)" stroke-width="1.2"/><path d="M-4 0 V-2 C-4 -4 -1 -4.5 -1 -6.5 C-1 -8.5 -4 -9 -4 -9.5" transform="translate(0.85 0)" stroke-width="1.2"/></g>
+    </symbol>
+    <symbol id="t-snap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+      <!-- the other piece's cut as a ghost, with its node hollow; this piece's cut ends in a node that lands on it -->
+      <g transform="translate(12 22.5) rotate(45) scale(1.1)"><path class="soft" d="M-4 0 V-4 C-4 -5.5 -6 -6 -6 -7.5 C-6 -9 -4 -9.3 -4 -9.5" stroke-dasharray="1.5 1.5"/></g>
+      <g transform="translate(12 22.5) rotate(-45) scale(1.1)"><path d="M4 0 V-4"/></g>
+      <circle cx="12" cy="16.3" r="2.6" class="soft" stroke-width="1.4"/>
+      <circle cx="12" cy="16.3" r="1.5" fill="currentColor" stroke="none"/>
+    </symbol>
+
+    <!-- Family B: one abstract set for every row -->
+    <symbol id="b-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 21 V16 C8 14.5 10.5 14 10.5 12.5 C10.5 11 8 10.5 8 9 V3"/>
+      <path class="soft" d="M16 21 V3"/>
+    </symbol>
+    <symbol id="b-sym" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 21 V16 C7 14.5 9.5 14 9.5 12.5 C9.5 11 7 10.5 7 9 V3"/>
+      <path d="M17 21 V16 C17 14.5 14.5 14 14.5 12.5 C14.5 11 17 10.5 17 9 V3"/>
+    </symbol>
+    <symbol id="b-anti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 21 V18 C7 16.5 9.5 16 9.5 14.5 C9.5 13 7 12.5 7 11 V3"/>
+      <path d="M17 3 V6 C17 7.5 14.5 8 14.5 9.5 C14.5 11 17 11.5 17 13 V21"/>
+    </symbol>
+
+    <!-- VARIANTS-DEFS -->
+    <symbol id="v1-outline-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+  <g stroke="#000" stroke-width="1.95">
+    <g transform="translate(12 22.5) rotate(-45) scale(1.1)">
+      <path d="M2.5 -0.8 C2.5 -2.8 1.95 -3.4 1.95 -5 C1.95 -6.6 2.5 -7.2 2.5 -9.2"/>
+      <path d="M7.5 -0.8 C7.5 -2.8 6.95 -3.4 6.95 -5 C6.95 -6.6 7.5 -7.2 7.5 -9.2"/>
+    </g>
+    <g transform="translate(12 22.5) rotate(45) scale(1.1)">
+      <path d="M-2.5 -0.8 C-2.5 -2.8 -1.95 -3.4 -1.95 -5 C-1.95 -6.6 -2.5 -7.2 -2.5 -9.2"/>
+      <path d="M-7.5 -0.8 C-7.5 -2.8 -6.95 -3.4 -6.95 -5 C-6.95 -6.6 -7.5 -7.2 -7.5 -9.2"/>
+    </g>
+  </g>
+  <g transform="translate(12 22.5) rotate(-45) scale(1.1)" stroke="#00ddff" stroke-width="1.32">
+      <path d="M2.5 -0.8 C2.5 -2.8 1.95 -3.4 1.95 -5 C1.95 -6.6 2.5 -7.2 2.5 -9.2"/>
+      <path d="M7.5 -0.8 C7.5 -2.8 6.95 -3.4 6.95 -5 C6.95 -6.6 7.5 -7.2 7.5 -9.2"/>
+  </g>
+  <g transform="translate(12 22.5) rotate(45) scale(1.1)" stroke="#ff8800" stroke-width="1.32">
+      <path d="M-2.5 -0.8 C-2.5 -2.8 -1.95 -3.4 -1.95 -5 C-1.95 -6.6 -2.5 -7.2 -2.5 -9.2"/>
+      <path d="M-7.5 -0.8 C-7.5 -2.8 -6.95 -3.4 -6.95 -5 C-6.95 -6.6 -7.5 -7.2 -7.5 -9.2"/>
+  </g>
+</symbol>
+    <symbol id="v1-outline-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path class="soft" d="M12 21.4 L3.4 12 L12 2.6 L20.6 12 Z"/>
+  <g stroke="#000" stroke-width="1.85">
+    <g transform="translate(12 21.4) rotate(-45) scale(1.3)">
+      <path d="M2.4 -0.7 C2.4 -2.7 1.85 -3.3 1.85 -5 C1.85 -6.7 2.4 -7.3 2.4 -9.3"/>
+      <path d="M7.6 -0.7 C7.6 -2.7 7.05 -3.3 7.05 -5 C7.05 -6.7 7.6 -7.3 7.6 -9.3"/>
+    </g>
+    <g transform="translate(12 21.4) rotate(45) scale(1.3)">
+      <path d="M-2.4 -0.7 C-2.4 -2.7 -1.85 -3.3 -1.85 -5 C-1.85 -6.7 -2.4 -7.3 -2.4 -9.3"/>
+      <path d="M-7.6 -0.7 C-7.6 -2.7 -7.05 -3.3 -7.05 -5 C-7.05 -6.7 -7.6 -7.3 -7.6 -9.3"/>
+    </g>
+  </g>
+  <g transform="translate(12 21.4) rotate(-45) scale(1.3)" stroke="#00ddff" stroke-width="1.15">
+    <path d="M2.4 -0.7 C2.4 -2.7 1.85 -3.3 1.85 -5 C1.85 -6.7 2.4 -7.3 2.4 -9.3"/>
+    <path d="M7.6 -0.7 C7.6 -2.7 7.05 -3.3 7.05 -5 C7.05 -6.7 7.6 -7.3 7.6 -9.3"/>
+  </g>
+  <g transform="translate(12 21.4) rotate(45) scale(1.3)" stroke="#ff8800" stroke-width="1.15">
+    <path d="M-2.4 -0.7 C-2.4 -2.7 -1.85 -3.3 -1.85 -5 C-1.85 -6.7 -2.4 -7.3 -2.4 -9.3"/>
+    <path d="M-7.6 -0.7 C-7.6 -2.7 -7.05 -3.3 -7.05 -5 C-7.05 -6.7 -7.6 -7.3 -7.6 -9.3"/>
+  </g>
+</symbol>
+    <symbol id="v1-snap-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+  <g stroke="#000" stroke-width="2.2">
+    <path d="M6.3 8.8 L9.9 12.4"/>
+    <path d="M17.7 8.8 L14.1 12.4"/>
+  </g>
+  <path stroke="#00ddff" stroke-width="1.35" d="M6.3 8.8 L9.9 12.4"/>
+  <path stroke="#ff8800" stroke-width="1.35" d="M17.7 8.8 L14.1 12.4"/>
+  <g stroke-width="1.15">
+    <path d="M5.4 12.4 H7.5 M6.3 11.2 L7.5 12.4 L6.3 13.6"/>
+    <path d="M18.6 12.4 H16.5 M17.7 11.2 L16.5 12.4 L17.7 13.6"/>
+  </g>
+  <circle cx="9.9" cy="12.4" r="1.3" fill="#00ddff" stroke="#000" stroke-width="0.8"/>
+  <circle cx="14.1" cy="12.4" r="1.3" fill="#ff8800" stroke="#000" stroke-width="0.8"/>
+</symbol>
+    <symbol id="v1-snap-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <g stroke="#000" stroke-width="2.6">
+    <path d="M4.2 8.8 L9.4 14"/>
+    <path d="M19.8 8.8 L14.6 14"/>
+  </g>
+  <path stroke="#00ddff" stroke-width="1.6" d="M4.2 8.8 L9.4 14"/>
+  <path stroke="#ff8800" stroke-width="1.6" d="M19.8 8.8 L14.6 14"/>
+  <g stroke-width="1.5">
+    <path d="M2.4 14 H6 M4 12 L6 14 L4 16"/>
+    <path d="M21.6 14 H18 M20 12 L18 14 L20 16"/>
+  </g>
+  <circle cx="9.4" cy="14" r="1.7" fill="#00ddff" stroke="#000" stroke-width="0.9"/>
+  <circle cx="14.6" cy="14" r="1.7" fill="#ff8800" stroke="#000" stroke-width="0.9"/>
+</symbol>
+    <symbol id="v2-outline-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(12 12) rotate(45)">
+    <g stroke-linecap="butt" stroke-width="1.9">
+      <g stroke="#00ddff">
+        <path d="M-6.05 -2.25 C-2.02 -3.25 2.02 -3.25 6.05 -2.25"/>
+        <path d="M-6.05 2.25 C-2.02 1.25 2.02 1.25 6.05 2.25"/>
+      </g>
+      <g stroke="#ff8800">
+        <path d="M-2.25 -6.05 C-1.25 -2.02 -1.25 2.02 -2.25 6.05"/>
+        <path d="M2.25 -6.05 C3.25 -2.02 3.25 2.02 2.25 6.05"/>
+      </g>
+    </g>
+    <rect class="soft" x="-6.7" y="-6.7" width="13.4" height="13.4" rx="2.6" stroke-width="1.4"/>
+  </g>
+</symbol>
+    <symbol id="v2-outline-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <g stroke-linecap="butt" stroke-width="1.65">
+    <g stroke="#00ddff">
+      <path d="M7.8 3.7 V20.3"/><path d="M12 3.7 V20.3"/><path d="M16.2 3.7 V20.3"/>
+    </g>
+    <g stroke="#ff8800">
+      <path d="M3.7 7.8 H20.3"/><path d="M3.7 12 H20.3"/><path d="M3.7 16.2 H20.3"/>
+    </g>
+  </g>
+  <rect class="soft" x="3.7" y="3.7" width="16.6" height="16.6" rx="2.4" stroke-width="1.4"/>
+</symbol>
+    <symbol id="v2-snap-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <g stroke-width="1.4">
+    <path d="M5.55 12 H2.5"/>
+    <path d="M6.56 9.63 L4.75 7.76"/>
+    <path d="M6.56 14.37 L4.75 16.24"/>
+    <path d="M18.45 12 H21.5"/>
+    <path d="M17.44 9.63 L19.25 7.76"/>
+    <path d="M17.44 14.37 L19.25 16.24"/>
+  </g>
+  <circle cx="8.85" cy="12" r="2.35" fill="currentColor" stroke="none"/>
+  <circle cx="15.15" cy="12" r="2.35" fill="currentColor" stroke="none"/>
+</symbol>
+    <symbol id="v2-snap-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <g stroke-width="1.45">
+    <path d="M6.6 8.93 A3.9 3.9 0 0 1 6.6 15.07"/>
+    <path d="M8.14 6.96 A6.4 6.4 0 0 1 8.14 17.04"/>
+    <path d="M17.4 8.93 A3.9 3.9 0 0 0 17.4 15.07"/>
+    <path d="M15.86 6.96 A6.4 6.4 0 0 0 15.86 17.04"/>
+  </g>
+  <circle cx="4.2" cy="12" r="2.4" fill="#00ddff" stroke="none"/>
+  <circle cx="19.8" cy="12" r="2.4" fill="#ff8800" stroke="none"/>
+</symbol>
+    <symbol id="v3-outline-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+  <g transform="translate(12 22.5) rotate(45) scale(1.1)" stroke="#e07800" stroke-width="1.32"><path d="M-2.5 -0.6 C-3.45 -3.53 -1.55 -6.47 -2.5 -9.4"/><path d="M-5 -0.6 C-5.95 -3.53 -4.05 -6.47 -5 -9.4"/><path d="M-7.5 -0.6 C-8.45 -3.53 -6.55 -6.47 -7.5 -9.4"/></g>
+  <g transform="translate(12 22.5) rotate(-45) scale(1.1)" stroke="#00b3d1" stroke-width="1.32"><path d="M2.5 -0.6 C3.45 -3.53 1.55 -6.47 2.5 -9.4"/><path d="M5 -0.6 C5.95 -3.53 4.05 -6.47 5 -9.4"/><path d="M7.5 -0.6 C8.45 -3.53 6.55 -6.47 7.5 -9.4"/></g>
+</symbol>
+    <symbol id="v3-outline-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <g stroke="#e07800"><path d="M1.82 11.68 C3.37 9.95 5.32 8.61 7.33 7.33 C9.34 6.05 11.3 4.72 12.85 2.98"/><path d="M2.64 21.84 C2.94 21.39 3.23 20.94 3.51 20.49 C5.71 17.03 8.54 14.2 12 12 C15.46 9.8 18.29 6.97 20.49 3.51 C20.77 3.06 21.06 2.61 21.36 2.16"/><path d="M11.15 21.02 C12.7 19.28 14.66 17.95 16.67 16.67 C18.68 15.39 20.63 14.05 22.18 12.32"/></g>
+  <g stroke="#00b3d1"><path d="M12.32 1.82 C14.05 3.37 15.39 5.32 16.67 7.33 C17.95 9.34 19.28 11.3 21.02 12.85"/><path d="M2.16 2.64 C2.61 2.94 3.06 3.23 3.51 3.51 C6.97 5.71 9.8 8.54 12 12 C14.2 15.46 17.03 18.29 20.49 20.49 C20.94 20.77 21.39 21.06 21.84 21.36"/><path d="M2.98 11.15 C4.72 12.7 6.05 14.66 7.33 16.67 C8.61 18.68 9.95 20.63 11.68 22.18"/></g>
+</symbol>
+    <symbol id="v3-snap-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(10.3 10.3) rotate(45)"><path d="M6.2 -5.5 H0 A5.5 5.5 0 0 0 0 5.5 H6.2 V2 H0 A2 2 0 0 1 0 -2 H6.2 Z"/></g>
+  <path d="M15.11 17.51 L16.17 18.57" stroke-width="1.4"/>
+  <path d="M17.51 15.11 L18.57 16.17" stroke-width="1.4"/>
+  <circle cx="19.78" cy="19.78" r="1.85" fill="currentColor" stroke="none"/>
+</symbol>
+    <symbol id="v3-snap-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="4.7" cy="12" r="2.15" fill="currentColor" stroke="none"/>
+  <circle cx="19.3" cy="12" r="2.15" fill="currentColor" stroke="none"/>
+  <path d="M12 9.6 V7.6"/>
+  <path d="M9.92 13.2 L8.19 14.2"/>
+  <path d="M14.08 13.2 L15.81 14.2"/>
+</symbol>
+    <symbol id="v4-outline-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+  <g transform="translate(12 22.5) rotate(45) scale(1.1)" stroke="#ff8800" stroke-width="1.75">
+    <path d="M-1.8 -0.2 C-1.8 -1.9 -1.5 -2.4 -1.5 -3.8 C-1.5 -5.2 -2.1 -5.7 -2.1 -7 C-2.1 -8.3 -1.8 -8.6 -1.8 -9.7"/>
+    <path d="M-8.2 -0.2 C-8.2 -1.9 -7.9 -2.4 -7.9 -3.8 C-7.9 -5.2 -8.5 -5.7 -8.5 -7 C-8.5 -8.3 -8.2 -8.6 -8.2 -9.7"/>
+  </g>
+  <g transform="translate(12 22.5) rotate(-45) scale(1.1)" stroke="#00ddff" stroke-width="1.95">
+    <path d="M1.8 -0.2 C1.8 -1.9 1.5 -2.4 1.5 -3.8 C1.5 -5.2 2.1 -5.7 2.1 -7 C2.1 -8.3 1.8 -8.6 1.8 -9.7"/>
+    <path d="M8.2 -0.2 C8.2 -1.9 7.9 -2.4 7.9 -3.8 C7.9 -5.2 8.5 -5.7 8.5 -7 C8.5 -8.3 8.2 -8.6 8.2 -9.7"/>
+  </g>
+  <path transform="translate(12 22.5) rotate(45) scale(1.1)" stroke="#ff8800" stroke-width="1.75" d="M-5 -0.2 C-5 -1.9 -4.7 -2.4 -4.7 -3.8 C-4.7 -5.2 -5.3 -5.7 -5.3 -7 C-5.3 -8.3 -5 -8.6 -5 -9.7"/>
+  <path transform="translate(12 22.5) rotate(-45) scale(1.1)" stroke="#00ddff" stroke-width="1.95" d="M5 -0.2 C5 -1.9 4.7 -2.4 4.7 -3.8 C4.7 -5.2 5.3 -5.7 5.3 -7 C5.3 -8.3 5 -8.6 5 -9.7"/>
+  <g transform="translate(12 22.5) rotate(45) scale(1.1)" stroke="#ff8800" stroke-width="1.75">
+    <path d="M-1.5 -3.9 L-2 -6.1"/>
+    <path d="M-7.9 -3.9 L-8.4 -6.1"/>
+  </g>
+</symbol>
+    <symbol id="v4-outline-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+  <path transform="translate(12 22.5) rotate(45) scale(1.1)" stroke="#ff8800" stroke-width="2.6" d="M-5.6 -1.2 C-4.9 -4.9 -4.9 -8.9 -5.6 -12.6"/>
+  <path transform="translate(12 22.5) rotate(-45) scale(1.1)" stroke="#fff" stroke-width="3.6" stroke-linecap="butt" d="M5.25 -3.6 L5.08 -7.6"/>
+  <path transform="translate(12 22.5) rotate(-45) scale(1.1)" stroke="#00ddff" stroke-width="2.6" d="M5.6 -1.2 C4.9 -4.9 4.9 -8.9 5.6 -12.6"/>
+</symbol>
+    <symbol id="v4-snap-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke-width="1.4" d="M13.83 16.22 A4.6 4.6 0 0 1 7.48 11.16"/>
+  <path stroke-width="1.4" d="M10.17 7.78 A4.6 4.6 0 0 1 16.52 12.84"/>
+  <path stroke="#00ddff" stroke-width="1.1" d="M3.39 5.16 A8 8 0 0 1 6.13 7.33"/>
+  <path stroke="#00ddff" stroke-width="1.9" d="M5.58 6.9 A8 8 0 0 1 8.4 9.14"/>
+  <path stroke="#ff8800" stroke-width="1.1" d="M20.61 18.84 A8 8 0 0 1 17.87 16.67"/>
+  <path stroke="#ff8800" stroke-width="1.9" d="M18.42 17.1 A8 8 0 0 1 15.6 14.86"/>
+  <circle cx="12" cy="12" r="1.95" fill="currentColor" stroke="none"/>
+</symbol>
+    <symbol id="v4-snap-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path class="soft" d="M12 22.5 L4.22 14.72 A5.5 5.5 0 0 1 12 6.94 A5.5 5.5 0 0 1 19.78 14.72 Z"/>
+  <g transform="translate(0 0.8)">
+    <path transform="translate(12 22.5) rotate(-45) scale(1.1)" stroke="#00ddff" stroke-width="1.5" d="M5.08 -12.02 C5.08 -11 4.68 -10.6 4.68 -9.64 C4.68 -8.7 5.08 -8.3 5.08 -7.26"/>
+    <path transform="translate(12 22.5) rotate(45) scale(1.1)" stroke="#ff8800" stroke-width="1.5" d="M-3.02 -5.21 C-3.02 -6.2 -2.62 -6.6 -2.62 -7.59 C-2.62 -8.5 -3.02 -8.9 -3.02 -9.96"/>
+    <path stroke-width="0.85" stroke-dasharray="0.01 1.3" d="M10.3 12.9 A2.4 2.4 0 0 0 13.7 16.1"/>
+    <circle cx="10.3" cy="12.9" r="1.55" fill="currentColor" stroke="none"/>
+    <circle cx="13.7" cy="16.1" r="1.55" fill="currentColor" stroke="none"/>
+  </g>
+</symbol>
+    <!-- /VARIANTS-DEFS -->
+  </defs>
+</svg>
+
+<main>
+  <h1>Symmetri-ikoner til editoren</h1>
+  <p class="lede">Forslag til ikoner for de tre symmetri-vælgere (Inden i kurve · Inden i lap · Mellem lapper) med tilstandene Fra, Sym og Anti. Ikonerne tegner det, indstillingen gør, uden hjælpestreger: kun snittene og omridset. Alt er 24 px-streger i editorens grønne, som de andre værktøjer.</p>
+
+  <h2>Familie A: et billede per række</h2>
+  <p>Hver række viser sin egen genstand: én kurve, én lap med to snit, eller begge lapper. Sym viser spejlingen, Anti viser drejningen. Man kan se på ikonet alene, hvad der spejles i hvad.</p>
+  <div class="sheet">
+    <div class="head"></div><div class="head">Fra</div><div class="head">Sym</div><div class="head">Anti</div>
+
+    <div class="row-label">Inden i kurve<small>Hvert snits anden halvdel følger den første</small></div>
+    <div class="cell"><svg class="icon"><use href="#a-curve-off"/></svg><span class="note">Snittet er frit</span></div>
+    <div class="cell"><svg class="icon"><use href="#a-curve-sym"/></svg><span class="note">Spejlet om midten: buen gentages</span></div>
+    <div class="cell"><svg class="icon"><use href="#a-curve-anti"/></svg><span class="note">Drejet om midten: et S</span></div>
+
+    <div class="row-label">Inden i lap<small>Snittene i den samme lap følger hinanden</small></div>
+    <div class="cell"><svg class="icon"><use href="#a-lobe-off"/></svg><span class="note">Hvert snit sit eget</span></div>
+    <div class="cell"><svg class="icon"><use href="#a-lobe-sym"/></svg><span class="note">Spejlet om lappens midtlinje</span></div>
+    <div class="cell"><svg class="icon"><use href="#a-lobe-anti"/></svg><span class="note">Drejet om lappens midte: buerne skifter ende</span></div>
+
+    <div class="row-label">Mellem lapper<small>Den anden lap følger den første</small></div>
+    <div class="cell"><svg class="icon"><use href="#a-both-off"/></svg><span class="note">To forskellige skabeloner</span></div>
+    <div class="cell"><svg class="icon"><use href="#a-both-sym"/></svg><span class="note">Spejlet: én skabelon til begge</span></div>
+    <div class="cell"><svg class="icon"><use href="#a-both-anti"/></svg><span class="note">Spejlet om den vandrette akse: snittet bytter side, og buen vender mod lappen</span></div>
+  </div>
+
+  <h2>Familie B: ét sæt til alle rækker</h2>
+  <p>Samme tre tegn overalt: to streger der spejler hinanden om en akse, to streger drejet om en prik, og en streg uden makker. Rækkens navn fortæller, hvad der spejles. Enklere at lære, men mindre præcist for "Inden i kurve", hvor det er ét snits to halvdele, ikke to snit.</p>
+  <div class="sheet">
+    <div class="head"></div><div class="head">Fra</div><div class="head">Sym</div><div class="head">Anti</div>
+    <div class="row-label">Alle tre rækker</div>
+    <div class="cell"><svg class="icon"><use href="#b-off"/></svg><span class="note">Ingen makker</span></div>
+    <div class="cell"><svg class="icon"><use href="#b-sym"/></svg><span class="note">Spejling om en akse</span></div>
+    <div class="cell"><svg class="icon"><use href="#b-anti"/></svg><span class="note">Drejning om et punkt</span></div>
+  </div>
+
+  <h2>Alternativer for "Mellem lapper"</h2>
+  <p>Samme geometri, fem tegnemåder. Yderst til højre står hver variant i knappen (28 px), hvor den skal læses.</p>
+  <div class="sheet alt">
+    <div class="head"></div><div class="head">Fra</div><div class="head">Sym</div><div class="head">Anti</div><div class="head">I knappen</div>
+    <div class="row-label">Nuværende: omrids<small>Streger for lapper og snit. Mest tro mod skabelonen, men tyndest.</small></div>
+    <div class="cell"><svg class="icon"><use href="#a-both-off"/></svg></div><div class="cell"><svg class="icon"><use href="#a-both-sym"/></svg></div><div class="cell"><svg class="icon"><use href="#a-both-anti"/></svg></div>
+    <div class="cell seg-cell"><span class="seg"><button><svg class="icon"><use href="#a-both-off"/></svg>Fra</button><button class="on"><svg class="icon"><use href="#a-both-sym"/></svg>Sym</button><button><svg class="icon"><use href="#a-both-anti"/></svg>Anti</button></span></div>
+    <div class="row-label">Udfyldte lapper<small>De to lapper som flader i to toner, snittene som slidser i baggrundsfarven. Lapperne skiller sig ad med det samme.</small></div>
+    <div class="cell"><svg class="icon"><use href="#c-both-off"/></svg></div><div class="cell"><svg class="icon"><use href="#c-both-sym"/></svg></div><div class="cell"><svg class="icon"><use href="#c-both-anti"/></svg></div>
+    <div class="cell seg-cell"><span class="seg"><button><svg class="icon"><use href="#c-both-off"/></svg>Fra</button><button class="on"><svg class="icon"><use href="#c-both-sym"/></svg>Sym</button><button><svg class="icon"><use href="#c-both-anti"/></svg>Anti</button></span></div>
+    <div class="row-label">Silhuet og fede snit<small>Én blød hjertesilhuet, snittene i fuld styrke. Simplest, snittet er det eneste man ser.</small></div>
+    <div class="cell"><svg class="icon"><use href="#j-both-off"/></svg></div><div class="cell"><svg class="icon"><use href="#j-both-sym"/></svg></div><div class="cell"><svg class="icon"><use href="#j-both-anti"/></svg></div>
+    <div class="cell seg-cell"><span class="seg"><button><svg class="icon"><use href="#j-both-off"/></svg>Fra</button><button class="on"><svg class="icon"><use href="#j-both-sym"/></svg>Sym</button><button><svg class="icon"><use href="#j-both-anti"/></svg>Anti</button></span></div>
+    <div class="row-label">Kun flettefeltet<small>Ingen lapper: kun det flettede felt med foldene stiplet. Snittene får hele pladsen, men man skal vide, at rombe = hjertets midte.</small></div>
+    <div class="cell"><svg class="icon"><use href="#e-both-off"/></svg></div><div class="cell"><svg class="icon"><use href="#e-both-sym"/></svg></div><div class="cell"><svg class="icon"><use href="#e-both-anti"/></svg></div>
+    <div class="cell seg-cell"><span class="seg"><button><svg class="icon"><use href="#e-both-off"/></svg>Fra</button><button class="on"><svg class="icon"><use href="#e-both-sym"/></svg>Sym</button><button><svg class="icon"><use href="#e-both-anti"/></svg>Anti</button></span></div>
+    <div class="row-label">To farver<small>Som omridset, men den anden laps snit i rød. Farven fortæller, hvem der følger hvem.</small></div>
+    <div class="cell"><svg class="icon"><use href="#h-both-off"/></svg></div><div class="cell"><svg class="icon"><use href="#h-both-sym"/></svg></div><div class="cell"><svg class="icon"><use href="#h-both-anti"/></svg></div>
+    <div class="cell seg-cell"><span class="seg"><button><svg class="icon"><use href="#h-both-off"/></svg>Fra</button><button class="on"><svg class="icon"><use href="#h-both-sym"/></svg>Sym</button><button><svg class="icon"><use href="#h-both-anti"/></svg>Anti</button></span></div>
+  </div>
+
+  <h2>Tegning</h2>
+  <p>De to afkrydsninger i Tegning-panelet. Vis omrids tegner snittenes kanter som dobbeltstreg. Den anden hedder i dag «Snap til modsat side», men den snapper ikke til en linje: når man trækker et punkt, lægger det sig præcis oven i det nærmeste punkt på den anden laps snit. Derfor ny tekst, «Snap til den anden laps punkter», og et ikon hvor punktet lander på et punkt (ringen) på den stiplede spøgelseslinje.</p>
+  <div class="sheet tegning">
+    <div class="head"></div><div class="head">Ikon</div><div class="head">I panelet</div>
+    <div class="row-label">Vis omrids<small>Striberne får en synlig kant på lærredet</small></div>
+    <div class="cell"><svg class="icon"><use href="#t-outline"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#t-outline"/></svg>Vis omrids</label></div>
+    <div class="row-label">Snap til den anden laps punkter<small>Var «Snap til modsat side». Et trukket punkt lægger sig oven i det nærmeste punkt på den anden laps snit</small></div>
+    <div class="cell"><svg class="icon"><use href="#t-snap"/></svg></div>
+    <div class="cell"><label class="check"><span class="box"></span><svg class="icon check-icon"><use href="#t-snap"/></svg>Snap til den anden laps punkter</label></div>
+  </div>
+
+
+  <!-- VARIANTS -->
+  <h2>Tegning: varianter for "Vis omrids"</h2>
+  <p>Ejerens ønske: et orange og blåt gitter som i editoren (venstre laps snit er cyan, højre laps orange, begge med sort kant). Sorteret efter tre dommeres vurdering af læsbarhed i 28 px; øverst bedst.</p>
+  <div class="sheet tegning">
+    <div class="head"></div><div class="head">Ikon</div><div class="head">I panelet</div>
+    <div class="row-label">v3-outline-a<small>Kontrast-justeret. Hjertets flettede felt tegnet som et gitter af cyan og orange bølgede snit</small></div>
+    <div class="cell"><svg class="icon"><use href="#v3-outline-a"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v3-outline-a"/></svg>Vis omrids</label></div>
+    <div class="row-label">v2-outline-a<small>Abstrakt. Cyan og orange snitlinjer krydser hinanden i en skrå rude – det vævede felt.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v2-outline-a"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v2-outline-a"/></svg>Vis omrids</label></div>
+    <div class="row-label">v4-outline-a<small>Ekspressiv. Hjertets flettefelt fyldt med tre cyan og tre orange bølgede snitlinjer, over og under.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v4-outline-a"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v4-outline-a"/></svg>Vis omrids</label></div>
+    <div class="row-label">v3-outline-b<small>Kontrast-justeret. Kun gitteret: tre cyan og tre orange bølgede snitlinjer, der krydser hinanden</small></div>
+    <div class="cell"><svg class="icon"><use href="#v3-outline-b"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v3-outline-b"/></svg>Vis omrids</label></div>
+    <div class="row-label">v2-outline-b<small>Abstrakt. Et gitter af cyan lodrette og orange vandrette linjer i en blød ramme.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v2-outline-b"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v2-outline-b"/></svg>Vis omrids</label></div>
+    <div class="row-label">v4-outline-b<small>Ekspressiv. To papirstrimler, én cyan og én orange, krydser over og under hinanden.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v4-outline-b"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v4-outline-b"/></svg>Vis omrids</label></div>
+    <div class="row-label">v1-outline-a<small>Tro mod editoren. Hjerteomrids med editorens cyan og orange snitlinjer, der krydser i det vævede felt.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v1-outline-a"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v1-outline-a"/></svg>Vis omrids</label></div>
+    <div class="row-label">v1-outline-b<small>Tro mod editoren. Kun det vævede felt: cyan og orange snitlinjer krydser hinanden i et gitter.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v1-outline-b"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v1-outline-b"/></svg>Vis omrids</label></div>
+  </div>
+  <h2>Tegning: varianter for "Snap til den anden laps punkter"</h2>
+  <p>Ejerens ønske: to punkter der tiltrækkes af hinanden. Sorteret efter tre dommeres vurdering af læsbarhed i 28 px; øverst bedst.</p>
+  <div class="sheet tegning">
+    <div class="head"></div><div class="head">Ikon</div><div class="head">I panelet</div>
+    <div class="row-label">v2-snap-a<small>Abstrakt. To punkter på vej mod hinanden, hvert med tre træk-streger bagude.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v2-snap-a"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v2-snap-a"/></svg>Snap til den anden laps punkter</label></div>
+    <div class="row-label">v2-snap-b<small>Abstrakt. Et cyan og et orange punkt med magnetbuer vendt mod hinanden.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v2-snap-b"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v2-snap-b"/></svg>Snap til den anden laps punkter</label></div>
+    <div class="row-label">v3-snap-a<small>Kontrast-justeret. En hestesko-magnet trækker et punkt til sig; to streger viser trækket</small></div>
+    <div class="cell"><svg class="icon"><use href="#v3-snap-a"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v3-snap-a"/></svg>Snap til den anden laps punkter</label></div>
+    <div class="row-label">v4-snap-a<small>Ekspressiv. To punkter er lige mødtes i ét punkt – sporene viser, hvor de kom fra.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v4-snap-a"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v4-snap-a"/></svg>Snap til den anden laps punkter</label></div>
+    <div class="row-label">v3-snap-b<small>Kontrast-justeret. To punkter med en lille gnist imellem, der viser at de tiltrækker hinanden</small></div>
+    <div class="cell"><svg class="icon"><use href="#v3-snap-b"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v3-snap-b"/></svg>Snap til den anden laps punkter</label></div>
+    <div class="row-label">v1-snap-b<small>Tro mod editoren. To snitpunkter uden hjerte: pilene viser, at de trækkes mod hinanden.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v1-snap-b"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v1-snap-b"/></svg>Snap til den anden laps punkter</label></div>
+    <div class="row-label">v4-snap-b<small>Ekspressiv. Et punkt på hvert af de to snit; den prikkede bue viser trækket imellem dem.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v4-snap-b"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v4-snap-b"/></svg>Snap til den anden laps punkter</label></div>
+    <div class="row-label">v1-snap-a<small>Tro mod editoren. To snitender i hjertet: et cyan og et orange punkt trækkes mod hinanden.</small></div>
+    <div class="cell"><svg class="icon"><use href="#v1-snap-a"/></svg></div>
+    <div class="cell"><label class="check"><span class="box on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></svg></span><svg class="icon check-icon"><use href="#v1-snap-a"/></svg>Snap til den anden laps punkter</label></div>
+  </div>
+  <!-- /VARIANTS -->
+  <h2>I panelet</h2>
+  <p>Sådan sidder de i editorens Symmetri-panel i den rigtige størrelse (28 px inde i 40 px høje knapper). Til venstre kun ikoner med tooltip, til højre ikon og ord.</p>
+  <div class="mock">
+    <div class="panel">
+      <h3>Symmetri</h3>
+      <p class="variant">Familie A, kun ikoner. Tooltip: "Sym: spejlet om midten".</p>
+      <div class="srow"><span>Inden i kurve</span><span class="seg"><button title="Fra"><svg class="icon"><use href="#a-curve-off"/></svg></button><button class="on" title="Sym"><svg class="icon"><use href="#a-curve-sym"/></svg></button><button title="Anti"><svg class="icon"><use href="#a-curve-anti"/></svg></button></span></div>
+      <div class="srow"><span>Inden i lap</span><span class="seg"><button class="on" title="Fra"><svg class="icon"><use href="#a-lobe-off"/></svg></button><button title="Sym"><svg class="icon"><use href="#a-lobe-sym"/></svg></button><button title="Anti"><svg class="icon"><use href="#a-lobe-anti"/></svg></button></span></div>
+      <div class="srow"><span>Mellem lapper</span><span class="seg"><button title="Fra"><svg class="icon"><use href="#a-both-off"/></svg></button><button class="on" title="Sym"><svg class="icon"><use href="#a-both-sym"/></svg></button><button title="Anti"><svg class="icon"><use href="#a-both-anti"/></svg></button></span></div>
+    </div>
+    <div class="panel">
+      <h3>Symmetri</h3>
+      <p class="variant">Familie A, ikon og ord. Bredere, men intet at gætte.</p>
+      <div class="srow"><span>Inden i kurve</span><span class="seg"><button><svg class="icon"><use href="#a-curve-off"/></svg>Fra</button><button class="on"><svg class="icon"><use href="#a-curve-sym"/></svg>Sym</button><button><svg class="icon"><use href="#a-curve-anti"/></svg>Anti</button></span></div>
+      <div class="srow"><span>Inden i lap</span><span class="seg"><button class="on"><svg class="icon"><use href="#a-lobe-off"/></svg>Fra</button><button><svg class="icon"><use href="#a-lobe-sym"/></svg>Sym</button><button><svg class="icon"><use href="#a-lobe-anti"/></svg>Anti</button></span></div>
+      <div class="srow"><span>Mellem lapper</span><span class="seg"><button><svg class="icon"><use href="#a-both-off"/></svg>Fra</button><button class="on"><svg class="icon"><use href="#a-both-sym"/></svg>Sym</button><button><svg class="icon"><use href="#a-both-anti"/></svg>Anti</button></span></div>
+    </div>
+  </div>
+  <p class="caption">Spejlingsakse og rotationscentrum er udeladt for at holde ikonerne rene; forklaringen ligger i tooltippen.</p>
+
+  <div class="verdict">
+    <strong>Min anbefaling:</strong> Familie A med ikon og ord i panelet. Ikonet viser genstanden (kurve, lap, begge lapper) og relationen (akse eller punkt), ordet fjerner tvivlen, og rækkenavnet bliver overflødigt at læse hver gang. Familie B er pænere som system, men den ser ens ud i alle tre rækker og siger derfor ikke, hvad "Inden i kurve" spejler. Alternativet, hvis panelet skal være smalt: Familie A uden ord, og så et lille eksempel af effekten i tooltippen.
+  </div>
+</main>
