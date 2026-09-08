@@ -1,5 +1,6 @@
 <script lang="ts">
 	import "../app.css";
+	import { onMount } from "svelte";
 	import { browser, dev } from "$app/environment";
 	import { page } from "$app/stores";
 	import { SITE_NAME, SITE_TITLE, SITE_TITLE_EN, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID } from "$lib/config";
@@ -64,12 +65,35 @@
 		if (!browser) return;
 		document.documentElement.lang = lang;
 	});
+
+	// Google Analytics is 170 KB over the wire and nothing on the page waits for
+	// it, so it loads once the browser is idle after the load event instead of
+	// competing with the page's own scripts. Events fired before then queue in
+	// dataLayer (set up in <svelte:head>) and are sent when it arrives.
+	onMount(() => {
+		if (!GA_MEASUREMENT_ID || dev) return;
+		const inject = () => {
+			if (document.querySelector('script[data-gtag]')) return;
+			const script = document.createElement('script');
+			script.async = true;
+			script.dataset.gtag = '';
+			script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+			document.head.appendChild(script);
+		};
+		const whenIdle = () =>
+			typeof window.requestIdleCallback === "function"
+				? window.requestIdleCallback(inject, { timeout: 4000 })
+				: window.setTimeout(inject, 1500);
+		if (document.readyState === 'complete') whenIdle();
+		else window.addEventListener('load', whenIdle, { once: true });
+	});
 </script>
 
 <svelte:head>
-	<!-- Google tag (gtag.js) -->
+	<!-- Google tag (gtag.js). Only the queue is set up here; the script itself is
+	     the page's largest download and is fetched after first paint (see the
+	     effect above). Calls made before it arrives queue in dataLayer. -->
 	{#if GA_MEASUREMENT_ID && !dev}
-		<script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
 		{@html `<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}

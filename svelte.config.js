@@ -20,6 +20,11 @@ const config = {
 			// Base path - empty for custom domain deployment
 			base: ''
 		},
+		// Every stylesheet the site has is under 32 KB, so all of them are inlined
+		// into the HTML: it removes the render-blocking CSS requests (about 300 ms
+		// on a slow connection before the hero text could paint) at the cost of a
+		// few KB per page that GitHub Pages serves gzipped anyway.
+		inlineStyleThreshold: 32768,
 		prerender: {
 			handleHttpError: ({ path, referrer, message }) => {
 				// Ignore 500 errors during prerender (SSR fetch issues)
