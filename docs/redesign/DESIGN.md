@@ -300,6 +300,20 @@ Handlinger. A **"Skjul panel"** control collapses the panel so the canvas fills 
 right edge ("Vis panel") brings it back; remember the choice in localStorage. Add a "Snap til modsat side"
 checkbox and a one-line hint above the canvas. The mobile editor keeps its existing stacked panels.
 
+Symmetri and Tegning are drawn, not only named — the icons the owner chose in `docs/redesign/symmetri-ikoner.html`
+("Familie A med tekst"). Each symmetry segment carries the glyph of *its own* row and mode at 28px in a 40px
+segment, with the word beside it: one curve, one lobe with two cuts, or both lobes, where Fra leaves the second
+cut free, Sym mirrors it and Anti turns it. Nine glyphs, one component and one table (`SymmetryIcon` and
+`symmetryIcons.ts` in `$lib/components/icons`), all `currentColor` so a selected segment inverts glyph and word
+together on green; a glyph that marks the following cut in a second colour reads `--icon-accent`, which the
+selected segment sets to `--red-tint` because `--red` on green is nearly black. Glyph and word together are
+wider than 340px leaves beside a row name, so the label sits above its control and the control spans the panel;
+below 600px the row goes back to one line and the segment keeps the glyph alone, the word staying in the DOM as
+its accessible name and repeated in the tooltip. The two Tegning checkboxes take the same treatment — the woven
+square for "Vis omrids", two points pulling together for "Snap til den anden laps punkter" — drawn in the
+canvas's own cut colours, cyan for the left lobe and orange for the right ($lib/editor/outlineColors, which the
+canvas reads too), because the colours are half of what those two icons say.
+
 The canvas fills the whole area under the top bar — full width and height, no three-column grid — and the tool
 rail and the panel **float over it** as white cards with `--shadow-panel`. So does the drawing surface: the SVG
 is the whole canvas area (`inset: 0`), so a zoomed or panned heart carries on under the rail and the panel and
