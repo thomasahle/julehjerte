@@ -27,6 +27,8 @@
 		SaveIcon,
 		StarIcon
 	} from '$lib/components/icons';
+	import FrameOutline from './FrameOutline.svelte';
+	import FramePanel from './FramePanel.svelte';
 	import MaskCanvas from './MaskCanvas.svelte';
 	import MaskToolPanel from './MaskToolPanel.svelte';
 	import SymmetryPanel from './SymmetryPanel.svelte';
@@ -42,13 +44,21 @@
 		handoffToDraw,
 		markMaskDirty,
 		session,
+		setFrame,
 		setMask,
 		setSymmetry,
+		type Frame,
 		type PaintError,
 		type SymmetrySettings
 	} from '$lib/editor/session.svelte';
+	import {
+		clampFrameSize,
+		mismatchInside,
+		shapeCells,
+		solveTargetMask
+	} from '$lib/paint/frame';
 	import { createMask, isEmpty, maskMismatch, resample, type Mask } from '$lib/paint/mask';
-	import { detectSymmetry } from '$lib/paint/symmetry';
+	import { detectSymmetry, transformsFor } from '$lib/paint/symmetry';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
 	import {
 		canRedo as historyCanRedo,
@@ -141,6 +151,8 @@
 	let timer: ReturnType<typeof setInterval> | null = null;
 	/** The rows the converter could hold the last heart to (PAINT.md §11). */
 	let honoured = $state<SymmetrySettings | null>(null);
+	/** "Vis det beskyttede motiv": the outline over the found heart. */
+	let showMotif = $state(false);
 
 	/** A destructive step waiting for the visitor to say yes. */
 	let confirming = $state<'clear' | 'import' | null>(null);
@@ -338,6 +350,65 @@
 		else if (action.kind === 'brush') brushSize = stepBrush(brushSize, action.delta);
 	}
 
+	/**
+	 * "Kanten" changed: a new mode, shape or size.
+	 *
+	 * It changes what a search is being asked for, so a heart found under the old
+	 * frame stops being the answer and the page goes back to the mask, exactly as
+	 * it does after a stroke. It also changes which cells the symmetry rows apply
+	 * to — the band's are excluded while it is free — which is why it goes through
+	 * the store's `setFrame` and not through an assignment: the store folds the
+	 * mask to the region the new frame means.
+	 */
+	function applyFrame(next: Frame): void {
+		setFrame(next);
+		revision++;
+		backToMask();
+	}
+
+	/**
+	 * The mask as it stands, on the undo stack, before a gesture moves the frame.
+	 *
+	 * That fold is an edit like any other: widening the motif folds band paint the
+	 * rows had left alone, and narrowing it stops folding paint that was folded —
+	 * so without this a drag of the Størrelse handle would rewrite cells the
+	 * visitor could not get back. Once per gesture, not once per pointermove:
+	 * both the slider and the canvas handle say when one begins.
+	 *
+	 * With no row on there is nothing to fold and nothing to record. As with
+	 * `changeSymmetry`, the fold does not mark the mask dirty — it is the
+	 * visitor's own instruction, not an edit they have yet to notice.
+	 */
+	function recordFrameFold(): void {
+		if (!transformsFor(session.symmetry).length) return;
+		const step = currentStep();
+		if (!step) return;
+		record(history, step);
+		syncHistoryFlags();
+	}
+
+	/** A dragged handle, which arrives many times a second and only moves the size. */
+	function resizeFrame(size: number): void {
+		if (size === session.frame.size) return;
+		applyFrame({ ...session.frame, size: clampFrameSize(size) });
+	}
+
+	/**
+	 * What the mask is symmetric under, judged on the visitor's own motif.
+	 *
+	 * With a free band the band is about to be replaced by a woven pattern, so its
+	 * colours must not decide whether the picture is symmetric (PAINT.md §11).
+	 * Every mask that arrives is judged here — "Prøv stjernen" and the import
+	 * dialog alike, which is why the dialog is handed this function rather than
+	 * calling `detectSymmetry` itself: a photo crop's corners are exactly the part
+	 * a free band throws away, so they must not decide the rows either.
+	 */
+	function detectOn(mask: Mask): SymmetrySettings {
+		const region =
+			session.frame.mode === 'free' ? shapeCells(session.frame, mask.size) : undefined;
+		return detectSymmetry(mask, undefined, region);
+	}
+
 	function changeSymmetry(next: SymmetrySettings): void {
 		// Switching a row on folds the mask, which is an edit the visitor may want
 		// back — so it goes on the undo stack like any other, with the rows it was
@@ -424,7 +495,7 @@
 			const prepared = await prepareImage(decoded.input, { paperColors: paperPair(colors) });
 			const mask = maskFromPrepared(prepared);
 			session.status = 'idle';
-			onImported(mask, detectSymmetry(mask), 'star.png');
+			onImported(mask, detectOn(mask), 'star.png');
 		} catch (err) {
 			console.error('Loading the star example failed', err);
 			session.status = 'idle';
@@ -476,7 +547,21 @@
 			setSymmetry(session.symmetry);
 			revision++;
 
-			await prepareMask(mask, colors, (next) => (stage = next));
+			// What the engine is actually asked to weave. With the band fixed that is
+			// the visitor's mask; with it free the band is replaced by a checker weave
+			// first, because the engine cannot yet be told to ignore a cell — see
+			// `frameWeights` and PAINT.md §11. The visitor's own mask is untouched.
+			//
+			// Nothing folds the target afterwards: the motif came out of the fold
+			// above, and the woven band is symmetric under every symmetry of the
+			// square by construction ($lib/paint/frame). A second fold over the whole
+			// square would undo both — it halved the checker whenever the block count
+			// was even, and it averaged the motif's own edge cells together with the
+			// band the checker had just overwritten.
+			const frame = { ...session.frame };
+			const target = solveTargetMask(mask, frame, advanced.frameCells);
+
+			await prepareMask(target, colors, (next) => (stage = next));
 			const solved = await findCuts(
 				{
 					colors,
@@ -500,11 +585,17 @@
 
 			// The difference the panel reports is measured on the heart about to be
 			// shown, not on the engine's own number: that one describes the solution
-			// before simplifying and before the symmetry correction moved it.
-			const mismatch = maskMismatch(
-				rasterizeDesign(converted.design, COMPARE_SIZE).data,
-				resample(mask.data, mask.size, COMPARE_SIZE)
-			);
+			// before simplifying and before the symmetry correction moved it. It is
+			// measured against the target the engine was given, not against the mask
+			// on screen, because with a free band those differ — and asking a heart to
+			// match a band nobody asked it to weave would be a number about nothing.
+			const woven = rasterizeDesign(converted.design, COMPARE_SIZE).data;
+			const wanted = resample(target.data, target.size, COMPARE_SIZE);
+			const mismatch = maskMismatch(woven, wanted);
+			// Inside the protected motif the target *is* the visitor's mask, so this
+			// is the number that says whether they got their own picture back.
+			const motifMismatch =
+				frame.mode === 'free' ? mismatchInside(woven, wanted, COMPARE_SIZE, frame) : undefined;
 
 			// The rows the panel shows are the converter's, not `solved.report.symmetry.
 			// honoured` (PAINT.md §11). Both are true statements about different
@@ -527,6 +618,7 @@
 					cuts: [solved.report.slits.left, solved.report.slits.right],
 					clearanceMm: solved.report.validation.minimumInterSlitDistanceLower,
 					mismatch,
+					motifMismatch,
 					identical: solved.report.solver.matchingPreference?.identical ?? false
 				}
 			};
@@ -669,6 +761,9 @@
 								colors={session.result.design.colors}
 								size={520}
 							/>
+							{#if showMotif && session.result.report.motifMismatch !== undefined}
+								<FrameOutline design={session.result.design} frame={session.frame} size={520} />
+							{/if}
 						</div>
 						<!-- The whole card is the way back: it used to carry a "Ret masken"
 						     link of its own next to the panel's "Tilbage til masken", which
@@ -687,6 +782,7 @@
 									brush={BRUSH_RADII[brushSize]}
 									{paintValue}
 									{revision}
+									frame={session.frame}
 									disabled
 									onEditStart={() => {}}
 									onEditEnd={() => {}}
@@ -706,6 +802,9 @@
 							brush={BRUSH_RADII[brushSize]}
 							{paintValue}
 							{revision}
+							frame={session.frame}
+							onFrameSizeStart={recordFrameFold}
+							onFrameSize={resizeFrame}
 							disabled={busy}
 							keyboardBusy={dialogOpen}
 							{onEditStart}
@@ -851,6 +950,16 @@
 						found={session.found}
 						disabled={busy || showingResult}
 					/>
+					<!-- Kanten sits under Værktøj in the same column (PAINT.md §11): it is
+					     about the picture, not about the search, and the visitor sets it
+					     while they paint. -->
+					<FramePanel
+						{lang}
+						frame={session.frame}
+						onFrameStart={recordFrameFold}
+						onFrame={applyFrame}
+						disabled={busy}
+					/>
 	{/snippet}
 
 	{#snippet cutsPanel()}
@@ -862,6 +971,9 @@
 						result={session.result}
 						{showingResult}
 						{honoured}
+						frame={session.frame}
+						{showMotif}
+						onShowMotif={(next) => (showMotif = next)}
 						{elapsed}
 						{stage}
 						{advanced}
@@ -878,6 +990,7 @@
 	<ImportImageDialog
 		{lang}
 		open={showImport}
+		detect={detectOn}
 		onClose={() => (showImport = false)}
 		onUse={(mask, found) => onImported(mask, found)}
 	/>

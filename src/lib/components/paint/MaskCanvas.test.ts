@@ -20,6 +20,7 @@ import MaskCanvasFixture from './MaskCanvasFixture.svelte';
 import { createMask, type Mask } from '$lib/paint/mask';
 import { fitHeart, toScreen } from '$lib/paint/heartLayout';
 import { ROTATE_GAP_PX, placementOf, rotateHandleAt } from '$lib/paint/selection';
+import { DEFAULT_FRAME, type Frame } from '$lib/paint/frame';
 import { NO_SYMMETRY, type SymmetrySettings } from '$lib/paint/symmetry';
 import type { PaintTool } from '$lib/paint/toolset';
 
@@ -78,6 +79,7 @@ function render(
 		brush?: number;
 		symmetry?: SymmetrySettings;
 		fill?: 0 | 1;
+		frame?: Frame;
 	} = {}
 ): Harness {
 	const mask = createMask(options.fill ?? 0, SIZE);
@@ -94,6 +96,9 @@ function render(
 			brush: options.brush ?? 2,
 			paintValue: options.paintValue ?? 1,
 			revision: 0,
+			// Fast by default, which is the canvas the painting tests want: nothing is
+			// protected, so the band draws nothing over the cells they sample.
+			frame: options.frame ?? { ...DEFAULT_FRAME },
 			onEditStart: () => {},
 			onEditEnd: () => {
 				harness.edits++;

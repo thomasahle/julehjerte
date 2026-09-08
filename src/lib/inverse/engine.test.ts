@@ -1,11 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMask, MASK_SIZE, type Mask } from '$lib/paint/mask';
+import { insideCell } from '$lib/paint/frame';
 import { symmetrize } from '$lib/paint/symmetry';
 import {
 	ADVANCED_LIMITS,
 	clampAdvanced,
 	ENGINE_SYMMETRY,
 	engineSymmetry,
+	frameWeights,
 	maskPrepareSettings,
 	maskToPixels,
 	solveSettings,
@@ -391,5 +393,36 @@ describe('the engine door', () => {
 		expect((workers[0]!.postMessage.mock.calls[1]![0] as { action: string }).action).toBe('solve');
 		reply(workers[0]!, 1, { type: 'result', result: 'the cuts' });
 		await expect(cuts).resolves.toBe('the cuts');
+	});
+});
+
+describe('frameWeights', () => {
+	const FREE = { mode: 'free' as const, shape: 'diamond' as const, size: 0.64 };
+
+	it('is 1 inside the protected motif and 0 in a free band', () => {
+		const mask = createMask(0, 40);
+		const weights = frameWeights(mask, FREE);
+		expect(weights).toHaveLength(mask.data.length);
+		for (let y = 0; y < mask.size; y++) {
+			for (let x = 0; x < mask.size; x++) {
+				const want = insideCell(FREE, mask.size, x, y) ? 1 : 0;
+				expect([x, y, weights[y * mask.size + x]]).toEqual([x, y, want]);
+			}
+		}
+	});
+
+	it('is 1 everywhere while the band is fixed', () => {
+		const weights = frameWeights(createMask(0, 20), { ...FREE, mode: 'fixed' });
+		expect([...weights].every((w) => w === 1)).toBe(true);
+	});
+
+	it('is not sent to the engine yet, because the engine cannot read it', () => {
+		// PAINT.md §11 and docs/inverse/MOTIF-BORDER.md: the fitter's loss has no
+		// per-cell weight, and a neutral 0.5 probability is not the same as an
+		// ignored cell. Until Codex's lane lands, a free band travels as
+		// `substituteCheckerBand`'s woven pattern instead — so no key of the solve
+		// settings may carry weights, or a reader would think the engine honours them.
+		const sent = solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY });
+		expect(Object.keys(sent).some((key) => /weight/i.test(key))).toBe(false);
 	});
 });

@@ -247,6 +247,20 @@ export const translations = {
     paintsWith: 'Maler med',
     paintsWithLeft: 'Venstre laps farve',
     paintsWithRight: 'Højre laps farve',
+
+    // Mal: "Kanten" — det beskyttede motiv og båndet uden om (PAINT.md §11)
+    paintFrame: 'Kanten',
+    paintFrameFixed: 'Fast',
+    paintFrameFree: 'Fri',
+    paintFrameShape: 'Form',
+    paintFrameShapeDiamond: 'Rude',
+    paintFrameShapeCircle: 'Cirkel',
+    paintFrameShapeHexagon: 'Sekskant',
+    paintFrameSize: 'Størrelse',
+    paintFrameHintFixed: 'Hele firkanten væves, som du har malet den.',
+    paintFrameHintFree: 'Motivet inden for formen holdes; uden om vælger maskinen selv et vævet mønster. Du kan stadig male i båndet – det tælles bare ikke med.',
+    paintFrameCells: 'Rammens felter',
+    paintShowMotif: 'Vis det beskyttede motiv',
     paintClearTitle: 'Ryd masken?',
     paintClearPrompt: 'Alt det, du har malet, forsvinder. Det kan ikke fortrydes bagefter.',
     paintClearConfirm: 'Ryd masken',
@@ -280,6 +294,10 @@ export const translations = {
     paintFound: 'Skabelonen er fundet.',
     /** {left}, {right} = snit i hver lap; {clearance} = mm; {mismatch} = procent */
     paintFoundSummary: '{left} + {right} snit · mindst {clearance} mm mellem snittene · {mismatch}% forskel fra masken',
+    /** {motif} = afvigelse inden i formen; {mismatch} = afvigelse i hele firkanten */
+    paintFoundMotifSummary: '{motif}% afvigelse i motivet · {mismatch}% i hele firkanten',
+    /** {left}, {right} = snit i hver lap; {clearance} = mm */
+    paintFoundCuts: '{left} + {right} snit · mindst {clearance} mm mellem snittene',
     paintFoundIdentical: 'Begge lapper klippes efter samme skabelon.',
     paintSymmetryNotHeld: 'Symmetrien kunne ikke holdes helt; hjertet vises som motoren fandt det.',
     paintOpenInDraw: 'Åbn i Tegn',
@@ -688,6 +706,20 @@ export const translations = {
     paintsWith: 'Paints with',
     paintsWithLeft: "The left lobe's colour",
     paintsWithRight: "The right lobe's colour",
+
+    // Paint mode: "Kanten" — the protected motif and the band around it (§11)
+    paintFrame: 'Border',
+    paintFrameFixed: 'Fixed',
+    paintFrameFree: 'Free',
+    paintFrameShape: 'Shape',
+    paintFrameShapeDiamond: 'Diamond',
+    paintFrameShapeCircle: 'Circle',
+    paintFrameShapeHexagon: 'Hexagon',
+    paintFrameSize: 'Size',
+    paintFrameHintFixed: 'The whole square is woven exactly as you painted it.',
+    paintFrameHintFree: 'The motif inside the shape is kept; outside it the machine picks a woven pattern of its own. You can still paint in the band — it simply does not count.',
+    paintFrameCells: 'Squares in the border',
+    paintShowMotif: 'Show the protected motif',
     paintClearTitle: 'Clear the mask?',
     paintClearPrompt: 'Everything you have painted goes. This cannot be undone afterwards.',
     paintClearConfirm: 'Clear the mask',
@@ -721,6 +753,10 @@ export const translations = {
     paintFound: 'The template has been found.',
     /** {left}, {right} = cuts per lobe; {clearance} = mm; {mismatch} = per cent */
     paintFoundSummary: '{left} + {right} cuts · at least {clearance} mm between cuts · {mismatch}% different from the mask',
+    /** {motif} = difference inside the shape; {mismatch} = difference over the whole square */
+    paintFoundMotifSummary: '{motif}% different in the motif · {mismatch}% over the whole square',
+    /** {left}, {right} = cuts in each lobe; {clearance} = mm */
+    paintFoundCuts: '{left} + {right} cuts · at least {clearance} mm between cuts',
     paintFoundIdentical: 'Both lobes are cut from the same template.',
     paintSymmetryNotHeld: 'The symmetry could not be held exactly; the heart is shown as the engine found it.',
     paintOpenInDraw: 'Open in Draw',

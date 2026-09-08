@@ -482,34 +482,76 @@ weaves the colour-swapped picture), so a failure under symmetry should suggest s
 it, and the notice when it differs from the request, exactly as with the converter's `honoured`. `symmetrize` on
 the mask and `enforce` in the converter stay as the safety net for the MILP route and for `withinCurve` Anti.
 
-**Free and soft cells are the next stage, and the engine side is Codex's.** Codex's motif-border experiment
+**Free cells shipped without the engine's weights; soft cells wait for them.** Codex's motif-border experiment
 (docs/inverse/MOTIF-BORDER.md) shows that an isolated painted motif needs a band of cells the engine may fill with
 a supporting weave, and that a photo crop whose corners sat a little outside the heart needs a band where the
-engine may *change a few cells* while keeping the rest. Both need explicit per-cell loss weights in the engine (a
-0.5 probability is not ignored). Codex is building that on their branch; we port it when it lands and do not build
-it here. The UI is designed now (mockup, section "Frie felter") so the paint mode fits it from the start:
+engine may *change a few cells* while keeping the rest. The second of those needs explicit per-cell loss weights in
+the engine (a 0.5 probability is not ignored) and is Codex's lane; the first works with today's engine the way
+their benchmark did, by preparing a different target, and is built (`$lib/paint/frame`, `FramePanel.svelte`).
 
-- The band outside a protected shape has three states, one segmented control "Kanten: Fast / Må rettes / Fri".
-  *Fast* = as painted (today). *Må rettes* = the engine keeps the cells but may change the ones it must, at a
-  cost (loss weight about 0.25 plus a penalty on changed cells; Codex's "repair the border"). *Fri* = the engine
-  fills the band itself (weight 0; the band's colours are ignored).
-- The protected shape is chosen as it appears in the heart: Rude (the band along the woven square's edges),
-  Cirkel, Sekskant (flat top and bottom as seen in the heart). Its size is set two ways: a "Størrelse" slider in
-  the panel (the shape's span as a share of the square, 30–84 %, default 64 %, i.e. Codex's 18 % inset) and four
-  drag handles on the outline where the heart's up/right/down/left axes meet it; the shape stays centred.
-- Drawing: soft cells keep their colours under a light hatch; free cells are hatched on a light ground; the
-  protected shape has a dashed outline. "Maler med" gets a third, hatched swatch to paint free cells by hand.
-- Model: the mask keeps its colour cells and gains a per-cell weight layer (fixed 1, soft, free 0) — a third
-  colour value would lose the soft state's colours. `detectSymmetry` ignores free cells; the bridge sends the
-  weights; the result panel reports three numbers separately: the difference inside the protected motif, the share
-  of band cells the engine changed, and the whole square.
+- The band outside a protected shape has a segmented control "Kanten: Fast / Fri" in a panel of its own in Mal's
+  left column, under Værktøj and Symmetri. *Fast* = as painted, which is what a heart made without thinking about
+  the frame still is. *Fri* = the search fills the band itself; the band's colours are ignored. The third state
+  *Må rettes* — the engine keeps the cells but may change the ones it must, at a cost (loss weight about 0.25 plus
+  a penalty on changed cells; Codex's "repair the border") — is **not shown at all** rather than shown disabled:
+  an option nobody can pick is a promise, and this one has no date on it.
+- The protected shape is chosen as it appears in the heart: Rude (the band along the woven square's edges, i.e. an
+  inset square in mask coordinates), Cirkel, Sekskant (flat top and bottom as seen in the heart, i.e. turned −45°
+  in mask coordinates). Its size is set two ways: a "Størrelse" slider in the panel and four drag handles on the
+  outline where the heart's up/right/down/left axes meet it; the shape stays centred. One number for all three
+  shapes — the span of the shape's bounding box **in the square's own axes**, 30–84 %, default 64 %, which is
+  Codex's 18 % inset whichever shape is chosen.
+- Drawing: free cells are hatched on a light ground that covers the mask's own colours there, and the protected
+  shape has a dashed outline with the four handles on it. Painting in the band still works — the cells exist, they
+  are simply not part of what the search is asked for. Fast draws nothing. Soft cells (colours kept under a
+  lighter hatch) and the third, hatched "Maler med" swatch for painting free cells by hand arrive with weights.
+- Model: the frame is a setting beside the mask, `session.frame = { mode, shape, size }`, not a layer inside it —
+  the band's cells are ordinary cells and the frame only says how the search should read them. The weight layer
+  the soft state needs (fixed 1, soft, free 0; a third colour value would lose the soft state's colours) replaces
+  `frameWeights`, not this. `symmetrize` and `detectSymmetry` take an optional region, so the rows are judged and
+  folded on the protected motif alone while the band is free; painting still mirrors everything.
+- Until the engine takes weights, a free band reaches it as a **checker weave**: `substituteCheckerBand` keeps every
+  cell inside the shape and replaces the band with a checker of `cells × cells` blocks over the square, `cells`
+  being an "Avanceret" number "Rammens felter" (3–5, default 4, the range and the winner of Codex's benchmark),
+  offered only while the band is free. The phase is the one that agrees with the visitor's own band cells more
+  often; where the band is thinner than one checker block — above 50 % of the square at four blocks a side, 60 % at
+  five, a third at three — those cells *are* the collar along the protected outline, so that is the same thing as
+  continuing the colour the motif has at its edge, and below that it is simply a vote over the whole band. A tie
+  keeps phase 0. The whole substitution is one function, to be deleted when weights arrive.
+- **The blocks are counted from the centre of the square, and the target is not folded afterwards.** The mask
+  arrives at the substitution already folded under the rows (the motif alone while the band is free) and the
+  checker is invariant under all eight symmetries of the square by construction, so the target is symmetric as it
+  comes. Folding it again — which the first build did — was wrong twice over. A checker counted from a *corner* is
+  its own negative under a mirror whenever the block count is even, so at the default of four the fold replaced the
+  band with blocks of twice the size: an effective count of two, outside `ADVANCED_LIMITS.frameCells` and outside
+  anything Codex's benchmark measured. And the same fold averaged the motif's own edge cells together with the band
+  the checker had just overwritten, against MOTIF-BORDER.md's premise that no cell of the centre is changed.
+  Counted from the centre, a mirror sends block `j` to `−j`, whose parity is `j`'s, and the pattern survives every
+  symmetry whatever the count and whether or not the block width divides the mask. Where the shape is one the
+  mirrors do not map onto itself — the hexagon, which they turn a quarter turn — the cells along its edge are left
+  unfolded and keep exactly what the visitor painted; the target is then symmetric everywhere but on that thin
+  edge, and the engine's own symmetrisation absorbs it.
+- Changing "Kanten" **is an edit**, not only a setting: the region the rows fold over moves with the shape, so a
+  change folds band paint away or stops folding motif paint. Mal records one undo step per gesture
+  (`recordFrameFold`; the Størrelse slider and the canvas handle both say when a gesture begins, so a drag is one
+  step and not sixty) and, like a change of rows, does not mark the mask dirty — the fold is the visitor's own
+  instruction, not an edit they have yet to notice.
+- The result panel reports the difference **inside the protected motif first** and the whole square second, both
+  measured against the target the engine was given (the number MOTIF-BORDER.md asks for: its three-cell house
+  passes the whole-image bar at 1.89 % with a centre that is 4.60 % wrong). A checkbox "Vis det beskyttede motiv"
+  lays the outline over the found heart. The third number — the share of band cells the engine changed — belongs
+  to the soft state and arrives with it.
 - The "Kanten" panel lives in Mal only, not in the import dialog: it applies to painted and imported masks
-  alike. After a photo import the panel may default to Må rettes.
+  alike. After a photo import the panel may default to Må rettes, once that state exists. The dialog does not
+  detect symmetry itself, though: it is handed the page's `detectOn`, so an imported mask's rows are judged on the
+  protected motif exactly as a painted one's are — a crop's corners are the untrustworthy part, and the reason the
+  band exists, so they must not decide the rows that are about to fold the picture.
 
-Until the engine supports weights, nothing of this is shown. Keep the door open: nothing may assume every cell is
-fixed, and the mask type must be extensible with a weight layer without touching the tools' signatures. The pattern
-is the norm, not the exception: flettedehjerter.dk's archive of a hundred-odd hearts is central motifs inside a
-woven frame, and several of Codex's photo benchmarks (puppy, Stonehenge, viking ship) come from it.
+`frameWeights(mask, frame)` in `$lib/inverse/engine` returns the per-cell weights (1 inside, 0 in a free band) and
+is **sent nowhere**: the fitter's loss has no per-cell weight to take. It is written and tested now so that the day
+Codex's lane lands the change is one settings key there and one deleted function in `$lib/paint/frame`. The
+pattern is the norm, not the exception: flettedehjerter.dk's archive of a hundred-odd hearts is central motifs
+inside a woven frame, and several of Codex's photo benchmarks (puppy, Stonehenge, viking ship) come from it.
 
 **Session store as landed.** `session` is a class instance: `mask` and `result` are `$state.raw` (replace, never
 mutate for reactivity; the canvas repaints by box), the small fields plain `$state`. Callers use `setMask(mask,

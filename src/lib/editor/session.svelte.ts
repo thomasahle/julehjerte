@@ -27,6 +27,14 @@ import type { HeartDesign } from '$lib/types/heart';
 import { clearHandoff, handoffToDraw, takeHandoff } from './handoff';
 import { createMask, packMask, unpackMask, type Mask } from '$lib/paint/mask';
 import {
+	clampFrameSize,
+	DEFAULT_FRAME,
+	shapeCells,
+	type Frame,
+	type FrameMode,
+	type FrameShape
+} from '$lib/paint/frame';
+import {
 	NO_SYMMETRY,
 	symmetrize,
 	transformsFor,
@@ -38,6 +46,10 @@ import {
 // from here so nothing has to reach into $lib/paint to name a symmetry.
 export type { SymmetryMode, SymmetrySettings };
 export { NO_SYMMETRY };
+
+// The frame is the same kind of setting, so it travels the same way.
+export type { Frame, FrameMode, FrameShape };
+export { DEFAULT_FRAME };
 
 /** Where Find snit has got to. `importing` covers preparing a picture in the dialog. */
 export type PaintStatus = 'idle' | 'importing' | 'searching' | 'done' | 'failed';
@@ -53,7 +65,21 @@ export type PaintError = { kind: PaintErrorKind; detail?: string };
 /** A found heart and the numbers the panel reports: cuts per lobe, clearance, difference. */
 export type PaintResult = {
 	design: HeartDesign;
-	report: { cuts: [number, number]; clearanceMm: number; mismatch: number; identical: boolean };
+	report: {
+		cuts: [number, number];
+		clearanceMm: number;
+		mismatch: number;
+		identical: boolean;
+		/**
+		 * The difference inside the protected motif alone, when the band was free.
+		 *
+		 * Reported separately because a large, accurately woven band dilutes an error
+		 * in the middle: MOTIF-BORDER.md's three-cell house passes the whole-image
+		 * bar at 1.89 % while its centre is 4.60 % wrong. Undefined when the band was
+		 * fixed, where the whole square *is* the motif.
+		 */
+		motifMismatch?: number;
+	};
 };
 
 export type PaintSession = {
@@ -71,6 +97,16 @@ export type PaintSession = {
 	error: PaintError | null;
 	/** The file or example the mask came from, e.g. "stjerne.png"; null when painted by hand. */
 	sourceName: string | null;
+	/**
+	 * "Kanten": which part of the square is the visitor's motif, and what happens
+	 * to the band around it (PAINT.md §11).
+	 *
+	 * A setting beside the mask and not a layer inside it: the cells of the band
+	 * exist and are painted on like any others, and the frame only says how the
+	 * search should read them. That is also what keeps the door open for Codex's
+	 * per-cell weights — a weight layer replaces `frameWeights`, not this.
+	 */
+	frame: Frame;
 };
 
 function freshSession(): PaintSession {
@@ -82,7 +118,8 @@ function freshSession(): PaintSession {
 		result: null,
 		status: 'idle',
 		error: null,
-		sourceName: null
+		sourceName: null,
+		frame: { ...DEFAULT_FRAME }
 	};
 }
 
@@ -101,6 +138,7 @@ class Session implements PaintSession {
 	status = $state<PaintStatus>('idle');
 	error = $state<PaintError | null>(null);
 	sourceName = $state<string | null>(null);
+	frame = $state<Frame>({ ...DEFAULT_FRAME });
 }
 
 export const session: PaintSession = new Session();
@@ -158,9 +196,40 @@ export function setSymmetry(next: SymmetrySettings): void {
 	foldToSymmetry();
 }
 
+/**
+ * Change the frame, and fold the mask to whatever the rows now mean.
+ *
+ * Switching the band free narrows the region the fold covers, so the mask has to
+ * be folded again — the other way round, switching it back to Fast, the band has
+ * to catch up with the rows it was never folded under. Moving the shape's edge
+ * does both at once, over the ring of cells that changed sides.
+ *
+ * So this *does* change cells, exactly as `setSymmetry` does, and for the same
+ * reason: painting under symmetry assumes the mask already matches the rows
+ * inside the region. The page therefore puts a frame change on the undo stack
+ * (one step per gesture, not per pointer event — `recordFrameFold` in
+ * PaintPage.svelte), and, as with the rows, does not mark the mask dirty: the
+ * fold is the visitor's own instruction rather than an edit they have yet to
+ * notice.
+ */
+export function setFrame(next: Frame): void {
+	session.frame = { ...next };
+	foldToSymmetry();
+}
+
+/**
+ * The cells the symmetry rows apply to: the whole square, or — while the band is
+ * free — the protected motif alone. Undefined rather than an all-ones array when
+ * everything counts, so the common case costs nothing.
+ */
+export function symmetryRegion(): Uint8Array | undefined {
+	if (!session.mask || session.frame.mode !== 'free') return undefined;
+	return shapeCells(session.frame, session.mask.size);
+}
+
 /** Make the mask exactly symmetric under the rows that are on. */
 function foldToSymmetry(): void {
-	if (session.mask) symmetrize(session.mask, transformsFor(session.symmetry));
+	if (session.mask) symmetrize(session.mask, transformsFor(session.symmetry), symmetryRegion());
 }
 
 /** Ryd: an empty mask, and nothing left to say about where it came from. */
@@ -197,6 +266,7 @@ export type SerializedSession = {
 	symmetry: SymmetrySettings;
 	found: SymmetrySettings | null;
 	sourceName: string | null;
+	frame: Frame;
 };
 
 export function serialize(): SerializedSession {
@@ -204,12 +274,24 @@ export function serialize(): SerializedSession {
 		mask: session.mask ? { size: session.mask.size, cells: packMask(session.mask) } : null,
 		symmetry: { ...session.symmetry },
 		found: session.found ? { ...session.found } : null,
-		sourceName: session.sourceName
+		sourceName: session.sourceName,
+		frame: { ...session.frame }
 	};
 }
 
 function isMode(value: unknown): value is SymmetryMode {
 	return value === 'off' || value === 'sym' || value === 'anti';
+}
+
+/** A frame out of stored data; anything unreadable falls back to the default. */
+function readFrame(value: unknown): Frame {
+	if (!value || typeof value !== 'object') return { ...DEFAULT_FRAME };
+	const v = value as Record<string, unknown>;
+	const mode: FrameMode = v.mode === 'free' ? 'free' : 'fixed';
+	const shape: FrameShape =
+		v.shape === 'circle' || v.shape === 'hexagon' ? v.shape : DEFAULT_FRAME.shape;
+	const size = typeof v.size === 'number' ? clampFrameSize(v.size) : DEFAULT_FRAME.size;
+	return { mode, shape, size };
 }
 
 function readSettings(value: unknown): SymmetrySettings | null {
@@ -242,5 +324,6 @@ export function restore(raw: unknown): boolean {
 	session.symmetry = symmetry;
 	session.found = readSettings(r.found);
 	session.sourceName = typeof r.sourceName === 'string' ? r.sourceName : null;
+	session.frame = readFrame(r.frame);
 	return true;
 }
