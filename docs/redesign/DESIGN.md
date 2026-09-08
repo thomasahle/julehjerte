@@ -100,9 +100,16 @@ width and are switched with `display: none`, deliberately: the server render and
 to be identical, so the choice cannot be made from a media-query store. It costs eight prerendered hearts.
 
 **Random hearts:** the page is prerendered with the fixed set `nemt-hjerte, snowflake, jul, classic-3x3,
-stjerne`; after hydration pick five distinct random gallery hearts and cross-fade them (opacity, ~400ms) into
-the same slots. Sizes and positions never change, so there is no layout shift. Never repeat a heart within
-the set; user-created hearts are excluded.
+stjerne`, and a short inline `<script>` emitted straight after the gallery swaps in five distinct random ones
+while the page is still parsing (`$lib/front/heroBootstrap`, `front/HeroBootstrap.svelte`). It picks gallery
+cards, clones each card's finished SVG into the slot, renames the clone's clip-path ids, copies the ribbon
+colour and rewrites the slot's `#heart-<id>` link and its label. So it needs no heart data and no app: it
+runs before any module script and before DOMContentLoaded, and the hero is filled before the first paint.
+The slots are `visibility: hidden` until it sets `html.hero-ready`, so no frame ever shows the fixed set —
+that set exists for `html.no-js` and for crawlers. Sizes and positions never change, so there is no layout
+shift, and no fade: the hearts are there from the first frame that has anything in it. Never repeat a heart
+within the set; user-created hearts are not in the HTML, so they are excluded by construction. The load
+function reads the draw back off `html[data-hero-hearts]` so hydration renders the same links.
 
 ### Hero (< 900px)
 Stacked and centred (padding `0 24px 22px`): a hearts block (width 100%, max 420, height 250) with three
@@ -118,7 +125,7 @@ Give the stacked hero `.hero { display:flex; flex-direction:column }` and the la
 note that a flex container paints absolutely positioned children in order-modified document order, hence the
 `z-index:1` on the hint and the corner firs. No steps strip on small screens.
 
-### Hanging heart component (`HangingHeart.svelte`, props: id/design, size, ribbon, delay, color)
+### Hanging heart component (`HangingHeart.svelte`, props: design or markup, colors, size, ribbon, delay)
 ```
 .hang  { display:flex; flex-direction:column; align-items:center; width:{size}px; max-width:100%;
          transform-origin:50% 0; animation: sway 7s ease-in-out infinite alternate; animation-delay:{delay}s }
@@ -130,7 +137,11 @@ ribbon { width:max(8px, round(size*0.055)px); height:{ribbon + round(size*0.24)}
 @keyframes sway { from { transform: rotate(-1.4deg) } to { transform: rotate(1.4deg) } }
 @media (prefers-reduced-motion: reduce) { .hang { animation:none } }
 ```
-The heart itself is the existing `PaperHeartSVG` (read-only render), white + red as today.
+The heart itself is the existing `PaperHeartSVG` (read-only render), white + red as today — drawn at
+prerender time and handed to the block as `markup` on the front page, where the browser never rebuilds it
+(see `$lib/front/galleryHearts`). A frozen heart cannot repaint itself, so the footer's swatches reach its
+paper through the `--paper-left` / `--paper-right` tokens instead; the ribbon stays a real element and
+follows the colour store as before.
 
 ### Gallery
 `main.gallery` max-width 1280, padding `24px 40px 56px` (→ `16px 24px 40px` < 900, `16px 16px 32px` < 600),
@@ -175,9 +186,16 @@ Card (`article.card`, relative, flex column centred, height size+136 with size 1
 - phones: `.card-heart .hang { max-width: 88% }`.
 Keep the URL `?selected=` state, the PDF flow and analytics events exactly as today.
 
-Scroll animation: each card fades in and slides up 20px the first time it enters the viewport
-(IntersectionObserver, once, ~450ms ease-out, stagger by column index); off under reduced motion. No parallax,
-no lazy loading — all hearts stay prerendered in the HTML.
+Scroll animation: there is none. Every heart is already drawn in the HTML the browser is parsing, so a card
+that fades in as it reaches the viewport is a page pretending to load something it has already got — and the
+observer per card, plus the opacity it starts at, was work and risk spent on saying so. Cards are simply
+there, at full opacity, from the first paint. No parallax and no lazy loading either.
+
+`content-visibility: auto` on the cards was measured against this and dropped: interleaved A/B at 390px with
+the CPU throttled 4×, scrolling the gallery down and back, it roughly doubled the main thread's work over the
+scroll (median 304 ms of tasks against 168 ms) and pushed the 95th-percentile frame from 18 ms to 32 ms,
+because every card entering the viewport then has to be laid out and painted from nothing. It buys a little
+on the mean frame and nothing else; the hearts are cheap to keep painted.
 
 Gallery frame (≥ 1400px only, `display:none` below): an absolute, pointer-events-none SVG over the gallery
 wrapper (`viewBox 0 0 1440 H`, `xMinYMin meet`, height H = gallery height) with edge firs, holly, stars and
