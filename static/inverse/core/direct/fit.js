@@ -4,7 +4,7 @@
 import {fitGrid,gridPaths,gridMask,gridControls} from './grid.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves,fittingMargin} from './refine.js';
-import {recoverShared} from './share.js';
+import {recoverShared,finalizeShared} from './share.js';
 import {sampleWeave,validate} from '../validate.js';
 import {matchingGrid,matchingSummary,symmetryEvidence} from './matching.js';
 import {applyTies,orbitMean,symmetryOrbit,symmetryTies} from './symmetry.js';
@@ -30,7 +30,11 @@ function refloor(result,floor){
 export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initializeCounts}={}){
   const start=performance.now();
   const solution=await fitIndependent(input,{...cfg,preferMatchingSheets:false},onProgress,countSearch);
-  const result=preferMatchingSolution(solution,cfg,{deadline:start+Math.min(cfg.timeLimit,10)*1000-400,onProgress});
+  const matching=preferMatchingSolution(solution,cfg,{deadline:start+Math.min(cfg.timeLimit,10)*1000-400,onProgress});
+  // A narrow seam can score well while still spoiling an invisible shared cut.
+  // Repair the selected pair together, including its matching-sheet constraint.
+  // Keep export time in reserve and bound this pass within the requested budget.
+  const result=finalizeShared(matching,cfg,{deadline:Math.min(start+cfg.timeLimit*1000-1000,performance.now()+2000),onProgress});
   result.report.seconds=(performance.now()-start)/1000;
   return result;
 }

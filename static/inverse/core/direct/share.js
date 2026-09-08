@@ -5,8 +5,16 @@ import {Cubic,distance,unit,dot} from '../bezier.js';
 import {CurveGraph,renderCurves} from './curves.js';
 import {mismatch} from './grid.js';
 import {resize} from './math.js';
-import {validate,easeMetrics} from '../validate.js';
+import {validate,easeMetrics,sampleWeave} from '../validate.js';
 import {materialAudit} from '../material.js';
+import {matchingSummary} from './matching.js';
+import {applyTies,symmetryTies,symmetryReport} from './symmetry.js';
+import {requestedSymmetry} from '../settings.js';
+import {curvesOf} from '../graph.js';
+import {auditImageFeatures} from '../image-features.js';
+import {maskDisagreement} from './prefer-matching.js';
+
+const curveKey=p=>[p,p.toReversed()].map(c=>c.flat().map(v=>Math.round(v*1e7)).join(',')).sort()[0];
 
 function at(path,g,derivative=false){const i=Math.max(0,Math.min(path.length-1,Math.floor(g))),t=Math.max(0,Math.min(1,g-i)),c=new Cubic(path[i]);return derivative?c.derivative(t):c.point(t);}
 function samples(path,step=.2){
@@ -21,8 +29,9 @@ function samples(path,step=.2){
   }return out;
 }
 export function sharingCandidates(paths){
-  const all=paths.map(f=>f.map(p=>samples(p))),out=[],cell=.6;
+  const all=paths.map(f=>f.map(p=>samples(p))),keys=paths.map(f=>f.map(p=>p.map(curveKey))),out=[],cell=.6;
   all[1].forEach((B,j)=>{
+    const common=new Set(keys[1][j]);
     const bins=new Map();B.forEach((q,i)=>{const key=`${Math.floor(q.p[0]/cell)},${Math.floor(q.p[1]/cell)}`;if(!bins.has(key))bins.set(key,[]);bins.get(key).push(i);});
     all[0].forEach((A,i)=>{
       const matches=A.map(q=>{
@@ -32,7 +41,10 @@ export function sharingCandidates(paths){
       });
       for(let lo=0;lo<A.length;){if(!matches[lo]){lo++;continue;}let hi=lo+1;while(hi<A.length&&matches[hi])hi++;hi--;
         const length=A[hi].s-A[lo].s,a0=A[lo].g,a1=A[hi].g,b0=matches[lo].g,b1=matches[hi].g;
-        if(length>=3&&Math.abs(b1-b0)>.05&&Math.min(a0,paths[0][i].length-a1,b0,b1,paths[1][j].length-b0,paths[1][j].length-b1)>.005)out.push({i,j,a0,a1,b0,b1,length});
+        // Do not repeatedly subdivide a span that is already exactly shared.
+        // Require the same 3 mm minimum on the still-independent part of it.
+        let independentLength=0;for(let k=lo;k<hi;k++)if(!common.has(keys[0][i][Math.min(paths[0][i].length-1,Math.floor(A[k].g))]))independentLength+=A[k+1].s-A[k].s;
+        if(independentLength>=3&&Math.abs(b1-b0)>.05&&Math.min(a0,paths[0][i].length-a1,b0,b1,paths[1][j].length-b0,paths[1][j].length-b1)>.005)out.push({i,j,a0,a1,b0,b1,length});
         lo=hi+1;
       }
     });
@@ -41,6 +53,7 @@ export function sharingCandidates(paths){
 function subs(path,a,b){return path.flatMap((c,i)=>{const lo=Math.max(0,a-i),hi=Math.min(1,b-i);return hi-lo>1e-8?[new Cubic(c).subcurve(lo,hi).p]:[];});}
 export function shareReplacement(pathA,pathB,c){
   let{a0,a1,b0,b1}=c;
+  const blend=c.blend??.5,mix=(a,b)=>a.map((v,k)=>blend===.5?(v+b[k])/2:(1-blend)*v+blend*b[k]);
   const outward=(path,lo,hi)=>{if(distance(at(path,lo),at(path,Math.floor(lo)))<.65)lo=Math.floor(lo);if(distance(at(path,hi),at(path,Math.ceil(hi)))<.65)hi=Math.ceil(hi);return[lo,hi];};
   [a0,a1]=outward(pathA,a0,a1);if(b1>b0)[b0,b1]=outward(pathB,b0,b1);else[b1,b0]=outward(pathB,b1,b0);
   const fractions=[0,1];for(let g=Math.ceil(a0);g<=Math.floor(a1);g++)fractions.push((g-a0)/(a1-a0));for(let g=Math.ceil(Math.min(b0,b1));g<=Math.floor(Math.max(b0,b1));g++)fractions.push((g-b0)/(b1-b0));
@@ -48,9 +61,9 @@ export function shareReplacement(pathA,pathB,c){
   const fs=[...new Set(fractions.map(v=>Math.round(Math.max(0,Math.min(1,v))*1e10)/1e10))].sort((a,b)=>a-b),shared=[];
   for(let i=1;i<fs.length;i++){
     const aa0=a0+(a1-a0)*fs[i-1],aa1=a0+(a1-a0)*fs[i],bb0=b0+(b1-b0)*fs[i-1],bb1=b0+(b1-b0)*fs[i];
-    const p0=at(pathA,aa0).map((v,k)=>(v+at(pathB,bb0)[k])/2),p3=at(pathA,aa1).map((v,k)=>(v+at(pathB,bb1)[k])/2);
+    const p0=mix(at(pathA,aa0),at(pathB,bb0)),p3=mix(at(pathA,aa1),at(pathB,bb1));
     if(distance(p0,p3)<1e-7)continue;
-    const v0=at(pathA,aa0,true).map((v,k)=>((aa1-aa0)*v+(bb1-bb0)*at(pathB,bb0,true)[k])/2),v1=at(pathA,aa1,true).map((v,k)=>((aa1-aa0)*v+(bb1-bb0)*at(pathB,bb1,true)[k])/2);
+    const v0=mix(at(pathA,aa0,true).map(v=>(aa1-aa0)*v),at(pathB,bb0,true).map(v=>(bb1-bb0)*v)),v1=mix(at(pathA,aa1,true).map(v=>(aa1-aa0)*v),at(pathB,bb1,true).map(v=>(bb1-bb0)*v));
     shared.push([p0,p0.map((v,k)=>v+v0[k]/3),p3.map((v,k)=>v-v1[k]/3),p3]);
   }
   if(!shared.length)throw new Error('No common curve span.');
@@ -62,24 +75,87 @@ export function shareReplacement(pathA,pathB,c){
   };
   return[replace(pathA,a0,a1,shared),replace(pathB,Math.min(b0,b1),Math.max(b0,b1),b1>b0?shared:shared.toReversed().map(p=>p.toReversed()))];
 }
+
+/** A shared span and its transpose must be edited together. Copying just one
+ * cut breaks the identical-sheet constraint; skipping sharing leaves hairline
+ * slivers between cuts that the area loss can barely see. */
+export function sharingReplacement(paths,c,{identicalSheets=false}={}){
+  const next=paths.map(f=>f.slice());
+  if(identicalSheets&&c.i===c.j){
+    // A cut meeting its own transpose can run along the diagonal (forward),
+    // or across it (backward). Both partners need the same interval and cubic
+    // subdivisions so the shared controls can also hold the symmetry ties.
+    const lo=Math.min(c.b0,c.b1),hi=Math.max(c.b0,c.b1);
+    if(Math.abs(c.a0-lo)>.05||Math.abs(c.a1-hi)>.05)return null;
+    const a0=Math.min(c.a0,lo),a1=Math.max(c.a1,hi);
+    c={...c,a0,a1,b0:c.b1>c.b0?a0:a1,b1:c.b1>c.b0?a1:a0};
+  }
+  const [a,b]=shareReplacement(paths[0][c.i],paths[1][c.j],c);
+  next[0][c.i]=a;next[1][c.j]=b;
+  if(identicalSheets&&c.i!==c.j){
+    const transpose=p=>p.map(curve=>curve.map(([x,y])=>[y,x]));
+    next[1][c.i]=transpose(a);next[0][c.j]=transpose(b);
+  }
+  return next;
+}
+
 export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},rounds=12}={}){
   let best=candidate;const accepted=[],rejected=[],bigN=Math.min(512,2*n),big=resize(prob,n,bigN);
+  // Other square/chord symmetries still require their own complete edit orbit.
+  // Never discard a requested constraint merely to remove a small image seam.
+  if(requestedSymmetry(cfg.symmetry).some(name=>name!=='transpose'))return{...best,sharing:{accepted,rejected,skipped:'unsupported_symmetry'}};
+  const identicalSheets=matchingSummary(best.graph.solution(best.points,best.phase,input)).identical;
   let bigError=mismatch(renderCurves(best.graph,best.points,best.phase,bigN,48),big);
   for(let round=0;round<rounds&&performance.now()<deadline;round++){
     const paths=best.graph.nested(best.points),before=best.graph.solution(best.points,best.phase,input),ease=easeMetrics(before,cfg);let changed=false;
-    for(const c of sharingCandidates(paths)){
+    proposals: for(const raw of sharingCandidates(paths))for(const blend of identicalSheets&&raw.i===raw.j?[.5]:[.5,0,1]){
+      const c={...raw,blend};
       if(performance.now()>deadline)break;
       try{
-        const next=paths.map(f=>f.slice()),pair=shareReplacement(paths[0][c.i],paths[1][c.j],c);next[0][c.i]=pair[0];next[1][c.j]=pair[1];
-        const graph=new CurveGraph(next,best.graph.width),points=graph.points,error=mismatch(renderCurves(graph,points,best.phase,n,48),prob);
+        const next=sharingReplacement(paths,c,{identicalSheets});if(!next)continue;
+        const graph=new CurveGraph(next,best.graph.width),points=graph.points;
+        if(identicalSheets){
+          const ties=symmetryTies(graph,{transpose:true});
+          if(ties.skipped.length||ties.conflicts.length)continue;
+          applyTies(ties,points,points,{fixed:graph.fixed,original:points.slice()});
+        }
+        const error=mismatch(renderCurves(graph,points,best.phase,n,48),prob);
         if(error>best.error+1e-12)continue;
         const highError=mismatch(renderCurves(graph,points,best.phase,bigN,48),big);if(highError>bigError+1e-12){rejected.push({reason:'higher_resolution_error',...c});continue;}
         const solution=graph.solution(points,best.phase,input),check=validate(solution,cfg,{checkImage:false});if(!check.passed){rejected.push({reason:'geometry',issues:check.issues.slice(0,3),...c});continue;}
         const quality=easeMetrics(solution,cfg);if(quality.minimumRadius<Math.min(.45,ease.minimumRadius||Infinity)||quality.sharpTurns>ease.sharpTurns){rejected.push({reason:'cut_quality',...c});continue;}
         if(cfg.requireMaterialCore&&!materialAudit(solution,cfg).passed){rejected.push({reason:'paper',...c});continue;}
         accepted.push({...c,errorBefore:best.error,errorAfter:error,bigErrorBefore:bigError,bigErrorAfter:highError});
-        best={...best,graph,points:points.slice(),error,geometryPassed:true,validation:check};bigError=highError;changed=true;break;
+        best={...best,graph,points:points.slice(),error,geometryPassed:true,validation:check};bigError=highError;changed=true;break proposals;
       }catch(e){rejected.push({reason:e.message,...c});}
     }if(!changed)break;
   }return{...best,sharing:{accepted,rejected}};
+}
+
+/** Finish the actual selected solution, after polishing and matching-sheet
+ * preference. Earlier sharing cannot certify geometry those stages replace. */
+export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{}}={}){
+  const input=solution.graph.target,source=input.sourceImage;
+  if(!source||performance.now()>=deadline||requestedSymmetry(cfg.symmetry).some(name=>name!=='transpose'))return solution;
+  const start=performance.now(),paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p)));
+  if(!sharingCandidates(paths).length)return solution;
+  onProgress({stage:'directSharing'});
+  const graph=new CurveGraph(paths,cfg.width),phase=input.phase?-1:1,n=Math.min(256,source.resolution),prob=resize(source.mask,source.resolution,n);
+  const before=maskDisagreement(source,sampleWeave(solution,source.resolution));
+  const candidate={graph,points:graph.points,phase,error:mismatch(renderCurves(graph,graph.points,phase,n,48),prob)};
+  const shared=recoverShared(candidate,prob,n,cfg,{input,deadline});
+  let selected=solution,error=before;
+  const report={...shared.sharing,errorBefore:before,errorAfter:before,applied:false};
+  if(shared.sharing.accepted.length){
+    const proposal=shared.graph.solution(shared.points,phase,input),woven=sampleWeave(proposal,source.resolution),nextError=maskDisagreement(source,woven);
+    const symmetry=symmetryReport(proposal,cfg.symmetry);
+    if(nextError<=before&&auditImageFeatures(source,woven,cfg.width).passed&&symmetry.honoured.length===symmetry.requested.length){
+      selected=proposal;error=nextError;report.applied=true;report.errorAfter=nextError;
+    }else report.rejectedFinalCheck={imageError:nextError,symmetry};
+  }
+  const seconds=(performance.now()-start)/1000,matching=solution.report.matchingPreference;
+  selected.report={...solution.report,finalSharing:{...report,seconds},stages:[...(solution.report.stages||[]),{stage:'directSharing',seconds}],
+    ...(report.applied?{estimatedMaskMismatch:error}:{}),
+    ...(report.applied&&matching?{matchingPreference:{...matching,...matchingSummary(selected),selectedImageError:error,additionalImageError:error-matching.baselineImageError}}:{})};
+  return selected;
 }
