@@ -564,8 +564,9 @@
 	}
 
 	function endDrag(event: PointerEvent): void {
-		if (draggingCorner >= 0) {
-			draggingCorner = -1;
+		const corner = draggingCorner;
+		draggingCorner = -1;
+		if (corner >= 0) {
 			// The corner has landed, so the crop is a question worth asking: this is
 			// the one `schedulePreview` held back for the length of the drag. A
 			// corner grabbed and let go without moving is the crop the preview is
@@ -674,6 +675,20 @@
 			default:
 				return '';
 		}
+	});
+
+	/**
+	 * What to say under the crop while it stands in for the mask: that the engine
+	 * is working, that it could not answer, or that it has not been asked yet.
+	 *
+	 * Nothing, for corners that fold over. The picture's own status line already
+	 * names that and says what to do about it, and promising a mask on release
+	 * here would be a second answer that happens to be wrong.
+	 */
+	let cropNote = $derived.by<TranslationKey | null>(() => {
+		if (previewBusy) return 'paintPreviewWorking';
+		if (previewError) return previewError;
+		return cornerStatus === 'invalid' ? null : 'paintPreviewCropHint';
 	});
 
 	let symmetryText = $derived.by(() => {
@@ -908,15 +923,10 @@
 					</div>
 					{#if previewMask}
 						<p class="hint">{symmetryText}</p>
-					{:else if livePhoto}
-						<!-- The crop is showing, so the line under it says what is missing:
-						     the engine is working, or it failed, or it has not been asked
-						     because the corner is still moving. -->
-						<p class="hint" role="status">
-							{#if previewBusy}{tr('paintPreviewWorking')}{:else if previewError}{tr(
-									previewError
-								)}{:else}{tr('paintPreviewCropHint')}{/if}
-						</p>
+					{:else if livePhoto && cropNote}
+						<!-- The crop is showing, so the line under it says what is still
+						     missing; `cropNote` is which of those three it is. -->
+						<p class="hint" role="status">{tr(cropNote)}</p>
 					{/if}
 				</section>
 			</div>
