@@ -153,10 +153,14 @@ describe('cutGeometryToDesign', () => {
       expect(maskMismatch(rasterizeDesign(flipped, 100).data, engineMask(geometry, 100))).toBeGreaterThan(0.1);
     });
 
-    it('agrees with the engine for both phases of the star', () => {
-      for (const phase of [0, 1] as const) {
-        const geometry = { ...EXAMPLES.star, phase };
-        expect(maskMismatch(ourMask(geometry, { tolerance: 0 }), engineMask(geometry))).toBeLessThan(0.015);
+    it('agrees with the engine at either phase of either example', () => {
+      // Both saved examples carry phase 0, so flipping it is the only way to see
+      // the rule work on real geometry rather than on hand-built straight cuts.
+      for (const name of ['star', 'jul'] as const) {
+        for (const phase of [0, 1] as const) {
+          const geometry = { ...EXAMPLES[name], phase };
+          expect(maskMismatch(ourMask(geometry, { tolerance: 0 }), engineMask(geometry))).toBeLessThan(0.015);
+        }
       }
     });
   });
