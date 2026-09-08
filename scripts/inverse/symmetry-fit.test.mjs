@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import { createCanvas, loadImage } from 'canvas';
 import { prepare, design } from '../../static/inverse/core/engine.js';
-import { DIRECT_PRESET } from '../../static/inverse/core/presets.js';
+import { AUTOMATIC_PRESET, DIRECT_PRESET } from '../../static/inverse/core/presets.js';
 import { settings } from '../../static/inverse/core/settings.js';
 import {
   applyTies,
@@ -244,6 +244,7 @@ test('the star example exports exactly transposed cuts', { timeout: 60000 }, asy
   assert.deepEqual(tied.result.report.symmetry.requested, ['transpose']);
   assert.deepEqual(tied.result.report.symmetry.honoured, ['transpose']);
   assert.ok(tied.result.report.symmetry.maxDeviationMm < TOLERANCE);
+  assert.ok(!tied.result.report.warnings.some((w) => w.includes('requested symmetry')));
 
   const { cuts, width } = exportedCuts(tied.result.files);
   assert.ok(cuts[0].length > 0 && cuts[1].length > 0);
@@ -307,6 +308,42 @@ test('within-curve symmetry makes every waves cut symmetric about its own chord'
   const { cuts } = exportedCuts(result.files);
   assert.ok(cuts[0].length > 0 && cuts[1].length > 0);
   assert.ok(chordDeviation(cuts, 'sym') < TOLERANCE, 'every exported cut must be symmetric about its chord');
+});
+
+test('the automatic route sends every symmetry but the transposition to the fitter', { timeout: 60000 }, async () => {
+  const cfg = { ...AUTOMATIC_PRESET, timeLimit: 5, trials: 0, roundHidden: false };
+  const text = await fs.readFile('static/inverse/examples/waves.svg', 'utf8');
+  assert.equal(prepare({ type: 'svg', text }, cfg).preview.metadata.automatic.route, 'vector');
+  const curved = prepare({ type: 'svg', text }, { ...cfg, symmetry: { withinCurve: 'sym' } });
+  assert.equal(curved.preview.metadata.automatic.route, 'direct');
+
+  // Clean woven artwork with identical sheets is what the angular MILP route is
+  // for, and that route reproduces a transposition by itself. A mirror it
+  // cannot hold, so the request moves the artwork to the fitter.
+  const grid = wovenPixels(160, [0.2, 0.4, 0.6, 0.8], [0.2, 0.4, 0.6, 0.8]), angular = prepare(grid, cfg);
+  assert.equal(angular.preview.metadata.automatic.route, 'angular');
+  assert.equal(prepare(grid, { ...cfg, symmetry: { transpose: true } }).preview.metadata.automatic.route, 'angular');
+  assert.equal(prepare(grid, { ...cfg, symmetry: { mirrorX: true } }).preview.metadata.automatic.route, 'direct');
+
+  // A target prepared before the request was made must not slip through the
+  // traced route either: that attempt is rejected before it is solved.
+  const mirrored = await design(angular.target, { ...cfg, symmetry: { mirrorX: true } });
+  assert.equal(mirrored.report.solver.automatic.selected, 'direct');
+  assert.deepEqual(mirrored.report.solver.automatic.attempts.map((a) => [a.route, a.accepted]), [['angular', false]]);
+  assert.deepEqual(mirrored.report.symmetry.honoured, ['mirrorX']);
+  const tied = await design(angular.target, { ...cfg, symmetry: { transpose: true } });
+  assert.equal(tied.report.solver.automatic.selected, 'angular');
+  assert.deepEqual(tied.report.symmetry.honoured, ['transpose']);
+});
+
+test('a symmetry the chosen route cannot enforce is warned about, not dropped in silence', { timeout: 60000 }, async () => {
+  const text = await fs.readFile('static/inverse/examples/waves.svg', 'utf8');
+  const cfg = { algorithm: 'trace', timeLimit: 5, trials: 0, roundHidden: false, symmetry: { mirrorX: true } };
+  const prepared = prepare({ type: 'svg', text }, cfg), result = await design(prepared.target, cfg);
+  assert.deepEqual(result.report.symmetry.requested, ['mirrorX']);
+  assert.deepEqual(result.report.symmetry.honoured, []);
+  assert.ok(result.report.symmetry.maxDeviationMm > TOLERANCE);
+  assert.ok(result.report.warnings.some((w) => w.includes('do not satisfy the requested symmetry mirrorX')));
 });
 
 test('a fit without a symmetry setting keeps its recorded result', { timeout: 60000 }, async () => {
