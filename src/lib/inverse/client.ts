@@ -4,6 +4,9 @@ export type ArtworkInput =
   | { type: 'svg' | 'json'; text: string }
   | { type: 'pixels'; rgba: Uint8ClampedArray; imageWidth: number; imageHeight: number; quad?: Point[]; roi?: number[]; cropProvenance?: Record<string, unknown> };
 
+/** The pixel arm of ArtworkInput, which corner detection and the mask both need by name. */
+export type PixelsInput = Extract<ArtworkInput, { type: 'pixels' }>;
+
 export interface CropProposal {
   quad: Point[];
   outline: Point[][];
