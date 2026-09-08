@@ -108,8 +108,22 @@
 	}
 </script>
 
+<!--
+  Fast is the state a visitor who has not thought about the band is already in,
+  and in it the shape and the size decide nothing: they describe a motif nobody
+  has asked to protect. So the panel is its one row until Fri is chosen, which
+  is what keeps the three-panel column inside a desktop window. The frame itself
+  is untouched — the shape and the size the visitor last set are still in the
+  store, and choosing Fri brings them back exactly as they were.
+
+  The sentence that used to stand under a Fast panel is the heading's title: it
+  says what Fast means, and it is the one thing here that is not already on the
+  segment's own two words.
+-->
 <section class="editor-panel">
-	<h2 class="panel-title">{tr('paintFrame')}</h2>
+	<h2 class="panel-title" title={frame.mode === 'free' ? undefined : tr('paintFrameHintFixed')}>
+		{tr('paintFrame')}
+	</h2>
 
 	<div class="field">
 		<div class="segmented">
@@ -127,63 +141,65 @@
 		</div>
 	</div>
 
-	<div class="field">
-		<span class="field-label" id="paint-frame-shape">{tr('paintFrameShape')}</span>
-		<div class="shape-grid" role="group" aria-labelledby="paint-frame-shape">
-			{#each SHAPES as item (item.id)}
-				<button
-					type="button"
-					class="shape-btn"
-					class:active={frame.shape === item.id}
-					aria-pressed={frame.shape === item.id}
-					title={tr(item.label)}
-					onclick={() => setShape(item.id)}
-					{disabled}
-				>
-					<!-- The woven square and the shape inside it, turned the quarter of a
-					     right angle the heart turns them: the corners of the viewBox hold
-					     the square's diagonal, which is √2 wide. -->
-					<svg viewBox="-0.25 -0.25 1.5 1.5" width="26" height="26" aria-hidden="true">
-						<g transform="rotate(45 0.5 0.5)">
-							<rect
-								x="0"
-								y="0"
-								width="1"
-								height="1"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="0.05"
-								opacity="0.35"
-							/>
-							<path d={glyphPath(item.id)} fill="currentColor" opacity="0.85" />
-						</g>
-					</svg>
-					<span class="shape-label">{tr(item.label)}</span>
-				</button>
-			{/each}
+	{#if frame.mode === 'free'}
+		<div class="field">
+			<span class="field-label" id="paint-frame-shape">{tr('paintFrameShape')}</span>
+			<div class="shape-grid" role="group" aria-labelledby="paint-frame-shape">
+				{#each SHAPES as item (item.id)}
+					<button
+						type="button"
+						class="shape-btn"
+						class:active={frame.shape === item.id}
+						aria-pressed={frame.shape === item.id}
+						title={tr(item.label)}
+						onclick={() => setShape(item.id)}
+						{disabled}
+					>
+						<!-- The woven square and the shape inside it, turned the quarter of a
+						     right angle the heart turns them: the corners of the viewBox hold
+						     the square's diagonal, which is √2 wide. -->
+						<svg viewBox="-0.25 -0.25 1.5 1.5" width="26" height="26" aria-hidden="true">
+							<g transform="rotate(45 0.5 0.5)">
+								<rect
+									x="0"
+									y="0"
+									width="1"
+									height="1"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="0.05"
+									opacity="0.35"
+								/>
+								<path d={glyphPath(item.id)} fill="currentColor" opacity="0.85" />
+							</g>
+						</svg>
+						<span class="shape-label">{tr(item.label)}</span>
+					</button>
+				{/each}
+			</div>
 		</div>
-	</div>
 
-	<div class="field">
-		<label class="field-label" for="paint-frame-size">
-			{tr('paintFrameSize')}
-			<span class="value">{percent} %</span>
-		</label>
-		<input
-			id="paint-frame-size"
-			type="range"
-			min={Math.round(FRAME_MIN_SIZE * 100)}
-			max={Math.round(FRAME_MAX_SIZE * 100)}
-			step="1"
-			value={percent}
-			onpointerdown={startSize}
-			onkeydown={startSize}
-			oninput={(e) => setSize(e.currentTarget.value)}
-			{disabled}
-		/>
-	</div>
+		<div class="field">
+			<label class="field-label" for="paint-frame-size">
+				{tr('paintFrameSize')}
+				<span class="value">{percent} %</span>
+			</label>
+			<input
+				id="paint-frame-size"
+				type="range"
+				min={Math.round(FRAME_MIN_SIZE * 100)}
+				max={Math.round(FRAME_MAX_SIZE * 100)}
+				step="1"
+				value={percent}
+				onpointerdown={startSize}
+				onkeydown={startSize}
+				oninput={(e) => setSize(e.currentTarget.value)}
+				{disabled}
+			/>
+		</div>
 
-	<p class="note">{tr(frame.mode === 'free' ? 'paintFrameHintFree' : 'paintFrameHintFixed')}</p>
+		<p class="note">{tr('paintFrameHintFree')}</p>
+	{/if}
 </section>
 
 <style>

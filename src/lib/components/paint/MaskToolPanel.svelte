@@ -156,16 +156,16 @@
 			{/each}
 		</div>
 
-		<!-- Markér is the one tool whose gestures cannot be guessed from its glyph:
-		     the frame, the handles, the three keys that end it, and the keyboard's
-		     own way through the lot. So it says so, and only while it is the tool in
-		     hand. role="status" because M can pick the tool without a pointer ever
-		     coming near it, and the one piece of help there is has to be heard. -->
+		<!-- Markér is the one tool whose gestures cannot be guessed from its glyph, so
+		     it says so while it is the tool in hand. One line, not five: the five it
+		     used to be pushed Kanten off the bottom of every desktop column, and the
+		     handles, the turner and the keyboard's own way through the lot are now in
+		     the Hjælp dialog, where there is room to read them. What stays is what a
+		     visitor cannot recover by trying: the two keys that end the gesture.
+		     role="status" because M can pick the tool without a pointer ever coming
+		     near it, and the one piece of help there is has to be heard. -->
 		{#if tool === 'select'}
-			<p class="tool-hint" role="status">
-				{tr('paintSelectionHint')}
-				{tr('paintSelectionKeys')}
-			</p>
+			<p class="tool-hint" role="status">{tr('paintSelectionShort')}</p>
 		{/if}
 
 		<!-- Both of these are one choice out of several, which is a radiogroup: one
@@ -191,48 +191,58 @@
 			</div>
 		</div>
 
+		<!-- Fortryd and Gentag share the swatches' row rather than taking a row of
+		     their own: two labelled buttons across the panel cost a line the column
+		     has not got, and both are already at Cmd/Ctrl+Z. As icons they are the
+		     same 40px square as the tools above, so the panel reads as one grid of
+		     buttons with the two papers set into it — and the words survive as the
+		     title and the accessible name, which is what a labelled button gave. -->
 		<div class="field">
 			<span class="field-label">{tr('paintsWith')}</span>
-			<div class="swatches">
-				<ToggleGroup
-					type="single"
-					role="radiogroup"
-					aria-label={tr('paintsWith')}
-					value={String(paintValue)}
-					onValueChange={choosePaper}
-					{disabled}
-				>
-					{#each PAPERS as value (value)}
-						<ToggleGroupItem
-							value={String(value)}
-							aria-label={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
-							title={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
-							style="background: {value ? colors.right : colors.left}"
-						/>
-					{/each}
-				</ToggleGroup>
-			</div>
-		</div>
+			<div class="paper-row">
+				<div class="swatches">
+					<ToggleGroup
+						type="single"
+						role="radiogroup"
+						aria-label={tr('paintsWith')}
+						value={String(paintValue)}
+						onValueChange={choosePaper}
+						{disabled}
+					>
+						{#each PAPERS as value (value)}
+							<ToggleGroupItem
+								value={String(value)}
+								aria-label={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
+								title={value ? tr('paintsWithRight') : tr('paintsWithLeft')}
+								style="background: {value ? colors.right : colors.left}"
+							/>
+						{/each}
+					</ToggleGroup>
+				</div>
 
-		<div class="history" role="group" aria-label={tr('editorHistory')}>
-			<button
-				type="button"
-				class="btn btn-sm btn-ghost"
-				onclick={onUndo}
-				disabled={disabled || !canUndo}
-			>
-				<UndoIcon size={16} />
-				{tr('editorUndo')}
-			</button>
-			<button
-				type="button"
-				class="btn btn-sm btn-ghost"
-				onclick={onRedo}
-				disabled={disabled || !canRedo}
-			>
-				<RedoIcon size={16} />
-				{tr('editorRedo')}
-			</button>
+				<div class="history" role="group" aria-label={tr('editorHistory')}>
+					<button
+						type="button"
+						class="icon-btn"
+						title={tr('editorUndo')}
+						aria-label={tr('editorUndo')}
+						onclick={onUndo}
+						disabled={disabled || !canUndo}
+					>
+						<UndoIcon size={20} />
+					</button>
+					<button
+						type="button"
+						class="icon-btn"
+						title={tr('editorRedo')}
+						aria-label={tr('editorRedo')}
+						onclick={onRedo}
+						disabled={disabled || !canRedo}
+					>
+						<RedoIcon size={20} />
+					</button>
+				</div>
+			</div>
 		</div>
 	</section>
 </div>
@@ -262,7 +272,11 @@
 		gap: 4px;
 	}
 
-	.tool-btn {
+	/* The tools and the two history buttons are the same square: one button shape
+	   for everything in the panel that is a glyph and nothing else. Only the tools
+	   are ever `.active`, so the rules below this one belong to them alone. */
+	.tool-btn,
+	.icon-btn {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -278,7 +292,12 @@
 			color 0.15s;
 	}
 
-	.tool-btn:hover:not(:disabled) {
+	.icon-btn {
+		width: 40px;
+	}
+
+	.tool-btn:hover:not(:disabled),
+	.icon-btn:hover:not(:disabled) {
 		background: var(--cream2);
 	}
 
@@ -297,7 +316,8 @@
 		border-color: var(--green-hover);
 	}
 
-	.tool-btn:disabled {
+	.tool-btn:disabled,
+	.icon-btn:disabled {
 		opacity: 0.35;
 		cursor: not-allowed;
 	}
@@ -409,12 +429,18 @@
 		cursor: not-allowed;
 	}
 
-	.history {
+	/* The swatches sit under their label as every other control does; the two
+	   history buttons are pushed to the far end, where they read as a pair of
+	   their own rather than as a third and fourth paper. */
+	.paper-row {
 		display: flex;
-		gap: 8px;
+		align-items: center;
+		gap: 10px;
 	}
 
-	.history .btn {
-		flex: 1 1 0;
+	.history {
+		display: flex;
+		gap: 4px;
+		margin-left: auto;
 	}
 </style>

@@ -239,11 +239,15 @@
 	}
 
 	// The column's own box changes with the viewport; what is inside it changes with
-	// the tool (the Markér hint) and with the result state (the panels stand down).
+	// the tool (the Markér hint), with the result state (the panels stand down) and
+	// with the band (Kanten is one row under Fast and four fields under Fri). The
+	// observer alone cannot see any of those: the column is pinned top and bottom,
+	// so its box is the same height whatever is inside it.
 	$effect(() => {
 		const el = leftColumnEl;
 		void tool;
 		void toolsStandby;
+		void session.frame.mode;
 		if (!el) return;
 		void tick().then(measureLeftColumn);
 		if (typeof ResizeObserver === 'undefined') return;
@@ -878,10 +882,10 @@
 					<!-- The column runs past one edge or the other and there is more of it
 					     out of sight. macOS draws nothing of an overlay scrollbar until a
 					     gesture starts, so without these a panel is simply not there as far
-					     as anyone can tell. Both edges, not just the bottom: with three
-					     panels the column overflows on every desktop height, so a visitor
-					     who has scrolled down to Kanten needs to be told Værktøj is up
-					     there as much as they needed to be told Kanten was below. -->
+					     as anyone can tell. Both edges, not just the bottom: a short window
+					     or a Kanten expanded under Fri still runs the column past both, so a
+					     visitor who has scrolled down to Kanten needs to be told Værktøj is
+					     up there as much as they needed to be told Kanten was below. -->
 					<div class="left-fade top" class:showing={leftColumnCutTop} aria-hidden="true"></div>
 					<div class="left-fade" class:showing={leftColumnCut} aria-hidden="true"></div>
 					<div class="right-panel" class:collapsed={panelCollapsed} id="paint-panel">
@@ -1104,14 +1108,14 @@
 		border-color: var(--green);
 	}
 
-	/* Three panels now (Værktøj, Symmetri, Kanten), which is taller than any
-	   desktop viewport — measured at 240px over on a 1440 x 950 window — so the
-	   column scrolls as a rule rather than only on a short laptop. It stays centred
-	   while it fits and scrolls from the top when it does not, which is what
-	   `safe center` says; a browser that does not know the keyword falls back to
-	   the top, the same answer for the case that matters. Centring with a transform
-	   instead cut the column off at *both* ends, with the top out of reach
-	   altogether.
+	/* Three panels (Værktøj, Symmetri, Kanten) that fit a desktop window in their
+	   default state — 732px against the 880 a 1440 x 950 viewport leaves — and run
+	   past it on a short one, or with Kanten expanded under Fri. So the column
+	   stays centred while it fits and scrolls from the top when it does not, which
+	   is what `safe center` says; a browser that does not know the keyword falls
+	   back to the top, the same answer for the case that matters. Centring with a
+	   transform instead cut the column off at *both* ends, with the top out of
+	   reach altogether.
 
 	   The padding is for the panels' shadow: `overflow-y: auto` computes overflow-x
 	   to `auto` as well, which clips anything drawn outside the box. */

@@ -233,8 +233,8 @@ export const translations = {
     paintLine: 'Linje',
     paintRect: 'Rektangel',
     paintSelect: 'Markér',
-    paintSelectionHint: 'Træk en ramme. Flyt indeni, skalér i hjørnerne, drej i håndtaget foroven. Enter lægger den fast, Esc fortryder, Delete rydder.',
-    paintSelectionKeys: 'Uden mus: gå til tegningen med tabulator, Enter markerer midten, piletaster flytter, Skift og en piletast skalerer, komma og punktum drejer.',
+    /** Den ene linje under værktøjerne; resten står i Hjælp (paintHelpBullets). */
+    paintSelectionShort: 'Træk en ramme; Enter lægger den fast, Esc fortryder.',
     /** {width} × {height} = markeringens størrelse i celler */
     paintSelectionLifted: 'Markering, {width} × {height} felter',
     paintSelectionPlaced: 'Markeringen er lagt fast',
@@ -313,8 +313,9 @@ export const translations = {
     paintHelpBullets: [
       'Mal på den flettede firkant midt i hjertet. De to lapper uden om viser papirfarverne.',
       'Vælg værktøj med P (pen), E (viskelæder), F (fyld), L (linje), R (rektangel) og M (markér); X bytter farve, og [ og ] skifter penselstørrelse.',
-      'Med Markér trækker du en ramme om et stykke af mønsteret og flytter, skalerer eller drejer det. Enter lægger det fast, Esc fortryder.',
-      'Slå en symmetri til, hvis mønsteret skal spejles. Alt du maler, spejles med.',
+      'Med Markér trækker du en ramme om et stykke af mønsteret. Flyt indeni, skalér i hjørnerne, drej i håndtaget foroven. Enter lægger den fast, Esc fortryder, Delete rydder.',
+      'Markér uden mus: gå til tegningen med tabulator, Enter markerer midten, piletaster flytter, Skift og en piletast skalerer, komma og punktum drejer.',
+      'Slå en symmetri til, hvis mønsteret skal spejles. Det, der er fundet i masken, er slået til på forhånd, og alt du maler, spejles med.',
       'Tryk Find snit. Det tager typisk et halvt til et par minutter, og du kan afbryde undervejs.',
       'Åbn resultatet i Tegn for at rette kurverne, eller hent skabelonen som PDF.'
     ],
@@ -692,8 +693,8 @@ export const translations = {
     paintLine: 'Line',
     paintRect: 'Rectangle',
     paintSelect: 'Select',
-    paintSelectionHint: 'Drag a frame. Move inside it, scale at the corners, turn with the handle above. Enter puts it down, Esc undoes it, Delete clears it.',
-    paintSelectionKeys: 'Without a mouse: tab to the drawing, Enter marks the middle, the arrow keys move it, Shift and an arrow key scale it, comma and full stop turn it.',
+    /** The one line under the tools; the rest is in Help (paintHelpBullets). */
+    paintSelectionShort: 'Drag a frame; Enter puts it down, Esc undoes it.',
     /** {width} × {height} = the size of the selection in cells */
     paintSelectionLifted: 'Selection, {width} × {height} cells',
     paintSelectionPlaced: 'The selection is put down',
@@ -772,8 +773,9 @@ export const translations = {
     paintHelpBullets: [
       'Paint on the woven square in the middle of the heart. The two lobes around it show the paper colours.',
       'Pick a tool with P (pen), E (eraser), F (fill), L (line), R (rectangle) and M (select); X swaps the colour, and [ and ] change the brush size.',
-      'With Select you drag a frame around a piece of the pattern and move, scale or turn it. Enter puts it down, Esc undoes it.',
-      'Switch a symmetry on if the pattern should be mirrored. Everything you paint is mirrored with it.',
+      'With Select you drag a frame around a piece of the pattern. Move inside it, scale at the corners, turn with the handle above. Enter puts it down, Esc undoes it, Delete clears it.',
+      'Select without a mouse: tab to the drawing, Enter marks the middle, the arrow keys move it, Shift and an arrow key scale it, comma and full stop turn it.',
+      'Switch a symmetry on if the pattern should be mirrored. Whatever was found in the mask is switched on already, and everything you paint is mirrored with it.',
       'Press Find the cuts. It usually takes half a minute to a couple of minutes, and you can stop it on the way.',
       'Open the result in Draw to reshape the curves, or download the template as a PDF.'
     ],

@@ -60,9 +60,13 @@ of an overlay scrollbar until a gesture starts):
 - Panel "Værktøj": tools Pen, Viskelæder, Fyld, Linje, Rektangel, Markér as 40px icon buttons (lucide: pencil,
   eraser, paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); brush size segmented
   control Fin / Mellem / Grov (radius 2 / 6 / 14 cells); "Maler med" two swatches (the current paper colours, the
-  chosen one ringed). Viskelæder always paints 0. Undo / redo buttons (lucide undo-2 / redo-2) and Cmd/Ctrl+Z,
-  Shift+Cmd/Ctrl+Z. Markér adds a line of help under the grid while it is the tool in hand, because its gestures
-  cannot be read off its glyph.
+  chosen one ringed). Viskelæder always paints 0. Undo / redo (lucide undo-2 / redo-2) are two 40px icon buttons —
+  the same square as the tools, with the words as `title` and `aria-label` — set at the right-hand end of the
+  swatches' own row rather than in a labelled row of their own, which the column has no line to spare for; the keys
+  are Cmd/Ctrl+Z and Shift+Cmd/Ctrl+Z as before. Markér adds **one** line of help under the grid while it is the
+  tool in hand ("Træk en ramme; Enter lægger den fast, Esc fortryder."), because its gestures cannot be read off its
+  glyph; the five lines it used to be — the handles, the turner, and the whole keyboard route — are in the Hjælp
+  dialog, which is where there is room to read them.
 - **Markér** (owner, 2026-09-08): drag a frame on the mask to lift a rectangle of cells; a dashed marquee with four
   corner handles and a turner above it. Dragging inside moves the cells (what they leave becomes paper 0), a corner
   scales — uniform, and free with Shift — and the turner turns about the centre by any angle. Enter or a click
@@ -78,10 +82,13 @@ of an overlay scrollbar until a gesture starts):
   arrow keys move the patch, Shift and an arrow size it, and `,` / `.` turn it 15° at a time; a live region reports
   the patch as it is lifted, sized, put down and cleared. The geometry is `src/lib/paint/selection.ts`, pure and
   tested; the interaction is in `MaskCanvas`.
-- Panel "Symmetri" (owner, 2026-09-08 — moved out of Find snit): the one-line explanation "Fundet i masken og slået
-  til; alt du maler, spejles med." and the three symmetry rows (the shared component, §6), with the "fundet" tags.
-  They live here rather than with the search because they are live while painting: a row switched on mirrors every
-  stroke from that moment, so they belong beside the brush they change. Find snit still reads them from the session.
+- Panel "Symmetri" (owner, 2026-09-08 — moved out of Find snit): the three symmetry rows (the shared component, §6)
+  with the "fundet" tags, and nothing else. The explanation "Fundet i masken og slået til; alt du maler, spejles
+  med." is the panel heading's `title` and a bullet in Hjælp: it is worth reading once and never again, and at 300px
+  it cost the column two lines on every visit. The rows keep their label above their control, and the segments keep
+  their words beside their icons (owner, 2026-09-08). They live here rather than with the search because they are
+  live while painting: a row switched on mirrors every stroke from that moment, so they belong beside the brush they
+  change. Find snit still reads them from the session.
   All three panels in the column stand down — every control inside really disabled, which is what a screen reader
   reads — while the found heart is on screen, because there is no mask under the pointer then; "Tilbage til masken"
   brings them back.
@@ -91,10 +98,18 @@ of an overlay scrollbar until a gesture starts):
 
 Below 900px the columns stack under the heart in the order they read: Værktøj, Symmetri, Kanten, Find snit.
 
-Three panels are taller than a desktop viewport, so above 900px the left column scrolls inside itself as a rule
-rather than as an exception. It is centred while it fits and starts at the top when it does not, and a fade over
-whichever edge it runs past says there is more that way — macOS draws nothing of an overlay scrollbar until a
-gesture starts, so a panel out of sight would otherwise not be there as far as anyone can tell.
+**The default column fits a desktop window** (owner, 2026-09-08). Three panels at their first-drawn heights did
+not: 1006px against the 880 a 1440 × 950 window leaves, so Kanten hung below the edge on a screen nobody would call
+small. It is 732px now — Kanten collapsed to its one row (§11), Fortryd and Gentag folded into the swatches' row,
+and the Markér and Symmetri explanations moved to `title` and Hjælp — which leaves Kanten's bottom 82px clear of
+the viewport. Nothing was removed to get there.
+
+The column still scrolls inside itself where it has to: a short window (1440 × 700 leaves 630, so the same 732px
+overflows by about 100), and Kanten expanded under Fri, which adds 213px. It is centred while it fits and starts at
+the top when it does not, and a fade over whichever edge it runs past says there is more that way — macOS draws
+nothing of an overlay scrollbar until a gesture starts, so a panel out of sight would otherwise not be there as far
+as anyone can tell. The fade is measured after every change that alters what is *in* the column — the tool, the
+result state, and the band, since the column's own box is pinned top and bottom and never changes height itself.
 
 Right floating panel (340px, collapsible with the same "Skjul panel" control as Tegn):
 
@@ -497,7 +512,12 @@ their benchmark did, by preparing a different target, and is built (`$lib/paint/
 
 - The band outside a protected shape has a segmented control "Kanten: Fast / Fri" in a panel of its own in Mal's
   left column, under Værktøj and Symmetri. *Fast* = as painted, which is what a heart made without thinking about
-  the frame still is. *Fri* = the search fills the band itself; the band's colours are ignored. The third state
+  the frame still is. **Under Fast the panel is that row and nothing else** (owner, 2026-09-08): the shape buttons,
+  the Størrelse slider and the hint say what would happen to a motif nobody has asked to protect, and they appear
+  when Fri is chosen. Only the panel's height changes — the frame keeps the shape and the size it had, so Fri brings
+  them back exactly as they were — and the sentence a Fast panel used to carry ("Hele firkanten væves, som du har
+  malet den.") is the heading's `title`. *Fri* = the search fills the band itself; the band's colours are ignored.
+  The third state
   *Må rettes* — the engine keeps the cells but may change the ones it must, at a cost (loss weight about 0.25 plus
   a penalty on changed cells; Codex's "repair the border") — is **not shown at all** rather than shown disabled:
   an option nobody can pick is a promise, and this one has no date on it.
