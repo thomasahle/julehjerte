@@ -7,7 +7,9 @@
 		ChevronRightIcon,
 		CloseIcon,
 		FitIcon,
+		OutlineIcon,
 		RedoIcon,
+		SnapIcon,
 		SwapIcon,
 		TrashIcon,
 		UndoIcon
@@ -3508,12 +3510,16 @@
 
 					<section class="editor-panel">
 						<h2 class="panel-title">{tr('editorDrawing')}</h2>
+						<!-- Each checkbox carries the picture of what it draws, in the
+						     canvas's own cut colours. -->
 						<label class="checkbox" title={tr('editorShowCurveOutlines')}>
 							<input type="checkbox" bind:checked={showCurves} />
+							<OutlineIcon />
 							<span>{tr('editorOutlines')}</span>
 						</label>
 						<label class="checkbox" title={tr('editorSnapToOppositeTitle')}>
 							<input type="checkbox" bind:checked={snapToOpposite} />
+							<SnapIcon />
 							<span>{tr('editorSnapToOpposite')}</span>
 						</label>
 					</section>
@@ -3938,6 +3944,12 @@
 			font-size: 14px;
 			color: var(--ink);
 			cursor: pointer;
+		}
+
+		/* The glyph between the box and the label keeps its 28px; only the label
+		   gives way when the panel narrows. */
+		.checkbox :global(svg) {
+			flex: none;
 		}
 
 		.checkbox input {

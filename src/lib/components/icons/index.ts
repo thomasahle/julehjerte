@@ -48,12 +48,14 @@ export { default as UploadIcon } from '@lucide/svelte/icons/upload';
 export { default as WeaveIcon } from './WeaveIcon.svelte';
 
 /**
- * The editor's symmetry glyphs — the pictures the owner chose in
- * docs/redesign/symmetri-ikoner.html. They draw cuts and lobes, which lucide
- * has nothing for, and they carry a little more line than the rest, so they
- * take `size = 28` and stroke 1.8 rather than 20 and 2.
+ * The editor's symmetry and drawing glyphs — the pictures the owner chose in
+ * docs/redesign/symmetri-ikoner.html. They draw cuts, lobes and the woven
+ * square, which lucide has nothing for, and they carry a little more line than
+ * the rest, so they take `size = 28` and stroke 1.8 rather than 20 and 2.
  */
 export { default as SymmetryIcon } from './SymmetryIcon.svelte';
+export { default as OutlineIcon } from './OutlineIcon.svelte';
+export { default as SnapIcon } from './SnapIcon.svelte';
 
 export type { IconProps } from './types';
 export type { SymmetryIconMode, SymmetryIconRow } from './symmetryIcons';
