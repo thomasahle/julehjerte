@@ -451,10 +451,23 @@ their benchmark did, by preparing a different target, and is built (`$lib/paint/
   cell inside the shape and replaces the band with a checker of `cells × cells` blocks over the square, `cells`
   being an "Avanceret" number "Rammens felter" (3–5, default 4, the range and the winner of Codex's benchmark),
   offered only while the band is free. The phase is the one that agrees with the visitor's own band cells more
-  often — at these sizes the band is thinner than one checker cell, so those cells *are* the collar along the
-  protected outline, and agreeing with them is continuing the colour the motif has at its edge; a tie keeps phase
-  0. The target is then folded under the symmetry rows, because the engine's target must be symmetric even where
-  the visitor's mask was left alone. The whole substitution is one function, to be deleted when weights arrive.
+  often; where the band is thinner than one checker block — above 50 % of the square at four blocks a side, 60 % at
+  five, a third at three — those cells *are* the collar along the protected outline, so that is the same thing as
+  continuing the colour the motif has at its edge, and below that it is simply a vote over the whole band. A tie
+  keeps phase 0. The whole substitution is one function, to be deleted when weights arrive.
+- **The blocks are counted from the centre of the square, and the target is not folded afterwards.** The mask
+  arrives at the substitution already folded under the rows (the motif alone while the band is free) and the
+  checker is invariant under all eight symmetries of the square by construction, so the target is symmetric as it
+  comes. Folding it again — which the first build did — was wrong twice over. A checker counted from a *corner* is
+  its own negative under a mirror whenever the block count is even, so at the default of four the fold replaced the
+  band with blocks of twice the size: an effective count of two, outside `ADVANCED_LIMITS.frameCells` and outside
+  anything Codex's benchmark measured. And the same fold averaged the motif's own edge cells together with the band
+  the checker had just overwritten, against MOTIF-BORDER.md's premise that no cell of the centre is changed.
+  Counted from the centre, a mirror sends block `j` to `−j`, whose parity is `j`'s, and the pattern survives every
+  symmetry whatever the count and whether or not the block width divides the mask. Where the shape is one the
+  mirrors do not map onto itself — the hexagon, which they turn a quarter turn — the cells along its edge are left
+  unfolded and keep exactly what the visitor painted; the target is then symmetric everywhere but on that thin
+  edge, and the engine's own symmetrisation absorbs it.
 - The result panel reports the difference **inside the protected motif first** and the whole square second, both
   measured against the target the engine was given (the number MOTIF-BORDER.md asks for: its three-cell house
   passes the whole-image bar at 1.89 % with a centre that is 4.60 % wrong). A checkbox "Vis det beskyttede motiv"

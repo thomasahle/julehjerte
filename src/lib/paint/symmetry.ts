@@ -206,8 +206,12 @@ export function symmetrize(m: Mask, transforms: Transform[], region?: Uint8Array
 			// in it: half an orbit cannot be made symmetric without writing on the
 			// half that was excluded. For a region the group maps onto itself — the
 			// rude and the circle of $lib/paint/frame — that is exactly the region;
-			// for one it does not, such as the hexagon under a diagonal mirror, the
-			// cells along its edge keep what they had.
+			// for one it does not, such as the hexagon under `mirrorX`, which swaps
+			// the heart's two axes, the cells along its edge keep exactly what the
+			// visitor painted. Nothing folds them afterwards either (PAINT.md §11):
+			// the target the engine is given is then symmetric everywhere but on
+			// that thin edge, which is a better trade than averaging the visitor's
+			// own motif with the band beside it.
 			if (region && cells.some((index) => !region[index])) {
 				for (const index of cells) done[index] = 1;
 				continue;

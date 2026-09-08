@@ -1,6 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { createMask, maskMismatch, type Mask } from './mask';
 import {
+	disagreement,
+	symmetrize,
+	transformsFor,
+	type SymmetrySettings,
+	type Transform
+} from './symmetry';
+import {
 	axisVector,
 	checkerPhase,
 	clampFrameCells,
@@ -166,15 +173,41 @@ describe('the drag handles', () => {
 	});
 });
 
-/** A checker of `cells × cells` blocks over the whole square, at one phase. */
+/**
+ * A checker of `cells × cells` blocks over the whole square, at one phase.
+ *
+ * Written out here rather than taken from `frame.ts`, so that the tests say for
+ * themselves what pattern is expected: blocks counted from the *centre* of the
+ * square outwards, which is what makes the band survive a fold (see below).
+ */
 function checkerMask(size: number, cells: number, phase: 0 | 1): Mask {
 	const m = createMask(0, size);
 	const block = size / cells;
+	const index = (coord: number) => {
+		const s = (coord + 0.5 - size / 2) / block;
+		return Math.sign(s) * Math.floor(Math.abs(s) + 0.5);
+	};
 	for (let y = 0; y < size; y++) {
 		for (let x = 0; x < size; x++) {
-			m.data[y * size + x] = ((Math.floor(x / block) + Math.floor(y / block) + phase) & 1) as 0 | 1;
+			m.data[y * size + x] = ((index(x) + index(y) + phase) & 1) as 0 | 1;
 		}
 	}
+	return m;
+}
+
+/** The rows a mask can be folded under, as the panel's three offer them. */
+const ROWS: SymmetrySettings[] = [
+	{ curve: 'off', lobe: 'sym', lobes: 'off' },
+	{ curve: 'off', lobe: 'off', lobes: 'sym' },
+	{ curve: 'off', lobe: 'sym', lobes: 'sym' },
+	{ curve: 'off', lobe: 'anti', lobes: 'anti' },
+	{ curve: 'sym', lobe: 'off', lobes: 'sym' }
+];
+
+/** A picture with no symmetry of its own, to be folded and woven around. */
+function scribble(size: number): Mask {
+	const m = createMask(0, size);
+	for (let i = 0; i < m.data.length; i++) m.data[i] = ((i * 7919) % 11 < 4 ? 1 : 0) as 0 | 1;
 	return m;
 }
 
@@ -182,14 +215,15 @@ describe('the solve mask', () => {
 	const size = 120;
 
 	it('keeps every cell of the protected motif', () => {
-		const painted = createMask(0, size);
-		for (let i = 0; i < painted.data.length; i++) painted.data[i] = (i * 7919) % 3 === 0 ? 1 : 0;
-		const f = frame('diamond');
-		const solve = substituteCheckerBand(painted, f, 4);
-		for (let y = 0; y < size; y++) {
-			for (let x = 0; x < size; x++) {
-				if (!insideCell(f, size, x, y)) continue;
-				expect(solve.data[y * size + x]).toBe(painted.data[y * size + x]);
+		const painted = scribble(size);
+		for (const shape of SHAPES) {
+			const f = frame(shape);
+			const solve = substituteCheckerBand(painted, f, 4);
+			for (let y = 0; y < size; y++) {
+				for (let x = 0; x < size; x++) {
+					if (!insideCell(f, size, x, y)) continue;
+					expect([shape, solve.data[y * size + x]]).toEqual([shape, painted.data[y * size + x]]);
+				}
 			}
 		}
 	});
@@ -198,13 +232,83 @@ describe('the solve mask', () => {
 		const f = frame('circle');
 		for (const cells of [3, 4, 5]) {
 			const solve = substituteCheckerBand(createMask(0, size), f, cells);
-			const block = size / cells;
-			const phase = solve.data[0]!;
+			const want = checkerMask(size, cells, solve.data[0] ? 1 : 0);
 			for (let y = 0; y < size; y++) {
 				for (let x = 0; x < size; x++) {
 					if (insideCell(f, size, x, y)) continue;
-					const want = (Math.floor(x / block) + Math.floor(y / block) + phase) & 1;
-					expect(solve.data[y * size + x]).toBe(want);
+					expect(solve.data[y * size + x]).toBe(want.data[y * size + x]);
+				}
+			}
+		}
+	});
+
+	it('lays the checker down so every symmetry of the square keeps it', () => {
+		// The band is not folded after it is woven — folding it is what used to turn
+		// an even block count into half as many blocks of twice the size, because a
+		// checker counted from a corner is its own negative under a mirror when the
+		// count is even. Counted from the centre it is invariant, whatever the count
+		// and whether or not the block width divides the mask.
+		const TRANSFORMS: Transform[] = [
+			'mirrorX',
+			'mirrorY',
+			'transpose',
+			'antiTranspose',
+			'rotate180'
+		];
+		for (const maskSize of [120, 100, 400]) {
+			for (const cells of [3, 4, 5]) {
+				// A frame that protects nothing, so the whole square is band and the
+				// pattern can be judged on its own.
+				const woven = substituteCheckerBand(createMask(0, maskSize), frame('diamond', 0), cells);
+				// … and it really is a checker, not one flat colour (which would be
+				// invariant under everything and prove nothing).
+				const ones = woven.data.reduce((sum, v) => sum + v, 0) / woven.data.length;
+				expect([maskSize, cells, ones > 0.35 && ones < 0.65]).toEqual([maskSize, cells, true]);
+				for (const t of TRANSFORMS) {
+					expect([maskSize, cells, t, disagreement(woven, t)]).toEqual([maskSize, cells, t, 0]);
+				}
+			}
+		}
+	});
+
+	it('needs no fold of its own: what the page hands the engine is already symmetric', () => {
+		// The composition Mal performs before a search: fold the mask under the rows
+		// (the motif alone while the band is free), then weave the band. For a shape
+		// the square's symmetries map onto itself, folding the result again would
+		// change nothing — which is why the page no longer does it.
+		for (const shape of ['diamond', 'circle'] as const) {
+			for (const rows of ROWS) {
+				for (const cells of [3, 4, 5]) {
+					const f = frame(shape);
+					const mask = scribble(size);
+					symmetrize(mask, transformsFor(rows), shapeCells(f, size));
+					const target = solveTargetMask(mask, f, cells);
+					const again = { size, data: new Uint8Array(target.data) };
+					symmetrize(again, transformsFor(rows));
+					expect([shape, cells, [...again.data]]).toEqual([shape, cells, [...target.data]]);
+				}
+			}
+		}
+	});
+
+	it('leaves the folded motif exactly as painted, for every shape and every row', () => {
+		// MOTIF-BORDER.md's premise, and what the "afvigelse i motivet" number is
+		// measured against: no cell of the centre is changed on the way to the engine.
+		// The hexagon is the one the mirrors do not map onto itself, so its edge cells
+		// are not folded either — they keep what the visitor painted, and nothing
+		// afterwards averages them with the band.
+		for (const shape of SHAPES) {
+			for (const rows of ROWS) {
+				const f = frame(shape);
+				const mask = scribble(size);
+				symmetrize(mask, transformsFor(rows), shapeCells(f, size));
+				const target = solveTargetMask(mask, f, 4);
+				for (let y = 0; y < size; y++) {
+					for (let x = 0; x < size; x++) {
+						if (!insideCell(f, size, x, y)) continue;
+						const i = y * size + x;
+						expect([shape, i, target.data[i]]).toEqual([shape, i, mask.data[i]]);
+					}
 				}
 			}
 		}

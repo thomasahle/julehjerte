@@ -57,7 +57,7 @@
 		solveTargetMask
 	} from '$lib/paint/frame';
 	import { createMask, isEmpty, maskMismatch, resample, type Mask } from '$lib/paint/mask';
-	import { detectSymmetry, symmetrize, transformsFor } from '$lib/paint/symmetry';
+	import { detectSymmetry } from '$lib/paint/symmetry';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
 	import {
 		canRedo as historyCanRedo,
@@ -465,11 +465,15 @@
 			// the visitor's mask; with it free the band is replaced by a checker weave
 			// first, because the engine cannot yet be told to ignore a cell — see
 			// `frameWeights` and PAINT.md §11. The visitor's own mask is untouched.
+			//
+			// Nothing folds the target afterwards: the motif came out of the fold
+			// above, and the woven band is symmetric under every symmetry of the
+			// square by construction ($lib/paint/frame). A second fold over the whole
+			// square would undo both — it halved the checker whenever the block count
+			// was even, and it averaged the motif's own edge cells together with the
+			// band the checker had just overwritten.
 			const frame = { ...session.frame };
 			const target = solveTargetMask(mask, frame, advanced.frameCells);
-			// The substitution wrote in the band, which the fold above deliberately
-			// left alone; the engine's target has to be symmetric all the same.
-			symmetrize(target, transformsFor(session.symmetry));
 
 			await prepareMask(target, colors, (next) => (stage = next));
 			const solved = await findCuts(

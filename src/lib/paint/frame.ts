@@ -256,14 +256,45 @@ export function mismatchInside(a: Uint8Array, b: Uint8Array, size: number, frame
 }
 
 /**
+ * Which checker block a cell falls in, counted from the block on the square's
+ * centre: 0 in the middle, ±1 either side of it, and so on outwards.
+ *
+ * Counted from the centre rather than from the square's corner, because the
+ * target the engine is given has to be symmetric under the rows the visitor
+ * asked for — and a checker counted from a corner is not. Mirroring a `k`-block
+ * checker turns block `j` into `k − 1 − j`, so for an even `k` the mirror of the
+ * band is its own negative: at the default of four blocks a side, folding the
+ * band afterwards averaged two opposite patterns and left blocks of twice the
+ * size. Counted from the centre the mirror turns `j` into `−j`, which has `j`'s
+ * parity, and the same holds for the diagonals and the quarter turns — so the
+ * pattern is invariant under all eight symmetries of the square, whatever `k`
+ * is and whether or not the block width divides the mask.
+ *
+ * The tie — a cell centre exactly on a block edge — is rounded away from the
+ * centre, so a cell and its mirror image land on exactly opposite indices
+ * however the division happens to fall.
+ */
+function blockIndex(coord: number, size: number, block: number): number {
+	const s = (coord + 0.5 - size / 2) / block;
+	return Math.sign(s) * Math.floor(Math.abs(s) + 0.5);
+}
+
+/** The colour the checker has at one cell, before the phase is added. */
+function checkerAt(x: number, y: number, size: number, block: number): 0 | 1 {
+	return ((blockIndex(x, size, block) + blockIndex(y, size, block)) & 1) as 0 | 1;
+}
+
+/**
  * Which of the two checker phases to lay down, 0 or 1.
  *
  * The rule, in one line: **the phase that agrees with the visitor's own band
- * cells more often**. At the sizes on offer the band is thinner than a single
- * checker cell — an 18 % band against a quarter-square checker — so every band
- * cell is a cell along the protected outline, and agreeing with the band is the
- * same thing as continuing the colour the motif has at its edge. A tie keeps
- * phase 0, so the answer does not depend on which cell was counted first.
+ * cells more often**. Where the band is thinner than one checker block — above
+ * 50 % of the square at four blocks a side, 60 % at five, a third at three —
+ * every band cell is a cell along the protected outline, so agreeing with the
+ * band is the same thing as continuing the colour the motif has at its edge;
+ * below that the corners of the band hold whole blocks too and the vote is
+ * simply over the whole band. A tie keeps phase 0, so the answer does not depend
+ * on which cell was counted first.
  */
 export function checkerPhase(mask: Mask, frame: Frame, cells: number): 0 | 1 {
 	const block = mask.size / clampFrameCells(cells);
@@ -271,12 +302,10 @@ export function checkerPhase(mask: Mask, frame: Frame, cells: number): 0 | 1 {
 	let total = 0;
 	for (let y = 0; y < mask.size; y++) {
 		const row = y * mask.size;
-		const by = Math.floor(y / block);
 		for (let x = 0; x < mask.size; x++) {
 			if (insideCell(frame, mask.size, x, y)) continue;
 			total++;
-			const checker = (Math.floor(x / block) + by) & 1;
-			if (checker === (mask.data[row + x] ? 1 : 0)) agree++;
+			if (checkerAt(x, y, mask.size, block) === (mask.data[row + x] ? 1 : 0)) agree++;
 		}
 	}
 	return total && agree * 2 < total ? 1 : 0;
@@ -286,10 +315,16 @@ export function checkerPhase(mask: Mask, frame: Frame, cells: number): 0 | 1 {
  * The mask the engine is actually asked to weave when the band is free.
  *
  * Keep every cell inside the protected shape; replace the band with a checker of
- * `cells × cells` blocks over the whole square, which is exactly what
+ * `cells × cells` blocks laid down from the square's centre, which is what
  * `scripts/inverse/motif-border-benchmark.mjs` did to get a weavable target out
  * of an isolated silhouette. The visitor's mask is not touched: they keep on
  * painting the picture they painted, and only the search sees this one.
+ *
+ * Nothing folds the band afterwards. The motif is already folded under the rows
+ * when it arrives here — that is the visitor's own instruction, and it is on
+ * screen — and the checker is symmetric under every symmetry of the square by
+ * construction (`blockIndex`), so the target is symmetric without a second pass
+ * that would write checker colours into the motif's own edge.
  *
  * **This function is the whole of the substitution and exists to be deleted.**
  * When the engine takes per-cell loss weights (Codex's lane, PAINT.md §11) the
@@ -303,10 +338,9 @@ export function substituteCheckerBand(mask: Mask, frame: Frame, cells: number): 
 	const data = new Uint8Array(mask.data);
 	for (let y = 0; y < mask.size; y++) {
 		const row = y * mask.size;
-		const by = Math.floor(y / block);
 		for (let x = 0; x < mask.size; x++) {
 			if (insideCell(frame, mask.size, x, y)) continue;
-			data[row + x] = ((Math.floor(x / block) + by + phase) & 1) as 0 | 1;
+			data[row + x] = (checkerAt(x, y, mask.size, block) ^ phase) as 0 | 1;
 		}
 	}
 	return { size: mask.size, data };
@@ -316,8 +350,11 @@ export function substituteCheckerBand(mask: Mask, frame: Frame, cells: number): 
  * The target one search is run against: the visitor's mask when the band is
  * fixed, and the same mask with a woven band when it is free.
  *
- * A copy either way, so the caller may fold it under the symmetry rows without
- * touching what is on the canvas.
+ * A copy either way, so that what goes to the engine can never be what is on the
+ * canvas. It is handed over as it comes back from here: the mask arrives already
+ * folded under the rows (the store folds it, and the page folds it again before
+ * a search), and the woven band is symmetric by construction, so there is
+ * nothing left to fold.
  */
 export function solveTargetMask(mask: Mask, frame: Frame, cells: number): Mask {
 	if (frame.mode !== 'free') return { size: mask.size, data: new Uint8Array(mask.data) };
