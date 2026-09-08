@@ -23,9 +23,19 @@ const cases=manifest.cases.filter(e=>(stage==='initialize'||e.fullSolve||arg('al
 const report={stage,policies,repeats,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,cpu:cpus()[0].model,manifestSha256:hash(await fs.readFile(path.join(root,'manifest.json'))),settings:cfg,sourceHashes:{},results:[]};
 for(const folder of ['static/inverse/core/direct','scripts/inverse'])for(const file of await fs.readdir(folder))if(file.endsWith('.js')||file.startsWith('count-')&&file.endsWith('.mjs'))report.sourceHashes[path.join(folder,file)]=hash(await fs.readFile(path.join(folder,file)));
 await fs.mkdir(output,{recursive:true});
+if(arg('resume')==='true'){
+  const previous=JSON.parse(await fs.readFile(path.join(output,'results.json')));
+  for(const field of ['stage','policies','repeats','manifestSha256','settings'])if(JSON.stringify(previous[field])!==JSON.stringify(report[field]))throw new Error(`Cannot resume: ${field} differs`);
+  for(const [file,digest] of Object.entries(previous.sourceHashes))if((file.startsWith('static/')||file.endsWith('count-strategies.mjs')||file.endsWith('count-strategy-data.mjs'))&&report.sourceHashes[file]!==digest)throw new Error(`Cannot resume changed numerical code: ${file}`);
+  // Only complete case/policy blocks reach results.json. An interrupted block
+  // is replayed from fresh inputs, retaining its original rotated policy order.
+  report.results=previous.results;
+  report.resumes=[...(previous.resumes||[]),{at:new Date().toISOString(),previousCommit:previous.gitCommit,completedRuns:previous.results.length}];
+}
 const seedSummary=seed=>({counts:seed.model.counts,phase:seed.phase,error:seed.error,score:seed.error+.001*seed.model.counts.reduce((a,b)=>a+b,0),geometrySha256:hash(Buffer.from(seed.model.z.buffer,seed.model.z.byteOffset,seed.model.z.byteLength)),rounds:seed.initializationRounds});
 const key=s=>s.counts.join(',')+':'+s.phase;
 for(let repeat=0;repeat<repeats;repeat++)for(const [index,e] of cases.entries()){
+  if(policies.every(strategy=>report.results.some(r=>r.id===e.id&&r.repeat===repeat&&r.strategy===strategy)))continue;
   const rows=[],offset=(index+repeat)%policies.length,order=[...policies.slice(offset),...policies.slice(0,offset)];
   for(const strategy of order){
     const target=await readCase(root,e),s=target.sourceImage,row={id:e.id,group:e.group,repeat,strategy};rows.push(row);report.results.push(row);
@@ -58,6 +68,7 @@ for(let repeat=0;repeat<repeats;repeat++)for(const [index,e] of cases.entries())
       r.bestScoreChange=r.seeds[0].score-baseline.seeds[0].score;
     }
   }
-  await fs.writeFile(path.join(output,'results.json'),JSON.stringify(report,null,2));
+  await fs.writeFile(path.join(output,'results.json.tmp'),JSON.stringify(report,null,2));
+  await fs.rename(path.join(output,'results.json.tmp'),path.join(output,'results.json'));
 }
 console.log(output);
