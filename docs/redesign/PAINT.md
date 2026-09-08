@@ -128,6 +128,18 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   it, which read as two different steps and is one — and the mask in it is drawn on `--sky`, as the detail page's
   heart thumbnails are, because on white a white lobe disappears. Download PDF and Gem in the top bar now work on
   this heart.
+- **A mediocre result says so** (owner, 2026-09-08). A percentage is a number, not a verdict: 0,4 % and 1,7 % read
+  alike to anyone who has not woven one of these. Above `MEDIOCRE_MISMATCH` (1 %, one named constant in
+  `FindCutsPanel.svelte`) the panel adds one plain line under the numbers — "Mønsteret er tæt på, men ikke helt:
+  prøv Find snit igen, ret masken, eller slå en symmetri fra." — and a third, ghost button `Find snit igen` on its
+  own line under the other two, which runs the same search from the mask again. Under 1 % nothing changes. The
+  threshold is judged on the motif where there is one and on the whole square where there is not, exactly as the
+  summary line is: a large, accurately woven band dilutes an error in the middle (MOTIF-BORDER.md's three-cell house
+  is 1,89 % over the square and 4,60 % in its centre). 1 % is where the engine's own matching allowance runs out —
+  `enforceCostLimit` is 0.03 for a whole design and a solve the fitter itself calls good lands well under a
+  hundredth — and it is where one cell in a hundred of a 400-cell square becomes a seam you can see in the woven
+  paper. "Find snit igen" goes back to the mask before it starts, so nobody watches a progress bar under the heart
+  they were just told was not good enough.
 - After failure: a notice in the panel: what happened (timed out / no weavable pattern / engine could not load) and
   what to try (paint with fewer thin details, switch off a symmetry, try again), plus `Prøv igen`.
 

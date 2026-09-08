@@ -552,6 +552,11 @@
 		settle();
 		const mask = session.mask;
 		if (!mask || maskEmpty || busy) return;
+		// "Find snit igen", from the panel's own result face: the heart on screen
+		// describes a search that is over, so the canvas goes back to the mask the
+		// new one is about — otherwise the visitor would watch a progress bar under
+		// the very heart they had just been told was not good enough.
+		backToMask();
 		notice = null;
 		session.error = null;
 		session.status = 'searching';

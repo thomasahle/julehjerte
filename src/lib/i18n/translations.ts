@@ -298,6 +298,10 @@ export const translations = {
     paintFoundMotifSummary: '{motif}% afvigelse i motivet · {mismatch}% i hele firkanten',
     /** {left}, {right} = snit i hver lap; {clearance} = mm */
     paintFoundCuts: '{left} + {right} snit · mindst {clearance} mm mellem snittene',
+    /** Vises, når afvigelsen er over MEDIOCRE_MISMATCH i FindCutsPanel.svelte */
+    paintFoundMediocre:
+      'Mønsteret er tæt på, men ikke helt: prøv Find snit igen, ret masken, eller slå en symmetri fra.',
+    paintFindCutsAgain: 'Find snit igen',
     paintFoundIdentical: 'Begge lapper klippes efter samme skabelon.',
     paintSymmetryNotHeld: 'Symmetrien kunne ikke holdes helt; hjertet vises som motoren fandt det.',
     paintOpenInDraw: 'Åbn i Tegn',
@@ -758,6 +762,10 @@ export const translations = {
     paintFoundMotifSummary: '{motif}% different in the motif · {mismatch}% over the whole square',
     /** {left}, {right} = cuts in each lobe; {clearance} = mm */
     paintFoundCuts: '{left} + {right} cuts · at least {clearance} mm between cuts',
+    /** Shown when the difference is above MEDIOCRE_MISMATCH in FindCutsPanel.svelte */
+    paintFoundMediocre:
+      'The pattern is close, but not exact: try Find the cuts again, change the mask, or switch off a symmetry.',
+    paintFindCutsAgain: 'Find the cuts again',
     paintFoundIdentical: 'Both lobes are cut from the same template.',
     paintSymmetryNotHeld: 'The symmetry could not be held exactly; the heart is shown as the engine found it.',
     paintOpenInDraw: 'Open in Draw',

@@ -89,6 +89,20 @@
 
 	const tr = (key: TranslationKey) => t(key, lang);
 
+	/**
+	 * Above this share of cells the panel says so: the heart is close, not right.
+	 *
+	 * 1 % is where two separate things run out at once. It is the engine's own
+	 * matching allowance — `enforceCostLimit` is 0.03 for a whole design, and a
+	 * solve the fitter itself calls good lands well under a hundredth — so past it
+	 * the number is no longer rounding but a pattern the search could not weave.
+	 * And it is where the difference stops being arithmetic: on a printed heart of
+	 * 400 cells a side, one cell in a hundred is a seam wide enough to see once the
+	 * paper is woven, which is the moment the visitor would rather be told than
+	 * left to find out. Under it the panel says nothing extra, as it always did.
+	 */
+	const MEDIOCRE_MISMATCH = 0.01;
+
 	/** The engine's stage names in words. Anything else is simply "working". */
 	const STAGES: Record<string, TranslationKey> = {
 		preprocessing: 'paintStagePreparing',
@@ -144,6 +158,16 @@
 			headingEl?.focus();
 		});
 	});
+
+	/**
+	 * The number the visitor should judge the heart by.
+	 *
+	 * Inside the motif where there is one, over the whole square where there is
+	 * not — the same choice the summary line above makes, for the same reason: a
+	 * large, accurately woven band dilutes an error in the middle.
+	 */
+	let difference = $derived(result ? (result.report.motifMismatch ?? result.report.mismatch) : 0);
+	let mediocre = $derived(difference > MEDIOCRE_MISMATCH);
 
 	// The rows the converter honoured differ from what was asked: the solve did
 	// not hold the symmetry closely enough to be corrected into it (§11).
@@ -246,6 +270,14 @@
 				<span>{tr('paintShowMotif')}</span>
 			</label>
 		{/if}
+		<!-- A percentage is a number, not a verdict: 0.4 % and 1.7 % read the same to
+		     anyone who has not woven one of these. Past the threshold the panel says
+		     in words that this is close and not right, and offers the one thing that
+		     often fixes it — the same search again, which starts from a different
+		     place and regularly lands better. -->
+		{#if mediocre}
+			<p class="note">{tr('paintFoundMediocre')}</p>
+		{/if}
 		{#if result.report.identical}
 			<p class="note">{tr('paintFoundIdentical')}</p>
 		{/if}
@@ -259,6 +291,15 @@
 			<button type="button" class="btn btn-sm btn-outline" onclick={onBackToMask}>
 				{tr('paintBackToMask')}
 			</button>
+			{#if mediocre}
+				<!-- Its own line under the other two: "Tilbage til masken" already fills
+				     its third of the panel, and a third button beside them would put all
+				     three onto two lines each. -->
+				<button type="button" class="btn btn-sm btn-ghost again" onclick={onFind}>
+					<ScissorsIcon size={16} />
+					{tr('paintFindCutsAgain')}
+				</button>
+			{/if}
 		</div>
 	{:else}
 		{#if status === 'failed' && error}
@@ -380,11 +421,17 @@
 
 	.actions {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 8px;
 	}
 
 	.actions .btn {
 		flex: 1 1 0;
+	}
+
+	/* Full width, so it wraps onto a line of its own under the two above. */
+	.actions .again {
+		flex-basis: 100%;
 	}
 
 	.find {
