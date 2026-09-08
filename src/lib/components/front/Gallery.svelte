@@ -93,10 +93,6 @@
 		};
 	});
 
-	/** "12 hjerter" — the row's heart count. */
-	function heartCount(n: number): string {
-		return t('categoryHeartCount', lang, { n });
-	}
 </script>
 
 <div class="gallery-wrap" bind:this={galleryWrapEl}>
@@ -122,7 +118,6 @@
 			<CategorySection
 				id={category.id}
 				title={categoryTitle(category.id, lang)}
-				count={heartCount(category.hearts.length)}
 				hearts={category.hearts}
 				{markup}
 				{designs}

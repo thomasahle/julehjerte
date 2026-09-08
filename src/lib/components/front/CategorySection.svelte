@@ -17,8 +17,6 @@
 		/** Category id; also the anchor the front page scrolls to. */
 		id: string;
 		title: string;
-		/** e.g. "12 hjerter". Omitted for "Mine hjerter", which is the heading alone. */
-		count?: string;
 		hearts: GalleryHeart[];
 		/**
 		 * The hearts' finished SVGs, by id, when they are already in the
@@ -44,7 +42,6 @@
 	let {
 		id,
 		title,
-		count,
 		hearts,
 		markup = null,
 		designs = null,
@@ -62,7 +59,7 @@
 <section class="cat" class:first class:apart {id}>
 	<div class="cat-head">
 		<h3>{title}</h3>
-		{#if count}<span>{count}</span>{/if}
+		
 	</div>
 	{#if hearts.length === 0 && empty}
 		{@render empty()}

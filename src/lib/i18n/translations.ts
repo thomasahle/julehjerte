@@ -49,7 +49,6 @@ export const translations = {
     selectNone: 'Fravælg alle',
     galleryHeading: 'Skabeloner',
     /** {n} = hearts in the category */
-    categoryHeartCount: '{n} hjerter',
     pdfSettings: 'PDF-indstillinger',
     stepPrintTitle: 'Vælg og print',
     stepPrintHint: 'I 100% størrelse på A4',
@@ -344,7 +343,6 @@ export const translations = {
     selectNone: 'Select none',
     galleryHeading: 'Templates',
     /** {n} = hearts in the category */
-    categoryHeartCount: '{n} hearts',
     pdfSettings: 'PDF settings',
     stepPrintTitle: 'Pick and print',
     stepPrintHint: 'At 100% size on A4',
