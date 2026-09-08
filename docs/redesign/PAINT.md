@@ -416,11 +416,15 @@ a supporting weave, and that the engine needs explicit per-cell loss weights for
 ignored). Codex is building that in the engine on their branch; we port it when it lands and do not build it here.
 The UI is designed now so the paint mode fits it from the start (mockup, section "Frie felter"): the mask gains a
 third value `2 = free`; "Maler med" gets a third, hatched swatch; a panel "Fri kant" with a checkbox "Lad motoren
-lægge kanten" and a width (Smal / Mellem / Bred ≈ 10 / 18 / 25 % of the square) marks the outer band free; free
-cells are drawn hatched on a light ground inside the heart with a dashed outline of the protected centre;
+lægge kanten" and a choice of the protected motif's *shape* as it appears in the heart — Rude (the band along the
+woven square's edges), Cirkel, Firkant (upright in the heart, a diamond in the mask) — with everything outside the
+shape free and the shape inset about 18 % of the square (the band Codex's experiment validated; no width control);
+free cells are drawn hatched on a light ground inside the heart with a dashed outline of the protected shape;
 `detectSymmetry` ignores free cells; the bridge sends weight 0 for them; the result panel reports the difference
 inside the protected motif separately from the whole square, and a checkbox shows the protected outline on the
-found heart; the import dialog gets "Reparér kanten" with the same width control for blurred photo edges. Until
+found heart; the import dialog gets "Reparér kanten" with the same shape choice for blurred photo edges. The pattern is
+the norm, not the exception: flettedehjerter.dk's archive of a hundred-odd hearts is central motifs inside a woven
+frame, and several of Codex's photo benchmarks (puppy, Stonehenge, viking ship) come from it. Until
 the engine supports weights, nothing of this is shown. Keep the mask's value type open to it: no code may assume
 `data[i] < 2` except the tools' own brushes.
 
