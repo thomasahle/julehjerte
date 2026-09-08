@@ -362,14 +362,26 @@
    */
   async function takePaintHandoff(): Promise<void> {
     const { takeHandoff } = await import('$lib/editor/session.svelte');
+    // Ask whether the heart is still wanted *before* taking it. takeHandoff empties
+    // the slot for good, and unlike the gallery heart above there is nowhere to
+    // fetch this one from again: a reload of ?from=session finds nothing and it was
+    // never in the collection. Left in place it costs nothing — only ?from=session
+    // reads the slot, and Mal overwrites it the next time it hands a heart over.
+    if (pendingLoadSuperseded) return;
     const design = takeHandoff();
-    if (!design || pendingLoadSuperseded) return;
+    if (!design) return;
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
     designColors = design.colors ?? null;
-    // Mal names the heart after what the mask came from; a heart with no name is
-    // still a new heart, so it gets the same name a blank editor would give it.
+    // The name is Mal's to set, on the design it hands over: it is the side that
+    // knows whether the mask came from star.png, a photo or the visitor's own
+    // brush, and cutGeometryToDesign takes `name` from its caller for exactly that
+    // (PAINT.md §3: "Stjerne fra billede" / "Heart from image", which Mal owns the
+    // translation key for). Never session.sourceName — that is the file the mask
+    // came from, so reading it here would make a Tegn → Mal → Tegn round trip
+    // rename the heart after itself. The fallback is only for a design that
+    // reaches us unnamed; then it is a new heart like any other.
     heartName = design.name || t('myHeart', lang);
     authorName = design.author ?? '';
     description = design.description ?? '';
@@ -405,6 +417,10 @@
     // What the mask turns out to be symmetric under becomes both the setting Mal
     // paints under and the "fundet" tags on its rows (PAINT.md §5).
     const found = detectMaskSymmetry(mask);
+    // sourceName says where the mask came from, which for a heart carried over from
+    // Tegn is that heart. It is not a name for whatever Mal makes next: a heart Mal
+    // hands back carries its own `name` (see takePaintHandoff), so deriving one from
+    // this would turn a Tegn → Mal → Tegn round trip into "Mit hjerte fra billede".
     setMask(mask, { sourceName: design.name, symmetry: found, found });
     await goto(href('paint', lang));
   }
