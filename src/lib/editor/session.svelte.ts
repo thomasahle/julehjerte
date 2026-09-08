@@ -11,6 +11,16 @@
  * a reload: 160 KB per keystroke is more than the draft mechanism should carry, and
  * an unsaved drawing that disappears with the tab is what a visitor already expects.
  * `serialize`/`restore` exist so that decision can be reversed in one place.
+ *
+ * The mask and the found heart are held with `$state.raw`, so that what the store
+ * makes reactive is the *replacement* of a mask, not a write to a cell. A plain
+ * `$state` object would be handed out as a deep proxy, and the tools read
+ * `mask.data` in their innermost loops — a flood fill over the full mask is 160 000
+ * proxied reads, which measures about fourteen times slower than the raw array and
+ * lands straight on the canvas's frame budget. The other side of that coin is that
+ * painting is invisible to reactivity by design: `$derived` and `$effect` never see
+ * a stroke. The canvas repaints the box a tool reports (§8), which is what it wants
+ * to do anyway; anything else that has to know must go through `setMask`.
  */
 
 import type { HeartDesign } from '$lib/types/heart';
@@ -69,7 +79,24 @@ function freshSession(): PaintSession {
 	};
 }
 
-export const session: PaintSession = $state(freshSession());
+/**
+ * The store itself. A class rather than one `$state` object because the two big
+ * values in it — the mask's cells and a found heart's fingers — must not be wrapped
+ * in a deep proxy (see the note at the top of the file); the small fields are
+ * ordinary `$state`, so a component can read `session.symmetry.curve` and follow it.
+ */
+class Session implements PaintSession {
+	mask = $state.raw<Mask | null>(null);
+	maskDirty = $state(false);
+	symmetry = $state<SymmetrySettings>({ ...NO_SYMMETRY });
+	found = $state<SymmetrySettings | null>(null);
+	result = $state.raw<PaintResult | null>(null);
+	status = $state<PaintStatus>('idle');
+	error = $state<PaintError | null>(null);
+	sourceName = $state<string | null>(null);
+}
+
+export const session: PaintSession = new Session();
 
 /**
  * Replace the mask wholesale — an import, "Mal på hjertet", "Prøv stjernen".
