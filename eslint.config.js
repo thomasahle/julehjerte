@@ -35,6 +35,17 @@ export default [
 		}
 	},
 	{
+		// Rune modules (`*.svelte.ts`) are claimed by the Svelte parser, which needs to
+		// be told which parser handles the TypeScript inside them.
+		files: ['**/*.svelte.ts', '**/*.svelte.js'],
+		languageOptions: {
+			parserOptions: {
+				parser: tseslint.parser,
+				svelteConfig
+			}
+		}
+	},
+	{
 		files: ['**/*.svelte'],
 		languageOptions: {
 			parserOptions: {

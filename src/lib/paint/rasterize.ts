@@ -1,153 +1,118 @@
 /**
- * Heart → mask: draw a design's weave into the paint mode's cell grid.
+ * A heart, drawn as a mask.
  *
- * The mask has to show exactly what the visitor sees on the canvas, so this
- * rasteriser takes the strips straight from `computeWeaveData` — the single
- * source of truth for which strip lies on top of which — and fills them with the
- * same even-odd rule the SVG renderer hands to the browser: base 0 (the left
- * lobe's paper), then the even-odd union of every strip as 1 (the right lobe's).
- * A cell covered by two strips at once falls back to 0, which is precisely the
- * over-under of the weave.
- *
- * Pure: no DOM, no canvas, so it runs in tests and in a worker.
+ * This is the "Mal på hjertet" direction: strips in, cells out. It must draw
+ * exactly what the site draws, so it takes the same `computeWeaveData` the SVG
+ * renderer takes and fills the same shapes under the same even-odd rule — a base
+ * of the left colour (0) with the union of every strip on top (1), inside the
+ * overlap rectangle. Sampling the finished SVG would need a browser; this is
+ * plain arithmetic, so it runs in a test and in a worker.
  */
 
-import type { HeartDesign } from '$lib/types/heart';
-import type { BezierSegment } from '$lib/geometry/bezierSegments';
+import type { BezierSegment, HeartDesign } from '$lib/types/heart';
 import { parsePathDataToSegments } from '$lib/geometry/bezierSegments';
 import { computeWeaveData } from '$lib/rendering/svgWeave';
-import { MASK_SIZE, type Mask } from '$lib/paint/mask';
+import { createMask, MASK_SIZE, type Mask } from './mask';
 
-/** Largest deviation, in cells, a flattened chord may have from its curve. */
-const FLATTEN_TOLERANCE_CELLS = 0.25;
+/** How far a flattened curve may stray from the true one, in mask cells. */
+const FLATNESS_CELLS = 0.25;
 
-/** Guard against a pathological control polygon subdividing forever. */
-const MAX_FLATTEN_DEPTH = 16;
-
-type Pt = { x: number; y: number };
-
-/** Perpendicular distance from `p` to the line through `a` and `b`. */
-function lineDistance(p: Pt, a: Pt, b: Pt): number {
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
-  const len = Math.hypot(dx, dy);
-  // A degenerate chord: fall back to the plain distance from the shared endpoint.
-  if (len < 1e-12) return Math.hypot(p.x - a.x, p.y - a.y);
-  return Math.abs((p.x - a.x) * dy - (p.y - a.y) * dx) / len;
-}
-
-function midpoint(a: Pt, b: Pt): Pt {
-  return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
-}
-
-/** Append the flattened curve to `out`, which must already end at `p0`. */
-function flattenCubic(seg: BezierSegment, tolerance: number, depth: number, out: Pt[]): void {
-  const flat =
-    Math.max(lineDistance(seg.p1, seg.p0, seg.p3), lineDistance(seg.p2, seg.p0, seg.p3)) <= tolerance;
-  if (flat || depth >= MAX_FLATTEN_DEPTH) {
-    out.push(seg.p3);
-    return;
-  }
-  // de Casteljau at t = 0.5
-  const p01 = midpoint(seg.p0, seg.p1);
-  const p12 = midpoint(seg.p1, seg.p2);
-  const p23 = midpoint(seg.p2, seg.p3);
-  const p012 = midpoint(p01, p12);
-  const p123 = midpoint(p12, p23);
-  const mid = midpoint(p012, p123);
-  flattenCubic({ p0: seg.p0, p1: p01, p2: p012, p3: mid }, tolerance, depth + 1, out);
-  flattenCubic({ p0: mid, p1: p123, p2: p23, p3: seg.p3 }, tolerance, depth + 1, out);
-}
-
+/** One edge of a flattened outline, in the design's pixel frame. */
 type Edge = { x0: number; y0: number; x1: number; y1: number };
 
 /**
- * Fill `edges` into `mask` with the even-odd rule, sampled at cell centres.
+ * How many straight pieces a cubic needs to stay within `tolerance`.
  *
- * The scanline walks each row left to right and flips the running value at every
- * crossing, the same way the engine's own `sampleRings` does, so the two agree
- * cell for cell on the same geometry.
+ * The error of an n-piece flattening is at most 3·D/(4n²), where D is the larger
+ * of the two second differences of the control points, so the count follows in
+ * closed form — no subdivision, no allocation per piece.
  */
-function fillEvenOdd(mask: Mask, edges: Edge[]): void {
-  const { size, data } = mask;
-  const crossings: number[] = [];
-  for (let row = 0; row < size; row++) {
-    const y = row + 0.5;
-    crossings.length = 0;
-    for (const e of edges) {
-      // Half-open in y so a vertex shared by two edges is counted exactly once.
-      if (e.y0 > y === e.y1 > y) continue;
-      crossings.push(e.x0 + ((y - e.y0) * (e.x1 - e.x0)) / (e.y1 - e.y0));
-    }
-    if (!crossings.length) continue;
-    crossings.sort((a, b) => a - b);
-    let next = 0;
-    let inside = 0;
-    const base = row * size;
-    for (let col = 0; col < size; col++) {
-      const x = col + 0.5;
-      while (next < crossings.length && crossings[next]! < x) {
-        inside ^= 1;
-        next++;
-      }
-      if (inside) data[base + col] = 1;
-    }
-  }
+function flatteningSteps(seg: BezierSegment, tolerance: number): number {
+	const ax = seg.p0.x - 2 * seg.p1.x + seg.p2.x;
+	const ay = seg.p0.y - 2 * seg.p1.y + seg.p2.y;
+	const bx = seg.p1.x - 2 * seg.p2.x + seg.p3.x;
+	const by = seg.p1.y - 2 * seg.p2.y + seg.p3.y;
+	const d = Math.max(Math.hypot(ax, ay), Math.hypot(bx, by));
+	if (d <= 0) return 1;
+	return Math.max(1, Math.ceil(Math.sqrt((3 * d) / (4 * tolerance))));
+}
+
+function pointOnCubic(seg: BezierSegment, t: number): { x: number; y: number } {
+	const u = 1 - t;
+	const a = u * u * u;
+	const b = 3 * u * u * t;
+	const c = 3 * u * t * t;
+	const d = t * t * t;
+	return {
+		x: a * seg.p0.x + b * seg.p1.x + c * seg.p2.x + d * seg.p3.x,
+		y: a * seg.p0.y + b * seg.p1.y + c * seg.p2.y + d * seg.p3.y
+	};
+}
+
+/** Turn one closed strip outline into edges, closing it back to its first point. */
+function outlineToEdges(pathData: string, tolerance: number, out: Edge[]): void {
+	const segments = parsePathDataToSegments(pathData);
+	if (!segments.length) return;
+	let from = segments[0]!.p0;
+	const first = from;
+	for (const seg of segments) {
+		const steps = flatteningSteps(seg, tolerance);
+		for (let i = 1; i <= steps; i++) {
+			const to = i === steps ? seg.p3 : pointOnCubic(seg, i / steps);
+			out.push({ x0: from.x, y0: from.y, x1: to.x, y1: to.y });
+			from = to;
+		}
+	}
+	if (from.x !== first.x || from.y !== first.y) {
+		out.push({ x0: from.x, y0: from.y, x1: first.x, y1: first.y });
+	}
 }
 
 /**
- * Rasterise a heart's weave into a `size × size` mask of the overlap rectangle.
+ * The heart's weave as a `size` × `size` mask of the overlap rectangle.
  *
- * The overlap rectangle — the woven square — is mapped onto the whole grid, so
- * the lobes' ears fall outside and are not drawn; they are painted as flat paper
- * by the canvas instead.
+ * Cells are sampled at their centres with an even-odd scanline: a cell is 1 when
+ * an odd number of strip outlines lie to its left, which is exactly the fill rule
+ * the SVG uses to make the checkerboard.
  */
-export function rasterizeDesign(design: HeartDesign, size = MASK_SIZE): Mask {
-  const mask: Mask = { size, data: new Uint8Array(size * size) };
-  if (!design.fingers.length) return mask;
+export function rasterizeDesign(design: HeartDesign, size: number = MASK_SIZE): Mask {
+	const mask = createMask(0, size);
+	if (!design.fingers.length || size <= 0) return mask;
 
-  const weave = computeWeaveData(design.fingers, design.gridSize, (design.weaveParity ?? 0) as 0 | 1);
-  const { overlap } = weave;
-  if (!(overlap.width > 0) || !(overlap.height > 0)) return mask;
+	const weave = computeWeaveData(design.fingers, design.gridSize, (design.weaveParity ?? 0) as 0 | 1);
+	const { left, top, width, height } = weave.overlap;
+	if (!(width > 0) || !(height > 0)) return mask;
 
-  const sx = size / overlap.width;
-  const sy = size / overlap.height;
-  const toCells = (p: Pt): Pt => ({ x: (p.x - overlap.left) * sx, y: (p.y - overlap.top) * sy });
+	const cellW = width / size;
+	const cellH = height / size;
+	const tolerance = FLATNESS_CELLS * Math.min(cellW, cellH);
 
-  const edges: Edge[] = [];
-  for (const strip of [...weave.rightOnTopStrips, ...weave.leftOnTopStrips]) {
-    // Every strip path is one closed subpath, so its parsed segments already
-    // carry the closing chord and form a complete boundary loop.
-    const segments = parsePathDataToSegments(strip.pathData);
-    if (!segments.length) continue;
-    const points: Pt[] = [toCells(segments[0]!.p0)];
-    for (const seg of segments) {
-      flattenCubic(
-        { p0: toCells(seg.p0), p1: toCells(seg.p1), p2: toCells(seg.p2), p3: toCells(seg.p3) },
-        FLATTEN_TOLERANCE_CELLS,
-        0,
-        points
-      );
-    }
-    for (let i = 1; i < points.length; i++) {
-      edges.push({ x0: points[i - 1]!.x, y0: points[i - 1]!.y, x1: points[i]!.x, y1: points[i]!.y });
-    }
-    // Close the loop in case the path data did not come back to its start.
-    const first = points[0]!;
-    const last = points[points.length - 1]!;
-    if (first.x !== last.x || first.y !== last.y) {
-      edges.push({ x0: last.x, y0: last.y, x1: first.x, y1: first.y });
-    }
-  }
+	const edges: Edge[] = [];
+	for (const strip of [...weave.rightOnTopStrips, ...weave.leftOnTopStrips]) {
+		outlineToEdges(strip.pathData, tolerance, edges);
+	}
+	if (!edges.length) return mask;
 
-  fillEvenOdd(mask, edges);
-  return mask;
-}
-
-/** Fraction of cells where two equally sized masks disagree. */
-export function maskMismatch(a: Uint8Array, b: Uint8Array): number {
-  if (a.length !== b.length || !a.length) throw new Error('Masks must have the same size.');
-  let differing = 0;
-  for (let i = 0; i < a.length; i++) if ((a[i] ? 1 : 0) !== (b[i] ? 1 : 0)) differing++;
-  return differing / a.length;
+	const crossings: number[] = [];
+	for (let py = 0; py < size; py++) {
+		const y = top + (py + 0.5) * cellH;
+		crossings.length = 0;
+		for (const e of edges) {
+			// Half-open in y: an edge counts when it straddles the scanline, so a
+			// vertex sitting exactly on it is counted once, not twice or never.
+			if ((e.y0 <= y) === (e.y1 <= y)) continue;
+			crossings.push(e.x0 + ((y - e.y0) / (e.y1 - e.y0)) * (e.x1 - e.x0));
+		}
+		if (crossings.length < 2) continue;
+		crossings.sort((a, b) => a - b);
+		const row = py * size;
+		for (let i = 0; i + 1 < crossings.length; i += 2) {
+			// Cell centres are at left + (px + 0.5) · cellW, so a span [a, b) covers
+			// the cells from ceil((a - left)/cellW - 0.5) up to the same for b.
+			const from = Math.max(0, Math.ceil((crossings[i]! - left) / cellW - 0.5));
+			const to = Math.min(size, Math.ceil((crossings[i + 1]! - left) / cellW - 0.5));
+			for (let px = from; px < to; px++) mask.data[row + px] = 1;
+		}
+	}
+	return mask;
 }

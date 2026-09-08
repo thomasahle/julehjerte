@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { detectSymmetryModes, mapSegments, reflectAcrossChordBisector } from '$lib/utils/symmetry';
-import { rasterizeDesign, maskMismatch } from '$lib/paint/rasterize';
+import { rasterizeDesign } from '$lib/paint/rasterize';
+import { maskMismatch } from '$lib/paint/mask';
 import {
   convertCutGeometry,
   cutGeometryToDesign,
