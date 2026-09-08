@@ -45,6 +45,13 @@ import type { Finger, HeartColors, HeartDesign, LobeId, NodeType } from '$lib/ty
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import { reverseSegments, segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { normalizeHeartDesign } from '$lib/utils/heartDesign';
+import {
+  mapPointBetweenLobes,
+  mapPointWithinLobe,
+  mapSegments,
+  pointReflectAcrossMidpoint,
+  reflectAcrossChordBisector
+} from '$lib/utils/symmetry';
 import { MAX_GRID_SIZE } from '$lib/constants';
 import { FIT_TOLERANCE, simplifyCubicChain } from '$lib/inverse/simplifyCurves';
 
@@ -228,20 +235,34 @@ function snapToEdges(segments: BezierSegment[], axis: 'x' | 'y'): void {
 // Symmetry enforcement
 // ============================================================================
 //
-// The mappings mirror `$lib/utils/symmetry.ts`, which is what the draw page's
-// `detectSymmetryModes` measures against, so an enforced heart lights up the
-// same three rows when the visitor opens it in Tegn. They are applied in the
-// 0–100 frame, which is square; that is the same frame as the editor's pixel
-// frame up to a uniform scale whenever the two lobes have equally many fingers,
-// which is exactly when Mellem lapper can hold at all.
+// The mappings are imported from `$lib/utils/symmetry.ts`, the very file the
+// draw page's `detectSymmetryModes` measures against, so an enforced heart
+// lights up the same three rows when the visitor opens it in Tegn. Two copies of
+// a reflection are two things to keep in step; there is one. The maps take their
+// bounds as an argument, so they work in our 0–100 frame as well as in the
+// editor's pixel frame — `normalizeHeartDesign` only scales and translates
+// afterwards, and a reflection survives that untouched.
 
-function mapSegments(segments: BezierSegment[], map: (p: Pt) => Pt, reverse: boolean): BezierSegment[] {
-  const mapped = segments.map((s) => ({ p0: map(s.p0), p1: map(s.p1), p2: map(s.p2), p3: map(s.p3) }));
-  return reverse ? reverseSegments(mapped) : mapped;
-}
+/** The 0–100 frame as the symmetry maps want it: the whole woven square. */
+const SQUARE: { minX: number; maxX: number; minY: number; maxY: number; size: number } = {
+  minX: 0,
+  maxX: SPAN,
+  minY: 0,
+  maxY: SPAN,
+  size: SPAN
+};
 
+/**
+ * The midpoint of two chains, cubic for cubic.
+ *
+ * Every caller passes a chain and a map of that same chain, and `mapSegments`
+ * preserves length exactly, so unequal lengths mean a bug in here rather than
+ * bad input from the engine — hence a plain Error, not a `CutGeometryError`.
+ */
 function averageSegments(a: BezierSegment[], b: BezierSegment[]): BezierSegment[] {
-  if (a.length !== b.length) return a;
+  if (a.length !== b.length) {
+    throw new Error(`Cannot average chains of ${a.length} and ${b.length} cubics.`);
+  }
   const mid = (p: Pt, q: Pt): Pt => ({ x: (p.x + q.x) / 2, y: (p.y + q.y) / 2 });
   return a.map((s, i) => ({
     p0: mid(s.p0, b[i]!.p0),
@@ -249,25 +270,6 @@ function averageSegments(a: BezierSegment[], b: BezierSegment[]): BezierSegment[
     p2: mid(s.p2, b[i]!.p2),
     p3: mid(s.p3, b[i]!.p3)
   }));
-}
-
-/** Reflection across the perpendicular bisector of the chord: swaps the ends. */
-function reflectAcrossChordBisector(p0: Pt, p3: Pt, p: Pt): Pt {
-  const mid = { x: (p0.x + p3.x) / 2, y: (p0.y + p3.y) / 2 };
-  const dx = p3.x - p0.x;
-  const dy = p3.y - p0.y;
-  const l = Math.hypot(dx, dy) || 1;
-  const ux = dx / l;
-  const uy = dy / l;
-  const rx = p.x - mid.x;
-  const ry = p.y - mid.y;
-  const along = rx * ux + ry * uy;
-  const across = rx * -uy + ry * ux;
-  return { x: mid.x - along * ux + across * -uy, y: mid.y - along * uy + across * ux };
-}
-
-function pointReflectAcrossMidpoint(p0: Pt, p3: Pt, p: Pt): Pt {
-  return { x: p0.x + p3.x - p.x, y: p0.y + p3.y - p.y };
 }
 
 /** Make one cut symmetric about its own middle (Inden i kurve). */
@@ -279,19 +281,6 @@ function enforceWithinCurve(segments: BezierSegment[], anti: boolean): BezierSeg
   return averageSegments(segments, mapSegments(segments, mate, true));
 }
 
-/** The within-lobe map: a mirror across the lobe's centre line, or a half turn. */
-function withinLobeMap(lobe: LobeId, anti: boolean): (p: Pt) => Pt {
-  if (anti) return (p) => ({ x: SPAN - p.x, y: SPAN - p.y });
-  if (lobe === 'left') return (p) => ({ x: p.x, y: SPAN - p.y });
-  return (p) => ({ x: SPAN - p.x, y: p.y });
-}
-
-/** The between-lobes map: transpose, or transpose through the anti-diagonal. */
-function betweenLobesMap(anti: boolean): (p: Pt) => Pt {
-  if (anti) return (p) => ({ x: SPAN - p.y, y: SPAN - p.x });
-  return (p) => ({ x: p.y, y: p.x });
-}
-
 /**
  * Make a lobe's cuts symmetric as a set (Inden i lap).
  *
@@ -301,7 +290,7 @@ function betweenLobesMap(anti: boolean): (p: Pt) => Pt {
  * cuts may have ended up with different numbers of cubics.
  */
 function enforceWithinLobe(cuts: BezierSegment[][], lobe: LobeId, anti: boolean): BezierSegment[][] {
-  const map = withinLobeMap(lobe, anti);
+  const map = (p: Pt) => mapPointWithinLobe(SQUARE, lobe, p, anti);
   const out = cuts.map((c) => c);
   const n = cuts.length;
   for (let i = 0; i < n; i++) {
@@ -336,8 +325,7 @@ function applyEnforcement(
   // with different counts, and then this row simply stays off.
   if (enforce.lobes !== 'off' && left.length === right.length) {
     const anti = enforce.lobes === 'anti';
-    const map = betweenLobesMap(anti);
-    right = left.map((c) => mapSegments(c, map, anti));
+    right = left.map((c) => mapSegments(c, (p) => mapPointBetweenLobes(SQUARE, p, anti), anti));
   }
 
   return { left, right };
