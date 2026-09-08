@@ -47,6 +47,9 @@ try{
      });}};
     });
     await page.goto(`${origin}/en/editor/paint/`);
+    // The root layout sets the inline paper colours in onMount. Production
+    // can finish loading its HTML before dynamic imports attach the handlers.
+    await page.waitForFunction(()=>document.documentElement.style.getPropertyValue('--paper-left')!=='');
     const button=label=>page.getByRole('button',{name:label,exact:true}).first();
     if(name==='star')await button('Try the star').click();
     else{
