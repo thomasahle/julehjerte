@@ -61,6 +61,11 @@
   let showPaintConfirm = $state(false);
   let paintButtonEl: HTMLButtonElement | null = $state(null);
   let paintCancelButtonEl: HTMLButtonElement | null = $state(null);
+  // The whole way over to Mal is lazy (see openInPaint), so on a cold cache the
+  // press is a network round trip with nothing on screen to show for it. The
+  // button is disabled meanwhile: it stops a second press from rasterising and
+  // navigating a second time, and it is the only feedback the press has.
+  let paintBusy = $state(false);
 
   // Inline status/error message shown in the actions panel (replaces alert()).
   type StatusKey = 'save' | 'import' | 'load' | 'pdf';
@@ -244,7 +249,12 @@
     if (urlFromId) {
       void loadDesignFromGallery(urlFromId);
     } else if (urlFromSession) {
-      void takePaintHandoff();
+      // Its own docblock says a handoff that is not there leaves the blank editor
+      // on screen, and that is the right answer — so a chunk that fails to load
+      // gets the same treatment, logged rather than shown.
+      void takePaintHandoff().catch((err) =>
+        console.error('Taking the heart from Mal failed', err)
+      );
     }
     if (!editorEl) return unsubscribeColors;
 
@@ -399,15 +409,37 @@
     await goto(href('paint', lang));
   }
 
+  /**
+   * Say that the way into Mal did not work.
+   *
+   * Everything openInPaint needs is fetched at the moment of the press, and on a
+   * prerendered site those requests are the ones that fail: a redeploy makes the
+   * loaded build's chunk hashes 404, and an offline tab fails identically. Without
+   * this the rejection reaches nobody — the URL does not change, the panel stays
+   * empty and only the console knows — so the press reads as a dead button.
+   */
+  function reportPaintError(err: unknown): void {
+    console.error('Opening the heart in Mal failed', err);
+    showStatus('load', 'error', t('paintOpenFailed', lang));
+  }
+
   // A mask the visitor has painted on is work they may not want to lose; one that
   // only ever arrived from an import or an earlier heart is replaced in silence.
   async function paintOnHeart(): Promise<void> {
-    const { session } = await import('$lib/editor/session.svelte');
-    if (session.mask && session.maskDirty) {
-      showPaintConfirm = true;
-      return;
+    if (paintBusy) return;
+    paintBusy = true;
+    try {
+      const { session } = await import('$lib/editor/session.svelte');
+      if (session.mask && session.maskDirty) {
+        showPaintConfirm = true;
+        return;
+      }
+      await openInPaint();
+    } catch (err) {
+      reportPaintError(err);
+    } finally {
+      paintBusy = false;
     }
-    await openInPaint();
   }
 
   function closePaintConfirm(): void {
@@ -418,7 +450,12 @@
 
   function confirmPaintOnHeart(): void {
     showPaintConfirm = false;
-    void openInPaint();
+    paintBusy = true;
+    openInPaint()
+      .catch(reportPaintError)
+      .finally(() => {
+        paintBusy = false;
+      });
   }
 
   function generateId(): string {
@@ -768,6 +805,8 @@
         class="btn btn-outline action"
         bind:this={paintButtonEl}
         onclick={paintOnHeart}
+        disabled={paintBusy}
+        aria-busy={paintBusy}
       >
         <PaintbrushIcon size={16} />
         {t('paintOnHeart', lang)}

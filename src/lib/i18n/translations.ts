@@ -214,6 +214,7 @@ export const translations = {
     paintReplaceMaskTitle: 'Erstat masken?',
     paintReplaceMaskPrompt: 'Du er i gang med at male på en maske. Tager du hjertet med over i Mal, bliver den erstattet.',
     paintReplaceMaskConfirm: 'Erstat masken',
+    paintOpenFailed: 'Mal kunne ikke åbnes. Tjek din forbindelse, genindlæs siden og prøv igen.',
     paintEngineLicences: 'Motorens licenser',
 
     // Editor help dialog
@@ -515,6 +516,7 @@ export const translations = {
     paintReplaceMaskTitle: 'Replace the mask?',
     paintReplaceMaskPrompt: 'You are painting on a mask right now. Taking this heart into Paint replaces it.',
     paintReplaceMaskConfirm: 'Replace the mask',
+    paintOpenFailed: 'Paint could not be opened. Check your connection, reload the page and try again.',
     paintEngineLicences: 'Engine licences',
 
     // Editor help dialog
