@@ -117,8 +117,10 @@ The column still scrolls inside itself where it has to: a short window (1440 × 
 overflows by about 95), and Kanten expanded under Fri, which adds 213px. It is centred while it fits and starts at
 the top when it does not, and a fade over whichever edge it runs past says there is more that way — macOS draws
 nothing of an overlay scrollbar until a gesture starts, so a panel out of sight would otherwise not be there as far
-as anyone can tell. The fade is measured after every change that alters what is *in* the column — the tool, the
-result state, and the band, since the column's own box is pinned top and bottom and never changes height itself.
+as anyone can tell. The fade is measured by a `ResizeObserver` over the column **and every panel in it**: the column
+itself is pinned top and bottom, so its own box never changes height and it can only report the viewport; the panels
+are what grow and shrink. It used to name each content change by hand (`void tool; void toolsStandby; void
+session.frame.mode`), and that list went stale the first time a panel learned a new height.
 
 Choosing Fri scrolls Kanten's own bottom into view (`scrollIntoView({ block: 'nearest' })` in `FramePanel`).
 Measured at 1440 × 950 without it, the revealed Størrelse slider landed under the bottom fade and the Fri hint

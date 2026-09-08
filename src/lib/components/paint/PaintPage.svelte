@@ -238,21 +238,21 @@
 		});
 	}
 
-	// The column's own box changes with the viewport; what is inside it changes with
-	// the tool (the Markér hint), with the result state (the panels stand down) and
-	// with the band (Kanten is one row under Fast and four fields under Fri). The
-	// observer alone cannot see any of those: the column is pinned top and bottom,
-	// so its box is the same height whatever is inside it.
+	// The column *and every panel in it*, because only the panels can say that the
+	// fade is needed. The column is pinned top and bottom, so its own box never
+	// changes height whatever it holds: watching it alone caught the viewport and
+	// nothing else, and each content change — the Markér hint appearing, the panels
+	// standing down, Kanten collapsing under Fast — had to be named here by hand as
+	// a `void` line. That list went stale the first time a panel learned a new
+	// height, and it would again; the panels themselves cannot.
 	$effect(() => {
 		const el = leftColumnEl;
-		void tool;
-		void toolsStandby;
-		void session.frame.mode;
 		if (!el) return;
 		void tick().then(measureLeftColumn);
 		if (typeof ResizeObserver === 'undefined') return;
 		const observer = new ResizeObserver(measureLeftColumn);
 		observer.observe(el);
+		for (const panel of el.children) observer.observe(panel);
 		return () => observer.disconnect();
 	});
 
