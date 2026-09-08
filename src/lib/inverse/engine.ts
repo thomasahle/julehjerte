@@ -10,9 +10,14 @@
  *
  * The worker is made on first use and kept. Making it costs a fetch, and the
  * HiGHS WASM it loads on the first solve costs 3.5 MB more, while a dialog calls
- * in every time a corner moves; there is one at a time by design (see
- * `InverseWorker.request`, which refuses a second), so callers serialise their
- * own requests.
+ * in every time a corner moves.
+ *
+ * One request at a time is the engine's own rule — `InverseWorker.request`
+ * rejects a second outright — and paint mode has callers that race: the import
+ * dialog's corner search and its debounced preview, with Find snit beside them
+ * once the page lands. So the queue lives here, next to the worker they share,
+ * rather than inside whichever caller was written first; a caller that had to
+ * remember to wait would meet the engine's raw English refusal instead.
  */
 
 import { base } from '$app/paths';
@@ -24,6 +29,11 @@ import {
 	type DetectedCrops,
 	type PreparedArtwork
 } from './client';
+
+// The engine's own error and the code that marks the engine itself as what
+// failed, re-exported so a caller can tell "the engine broke" from "this picture
+// cannot be read" without reaching past this door.
+export { EngineError, ENGINE_UNAVAILABLE } from './client';
 
 /** The paper pair as the engine wants it: `[right, left]`, six-digit hex. */
 export type PaperPair = [string, string];
@@ -37,6 +47,42 @@ function engine(): InverseWorker {
 	// The engine is unbundled under static/, so it is addressed by URL and only
 	// ever loaded in a browser — never at build or SSR time (§1).
 	return (worker ??= new InverseWorker(`${base}/inverse/worker-bootstrap.js`));
+}
+
+/** The tail of the queue: every call waits for it, and becomes it. */
+let chain: Promise<unknown> = Promise.resolve();
+
+/**
+ * Which round of requests we are on. `cancel` moves it on, and work that was
+ * queued before the move is dropped rather than started: the point of Afbryd is
+ * that the engine stops, not that it starts the next 24-megapixel prepare
+ * nobody is waiting for any more.
+ */
+let epoch = 0;
+
+function queue<T>(work: () => Promise<T>): Promise<T> {
+	const mine = epoch;
+	const run = () =>
+		mine === epoch
+			? work()
+			: Promise.reject<T>(new DOMException('Cancelled', 'AbortError'));
+	const next = chain.then(run, run);
+	// The tail must not carry a rejection nobody handles; callers see their own.
+	chain = next.catch(() => undefined);
+	return next;
+}
+
+/**
+ * Stop the engine: what it is doing now, and what is waiting behind it.
+ *
+ * Terminating the worker is the only interruption there is — a solve is one
+ * long synchronous computation inside it — so the request in flight rejects
+ * with an `AbortError` and the next call builds a fresh worker. Afbryd is this,
+ * and so is closing the import dialog on a prepare the visitor no longer wants.
+ */
+export function cancel(): void {
+	epoch++;
+	worker?.stop();
 }
 
 /* -------------------------------------------------------------------------
@@ -75,23 +121,25 @@ export function prepareImage(
 	settings: ImportSettings,
 	onStage: (stage: string) => void = () => {}
 ): Promise<PreparedArtwork> {
-	return engine().request<PreparedArtwork>(
-		'prepare',
-		input,
-		{
-			...AUTOMATIC_PRESET,
-			// The woven square is 100 mm wide and the mask has MASK_SIZE cells to a
-			// side, so the prepared mask arrives at the resolution we paint at.
-			width: 100,
-			minWidth: 2,
-			cutError: 0.25,
-			resolution: MASK_SIZE,
-			paperColors: settings.paperColors,
-			mode: settings.mode,
-			swatches: settings.swatches,
-			invert: settings.invert
-		},
-		onStage
+	return queue(() =>
+		engine().request<PreparedArtwork>(
+			'prepare',
+			input,
+			{
+				...AUTOMATIC_PRESET,
+				// The woven square is 100 mm wide and the mask has MASK_SIZE cells to a
+				// side, so the prepared mask arrives at the resolution we paint at.
+				width: 100,
+				minWidth: 2,
+				cutError: 0.25,
+				resolution: MASK_SIZE,
+				paperColors: settings.paperColors,
+				mode: settings.mode,
+				swatches: settings.swatches,
+				invert: settings.invert
+			},
+			onStage
+		)
 	);
 }
 
@@ -105,7 +153,7 @@ export function prepareImage(
  * can go straight back as `ArtworkInput.quad`.
  */
 export function detectCorners(input: PixelsInput, roi?: number[]): Promise<DetectedCrops> {
-	return engine().request<DetectedCrops>('detect-crops', { ...input, roi }, {});
+	return queue(() => engine().request<DetectedCrops>('detect-crops', { ...input, roi }, {}));
 }
 
 /**
@@ -116,5 +164,5 @@ export function detectCorners(input: PixelsInput, roi?: number[]): Promise<Detec
  * second look at the whole picture.
  */
 export function refineCorners(input: PixelsInput): Promise<DetectedCrops> {
-	return engine().request<DetectedCrops>('refine-crop', input, {});
+	return queue(() => engine().request<DetectedCrops>('refine-crop', input, {}));
 }

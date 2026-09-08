@@ -62,6 +62,14 @@ export class EngineError extends Error {
   }
 }
 
+/**
+ * The code on an error that is the engine's own failure rather than an answer
+ * about the artwork. Everything the engine sends back — "no red and white paper
+ * in this picture", a refused setting — arrives as an EngineError too, so the UI
+ * needs this to know whether to blame the picture or the engine.
+ */
+export const ENGINE_UNAVAILABLE = 'ENGINE_UNAVAILABLE';
+
 export class InverseWorker {
   private worker: Worker | null = null;
   private sequence = 0;
@@ -97,9 +105,9 @@ export class InverseWorker {
         };
         worker.onerror = (event) => {
           event.preventDefault();
-          this.stop(new EngineError(event.message || 'The local template engine could not load.'));
+          this.stop(new EngineError(event.message || 'The local template engine could not load.', undefined, ENGINE_UNAVAILABLE));
         };
-        worker.onmessageerror = () => this.stop(new EngineError('The engine response could not be read.'));
+        worker.onmessageerror = () => this.stop(new EngineError('The engine response could not be read.', undefined, ENGINE_UNAVAILABLE));
         worker.postMessage({ id, action, input, settings });
       } catch (error) {
         this.stop(error instanceof Error ? error : new Error(String(error)));
