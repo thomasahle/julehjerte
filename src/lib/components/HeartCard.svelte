@@ -62,8 +62,8 @@
 		index = 0
 	}: Props = $props();
 
-	/** Heart width in px; the card is this plus 136px of name and difficulty. */
-	const SIZE = 168;
+	/** Heart width in px; the card is this plus 120px for the ribbon slack, name and difficulty. */
+	const SIZE = 200;
 	/** Ribbon lengths cycled through the grid, so neighbours hang at different heights. */
 	const RIBBONS = [26, 54, 38, 66, 44];
 
@@ -91,7 +91,7 @@
 	data-heart-id={heart.id}
 	data-heart-name={heart.name}
 	data-user={heart.isUserCreated ? '' : undefined}
-	style="height: {SIZE + 136}px;"
+	style="height: {SIZE + 120}px;"
 >
 	<button
 		class="card-select"

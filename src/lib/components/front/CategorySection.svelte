@@ -128,9 +128,11 @@
 
 	.cat-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
-		column-gap: 24px;
-		row-gap: 40px;
+		/* Cells are just wider than the 200px heart, so the hearts nearly fill
+		   their columns: five per row at 1440, four at 1024, three at 768. */
+		grid-template-columns: repeat(auto-fill, minmax(204px, 1fr));
+		column-gap: 16px;
+		row-gap: 28px;
 	}
 
 	@media (max-width: 899px) {
