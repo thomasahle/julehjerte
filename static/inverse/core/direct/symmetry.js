@@ -80,7 +80,11 @@ export function orbitMean(values,n,orbit){
   return out;
 }
 
-/** Count pairs a requested symmetry can reproduce; see the parity note above. */
+/** Count pairs a requested symmetry can reproduce; see the parity note above.
+ * Deliberately narrower than the pairing table needs: an odd mirrored family
+ * ties perfectly well, it just always weaves the colour-swapped picture, so it
+ * can only lose against the invariant target the orbit mean builds. See
+ * docs/inverse/SYMMETRY.md, "Counts, and one deliberate narrowing". */
 export function symmetricCounts(spec,counts){
   if(!spec)return true;
   if((spec.transpose||spec.antiTranspose)&&counts[0]!==counts[1])return false;

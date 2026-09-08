@@ -105,7 +105,7 @@ async function fitIndependent(input,cfg,onProgress){
   const small=resize(prob,n,64);
   for(const o of options){const model=gridModel(o.counts);model.z.fill(0);o.initialError=mismatch(gridMask(model,64,o.phase),small);}
   options.sort((a,b)=>a.initialError-b.initialError||a.counts[0]+a.counts[1]-b.counts[0]-b.counts[1]);
-  if(!options.length)throw new Error(symmetryRequested?'The requested symmetry allows no slit counts within this strip width.':'The requested strip width leaves no room for a woven grid.');
+  if(!options.length)throw new Error(symmetryRequested?'The requested symmetry allows no slit counts here: a mirrored family needs an even number of cuts, a transposition needs equal counts, and the strip width limits the rest.':'The requested strip width leaves no room for a woven grid.');
   const stage=(name,run)=>{const at=performance.now();onProgress({stage:name});const value=run();timings.push({stage:name,seconds:(performance.now()-at)/1000});return value;};
   let initialWinner=null;
   const coarse=stage('directInitializing',()=>{
