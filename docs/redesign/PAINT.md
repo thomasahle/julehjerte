@@ -410,23 +410,32 @@ mirrorY, Anti → rotate180; Inden i kurve Sym/Anti → withinCurve — in one f
 lane lands) is true, so the page can be built before the engine is merged. `symmetrize` on the mask and
 `enforce` in the converter stay as the safety net for the MILP route and for `withinCurve` Anti.
 
-**Free cells are the next stage, and the engine side is Codex's.** Codex's motif-border experiment
+**Free and soft cells are the next stage, and the engine side is Codex's.** Codex's motif-border experiment
 (docs/inverse/MOTIF-BORDER.md) shows that an isolated painted motif needs a band of cells the engine may fill with
-a supporting weave, and that the engine needs explicit per-cell loss weights for that (a 0.5 probability is not
-ignored). Codex is building that in the engine on their branch; we port it when it lands and do not build it here.
-The UI is designed now so the paint mode fits it from the start (mockup, section "Frie felter"): the mask gains a
-third value `2 = free`; "Maler med" gets a third, hatched swatch; a panel "Fri kant" with a checkbox "Lad motoren
-lægge kanten" and a choice of the protected motif's *shape* as it appears in the heart — Rude (the band along the
-woven square's edges), Cirkel, Firkant (upright in the heart, a diamond in the mask) — with everything outside the
-shape free and the shape inset about 18 % of the square (the band Codex's experiment validated; no width control);
-free cells are drawn hatched on a light ground inside the heart with a dashed outline of the protected shape;
-`detectSymmetry` ignores free cells; the bridge sends weight 0 for them; the result panel reports the difference
-inside the protected motif separately from the whole square, and a checkbox shows the protected outline on the
-found heart; the import dialog gets "Reparér kanten" with the same shape choice for blurred photo edges. The pattern is
-the norm, not the exception: flettedehjerter.dk's archive of a hundred-odd hearts is central motifs inside a woven
-frame, and several of Codex's photo benchmarks (puppy, Stonehenge, viking ship) come from it. Until
-the engine supports weights, nothing of this is shown. Keep the mask's value type open to it: no code may assume
-`data[i] < 2` except the tools' own brushes.
+a supporting weave, and that a photo crop whose corners sat a little outside the heart needs a band where the
+engine may *change a few cells* while keeping the rest. Both need explicit per-cell loss weights in the engine (a
+0.5 probability is not ignored). Codex is building that on their branch; we port it when it lands and do not build
+it here. The UI is designed now (mockup, section "Frie felter") so the paint mode fits it from the start:
+
+- The band outside a protected shape has three states, one segmented control "Kanten: Fast / Må rettes / Fri".
+  *Fast* = as painted (today). *Må rettes* = the engine keeps the cells but may change the ones it must, at a
+  cost (loss weight about 0.25 plus a penalty on changed cells; Codex's "repair the border"). *Fri* = the engine
+  fills the band itself (weight 0; the band's colours are ignored).
+- The protected shape is chosen as it appears in the heart: Rude (the band along the woven square's edges),
+  Cirkel, Firkant (upright in the heart, a diamond in the mask), inset about 18 % of the square, the margin Codex
+  validated; there is no width control.
+- Drawing: soft cells keep their colours under a light hatch; free cells are hatched on a light ground; the
+  protected shape has a dashed outline. "Maler med" gets a third, hatched swatch to paint free cells by hand.
+- Model: the mask keeps its colour cells and gains a per-cell weight layer (fixed 1, soft, free 0) — a third
+  colour value would lose the soft state's colours. `detectSymmetry` ignores free cells; the bridge sends the
+  weights; the result panel reports three numbers separately: the difference inside the protected motif, the share
+  of band cells the engine changed, and the whole square.
+- The import dialog gets the same "Kanten" control (default Må rettes for photos) with the preview showing it.
+
+Until the engine supports weights, nothing of this is shown. Keep the door open: nothing may assume every cell is
+fixed, and the mask type must be extensible with a weight layer without touching the tools' signatures. The pattern
+is the norm, not the exception: flettedehjerter.dk's archive of a hundred-odd hearts is central motifs inside a
+woven frame, and several of Codex's photo benchmarks (puppy, Stonehenge, viking ship) come from it.
 
 **Session store as landed.** `session` is a class instance: `mask` and `result` are `$state.raw` (replace, never
 mutate for reactivity; the canvas repaints by box), the small fields plain `$state`. Callers use `setMask(mask,
