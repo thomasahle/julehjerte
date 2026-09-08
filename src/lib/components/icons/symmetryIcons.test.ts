@@ -3,7 +3,8 @@ import {
 	SYMMETRY_ICON_MODES,
 	SYMMETRY_ICON_PATHS,
 	SYMMETRY_ICON_ROWS,
-	type SymmetryIconPath
+	type SymmetryIconPath,
+	type SymmetryIconRow
 } from './symmetryIcons';
 
 /** What a glyph actually draws: its paths, each with where it is placed. */
@@ -53,14 +54,17 @@ describe('symmetry icon paths', () => {
 		}
 	});
 
-	// The shape a cut sits in is context, held back so the cuts read first; a cut
-	// drawn faint would be the icon losing its subject.
-	it('softens the outline and nothing else', () => {
+	// The shape a cut sits in is context, held back so the cuts read first: the
+	// two rows that draw one have exactly one, drawn first and faint, and a cut
+	// drawn faint would be the icon losing its subject. "Inden i kurve" is the
+	// cut alone, with nothing to hold back.
+	it('softens the shape the cuts sit in, and only that', () => {
+		const OUTLINES: Record<SymmetryIconRow, number> = { curve: 0, lobe: 1, lobes: 1 };
 		for (const row of SYMMETRY_ICON_ROWS) {
 			for (const mode of SYMMETRY_ICON_MODES) {
 				const paths = SYMMETRY_ICON_PATHS[row][mode];
 				const soft = paths.filter((p) => p.soft);
-				expect(soft.length, `${row}/${mode}`).toBeLessThanOrEqual(1);
+				expect(soft.length, `${row}/${mode}`).toBe(OUTLINES[row]);
 				if (soft.length === 1) expect(paths[0].soft, `${row}/${mode}`).toBe(true);
 			}
 		}
