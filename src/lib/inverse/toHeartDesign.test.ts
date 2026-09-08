@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { detectSymmetryModes } from '$lib/utils/symmetry';
 import { rasterizeDesign, maskMismatch } from '$lib/paint/rasterize';
 import {
+  convertCutGeometry,
   cutGeometryToDesign,
   CutGeometryError,
   segmentsPerCut,
@@ -363,6 +364,59 @@ describe('cutGeometryToDesign', () => {
         enforce: { curve: 'off', lobe: 'off', lobes: 'off' }
       });
       expect(maskMismatch(rasterizeDesign(enforced, N).data, rasterizeDesign(plain, N).data)).toBe(0);
+    });
+  });
+
+  describe('the rows it could honour', () => {
+    /** JUL with one A cut dropped, so the two families no longer match up. */
+    function lopsided(): CutGeometry {
+      const geometry = JSON.parse(JSON.stringify(EXAMPLES.jul)) as CutGeometry;
+      geometry.A_overlap_paths = geometry.A_overlap_paths.slice(0, 3);
+      return geometry;
+    }
+
+    it('repeats back what it was asked for when the geometry can carry it', () => {
+      const asked = { curve: 'sym', lobe: 'sym', lobes: 'anti' } as const;
+      const { honoured } = convertCutGeometry(EXAMPLES.jul, { name: 'jul', enforce: asked });
+      expect(honoured).toEqual(asked);
+    });
+
+    it('says every row is off when the caller asks for no symmetry at all', () => {
+      expect(convertCutGeometry(EXAMPLES.jul, { name: 'jul' }).honoured).toEqual({
+        curve: 'off',
+        lobe: 'off',
+        lobes: 'off'
+      });
+    });
+
+    // Mellem lapper makes one lobe the other one mapped, which needs the same
+    // number of cuts on both sides — `lobesShareTemplate` refuses anything else,
+    // and so does our square grid. The engine can perfectly well answer with 3
+    // cuts one way and 4 the other, and then the row has to be reported as
+    // dropped: a panel that kept showing "Mellem lapper: Sym" would disagree
+    // with Tegn's own detection the moment the visitor opened the heart there.
+    it('drops Mellem lapper when the two families came back different sizes', () => {
+      const { design, honoured } = convertCutGeometry(lopsided(), {
+        name: 'jul',
+        enforce: { curve: 'off', lobe: 'sym', lobes: 'sym' }
+      });
+      expect(design.gridSize).toEqual({ x: 4, y: 5 });
+      expect(honoured).toEqual({ curve: 'off', lobe: 'sym', lobes: 'off' });
+      // And the heart really is what `honoured` says: the row it dropped is off
+      // in the draw page's own reading, the row it kept is on.
+      const modes = detectSymmetryModes(design.fingers);
+      expect(modes.betweenLobesMode).toBe('off');
+      expect(modes.withinLobeMode).toBe('sym');
+    });
+
+    it('leaves the lopsided heart untouched by the row it dropped', () => {
+      const geometry = lopsided();
+      const plain = cutGeometryToDesign(geometry, { name: 'jul' });
+      const asked = cutGeometryToDesign(geometry, {
+        name: 'jul',
+        enforce: { curve: 'off', lobe: 'off', lobes: 'sym' }
+      });
+      expect(maskMismatch(rasterizeDesign(asked, N).data, rasterizeDesign(plain, N).data)).toBe(0);
     });
   });
 

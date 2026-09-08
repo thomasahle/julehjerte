@@ -106,6 +106,19 @@ export type CutGeometryOptions = {
   tolerance?: number;
 };
 
+/** All three rows off: what enforcement does when the caller asks for nothing. */
+const NO_SYMMETRY: SymmetrySettings = { curve: 'off', lobe: 'off', lobes: 'off' };
+
+export type ConvertedHeart = {
+  design: HeartDesign;
+  /**
+   * The rows of `opts.enforce` the conversion could actually apply. A row the
+   * geometry cannot carry comes back `'off'`, so the caller shows Fra instead of
+   * a symmetry the heart does not have.
+   */
+  honoured: SymmetrySettings;
+};
+
 /** How far an endpoint may sit from its square edge, in the 0–100 frame. */
 const EDGE_TOLERANCE = 0.05;
 
@@ -305,7 +318,7 @@ function applyEnforcement(
   leftCuts: BezierSegment[][],
   rightCuts: BezierSegment[][],
   enforce: SymmetrySettings
-): { left: BezierSegment[][]; right: BezierSegment[][] } {
+): { left: BezierSegment[][]; right: BezierSegment[][]; honoured: SymmetrySettings } {
   let left = leftCuts;
   let right = rightCuts;
 
@@ -321,14 +334,20 @@ function applyEnforcement(
     right = enforceWithinLobe(right, 'right', anti);
   }
 
-  // Only meaningful when the lobes have equally many cuts; the engine can answer
-  // with different counts, and then this row simply stays off.
-  if (enforce.lobes !== 'off' && left.length === right.length) {
+  // Mellem lapper says one lobe is the other one mapped, so it can only hold
+  // when the two have equally many cuts — the same `gridSize.x === gridSize.y`
+  // that `lobesShareTemplate` insists on. The engine may well answer with
+  // different counts, and rather than deform the heart into a shape it cannot
+  // hold, the row is dropped and reported back as `honoured.lobes: 'off'` so the
+  // caller can turn its toggle to Fra instead of showing a symmetry that is not
+  // there.
+  const lobesFit = left.length === right.length;
+  if (enforce.lobes !== 'off' && lobesFit) {
     const anti = enforce.lobes === 'anti';
     right = left.map((c) => mapSegments(c, (p) => mapPointBetweenLobes(SQUARE, p, anti), anti));
   }
 
-  return { left, right };
+  return { left, right, honoured: { ...enforce, lobes: lobesFit ? enforce.lobes : 'off' } };
 }
 
 // ============================================================================
@@ -355,14 +374,24 @@ function fingerPosition(segments: BezierSegment[], lobe: LobeId): number {
 }
 
 /**
- * Convert the engine's cut geometry into a heart the editor can open.
+ * Convert the engine's cut geometry into a heart the editor can open, and say
+ * which symmetry rows the answer could actually be held to.
  *
  * The output is built as raw 0–100 JSON fingers and handed to
  * `normalizeHeartDesign`, which adds the four square edges as fingers, fixes the
  * grid size and moves everything into the editor's pixel frame — the same road
  * every saved heart travels, so nothing here can drift from it.
+ *
+ * `honoured` repeats `opts.enforce` with any row the geometry could not carry
+ * turned to `'off'` (today only Mellem lapper, when the two families came back
+ * with different numbers of cuts). The paint panel should set its toggles from
+ * this rather than from what the visitor asked for, or it will claim a symmetry
+ * the heart does not have — and Tegn's own detection would then disagree with it.
  */
-export function cutGeometryToDesign(json: string | CutGeometry, opts: CutGeometryOptions): HeartDesign {
+export function convertCutGeometry(
+  json: string | CutGeometry,
+  opts: CutGeometryOptions
+): ConvertedHeart {
   const geometry = parseCutGeometry(json);
   const scale = SPAN / geometry.square_width_mm;
 
@@ -396,9 +425,8 @@ export function cutGeometryToDesign(json: string | CutGeometry, opts: CutGeometr
     byLobe[family.lobe] = cuts;
   }
 
-  const { left, right } = opts.enforce
-    ? applyEnforcement(byLobe.left, byLobe.right, opts.enforce)
-    : { left: byLobe.left, right: byLobe.right };
+  const enforce = opts.enforce ?? NO_SYMMETRY;
+  const { left, right, honoured } = applyEnforcement(byLobe.left, byLobe.right, enforce);
 
   const paperColors = geometry.paper_colors;
   const colors =
@@ -421,10 +449,24 @@ export function cutGeometryToDesign(json: string | CutGeometry, opts: CutGeometr
     ]
   });
 
+  // `normalizeHeartDesign` takes `unknown` and answers null for anything that is
+  // not an object; the argument above is an object literal, so this only narrows
+  // the type. It stays a typed error rather than a `!` so that a future change
+  // to the normaliser cannot turn into an unexplained crash in the paint panel.
   if (!design) {
     throw new CutGeometryError('paintErrorGeometryCurves', 'The converted cuts did not make a heart.');
   }
-  return design;
+  return { design, honoured };
+}
+
+/**
+ * The heart alone, for callers that do not care which rows survived.
+ *
+ * This is the signature docs/redesign/PAINT.md §4 names; `convertCutGeometry`
+ * is the same conversion with the honoured symmetry rows attached.
+ */
+export function cutGeometryToDesign(json: string | CutGeometry, opts: CutGeometryOptions): HeartDesign {
+  return convertCutGeometry(json, opts).design;
 }
 
 /** Cubics per cut after conversion, for the report and the tests. */
