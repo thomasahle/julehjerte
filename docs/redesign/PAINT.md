@@ -390,3 +390,37 @@ as they are. Update docs/inverse/README.md's first paragraph to say where the en
 
 Mask persistence across reloads, zoom/pan on the paint canvas, per-heart colour editing in Mal, the hero button on
 the front page, the symmetry icons (separate task), format 2 of the heart model.
+
+## 11. Decisions taken after round one (2026-09-08)
+
+**Enforcing symmetry has a cost limit.** `convertCutGeometry` takes `enforceCostLimit` (default 0.03): it converts
+with and without `enforce`, rasterises both at 200, and if the two differ by more than the limit it returns the
+unenforced design with every row of `honoured` set to `'off'` and `symmetryCost` reporting the measured share. The
+panel then shows the rows from `honoured` and a one-line notice ("Symmetrien kunne ikke holdes helt; hjertet vises
+som motoren fandt det"). Below the limit the corrected design is returned as before. Rationale: enforcing is a
+correction for a solve that nearly holds the symmetry; on one that does not, it deforms the heart by 11–24 %.
+
+**The engine will hold symmetry itself.** A separate lane (branch `paint-engine-symmetry`) adds
+`settings.symmetry = { mirrorX?, mirrorY?, transpose?, antiTranspose?, rotate180?: boolean; withinCurve?: 'off' |
+'sym' | 'anti' }` to the engine: the fitter's target becomes the mean of the mask over the symmetry group ("both
+mirrorings in the loss") and the control points are tied under the group, so the answer is exactly symmetric. The
+bridge maps the three rows to it — Mellem lapper Sym → transpose, Anti → antiTranspose; Inden i lap Sym → mirrorX +
+mirrorY, Anti → rotate180; Inden i kurve Sym/Anti → withinCurve — in one function `engineSymmetry(rows)` in
+`src/lib/inverse/engine.ts`, sent only when `ENGINE_SYMMETRY` (a constant in the same file, false until the engine
+lane lands) is true, so the page can be built before the engine is merged. `symmetrize` on the mask and
+`enforce` in the converter stay as the safety net for the MILP route and for `withinCurve` Anti.
+
+**Free cells are the next stage, not this one.** Codex's motif-border experiment (docs/inverse/MOTIF-BORDER.md)
+shows that an isolated painted motif needs a band of cells the engine may fill with a supporting weave, and that
+the engine needs explicit per-cell loss weights for that (a 0.5 probability is not ignored). When the engine has
+weights, the mask gains a third value `2 = free` (a "Fri" tool and a "Fri kant" band control, hatched on the
+canvas, weight 0 in the bridge, excluded from `detectSymmetry`, the centre error reported separately). Keep the
+mask's value type open to that: no code may assume `data[i] < 2` except the tools' own brushes.
+
+**Session store as landed.** `session` is a class instance: `mask` and `result` are `$state.raw` (replace, never
+mutate for reactivity; the canvas repaints by box), the small fields plain `$state`. Callers use `setMask(mask,
+{sourceName, symmetry, found})` (folds the mask to the rows), `setSymmetry(rows)` (switches and folds),
+`markMaskDirty()`, `clearMask()`, `handoffToDraw(design)` / `takeHandoff()`.
+
+**Known flake.** `src/lib/inverse/simplifyCurves.test.ts` has one test that exceeds vitest's 5 s default under a
+parallel full run (11.8 s) and passes alone (3.4 s): give it an explicit timeout or make its sweep cheaper.
