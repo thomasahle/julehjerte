@@ -59,7 +59,13 @@
 		undo as historyUndo,
 		type MaskStep
 	} from '$lib/paint/history';
-	import { BRUSH_RADII, type BrushSize, type PaintAction, type PaintTool } from '$lib/paint/toolset';
+	import {
+		BRUSH_RADII,
+		stepBrush,
+		type BrushSize,
+		type PaintAction,
+		type PaintTool
+	} from '$lib/paint/toolset';
 	import { decodeImageFile, maskFromPrepared } from '$lib/paint/importImage';
 	import {
 		cancel as cancelEngine,
@@ -274,11 +280,7 @@
 		else if (action.kind === 'swapColour') paintValue = paintValue ? 0 : 1;
 		else if (action.kind === 'undo') undo();
 		else if (action.kind === 'redo') redo();
-		else if (action.kind === 'brush') {
-			const order: BrushSize[] = ['fine', 'medium', 'coarse'];
-			const at = order.indexOf(brushSize);
-			brushSize = order[Math.max(0, Math.min(order.length - 1, at + action.delta))]!;
-		}
+		else if (action.kind === 'brush') brushSize = stepBrush(brushSize, action.delta);
 	}
 
 	function changeSymmetry(next: SymmetrySettings): void {
