@@ -579,6 +579,8 @@
           <p class="notice" role="status">
             {#if result.report.imageError && result.report.imageError.mismatchFraction > (result.report.settings.maxImageError ?? .03)}
               {text('reviewImageError').replace('{error}', (100 * result.report.imageError.mismatchFraction).toFixed(2)).replace('{limit}', (100 * (result.report.settings.maxImageError ?? .03)).toFixed(2))}
+            {:else if result.report.validation.passed && result.report.manufacturing.status === 'pass' && result.report.imageFidelity?.features.passed === false}
+              {text('reviewFeatures')}
             {:else}{text('reviewTemplate')}{/if}
           </p>
         {/if}

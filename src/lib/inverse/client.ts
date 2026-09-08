@@ -50,6 +50,7 @@ export interface DesignResult {
     manufacturing: { status: 'pass' | 'fail' | 'uncertain' };
     warnings: string[];
     imageError?: { mismatchFraction: number; resolution: number } | null;
+    imageFidelity?: { features: { passed: boolean } };
     settings: { width: number; maxImageError?: number; paperColors: [string, string] };
   };
 }

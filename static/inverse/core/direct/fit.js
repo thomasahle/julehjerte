@@ -87,6 +87,10 @@ async function fitIndependent(input,cfg,onProgress){
   const numericalBackend=await loadBoundaryKernel();
   const sourceFeatures=imageFeatures(source,cfg.width),matchingEvidence=symmetryEvidence(source),evidence=borderEvidence(fullProb,source.resolution),attempts=[],timings=[],options=[],seen=new Set();
   const maximumCount=gridCountLimit(evidence);
+  // Dense hypotheses take longer to initialize and refine in browser engines.
+  // Use the requested budget for them instead of starving the best candidate
+  // with the ten-second fast path intended for simpler photographs.
+  if(maximumCount>8)deadline=start+Math.min(cfg.timeLimit,18)*1000-1300;
   const add=(counts,phase)=>{if(counts.some(c=>c<1||c>maximumCount||(c+1)*(cfg.nominalWidth+.35)>=cfg.width))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
   for(let count=1;count<=maximumCount;count++)for(const phase of[1,-1])add([count,count],phase);
   const modes=sides=>{const counts=new Map();for(const r of evidence)if(sides.includes(r.side)&&r.count>=1&&r.count<=maximumCount)counts.set(r.count,(counts.get(r.count)||0)+1);return[...counts].sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]);};
