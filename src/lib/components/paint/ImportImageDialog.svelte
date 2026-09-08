@@ -263,6 +263,18 @@
 		previewBusy = false;
 		previewError = null;
 		livePhoto = null;
+		// A gesture does not outlive the dialog. Escape while a corner is held
+		// closes the Modal and destroys the picture under the finger, so neither
+		// pointerup nor pointercancel ever reaches `endDrag` — and a `draggingCorner`
+		// left behind would hold open the one branch in `schedulePreview` that never
+		// asks the engine, silently, for the rest of the visit: the next picture
+		// would show its crop and never become a mask. `regionStart` and
+		// `suppressClick` are stale in exactly the same way, and would put the next
+		// visit's first click into a region that was abandoned a picture ago.
+		draggingCorner = -1;
+		cornerMoved = false;
+		regionStart = null;
+		suppressClick = false;
 		if (fileInput) fileInput.value = '';
 	}
 

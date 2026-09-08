@@ -13,7 +13,9 @@
  * photograph), the paper pair once it is up (a mask), and the last good frame
  * kept when the corners are dragged into a crop that folds over. What the page
  * asks the engine is counted at the worker, so "not asked until the corner
- * lands" is read off the requests themselves rather than off a status line.
+ * lands" is read off the requests themselves rather than off a status line —
+ * and so is the last check, that a drag abandoned with Escape leaves the next
+ * picture preparable.
  *
  * Run it against a built site:
  *
@@ -32,6 +34,15 @@ const playwright = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const origin = process.env.PAINT_TEST_URL || 'http://127.0.0.1:5371';
 const shots = process.env.PAINT_QA_DIR || 'docs/redesign/qa';
 const photo = process.env.PAINT_QA_PHOTO || 'static/hearts/photos/5star.jpg';
+/**
+ * A square photograph, for the last check only.
+ *
+ * A square picture may be taken whole, so the dialog reaches a crop — and asks
+ * the engine — without a pointer ever touching the picture. That matters there:
+ * the pointerdown that placing corners by hand needs is also what would clear a
+ * stale drag by accident, and the check is about a drag that was never cleared.
+ */
+const squarePhoto = process.env.PAINT_QA_SQUARE_PHOTO || 'static/hearts/photos/circle.jpg';
 
 await fs.mkdir(shots, { recursive: true });
 const shot = (name) => path.join(shots, `live-crop-${name}.png`);
@@ -251,6 +262,42 @@ try {
 	);
 	check('and the picture says the corners are wrong', /uden knæk/.test(says), JSON.stringify(says.slice(0, 60)));
 
+	// --- A drag abandoned with Escape must not disable the next import. ---
+	// Escape closes the Modal under the finger and destroys the picture, so
+	// neither pointerup nor pointercancel reaches `endDrag` and the drag ends
+	// only in the dialog's own bookkeeping. If it forgot to reset that, the
+	// branch that holds the engine back for the length of a drag would stay open
+	// for the rest of the visit: every later picture would show its crop and
+	// never be prepared, with nothing said anywhere. So: abandon a drag, come
+	// back with a square picture — which needs no corners, and so no pointer on
+	// the picture that might clear the drag by accident — and watch for the
+	// engine being asked about it.
+	const held = await page.locator('.photo .corner').first().boundingBox();
+	await page.mouse.move(held.x + held.width / 2, held.y + held.height / 2);
+	await page.mouse.down();
+	await page.mouse.move(held.x + held.width / 2 + 40, held.y + held.height / 2 + 30, { steps: 4 });
+	await page.keyboard.press('Escape');
+	await page.mouse.up();
+	const closed = await page
+		.locator('#paint-import-title')
+		.waitFor({ state: 'detached', timeout: 5000 })
+		.then(() => true, () => false);
+	check('Escape closes the dialog mid-drag', closed);
+
+	const askedBeforeReopening = (await engineCalls()).length;
+	await openWith(squarePhoto);
+	const preparedAgain = await page
+		.waitForFunction(
+			(n) => window.__enginePosts.slice(n).includes('prepare'),
+			askedBeforeReopening,
+			{ timeout: 60000 }
+		)
+		.then(() => true, () => false);
+	check(
+		'the next picture is still prepared after a drag abandoned with Escape',
+		preparedAgain,
+		(await engineCalls()).slice(askedBeforeReopening).join(', ') || 'the engine was never asked'
+	);
 } finally {
 	await browser.close();
 }
