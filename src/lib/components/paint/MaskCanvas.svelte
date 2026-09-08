@@ -41,6 +41,15 @@
 		revision: number;
 		/** No pointer input while the engine is working (PAINT.md §2). */
 		disabled?: boolean;
+		/**
+		 * A dialog has the keyboard: the shortcuts stand down, the pointer does not.
+		 *
+		 * The key handler is on the window, and the site `Modal` stops nothing but
+		 * Escape, so without this a P or an X would change the tool behind the scrim
+		 * and Cmd/Ctrl+Z would undo the very mask the dialog is asking about — while
+		 * swallowing the browser's own Undo inside the dialog's own fields.
+		 */
+		keyboardBusy?: boolean;
 		/** A gesture is about to change the mask: the moment to snapshot for undo. */
 		onEditStart: () => void;
 		/** The gesture is over and the mask has changed. */
@@ -59,6 +68,7 @@
 		paintValue,
 		revision,
 		disabled = false,
+		keyboardBusy = false,
 		onEditStart,
 		onEditEnd,
 		onShortcut,
@@ -379,7 +389,7 @@
 	}
 
 	function onKeyDown(event: KeyboardEvent): void {
-		if (disabled) return;
+		if (disabled || keyboardBusy) return;
 		const target = event.target as HTMLElement | null;
 		// Never while the visitor is typing in a field: "r" is a letter there.
 		if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) {

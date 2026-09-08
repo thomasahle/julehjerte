@@ -141,6 +141,16 @@
 		return !session.mask || isEmpty(session.mask);
 	});
 	let busy = $derived(session.status === 'searching' || session.status === 'importing');
+	/**
+	 * A dialog is on screen, so it owns the keyboard.
+	 *
+	 * The canvas listens on the window, and `Modal` stops nothing but Escape, so
+	 * the paint shortcuts have to stand down themselves: P and X would otherwise
+	 * change the tool behind the scrim, and Cmd/Ctrl+Z would undo the very mask the
+	 * Ryd or Erstat dialog is asking about. Pointer input is a separate question —
+	 * `disabled` answers that one — so this gates only the keys.
+	 */
+	let dialogOpen = $derived(showHelp || showImport || confirming !== null);
 	let heading = $derived(t('paintPageTitle', lang));
 
 	onMount(() => {
@@ -599,6 +609,7 @@
 							{paintValue}
 							{revision}
 							disabled={busy}
+							keyboardBusy={dialogOpen}
 							{onEditStart}
 							{onEditEnd}
 							{onShortcut}
