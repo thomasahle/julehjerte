@@ -14,7 +14,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "eslint .",
 		"test": "vitest run && npm run test:inverse",
-		"test:inverse": "node --test scripts/inverse/*.test.mjs",
+		"test:inverse": "node --test --test-concurrency=1 scripts/inverse/*.test.mjs",
 		"test:inverse:browser": "node scripts/inverse/browser-test.mjs",
 		"benchmark:inverse:photos": "node scripts/inverse/photo-benchmark.mjs",
 		"benchmark:inverse:robustness": "node scripts/inverse/robustness-benchmark.mjs",
