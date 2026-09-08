@@ -61,10 +61,13 @@ of an overlay scrollbar until a gesture starts):
   eraser, paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); brush size segmented
   control Fin / Mellem / Grov (radius 2 / 6 / 14 cells); "Maler med" two swatches (the current paper colours, the
   chosen one ringed). Viskelæder always paints 0. Undo / redo (lucide undo-2 / redo-2) are two 40px icon buttons —
-  the same square as the tools, with the words as `title` and `aria-label` — set at the right-hand end of the
-  swatches' own row rather than in a labelled row of their own, which the column has no line to spare for; the keys
-  are Cmd/Ctrl+Z and Shift+Cmd/Ctrl+Z as before. Markér adds **one** line of help under the grid while it is the
-  tool in hand ("Træk en ramme; Enter lægger den fast, Esc fortryder."), because its gestures cannot be read off its
+  the tools' own square (`.tool-btn`, not the site's `.btn-icon`: the two differ by a glyph size, a ground and a
+  disabled opacity, and two nearly-identical squares in one panel is worse than one local name), with the words in
+  the same `Tooltip` the tools wear and in `aria-label` — set at the right-hand end of the swatches' row rather than
+  in a labelled row of their own, which the column has no line to spare for. They are a sibling of the "Maler med"
+  field inside that row, not inside it: a label reading "Maler med" must not appear to head them. The keys are
+  Cmd/Ctrl+Z and Shift+Cmd/Ctrl+Z as before. Markér adds **one** line of help under the grid while it is the tool in
+  hand ("Træk en ramme; Enter lægger den fast, Esc fortryder."), because its gestures cannot be read off its
   glyph; the five lines it used to be — the handles, the turner, and the whole keyboard route — are in the Hjælp
   dialog, which is where there is room to read them.
 - **Markér** (owner, 2026-09-08): drag a frame on the mask to lift a rectangle of cells; a dashed marquee with four
@@ -100,14 +103,15 @@ Below 900px the columns stack under the heart in the order they read: Værktøj,
 
 **The default column fits a desktop window** (owner, 2026-09-08). Three panels at their first-drawn heights did
 not: 1006px against the 880 a 1440 × 950 window leaves, so Kanten hung below the edge on a screen nobody would call
-small. It is 732px now — Kanten collapsed to its one row (§11), Fortryd and Gentag folded into the swatches' row,
-and the Markér, Symmetri and Kanten explanations moved to `title` and Hjælp — which leaves Kanten's bottom 82px
-clear of the viewport. Nothing was removed to get there, and nothing was moved to a `title` alone: a `title` on a
+small. It is 726px now — Kanten collapsed to its one row (§11), Fortryd and Gentag folded into the swatches' row
+(and out of the "Maler med" field, which took another 6px off), and the Markér, Symmetri and Kanten explanations
+moved to `title` and Hjælp — which leaves Kanten's bottom at 865px, 85px clear of a 950px viewport. Nothing was
+removed to get there, and nothing was moved to a `title` alone: a `title` on a
 heading is mouse-only, so every sentence that left the column has a bullet in the Hjælp dialog to be found on
 purpose, on a phone and from the keyboard.
 
-The column still scrolls inside itself where it has to: a short window (1440 × 700 leaves 630, so the same 732px
-overflows by about 100), and Kanten expanded under Fri, which adds 213px. It is centred while it fits and starts at
+The column still scrolls inside itself where it has to: a short window (1440 × 700 leaves 630, so the same 726px
+overflows by about 95), and Kanten expanded under Fri, which adds 213px. It is centred while it fits and starts at
 the top when it does not, and a fade over whichever edge it runs past says there is more that way — macOS draws
 nothing of an overlay scrollbar until a gesture starts, so a panel out of sight would otherwise not be there as far
 as anyone can tell. The fade is measured after every change that alters what is *in* the column — the tool, the

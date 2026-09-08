@@ -80,6 +80,12 @@
 		{ id: 'select', label: 'paintSelect', icon: SelectIcon, key: 'M' }
 	];
 
+	/** The two history buttons, in the order a hand reaches for them. */
+	const HISTORY: { id: 'undo' | 'redo'; label: TranslationKey; icon: Component<IconProps> }[] = [
+		{ id: 'undo', label: 'editorUndo', icon: UndoIcon },
+		{ id: 'redo', label: 'editorRedo', icon: RedoIcon }
+	];
+
 	/** The two papers, as the mask numbers them: 0 is the left lobe, 1 the right. */
 	const PAPERS: (0 | 1)[] = [0, 1];
 
@@ -195,11 +201,15 @@
 		     their own: two labelled buttons across the panel cost a line the column
 		     has not got, and both are already at Cmd/Ctrl+Z. As icons they are the
 		     same 40px square as the tools above, so the panel reads as one grid of
-		     buttons with the two papers set into it — and the words survive as the
-		     title and the accessible name, which is what a labelled button gave. -->
-		<div class="field">
-			<span class="field-label">{tr('paintsWith')}</span>
-			<div class="paper-row">
+		     buttons with the two papers set into it — and the words survive in the
+		     tooltip and the accessible name, which is what a labelled button gave.
+
+		     They sit beside "Maler med" and not inside it: the field's label heads
+		     the swatches alone, and two history buttons under a heading that says
+		     "Maler med" read as a third and fourth thing to paint with. -->
+		<div class="paper-row">
+			<div class="field">
+				<span class="field-label">{tr('paintsWith')}</span>
 				<div class="swatches">
 					<ToggleGroup
 						type="single"
@@ -219,29 +229,35 @@
 						{/each}
 					</ToggleGroup>
 				</div>
+			</div>
 
-				<div class="history" role="group" aria-label={tr('editorHistory')}>
-					<button
-						type="button"
-						class="icon-btn"
-						title={tr('editorUndo')}
-						aria-label={tr('editorUndo')}
-						onclick={onUndo}
-						disabled={disabled || !canUndo}
-					>
-						<UndoIcon size={20} />
-					</button>
-					<button
-						type="button"
-						class="icon-btn"
-						title={tr('editorRedo')}
-						aria-label={tr('editorRedo')}
-						onclick={onRedo}
-						disabled={disabled || !canRedo}
-					>
-						<RedoIcon size={20} />
-					</button>
-				</div>
+			<!-- The same Tooltip the six tools above wear, rather than a native
+			     `title`: a title never fires on keyboard focus, and these two are the
+			     only glyph-only buttons in the panel a visitor could tab to and be
+			     told nothing about. `aria-label` stays either way, for the reader
+			     that has no pointer and no tooltip. -->
+			<div class="history" role="group" aria-label={tr('editorHistory')}>
+				{#each HISTORY as item (item.id)}
+					<Tooltip>
+						<TooltipTrigger>
+							{#snippet child({ props })}
+								<!-- The tooltip's props first, as in the tool grid above: they carry
+								     an `onclick` of their own and the last spread wins. -->
+								<button
+									{...props}
+									type="button"
+									class="tool-btn"
+									aria-label={tr(item.label)}
+									onclick={item.id === 'undo' ? onUndo : onRedo}
+									disabled={disabled || !(item.id === 'undo' ? canUndo : canRedo)}
+								>
+									<item.icon size={20} />
+								</button>
+							{/snippet}
+						</TooltipTrigger>
+						<TooltipContent>{tr(item.label)}</TooltipContent>
+					</Tooltip>
+				{/each}
 			</div>
 		</div>
 	</section>
@@ -272,11 +288,16 @@
 		gap: 4px;
 	}
 
-	/* The tools and the two history buttons are the same square: one button shape
-	   for everything in the panel that is a glyph and nothing else. Only the tools
-	   are ever `.active`, so the rules below this one belong to them alone. */
-	.tool-btn,
-	.icon-btn {
+	/* The tools and the two history buttons are one square under one name.
+	   `app.css` declares the site's own 40px glyph button as `.btn .btn-sm
+	   .btn-icon`, and the history buttons could wear it — but they stand in a row
+	   with the six tools directly above them, and the site's square differs from
+	   the tools' in three small ways at once (an 18px glyph against 20, a
+	   transparent ground against white, and 0.5 opacity when disabled against
+	   0.35). Two nearly-but-not-quite identical squares in one panel is worse than
+	   one local name, so the tools' square wins here and there is no second one.
+	   Only the tools are ever `.active`, so the rules below belong to them alone. */
+	.tool-btn {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -292,12 +313,13 @@
 			color 0.15s;
 	}
 
-	.icon-btn {
+	/* In the grid above, the six squares stretch to their column; in the history
+	   row there is no grid to stretch to, so the square is stated. */
+	.history .tool-btn {
 		width: 40px;
 	}
 
-	.tool-btn:hover:not(:disabled),
-	.icon-btn:hover:not(:disabled) {
+	.tool-btn:hover:not(:disabled) {
 		background: var(--cream2);
 	}
 
@@ -316,8 +338,7 @@
 		border-color: var(--green-hover);
 	}
 
-	.tool-btn:disabled,
-	.icon-btn:disabled {
+	.tool-btn:disabled {
 		opacity: 0.35;
 		cursor: not-allowed;
 	}
@@ -431,10 +452,12 @@
 
 	/* The swatches sit under their label as every other control does; the two
 	   history buttons are pushed to the far end, where they read as a pair of
-	   their own rather than as a third and fourth paper. */
+	   their own rather than as a third and fourth paper. Aligned at the bottom,
+	   so the 40px squares sit on the same line as the 34px swatches beside them
+	   rather than floating against the label above. */
 	.paper-row {
 		display: flex;
-		align-items: center;
+		align-items: flex-end;
 		gap: 10px;
 	}
 
