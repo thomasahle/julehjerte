@@ -7,6 +7,8 @@ import {refineCurves,fittingMargin} from './refine.js';
 import {recoverShared} from './share.js';
 import {sampleWeave,validate} from '../validate.js';
 import {matchingGrid,matchingSummary,symmetryEvidence} from './matching.js';
+import {applyTies,orbitMean,symmetricCounts,symmetryOrbit,symmetryTies} from './symmetry.js';
+import {requestedSymmetry} from '../settings.js';
 import {materialAudit} from '../material.js';
 import {resize} from './math.js';
 import {initializeGrid,borderGrid,separableGrid} from './initialize.js';
@@ -82,7 +84,12 @@ export async function fitDirect(input,cfg,onProgress=()=>{}){
   return result;
 }
 async function fitIndependent(input,cfg,onProgress){
-  const source=input.sourceImage,fullProb=source.probability||Float32Array.from(source.mask),n=Math.min(256,source.resolution),prob=resize(fullProb,source.resolution,n),gridTarget=resize(fullProb,source.resolution,96),start=performance.now(),fastSeconds=Math.min(cfg.timeLimit,10),maxDeadline=start+cfg.timeLimit*1000;
+  // Every per-pixel target the search optimizes is the mean over the requested
+  // symmetry group, so each mirroring of the drawing enters the loss directly.
+  // The original classified mask stays the reference for symmetry evidence,
+  // feature audits and the reported image error.
+  const source=input.sourceImage,orbit=symmetryOrbit(cfg.symmetry),symmetryRequested=requestedSymmetry(cfg.symmetry).length>0,
+    classified=source.probability||Float32Array.from(source.mask),fullProb=orbit?orbitMean(classified,source.resolution,orbit):classified,n=Math.min(256,source.resolution),prob=resize(fullProb,source.resolution,n),gridTarget=resize(fullProb,source.resolution,96),start=performance.now(),fastSeconds=Math.min(cfg.timeLimit,10),maxDeadline=start+cfg.timeLimit*1000;
   let deadline=start+fastSeconds*1000-Math.min(1300,fastSeconds*200);
   const numericalBackend=await loadBoundaryKernel();
   const sourceFeatures=imageFeatures(source,cfg.width),matchingEvidence=symmetryEvidence(source),evidence=borderEvidence(fullProb,source.resolution),attempts=[],timings=[],options=[],seen=new Set();
@@ -91,14 +98,14 @@ async function fitIndependent(input,cfg,onProgress){
   // Use the requested budget for them instead of starving the best candidate
   // with the ten-second fast path intended for simpler photographs.
   if(maximumCount>8)deadline=start+Math.min(cfg.timeLimit,18)*1000-1300;
-  const add=(counts,phase)=>{if(counts.some(c=>c<1||c>maximumCount||(c+1)*(cfg.nominalWidth+.35)>=cfg.width))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
+  const add=(counts,phase)=>{if(counts.some(c=>c<1||c>maximumCount||(c+1)*(cfg.nominalWidth+.35)>=cfg.width)||!symmetricCounts(cfg.symmetry,counts))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
   for(let count=1;count<=maximumCount;count++)for(const phase of[1,-1])add([count,count],phase);
   const modes=sides=>{const counts=new Map();for(const r of evidence)if(sides.includes(r.side)&&r.count>=1&&r.count<=maximumCount)counts.set(r.count,(counts.get(r.count)||0)+1);return[...counts].sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]);};
   for(const a of modes([0,2]))for(const b of modes([1,3]))for(const phase of[1,-1])add([a,b],phase);
   const small=resize(prob,n,64);
   for(const o of options){const model=gridModel(o.counts);model.z.fill(0);o.initialError=mismatch(gridMask(model,64,o.phase),small);}
   options.sort((a,b)=>a.initialError-b.initialError||a.counts[0]+a.counts[1]-b.counts[0]-b.counts[1]);
-  if(!options.length)throw new Error('The requested strip width leaves no room for a woven grid.');
+  if(!options.length)throw new Error(symmetryRequested?'The requested symmetry allows no slit counts within this strip width.':'The requested strip width leaves no room for a woven grid.');
   const stage=(name,run)=>{const at=performance.now();onProgress({stage:name});const value=run();timings.push({stage:name,seconds:(performance.now()-at)/1000});return value;};
   let initialWinner=null;
   const coarse=stage('directInitializing',()=>{
@@ -125,7 +132,10 @@ async function fitIndependent(input,cfg,onProgress){
     if(seeds[0].error===0||cfg.earlyStop&&seeds[0].error<=Math.min(.005,cfg.maxImageError)){
       const seed=seeds[0],model=cfg.preferMatchingSheets?matchingGrid(seed.model):seed.model;
       if(model){
-        const graph=new CurveGraph(gridPaths(model,cfg.width,seed.floor),cfg.width),solution=graph.solution(graph.points,seed.phase,input),woven=sampleWeave(solution,source.resolution);
+        // An exact seed still has to start feasible: project it before scoring.
+        const graph=new CurveGraph(gridPaths(model,cfg.width,seed.floor),cfg.width),base=graph.points.slice(),points=graph.points.slice(),ties=symmetryTies(graph,cfg.symmetry);
+        if(ties)applyTies(ties,points,points,{fixed:graph.fixed,original:base});
+        const solution=graph.solution(points,seed.phase,input),woven=sampleWeave(solution,source.resolution);
         let observed=0,errors=0;for(let i=0;i<woven.length;i++){if(source.validMask&&!source.validMask[i])continue;observed++;errors+=woven[i]!==source.mask[i];}
         const error=errors/observed;
         if(error<=(cfg.earlyStop?Math.min(.005,cfg.maxImageError):0)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed&&validate(solution,cfg).passed&&(!cfg.requireMaterialCore||materialAudit(solution,cfg).passed))initialWinner={solution,counts:seed.model.counts,error};
@@ -152,7 +162,10 @@ async function fitIndependent(input,cfg,onProgress){
   // alternate traced routing while there is still time within this search.
   const features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width,sourceFeatures);
   let recovery=null;
-  if(!features.passed&&deadline-performance.now()>2000){
+  // Traced feature recovery routes through the MILP, which cannot hold a
+  // mirrored pairing, and a symmetric fit is expected to drop features of an
+  // asymmetric drawing. Stay with the constrained fitter instead.
+  if(!features.passed&&!symmetryRequested&&deadline-performance.now()>2000){
     recovery=await recoverImageFeatures(input,cfg,Math.min(20,(deadline-performance.now())/1000*.9),onProgress);
     if(recovery.solution){
       const solution=recovery.solution;
@@ -191,13 +204,15 @@ async function fitIndependent(input,cfg,onProgress){
   }
   candidates.sort((a,b)=>Number(b.paperPassed)-Number(a.paperPassed)||Number(b.geometryPassed)-Number(a.geometryPassed)||Number(b.imagePassed)-Number(a.imagePassed)||a.selectionScore-b.selectionScore);
   let candidate=candidates[0];
-  if(!candidate.matching?.identical&&candidate.paperPassed&&performance.now()<deadline-1300){
+  // Shared-cut recovery re-subdivides one cut of a pair, which no symmetry
+  // pairing can follow; skip it rather than leave the constraint broken.
+  if(!candidate.matching?.identical&&!symmetryRequested&&candidate.paperPassed&&performance.now()<deadline-1300){
     const shared=stage('directSharing',()=>recoverShared(candidate,prob,n,cfg,{deadline:deadline-1300,input}));
     if(assess(shared)&&shared.originalImageError<=candidate.originalImageError)candidate=shared;
   }
   if(candidate.paperPassed&&performance.now()<deadline-450){
     const graph=new CurveGraph(candidate.graph.nested(candidate.points),cfg.width);
-    const polished=stage('directPolishing',()=>refineCurves(graph,Float64Array.from(source.mask),source.resolution,candidate.phase,{...cfg,preferMatchingSheets:false},{input,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false}));
+    const polished=stage('directPolishing',()=>refineCurves(graph,orbit?orbitMean(source.mask,source.resolution,orbit):Float64Array.from(source.mask),source.resolution,candidate.phase,{...cfg,preferMatchingSheets:false},{input,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false}));
     if(assess(polished)&&polished.originalImageError<=candidate.originalImageError)candidate={...polished,counts:candidate.counts,sharing:candidate.sharing};
   }
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
