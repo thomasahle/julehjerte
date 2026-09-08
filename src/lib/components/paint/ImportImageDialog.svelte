@@ -14,6 +14,17 @@
   corner out. So every change re-prepares (debounced, because dragging a corner
   is a hundred changes) and the answer is drawn as the heart it will become,
   with the same routine the paint canvas uses.
+
+  But a preview that only appears after the corner is let go is not a preview of
+  the drag, and dragging a corner is how a crop is found. So the diamond carries
+  two pictures in turn: while the corners move it shows the photograph itself,
+  rectified through them on the main thread (`$lib/paint/rectify.ts`, the
+  locator's own `rectifyMotif`, a frame per pointer move) and drawn in the same
+  heart by `drawHeartPhoto`; when the corner lands, the engine is asked and its
+  two-colour answer replaces it. The visitor sees the crop follow their finger
+  and then settle into the mask it will become — which is also the honest
+  reading, because the colour picture is the crop and only the engine's is the
+  mask.
 -->
 <script lang="ts">
 	import Modal from '$lib/components/Modal.svelte';
@@ -38,7 +49,7 @@
 		type ImportSettings
 	} from '$lib/inverse/engine';
 	import type { Mask } from '$lib/paint/mask';
-	import { drawHeart } from '$lib/paint/drawHeart';
+	import { drawHeart, drawHeartPhoto } from '$lib/paint/drawHeart';
 	import {
 		decodeImageFile,
 		ImportError,
@@ -47,6 +58,7 @@
 		orderQuad,
 		type DecodedImage
 	} from '$lib/paint/importImage';
+	import { rectifyPhoto, warmRectifier, type RectifiedPhoto } from '$lib/paint/rectify';
 	import { detectSymmetry, NO_SYMMETRY, type SymmetrySettings } from '$lib/paint/symmetry';
 
 	interface Props {
@@ -124,6 +136,13 @@
 	let previewBusy = $state(false);
 	/** Why there is no preview, if the engine was asked and could not give one. */
 	let previewError = $state<TranslationKey | null>(null);
+	/**
+	 * The photograph seen through the corners as they stand, or null when there
+	 * are no four corners to see it through. It stands in for the mask between a
+	 * corner moving and the engine answering — and stays put through a crop that
+	 * folds over, so a preview does not blink out under a finger mid-drag.
+	 */
+	let livePhoto = $state.raw<RectifiedPhoto | null>(null);
 
 	let colours = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let fileInput = $state.raw<HTMLInputElement | null>(null);
@@ -132,6 +151,8 @@
 	let photoEl = $state.raw<HTMLDivElement | null>(null);
 
 	let draggingCorner = -1;
+	/** Whether the corner under the finger has actually moved since it was grabbed. */
+	let cornerMoved = false;
 	let regionStart: Point | null = null;
 	/** A drag that ended on the picture must not also count as a corner click. */
 	let suppressClick = false;
@@ -155,21 +176,86 @@
 
 	// Everything about a picture belongs to the visit that opened the dialog: a
 	// second visit starts from the drop zone rather than from someone else's crop.
+	// Opening it is also the earliest moment we know a crop may be dragged, and
+	// the live crop's locator is a fetch — so it is started here, while the
+	// visitor is still choosing a file, rather than under the first finger.
 	$effect(() => {
-		if (!open) reset();
+		if (open) warmRectifier();
+		else reset();
 	});
 
 	$effect(() => {
 		const canvas = previewCanvas;
 		const mask = previewMask;
-		if (!canvas || !mask) return;
+		const photo = livePhoto;
+		if (!canvas || (!mask && !photo)) return;
 		const ratio = window.devicePixelRatio || 1;
-		canvas.width = Math.round(PREVIEW_SIZE * ratio);
-		canvas.height = Math.round(PREVIEW_SIZE * ratio);
+		const side = Math.round(PREVIEW_SIZE * ratio);
+		// Assigning `width` clears and reallocates the backing store even when the
+		// value is the one already there. That was once per prepared mask; with the
+		// live crop it is once per animation frame for the whole of a drag, which on
+		// the phone this feature is most for is a 600 px canvas thrown away sixty
+		// times a second. The transform is set every time regardless: it costs
+		// nothing, and a resize is what clears it.
+		if (canvas.width !== side || canvas.height !== side) {
+			canvas.width = side;
+			canvas.height = side;
+		}
 		const ctx = canvas.getContext('2d');
 		if (!ctx) return;
 		ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-		drawHeart(ctx, mask, colours, PREVIEW_SIZE);
+		// The mask is the answer and wins whenever there is one; the crop is what
+		// the diamond carries until the engine has been asked.
+		if (mask) drawHeart(ctx, mask, colours, PREVIEW_SIZE);
+		else if (photo) drawHeartPhoto(ctx, photo, colours, PREVIEW_SIZE);
+	});
+
+	/**
+	 * Keep the live crop in step with the corners.
+	 *
+	 * This is the old generator page's loop: one animation frame per change, the
+	 * locator module fetched once and answering from the browser's registry after
+	 * that, and the frame before it cancelled — so a corner dragged across the
+	 * picture rectifies once per painted frame rather than once per pointer
+	 * event. It is the whole of what moves during a drag; the engine is not asked
+	 * until the corner lands (`schedulePreview`).
+	 */
+	$effect(() => {
+		const source = decoded?.input;
+		const corners = $state.snapshot(quad) as Point[];
+		// A picture used whole has no corners to drag and its mask is already on
+		// the way; an SVG has no pixels to rectify.
+		if (source?.type !== 'pixels' || cropMode !== 'quad' || corners.length !== 4) {
+			livePhoto = null;
+			return;
+		}
+		let cancelled = false;
+		const frame = requestAnimationFrame(async () => {
+			const image = { width: source.imageWidth, height: source.imageHeight, data: source.rgba };
+			try {
+				const photo = await rectifyPhoto(image, corners);
+				if (!cancelled) livePhoto = photo;
+			} catch (error) {
+				// Corners that fold over are not a crop the locator can flatten, and
+				// the status line already says so in the visitor's own words. The
+				// last good frame stays: a preview that blanked every time a dragged
+				// corner crossed its neighbour would flicker all the way across.
+				//
+				// Everything else that can throw here — the locator failing to load
+				// above all — has no symptom at all but a crop that never appears,
+				// so it is logged like the engine's own failures (`engineFailed`).
+				// Corners the dialog itself calls convex are the ones the locator
+				// takes, so this asks the question we already have an answer to
+				// rather than reading the locator's message back.
+				if (isConvexQuad(corners)) {
+					console.error('Import: the live crop could not be drawn', error);
+				}
+			}
+		});
+		return () => {
+			cancelled = true;
+			cancelAnimationFrame(frame);
+		};
 	});
 
 	function reset(): void {
@@ -199,6 +285,19 @@
 		previewFound = null;
 		previewBusy = false;
 		previewError = null;
+		livePhoto = null;
+		// A gesture does not outlive the dialog. Escape while a corner is held
+		// closes the Modal and destroys the picture under the finger, so neither
+		// pointerup nor pointercancel ever reaches `endDrag` — and a `draggingCorner`
+		// left behind would hold open the one branch in `schedulePreview` that never
+		// asks the engine, silently, for the rest of the visit: the next picture
+		// would show its crop and never become a mask. `regionStart` and
+		// `suppressClick` are stale in exactly the same way, and would put the next
+		// visit's first click into a region that was abandoned a picture ago.
+		draggingCorner = -1;
+		cornerMoved = false;
+		regionStart = null;
+		suppressClick = false;
 		if (fileInput) fileInput.value = '';
 	}
 
@@ -385,10 +484,13 @@
 		// made while it runs has to discard it. Bumping it only in `runPreview`
 		// would let that answer arrive during the debounce and pass for this one.
 		const mine = ++generation;
-		if (!payload()) {
-			previewBusy = false;
-			return;
-		}
+		previewBusy = false;
+		// A corner under a finger is still moving, so even the debounce is too
+		// eager: a hand that pauses for a third of a second mid-drag would spend a
+		// second of the engine's time on a crop it is about to leave, and the
+		// preview would freeze on it. What follows the drag is the rectified
+		// photograph; `endDrag` asks the engine once the corner has landed.
+		if (!payload() || draggingCorner >= 0) return;
 		previewBusy = true;
 		previewTimer = setTimeout(() => void runPreview(mine), PREVIEW_DEBOUNCE_MS);
 	}
@@ -467,6 +569,7 @@
 		}
 		const radius = GRAB_RADIUS * imagePixelsPerScreenPixel();
 		draggingCorner = quad.findIndex((c) => Math.hypot(c[0] - p[0], c[1] - p[1]) <= radius);
+		cornerMoved = false;
 		if (draggingCorner >= 0) {
 			event.currentTarget.setPointerCapture(event.pointerId);
 			suppressClick = true;
@@ -489,13 +592,25 @@
 		// A tenth of a pixel is finer than anyone can aim and finer than the
 		// engine's own half-pixel convention needs; it keeps the numbers readable.
 		quad[draggingCorner] = p.map((v) => Math.round(v * 10) / 10) as Point;
+		cornerMoved = true;
 		outline = [];
 		cornerStatus = isConvexQuad(quad) ? 'set' : 'invalid';
 		schedulePreview();
 	}
 
 	function endDrag(event: PointerEvent): void {
+		const corner = draggingCorner;
 		draggingCorner = -1;
+		if (corner >= 0) {
+			// The corner has landed, so the crop is a question worth asking: this is
+			// the one `schedulePreview` held back for the length of the drag. A
+			// corner grabbed and let go without moving is the crop the preview is
+			// already showing, and re-preparing it would throw that away for a
+			// second and hand back the same mask.
+			if (cornerMoved) schedulePreview();
+			cornerMoved = false;
+			return;
+		}
 		if (!regionStart) return;
 		regionStart = null;
 		if (event.type === 'pointercancel') {
@@ -595,6 +710,20 @@
 			default:
 				return '';
 		}
+	});
+
+	/**
+	 * What to say under the crop while it stands in for the mask: that the engine
+	 * is working, that it could not answer, or that it has not been asked yet.
+	 *
+	 * Nothing, for corners that fold over. The picture's own status line already
+	 * names that and says what to do about it, and promising a mask on release
+	 * here would be a second answer that happens to be wrong.
+	 */
+	let cropNote = $derived.by<TranslationKey | null>(() => {
+		if (previewBusy) return 'paintPreviewWorking';
+		if (previewError) return previewError;
+		return cornerStatus === 'invalid' ? null : 'paintPreviewCropHint';
 	});
 
 	let symmetryText = $derived.by(() => {
@@ -802,10 +931,16 @@
 
 					<h3 class="panel-title">{tr('paintPreview')}</h3>
 					<div class="preview">
-						{#if previewMask}
+						{#if previewMask || livePhoto}
 							<!-- The name goes on the wrapper: a <canvas> is an interactive
-							     element to the accessibility tree, and cannot take role="img". -->
-							<div class="heart" role="img" aria-label={tr('paintPreviewAlt')}>
+							     element to the accessibility tree, and cannot take role="img".
+							     It says which of the two pictures is up, because "the mask" and
+							     "the photograph cropped" are different promises. -->
+							<div
+								class="heart"
+								role="img"
+								aria-label={previewMask ? tr('paintPreviewAlt') : tr('paintPreviewCropAlt')}
+							>
 								<canvas
 									bind:this={previewCanvas}
 									style:width="{PREVIEW_SIZE}px"
@@ -823,6 +958,10 @@
 					</div>
 					{#if previewMask}
 						<p class="hint">{symmetryText}</p>
+					{:else if livePhoto && cropNote}
+						<!-- The crop is showing, so the line under it says what is still
+						     missing; `cropNote` is which of those three it is. -->
+						<p class="hint" role="status">{tr(cropNote)}</p>
 					{/if}
 				</section>
 			</div>

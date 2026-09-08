@@ -56,6 +56,31 @@ declare module '$inverse/core/settings.js' {
   export function settings(raw?: Record<string, unknown>): Record<string, unknown>;
 }
 
+declare module '$inverse/locator/locator.js' {
+  /**
+   * Flatten the quadrilateral `quad` out of `image` into a `size × size` square
+   * of RGBA pixels, sampled bilinearly. The unit square's corners
+   * `(0,0) (1,0) (1,1) (0,1)` map onto the four given points in order, and the
+   * points are read in *pixel-centre* coordinates — which is what
+   * `rectifyQuad` in `$lib/paint/rectify.ts` converts to. Pixels the quad
+   * reaches outside the picture come back as zeroes, with `valid` 0.
+   *
+   * Throws a `TypeError` for corners that do not form a convex quadrilateral in
+   * perimeter order (either winding), and a `RangeError` for a size outside
+   * 16…2048.
+   */
+  export function rectifyMotif(
+    image: { width: number; height: number; data: Uint8ClampedArray },
+    quad: number[][],
+    options?: { size?: number }
+  ): {
+    width: number;
+    height: number;
+    data: Uint8ClampedArray;
+    valid: Uint8Array;
+  };
+}
+
 declare module '$inverse/core/engine.js' {
   /**
    * Classify artwork into the engine's own two-colour reading of the woven

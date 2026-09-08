@@ -331,6 +331,8 @@ export const translations = {
     paintPreviewFailed: 'Billedet kunne ikke laves om til en maske.',
     paintPreviewWaiting: 'Sæt hjørnerne for at se masken.',
     paintPreviewAlt: 'Masken vist som hjerte',
+    paintPreviewCropAlt: 'Fotoet beskåret og vist som hjerte',
+    paintPreviewCropHint: 'Fotoet, som hjørnerne beskærer det. Masken beregnes, når du slipper hjørnet.',
     /** {rows} = the symmetry rows found, e.g. "Mellem lapper (Sym)" */
     paintFoundSymmetry: 'Fundet symmetri: {rows}',
     paintFoundSymmetryNone: 'Ingen symmetri fundet',
@@ -760,6 +762,8 @@ export const translations = {
     paintPreviewFailed: 'The picture could not be turned into a mask.',
     paintPreviewWaiting: 'Set the corners to see the mask.',
     paintPreviewAlt: 'The mask shown as a heart',
+    paintPreviewCropAlt: 'The photo cropped and shown as a heart',
+    paintPreviewCropHint: 'The photo as the corners crop it. The mask is worked out when you let the corner go.',
     /** {rows} = the symmetry rows found, e.g. "Between lobes (Sym)" */
     paintFoundSymmetry: 'Symmetry found: {rows}',
     paintFoundSymmetryNone: 'No symmetry found',

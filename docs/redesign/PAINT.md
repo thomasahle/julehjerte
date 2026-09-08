@@ -93,6 +93,14 @@ Import dialog (`ImportImageDialog`, built on the site `Modal`, `column` layout, 
   mapping to the engine's `mode` auto / red-white-mixture / swatches; "Byt farverne" checkbox (engine `invert`).
 - Live preview "Sådan bliver masken": the prepared mask drawn as a heart (same renderer as the canvas, 200px), and a
   line naming the symmetries found (§5). The preview re-runs `prepare` (debounced) when corners or colours change.
+  **While the corners are moving it shows the crop instead**: the photograph rectified through the four corners with
+  the locator's own `rectifyMotif` (`src/lib/paint/rectify.ts`, loaded by URL and cached, one `requestAnimationFrame`
+  per pointer move, size 200) and drawn in the same heart by `drawHeartPhoto` — the lobes keep the paper colours, the
+  woven square carries the photo in colour. The engine is left alone for the whole drag and asked once on release,
+  and its two-colour mask then replaces the crop. Corners that fold over keep the last good frame beside the existing
+  "uden knæk" message. This is what the old generator page did (`d0150f8`, "Render source pixels with the same
+  half-pixel convention as preprocessing"), and the half-pixel offset — the dialog counts pixel edges, the locator
+  pixel centres — is the whole of the conversion.
 - Footer: `Annuller`, `Brug som maske` (primary). Using replaces the session mask (confirm via Modal if the current
   mask has unsaved strokes), sets the suggested symmetries, closes the dialog.
 
@@ -178,6 +186,14 @@ export function symmetrize(m: Mask, transforms: Transform[]): void;    // majori
 export function rasterizeDesign(design: HeartDesign, size = MASK_SIZE): Mask;
 
 // src/lib/paint/history.ts — undo/redo as full snapshots capped at 40 (a 160 KB mask × 40 = 6.4 MB, fine)
+
+// src/lib/paint/rectify.ts — the import dialog's live crop (§2): the photograph through the four corners
+export const RECTIFIED_SIZE = 200;
+export type RectifiedPhoto = { size: number; data: Uint8ClampedArray };   // shaped like Mask: a side and row-major data
+export function rectifyQuad(quad: readonly Point[]): number[][];          // pixel edges -> the locator's pixel centres
+export function rectifyPhoto(image: SourcePixels, quad: readonly Point[], size?): Promise<RectifiedPhoto>;
+// src/lib/paint/drawHeart.ts — the same heart with the crop in the woven square instead of a mask
+export function drawHeartPhoto(ctx, photo: RectifiedPhoto, colors: HeartColors, size: number): void;
 
 // src/lib/inverse/toHeartDesign.ts — engine cut geometry -> our heart
 export type CutGeometryOptions = { name: string; author?: string; colors?: HeartColors; enforce?: SymmetrySettings; tolerance?: number };

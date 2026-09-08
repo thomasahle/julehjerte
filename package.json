@@ -39,7 +39,8 @@
 		"benchmark:inverse:hunodan": "node scripts/inverse/hunodan-benchmark.mjs",
 		"test:inverse:hunodan:browser": "node scripts/inverse/hunodan-browser-test.mjs",
 		"benchmark:inverse:hunodan:report": "node scripts/inverse/hunodan-visual-report.mjs",
-		"test:inverse:hunodan:models:browser": "node scripts/inverse/hunodan-model-browser-test.mjs"
+		"test:inverse:hunodan:models:browser": "node scripts/inverse/hunodan-model-browser-test.mjs",
+		"test:paint:live-crop": "node scripts/paint/live-crop-browser-test.mjs"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
