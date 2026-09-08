@@ -28,7 +28,15 @@
 	} from '$lib/stores/colors';
 	import { toHexColors } from '$lib/utils/heartColors';
 	import type { ArtworkInput, CropProposal, Point } from '$lib/inverse/client';
-	import { detectCorners, prepareImage, refineCorners, type ImportSettings } from '$lib/inverse/engine';
+	import {
+		cancel,
+		detectCorners,
+		EngineError,
+		ENGINE_UNAVAILABLE,
+		prepareImage,
+		refineCorners,
+		type ImportSettings
+	} from '$lib/inverse/engine';
 	import type { Mask } from '$lib/paint/mask';
 	import { drawHeart } from '$lib/paint/drawHeart';
 	import {
@@ -44,7 +52,10 @@
 	interface Props {
 		open: boolean;
 		onClose: () => void;
-		/** The prepared mask and the symmetry detected in it, for the session store. */
+		/**
+		 * The prepared mask and the symmetry detected in it, for the session store.
+		 * The dialog closes itself afterwards, so this only has to store them.
+		 */
 		onUse: (mask: Mask, found: SymmetrySettings) => void;
 		lang: Language;
 	}
@@ -67,6 +78,20 @@
 	/** How near a pointer has to be to grab a corner, in screen pixels. */
 	const GRAB_RADIUS = 20;
 
+	/**
+	 * The smallest drawn area worth searching in, in screen pixels. Below this the
+	 * box is a stray click rather than a region.
+	 */
+	const MIN_REGION = 24;
+
+	/** Where an arrow key moves the corner it is pressed on. */
+	const NUDGE: Record<string, Point> = {
+		ArrowLeft: [-1, 0],
+		ArrowRight: [1, 0],
+		ArrowUp: [0, -1],
+		ArrowDown: [0, 1]
+	};
+
 	let decoded = $state.raw<DecodedImage | null>(null);
 	let fileError = $state<TranslationKey | null>(null);
 
@@ -84,7 +109,7 @@
 	 * not enclose anything the engine can rectify.
 	 */
 	let cornerStatus = $state<
-		'searching' | 'found' | 'uncertain' | 'none' | 'manual' | 'set' | 'invalid' | null
+		'searching' | 'found' | 'uncertain' | 'none' | 'manual' | 'set' | 'invalid' | 'failed' | null
 	>(null);
 	/** The outline the engine drew round what it thinks is the heart. */
 	let outline = $state.raw<Point[][]>([]);
@@ -97,13 +122,14 @@
 	let previewMask = $state.raw<Mask | null>(null);
 	let previewFound = $state<SymmetrySettings | null>(null);
 	let previewBusy = $state(false);
-	let previewFailed = $state(false);
+	/** Why there is no preview, if the engine was asked and could not give one. */
+	let previewError = $state<TranslationKey | null>(null);
 
 	let colours = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let fileInput = $state.raw<HTMLInputElement | null>(null);
 	let chooseButton = $state.raw<HTMLButtonElement | null>(null);
 	let previewCanvas = $state.raw<HTMLCanvasElement | null>(null);
-	let photoEl = $state.raw<HTMLButtonElement | null>(null);
+	let photoEl = $state.raw<HTMLDivElement | null>(null);
 
 	let draggingCorner = -1;
 	let regionStart: Point | null = null;
@@ -111,20 +137,11 @@
 	let suppressClick = false;
 
 	/**
-	 * The engine takes one request at a time (`InverseWorker.request` refuses a
-	 * second), and the dialog has two callers racing — corner detection and the
-	 * debounced preview. Chaining them is simpler than a busy flag each has to
-	 * remember to check, and it keeps the order the visitor asked for.
+	 * Bumped by every change that makes the engine's current answer the answer to
+	 * a question the visitor has moved on from — a corner dragged, a colour mode
+	 * picked, a new file, the dialog closed. A reply carrying an older number is
+	 * dropped, so a mask never outlives the crop it was made from.
 	 */
-	let chain: Promise<unknown> = Promise.resolve();
-
-	function queue<T>(work: () => Promise<T>): Promise<T> {
-		const next = chain.then(work, work);
-		chain = next.catch(() => undefined);
-		return next;
-	}
-
-	/** Bumped by every scheduled preview, so a late answer to an old question is dropped. */
 	let generation = 0;
 	let previewTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -159,7 +176,15 @@
 		if (previewTimer) clearTimeout(previewTimer);
 		previewTimer = null;
 		generation++;
-		if (decoded) URL.revokeObjectURL(decoded.url);
+		// Nobody wants the answer any more, so nobody should pay for it either: a
+		// prepare of a 24-megapixel photograph runs for seconds after the dialog is
+		// closed unless the worker is told to stop. Only when this dialog is what
+		// asked, though — `reset` also runs when it is mounted closed, and the
+		// engine it would stop is shared with Find snit.
+		if (decoded) {
+			cancel();
+			URL.revokeObjectURL(decoded.url);
+		}
 		decoded = null;
 		fileError = null;
 		quad = [];
@@ -173,7 +198,7 @@
 		previewMask = null;
 		previewFound = null;
 		previewBusy = false;
-		previewFailed = false;
+		previewError = null;
 		if (fileInput) fileInput.value = '';
 	}
 
@@ -219,29 +244,67 @@
 	async function findCorners(): Promise<void> {
 		const source = decoded?.input;
 		if (!source || source.type !== 'pixels') return;
+		// The crop is about to be replaced, so a preview of the old one — running or
+		// merely armed — is already out of date; and this search is itself an answer
+		// to drop if the visitor picks another picture while it runs.
+		if (previewTimer) clearTimeout(previewTimer);
+		previewTimer = null;
+		const mine = ++generation;
 		cornerStatus = 'searching';
 		previewMask = null;
-		previewFailed = false;
+		previewFound = null;
+		previewBusy = false;
+		previewError = null;
 		const refine = quad.length === 4 && isConvexQuad(quad);
 		const roi = region ?? undefined;
 		const corners = quad.map((p) => [...p] as Point);
 		try {
-			const crops = await queue(() =>
-				refine ? refineCorners({ ...source, quad: corners }) : detectCorners(source, roi)
-			);
+			const crops = refine
+				? await refineCorners({ ...source, quad: corners })
+				: await detectCorners(source, roi);
+			if (mine !== generation) return;
 			const candidate = crops.candidates[0];
 			if (candidate) useCandidate(candidate);
-			else if (squarePicture && !refine) useWholePicture();
-			else {
+			// A drawn area is an instruction about where the heart is, so falling
+			// back to the whole picture would answer a question nobody asked.
+			else if (squarePicture && !refine && !region) useWholePicture();
+			else if (crops.status === 'needs_selection' && !region) {
+				// The engine saw more than one plausible motif and proposed none on
+				// purpose: it is asking which one is the heart, and drawing an area
+				// round it is how the visitor answers.
 				quad = [];
 				outline = [];
+				cropMode = 'quad';
+				cropTool = 'region';
+				cornerStatus = null;
+			} else {
+				quad = [];
+				outline = [];
+				region = null;
 				cropMode = 'quad';
 				cropTool = 'corners';
 				cornerStatus = 'none';
 			}
-		} catch {
-			cornerStatus = 'none';
+		} catch (error) {
+			if (mine !== generation) return;
+			cornerStatus = engineFailed(error) ? 'failed' : 'none';
 		}
+	}
+
+	/**
+	 * Whether the engine is what failed, rather than the picture.
+	 *
+	 * An engine that cannot load answers every question the same way, so telling
+	 * the visitor no heart was found in their photograph blames the photograph
+	 * and sends them down a manual crop that will fail in exactly the same way.
+	 * What the engine says *about* a picture — that it cannot find red and white
+	 * paper in it, say — is a real answer and keeps the picture's own words.
+	 * Either way the engine's message is logged: it is the only diagnostic there
+	 * is once it has been turned into one of two sentences.
+	 */
+	function engineFailed(error: unknown): boolean {
+		console.error('Import: the engine could not answer', error);
+		return error instanceof EngineError && error.code === ENGINE_UNAVAILABLE;
 	}
 
 	function useCandidate(candidate: CropProposal): void {
@@ -249,6 +312,9 @@
 		outline = candidate.outline;
 		cropMode = 'quad';
 		cropTool = 'corners';
+		// The drawn area has been answered; leaving it on the picture would only
+		// draw a gold box round a crop it no longer describes.
+		region = null;
 		cornerStatus = candidate.needsReview ? 'uncertain' : 'found';
 		schedulePreview();
 	}
@@ -270,14 +336,21 @@
 		outline = [];
 		region = null;
 		cornerStatus = 'manual';
-		previewMask = null;
+		// There is no crop any more, so this only clears the preview and drops
+		// whatever the engine was preparing for the crop there was.
+		schedulePreview();
 	}
 
 	function selectRegion(): void {
-		cropMode = 'quad';
 		cropTool = 'region';
 		region = null;
-		previewMask = null;
+		// Arming the tool changes no crop, so the preview still shows what would be
+		// used — unless a square picture was being taken whole, where switching to a
+		// crop leaves nothing to show until an area is drawn.
+		if (cropMode === 'square') {
+			cropMode = 'quad';
+			schedulePreview();
+		}
 	}
 
 	/** What goes to the engine, or null while the crop is still unfinished. */
@@ -304,30 +377,38 @@
 	function schedulePreview(): void {
 		previewMask = null;
 		previewFound = null;
-		previewFailed = false;
+		previewError = null;
 		if (previewTimer) clearTimeout(previewTimer);
 		previewTimer = null;
-		if (!payload()) return;
+		// The number is taken here rather than when the request goes out: a prepare
+		// already running is an answer about the corners as they were, and a change
+		// made while it runs has to discard it. Bumping it only in `runPreview`
+		// would let that answer arrive during the debounce and pass for this one.
+		const mine = ++generation;
+		if (!payload()) {
+			previewBusy = false;
+			return;
+		}
 		previewBusy = true;
-		previewTimer = setTimeout(runPreview, PREVIEW_DEBOUNCE_MS);
+		previewTimer = setTimeout(() => void runPreview(mine), PREVIEW_DEBOUNCE_MS);
 	}
 
-	async function runPreview(): Promise<void> {
+	async function runPreview(mine: number): Promise<void> {
+		if (mine !== generation) return;
 		const source = payload();
 		if (!source) {
 			previewBusy = false;
 			return;
 		}
-		const mine = ++generation;
 		try {
-			const prepared = await queue(() => prepareImage(source, importSettings()));
+			const prepared = await prepareImage(source, importSettings());
 			if (mine !== generation) return;
 			const mask = maskFromPrepared(prepared);
 			previewMask = mask;
 			previewFound = detectSymmetry(mask);
-		} catch {
+		} catch (error) {
 			if (mine !== generation) return;
-			previewFailed = true;
+			previewError = engineFailed(error) ? 'paintFailedEngine' : 'paintPreviewFailed';
 		} finally {
 			if (mine === generation) previewBusy = false;
 		}
@@ -337,6 +418,10 @@
 		if (!previewMask) return;
 		// Spread rather than hand the store a rune proxy of our own state.
 		onUse(previewMask, { ...(previewFound ?? NO_SYMMETRY) });
+		// Using the mask is the end of the dialog's business (§2). Closing here
+		// rather than leaving it to the parent is what makes that true wherever the
+		// dialog is wired up.
+		onClose();
 	}
 
 	/* ---------------------------------------------------------------------
@@ -354,6 +439,20 @@
 		];
 	}
 
+	/**
+	 * How many of the picture's own pixels one screen pixel covers.
+	 *
+	 * Every distance the visitor feels — the grab radius, an arrow key's step, the
+	 * smallest area worth searching in — is a distance on the screen, and a
+	 * photograph shown at a fifth of its size would otherwise make each of them
+	 * five times as coarse as it looks.
+	 */
+	function imagePixelsPerScreenPixel(): number {
+		const width = decoded?.pixels?.width ?? 0;
+		const shown = photoEl?.getBoundingClientRect().width ?? 0;
+		return shown ? width / shown : 1;
+	}
+
 	function startDrag(event: PointerEvent): void {
 		if (cropMode !== 'quad' || !(event.currentTarget instanceof HTMLElement)) return;
 		suppressClick = false;
@@ -366,8 +465,7 @@
 			suppressClick = true;
 			return;
 		}
-		const rect = event.currentTarget.getBoundingClientRect();
-		const radius = (GRAB_RADIUS * (decoded?.pixels?.width ?? 0)) / rect.width;
+		const radius = GRAB_RADIUS * imagePixelsPerScreenPixel();
 		draggingCorner = quad.findIndex((c) => Math.hypot(c[0] - p[0], c[1] - p[1]) <= radius);
 		if (draggingCorner >= 0) {
 			event.currentTarget.setPointerCapture(event.pointerId);
@@ -405,18 +503,49 @@
 			return;
 		}
 		// A stray click is not an area. Below this the drawn box is noise, and
-		// searching inside it would only find nothing.
+		// searching inside it would only find nothing — so it is dropped rather than
+		// left on the picture as a box that nothing will ever answer.
 		const drawn = region;
-		if (drawn && drawn[2]! - drawn[0]! >= 24 && drawn[3]! - drawn[1]! >= 24) {
-			quad = [];
-			outline = [];
-			cropTool = 'corners';
-			void findCorners();
+		const minimum = MIN_REGION * imagePixelsPerScreenPixel();
+		if (!drawn || drawn[2]! - drawn[0]! < minimum || drawn[3]! - drawn[1]! < minimum) {
+			region = null;
+			return;
 		}
+		quad = [];
+		outline = [];
+		cropTool = 'corners';
+		void findCorners();
+	}
+
+	/**
+	 * Move the corner an arrow key was pressed on.
+	 *
+	 * Dragging is the only other way to adjust a crop, and §8 asks for a keyboard
+	 * path throughout; the markers are therefore real buttons, and this is what
+	 * they are for. One press is one screen pixel's worth of the picture, ten with
+	 * Shift.
+	 */
+	function nudgeCorner(event: KeyboardEvent, index: number): void {
+		const step = NUDGE[event.key];
+		const pixels = decoded?.pixels;
+		const corner = quad[index];
+		if (!step || !pixels || !corner) return;
+		event.preventDefault();
+		const distance = imagePixelsPerScreenPixel() * (event.shiftKey ? 10 : 1);
+		const move = (v: number, by: number, limit: number) =>
+			Math.round(Math.max(0, Math.min(limit, v + by * distance)) * 10) / 10;
+		quad[index] = [move(corner[0], step[0], pixels.width), move(corner[1], step[1], pixels.height)];
+		outline = [];
+		cornerStatus = isConvexQuad(quad) ? 'set' : 'invalid';
+		schedulePreview();
 	}
 
 	function clickPicture(event: MouseEvent): void {
 		if (cropMode !== 'quad' || cropTool !== 'corners') return;
+		// A click with no pointer behind it (a screen reader activating the picture,
+		// say) reports (0, 0), which would put a corner in the top-left of the photo
+		// rather than where anybody meant.
+		if (event.detail === 0) return;
 		if (suppressClick) {
 			suppressClick = false;
 			return;
@@ -461,6 +590,8 @@
 				return tr('paintCornersSet');
 			case 'invalid':
 				return tr('paintCornersInvalid');
+			case 'failed':
+				return tr('paintFailedEngine');
 			default:
 				return '';
 		}
@@ -538,9 +669,16 @@
 		{:else}
 			<div class="work">
 				<section class="picture" aria-label={tr('paintCorners')}>
-					<button
-						type="button"
+					<!-- Setting a corner is pointing at a place in a photograph, which no
+					     key can do, so the picture is not a button: an Enter on one would be
+					     a corner at (0, 0). What the keyboard gets instead is the corner
+					     markers, which are buttons the arrow keys move, beside Find igen,
+					     Vælg område and Sæt selv. -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<div
 						class="photo"
+						class:pointing={!!decoded.pixels && cropMode === 'quad'}
 						class:region-tool={cropTool === 'region'}
 						bind:this={photoEl}
 						onclick={clickPicture}
@@ -548,7 +686,6 @@
 						onpointermove={moveDrag}
 						onpointerup={endDrag}
 						onpointercancel={endDrag}
-						aria-label={tr('paintCorners')}
 					>
 						<img src={decoded.url} alt={decoded.name} draggable="false" />
 						{#if decoded.pixels && cropMode === 'quad'}
@@ -578,15 +715,17 @@
 								{/if}
 							</svg>
 							{#each quad as p, i (i)}
-								<span
+								<button
+									type="button"
 									class="corner"
 									style:left="{(100 * p[0]) / decoded.pixels.width}%"
 									style:top="{(100 * p[1]) / decoded.pixels.height}%"
-									aria-hidden="true">{i + 1}</span
+									aria-label={tr('paintCornerNudge', { n: i + 1 })}
+									onkeydown={(event) => nudgeCorner(event, i)}>{i + 1}</button
 								>
 							{/each}
 						{/if}
-					</button>
+					</div>
 
 					{#if decoded.pixels}
 						<div class="corner-actions">
@@ -599,12 +738,14 @@
 							<button
 								type="button"
 								class="btn btn-sm btn-ghost"
+								class:btn-dark={cropTool === 'region'}
 								aria-pressed={cropTool === 'region'}
 								onclick={selectRegion}>{tr('paintCornersRegion')}</button
 							>
 							<button
 								type="button"
 								class="btn btn-sm btn-ghost"
+								class:btn-dark={cornerStatus === 'manual'}
 								aria-pressed={cornerStatus === 'manual'}
 								onclick={setCornersManually}>{tr('paintCornersSetSelf')}</button
 							>
@@ -612,6 +753,7 @@
 								<button
 									type="button"
 									class="btn btn-sm btn-ghost"
+									class:btn-dark={cropMode === 'square'}
 									aria-pressed={cropMode === 'square'}
 									onclick={useWholePicture}>{tr('paintCornersWholeImage')}</button
 								>
@@ -655,7 +797,7 @@
 
 					<label class="checkbox">
 						<input type="checkbox" bind:checked={invert} onchange={schedulePreview} />
-						<span>{tr('swapColors')}</span>
+						<span>{tr('paintColoursInvert')}</span>
 					</label>
 
 					<h3 class="panel-title">{tr('paintPreview')}</h3>
@@ -673,9 +815,9 @@
 							</div>
 						{:else}
 							<div class="placeholder" role="status">
-								{#if previewBusy}{tr('paintPreviewWorking')}{:else if previewFailed}{tr(
-										'paintPreviewFailed'
-									)}{/if}
+								{#if previewBusy}{tr('paintPreviewWorking')}{:else if previewError}{tr(
+										previewError
+									)}{:else}{tr('paintPreviewWaiting')}{/if}
 							</div>
 						{/if}
 					</div>
@@ -816,27 +958,29 @@
 		margin: 0;
 	}
 
-	/* The picture is a button so that clicking it to set a corner is a real
-	   control; it carries none of a button's looks. It shrink-wraps the picture
-	   so the corner markers, which are positioned in percentages of this box,
-	   land on the picture and not on letterboxing beside it. */
+	/* The picture shrink-wraps itself so the corner markers, which are positioned
+	   in percentages of this box, land on the picture and not on letterboxing
+	   beside it. It invites a pointer only where there is a crop to point at: an
+	   SVG import has no corners to set, and neither has a picture used whole. */
 	.photo {
 		position: relative;
 		display: block;
 		width: fit-content;
 		max-width: 100%;
 		margin: 0 auto;
-		padding: 0;
 		border: 1px solid var(--line);
 		border-radius: 10px;
 		background: var(--cream2);
 		overflow: hidden;
-		cursor: crosshair;
 		touch-action: none;
 		user-select: none;
 	}
 
-	.photo.region-tool {
+	.photo.pointing {
+		cursor: crosshair;
+	}
+
+	.photo.pointing.region-tool {
 		cursor: cell;
 	}
 
@@ -879,32 +1023,38 @@
 		vector-effect: non-scaling-stroke;
 	}
 
+	/* A marker is a button so that the keyboard can reach it and move it. A
+	   pointer is answered by the picture underneath, which grabs whichever corner
+	   is nearest — so the marker passes the gesture on rather than catching it,
+	   and wears the picture's cursor while it does. */
 	.corner {
 		position: absolute;
 		display: grid;
 		place-items: center;
 		width: 24px;
 		height: 24px;
+		padding: 0;
 		transform: translate(-50%, -50%);
 		border: 2px solid var(--white);
 		border-radius: 50%;
 		background: var(--green);
 		color: var(--white);
+		font-family: inherit;
 		font-size: 12px;
 		font-weight: 600;
-		pointer-events: none;
+		cursor: inherit;
+		touch-action: none;
+	}
+
+	.corner:focus-visible {
+		outline: 2px solid var(--deep);
+		outline-offset: 2px;
 	}
 
 	.corner-actions {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
-	}
-
-	.corner-actions .btn[aria-pressed='true'] {
-		background: var(--green);
-		border-color: var(--green);
-		color: var(--white);
 	}
 
 	.segmented {
