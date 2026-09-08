@@ -7,12 +7,12 @@ import {execFileSync} from 'node:child_process';
 import {createServer} from 'vite';
 import {JSDOM} from 'jsdom';
 import {createCanvas,loadImage} from 'canvas';
-import {motifFixture} from './motif-fixture.mjs';
+import {motifFixture,topHatFixture} from './motif-fixture.mjs';
 
 const browsers=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 const origin=process.env.INVERSE_TEST_URL||'http://localhost:5200';
 const names=(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',');
-const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan').split(',');
+const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan,top-hat,top-hat-independent').split(',');
 const output=process.env.INVERSE_TEST_OUTPUT||`tmp/paint-browser/${new Date().toISOString().replace(/[:.]/g,'-')}`;
 await fs.mkdir(output,{recursive:true});
 const loader=await createServer({configFile:false,server:{middlewareMode:true,hmr:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
@@ -24,11 +24,12 @@ const {rasterizeDesign}=await loader.ssrLoadModule('/src/lib/paint/rasterize.ts'
 const {resample,maskMismatch}=await loader.ssrLoadModule('/src/lib/paint/mask.ts');
 const results=[];
 const report={origin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,workspaceSourceHashes:{},results};
-for(const file of ['static/inverse/core/direct/topology.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of ['static/inverse/core/automatic.js','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
  for(const browserName of names){
   const browser=await browsers[browserName].launch({headless:true});
   try{for(const name of cases){
+   const topHat=name==='top-hat'||name==='top-hat-independent';
    const dir=path.join(output,`${browserName}-${name}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,pageErrors:[]};results.push(row);
    const context=await browser.newContext({viewport:{width:1440,height:1100},acceptDownloads:true});
@@ -57,13 +58,19 @@ try{
      if(name==='hunodan'){
       const metadata=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
       const e=metadata.cases[0],[x,y,x1,y1]=e.photoROI,im=await loadImage(e.source),c=createCanvas(x1-x,y1-y);c.getContext('2d').drawImage(im,-x,-y);await fs.writeFile(file,c.toBuffer('image/png'));
-     }else await fs.writeFile(file,motifFixture(name).png);
+     }else await fs.writeFile(file,topHat?topHatFixture():motifFixture(name).png);
      await button('Import picture').click();await page.locator('input[type=file]').setInputFiles(file);
      if(name!=='hunodan')await button('The whole picture').click();
      else await page.locator('button.corner').nth(3).waitFor();
      await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Use as mask'&&!b.disabled));
      await page.screenshot({path:path.join(dir,'import.png'),fullPage:true});
      await button('Use as mask').click();
+     if(topHat){
+      await page.getByRole('radio',{name:'Free',exact:true}).click();
+      await page.locator('#paint-frame-size').focus();await page.locator('#paint-frame-size').press('End');
+      assert.equal(await page.locator('#paint-frame-size').inputValue(),'84');
+      if(name==='top-hat-independent')await page.getByRole('radiogroup',{name:'Between lobes symmetry',exact:true}).getByRole('radio',{name:'Off',exact:true}).click();
+     }
     }
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Find the cuts'&&!b.disabled));
     const start=performance.now();await button('Find the cuts').click();
@@ -85,8 +92,20 @@ try{
     const svgFile=path.join(dir,'editable.svg');await(await pending).saveAs(svgFile);
     const design=parseHeartFromSVG(await fs.readFile(svgFile,'utf8'),'editable.svg');assert.ok(design);
     assert.deepEqual([...findFingersWithIssues(design.fingers,intersectionMarginPx(inferOverlapRect(design.fingers,design.gridSize)))],[]);
+    // A shared engine span must remain one exact span on both editable sheets.
+    // Area-error checks alone can miss the long hairline seams in the hat bug.
+    const geometry=JSON.parse(observed.result.files['cut_geometry.json']),overlap=inferOverlapRect(design.fingers,design.gridSize);
+    const canonical=p=>[p,p.toReversed()].map(c=>c.flat().map(v=>Math.round(v*1e6)).join(',')).sort()[0];
+    const shared=new Set(geometry.A_overlap_paths.flatMap(p=>p.map(r=>r.curve)));
+    const common=[...new Set(geometry.B_overlap_paths.flatMap(p=>p.map(r=>r.curve)))].filter(id=>shared.has(id));
+    const editable=['left','right'].map(lobe=>new Set(design.fingers.filter(f=>f.lobe===lobe).flatMap(f=>f.segments.map(s=>canonical([s.p0,s.p1,s.p2,s.p3].map(p=>[(p.x-overlap.left)*100/overlap.width,(p.y-overlap.top)*100/overlap.height]))))));
+    for(const id of common)for(const family of editable)assert.ok(family.has(canonical(geometry.curves[id].control_points)),`Shared span ${id} diverged during conversion/export`);
+    row.sharedSpans=common.length;
+    if(topHat){
+     assert.ok(common.length>10,'The hat needs exact shared cuts, not independent near matches.');
+    }
     row.editableError=maskMismatch(rasterizeDesign(design,200).data,resample(Uint8Array.from(observed.prepared.mask),observed.prepared.resolution,200));
-    assert.ok(row.editableError<=(name==='hunodan'?.03:.015),`Editable mismatch ${row.editableError}`);
+    assert.ok(row.editableError<=(topHat?.04:name==='hunodan'?.03:.015),`Editable mismatch ${row.editableError}`);
     if(name==='star'){
      const pendingPDF=page.waitForEvent('download');await button('Download PDF').click();
      const pdfFile=path.join(dir,'template.pdf');await(await pendingPDF).saveAs(pdfFile);

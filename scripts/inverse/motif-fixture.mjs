@@ -1,6 +1,16 @@
 /** Original synthetic silhouettes for the border experiment and regressions. */
 import {createCanvas,ImageData} from 'canvas';
 
+/** A plain top hat drawn upright in the heart view. The browser test adds its
+ * free border through the real Paint controls; no fitted cuts are supplied. */
+export function topHatFixture(n=200){
+ const canvas=createCanvas(n,n),ctx=canvas.getContext('2d');
+ ctx.fillStyle='white';ctx.fillRect(0,0,n,n);ctx.fillStyle='black';ctx.beginPath();
+ const outline=[[-.12,-.17],[.12,-.17],[.12,.09],[.19,.09],[.19,.16],[-.19,.16],[-.19,.09],[-.12,.09]];
+ outline.forEach(([dx,dy],i)=>{const x=(.5+dx+dy)*n,y=(.5-dx+dy)*n;if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y);});
+ ctx.closePath();ctx.fill();return canvas.toBuffer('image/png');
+}
+
 export function motifFixture(shape,{cells=4,n=240,offset=0}={}){
  const c=createCanvas(n,n),ctx=c.getContext('2d');ctx.fillStyle='white';ctx.fillRect(0,0,n,n);ctx.fillStyle='black';
  const points=shape==='hat'?[[.25,.72],[.38,.66],[.47,.25],[.65,.2],[.55,.37],[.64,.66],[.75,.72],[.7,.78],[.3,.78]]:[[.28,.44],[.5,.22],[.72,.44],[.66,.44],[.66,.78],[.34,.78],[.34,.44]];
