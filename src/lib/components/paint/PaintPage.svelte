@@ -100,6 +100,10 @@
 	let helpButtonEl = $state.raw<HTMLButtonElement | null>(null);
 	/** The canvas being painted on, for `settle()` below. */
 	let maskCanvas = $state.raw<ReturnType<typeof MaskCanvas> | null>(null);
+	/** The left column, which scrolls inside itself on a short viewport. */
+	let leftColumnEl = $state.raw<HTMLDivElement | null>(null);
+	/** There is more of the column below its bottom edge. */
+	let leftColumnCut = $state(false);
 
 	let tool = $state<PaintTool>('pen');
 	let brushSize = $state<BrushSize>('medium');
@@ -197,6 +201,19 @@
 		};
 	});
 
+	/**
+	 * Whether the left column has more under its bottom edge.
+	 *
+	 * Read on scroll, on a resize of the column, and after a change that alters what
+	 * is in it — the Markér hint is several lines, and appearing is what pushes the
+	 * last symmetry row under the edge on a 1366 x 768 laptop.
+	 */
+	function measureLeftColumn(): void {
+		const el = leftColumnEl;
+		// A pixel of rounding either way must not make the fade flicker at the end.
+		leftColumnCut = !!el && el.scrollHeight - el.scrollTop - el.clientHeight > 4;
+	}
+
 	/** The canvas fills the viewport under the bar, so the bar's height is a variable. */
 	function measureHeader(): void {
 		void tick().then(() => {
@@ -205,6 +222,20 @@
 			pageEl.style.setProperty('--paint-header-height', `${Math.round(height)}px`);
 		});
 	}
+
+	// The column's own box changes with the viewport; what is inside it changes with
+	// the tool (the Markér hint) and with the result state (the panels stand down).
+	$effect(() => {
+		const el = leftColumnEl;
+		void tool;
+		void toolsStandby;
+		if (!el) return;
+		void tick().then(measureLeftColumn);
+		if (typeof ResizeObserver === 'undefined') return;
+		const observer = new ResizeObserver(measureLeftColumn);
+		observer.observe(el);
+		return () => observer.disconnect();
+	});
 
 	function syncHistoryFlags(): void {
 		canUndo = historyCanUndo(history);
@@ -728,10 +759,15 @@
 				</div>
 
 				{#if !isNarrow}
-					<div class="left-panel">
+					<div class="left-panel" bind:this={leftColumnEl} onscroll={measureLeftColumn}>
 						{@render toolPanel()}
 						{@render symmetryPanel()}
 					</div>
+					<!-- The column is cut off at the bottom and there is more under the
+					     edge. macOS draws nothing of an overlay scrollbar until a gesture
+					     starts, so without this the third symmetry row is simply not there
+					     as far as anyone can tell. -->
+					<div class="left-fade" class:showing={leftColumnCut} aria-hidden="true"></div>
 					<div class="right-panel" class:collapsed={panelCollapsed} id="paint-panel">
 						<div class="panel-collapse">
 							<button
@@ -957,20 +993,31 @@
 		overflow-y: auto;
 		overscroll-behavior: contain;
 		scrollbar-width: thin;
+		scrollbar-color: var(--sage) transparent;
 		z-index: 26;
 	}
 
-	/* A real scrollbar rather than the overlay one macOS draws nothing of until a
-	   gesture starts: a column cut off at the bottom edge would otherwise give no
-	   sign at all that there is a third symmetry row under it. It appears only when
-	   the column really does overflow. */
-	.left-panel::-webkit-scrollbar {
-		width: 8px;
+	/* The cut edge, when there is more of the column below it. Its own element
+	   rather than a pseudo of the scroller: a background inside a scroller either
+	   scrolls away with the content or sits behind the opaque panels, and the
+	   scrollbar cannot say it — Chrome ignores `::-webkit-scrollbar` as soon as
+	   `scrollbar-width` is set, and macOS draws an overlay scrollbar that is
+	   invisible until a gesture starts. */
+	.left-fade {
+		position: absolute;
+		left: 10px;
+		bottom: 4px;
+		width: 312px;
+		height: 28px;
+		z-index: 27;
+		opacity: 0;
+		transition: opacity 120ms ease-out;
+		pointer-events: none;
+		background: linear-gradient(to top, var(--page), transparent);
 	}
 
-	.left-panel::-webkit-scrollbar-thumb {
-		border-radius: 4px;
-		background: var(--sage);
+	.left-fade.showing {
+		opacity: 1;
 	}
 
 	/* The tool column standing down while the found heart is on screen. Every

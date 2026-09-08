@@ -52,7 +52,8 @@ Canvas (full-bleed, same `CanvasBackdrop` sky and landscape, same fit band betwe
 
 Left floating panel (same column width and style as Tegn's tool rail area, 300px; two panels since the symmetry
 rows moved in, so on a short viewport the column stops centring itself — `justify-content: safe center` — and
-scrolls from the top, with a real scrollbar so that a row under the bottom edge says so):
+scrolls from the top, with a fade over its bottom edge while there is more below it, because macOS draws nothing
+of an overlay scrollbar until a gesture starts):
 
 - Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, clears to all-0 after a
   confirm if the mask is not empty; uses the site `Modal`, no `confirm()`).
