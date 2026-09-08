@@ -138,14 +138,14 @@ export function engineSymmetry(rows: SymmetrySettings): EngineSymmetry {
  * The frame as per-cell loss weights: 1 for a cell that must come out as painted,
  * 0 for a cell of a free band the search may fill as it likes.
  *
- * **Nothing sends this to the engine yet, and that is deliberate.** The fitter's
- * loss has no per-cell weight to take: `core/` scores a candidate against every
- * cell of the target equally, and MOTIF-BORDER.md says plainly why the obvious
- * workaround does not work — a neutral 0.5 probability is not ignored, because
- * the squared-error grid loss still pulls predictions towards it and several
- * ranking stages threshold probabilities on the way out. Weights are Codex's
- * lane. Until they land, a free band reaches the engine as
- * `substituteCheckerBand`'s woven pattern instead (PAINT.md §11).
+ * **Nothing sends this to the engine yet, and that is deliberate.** The grid
+ * and Bézier losses now accept weights, but initialization, symmetry averaging,
+ * final matching and image/feature gates still need the same interpretation
+ * throughout the public solver (docs/inverse/WEIGHTED-IMAGE.md). A neutral 0.5
+ * probability is insufficient: the soft grid loss attracts predictions to it,
+ * and unweighted ranking thresholds it. Until the complete pipeline accepts
+ * weights, a free band reaches the engine as `substituteCheckerBand`'s woven
+ * pattern instead (PAINT.md §11).
  *
  * It is written now, and tested, so that the day the engine takes weights the
  * change is one added settings key here and the deletion of one function in

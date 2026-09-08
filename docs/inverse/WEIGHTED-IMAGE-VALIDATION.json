@@ -1,0 +1,1497 @@
+{
+  "date": "2026-09-08T23:24:29.523Z",
+  "sourceCommit": "400221691e6b0933296441d2fc227133c0826f53",
+  "status": "Weighted grid and curve optimization primitives; not enabled through the public solver or Paint UI.",
+  "sourceHashes": {
+    "scripts/inverse/motif-fixture.mjs": "0e8cbbe3e94466baf83d3ac96099a75c543834adf653dc6be7f339d8f076678c",
+    "src/lib/paint/frame.ts": "0250b56698761d300cc2532bd3d9e907092fddbae4c10564e908138cba8041e3",
+    "scripts/inverse/weighted-border-benchmark.mjs": "baa90bd1cca781cb7f390e2f1140374b70ff4939a24b6e2b33c53c7ac32df7b8",
+    "scripts/inverse/weighted-image.test.mjs": "b497e360100b7ba911b0cf322919357c33084bfca553adb406f8ac1f5a508191"
+  },
+  "checks": {
+    "applicationTests": 717,
+    "engineTests": 185,
+    "failures": 0,
+    "commands": [
+      "npm test",
+      "npm run build",
+      "npm run check",
+      "npm run lint"
+    ],
+    "svelteErrors": 0,
+    "svelteWarnings": 7,
+    "testLogSha256": "2f2370b84fc4ce106526725c6639a64380c0b314ef99a3178f616cee28be2f97"
+  },
+  "defaultNumericalEquivalence": {
+    "referenceCommit": "e5ef303",
+    "backend": {
+      "backend": "wasm",
+      "method": "Same continuous boundary formula; float64, no fast-math"
+    },
+    "method": "Load pre-weight grid/boundary/refinement modules from git; relative imports use unchanged current helpers. Deep strict equality for numerical returned values, including controls, gradients, paper checks and checkpoint histories, excluding paper-audit elapsed seconds; no deadlines.",
+    "gridLosses": 18,
+    "boundaries": 18,
+    "grids": 6,
+    "refinements": 2,
+    "passed": true
+  },
+  "motifExperiment": {
+    "runtime": "v25.6.1",
+    "cpu": "Apple M2 Pro",
+    "engineSha256": {
+      "static/inverse/core/automatic.js": "7fd31bdaf25ac1c17f2f87d184a7cbf4d00609ab8593d36237ebcf20b73c205e",
+      "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/core/engine.js": "abbaafc7684d45b2a183d51e4fc06b19cd8462fedcca6ed3797b2e71cc8c5773",
+      "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+      "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "static/inverse/core/image-features.js": "50aca7d2d526148986335907ae8d124b1c74155fdd4d5371c714130c099da46e",
+      "static/inverse/core/input.js": "e390d8b78b5fe2bcfa5e0aa9336a8783313d4ee2369b4b47f14880bbce7a762a",
+      "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "static/inverse/core/material.js": "945fed7196f52c3b54e140d9ac47a6ce8ef111376c2c73d7288c2401bad197fb",
+      "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+      "static/inverse/core/solver.js": "1021b7b30bc82ff02f99849c6c84535ee6128f6dea23e7366f2aa028ffaec041",
+      "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "static/inverse/core/direct/boundary.js": "81352f745b660ed8ca11f0b0aed384cafffc8c87874707af775d9806d6b5251d",
+      "static/inverse/core/direct/counts.js": "f7e782d4eb10ba73095954100318eb634c1cc17241421c883b680899f7fa9fa0",
+      "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+      "static/inverse/core/direct/finalize.js": "83e635848f6e11019d85a937d172f852140c3d8dc43beec6e61daaf4a7c9dccc",
+      "static/inverse/core/direct/fit.js": "3fde0bd63ff9fa311d1915e0c8eff1706d7bf3669e0d9a4881078e68ea321210",
+      "static/inverse/core/direct/grid.js": "4136f590b11af62de8135c9e23b1f3a48ad2e0dcb9e419e7c2a5f906595caa47",
+      "static/inverse/core/direct/image-objective.js": "891d040b97182e4893201dd53a63d817fec6f013751f3424c6e8976642caa4e2",
+      "static/inverse/core/direct/initialize.js": "d8bc8eff740d9dde553e9243feee45a1df3a511c675739a736802027ad17a6f7",
+      "static/inverse/core/direct/matching.js": "9559e669bb2997f178ca71d5c55c1d78226b709932f5f0630a31ee993d2c20df",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "48435ecb5bea2b58d0b89ae48a358da064031c7d801bcbb477b749625a6719a2",
+      "static/inverse/core/direct/prefer-matching.js": "0c4b48c48f3b48b9687dcd846cc497aa6537bc31c3d53649962ca9a52fb84834",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "f2bc0b7bb92155553909e1a55dd791587ee0979b9acd594d1323b9ced0f7e7ab",
+      "static/inverse/core/direct/share.js": "760711ae3bb4920019b25ab468a2379c340fd5dedf58e9ed839edf02263d5ebd",
+      "static/inverse/core/direct/symmetry.js": "2f023222094d6732c13b0c74736249392284e9d47d3248d328884fcdc1de87c9",
+      "static/inverse/core/direct/topology.js": "e98801f147529817b5f0c9adbb2c615b5ddfdd8c904b5653c5a7a2be83c37aa3",
+      "static/inverse/core/direct/native/boundary.c": "7798b37aa8ff54104fedd8506d2b46b1a4968f0ca4d3fa440717ac63557eedfc",
+      "static/inverse/core/direct/native/boundary.wasm": "0b8f321550f82dbac9bff6a5cc58d63f540099b80f0ca1c7f9305738370e0207"
+    },
+    "sourceResolution": 200,
+    "steps": 160,
+    "initialSolveBudgetSeconds": 10,
+    "method": "Each case starts with a fresh automatic solve of the existing checker-border target. Every refinement starts independently from that same pair. Fixed steps, no deadline. Targets and frame coordinates are fixed. No reference cutting templates are read. Geometry and paper are audited; this is not full weighted-pipeline or browser validation.",
+    "results": [
+      {
+        "shape": "top-hat",
+        "size": 0.64,
+        "variants": [
+          {
+            "name": "baseline",
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": true,
+            "motifError": 0.00360107421875,
+            "checkerBorderChanges": 0,
+            "wholeOriginalError": 0.288575,
+            "wholeCheckerError": 0.001475
+          },
+          {
+            "name": "checker-refinement",
+            "seconds": 0.8029699999999999,
+            "steps": 160,
+            "selectedError": 0.001475,
+            "primitives": {
+              "curved": 2,
+              "straight": 84
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": true,
+            "motifError": 0.0037841796875,
+            "checkerBorderChanges": 0,
+            "wholeOriginalError": 0.28865,
+            "wholeCheckerError": 0.00155
+          },
+          {
+            "name": "neutral-gray",
+            "seconds": 0.8502156669999995,
+            "steps": 160,
+            "selectedError": 0.279275,
+            "primitives": {
+              "curved": 4,
+              "straight": 82
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": true,
+            "motifError": 0.0037841796875,
+            "checkerBorderChanges": 0.010501355013550135,
+            "wholeOriginalError": 0.28245,
+            "wholeCheckerError": 0.00775
+          },
+          {
+            "name": "weighted-free",
+            "seconds": 0.6736084579999997,
+            "steps": 160,
+            "selectedError": 0.00360107421875,
+            "primitives": {
+              "curved": 0,
+              "straight": 86
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": true,
+            "motifError": 0.003662109375,
+            "checkerBorderChanges": 0.009950880758807588,
+            "wholeOriginalError": 0.282725,
+            "wholeCheckerError": 0.007375
+          },
+          {
+            "name": "weighted-soft",
+            "seconds": 0.7968755000000001,
+            "steps": 160,
+            "selectedError": 0.09976220387652548,
+            "primitives": {
+              "curved": 84,
+              "straight": 2
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": true,
+            "motifError": 0.00390625,
+            "checkerBorderChanges": 0.1296578590785908,
+            "wholeOriginalError": 0.2174,
+            "wholeCheckerError": 0.07815
+          }
+        ],
+        "initialSeconds": 2.3077909169999997,
+        "initialTemplateChecksPassed": true,
+        "originalImageSha256": "0b9f120849b863c65f2f806828b20702be2dfd90bd70426b1d7eb0ee7ca10fba"
+      },
+      {
+        "shape": "top-hat",
+        "size": 0.84,
+        "variants": [
+          {
+            "name": "baseline",
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.022250566893424036,
+            "checkerBorderChanges": 0.13459578804347827,
+            "wholeOriginalError": 0.114475,
+            "wholeCheckerError": 0.055325
+          },
+          {
+            "name": "checker-refinement",
+            "seconds": 0.9425001249999987,
+            "steps": 160,
+            "selectedError": 0.038725,
+            "primitives": {
+              "curved": 78,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.006625566893424036,
+            "checkerBorderChanges": 0.11463994565217392,
+            "wholeOriginalError": 0.107475,
+            "wholeCheckerError": 0.038425
+          },
+          {
+            "name": "neutral-gray",
+            "seconds": 0.9279164579999997,
+            "steps": 160,
+            "selectedError": 0.090475,
+            "primitives": {
+              "curved": 78,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.004357993197278911,
+            "checkerBorderChanges": 0.16932744565217392,
+            "wholeOriginalError": 0.090075,
+            "wholeCheckerError": 0.052925
+          },
+          {
+            "name": "weighted-free",
+            "seconds": 0.9556846670000013,
+            "steps": 160,
+            "selectedError": 0.004570578231292517,
+            "primitives": {
+              "curved": 78,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.004322562358276644,
+            "checkerBorderChanges": 0.16932744565217392,
+            "wholeOriginalError": 0.0901,
+            "wholeCheckerError": 0.0529
+          },
+          {
+            "name": "weighted-soft",
+            "seconds": 0.924362374999997,
+            "steps": 160,
+            "selectedError": 0.02889983316221766,
+            "primitives": {
+              "curved": 78,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.004216269841269841,
+            "checkerBorderChanges": 0.19539741847826086,
+            "wholeOriginalError": 0.08015,
+            "wholeCheckerError": 0.0605
+          }
+        ],
+        "initialSeconds": 10.080285667,
+        "initialTemplateChecksPassed": false,
+        "originalImageSha256": "0b9f120849b863c65f2f806828b20702be2dfd90bd70426b1d7eb0ee7ca10fba"
+      },
+      {
+        "shape": "hat",
+        "size": 0.64,
+        "variants": [
+          {
+            "name": "baseline",
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.0028076171875,
+            "checkerBorderChanges": 0,
+            "wholeOriginalError": 0.28655,
+            "wholeCheckerError": 0.00115
+          },
+          {
+            "name": "checker-refinement",
+            "seconds": 0.7070580410000002,
+            "steps": 160,
+            "selectedError": 0.000025,
+            "primitives": {
+              "curved": 76,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.00048828125,
+            "checkerBorderChanges": 0,
+            "wholeOriginalError": 0.2856,
+            "wholeCheckerError": 0.0002
+          },
+          {
+            "name": "neutral-gray",
+            "seconds": 0.7029031670000004,
+            "steps": 160,
+            "selectedError": 0.277525,
+            "primitives": {
+              "curved": 76,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.00048828125,
+            "checkerBorderChanges": 0.009993224932249323,
+            "wholeOriginalError": 0.2797,
+            "wholeCheckerError": 0.0061
+          },
+          {
+            "name": "weighted-free",
+            "seconds": 0.6975272499999992,
+            "steps": 160,
+            "selectedError": 0.00006103515625,
+            "primitives": {
+              "curved": 76,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.00048828125,
+            "checkerBorderChanges": 0.009993224932249323,
+            "wholeOriginalError": 0.2797,
+            "wholeCheckerError": 0.0061
+          },
+          {
+            "name": "weighted-soft",
+            "seconds": 0.7413139579999988,
+            "steps": 160,
+            "selectedError": 0.09691313711414214,
+            "primitives": {
+              "curved": 76,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.00048828125,
+            "checkerBorderChanges": 0.1268631436314363,
+            "wholeOriginalError": 0.2159,
+            "wholeCheckerError": 0.0751
+          }
+        ],
+        "initialSeconds": 1.6582338329999984,
+        "initialTemplateChecksPassed": true,
+        "originalImageSha256": "4dab28ea03057fc7646ab6a26c10b9de34e6caa6a2d6cd17a87823aef8d0b9d2"
+      },
+      {
+        "shape": "hat",
+        "size": 0.84,
+        "variants": [
+          {
+            "name": "baseline",
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.03504109977324263,
+            "checkerBorderChanges": 0.026834239130434784,
+            "wholeOriginalError": 0.155975,
+            "wholeCheckerError": 0.032625
+          },
+          {
+            "name": "checker-refinement",
+            "seconds": 1.301098582999999,
+            "steps": 160,
+            "selectedError": 0.03345,
+            "primitives": {
+              "curved": 114,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.03504109977324263,
+            "checkerBorderChanges": 0.026834239130434784,
+            "wholeOriginalError": 0.155975,
+            "wholeCheckerError": 0.032625
+          },
+          {
+            "name": "neutral-gray",
+            "seconds": 1.3707058749999996,
+            "steps": 160,
+            "selectedError": 0.1573,
+            "primitives": {
+              "curved": 114,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.03504109977324263,
+            "checkerBorderChanges": 0.026834239130434784,
+            "wholeOriginalError": 0.155975,
+            "wholeCheckerError": 0.032625
+          },
+          {
+            "name": "weighted-free",
+            "seconds": 1.3161193330000023,
+            "steps": 160,
+            "selectedError": 0.0366000566893424,
+            "primitives": {
+              "curved": 114,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.03504109977324263,
+            "checkerBorderChanges": 0.026834239130434784,
+            "wholeOriginalError": 0.155975,
+            "wholeCheckerError": 0.032625
+          },
+          {
+            "name": "weighted-soft",
+            "seconds": 1.3406235830000006,
+            "steps": 160,
+            "selectedError": 0.0753256545174538,
+            "primitives": {
+              "curved": 114,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.03504109977324263,
+            "checkerBorderChanges": 0.026834239130434784,
+            "wholeOriginalError": 0.155975,
+            "wholeCheckerError": 0.032625
+          }
+        ],
+        "initialSeconds": 9.267341124999996,
+        "initialTemplateChecksPassed": false,
+        "originalImageSha256": "4dab28ea03057fc7646ab6a26c10b9de34e6caa6a2d6cd17a87823aef8d0b9d2"
+      },
+      {
+        "shape": "house",
+        "size": 0.64,
+        "variants": [
+          {
+            "name": "baseline",
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0,
+            "checkerBorderChanges": 0,
+            "wholeOriginalError": 0.2854,
+            "wholeCheckerError": 0
+          },
+          {
+            "name": "checker-refinement",
+            "seconds": 0.6531655000000028,
+            "steps": 160,
+            "selectedError": 0,
+            "primitives": {
+              "curved": 0,
+              "straight": 66
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.0001220703125,
+            "checkerBorderChanges": 0,
+            "wholeOriginalError": 0.28545,
+            "wholeCheckerError": 0.00005
+          },
+          {
+            "name": "neutral-gray",
+            "seconds": 0.6660337500000023,
+            "steps": 160,
+            "selectedError": 0.2775,
+            "primitives": {
+              "curved": 2,
+              "straight": 64
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.0001220703125,
+            "checkerBorderChanges": 0.01016260162601626,
+            "wholeOriginalError": 0.27945,
+            "wholeCheckerError": 0.00605
+          },
+          {
+            "name": "weighted-free",
+            "seconds": 0.6348859579999989,
+            "steps": 160,
+            "selectedError": 0,
+            "primitives": {
+              "curved": 0,
+              "straight": 66
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.00006103515625,
+            "checkerBorderChanges": 0.01016260162601626,
+            "wholeOriginalError": 0.279425,
+            "wholeCheckerError": 0.006025
+          },
+          {
+            "name": "weighted-soft",
+            "seconds": 0.7395602089999956,
+            "steps": 160,
+            "selectedError": 0.09673366834170855,
+            "primitives": {
+              "curved": 66,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0,
+            "checkerBorderChanges": 0.12762533875338752,
+            "wholeOriginalError": 0.21525,
+            "wholeCheckerError": 0.07535
+          }
+        ],
+        "initialSeconds": 1.5051111660000025,
+        "initialTemplateChecksPassed": true,
+        "originalImageSha256": "b3407b1c44d641a59c0fc3d3b26d8727ec281875bc5631b8b96b9ce18dac7d5e"
+      },
+      {
+        "shape": "house",
+        "size": 0.84,
+        "variants": [
+          {
+            "name": "baseline",
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.04265873015873016,
+            "checkerBorderChanges": 0.036684782608695655,
+            "wholeOriginalError": 0.16035,
+            "wholeCheckerError": 0.0409
+          },
+          {
+            "name": "checker-refinement",
+            "seconds": 1.3531432499999938,
+            "steps": 160,
+            "selectedError": 0.042475,
+            "primitives": {
+              "curved": 124,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.04265873015873016,
+            "checkerBorderChanges": 0.036684782608695655,
+            "wholeOriginalError": 0.16035,
+            "wholeCheckerError": 0.0409
+          },
+          {
+            "name": "neutral-gray",
+            "seconds": 1.3521294159999961,
+            "steps": 160,
+            "selectedError": 0.162325,
+            "primitives": {
+              "curved": 124,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.04265873015873016,
+            "checkerBorderChanges": 0.036684782608695655,
+            "wholeOriginalError": 0.16035,
+            "wholeCheckerError": 0.0409
+          },
+          {
+            "name": "weighted-free",
+            "seconds": 1.3585386670000008,
+            "steps": 160,
+            "selectedError": 0.04485544217687075,
+            "primitives": {
+              "curved": 124,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.04265873015873016,
+            "checkerBorderChanges": 0.036684782608695655,
+            "wholeOriginalError": 0.16035,
+            "wholeCheckerError": 0.0409
+          },
+          {
+            "name": "weighted-soft",
+            "seconds": 1.3576445000000095,
+            "steps": 160,
+            "selectedError": 0.08254459702258726,
+            "primitives": {
+              "curved": 124,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.04265873015873016,
+            "checkerBorderChanges": 0.036684782608695655,
+            "wholeOriginalError": 0.16035,
+            "wholeCheckerError": 0.0409
+          }
+        ],
+        "initialSeconds": 9.443158499999997,
+        "initialTemplateChecksPassed": false,
+        "originalImageSha256": "b3407b1c44d641a59c0fc3d3b26d8727ec281875bc5631b8b96b9ce18dac7d5e"
+      },
+      {
+        "shape": "circle",
+        "size": 0.64,
+        "variants": [
+          {
+            "name": "baseline",
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.0030517578125,
+            "checkerBorderChanges": 0,
+            "wholeOriginalError": 0.28665,
+            "wholeCheckerError": 0.00125
+          },
+          {
+            "name": "checker-refinement",
+            "seconds": 0.6738137089999946,
+            "steps": 160,
+            "selectedError": 0.00005,
+            "primitives": {
+              "curved": 66,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.0003662109375,
+            "checkerBorderChanges": 0,
+            "wholeOriginalError": 0.28555,
+            "wholeCheckerError": 0.00015
+          },
+          {
+            "name": "neutral-gray",
+            "seconds": 0.6986174580000079,
+            "steps": 160,
+            "selectedError": 0.27755,
+            "primitives": {
+              "curved": 66,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.0003662109375,
+            "checkerBorderChanges": 0.009993224932249323,
+            "wholeOriginalError": 0.27965,
+            "wholeCheckerError": 0.00605
+          },
+          {
+            "name": "weighted-free",
+            "seconds": 0.7094704999999958,
+            "steps": 160,
+            "selectedError": 0.0001220703125,
+            "primitives": {
+              "curved": 66,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.000244140625,
+            "checkerBorderChanges": 0.009993224932249323,
+            "wholeOriginalError": 0.2796,
+            "wholeCheckerError": 0.006
+          },
+          {
+            "name": "weighted-soft",
+            "seconds": 0.7617761250000039,
+            "steps": 160,
+            "selectedError": 0.09691313711414214,
+            "primitives": {
+              "curved": 66,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.0003662109375,
+            "checkerBorderChanges": 0.12737127371273713,
+            "wholeOriginalError": 0.21555,
+            "wholeCheckerError": 0.07535
+          }
+        ],
+        "initialSeconds": 1.5770149579999997,
+        "initialTemplateChecksPassed": true,
+        "originalImageSha256": "41b5576fd7b0d281b94ecbc869f5d3fb8dd5760f6fd2cea63e329cf9d5c8f41d"
+      },
+      {
+        "shape": "circle",
+        "size": 0.84,
+        "variants": [
+          {
+            "name": "baseline",
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.0299390589569161,
+            "checkerBorderChanges": 0.03354279891304348,
+            "wholeOriginalError": 0.14995,
+            "wholeCheckerError": 0.031
+          },
+          {
+            "name": "checker-refinement",
+            "seconds": 1.4599839590000048,
+            "steps": 160,
+            "selectedError": 0.03195,
+            "primitives": {
+              "curved": 124,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.029336734693877552,
+            "checkerBorderChanges": 0.033203125,
+            "wholeOriginalError": 0.149575,
+            "wholeCheckerError": 0.030475
+          },
+          {
+            "name": "neutral-gray",
+            "seconds": 1.3998069169999945,
+            "steps": 160,
+            "selectedError": 0.151375,
+            "primitives": {
+              "curved": 124,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.02923044217687075,
+            "checkerBorderChanges": 0.033712635869565216,
+            "wholeOriginalError": 0.1494,
+            "wholeCheckerError": 0.03055
+          },
+          {
+            "name": "weighted-free",
+            "seconds": 1.348506416999997,
+            "steps": 160,
+            "selectedError": 0.03160430839002268,
+            "primitives": {
+              "curved": 124,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.02923044217687075,
+            "checkerBorderChanges": 0.033712635869565216,
+            "wholeOriginalError": 0.1494,
+            "wholeCheckerError": 0.03055
+          },
+          {
+            "name": "weighted-soft",
+            "seconds": 1.3620128330000008,
+            "steps": 160,
+            "selectedError": 0.07001572125256673,
+            "primitives": {
+              "curved": 124,
+              "straight": 0
+            },
+            "geometryPassed": true,
+            "paperPassed": true,
+            "identicalSheets": false,
+            "motifError": 0.02923044217687075,
+            "checkerBorderChanges": 0.033712635869565216,
+            "wholeOriginalError": 0.14935,
+            "wholeCheckerError": 0.03055
+          }
+        ],
+        "initialSeconds": 9.619597834,
+        "initialTemplateChecksPassed": false,
+        "originalImageSha256": "41b5576fd7b0d281b94ecbc869f5d3fb8dd5760f6fd2cea63e329cf9d5c8f41d"
+      }
+    ],
+    "rawArtifacts": "tmp/weighted-border-first",
+    "reportingCorrection": "The first raw replay used initialExportAllowed for templateChecksPassed; renamed here to initialTemplateChecksPassed. This is the quality-check result, not whether files can be downloaded."
+  },
+  "stalledCases": [
+    {
+      "shape": "hat",
+      "counts": [
+        4,
+        4
+      ],
+      "history": [
+        {
+          "step": -1,
+          "error": 0.0366000566893424,
+          "score": 0.04138699424968964,
+          "primitives": {
+            "curved": 114,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "pass",
+          "issues": []
+        },
+        {
+          "step": 0,
+          "error": 0.036139455782312924,
+          "score": 0.04080638981663007,
+          "primitives": {
+            "curved": 114,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "uncertain",
+          "issues": []
+        },
+        {
+          "step": 40,
+          "error": 0.02512046485260771,
+          "score": 0.029664292701593736,
+          "primitives": {
+            "curved": 114,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "uncertain",
+          "issues": []
+        },
+        {
+          "step": 80,
+          "error": 0.027210884353741496,
+          "score": 0.03157086509198395,
+          "primitives": {
+            "curved": 114,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "uncertain",
+          "issues": []
+        },
+        {
+          "step": 120,
+          "error": 0.027210884353741496,
+          "score": 0.03157086509198395,
+          "primitives": {
+            "curved": 114,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "uncertain",
+          "issues": []
+        },
+        {
+          "step": 159,
+          "error": 0.0273171768707483,
+          "score": 0.03175017336088079,
+          "primitives": {
+            "curved": 114,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "uncertain",
+          "issues": []
+        }
+      ],
+      "topCheckerSeeds": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "checkerError": 0.0675,
+          "motifError": 0.07227891156462585
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": -1,
+          "checkerError": 0.0845,
+          "motifError": 0.05895691609977324
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "checkerError": 0.0849,
+          "motifError": 0.08801020408163265
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1,
+          "checkerError": 0.085,
+          "motifError": 0.08995890022675737
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "checkerError": 0.0963,
+          "motifError": 0.08124291383219955
+        }
+      ],
+      "topProtectedSeeds": [
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": -1,
+          "checkerError": 0.10675,
+          "motifError": 0.053323412698412696
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "checkerError": 0.0993,
+          "motifError": 0.05580357142857143
+        },
+        {
+          "counts": [
+            1,
+            1
+          ],
+          "phase": -1,
+          "checkerError": 0.132475,
+          "motifError": 0.05888605442176871
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": -1,
+          "checkerError": 0.0845,
+          "motifError": 0.05895691609977324
+        },
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": 1,
+          "checkerError": 0.137675,
+          "motifError": 0.0627125850340136
+        }
+      ]
+    },
+    {
+      "shape": "house",
+      "counts": [
+        4,
+        4
+      ],
+      "history": [
+        {
+          "step": -1,
+          "error": 0.04485544217687075,
+          "score": 0.04978610869254252,
+          "primitives": {
+            "curved": 124,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "pass",
+          "issues": []
+        },
+        {
+          "step": 0,
+          "error": 0.04400510204081633,
+          "score": 0.049220237909255754,
+          "primitives": {
+            "curved": 124,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "uncertain",
+          "issues": []
+        },
+        {
+          "step": 40,
+          "error": 0.03344671201814059,
+          "score": 0.03886931453990827,
+          "primitives": {
+            "curved": 124,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "uncertain",
+          "issues": []
+        },
+        {
+          "step": 80,
+          "error": 0.035147392290249435,
+          "score": 0.04068531720662458,
+          "primitives": {
+            "curved": 124,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "uncertain",
+          "issues": []
+        },
+        {
+          "step": 120,
+          "error": 0.035147392290249435,
+          "score": 0.04068531720662458,
+          "primitives": {
+            "curved": 124,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "uncertain",
+          "issues": []
+        },
+        {
+          "step": 159,
+          "error": 0.03535997732426304,
+          "score": 0.04084409291729621,
+          "primitives": {
+            "curved": 124,
+            "straight": 0
+          },
+          "straightened": false,
+          "geometry": true,
+          "paper": "uncertain",
+          "issues": []
+        }
+      ],
+      "topCheckerSeeds": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": -1,
+          "checkerError": 0.068075,
+          "motifError": 0.07330640589569161
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": -1,
+          "checkerError": 0.076625,
+          "motifError": 0.06466128117913832
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "checkerError": 0.07865,
+          "motifError": 0.06363378684807257
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "checkerError": 0.08425,
+          "motifError": 0.05442176870748299
+        },
+        {
+          "counts": [
+            6,
+            6
+          ],
+          "phase": -1,
+          "checkerError": 0.087225,
+          "motifError": 0.08443168934240362
+        }
+      ],
+      "topProtectedSeeds": [
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "phase": -1,
+          "checkerError": 0.09755,
+          "motifError": 0.04102891156462585
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "phase": 1,
+          "checkerError": 0.09695,
+          "motifError": 0.04836309523809524
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "phase": 1,
+          "checkerError": 0.08425,
+          "motifError": 0.05442176870748299
+        },
+        {
+          "counts": [
+            1,
+            1
+          ],
+          "phase": -1,
+          "checkerError": 0.13945,
+          "motifError": 0.0610827664399093
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "phase": 1,
+          "checkerError": 0.07865,
+          "motifError": 0.06363378684807257
+        }
+      ]
+    }
+  ],
+  "defaultBrowser": {
+    "sourceHashes": {
+      "static/inverse/core/automatic.js": "7fd31bdaf25ac1c17f2f87d184a7cbf4d00609ab8593d36237ebcf20b73c205e",
+      "static/inverse/core/direct/finalize.js": "83e635848f6e11019d85a937d172f852140c3d8dc43beec6e61daaf4a7c9dccc",
+      "static/inverse/core/direct/topology.js": "e98801f147529817b5f0c9adbb2c615b5ddfdd8c904b5653c5a7a2be83c37aa3",
+      "static/inverse/core/direct/fit.js": "3fde0bd63ff9fa311d1915e0c8eff1706d7bf3669e0d9a4881078e68ea321210",
+      "static/inverse/core/direct/share.js": "760711ae3bb4920019b25ab468a2379c340fd5dedf58e9ed839edf02263d5ebd",
+      "static/inverse/core/direct/initialize.js": "d8bc8eff740d9dde553e9243feee45a1df3a511c675739a736802027ad17a6f7",
+      "static/inverse/core/direct/counts.js": "f7e782d4eb10ba73095954100318eb634c1cc17241421c883b680899f7fa9fa0",
+      "src/lib/inverse/toHeartDesign.ts": "6517b294d1a96a445586859c4ad05cb21bba2b884f6cda69ac65e49fb599af85",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "ad06008901ae958a73de952cb15a53b2d8b15a45dc8a89f03d4a134e7bff877d"
+    },
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat",
+        "pageErrors": [],
+        "engineError": 0.0297625,
+        "solveAndConversionSeconds": 17.365664167,
+        "sharedSpans": 101,
+        "editableError": 0.02825,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "star",
+        "pageErrors": [],
+        "engineError": 0.0016,
+        "solveAndConversionSeconds": 2.8754018749999997,
+        "sharedSpans": 12,
+        "editableError": 0.0046,
+        "passed": true
+      }
+    ],
+    "rawArtifacts": "tmp/weighted-default-browser"
+  },
+  "hunodan": {
+    "cpu": "Apple M2 Pro",
+    "runtime": "v25.6.1",
+    "settings": {
+      "algorithm": "auto",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 175,
+      "localNeighborhoodFactor": 8,
+      "roundHidden": false,
+      "timeLimit": 10,
+      "trials": 0,
+      "earlyStop": false
+    },
+    "criteria": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.",
+    "baselineSha256": "4ef7307beb4f436d6bc2ee760bc870cf41ca070b4581da58a7dd71497c3281af",
+    "passed": 22,
+    "total": 22,
+    "minimumSeconds": 2.9106649159999978,
+    "medianSeconds": 7.664969104,
+    "maximumSeconds": 9.651601208000008,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "seconds": 5.872211208,
+        "error": 0.009799111111111111,
+        "baselineError": 0.009841777777777777,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 7.782168042,
+        "error": 0.013952,
+        "baselineError": 0.0072106666666666664,
+        "matchingAllowance": 0.01,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 5.6485985,
+        "error": 0.006634666666666666,
+        "baselineError": 0.007089777777777778,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 6.341297875,
+        "error": 0.013788444444444445,
+        "baselineError": 0.004771555555555556,
+        "matchingAllowance": 0.01,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 2.9106649159999978,
+        "error": 0.010055560936523171,
+        "baselineError": 0.01776012820399933,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 8.356492125000004,
+        "error": 0.013434516059027778,
+        "baselineError": 0.013509114583333334,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 7.763488875000003,
+        "error": 0.00512,
+        "baselineError": 0.005831111111111111,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 6.9457819579999995,
+        "error": 0.005368888888888889,
+        "baselineError": 0.005745777777777778,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 7.304320959000004,
+        "error": 0.004515555555555556,
+        "baselineError": 0.005688888888888889,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 9.288609624999998,
+        "error": 0.005518222222222222,
+        "baselineError": 0.006492444444444445,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 5.099277374999991,
+        "error": 0.009429333333333333,
+        "baselineError": 0.009820444444444444,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 9.202422582999992,
+        "error": 0.006060565384305619,
+        "baselineError": 0.007107573357674032,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 7.202414332999993,
+        "error": 0.0038857719392728835,
+        "baselineError": 0.004369789145743716,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 9.651601208000008,
+        "error": 0.007924946098712197,
+        "baselineError": 0.009679570602593737,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 6.0791503749999976,
+        "error": 0.007529570614696785,
+        "baselineError": 0.008177127465366042,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 8.351349958000005,
+        "error": 0.0041617357001972385,
+        "baselineError": 0.004464168310322156,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 9.214627042000007,
+        "error": 0.005500053140610054,
+        "baselineError": 0.007439685407588479,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 7.566449332999997,
+        "error": 0.007929362880886427,
+        "baselineError": 0.008206371191135734,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 6.089649750000011,
+        "error": 0.003573947482638889,
+        "baselineError": 0.003851996527777778,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 9.09248666699999,
+        "error": 0.012352664480635904,
+        "baselineError": 0.0126798873807852,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 9.120828458000004,
+        "error": 0.00500405923686347,
+        "baselineError": 0.006172839506172839,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 8.895917167000007,
+        "error": 0.010624446293860237,
+        "baselineError": 0.012731885419742812,
+        "matchingAllowance": 0,
+        "exportAllowed": true,
+        "featuresPassed": true,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "passed": true
+      }
+    ],
+    "rawArtifacts": "tmp/weighted-hunodan"
+  }
+}
