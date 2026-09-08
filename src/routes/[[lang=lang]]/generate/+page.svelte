@@ -437,7 +437,7 @@
 <svelte:head><title>{text('title')} · Juleflet</title></svelte:head>
 
 <PageHeader {lang} />
-<div class="studio">
+<main class="studio" id="main-content" tabindex="-1">
   <div class="intro">
     <span class="badge">{text('experimental')}</span>
     <h1>{text('title')}</h1>
@@ -656,7 +656,7 @@
     </section>
   </div>
   <p class="attribution"><a href={asset('THIRD_PARTY_NOTICES.txt')}>{text('notices')}</a></p>
-</div>
+</main>
 
 <style>
   .studio { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem 0; }
