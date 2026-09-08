@@ -422,8 +422,9 @@ it here. The UI is designed now (mockup, section "Frie felter") so the paint mod
   cost (loss weight about 0.25 plus a penalty on changed cells; Codex's "repair the border"). *Fri* = the engine
   fills the band itself (weight 0; the band's colours are ignored).
 - The protected shape is chosen as it appears in the heart: Rude (the band along the woven square's edges),
-  Cirkel, Sekskant (flat top and bottom as seen in the heart), inset about 18 % of the square, the margin Codex
-  validated; there is no width control.
+  Cirkel, Sekskant (flat top and bottom as seen in the heart). Its size is set two ways: a "Størrelse" slider in
+  the panel (the shape's span as a share of the square, 30–84 %, default 64 %, i.e. Codex's 18 % inset) and four
+  drag handles on the outline where the heart's up/right/down/left axes meet it; the shape stays centred.
 - Drawing: soft cells keep their colours under a light hatch; free cells are hatched on a light ground; the
   protected shape has a dashed outline. "Maler med" gets a third, hatched swatch to paint free cells by hand.
 - Model: the mask keeps its colour cells and gains a per-cell weight layer (fixed 1, soft, free 0) — a third
