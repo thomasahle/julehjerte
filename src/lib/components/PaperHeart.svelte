@@ -3701,15 +3701,23 @@
 			user-select: none;
 		}
 
+		/* All three sit on the canvas, which is a picture and not a flat colour, so
+		   all three carry the same pill. The strip count especially: its corner is
+		   where the landscape's darkest firs are, and --muted on those is unreadable. */
 		.canvas-hint,
-		.canvas-selection {
-			top: 14px;
+		.canvas-selection,
+		.canvas-strips {
 			align-items: center;
 			gap: 8px;
 			padding: 8px 12px;
 			border: 1px solid var(--line);
 			border-radius: 10px;
 			background: var(--white);
+		}
+
+		.canvas-hint,
+		.canvas-selection {
+			top: 14px;
 		}
 
 		/* The hint carries three separate instructions, so it wraps rather than

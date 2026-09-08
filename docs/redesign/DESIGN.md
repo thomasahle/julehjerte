@@ -311,7 +311,9 @@ panning or zooming with the heart. A 40% sheet of `--sky` over it leaves the dra
 the heart stays the subject; washing the scene rather than fading the drawing keeps the drawing's snow and the
 strip under it the same colour, so the bottom edge has no seam. This is the editor page's one inlined copy of
 the landscape, so the page must not grow a second. Below 900px the wash goes opaque and the canvas keeps the
-sky alone: the short box there hid the drawing behind the floating panels and left a torn strip of firs.
+sky alone: the short box there hid the drawing behind the floating panels and left a torn strip of firs. All
+three lines of canvas chrome — hint, selection chip, strip count — carry the same white pill, the strip count
+included, because its corner is where the drawing's darkest firs are.
 
 The rail's and the panel's widths survive as two insets (`--editor-rail-inset`, `--editor-panel-inset`; the
 panel's drops to 60px while it is collapsed) with exactly two jobs: they place the canvas chrome (hint,
