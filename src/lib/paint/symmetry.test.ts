@@ -201,16 +201,41 @@ describe('symmetrize', () => {
 		expect([...m.data]).toEqual([...before.data]);
 	});
 
-	it('keeps the majority colour of each orbit', () => {
-		// Three of the four mirror images are painted; the fold must fill the fourth
-		// rather than clear the three.
+	it('takes each orbit by majority, and a tie by the first cell in row order', () => {
+		// Under both mirrors every orbit is four cells, one in each quarter. The fold
+		// has to be a vote, not a union: painting the symmetric answer as the union of
+		// the four would thicken every stroke into all its images and turn a
+		// photograph's few per cent of noise into speckle. Nor is it an intersection,
+		// which would rub out a stroke the visitor drew before symmetry came on.
 		const m = createMask(0, 8);
 		const settings: SymmetrySettings = { curve: 'off', lobe: 'sym', lobes: 'off' };
-		m.data[1 * 8 + 1] = 1;
-		m.data[1 * 8 + 6] = 1;
-		m.data[6 * 8 + 1] = 1;
+		const quarters = (x: number, y: number) => [
+			[x, y],
+			[7 - x, y],
+			[x, 7 - y],
+			[7 - x, 7 - y]
+		];
+		const paint = (cells: number[][]) => {
+			for (const [x, y] of cells) m.data[y! * 8 + x!] = 1;
+		};
+		// One of four: the minority loses. Three of four: the majority fills the fourth,
+		// whether or not the first cell of the orbit is one of the three — the vote is
+		// counted, not read off whichever cell the scan happens to reach first.
+		paint(quarters(1, 1).slice(1, 2));
+		paint(quarters(2, 1).slice(0, 3));
+		paint(quarters(2, 2).slice(1));
+		// Two of four, twice: the tie goes to the cell symmetrize reaches first, which
+		// is the one with the smallest row-major index — (3,1) here, and (1,2) there.
+		paint([quarters(3, 1)[1]!, quarters(3, 1)[2]!]);
+		paint([quarters(1, 2)[0]!, quarters(1, 2)[3]!]);
+
 		symmetrize(m, transformsFor(settings));
-		expect(get(m, 6, 6)).toBe(1);
+
+		for (const [x, y] of quarters(1, 1)) expect(get(m, x!, y!)).toBe(0);
+		for (const [x, y] of quarters(2, 1)) expect(get(m, x!, y!)).toBe(1);
+		for (const [x, y] of quarters(2, 2)) expect(get(m, x!, y!)).toBe(1);
+		for (const [x, y] of quarters(3, 1)) expect(get(m, x!, y!)).toBe(0);
+		for (const [x, y] of quarters(1, 2)) expect(get(m, x!, y!)).toBe(1);
 	});
 });
 
