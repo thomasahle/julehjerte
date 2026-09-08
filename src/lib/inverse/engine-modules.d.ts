@@ -11,6 +11,13 @@
  * So tests import `$inverse/...` — an alias defined in vitest.config.ts — and
  * these declarations describe the handful of functions they use. Only what the
  * tests touch is declared; extend it as more of the engine is needed.
+ *
+ * **`$inverse` resolves under vitest and nowhere else.** It is not in
+ * vite.config.ts and not in `kit.alias`, so an app module importing from it would
+ * type-check cleanly here and then fail at `vite build`. Nothing outside a test
+ * may import it — and nothing should want to: the paint page must not pull the
+ * engine into its bundle at all (PAINT.md §8); it loads it by URL in a worker
+ * when the visitor presses Find snit.
  */
 
 declare module '$inverse/core/graph.js' {

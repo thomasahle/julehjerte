@@ -151,8 +151,14 @@ export type ConvertedHeart = {
 /** How far an endpoint may sit from its square edge, in the 0–100 frame. */
 const EDGE_TOLERANCE = 0.05;
 
-/** Distance under which two chained cubics count as touching, in the 0–100 frame. */
-const JOIN_TOLERANCE = 0.5;
+/**
+ * Distance under which two chained cubics count as touching, in the 0–100 frame
+ * — a micrometre on a 100 mm square, which is slack for rounding and scaling and
+ * nothing else. The engine's chained cubics share their endpoints exactly (both
+ * saved examples join to the last bit), so a gap here is never a real gap: it
+ * means we read the `reverse` flags wrong, and such a gap is enormous.
+ */
+const JOIN_TOLERANCE = 1e-3;
 
 /** The 0–100 frame's far edge; the near edge is 0. */
 const SPAN = 100;

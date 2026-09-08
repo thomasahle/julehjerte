@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { detectSymmetryModes } from '$lib/utils/symmetry';
+import { detectSymmetryModes, mapSegments, reflectAcrossChordBisector } from '$lib/utils/symmetry';
 import { rasterizeDesign, maskMismatch } from '$lib/paint/rasterize';
 import {
   convertCutGeometry,
@@ -209,6 +209,48 @@ describe('cutGeometryToDesign', () => {
       expect(average).toBeGreaterThan(4);
     });
 
+    it('pins an endpoint that came in a hair off the edge, so enforcing stays exact', () => {
+      // The enforcement mappings take their axis from the chain's own endpoints,
+      // and `normalizeHeartDesign` projects those endpoints onto the overlap
+      // rectangle afterwards. An endpoint 0.04 off its edge would therefore tilt
+      // the axis first and then be moved on its own, leaving the cut symmetric
+      // only to within 0.15 px — invisible to `detectSymmetryModes`, whose
+      // tolerance is five, and to every mask comparison in this file.
+      const geometry: CutGeometry = {
+        schema: 'heartcurves-2',
+        units: 'mm',
+        square_width_mm: 100,
+        phase: 0,
+        curves: {
+          a: { control_points: [[30, 0.04], [55, 25], [15, 70], [70, 100]] },
+          b: { control_points: [[0, 50], [25, 62], [75, 38], [100, 50]] }
+        },
+        A_overlap_paths: [[{ curve: 'a', reverse: false }]],
+        B_overlap_paths: [[{ curve: 'b', reverse: false }]]
+      };
+      const design = cutGeometryToDesign(geometry, {
+        name: 'x',
+        tolerance: 0,
+        enforce: { curve: 'sym', lobe: 'off', lobes: 'off' }
+      });
+      const cut = design.fingers.find((f) => f.id === 'R-cut-0');
+      const segments = cut!.segments;
+      const start = segments[0]!.p0;
+      const end = segments[segments.length - 1]!.p3;
+      const mirrored = mapSegments(segments, (p) => reflectAcrossChordBisector(start, end, p), true);
+      let worst = 0;
+      for (let i = 0; i < segments.length; i++) {
+        for (const key of ['p0', 'p1', 'p2', 'p3'] as const) {
+          const a = segments[i]![key];
+          const b = mirrored[i]![key];
+          worst = Math.max(worst, Math.hypot(a.x - b.x, a.y - b.y));
+        }
+      }
+      expect(worst).toBeLessThan(1e-6);
+      // One cut per family is a 2 × 2 grid, so the overlap rect runs 225…375.
+      expect(end.y).toBeCloseTo(225, 9);
+    });
+
     it('keeps the endpoints of every cut on the square edges', () => {
       const design = cutGeometryToDesign(EXAMPLES.jul, { name: 'jul' });
       for (const finger of design.fingers) {
@@ -298,6 +340,33 @@ describe('cutGeometryToDesign', () => {
       geometry.A_overlap_paths = [[{ curve: 'a', reverse: false }, { curve: 'b', reverse: false }]];
       try {
         cutGeometryToDesign(geometry, { name: 'x' });
+        expect.unreachable();
+      } catch (error) {
+        expect((error as CutGeometryError).key).toBe('paintErrorGeometryCurves');
+      }
+    });
+
+    // The two saved examples join their cubics to the last bit, so the tolerance
+    // is there for rounding and scaling slack, not for real gaps. These two pin
+    // it from either side: half a micrometre on a 100 mm square is welded, four
+    // of them are a misread chain and refused.
+    const chainWithGap = (gap: number): CutGeometry => {
+      const geometry = syntheticGeometry([], [50], 0);
+      geometry.curves['a'] = { control_points: straightCut([30, 0], [30, 50]) };
+      geometry.curves['b'] = { control_points: straightCut([30 + gap, 50], [30, 100]) };
+      geometry.A_overlap_paths = [[{ curve: 'a', reverse: false }, { curve: 'b', reverse: false }]];
+      return geometry;
+    };
+
+    it('welds a joint that is only floating-point slack', () => {
+      const welded = cutGeometryToDesign(chainWithGap(5e-4), { name: 'x', tolerance: 0 });
+      const exact = cutGeometryToDesign(chainWithGap(0), { name: 'x', tolerance: 0 });
+      expect(maskMismatch(rasterizeDesign(welded, N).data, rasterizeDesign(exact, N).data)).toBe(0);
+    });
+
+    it('refuses a joint wider than that', () => {
+      try {
+        cutGeometryToDesign(chainWithGap(2e-3), { name: 'x', tolerance: 0 });
         expect.unreachable();
       } catch (error) {
         expect((error as CutGeometryError).key).toBe('paintErrorGeometryCurves');

@@ -364,6 +364,13 @@ export function simplifyCubicChain(segments: BezierSegment[], tolerance = FIT_TO
  * Largest distance from `points` to the nearest place on `curves`, for tests and
  * for reporting how far a fit strayed. `resolution` is the sample spacing along
  * the curves, so it bounds how much the answer can overstate the true distance.
+ *
+ * One-sided on purpose, and only useful as such: it bounds how far the original
+ * strayed from the fit, not how far the fit strayed from the original, so a
+ * curve that bulges out into empty space while still passing near every sample
+ * scores well here. What actually catches a bulge is the whole-design comparison
+ * in `toHeartDesign.test.ts`, where an area error shows up in `maskMismatch` at
+ * once; this only tells the fitter when to subdivide.
  */
 export function chainDeviation(curves: BezierSegment[], points: Pt[], resolution = 0.05): number {
   const dense: Pt[] = [];
