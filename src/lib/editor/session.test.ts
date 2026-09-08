@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import type { HeartDesign } from '$lib/types/heart';
 import { createMask } from '$lib/paint/mask';
+import { disagreement } from '$lib/paint/symmetry';
+import { rect } from '$lib/paint/tools';
 import {
 	clearMask,
 	handoffToDraw,
@@ -10,6 +12,7 @@ import {
 	serialize,
 	session,
 	setMask,
+	setSymmetry,
 	takeHandoff
 } from './session.svelte';
 
@@ -63,6 +66,36 @@ describe('the session', () => {
 		clearMask();
 		expect(session.maskDirty).toBe(false);
 		expect(session.sourceName).toBeNull();
+	});
+
+	it('folds the mask when a symmetry row is switched on', () => {
+		// Painting under symmetry spreads the brush colour through the whole box a tool
+		// reports, which is only right while the mask already matches under the active
+		// transforms — otherwise the diagonal stroke's box drags older paint along with
+		// it. Switching a row on is where that is put right, once, for everything the
+		// visitor painted before.
+		const m = createMask(0, 32);
+		rect(m, { x: 20, y: 1 }, { x: 24, y: 3 }, 1);
+		setMask(m);
+		expect(disagreement(session.mask!, 'transpose')).toBeGreaterThan(0);
+
+		setSymmetry({ curve: 'off', lobe: 'off', lobes: 'sym' });
+		expect(session.symmetry).toEqual({ curve: 'off', lobe: 'off', lobes: 'sym' });
+		expect(disagreement(session.mask!, 'transpose')).toBe(0);
+		// Nothing was rubbed out: the rectangle is still there, and so is its image.
+		expect(session.mask!.data[1 * 32 + 20]).toBe(1);
+		expect(session.mask!.data[20 * 32 + 1]).toBe(1);
+	});
+
+	it('folds a mask that arrives while a row is on', () => {
+		// Detection answers "symmetric" within a tolerance, so an imported mask is only
+		// nearly symmetric; painting needs it to be exactly so.
+		const nearly = createMask(0, 32);
+		rect(nearly, { x: 4, y: 8 }, { x: 12, y: 10 }, 1);
+		rect(nearly, { x: 8, y: 4 }, { x: 10, y: 11 }, 1); // the transpose, one cell short
+		const settings = { curve: 'off', lobe: 'off', lobes: 'sym' } as const;
+		setMask(nearly, { symmetry: settings, found: settings });
+		expect(disagreement(session.mask!, 'transpose')).toBe(0);
 	});
 
 	it('copies the settings it is given, so the caller cannot change them behind its back', () => {

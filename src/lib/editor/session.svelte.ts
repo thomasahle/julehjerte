@@ -25,7 +25,13 @@
 
 import type { HeartDesign } from '$lib/types/heart';
 import { createMask, packMask, unpackMask, type Mask } from '$lib/paint/mask';
-import { NO_SYMMETRY, type SymmetryMode, type SymmetrySettings } from '$lib/paint/symmetry';
+import {
+	NO_SYMMETRY,
+	symmetrize,
+	transformsFor,
+	type SymmetryMode,
+	type SymmetrySettings
+} from '$lib/paint/symmetry';
 
 // The three rows live with the mask transforms they mean; both modes import them
 // from here so nothing has to reach into $lib/paint to name a symmetry.
@@ -108,7 +114,10 @@ export const session: PaintSession = new Session();
  * the last picture's behind, describing a mask that is gone.
  *
  * The three rows are the exception: they are the visitor's setting, not a property
- * of the mask, so they stay as they were unless the caller has a better answer.
+ * of the mask, so they stay as they were unless the caller has a better answer. The
+ * arriving mask is folded under whichever rows end up on — see `foldToSymmetry`; a
+ * mask found symmetric within the detection tolerance is only nearly symmetric, and
+ * painting needs it to be exactly so.
  */
 export function setMask(
 	mask: Mask,
@@ -122,6 +131,32 @@ export function setMask(
 	session.result = null;
 	session.status = 'idle';
 	session.error = null;
+	foldToSymmetry();
+}
+
+/**
+ * Switch the three rows, and fold the mask to match them.
+ *
+ * Every row the visitor turns on has to come through here rather than by assigning
+ * `session.symmetry`, because painting under symmetry assumes the mask already
+ * matches under the active transforms: `applySymmetric` spreads the brush colour
+ * through the whole box a tool reports, and the box of a diagonal stroke is most of
+ * the mask, so paint laid down earlier — with symmetry off, or under different rows
+ * — would be mirrored along with the stroke. Folding first is what makes the
+ * assumption true, and it is the same fold §5 does before solving.
+ *
+ * Switching a row off costs nothing: the mask is already symmetric under what is
+ * left. The fold does not count as a stroke — it is the visitor's own instruction,
+ * not an edit they have yet to notice.
+ */
+export function setSymmetry(next: SymmetrySettings): void {
+	session.symmetry = { ...next };
+	foldToSymmetry();
+}
+
+/** Make the mask exactly symmetric under the rows that are on. */
+function foldToSymmetry(): void {
+	if (session.mask) symmetrize(session.mask, transformsFor(session.symmetry));
 }
 
 /** Ryd: an empty mask, and nothing left to say about where it came from. */

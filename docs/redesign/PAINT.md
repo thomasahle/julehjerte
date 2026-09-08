@@ -116,7 +116,8 @@ export type PaintSession = {
 };
 export type PaintResult = { design: HeartDesign; report: { cuts: [number, number]; clearanceMm: number; mismatch: number; identical: boolean } };
 export type SymmetrySettings = { curve: SymmetryMode; lobe: SymmetryMode; lobes: SymmetryMode };  // 'off' | 'sym' | 'anti'
-export const session: PaintSession;                 // $state
+export const session: PaintSession;                 // $state; mask and result are $state.raw (see below)
+export function setSymmetry(s: SymmetrySettings): void;     // switches the rows and folds the mask to match (§4)
 export function handoffToDraw(design: HeartDesign): void;   // stores the design for the draw page to pick up
 export function takeHandoff(): HeartDesign | null;  // draw page calls this on mount (source `session`)
 ```
@@ -129,6 +130,12 @@ session's `mask` is kept, so the visitor can come back to it.
 Persistence: the mask is not written to localStorage in this version (160 KB per save is more than the draft should
 carry); a reload loses it. Say so nowhere — it simply behaves like an unsaved drawing. Keep the door open: the store
 has one `serialize()`/`restore()` pair, unused for now.
+
+Reactivity: `mask` and `result` are held with `$state.raw`, so what is reactive is replacing them, not writing into
+them. A deep `$state` proxy around the mask costs about fourteen times the time in the tools' innermost loops, and it
+would not have made a stroke reactive anyway (`Uint8Array` is never proxied). Painting is therefore invisible to
+`$derived`/`$effect` by design; the canvas repaints the box each tool returns (§8), and anything else that must know a
+mask changed goes through `setMask`.
 
 ## 4. Modules and contracts
 
@@ -151,7 +158,7 @@ export function stroke(m: Mask, from: Vec, to: Vec, brush: Brush): Box;   // cir
 export function line(m: Mask, from: Vec, to: Vec, brush: Brush): Box;     // same as stroke; the UI previews it
 export function rect(m: Mask, a: Vec, b: Vec, value: 0 | 1): Box;
 export function floodFill(m: Mask, x: number, y: number, value: 0 | 1): Box;   // 4-connected, iterative
-export function applySymmetric(m: Mask, box: Box, transforms: Transform[]): Box; // copies the box under each transform
+export function applySymmetric(m: Mask, box: Box, transforms: Transform[], value: 0 | 1): Box; // spreads the brush colour under each transform
 
 // src/lib/paint/symmetry.ts
 export type Transform = 'transpose' | 'antiTranspose' | 'mirrorX' | 'mirrorY' | 'rotate180';
@@ -174,6 +181,16 @@ export function findCuts(settings: FindSettings, onStage): Promise<DesignResult>
 export function detectCorners(input: PixelsInput, roi?: number[]): Promise<DetectedCrops>;
 export function cancel(): void;
 ```
+
+`applySymmetric` takes the brush colour as a fourth argument — 0 for the eraser — and spreads exactly that colour from
+the cells of `box` to their images, rather than copying the box wholesale. A copy is wrong at a mirror line, where the
+box lands on its own image and the copy reads cells it has just written; a snapshot-based copy that ignores the colour
+degenerates to a swap there; and folding by majority gives the pen and the eraser the same answer where they need
+opposite ones. Spreading one colour is order-free and idempotent. In return it needs the mask to have been symmetric
+before the edit: `box` is the rectangle a tool changed, not the cells it wrote, so older paint of the brush colour
+lying inside it spreads too. **Switching a row on therefore goes through `setSymmetry` in the session store, which
+folds the mask with `symmetrize` first**, and `setMask` folds an arriving mask the same way (detection answers
+"symmetric" only within its tolerance).
 
 ### Engine facts the bridge relies on
 

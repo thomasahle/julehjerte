@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { createMask, get, isEmpty, isEmptyBox, MASK_SIZE, type Mask } from './mask';
-import { disagreement, transformsFor } from './symmetry';
+import { cloneMask, createMask, get, isEmpty, isEmptyBox, MASK_SIZE, type Mask } from './mask';
+import { disagreement, symmetrize, transformsFor } from './symmetry';
 import { applySymmetric, floodFill, line, rect, stampCircle, stroke } from './tools';
 
 const PEN = { radius: 2, value: 1 } as const;
@@ -220,10 +220,39 @@ describe('applySymmetric', () => {
 		expect(disagreement(m, 'transpose')).toBe(0);
 	});
 
-	it('leaves the mask alone when no symmetry is on', () => {
+	it('leaves the mask alone when no symmetry is on, and still returns its own box', () => {
+		// The canvas accumulates the boxes it is handed back and unions them in place,
+		// so a returned box must never be the caller's own object.
 		const m = createMask(0, 16);
 		const box = rect(m, { x: 1, y: 1 }, { x: 2, y: 2 }, 1);
-		expect(applySymmetric(m, box, [], 1)).toEqual(box);
+		const changed = applySymmetric(m, box, [], 1);
+		expect(changed).toEqual(box);
+		expect(changed).not.toBe(box);
 		expect(count(m, 1)).toBe(4);
+	});
+
+	it('is exact once the mask has been folded, however loose the box', () => {
+		// The whole flow: paint with symmetry off, switch Mellem lapper Sym on — which
+		// the session answers by folding the mask — then draw one diagonal stroke, whose
+		// box is nearly the whole mask. With the fold done first the old rectangle is
+		// already at both of its positions, so spreading the brush colour through that
+		// box adds nothing but the stroke.
+		const m = createMask(0, 32);
+		rect(m, { x: 20, y: 1 }, { x: 24, y: 3 }, 1); // painted while symmetry was off
+		symmetrize(m, ['mirrorX']); // what setSymmetry does when the row goes on
+		const before = cloneMask(m);
+
+		const box = stroke(m, { x: 1, y: 1 }, { x: 30, y: 30 }, PEN);
+		applySymmetric(m, box, ['mirrorX'], 1);
+
+		expect(disagreement(m, 'mirrorX')).toBe(0);
+		// Nothing was rubbed out, and the only cells added are the stroke and its image.
+		for (let i = 0; i < m.data.length; i++) if (before.data[i]) expect(m.data[i]).toBe(1);
+		const strokeOnly = createMask(0, 32);
+		const strokeBox = stroke(strokeOnly, { x: 1, y: 1 }, { x: 30, y: 30 }, PEN);
+		applySymmetric(strokeOnly, strokeBox, ['mirrorX'], 1);
+		for (let i = 0; i < m.data.length; i++) {
+			if (m.data[i] && !before.data[i]) expect(strokeOnly.data[i]).toBe(1);
+		}
 	});
 });

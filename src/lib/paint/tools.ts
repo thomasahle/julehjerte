@@ -149,17 +149,24 @@ export function floodFill(m: Mask, x: number, y: number, value: 0 | 1): Box {
  * not do — at a mirror line the pen and the eraser want opposite answers from the
  * very same pair of cells.
  *
- * This assumes the mask was symmetric before the edit, which it is while symmetry
- * stays on; `symmetrize` is what makes it so after it is switched on.
+ * The mask must have been symmetric before the edit, and that requirement is real:
+ * `box` is the rectangle a tool changed, not the cells it wrote, and the box of a
+ * diagonal stroke is most of the mask — so paint of the same colour laid down
+ * earlier and lying inside the box is spread as well. Nothing here can tell the two
+ * apart; the tools report a box, and asking them for the cells instead would cost a
+ * copy of the box on every pointer batch. So the caller owes the invariant, and the
+ * session is where it is paid: `setSymmetry` folds the mask with `symmetrize` when a
+ * row is switched on, and `setMask` folds an arriving mask the same way. Switching a
+ * row on by assigning `session.symmetry` skips that and breaks this.
  */
 export function applySymmetric(m: Mask, box: Box, transforms: Transform[], value: 0 | 1): Box {
-	if (isEmptyBox(box) || !transforms.length) return box;
+	if (isEmptyBox(box) || !transforms.length) return { ...box };
 	const maps = closedPointMaps(transforms);
-	if (!maps.length) return box;
+	if (!maps.length) return { ...box };
 
 	// A square symmetry maps a rectangle to a rectangle, so the mapped corners bound
 	// each copy, and their union is what the canvas has to repaint.
-	let changed = box;
+	let changed: Box = { ...box };
 	for (const map of maps) {
 		const a = map(box.x0, box.y0, m.size);
 		const b = map(box.x1 - 1, box.y1 - 1, m.size);
