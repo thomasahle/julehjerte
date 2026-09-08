@@ -52,6 +52,8 @@ export interface DesignResult {
     validation: { passed: boolean; minimumInterSlitDistanceLower: number };
     manufacturing: { status: 'pass' | 'fail' | 'uncertain' };
     warnings: string[];
+    /** Which of the requested square symmetries the exported cuts satisfy (docs/inverse/SYMMETRY.md). */
+    symmetry?: { requested: string[]; honoured: string[]; maxDeviationMm: number | null };
     imageError?: { mismatchFraction: number; resolution: number } | null;
     imageFidelity?: { features: { passed: boolean } };
     settings: { width: number; maxImageError?: number; paperColors: [string, string] };

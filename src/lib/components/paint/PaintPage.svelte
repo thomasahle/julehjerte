@@ -444,6 +444,20 @@
 				resample(mask.data, mask.size, COMPARE_SIZE)
 			);
 
+			// The rows the panel shows are the converter's, not `solved.report.symmetry.
+			// honoured` (PAINT.md §11). Both are true statements about different
+			// things: the engine's says which symmetries its own cuts came out with,
+			// the converter's says which ones the heart on screen has. Where the
+			// engine could not hold one and correcting it was cheap, the heart does
+			// have it — and it is the heart the visitor is looking at. Where the
+			// correction was too expensive the converter drops every row and the
+			// panel says so, which is the same notice the engine's report would ask
+			// for. The engine's own answer goes to the console, because a search that
+			// surprises someone is diagnosed from what the fitter managed.
+			const asked = solved.report.symmetry;
+			if (asked && asked.honoured.length < asked.requested.length) {
+				console.warn('The engine could not hold every symmetry that was asked of it', asked);
+			}
 			honoured = converted.honoured;
 			session.result = {
 				design: { ...converted.design, id: newHeartId() },
