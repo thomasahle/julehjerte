@@ -29,6 +29,7 @@ export { default as ImageIcon } from '@lucide/svelte/icons/image';
 export { default as LineIcon } from '@lucide/svelte/icons/minus';
 export { default as MenuIcon } from '@lucide/svelte/icons/menu';
 export { default as PaintBucketIcon } from '@lucide/svelte/icons/paint-bucket';
+export { default as PaintbrushIcon } from '@lucide/svelte/icons/paintbrush';
 export { default as PencilIcon } from '@lucide/svelte/icons/pencil';
 export { default as PlusIcon } from '@lucide/svelte/icons/plus';
 export { default as PrinterIcon } from '@lucide/svelte/icons/printer';

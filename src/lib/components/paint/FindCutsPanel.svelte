@@ -8,7 +8,6 @@
 -->
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import { base } from '$app/paths';
 	import SymmetryRows from '$lib/components/editor/SymmetryRows.svelte';
 	import { ExternalIcon, ScissorsIcon } from '$lib/components/icons';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
@@ -18,6 +17,7 @@
 		type AdvancedNumber,
 		type AdvancedSettings
 	} from '$lib/inverse/engine';
+	import { ENGINE_NOTICES_KEY, engineNoticesHref } from '$lib/inverse/notices';
 	import type { PaintError, PaintResult, PaintStatus } from '$lib/editor/session.svelte';
 	import type { SymmetrySettings } from '$lib/paint/symmetry';
 
@@ -272,9 +272,11 @@
 			</label>
 			<div class="advanced-footer">
 				<button type="button" class="link" onclick={onResetAdvanced}>{tr('paintReset')}</button>
-				<!-- The engine is somebody else's work; its licences travel with it. -->
-				<a class="link" href="{base}/inverse/THIRD_PARTY_NOTICES.txt" target="_blank" rel="noopener">
-					{tr('paintEngineNotices')}
+				<!-- The engine is somebody else's work; its licences travel with it.
+				     `notices.ts` owns the path and the label, so the obligation the
+				     retired generator page carried cannot be dropped by accident. -->
+				<a class="link" href={engineNoticesHref()} target="_blank" rel="noopener">
+					{tr(ENGINE_NOTICES_KEY)}
 					<ExternalIcon size={12} />
 				</a>
 			</div>

@@ -31,12 +31,13 @@
     CloseIcon,
     DownloadIcon,
     HelpIcon,
+    PaintbrushIcon,
     PrinterIcon,
     SaveIcon,
     UploadIcon
   } from '$lib/components/icons';
   import { NARROW_QUERY } from '$lib/breakpoints';
-  import { heartHref, homeAnchorHref } from '$lib/i18n/routes';
+  import { heartHref, homeAnchorHref, href } from '$lib/i18n/routes';
   import { takeHandoff } from '$lib/editor/handoff';
   import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
@@ -55,6 +56,17 @@
     showHelp = false;
     tick().then(() => helpButtonEl?.focus());
   }
+
+  // "Mal på hjertet" and the confirmation it asks before replacing a mask that
+  // has strokes on it. Same dialog rules as the help modal above.
+  let showPaintConfirm = $state(false);
+  let paintButtonEl: HTMLButtonElement | null = $state(null);
+  let paintCancelButtonEl: HTMLButtonElement | null = $state(null);
+  // The whole way over to Mal is lazy (see openInPaint), so on a cold cache the
+  // press is a network round trip with nothing on screen to show for it. The
+  // button is disabled meanwhile: it stops a second press from rasterising and
+  // navigating a second time, and it is the only feedback the press has.
+  let paintBusy = $state(false);
 
   // Inline status/error message shown in the actions panel (replaces alert()).
   type StatusKey = 'save' | 'import' | 'load' | 'pdf';
@@ -86,6 +98,7 @@
 
   // The editor accepts these URL inputs:
   //   /editor/?from=<gallery-id>   loads /hearts/<id>.svg (like the detail page) and edits a copy
+  //   /editor/?from=session        takes the heart Mal found out of the editor session (PAINT.md §3)
   //   /editor/#design=<payload>    user-created heart; payload = encodeURIComponent(JSON.stringify(serializeHeartDesign(d)))
   //   /editor/?design=<payload>    legacy form of the same payload (kept so old links keep working)
   // edit=true and returnTo=detail are read from the query string (also accepted in the hash).
@@ -128,7 +141,8 @@
     const design = designData ? parseDesignPayload(designData) : null;
     const rawFrom = design ? null : get('from');
     // `?from=session` is Mal handing over the heart Find snit found (PAINT.md
-    // §3). It is not a gallery id, so it never reaches loadDesignFromGallery.
+    // §3): the design waits in the editor session, not in the gallery, so it
+    // must not be looked up as an id.
     const fromSession = rawFrom === 'session';
     const fromId = !fromSession && rawFrom && /^[A-Za-z0-9_-]+$/.test(rawFrom) ? rawFrom : null;
     return {
@@ -149,15 +163,26 @@
     returnToDetail: urlReturnToDetail
   } = getEditorUrlInput();
 
-  // The heart Mal found, taken exactly once. It arrives as a new unsaved heart
-  // with its own name, so it goes down the same road as a shared `#design=`
-  // link — only the naming below differs.
+  // The heart Mal found, taken exactly once, before the first render so the
+  // editor never shows a blank heart it is about to replace. It arrives as a new
+  // unsaved heart with its own name, so it goes down the same road as a shared
+  // `#design=` link — only the naming and the draft below differ.
+  //
+  // `$lib/editor/handoff` is a module of its own for this one import: reaching
+  // the session store from here would pull the mask and symmetry code into the
+  // draw page's own bundle, which PAINT.md §8 forbids. Taking it empties the
+  // slot for good, and there is nowhere to fetch this heart from again — so a
+  // reload of ?from=session finds nothing, and the blank editor already on
+  // screen is the right answer rather than an error about a heart nobody asked
+  // for.
   const sessionDesign = urlFromSession ? takeHandoff() : null;
   const urlDesign = sessionDesign ?? urlDesignFromLink;
 
   // State for the loaded design - initialize with URL values
   let initialDesign = $state<HeartDesign | null>(urlDesign);
-  let editingExisting = $state(urlDesign !== null);
+  // A shared link opens the heart it carries for editing; the heart Mal hands
+  // over is a new unsaved one, so the page is "create", not "edit".
+  let editingExisting = $state(urlDesignFromLink !== null);
   let isEditMode = $state(urlEditMode); // true = editing custom heart, false = creating copy
   let returnToDetail = $state(urlReturnToDetail);
   let editorKey = $state(0); // Key to force PaperHeart remount
@@ -189,13 +214,13 @@
   // visitor presses "Gem", so a stray colour click leaves no card behind.
   let savesToCollection = $state(false);
   let draftSource = $state<DraftSource>(
-    urlFromSession ? 'session' : urlFromId ? gallerySource(urlFromId) : urlDesign ? 'shared' : 'blank'
+    urlFromSession ? 'paint' : urlFromId ? gallerySource(urlFromId) : urlDesign ? 'shared' : 'blank'
   );
   // A draft found at mount, offered above the canvas until it is taken or dropped.
   let pendingDraft = $state<EditorDraft | null>(null);
-  // Restoring a draft cancels a ?from= fetch that is still in flight, so the
-  // gallery heart cannot land on top of the restored one.
-  let galleryLoadSuperseded = false;
+  // Restoring a draft cancels whatever ?from= is still fetching or importing, so
+  // neither the gallery heart nor Mal's can land on top of the restored one.
+  let pendingLoadSuperseded = false;
   // Serialized design as first emitted by PaperHeart; used to tell real edits from the initial emission.
   let designBaseline: string | null = null;
   let hasDesignEdits = false;
@@ -220,6 +245,14 @@
     // Set heart name (needs lang to be initialized)
     if (sessionDesign) {
       // Not a copy of anything: Mal made this heart, and it is the visitor's own.
+      // The name is Mal's to set, on the design it hands over: it is the side
+      // that knows whether the mask came from star.png, a photo or the visitor's
+      // own brush, and `cutGeometryToDesign` takes `name` from its caller for
+      // exactly that (PAINT.md §3: "Stjerne fra billede" / "Heart from image").
+      // Never `session.sourceName` — that is the file the mask came from, so
+      // reading it here would make a Tegn → Mal → Tegn round trip rename the
+      // heart after itself. The fallback is only for a design that reaches us
+      // unnamed; then it is a new heart like any other.
       heartName = sessionDesign.name || t('myHeart', lang);
     } else if (urlDesign) {
       // In edit mode, keep original name; in copy mode, append "(Copy)"
@@ -240,9 +273,13 @@
     savesToCollection = editedId ? getUserCollection().some((h) => h.id === editedId) : false;
 
     // Stored state is read after mount, never during render (see $lib/editor/draft).
-    if (!savesToCollection) {
+    // Not for a heart handed over from Mal: the visitor asked for that one just
+    // now, and offering to restore an older draft over it answers a question
+    // they did not ask. It takes over the draft instead, as an imported SVG does.
+    if (!savesToCollection && !sessionDesign) {
       pendingDraft = readDraft();
     }
+    if (sessionDesign) scheduleAutosave();
 
     if (urlFromId) {
       void loadDesignFromGallery(urlFromId);
@@ -323,7 +360,7 @@
   async function loadDesignFromGallery(id: string): Promise<void> {
     const design = await loadStaticHeartById(id);
     // The visitor restored a draft while this was loading: leave their heart alone.
-    if (galleryLoadSuperseded) return;
+    if (pendingLoadSuperseded) return;
     if (!design) {
       showStatus('load', 'error', t('heartNotFound', lang));
       return;
@@ -340,6 +377,84 @@
     initialDesign = design;
     resetDesignBaseline();
     editorKey++;
+  }
+
+  /**
+   * "Mal på hjertet": this heart as a mask, and over to Mal (PAINT.md §2).
+   *
+   * The rasteriser, the mask and the session are loaded at the press rather than
+   * imported at the top of the file: they are Mal's modules, and PAINT.md §8
+   * keeps them out of the draw page's bundle. A visitor who never presses the
+   * button never downloads them.
+   */
+  async function openInPaint(): Promise<void> {
+    const [{ rasterizeDesign }, { detectSymmetry: detectMaskSymmetry }, { setMask }] =
+      await Promise.all([
+        import('$lib/paint/rasterize'),
+        import('$lib/paint/symmetry'),
+        import('$lib/editor/session.svelte')
+      ]);
+    const design = createHeartDesign();
+    const mask = rasterizeDesign(design);
+    // What the mask turns out to be symmetric under becomes both the setting Mal
+    // paints under and the "fundet" tags on its rows (PAINT.md §5).
+    const found = detectMaskSymmetry(mask);
+    // sourceName says where the mask came from, which for a heart carried over from
+    // Tegn is that heart. It is not a name for whatever Mal makes next: a heart Mal
+    // hands back carries its own `name` (see `sessionDesign` above), so deriving one
+    // from this would turn a Tegn → Mal → Tegn round trip into "Mit hjerte fra
+    // billede".
+    setMask(mask, { sourceName: design.name, symmetry: found, found });
+    await goto(href('paint', lang));
+  }
+
+  /**
+   * Say that the way into Mal did not work.
+   *
+   * Everything openInPaint needs is fetched at the moment of the press, and on a
+   * prerendered site those requests are the ones that fail: a redeploy makes the
+   * loaded build's chunk hashes 404, and an offline tab fails identically. Without
+   * this the rejection reaches nobody — the URL does not change, the panel stays
+   * empty and only the console knows — so the press reads as a dead button.
+   */
+  function reportPaintError(err: unknown): void {
+    console.error('Opening the heart in Mal failed', err);
+    showStatus('load', 'error', t('paintOpenFailed', lang));
+  }
+
+  // A mask the visitor has painted on is work they may not want to lose; one that
+  // only ever arrived from an import or an earlier heart is replaced in silence.
+  async function paintOnHeart(): Promise<void> {
+    if (paintBusy) return;
+    paintBusy = true;
+    try {
+      const { session } = await import('$lib/editor/session.svelte');
+      if (session.mask && session.maskDirty) {
+        showPaintConfirm = true;
+        return;
+      }
+      await openInPaint();
+    } catch (err) {
+      reportPaintError(err);
+    } finally {
+      paintBusy = false;
+    }
+  }
+
+  function closePaintConfirm(): void {
+    if (!showPaintConfirm) return;
+    showPaintConfirm = false;
+    tick().then(() => paintButtonEl?.focus());
+  }
+
+  function confirmPaintOnHeart(): void {
+    showPaintConfirm = false;
+    paintBusy = true;
+    openInPaint()
+      .catch(reportPaintError)
+      .finally(() => {
+        paintBusy = false;
+      });
   }
 
   function generateId(): string {
@@ -424,7 +539,7 @@
     const draft = pendingDraft;
     pendingDraft = null;
     if (!draft) return;
-    galleryLoadSuperseded = true;
+    pendingLoadSuperseded = true;
     const design = draft.design;
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
@@ -684,6 +799,17 @@
       </div>
     {/if}
     <div class="action-buttons">
+      <button
+        type="button"
+        class="btn btn-outline action"
+        bind:this={paintButtonEl}
+        onclick={paintOnHeart}
+        disabled={paintBusy}
+        aria-busy={paintBusy}
+      >
+        <PaintbrushIcon size={16} />
+        {t('paintOnHeart', lang)}
+      </button>
       <button type="button" class="btn btn-ghost action" onclick={downloadSVG}>
         <DownloadIcon size={16} />
         {t('editorExportSvg', lang)}
@@ -711,7 +837,9 @@
 
 <div class="editor" bind:this={editorEl}>
   <!-- variant="editor" is the back-link + logo bar; the site nav links and the
-       EN/GitHub pills belong on content pages, not in the full-screen tool. -->
+       EN/GitHub pills belong on content pages, not in the full-screen tool. The
+       `mode` switch is the other half of PAINT.md §2's ask of Tegn: with the
+       paint route landed, the header carries the way back and forth. -->
   <PageHeader bind:ref={headerEl} {lang} variant="editor" mode={{ current: 'draw' }} onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? heartHref(getBackDetailId()!, lang) : undefined) : undefined}>
     <button
       type="button"
@@ -776,6 +904,29 @@
     </aside>
   {/if}
   </main>
+
+  <Modal
+    open={showPaintConfirm}
+    labelledBy="paint-confirm-title"
+    initialFocus={paintCancelButtonEl}
+    onClose={closePaintConfirm}
+  >
+    <h2 id="paint-confirm-title" class="confirm-title">{t('paintReplaceMaskTitle', lang)}</h2>
+    <p class="confirm-text">{t('paintReplaceMaskPrompt', lang)}</p>
+    <div class="confirm-actions">
+      <button
+        type="button"
+        class="btn btn-ghost"
+        bind:this={paintCancelButtonEl}
+        onclick={closePaintConfirm}
+      >
+        {t('cancel', lang)}
+      </button>
+      <button type="button" class="btn btn-primary" onclick={confirmPaintOnHeart}>
+        {t('paintReplaceMaskConfirm', lang)}
+      </button>
+    </div>
+  </Modal>
 
   <Modal
     open={showHelp}
@@ -1025,6 +1176,27 @@
       grid-template-columns: 1fr;
       max-width: 420px;
     }
+  }
+
+  /* The "Mal på hjertet" confirmation inside <Modal>: a question, one line of
+     consequence, and the two answers right-aligned. */
+  .confirm-title {
+    margin: 0 0 8px;
+    font-size: 20px;
+    color: var(--deep);
+  }
+
+  .confirm-text {
+    margin: 0;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
   }
 
   /* <Modal> owns the scrim and the card; what follows is the help content. */

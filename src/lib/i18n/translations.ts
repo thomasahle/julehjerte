@@ -253,7 +253,6 @@ export const translations = {
     paintMinStripWidth: 'Mindste strimmelbredde (mm)',
     paintMatchingSheets: 'Samme skabelon til begge sider',
     paintReset: 'Nulstil',
-    paintEngineNotices: 'Motorens licenser',
     /** {seconds} = sekunder siden søgningen begyndte */
     paintSearching: 'Søger efter snit … {seconds} s',
     paintCancel: 'Afbryd',
@@ -336,6 +335,14 @@ export const translations = {
     paintFoundSymmetry: 'Fundet symmetri: {rows}',
     paintFoundSymmetryNone: 'Ingen symmetri fundet',
     paintUseAsMask: 'Brug som maske',
+
+    // Mal (docs/redesign/PAINT.md): what Tegn says about the second mode
+    paintOnHeart: 'Mal på hjertet',
+    paintReplaceMaskTitle: 'Erstat masken?',
+    paintReplaceMaskPrompt: 'Du er i gang med at male på en maske. Tager du hjertet med over i Mal, bliver den erstattet.',
+    paintReplaceMaskConfirm: 'Erstat masken',
+    paintOpenFailed: 'Mal kunne ikke åbnes. Tjek din forbindelse, genindlæs siden og prøv igen.',
+    paintEngineLicences: 'Motorens licenser',
 
     // Editor help dialog
     helpOpenAriaLabel: 'Hjælp',
@@ -675,7 +682,6 @@ export const translations = {
     paintMinStripWidth: 'Narrowest strip (mm)',
     paintMatchingSheets: 'One template for both sides',
     paintReset: 'Reset',
-    paintEngineNotices: 'Engine licences',
     /** {seconds} = seconds since the search began */
     paintSearching: 'Searching for cuts … {seconds} s',
     paintCancel: 'Stop',
@@ -758,6 +764,14 @@ export const translations = {
     paintFoundSymmetry: 'Symmetry found: {rows}',
     paintFoundSymmetryNone: 'No symmetry found',
     paintUseAsMask: 'Use as mask',
+
+    // Paint mode (docs/redesign/PAINT.md): what Draw says about the second mode
+    paintOnHeart: 'Paint on the heart',
+    paintReplaceMaskTitle: 'Replace the mask?',
+    paintReplaceMaskPrompt: 'You are painting on a mask right now. Taking this heart into Paint replaces it.',
+    paintReplaceMaskConfirm: 'Replace the mask',
+    paintOpenFailed: 'Paint could not be opened. Check your connection, reload the page and try again.',
+    paintEngineLicences: 'Engine licences',
 
     // Editor help dialog
     helpOpenAriaLabel: 'Help',
