@@ -47,4 +47,13 @@ export { default as UploadIcon } from '@lucide/svelte/icons/upload';
 /** Paper strips woven into a lattice — no lucide equivalent. */
 export { default as WeaveIcon } from './WeaveIcon.svelte';
 
+/**
+ * The editor's symmetry glyphs — the pictures the owner chose in
+ * docs/redesign/symmetri-ikoner.html. They draw cuts and lobes, which lucide
+ * has nothing for, and they carry a little more line than the rest, so they
+ * take `size = 28` and stroke 1.8 rather than 20 and 2.
+ */
+export { default as SymmetryIcon } from './SymmetryIcon.svelte';
+
 export type { IconProps } from './types';
+export type { SymmetryIconMode, SymmetryIconRow } from './symmetryIcons';

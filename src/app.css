@@ -34,6 +34,12 @@
      token rather than a reuse. */
   --red-dark: #a5121d;
 
+  /* --red washed out far enough to read on --green. An icon that marks one
+     part in red (the symmetry glyphs' second cut) has to keep that mark when
+     its segment is selected and the glyph turns white on green, and --red on
+     green is nearly black. From docs/redesign/symmetri-ikoner.html. */
+  --red-tint: #f3b3b8;
+
   /* --muted is 5.14:1 on --page but only 4.02:1 on --sky, so the hero and the
      detail scene use this darker shade for secondary text. AA needs 4.5:1. */
   --muted-on-sky: #4d594f;
