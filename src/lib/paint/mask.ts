@@ -104,57 +104,42 @@ export function resample(data: Uint8Array, from: number, to: number): Uint8Array
 	return out;
 }
 
-const BASE64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-
 /**
  * The mask as one ASCII string: bits packed eight to a byte, then base64.
  *
- * Written by hand rather than with `btoa` because this module must stay usable
- * outside a browser (tests, and any future prerender). A 400 × 400 mask becomes
- * about 27 KB of text — small enough to hand to a future save format, which is
- * the only reason the pair exists (see `session.serialize`).
+ * A 400 × 400 mask becomes about 27 KB of text — small enough to hand to a future
+ * save format, which is the only reason the pair exists (see `session.serialize`).
+ * `btoa` and `atob` are global in browsers, workers and Node alike, so the module
+ * still needs no DOM.
  */
 export function packMask(m: Mask): string {
 	const bytes = new Uint8Array(Math.ceil(m.data.length / 8));
 	for (let i = 0; i < m.data.length; i++) {
 		if (m.data[i]) bytes[i >> 3]! |= 0x80 >> (i & 7);
 	}
-	let out = '';
-	for (let i = 0; i < bytes.length; i += 3) {
-		const b0 = bytes[i]!;
-		const b1 = i + 1 < bytes.length ? bytes[i + 1]! : 0;
-		const b2 = i + 2 < bytes.length ? bytes[i + 2]! : 0;
-		out += BASE64[b0 >> 2];
-		out += BASE64[((b0 & 3) << 4) | (b1 >> 4)];
-		out += i + 1 < bytes.length ? BASE64[((b1 & 15) << 2) | (b2 >> 6)] : '=';
-		out += i + 2 < bytes.length ? BASE64[b2 & 63] : '=';
+	// String.fromCharCode takes its arguments on the stack, so a full mask goes over
+	// in chunks rather than in one call that would overflow it.
+	let binary = '';
+	for (let i = 0; i < bytes.length; i += 8192) {
+		binary += String.fromCharCode(...bytes.subarray(i, i + 8192));
 	}
-	return out;
+	return btoa(binary);
 }
 
 /** The inverse of `packMask`; null when the text is not a mask of that size. */
 export function unpackMask(size: number, packed: string): Mask | null {
 	if (!Number.isInteger(size) || size <= 0) return null;
 	const cells = size * size;
-	const wanted = Math.ceil(cells / 8);
-	const bytes: number[] = [];
-	let acc = 0;
-	let bits = 0;
-	for (const ch of packed) {
-		if (ch === '=') break;
-		const v = BASE64.indexOf(ch);
-		if (v < 0) return null;
-		acc = (acc << 6) | v;
-		bits += 6;
-		if (bits >= 8) {
-			bits -= 8;
-			bytes.push((acc >> bits) & 0xff);
-		}
+	let binary: string;
+	try {
+		binary = atob(packed);
+	} catch {
+		return null; // not base64 at all
 	}
-	if (bytes.length < wanted) return null;
+	if (binary.length < Math.ceil(cells / 8)) return null;
 	const mask = createMask(0, size);
 	for (let i = 0; i < cells; i++) {
-		mask.data[i] = (bytes[i >> 3]! >> (7 - (i & 7))) & 1;
+		mask.data[i] = (binary.charCodeAt(i >> 3) >> (7 - (i & 7))) & 1;
 	}
 	return mask;
 }
