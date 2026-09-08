@@ -430,7 +430,8 @@ it here. The UI is designed now (mockup, section "Frie felter") so the paint mod
   colour value would lose the soft state's colours. `detectSymmetry` ignores free cells; the bridge sends the
   weights; the result panel reports three numbers separately: the difference inside the protected motif, the share
   of band cells the engine changed, and the whole square.
-- The import dialog gets the same "Kanten" control (default Må rettes for photos) with the preview showing it.
+- The "Kanten" panel lives in Mal only, not in the import dialog: it applies to painted and imported masks
+  alike. After a photo import the panel may default to Må rettes.
 
 Until the engine supports weights, nothing of this is shown. Keep the door open: nothing may assume every cell is
 fixed, and the mask type must be extensible with a weight layer without touching the tools' signatures. The pattern
