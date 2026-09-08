@@ -2,7 +2,6 @@
 	import { onMount, tick, type Component, type Snippet } from 'svelte';
 	import type { IconProps } from '$lib/components/icons/types';
 	import { Separator } from '$lib/components/ui/separator';
-	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '$lib/components/ui/tooltip';
 	import {
 		ChevronRightIcon,
@@ -13,6 +12,7 @@
 		TrashIcon,
 		UndoIcon
 	} from '$lib/components/icons';
+	import SymmetryRows from '$lib/components/editor/SymmetryRows.svelte';
 	import {
 		NodeAddIcon,
 		NodeCornerIcon,
@@ -3493,58 +3493,16 @@
 
 					<section class="editor-panel symmetry-panel">
 						<h2 class="panel-title">{tr('symmetry')}</h2>
-						<!-- The name goes on the ToggleGroup, not on the plain wrapper: a
-						     <div> with no role drops its aria-label from the tree, which left
-						     three interchangeable unnamed radio groups. -->
-						<div class="symmetry-row">
-							<span class="symmetry-label">{tr('editorWithinCurve')}</span>
-							<ToggleGroup
-								type="single"
-								role="radiogroup"
-								aria-label={tr('editorWithinCurveSymmetry')}
-								bind:value={withinCurveMode}
-							>
-								<ToggleGroupItem value="off" title={tr('editorOff')}>{tr('editorOff')}</ToggleGroupItem>
-								<ToggleGroupItem value="sym" title={tr('mirrorSymmetry')}>{tr('editorSym')}</ToggleGroupItem>
-								<ToggleGroupItem value="anti" title={tr('editorAntiSymmetry')}>{tr('editorAnti')}</ToggleGroupItem>
-							</ToggleGroup>
-						</div>
-						<div class="symmetry-row">
-							<span class="symmetry-label">{tr('editorWithinLobe')}</span>
-							<ToggleGroup
-								type="single"
-								role="radiogroup"
-								aria-label={tr('editorWithinLobeSymmetry')}
-								bind:value={withinLobeMode}
-							>
-								<ToggleGroupItem value="off" title={tr('editorOff')}>{tr('editorOff')}</ToggleGroupItem>
-								<ToggleGroupItem value="sym" title={tr('mirrorSymmetry')}>{tr('editorSym')}</ToggleGroupItem>
-								<ToggleGroupItem value="anti" title={tr('editorAntiSymmetry')}>{tr('editorAnti')}</ToggleGroupItem>
-							</ToggleGroup>
-						</div>
-						<div class="symmetry-row">
-							<span class="symmetry-label">{tr('editorBetweenLobes')}</span>
-							<Tooltip>
-								<TooltipTrigger>
-									{#snippet child({ props })}
-										<span class="tooltip-wrapper" {...props}>
-											<ToggleGroup
-												type="single"
-												role="radiogroup"
-												aria-label={tr('editorBetweenLobesSymmetry')}
-												bind:value={betweenLobesMode}
-												disabled={!canSymmetryBetweenLobes()}
-											>
-												<ToggleGroupItem value="off" title={tr('editorOff')}>{tr('editorOff')}</ToggleGroupItem>
-												<ToggleGroupItem value="sym" title={tr('mirrorSymmetry')}>{tr('editorSym')}</ToggleGroupItem>
-												<ToggleGroupItem value="anti" title={tr('editorAntiSymmetry')}>{tr('editorAnti')}</ToggleGroupItem>
-											</ToggleGroup>
-										</span>
-									{/snippet}
-								</TooltipTrigger>
-								<TooltipContent>{canSymmetryBetweenLobes() ? tr('editorBetweenLobesSymmetry') : tr('editorRequiresEqualGridSize')}</TooltipContent>
-							</Tooltip>
-						</div>
+						<SymmetryRows
+							{lang}
+							value={{ curve: withinCurveMode, lobe: withinLobeMode, lobes: betweenLobesMode }}
+							onChange={(next) => {
+								withinCurveMode = next.curve;
+								withinLobeMode = next.lobe;
+								betweenLobesMode = next.lobes;
+							}}
+							disabled={{ lobes: !canSymmetryBetweenLobes() }}
+						/>
 					</section>
 
 					<section class="editor-panel">
@@ -4046,50 +4004,6 @@
 		.swatch:focus-within {
 			outline: 2px solid var(--green);
 			outline-offset: 2px;
-		}
-
-		.symmetry-row {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			gap: 10px;
-		}
-
-		.symmetry-label {
-			color: var(--ink);
-			font-size: 14px;
-			white-space: nowrap;
-		}
-
-		/* Segmented Fra / Sym / Anti control, restyled from the shadcn ToggleGroup. */
-		.symmetry-row :global([data-slot='toggle-group']) {
-			display: inline-flex;
-			gap: 0;
-			padding: 0;
-			border: 1.5px solid var(--line);
-			border-radius: 8px;
-			overflow: hidden;
-			background: var(--white);
-		}
-
-		.symmetry-row :global([data-slot='toggle-group-item']) {
-			border-radius: 0;
-			padding: 6px 10px;
-			font-size: 13px;
-			font-weight: 600;
-			color: var(--green);
-			background: var(--white);
-			box-shadow: none;
-		}
-
-		.symmetry-row :global([data-slot='toggle-group-item']:hover) {
-			background: var(--cream2);
-			color: var(--green);
-		}
-
-		.symmetry-row :global([data-slot='toggle-group-item'][data-state='on']) {
-			background: var(--green);
-			color: var(--white);
 		}
 
 		.tooltip-wrapper {

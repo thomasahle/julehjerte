@@ -232,7 +232,8 @@ describe('cutGeometryToDesign', () => {
       const design = cutGeometryToDesign(geometry, {
         name: 'x',
         tolerance: 0,
-        enforce: { curve: 'sym', lobe: 'off', lobes: 'off' }
+        enforce: { curve: 'sym', lobe: 'off', lobes: 'off' },
+        enforceCostLimit: 1
       });
       const cut = design.fingers.find((f) => f.id === 'R-cut-0');
       const segments = cut!.segments;
@@ -387,7 +388,10 @@ describe('cutGeometryToDesign', () => {
     it('makes the star exactly symmetric on all three rows', () => {
       const design = cutGeometryToDesign(EXAMPLES.star, {
         name: 'star',
-        enforce: { curve: 'sym', lobe: 'sym', lobes: 'sym' }
+        enforce: { curve: 'sym', lobe: 'sym', lobes: 'sym' },
+        // What the mappings do, with the cost guard out of the way: the star was
+        // solved without symmetry, so the correction is far past the limit.
+        enforceCostLimit: 1
       });
       expect(detectSymmetryModes(design.fingers)).toEqual({
         withinCurveMode: 'sym',
@@ -408,7 +412,8 @@ describe('cutGeometryToDesign', () => {
       it(`reports ${row} anti when only that row is enforced`, () => {
         const design = cutGeometryToDesign(EXAMPLES.jul, {
           name: 'jul',
-          enforce: { curve: 'off', lobe: 'off', lobes: 'off', [row]: 'anti' }
+          enforce: { curve: 'off', lobe: 'off', lobes: 'off', [row]: 'anti' },
+          enforceCostLimit: 1
         });
         expect(detectSymmetryModes(design.fingers)[mode]).toBe('anti');
       });
@@ -447,13 +452,18 @@ describe('cutGeometryToDesign', () => {
         it(`stays within the measured bound on ${name}, which holds no symmetry`, () => {
           const theirs = engineMask(EXAMPLES[name]);
           for (const enforce of ROWS) {
-            const design = cutGeometryToDesign(EXAMPLES[name], { name, enforce });
+            const design = cutGeometryToDesign(EXAMPLES[name], {
+              name,
+              enforce,
+              enforceCostLimit: 1
+            });
             const cost = maskMismatch(rasterizeDesign(design, N).data, theirs);
             expect(cost).toBeLessThan(BOUNDS[name].row);
           }
           const all = cutGeometryToDesign(EXAMPLES[name], {
             name,
-            enforce: { curve: 'sym', lobe: 'sym', lobes: 'sym' }
+            enforce: { curve: 'sym', lobe: 'sym', lobes: 'sym' },
+            enforceCostLimit: 1
           });
           expect(maskMismatch(rasterizeDesign(all, N).data, theirs)).toBeLessThan(BOUNDS[name].all);
         });
@@ -484,6 +494,85 @@ describe('cutGeometryToDesign', () => {
       });
     });
 
+    describe('the cost limit', () => {
+      // The star was solved with no symmetry asked for, so correcting it moves
+      // about a sixth of the woven square — the case the limit exists for.
+      const ALL = { curve: 'sym', lobe: 'sym', lobes: 'sym' } as const;
+
+      it('keeps the engine\'s own heart when the correction costs too much', () => {
+        const plain = cutGeometryToDesign(EXAMPLES.star, { name: 'star' });
+        const { design, honoured, symmetryCost } = convertCutGeometry(EXAMPLES.star, {
+          name: 'star',
+          enforce: ALL
+        });
+        expect(symmetryCost).toBeGreaterThan(0.03);
+        expect(honoured).toEqual({ curve: 'off', lobe: 'off', lobes: 'off' });
+        // Not "close to": it is the very design the unenforced call returns.
+        expect(maskMismatch(rasterizeDesign(design, N).data, rasterizeDesign(plain, N).data)).toBe(0);
+      });
+
+      it('reports the same cost it refused the correction for', () => {
+        const forced = cutGeometryToDesign(EXAMPLES.star, {
+          name: 'star',
+          enforce: ALL,
+          enforceCostLimit: 1
+        });
+        const plain = cutGeometryToDesign(EXAMPLES.star, { name: 'star' });
+        const measured = maskMismatch(
+          rasterizeDesign(forced, 200).data,
+          rasterizeDesign(plain, 200).data
+        );
+        const { symmetryCost } = convertCutGeometry(EXAMPLES.star, { name: 'star', enforce: ALL });
+        expect(symmetryCost).toBeCloseTo(measured, 12);
+      });
+
+      it('keeps the correction when it is cheap, and says how cheap', () => {
+        // A solve that already holds the symmetry: the correction is a no-op to
+        // within the refitting error, so the guard must not stand in its way.
+        const geometry = syntheticGeometry([30, 70], [30, 70], 0);
+        const { design, honoured, symmetryCost } = convertCutGeometry(geometry, {
+          name: 'x',
+          enforce: ALL
+        });
+        expect(honoured).toEqual(ALL);
+        expect(symmetryCost).toBeLessThanOrEqual(0.03);
+        expect(detectSymmetryModes(design.fingers)).toEqual({
+          withinCurveMode: 'sym',
+          withinLobeMode: 'sym',
+          betweenLobesMode: 'sym'
+        });
+      });
+
+      it('measures nothing when no row was asked for', () => {
+        expect(convertCutGeometry(EXAMPLES.star, { name: 'star' }).symmetryCost).toBeUndefined();
+      });
+
+      it('obeys a limit the caller sets', () => {
+        const asked = { curve: 'off', lobe: 'sym', lobes: 'off' } as const;
+        const { symmetryCost } = convertCutGeometry(EXAMPLES.jul, {
+          name: 'jul',
+          enforce: asked,
+          enforceCostLimit: 1
+        });
+        // The same conversion, refused by a limit set just under its own cost
+        // and kept by one just over it.
+        expect(
+          convertCutGeometry(EXAMPLES.jul, {
+            name: 'jul',
+            enforce: asked,
+            enforceCostLimit: symmetryCost! - 1e-6
+          }).honoured
+        ).toEqual({ curve: 'off', lobe: 'off', lobes: 'off' });
+        expect(
+          convertCutGeometry(EXAMPLES.jul, {
+            name: 'jul',
+            enforce: asked,
+            enforceCostLimit: symmetryCost! + 1e-6
+          }).honoured
+        ).toEqual(asked);
+      });
+    });
+
     it('leaves the heart alone when every row is off', () => {
       const plain = cutGeometryToDesign(EXAMPLES.jul, { name: 'jul' });
       const enforced = cutGeometryToDesign(EXAMPLES.jul, {
@@ -504,7 +593,11 @@ describe('cutGeometryToDesign', () => {
 
     it('repeats back what it was asked for when the geometry can carry it', () => {
       const asked = { curve: 'sym', lobe: 'sym', lobes: 'anti' } as const;
-      const { honoured } = convertCutGeometry(EXAMPLES.jul, { name: 'jul', enforce: asked });
+      const { honoured } = convertCutGeometry(EXAMPLES.jul, {
+        name: 'jul',
+        enforce: asked,
+        enforceCostLimit: 1
+      });
       expect(honoured).toEqual(asked);
     });
 
@@ -525,7 +618,8 @@ describe('cutGeometryToDesign', () => {
     it('drops Mellem lapper when the two families came back different sizes', () => {
       const { design, honoured } = convertCutGeometry(lopsided(), {
         name: 'jul',
-        enforce: { curve: 'off', lobe: 'sym', lobes: 'sym' }
+        enforce: { curve: 'off', lobe: 'sym', lobes: 'sym' },
+        enforceCostLimit: 1
       });
       expect(design.gridSize).toEqual({ x: 4, y: 5 });
       expect(honoured).toEqual({ curve: 'off', lobe: 'sym', lobes: 'off' });
@@ -541,7 +635,8 @@ describe('cutGeometryToDesign', () => {
       const plain = cutGeometryToDesign(geometry, { name: 'jul' });
       const asked = cutGeometryToDesign(geometry, {
         name: 'jul',
-        enforce: { curve: 'off', lobe: 'off', lobes: 'sym' }
+        enforce: { curve: 'off', lobe: 'off', lobes: 'sym' },
+        enforceCostLimit: 1
       });
       expect(maskMismatch(rasterizeDesign(asked, N).data, rasterizeDesign(plain, N).data)).toBe(0);
     });

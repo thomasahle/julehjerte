@@ -24,6 +24,7 @@
  */
 
 import type { HeartDesign } from '$lib/types/heart';
+import { clearHandoff, handoffToDraw, takeHandoff } from './handoff';
 import { createMask, packMask, unpackMask, type Mask } from '$lib/paint/mask';
 import {
 	NO_SYMMETRY,
@@ -146,8 +147,11 @@ export function setMask(
  * assumption true, and it is the same fold §5 does before solving.
  *
  * Switching a row off costs nothing: the mask is already symmetric under what is
- * left. The fold does not count as a stroke — it is the visitor's own instruction,
- * not an edit they have yet to notice.
+ * left. The fold does not mark the mask dirty — it is the visitor's own
+ * instruction, not an edit they have yet to notice — but it does change the cells,
+ * so the page puts it on the undo stack, with the rows it was folded under
+ * ($lib/paint/history): the cells and the rows are one state, and putting one back
+ * without the other leaves the next stroke painting on an unfolded mask.
  */
 export function setSymmetry(next: SymmetrySettings): void {
 	session.symmetry = { ...next };
@@ -172,7 +176,7 @@ export function markMaskDirty(): void {
 /** Everything back to the start. Tests lean on this; the UI has no reason to. */
 export function resetSession(): void {
 	Object.assign(session, freshSession());
-	handoff = null;
+	clearHandoff();
 }
 
 /**
@@ -180,19 +184,12 @@ export function resetSession(): void {
  *
  * Not part of `session`: it is a one-shot message, taken exactly once by the page
  * that `/editor/?from=session` opens, and keeping it out of the store means a stale
- * result cannot be picked up by the next visit to Tegn.
+ * result cannot be picked up by the next visit to Tegn. It lives in its own module
+ * so that the draw page can take it without importing the mask and the symmetry
+ * group along with it (see `./handoff`); both functions are re-exported here,
+ * which is where PAINT.md §11 names them.
  */
-let handoff: HeartDesign | null = null;
-
-export function handoffToDraw(design: HeartDesign): void {
-	handoff = design;
-}
-
-export function takeHandoff(): HeartDesign | null {
-	const design = handoff;
-	handoff = null;
-	return design;
-}
+export { handoffToDraw, takeHandoff };
 
 /** The session as plain JSON-safe data. Unused for now; see the note at the top. */
 export type SerializedSession = {

@@ -215,8 +215,11 @@ folds the mask with `symmetrize` first**, and `setMask` folds an arriving mask t
 - Settings we pass (from the old page, minus what the owner removed): `{...AUTOMATIC_PRESET, width: 100, minWidth: 2,
   cutError: 0.25, timeLimit: 600, preferMatchingSheets, matchingErrorAllowance: 0.01, earlyStop: false,
   removeSpecks: 0, fillHoles: 0, minRadius: 0.8, kerf: 0, printShrinkPercent: 0.2, materialResolution: 360,
-  trials: 12, requireMaterialCore: true, paperColors: [right, left], resolution: 400}`. `identicalSheets: true` when
-  Mellem lapper is Sym (check `core/settings.js` for the accepted keys before relying on one).
+  trials: 12, requireMaterialCore: true, paperColors: [right, left], resolution: 400}`. "Samme skabelon til begge
+  sider" goes over as `preferMatchingSheets`, defaulting to Mellem lapper Sym. **Not `identicalSheets`**: that key is
+  not in `core/settings.js`'s `DEFAULTS`, so `settings(raw)` drops it before a solve ever sees it — it is read off
+  the raw object by `prepare` alone. `settings()` is the list of keys the engine accepts, and a key that is not on
+  it disappears in silence; `engine.test.ts` puts the whole settings object through it for exactly that reason.
 - `prepared.mask`: `Uint8Array` of `prepared.resolution²`, value 0 = left colour, 1 = right colour (this is the
   convention the old page used when drawing it). Resample to 400 if the engine chose a smaller resolution.
 - `DesignResult.files['cut_geometry.json']` is the solution (schema `heartcurves-2`): `square_width_mm` (100),
@@ -336,8 +339,9 @@ i lap Anti. Everything else off. Run it after import and after "Mal på hjertet"
 `session.symmetry` and `session.found`.
 
 Solving with symmetry on: `symmetrize` the mask under the active transforms first (so the target itself is
-symmetric), pass `identicalSheets`/`preferMatchingSheets` for Mellem lapper Sym (the only symmetry the engine
-enforces itself), and give the converter `enforce: session.symmetry` so the resulting fingers are exact. Inden i
+symmetric), pass `preferMatchingSheets` for Mellem lapper Sym (the only symmetry the engine enforces itself, and see
+§4 for why it is not `identicalSheets`), and give the converter `enforce: session.symmetry` so the resulting fingers
+are exact. Inden i
 kurve Anti cannot be expressed on the mask; it is passed to the converter only, so it is the one row that always
 reaches a solve that was never asked to hold it — see the note on what enforcing costs in §4. The rows the panel
 shows afterwards are the converter's `honoured`, not what was asked for.
