@@ -9,6 +9,11 @@
  * agree to the pixel — otherwise "Sådan bliver masken" is a promise the canvas
  * then breaks — so the routine lives here rather than in either component.
  *
+ * The same square also carries a rectified photograph while the import dialog's
+ * corners are being dragged (`drawHeartPhoto`), for the same reason: a crop that
+ * did not sit exactly where the mask will sit would make the live preview a lie
+ * about the answer it is standing in for.
+ *
  * It is plain canvas-2d: everything about the heart's geometry is in `heartLayout`,
  * which is arithmetic and testable, and `drawHeart` is the six calls that put it
  * on a context. The frame matches the site's SVG heart (`$lib/rendering/svgWeave`):
@@ -20,6 +25,7 @@
 import type { HeartColors } from '$lib/types/heart';
 import { fitHeart, type HeartLayout } from './heartLayout';
 import type { Mask } from './mask';
+import type { RectifiedPhoto } from './rectify';
 
 /**
  * Where the heart sits on a canvas: the square's centre and its side in pixels,
@@ -60,6 +66,54 @@ export function drawHeart(
 	colors: HeartColors,
 	size: number
 ): void {
+	drawFramed(ctx, colors, size, maskCanvas(mask, colors), mask.size);
+}
+
+/**
+ * The same heart, with a rectified photograph in the woven square instead of a
+ * mask — PAINT.md §2, the preview while a corner is being dragged.
+ *
+ * The engine cannot answer per frame, so the import dialog shows the crop
+ * itself — in colour, the photograph as the four corners see it — until the
+ * corner lands and the prepared mask replaces it. Which means the two pictures
+ * have to be the same picture in every respect but their contents: same
+ * `heartLayout`, same turn, same clip, same paper on the lobes. So this is
+ * `drawHeart` with one argument changed, sharing every line of the frame, and
+ * a crop that drifted from the mask it becomes is not a drawing bug that can
+ * happen. `photo.data` is `size²` RGBA pixels in the woven square's own
+ * orientation, which is `rectifyMotif`'s output for the same corner order the
+ * engine reads — see `rectify.ts`. Pixels the crop reaches outside the
+ * photograph come back transparent, and stay transparent here: the lobes show
+ * through where the corners left the picture, which is the truth about them.
+ */
+export function drawHeartPhoto(
+	ctx: CanvasRenderingContext2D,
+	photo: RectifiedPhoto,
+	colors: HeartColors,
+	size: number
+): void {
+	drawFramed(ctx, colors, size, photoCanvas(photo), photo.size);
+}
+
+/**
+ * The heart's frame — two lobes in the paper colours — with `contents` blitted
+ * into the woven square.
+ *
+ * The contents go through an offscreen canvas of their own resolution rather
+ * than as `fillRect` per cell: 160 000 rectangles is a second of work, one
+ * `drawImage` is a blit. Smoothing follows the direction of the scaling —
+ * a 400-cell mask shown 112 px wide loses every thin stroke to
+ * nearest-neighbour sampling, while a mask magnified past its own cells should
+ * show them as the squares they are. `cells` is the contents' resolution, which
+ * decides that. The context is left as it was found.
+ */
+function drawFramed(
+	ctx: CanvasRenderingContext2D,
+	colors: HeartColors,
+	size: number,
+	contents: HTMLCanvasElement | null,
+	cells: number
+): void {
 	const { cx, cy, scale } = heartLayout(size);
 	ctx.save();
 	ctx.clearRect(0, 0, size, size);
@@ -86,34 +140,30 @@ export function drawHeart(
 	ctx.closePath();
 	ctx.fill();
 
-	drawMaskCells(ctx, mask, colors, scale);
+	if (contents) {
+		ctx.beginPath();
+		ctx.rect(-0.5, -0.5, 1, 1);
+		ctx.clip();
+		ctx.imageSmoothingEnabled = scale < cells;
+		ctx.drawImage(contents, -0.5, -0.5, 1, 1);
+	}
 	ctx.restore();
 }
 
-/**
- * Paint the mask into the woven square of an already-transformed context.
- *
- * The cells go through an offscreen canvas of the mask's own size rather than as
- * `fillRect` per cell: 160 000 rectangles is a second of work, one `drawImage`
- * is a blit. Smoothing follows the direction of the scaling — a 400-cell mask
- * shown 112 px wide loses every thin stroke to nearest-neighbour sampling, while
- * a mask magnified past its own cells should show them as the squares they are.
- */
-function drawMaskCells(
-	ctx: CanvasRenderingContext2D,
-	mask: Mask,
-	colors: HeartColors,
-	scale: number
-): void {
-	const cells = maskCanvas(mask, colors);
-	if (!cells) return;
-	ctx.save();
-	ctx.beginPath();
-	ctx.rect(-0.5, -0.5, 1, 1);
-	ctx.clip();
-	ctx.imageSmoothingEnabled = scale < mask.size;
-	ctx.drawImage(cells, -0.5, -0.5, 1, 1);
-	ctx.restore();
+/** The rectified photograph as an image, one pixel per pixel. */
+function photoCanvas(photo: RectifiedPhoto): HTMLCanvasElement | null {
+	if (typeof document === 'undefined') return null;
+	// A short buffer would throw inside `set`; a long one is not this picture.
+	if (photo.size <= 0 || photo.data.length !== photo.size * photo.size * 4) return null;
+	const canvas = document.createElement('canvas');
+	canvas.width = photo.size;
+	canvas.height = photo.size;
+	const ctx = canvas.getContext('2d');
+	if (!ctx) return null;
+	const image = ctx.createImageData(photo.size, photo.size);
+	image.data.set(photo.data);
+	ctx.putImageData(image, 0, 0);
+	return canvas;
 }
 
 /** The mask as an image of its two paper colours, one pixel per cell. */

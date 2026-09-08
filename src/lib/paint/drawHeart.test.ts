@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { drawHeart, heartLayout } from './drawHeart';
+import { drawHeart, drawHeartPhoto, heartLayout } from './drawHeart';
 import { toMask, toScreen } from './heartLayout';
 import { createMask, type Mask } from './mask';
+import type { RectifiedPhoto } from './rectify';
 
 /** The heart's reach from the square's centre, in units of the square's side. */
 const REACH = Math.SQRT1_2 / 2 + 0.5;
@@ -165,5 +166,104 @@ describe('drawHeart', () => {
 		// it — a wrong drawing with nothing to show it was wrong.
 		expect(at(paint(createMask(1, 8)), 0, 0)).toBe(RED);
 		expect(at(paint(createMask(1, 8), 'not a colour'), 0, 0)).not.toBe(RED);
+	});
+});
+
+/*
+ * The live crop (PAINT.md §2): while a corner is dragged the dialog shows the
+ * rectified photograph in the same diamond, and the prepared mask replaces it
+ * on release. The visitor reads the two as one picture that sharpened, so the
+ * claim worth pinning is that they *are* one picture: every cell of the photo
+ * lands where the same cell of a mask would, and the lobes keep the paper.
+ */
+
+const BLUE = '0,0,255';
+
+/** A photo whose only ink is one quadrant; everywhere else is the left paper. */
+function quadrantPhoto(qx: 0 | 1, qy: 0 | 1, n = 8): RectifiedPhoto {
+	const data = new Uint8ClampedArray(n * n * 4);
+	const half = n / 2;
+	for (let y = 0; y < n; y++) {
+		for (let x = 0; x < n; x++) {
+			const i = 4 * (y * n + x);
+			const inked = Math.floor(x / half) === qx && Math.floor(y / half) === qy;
+			data.set(inked ? [0, 0, 255, 255] : [255, 255, 255, 255], i);
+		}
+	}
+	return { size: n, data };
+}
+
+function photograph(photo: RectifiedPhoto): CanvasRenderingContext2D {
+	const ctx = context();
+	drawHeartPhoto(ctx, photo, { left: '#ffffff', right: '#ff0000' }, SIZE);
+	return ctx;
+}
+
+describe('drawHeartPhoto', () => {
+	it('puts each quadrant of the crop where the same quadrant of a mask goes', () => {
+		// Exactly `drawHeart`'s first two claims, asked of the photo: the quadrant
+		// x > ½, y < ½ lands on the diamond's upper right and nowhere else, and
+		// the off-diagonal quadrant proves the square is not transposed.
+		const upperRight = photograph(quadrantPhoto(1, 0));
+		expect(at(upperRight, 0.25, -0.25)).toBe(BLUE);
+		expect(at(upperRight, -0.25, -0.25)).toBe(WHITE);
+		expect(at(upperRight, -0.25, 0.25)).toBe(WHITE);
+		expect(at(upperRight, 0.25, 0.25)).toBe(WHITE);
+
+		const lowerLeft = photograph(quadrantPhoto(0, 1));
+		expect(at(lowerLeft, -0.25, 0.25)).toBe(BLUE);
+		expect(at(lowerLeft, 0.25, -0.25)).toBe(WHITE);
+	});
+
+	it('draws each pixel where the paint canvas points at the cell under it', () => {
+		// The same round trip `drawHeart` is held to, so the crop the visitor
+		// drags and the mask that replaces it cannot disagree about which corner
+		// of the photograph became which lobe of the heart.
+		const ctx = photograph(quadrantPhoto(1, 0));
+		const layout = heartLayout(SIZE);
+		const colourAt = (p: { x: number; y: number }) => {
+			const [r, g, b] = ctx.getImageData(Math.round(p.x), Math.round(p.y), 1, 1).data;
+			return `${r},${g},${b}`;
+		};
+		const inked = toScreen(layout, 0.8, 0.3);
+		expect(colourAt(inked)).toBe(BLUE);
+		expect(colourAt(toScreen(layout, 0.3, 0.8))).toBe(WHITE);
+		const back = toMask(layout, 8, inked.x, inked.y);
+		expect([Math.floor(back.x), Math.floor(back.y)]).toEqual([6, 2]);
+	});
+
+	it('lands a photo cell exactly where the same mask cell lands', () => {
+		// A mask and a crop of the same resolution, inked in the same one cell:
+		// nothing but the colours may differ, so the pair pins the whole mapping
+		// rather than the four points a quadrant test can reach.
+		const photo = photograph(quadrantPhoto(1, 0));
+		const mask = paint(quadrantMask(1, 0));
+		const layout = heartLayout(SIZE);
+		for (let y = 0; y < 8; y++) {
+			for (let x = 0; x < 8; x++) {
+				const p = toScreen(layout, (x + 0.5) / 8, (y + 0.5) / 8);
+				const read = (ctx: CanvasRenderingContext2D) => {
+					const [r, g, b] = ctx.getImageData(Math.round(p.x), Math.round(p.y), 1, 1).data;
+					return `${r},${g},${b}`;
+				};
+				expect(read(photo) === BLUE).toBe(read(mask) === RED);
+			}
+		}
+	});
+
+	it('leaves the paper colours on the lobes, which are not the photograph', () => {
+		// The crop fills the woven square and stops there: the lobes are paper in
+		// both pictures, so nothing about them moves when the mask arrives.
+		const ctx = photograph(quadrantPhoto(1, 0));
+		expect(at(ctx, -0.75, 0)).toBe(WHITE);
+		expect(at(ctx, 0, -0.75)).toBe(RED);
+	});
+
+	it('draws the lobes and no crop at all for pixels that are not a square', () => {
+		// A short buffer would throw inside `set` and take the whole frame with
+		// it; the heart is still worth drawing without its middle.
+		const ctx = photograph({ size: 8, data: new Uint8ClampedArray(4) });
+		expect(at(ctx, 0, -0.75)).toBe(RED);
+		expect(at(ctx, 0.25, -0.25)).toBe(RED);
 	});
 });
