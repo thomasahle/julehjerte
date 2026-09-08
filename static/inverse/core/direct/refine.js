@@ -10,6 +10,7 @@ import {materialAudit} from '../material.js';
 import {matchingGroups,matchingPenalty,projectMatching} from './matching.js';
 import {symmetryTies,applyTies} from './symmetry.js';
 import {straightProposal,primitiveComplexity,primitiveCost} from './primitives.js';
+import {boundaryObjective} from './image-objective.js';
 export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+.35;}
 
 const cornerCache=new WeakMap();
@@ -89,7 +90,9 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary'}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null}={}){
+  // Compile the weighted force field once, not on every optimization step.
+  const objective=boundaryObjective(prob,weights),force=objective.target;
   const points=graph.points.slice(),initial=points.slice(),adam=new Adam(points.length,rate*graph.width/100),history=[];
   // Requested symmetries are constraints, not preferences: both the points and
   // the search direction are projected onto their subspace at every step. A
@@ -107,7 +110,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     if(straight&&ties)applyTies(ties,straight,straight,{fixed:graph.fixed,original:initial});
     if(straight&&groups)projectMatching(straight,groups,graph.fixed,initial);
     const proposals=[points,...(straight?[straight]:[])].map(p=>{
-      const error=mismatch(renderCurves(graph,p,phase,n,32),prob),imageScore=(boundaryValue(graph,p,prob,n,phase)+boundaryValue(graph,p,prob,n,phase,{transpose:true,rows:193}))/2;
+      const error=mismatch(renderCurves(graph,p,phase,n,32),prob,weights),imageScore=(boundaryValue(graph,p,force,n,phase)+boundaryValue(graph,p,force,n,phase,{transpose:true,rows:193}))/2+objective.offset;
       const score=imageScore+primitiveCost(graph,p,n)+(cfg.preferMatchingSheets?matchingPenalty(graph,p).loss:0);
       return{graph,points:p.slice(),phase,error,score,primitives:primitiveComplexity(graph,p),straightened:p===straight};
     });
@@ -134,7 +137,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
   checkpoint(-1);
   for(let step=0;step<steps;step++){
     if(stoppedEarly||(step%5===0&&performance.now()>deadline))break;
-    const g=boundaryGradient(graph,points,prob,n,phase),penalty=curvePenalty(graph,points,cfg);
+    const g=boundaryGradient(graph,points,force,n,phase),penalty=curvePenalty(graph,points,cfg);
     if(cfg.preferMatchingSheets&&!identicalSheets){const matching=matchingPenalty(graph,points);for(let i=0;i<g.length;i++)g[i]+=matching.gradient[i];}
     for(let i=0;i<g.length;i++)g[i]=graph.fixed[i]?0:g[i]+penalty.gradient[i]+.000004*(points[i]-initial[i])/points.length;
     if(ties)applyTies(ties,g,points,{fixed:graph.fixed,tangent:true});

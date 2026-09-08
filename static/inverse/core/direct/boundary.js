@@ -6,9 +6,11 @@
 import {bernstein,dbernstein,bilinear} from './math.js';
 import {polygonIndex} from './curves.js';
 import {nativeBoundaryGradient} from './native.js';
+import {boundaryObjective} from './image-objective.js';
 
 const quadratureTables=new Map();
-export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24,native=true}={}){
+export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24,native=true,weights=null}={}){
+  if(weights)prob=boundaryObjective(prob,weights).target;
   const index=polygonIndex(graph,points,maskSamples),gradient=new Float64Array(points.length),w=graph.width;
   if(!quadratureTables.has(nquad))quadratureTables.set(nquad,{B:Array.from({length:nquad},(_,j)=>bernstein((j+.5)/nquad)),D:Array.from({length:nquad},(_,j)=>dbernstein((j+.5)/nquad))});
   const {B,D}=quadratureTables.get(nquad);
@@ -29,7 +31,8 @@ export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples
  * Orthogonal averaging reduces row quadrature bias but is not used as the
  * backward derivative. The cubic controls are never chosen from target edges.
  */
-export function boundaryValue(graph,points,prob,n,phase,{rows=192,ns=24,transpose=false}={}){
+export function boundaryValue(graph,points,prob,n,phase,{rows=192,ns=24,transpose=false,weights=null}={}){
+  const objective=boundaryObjective(prob,weights);prob=objective.target;
   const index=polygonIndex(graph,points,ns),w=graph.width,segments=transpose?index.segments.map(s=>[s[1],s[0],s[3],s[2]]):index.segments;
   let total=0,constant=0;for(const p of prob)constant+=p*p/prob.length;
   const cost=new Float64Array(n+2),cdf=new Float64Array(n+2),xs=Float64Array.from({length:n+2},(_,i)=>i===0?0:i===n+1?w:(i-.5)*w/n);
@@ -43,5 +46,5 @@ export function boundaryValue(graph,points,prob,n,phase,{rows=192,ns=24,transpos
     const integral=x=>{x=Math.max(0,Math.min(w,x));const j=Math.max(0,Math.min(n,Math.floor(x*n/w+.5))),dx=x-xs[j];return cdf[j]+cost[j]*dx+.5*(cost[j+1]-cost[j])*dx*dx/(xs[j+1]-xs[j]);};
     let area=0;for(let j=0;j<crossings.length;j++)area+=(j%2?1:-1)*integral(crossings[j]);
     total+=(phase===-1?cdf[n+1]-area:area)/(w*rows);
-  }return constant+total;
+  }return constant+total+objective.offset;
 }

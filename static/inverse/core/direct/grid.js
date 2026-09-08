@@ -2,6 +2,7 @@
  * gradients of the annealed joint parity surrogate. No target contours.
  */
 import {Adam,basisTable,splineBasis,splineKnots,randomNormal,resize} from './math.js';
+import {imageWeights,resizeObjective} from './image-objective.js';
 
 export function gridModel(counts,k=16,seed=0,initial=null){
   const normal=randomNormal(seed),offsets=[0,k*(counts[0]+1)],size=offsets[1]+k*(counts[1]+1);
@@ -42,7 +43,8 @@ function addSmoothness(model,controls,dc){
 /** Ordered initializer gradients. Exclusion products handle zero tanh factors
  * without division, including exactly aligned grid boundaries.
  */
-export function gridLoss(model,target,n,phase,epsilon,{floor=.008,coarseWeight=.4,smooth=true,clearance=0}={}){
+export function gridLoss(model,target,n,phase,epsilon,{floor=.008,coarseWeight=.4,smooth=true,clearance=0,weights=null}={}){
+  const importance=imageWeights(weights,n*n);weights=importance?.values;
   phase*= (model.counts[0]+model.counts[1])%2?-1:1;
   const basis=basisTable(n,model.k),controls=gridControls(model,floor),samples=gridSamples(controls,model,basis,n),products=[],derivatives=[];
   model.counts.forEach((count,f)=>{
@@ -54,15 +56,26 @@ export function gridLoss(model,target,n,phase,epsilon,{floor=.008,coarseWeight=.
       for(let i=count-1;i>=0;i--){derivative[index*count+i]=-prefix[i]*suffix*(1-values[i]*values[i])/epsilon;suffix*=values[i];}
     }products.push(product);derivatives.push(derivative);
   });
-  const prediction=new Float64Array(n*n),dPred=new Float64Array(n*n),pool=8,m=Math.ceil(n/pool),coarse=new Float64Array(m*m),counts=new Uint16Array(m*m);let loss=0;
+  const prediction=new Float64Array(n*n),dPred=new Float64Array(n*n),pool=8,m=Math.ceil(n/pool),coarse=new Float64Array(m*m),counts=new Uint16Array(m*m),coarseMass=weights?new Float64Array(m*m):null;let loss=0;
   for(let y=0;y<n;y++)for(let x=0;x<n;x++){
     const i=y*n+x,p=(1-phase*products[0][i]*products[1][x*n+y])/2,d=p-target[i],b=Math.floor(y/pool)*m+Math.floor(x/pool);
-    prediction[i]=p;dPred[i]=2*d/(n*n);loss+=d*d/(n*n);coarse[b]+=d;counts[b]++;
+    prediction[i]=p;counts[b]++;
+    if(weights){const w=weights[i];dPred[i]=2*w*d/importance.mass;loss+=w*d*d/importance.mass;coarse[b]+=w*d;coarseMass[b]+=w;}
+    else{dPred[i]=2*d/(n*n);loss+=d*d/(n*n);coarse[b]+=d;}
   }
-  for(let i=0;i<coarse.length;i++){coarse[i]/=counts[i];loss+=coarseWeight*coarse[i]*coarse[i]/coarse.length;}
+  // Each pooled cell has the mean importance of its constituent pixels.
+  // Ignored cells contribute neither to its residual nor its normalization.
+  // Mean (rather than total) importance preserves the original equal-block
+  // objective even when a partial edge block has fewer than 8×8 pixels.
+  let pooledMass=0;
+  if(weights)for(let i=0;i<coarse.length;i++)pooledMass+=coarseMass[i]/counts[i];
+  for(let i=0;i<coarse.length;i++){
+    if(weights){if(!coarseMass[i])continue;coarse[i]/=coarseMass[i];loss+=coarseWeight*(coarseMass[i]/counts[i])*coarse[i]*coarse[i]/pooledMass;}
+    else{coarse[i]/=counts[i];loss+=coarseWeight*coarse[i]*coarse[i]/coarse.length;}
+  }
   const ds=model.counts.map(c=>new Float64Array(n*c));
   for(let y=0;y<n;y++)for(let x=0;x<n;x++){
-    const i=y*n+x,j=x*n+y,b=Math.floor(y/pool)*m+Math.floor(x/pool),g=dPred[i]+2*coarseWeight*coarse[b]/(coarse.length*counts[b]);
+    const i=y*n+x,j=x*n+y,b=Math.floor(y/pool)*m+Math.floor(x/pool),g=dPred[i]+(weights?2*coarseWeight*coarse[b]*weights[i]/(pooledMass*counts[b]):2*coarseWeight*coarse[b]/(coarse.length*counts[b]));
     const a=-phase*.5*g*products[1][j],bb=-phase*.5*g*products[0][i];
     for(let k=0;k<model.counts[0];k++)ds[0][y*model.counts[0]+k]+=a*derivatives[0][i*model.counts[0]+k];
     for(let k=0;k<model.counts[1];k++)ds[1][x*model.counts[1]+k]+=bb*derivatives[1][j*model.counts[1]+k];
@@ -105,7 +118,11 @@ export function gridMask(model,n,phase,floor=.008){
     let v=Number(phase===-1);for(let j=0;j<model.counts[0];j++)v^=Number((x+.5)/n>samples[0][y*model.counts[0]+j]);for(let j=0;j<model.counts[1];j++)v^=Number((y+.5)/n>samples[1][x*model.counts[1]+j]);mask[y*n+x]=v;
   }return mask;
 }
-export const mismatch=(mask,prob)=>mask.reduce((s,v,i)=>s+Number(v!==Number(prob[i]>.5)),0)/mask.length;
+export function mismatch(mask,prob,weights=null){
+  const importance=imageWeights(weights,mask.length);
+  if(!importance)return mask.reduce((s,v,i)=>s+Number(v!==Number(prob[i]>.5)),0)/mask.length;
+  return mask.reduce((s,v,i)=>s+weights[i]*Number(v!==Number(prob[i]>.5)),0)/importance.mass;
+}
 export function gridPaths(model,width=100,floor=.008){
   const controls=gridControls(model,floor),breaks=[...new Set(splineKnots(model.k))];
   return model.counts.map((count,f)=>Array.from({length:count},(_,i)=>breaks.slice(1).map((hi,j)=>{
@@ -113,15 +130,16 @@ export function gridPaths(model,width=100,floor=.008){
     return xs.map((x,k)=>(f?[ys[k],x]:[x,ys[k]]).map(v=>v*width));
   })));
 }
-export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed=0,floor=.008,clearance=0,resolution=96,optimizationTarget=null,deadline=Infinity,onProgress=()=>{}}={}){
+export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed=0,floor=.008,clearance=0,resolution=96,optimizationTarget=null,weights=null,deadline=Infinity,onProgress=()=>{}}={}){
   if(optimizationTarget&&optimizationTarget.length!==resolution*resolution)throw new Error('Optimization target must match the grid resolution.');
-  const target=optimizationTarget||resize(prob,size,resolution),model=gridModel(counts,k,seed,initial),adam=new Adam(model.z.length,initial ? .015 : .04);
-  let best={z:model.z.slice(),error:mismatch(gridMask(model,size,phase,floor),prob),step:-1},completed=0;
+  if(optimizationTarget&&imageWeights(weights,prob.length))throw new Error('Weighted grids must resample their target and weights together.');
+  const resized=weights?resizeObjective(prob,size,resolution,weights):null,target=optimizationTarget||resized?.probability||resize(prob,size,resolution),model=gridModel(counts,k,seed,initial),adam=new Adam(model.z.length,initial ? .015 : .04);
+  let best={z:model.z.slice(),error:mismatch(gridMask(model,size,phase,floor),prob,weights),step:-1},completed=0;
   for(let step=0;step<steps;step++){
     if(step%10===0&&performance.now()>deadline)break;
     const progress=step/Math.max(1,steps-1),epsilon=initial?.length?(.012*(1-progress)**2+.003):(.035*(1-progress)**2+.004);
-    const value=gridLoss(model,target,resolution,phase,epsilon,{floor,clearance});adam.update(model.z,value.gradient,3);completed++;
-    if(step%30===0||step===steps-1){const error=mismatch(gridMask(model,size,phase,floor),prob);if(error<best.error)best={z:model.z.slice(),error,step};onProgress({step,error,loss:value.loss});}
+    const value=gridLoss(model,target,resolution,phase,epsilon,{floor,clearance,weights:resized?.weights});adam.update(model.z,value.gradient,3);completed++;
+    if(step%30===0||step===steps-1){const error=mismatch(gridMask(model,size,phase,floor),prob,weights);if(error<best.error)best={z:model.z.slice(),error,step};onProgress({step,error,loss:value.loss});}
   }
   model.z=best.z;return{model,phase,floor,error:best.error,steps:completed};
 }
