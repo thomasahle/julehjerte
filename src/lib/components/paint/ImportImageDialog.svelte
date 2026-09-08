@@ -222,11 +222,21 @@
 			try {
 				const photo = await rectifyPhoto(image, corners);
 				if (!cancelled) livePhoto = photo;
-			} catch {
+			} catch (error) {
 				// Corners that fold over are not a crop the locator can flatten, and
 				// the status line already says so in the visitor's own words. The
 				// last good frame stays: a preview that blanked every time a dragged
 				// corner crossed its neighbour would flicker all the way across.
+				//
+				// Everything else that can throw here — the locator failing to load
+				// above all — has no symptom at all but a crop that never appears,
+				// so it is logged like the engine's own failures (`engineFailed`).
+				// Corners the dialog itself calls convex are the ones the locator
+				// takes, so this asks the question we already have an answer to
+				// rather than reading the locator's message back.
+				if (isConvexQuad(corners)) {
+					console.error('Import: the live crop could not be drawn', error);
+				}
 			}
 		});
 		return () => {
