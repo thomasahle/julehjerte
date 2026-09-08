@@ -73,6 +73,9 @@ describe('simplifyCubicChain', () => {
     expect(dir(last.p3, last.p2)).toBeCloseTo(dir(S_CURVE.p3, S_CURVE.p2), 6);
   });
 
+  // Three tolerances × eight cuts × a dense sampling of each: about 3.4 s on its
+  // own, and three times that when the full suite has every core busy. The work
+  // is the point of the test, so it gets the time instead of a thinner sweep.
   it('stays inside the tolerance it was given, on every cut of the star', () => {
     for (const tolerance of [0.15, FIT_TOLERANCE, 0.6]) {
       for (const chain of starChains()) {
@@ -81,7 +84,7 @@ describe('simplifyCubicChain', () => {
         expect(chainDeviation(fitted, sampleChain(chain, 0.1))).toBeLessThan(tolerance * 1.05);
       }
     }
-  });
+  }, 30_000);
 
   it('is monotone in the tolerance: coarser never costs more cubics', () => {
     for (const chain of starChains()) {
