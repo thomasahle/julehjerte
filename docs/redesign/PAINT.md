@@ -422,7 +422,7 @@ it here. The UI is designed now (mockup, section "Frie felter") so the paint mod
   cost (loss weight about 0.25 plus a penalty on changed cells; Codex's "repair the border"). *Fri* = the engine
   fills the band itself (weight 0; the band's colours are ignored).
 - The protected shape is chosen as it appears in the heart: Rude (the band along the woven square's edges),
-  Cirkel, Firkant (upright in the heart, a diamond in the mask), inset about 18 % of the square, the margin Codex
+  Cirkel, Sekskant (flat top and bottom as seen in the heart), inset about 18 % of the square, the margin Codex
   validated; there is no width control.
 - Drawing: soft cells keep their colours under a light hatch; free cells are hatched on a light ground; the
   protected shape has a dashed outline. "Maler med" gets a third, hatched swatch to paint free cells by hand.
