@@ -16,14 +16,11 @@
   Nothing is nested inside anything else interactive, so the card stays keyboard
   and screen-reader friendly.
 
-  The card fades in and slides up the first time it scrolls into view. That is
-  set up in the browser only, and only for cards that are still below the fold,
-  so a card that is already visible (or a visitor who asked for reduced motion,
-  or has no JS) simply gets the finished state.
+  The card has no entrance animation: every heart it shows is already drawn in
+  the HTML the browser is parsing, so a card that fades in as it reaches the
+  viewport is the page pretending to load something it has already got.
 -->
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 	import type { HeartDesign } from '$lib/types/heart';
 	import { t, type Language } from '$lib/i18n';
 	import { heartHref } from '$lib/i18n/routes';
@@ -64,74 +61,6 @@
 	let difficulty = $derived(calculateDifficulty(design));
 	let detailsHref = $derived(heartHref(design.id, lang));
 
-	// Scroll-in animation. It only ever leaves 'idle' in the browser, so the
-	// prerendered card is fully visible with or without JavaScript.
-	//   idle      the finished state (also: reduced motion, already on screen)
-	//   pending   hidden, waiting to scroll into view
-	//   revealed  running the fade-and-rise, then back to idle
-	type RevealPhase = 'idle' | 'pending' | 'revealed';
-
-	let cardEl = $state.raw<HTMLElement | null>(null);
-	let phase = $state<RevealPhase>('idle');
-	let stagger = $state(0);
-
-	onMount(() => {
-		if (!browser || !cardEl) return;
-		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-		const el = cardEl;
-		// Already on screen (or above it): show it as it is, no animation and no flash.
-		if (el.getBoundingClientRect().top < window.innerHeight - 40) return;
-
-		// Stagger by column, derived from how many equal-width cards fit the grid.
-		const grid = el.parentElement;
-		const columns =
-			grid && el.offsetWidth > 0 ? Math.max(1, Math.floor(grid.clientWidth / el.offsetWidth)) : 1;
-		stagger = index % columns;
-		phase = 'pending';
-
-		// The root is grown upwards without limit, so "intersecting" means "no
-		// longer below the fold" — a card the page jumps straight past (an anchor
-		// like /#stjerner, or the deep link back from a heart's page) then reveals
-		// instead of staying invisible above the viewport.
-		const observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (!entry.isIntersecting) continue;
-					phase = 'revealed';
-					observer.disconnect();
-				}
-			},
-			{ rootMargin: '100000px 0px -40px 0px' }
-		);
-		observer.observe(el);
-		return () => observer.disconnect();
-	});
-
-	// The sway is an infinite animation on a rotated, drop-shadowed layer, so every
-	// card keeps a filtered render surface alive for the life of the tab — and 38 of
-	// the front page's 43 hanging hearts are below the fold. Pause the ones nobody
-	// is looking at. `offscreen` starts false so the first paint is never paused.
-	let offscreen = $state(false);
-
-	onMount(() => {
-		if (!browser || !cardEl || typeof IntersectionObserver === 'undefined') return;
-		const observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) offscreen = !entry.isIntersecting;
-			},
-			{ rootMargin: '200px 0px' }
-		);
-		observer.observe(cardEl);
-		return () => observer.disconnect();
-	});
-
-	// Drop the animation once it has played: an animation with fill-mode would
-	// otherwise keep overriding the card's hover transform.
-	function handleAnimationEnd(event: AnimationEvent) {
-		if (event.target === cardEl && phase === 'revealed') phase = 'idle';
-	}
-
 	function handleDetails() {
 		onClick?.(design);
 	}
@@ -146,15 +75,10 @@
 </script>
 
 <article
-	bind:this={cardEl}
 	class="card"
 	class:is-selected={selected}
-	class:pending={phase === 'pending'}
-	class:revealed={phase === 'revealed'}
-	class:offscreen
 	id={makeHeartAnchorId(design.id)}
-	style="height: {SIZE + 136}px; --stagger: {stagger * 55}ms;"
-	onanimationend={handleAnimationEnd}
+	style="height: {SIZE + 136}px;"
 >
 	<button
 		class="card-select"
@@ -208,30 +132,6 @@
 
 	.card:hover {
 		transform: scale(1.02);
-	}
-
-	.card.offscreen :global(.hang) {
-		animation-play-state: paused;
-	}
-
-	/* Waiting to scroll into view — only ever set from the browser. */
-	.card.pending {
-		opacity: 0;
-	}
-
-	.card.revealed {
-		animation: card-in 0.45s ease-out var(--stagger, 0ms) both;
-	}
-
-	@keyframes card-in {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: none;
-		}
 	}
 
 	/* The whole card toggles PDF selection. */
@@ -393,10 +293,6 @@
 	@media (prefers-reduced-motion: reduce) {
 		.card {
 			transition: none;
-		}
-
-		.card.revealed {
-			animation: none;
 		}
 	}
 </style>
