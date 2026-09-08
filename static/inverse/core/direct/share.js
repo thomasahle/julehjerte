@@ -4,7 +4,6 @@
 import {Cubic,distance,unit,dot} from '../bezier.js';
 import {CurveGraph,renderCurves} from './curves.js';
 import {mismatch} from './grid.js';
-import {resize} from './math.js';
 import {validate,easeMetrics,sampleWeave} from '../validate.js';
 import {materialAudit} from '../material.js';
 import {matchingSummary} from './matching.js';
@@ -13,6 +12,8 @@ import {requestedSymmetry} from '../settings.js';
 import {curvesOf} from '../graph.js';
 import {auditImageFeatures} from '../image-features.js';
 import {maskDisagreement} from './prefer-matching.js';
+import {sourceWeights} from '../image-reference.js';
+import {resizeObjective} from './image-objective.js';
 
 const curveKey=p=>[p,p.toReversed()].map(c=>c.flat().map(v=>Math.round(v*1e7)).join(',')).sort()[0];
 
@@ -113,13 +114,13 @@ export function sharingReplacement(paths,c,{identicalSheets=false}={}){
   return next;
 }
 
-export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},rounds=12}={}){
-  let best=candidate;const accepted=[],rejected=[],bigN=Math.min(512,2*n),big=resize(prob,n,bigN);
+export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},rounds=12,weights=null}={}){
+  let best=candidate;const accepted=[],rejected=[],bigN=Math.min(512,2*n),high=resizeObjective(prob,n,bigN,weights),big=high.probability;
   // Other square/chord symmetries still require their own complete edit orbit.
   // Never discard a requested constraint merely to remove a small image seam.
   if(requestedSymmetry(cfg.symmetry).some(name=>name!=='transpose'))return{...best,sharing:{accepted,rejected,skipped:'unsupported_symmetry'}};
   const identicalSheets=matchingSummary(best.graph.solution(best.points,best.phase,input)).identical;
-  let bigError=mismatch(renderCurves(best.graph,best.points,best.phase,bigN,48),big);
+  let bigError=mismatch(renderCurves(best.graph,best.points,best.phase,bigN,48),big,high.weights);
   for(let round=0;round<rounds&&performance.now()<deadline;round++){
     const paths=best.graph.nested(best.points),before=best.graph.solution(best.points,best.phase,input),ease=easeMetrics(before,cfg);let changed=false;
     proposals: for(const raw of sharingCandidates(paths))for(const blend of identicalSheets&&raw.i===raw.j?[.5]:[.5,0,1]){
@@ -133,9 +134,9 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
           if(ties.skipped.length||ties.conflicts.length)continue;
           applyTies(ties,points,points,{fixed:graph.fixed,original:points.slice()});
         }
-        const error=mismatch(renderCurves(graph,points,best.phase,n,48),prob);
+        const error=mismatch(renderCurves(graph,points,best.phase,n,48),prob,weights);
         if(error>best.error+1e-12)continue;
-        const highError=mismatch(renderCurves(graph,points,best.phase,bigN,48),big);if(highError>bigError+1e-12){rejected.push({reason:'higher_resolution_error',...c});continue;}
+        const highError=mismatch(renderCurves(graph,points,best.phase,bigN,48),big,high.weights);if(highError>bigError+1e-12){rejected.push({reason:'higher_resolution_error',...c});continue;}
         const solution=graph.solution(points,best.phase,input),check=validate(solution,cfg,{checkImage:false});if(!check.passed){rejected.push({reason:'geometry',issues:check.issues.slice(0,3),...c});continue;}
         const quality=easeMetrics(solution,cfg);if(quality.minimumRadius<Math.min(.45,ease.minimumRadius||Infinity)||quality.sharpTurns>ease.sharpTurns){rejected.push({reason:'cut_quality',...c});continue;}
         if(cfg.requireMaterialCore&&!materialAudit(solution,cfg).passed){rejected.push({reason:'paper',...c});continue;}
@@ -154,10 +155,10 @@ export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{}
   const start=performance.now(),paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p)));
   if(!sharingCandidates(paths).length)return solution;
   onProgress({stage:'directSharing'});
-  const graph=new CurveGraph(paths,cfg.width),phase=input.phase?-1:1,n=Math.min(256,source.resolution),prob=resize(source.mask,source.resolution,n);
+  const graph=new CurveGraph(paths,cfg.width),phase=input.phase?-1:1,n=Math.min(256,source.resolution),resized=resizeObjective(source.mask,source.resolution,n,sourceWeights(source)),prob=resized.probability;
   const before=maskDisagreement(source,sampleWeave(solution,source.resolution));
-  const candidate={graph,points:graph.points,phase,error:mismatch(renderCurves(graph,graph.points,phase,n,48),prob)};
-  const shared=recoverShared(candidate,prob,n,cfg,{input,deadline});
+  const candidate={graph,points:graph.points,phase,error:mismatch(renderCurves(graph,graph.points,phase,n,48),prob,resized.weights)};
+  const shared=recoverShared(candidate,prob,n,cfg,{input,deadline,weights:resized.weights});
   let selected=solution,error=before;
   const report={...shared.sharing,errorBefore:before,errorAfter:before,applied:false};
   if(shared.sharing.accepted.length){

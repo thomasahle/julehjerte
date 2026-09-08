@@ -35,8 +35,9 @@ export function prepareAutomatic(input,raw,onProgress){
     value.target.metadata.automatic={route:'direct',reason:'Joint cubic and straight-span refinement against the original classified image'};
     try{
       value.target.boundarySeed=prepareBoundary(value.target,settings(cfg));
-      value.preview.boundaries=boundarySVG(value.target.boundarySeed);
-      value.preview.metadata.originalBoundariesAvailable=value.target.boundarySeed.curves.length>0;
+      const original=value.target.sourceImage.weights?prepareBoundary(value.target,settings(cfg),{useInitializationGuide:false}):value.target.boundarySeed;
+      value.preview.boundaries=boundarySVG(original);
+      value.preview.metadata.originalBoundariesAvailable=original.curves.length>0;
     }catch(error){value.target.metadata.automatic.boundaryEvidenceError=error.message;}
   }
   if(fitterOnly)value.target.metadata.automatic={...value.target.metadata.automatic,route:'direct',reason:'Fit the requested symmetry directly; the traced routes cannot constrain mirrored cuts'};

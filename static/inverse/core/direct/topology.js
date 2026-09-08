@@ -14,11 +14,13 @@ import {symmetryEvidence} from './matching.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {CurveGraph} from './curves.js';
 import {symmetryTies} from './symmetry.js';
+import {initializationMask} from '../image-reference.js';
 
-export function prepareBoundary(input,cfg){
-  if(input.boundarySeed?.width===cfg.width)return input.boundarySeed;
+export function prepareBoundary(input,cfg,{useInitializationGuide=true}={}){
+  if(useInitializationGuide&&input.boundarySeed?.width===cfg.width)return input.boundarySeed;
   const source=input.sourceImage,tolerance=Math.max(.35,1.2*cfg.width/source.resolution);
-  const trace=fitTolerance=>preprocessMask(source.mask,source.resolution,{...cfg,fitTolerance,maxSpan:40,smoothRadius:0,snapRadius:0,borderRadius:0,polygonal:false,mixedBoundaries:true},input.metadata.preprocessing);
+  const mask=useInitializationGuide?initializationMask(source):source.mask;
+  const trace=fitTolerance=>preprocessMask(mask,source.resolution,{...cfg,fitTolerance,maxSpan:40,smoothRadius:0,snapRadius:0,borderRadius:0,polygonal:false,mixedBoundaries:true},input.metadata.preprocessing);
   let target=trace(tolerance);
   // Upsampling a binary mask makes its old pixel stairs look like deliberate
   // tiny corners. Try a smaller graph before handing hundreds of redundant
@@ -47,7 +49,8 @@ export async function initializeTopology(input,cfg,{maximumError=.005,seconds=3,
     report.traceError=maskDisagreement(source,sampleTarget(target,source.resolution));
     // An initializer that already loses the image cannot improve a good grid.
     if(!target.curves.length||target.curves.length>160||report.traceError>maximumError)return{report};
-    if(symmetryEvidence(source).minimumIdenticalImageError<=.005){target=transposeTarget(target);report.matchingProposal=true;}
+    const guideSource=source.weights?{mask:initializationMask(source),resolution:source.resolution}:source;
+    if(symmetryEvidence(guideSource).minimumIdenticalImageError<=.005){target=transposeTarget({...target,sourceImage:guideSource});target.sourceImage=source;report.matchingProposal=true;}
     const graphCfg=settings({...cfg,...MATCHING_GRID_PRESET,maxTurn:cfg.maxTurn,localNeighborhoodFactor:cfg.localNeighborhoodFactor,timeLimit:Math.max(.1,seconds-(performance.now()-start)/1000)});
     const graph=buildGraph(target,graphCfg,{onProgress});
     const solution=await solveGraph(graph,graphCfg,{onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});

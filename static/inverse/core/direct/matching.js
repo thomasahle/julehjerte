@@ -2,14 +2,15 @@
 import {pathPolyline} from '../bezier.js';
 import {curvesOf} from '../graph.js';
 import {gridModel} from './grid.js';
+import {sourceWeights} from '../image-reference.js';
 
 export function symmetryEvidence(source){
-  const {mask,resolution:n,validMask}=source;let incompatiblePairs=0,observed=0;
+  const {mask,resolution:n,validMask}=source,weights=source.weights?sourceWeights(source):null;let incompatiblePairs=0,observed=0;
   for(let y=0;y<n;y++)for(let x=0;x<n;x++){
-    const i=y*n+x,j=x*n+y;if(validMask&&!validMask[i])continue;observed++;
-    if(x>y&&(!validMask||validMask[j])&&mask[i]!==mask[j])incompatiblePairs++;
+    const i=y*n+x,j=x*n+y;if(validMask&&!validMask[i])continue;observed+=weights?weights[i]:1;
+    if(x>y&&(!validMask||validMask[j])&&mask[i]!==mask[j])incompatiblePairs+=weights?Math.min(weights[i],weights[j]):1;
   }
-  return{minimumIdenticalImageError:incompatiblePairs/Math.max(1,observed),method:'Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.'};
+  return{minimumIdenticalImageError:observed?incompatiblePairs/observed:Infinity,method:weights?'Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.':'Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.'};
 }
 
 export function matchingGrid(model,blend=.5){

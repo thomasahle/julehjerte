@@ -36,6 +36,7 @@
 import {SYMMETRIES,requestedSymmetry} from '../settings.js';
 import {curvesOf} from '../graph.js';
 import {projectMatching} from './matching.js';
+import {imageWeights} from './image-objective.js';
 
 // D4 elements act on centred pixel coordinates as [a,b,c,d]: (X,Y)->(aX+bY,cX+dY).
 const MATRIX={mirrorX:[-1,0,0,1],mirrorY:[1,0,0,-1],rotate180:[-1,0,0,-1],transpose:[0,1,1,0],antiTranspose:[0,-1,-1,0]};
@@ -78,6 +79,15 @@ export function orbitMean(values,n,orbit){
     out[y*n+x]=sum/orbit.length;
   }
   return out;
+}
+
+/** Symmetries average observations, not the colour of ignored pixels. */
+export function orbitObjective(prob,n,orbit,weights=null){
+  const info=imageWeights(weights,prob.length);
+  if(!orbit)return{probability:prob,weights:info?.values??null};
+  if(!info)return{probability:orbitMean(prob,n,orbit),weights:null};
+  const meanWeight=orbitMean(weights,n,orbit),weighted=orbitMean(Float64Array.from(prob,(p,i)=>p*weights[i]),n,orbit);
+  return{probability:Float64Array.from(weighted,(v,i)=>meanWeight[i]>0?v/meanWeight[i]:0),weights:meanWeight};
 }
 
 /** Count pairs a requested symmetry can reproduce; see the parity note above.

@@ -3,10 +3,10 @@
  * initialization policies can be compared with identical downstream checks.
  */
 import {gridModel,gridMask,mismatch} from './grid.js';
-import {resize} from './math.js';
 import {symmetricCounts} from './symmetry.js';
 import {requestedSymmetry} from '../settings.js';
 import {initializeGrid,borderGrid,separableGrid} from './initialize.js';
+import {resizeObjective} from './image-objective.js';
 
 export function borderEvidence(prob,n){
   const rows=[];
@@ -60,14 +60,14 @@ export function gridFinalists(coarse,evidence,limit=3){
   }
   return chosen;
 }
-export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit(evidence)}){
+export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit(evidence),weights=null}){
   const options=[],seen=new Set();
   const add=(counts,phase)=>{if(counts.some(c=>c<1||c>maximumCount||(c+1)*(cfg.nominalWidth+.35)>=cfg.width)||!symmetricCounts(cfg.symmetry,counts))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
   for(let count=1;count<=maximumCount;count++)for(const phase of[1,-1])add([count,count],phase);
   const modes=sides=>{const counts=new Map();for(const r of evidence)if(sides.includes(r.side)&&r.count>=1&&r.count<=maximumCount)counts.set(r.count,(counts.get(r.count)||0)+1);return[...counts].sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0]);};
   for(const a of modes([0,2]))for(const b of modes([1,3]))for(const phase of[1,-1])add([a,b],phase);
-  const small=resize(prob,n,64);
-  for(const o of options){const model=gridModel(o.counts);model.z.fill(0);o.initialError=mismatch(gridMask(model,64,o.phase),small);}
+  const small=resizeObjective(prob,n,64,weights);
+  for(const o of options){const model=gridModel(o.counts);model.z.fill(0);o.initialError=mismatch(gridMask(model,64,o.phase),small.probability,small.weights);}
   options.sort((a,b)=>a.initialError-b.initialError||a.counts[0]+a.counts[1]-b.counts[0]-b.counts[1]);
   if(!options.length)throw new Error(requestedSymmetry(cfg.symmetry).length?'The requested symmetry allows no slit counts here: a mirrored family needs an even number of cuts, a transposition needs equal counts, and the strip width limits the rest.':'The requested strip width leaves no room for a woven grid.');
   return options;
@@ -75,18 +75,26 @@ export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit
 
 // Reuse projection work without pruning any count or phase. The explicit false
 // option preserves the original initializer for paired benchmark comparisons.
-export function initializeCounts({options,fullProb,resolution,prob,n,evidence},{rounds=18,sharedWork=true}={}){
+export function initializeCounts({options,fullProb,resolution,prob,n,evidence,weights=null,fullWeights=null,guideProb=null},{rounds=18,sharedWork=true}={}){
     const seeds=[];
     for(const o of options){
       const uniform=gridModel(o.counts);uniform.z.fill(0);
-      const raw={model:uniform,phase:o.phase,floor:.008,error:mismatch(gridMask(uniform,n,o.phase),prob),steps:0};
+      const raw={model:uniform,phase:o.phase,floor:.008,error:mismatch(gridMask(uniform,n,o.phase),prob,weights),steps:0};
       const choices=[raw];
       // Keep both uniform and border-informed proposals: photographed endpoints
       // are useful evidence, but must not eliminate a better interior layout.
-      for(const initial of[null,borderGrid(o.counts,evidence,{sharedWork})?.z,separableGrid(fullProb,resolution,o.counts,o.phase,{sharedWork}).z].filter(v=>v!==undefined)){
-        const result=initializeGrid(fullProb,resolution,o.counts,o.phase,{initial,scoreResolution:96,rounds,sharedWork});
-        result.error=mismatch(gridMask(result.model,n,result.phase,result.floor),prob);
+      for(const initial of[null,borderGrid(o.counts,evidence,{sharedWork})?.z,separableGrid(fullProb,resolution,o.counts,o.phase,{sharedWork,weights:fullWeights}).z].filter(v=>v!==undefined)){
+        const result=initializeGrid(fullProb,resolution,o.counts,o.phase,{initial,scoreResolution:96,rounds,sharedWork,weights:fullWeights});
+        result.error=mismatch(gridMask(result.model,n,result.phase,result.floor),prob,weights);
         choices.push(result);
+      }
+      // A supporting checker supplies additional layouts, never a required
+      // border. Both the guided layout and its weighted refinement compete
+      // using only the actual observed-image objective.
+      if(guideProb){
+        const guide=initializeGrid(guideProb,resolution,o.counts,o.phase,{scoreResolution:96,rounds,sharedWork});
+        const refined=initializeGrid(fullProb,resolution,o.counts,o.phase,{initial:guide.model.z,scoreResolution:96,rounds,sharedWork,weights:fullWeights});
+        for(const result of[guide,refined]){result.error=mismatch(gridMask(result.model,n,result.phase,result.floor),prob,weights);choices.push(result);}
       }
       const initializationRounds=choices.filter(r=>r!==raw).map(r=>r.steps);
       const initializationTerminations=choices.filter(r=>r!==raw).map(r=>r.termination);

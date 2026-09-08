@@ -4,7 +4,7 @@
  */
 import {resize} from './math.js';
 
-export function imageWeights(weights,length){
+export function imageWeights(weights,length,{allowEmpty=false}={}){
   if(weights==null)return null;
   if(weights.length!==length)throw new Error('Image weights must match the target resolution.');
   let mass=0,allOne=true;
@@ -12,7 +12,7 @@ export function imageWeights(weights,length){
     if(!Number.isFinite(w)||w<0||w>1+1e-12)throw new Error('Image weights must be finite values between zero and one.');
     mass+=w;if(w!==1)allOne=false;
   }
-  if(!(mass>0))throw new Error('At least one image pixel must have positive weight.');
+  if(!(mass>0)&&!allowEmpty)throw new Error('At least one image pixel must have positive weight.');
   return allOne?null:{values:weights,mass};
 }
 

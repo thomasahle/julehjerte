@@ -8,18 +8,14 @@ import {auditImageFeatures,imageFeatures} from '../image-features.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves} from './refine.js';
 import {matchingPaths,matchingSummary,symmetryEvidence} from './matching.js';
+import {referenceError,sourceWeights} from '../image-reference.js';
 
 export function matchingErrorLimit(baseline,cfg){
   return Math.min(cfg.maxImageError,baseline+(cfg.matchingErrorAllowance??.01));
 }
 
 export function maskDisagreement(source,woven){
-  let errors=0,observed=0;
-  for(let i=0;i<woven.length;i++){
-    if(source.validMask&&!source.validMask[i])continue;
-    observed++;errors+=woven[i]!==source.mask[i];
-  }
-  return observed?errors/observed:Infinity;
+  return referenceError(source,woven).mismatchFraction;
 }
 
 /** Each sheet can be copied even when counts or subdivisions differ. */
@@ -75,7 +71,7 @@ export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200
   for(let i=0;i<proposals.length&&performance.now()<deadline-80;i++){
     const p=proposals[i],remaining=deadline-performance.now(),end=performance.now()+remaining/(proposals.length-i);
     const c=refineCurves(p.graph,Float64Array.from(source.mask),source.resolution,phase,{...cfg,preferMatchingSheets:false},
-      {input,identicalSheets:true,steps,rate:.012,deadline:end,selection:'mask'});
+      {input,identicalSheets:true,steps,rate:.012,deadline:end,selection:'mask',weights:sourceWeights(source)});
     const candidate=c.graph.solution(c.points,phase,input),attempt={proposal:p.name,refined:true,steps:c.steps};report.attempts.push(attempt);
     if(inspect(candidate,attempt))return finish(candidate,'matched');
   }

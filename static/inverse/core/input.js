@@ -5,6 +5,7 @@ import {repairJunctions} from './junctions.js';
 import {stabilizeBorder} from './border.js';
 import {redWhiteMixture} from './unmix.js';
 import {fitPolygonal,fitBoundary} from './polygonal.js';
+import {imageWeights} from './direct/image-objective.js';
 export function hexColor(s){if(typeof s!=='string'||!/^#[0-9a-f]{6}$/i.test(s))throw new Error('Use colours in #RRGGBB format.');return [1,3,5].map(i=>parseInt(s.slice(i,i+2),16));}
 export function colorsSafe(colors=['#bd1111','#ffffff']){if(!Array.isArray(colors)||colors.length!==2||colors[0].toLowerCase()===colors[1].toLowerCase())throw new Error('Choose two different paper colours.');colors.forEach(hexColor);return colors;}
 export function parsePath(d){
@@ -118,6 +119,24 @@ export function preprocessPixels({rgba,imageWidth,imageHeight,quad=null,cropProv
   target.metadata.sourceImage={widthPixels:imageWidth,heightPixels:imageHeight,cropCorners:quad?quad.map(p=>[...p]):null,cropProvenance};
   target.metadata.preprocessing.requestedResolution=requestedResolution;
   return{target,rgb,mask:quantized.mask,n};
+}
+
+/** A painted mask is already classified and rectified. Preserve its source
+ * pixel grid; the fitter resamples probability and weight together per scale.
+ */
+export function preprocessBinaryMask(input,settings={}){
+  const n=input.resolution;
+  if(!Number.isInteger(n)||n<32||n>600||input.mask?.length!==n*n)throw new Error('A binary mask must be a square of 32–600 pixels per side.');
+  if(Array.from(input.mask).some(v=>v!==0&&v!==1))throw new Error('A binary mask must contain only zero and one.');
+  const mask=Uint8Array.from(input.mask,v=>settings.invert?1-v:v),importance=imageWeights(input.weights,n*n);
+  const seedCells=input.seedCells??4;
+  if(!Number.isInteger(seedCells)||seedCells<2||seedCells>8)throw new Error('The supporting grid must have 2–8 cells per side.');
+  const sourceImage={mask,probability:Float32Array.from(mask),resolution:n,...(importance?{weights:Float64Array.from(importance.values),seedCells}:{})};
+  const count=components(mask,n,1).length;
+  const target={width:settings.width||100,phase:0,curves:[],sourceImage,metadata:{input:'Binary artwork mask',direct:true,paperColors:colorsSafe(settings.paperColors),
+    preprocessing:{method:'binary',actualResolution:n,inverted:!!settings.invert,traceUsed:false,traceChangeFraction:0,totalChangeFraction:0,sourceMaskComponents:count,vectorSampleComponents:count},
+    ...(importance?{imageWeights:{resolution:n,weightMass:importance.mass,meaning:'Zero permits colour changes; positive weights enter the normalized image objective. The original mask is retained.',seedCells}}:{})}};
+  return{target,mask,n};
 }
 /** Reuse classification while exploring bounded geometric interpretations. */
 export function preprocessMask(mask,n,settings={},classification={}){

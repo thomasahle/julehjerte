@@ -2,14 +2,17 @@
  * Dynamic programming optimizes all transitions in a row together. Alternating
  * sheet updates and a smooth spline projection preserve independent families.
  */
-import {basisTable,resize} from './math.js';
+import {basisTable} from './math.js';
 import {gridControls,gridSamples,gridModel,gridMask,mismatch} from './grid.js';
+import {imageWeights,resizeObjective} from './image-objective.js';
 
 /** Least-cost alternating runs with exactly `count` transitions. Pixel costs
  * can be soft probabilities. The minimum run length applies to edge runs too.
  */
 const runScratch=new Map();
-export function alternatingRuns(row,count,phase,prior,{minimum=1,weight=.2}={}){
+export function alternatingRuns(row,count,phase,prior,{minimum=1,weight=.2,pixelWeights=null,weightScale=1}={}){
+  const importance=imageWeights(pixelWeights,row.length,{allowEmpty:true});
+  if(!importance&&weightScale===1)pixelWeights=null;
   const n=row.length,stride=n+1,key=n+','+count;
   let work=runScratch.get(key);
   if(!work){
@@ -17,7 +20,10 @@ export function alternatingRuns(row,count,phase,prior,{minimum=1,weight=.2}={}){
     work={prefix:[new Float64Array(stride),new Float64Array(stride)],previous:new Float64Array(stride),next:new Float64Array(stride),back:Array.from({length:count+1},()=>new Int32Array(stride))};runScratch.set(key,work);
   }
   const {prefix,back}=work;
-  for(let i=0;i<n;i++){prefix[0][i+1]=prefix[0][i]+row[i];prefix[1][i+1]=prefix[1][i]+1-row[i];}
+  for(let i=0;i<n;i++){
+    if(pixelWeights){const w=pixelWeights[i]*weightScale;prefix[0][i+1]=prefix[0][i]+w*row[i];prefix[1][i+1]=prefix[1][i]+w*(1-row[i]);}
+    else{prefix[0][i+1]=prefix[0][i]+row[i];prefix[1][i+1]=prefix[1][i]+1-row[i];}
+  }
   let previous=work.previous,next=work.next;previous.fill(Infinity);previous[0]=0;
   for(let region=0;region<=count;region++){
     const costs=prefix[(phase+region)%2];next.fill(Infinity);let best=Infinity,at=-1;
@@ -95,23 +101,27 @@ function projectRows(model,f,positions,n,floor,sharedWork){
 }
 /** Fit an independent pair of straight strip profiles to the whole image.
  * This supplies a nonuniform alternative to equally spaced starting grids. */
-export function separableGrid(prob,size,counts,phase,{resolution=64,k=16,floor=.008,sharedWork=true}={}){
-  const n=resolution,target=resize(prob,size,n),bit=Number(phase===-1),minimum=Math.max(1,Math.ceil(n*floor));let best=null;
+export function separableGrid(prob,size,counts,phase,{resolution=64,k=16,floor=.008,sharedWork=true,weights=null}={}){
+  const n=resolution,resized=resizeObjective(prob,size,n,weights),target=resized.probability,importance=resized.weights,bit=Number(phase===-1),minimum=Math.max(1,Math.ceil(n*floor));let best=null;
   for(const fraction of[.07,.31,.63,.93]){
     const y=Math.floor(n*fraction),row=Array.from(target.slice(y*n,(y+1)*n)),prior=counts.map(c=>Array.from({length:c},(_,i)=>(i+1)/(c+1)));
-    if(row[0]>.5)for(let x=0;x<n;x++)row[x]=1-row[x];
-    let cuts=[alternatingRuns(row,counts[0],0,prior[0],{minimum,weight:0}),prior[1]];
+    const rowWeights=importance?.slice(y*n,(y+1)*n),first=rowWeights?rowWeights.findIndex(w=>w>0):0;
+    if(first>=0&&row[first]>.5)for(let x=0;x<n;x++)row[x]=1-row[x];
+    let cuts=[alternatingRuns(row,counts[0],0,prior[0],{minimum,weight:0,pixelWeights:rowWeights}),prior[1]];
     for(let round=0;round<6;round++)for(const f of[1,0]){
-      const profile=new Float64Array(n),flips=new Uint8Array(n);
+      const profile=new Float64Array(n),flips=new Uint8Array(n),profileWeights=importance?new Float64Array(n):null;
       for(let q=0;q<n;q++){let flip=bit;for(const cut of cuts[1-f])flip^=Number((q+.5)/n>cut);flips[q]=flip;}
       for(let t=0;t<n;t++)for(let q=0;q<n;q++){
-        const p=target[f?t*n+q:q*n+t];profile[t]+=(flips[q]?1-p:p)/n;
+        const index=f?t*n+q:q*n+t,p=target[index];
+        if(importance){const w=importance[index]/n;profile[t]+=w*(flips[q]?1-p:p);profileWeights[t]+=w;}
+        else profile[t]+=(flips[q]?1-p:p)/n;
       }
-      cuts[f]=alternatingRuns(profile,counts[f],0,cuts[f],{minimum,weight:0});
+      if(profileWeights)for(let t=0;t<n;t++)profile[t]=profileWeights[t]?profile[t]/profileWeights[t]:0;
+      cuts[f]=alternatingRuns(profile,counts[f],0,cuts[f],{minimum,weight:0,pixelWeights:profileWeights});
     }
     const model=gridModel(counts,k);model.z.fill(0);
     for(let f=0;f<2;f++){const positions=new Float64Array(n*counts[f]);for(let y=0;y<n;y++)positions.set(cuts[f],y*counts[f]);projectRows(model,f,positions,n,floor,sharedWork);}
-    const error=mismatch(gridMask(model,n,phase,floor),target);if(!best||error<best.error)best={model,error};
+    const error=mismatch(gridMask(model,n,phase,floor),target,importance);if(!best||error<best.error)best={model,error};
   }
   return best.model;
 }
@@ -130,26 +140,26 @@ export function borderGrid(counts,evidence,{k=16,floor=.008,resolution=96,shared
   }
   return supported?model:null;
 }
-export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=size,deadline=Infinity,sharedWork=true}={}){
-  const n=resolution,target=resize(prob,size,n),model=gridModel(counts,k,0,initial);if(!initial)model.z.fill(0);
-  let best={z:model.z.slice(),error:mismatch(gridMask(model,n,phase,floor),target)},completed=0;const previous=[null,null];
+export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=size,deadline=Infinity,sharedWork=true,weights=null}={}){
+  const n=resolution,resized=resizeObjective(prob,size,n,weights),target=resized.probability,importance=resized.weights,weightScale=importance?n*n/importance.reduce((s,w)=>s+w,0):1,model=gridModel(counts,k,0,initial);if(!initial)model.z.fill(0);
+  let best={z:model.z.slice(),error:mismatch(gridMask(model,n,phase,floor),target,importance)},completed=0;const previous=[null,null];
   let termination='round_limit';
   for(let round=0;round<rounds;round++){
     if(performance.now()>deadline){termination='deadline';break;}
     for(const f of round%2?[1,0]:[0,1]){
       const samples=gridSamples(gridControls(model,floor),model,basisTable(n,k),n),count=counts[f],positions=new Float64Array(n*count);
       for(let y=0;y<n;y++){
-        const row=new Float64Array(n),prior=Array.from(samples[f].slice(y*count,(y+1)*count));
+        const row=new Float64Array(n),prior=Array.from(samples[f].slice(y*count,(y+1)*count)),rowWeights=importance?new Float64Array(n):null;
         for(let x=0;x<n;x++){
           let flip=0;for(let i=0;i<counts[1-f];i++)flip^=Number((y+.5)/n>samples[1-f][x*counts[1-f]+i]);
-          const p=target[f?x*n+y:y*n+x];row[x]=flip?1-p:p;
+          const index=f?x*n+y:y*n+x,p=target[index];row[x]=flip?1-p:p;if(rowWeights)rowWeights[x]=importance[index];
         }
-        const cuts=alternatingRuns(row,count,Number(phase===-1),prior,{minimum:Math.max(1,Math.ceil(n*floor)),weight});
+        const cuts=alternatingRuns(row,count,Number(phase===-1),prior,{minimum:Math.max(1,Math.ceil(n*floor)),weight,pixelWeights:rowWeights,weightScale});
         positions.set(cuts||prior,y*count);
       }
       projectRows(model,f,positions,n,floor,sharedWork);
     }
-    completed++;const error=mismatch(gridMask(model,n,phase,floor),target);
+    completed++;const error=mismatch(gridMask(model,n,phase,floor),target,importance);
     if(error<best.error)best={z:model.z.slice(),error};
     if(sharedWork){
       // Sheet update order alternates. Repetition at the same parity proves a
@@ -159,6 +169,6 @@ export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k
       previous[round%2]=model.z.slice();
     }
   }
-  model.z=best.z;const error=scoreResolution===n?best.error:mismatch(gridMask(model,scoreResolution,phase,floor),resize(prob,size,scoreResolution));
+  model.z=best.z;const scored=scoreResolution===n?resized:resizeObjective(prob,size,scoreResolution,weights),error=scoreResolution===n?best.error:mismatch(gridMask(model,scoreResolution,phase,floor),scored.probability,scored.weights);
   return{model,phase,floor,error,steps:completed,termination};
 }
