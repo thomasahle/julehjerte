@@ -43,12 +43,18 @@ function solve(matrix,rhs){
   }return a.map(row=>row[n]);
 }
 const projectionCache=new Map();
-function sharedProjection(n,k){
-  const key=n+','+k;if(projectionCache.has(key))return projectionCache.get(key);
+function projectionMatrix(n,k){
   const basis=basisTable(n,k),a=Array.from({length:k},()=>new Float64Array(k));
   for(let y=0;y<n;y++)for(let j=0;j<k;j++){const b=basis[y*k+j];if(b)for(let l=0;l<k;l++)a[j][l]+=b*basis[y*k+l];}
+  // A light second-difference penalty damps row quantization, without assuming
+  // equal widths, symmetry, straight cuts or a particular photographed motif.
   for(let j=0;j<k-2;j++)for(let u=0;u<3;u++)for(let v=0;v<3;v++)a[j+u][j+v]+=.25*[1,-2,1][u]*[1,-2,1][v];
   for(let j=0;j<k;j++)a[j][j]+=1e-8;
+  return a;
+}
+function sharedProjection(n,k){
+  const key=n+','+k;if(projectionCache.has(key))return projectionCache.get(key);
+  const a=projectionMatrix(n,k);
   // Record the same elimination operations as solve(), including pivot order.
   // Applying them to each RHS preserves its floating-point operation order.
   const operations=[];
@@ -69,19 +75,14 @@ function sharedProjection(n,k){
   if(projectionCache.size>=16)projectionCache.delete(projectionCache.keys().next().value);
   projectionCache.set(key,project);return project;
 }
-function projectRows(model,f,positions,n,floor,sharedWork=false){
-  const count=model.counts[f],k=model.k,basis=basisTable(n,k),matrix=sharedWork?null:Array.from({length:k},()=>new Float64Array(k)),rhs=Array.from({length:count},()=>new Float64Array(k));
+function projectRows(model,f,positions,n,floor,sharedWork){
+  const count=model.counts[f],k=model.k,basis=basisTable(n,k),rhs=Array.from({length:count},()=>new Float64Array(k));
   for(let y=0;y<n;y++)for(let j=0;j<k;j++){
     const b=basis[y*k+j];if(!b)continue;
-    if(matrix)for(let l=0;l<k;l++)matrix[j][l]+=b*basis[y*k+l];
     for(let i=0;i<count;i++)rhs[i][j]+=b*positions[y*count+i];
   }
-  // A light second-difference penalty damps row quantization, without assuming
-  // equal widths, symmetry, straight cuts or a particular photographed motif.
-  if(matrix){
-    for(let j=0;j<k-2;j++)for(let a=0;a<3;a++)for(let b=0;b<3;b++)matrix[j+a][j+b]+=.25*[1,-2,1][a]*[1,-2,1][b];
-    for(let j=0;j<k;j++)matrix[j][j]+=1e-8;
-  }
+  // The uncached solve is retained as an explicit benchmark reference.
+  const matrix=sharedWork?null:projectionMatrix(n,k);
   const controls=rhs.map(sharedWork?sharedProjection(n,k):v=>solve(matrix,v));
   for(let j=0;j<k;j++){
     let last=0;const gaps=[];
@@ -94,7 +95,7 @@ function projectRows(model,f,positions,n,floor,sharedWork=false){
 }
 /** Fit an independent pair of straight strip profiles to the whole image.
  * This supplies a nonuniform alternative to equally spaced starting grids. */
-export function separableGrid(prob,size,counts,phase,{resolution=64,k=16,floor=.008,sharedWork=false}={}){
+export function separableGrid(prob,size,counts,phase,{resolution=64,k=16,floor=.008,sharedWork=true}={}){
   const n=resolution,target=resize(prob,size,n),bit=Number(phase===-1),minimum=Math.max(1,Math.ceil(n*floor));let best=null;
   for(const fraction of[.07,.31,.63,.93]){
     const y=Math.floor(n*fraction),row=Array.from(target.slice(y*n,(y+1)*n)),prior=counts.map(c=>Array.from({length:c},(_,i)=>(i+1)/(c+1)));
@@ -115,7 +116,7 @@ export function separableGrid(prob,size,counts,phase,{resolution=64,k=16,floor=.
   return best.model;
 }
 /** A noisy border is a proposal, never a hard slit-count constraint. */
-export function borderGrid(counts,evidence,{k=16,floor=.008,resolution=96,sharedWork=false}={}){
+export function borderGrid(counts,evidence,{k=16,floor=.008,resolution=96,sharedWork=true}={}){
   const model=gridModel(counts,k);model.z.fill(0);let supported=0;
   for(let f=0;f<2;f++){
     const ends=(f?[3,1]:[0,2]).map(side=>{
@@ -129,7 +130,7 @@ export function borderGrid(counts,evidence,{k=16,floor=.008,resolution=96,shared
   }
   return supported?model:null;
 }
-export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=size,deadline=Infinity,sharedWork=false}={}){
+export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=size,deadline=Infinity,sharedWork=true}={}){
   const n=resolution,target=resize(prob,size,n),model=gridModel(counts,k,0,initial);if(!initial)model.z.fill(0);
   let best={z:model.z.slice(),error:mismatch(gridMask(model,n,phase,floor),target)},completed=0;const previous=[null,null];
   for(let round=0;round<rounds;round++){

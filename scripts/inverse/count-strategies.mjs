@@ -9,7 +9,7 @@ export function searchCounts(context,strategy='all'){
   if(strategy==='all'||strategy==='shared-work')return initializeCounts(context,{sharedWork});
   if(strategy==='border-consensus'){
     const selected=supported?context.options.filter(o=>same(o.counts,supported)):[];
-    const result=initializeCounts({...context,options:selected.length?selected:context.options});
+    const result=initializeCounts({...context,options:selected.length?selected:context.options},{sharedWork});
     result.report={...result.report,strategy,hypotheses:context.options.length,borderCounts:supported,fallback:!selected.length};return result;
   }
   // Cheap trials use every starting layout; survivors restart from those same

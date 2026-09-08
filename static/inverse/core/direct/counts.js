@@ -73,7 +73,9 @@ export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit
   return options;
 }
 
-export function initializeCounts({options,fullProb,resolution,prob,n,evidence},{rounds=18,sharedWork=false}={}){
+// Reuse projection work without pruning any count or phase. The explicit false
+// option preserves the original initializer for paired benchmark comparisons.
+export function initializeCounts({options,fullProb,resolution,prob,n,evidence},{rounds=18,sharedWork=true}={}){
     const seeds=[];
     for(const o of options){
       const uniform=gridModel(o.counts);uniform.z.fill(0);
