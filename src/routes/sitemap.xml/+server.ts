@@ -12,6 +12,7 @@ export const prerender = true;
 const staticPages: { key: RouteKey; priority: string }[] = [
 	{ key: 'home', priority: '1.0' },
 	{ key: 'editor', priority: '0.8' },
+	{ key: 'paint', priority: '0.7' },
 	{ key: 'howTo', priority: '0.7' },
 	{ key: 'generate', priority: '0.7' },
 	{ key: 'about', priority: '0.5' }

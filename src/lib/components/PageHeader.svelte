@@ -14,6 +14,8 @@
     backHref  editor variant: where the back link goes (default: the gallery)
     onBack    editor variant: intercept the back click (the editor returns to
               the detail page it came from)
+    mode      editor variant: which of the editor's two modes this page is, and
+              with it the Tegn / Mal switch in the middle of the bar
     children  right-hand slot, rendered in both variants
 -->
 <script lang="ts">
@@ -23,10 +25,13 @@
 	import { afterNavigate } from '$app/navigation';
 	import { t, type Language } from '$lib/i18n';
 	import { href as routeHref, otherLanguageUrl } from '$lib/i18n/routes';
-	import { ArrowLeftIcon, MenuIcon, CloseIcon } from '$lib/components/icons';
+	import { ArrowLeftIcon, ImageIcon, MenuIcon, CloseIcon, PencilIcon } from '$lib/components/icons';
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 
 	type NavSection = 'templates' | 'howto' | 'about';
+
+	/** Which of the editor's two modes the page is (docs/redesign/PAINT.md §1). */
+	type EditorMode = { current: 'draw' | 'paint' };
 
 	interface Props {
 		lang: Language;
@@ -34,6 +39,11 @@
 		variant?: 'site' | 'editor';
 		backHref?: string;
 		onBack?: (event: MouseEvent) => void;
+		/**
+		 * Editor variant only: renders the Tegn / Mal switch in the middle of the
+		 * bar. Absent on every other page, which has no second mode to switch to.
+		 */
+		mode?: EditorMode;
 		/**
 		 * The <header> element, for a page that has to measure it. Bind to it
 		 * rather than reaching in with a selector: the markup inside is ours to
@@ -49,6 +59,7 @@
 		variant = 'site',
 		backHref = undefined,
 		onBack = undefined,
+		mode = undefined,
 		ref = $bindable(null),
 		children
 	}: Props = $props();
@@ -73,6 +84,12 @@
 			browser ? $page.url.hash : ''
 		)
 	);
+
+	// The two modes, in the order the switch shows them.
+	let modes = $derived([
+		{ id: 'draw' as const, href: routeHref('editor', lang), label: t('paintModeDraw', lang), icon: PencilIcon },
+		{ id: 'paint' as const, href: routeHref('paint', lang), label: t('paintModePaint', lang), icon: ImageIcon }
+	]);
 
 	afterNavigate(() => {
 		menuOpen = false;
@@ -106,13 +123,41 @@
 <header bind:this={ref} class="nav" class:editor={variant === 'editor'}>
 	<div class="nav-start">
 		{#if variant === 'editor'}
-			<a class="back-link" href={backHref ?? homeHref} onclick={handleBack}>
+			<!-- The label is a span so the editor bar can drop it on a phone, where
+			     the mode switch takes the middle and the arrow still says "back". -->
+			<a
+				class="back-link"
+				href={backHref ?? homeHref}
+				onclick={handleBack}
+				aria-label={t('back', lang)}
+			>
 				<ArrowLeftIcon size={16} />
-				{t('back', lang)}
+				<span>{t('back', lang)}</span>
 			</a>
 		{/if}
 		<a class="nav-logo" href={homeHref}>{t('siteWordmark', lang)}</a>
 	</div>
+
+	{#if mode}
+		<!-- The middle cell of the editor bar. It is a nav rather than a group of
+		     buttons because switching mode is ordinary navigation: each mode is a
+		     page with its own URL, and the state that survives the move lives in
+		     the editor session, not in either page. -->
+		<nav class="mode-switch" aria-label={t('paintModeSwitch', lang)}>
+			{#each modes as item (item.id)}
+				<a
+					class="mode-link"
+					class:active={mode.current === item.id}
+					href={item.href}
+					aria-current={mode.current === item.id ? 'page' : undefined}
+					title={item.label}
+				>
+					<item.icon size={16} />
+					<span>{item.label}</span>
+				</a>
+			{/each}
+		</nav>
+	{/if}
 
 	{#if variant === 'site'}
 		<nav class="nav-links" aria-label={t('siteNavigation', lang)}>
@@ -277,6 +322,38 @@
 		gap: 10px;
 	}
 
+	/* Tegn / Mal, centred in the bar: the two halves either side of it are the
+	   back link with the wordmark and the page's own buttons, and neither is a
+	   fixed width, so the switch is centred by the grid rather than by margins. */
+	.mode-switch {
+		display: inline-flex;
+		border: 1.5px solid var(--line);
+		border-radius: 10px;
+		overflow: hidden;
+		background: var(--white);
+	}
+
+	.mode-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 8px 14px;
+		text-decoration: none;
+		color: var(--green);
+		font-size: 14px;
+		font-weight: 600;
+		line-height: 1;
+	}
+
+	.mode-link:hover {
+		background: var(--cream2);
+	}
+
+	.mode-link.active {
+		background: var(--green);
+		color: var(--white);
+	}
+
 	.nav-burger {
 		display: none;
 		align-items: center;
@@ -332,6 +409,17 @@
 		padding: 10px 24px;
 	}
 
+	/* With a mode switch the bar is three cells, so the switch sits in the middle
+	   of the window and not in the middle of whatever is left over. */
+	.editor:has(.mode-switch) {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+	}
+
+	.editor:has(.mode-switch) .nav-actions {
+		justify-content: flex-end;
+	}
+
 	.editor .nav-logo {
 		font-size: 22px;
 	}
@@ -374,6 +462,23 @@
 	   place. The site variant keeps its wordmark; it only has a burger beside it. */
 	@media (max-width: 699px) {
 		.editor .nav-logo {
+			display: none;
+		}
+	}
+
+	/* Phones: the switch keeps its icons, and its words go on the title. The back
+	   link keeps only its arrow, because with a switch in the middle there is no
+	   room for two labels and three buttons beside it. */
+	@media (max-width: 599px) {
+		.mode-link {
+			padding: 8px 12px;
+		}
+
+		.mode-link span {
+			display: none;
+		}
+
+		.editor:has(.mode-switch) .back-link span {
 			display: none;
 		}
 	}

@@ -123,6 +123,23 @@ export type FindSettings = {
 	matchingSheets?: boolean;
 };
 
+/**
+ * The three engine knobs the "Avanceret" disclosure offers (PAINT.md §2).
+ *
+ * Everything else the engine can be told is either meaningless to a hobbyist or
+ * a way to get a template that cannot be cut, so it is not offered.
+ */
+export type AdvancedSettings = { widthMm: number; minWidthMm: number; matchingSheets: boolean };
+
+/** What Nulstil goes back to; matching sheets follows Mellem lapper: Sym. */
+export function defaultAdvanced(symmetry: SymmetrySettings): AdvancedSettings {
+	return {
+		widthMm: DEFAULT_WIDTH_MM,
+		minWidthMm: DEFAULT_MIN_WIDTH_MM,
+		matchingSheets: symmetry.lobes === 'sym'
+	};
+}
+
 /** Progress from the engine, as the stage names `core/` emits ('graph', 'paper', …). */
 export type StageListener = (stage: string) => void;
 

@@ -37,6 +37,7 @@
   } from '$lib/components/icons';
   import { NARROW_QUERY } from '$lib/breakpoints';
   import { heartHref, homeAnchorHref } from '$lib/i18n/routes';
+  import { takeHandoff } from '$lib/editor/handoff';
   import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
   // Help modal state. The dialog declares aria-modal, so it also has to behave
@@ -112,10 +113,13 @@
   function getEditorUrlInput(): {
     design: HeartDesign | null;
     fromId: string | null;
+    fromSession: boolean;
     isEditMode: boolean;
     returnToDetail: boolean;
   } {
-    if (!browser) return { design: null, fromId: null, isEditMode: false, returnToDetail: false };
+    if (!browser) {
+      return { design: null, fromId: null, fromSession: false, isEditMode: false, returnToDetail: false };
+    }
     const query = new URLSearchParams(window.location.search);
     const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
     const get = (key: string) => query.get(key) ?? hash.get(key);
@@ -123,17 +127,33 @@
     const designData = hash.get('design') ?? query.get('design');
     const design = designData ? parseDesignPayload(designData) : null;
     const rawFrom = design ? null : get('from');
-    const fromId = rawFrom && /^[A-Za-z0-9_-]+$/.test(rawFrom) ? rawFrom : null;
-    return { design, fromId, isEditMode: design !== null && get('edit') === 'true', returnToDetail };
+    // `?from=session` is Mal handing over the heart Find snit found (PAINT.md
+    // §3). It is not a gallery id, so it never reaches loadDesignFromGallery.
+    const fromSession = rawFrom === 'session';
+    const fromId = !fromSession && rawFrom && /^[A-Za-z0-9_-]+$/.test(rawFrom) ? rawFrom : null;
+    return {
+      design,
+      fromId,
+      fromSession,
+      isEditMode: design !== null && get('edit') === 'true',
+      returnToDetail
+    };
   }
 
   // Parse URL inputs ONCE at module initialization time
   const {
-    design: urlDesign,
+    design: urlDesignFromLink,
     fromId: urlFromId,
+    fromSession: urlFromSession,
     isEditMode: urlEditMode,
     returnToDetail: urlReturnToDetail
   } = getEditorUrlInput();
+
+  // The heart Mal found, taken exactly once. It arrives as a new unsaved heart
+  // with its own name, so it goes down the same road as a shared `#design=`
+  // link — only the naming below differs.
+  const sessionDesign = urlFromSession ? takeHandoff() : null;
+  const urlDesign = sessionDesign ?? urlDesignFromLink;
 
   // State for the loaded design - initialize with URL values
   let initialDesign = $state<HeartDesign | null>(urlDesign);
@@ -169,7 +189,7 @@
   // visitor presses "Gem", so a stray colour click leaves no card behind.
   let savesToCollection = $state(false);
   let draftSource = $state<DraftSource>(
-    urlFromId ? gallerySource(urlFromId) : urlDesign ? 'shared' : 'blank'
+    urlFromSession ? 'session' : urlFromId ? gallerySource(urlFromId) : urlDesign ? 'shared' : 'blank'
   );
   // A draft found at mount, offered above the canvas until it is taken or dropped.
   let pendingDraft = $state<EditorDraft | null>(null);
@@ -198,7 +218,10 @@
     const unsubscribeColors = subscribeColors((c) => { siteColors = c; });
 
     // Set heart name (needs lang to be initialized)
-    if (urlDesign) {
+    if (sessionDesign) {
+      // Not a copy of anything: Mal made this heart, and it is the visitor's own.
+      heartName = sessionDesign.name || t('myHeart', lang);
+    } else if (urlDesign) {
       // In edit mode, keep original name; in copy mode, append "(Copy)"
       heartName = isEditMode ? urlDesign.name : `${urlDesign.name} ${t('copy', lang)}`;
     } else if (!heartName) {
@@ -689,7 +712,7 @@
 <div class="editor" bind:this={editorEl}>
   <!-- variant="editor" is the back-link + logo bar; the site nav links and the
        EN/GitHub pills belong on content pages, not in the full-screen tool. -->
-  <PageHeader bind:ref={headerEl} {lang} variant="editor" onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? heartHref(getBackDetailId()!, lang) : undefined) : undefined}>
+  <PageHeader bind:ref={headerEl} {lang} variant="editor" mode={{ current: 'draw' }} onBack={returnToDetail ? handleEditorBack : undefined} backHref={returnToDetail ? (getBackDetailId() ? heartHref(getBackDetailId()!, lang) : undefined) : undefined}>
     <button
       type="button"
       class="btn btn-sm btn-ghost btn-icon icon-button"
