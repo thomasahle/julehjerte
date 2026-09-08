@@ -229,6 +229,8 @@ export const translations = {
     paintCornersNone: 'Der blev ikke fundet noget hjerte. Sæt hjørnerne selv.',
     /** {n} = corners clicked so far */
     paintCornersManual: 'Klik de fire hjørner: det øverste først, så med uret. ({n}/4)',
+    paintCornersSet: 'Hjørnerne er sat. Træk i dem, hvis de sidder skævt.',
+    paintCornersInvalid: 'De fire hjørner skal danne en firkant uden knæk. Sæt dem igen.',
     paintCornersRegionHint: 'Træk en ramme om hjertet, så der kun ledes der.',
     paintCornersWholeImageHint: 'Billedet er kvadratisk og bruges, som det er.',
     paintColours: 'Farver',
@@ -562,6 +564,8 @@ export const translations = {
     paintCornersNone: 'No heart was found. Set the corners yourself.',
     /** {n} = corners clicked so far */
     paintCornersManual: 'Click the four corners: the top one first, then clockwise. ({n}/4)',
+    paintCornersSet: 'The corners are set. Drag them if they sit wrong.',
+    paintCornersInvalid: 'The four corners must form a quadrilateral that does not fold over. Set them again.',
     paintCornersRegionHint: 'Drag a box round the heart to search only there.',
     paintCornersWholeImageHint: 'The picture is square and is used as it is.',
     paintColours: 'Colours',

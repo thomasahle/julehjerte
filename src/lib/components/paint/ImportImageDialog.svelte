@@ -77,7 +77,15 @@
 	/** Whether a drag on the picture moves a corner or draws a search area. */
 	let cropTool = $state<'corners' | 'region'>('corners');
 	let region = $state.raw<number[] | null>(null);
-	let cornerStatus = $state<'searching' | 'found' | 'uncertain' | 'none' | 'manual' | null>(null);
+	/**
+	 * What to say about the corners. `found` and `uncertain` are the engine's two
+	 * answers, `manual` is the visitor part-way through clicking four, `set` is a
+	 * crop they placed or moved themselves, and `invalid` is four corners that do
+	 * not enclose anything the engine can rectify.
+	 */
+	let cornerStatus = $state<
+		'searching' | 'found' | 'uncertain' | 'none' | 'manual' | 'set' | 'invalid' | null
+	>(null);
 	/** The outline the engine drew round what it thinks is the heart. */
 	let outline = $state.raw<Point[][]>([]);
 
@@ -384,7 +392,7 @@
 		// engine's own half-pixel convention needs; it keeps the numbers readable.
 		quad[draggingCorner] = p.map((v) => Math.round(v * 10) / 10) as Point;
 		outline = [];
-		cornerStatus = 'uncertain';
+		cornerStatus = isConvexQuad(quad) ? 'set' : 'invalid';
 		schedulePreview();
 	}
 
@@ -426,7 +434,7 @@
 		// perimeter order from there, so a zigzag of clicks still means the crop
 		// they drew rather than a bow tie the engine refuses.
 		quad = orderQuad(quad);
-		cornerStatus = isConvexQuad(quad) ? 'found' : 'none';
+		cornerStatus = isConvexQuad(quad) ? 'set' : 'invalid';
 		schedulePreview();
 	}
 
@@ -449,6 +457,10 @@
 				return tr('paintCornersNone');
 			case 'manual':
 				return tr('paintCornersManual', { n: quad.length });
+			case 'set':
+				return tr('paintCornersSet');
+			case 'invalid':
+				return tr('paintCornersInvalid');
 			default:
 				return '';
 		}
@@ -593,7 +605,7 @@
 							<button
 								type="button"
 								class="btn btn-sm btn-ghost"
-								aria-pressed={cropMode === 'quad' && cropTool === 'corners' && !!quad.length}
+								aria-pressed={cornerStatus === 'manual'}
 								onclick={setCornersManually}>{tr('paintCornersSetSelf')}</button
 							>
 							{#if squarePicture}
@@ -805,11 +817,15 @@
 	}
 
 	/* The picture is a button so that clicking it to set a corner is a real
-	   control; it carries none of a button's looks. */
+	   control; it carries none of a button's looks. It shrink-wraps the picture
+	   so the corner markers, which are positioned in percentages of this box,
+	   land on the picture and not on letterboxing beside it. */
 	.photo {
 		position: relative;
 		display: block;
-		width: 100%;
+		width: fit-content;
+		max-width: 100%;
+		margin: 0 auto;
 		padding: 0;
 		border: 1px solid var(--line);
 		border-radius: 10px;
@@ -824,10 +840,13 @@
 		cursor: cell;
 	}
 
+	/* A tall photograph must not push the corner buttons and the status line out
+	   of the dialog: the picture is a step, not the whole of it. */
 	.photo img {
 		display: block;
-		width: 100%;
-		height: auto;
+		width: auto;
+		max-width: 100%;
+		max-height: 340px;
 	}
 
 	.photo svg {
