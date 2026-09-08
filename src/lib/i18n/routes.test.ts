@@ -82,6 +82,9 @@ describe('language mirroring', () => {
 		expect(pathInLanguage('/en/how-to/', 'da')).toBe('/saadan-goer-du/');
 		expect(pathInLanguage('/om/', 'en')).toBe('/en/about/');
 		expect(pathInLanguage('/en/about/', 'da')).toBe('/om/');
+		// The paint mode is the third: /editor/mal/ is not /en/editor/mal/.
+		expect(pathInLanguage('/editor/mal/', 'en')).toBe('/en/editor/paint/');
+		expect(pathInLanguage('/en/editor/paint/', 'da')).toBe('/editor/mal/');
 	});
 
 	it('maps the prefixed pages by adding or removing /en', () => {

@@ -31,12 +31,13 @@
     CloseIcon,
     DownloadIcon,
     HelpIcon,
+    PaintbrushIcon,
     PrinterIcon,
     SaveIcon,
     UploadIcon
   } from '$lib/components/icons';
   import { NARROW_QUERY } from '$lib/breakpoints';
-  import { heartHref, homeAnchorHref } from '$lib/i18n/routes';
+  import { heartHref, homeAnchorHref, href } from '$lib/i18n/routes';
   import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
 
   // Help modal state. The dialog declares aria-modal, so it also has to behave
@@ -54,6 +55,12 @@
     showHelp = false;
     tick().then(() => helpButtonEl?.focus());
   }
+
+  // "Mal på hjertet" and the confirmation it asks before replacing a mask that
+  // has strokes on it. Same dialog rules as the help modal above.
+  let showPaintConfirm = $state(false);
+  let paintButtonEl: HTMLButtonElement | null = $state(null);
+  let paintCancelButtonEl: HTMLButtonElement | null = $state(null);
 
   // Inline status/error message shown in the actions panel (replaces alert()).
   type StatusKey = 'save' | 'import' | 'load' | 'pdf';
@@ -317,6 +324,51 @@
     initialDesign = design;
     resetDesignBaseline();
     editorKey++;
+  }
+
+  /**
+   * "Mal på hjertet": this heart as a mask, and over to Mal (PAINT.md §2).
+   *
+   * The rasteriser, the mask and the session are loaded on the click rather than
+   * imported at the top of the file, because they are Mal's modules and the draw
+   * page's bundle must not grow for a mode most visitors never open (§8).
+   */
+  async function openInPaint(): Promise<void> {
+    const [{ rasterizeDesign }, { detectSymmetry: detectMaskSymmetry }, { setMask }] =
+      await Promise.all([
+        import('$lib/paint/rasterize'),
+        import('$lib/paint/symmetry'),
+        import('$lib/editor/session.svelte')
+      ]);
+    const design = createHeartDesign();
+    const mask = rasterizeDesign(design);
+    // What the mask turns out to be symmetric under becomes both the setting Mal
+    // paints under and the "fundet" tags on its rows (PAINT.md §5).
+    const found = detectMaskSymmetry(mask);
+    setMask(mask, { sourceName: design.name, symmetry: found, found });
+    await goto(href('paint', lang));
+  }
+
+  // A mask the visitor has painted on is work they may not want to lose; one that
+  // only ever arrived from an import or an earlier heart is replaced in silence.
+  async function paintOnHeart(): Promise<void> {
+    const { session } = await import('$lib/editor/session.svelte');
+    if (session.mask && session.maskDirty) {
+      showPaintConfirm = true;
+      return;
+    }
+    await openInPaint();
+  }
+
+  function closePaintConfirm(): void {
+    if (!showPaintConfirm) return;
+    showPaintConfirm = false;
+    tick().then(() => paintButtonEl?.focus());
+  }
+
+  function confirmPaintOnHeart(): void {
+    showPaintConfirm = false;
+    void openInPaint();
   }
 
   function generateId(): string {
@@ -661,6 +713,15 @@
       </div>
     {/if}
     <div class="action-buttons">
+      <button
+        type="button"
+        class="btn btn-outline action"
+        bind:this={paintButtonEl}
+        onclick={paintOnHeart}
+      >
+        <PaintbrushIcon size={16} />
+        {t('paintOnHeart', lang)}
+      </button>
       <button type="button" class="btn btn-ghost action" onclick={downloadSVG}>
         <DownloadIcon size={16} />
         {t('editorExportSvg', lang)}
@@ -753,6 +814,29 @@
     </aside>
   {/if}
   </main>
+
+  <Modal
+    open={showPaintConfirm}
+    labelledBy="paint-confirm-title"
+    initialFocus={paintCancelButtonEl}
+    onClose={closePaintConfirm}
+  >
+    <h2 id="paint-confirm-title" class="confirm-title">{t('paintReplaceMaskTitle', lang)}</h2>
+    <p class="confirm-text">{t('paintReplaceMaskPrompt', lang)}</p>
+    <div class="confirm-actions">
+      <button
+        type="button"
+        class="btn btn-ghost"
+        bind:this={paintCancelButtonEl}
+        onclick={closePaintConfirm}
+      >
+        {t('cancel', lang)}
+      </button>
+      <button type="button" class="btn btn-primary" onclick={confirmPaintOnHeart}>
+        {t('paintReplaceMaskConfirm', lang)}
+      </button>
+    </div>
+  </Modal>
 
   <Modal
     open={showHelp}
@@ -1002,6 +1086,27 @@
       grid-template-columns: 1fr;
       max-width: 420px;
     }
+  }
+
+  /* The "Mal på hjertet" confirmation inside <Modal>: a question, one line of
+     consequence, and the two answers right-aligned. */
+  .confirm-title {
+    margin: 0 0 8px;
+    font-size: 20px;
+    color: var(--deep);
+  }
+
+  .confirm-text {
+    margin: 0;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
   }
 
   /* <Modal> owns the scrim and the card; what follows is the help content. */

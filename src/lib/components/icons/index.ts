@@ -25,6 +25,7 @@ export { default as FitIcon } from '@lucide/svelte/icons/maximize';
 export { default as GearIcon } from '@lucide/svelte/icons/settings';
 export { default as HelpIcon } from '@lucide/svelte/icons/circle-help';
 export { default as MenuIcon } from '@lucide/svelte/icons/menu';
+export { default as PaintbrushIcon } from '@lucide/svelte/icons/paintbrush';
 export { default as PencilIcon } from '@lucide/svelte/icons/pencil';
 export { default as PlusIcon } from '@lucide/svelte/icons/plus';
 export { default as PrinterIcon } from '@lucide/svelte/icons/printer';

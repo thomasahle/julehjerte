@@ -209,6 +209,12 @@ export const translations = {
     editorImportSvg: 'Importér SVG',
     editorFitView: 'Tilpas visning',
 
+    // Mal (docs/redesign/PAINT.md): what Tegn says about the second mode
+    paintOnHeart: 'Mal på hjertet',
+    paintReplaceMaskTitle: 'Erstat masken?',
+    paintReplaceMaskPrompt: 'Du er i gang med at male på en maske. Tager du hjertet med over i Mal, bliver den erstattet.',
+    paintReplaceMaskConfirm: 'Erstat masken',
+
     // Editor help dialog
     helpOpenAriaLabel: 'Hjælp',
     helpCloseAriaLabel: 'Luk',
@@ -502,6 +508,12 @@ export const translations = {
     editorExportSvg: 'Export SVG',
     editorImportSvg: 'Import SVG',
     editorFitView: 'Fit to view',
+
+    // Paint mode (docs/redesign/PAINT.md): what Draw says about the second mode
+    paintOnHeart: 'Paint on the heart',
+    paintReplaceMaskTitle: 'Replace the mask?',
+    paintReplaceMaskPrompt: 'You are painting on a mask right now. Taking this heart into Paint replaces it.',
+    paintReplaceMaskConfirm: 'Replace the mask',
 
     // Editor help dialog
     helpOpenAriaLabel: 'Help',
