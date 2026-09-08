@@ -8,19 +8,25 @@ import {gridControls,gridSamples,gridModel,gridMask,mismatch} from './grid.js';
 /** Least-cost alternating runs with exactly `count` transitions. Pixel costs
  * can be soft probabilities. The minimum run length applies to edge runs too.
  */
+const runScratch=new Map();
 export function alternatingRuns(row,count,phase,prior,{minimum=1,weight=.2}={}){
-  const n=row.length,stride=n+1,prefix=[new Float64Array(stride),new Float64Array(stride)];
+  const n=row.length,stride=n+1,key=n+','+count;
+  let work=runScratch.get(key);
+  if(!work){
+    if(runScratch.size>=32)runScratch.delete(runScratch.keys().next().value);
+    work={prefix:[new Float64Array(stride),new Float64Array(stride)],previous:new Float64Array(stride),next:new Float64Array(stride),back:Array.from({length:count+1},()=>new Int32Array(stride))};runScratch.set(key,work);
+  }
+  const {prefix,back}=work;
   for(let i=0;i<n;i++){prefix[0][i+1]=prefix[0][i]+row[i];prefix[1][i+1]=prefix[1][i]+1-row[i];}
-  let previous=new Float64Array(stride).fill(Infinity);previous[0]=0;
-  const back=Array.from({length:count+1},()=>new Int32Array(stride).fill(-1));
+  let previous=work.previous,next=work.next;previous.fill(Infinity);previous[0]=0;
   for(let region=0;region<=count;region++){
-    const costs=prefix[(phase+region)%2],next=new Float64Array(stride).fill(Infinity);let best=Infinity,at=-1;
+    const costs=prefix[(phase+region)%2];next.fill(Infinity);let best=Infinity,at=-1;
     for(let end=(region+1)*minimum;end<=n-(count-region)*minimum;end++){
       const start=end-minimum,penalty=region?weight*n*(start/n-prior[region-1])**2:0,value=previous[start]-costs[start]+penalty;
       if(value<best){best=value;at=start;}
       next[end]=best+costs[end];back[region][end]=at;
     }
-    previous=next;
+    [previous,next]=[next,previous];
   }
   if(!Number.isFinite(previous[n]))return null;
   const cuts=[];let end=n;

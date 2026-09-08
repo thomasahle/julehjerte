@@ -14,15 +14,33 @@ export function distanceTransform(seeds,nx,ny){
   for(let y=0;y<ny;y++){for(let x=0;x<nx;x++)f[x]=first[y*nx+x];edt(nx);for(let x=0;x<nx;x++)out[y*nx+x]=d[x];}return out;
 }
 export function unfoldedPolylines(solution,k,tol=.01){const w=solution.graph.target.width;return solution.paths[k].map((_,i)=>{let p=pathPolyline(curvesOf(solution,k,i),tol);if(k===1)p=p.map(([x,y])=>[y,x]);return[...p,...p.slice(0,-1).reverse().map(([x,y])=>[x,2*w-y])];});}
-function labelCore(mask,nx,ny,originY,h,w,offset,minArea){const labels=new Int32Array(mask.length),parts=[];let id=0;for(let i=0;i<mask.length;i++){if(!mask[i]||labels[i])continue;id++;const queue=[i];labels[i]=id;let anchored=false;for(let head=0;head<queue.length;head++){const p=queue[head],x=p%nx,y=Math.floor(p/nx),yy=originY+(y+.5)*h;if(yy<-offset*1.1||yy>2*w+offset*1.1)anchored=true;for(const q of[x>0?p-1:-1,x<nx-1?p+1:-1,y>0?p-nx:-1,y<ny-1?p+nx:-1])if(q>=0&&mask[q]&&!labels[q]){labels[q]=id;queue.push(q);}}parts.push({id,anchored,area:queue.length*h*h,significant:queue.length*h*h>=minArea});}const anchors=new Set(parts.filter(p=>p.anchored).map(p=>p.id)),floating=parts.filter(p=>!p.anchored&&p.significant);return{labels,parts,anchors,floating};}
+function labelCore(mask,nx,ny,originY,h,w,offset,minArea){
+  const labels=new Int32Array(mask.length),queue=new Int32Array(mask.length),parts=[];let id=0;
+  for(let i=0;i<mask.length;i++){
+    if(!mask[i]||labels[i])continue;
+    id++;let tail=1;queue[0]=i;labels[i]=id;let anchored=false;
+    for(let head=0;head<tail;head++){
+      const p=queue[head],x=p%nx,y=Math.floor(p/nx),yy=originY+(y+.5)*h;
+      if(yy<-offset*1.1||yy>2*w+offset*1.1)anchored=true;
+      let q=p-1;if(x>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+      q=p+1;if(x<nx-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+      q=p-nx;if(y>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+      q=p+nx;if(y<ny-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+    }
+    parts.push({id,anchored,area:tail*h*h,significant:tail*h*h>=minArea});
+  }
+  const anchors=new Set(parts.filter(p=>p.anchored).map(p=>p.id)),floating=parts.filter(p=>!p.anchored&&p.significant);
+  return{labels,parts,anchors,floating};
+}
 function materialFamily(solution,k,cfg,includeMap){
   const w=solution.graph.target.width,nx=cfg.materialResolution,ny=3*nx,h=w/nx,originY=-w/2,tol=cfg.geometryTolerance,R=cfg.nominalWidth/2,guard=Math.SQRT2*h/2+tol,lines=unfoldedPolylines(solution,k,tol),ss=lines.flatMap(segments),seeds=new Uint8Array(nx*ny),cell=Math.max(R+5*h,4*h),tiles=new Map();
   for(let si=0;si<ss.length;si++){const s=ss[si],steps=Math.max(1,Math.ceil(distance(s.a,s.b)/(h/3)));for(let t=0;t<=steps;t++){const p=mix(s.a,s.b,t/steps),ix=Math.round(p[0]/h-.5),iy=Math.round((p[1]-originY)/h-.5);if(ix>=0&&ix<nx&&iy>=0&&iy<ny)seeds[iy*nx+ix]=1;}const[ax,ay,bx,by]=s.box;for(let ty=Math.floor(ay/cell);ty<=Math.floor(by/cell);ty++)for(let tx=Math.floor(ax/cell);tx<=Math.floor(bx/cell);tx++){const key=tx+','+ty;if(!tiles.has(key))tiles.set(key,[]);tiles.get(key).push(si);}}
+  const neighborTiles=new Map();
   const edt=distanceTransform(seeds,nx,ny),certain=new Uint8Array(nx*ny),possible=new Uint8Array(nx*ny),paper=includeMap?new Uint8Array(nx*ny):null;
   for(let y=0;y<ny;y++)for(let x=0;x<nx;x++){const i=y*nx+x,xx=(x+.5)*h,yy=originY+(y+.5)*h,distOutline=w/2-Math.hypot(xx-w/2,Math.max(0,-yy,yy-2*w));if(paper&&distOutline>0)paper[i]=1;if(distOutline<R-guard)continue;let d=Math.sqrt(edt[i])*h;
     // EDT is only an accelerator. Recompute chord distance near either
     // threshold, so lattice seeding does not determine a narrow-neck decision.
-    if(ss.length&&Math.abs(d-R)<4*h+2*tol){d=Infinity;const tx=Math.floor(xx/cell),ty=Math.floor(yy/cell),seen=new Set();for(let j=-1;j<=1;j++)for(let l=-1;l<=1;l++)for(const si of tiles.get((tx+l)+','+(ty+j))||[]){if(seen.has(si))continue;seen.add(si);d=Math.min(d,segmentDistance([xx,yy],ss[si].a,ss[si].b));}}
+    if(ss.length&&Math.abs(d-R)<4*h+2*tol){d=Infinity;const tx=Math.floor(xx/cell),ty=Math.floor(yy/cell),key=tx+','+ty;let near=neighborTiles.get(key);if(!near){const seen=new Set();for(let j=-1;j<=1;j++)for(let l=-1;l<=1;l++)for(const si of tiles.get((tx+l)+','+(ty+j))||[])seen.add(si);near=[...seen];neighborTiles.set(key,near);}const p=[xx,yy];for(const si of near)d=Math.min(d,segmentDistance(p,ss[si].a,ss[si].b));}
     const clearance=Math.min(distOutline,d);if(clearance>R+guard)certain[i]=1;if(clearance>R-guard)possible[i]=1;
   }
   const c=labelCore(certain,nx,ny,originY,h,w,R,cfg.minFeatureArea),p=labelCore(possible,nx,ny,originY,h,w,R,cfg.minFeatureArea),foldY=Math.min(ny-1,Math.round((w-originY)/h-.5)),foldCuts=[0,w,...solution.paths[k].map((_,i)=>{const cc=curvesOf(solution,k,i).at(-1);return cc.p[3][k===0?0:1];})].sort((a,b)=>a-b),fold=[];

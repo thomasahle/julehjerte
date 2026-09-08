@@ -1,0 +1,665 @@
+{
+  "description": "Frozen photograph-only crops used for the validated 22-case release. No reference cutting paths or slit counts are provided to fitting.",
+  "cases": [
+    {
+      "id": "hjfig-01",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjfig-01.jpg",
+      "sourceSha256": "32a7d5c332a2f4262955932c7044991743bdb2b1e8eb1c1c22f6e6d9c315eab6",
+      "photoROI": [
+        216,
+        0,
+        600,
+        375
+      ],
+      "decodedPixelsSha256": "9530dd07e457ffce774a9ade50a392c36b9b38e5f04e13bf3655537abb63d20f",
+      "quad": [
+        [
+          188.65840672286313,
+          50.446388800465265
+        ],
+        [
+          342.05595393044155,
+          195.6523959586842
+        ],
+        [
+          190.76691435038555,
+          347.06851680680785
+        ],
+        [
+          44.80862299146844,
+          199.21246184376056
+        ]
+      ]
+    },
+    {
+      "id": "hjfig-02",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjfig-02.jpg",
+      "sourceSha256": "c5d2c4465ca58e3629abd28b36c6e9e3aed1f5d14b2725459809f5b4ba550276",
+      "photoROI": [
+        216,
+        0,
+        600,
+        375
+      ],
+      "decodedPixelsSha256": "82ad87be5a257e1dc77cb0c5c0cfb7f0d9f78bcdf2d4e2cdb3eff77d30321675",
+      "quad": [
+        [
+          194.29301979808054,
+          47.67431831120112
+        ],
+        [
+          343.0654428810814,
+          197.11195681723675
+        ],
+        [
+          196.4575674701016,
+          344.5264550253009
+        ],
+        [
+          48.27147998840894,
+          198.84651153671882
+        ]
+      ]
+    },
+    {
+      "id": "hjfig-03",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjfig-03.jpg",
+      "sourceSha256": "6f75ea95d5d467f53a8ebfde0bb61bfc74c7c6e6b55a0f6154f4ae273c8c35b2",
+      "photoROI": [
+        216,
+        0,
+        600,
+        375
+      ],
+      "decodedPixelsSha256": "aa208ae7c4b835fa62ab2b2766cb47d60393a55caedaae228fb8779ec05b93c2",
+      "quad": [
+        [
+          192.39664758267418,
+          43.535512562511656
+        ],
+        [
+          338.2028175594765,
+          191.88044361475224
+        ],
+        [
+          186.02342195434386,
+          341.728261995053
+        ],
+        [
+          45.18920677619988,
+          194.15081895867112
+        ]
+      ]
+    },
+    {
+      "id": "hjfig-04",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjfig-04.jpg",
+      "sourceSha256": "5ea33117d0208261edaf9e4690757e9711665e434353619bb6859bedb10da244",
+      "photoROI": [
+        216,
+        0,
+        600,
+        375
+      ],
+      "decodedPixelsSha256": "b06386885b6a8ebaa6d15c3cc999e09df681c794c68e5aa24af780c92eb6a6e9",
+      "quad": [
+        [
+          197.2316439885614,
+          42.96350991647984
+        ],
+        [
+          349.3532625975257,
+          184.63886957180316
+        ],
+        [
+          203.74221817945812,
+          338.08948958431125
+        ],
+        [
+          53.66434700347705,
+          192.532408975867
+        ]
+      ]
+    },
+    {
+      "id": "hjfig-05",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjfig-05.jpg",
+      "sourceSha256": "cc0c4eddf643a41839fadc014400f3353815017883c37a53160a9f4592ec9bd8",
+      "photoROI": [
+        223,
+        0,
+        621,
+        337
+      ],
+      "decodedPixelsSha256": "506d5d9aba93bd2f152861e41051d744766e6303209b45c0062f229853f6d6a9",
+      "quad": [
+        [
+          216.8538757473738,
+          38.328225363387574
+        ],
+        [
+          359.89753198285587,
+          187.87012162871665
+        ],
+        [
+          212.54958628080993,
+          334.34627418104253
+        ],
+        [
+          67.96701146105954,
+          182.82942921221752
+        ]
+      ]
+    },
+    {
+      "id": "hjfla-01",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjfla-01.jpg",
+      "sourceSha256": "4cc2b77e50e1cbedcc14ad962772e22ca9403c274b55f74f49468deadada44c1",
+      "photoROI": [
+        0,
+        416,
+        594,
+        800
+      ],
+      "decodedPixelsSha256": "e602806552817fc099c1fd22e6e73f1a328d50b5ae1cb03ec47f0785286bb078",
+      "quad": [
+        [
+          292.39323601496517,
+          57.738078773875756
+        ],
+        [
+          438.0941449375487,
+          208.89102780960795
+        ],
+        [
+          283.1908795446907,
+          354.6771453079949
+        ],
+        [
+          141.8477138031669,
+          202.00972504056293
+        ]
+      ]
+    },
+    {
+      "id": "hjcur-01",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjcur-01.jpg",
+      "sourceSha256": "4c287c45c503edb0c763d6ce149bd2d475e81391ff8905c89c19d6167349b484",
+      "photoROI": [
+        216,
+        0,
+        600,
+        375
+      ],
+      "decodedPixelsSha256": "a27b058b8c1e27159631f6d6720f213ac6fc804cfce7d1aee75150f73edb1578",
+      "quad": [
+        [
+          189.3096608168546,
+          43.709919844428974
+        ],
+        [
+          332.4881934002591,
+          192.81949779926094
+        ],
+        [
+          185.4163085647945,
+          340.0580997580325
+        ],
+        [
+          41.75016952913069,
+          189.06796025783646
+        ]
+      ]
+    },
+    {
+      "id": "hjcur-02",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjcur-02.jpg",
+      "sourceSha256": "203953eb80e07ef83f467b34f354496e53c9359ff81bc6e5ebd43a51f15ca2c6",
+      "photoROI": [
+        216,
+        0,
+        600,
+        375
+      ],
+      "decodedPixelsSha256": "4177975fc7ed5649e09c6b1e1014d305368a8138f80d47f6aa4108809432b7f0",
+      "quad": [
+        [
+          194.65378748297076,
+          44.23339992230309
+        ],
+        [
+          339.67367514119843,
+          190.98638544523556
+        ],
+        [
+          193.29192428448607,
+          341.6245320415693
+        ],
+        [
+          45.47671643716768,
+          194.46654727533422
+        ]
+      ]
+    },
+    {
+      "id": "hjcur-03",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjcur-03.jpg",
+      "sourceSha256": "bb8390c22770e96257de8dc8d0dc5f7d73ab9bfb1faba028c63fbc1e335779f9",
+      "photoROI": [
+        216,
+        0,
+        600,
+        375
+      ],
+      "decodedPixelsSha256": "43d7f94d8a47807208c964d3a03f77221004190571f67553720d2c7c77b29167",
+      "quad": [
+        [
+          192.91699437321472,
+          44.50524545817953
+        ],
+        [
+          339.69230667005473,
+          191.74644497178232
+        ],
+        [
+          193.504565619557,
+          339.1119442002352
+        ],
+        [
+          47.907480430688935,
+          190.7899197613935
+        ]
+      ]
+    },
+    {
+      "id": "hjcur-04",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjcur-04.jpg",
+      "sourceSha256": "b55c4bd9e33a8b44e7b0a06b75df7dbed932401e3175c2a1920440bdc497e950",
+      "photoROI": [
+        216,
+        0,
+        600,
+        375
+      ],
+      "decodedPixelsSha256": "1f3a7aa20993d9d969c0ef29e7131d5616ece383586b7e39430cefc319f5d763",
+      "quad": [
+        [
+          191.11896416727424,
+          45.88792059701687
+        ],
+        [
+          341.0873159394011,
+          191.2984068580547
+        ],
+        [
+          197.00593204212686,
+          340.5161588661794
+        ],
+        [
+          47.43720035962269,
+          197.26037469745123
+        ]
+      ]
+    },
+    {
+      "id": "hjcur-05",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjcur-05.jpg",
+      "sourceSha256": "fcd46cc3a057f1f826e081932754a86fb970424620eee5eb86dd23eab55eb505",
+      "photoROI": [
+        216,
+        0,
+        600,
+        375
+      ],
+      "decodedPixelsSha256": "414572d982aadfc513626b498f8cadf7e953b92da4291eed1db8eaa02bbd4958",
+      "quad": [
+        [
+          191.5718921769267,
+          41.002447759302676
+        ],
+        [
+          343.2169032469649,
+          184.90280502631018
+        ],
+        [
+          198.85140229323983,
+          339.1694570006557
+        ],
+        [
+          47.783414978700904,
+          192.22189834334512
+        ]
+      ]
+    },
+    {
+      "id": "hjhih-01",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjhih-01.jpg",
+      "sourceSha256": "f11704b067941ead5dde1ef74f63d5b70d1f7a50e9c3c7cafb5b852cb0f7d18a",
+      "photoROI": [
+        217,
+        0,
+        603,
+        401
+      ],
+      "decodedPixelsSha256": "2922c3dd9a71d122e06e9d0a469e623f877fdf503e824253614385f1dbf3f4f8",
+      "quad": [
+        [
+          202.3674368892556,
+          48.59748347940166
+        ],
+        [
+          343.3485875149892,
+          197.0361767885677
+        ],
+        [
+          197.99631627152766,
+          344.7008318562862
+        ],
+        [
+          48.39713363046562,
+          196.17346145844522
+        ]
+      ]
+    },
+    {
+      "id": "hjhih-02",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjhih-02.jpg",
+      "sourceSha256": "8e1982096d14d9c4db71c782736d56cb711b57e6ee3d482e894022d9fd990b59",
+      "photoROI": [
+        214,
+        0,
+        597,
+        413
+      ],
+      "decodedPixelsSha256": "325a823c55d20acf7a958b1509ecc05984bc15c4f46c543a8643efdfba9e9a86",
+      "quad": [
+        [
+          188.30974117601937,
+          50.96916524073435
+        ],
+        [
+          339.6341931275473,
+          196.09932591960958
+        ],
+        [
+          193.5495451122848,
+          347.13449938438606
+        ],
+        [
+          45.606330547136366,
+          202.17162619262066
+        ]
+      ]
+    },
+    {
+      "id": "hjhih-04",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjhih-04.jpg",
+      "sourceSha256": "0871c106cf029808a27d67dadc2dd623055727c1145421120f7c9fdfdee1e07e",
+      "photoROI": [
+        221,
+        0,
+        614,
+        394
+      ],
+      "decodedPixelsSha256": "79d833e7bd5a40e80a930e89efb03b7c2b8c935adebba78827a4e679c8c849e5",
+      "quad": [
+        [
+          200.61465222970472,
+          54.11515840702254
+        ],
+        [
+          343.4005945195555,
+          202.72299292577537
+        ],
+        [
+          193.7893892931023,
+          350.38325136594614
+        ],
+        [
+          47.72031824020348,
+          199.65779445405863
+        ]
+      ]
+    },
+    {
+      "id": "hjstr-01",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjstr-01.jpg",
+      "sourceSha256": "37fd224b8429524eee4488429070256ddc757641c3f40aac2aeaa4875dc59e88",
+      "photoROI": [
+        214,
+        0,
+        595,
+        448
+      ],
+      "decodedPixelsSha256": "72b9226a23598380902c88593b4d0b2d80e0d59b560b8f2905497edc56909594",
+      "quad": [
+        [
+          191.35718595247062,
+          103.88262046442289
+        ],
+        [
+          343.85046746261594,
+          250.2169394187539
+        ],
+        [
+          198.4226972120015,
+          405.96812758830697
+        ],
+        [
+          45.21045375375542,
+          257.6144338993603
+        ]
+      ]
+    },
+    {
+      "id": "hjstr-02",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjstr-02.jpg",
+      "sourceSha256": "653d4b726cba91d87e4bda99aac9b47e1ac9ce5780b7c44acbd011066ad63a98",
+      "photoROI": [
+        219,
+        0,
+        609,
+        416
+      ],
+      "decodedPixelsSha256": "345ff127c9137135f8927706079176a659c53e21b06bdb6be5c538be94cc9f97",
+      "quad": [
+        [
+          198.53970825883664,
+          56.91861221524674
+        ],
+        [
+          340.401102574917,
+          206.41140570062836
+        ],
+        [
+          193.49387320044173,
+          353.103709640915
+        ],
+        [
+          45.76141964287936,
+          201.28226651792085
+        ]
+      ]
+    },
+    {
+      "id": "hjstr-03",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjstr-03.jpg",
+      "sourceSha256": "902bc6920f02f7d5c25fec20517b50c9e97a719d8509696ae861bb1ed9d12256",
+      "photoROI": [
+        217,
+        0,
+        605,
+        416
+      ],
+      "decodedPixelsSha256": "44528341f498f4e6872e905f1c083c6f80fd5c0b95bd8e676edcc8f62c194f03",
+      "quad": [
+        [
+          198.0767384478126,
+          48.83345802423042
+        ],
+        [
+          339.75075854262275,
+          193.76882218562517
+        ],
+        [
+          196.19023395819448,
+          342.00139702165603
+        ],
+        [
+          49.884135008919685,
+          193.13927233494536
+        ]
+      ]
+    },
+    {
+      "id": "hjsta-01",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjsta-01.jpg",
+      "sourceSha256": "a83a175f4d960df6901354a6ea413c519efa2a8b180ca7018b8d09de37583651",
+      "photoROI": [
+        213,
+        0,
+        593,
+        384
+      ],
+      "decodedPixelsSha256": "460eb4c8faa5df42a744ea87f5e4609e329d369e5dc8d7ff28ab90de815808e7",
+      "quad": [
+        [
+          195.05439485448392,
+          47.20208591783353
+        ],
+        [
+          340.6664953436871,
+          192.6885347130366
+        ],
+        [
+          196.168411462646,
+          344.4035983631109
+        ],
+        [
+          47.055118952907264,
+          194.67333807919917
+        ]
+      ]
+    },
+    {
+      "id": "hjsta-02",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjsta-02.jpg",
+      "sourceSha256": "02222a5d4b385ed4ea84859bf74df573d786234dd483581771541edabce67e13",
+      "photoROI": [
+        215,
+        0,
+        599,
+        394
+      ],
+      "decodedPixelsSha256": "9285310e337c5dbe3763c541f09bf515fcec107a1799ee1c11f57a5e7637d150",
+      "quad": [
+        [
+          191.16406799843026,
+          48.32364781659089
+        ],
+        [
+          340.02723897564636,
+          188.05970075260046
+        ],
+        [
+          199.97936496176143,
+          342.58204776083375
+        ],
+        [
+          48.44755619555002,
+          198.55438994750548
+        ]
+      ]
+    },
+    {
+      "id": "hjsta-03",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjsta-03.jpg",
+      "sourceSha256": "9ac7571ed97d991d1d70f7321ae4e3cae0da0dbc91c8a14fa05c0de0b9dfc3b7",
+      "photoROI": [
+        215,
+        0,
+        598,
+        383
+      ],
+      "decodedPixelsSha256": "d79d958d7b7caa8a7e99ba51e67b4e94f0a96e28f3a190fe391b15b2c756fd4a",
+      "quad": [
+        [
+          193.65672679368126,
+          45.04975588659226
+        ],
+        [
+          342.9501305994181,
+          189.66698048576146
+        ],
+        [
+          193.48036649787394,
+          344.79572426897465
+        ],
+        [
+          45.610873631912625,
+          195.13043392991767
+        ]
+      ]
+    },
+    {
+      "id": "hjsta-04",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjsta-04.jpg",
+      "sourceSha256": "5143ab770f070447343a52b1af758b288c310edd6d144effbae1aea9dd2a226d",
+      "photoROI": [
+        212,
+        0,
+        590,
+        386
+      ],
+      "decodedPixelsSha256": "aa59b12aafe221485398b5323036012af540120f04e4917a8c2d61710deb7d67",
+      "quad": [
+        [
+          192.8820949412971,
+          40.64326337448036
+        ],
+        [
+          338.7224272496793,
+          186.46827119242013
+        ],
+        [
+          189.2253365301165,
+          332.48276340072863
+        ],
+        [
+          45.11114873361885,
+          184.1413775871979
+        ]
+      ]
+    },
+    {
+      "id": "hjsta-05",
+      "source": "scripts/inverse/fixtures/hunodan/source/hjsta-05.jpg",
+      "sourceSha256": "bde5a6cc6ef440682c90328b8e3830e155a4ddd491d40439f820e5c48df351ea",
+      "photoROI": [
+        217,
+        0,
+        603,
+        393
+      ],
+      "decodedPixelsSha256": "bdeba281cc52081422657d63f76d0443a1c58a543fb13960206abe98895cb171",
+      "quad": [
+        [
+          196.5969474661884,
+          51.51935280757243
+        ],
+        [
+          342.30866035747334,
+          198.8625643664934
+        ],
+        [
+          193.80999274262587,
+          348.0238605607671
+        ],
+        [
+          48.248889692101926,
+          199.65485925642955
+        ]
+      ]
+    }
+  ]
+}

@@ -49,7 +49,7 @@ export function gridLoss(model,target,n,phase,epsilon,{floor=.008,coarseWeight=.
     const product=new Float64Array(n*n),derivative=new Float64Array(n*n*count),values=new Float64Array(count),prefix=new Float64Array(count+1);
     for(let y=0;y<n;y++)for(let x=0;x<n;x++){
       prefix[0]=1;const index=y*n+x;
-      for(let i=0;i<count;i++){values[i]=Math.tanh(((x+.5)/n-samples[f][y*count+i])/epsilon);prefix[i+1]=prefix[i]*values[i];}
+      for(let i=0;i<count;i++){const q=((x+.5)/n-samples[f][y*count+i])/epsilon;values[i]=q>19?1:q< -19?-1:Math.tanh(q);prefix[i+1]=prefix[i]*values[i];}
       product[index]=prefix[count];let suffix=1;
       for(let i=count-1;i>=0;i--){derivative[index*count+i]=-prefix[i]*suffix*(1-values[i]*values[i])/epsilon;suffix*=values[i];}
     }products.push(product);derivatives.push(derivative);
