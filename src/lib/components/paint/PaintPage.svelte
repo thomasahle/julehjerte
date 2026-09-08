@@ -380,6 +380,15 @@
 	 * visitor's own instruction, not an edit they have yet to notice.
 	 */
 	function recordFrameFold(): void {
+		// Before anything else, and whether or not a fold follows: changing the frame
+		// bumps `revision`, and the canvas drops a floating patch on a bump because
+		// the cells it was lifted from are no longer the cells underneath. Both
+		// gestures that reach here — the panel's controls and the canvas's own
+		// handles — can be made with a patch still in the air, and the handles are on
+		// the canvas, so the press that grabs one is not the press "outside" that
+		// commits. Settling first also puts the two undo steps in the order they
+		// happened: the patch goes down, then the frame folds what is there.
+		settle();
 		if (!transformsFor(session.symmetry).length) return;
 		const step = currentStep();
 		if (!step) return;
@@ -899,8 +908,8 @@
 			</div>
 
 			{#if isNarrow}
-				<!-- The same order as the left column above, then the right one: Værktøj,
-				     Symmetri, Find snit. -->
+				<!-- The same order as the left column above, then the right one:
+				     Værktøj, Symmetri, Kanten, Find snit. -->
 				<aside class="sidebar">
 					{@render toolPanel()}
 					{@render symmetryPanel()}
@@ -958,7 +967,7 @@
 						frame={session.frame}
 						onFrameStart={recordFrameFold}
 						onFrame={applyFrame}
-						disabled={busy}
+						disabled={busy || showingResult}
 					/>
 	{/snippet}
 

@@ -42,7 +42,11 @@
 		 */
 		onFrameStart?: () => void;
 		onFrame: (next: Frame) => void;
-		/** The engine is working; the frame decides what it is working on. */
+		/**
+		 * Nothing here can be changed: the engine is working and the frame decides
+		 * what it is working on, or the found heart is on screen and the whole left
+		 * column stands down until "Tilbage til masken" brings the mask back.
+		 */
 		disabled?: boolean;
 		lang: Language;
 	}
