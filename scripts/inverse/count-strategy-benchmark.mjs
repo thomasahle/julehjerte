@@ -29,6 +29,7 @@ for(let repeat=0;repeat<repeats;repeat++)for(const [index,e] of cases.entries())
   const rows=[],offset=(index+repeat)%policies.length,order=[...policies.slice(offset),...policies.slice(0,offset)];
   for(const strategy of order){
     const target=await readCase(root,e),s=target.sourceImage,row={id:e.id,group:e.group,repeat,strategy};rows.push(row);report.results.push(row);
+    const attemptStart=performance.now();
     try{
       if(stage==='initialize'){
         const start=performance.now(),fullProb=s.probability,n=Math.min(256,s.resolution),prob=resize(fullProb,s.resolution,n),evidence=borderEvidence(fullProb,s.resolution),options=countHypotheses({prob,n,cfg,evidence});
@@ -44,7 +45,7 @@ for(let repeat=0;repeat<repeats;repeat++)for(const [index,e] of cases.entries())
         for(const [file,data] of Object.entries(answer.files))if(['report.json','cut_geometry.json','template_left.svg','template_right.svg'].includes(file))await fs.writeFile(path.join(dir,file),data);
         await fs.writeFile(path.join(dir,'independent.png'),woven.png);
       }
-    }catch(error){row.failure=error.message;row.failureReport=error.report;row.passed=false;}
+    }catch(error){row.seconds=(performance.now()-attemptStart)/1000;row.failure=error.message;row.failureReport=error.report;row.passed=false;}
     console.log(JSON.stringify({id:e.id,repeat,strategy,seconds:row.seconds,error:row.error,passed:row.passed,failure:row.failure}));
   }
   if(stage==='initialize'){
