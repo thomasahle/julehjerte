@@ -136,6 +136,13 @@ function endTangent(segments: BezierSegment[]): Pt {
   return { x: 0, y: 0 };
 }
 
+/** Preserve intentional corners emitted by the main fitter. */
+export function isSharpJoin(before: BezierSegment, after: BezierSegment): boolean {
+  const incoming = negate(endTangent([before]));
+  const outgoing = startTangent([after]);
+  return dot(incoming, outgoing) < Math.SQRT1_2;
+}
+
 function chordLengthParameterize(points: Pt[], first: number, last: number): number[] {
   const u: number[] = [0];
   for (let i = first + 1; i <= last; i++) {
@@ -326,6 +333,19 @@ function subdivide(
  */
 export function simplifyCubicChain(segments: BezierSegment[], tolerance = FIT_TOLERANCE): BezierSegment[] {
   if (segments.length <= 1 || !(tolerance > 0)) return segments.map((s) => ({ ...s }));
+
+  // Refitting across a right angle would undo the fitter's straight-span and
+  // corner preservation. Fit the smooth runs on either side independently.
+  const corners = segments.flatMap((s, i) => i > 0 && isSharpJoin(segments[i - 1]!, s) ? [i] : []);
+  if (corners.length) {
+    const out: BezierSegment[] = [];
+    let from = 0;
+    for (const to of [...corners, segments.length]) {
+      out.push(...simplifyCubicChain(segments.slice(from, to), tolerance));
+      from = to;
+    }
+    return out;
+  }
 
   const points = sampleChain(segments, tolerance / 2);
   if (points.length < 2) return segments.map((s) => ({ ...s }));

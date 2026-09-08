@@ -89,7 +89,7 @@ import {
   reflectAcrossChordBisector
 } from '$lib/utils/symmetry';
 import { MAX_GRID_SIZE } from '$lib/constants';
-import { FIT_TOLERANCE, simplifyCubicChain } from '$lib/inverse/simplifyCurves';
+import { FIT_TOLERANCE, isSharpJoin, simplifyCubicChain } from '$lib/inverse/simplifyCurves';
 import { NO_SYMMETRY, type SymmetryMode, type SymmetrySettings } from '$lib/paint/symmetry';
 import { maskMismatch } from '$lib/paint/mask';
 import { rasterizeDesign } from '$lib/paint/rasterize';
@@ -448,9 +448,10 @@ function applyEnforcement(
 
 // ============================================================================
 
-function nodeTypesFor(count: number): Record<string, NodeType> {
+function nodeTypesFor(segments: BezierSegment[]): Record<string, NodeType> {
+  const count = segments.length;
   const nodeTypes: Record<string, NodeType> = { '0': 'corner', [String(count)]: 'corner' };
-  for (let i = 1; i < count; i++) nodeTypes[String(i)] = 'smooth';
+  for (let i = 1; i < count; i++) nodeTypes[String(i)] = isSharpJoin(segments[i - 1]!, segments[i]!) ? 'corner' : 'smooth';
   return nodeTypes;
 }
 
@@ -459,7 +460,7 @@ function toRawFinger(segments: BezierSegment[], lobe: LobeId, index: number) {
     id: `${lobe === 'left' ? 'L' : 'R'}-cut-${index}`,
     lobe,
     pathData: segmentsToPathData(segments),
-    nodeTypes: nodeTypesFor(segments.length)
+    nodeTypes: nodeTypesFor(segments)
   };
 }
 

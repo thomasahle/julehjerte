@@ -270,7 +270,7 @@ describe('cutGeometryToDesign', () => {
   });
 
   describe('node types', () => {
-    it('marks the fitted joints smooth and the endpoints corners', () => {
+    it('keeps corner and smooth joints editable with their correct node types', () => {
       const design = cutGeometryToDesign(EXAMPLES.star, { name: 'star' });
       const { fingers } = segmentsPerCut(design);
       expect(fingers.length).toBeGreaterThan(0);
@@ -278,8 +278,24 @@ describe('cutGeometryToDesign', () => {
         const n = finger.segments.length;
         expect(finger.nodeTypes?.['0']).toBe('corner');
         expect(finger.nodeTypes?.[String(n)]).toBe('corner');
-        for (let i = 1; i < n; i++) expect(finger.nodeTypes?.[String(i)]).toBe('smooth');
       }
+      const interiorTypes = fingers.flatMap(f => Object.entries(f.nodeTypes ?? {}).filter(([i]) => +i > 0 && +i < f.segments.length).map(([,type]) => type));
+      expect(interiorTypes).toContain('corner');
+      expect(interiorTypes).toContain('smooth');
+    });
+
+    it('does not round or label the right angles of a straight cut as smooth', () => {
+      const geometry = syntheticGeometry([20], [20], 0);
+      const points: [number, number][] = [[0,20],[50,20],[50,80],[100,80]];
+      geometry.B_overlap_paths[0] = points.slice(1).map((point, i) => {
+        const id = `angle-${i}`;
+        geometry.curves[id] = { control_points: straightCut(points[i]!, point) };
+        return { curve: id, reverse: false };
+      });
+      const result = cutGeometryToDesign(geometry, { name: 'right angles' });
+      const finger = result.fingers.find(f => f.id === 'L-cut-0')!;
+      expect(finger.segments).toHaveLength(3);
+      expect(finger.nodeTypes).toEqual({ '0':'corner', '1':'corner', '2':'corner', '3':'corner' });
     });
   });
 
