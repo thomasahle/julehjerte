@@ -1,6 +1,12 @@
 # Image-to-template integration
 
-The engine runs in the editor's paint mode, `/editor/mal/` and `/en/editor/paint/` — see [../redesign/PAINT.md](../redesign/PAINT.md). The visitor paints or imports a two-colour mask of the woven square, and "Find snit" asks the engine for the cuts that weave it. The standalone `/generate/` page this integration was first built for has been retired; everything below it — the worker bridge in `src/lib/inverse/client.ts`, the presets, and the vendored engine under `static/inverse/` — is unchanged and is what paint mode uses. The notes below still describe that page's controls where they explain how the engine behaves. The `scripts/inverse/*-browser-test.mjs` harnesses, and the `npm run test:inverse:*` scripts that drive them, all navigate to `/generate/` as their first step, so none of them can run against the current site; they are kept for the engine assertions written into them — read them, port the assertion you need, do not expect `npm run test:inverse:browser` to pass.
+The engine runs in the editor's paint mode, `/editor/mal/` and `/en/editor/paint/` — see [../redesign/PAINT.md](../redesign/PAINT.md). The visitor paints or imports a two-colour mask, and "Find snit" finds the cuts. The latest algorithm work has been migrated with the redesign's symmetry constraints preserved; see [REDESIGN-MIGRATION.md](REDESIGN-MIGRATION.md) for the comparison, the star conversion regression, and current QA instructions.
+
+Run `npm run test:inverse:paint:browser` against the built app for the actual Paint → Draw → export flow. This checks the final editable geometry as well as the worker's result. The older browser harnesses navigate to the retired `/generate/` page and are historical evidence, not tests of the current UI.
+
+## Historical integration notes
+
+The sections below record earlier releases and experiments. Their standalone-page controls, browser commands and deployment instructions refer to those releases.
 
 The feature imports the recovered JavaScript engine from `juleflet-codex-handoff.zip`. It is experimental: it can find checked template pairs for simple artwork, but it is not a completed reconstruction of the published gallery. The Star button now prepares an image for a fresh inverse solve using the explicit matching-sheet preset. Its cuts are compared against the published template; see [REFERENCE-QUALITY.md](REFERENCE-QUALITY.md). JUL still audits saved geometry. The 38-design blind raster benchmark achieves reference-quality matches for 11 designs across two presets; the sanitized visible-vector track and broader reconstruction work remain unfinished. No physical paper assembly has been tested.
 
