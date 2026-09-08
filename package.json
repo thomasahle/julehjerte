@@ -16,6 +16,7 @@
 		"test": "vitest run && npm run test:inverse",
 		"test:inverse": "node --test --test-concurrency=1 scripts/inverse/*.test.mjs",
 		"test:inverse:browser": "node scripts/inverse/browser-test.mjs",
+		"test:inverse:paint:browser": "node scripts/inverse/paint-browser-test.mjs",
 		"benchmark:inverse:photos": "node scripts/inverse/photo-benchmark.mjs",
 		"benchmark:inverse:robustness": "node scripts/inverse/robustness-benchmark.mjs",
 		"test:watch": "vitest",

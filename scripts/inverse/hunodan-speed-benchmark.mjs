@@ -6,7 +6,7 @@ import {cpus} from 'node:os';
 import {createCanvas,loadImage} from 'canvas';
 import {prepare,design,finish} from '../../static/inverse/core/engine.js';
 import {settings} from '../../static/inverse/core/settings.js';
-import {DIRECT_PRESET} from '../../src/lib/inverse/presets.js';
+import {AUTOMATIC_PRESET} from '../../src/lib/inverse/presets.js';
 import {auditImageFeatures} from '../../static/inverse/core/image-features.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 
@@ -14,7 +14,7 @@ const catalog=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/spe
 const baseline=JSON.parse(await fs.readFile('docs/inverse/HUNODAN-VALIDATION.json'));
 const experiment=process.env.INVERSE_SPEED_MODULE;
 const fitter=experiment?(await import(pathToFileURL(experiment).href)).fitDirect:null;
-const cfg={...DIRECT_PRESET,timeLimit:Number(process.env.INVERSE_SPEED_SECONDS||10),trials:0,earlyStop:false,...JSON.parse(process.env.INVERSE_SPEED_SETTINGS||'{}')};
+const cfg={...AUTOMATIC_PRESET,timeLimit:Number(process.env.INVERSE_SPEED_SECONDS||10),trials:0,earlyStop:false,...JSON.parse(process.env.INVERSE_SPEED_SETTINGS||'{}')};
 const out=process.env.INVERSE_SPEED_OUT||`tmp/inverse-speed/${new Date().toISOString().replace(/[:.]/g,'-')}`;
 await fs.mkdir(out,{recursive:true});
 const results=[],hash=v=>createHash('sha256').update(v).digest('hex');
