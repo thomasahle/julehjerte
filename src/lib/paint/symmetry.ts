@@ -83,17 +83,40 @@ export function applyTransform(
 	return mapPoint(ELEMENTS[t], x, y, size);
 }
 
-/** The fraction of cells that disagree with their image under `t`; 0 means exactly symmetric. */
-export function disagreement(m: Mask, t: Transform): number {
-	const e = ELEMENTS[t];
+/**
+ * How many cells disagree with their image under `e`, and how many were looked at.
+ *
+ * With a `region` only cells whose image is in the region too are counted: the
+ * question a free band asks is whether the *motif* is symmetric, and a band that
+ * is about to be replaced by a woven pattern must not answer it.
+ */
+function countDisagreement(
+	m: Mask,
+	e: Element,
+	region?: Uint8Array
+): { differing: number; counted: number } {
 	let differing = 0;
+	let counted = 0;
 	for (let y = 0; y < m.size; y++) {
 		for (let x = 0; x < m.size; x++) {
+			const here = y * m.size + x;
 			const p = mapPoint(e, x, y, m.size);
-			if (m.data[y * m.size + x] !== m.data[p.y * m.size + p.x]) differing++;
+			const there = p.y * m.size + p.x;
+			if (region && (!region[here] || !region[there])) continue;
+			counted++;
+			if (m.data[here] !== m.data[there]) differing++;
 		}
 	}
-	return differing / (m.size * m.size);
+	return { differing, counted };
+}
+
+/**
+ * The fraction of cells that disagree with their image under `t`; 0 means exactly
+ * symmetric. With a `region`, the fraction is of the region rather than of the square.
+ */
+export function disagreement(m: Mask, t: Transform, region?: Uint8Array): number {
+	const { differing, counted } = countDisagreement(m, ELEMENTS[t], region);
+	return counted ? differing / counted : 0;
 }
 
 /** The generators of the symmetry the settings ask for; §5's table, deduplicated. */
@@ -160,13 +183,17 @@ function orbit(elements: Element[], x: number, y: number, size: number): number[
 /**
  * Fold the mask onto itself so it is exactly symmetric under `transforms`.
  *
+ * With a `region` (the protected motif of a free band, `$lib/paint/frame`) only
+ * that part is folded: the band's colours are thrown away before the search sees
+ * them, so folding them would be work that changes nothing.
+ *
  * Each orbit takes the value most of its cells already have, and a tie goes to the
  * first cell in row order — so the result does not depend on which cell we happen
  * to visit first, and running it twice changes nothing. Solving wants a symmetric
  * target: asking the engine for a symmetric answer to an almost-symmetric picture
  * only spends search time proving the difference away.
  */
-export function symmetrize(m: Mask, transforms: Transform[]): void {
+export function symmetrize(m: Mask, transforms: Transform[], region?: Uint8Array): void {
 	const elements = closure(transforms);
 	if (!elements.length) return;
 	const done = new Uint8Array(m.data.length);
@@ -175,6 +202,16 @@ export function symmetrize(m: Mask, transforms: Transform[]): void {
 			const start = y * m.size + x;
 			if (done[start]) continue;
 			const cells = orbit(elements, x, y, m.size);
+			// A region is folded orbit by orbit, and only where the whole orbit is
+			// in it: half an orbit cannot be made symmetric without writing on the
+			// half that was excluded. For a region the group maps onto itself — the
+			// rude and the circle of $lib/paint/frame — that is exactly the region;
+			// for one it does not, such as the hexagon under a diagonal mirror, the
+			// cells along its edge keep what they had.
+			if (region && cells.some((index) => !region[index])) {
+				for (const index of cells) done[index] = 1;
+				continue;
+			}
 			let ones = 0;
 			for (const index of cells) ones += m.data[index]!;
 			const value = ones * 2 === cells.length ? m.data[cells[0]!]! : ones * 2 > cells.length ? 1 : 0;
@@ -202,10 +239,15 @@ export function symmetrize(m: Mask, transforms: Transform[]): void {
  * The rules are §5's: the strongest reading wins, and anything not recognised
  * stays off rather than being forced on the visitor's drawing.
  */
-export function detectSymmetry(m: Mask, tolerance = 0.03): SymmetrySettings {
+export function detectSymmetry(m: Mask, tolerance = 0.03, region?: Uint8Array): SymmetrySettings {
 	let ones = 0;
-	for (const v of m.data) ones += v;
-	const ink = Math.min(ones, m.data.length - ones);
+	let counted = 0;
+	for (let i = 0; i < m.data.length; i++) {
+		if (region && !region[i]) continue;
+		counted++;
+		ones += m.data[i]!;
+	}
+	const ink = Math.min(ones, counted - ones);
 	// A blank mask (and a completely filled one) is symmetric under everything and
 	// says nothing about what the visitor wants; switching all three rows on for it
 	// would be a guess, so nothing is reported.
@@ -214,7 +256,8 @@ export function detectSymmetry(m: Mask, tolerance = 0.03): SymmetrySettings {
 	// holds exactly one cell of the minority colour, so this is the share of the ink
 	// the transform fails to explain: 0 for an exact symmetry, 1 for a picture as
 	// unlike its image as two unrelated drawings with this much ink in them.
-	const holds = (t: Transform) => (disagreement(m, t) * m.data.length) / (2 * ink) <= tolerance;
+	const holds = (t: Transform) =>
+		countDisagreement(m, ELEMENTS[t], region).differing / (2 * ink) <= tolerance;
 	const mirrored = holds('mirrorX') && holds('mirrorY');
 	const lobes: SymmetryMode = holds('transpose') ? 'sym' : holds('antiTranspose') ? 'anti' : 'off';
 	const lobe: SymmetryMode = mirrored ? 'sym' : holds('rotate180') ? 'anti' : 'off';

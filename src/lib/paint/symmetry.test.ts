@@ -270,3 +270,46 @@ describe('symmetrize', () => {
 		for (const [x, y] of quarters(1, 2)) expect(get(m, x!, y!)).toBe(1);
 	});
 });
+
+describe('a region: the protected motif of a free band', () => {
+	/** The middle of an 8-cell square, as `$lib/paint/frame` would mark it. */
+	function middle(size: number, inset: number): Uint8Array {
+		const region = new Uint8Array(size * size);
+		for (let y = inset; y < size - inset; y++) {
+			for (let x = inset; x < size - inset; x++) region[y * size + x] = 1;
+		}
+		return region;
+	}
+
+	it('folds inside it and leaves the band exactly as it was', () => {
+		const m = createMask(0, 8);
+		const region = middle(8, 2);
+		// One cell inside the motif, off the mirror line, and one in the band.
+		m.data[2 * 8 + 2] = 1;
+		m.data[0 * 8 + 1] = 1;
+		symmetrize(m, ['mirrorX'], region);
+		// The motif is mirrored …
+		expect(get(m, 5, 2)).toBe(1);
+		// … and the band is not: its cell keeps its colour and gains no image.
+		expect(get(m, 1, 0)).toBe(1);
+		expect(get(m, 6, 0)).toBe(0);
+	});
+
+	it('judges symmetry on the motif alone', () => {
+		const m = createMask(0, 8);
+		const region = middle(8, 2);
+		// A motif that is exactly transpose-symmetric …
+		for (const [x, y] of [
+			[2, 3],
+			[3, 2],
+			[4, 4]
+		]) {
+			m.data[y! * 8 + x!] = 1;
+		}
+		expect(detectSymmetry(m, 0.03, region).lobes).toBe('sym');
+		// … under a band that is not symmetric at all.
+		for (let x = 0; x < 8; x++) m.data[x] = 1;
+		expect(detectSymmetry(m, 0.03).lobes).toBe('off');
+		expect(detectSymmetry(m, 0.03, region).lobes).toBe('sym');
+	});
+});

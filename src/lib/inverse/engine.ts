@@ -45,6 +45,13 @@ import {
 	type PixelsInput,
 	type PreparedArtwork
 } from '$lib/inverse/client';
+import {
+	DEFAULT_FRAME_CELLS,
+	FRAME_MAX_CELLS,
+	FRAME_MIN_CELLS,
+	insideCell,
+	type Frame
+} from '$lib/paint/frame';
 import { MASK_SIZE, type Mask } from '$lib/paint/mask';
 import type { SymmetrySettings } from '$lib/paint/symmetry';
 import type { HeartColors } from '$lib/types/heart';
@@ -127,6 +134,36 @@ export function engineSymmetry(rows: SymmetrySettings): EngineSymmetry {
 	return out;
 }
 
+/**
+ * The frame as per-cell loss weights: 1 for a cell that must come out as painted,
+ * 0 for a cell of a free band the search may fill as it likes.
+ *
+ * **Nothing sends this to the engine yet, and that is deliberate.** The fitter's
+ * loss has no per-cell weight to take: `core/` scores a candidate against every
+ * cell of the target equally, and MOTIF-BORDER.md says plainly why the obvious
+ * workaround does not work — a neutral 0.5 probability is not ignored, because
+ * the squared-error grid loss still pulls predictions towards it and several
+ * ranking stages threshold probabilities on the way out. Weights are Codex's
+ * lane. Until they land, a free band reaches the engine as
+ * `substituteCheckerBand`'s woven pattern instead (PAINT.md §11).
+ *
+ * It is written now, and tested, so that the day the engine takes weights the
+ * change is one added settings key here and the deletion of one function in
+ * `$lib/paint/frame` — not a new model of what the mask is.
+ */
+export function frameWeights(mask: Mask, frame: Frame): Float32Array {
+	const weights = new Float32Array(mask.data.length);
+	weights.fill(1);
+	if (frame.mode !== 'free') return weights;
+	for (let y = 0; y < mask.size; y++) {
+		const row = y * mask.size;
+		for (let x = 0; x < mask.size; x++) {
+			if (!insideCell(frame, mask.size, x, y)) weights[row + x] = 0;
+		}
+	}
+	return weights;
+}
+
 /** How the engine should read a picture's colours; the dialog's three choices. */
 export type ColourMode = 'auto' | 'red-white-mixture' | 'swatches';
 
@@ -167,10 +204,24 @@ export type FindSettings = {
  * Everything else the engine can be told is either meaningless to a hobbyist or
  * a way to get a template that cannot be cut, so it is not offered.
  */
-export type AdvancedSettings = { widthMm: number; minWidthMm: number; matchingSheets: boolean };
+export type AdvancedSettings = {
+	widthMm: number;
+	minWidthMm: number;
+	matchingSheets: boolean;
+	/**
+	 * "Rammens felter": how many checker cells a free band is woven from, per side
+	 * of the square (PAINT.md §11).
+	 *
+	 * The one number here that the engine never sees: it shapes the *target* the
+	 * search is given, in `$lib/paint/frame`, rather than the search. It sits with
+	 * the others because it belongs to the same disclosure and the same Nulstil,
+	 * and because it goes away with the checker when weights arrive.
+	 */
+	frameCells: number;
+};
 
-/** The two settings in it that are numbers, which are the two that have bounds. */
-export type AdvancedNumber = 'widthMm' | 'minWidthMm';
+/** The settings in it that are numbers, which are the ones that have bounds. */
+export type AdvancedNumber = 'widthMm' | 'minWidthMm' | 'frameCells';
 
 /**
  * What those two numbers may be.
@@ -184,12 +235,16 @@ export type AdvancedNumber = 'widthMm' | 'minWidthMm';
  */
 export const ADVANCED_LIMITS: Record<AdvancedNumber, readonly [number, number]> = {
 	widthMm: [20, 300],
-	minWidthMm: [0.5, 30]
+	minWidthMm: [0.5, 30],
+	// Codex's benchmark tried three, four and five and four won on both fixtures;
+	// outside that range the band stops being a weave a heart can be cut from.
+	frameCells: [FRAME_MIN_CELLS, FRAME_MAX_CELLS]
 };
 
 const ADVANCED_DEFAULTS: Record<AdvancedNumber, number> = {
 	widthMm: DEFAULT_WIDTH_MM,
-	minWidthMm: DEFAULT_MIN_WIDTH_MM
+	minWidthMm: DEFAULT_MIN_WIDTH_MM,
+	frameCells: DEFAULT_FRAME_CELLS
 };
 
 /** One typed number brought inside the range; a non-number goes back to the default. */
@@ -204,7 +259,8 @@ export function defaultAdvanced(symmetry: SymmetrySettings): AdvancedSettings {
 	return {
 		widthMm: DEFAULT_WIDTH_MM,
 		minWidthMm: DEFAULT_MIN_WIDTH_MM,
-		matchingSheets: symmetry.lobes === 'sym'
+		matchingSheets: symmetry.lobes === 'sym',
+		frameCells: DEFAULT_FRAME_CELLS
 	};
 }
 

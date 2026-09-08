@@ -11,8 +11,10 @@ import {
 	restore,
 	serialize,
 	session,
+	setFrame,
 	setMask,
 	setSymmetry,
+	symmetryRegion,
 	takeHandoff
 } from './session.svelte';
 
@@ -151,5 +153,57 @@ describe('serialize and restore', () => {
 		);
 		expect(session.sourceName).toBe('keep.png');
 		expect(session.mask?.data[0]).toBe(1);
+	});
+});
+
+describe('the frame', () => {
+	it('starts Fast, a rude, at Codex s 18% inset', () => {
+		expect(session.frame).toEqual({ mode: 'fixed', shape: 'diamond', size: 0.64 });
+	});
+
+	it('folds the whole square while the band is fixed', () => {
+		setMask(createMask(0, 40));
+		// A blot in one corner of the square, well outside a 64% motif.
+		rect(session.mask!, { x: 1, y: 1 }, { x: 6, y: 3 }, 1);
+		setSymmetry({ curve: 'off', lobe: 'off', lobes: 'sym' });
+		expect(disagreement(session.mask!, 'transpose')).toBe(0);
+	});
+
+	it('folds the motif alone once the band is free', () => {
+		setMask(createMask(0, 40));
+		rect(session.mask!, { x: 1, y: 1 }, { x: 6, y: 3 }, 1);
+		setFrame({ mode: 'free', shape: 'diamond', size: 0.64 });
+		setSymmetry({ curve: 'off', lobe: 'off', lobes: 'sym' });
+		// The blot is in the band, so the fold left it and its missing image alone.
+		expect(disagreement(session.mask!, 'transpose')).toBeGreaterThan(0);
+		// … and the motif is exactly symmetric all the same.
+		const region = symmetryRegion();
+		expect(region).toBeDefined();
+		expect(disagreement(session.mask!, 'transpose', region)).toBe(0);
+	});
+
+	it('catches the band up when the band goes back to Fast', () => {
+		setMask(createMask(0, 40));
+		rect(session.mask!, { x: 1, y: 1 }, { x: 6, y: 3 }, 1);
+		setFrame({ mode: 'free', shape: 'diamond', size: 0.64 });
+		setSymmetry({ curve: 'off', lobe: 'off', lobes: 'sym' });
+		setFrame({ mode: 'fixed', shape: 'diamond', size: 0.64 });
+		expect(disagreement(session.mask!, 'transpose')).toBe(0);
+	});
+
+	it('has no region to fold while the band is fixed', () => {
+		setMask(createMask(0, 20));
+		expect(symmetryRegion()).toBeUndefined();
+	});
+
+	it('survives a round trip, and refuses nonsense', () => {
+		setFrame({ mode: 'free', shape: 'hexagon', size: 0.8 });
+		const stored = serialize();
+		resetSession();
+		expect(restore(stored)).toBe(true);
+		expect(session.frame).toEqual({ mode: 'free', shape: 'hexagon', size: 0.8 });
+		resetSession();
+		expect(restore({ ...stored, frame: { mode: 'sideways', shape: 'blob', size: 9 } })).toBe(true);
+		expect(session.frame).toEqual({ mode: 'fixed', shape: 'diamond', size: 0.84 });
 	});
 });
