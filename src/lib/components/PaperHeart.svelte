@@ -7,7 +7,9 @@
 		ChevronRightIcon,
 		CloseIcon,
 		FitIcon,
+		OutlineIcon,
 		RedoIcon,
+		SnapIcon,
 		SwapIcon,
 		TrashIcon,
 		UndoIcon
@@ -47,6 +49,7 @@
 	import { dot, midpoint, normalize, perp, vecAdd, vecDist, vecLerp, vecScale, vecSub } from '$lib/geometry/vec';
 	import { insertNodeInFinger, shiftNodeTypesOnDelete } from '$lib/editor/commands';
 	import { bezierPointAt, findFingersWithIssues, intersectionMarginPx, segmentsIntersect } from '$lib/editor/curveIssues';
+	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
 	import { findNearestOppositeAnchor, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
 	import { toggleNumberInList } from '$lib/editor/selection';
 	import {
@@ -3124,7 +3127,7 @@
 											{@const isHovered = finger.id === hoverFingerId}
 											{@const hidden = !showCurves}
 											{@const hasIssues = issueFingerIds.has(finger.id)}
-											{@const lobeColor = finger.lobe === 'left' ? '#00ddff' : '#ff8800'}
+											{@const lobeColor = LOBE_OUTLINE_COLORS[finger.lobe]}
 											{@const strokeColor = hasIssues ? '#ff0000' : isSelected ? '#111111' : lobeColor}
 											{@const outlineColor = isSelected ? '#ffffff' : '#000000'}
 											{@const fingerPathData = segmentsToPathData(finger.segments)}
@@ -3493,8 +3496,12 @@
 
 					<section class="editor-panel symmetry-panel">
 						<h2 class="panel-title">{tr('symmetry')}</h2>
+						<!-- Below 900px this panel leaves the column and floats over the
+						     drawing in a wrapping row, where every line it takes is a line
+						     off the heart: the segments keep the glyph alone there. -->
 						<SymmetryRows
 							{lang}
+							compact={isMobileLayout}
 							value={{ curve: withinCurveMode, lobe: withinLobeMode, lobes: betweenLobesMode }}
 							onChange={(next) => {
 								withinCurveMode = next.curve;
@@ -3507,12 +3514,16 @@
 
 					<section class="editor-panel">
 						<h2 class="panel-title">{tr('editorDrawing')}</h2>
+						<!-- Each checkbox carries the picture of what it draws, in the
+						     canvas's own cut colours. -->
 						<label class="checkbox" title={tr('editorShowCurveOutlines')}>
 							<input type="checkbox" bind:checked={showCurves} />
+							<OutlineIcon />
 							<span>{tr('editorOutlines')}</span>
 						</label>
 						<label class="checkbox" title={tr('editorSnapToOppositeTitle')}>
 							<input type="checkbox" bind:checked={snapToOpposite} />
+							<SnapIcon />
 							<span>{tr('editorSnapToOpposite')}</span>
 						</label>
 					</section>
@@ -3937,6 +3948,12 @@
 			font-size: 14px;
 			color: var(--ink);
 			cursor: pointer;
+		}
+
+		/* The glyph between the box and the label keeps its 28px; only the label
+		   gives way when the panel narrows. */
+		.checkbox :global(svg) {
+			flex: none;
 		}
 
 		.checkbox input {
