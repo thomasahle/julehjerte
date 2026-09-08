@@ -60,6 +60,14 @@
 		 * found heart, say — and the handles are not drawn at all.
 		 */
 		onFrameSize?: (size: number) => void;
+		/**
+		 * A handle has been grabbed and the size is about to move.
+		 *
+		 * The drag folds the mask, because the rows apply to the protected motif
+		 * alone while the band is free; the page snapshots for undo here so that
+		 * the whole drag is one step and not one per pointer event.
+		 */
+		onFrameSizeStart?: () => void;
 		/** No pointer input while the engine is working (PAINT.md §2). */
 		disabled?: boolean;
 		/**
@@ -90,6 +98,7 @@
 		revision,
 		frame,
 		onFrameSize,
+		onFrameSizeStart,
 		disabled = false,
 		keyboardBusy = false,
 		onEditStart,
@@ -489,6 +498,7 @@
 			pointerId = event.pointerId;
 			frameAxis = grabbed;
 			canvasEl?.setPointerCapture(event.pointerId);
+			onFrameSizeStart?.();
 			return;
 		}
 		const point = pointAt(event);
@@ -580,8 +590,9 @@
 		last = null;
 		preview = null;
 		schedule();
-		// Resizing the protected motif changes no cell, so it is not an edit the
-		// undo stack or the found heart have anything to say about.
+		// A resize is not a stroke: the undo step it needs was taken when the handle
+		// was grabbed (`onFrameSizeStart`), and the page has already left the found
+		// heart behind on the first change of size.
 		if (!resizing) onEditEnd();
 	}
 

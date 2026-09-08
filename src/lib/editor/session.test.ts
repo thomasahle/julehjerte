@@ -182,6 +182,20 @@ describe('the frame', () => {
 		expect(disagreement(session.mask!, 'transpose', region)).toBe(0);
 	});
 
+	it('folds paint the rows had left alone when the motif grows', () => {
+		// Why a frame change is an edit and not only a setting: the region the rows
+		// apply to moves with the shape, so widening the motif folds band paint away.
+		// The page therefore puts a step on the undo stack for it (`recordFrameFold`).
+		setMask(createMask(0, 40));
+		rect(session.mask!, { x: 5, y: 8 }, { x: 12, y: 14 }, 1);
+		setFrame({ mode: 'free', shape: 'diamond', size: 0.3 });
+		setSymmetry({ curve: 'off', lobe: 'off', lobes: 'sym' });
+		const before = [...session.mask!.data];
+		setFrame({ mode: 'free', shape: 'diamond', size: 0.84 });
+		const changed = before.filter((value, i) => value !== session.mask!.data[i]).length;
+		expect(changed).toBeGreaterThan(0);
+	});
+
 	it('catches the band up when the band goes back to Fast', () => {
 		setMask(createMask(0, 40));
 		rect(session.mask!, { x: 1, y: 1 }, { x: 6, y: 3 }, 1);

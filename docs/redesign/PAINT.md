@@ -468,6 +468,11 @@ their benchmark did, by preparing a different target, and is built (`$lib/paint/
   mirrors do not map onto itself — the hexagon, which they turn a quarter turn — the cells along its edge are left
   unfolded and keep exactly what the visitor painted; the target is then symmetric everywhere but on that thin
   edge, and the engine's own symmetrisation absorbs it.
+- Changing "Kanten" **is an edit**, not only a setting: the region the rows fold over moves with the shape, so a
+  change folds band paint away or stops folding motif paint. Mal records one undo step per gesture
+  (`recordFrameFold`; the Størrelse slider and the canvas handle both say when a gesture begins, so a drag is one
+  step and not sixty) and, like a change of rows, does not mark the mask dirty — the fold is the visitor's own
+  instruction, not an edit they have yet to notice.
 - The result panel reports the difference **inside the protected motif first** and the whole square second, both
   measured against the target the engine was given (the number MOTIF-BORDER.md asks for: its three-cell house
   passes the whole-image bar at 1.89 % with a centre that is 4.60 % wrong). A checkbox "Vis det beskyttede motiv"

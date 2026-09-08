@@ -31,13 +31,23 @@
 
 	interface Props {
 		frame: Frame;
+		/**
+		 * A gesture that will change the frame is beginning.
+		 *
+		 * Every change here folds the mask — the rows apply to the protected motif
+		 * alone while the band is free, so moving its edge folds cells that were
+		 * left alone or stops folding cells that were not. The page snapshots for
+		 * undo on this rather than on `onFrame`, because the slider fires on every
+		 * pixel of a drag and that whole drag is one edit.
+		 */
+		onFrameStart?: () => void;
 		onFrame: (next: Frame) => void;
 		/** The engine is working; the frame decides what it is working on. */
 		disabled?: boolean;
 		lang: Language;
 	}
 
-	let { frame, onFrame, disabled = false, lang }: Props = $props();
+	let { frame, onFrameStart, onFrame, disabled = false, lang }: Props = $props();
 
 	const tr = (key: TranslationKey) => t(key, lang);
 
@@ -51,10 +61,13 @@
 	let percent = $derived(Math.round(frame.size * 100));
 
 	function setMode(next: unknown): void {
-		if (next === 'fixed' || next === 'free') onFrame({ ...frame, mode: next });
+		if (next !== 'fixed' && next !== 'free') return;
+		onFrameStart?.();
+		onFrame({ ...frame, mode: next });
 	}
 
 	function setShape(shape: FrameShape): void {
+		onFrameStart?.();
 		onFrame({ ...frame, shape });
 	}
 
@@ -62,6 +75,17 @@
 		const value = Number(raw);
 		if (!Number.isFinite(value)) return;
 		onFrame({ ...frame, size: clampFrameSize(value / 100) });
+	}
+
+	/**
+	 * A drag of the slider, or one press of an arrow key on it, is beginning.
+	 *
+	 * A held-down key repeats, and each repeat would otherwise be its own undo
+	 * step; the whole run is one gesture, so only the first press counts.
+	 */
+	function startSize(event: PointerEvent | KeyboardEvent): void {
+		if ('repeat' in event && event.repeat) return;
+		onFrameStart?.();
 	}
 
 	/** One shape as an SVG path in the unit square, for the button glyphs. */
@@ -143,6 +167,8 @@
 			max={Math.round(FRAME_MAX_SIZE * 100)}
 			step="1"
 			value={percent}
+			onpointerdown={startSize}
+			onkeydown={startSize}
 			oninput={(e) => setSize(e.currentTarget.value)}
 			{disabled}
 		/>

@@ -201,7 +201,16 @@ export function setSymmetry(next: SymmetrySettings): void {
  *
  * Switching the band free narrows the region the fold covers, so the mask has to
  * be folded again — the other way round, switching it back to Fast, the band has
- * to catch up with the rows it was never folded under.
+ * to catch up with the rows it was never folded under. Moving the shape's edge
+ * does both at once, over the ring of cells that changed sides.
+ *
+ * So this *does* change cells, exactly as `setSymmetry` does, and for the same
+ * reason: painting under symmetry assumes the mask already matches the rows
+ * inside the region. The page therefore puts a frame change on the undo stack
+ * (one step per gesture, not per pointer event — `recordFrameFold` in
+ * PaintPage.svelte), and, as with the rows, does not mark the mask dirty: the
+ * fold is the visitor's own instruction rather than an edit they have yet to
+ * notice.
  */
 export function setFrame(next: Frame): void {
 	session.frame = { ...next };

@@ -57,7 +57,7 @@
 		solveTargetMask
 	} from '$lib/paint/frame';
 	import { createMask, isEmpty, maskMismatch, resample, type Mask } from '$lib/paint/mask';
-	import { detectSymmetry } from '$lib/paint/symmetry';
+	import { detectSymmetry, transformsFor } from '$lib/paint/symmetry';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
 	import {
 		canRedo as historyCanRedo,
@@ -299,22 +299,44 @@
 	/**
 	 * "Kanten" changed: a new mode, shape or size.
 	 *
-	 * It changes no cell, so it is not on the undo stack — but it does change what
-	 * a search is being asked for, so a heart found under the old frame stops being
-	 * the answer and the page goes back to the mask, exactly as it does after a
-	 * stroke. It also changes which cells the symmetry rows apply to, which is why
-	 * it goes through the store's `setFrame` and not through an assignment.
+	 * It changes what a search is being asked for, so a heart found under the old
+	 * frame stops being the answer and the page goes back to the mask, exactly as
+	 * it does after a stroke. It also changes which cells the symmetry rows apply
+	 * to — the band's are excluded while it is free — which is why it goes through
+	 * the store's `setFrame` and not through an assignment: the store folds the
+	 * mask to the region the new frame means.
 	 */
-	function changeFrame(next: Frame): void {
+	function applyFrame(next: Frame): void {
 		setFrame(next);
 		revision++;
 		backToMask();
 	}
 
+	/**
+	 * The mask as it stands, on the undo stack, before a gesture moves the frame.
+	 *
+	 * That fold is an edit like any other: widening the motif folds band paint the
+	 * rows had left alone, and narrowing it stops folding paint that was folded —
+	 * so without this a drag of the Størrelse handle would rewrite cells the
+	 * visitor could not get back. Once per gesture, not once per pointermove:
+	 * both the slider and the canvas handle say when one begins.
+	 *
+	 * With no row on there is nothing to fold and nothing to record. As with
+	 * `changeSymmetry`, the fold does not mark the mask dirty — it is the
+	 * visitor's own instruction, not an edit they have yet to notice.
+	 */
+	function recordFrameFold(): void {
+		if (!transformsFor(session.symmetry).length) return;
+		const step = currentStep();
+		if (!step) return;
+		record(history, step);
+		syncHistoryFlags();
+	}
+
 	/** A dragged handle, which arrives many times a second and only moves the size. */
 	function resizeFrame(size: number): void {
 		if (size === session.frame.size) return;
-		changeFrame({ ...session.frame, size: clampFrameSize(size) });
+		applyFrame({ ...session.frame, size: clampFrameSize(size) });
 	}
 
 	/**
@@ -712,6 +734,7 @@
 							{paintValue}
 							{revision}
 							frame={session.frame}
+							onFrameSizeStart={recordFrameFold}
 							onFrameSize={resizeFrame}
 							disabled={busy}
 							keyboardBusy={dialogOpen}
@@ -831,7 +854,13 @@
 					<!-- Kanten sits under Værktøj in the same column (PAINT.md §11): it is
 					     about the picture, not about the search, and the visitor sets it
 					     while they paint. -->
-					<FramePanel {lang} frame={session.frame} onFrame={changeFrame} disabled={busy} />
+					<FramePanel
+						{lang}
+						frame={session.frame}
+						onFrameStart={recordFrameFold}
+						onFrame={applyFrame}
+						disabled={busy}
+					/>
 	{/snippet}
 
 	{#snippet cutsPanel()}
