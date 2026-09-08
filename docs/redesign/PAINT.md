@@ -410,12 +410,19 @@ mirrorY, Anti → rotate180; Inden i kurve Sym/Anti → withinCurve — in one f
 lane lands) is true, so the page can be built before the engine is merged. `symmetrize` on the mask and
 `enforce` in the converter stay as the safety net for the MILP route and for `withinCurve` Anti.
 
-**Free cells are the next stage, not this one.** Codex's motif-border experiment (docs/inverse/MOTIF-BORDER.md)
-shows that an isolated painted motif needs a band of cells the engine may fill with a supporting weave, and that
-the engine needs explicit per-cell loss weights for that (a 0.5 probability is not ignored). When the engine has
-weights, the mask gains a third value `2 = free` (a "Fri" tool and a "Fri kant" band control, hatched on the
-canvas, weight 0 in the bridge, excluded from `detectSymmetry`, the centre error reported separately). Keep the
-mask's value type open to that: no code may assume `data[i] < 2` except the tools' own brushes.
+**Free cells are the next stage, and the engine side is Codex's.** Codex's motif-border experiment
+(docs/inverse/MOTIF-BORDER.md) shows that an isolated painted motif needs a band of cells the engine may fill with
+a supporting weave, and that the engine needs explicit per-cell loss weights for that (a 0.5 probability is not
+ignored). Codex is building that in the engine on their branch; we port it when it lands and do not build it here.
+The UI is designed now so the paint mode fits it from the start (mockup, section "Frie felter"): the mask gains a
+third value `2 = free`; "Maler med" gets a third, hatched swatch; a panel "Fri kant" with a checkbox "Lad motoren
+lægge kanten" and a width (Smal / Mellem / Bred ≈ 10 / 18 / 25 % of the square) marks the outer band free; free
+cells are drawn hatched on a light ground inside the heart with a dashed outline of the protected centre;
+`detectSymmetry` ignores free cells; the bridge sends weight 0 for them; the result panel reports the difference
+inside the protected motif separately from the whole square, and a checkbox shows the protected outline on the
+found heart; the import dialog gets "Reparér kanten" with the same width control for blurred photo edges. Until
+the engine supports weights, nothing of this is shown. Keep the mask's value type open to it: no code may assume
+`data[i] < 2` except the tools' own brushes.
 
 **Session store as landed.** `session` is a class instance: `mask` and `result` are `$state.raw` (replace, never
 mutate for reactivity; the canvas repaints by box), the small fields plain `$state`. Callers use `setMask(mask,
