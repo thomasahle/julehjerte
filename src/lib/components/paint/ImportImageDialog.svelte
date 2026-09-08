@@ -58,7 +58,7 @@
 		orderQuad,
 		type DecodedImage
 	} from '$lib/paint/importImage';
-	import { rectifyPhoto, type RectifiedPhoto } from '$lib/paint/rectify';
+	import { rectifyPhoto, warmRectifier, type RectifiedPhoto } from '$lib/paint/rectify';
 	import { detectSymmetry, NO_SYMMETRY, type SymmetrySettings } from '$lib/paint/symmetry';
 
 	interface Props {
@@ -176,8 +176,12 @@
 
 	// Everything about a picture belongs to the visit that opened the dialog: a
 	// second visit starts from the drop zone rather than from someone else's crop.
+	// Opening it is also the earliest moment we know a crop may be dragged, and
+	// the live crop's locator is a fetch — so it is started here, while the
+	// visitor is still choosing a file, rather than under the first finger.
 	$effect(() => {
-		if (!open) reset();
+		if (open) warmRectifier();
+		else reset();
 	});
 
 	$effect(() => {

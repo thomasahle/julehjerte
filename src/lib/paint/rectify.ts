@@ -85,6 +85,22 @@ function rectifier(): Promise<RectifyMotif> {
 }
 
 /**
+ * Start fetching the locator without asking it anything yet.
+ *
+ * The first rectify is the only one that waits for the module, and the caller
+ * that waits is the worst one to make wait: a drag that starts before the
+ * module has landed has already cleared the prepared mask, so the preview falls
+ * back from a heart to "set the corners to see the mask" — a sentence that is
+ * wrong on its face, since the corners are what the finger is holding. The
+ * dialog calls this when it opens, seconds before a finger can reach a corner.
+ * A failure here is dropped rather than reported: `rectifier` has already
+ * forgotten it, so the first real frame asks again and reports it then.
+ */
+export function warmRectifier(): void {
+	void rectifier().catch(() => {});
+}
+
+/**
  * The photograph, seen through the quadrilateral, as a square of RGBA pixels.
  *
  * Throws what the locator throws — a `TypeError` for four corners that do not
