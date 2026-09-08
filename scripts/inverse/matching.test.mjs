@@ -42,7 +42,7 @@ test('matching preference has an analytic gradient on both sheet families',()=>{
 test('the same preference over affine ties keeps its gradient and its projection',()=>{
   // The transposed ties are plain indices; a mirror ties x to w-x. Requested
   // symmetries take the hard projection, so this soft path is only ever a
-  // preference over the same groups — its gradient still has to be the real one.
+  // preference over the same groups; its gradient still has to be the real one.
   const graph=new CurveGraph(gridPaths(gridModel([2,2],8,7),100),100),p=graph.points,h=1e-4;
   const {groups}=symmetryTies(graph,settings({symmetry:{mirrorX:true}}).symmetry);
   assert.ok(groups.length>1&&groups.every(g=>typeof g[0]!=='number'));

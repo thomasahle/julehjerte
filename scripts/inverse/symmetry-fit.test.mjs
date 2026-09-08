@@ -125,7 +125,7 @@ const starRuns = new Map();
 /** The star example prepared the way the browser's fit-curves-to-image mode
  * prepares it, then fitted end to end. Memoized per request. These runs are
  * budgeted in wall-clock time, so only assertions that hold for any number of
- * gradient steps — which symmetry the result has — belong on them. */
+ * gradient steps, which symmetry the result has, belong on them. */
 async function starFit(symmetry) {
   const key = JSON.stringify(symmetry);
   if (!starRuns.has(key)) {
@@ -284,7 +284,7 @@ test('a requested mirror is exact even when the caller also wants identical shee
   // The polish stage asks for identical sheets whenever the candidate already
   // has them. Two hard projections in turn leave only the last exact, and the
   // very first snapshot is taken after a single clamp, so the request has to be
-  // the projection that runs — not the transposition nobody asked for here.
+  // the projection that runs, not the transposition nobody asked for here.
   const mirrored = await equalWorkFit({ mirrorX: true }, { steps: 1, identicalSheets: true });
   assert.deepEqual(mirrored.report.honoured, ['mirrorX']);
   assert.ok(mirrored.report.maxDeviationMm < TOLERANCE, `mirrorX deviates by ${mirrored.report.maxDeviationMm} mm`);
