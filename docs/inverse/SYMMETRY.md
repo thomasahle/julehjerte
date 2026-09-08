@@ -90,6 +90,25 @@ counts. The grid-count search skips the pairs it cannot reproduce; the skipped
 counts cannot hold the answer, since their woven picture would be the requested
 one with its colours swapped.
 
+### The editor's three rows
+
+The paint editor states symmetry as cut geometry — within a curve, within a
+lobe, between lobes — and paints with the square symmetries those rows imply
+(`src/lib/paint/symmetry.ts`, same five transform names, same closure over the
+eight symmetries of the square). The engine request that carries each row:
+
+| Editor row | `sym` | `anti` |
+| --- | --- | --- |
+| Mellem lapper (between lobes) | `transpose` | `antiTranspose` |
+| Inden i lap (within a lobe) | `mirrorX` + `mirrorY` | `rotate180` |
+| Inden i kurve (within a curve) | `withinCurve: 'sym'` | `withinCurve: 'anti'` |
+
+The last row is the one the mask cannot express — a per-cut chord symmetry is
+not a symmetry of the square — so the editor paints it as the closest mask
+symmetry while the engine holds it exactly on the cuts. Sending both the row's
+mask transforms and its `withinCurve` mode is consistent: the union-find merges
+them, and the report measures each separately.
+
 ## Which stage sees which target
 
 When any transform of the square is requested, every per-pixel target the
