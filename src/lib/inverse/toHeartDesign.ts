@@ -39,6 +39,35 @@
  * Equal for every cell exactly when `weaveParity = phase`. The path counts drop
  * out — they only appear in the engine's own expression because its rings count
  * from the opposite side of the square.
+ *
+ * ## What `enforce` is, and what it is not
+ *
+ * `enforce` is a **correction, not a projection**. It assumes the solve already
+ * (nearly) holds the symmetry, because the paint flow asks the engine for it:
+ * the mask is `symmetrize`d before solving, and Mellem lapper Sym also sets
+ * `identicalSheets`, the one symmetry the engine enforces itself. On such an
+ * answer the correction is small, and the heart the visitor gets is the heart
+ * the engine found.
+ *
+ * On an answer that does *not* hold the symmetry the correction is not small,
+ * and it cannot be: a woven square can be almost perfectly symmetric as a
+ * *picture* while the cuts that weave it are not — the star example is 1.3% away
+ * from its own transpose, yet its two families are nowhere near transposes of
+ * each other. Forcing the cuts then has to move the picture. Measured on the two
+ * saved examples, which were solved with no symmetry asked for at all, one row
+ * costs 11–19% of the woven area and all three together 17–24%;
+ * `toHeartDesign.test.ts` pins those bounds, so a change to the mappings cannot
+ * quietly make them worse.
+ *
+ * Two things follow for the caller:
+ *
+ * - Inden i kurve Anti cannot be expressed on the mask (PAINT.md §5), so it
+ *   always arrives here as a correction to a solve that was never asked to hold
+ *   it. That row's cost is the one we cannot design away.
+ * - The "difference from the mask" the success panel shows has to be measured on
+ *   the converted heart — `maskMismatch(rasterizeDesign(design, n).data, mask)`
+ *   — and **not** taken from the engine's `report.imageError.mismatchFraction`,
+ *   which describes the heart as it was before any of this happened.
  */
 
 import type { Finger, HeartColors, HeartDesign, LobeId, NodeType } from '$lib/types/heart';

@@ -172,7 +172,7 @@ describe('cutGeometryToDesign', () => {
         const theirs = engineMask(EXAMPLES[name]);
         const raw = maskMismatch(ourMask(EXAMPLES[name], { tolerance: 0 }), theirs);
         const fitted = maskMismatch(ourMask(EXAMPLES[name]), theirs);
-        // Measured at FIT_TOLERANCE 0.25: star +0.62 points, jul +0.42.
+        // Measured at FIT_TOLERANCE 0.25: star +0.63 points, jul +0.49.
         expect(fitted).toBeLessThanOrEqual(raw + 0.007);
         expect(fitted).toBeLessThan(0.015);
       }
@@ -355,6 +355,63 @@ describe('cutGeometryToDesign', () => {
       });
       expect(maskMismatch(rasterizeDesign(enforced, N).data, rasterizeDesign(plain, N).data)).toBe(0);
       expect(maskMismatch(rasterizeDesign(enforced, N).data, engineMask(geometry))).toBe(0);
+    });
+
+    // Enforcement is a correction, not a projection: it assumes the engine was
+    // already asked for the symmetry (a symmetrised mask, `identicalSheets`).
+    // These two tests say what that assumption is worth. The saved examples were
+    // solved with no symmetry asked for at all, so they are the worst case, and
+    // the bounds are there to fail loudly if a change to the mappings — a
+    // mispaired cut, a flipped axis — makes the deformation grow.
+    describe('what enforcing costs', () => {
+      const ROWS = [
+        { curve: 'sym', lobe: 'off', lobes: 'off' },
+        { curve: 'off', lobe: 'sym', lobes: 'off' },
+        { curve: 'off', lobe: 'off', lobes: 'sym' }
+      ] as const;
+      // Measured: one row 11.0-13.7% (star) and 15.6-19.1% (jul), all three
+      // 16.8% and 24.4%.
+      const BOUNDS = { star: { row: 0.15, all: 0.18 }, jul: { row: 0.2, all: 0.25 } };
+
+      for (const name of ['star', 'jul'] as const) {
+        it(`stays within the measured bound on ${name}, which holds no symmetry`, () => {
+          const theirs = engineMask(EXAMPLES[name]);
+          for (const enforce of ROWS) {
+            const design = cutGeometryToDesign(EXAMPLES[name], { name, enforce });
+            const cost = maskMismatch(rasterizeDesign(design, N).data, theirs);
+            expect(cost).toBeLessThan(BOUNDS[name].row);
+          }
+          const all = cutGeometryToDesign(EXAMPLES[name], {
+            name,
+            enforce: { curve: 'sym', lobe: 'sym', lobes: 'sym' }
+          });
+          expect(maskMismatch(rasterizeDesign(all, N).data, theirs)).toBeLessThan(BOUNDS[name].all);
+        });
+      }
+
+      it('costs almost nothing on a solve that already holds the symmetry', () => {
+        // JUL's cuts with family A replaced by the transpose of family B: a real,
+        // curvy solution that is exactly what `identicalSheets` would have given
+        // us. Correcting that must be a no-op to within the refitting error,
+        // which is what makes enforcement safe in the flow PAINT.md §5 describes.
+        const geometry = JSON.parse(JSON.stringify(EXAMPLES.jul)) as CutGeometry;
+        geometry.A_overlap_paths = geometry.B_overlap_paths.map((cut) =>
+          cut.map((ref) => {
+            const id = `transposed-${ref.curve}`;
+            geometry.curves[id] = {
+              control_points: geometry.curves[ref.curve]!.control_points.map((p) => [p[1]!, p[0]!])
+            };
+            return { curve: id, reverse: ref.reverse };
+          })
+        );
+        const plain = cutGeometryToDesign(geometry, { name: 'jul' });
+        const enforced = cutGeometryToDesign(geometry, {
+          name: 'jul',
+          enforce: { curve: 'off', lobe: 'off', lobes: 'sym' }
+        });
+        const cost = maskMismatch(rasterizeDesign(enforced, N).data, rasterizeDesign(plain, N).data);
+        expect(cost).toBeLessThan(0.005);
+      });
     });
 
     it('leaves the heart alone when every row is off', () => {
