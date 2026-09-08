@@ -11,7 +11,9 @@
  *
  * Each row draws its own subject, and the three modes change only the second
  * cut, which is the point: Fra leaves it free, Sym mirrors the first, Anti
- * turns it.
+ * turns it. All of it in one colour: the page's other family marks the
+ * following cut in red (`h-both-*`), and that is the one the owner did not
+ * choose, so nothing here carries a second colour.
  */
 
 /** The three rows: within one curve, within one lobe, between the two lobes. */
@@ -30,13 +32,6 @@ export interface SymmetryIconPath {
 	soft?: boolean;
 	/** Placement of a cut that is drawn in its own lobe's coordinates. */
 	transform?: string;
-	/**
-	 * Drawn in the accent colour instead of `currentColor` — the second colour
-	 * that says which cut follows which. No Familie A glyph uses it, but the
-	 * accent is part of the icon contract (see SymmetryIcon), so the table can
-	 * carry a two-coloured glyph without the control's CSS changing.
-	 */
-	accent?: boolean;
 }
 
 /**

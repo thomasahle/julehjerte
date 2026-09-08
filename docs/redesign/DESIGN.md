@@ -304,9 +304,9 @@ Symmetri and Tegning are drawn, not only named — the icons the owner chose in 
 ("Familie A med tekst"). Each symmetry segment carries the glyph of *its own* row and mode at 28px in a 40px
 segment, with the word beside it: one curve, one lobe with two cuts, or both lobes, where Fra leaves the second
 cut free, Sym mirrors it and Anti turns it. Nine glyphs, one component and one table (`SymmetryIcon` and
-`symmetryIcons.ts` in `$lib/components/icons`), all `currentColor` so a selected segment inverts glyph and word
-together on green; a glyph that marks the following cut in a second colour reads `--icon-accent`, which the
-selected segment sets to `--red-tint` because `--red` on green is nearly black. Glyph and word together are
+`symmetryIcons.ts` in `$lib/components/icons`), all one colour — `currentColor` — so a selected segment inverts
+glyph and word together on green. The source page has a second family that marks the following cut in red, but
+that is not the one the owner chose, so no glyph here carries a second colour. Glyph and word together are
 wider than 340px leaves beside a row name, so the label sits above its control and the control spans the panel;
 below 600px the row goes back to one line and the segment keeps the glyph alone, the word staying in the DOM as
 its accessible name and repeated in the tooltip. The two Tegning checkboxes take the same treatment — the woven

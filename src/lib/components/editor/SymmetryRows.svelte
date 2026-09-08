@@ -194,8 +194,6 @@
 	.symmetry-row :global([data-slot='toggle-group-item'][data-state='on']) {
 		background: var(--green);
 		color: var(--white);
-		/* A glyph's accent mark, white-on-green: --red would go nearly black. */
-		--icon-accent: var(--red-tint);
 	}
 
 	.tooltip-wrapper {
