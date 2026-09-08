@@ -20,6 +20,16 @@
                availability the caller controls, so it is the row a visitor may
                find greyed out and wonder about. Tegn names `lobes`, which needs
                an equal number of strips on both lobes; Mal names none.
+    compact    the caller has little room to spare, so the segments keep the
+               glyph alone and the word becomes their accessible name. It is
+               the caller's call and not a viewport width, because the two
+               hosts differ in what they can afford, not in how wide they are:
+               below 900px Tegn's panels leave their column and float over the
+               drawing in a wrapping row, 235px wide at 760px, where every line
+               of the panel is a line off the heart, while Mal's panel stays
+               in the flow of a page that scrolls and has room for the words at
+               any width. Tegn passes its own `isMobileLayout`; Mal passes
+               nothing.
     lang       the page language
 -->
 <script lang="ts">
@@ -37,10 +47,11 @@
 		onChange: (next: SymmetrySettings) => void;
 		found?: SymmetrySettings | null;
 		disabled?: Partial<Record<Row, boolean>>;
+		compact?: boolean;
 		lang: Language;
 	}
 
-	let { value, onChange, found = null, disabled = {}, lang }: Props = $props();
+	let { value, onChange, found = null, disabled = {}, compact = false, lang }: Props = $props();
 
 	const tr = (key: TranslationKey) => t(key, lang);
 
@@ -51,7 +62,7 @@
 	];
 
 	// Word and tooltip per segment. The tooltip is the long name — "Spejlsymmetri"
-	// for Sym — and it is also what a visitor gets on the phone, where the segment
+	// for Sym — and it is also what a mouse gets where the segment is compact and
 	// keeps the glyph alone.
 	const MODES: { mode: SymmetryMode; word: TranslationKey; title: TranslationKey }[] = [
 		{ mode: 'off', word: 'editorOff', title: 'editorOff' },
@@ -87,16 +98,18 @@
 		{#each MODES as segment (segment.mode)}
 			<ToggleGroupItem value={segment.mode} title={tr(segment.title)}>
 				<SymmetryIcon row={row.key} mode={segment.mode} />
-				<!-- Kept in the DOM when the phone hides it: it is the segment's
-				     accessible name, and the title repeats it as a tooltip. -->
-				<span class="seg-word">{tr(segment.word)}</span>
+				<!-- Kept in the DOM when a compact segment hides it: it is the
+				     segment's accessible name, and the title repeats it as a
+				     tooltip. `sr-only` is the house recipe for that, used here
+				     conditionally rather than copied. -->
+				<span class:sr-only={compact}>{tr(segment.word)}</span>
 			</ToggleGroupItem>
 		{/each}
 	</ToggleGroup>
 {/snippet}
 
 {#each ROWS as row (row.key)}
-	<div class="symmetry-row">
+	<div class="symmetry-row" class:compact>
 		<span class="symmetry-label">
 			{tr(row.label)}
 			{#if found && found[row.key] !== 'off'}
@@ -124,8 +137,11 @@
 {/each}
 
 <style>
-	/* Label above, control below: with a 28px glyph and a word in each segment
-	   the control is wider than the 340px panel leaves beside a row name. */
+	/* Name above, control below: three segments with a glyph and a word measure
+	   247px, more than any panel that shows these leaves beside a row name (306
+	   in Tegn's column, 324 in Mal's at 390px, less the 65-89 of the name). The
+	   three names are of different lengths, so leaving that to wrapping would
+	   stack them one at a time and leave the panel ragged. */
 	.symmetry-row {
 		display: flex;
 		flex-direction: column;
@@ -133,7 +149,22 @@
 		gap: 6px;
 	}
 
+	/* Compact: the same three segments measure 172px without their words, so the
+	   name can go back beside the control and the row is one line again — where
+	   that fits. The control asks for exactly the width its segments need
+	   (`max-content`, so it follows the glyphs and the language rather than a
+	   number written here) and will not shrink below it, so a panel too narrow
+	   for both wraps instead of squeezing the drawings: one line in Tegn's
+	   full-width phone panel at 390px, two in the 235px panel it shares with
+	   Tegning and Farver at 760px. */
+	.symmetry-row.compact {
+		flex-flow: row wrap;
+		align-items: center;
+		gap: 6px 10px;
+	}
+
 	.symmetry-label {
+		flex: none;
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
@@ -153,7 +184,14 @@
 		line-height: 1.5;
 	}
 
-	/* Segmented Fra / Sym / Anti control, restyled from the shadcn ToggleGroup. */
+	/* Stacked, the control spans the panel; compact, it takes what it needs and
+	   grows into whatever the line has left over. */
+	.symmetry-row.compact :global([data-slot='toggle-group']),
+	.symmetry-row.compact .tooltip-wrapper {
+		flex: 1 0 max-content;
+		width: auto;
+	}
+
 	.symmetry-row :global([data-slot='toggle-group']) {
 		display: flex;
 		width: 100%;
@@ -196,41 +234,16 @@
 		color: var(--white);
 	}
 
+	/* The tooltip trigger stands in for the control it wraps, so it is the flex
+	   item and hands its whole width on to the group inside it. */
 	.tooltip-wrapper {
 		display: inline-flex;
 		width: 100%;
 	}
 
-	/* Phone: the panel floats over the canvas, so the rows go back to one line
-	   and the segments keep the glyph alone. The word stays as the segment's
-	   name for a screen reader, and the title as its tooltip. */
-	@media (max-width: 599px) {
-		.symmetry-row {
-			flex-direction: row;
-			align-items: center;
-			justify-content: space-between;
-			gap: 10px;
-		}
-
-		/* Both, or the wrapped row's control would sit at the left edge of a
-		   full-width wrapper while the other two stay right. */
-		.symmetry-row :global([data-slot='toggle-group']),
-		.tooltip-wrapper {
-			width: auto;
-		}
-
-		.symmetry-row :global([data-slot='toggle-group-item']) {
-			flex: none;
-			padding: 0 10px;
-		}
-
-		.seg-word {
-			position: absolute;
-			width: 1px;
-			height: 1px;
-			overflow: hidden;
-			clip-path: inset(50%);
-			white-space: nowrap;
-		}
+	/* The glyph is a flex item of its segment and would shrink with it; it is
+	   drawn for 28px and three squeezed drawings say less than one clear one. */
+	.symmetry-row :global([data-slot='toggle-group-item'] svg) {
+		flex: none;
 	}
 </style>

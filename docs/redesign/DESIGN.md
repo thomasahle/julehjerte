@@ -306,13 +306,21 @@ segment, with the word beside it: one curve, one lobe with two cuts, or both lob
 cut free, Sym mirrors it and Anti turns it. Nine glyphs, one component and one table (`SymmetryIcon` and
 `symmetryIcons.ts` in `$lib/components/icons`), all one colour — `currentColor` — so a selected segment inverts
 glyph and word together on green. The source page has a second family that marks the following cut in red, but
-that is not the one the owner chose, so no glyph here carries a second colour. Glyph and word together are
-wider than 340px leaves beside a row name, so the label sits above its control and the control spans the panel;
-below 600px the row goes back to one line and the segment keeps the glyph alone, the word staying in the DOM as
-its accessible name and repeated in the tooltip. The two Tegning checkboxes take the same treatment — the woven
-square for "Vis omrids", two points pulling together for "Snap til den anden laps punkter" — drawn in the
-canvas's own cut colours, cyan for the left lobe and orange for the right ($lib/editor/outlineColors, which the
-canvas reads too), because the colours are half of what those two icons say.
+that is not the one the owner chose, so no glyph here carries a second colour. Three segments with a glyph and
+a word want 247px, more than any panel that shows them leaves beside a row name, so the label sits above its
+control and the control spans the panel. Whether a segment may drop its word is then the host's call and not a
+viewport width's, because the two hosts differ in what they can afford rather than in how wide they are: below
+900px Tegn's panels leave their column and float over the drawing, where a panel can be 235px wide and every
+line it takes is a line off the heart, so Tegn passes `compact` and its segments keep the glyph alone (172px for
+the three) with the word left in the DOM as their accessible name and repeated in the tooltip; Mal's panel
+stays in the flow of a page that scrolls, passes nothing, and keeps its words down to 390px. A compact row puts
+the name back beside its control, and wraps below it again where even that does not fit — one line in Tegn's
+full-width phone panel, two in the 235px one it gets beside Farver at 760px. The two Tegning checkboxes take
+the same treatment — the woven square for "Vis omrids", two points pulling together for "Snap til den anden
+laps punkter" — drawn in the canvas's own cut colours, cyan for the left lobe and orange for the right
+($lib/editor/outlineColors, which the canvas reads too), because the colours are half of what those two icons
+say. In the 149px column those two share with Farver on a phone the glyph costs the Snap label a third line;
+nothing is clipped, and no glyph small enough to win the line back is still worth drawing, so it is accepted.
 
 The canvas fills the whole area under the top bar — full width and height, no three-column grid — and the tool
 rail and the panel **float over it** as white cards with `--shadow-panel`. So does the drawing surface: the SVG

@@ -3496,8 +3496,12 @@
 
 					<section class="editor-panel symmetry-panel">
 						<h2 class="panel-title">{tr('symmetry')}</h2>
+						<!-- Below 900px this panel leaves the column and floats over the
+						     drawing in a wrapping row, where every line it takes is a line
+						     off the heart: the segments keep the glyph alone there. -->
 						<SymmetryRows
 							{lang}
+							compact={isMobileLayout}
 							value={{ curve: withinCurveMode, lobe: withinLobeMode, lobes: betweenLobesMode }}
 							onChange={(next) => {
 								withinCurveMode = next.curve;
