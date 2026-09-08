@@ -643,7 +643,10 @@
 						     link of its own next to the panel's "Tilbage til masken", which
 						     read as two different steps and is one. -->
 						<button type="button" class="mask-card" onclick={backToMask}>
-							<span class="mask-card-canvas">
+							<!-- The picture is decoration on a button whose one word says what
+							     it does: read out, its own label would put the whole
+							     "400 × 400 celler i to papirfarver" in front of that word. -->
+							<span class="mask-card-canvas" aria-hidden="true">
 								<MaskCanvas
 									{lang}
 									mask={session.mask}
@@ -776,16 +779,13 @@
 	     or stacked under it. -->
 	{#snippet toolPanel()}
 					<!-- While the found heart is on screen there is no mask to paint on, so
-					     the whole column stands down: aria-disabled says so to a screen
-					     reader in one place rather than control by control, the muting says
-					     it on screen, and every control inside is really disabled so a click
-					     that gets through still does nothing. "Tilbage til masken" — the
-					     panel's button or the card — brings it back. -->
-					<div
-						class="tool-panel"
-						class:standby={toolsStandby}
-						aria-disabled={toolsStandby ? 'true' : undefined}
-					>
+					     the whole column stands down: every control inside is really
+					     disabled, which is what says so to a screen reader, and the class
+					     mutes what is left on screen. (aria-disabled on this wrapper would
+					     say nothing at all: it is not a global attribute, and a plain div
+					     has no role to hang it on.) "Tilbage til masken" — the panel's
+					     button or the card — brings it back. -->
+					<div class="tool-panel" class:standby={toolsStandby}>
 						<MaskToolPanel
 							{lang}
 							{tool}
