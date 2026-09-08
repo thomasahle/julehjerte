@@ -57,10 +57,10 @@ describe('MaskToolPanel', () => {
 	it('gives every tool button its own click', () => {
 		const panel = render();
 		try {
-			expect(panel.buttons).toHaveLength(5);
+			expect(panel.buttons).toHaveLength(6);
 			for (const button of panel.buttons) button.click();
 			flushSync();
-			expect(panel.picked).toEqual(['pen', 'eraser', 'fill', 'line', 'rect']);
+			expect(panel.picked).toEqual(['pen', 'eraser', 'fill', 'line', 'rect', 'select']);
 		} finally {
 			panel.cleanup();
 		}
@@ -81,7 +81,7 @@ describe('MaskToolPanel', () => {
 	it('really disables the tools while the engine is working', () => {
 		const panel = render({ disabled: true });
 		try {
-			expect(panel.buttons.map((b) => b.disabled)).toEqual([true, true, true, true, true]);
+			expect(panel.buttons.map((b) => b.disabled)).toEqual([true, true, true, true, true, true]);
 			panel.byLabel('Viskelæder')?.click();
 			flushSync();
 			expect(panel.picked).toEqual([]);

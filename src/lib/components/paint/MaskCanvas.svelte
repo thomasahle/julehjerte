@@ -24,6 +24,26 @@
 	import type { HeartColors } from '$lib/types/heart';
 	import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from '$lib/paint/mask';
 	import { applySymmetric, floodFill, rect, stroke } from '$lib/paint/tools';
+	import {
+		GRAB_PX,
+		HANDLES,
+		HANDLE_PX,
+		ROTATE_GAP_PX,
+		clear as clearSelection,
+		commit as commitCells,
+		contains,
+		cornerAt,
+		corners,
+		lift,
+		moveBy,
+		rectFrom,
+		rotateHandleAt,
+		rotateTo,
+		scaleTo,
+		type Handle,
+		type Placement,
+		type Selection
+	} from '$lib/paint/selection';
 	import { transformsFor, type SymmetrySettings } from '$lib/paint/symmetry';
 	import { colourChannels } from '$lib/paint/drawHeart';
 	import { fitHeart, insideSquare, toMask, type HeartLayout, type Pt } from '$lib/paint/heartLayout';
@@ -111,21 +131,50 @@
 	let preview: { from: Pt; to: Pt } | null = null;
 	let frame = 0;
 
-	/** The design tokens the canvas paints with, read once from the document. */
-	let chrome: { outline: string; mirror: string } | null = null;
+	// Markér. The mask is not touched while a selection floats: `selection` holds a
+	// copy of the cells and where they stand now, and only a commit writes. That is
+	// what makes Escape free and undo one snapshot per commit instead of one per
+	// drag. None of this is `$state` — like `preview`, it is drawn by `paint()` and
+	// nothing outside this component reads it.
+	let selection: Selection | null = null;
+	let selectionDrag:
+		| { kind: 'marquee'; from: Pt }
+		| { kind: 'move'; grab: Pt; origin: Placement }
+		| { kind: 'scale'; handle: Handle; origin: Placement }
+		| { kind: 'rotate' }
+		| null = null;
+	/** The frame being dragged out, before there are any cells in it. */
+	let marquee: { from: Pt; to: Pt } | null = null;
+	// The floating cells as a picture, kept for the life of one selection so that
+	// dragging it around costs no more than dragging an image around.
+	let patch: HTMLCanvasElement | null = null;
+	let patchFor: Selection | null = null;
 
-	function tokens(): { outline: string; mirror: string } {
+	/** The design tokens the canvas paints with, read once from the document. */
+	let chrome: { outline: string; mirror: string; marquee: string; paper: string } | null = null;
+
+	function tokens(): { outline: string; mirror: string; marquee: string; paper: string } {
 		if (chrome) return chrome;
 		const style = getComputedStyle(canvasEl ?? document.documentElement);
 		const deep = style.getPropertyValue('--deep-rgb').trim();
 		const blue = style.getPropertyValue('--blue').trim();
+		const green = style.getPropertyValue('--green').trim();
+		const white = style.getPropertyValue('--white').trim();
 		// No fallback colours: a token that is not there draws nothing rather than
 		// putting a colour on the page that the stylesheet never named.
 		chrome = {
 			outline: deep ? `rgb(${deep} / 0.3)` : 'transparent',
-			mirror: blue || 'transparent'
+			mirror: blue || 'transparent',
+			marquee: green || 'transparent',
+			paper: white || 'transparent'
 		};
 		return chrome;
+	}
+
+	/** One screen pixel, in mask cells — what the marquee's chrome is measured in. */
+	function cellsPerPixel(): number {
+		if (!mask || !layout.scale) return 1;
+		return mask.size / layout.scale;
 	}
 
 	/**
@@ -189,6 +238,7 @@
 		}
 
 		drawPreview(ctx);
+		drawSelection(ctx);
 
 		// A faint edge, so the square reads as the woven part even where the mask
 		// happens to be the same colour as the lobe beside it.
@@ -220,6 +270,156 @@
 			ctx.lineTo(to.x, to.y);
 			ctx.stroke();
 		}
+		ctx.restore();
+	}
+
+	/** The floating cells as a picture, built once per selection. */
+	function patchImage(sel: Selection): HTMLCanvasElement | null {
+		if (patchFor === sel && patch) return patch;
+		if (typeof document === 'undefined') return null;
+		const w = sel.source.x1 - sel.source.x0;
+		const h = sel.source.y1 - sel.source.y0;
+		const canvas = document.createElement('canvas');
+		canvas.width = w;
+		canvas.height = h;
+		const ctx = canvas.getContext('2d');
+		if (!ctx) return null;
+		const image = new ImageData(w, h);
+		const [left, right] = paper;
+		for (let i = 0; i < sel.cells.length; i++) {
+			const colour = sel.cells[i] === 1 ? right! : left!;
+			image.data[4 * i] = colour[0]!;
+			image.data[4 * i + 1] = colour[1]!;
+			image.data[4 * i + 2] = colour[2]!;
+			image.data[4 * i + 3] = 255;
+		}
+		ctx.putImageData(image, 0, 0);
+		patch = canvas;
+		patchFor = sel;
+		return canvas;
+	}
+
+	/**
+	 * Markér, as it stands: the hole the cells were lifted from, the cells where
+	 * they are now, and the frame with its handles.
+	 *
+	 * All of it in square units, so the marquee is turned with the diamond and sits
+	 * on the cells it describes; the chrome divides by `layout.scale` so that a
+	 * handle is the same size on screen however large the heart is drawn.
+	 */
+	function drawSelection(ctx: CanvasRenderingContext2D): void {
+		if (!mask) return;
+		const size = mask.size;
+
+		if (marquee) {
+			const r = rectFrom(marquee.from, marquee.to, mask);
+			frameOf(ctx, [
+				{ x: r.x0 / size, y: r.y0 / size },
+				{ x: r.x1 / size, y: r.y0 / size },
+				{ x: r.x1 / size, y: r.y1 / size },
+				{ x: r.x0 / size, y: r.y1 / size }
+			]);
+			return;
+		}
+		if (!selection) return;
+
+		// The area it came from is already paper: the mask itself still holds the
+		// cells, so the hole has to be drawn rather than read.
+		const { source, placement } = selection;
+		ctx.save();
+		ctx.fillStyle = colors.left;
+		ctx.fillRect(
+			source.x0 / size,
+			source.y0 / size,
+			(source.x1 - source.x0) / size,
+			(source.y1 - source.y0) / size
+		);
+
+		const image = patchImage(selection);
+		if (image) {
+			ctx.translate(placement.cx / size, placement.cy / size);
+			ctx.rotate(placement.angle);
+			// Cells, not a photograph — the same reason the mask itself is drawn
+			// unsmoothed, and what makes the preview show the nearest-neighbour
+			// picture the commit will actually lay down.
+			ctx.imageSmoothingEnabled = false;
+			ctx.drawImage(
+				image,
+				-placement.width / (2 * size),
+				-placement.height / (2 * size),
+				placement.width / size,
+				placement.height / size
+			);
+			ctx.imageSmoothingEnabled = true;
+		}
+		ctx.restore();
+
+		frameOf(
+			ctx,
+			corners(placement).map((c) => ({ x: c.x / size, y: c.y / size }))
+		);
+		drawHandles(ctx, placement);
+	}
+
+	/**
+	 * A dashed frame that shows on both papers: a solid pale line first, the dashes
+	 * over it, so neither a white nor a red field can swallow the whole marquee.
+	 */
+	function frameOf(ctx: CanvasRenderingContext2D, path: Pt[]): void {
+		if (path.length < 2) return;
+		const ink = tokens();
+		ctx.save();
+		const trace = () => {
+			ctx.beginPath();
+			ctx.moveTo(path[0]!.x, path[0]!.y);
+			for (let i = 1; i < path.length; i++) ctx.lineTo(path[i]!.x, path[i]!.y);
+			ctx.closePath();
+			ctx.stroke();
+		};
+		ctx.lineWidth = 3 / layout.scale;
+		ctx.strokeStyle = ink.paper;
+		trace();
+		ctx.lineWidth = 1.5 / layout.scale;
+		ctx.strokeStyle = ink.marquee;
+		ctx.setLineDash([6 / layout.scale, 4 / layout.scale]);
+		trace();
+		ctx.restore();
+	}
+
+	/** The four corner grips and the turner above the frame. */
+	function drawHandles(ctx: CanvasRenderingContext2D, placement: Placement): void {
+		if (!mask) return;
+		const size = mask.size;
+		const ink = tokens();
+		const side = HANDLE_PX / layout.scale;
+		const stalk = rotateHandleAt(placement, ROTATE_GAP_PX * cellsPerPixel());
+		const top = {
+			x: (cornerAt(placement, 'nw').x + cornerAt(placement, 'ne').x) / (2 * size),
+			y: (cornerAt(placement, 'nw').y + cornerAt(placement, 'ne').y) / (2 * size)
+		};
+
+		ctx.save();
+		ctx.lineWidth = 1.5 / layout.scale;
+		ctx.strokeStyle = ink.marquee;
+		ctx.fillStyle = ink.paper;
+
+		ctx.beginPath();
+		ctx.moveTo(top.x, top.y);
+		ctx.lineTo(stalk.x / size, stalk.y / size);
+		ctx.stroke();
+
+		for (const handle of HANDLES) {
+			const c = cornerAt(placement, handle);
+			ctx.beginPath();
+			ctx.rect(c.x / size - side / 2, c.y / size - side / 2, side, side);
+			ctx.fill();
+			ctx.stroke();
+		}
+
+		ctx.beginPath();
+		ctx.arc(stalk.x / size, stalk.y / size, side / 1.6, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
 		ctx.restore();
 	}
 
@@ -312,10 +512,137 @@
 		schedule();
 	}
 
+	/**
+	 * What the pointer would take hold of: the turner, one corner, the patch
+	 * itself, or nothing — which is the click that puts the selection down.
+	 */
+	function grabAt(point: Pt): Handle | 'rotate' | 'inside' | null {
+		if (!selection) return null;
+		const reach = GRAB_PX * cellsPerPixel();
+		const turner = rotateHandleAt(selection.placement, ROTATE_GAP_PX * cellsPerPixel());
+		if (Math.hypot(point.x - turner.x, point.y - turner.y) <= reach) return 'rotate';
+		for (const handle of HANDLES) {
+			const c = cornerAt(selection.placement, handle);
+			if (Math.hypot(point.x - c.x, point.y - c.y) <= reach) return handle;
+		}
+		return contains(selection.placement, point) ? 'inside' : null;
+	}
+
+	/**
+	 * Spread a selection's edit under the active symmetries.
+	 *
+	 * Unlike a stroke, this changes cells of both colours at once — the vacated
+	 * area is 0, what was put down may be either — so it takes two passes of
+	 * `applySymmetric` over the one box. Paper goes first, so where a mirror line
+	 * runs through the edit it is the cells the visitor moved that win, not the
+	 * hole they came from.
+	 */
+	function spread(box: Box): void {
+		if (!mask || isEmptyBox(box)) return;
+		let changed = box;
+		if (transforms.length) {
+			changed = applySymmetric(mask, box, transforms, 0);
+			changed = unionBox(changed, applySymmetric(mask, box, transforms, 1));
+		}
+		syncOffscreen(changed);
+	}
+
+	/** Forget the floating patch without writing anything — Escape, or a new mask. */
+	function dropSelection(): void {
+		selection = null;
+		selectionDrag = null;
+		marquee = null;
+		patch = null;
+		patchFor = null;
+	}
+
+	/**
+	 * Put the selection down (or, with `erase`, throw its cells away). One undo
+	 * snapshot per commit, taken here rather than on pointer down, because every
+	 * drag before this one left the mask exactly as it found it.
+	 */
+	function endSelection(erase = false): void {
+		const sel = selection;
+		dropSelection();
+		if (sel && mask) {
+			onEditStart();
+			spread(erase ? clearSelection(mask, sel) : commitCells(mask, sel));
+			schedule();
+			onEditEnd();
+			return;
+		}
+		schedule();
+	}
+
+	/** The selection tool's own gestures; the painting tools never reach this. */
+	function selectPointerDown(event: PointerEvent, point: Pt): void {
+		if (!mask) return;
+		const grab = grabAt(point);
+		if (grab && selection) {
+			pointerId = event.pointerId;
+			canvasEl?.setPointerCapture(event.pointerId);
+			selectionDrag =
+				grab === 'rotate'
+					? { kind: 'rotate' }
+					: grab === 'inside'
+						? { kind: 'move', grab: point, origin: { ...selection.placement } }
+						: { kind: 'scale', handle: grab, origin: { ...selection.placement } };
+			return;
+		}
+		// A press anywhere else is the "click outside" that commits — and, when it
+		// lands on the square, the start of the next frame in the same gesture.
+		if (selection) endSelection();
+		if (!insideSquare(point, mask.size)) return;
+		pointerId = event.pointerId;
+		canvasEl?.setPointerCapture(event.pointerId);
+		selectionDrag = { kind: 'marquee', from: point };
+		marquee = { from: point, to: point };
+		schedule();
+	}
+
+	function selectPointerMove(point: Pt, shift: boolean): void {
+		const drag = selectionDrag;
+		if (!drag) return;
+		if (drag.kind === 'marquee') marquee = { from: drag.from, to: point };
+		else if (selection) {
+			if (drag.kind === 'move') {
+				selection.placement = moveBy(drag.origin, point.x - drag.grab.x, point.y - drag.grab.y);
+			} else if (drag.kind === 'scale') {
+				// Uniform by default and free with Shift: the mask is a picture, and
+				// stretching one axis of it is the rarer of the two wishes.
+				selection.placement = scaleTo(drag.origin, drag.handle, point, !shift);
+			} else {
+				selection.placement = rotateTo(selection.placement, point);
+			}
+		}
+		schedule();
+	}
+
+	function selectPointerUp(point: Pt): void {
+		if (selectionDrag?.kind === 'marquee' && marquee && mask) {
+			const framed = rectFrom(marquee.from, point, mask);
+			marquee = null;
+			// A click is not a one-cell selection: it is how the visitor says "put it
+			// down and select nothing", so anything this small selects nothing.
+			const tiny = framed.x1 - framed.x0 < 2 && framed.y1 - framed.y0 < 2;
+			selection = tiny ? null : lift(mask, framed);
+			patch = null;
+			patchFor = null;
+		}
+		selectionDrag = null;
+		releasePointer();
+		schedule();
+	}
+
 	function onPointerDown(event: PointerEvent): void {
 		if (disabled || !mask || pointerId !== null || event.button !== 0) return;
 		const point = pointAt(event);
-		if (!point || !insideSquare(point, mask.size)) return;
+		if (!point) return;
+		if (tool === 'select') {
+			selectPointerDown(event, point);
+			return;
+		}
+		if (!insideSquare(point, mask.size)) return;
 		pointerId = event.pointerId;
 		canvasEl?.setPointerCapture(event.pointerId);
 		onEditStart();
@@ -337,6 +664,11 @@
 
 	function onPointerMove(event: PointerEvent): void {
 		if (pointerId !== event.pointerId || !mask) return;
+		if (tool === 'select') {
+			const point = pointAt(event);
+			if (point) selectPointerMove(point, event.shiftKey);
+			return;
+		}
 		if (tool === 'line' || tool === 'rect') {
 			const point = pointAt(event);
 			if (!point || !start) return;
@@ -361,6 +693,10 @@
 
 	function onPointerUp(event: PointerEvent): void {
 		if (pointerId !== event.pointerId || !mask) return;
+		if (tool === 'select') {
+			selectPointerUp(pointAt(event) ?? marquee?.to ?? { x: 0, y: 0 });
+			return;
+		}
 		if ((tool === 'line' || tool === 'rect') && start) {
 			const point = pointAt(event) ?? start;
 			const value = toolValue();
@@ -379,10 +715,20 @@
 		// A cancelled drag drops its preview; anything already painted stays, and
 		// the visitor undoes it if they did not want it.
 		if (pointerId !== event.pointerId) return;
+		if (tool === 'select') {
+			// The floating patch stays exactly where the drag left it; nothing has
+			// been written, so there is nothing to take back.
+			selectionDrag = null;
+			marquee = null;
+			releasePointer();
+			schedule();
+			return;
+		}
 		finish();
 	}
 
-	function finish(): void {
+	/** Give the pointer back and forget the gesture, without ending an edit. */
+	function releasePointer(): void {
 		if (pointerId !== null && canvasEl?.hasPointerCapture(pointerId)) {
 			canvasEl.releasePointerCapture(pointerId);
 		}
@@ -390,6 +736,10 @@
 		start = null;
 		last = null;
 		preview = null;
+	}
+
+	function finish(): void {
+		releasePointer();
 		schedule();
 		onEditEnd();
 	}
@@ -400,6 +750,27 @@
 		// Never while the visitor is typing in a field: "r" is a letter there.
 		if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) {
 			return;
+		}
+		// A floating selection owns these four keys, and only while it floats: Enter
+		// and Escape mean nothing else on this page, and Backspace would otherwise
+		// walk the browser back a page while the visitor thinks they are erasing.
+		if (selection) {
+			if (event.key === 'Enter') {
+				event.preventDefault();
+				endSelection();
+				return;
+			}
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				dropSelection();
+				schedule();
+				return;
+			}
+			if (event.key === 'Delete' || event.key === 'Backspace') {
+				event.preventDefault();
+				endSelection(true);
+				return;
+			}
 		}
 		const action = shortcutFor(event);
 		if (!action) return;
@@ -442,6 +813,29 @@
 		});
 	});
 
+	// A selection describes the mask it was lifted from, cell for cell. Undo, Ryd,
+	// an import or a symmetry fold replaces those cells, so the patch is dropped
+	// rather than committed onto a picture it no longer belongs to.
+	$effect(() => {
+		void mask;
+		void revision;
+		untrack(() => {
+			if (selection || marquee) {
+				dropSelection();
+				schedule();
+			}
+		});
+	});
+
+	// Leaving Markér puts the selection down. An edit in progress that vanishes
+	// because the visitor reached for the pen would be a stroke's work lost.
+	$effect(() => {
+		const chosen = tool;
+		untrack(() => {
+			if (chosen !== 'select' && selection) endSelection();
+		});
+	});
+
 	// The visible canvas follows everything else it draws.
 	$effect(() => {
 		void colors.left;
@@ -467,6 +861,7 @@
 	<canvas
 		bind:this={canvasEl}
 		class:disabled
+		class:selecting={!disabled && tool === 'select'}
 		onpointerdown={onPointerDown}
 		onpointermove={onPointerMove}
 		onpointerup={onPointerUp}
@@ -491,5 +886,11 @@
 
 	canvas.disabled {
 		cursor: progress;
+	}
+
+	/* Markér draws a frame rather than paint, and the crosshair reads as "a mark
+	   goes here". `cell` is the cursor a marquee has everywhere else. */
+	canvas.selecting {
+		cursor: cell;
 	}
 </style>

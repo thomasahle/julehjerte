@@ -16,6 +16,7 @@
 		PaintBucketIcon,
 		PencilIcon,
 		RedoIcon,
+		SelectIcon,
 		SquareIcon,
 		TrashIcon,
 		UndoIcon
@@ -69,13 +70,14 @@
 
 	const tr = (key: TranslationKey) => t(key, lang);
 
-	/** The five tools, their glyphs, and the letter that picks each one. */
+	/** The six tools, their glyphs, and the letter that picks each one. */
 	const TOOLS: { id: PaintTool; label: TranslationKey; icon: Component<IconProps>; key: string }[] = [
 		{ id: 'pen', label: 'paintPen', icon: PencilIcon, key: 'P' },
 		{ id: 'eraser', label: 'paintEraser', icon: EraserIcon, key: 'E' },
 		{ id: 'fill', label: 'paintFill', icon: PaintBucketIcon, key: 'F' },
 		{ id: 'line', label: 'paintLine', icon: LineIcon, key: 'L' },
-		{ id: 'rect', label: 'paintRect', icon: SquareIcon, key: 'R' }
+		{ id: 'rect', label: 'paintRect', icon: SquareIcon, key: 'R' },
+		{ id: 'select', label: 'paintSelect', icon: SelectIcon, key: 'M' }
 	];
 
 	/** The two papers, as the mask numbers them: 0 is the left lobe, 1 the right. */
@@ -153,6 +155,13 @@
 				</Tooltip>
 			{/each}
 		</div>
+
+		<!-- Markér is the one tool whose gestures cannot be guessed from its glyph:
+		     the frame, the handles and the three keys that end it. So it says so,
+		     and only while it is the tool in hand. -->
+		{#if tool === 'select'}
+			<p class="tool-hint">{tr('paintSelectionHint')}</p>
+		{/if}
 
 		<!-- Both of these are one choice out of several, which is a radiogroup: one
 		     tab stop, and the arrow keys to move within it. Declaring the role over
@@ -241,10 +250,10 @@
 		background: var(--white);
 	}
 
-	/* Five 40px icon buttons, as wide as the panel allows. */
+	/* Six 40px icon buttons, as wide as the panel allows. */
 	.tool-grid {
 		display: grid;
-		grid-template-columns: repeat(5, 1fr);
+		grid-template-columns: repeat(6, 1fr);
 		gap: 4px;
 	}
 
@@ -281,6 +290,13 @@
 
 	.tool-glyph {
 		display: inline-flex;
+	}
+
+	.tool-hint {
+		margin: 0;
+		font-size: 12px;
+		line-height: 1.45;
+		color: var(--muted);
 	}
 
 	.tool-glyph.diagonal {

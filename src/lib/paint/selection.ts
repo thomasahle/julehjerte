@@ -64,6 +64,17 @@ const CORNER_SIGNS: Record<Handle, { u: -1 | 1; v: -1 | 1 }> = {
 /** The corners in drawing order, so a marquee is one closed path. */
 export const HANDLES: Handle[] = ['nw', 'ne', 'se', 'sw'];
 
+/**
+ * The marquee's chrome, in screen pixels — the side of a corner grip, how near a
+ * pointer has to come to take hold of one, and how far the turner sits out beyond
+ * the top edge. They are here rather than in the canvas because they are what
+ * `rotateHandleAt` and the hit test are measured in, and a test that reaches for a
+ * handle has to reach for the same place the canvas drew it.
+ */
+export const HANDLE_PX = 9;
+export const GRAB_PX = 11;
+export const ROTATE_GAP_PX = 22;
+
 export function isEmptyRect(r: CellRect): boolean {
 	return isEmptyBox(r);
 }

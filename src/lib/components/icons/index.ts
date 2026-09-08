@@ -38,6 +38,8 @@ export { default as SaveIcon } from '@lucide/svelte/icons/save';
 export { default as ScissorsIcon } from '@lucide/svelte/icons/scissors';
 export { default as ShareIcon } from '@lucide/svelte/icons/share-2';
 export { default as SquareIcon } from '@lucide/svelte/icons/square';
+/** The marquee of the selection tool. lucide's box-select ships no Svelte build. */
+export { default as SelectIcon } from '@lucide/svelte/icons/square-dashed';
 export { default as StarIcon } from '@lucide/svelte/icons/star';
 export { default as SwapIcon } from '@lucide/svelte/icons/arrow-left-right';
 export { default as TrashIcon } from '@lucide/svelte/icons/trash-2';

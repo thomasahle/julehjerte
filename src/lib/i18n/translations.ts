@@ -232,6 +232,8 @@ export const translations = {
     paintFill: 'Fyld',
     paintLine: 'Linje',
     paintRect: 'Rektangel',
+    paintSelect: 'Markér',
+    paintSelectionHint: 'Træk en ramme. Flyt indeni, skalér i hjørnerne, drej i håndtaget foroven. Enter lægger den fast, Esc fortryder, Delete rydder.',
     paintBrush: 'Pensel',
     paintBrushFine: 'Fin',
     paintBrushMedium: 'Mellem',
@@ -285,7 +287,8 @@ export const translations = {
     paintHelpIntro: 'I Mal tegner du selv, hvordan det færdige hjerte skal se ud, og lader computeren finde de snit, der væver netop det mønster.',
     paintHelpBullets: [
       'Mal på den flettede firkant midt i hjertet. De to lapper uden om viser papirfarverne.',
-      'Vælg værktøj med P (pen), E (viskelæder), F (fyld), L (linje) og R (rektangel); X bytter farve, og [ og ] skifter penselstørrelse.',
+      'Vælg værktøj med P (pen), E (viskelæder), F (fyld), L (linje), R (rektangel) og M (markér); X bytter farve, og [ og ] skifter penselstørrelse.',
+      'Med Markér trækker du en ramme om et stykke af mønsteret og flytter, skalerer eller drejer det. Enter lægger det fast, Esc fortryder.',
       'Slå en symmetri til, hvis mønsteret skal spejles. Alt du maler, spejles med.',
       'Tryk Find snit. Det tager typisk et halvt til et par minutter, og du kan afbryde undervejs.',
       'Åbn resultatet i Tegn for at rette kurverne, eller hent skabelonen som PDF.'
@@ -661,6 +664,8 @@ export const translations = {
     paintFill: 'Fill',
     paintLine: 'Line',
     paintRect: 'Rectangle',
+    paintSelect: 'Select',
+    paintSelectionHint: 'Drag a frame. Move inside it, scale at the corners, turn with the handle above. Enter puts it down, Esc undoes it, Delete clears it.',
     paintBrush: 'Brush',
     paintBrushFine: 'Fine',
     paintBrushMedium: 'Medium',
@@ -714,7 +719,8 @@ export const translations = {
     paintHelpIntro: 'In Paint you draw what the finished heart should look like, and the computer looks for the cuts that weave exactly that pattern.',
     paintHelpBullets: [
       'Paint on the woven square in the middle of the heart. The two lobes around it show the paper colours.',
-      'Pick a tool with P (pen), E (eraser), F (fill), L (line) and R (rectangle); X swaps the colour, and [ and ] change the brush size.',
+      'Pick a tool with P (pen), E (eraser), F (fill), L (line), R (rectangle) and M (select); X swaps the colour, and [ and ] change the brush size.',
+      'With Select you drag a frame around a piece of the pattern and move, scale or turn it. Enter puts it down, Esc undoes it.',
       'Switch a symmetry on if the pattern should be mirrored. Everything you paint is mirrored with it.',
       'Press Find the cuts. It usually takes half a minute to a couple of minutes, and you can stop it on the way.',
       'Open the result in Draw to reshape the curves, or download the template as a PDF.'
