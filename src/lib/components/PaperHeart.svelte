@@ -47,6 +47,7 @@
 	import { dot, midpoint, normalize, perp, vecAdd, vecDist, vecLerp, vecScale, vecSub } from '$lib/geometry/vec';
 	import { insertNodeInFinger, shiftNodeTypesOnDelete } from '$lib/editor/commands';
 	import { bezierPointAt, findFingersWithIssues, intersectionMarginPx, segmentsIntersect } from '$lib/editor/curveIssues';
+	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
 	import { findNearestOppositeAnchor, snapOppositeRadiusPx } from '$lib/editor/snapOpposite';
 	import { toggleNumberInList } from '$lib/editor/selection';
 	import {
@@ -3124,7 +3125,7 @@
 											{@const isHovered = finger.id === hoverFingerId}
 											{@const hidden = !showCurves}
 											{@const hasIssues = issueFingerIds.has(finger.id)}
-											{@const lobeColor = finger.lobe === 'left' ? '#00ddff' : '#ff8800'}
+											{@const lobeColor = LOBE_OUTLINE_COLORS[finger.lobe]}
 											{@const strokeColor = hasIssues ? '#ff0000' : isSelected ? '#111111' : lobeColor}
 											{@const outlineColor = isSelected ? '#ffffff' : '#000000'}
 											{@const fingerPathData = segmentsToPathData(finger.segments)}
