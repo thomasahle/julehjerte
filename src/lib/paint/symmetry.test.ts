@@ -5,6 +5,7 @@ import {
 	closedPointMaps,
 	detectSymmetry,
 	disagreement,
+	NO_SYMMETRY,
 	symmetrize,
 	transformMask,
 	transformsFor,
@@ -38,6 +39,17 @@ function addNoise(m: Mask, fraction: number, seed = 7): void {
 	for (let i = 0; i < m.data.length; i++) {
 		if (random() < fraction) m.data[i] = m.data[i] ? 0 : 1;
 	}
+}
+
+/** A small rectangle painted off centre: a motif with no symmetry and very little ink. */
+function blob(size: number): Mask {
+	const m = createMask(0, size);
+	const x1 = Math.round(size * 0.2);
+	const y1 = Math.round(size * 0.22);
+	for (let y = Math.round(size * 0.15); y < y1; y++) {
+		for (let x = Math.round(size * 0.1); x < x1; x++) m.data[y * size + x] = 1;
+	}
+	return m;
 }
 
 /** A mask that is symmetric under transpose but under nothing else. */
@@ -145,6 +157,27 @@ describe('detectSymmetry', () => {
 
 	it('finds nothing in noise', () => {
 		expect(detectSymmetry(noisyMask(100))).toEqual({ curve: 'off', lobe: 'off', lobes: 'off' });
+	});
+
+	it('finds nothing in a small motif drawn off centre', () => {
+		// The blob covers under 1% of the square, so it agrees with every one of its
+		// images on 98% of the cells. Counted over the square that reads as all three
+		// rows found — and §5 would then fold the visitor's motif away before solving.
+		expect(detectSymmetry(blob(200))).toEqual(NO_SYMMETRY);
+	});
+
+	it('finds the symmetry of a small motif that has one', () => {
+		// The answer to a sparse mask is not to give up on it: the same blob, painted
+		// with its transpose, is still recognised however little of the square it covers.
+		const m = blob(200);
+		symmetrize(m, ['transpose']);
+		expect(detectSymmetry(m)).toEqual({ curve: 'off', lobe: 'off', lobes: 'sym' });
+	});
+
+	it('finds nothing on a mask with nothing painted on it', () => {
+		// Straight after Ryd, and again on a mask painted solid: no picture, no symmetry.
+		expect(detectSymmetry(createMask(0, 64))).toEqual(NO_SYMMETRY);
+		expect(detectSymmetry(createMask(1, 64))).toEqual(NO_SYMMETRY);
 	});
 
 	it('reads a fully symmetric mask as all three rows', () => {

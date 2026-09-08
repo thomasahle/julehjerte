@@ -270,9 +270,14 @@ are closed automatically because each copy is itself copied (apply transforms in
 once more — or simply apply the full closure of the generated group; keep it simple and tested).
 
 Detection (`detectSymmetry`): agreement ratio of the mask with each transformed copy; a transform "holds" when the
-disagreeing fraction is ≤ tolerance (3%). Rules: transpose → Mellem lapper Sym; else antiTranspose → Mellem lapper
-Anti; mirrorX ∧ mirrorY → Inden i lap Sym and Inden i kurve Sym; else rotate180 → Inden i lap Anti. Everything else
-off. Run it after import and after "Mal på hjertet"; the result becomes both `session.symmetry` and `session.found`.
+disagreeing fraction is ≤ tolerance (3%). That fraction is counted **against the ink** — the cells of the minority
+colour — not against the whole square: over the square, any mask with under about 1.5% ink agrees with all five of its
+images whatever is drawn on it, so every row would come back "fundet" and `symmetrize` would then fold the visitor's
+motif away before the engine saw it. At half coverage the two readings are the same number, so a photograph is judged
+as before. A mask with no ink at all (straight after Ryd) reports nothing. Rules: transpose → Mellem lapper Sym; else
+antiTranspose → Mellem lapper Anti; mirrorX ∧ mirrorY → Inden i lap Sym and Inden i kurve Sym; else rotate180 → Inden
+i lap Anti. Everything else off. Run it after import and after "Mal på hjertet"; the result becomes both
+`session.symmetry` and `session.found`.
 
 Solving with symmetry on: `symmetrize` the mask under the active transforms first (so the target itself is
 symmetric), pass `identicalSheets`/`preferMatchingSheets` for Mellem lapper Sym (the only symmetry the engine

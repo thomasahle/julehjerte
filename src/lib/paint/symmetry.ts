@@ -203,12 +203,31 @@ export function symmetrize(m: Mask, transforms: Transform[]): void {
  * The symmetries the mask already has, as the editor's three rows.
  *
  * A photograph is never exact, so a transform counts as held when at most
- * `tolerance` of the cells disagree with their image. The rules are §5's: the
- * strongest reading wins, and anything not recognised stays off rather than being
- * forced on the visitor's drawing.
+ * `tolerance` of the picture disagrees with its image. The picture is the ink —
+ * the cells of the minority colour — and not the whole square, because a small
+ * motif matches every one of its images on almost every cell simply by being
+ * mostly blank: measured over the square, any mask with under about 1.5% ink
+ * would report all three rows found whatever is drawn on it, and §5 then folds
+ * the motif away with `symmetrize` before the engine ever sees it. At half
+ * coverage the two measures are the same number, so a photograph is judged as
+ * before; below it the rule tightens instead of going blind.
+ *
+ * The rules are §5's: the strongest reading wins, and anything not recognised
+ * stays off rather than being forced on the visitor's drawing.
  */
 export function detectSymmetry(m: Mask, tolerance = 0.03): SymmetrySettings {
-	const holds = (t: Transform) => disagreement(m, t) <= tolerance;
+	let ones = 0;
+	for (const v of m.data) ones += v;
+	const ink = Math.min(ones, m.data.length - ones);
+	// A blank mask (and a completely filled one) is symmetric under everything and
+	// says nothing about what the visitor wants; switching all three rows on for it
+	// would be a guess, so nothing is reported.
+	if (!ink) return { ...NO_SYMMETRY };
+	// `disagreement` counts both ends of every mismatched pair, and each such pair
+	// holds exactly one cell of the minority colour, so this is the share of the ink
+	// the transform fails to explain: 0 for an exact symmetry, 1 for a picture as
+	// unlike its image as two unrelated drawings with this much ink in them.
+	const holds = (t: Transform) => (disagreement(m, t) * m.data.length) / (2 * ink) <= tolerance;
 	const mirrored = holds('mirrorX') && holds('mirrorY');
 	const lobes: SymmetryMode = holds('transpose') ? 'sym' : holds('antiTranspose') ? 'anti' : 'off';
 	const lobe: SymmetryMode = mirrored ? 'sym' : holds('rotate180') ? 'anti' : 'off';
