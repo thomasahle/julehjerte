@@ -404,11 +404,16 @@ correction for a solve that nearly holds the symmetry; on one that does not, it 
 `settings.symmetry = { mirrorX?, mirrorY?, transpose?, antiTranspose?, rotate180?: boolean; withinCurve?: 'off' |
 'sym' | 'anti' }` to the engine: the fitter's target becomes the mean of the mask over the symmetry group ("both
 mirrorings in the loss") and the control points are tied under the group, so the answer is exactly symmetric. The
-bridge maps the three rows to it — Mellem lapper Sym → transpose, Anti → antiTranspose; Inden i lap Sym → mirrorX +
-mirrorY, Anti → rotate180; Inden i kurve Sym/Anti → withinCurve — in one function `engineSymmetry(rows)` in
-`src/lib/inverse/engine.ts`, sent only when `ENGINE_SYMMETRY` (a constant in the same file, false until the engine
-lane lands) is true, so the page can be built before the engine is merged. `symmetrize` on the mask and
-`enforce` in the converter stay as the safety net for the MILP route and for `withinCurve` Anti.
+bridge maps the three rows to it exactly as docs/inverse/SYMMETRY.md's table says — Mellem lapper Sym →
+transpose, Anti → antiTranspose; Inden i lap Sym → mirrorX + mirrorY, Anti → rotate180; Inden i kurve Sym →
+mirrorX + mirrorY + withinCurve 'sym' (the mask was painted mirrored, so the fitter must be told both), Anti →
+withinCurve 'anti' — in one function `engineSymmetry(rows)` in `src/lib/inverse/engine.ts`. The engine lane has
+landed on redesign (afe0ba2), so `ENGINE_SYMMETRY` is true from the round-two merge on. Two consequences for the
+UI: with a mirror requested the engine only tries even strip counts for the mirrored family (an odd mirrored family
+weaves the colour-swapped picture), so a failure under symmetry should suggest switching the row off; and
+`report.symmetry.honoured` says which requested transforms the exported cuts actually satisfy — show the rows from
+it, and the notice when it differs from the request, exactly as with the converter's `honoured`. `symmetrize` on
+the mask and `enforce` in the converter stay as the safety net for the MILP route and for `withinCurve` Anti.
 
 **Free and soft cells are the next stage, and the engine side is Codex's.** Codex's motif-border experiment
 (docs/inverse/MOTIF-BORDER.md) shows that an isolated painted motif needs a band of cells the engine may fill with
