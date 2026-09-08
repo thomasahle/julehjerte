@@ -19,6 +19,7 @@ for(const entry of catalog.cases){
   const automatic=detectHeartCrops(input),row={id:entry.id,sourceSha256:createHash('sha256').update(bytes).digest('hex'),automatic,crops:[]};results.push(row);
   const crops=[...automatic.candidates.map((c,i)=>({name:`automatic-${i}`,quad:c.quad})),{name:'manual-diagnostic',quad:entry.manualGuide}];
   for(const crop of crops){
+    if(process.env.INVERSE_HARD_CROPS&&!process.env.INVERSE_HARD_CROPS.split(',').includes(crop.name))continue;
     const directory=`${output}/${entry.id}/${crop.name}`;await fs.mkdir(directory,{recursive:true});
     const item={...crop,groundTruthAvailable:false};row.crops.push(item);
     ctx.drawImage(im,0,0);ctx.strokeStyle='#00eaff';ctx.lineWidth=4;ctx.beginPath();crop.quad.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.stroke();

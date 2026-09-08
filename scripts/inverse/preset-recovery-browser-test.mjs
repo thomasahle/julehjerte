@@ -11,7 +11,7 @@ const output=`tmp/inverse-browser/${new Date().toISOString().replace(/[:.]/g,'-'
 const cases=[
   {id:'flag-screenshot',file:'scripts/inverse/fixtures/preset-recovery/hunodan-flag-screenshot.png'},
   {id:'blue-stars',file:'scripts/inverse/fixtures/hunodan/source/hjsta-05.jpg',region:[.37,.015,.99,.94]},
-  {id:'tilted-orange-weave',file:'scripts/inverse/fixtures/hard-user/tilted-orange-weave.png',manual:[[447,160],[845,574],[350,921],[55,451]]},
+  {id:'tilted-orange-weave',file:'scripts/inverse/fixtures/hard-user/tilted-orange-weave.png',dense:true},
 ];
 await fs.mkdir(output,{recursive:true});
 for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',')){
@@ -42,18 +42,9 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
       assert.equal(await page.getByLabel('Prefer matching templates',{exact:true}).count(),0);
       assert.equal(await page.getByRole('heading',{name:'Inspect your pattern',exact:true}).count(),0);
       row.checks.push('A photo upload replaces the example without exposing any fitting or matching options');
-      if(entry.manual){
-        // This photograph remains a known automatic-detection failure. Verify
-        // recovery without pretending the diagnostic landmarks were detected.
-        assert.equal(await page.locator('.corner').count(),0);
-        await button('Place corners').click();
-        for(const p of entry.manual){
-          const el=page.locator('.crop-image');await el.scrollIntoViewIfNeeded();
-          const box=await el.boundingBox(),size=await el.locator('img').evaluate(im=>[im.naturalWidth,im.naturalHeight]);
-          await page.mouse.click(box.x+p[0]/size[0]*box.width,box.y+p[1]/size[1]*box.height);
-        }
-        for(let i=0;i<4;i++)for(let axis=0;axis<2;axis++)await page.locator('.coordinates input').nth(2*i+axis).fill(String(entry.manual[i][axis]));
-        row.checks.push('The known detector failure recovers through four manual corner clicks and coordinate adjustments');
+      if(entry.dense){
+        assert.equal(await page.locator('.corner').count(),4);
+        row.checks.push('The orange photograph receives four editable automatic corners without manual selection');
       }
       if(await page.locator('.corner').count()===0&&entry.region){
         // The full source also contains its printed template. Follow the UI's
@@ -85,14 +76,14 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
       await button('Find cutting templates').click();
       await page.waitForFunction(()=>!!window.recoveryResult||!!document.querySelector('[role=alert]'),{},{timeout:90000});
       row.report=await page.evaluate(()=>window.recoveryResult?.report);
-      if(entry.manual){
+      if(entry.dense){
         assert.equal(row.report?.templateExportAllowed,true);
         assert.ok(row.report.imageError.mismatchFraction<=.03);
         // The browser-decoded target contains a small white island at a
         // glossy highlight. Preserve that warning instead of relaxing the audit.
+        assert.ok(row.report.imageFidelity.features.missing.reduce((sum,r)=>sum+r.areaMm2,0)<4);
         for(const missing of row.report.imageFidelity.features.missing){
           assert.ok(missing.areaMm2<4);
-          assert.ok(Math.hypot(missing.centerMm[0]-91.1,missing.centerMm[1]-14.0)<1);
         }
         assert.equal(row.report.templateChecksPassed,row.report.imageFidelity.features.passed);
         if(!row.report.imageFidelity.features.passed)assert.ok(await page.getByText('Some coloured regions in the input mask are missing from the weave.',{exact:false}).isVisible());
@@ -106,14 +97,14 @@ for(const name of(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').
       row.independentImageError=rendered.mask.reduce((s,v,i)=>s+Number(v!==prepared.mask[i]),0)/prepared.mask.length;
       assert.ok(row.independentImageError<=.03);
       const featureAudit=auditImageFeatures(prepared,rendered.mask,100);
-      if(entry.manual){
-        for(const missing of featureAudit.missing)assert.ok(missing.areaMm2<4&&Math.hypot(missing.centerMm[0]-91.1,missing.centerMm[1]-14.0)<1);
+      if(entry.dense){
+        assert.ok(featureAudit.missing.reduce((sum,r)=>sum+r.areaMm2,0)<4);
         row.independentFeatureAudit=featureAudit;
       }else assert.equal(featureAudit.passed,true);
       await fs.writeFile(`${output}/${name}-${entry.id}-woven.png`,rendered.png);
       await button('Compare').click();await page.locator('.comparison-view').screenshot({path:`${output}/${name}-${entry.id}-difference.png`});
       await button('Original mask').click();await page.locator('canvas.mask').waitFor();
-      row.checks.push(entry.manual?'Downloaded templates meet the 3% image target; any remaining tiny highlight warning is retained, with the original mask and comparison available':'Downloaded templates pass independent image and feature checks; the original mask and comparison remain available');
+      row.checks.push(entry.dense?'Downloaded templates meet the 3% image target; any remaining tiny highlight warning is retained, with the original mask and comparison available':'Downloaded templates pass independent image and feature checks; the original mask and comparison remain available');
       assert.deepEqual(row.pageErrors,[]);
       console.log(name,entry.id,JSON.stringify({error:row.independentImageError,seconds:row.report.solver.seconds,checks:row.checks}));
     }catch(error){row.error=error.stack;process.exitCode=1;console.error(name,entry.id,error);if(page)await page.screenshot({path:`${output}/${name}-${entry.id}-failure.png`,fullPage:true});}

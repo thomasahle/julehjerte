@@ -21,6 +21,12 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
       const pale = detectMotif(image, { roi, maxSize: 650, palette: 'pale' });
       if (pale.quad || pale.status === 'needs_selection') proposal = pale;
     }
+    if (!proposal.quad) {
+      // A dim pale sheet can merge with a textured background. Anchor its
+      // colour estimate inside the main saturated paper component instead.
+      const anchored = detectMotif(image, { roi, maxSize: 650, palette: 'anchored' });
+      if (anchored.quad) proposal = anchored;
+    }
   }
   return {
     status: proposal.status,
