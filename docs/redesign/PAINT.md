@@ -50,21 +50,40 @@ Canvas (full-bleed, same `CanvasBackdrop` sky and landscape, same fit band betwe
 - Wheel/pinch zoom and drag-to-pan like Tegn are **not** required in the first version; fit-to-band is enough.
   Keep the canvas code ready for it (one transform matrix between screen and mask coordinates).
 
-Left floating panel (same column width and style as Tegn's tool rail area, 300px):
+Left floating panel (same column width and style as Tegn's tool rail area, 300px; two panels since the symmetry
+rows moved in, so the column scrolls inside itself on a short viewport rather than running off it):
 
 - Row of two buttons: `Importér billede` (outline, opens the dialog) and `Ryd` (ghost, clears to all-0 after a
   confirm if the mask is not empty; uses the site `Modal`, no `confirm()`).
-- Panel "Værktøj": tools Pen, Viskelæder, Fyld, Linje, Rektangel as 40px icon buttons (lucide: pencil, eraser,
-  paint-bucket, minus (rotated 45°) or a simple line glyph, square); brush size segmented control Fin / Mellem / Grov
-  (radius 2 / 6 / 14 cells); "Maler med" two swatches (the current paper colours, the chosen one ringed).
-  Viskelæder always paints 0. Undo / redo buttons (lucide undo-2 / redo-2) and Cmd/Ctrl+Z, Shift+Cmd/Ctrl+Z.
-- Keyboard: P pen, E eraser, F fill, L line, R rectangle, X swaps the painting colour, `[`/`]` brush size.
+- Panel "Værktøj": tools Pen, Viskelæder, Fyld, Linje, Rektangel, Markér as 40px icon buttons (lucide: pencil,
+  eraser, paint-bucket, minus (rotated 45°) or a simple line glyph, square, square-dashed); brush size segmented
+  control Fin / Mellem / Grov (radius 2 / 6 / 14 cells); "Maler med" two swatches (the current paper colours, the
+  chosen one ringed). Viskelæder always paints 0. Undo / redo buttons (lucide undo-2 / redo-2) and Cmd/Ctrl+Z,
+  Shift+Cmd/Ctrl+Z. Markér adds a line of help under the grid while it is the tool in hand, because its gestures
+  cannot be read off its glyph.
+- **Markér** (owner, 2026-09-08): drag a frame on the mask to lift a rectangle of cells; a dashed marquee with four
+  corner handles and a turner above it. Dragging inside moves the cells (what they leave becomes paper 0), a corner
+  scales — uniform, and free with Shift — and the turner turns about the centre by any angle. Enter or a click
+  outside commits, Escape drops it, Delete/Backspace clears the selected cells. Resampling is nearest-neighbour at
+  the mask's own cells, so a two-colour mask stays two-colour. The mask is not touched until a commit: undo takes one
+  snapshot per commit, and Escape has nothing to take back. A commit spreads under the active transforms like any
+  other edit, but it changes both colours at once (the vacated cells and the placed ones), so it takes two passes of
+  `applySymmetric` over the one box — paper first, so the moved cells win at a mirror line. The geometry is
+  `src/lib/paint/selection.ts`, pure and tested; the interaction is in `MaskCanvas`.
+- Panel "Symmetri" (owner, 2026-09-08 — moved out of Find snit): the one-line explanation "Fundet i masken og slået
+  til; alt du maler, spejles med." and the three symmetry rows (the shared component, §6), with the "fundet" tags.
+  They live here rather than with the search because they are live while painting: a row switched on mirrors every
+  stroke from that moment, so they belong beside the brush they change. Find snit still reads them from the session.
+  Both panels stand down — really disabled, `aria-disabled` on the column — while the found heart is on screen,
+  because there is no mask under the pointer then; "Tilbage til masken" brings them back.
+- Keyboard: P pen, E eraser, F fill, L line, R rectangle, M select, X swaps the painting colour, `[`/`]` brush size.
+
+Below 900px the columns stack under the heart in the order they read: Værktøj, Symmetri, Kanten, Find snit.
 
 Right floating panel (340px, collapsible with the same "Skjul panel" control as Tegn):
 
-- Panel "Find snit": one sentence ("Symmetri som i Tegn. Fundet i masken og slået til; alt du maler, spejles med."),
-  the three symmetry rows (a shared component, §6), the primary button `Find snit`, a disclosure "Avanceret" with the
-  engine settings that matter to a hobbyist: Papirets bredde (mm, default 100), Mindste strimmelbredde (mm, 2),
+- Panel "Find snit": one sentence about the search ("Computeren leder efter de snit, der væver netop dit mønster."),
+  the primary button `Find snit`, a disclosure "Avanceret" with the engine settings that matter to a hobbyist: Papirets bredde (mm, default 100), Mindste strimmelbredde (mm, 2),
   Samme skabelon til begge sider (checkbox, follows Mellem lapper: Sym), and a "Nulstil" link. Nothing else.
 - While searching: the panel shows a progress row (heart glyph, "Søger efter snit … 12 s", the current stage in
   plain words, a bar) and `Afbryd`. The mask stays editable-looking but pointer input is ignored until done.
@@ -73,8 +92,11 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   on the heart we are about to show — `maskMismatch` of `rasterizeDesign(design, 200)` against the session mask
   resampled to 200 — not taken from the engine's `report.imageError.mismatchFraction`, which describes the solution
   before simplifying and before `enforce` (§4) moved it. The canvas shows the found
-  heart rendered by our own `PaperHeartSVG` (not the engine's preview), and a small card with the mask and a
-  "Ret masken" link. Download PDF and Gem in the top bar now work on this heart.
+  heart rendered by our own `PaperHeartSVG` (not the engine's preview), and a small card with the mask. That card is
+  one button, labelled "Tilbage til masken" like the panel's — it used to carry a "Ret masken" link of its own beside
+  it, which read as two different steps and is one — and the mask in it is drawn on `--sky`, as the detail page's
+  heart thumbnails are, because on white a white lobe disappears. Download PDF and Gem in the top bar now work on
+  this heart.
 - After failure: a notice in the panel: what happened (timed out / no weavable pattern / engine could not load) and
   what to try (paint with fewer thin details, switch off a symmetry, try again), plus `Prøv igen`.
 
@@ -167,6 +189,16 @@ export function line(m: Mask, from: Vec, to: Vec, brush: Brush): Box;     // sam
 export function rect(m: Mask, a: Vec, b: Vec, value: 0 | 1): Box;
 export function floodFill(m: Mask, x: number, y: number, value: 0 | 1): Box;   // 4-connected, iterative
 export function applySymmetric(m: Mask, box: Box, transforms: Transform[], value: 0 | 1): Box; // spreads the brush colour under each transform
+
+// src/lib/paint/selection.ts — Markér, as geometry: a rectangle of cells lifted off the mask and put back somewhere else
+export type Placement = { cx: number; cy: number; width: number; height: number; angle: number };
+export type Selection = { source: CellRect; cells: Uint8Array; placement: Placement };
+export function lift(m: Mask, r: CellRect): Selection | null;   // copies the cells; the mask is left alone
+export function moveBy(p: Placement, dx: number, dy: number): Placement;
+export function scaleTo(p: Placement, handle: Handle, point: Vec, uniform: boolean): Placement;  // opposite corner anchored
+export function rotateTo(p: Placement, point: Vec): Placement;  // about the centre, from the turner
+export function stamp(m: Mask, sel: Selection): Box;            // nearest neighbour, mapped backwards so a turn leaves no holes
+export function commit(m: Mask, sel: Selection): Box;           // vacate the source to 0, then stamp
 
 // src/lib/paint/symmetry.ts
 export type Transform = 'transpose' | 'antiTranspose' | 'mirrorX' | 'mirrorY' | 'rotate180';

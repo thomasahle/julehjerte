@@ -29,6 +29,7 @@
 	} from '$lib/components/icons';
 	import MaskCanvas from './MaskCanvas.svelte';
 	import MaskToolPanel from './MaskToolPanel.svelte';
+	import SymmetryPanel from './SymmetryPanel.svelte';
 	import FindCutsPanel from './FindCutsPanel.svelte';
 	import ImportImageDialog from './ImportImageDialog.svelte';
 	import { SITE_TITLE, SITE_TITLE_EN } from '$lib/config';
@@ -701,7 +702,10 @@
 				</div>
 
 				{#if !isNarrow}
-					<div class="left-panel">{@render toolPanel()}</div>
+					<div class="left-panel">
+						{@render toolPanel()}
+						{@render symmetryPanel()}
+					</div>
 					<div class="right-panel" class:collapsed={panelCollapsed} id="paint-panel">
 						<div class="panel-collapse">
 							<button
@@ -734,15 +738,18 @@
 			</div>
 
 			{#if isNarrow}
+				<!-- The same order as the left column above, then the right one: Værktøj,
+				     Symmetri, Find snit. -->
 				<aside class="sidebar">
 					{@render toolPanel()}
+					{@render symmetryPanel()}
 					{@render cutsPanel()}
 				</aside>
 			{/if}
 		</TooltipProvider>
 	</main>
 
-	<!-- The two panels, authored once and rendered either floating over the canvas
+	<!-- The three panels, authored once and rendered either floating over the canvas
 	     or stacked under it. -->
 	{#snippet toolPanel()}
 					<!-- While the found heart is on screen there is no mask to paint on, so
@@ -777,12 +784,20 @@
 					</div>
 	{/snippet}
 
+	{#snippet symmetryPanel()}
+					<SymmetryPanel
+						{lang}
+						value={session.symmetry}
+						onChange={changeSymmetry}
+						found={session.found}
+						disabled={busy || showingResult}
+					/>
+	{/snippet}
+
 	{#snippet cutsPanel()}
 					<FindCutsPanel
 						{lang}
 						symmetry={session.symmetry}
-						onSymmetry={changeSymmetry}
-						found={session.found}
 						status={session.status}
 						error={session.error}
 						result={session.result}
@@ -895,12 +910,21 @@
 		border-color: var(--green);
 	}
 
+	/* Two panels now, so the column can outgrow a short viewport: it stays centred
+	   while it fits and scrolls inside itself when it does not. */
 	.left-panel {
 		position: absolute;
 		left: 16px;
 		top: 50%;
 		transform: translateY(-50%);
 		width: 300px;
+		max-height: calc(100% - 8px);
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
 		z-index: 26;
 	}
 
