@@ -59,6 +59,13 @@
  * `toHeartDesign.test.ts` pins those bounds, so a change to the mappings cannot
  * quietly make them worse.
  *
+ * So the correction is measured before it is kept: both designs are rasterised
+ * and compared, and past `enforceCostLimit` (3 % of the square by default) the
+ * unenforced heart is returned with every row of `honoured` off and the measured
+ * share in `symmetryCost`. A visitor is better served by the heart the engine
+ * found, with the rows honestly showing Fra, than by a deformed one that claims
+ * a symmetry.
+ *
  * Two things follow for the caller:
  *
  * - Inden i kurve Anti cannot be expressed on the mask (PAINT.md §5), so it
@@ -84,6 +91,8 @@ import {
 import { MAX_GRID_SIZE } from '$lib/constants';
 import { FIT_TOLERANCE, simplifyCubicChain } from '$lib/inverse/simplifyCurves';
 import { NO_SYMMETRY, type SymmetryMode, type SymmetrySettings } from '$lib/paint/symmetry';
+import { maskMismatch } from '$lib/paint/mask';
+import { rasterizeDesign } from '$lib/paint/rasterize';
 
 /** One cut's ordered reference into `curves`; `reverse` runs the cubic backwards. */
 export type CutReference = { curve: string; reverse: boolean };
@@ -133,6 +142,12 @@ export type CutGeometryOptions = {
   author?: string;
   colors?: HeartColors;
   enforce?: SymmetrySettings;
+  /**
+   * How much of the woven square enforcing may move before the correction is
+   * refused altogether; defaults to `ENFORCE_COST_LIMIT`. Pass 1 to measure what
+   * the mappings do without the guard standing in the way.
+   */
+  enforceCostLimit?: number;
   /** Fitting tolerance in the 0–100 frame, in millimetres on a 100 mm square. */
   tolerance?: number;
 };
@@ -142,13 +157,38 @@ export type ConvertedHeart = {
   /**
    * The rows of `opts.enforce` the conversion could actually apply. A row the
    * geometry cannot carry comes back `'off'`, so the caller shows Fra instead of
-   * a symmetry the heart does not have.
+   * a symmetry the heart does not have — and so does every row when the whole
+   * correction cost more than `enforceCostLimit`.
    */
   honoured: SymmetrySettings;
+  /**
+   * The share of the woven square the correction moved, present whenever one was
+   * attempted. Over the limit it is why `honoured` is all off; under it, it is
+   * how little the correction cost.
+   */
+  symmetryCost?: number;
 };
 
 /** How far an endpoint may sit from its square edge, in the 0–100 frame. */
 const EDGE_TOLERANCE = 0.05;
+
+/**
+ * How much of the woven square enforcing may move before it is refused.
+ *
+ * Three per cent is about where a correction stops reading as the same picture.
+ * Below it the symmetry the visitor asked for is worth the drift; above it the
+ * solve plainly did not hold the symmetry, and forcing the cuts deforms the
+ * heart by the 11–24 % measured in the tests — a different heart, presented as
+ * theirs. The unenforced answer is shown instead, and `honoured` says so.
+ */
+export const ENFORCE_COST_LIMIT = 0.03;
+
+/**
+ * The grid the two candidates are compared on. The same 200 the success panel
+ * measures its difference at, and enough that a corrected cut moving by a
+ * millimetre of the 100 mm square shows up in it.
+ */
+const COST_RESOLUTION = 200;
 
 /**
  * Distance under which two chained cubics count as touching, in the 0–100 frame
@@ -459,9 +499,6 @@ export function convertCutGeometry(
     byLobe[family.lobe] = cuts;
   }
 
-  const enforce = opts.enforce ?? NO_SYMMETRY;
-  const { left, right, honoured } = applyEnforcement(byLobe.left, byLobe.right, enforce);
-
   const paperColors = geometry.paper_colors;
   const colors =
     opts.colors ??
@@ -470,27 +507,50 @@ export function convertCutGeometry(
         { right: paperColors[0], left: paperColors[1] }
       : undefined);
 
-  const design = normalizeHeartDesign({
-    id: '',
-    name: opts.name,
-    author: opts.author ?? '',
-    weaveParity: geometry.phase,
-    gridSize: { x: right.length + 1, y: left.length + 1 },
-    colors,
-    fingers: [
-      ...left.map((segments, i) => toRawFinger(segments, 'left', i)),
-      ...right.map((segments, i) => toRawFinger(segments, 'right', i))
-    ]
-  });
+  const build = (left: BezierSegment[][], right: BezierSegment[][]): HeartDesign => {
+    const design = normalizeHeartDesign({
+      id: '',
+      name: opts.name,
+      author: opts.author ?? '',
+      weaveParity: geometry.phase,
+      gridSize: { x: right.length + 1, y: left.length + 1 },
+      colors,
+      fingers: [
+        ...left.map((segments, i) => toRawFinger(segments, 'left', i)),
+        ...right.map((segments, i) => toRawFinger(segments, 'right', i))
+      ]
+    });
 
-  // `normalizeHeartDesign` takes `unknown` and answers null for anything that is
-  // not an object; the argument above is an object literal, so this only narrows
-  // the type. It stays a typed error rather than a `!` so that a future change
-  // to the normaliser cannot turn into an unexplained crash in the paint panel.
-  if (!design) {
-    throw new CutGeometryError('paintErrorGeometryCurves', 'The converted cuts did not make a heart.');
+    // `normalizeHeartDesign` takes `unknown` and answers null for anything that
+    // is not an object; the argument above is an object literal, so this only
+    // narrows the type. It stays a typed error rather than a `!` so that a future
+    // change to the normaliser cannot turn into an unexplained crash in the paint
+    // panel.
+    if (!design) {
+      throw new CutGeometryError('paintErrorGeometryCurves', 'The converted cuts did not make a heart.');
+    }
+    return design;
+  };
+
+  const enforce = opts.enforce ?? NO_SYMMETRY;
+  const { left, right, honoured } = applyEnforcement(byLobe.left, byLobe.right, enforce);
+
+  // Nothing was asked for, or nothing survived: no correction, so no comparison
+  // and nothing to report. This is also the fast path — one raster, not three.
+  if (honoured.curve === 'off' && honoured.lobe === 'off' && honoured.lobes === 'off') {
+    return { design: build(byLobe.left, byLobe.right), honoured };
   }
-  return { design, honoured };
+
+  const plain = build(byLobe.left, byLobe.right);
+  const corrected = build(left, right);
+  const symmetryCost = maskMismatch(
+    rasterizeDesign(corrected, COST_RESOLUTION).data,
+    rasterizeDesign(plain, COST_RESOLUTION).data
+  );
+  if (symmetryCost > (opts.enforceCostLimit ?? ENFORCE_COST_LIMIT)) {
+    return { design: plain, honoured: { ...NO_SYMMETRY }, symmetryCost };
+  }
+  return { design: corrected, honoured, symmetryCost };
 }
 
 /**
