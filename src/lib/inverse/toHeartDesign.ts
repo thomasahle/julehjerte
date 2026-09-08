@@ -83,6 +83,7 @@ import {
 } from '$lib/utils/symmetry';
 import { MAX_GRID_SIZE } from '$lib/constants';
 import { FIT_TOLERANCE, simplifyCubicChain } from '$lib/inverse/simplifyCurves';
+import { NO_SYMMETRY, type SymmetryMode, type SymmetrySettings } from '$lib/paint/symmetry';
 
 /** One cut's ordered reference into `curves`; `reverse` runs the cubic backwards. */
 export type CutReference = { curve: string; reverse: boolean };
@@ -119,12 +120,13 @@ export class CutGeometryError extends Error {
   }
 }
 
-export type SymmetryMode = 'off' | 'sym' | 'anti';
 /**
  * The editor's three symmetry rows: Inden i kurve, Inden i lap, Mellem lapper.
- * Mirrors the type the paint session store carries.
+ * They are declared once, in the paint lane's `symmetry.ts`, because that module
+ * also holds what each row means on the mask; the session store re-exports them
+ * for UI code. Re-exported here so callers of the converter need only one import.
  */
-export type SymmetrySettings = { curve: SymmetryMode; lobe: SymmetryMode; lobes: SymmetryMode };
+export type { SymmetryMode, SymmetrySettings };
 
 export type CutGeometryOptions = {
   name: string;
@@ -134,9 +136,6 @@ export type CutGeometryOptions = {
   /** Fitting tolerance in the 0–100 frame, in millimetres on a 100 mm square. */
   tolerance?: number;
 };
-
-/** All three rows off: what enforcement does when the caller asks for nothing. */
-const NO_SYMMETRY: SymmetrySettings = { curve: 'off', lobe: 'off', lobes: 'off' };
 
 export type ConvertedHeart = {
   design: HeartDesign;
