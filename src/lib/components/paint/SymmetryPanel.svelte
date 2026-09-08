@@ -12,6 +12,12 @@
   down is a plain `<fieldset disabled>`: it really disables every control inside,
   and it says so, without this panel having to reach into the shared component or
   borrow the "requires an equal grid" tooltip that Tegn's disabled row carries.
+
+  The panel is 300px against the 372px the rows were first drawn for, and once
+  needed two `:global` rules to keep the "Anti" end of a row inside it. The rows
+  now stack their name above their control, which fits any column either host
+  has, so this panel styles nothing of theirs and passes no `compact`: it is a
+  page that scrolls and has room for the words.
 -->
 <script lang="ts">
 	import SymmetryRows from '$lib/components/editor/SymmetryRows.svelte';
@@ -54,20 +60,6 @@
 
 	.rows:disabled {
 		opacity: 0.45;
-	}
-
-	/* The rows were drawn for the 372px right column. This one is 300px, and
-	   "Mellem lapper" with its "fundet" pill beside a three-segment control does
-	   not fit on one line there — the "Anti" end ran off the panel. So the label
-	   may wrap here and the control may not shrink. SymmetryRows is shared with
-	   Tegn, where the wider column still puts every row on one line, so the fix
-	   belongs to this panel rather than to the component. */
-	.rows :global(.symmetry-label) {
-		white-space: normal;
-	}
-
-	.rows :global([data-slot='toggle-group']) {
-		flex: none;
 	}
 
 	.lead {
