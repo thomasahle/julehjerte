@@ -169,6 +169,14 @@ test('symmetry ties reproduce the identical-sheet projection and pin a mirrored 
     assert.equal(value, 50);
   }
   assert.equal(symmetryReport(odd.solution(points, 1, {}), mirror).maxDeviationMm, 0);
+
+  // A cross-family transform has no pairing when the counts differ. That is
+  // reported, not approximated, and the count search never offers such a pair.
+  const unequal = new CurveGraph(gridPaths(gridModel([2, 3], 8, 3), 100), 100);
+  const skipped = symmetryTies(unequal, spec);
+  assert.deepEqual(skipped.skipped, ['transpose']);
+  assert.equal(skipped.groups.length, 0);
+  assert.equal(symmetryReport(unequal.solution(unequal.points, 1, {}), spec).maxDeviationMm, null);
 });
 
 test('the count search only offers pairs a requested symmetry can reproduce', () => {
