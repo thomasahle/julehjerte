@@ -23,7 +23,7 @@
 	import { t, type Language } from '$lib/i18n';
 	import type { HeartColors } from '$lib/types/heart';
 	import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from '$lib/paint/mask';
-	import { applySymmetric, floodFill, rect, stroke } from '$lib/paint/tools';
+	import { applySymmetric, applySymmetricEdit, floodFill, rect, stroke } from '$lib/paint/tools';
 	import {
 		GRAB_PX,
 		HANDLES,
@@ -34,12 +34,13 @@
 		contains,
 		cornerAt,
 		corners,
-		lift,
+			lift,
 		moveBy,
 		rectFrom,
 		rotateHandleAt,
 		rotateTo,
 		scaleTo,
+		type Edit,
 		type Handle,
 		type Placement,
 		type Selection
@@ -531,19 +532,17 @@
 	/**
 	 * Spread a selection's edit under the active symmetries.
 	 *
-	 * Unlike a stroke, this changes cells of both colours at once — the vacated
-	 * area is 0, what was put down may be either — so it takes two passes of
-	 * `applySymmetric` over the one box. Paper goes first, so where a mirror line
-	 * runs through the edit it is the cells the visitor moved that win, not the
-	 * hole they came from.
+	 * Unlike a stroke this lays down both papers at once — the vacated area is 0,
+	 * what was put down may be either — so it cannot be spread by colour the way
+	 * `applySymmetric` spreads a stroke. `applySymmetricEdit` takes the marks the
+	 * commit left instead, and mirrors what the visitor put down over the hole it
+	 * came from rather than the other way round.
 	 */
-	function spread(box: Box): void {
-		if (!mask || isEmptyBox(box)) return;
-		let changed = box;
-		if (transforms.length) {
-			changed = applySymmetric(mask, box, transforms, 0);
-			changed = unionBox(changed, applySymmetric(mask, box, transforms, 1));
-		}
+	function spread(edit: Edit): void {
+		if (!mask || isEmptyBox(edit.box)) return;
+		const changed = transforms.length
+			? applySymmetricEdit(mask, edit.box, edit.marks, transforms)
+			: edit.box;
 		syncOffscreen(changed);
 	}
 

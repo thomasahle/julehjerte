@@ -19,7 +19,7 @@
 
 import type { Vec } from '$lib/types/heart';
 import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from './mask';
-import { rect } from './tools';
+import { EDIT_CLEARED, EDIT_LAID, rect } from './tools';
 
 /** Half-open cell rectangle, `x0 <= x < x1`, in the same coordinates as `Box`. */
 export type CellRect = Box;
@@ -39,6 +39,18 @@ export type Selection = {
 	/** Where they stand now. A fresh selection stands exactly where it was lifted. */
 	placement: Placement;
 };
+
+/**
+ * What one commit wrote: the area to repaint, and which cells it laid which
+ * layer on (`EDIT_*` in `tools.ts`), for `applySymmetricEdit` to spread.
+ *
+ * The marks cover every cell the edit *touched* and not only the ones whose value
+ * came out different. A patch that lands on cells already holding its own colours
+ * has still been put there by the visitor, and symmetry has to know it: otherwise
+ * the hole it came from is the only claim on that orbit, and a mirror line
+ * between the two carries the hole over the patch.
+ */
+export type Edit = { box: Box; marks: Uint8Array };
 
 /** The four corners of the marquee, named as they are before it is turned. */
 export type Handle = 'nw' | 'ne' | 'se' | 'sw';
@@ -230,8 +242,13 @@ export function boundsOf(p: Placement, m: Mask): CellRect {
  * and rounded down to a source cell. Cells whose centre falls outside the patch are
  * left alone, so a turned selection lays down a turned rectangle and not its
  * bounding box.
+ *
+ * `marks`, when given, is where the cells the patch covered are recorded — every
+ * one of them, including any that already held the value being laid on it, which
+ * is what `Edit` above explains. The box that comes back is the bounding box of
+ * that same area, which is what the canvas repaints.
  */
-export function stamp(m: Mask, sel: Selection): Box {
+export function stamp(m: Mask, sel: Selection, marks?: Uint8Array): Box {
 	const p = sel.placement;
 	const w = sel.source.x1 - sel.source.x0;
 	const h = sel.source.y1 - sel.source.y0;
@@ -242,7 +259,7 @@ export function stamp(m: Mask, sel: Selection): Box {
 	// The inverse turn: the placement turns by +angle, so reading back turns by −.
 	const cos = Math.cos(-p.angle);
 	const sin = Math.sin(-p.angle);
-	let changed = emptyBox();
+	let covered = emptyBox();
 	for (let cy = area.y0; cy < area.y1; cy++) {
 		const dy = cy + 0.5 - p.cy;
 		const row = cy * m.size;
@@ -253,35 +270,46 @@ export function stamp(m: Mask, sel: Selection): Box {
 			const sx = Math.floor((ux / p.width + 0.5) * w);
 			const sy = Math.floor((uy / p.height + 0.5) * h);
 			if (sx < 0 || sy < 0 || sx >= w || sy >= h) continue;
-			const value = sel.cells[sy * w + sx]!;
-			if (m.data[row + cx] === value) continue;
-			m.data[row + cx] = value;
-			changed = unionBox(changed, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
+			if (marks) marks[row + cx] = EDIT_LAID;
+			covered = unionBox(covered, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
+			m.data[row + cx] = sel.cells[sy * w + sx]!;
 		}
 	}
-	return changed;
+	return covered;
 }
 
-/** Paint a rectangle of cells one value — what a commit does to the area it left. */
-export function fill(m: Mask, r: CellRect, value: 0 | 1): Box {
+/**
+ * Paint a rectangle of cells one value — what a commit does to the area it left.
+ * The box that comes back is the rectangle itself, not the cells within it that
+ * came out different, for the reason `Edit` gives.
+ */
+export function fill(m: Mask, r: CellRect, value: 0 | 1, marks?: Uint8Array): Box {
 	if (isEmptyRect(r)) return emptyBox();
-	return rect(m, { x: r.x0, y: r.y0 }, { x: r.x1 - 1, y: r.y1 - 1 }, value);
+	rect(m, { x: r.x0, y: r.y0 }, { x: r.x1 - 1, y: r.y1 - 1 }, value);
+	if (marks) {
+		for (let y = r.y0; y < r.y1; y++) marks.fill(EDIT_CLEARED, y * m.size + r.x0, y * m.size + r.x1);
+	}
+	return { ...r };
 }
 
 /**
  * Put the selection down: the area it was lifted from becomes paper 0, and the
- * cells land where the placement puts them. Returns the box both together changed,
- * which is what the canvas repaints and what symmetry is spread over.
+ * cells land where the placement puts them. Returns the area both together
+ * touched, which is what the canvas repaints, and the marks symmetry spreads by.
  *
  * The vacated area is written first, so a patch dragged only a little still covers
- * the part of its own source it overlaps.
+ * the part of its own source it overlaps — and marked first, so that where a
+ * mirror line runs through the edit it is the cells the visitor moved that win,
+ * not the hole they came from.
  */
-export function commit(m: Mask, sel: Selection): Box {
-	const vacated = fill(m, sel.source, 0);
-	return unionBox(vacated, stamp(m, sel));
+export function commit(m: Mask, sel: Selection): Edit {
+	const marks = new Uint8Array(m.data.length);
+	const vacated = fill(m, sel.source, 0, marks);
+	return { box: unionBox(vacated, stamp(m, sel, marks)), marks };
 }
 
 /** Delete: the selected cells go, and nothing is put back down. */
-export function clear(m: Mask, sel: Selection): Box {
-	return fill(m, sel.source, 0);
+export function clear(m: Mask, sel: Selection): Edit {
+	const marks = new Uint8Array(m.data.length);
+	return { box: fill(m, sel.source, 0, marks), marks };
 }

@@ -17,6 +17,7 @@ import {
 	scaleTo,
 	stamp
 } from './selection';
+import { EDIT_CLEARED, EDIT_LAID, EDIT_NONE } from './tools';
 
 /** A mask from rows of `.` and `#`, so a patch can be read at a glance. */
 function maskOf(rows: string[]): Mask {
@@ -95,7 +96,7 @@ describe('commit', () => {
 		const m = maskOf(['##..', '#...', '....', '....']);
 		const sel = lift(m, { x0: 0, y0: 0, x1: 2, y1: 2 })!;
 		sel.placement = moveBy(sel.placement, 2, 2);
-		const box = commit(m, sel);
+		const { box } = commit(m, sel);
 		expect(rowsOf(m)).toEqual(['....', '....', '..##', '..#.']);
 		expect(box).toEqual({ x0: 0, y0: 0, x1: 4, y1: 4 });
 	});
@@ -115,8 +116,23 @@ describe('commit', () => {
 		const sel = lift(m, { x0: 1, y0: 0, x1: 3, y1: 2 })!;
 		// The box is what to repaint, not what ended up different: vacating cleared
 		// the ink and the stamp wrote it back, so both passes touched those cells.
-		expect(commit(m, sel)).toEqual({ x0: 1, y0: 0, x1: 3, y1: 2 });
+		expect(commit(m, sel).box).toEqual({ x0: 1, y0: 0, x1: 3, y1: 2 });
 		expect(rowsOf(m)).toEqual(['.#..', '.##.', '....', '....']);
+	});
+
+	it('marks every cell it touched, and the patch over the hole where they meet', () => {
+		const m = maskOf(['##..', '##..', '....', '....']);
+		const sel = lift(m, { x0: 0, y0: 0, x1: 2, y1: 2 })!;
+		sel.placement = moveBy(sel.placement, 1, 0);
+		const { marks } = commit(m, sel);
+		// The column the patch still covers was vacated first and laid on after, and
+		// symmetry has to be told the patch won there.
+		expect([...marks.slice(0, 4)]).toEqual([EDIT_CLEARED, EDIT_LAID, EDIT_LAID, EDIT_NONE]);
+		// Cells the patch covered but did not change are marked all the same: the
+		// hole's mirror image would otherwise be the only claim on them.
+		const blank = maskOf(['##..', '##..', '....', '....']);
+		const same = lift(blank, { x0: 0, y0: 0, x1: 2, y1: 2 })!;
+		expect([...commit(blank, same).marks.slice(0, 2)]).toEqual([EDIT_LAID, EDIT_LAID]);
 	});
 
 	it('writes only 0 and 1, so a two-colour mask stays two-colour', () => {
@@ -134,7 +150,7 @@ describe('clear', () => {
 		const m = maskOf(['####', '####', '####', '####']);
 		const sel = lift(m, { x0: 1, y0: 1, x1: 3, y1: 3 })!;
 		sel.placement = moveBy(sel.placement, 1, 1);
-		expect(clear(m, sel)).toEqual({ x0: 1, y0: 1, x1: 3, y1: 3 });
+		expect(clear(m, sel).box).toEqual({ x0: 1, y0: 1, x1: 3, y1: 3 });
 		expect(rowsOf(m)).toEqual(['####', '#..#', '#..#', '####']);
 	});
 });
@@ -180,7 +196,7 @@ describe('stamp', () => {
 		expect(rowsOf(m)).toEqual(['#...', '....', '....', '....']);
 	});
 
-	it('reports the box it changed and nothing wider', () => {
+	it('reports the box it covered and nothing wider', () => {
 		const m = createMask(0, 8);
 		const sel = lift(m, { x0: 0, y0: 0, x1: 2, y1: 2 })!;
 		sel.cells.fill(1);

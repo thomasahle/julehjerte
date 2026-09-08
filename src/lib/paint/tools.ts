@@ -131,6 +131,30 @@ export function floodFill(m: Mask, x: number, y: number, value: 0 | 1): Box {
 	return changed;
 }
 
+/** A point map of the closed symmetry group, as `closedPointMaps` hands them out. */
+type PointMap = (x: number, y: number, size: number) => { x: number; y: number };
+
+/**
+ * The box and all its images — what the canvas has to repaint after a spread.
+ *
+ * A square symmetry maps a rectangle to a rectangle, so the mapped corners bound
+ * each copy and their union bounds the lot.
+ */
+function imagesOf(m: Mask, box: Box, maps: PointMap[]): Box {
+	let changed: Box = { ...box };
+	for (const map of maps) {
+		const a = map(box.x0, box.y0, m.size);
+		const b = map(box.x1 - 1, box.y1 - 1, m.size);
+		changed = unionBox(changed, {
+			x0: Math.min(a.x, b.x),
+			y0: Math.min(a.y, b.y),
+			x1: Math.max(a.x, b.x) + 1,
+			y1: Math.max(a.y, b.y) + 1
+		});
+	}
+	return changed;
+}
+
 /**
  * Copy what the edit painted in `box` to every symmetric position.
  *
@@ -164,19 +188,7 @@ export function applySymmetric(m: Mask, box: Box, transforms: Transform[], value
 	const maps = closedPointMaps(transforms);
 	if (!maps.length) return { ...box };
 
-	// A square symmetry maps a rectangle to a rectangle, so the mapped corners bound
-	// each copy, and their union is what the canvas has to repaint.
-	let changed: Box = { ...box };
-	for (const map of maps) {
-		const a = map(box.x0, box.y0, m.size);
-		const b = map(box.x1 - 1, box.y1 - 1, m.size);
-		changed = unionBox(changed, {
-			x0: Math.min(a.x, b.x),
-			y0: Math.min(a.y, b.y),
-			x1: Math.max(a.x, b.x) + 1,
-			y1: Math.max(a.y, b.y) + 1
-		});
-	}
+	const changed = imagesOf(m, box, maps);
 
 	for (let y = box.y0; y < box.y1; y++) {
 		const row = y * m.size;
@@ -185,6 +197,74 @@ export function applySymmetric(m: Mask, box: Box, transforms: Transform[], value
 			for (const map of maps) {
 				const p = map(x, y, m.size);
 				m.data[p.y * m.size + p.x] = value;
+			}
+		}
+	}
+	return changed;
+}
+
+/**
+ * How an edit that lays down both papers at once marks the cells it wrote, for
+ * `applySymmetricEdit` to spread: one byte per mask cell.
+ *
+ * A stroke is one colour, so `applySymmetric` can find its cells by their value.
+ * Moving a patch of mask is not: it clears the area the cells came from and lays
+ * down cells of either colour where they landed, and where a mirror line runs
+ * between the two, one orbit is claimed twice — by the hole and by the patch.
+ * The marks say which claim wins.
+ */
+export const EDIT_NONE = 0;
+/** Cleared on the way: the area a moved patch was lifted from. */
+export const EDIT_CLEARED = 1;
+/** Laid down: the patch itself. This wins where the two mirror onto each other. */
+export const EDIT_LAID = 2;
+
+/** The order the layers are spread in; the last one written is the one that shows. */
+const EDIT_LAYERS = [EDIT_CLEARED, EDIT_LAID];
+
+/**
+ * Spread an edit that laid down both papers at once under the active symmetries.
+ *
+ * Every marked cell hands its value to its whole orbit, in layer order, and every
+ * value is read from a copy of the mask taken before any of it is written. Both
+ * halves matter, and a patch dragged onto its own reflection is where:
+ *
+ *  - Reading the mask as it is written mirrors the hole over the cells the patch
+ *    has just laid down, and a second pass then finds nothing left to restore —
+ *    a single drag can blank the whole drawing that way.
+ *  - Marking only the cells whose value actually changed leaves a patch that
+ *    landed on cells already holding its own colours out of the spread, so the
+ *    hole wins there by default.
+ *
+ * The mask must have been symmetric under `transforms` before the edit, exactly
+ * as `applySymmetric` requires and for the same reason: the cells outside the
+ * marks are assumed to already agree with their images.
+ */
+export function applySymmetricEdit(
+	m: Mask,
+	box: Box,
+	marks: Uint8Array,
+	transforms: Transform[]
+): Box {
+	if (isEmptyBox(box) || !transforms.length) return { ...box };
+	const maps = closedPointMaps(transforms);
+	if (!maps.length) return { ...box };
+
+	const changed = imagesOf(m, box, maps);
+	const before = m.data.slice();
+	for (const layer of EDIT_LAYERS) {
+		for (let y = box.y0; y < box.y1; y++) {
+			const row = y * m.size;
+			for (let x = box.x0; x < box.x1; x++) {
+				if (marks[row + x] !== layer) continue;
+				const value = before[row + x]!;
+				// The cell itself as well as its images: the layer below may have
+				// mirrored its own value over this very cell a moment ago.
+				m.data[row + x] = value;
+				for (const map of maps) {
+					const p = map(x, y, m.size);
+					m.data[p.y * m.size + p.x] = value;
+				}
 			}
 		}
 	}

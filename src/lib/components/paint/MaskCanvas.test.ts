@@ -146,6 +146,22 @@ function send(
 	flushSync();
 }
 
+/** One keystroke, from wherever the focus happens to be. */
+function press(
+	key: string,
+	options: { on?: EventTarget; shiftKey?: boolean } = {}
+): KeyboardEvent {
+	const event = new KeyboardEvent('keydown', {
+		key,
+		bubbles: true,
+		cancelable: true,
+		shiftKey: options.shiftKey ?? false
+	});
+	(options.on ?? window).dispatchEvent(event);
+	flushSync();
+	return event;
+}
+
 /** One press-drag-release across the mask, in cells. */
 function drag(
 	canvas: HTMLCanvasElement,
@@ -272,8 +288,7 @@ describe('Markér', () => {
 		drag(c.canvas, [5, 5], [13, 13]);
 		drag(c.canvas, [8, 8], [8, 28]);
 		expect(c.edits).toBe(0);
-		window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-		flushSync();
+		press('Enter');
 		expect(c.cell(8, 8)).toBe(0);
 		expect(c.cell(8, 28)).toBe(1);
 		expect(c.edits).toBe(1);
@@ -283,8 +298,7 @@ describe('Markér', () => {
 		const c = withBlock();
 		drag(c.canvas, [5, 5], [13, 13]);
 		drag(c.canvas, [8, 8], [28, 28]);
-		window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-		flushSync();
+		press('Escape');
 		expect(c.cell(8, 8)).toBe(1);
 		expect(c.cell(28, 28)).toBe(0);
 		expect(c.edits).toBe(0);
@@ -293,8 +307,7 @@ describe('Markér', () => {
 	it('clears the selected cells on Delete', () => {
 		const c = withBlock();
 		drag(c.canvas, [5, 5], [13, 13]);
-		window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true }));
-		flushSync();
+		press('Delete');
 		expect(c.mask.data.some((v) => v === 1)).toBe(false);
 		expect(c.edits).toBe(1);
 	});
@@ -327,8 +340,7 @@ describe('Markér', () => {
 		// Straight out to the right of the centre: a quarter turn clockwise.
 		send(c.canvas, 'pointermove', atPoint({ x: placement.cx + 6, y: placement.cy }));
 		send(c.canvas, 'pointerup', atPoint({ x: placement.cx + 6, y: placement.cy }));
-		window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-		flushSync();
+		press('Enter');
 
 		// The upright has come round to the top and the foot to the left, and a
 		// quarter turn of a square patch loses no cells on the way.
@@ -366,5 +378,31 @@ describe('Markér', () => {
 		expect(c.cell(8, 8)).toBe(0);
 		expect(c.cell(28, 8)).toBe(1);
 		expect(c.edits).toBe(1);
+	});
+
+	it('mirrors a moved patch under an active symmetry instead of blanking the mask', () => {
+		// Mellem lapper Sym is the transpose, so the block and its image are both
+		// drawn: the mask has to be symmetric before an edit is spread.
+		const c = render({ tool: 'select', symmetry: { curve: 'off', lobe: 'off', lobes: 'sym' } });
+		// A block off the diagonal and its image, so the mask is exactly symmetric
+		// before anything is moved, as it always is when a row is switched on.
+		for (let y = 16; y < 22; y++) {
+			for (let x = 6; x < 12; x++) {
+				c.mask.data[y * SIZE + x] = 1;
+				c.mask.data[x * SIZE + y] = 1;
+			}
+		}
+		const ink = c.mask.data.reduce((n, v) => n + v, 0);
+
+		drag(c.canvas, [5, 15], [13, 23]);
+		// Straight across the diagonal and onto its own reflection, which is where
+		// the hole and the patch claim the same cells. Spreading the hole over the
+		// cells the patch had just laid down left the whole drawing blank.
+		drag(c.canvas, [8, 18], [18, 8]);
+		press('Enter');
+
+		expect(c.mask.data.reduce((n, v) => n + v, 0)).toBe(ink);
+		expect(c.cell(18, 8)).toBe(1);
+		expect(c.cell(8, 18)).toBe(1);
 	});
 });
