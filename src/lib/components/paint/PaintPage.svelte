@@ -933,22 +933,44 @@
 		border-color: var(--green);
 	}
 
-	/* Two panels now, so the column can outgrow a short viewport: it stays centred
-	   while it fits and scrolls inside itself when it does not. */
+	/* Two panels now, so the column can outgrow a short viewport — a 1366 x 768
+	   laptop lands inside the range where it does. It stays centred while it fits
+	   and scrolls from the top when it does not, which is what `safe center` says;
+	   a browser that does not know the keyword falls back to the top, the same
+	   answer for the case that matters. Centring with a transform instead cut the
+	   column off at *both* ends, with the top out of reach altogether.
+
+	   The padding is for the panels' shadow: `overflow-y: auto` computes overflow-x
+	   to `auto` as well, which clips anything drawn outside the box. */
 	.left-panel {
 		position: absolute;
-		left: 16px;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 300px;
-		max-height: calc(100% - 8px);
+		left: 10px;
+		top: 4px;
+		bottom: 4px;
+		width: 312px;
+		box-sizing: border-box;
+		padding: 4px 6px;
 		display: flex;
 		flex-direction: column;
+		justify-content: safe center;
 		gap: 14px;
 		overflow-y: auto;
 		overscroll-behavior: contain;
 		scrollbar-width: thin;
 		z-index: 26;
+	}
+
+	/* A real scrollbar rather than the overlay one macOS draws nothing of until a
+	   gesture starts: a column cut off at the bottom edge would otherwise give no
+	   sign at all that there is a third symmetry row under it. It appears only when
+	   the column really does overflow. */
+	.left-panel::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	.left-panel::-webkit-scrollbar-thumb {
+		border-radius: 4px;
+		background: var(--sage);
 	}
 
 	/* The tool column standing down while the found heart is on screen. Every
