@@ -10,6 +10,11 @@
  * page that happens to show it, so the next page to replace that one inherits
  * the obligation instead of quietly dropping it — and so the path and the file
  * on disk can be tested against each other.
+ *
+ * Nothing renders it yet. The page that used to is gone and Mal's Avanceret
+ * disclosure is not built, so between those two commits the site ships the
+ * vendored engine with its notices shown nowhere. Linking this from Avanceret is
+ * therefore a blocker on the paint page, not a nicety it may take or leave.
  */
 
 import { base } from '$app/paths';
