@@ -648,7 +648,8 @@ exposed yet. Geometry and paper constraints still apply everywhere, including th
 - Drawing: free cells are hatched on a light ground that covers the mask's own colours there, and the protected
   shape has a dashed outline with the four handles on it. Painting in the band still works — the cells exist, they
   are simply not part of what the search is asked for. Fast draws nothing. Soft cells (colours kept under a
-  lighter hatch) and the third, hatched "Maler med" swatch for painting free cells by hand arrive with weights.
+  lighter hatch) and the third, hatched "Maler med" swatch for painting free cells by hand need a per-cell weight
+  editor; the engine already accepts those weights.
 - Model: the frame is a setting beside the mask, `session.frame = { mode, shape, size }`, not a layer inside it —
   the band's cells are ordinary cells and the frame only says how the search should read them. The weight layer
   the soft state needs (fixed 1, soft, free 0; a third colour value would lose the soft state's colours) replaces

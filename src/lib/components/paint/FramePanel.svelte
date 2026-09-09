@@ -9,9 +9,8 @@
   size — and whether the rest is theirs too (Fast) or the search's to fill (Fri).
 
   "Må rettes", the third state of §11 where the engine may change a few band
-  cells at a cost, needs per-cell loss weights the engine does not have yet. It
-  is not shown at all rather than shown greyed out: an option nobody can pick is
-  a promise, and this one has no date on it.
+  cells at a cost, still needs a UI policy for soft weights and changed cells.
+  The engine already accepts per-cell weights. Only Fast and Fri are exposed.
 
   The three shape buttons draw their own glyph from the same `shapeOutline` the
   canvas uses, turned as the heart turns it, so the button shows the shape the
