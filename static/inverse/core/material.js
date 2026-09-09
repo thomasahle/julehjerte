@@ -81,22 +81,24 @@ function copyFamily(family,k){
 }
 function materialFamily({lines,foldCuts},k,w,cfg,includeMap,native){
   const nx=cfg.materialResolution,ny=3*nx,h=w/nx,originY=-w/2,tol=cfg.geometryTolerance,R=cfg.nominalWidth/2,guard=Math.SQRT2*h/2+tol,ss=lines.flatMap(segments),seeds=new Uint8Array(nx*ny),cell=Math.max(R+5*h,4*h);
-  // Every queried tile and its neighbors fit in this padded capsule lattice.
-  // Restrict the index to those cells, retaining each original chord unchanged.
+  // Index each chord in every tile that can contain a centre within R+guard.
+  // Only the two core thresholds matter here, not distances above both. The
+  // extra tolerance makes the index conservative at rounded tile boundaries;
+  // it does not change the distance calculation or either acceptance threshold.
+  // Restrict the index to the padded capsule, retaining each chord unchanged.
   const columns=Math.ceil(w/cell)+3,rows=Math.ceil(3*w/cell)+3,firstRow=Math.floor(originY/cell)-1;
-  const tiles=new Array(columns*rows);
-  for(let si=0;si<ss.length;si++){const s=ss[si],steps=Math.max(1,Math.ceil(distance(s.a,s.b)/(h/3)));for(let t=0;t<=steps;t++){const p=mix(s.a,s.b,t/steps),ix=Math.round(p[0]/h-.5),iy=Math.round((p[1]-originY)/h-.5);if(ix>=0&&ix<nx&&iy>=0&&iy<ny)seeds[iy*nx+ix]=1;}const[ax,ay,bx,by]=s.box;for(let ty=Math.max(firstRow,Math.floor(ay/cell));ty<=Math.min(firstRow+rows-1,Math.floor(by/cell));ty++)for(let tx=Math.max(-1,Math.floor(ax/cell));tx<=Math.min(columns-2,Math.floor(bx/cell));tx++){const key=(ty-firstRow)*columns+tx+1;if(!tiles[key])tiles[key]=[];tiles[key].push(si);}}
-  const neighborTiles=new Array(columns*rows),chords=ss.map(s=>prepareChord(s.a,s.b));
-  // Lattice queries and their immediate neighbors stay inside the padding.
-  // Cache candidate lists by array index; geometry itself is never cached.
+  const tiles=new Array(columns*rows),reach=R+guard+tol;
+  for(let si=0;si<ss.length;si++){const s=ss[si],steps=Math.max(1,Math.ceil(distance(s.a,s.b)/(h/3)));for(let t=0;t<=steps;t++){const p=mix(s.a,s.b,t/steps),ix=Math.round(p[0]/h-.5),iy=Math.round((p[1]-originY)/h-.5);if(ix>=0&&ix<nx&&iy>=0&&iy<ny)seeds[iy*nx+ix]=1;}const[ax,ay,bx,by]=s.box;for(let ty=Math.max(firstRow,Math.floor((ay-reach)/cell));ty<=Math.min(firstRow+rows-1,Math.floor((by+reach)/cell));ty++)for(let tx=Math.max(-1,Math.floor((ax-reach)/cell));tx<=Math.min(columns-2,Math.floor((bx+reach)/cell));tx++){const key=(ty-firstRow)*columns+tx+1;if(!tiles[key])tiles[key]=[];tiles[key].push(si);}}
+  const chords=ss.map(s=>prepareChord(s.a,s.b));
+  // Each queried tile already contains all potentially relevant chords, once
+  // each and in input order. No neighbouring lists or duplicate removal needed.
   const lattice=paperLattice(w,nx),tileX=lattice.x.map(x=>Math.floor(x/cell)+1),tileY=lattice.y.map(y=>(Math.floor(y/cell)-firstRow)*columns);
   const edt=distanceTransform(seeds,nx,ny,{native}),certain=new Uint8Array(nx*ny),possible=new Uint8Array(nx*ny),paper=includeMap?new Uint8Array(nx*ny):null;
   for(let y=0;y<ny;y++)for(let x=0;x<nx;x++){const i=y*nx+x,xx=lattice.x[x],yy=lattice.y[y],distOutline=lattice.outline[i];if(paper&&distOutline>0)paper[i]=1;if(distOutline<R-guard)continue;let d=Math.sqrt(edt[i])*h;
     // EDT is only an accelerator. Recompute chord distance near either
     // threshold, so lattice seeding does not determine a narrow-neck decision.
     if(ss.length&&Math.abs(d-R)<4*h+2*tol){
-      d=Infinity;const key=tileX[x]+tileY[y];let near=neighborTiles[key];
-      if(!near){const seen=new Set();for(let j=-1;j<=1;j++)for(let l=-1;l<=1;l++)for(const si of tiles[key+j*columns+l]||[])seen.add(si);near=[...seen];neighborTiles[key]=near;}
+      d=Infinity;const near=tiles[tileX[x]+tileY[y]]||[];
       for(const si of near){
         d=Math.min(d,chordDistance(xx,yy,chords[si]));
         // This centre is already outside both cores. A closer chord cannot
