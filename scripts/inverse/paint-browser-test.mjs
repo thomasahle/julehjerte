@@ -56,12 +56,15 @@ const {inferOverlapRect}=await loader.ssrLoadModule('/src/lib/utils/overlapRect.
 const {rasterizeDesign}=await loader.ssrLoadModule('/src/lib/paint/rasterize.ts');
 const {frameMismatch}=await loader.ssrLoadModule('/src/lib/paint/frame.ts');
 const {resample,maskMismatch}=await loader.ssrLoadModule('/src/lib/paint/mask.ts');
+const {convertCutGeometry}=await loader.ssrLoadModule('/src/lib/inverse/toHeartDesign.ts');
+const {conversionFidelity}=await loader.ssrLoadModule('/src/lib/inverse/conversionFidelity.ts');
 const results=[];
 const report={origin,upstreamOrigin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,referenceRequestCounts,
  timingVersion:2,timingMethod:'Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.',
  harnessSourceHashes:{},workspaceSourceHashes:{},results};
 for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
 try{
  for(const browserName of names){
   const browser=await browsers[browserName].launch({headless:true});
@@ -87,6 +90,14 @@ try{
     // can finish loading its HTML before dynamic imports attach the handlers.
     await page.waitForFunction(()=>document.documentElement.style.getPropertyValue('--paper-left')!=='');
     const button=label=>page.getByRole('button',{name:label,exact:true}).first();
+    const symmetry=async()=>{
+     const rows={};
+     for(const [key,label]of[['curve','Within curve symmetry'],['lobe','Within lobe symmetry'],['lobes','Between lobes symmetry']]){
+      const selected=await page.getByRole('radiogroup',{name:label,exact:true}).getByRole('radio',{checked:true}).innerText();
+      rows[key]=selected.trim().toLowerCase();assert.ok(['off','sym','anti'].includes(rows[key]));
+     }
+     return rows;
+    };
     if(name==='star')await button('Try the star').click();
     else{
      const file=path.join(dir,'input.png');
@@ -108,6 +119,7 @@ try{
      }
     }
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Find the cuts'&&!b.disabled));
+    row.requestedSymmetry=await symmetry();
     await button('Find the cuts').click();
     await page.waitForFunction(()=>{const qa=window.__paintQA;return qa.error||qa.marks&&qa.marks.ready!==null||qa.result&&document.querySelector('[role=alert]');},{},{timeout:190000});
     const captureStart=performance.now(),observed=await page.evaluate(collectPaintObservation);
@@ -144,6 +156,7 @@ try{
     const summary=await page.locator('.summary[role=status]').innerText();
     const shown=summary.match(free?/([\d.]+)% different in the motif/:/([\d.]+)% different from the mask/);
     assert.ok(shown,summary);row.displayedError=Number(shown[1])/100;
+    row.honouredSymmetry=await symmetry();
     await page.screenshot({path:path.join(dir,'result.png'),fullPage:true});
     await button('Open in Draw').click();await page.waitForURL('**/en/editor/?from=session');
     await button('Export SVG').waitFor();
@@ -175,6 +188,12 @@ try{
     const resolution=observed.prepared.resolution,sourceMask=Uint8Array.from(observed.prepared.mask),sourceRendered=rasterizeDesign(design,resolution).data;
     row.sourceResolution=resolution;
     row.sourceEditableError=free?frameMismatch(sourceRendered,sourceMask,resolution,{mode:'free',shape:'diamond',size:frameSize}).inside:maskMismatch(sourceRendered,sourceMask);
+    // Check the actual downloaded result, not just the converter's own success
+    // flag. Compare the same honoured symmetry with simplification disabled.
+    const raw=convertCutGeometry(geometry,{name:'unsimplified',tolerance:0,enforce:row.honouredSymmetry});
+    assert.deepEqual(raw.honoured,row.honouredSymmetry);
+    row.conversionFidelity=conversionFidelity(raw.design,{mask:{size:resolution,data:sourceMask},weights:observed.prepared.weights??undefined})(design);
+    assert.equal(row.conversionFidelity.passed,true,`Editable SVG lost fitted weave fidelity: ${JSON.stringify(row.conversionFidelity)}`);
     assert.ok(Math.abs(row.displayedError-row.sourceEditableError)<=.00051,`Displayed mismatch ${row.displayedError} disagrees with exported heart ${row.sourceEditableError}`);
     assert.ok(row.sourceEditableError<=(small?.005:topHat?.01:free||name==='hunodan'?.03:.015),`Editable source mismatch ${row.sourceEditableError}`);
     if(name==='star'){
