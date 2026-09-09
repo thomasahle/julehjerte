@@ -309,8 +309,13 @@ export const translations = {
     paintSearchElapsed: '{seconds} s',
     /** {left}, {right} = strimler i hver retning, som motoren prøver nu */
     paintSearchStrips: '{left} + {right} strimler',
-    /** {percent} = hvor meget af firkanten buddet rammer forkert */
-    paintSearchDeviation: 'afvigelse {percent} %',
+    /**
+     * {percent} = motorens eget grove mål for buddet, mens det finpudses.
+     * Ikke det samme tal som "forskel fra masken" i svaret: det måles på det
+     * færdige hjerte, dette på buddet midt i søgningen — derfor "buddets" og
+     * "ca.".
+     */
+    paintSearchDeviation: 'buddets afvigelse ca. {percent} %',
     paintSearchFalling: 'og faldende',
     paintSearchRising: 'og stigende',
     paintSearchFlat: 'og stabil',
@@ -816,8 +821,12 @@ export const translations = {
     paintSearchElapsed: '{seconds} s',
     /** {left}, {right} = strips each way in the candidate being tried now */
     paintSearchStrips: '{left} + {right} strips',
-    /** {percent} = how much of the square the candidate gets wrong */
-    paintSearchDeviation: 'deviation {percent} %',
+    /**
+     * {percent} = the engine's own rough measure of the candidate being refined.
+     * Not the answer's "difference from the mask", which is measured on the
+     * finished heart — hence "the candidate" and "about".
+     */
+    paintSearchDeviation: 'the candidate about {percent} % off',
     paintSearchFalling: 'and falling',
     paintSearchRising: 'and rising',
     paintSearchFlat: 'and steady',

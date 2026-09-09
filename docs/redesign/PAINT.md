@@ -138,12 +138,24 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   a scissors glyph, a counter and one phrase for up to three minutes, while the engine underneath was announcing
   every strip-count pair it had scored and reporting a fresh error every forty refinement steps. The face is now:
   - the **stage in plain words** (scissors glyph, `role="status"`), with the numbers under it as one line —
-    "12 s · 4 + 4 strimler · afvigelse 1,3 % og faldende". Each part is left out when there is nothing true to say:
-    a search that has not chosen its counts prints no counts. The trend is read off the last two checkpoints of the
-    *same* attempt and is "stabil" under `TREND_EPSILON` (1e-3), which is one unit of the last digit the panel
-    prints; a jump between two attempts is not a trend and is reported as none. The threshold was 1e-4 for one
-    round and measured wrong on Uret v2: the word alternated between faldende, stigende and stabil once a second
-    under a number that stayed at 0,8 % throughout — three claims a second, none of which the visitor could check.
+    "12 s · 4 + 4 strimler · buddets afvigelse ca. 1,3 % og faldende". Each part is left out when there is nothing
+    true to say: a search that has not chosen its counts prints no counts. The trend is read off the last two
+    checkpoints of the *same* attempt and is "stabil" under `TREND_EPSILON` (1e-3), which is one unit of the last
+    digit the panel prints; a jump between two attempts is not a trend and is reported as none. The threshold was
+    1e-4 for one round and measured wrong on Uret v2: the word alternated between faldende, stigende and stabil
+    once a second under a number that stayed at 0,8 % throughout — three claims a second, none of which the
+    visitor could check.
+  - **the live percentage is not the answer's percentage, and does not pretend to be** (2026-09-09). It is
+    `refineCurves`'s own `mismatch(renderCurves(…), prob)`: the candidate under the gradient against the
+    symmetry-averaged target at the fitting resolution (256 cells at most), over every cell, before simplification
+    and before our symmetry correction. The answer's "forskel fra masken" is measured on the converted heart about
+    to be drawn. Measured on Uret v2 the panel held 0,8 % for the last six seconds and the answer then said 1,6 %.
+    So the line says "buddets afvigelse ca." / "the candidate about … % off" rather than "afvigelse", and the
+    number **goes** the moment the fitter leaves refinement: `directSharing` and `directPolishing` improve the
+    answer and report no error at all, so the last checkpoint's number would otherwise stand — under a stage line
+    saying something else was happening — until the answer contradicted it. The counts stay, because those really
+    are the winner's, and the running mark in the attempts list is cleared at the same moment: `fit.js` breaks out
+    of its loop on a candidate that passes, so nothing ever announces the winner as finished.
   - the **attempts**: every counts pair the fitter announced, one row each — the pair, its error, and a dot for
     done / running / waiting with the running row in `--cream2`. A pair announced but not reached says "venter"
     rather than its seed error, which means something different from the errors above it. A pair is one row however

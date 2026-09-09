@@ -103,7 +103,7 @@ describe('the recorded solve', () => {
 		expect(state.attempts.map((a) => a.state)).toEqual([
 			'done',
 			'done',
-			'running',
+			'done',
 			'waiting',
 			'waiting',
 			'waiting',
@@ -113,8 +113,27 @@ describe('the recorded solve', () => {
 		// Each finished attempt keeps the last error it reached, not its seed error.
 		expect(state.attempts[0].error!).toBeLessThan(0.08);
 		expect(state.counts).toEqual([6, 6]);
-		expect(state.error!).toBeGreaterThan(0);
-		expect(state.error!).toBeLessThan(0.05);
+	});
+
+	it('stops claiming a live error once the refinement is over', () => {
+		// The last thing the fitter says about a candidate is a checkpoint of the
+		// winning attempt; sharing, polishing, the paper check and the export follow
+		// and none of them measures the mask error again. The panel would otherwise
+		// hold the last checkpoint's number, from before the two stages that improve
+		// the answer, under a heading saying it was being worked on.
+		const upToPolish = events.slice(
+			0,
+			events.findIndex((e) => e.stage === 'directSharing')
+		);
+		const mid = reduceAll(upToPolish);
+		expect(mid.attempts.filter((a) => a.state === 'running')).toHaveLength(1);
+		expect(mid.error!).toBeGreaterThan(0);
+		expect(mid.error!).toBeLessThan(0.05);
+
+		const end = reduceAll(events);
+		expect(end.attempts.some((a) => a.state === 'running')).toBe(false);
+		expect(end.error).toBeNull();
+		expect(end.errorTrend).toBeNull();
 	});
 
 	it('stays with the fitter through the graph and the model inside it', () => {
@@ -208,6 +227,30 @@ describe('attempts', () => {
 		);
 		expect(state.attempts).toEqual([{ counts: [4, 4], error: 0.08, state: 'waiting' }]);
 		expect(state.stage).toBe('directClearance');
+	});
+
+	it('finishes the running attempt when the fitter moves past refinement', () => {
+		// `fit.js` breaks out of its loop on a candidate that passes, so nothing
+		// announces the winner as finished; without this the list said "i gang"
+		// through sharing, polishing and the export.
+		const state = reduce(
+			{ stage: 'directRefining', counts: [4, 4], step: 0, error: 0.05 },
+			{ stage: 'directSharing' }
+		);
+		expect(state.attempts).toEqual([{ counts: [4, 4], error: 0.05, state: 'done' }]);
+		expect(state.error).toBeNull();
+	});
+
+	it('leaves the attempt running through the clearance of the next seed', () => {
+		// The loop measures the next seed's clearance before refining it, which is
+		// under a second; dropping the mark there would blink the list for no
+		// reason, and the next checkpoint moves it along anyway.
+		const state = reduce(
+			{ stage: 'directRefining', counts: [4, 4], step: 0, error: 0.05 },
+			{ stage: 'directClearance' }
+		);
+		expect(state.attempts).toEqual([{ counts: [4, 4], error: 0.05, state: 'running' }]);
+		expect(state.error).toBeCloseTo(0.05);
 	});
 });
 

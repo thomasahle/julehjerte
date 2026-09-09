@@ -193,8 +193,33 @@ describe('FindCutsPanel while searching', () => {
 			expect(panel.text).toContain('Tilpasser kurverne');
 			expect(panel.text).toContain('12 s');
 			expect(panel.text).toContain('4 + 4 strimler');
-			expect(panel.text).toContain('afvigelse 1,3 %');
+			// "buddets afvigelse ca.", not "afvigelse": this is the refiner's own
+			// coarse measure of the candidate under the gradient, and the answer's
+			// "forskel fra masken" is measured on the finished heart. On Uret v2 the
+			// two differ by about a factor of two, so they must not read as one
+			// number that moved.
+			expect(panel.text).toContain('buddets afvigelse ca. 1,3 %');
 			expect(panel.text).toContain('og faldende');
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('drops the live number once the fitter has moved past refinement', () => {
+		// Sharing and polishing improve the answer and report no error, so the last
+		// checkpoint's number would stand on screen — under a stage line saying
+		// something else is happening — until the answer contradicted it.
+		const panel = searching(
+			{ stage: 'directRefining', counts: [4, 4], step: 40, error: 0.013 },
+			{ stage: 'directPolishing' }
+		);
+		try {
+			expect(panel.text).toContain('Finpudser kurverne');
+			expect(panel.text).toContain('4 + 4 strimler');
+			expect(panel.text).not.toContain('buddets afvigelse');
+			// The attempt keeps the number it reached, in the past tense the list is.
+			expect(panel.root.querySelector('.attempt-error')?.textContent?.trim()).toBe('1,3 %');
+			expect(panel.root.querySelector('.attempt.running')).toBeNull();
 		} finally {
 			panel.cleanup();
 		}
@@ -313,7 +338,7 @@ describe('FindCutsPanel while searching', () => {
 		try {
 			expect(panel.text).toContain('Refining the curves');
 			expect(panel.text).toContain('4 + 4 strips');
-			expect(panel.text).toContain('deviation 1.3 %');
+			expect(panel.text).toContain('the candidate about 1.3 % off');
 			expect(panel.text).toContain('and falling');
 			expect(panel.text).toContain('Attempts');
 			expect(panel.text).toContain('Stop');

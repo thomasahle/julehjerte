@@ -67,8 +67,28 @@ const STAGE_KEYS: readonly StageKey[] = [
 	'exporting'
 ];
 
-/** The stages during which the fitter is working on one particular seed. */
-const RUNNING_STAGES: readonly string[] = ['directFitting', 'directRefining'];
+/**
+ * The stages during which the fitter is working on one particular seed.
+ *
+ * One name, because one name is all the engine attaches counts and an error to:
+ * `refineCurves`'s checkpoint record is forwarded as `{stage:'directRefining',
+ * counts, ...rec}` (`fit.js`), and every other `direct*` stage is posted by the
+ * bare `stage()` helper, which sends the name and nothing else. 'directFitting'
+ * was in this list for a while and could never fire.
+ */
+const RUNNING_STAGES: readonly string[] = ['directRefining'];
+
+/**
+ * Stages that leave the refinement where it was.
+ *
+ * Everything else ends it: the loop's clearance belongs to the seed about to be
+ * refined and the seed announcements all come before any refinement, but
+ * sharing, polishing, the paper check and the matching search are about the
+ * winner, and none of them measures the mask error again. So when one of those
+ * arrives the running attempt is finished and the live number is stale — see
+ * `reduceProgress`.
+ */
+const CONTINUES_ATTEMPT: readonly string[] = ['directClearance', 'directInitializing'];
 
 /** Every stage the direct fitter emits; seeing one settles the route. */
 const FITTER_STAGES: readonly string[] = [
@@ -109,7 +129,21 @@ export type SearchProgress = {
 	stage: StageKey;
 	/** The strip counts being tried now, `[A, B]`, or null before there are any. */
 	counts: [number, number] | null;
-	/** Share of the square the current candidate gets wrong, 0…1. */
+	/**
+	 * The refiner's own rough measure of the candidate under the gradient, 0…1 —
+	 * null when nothing is being refined.
+	 *
+	 * Not the number the answer prints, and the panel must not word it as if it
+	 * were. This is `mismatch(renderCurves(…), prob)` from `refine.js`: the
+	 * candidate against the symmetry-averaged target at the fitting resolution
+	 * (256 at most), over every cell of the square, before simplification and
+	 * before our own symmetry correction. The answer's "forskel fra masken" is
+	 * measured on the converted heart that is about to be drawn. Measured on Uret
+	 * v2 the two differ by about a factor of two, the live one being the rosier —
+	 * so it goes as soon as the refinement it describes is over, rather than
+	 * standing through the two stages that improve the answer without reporting
+	 * an error at all.
+	 */
 	error: number | null;
 	errorTrend: ErrorTrend | null;
 	attempts: Attempt[];
@@ -266,6 +300,19 @@ export function reduceProgress(state: SearchProgress, event: EngineProgress): Se
 			nextError = null;
 		}
 		current = counts;
+	} else if (!RUNNING_STAGES.includes(raw) && !CONTINUES_ATTEMPT.includes(raw)) {
+		// The refinement is over. `fit.js` breaks out of its loop the moment a
+		// candidate passes, so nothing else ever marks the winner finished, and the
+		// panel used to say "4 + 4 · 0,8 % · i gang" through sharing, polishing,
+		// the paper check and the export — a claim about the present that had
+		// stopped being true a stage ago. The counts stay, because those really are
+		// the winner's; the error goes, because the stages that follow improve the
+		// answer without measuring it again (see `SearchProgress.error`).
+		if (attempts.some((a) => a.state === 'running')) {
+			attempts = attempts.map((a) => (a.state === 'running' ? { ...a, state: 'done' as const } : a));
+		}
+		nextError = null;
+		nextTrend = null;
 	}
 
 	if (error !== null && RUNNING_STAGES.includes(raw)) {
