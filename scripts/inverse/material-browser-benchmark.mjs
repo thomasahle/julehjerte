@@ -12,6 +12,7 @@ import {solutionJSON} from '../../static/inverse/core/graph.js';
 
 const browsers=await import(process.env.PLAYWRIGHT_MODULE||'playwright'),origin=process.env.INVERSE_TEST_URL||'http://127.0.0.1:5232';
 const output=process.env.INVERSE_TEST_OUTPUT||'tmp/material-browser-benchmark',reference=process.env.INVERSE_PAPER_REFERENCE||'0a30976';
+const hunodan=process.env.INVERSE_PAPER_HUNODAN||'tmp/image-reuse-hunodan-replay',weighted=process.env.INVERSE_PAPER_WEIGHTED||'tmp/image-reuse-weighted';
 const hash=b=>createHash('sha256').update(b).digest('hex'),previous=execFileSync('git',['show',`${reference}:static/inverse/core/material.js`],{encoding:'utf8'});
 for(const name of['bezier.js','graph.js','geometry.js','validate.js','settings.js'])assert.equal(hash(await fs.readFile(`static/inverse/core/${name}`)),hash(execFileSync('git',['show',`${reference}:static/inverse/core/${name}`])),name);
 const referenceURL=origin+'/inverse/core/qa-material-reference.js',pageURL=origin+'/inverse/qa-paper.html';
@@ -21,14 +22,18 @@ for(const name of['neck','thin'])cases.push({id:`matching-${name}`,data:solution
 const hatFile='scripts/inverse/fixtures/free-border-hat.json',hatBytes=await fs.readFile(hatFile);
 cases.push({id:'matching-hat',data:JSON.parse(hatBytes).geometry,source:hatFile,sourceSha256:hash(hatBytes),cfg:{width:100,materialResolution:360}});
 for(const [id,file]of[
- ['hjcur-04','tmp/image-reuse-hunodan-replay/hjcur-04/cut_geometry.json'],
- ['hjhih-04','tmp/image-reuse-hunodan-replay/hjhih-04/cut_geometry.json'],
- ['top-hat','tmp/image-reuse-weighted/top-hat-0.84-weighted/cut_geometry.json']
+ ['hjcur-04',`${hunodan}/hjcur-04/cut_geometry.json`],
+ ['hjhih-04',`${hunodan}/hjhih-04/cut_geometry.json`],
+ ['top-hat',`${weighted}/top-hat-0.84-weighted/cut_geometry.json`],
+ ['circle',`${weighted}/circle-0.84-weighted/cut_geometry.json`]
 ]){const bytes=await fs.readFile(file);cases.push({id,data:JSON.parse(bytes),source:file,sourceSha256:hash(bytes),cfg:{width:100,materialResolution:360}});}
 await fs.mkdir(output,{recursive:true});
-const report={origin,reference,previousMaterialSha256:hash(previous),sourceHashes:{},method:'Same complete audit, including maps. Four rounds rotate policy order after one warmup for each policy and input. Loading, warmups and exact comparisons are outside audit timers. current selects the measured backend; cachedJavaScript and forcedWasm isolate backend costs with the same outline reuse.',cases:cases.map(({data:_data,...entry})=>entry),results:[]};
+const report={origin,reference,previousMaterialSha256:hash(previous),sourceHashes:{},servedSourceHashes:{},method:'Same complete audit, including maps. Four rounds rotate policy order after one warmup for each policy and input. Loading, warmups and exact comparisons are outside audit timers. current selects the measured backend; cachedJavaScript and forcedWasm isolate backend costs with the same outline reuse.',cases:cases.map(({data:_data,...entry})=>entry),results:[]};
 for(const name of await fs.readdir('static/inverse/core',{recursive:true}))if(/\.(js|wasm|c)$/.test(name)){const file=`static/inverse/core/${name}`;report.sourceHashes[file]=hash(await fs.readFile(file));}
 for(const browserName of(process.env.INVERSE_TEST_BROWSERS||'firefox,chromium,webkit').split(',')){
+ const response=await fetch(origin+'/inverse/core/material.js');assert.ok(response.ok,'The production paper audit must be served');
+ report.servedSourceHashes[browserName]=hash(Buffer.from(await response.arrayBuffer()));
+ assert.equal(report.servedSourceHashes[browserName],report.sourceHashes['static/inverse/core/material.js'],'The served paper audit must match the benchmarked source');
  const browser=await browsers[browserName].launch({headless:true}),context=await browser.newContext();
  try{
   await context.route('**/*',route=>{

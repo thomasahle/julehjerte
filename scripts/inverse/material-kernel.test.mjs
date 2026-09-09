@@ -6,6 +6,7 @@ import {distanceTransform,materialAudit} from '../../static/inverse/core/materia
 import {settings} from '../../static/inverse/core/settings.js';
 import {solutionJSON,loadSolutionJSON} from '../../static/inverse/core/graph.js';
 import {fixture} from './fixtures.mjs';
+import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 
 const randomMask=(nx,ny,seed=7)=>{let s=seed;return Uint8Array.from({length:nx*ny},()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return Number(s<0x18000000);});};
 const withoutTime=result=>{delete result.summary.seconds;return result;};
@@ -111,5 +112,35 @@ test('outline reuse preserves audits after width, resolution and cut changes',as
     const cfg=settings({width,materialResolution:resolution,minWidth,cutError:0,printShrinkPercent:0});
     const result=withoutTime(materialAudit(loadSolutionJSON(data),cfg,{includeMaps:true}));
     assert.equal(createHash('sha256').update(JSON.stringify(result)).digest('hex'),expected,`${name}, ${width} mm, ${resolution}`);
+  }
+});
+
+test('padded tile indexing preserves complete audits of outlying trial cuts',async()=>{
+  await loadNumericalKernel();
+  // Full-map hashes from d623294's unbounded string-key index. These internal
+  // trial curves deliberately exceed the saved-template import bounds.
+  const cases=[
+    ['warped',73,121,.7,'uncertain','3b6996ea215bb55a532e18ab3542cf97edb65fd5f9dfc8b5d5a1a2ade62fcc59'],
+    ['outside-left',100,80,3,'fail','3c5da4c3cb5e0711e14445829b9f665550654a866327e25ad4608014cb88712d'],
+    ['outside-right',20,180,1,'fail','62ce7187750f748b1a647d01fbf9b26b3d1d86d8548e5255d8f2a797cc831bd9'],
+    ['warped',20.3,81,.2,'uncertain','2fe9740638634322d63608441581c1ae752627abb12e35055091f12c208af48c']
+  ];
+  for(const [mode,width,resolution,minWidth,status,expected]of [...cases,...cases.toReversed()]){
+    const data=solutionJSON(fixture('straight'));
+    for(const curve of Object.values(data.curves))curve.control_points=curve.control_points.map(p=>p.map(v=>v*width/60));
+    if(mode==='warped'){
+      data.curves[0].control_points=[[-.5,0],[1.8,-2],[-.8,3],[.3,1]].map(p=>p.map(v=>v*width));
+      data.curves[2].control_points=[[0,.6],[2,1.8],[-1,-.9],[1,.7]].map(p=>p.map(v=>v*width));
+    }else{
+      const shift=(mode==='outside-left'?-2:2)*width;
+      for(const p of data.A_overlap_paths)for(const cut of p)for(const xy of data.curves[cut.curve].control_points)xy[0]+=shift;
+    }
+    const graph=new CurveGraph([data.A_overlap_paths,data.B_overlap_paths].map(f=>f.map(p=>p.map(c=>data.curves[c.curve].control_points))),width);
+    const cfg=settings({width,materialResolution:resolution,minWidth,cutError:0,printShrinkPercent:0});
+    for(const native of [false,true]){
+      const result=withoutTime(materialAudit(graph.solution(graph.points,1),cfg,{includeMaps:true,native}));
+      assert.equal(result.status,status);assert.equal(result.passed,false);
+      assert.equal(createHash('sha256').update(JSON.stringify(result)).digest('hex'),expected,`${mode}, ${width} mm, ${resolution}, native=${native}`);
+    }
   }
 });
