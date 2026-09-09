@@ -168,17 +168,16 @@
 	/**
 	 * The candidate the engine is looking at right now, drawn over the mask.
 	 *
-	 * Dormant: `geometry` on a progress event is a validity flag today, and
-	 * `candidateGeometry` answers null for it, so nothing is ever drawn until the
-	 * engine starts attaching the real thing (PAINT.md §12 (a)). Wired now, so
-	 * that when it does the change is in `core/` alone.
+	 * Geometry snapshots arrive at refinement checkpoints and for validated MILP
+	 * incumbents. Rate-limited events retain their boolean validity flag, which
+	 * `candidateGeometry` ignores without clearing the last available preview.
 	 */
 	let candidate = $state.raw<HeartDesign | null>(null);
 
 	/**
 	 * Converting a candidate is a full `cutGeometryToDesign`, so it is held to
-	 * four a second with the latest winning — the engine's own throttle is a
-	 * promise in a document, and this one is in the code that would suffer.
+	 * four a second with the latest winning. This also coalesces worker messages
+	 * that arrive together after the main thread has been busy.
 	 */
 	const candidates = createGeometryThrottle<string | CutGeometry>((geometry) => {
 		try {

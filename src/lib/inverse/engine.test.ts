@@ -151,6 +151,7 @@ describe('the settings a search is run with', () => {
 		expect(cfg.preferMatchingSheets).toBe(false);
 		expect(cfg.width).toBe(100);
 		expect(cfg.minWidth).toBe(2);
+		expect(cfg.progressGeometry).toBe(true);
 	});
 
 	it('clamps the two Avanceret numbers instead of letting the engine throw', () => {

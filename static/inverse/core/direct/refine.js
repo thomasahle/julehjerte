@@ -126,7 +126,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     for(const value of proposals){
       const solution=graph.solution(value.points,phase,input),check=validate(solution,cfg,{checkImage:false}),paper=check.passed?materialAudit(solution,cfg):null;
       value.validation=check;value.paper=paper?.summary;
-      const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec);
+      const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec,solution);
       if(!bestInvalid||value.error<bestInvalid.error)bestInvalid=value;
       if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){
         safe=value.points.slice();accepted=true;

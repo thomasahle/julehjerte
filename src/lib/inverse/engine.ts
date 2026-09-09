@@ -277,12 +277,9 @@ interface ProgressFields {
 	/** The refiner's own objective; not the same thing as `error`. */
 	score?: number;
 	/**
-	 * Today a validity flag: `check.passed` from `refineCurves`.
-	 *
-	 * PAINT.md §12 (a) asks for the current candidate's `heartcurves-2` solution
-	 * here instead, and the two are told apart by type — a boolean is the flag,
-	 * an object or a string is geometry. `searchProgress.candidateGeometry` is
-	 * the one place that decides.
+	 * A validity flag, or a `heartcurves-2` snapshot when progressGeometry is
+	 * enabled and its rate limit permits. `searchProgress.candidateGeometry`
+	 * distinguishes the two by type. Snapshots describe an in-progress candidate.
 	 */
 	geometry?: boolean | string | Record<string, unknown>;
 	/** The material audit's verdict on the unfolded paper. */
@@ -585,6 +582,7 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		// each other's images rather than copies.
 		preferMatchingSheets: settings.matchingSheets ?? settings.symmetry.lobes === 'sym',
 		matchingErrorAllowance: 0.01,
+		progressGeometry: true,
 		earlyStop: false,
 		removeSpecks: 0,
 		fillHoles: 0,

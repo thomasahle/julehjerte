@@ -2,6 +2,7 @@
  * Geometry and paper checks remain those used by the app's other solver.
  */
 import {fitGrid,gridPaths,gridMask,gridControls} from './grid.js';
+import {progressReporter} from '../progress.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves,fittingMargin} from './refine.js';
 import {recoverShared} from './share.js';
@@ -33,6 +34,7 @@ function refloor(result,floor){
 }
 export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initializeCounts}={}){
   const start=performance.now();
+  onProgress=progressReporter(onProgress,cfg.progressGeometry);
   const solution=await fitIndependent(input,{...cfg,preferMatchingSheets:false},onProgress,countSearch);
   const selected=finalizeFittedSolution(solution,cfg,{startedAt:start,onProgress});
   // numericalBackend describes module loading; these record actual choices
@@ -103,7 +105,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const topologyDeadline=Math.max(deadline,start+Math.min(cfg.timeLimit,15)*1000-1300);
     topology=await initializeTopology(input,cfg,{maximumError:Math.min(.005,coarse[0].error),seconds:Math.min(10,cfg.timeLimit*.5,(topologyDeadline-performance.now()-800)/1000),onProgress});
     if(topology.graph){
-      const candidate=stage('directRefining',()=>refineCurves(topology.graph,fullProb,source.resolution,topology.phase,cfg,{input,weights:fullWeights,steps:80,rate:.008,deadline:Math.min(topologyDeadline,performance.now()+700)}));
+      const candidate=stage('directRefining',()=>refineCurves(topology.graph,fullProb,source.resolution,topology.phase,cfg,{input,weights:fullWeights,steps:80,rate:.008,deadline:Math.min(topologyDeadline,performance.now()+700),onProgress:cfg.progressGeometry?(r,solution)=>onProgress({stage:'directRefining',counts:topology.graph.families.map(f=>f.length),...r},solution):undefined}));
       const solution=candidate.graph.solution(candidate.points,candidate.phase,input),woven=sampleWeave(solution,source.resolution);
       const error=maskDisagreement(source,woven);
       if(candidate.geometryPassed&&candidate.paperPassed&&error<=Math.min(.01,cfg.maxImageError)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed){
@@ -129,7 +131,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     recovery=await recoverImageFeatures(input,cfg,Math.min(20,(deadline-performance.now())/1000*.9),onProgress);
     if(recovery.solution){
       const seed=recovery.solution,paths=seed.paths.map((family,f)=>family.map((_,i)=>curvesOf(seed,f,i).map(c=>c.p))),graph=new CurveGraph(paths,cfg.width),phase=seed.graph.target.phase?-1:1;
-      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline,performance.now()+700)}));
+      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline,performance.now()+700),onProgress:cfg.progressGeometry?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
       const solution=graph.solution(candidate.points,phase,input),woven=sampleWeave(solution,source.resolution);
       if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
@@ -169,7 +171,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const clear=stage('directClearance',()=>fitGrid(prob,n,selected.model.counts,selected.phase,{optimizationTarget:gridTarget,weights:fitWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15)}));
     attempts.push({stage:'clearance',counts:clear.model.counts,phase:clear.phase,error:clear.error,steps:clear.steps});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
-    const candidate=stage('directRefining',()=>refineCurves(graph,prob,n,clear.phase,{...cfg,preferMatchingSheets:false},{deadline:end,input,weights:fitWeights,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:r=>onProgress({stage:'directRefining',counts:clear.model.counts,...r})}));
+    const candidate=stage('directRefining',()=>refineCurves(graph,prob,n,clear.phase,{...cfg,preferMatchingSheets:false},{deadline:end,input,weights:fitWeights,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>onProgress({stage:'directRefining',counts:clear.model.counts,...r},solution)}));
     candidate.counts=clear.model.counts;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop);
     if(candidate.imagePassed)break;
   }
