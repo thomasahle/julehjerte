@@ -33,7 +33,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
       const a=ids[j-1],b=ids[j],len=Math.hypot(s[2*a]-s[2*b],s[2*a+1]-s[2*b+1]),id=segments.length;
       segments.push({a,b,pi,arc:arcs[j-1]+len/2,half:len/2});arcs.push(arcs[j-1]+len);
       const f=graph.family[pi],loX=Math.floor((Math.min(s[2*a],s[2*b])-margin)/margin),hiX=Math.floor((Math.max(s[2*a],s[2*b])+margin)/margin),loY=Math.floor((Math.min(s[2*a+1],s[2*b+1])-margin)/margin),hiY=Math.floor((Math.max(s[2*a+1],s[2*b+1])+margin)/margin);
-      for(let x=loX;x<=hiX;x++)for(let y=loY;y<=hiY;y++){const k=key(x,y,f);if(!cells.has(k))cells.set(k,[]);cells.get(k).push(id);}
+      for(let x=loX;x<=hiX;x++)for(let y=loY;y<=hiY;y++){const k=key(x,y,f);const bucket=cells.get(k);if(bucket)bucket.push(id);else cells.set(k,[id]);}
     }arcPositions.push(arcs);
   });
   const nearest=new Map();
@@ -49,7 +49,8 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
       for(const q of nearest.values()){
         const dist=Math.sqrt(q.d+1e-12),scale=separationWeight/total;loss+=scale*((margin-dist)/margin)**2;
         const g=2*scale*(dist-margin)/(margin*margin*dist);
-        for(const[axis,delta]of[[0,q.dx],[1,q.dy]]){ds[2*id+axis]+=g*delta;ds[2*q.a+axis]-=(1-q.t)*g*delta;ds[2*q.b+axis]-=q.t*g*delta;}
+        ds[2*id]+=g*q.dx;ds[2*q.a]-=(1-q.t)*g*q.dx;ds[2*q.b]-=q.t*g*q.dx;
+        ds[2*id+1]+=g*q.dy;ds[2*q.a+1]-=(1-q.t)*g*q.dy;ds[2*q.b+1]-=q.t*g*q.dy;
       }
       const coordinate=s[2*id+f],delta=coordinate<side?coordinate-side:coordinate>w-side?coordinate-(w-side):0;
       loss+=.2*delta*delta/ids.length;ds[2*id+f]+=.4*delta/ids.length;
@@ -65,9 +66,9 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
       if(curv>1e-10)minRadius=Math.min(minRadius,1/curv);
       const energy=.00008*curv*curv+.015*tight*tight,dCurv=(.00016*curv+.03*tight)*speed/normalizer,dSpeed=energy/normalizer;
       loss+=energy*speed/normalizer;
-      const gv=[dCurv*(sign*ay/speed**3-3*curv*vx/speed**2)+dSpeed*vx/speed,dCurv*(-sign*ax/speed**3-3*curv*vy/speed**2)+dSpeed*vy/speed];
-      const ga=[-dCurv*sign*vy/speed**3,dCurv*sign*vx/speed**3];
-      for(let k=0;k<4;k++)for(let axis=0;axis<2;axis++)gradient[2*ids[k]+axis]+=D[k]*gv[axis]+DD[k]*ga[axis];
+      const gvx=dCurv*(sign*ay/speed**3-3*curv*vx/speed**2)+dSpeed*vx/speed,gvy=dCurv*(-sign*ax/speed**3-3*curv*vy/speed**2)+dSpeed*vy/speed;
+      const gax=-dCurv*sign*vy/speed**3,gay=dCurv*sign*vx/speed**3;
+      for(let k=0;k<4;k++){gradient[2*ids[k]]+=D[k]*gvx+DD[k]*gax;gradient[2*ids[k]+1]+=D[k]*gvy+DD[k]*gay;}
     }
   }
   const joins=Math.max(1,graph.joins.length),corners=initialCorners(graph);
@@ -78,9 +79,10 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
     // corner. Maximum-turn and paper constraints still validate sharp joins.
     const corner=corners.has(join)&&dot<Math.SQRT1_2,dd=corner?0:(-.015+.06*Math.min(dot,0))/joins;
     loss+=(corner?.015*(1-Math.SQRT1_2):.015*(1-dot)+.03*Math.min(dot,0)**2)/joins;
-    for(const[axis,uu,vv]of[[0,ux,vx],[1,uy,vy]]){
-      const gu=dd*(vv/(u*v)-dot*uu/(u*u)),gv=dd*(uu/(u*v)-dot*vv/(v*v));gradient[2*anchorA+axis]+=gu;gradient[2*handleA+axis]-=gu;gradient[2*handleB+axis]+=gv;gradient[2*anchorB+axis]-=gv;
-    }
+    const gux=dd*(vx/(u*v)-dot*ux/(u*u)),gvx=dd*(ux/(u*v)-dot*vx/(v*v));
+    gradient[2*anchorA]+=gux;gradient[2*handleA]-=gux;gradient[2*handleB]+=gvx;gradient[2*anchorB]-=gvx;
+    const guy=dd*(vy/(u*v)-dot*uy/(u*u)),gvy=dd*(uy/(u*v)-dot*vy/(v*v));
+    gradient[2*anchorA+1]+=guy;gradient[2*handleA+1]-=guy;gradient[2*handleB+1]+=gvy;gradient[2*anchorB+1]-=gvy;
   }
   for(const ids of graph.edges)for(const[a,b]of[[ids[0],ids[1]],[ids[2],ids[3]]]){
     const dx=points[2*a]-points[2*b],dy=points[2*a+1]-points[2*b+1],length=Math.max(1e-8,Math.hypot(dx,dy));if(length>=.25)continue;
