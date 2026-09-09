@@ -31,10 +31,12 @@ preserve a narrow line when the input really contains one.
 
 ## Integration status
 
-At review, `redesign` was at `456e628` and did not contain the common finalizer
-or these fixes. They are committed on `codex/solver-initialization`, whose
-isolated checkout is `/Users/ahle/repos/julehjerte-solver-initialization`.
-The main and redesign checkouts were not changed. Nothing was pushed or deployed.
+`codex/solver-initialization` now includes the newer Paint UI from `redesign`
+through `456e628`, merged in `c10e093`. The merge preserves all solver changes,
+including the common finalizer, exact shared cuts and weighted free borders.
+The isolated checkout is `/Users/ahle/repos/julehjerte-solver-initialization`.
+The main and redesign checkouts were not changed; another agent still needs to
+integrate this branch there. Nothing was pushed or deployed.
 
 The key implementation commits are:
 
@@ -50,9 +52,9 @@ The key implementation commits are:
 
 This table identifies the changes; it is not an independent cherry-pick recipe.
 The branch also carries the weighted free-border objective and related engine
-improvements. Integrating the branch requires retaining those dependencies and
-reconciling the newer Paint UI on `redesign`. Copying `share.js` alone leaves
-the call-order bug and misses conversion checks.
+improvements. The newer Paint UI has been reconciled with those dependencies
+on this branch. Copying `share.js` alone leaves the call-order bug and misses
+conversion checks.
 
 See [the original diagnosis](SHARED-CUTS.md),
 [conversion fidelity](CONVERSION-FIDELITY.md), and
@@ -99,3 +101,8 @@ after rebuilding before using it for QA.
 The checked preview is at <http://127.0.0.1:5232/en/editor/paint/>. Raw results
 and screenshots are in `tmp/hat-seam-recheck-browser-fresh/`; check logs are
 `tmp/hat-seam-recheck-{test,check,lint,build}.log`.
+
+The newer Paint integration has since passed 1,041 tests, 18 export workflows,
+a JavaScript-fallback replay and two desktop/phone control replays. See
+[the integration report](REDESIGN-INTEGRATION.md) for the current source commits
+and measurements. Those checks retain the hat fix through the updated interface.
