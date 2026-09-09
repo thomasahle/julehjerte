@@ -12,11 +12,12 @@ test('dense numeric comparisons preserve exact values, offsets and array semanti
     for(let i=0;i<b.length;i++){const changed=b.slice();changed[i]=big?7n:7;assert.equal(sameArray(a,changed),false);}
     assert.equal(sameArray(a,b.subarray(1)),false);assert.equal(sameArray(new Type(),new Type()),true);
   }
+  const sparse=new Array(2);sparse[1]=2;
   const pairs=[
     [Float64Array.of(NaN,Infinity,-Infinity,-0),[NaN,Infinity,-Infinity,-0]],
     [Float64Array.of(0),Float64Array.of(-0)],
     [Float64Array.of(1),Float64Array.of(1+Number.EPSILON)],
-    [[,2],[99,2]],[[undefined,2],[99,2]],[[1,2],Float64Array.of(1,2)],
+    [sparse,[99,2]],[[undefined,2],[99,2]],[[1,2],Float64Array.of(1,2)],
     [null,null],[[],[]],[[],null]
   ];
   for(const[a,b]of pairs)assert.equal(sameArray(a,b),reference(a,b));
