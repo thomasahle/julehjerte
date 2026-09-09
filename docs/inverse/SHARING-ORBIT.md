@@ -68,3 +68,29 @@ export are checked separately by the Paint workflow suite.
 node --test scripts/inverse/sharing-orbit.test.mjs scripts/inverse/sharing.test.mjs
 node scripts/inverse/sharing-orbit-browser-test.mjs
 ```
+
+## Production regression checks
+
+The complete test run passes 783 application tests and 331 engine tests (one
+optional application recording is skipped), with zero type-check errors, seven
+existing Svelte warnings, and successful lint and build checks. All 12 controlled
+cleanup replays pass in Chromium, Firefox and WebKit.
+
+All 22 regular Hunodan photographs retain byte-identical exported geometry
+compared with the previous release checks. Serial Node preparation, fitting,
+validation and export have a 5.08-second median and an 8.02-second maximum. This
+includes progress geometry and retained candidate checkpoints; photograph
+decoding and independent export rasterization are measured separately. These
+are whole-fit timings, distinct from the short controlled cleanup fixtures.
+
+The 32 free-border perturbation cases also retain byte-identical geometry, with
+all existing quality checks passing (4.47-second median, 7.64-second maximum).
+All 18 fresh Paint workflows pass across Chromium, Firefox and WebKit: star,
+Hunodan photo, circle, and matching, independent and anti-paired hats. Their
+exported geometry and source-mask errors match the preceding release exactly;
+the matching hat retains 41 shared spans through editor conversion.
+
+[SHARING-ORBIT-VALIDATION.json](SHARING-ORBIT-VALIDATION.json) records the browser
+measurements, source and artifact hashes, and comparison criteria. All 59 served
+engine/worker source files match the benchmarked checkout. The preview remains
+available at `http://127.0.0.1:5232/en/editor/paint/`.
