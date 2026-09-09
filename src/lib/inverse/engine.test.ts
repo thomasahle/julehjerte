@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { deepStrictEqual } from 'node:assert';
 import { createMask, MASK_SIZE, type Mask } from '$lib/paint/mask';
 import { insideCell } from '$lib/paint/frame';
 import { symmetrize } from '$lib/paint/symmetry';
@@ -52,10 +53,12 @@ function scribble(): Mask {
 	return mask;
 }
 
+// Node compares these complete typed buffers without treating every pixel as
+// an object property. Keep exact equality at the production 400² resolution.
 describe('the mask round trip', () => {
 	it('comes back from prepare cell for cell', () => {
 		const mask = scribble();
-		expect(roundTrip(mask)).toEqual(mask.data);
+		deepStrictEqual(roundTrip(mask), mask.data);
 	});
 
 	it('survives a symmetric mask too, which takes the engine down another road', () => {
@@ -65,7 +68,7 @@ describe('the mask round trip', () => {
 		// either way, and this is what says so.
 		const mask = scribble();
 		symmetrize(mask, ['transpose', 'mirrorX', 'mirrorY']);
-		expect(roundTrip(mask)).toEqual(mask.data);
+		deepStrictEqual(roundTrip(mask), mask.data);
 	});
 
 	it('paints 1 in the right lobe colour and 0 in the left', () => {
@@ -81,14 +84,14 @@ describe('the mask round trip', () => {
 	it('keeps the mapping when the visitor picks other paper', () => {
 		const colors = { left: '#0b3d0b', right: '#f5c542' };
 		const mask = scribble();
-		expect(roundTrip(mask, colors)).toEqual(mask.data);
+		deepStrictEqual(roundTrip(mask, colors), mask.data);
 	});
 
 	it('falls back to the site paper for a colour the engine would refuse', () => {
 		// The colour store still holds its default red as `rgb(185, 19, 19)`, and
 		// the engine takes `#rrggbb` only.
 		const mask = scribble();
-		expect(roundTrip(mask, { left: '#ffffff', right: 'rgb(185, 19, 19)' })).toEqual(mask.data);
+		deepStrictEqual(roundTrip(mask, { left: '#ffffff', right: 'rgb(185, 19, 19)' }), mask.data);
 	});
 
 	it('sends the swatches right colour first, which is what makes 1 the right lobe', () => {
@@ -421,13 +424,13 @@ describe('frameWeights', () => {
 		const mask = scribble();
 		const input = maskToArtwork(mask, FREE);
 		const { preview, target } = prepare(input, maskPrepareSettings(COLORS));
-		expect(preview.mask).toEqual(mask.data);
-		expect(preview.weights).toEqual(Float64Array.from(frameWeights(mask, FREE)));
-		expect(target.sourceImage.weights).toEqual(preview.weights);
+		deepStrictEqual(preview.mask, mask.data);
+		deepStrictEqual(preview.weights, Float64Array.from(frameWeights(mask, FREE)));
+		deepStrictEqual(target.sourceImage.weights, preview.weights);
 		// Owning the input prevents a brush stroke during queued preparation from
 		// changing which drawing the weights describe.
 		mask.data.fill(0);
-		expect(input.mask).toEqual(preview.mask);
+		deepStrictEqual(input.mask, preview.mask);
 		expect(input.mask.some(Boolean)).toBe(true);
 	});
 
@@ -438,6 +441,6 @@ describe('frameWeights', () => {
 		expect(input.weights).toBeUndefined();
 		const { preview } = prepare(input, maskPrepareSettings(COLORS));
 		expect(preview.resolution).toBe(64);
-		expect(preview.mask).toEqual(mask.data);
+		deepStrictEqual(preview.mask, mask.data);
 	});
 });
