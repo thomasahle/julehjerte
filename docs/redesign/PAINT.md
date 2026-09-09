@@ -190,6 +190,16 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   "Samme skabelon til begge sider" is on, the default under Mellem lapper: Sym — takes the disabled early return
   there. It has its own sentence and its own test.
 
+  **What "Prøv stjernen" actually shows** (measured on the built site, 2026-09-09). With the settings the mask
+  arrives with — the symmetries found in it, one template for both sides — the star is answered in about two and a
+  half seconds by the traced route, so the face is ten stage sentences, the seconds, and eight "ikke prøvet" rows
+  that stay that way: the count search announces its seeds and `gridFinalists` never gets to refine one. The
+  fixture is the other half of the picture, captured with no symmetry, where the fitter did the work and three of
+  the eight seeds were refined under a falling deviation. So the deviation line and the running row are real but
+  are not what the star shows on a default visit, and neither are the MILP's three numbers: `automatic.js`
+  announces the count search *before* it chooses a route, so `directInitializing` has already settled `route` on
+  the fitter by the time 'model' and 'solving' arrive. Both are worth a look the next time the route heuristic is.
+
   The mask stays editable-looking but pointer input is ignored until done.
 - After success: "Skabelonen er fundet" with the numbers (n + m snit, minimum clearance in mm, difference from the
   mask in %), and the buttons `Åbn i Tegn` (primary) and `Tilbage til masken` (outline). The difference is measured
