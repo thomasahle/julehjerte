@@ -151,7 +151,14 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   };
   let stoppedEarly=false;
   for(let i=0;i<fine.length&&!stoppedEarly;i++){
-    if(i){if(performance.now()>maxDeadline-1000)break;deadline=Math.min(maxDeadline-1300,performance.now()+8700);}
+    // Initialization (including a speculative topology solve) can exhaust the
+    // initial fast allocation on slower browsers. Give the first candidate the
+    // same refinement opportunity as later candidates when the user's budget
+    // permits it. A ten-second request retains its existing deadline.
+    if(i||cfg.timeLimit>fastSeconds&&deadline-performance.now()<3500){
+      if(i&&performance.now()>maxDeadline-1000)break;
+      deadline=Math.min(maxDeadline-1300,performance.now()+8700);
+    }
     const selected=fine[i],remaining=deadline-performance.now(),allocation=remaining,end=Math.min(deadline-1700,performance.now()+allocation);
     const clear=stage('directClearance',()=>fitGrid(prob,n,selected.model.counts,selected.phase,{optimizationTarget:gridTarget,weights:fitWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15)}));
     attempts.push({stage:'clearance',counts:clear.model.counts,phase:clear.phase,error:clear.error,steps:clear.steps});
