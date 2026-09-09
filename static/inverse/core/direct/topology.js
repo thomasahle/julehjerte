@@ -27,12 +27,16 @@ export function prepareBoundary(input,cfg,{useInitializationGuide=true,guidePhas
   // turns to the MILP. This changes only the initialization, and every proposal
   // is measured against the original mask, including its small features.
   if(target.curves.length>64){
-    const attempts=[];
-    for(const fitTolerance of [.005*cfg.width,.0075*cfg.width]){
+    // A protected motif can occupy much less than the square: a 0.2% weighted
+    // cap can reject a straight outline over just a few raster stairs. Use the
+    // topology initializer's 0.5% cap for explicitly free borders; the original
+    // weighted image and feature checks still decide which solutions survive.
+    const attempts=[],maximumError=source.weights?.some(w=>w===0)?.005:.002;
+    for(const fitTolerance of [.005*cfg.width,.006*cfg.width,.0075*cfg.width]){
       if(fitTolerance<=tolerance)continue;
       const candidate=trace(fitTolerance),woven=sampleTarget(candidate,source.resolution),error=maskDisagreement(source,woven);
-      const accepted=candidate.curves.length<target.curves.length&&error<=.002&&auditImageFeatures(source,woven,cfg.width).passed;
-      attempts.push({fitTolerance,segments:candidate.curves.length,imageError:error,accepted});
+      const accepted=candidate.curves.length<target.curves.length&&error<=maximumError&&auditImageFeatures(source,woven,cfg.width).passed;
+      attempts.push({fitTolerance,segments:candidate.curves.length,imageError:error,maximumError,accepted});
       if(accepted)target=candidate;
     }
     target.metadata.boundarySimplification=attempts;
@@ -66,6 +70,7 @@ async function initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgres
   try{
     let target=prepareBoundary(input,cfg,{guidePhase});
     report.boundarySegments=target.curves.length;
+    if(target.metadata.boundarySimplification)report.boundarySimplification=target.metadata.boundarySimplification;
     report.traceError=maskDisagreement(source,sampleTarget(target,source.resolution));
     // An initializer that already loses the image cannot improve a good grid.
     if(!target.curves.length||target.curves.length>160||report.traceError>maximumError)return{report};
