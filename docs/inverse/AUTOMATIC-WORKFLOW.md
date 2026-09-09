@@ -6,8 +6,9 @@ small traced HiGHS problem first; SVG artwork retains its native paths. A failed
 traced attempt falls back to direct fitting against the original mask.
 
 Matching templates are selected when a validated identical pair adds no more
-than **one percentage point** of original-mask disagreement, within the 3% quality
-target. Proposals copy either sheet or average corresponding cuts, then refine
+than **one percentage point** of original-mask disagreement. The 3% quality
+threshold remains a warning, separately from this preference; see the
+[matching-policy correction](MATCHING-TEMPLATES.md). Proposals copy either sheet or average corresponding cuts, then refine
 exactly tied coordinates when time remains. Exact proposals are checked even
 when optimization time has expired. This is a bounded candidate search, not a
 proof that every possible matching pair will be found. A diagonal mismatch bound
