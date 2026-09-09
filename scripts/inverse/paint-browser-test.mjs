@@ -4,6 +4,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
+import {createServer as createHTTPServer} from 'node:http';
 import {createServer} from 'vite';
 import {JSDOM} from 'jsdom';
 import {createCanvas,loadImage} from 'canvas';
@@ -11,7 +12,8 @@ import {motifFixture,topHatFixture} from './motif-fixture.mjs';
 import {installPaintObservation,collectPaintObservation} from './paint-observer.mjs';
 
 const browsers=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
-const origin=process.env.INVERSE_TEST_URL||'http://localhost:5200';
+let origin=process.env.INVERSE_TEST_URL||'http://localhost:5200';
+const upstreamOrigin=origin;
 const disableNumericalKernel=process.env.INVERSE_TEST_DISABLE_NUMERICAL_KERNEL==='1';
 const names=(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',');
 const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan,top-hat,top-hat-independent').split(',');
@@ -19,12 +21,31 @@ const output=process.env.INVERSE_TEST_OUTPUT||`tmp/paint-browser/${new Date().to
 const repeats=Number(process.env.INVERSE_TEST_REPEATS||1);
 assert.ok(Number.isInteger(repeats)&&repeats>=1&&repeats<=10,'Replay count must be between 1 and 10.');
 const engineReference=process.env.INVERSE_TEST_ENGINE_REFERENCE?execFileSync('git',['rev-parse','--verify','--end-of-options',process.env.INVERSE_TEST_ENGINE_REFERENCE+'^{commit}'],{encoding:'utf8'}).trim():null;
-const referenceFiles=new Map(),referenceSourceHashes={};
+const referenceFiles=new Map(),referenceSourceHashes={},referenceRequestCounts={};
+let referenceServer=null;
 if(engineReference){
  // Read the static snapshot before starting any browser timer. The page and
  // editor stay current; reports explicitly identify the substituted engine.
  const files=execFileSync('git',['ls-tree','-r','--name-only',engineReference,'--','static/inverse/core'],{encoding:'utf8'}).trim().split('\n');
  for(const file of files){const bytes=execFileSync('git',['show',`${engineReference}:${file}`],{maxBuffer:16*1024*1024});referenceFiles.set('/'+file.replace(/^static\//,''),bytes);referenceSourceHashes[file]=createHash('sha256').update(bytes).digest('hex');}
+ // Firefox worker imports can bypass Playwright route overrides. Serve the
+ // reference bytes over HTTP so every worker uses the actual snapshot.
+ referenceServer=createHTTPServer(async(request,response)=>{
+  try{
+   const url=new URL(request.url,upstreamOrigin);
+   if(url.origin!==new URL(upstreamOrigin).origin){response.writeHead(400);response.end();return;}
+   if(referenceFiles.has(url.pathname)){
+    referenceRequestCounts[url.pathname]=(referenceRequestCounts[url.pathname]||0)+1;
+    response.writeHead(200,{'Content-Type':url.pathname.endsWith('.wasm')?'application/wasm':url.pathname.endsWith('.json')?'application/json':'text/javascript','Cache-Control':'no-store'});
+    response.end(referenceFiles.get(url.pathname));return;
+   }
+   const upstream=await fetch(url,{redirect:'manual'}),headers={'Content-Type':upstream.headers.get('content-type')||'application/octet-stream','Cache-Control':'no-store'};
+   const location=upstream.headers.get('location');if(location)headers.Location=location.replace(upstreamOrigin,origin);
+   response.writeHead(upstream.status,headers);response.end(Buffer.from(await upstream.arrayBuffer()));
+  }catch(error){response.writeHead(502);response.end(String(error));}
+ });
+ await new Promise((resolve,reject)=>{referenceServer.once('error',reject);referenceServer.listen(0,'127.0.0.1',resolve);});
+ origin=`http://127.0.0.1:${referenceServer.address().port}`;
 }
 await fs.mkdir(output,{recursive:true});
 const loader=await createServer({configFile:false,server:{middlewareMode:true,hmr:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
@@ -36,7 +57,7 @@ const {rasterizeDesign}=await loader.ssrLoadModule('/src/lib/paint/rasterize.ts'
 const {frameMismatch}=await loader.ssrLoadModule('/src/lib/paint/frame.ts');
 const {resample,maskMismatch}=await loader.ssrLoadModule('/src/lib/paint/mask.ts');
 const results=[];
-const report={origin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,
+const report={origin,upstreamOrigin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,referenceRequestCounts,
  timingVersion:2,timingMethod:'Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.',
  harnessSourceHashes:{},workspaceSourceHashes:{},results};
 for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -48,13 +69,13 @@ try{
    const topHat=name==='top-hat'||name==='top-hat-independent',small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
+   const referenceStart={...referenceRequestCounts};
    const context=await browser.newContext({viewport:{width:1440,height:1100},acceptDownloads:true});
    let page;
    try{
     await context.route('**/*',route=>{
      const url=new URL(route.request().url());
      if(disableNumericalKernel&&url.pathname.endsWith('/inverse/core/direct/native/boundary.wasm')){row.blockedKernelRequests=(row.blockedKernelRequests||0)+1;return route.abort();}
-     if(url.origin===new URL(origin).origin&&referenceFiles.has(url.pathname))return route.fulfill({contentType:url.pathname.endsWith('.wasm')?'application/wasm':'text/javascript',body:referenceFiles.get(url.pathname)});
      return url.origin===new URL(origin).origin?route.continue():route.abort();
     });
     page=await context.newPage();page.on('pageerror',e=>row.pageErrors.push(e.message));
@@ -103,6 +124,13 @@ try{
     await fs.writeFile(path.join(dir,'cut_geometry.json'),observed.result.files['cut_geometry.json']);
     row.artifactWriteSeconds=(performance.now()-writeStart)/1000;
     row.reportedFitSeconds=observed.result.report.solver.seconds;
+    if(engineReference){
+     row.referenceEngineRequests={};
+     for(const file of['/inverse/core/solver.js','/inverse/core/direct/topology.js']){
+      row.referenceEngineRequests[file]=(referenceRequestCounts[file]||0)-(referenceStart[file]||0);
+      assert.ok(row.referenceEngineRequests[file]>0,`The reference server must deliver ${file} to this worker.`);
+     }
+    }
     row.engineError=observed.result.report.imageError.mismatchFraction;
     row.numericalBackend=observed.result.report.solver.numericalBackend?.backend;
     row.paperKernels=observed.result.report.solver.paperKernels;
@@ -160,5 +188,5 @@ try{
    finally{await context.close();console.log(JSON.stringify(row));await fs.writeFile(path.join(output,'results.json'),JSON.stringify(report,null,2));}
   }}finally{await browser.close();}
  }
-}finally{await loader.close();dom.window.close();}
+}finally{await loader.close();dom.window.close();if(referenceServer){referenceServer.closeAllConnections();await new Promise(resolve=>referenceServer.close(resolve));}}
 console.log(output);
