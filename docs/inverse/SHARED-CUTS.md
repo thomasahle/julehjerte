@@ -20,9 +20,11 @@ It can keep independent sheets or preserve exact
 transposition. An edit to two different cuts also edits their transposed
 partners; a cut meeting its own transpose uses compatible subdivisions for
 both forward and backward shared sections. Their common Bézier controls are
-then represented once in the graph. Other requested square/chord symmetries
-retain the existing conservative exclusion until their complete edit orbits
-are implemented.
+then represented once in the graph. The later
+[anti-paired recovery](ANTI-SHARING.md) also supports the between-lobes Anti
+setting, including its reversed partners and parameter intervals. Combined
+square and within-curve symmetries retain their exclusion until complete
+coordinated edits are implemented.
 
 Proposals can average the near-coincident sections or follow either existing
 section. All options face the same image, geometry, bend and paper-core checks.
