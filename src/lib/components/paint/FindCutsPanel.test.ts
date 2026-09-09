@@ -188,7 +188,7 @@ describe('FindCutsPanel while searching', () => {
 		try {
 			expect(panel.text).toContain('Tilpasser kurverne');
 			expect(panel.text).toContain('12 s');
-			expect(panel.text).toContain('4 + 4 strimler');
+			expect(panel.text).toContain('5 + 5 strimler');
 			// "buddets afvigelse ca.", not "afvigelse": this is the refiner's own
 			// coarse measure of the candidate under the gradient, and the answer's
 			// "forskel fra masken" is measured on the finished heart. On Uret v2 the
@@ -196,6 +196,19 @@ describe('FindCutsPanel while searching', () => {
 			// number that moved.
 			expect(panel.text).toContain('buddets afvigelse ca. 1,3 %');
 			expect(panel.text).toContain('og faldende');
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('converts unequal cut counts to paper strips in both progress displays', () => {
+		const panel = searching(
+			{ stage: 'directInitializing', counts: [2, 3], error: 0.08 },
+			{ stage: 'directRefining', counts: [2, 3], step: 0, error: 0.02 }
+		);
+		try {
+			expect(panel.text).toContain('3 + 4 strimler');
+			expect(panel.root.querySelector('.attempt-counts')?.textContent?.trim()).toBe('3 + 4');
 		} finally {
 			panel.cleanup();
 		}
@@ -211,7 +224,7 @@ describe('FindCutsPanel while searching', () => {
 		);
 		try {
 			expect(panel.text).toContain('Finpudser kurverne');
-			expect(panel.text).toContain('4 + 4 strimler');
+			expect(panel.text).toContain('5 + 5 strimler');
 			expect(panel.text).not.toContain('buddets afvigelse');
 			// The attempt keeps the number it reached, in the past tense the list is.
 			expect(panel.root.querySelector('.attempt-error')?.textContent?.trim()).toBe('1,3 %');
@@ -245,9 +258,9 @@ describe('FindCutsPanel while searching', () => {
 		try {
 			const rows = [...panel.root.querySelectorAll('.attempt')];
 			expect(rows.map((r) => r.querySelector('.attempt-counts')?.textContent?.trim())).toEqual([
-				'4 + 4',
 				'5 + 5',
-				'6 + 6'
+				'6 + 6',
+				'7 + 7'
 			]);
 			expect(rows.map((r) => r.querySelector('.attempt-error')?.textContent?.trim())).toEqual([
 				'2,0 %',
@@ -335,7 +348,7 @@ describe('FindCutsPanel while searching', () => {
 		});
 		try {
 			expect(panel.text).toContain('Refining the curves');
-			expect(panel.text).toContain('4 + 4 strips');
+			expect(panel.text).toContain('5 + 5 strips');
 			expect(panel.text).toContain('the candidate about 1.3 % off');
 			expect(panel.text).toContain('and falling');
 			expect(panel.text).toContain('not tried');

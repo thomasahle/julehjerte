@@ -268,7 +268,7 @@ export const ENGINE_GRACEFUL_STOP: boolean = false;
  * the day `core/` grows one. The union is what says which stage sends what.
  */
 interface ProgressFields {
-	/** Strips per family, `[A, B]` — the engine's A is our right lobe. */
+	/** Cuts per family, `[A, B]` — the engine's A is our right lobe. */
 	counts?: [number, number];
 	/** Share of the square's cells the candidate gets wrong, 0…1. */
 	error?: number;

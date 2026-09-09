@@ -210,10 +210,11 @@
 	let searchDetails = $derived.by(() => {
 		const parts = [t('paintSearchElapsed', lang, { seconds: elapsed })];
 		if (progress.counts) {
+			// Engine counts are slits; each sheet has one more paper strip.
 			parts.push(
 				t('paintSearchStrips', lang, {
-					left: progress.counts[0],
-					right: progress.counts[1]
+					left: progress.counts[0] + 1,
+					right: progress.counts[1] + 1
 				})
 			);
 		}
@@ -345,8 +346,8 @@
 							<span class="dot {attempt.state}" aria-hidden="true"></span>
 							<span class="attempt-counts">
 								{t('paintAttemptCounts', lang, {
-									left: attempt.counts[0],
-									right: attempt.counts[1]
+									left: attempt.counts[0] + 1,
+									right: attempt.counts[1] + 1
 								})}
 							</span>
 							{#if attempt.error !== null}

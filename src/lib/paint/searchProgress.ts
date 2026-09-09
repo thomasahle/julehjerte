@@ -121,7 +121,7 @@ const MILP_STAGES: readonly string[] = ['model', 'solving'];
  */
 export type AttemptState = 'done' | 'running' | 'waiting';
 
-/** One strip-count pair the fitter announced, and what became of it. */
+/** One cut-count pair the fitter announced, and what became of it. */
 export type Attempt = {
 	counts: [number, number];
 	/** The last error the refiner measured for it, or null until it has run. */
@@ -134,16 +134,16 @@ export type ErrorTrend = 'falling' | 'flat' | 'rising';
 
 export type SearchProgress = {
 	stage: StageKey;
-	/** The strip counts being tried now, `[A, B]`, or null before there are any. */
+	/** The cut counts being tried now, `[A, B]`, or null before there are any. */
 	counts: [number, number] | null;
 	/**
 	 * The refiner's own rough measure of the candidate under the gradient, 0…1 —
 	 * null when nothing is being refined.
 	 *
 	 * Not the number the answer prints, and the panel must not word it as if it
-	 * were. This is `mismatch(renderCurves(…), prob)` from `refine.js`: the
+	 * were. This is `mismatch(renderCurves(…), prob, weights)` from `refine.js`: the
 	 * candidate against the symmetry-averaged target at the fitting resolution
-	 * (256 at most), over every cell of the square, before simplification and
+	 * (256 at most), weighted over the protected region for free borders, before simplification and
 	 * before our own symmetry correction. The answer's "forskel fra masken" is
 	 * measured on the converted heart that is about to be drawn. Measured on Uret
 	 * v2 the two differ by about a factor of two, the live one being the rosier —
@@ -199,7 +199,7 @@ function stageKey(stage: unknown): StageKey {
 		: 'working';
 }
 
-/** A pair of strip counts, or null for anything that is not one. */
+/** A pair of cut counts, or null for anything that is not one. */
 function countsOf(event: EngineProgress): [number, number] | null {
 	const counts = event.counts;
 	if (!Array.isArray(counts) || counts.length !== 2) return null;
