@@ -85,10 +85,12 @@
 		paperPair,
 		prepareImage,
 		prepareMask,
-		type AdvancedSettings
+		type AdvancedSettings,
+		type EngineProgress
 	} from '$lib/inverse/engine';
 	import { EngineError, searchTimedOut } from '$lib/inverse/client';
 	import { convertValidatedCutGeometry, CutGeometryError } from '$lib/inverse/toHeartDesign';
+	import { IDLE_PROGRESS, reduceProgress, type SearchProgress } from '$lib/paint/searchProgress';
 	import { DEFAULT_COLORS, DEFAULT_COLORS_HEX, getColors, subscribeColors } from '$lib/stores/colors';
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { toHexColors } from '$lib/utils/heartColors';
@@ -148,9 +150,18 @@
 	let canRedo = $state(false);
 	const history = createHistory();
 
-	let stage = $state('');
+	/**
+	 * What the search is doing, folded out of the engine's progress events.
+	 *
+	 * `$state.raw` because the reducer replaces the object rather than mutating
+	 * it: a checkpoint arrives a few times a second and the panel reads the whole
+	 * thing, so per-field reactivity would buy nothing and cost a proxy around an
+	 * array that is rebuilt anyway.
+	 */
+	let progress = $state.raw<SearchProgress>(IDLE_PROGRESS);
 	let elapsed = $state(0);
 	let timer: ReturnType<typeof setInterval> | null = null;
+
 	/** The rows the converter could hold the last heart to (PAINT.md §11). */
 	let honoured = $state<SymmetrySettings | null>(null);
 	/** "Vis det beskyttede motiv": the outline over the found heart. */
@@ -548,6 +559,17 @@
 		return { kind: 'engine', detail: err instanceof Error ? err.message : String(err) };
 	}
 
+	/**
+	 * One progress event, folded into the picture the panel draws.
+	 *
+	 * The reducer takes the whole event: the fitter says which counts it is trying
+	 * and how wrong they still are, and none of that survived the old
+	 * `progress(data.event.stage)`.
+	 */
+	function onProgress(event: EngineProgress): void {
+		progress = reduceProgress(progress, event);
+	}
+
 	async function find(): Promise<void> {
 		settle();
 		const mask = session.mask;
@@ -560,7 +582,7 @@
 		notice = null;
 		session.error = null;
 		session.status = 'searching';
-		stage = 'preprocessing';
+		progress = reduceProgress(IDLE_PROGRESS, { stage: 'preprocessing' });
 		startTimer();
 		try {
 			// The target itself has to be symmetric, or the search spends its time
@@ -582,7 +604,7 @@
 			const frame = { ...session.frame };
 			const target = solveTargetMask(mask, frame, advanced.frameCells);
 
-			await prepareMask(target, colors, (event) => (stage = event.stage));
+			await prepareMask(target, colors, onProgress);
 			const solved = await findCuts(
 				{
 					colors,
@@ -591,7 +613,7 @@
 					minWidthMm: advanced.minWidthMm,
 					matchingSheets: advanced.matchingSheets
 				},
-				(event) => (stage = event.stage)
+				onProgress
 			);
 
 			const geometry = solved.files['cut_geometry.json'];
@@ -1006,7 +1028,7 @@
 						{showMotif}
 						onShowMotif={(next) => (showMotif = next)}
 						{elapsed}
-						{stage}
+						{progress}
 						{advanced}
 						onAdvanced={(next) => (advanced = next)}
 						onResetAdvanced={() => (advanced = defaultAdvanced(session.symmetry))}

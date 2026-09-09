@@ -13,6 +13,7 @@ import { describe, expect, it } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import FindCutsPanel from './FindCutsPanel.svelte';
 import { defaultAdvanced } from '$lib/inverse/engine';
+import { IDLE_PROGRESS, reduceAll } from '$lib/paint/searchProgress';
 import { DEFAULT_FRAME } from '$lib/paint/frame';
 import { NO_SYMMETRY } from '$lib/paint/symmetry';
 import type { PaintResult } from '$lib/editor/session.svelte';
@@ -52,7 +53,7 @@ function render(overrides: Partial<Props> = {}) {
 			showMotif: false,
 			onShowMotif: () => {},
 			elapsed: 0,
-			stage: '',
+			progress: IDLE_PROGRESS,
 			advanced: defaultAdvanced({ ...NO_SYMMETRY }),
 			onAdvanced: () => {},
 			onResetAdvanced: () => {},
@@ -72,6 +73,8 @@ function render(overrides: Partial<Props> = {}) {
 	return {
 		found,
 		again,
+		/** The mounted markup, for the tests that read structure and not only words. */
+		root: target,
 		text: target.textContent ?? '',
 		cleanup: () => {
 			unmount(component);
@@ -155,6 +158,144 @@ describe('FindCutsPanel', () => {
 		try {
 			expect(panel.text).not.toContain(MEDIOCRE);
 			expect(panel.again).toBeUndefined();
+		} finally {
+			panel.cleanup();
+		}
+	});
+});
+
+/**
+ * The searching face — PAINT.md §2.
+ *
+ * It used to be a bar, a counter and one phrase, while the engine was reporting
+ * which strip counts it was trying and how wrong each of them still was. What
+ * follows drives the panel with the same events the engine sends, through the
+ * same reducer the page uses, and reads what it says.
+ */
+describe('FindCutsPanel while searching', () => {
+	function searching(...events: Parameters<typeof reduceAll>[0]) {
+		return render({
+			status: 'searching',
+			result: null,
+			showingResult: false,
+			elapsed: 12,
+			progress: reduceAll(events)
+		});
+	}
+
+	it('names the stage and the numbers behind it', () => {
+		const panel = searching(
+			{ stage: 'directInitializing', counts: [4, 4], error: 0.08 },
+			{ stage: 'directRefining', counts: [4, 4], step: 0, error: 0.02 },
+			{ stage: 'directRefining', counts: [4, 4], step: 40, error: 0.013 }
+		);
+		try {
+			expect(panel.text).toContain('Tilpasser kurverne');
+			expect(panel.text).toContain('12 s');
+			expect(panel.text).toContain('4 + 4 strimler');
+			expect(panel.text).toContain('afvigelse 1,3 %');
+			expect(panel.text).toContain('og faldende');
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('lists the attempts with the running one marked', () => {
+		const panel = searching(
+			{ stage: 'directInitializing', counts: [4, 4], error: 0.08 },
+			{ stage: 'directInitializing', counts: [5, 5], error: 0.12 },
+			{ stage: 'directInitializing', counts: [6, 6], error: 0.15 },
+			{ stage: 'directRefining', counts: [4, 4], step: 0, error: 0.02 },
+			{ stage: 'directRefining', counts: [5, 5], step: 0, error: 0.031 }
+		);
+		try {
+			const rows = [...panel.root.querySelectorAll('.attempt')];
+			expect(rows.map((r) => r.querySelector('.attempt-counts')?.textContent?.trim())).toEqual([
+				'4 + 4',
+				'5 + 5',
+				'6 + 6'
+			]);
+			expect(rows.map((r) => r.querySelector('.attempt-error')?.textContent?.trim())).toEqual([
+				'2,0 %',
+				'3,1 %',
+				// Announced but not reached: a seed error is not a result, so the row
+				// says so in words rather than printing a number that means something
+				// else from the two above it.
+				'venter'
+			]);
+			expect(rows.map((r) => r.className.includes('running'))).toEqual([false, true, false]);
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('shows the MILP its own numbers instead of an attempts list', () => {
+		const panel = searching(
+			{ stage: 'model', variables: 4000, constraints: 9000 },
+			{ stage: 'solving', round: 2, remaining: 30, validatedIncumbent: true },
+			{ stage: 'solving', round: 2, nodes: 900, gap: 0.03 }
+		);
+		try {
+			expect(panel.text).toContain('Løser');
+			expect(panel.text).toContain('runde 2');
+			expect(panel.text).toContain('afstand til bedst mulige 3,0 %');
+			expect(panel.text).toContain('1 gyldig kandidat');
+			expect(panel.root.querySelector('.attempt')).toBeNull();
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('announces the stage and nothing that ticks', () => {
+		// A search runs for up to three minutes. The stage changes a handful of
+		// times and is news; the seconds and the error change several times a
+		// second and would be read over each other for the whole search.
+		const panel = searching({ stage: 'directPolishing' });
+		try {
+			const live = [...panel.root.querySelectorAll('[role="status"]')];
+			expect(live).toHaveLength(1);
+			expect(live[0].textContent).toContain('Finpudser kurverne');
+			expect(live[0].textContent).not.toContain('12 s');
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('offers Afbryd and, until the engine can stop gracefully, nothing else', () => {
+		const panel = searching({ stage: 'directRefining', counts: [4, 4], error: 0.02 });
+		try {
+			const buttons = [...panel.root.querySelectorAll('.actions button')].map((b) =>
+				b.textContent?.trim()
+			);
+			expect(buttons).toEqual(['Afbryd']);
+			// PAINT.md §12 (b): "Brug det bedste nu" appears only once the engine can
+			// hand back its best validated candidate instead of being terminated.
+			expect(panel.text).not.toContain('Brug det bedste nu');
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('speaks English too', () => {
+		const panel = render({
+			status: 'searching',
+			result: null,
+			showingResult: false,
+			elapsed: 12,
+			lang: 'en',
+			progress: reduceAll([
+				{ stage: 'directInitializing', counts: [4, 4], error: 0.08 },
+				{ stage: 'directRefining', counts: [4, 4], step: 0, error: 0.02 },
+				{ stage: 'directRefining', counts: [4, 4], step: 40, error: 0.013 }
+			])
+		});
+		try {
+			expect(panel.text).toContain('Refining the curves');
+			expect(panel.text).toContain('4 + 4 strips');
+			expect(panel.text).toContain('deviation 1.3 %');
+			expect(panel.text).toContain('and falling');
+			expect(panel.text).toContain('Attempts');
+			expect(panel.text).toContain('Stop');
 		} finally {
 			panel.cleanup();
 		}

@@ -17,9 +17,16 @@
 	import {
 		ADVANCED_LIMITS,
 		clampAdvanced,
+		ENGINE_GRACEFUL_STOP,
 		type AdvancedNumber,
 		type AdvancedSettings
 	} from '$lib/inverse/engine';
+	import type {
+		AttemptState,
+		ErrorTrend,
+		SearchProgress,
+		StageKey
+	} from '$lib/paint/searchProgress';
 	import { ENGINE_NOTICES_KEY, engineNoticesHref } from '$lib/inverse/notices';
 	import type { PaintError, PaintResult, PaintStatus } from '$lib/editor/session.svelte';
 	import type { Frame } from '$lib/paint/frame';
@@ -50,8 +57,17 @@
 		onShowMotif: (next: boolean) => void;
 		/** Whole seconds since the search started. */
 		elapsed: number;
-		/** The engine's current stage name, as `core/` spells it. */
-		stage: string;
+		/** What the engine is doing, folded out of its progress events. */
+		progress: SearchProgress;
+		/**
+		 * Ask the engine to stop and hand back its best validated candidate.
+		 *
+		 * Dormant: the button that would call it is drawn only when the engine can
+		 * do this (`ENGINE_GRACEFUL_STOP`), and today it cannot — the only stop
+		 * there is terminates the worker and throws the search away. PAINT.md §12
+		 * (b) is the contract that would change that.
+		 */
+		onUseBest?: () => void;
 		advanced: AdvancedSettings;
 		onAdvanced: (next: AdvancedSettings) => void;
 		onResetAdvanced: () => void;
@@ -75,7 +91,8 @@
 		showMotif,
 		onShowMotif,
 		elapsed,
-		stage,
+		progress,
+		onUseBest,
 		advanced,
 		onAdvanced,
 		onResetAdvanced,
@@ -106,9 +123,22 @@
 	 */
 	const MEDIOCRE_MISMATCH = 0.01;
 
-	/** The engine's stage names in words. Anything else is simply "working". */
-	const STAGES: Record<string, TranslationKey> = {
+	/**
+	 * Every stage the reducer can report, in words.
+	 *
+	 * `StageKey` is a closed set, so this is exhaustive by type: a stage that
+	 * arrives without a sentence has already become `'working'` upstream, and a
+	 * stage added there will not compile until it has one here.
+	 */
+	const STAGES: Record<StageKey, TranslationKey> = {
+		working: 'paintStageWorking',
 		preprocessing: 'paintStagePreparing',
+		directInitializing: 'paintStageSeeding',
+		directFitting: 'paintStageFitting',
+		directClearance: 'paintStageClearance',
+		directRefining: 'paintStageRefining',
+		directSharing: 'paintStageSharing',
+		directPolishing: 'paintStagePolishing',
 		graph: 'paintStageGraph',
 		connectors: 'paintStageConnectors',
 		model: 'paintStageModel',
@@ -120,6 +150,19 @@
 		exporting: 'paintStageExporting'
 	};
 
+	/** The dot beside an attempt, and the word a screen reader gets instead. */
+	const ATTEMPT_STATES: Record<AttemptState, TranslationKey> = {
+		done: 'paintAttemptDone',
+		running: 'paintAttemptRunning',
+		waiting: 'paintAttemptWaiting'
+	};
+
+	const TRENDS: Record<ErrorTrend, TranslationKey> = {
+		falling: 'paintSearchFalling',
+		rising: 'paintSearchRising',
+		flat: 'paintSearchFlat'
+	};
+
 	const FAILURES: Record<PaintError['kind'], TranslationKey> = {
 		timeout: 'paintFailedTimeout',
 		noSolution: 'paintFailedNoSolution',
@@ -127,7 +170,7 @@
 	};
 
 	let searching = $derived(status === 'searching');
-	let stageText = $derived(tr(STAGES[stage] ?? 'paintStageWorking'));
+	let stageText = $derived(tr(STAGES[progress.stage]));
 
 	/**
 	 * One decimal in the visitor's own notation: Danish writes 3,9 mm and 1,3 %
@@ -139,6 +182,46 @@
 			maximumFractionDigits: 1
 		});
 	}
+
+	/**
+	 * The numbers beside the stage, joined into one line.
+	 *
+	 * PAINT.md §2 asks for "Tilpasser kurverne … 12 s · 4 + 4 strimler · afvigelse
+	 * 1,3 % og faldende": the seconds always, then whatever the engine has said so
+	 * far. Each part is left out rather than printed empty, because a search that
+	 * has not yet chosen its strip counts has nothing true to say about them, and
+	 * "0 + 0 strimler" would be a number about nothing.
+	 */
+	let searchDetails = $derived.by(() => {
+		const parts = [t('paintSearchElapsed', lang, { seconds: elapsed })];
+		if (progress.counts) {
+			parts.push(
+				t('paintSearchStrips', lang, {
+					left: progress.counts[0],
+					right: progress.counts[1]
+				})
+			);
+		}
+		if (progress.error !== null) {
+			const deviation = t('paintSearchDeviation', lang, {
+				percent: decimal(100 * progress.error)
+			});
+			parts.push(
+				progress.errorTrend ? `${deviation} ${tr(TRENDS[progress.errorTrend])}` : deviation
+			);
+		}
+		// The MILP route counts rounds rather than attempts, and its own two
+		// numbers say what the fitter's error says: how close it is, and whether it
+		// already has something it could hand back.
+		if (progress.route === 'milp') {
+			if (progress.round !== null) parts.push(t('paintSearchRound', lang, { round: progress.round }));
+			if (progress.gap !== null) {
+				parts.push(t('paintSearchGap', lang, { percent: decimal(100 * progress.gap) }));
+			}
+			if (progress.incumbent) parts.push(tr('paintSearchIncumbent'));
+		}
+		return parts.join(' · ');
+	});
 
 	/** Which of the three faces is on screen; the effect below watches it. */
 	let face = $derived(searching ? 'searching' : showingResult && result ? 'found' : 'ask');
@@ -224,14 +307,45 @@
 	<h2 class="panel-title" bind:this={headingEl} tabindex="-1">{tr('paintFindCuts')}</h2>
 
 	{#if searching}
-		<div class="progress-row">
+		<!-- role="status" on the stage and nowhere else: the search can run for two
+		     minutes, and a stage that changes a handful of times is news, while the
+		     seconds, the error and the attempts change several times a second and
+		     would be read aloud over each other for the whole search. -->
+		<div class="progress-row" role="status">
 			<ScissorsIcon size={18} />
-			<span>{t('paintSearching', lang, { seconds: elapsed })}</span>
+			<span>{stageText}</span>
 		</div>
-		<!-- role="status" on the stage and not on the seconds: the search can run for
-		     two minutes, and a stage that changes a handful of times is news, while a
-		     counter ticking every second is noise. -->
-		<p class="note" role="status">{stageText}</p>
+		<p class="numbers">{searchDetails}</p>
+		{#if progress.attempts.length}
+			<!-- What the fitter is working through: every strip-count pair it
+			     announced, the one it is on marked, and the ones it has finished with
+			     their last error. Nothing is invented — a pair the engine has not
+			     mentioned is not in the list at all. -->
+			<div class="attempts">
+				<p class="attempts-title" id="paint-attempts">{tr('paintAttempts')}</p>
+				<ul aria-labelledby="paint-attempts">
+					{#each progress.attempts as attempt (attempt.counts.join('x'))}
+						<li class="attempt" class:running={attempt.state === 'running'}>
+							<span class="dot {attempt.state}" aria-hidden="true"></span>
+							<span class="attempt-counts">
+								{t('paintAttemptCounts', lang, {
+									left: attempt.counts[0],
+									right: attempt.counts[1]
+								})}
+							</span>
+							<span class="attempt-error">
+								{attempt.state === 'waiting' || attempt.error === null
+									? tr('paintAttemptWaiting')
+									: `${decimal(100 * attempt.error)} %`}
+							</span>
+							<!-- The dot is the only thing that says done from running, so the
+							     word it stands for goes where a screen reader will find it. -->
+							<span class="sr-only">{tr(ATTEMPT_STATES[attempt.state])}</span>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
 		<div class="bar" role="progressbar" aria-label={tr('paintFindCuts')}>
 			<span></span>
 		</div>
@@ -239,6 +353,14 @@
 			<button type="button" class="btn btn-sm btn-outline" onclick={onCancel}>
 				{tr('paintCancel')}
 			</button>
+			{#if ENGINE_GRACEFUL_STOP}
+				<!-- Dormant until the engine can stop without throwing the search away
+				     (PAINT.md §12 (b)). Written now so the day the message exists this
+				     panel needs no new thinking, only the flag. -->
+				<button type="button" class="btn btn-sm btn-primary" onclick={() => onUseBest?.()}>
+					{tr('paintUseBest')}
+				</button>
+			{/if}
 		</div>
 	{:else if showingResult && result}
 		<!-- The answer to a wait that may have lasted a minute or two: it has to say
@@ -466,6 +588,73 @@
 		font-size: 14px;
 		font-weight: 600;
 		color: var(--deep);
+	}
+
+	/* The stage line's own numbers, under it rather than beside it: at 340px the
+	   sentence PAINT.md asks for runs to two lines whatever is done to it, and
+	   this way the words that change every few seconds are the ones that wrap. */
+	.progress-row + .numbers {
+		font-size: 13px;
+		color: var(--muted);
+	}
+
+	.attempts {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.attempts-title {
+		margin: 0;
+		font-size: 12px;
+		font-weight: 600;
+		color: var(--muted);
+	}
+
+	.attempts ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.attempt {
+		display: grid;
+		grid-template-columns: 10px 1fr auto;
+		align-items: center;
+		gap: 8px;
+		padding: 2px 6px;
+		border-radius: 6px;
+		font-size: 12px;
+		font-variant-numeric: tabular-nums;
+		color: var(--muted);
+	}
+
+	/* The one being worked on, in the panel's own ground and ink rather than a
+	   colour of its own: it is the row the eye should land on, and the list is
+	   already three shades of one green. */
+	.attempt.running {
+		background: var(--cream2);
+		color: var(--ink);
+		font-weight: 600;
+	}
+
+	.dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: var(--line);
+	}
+
+	.dot.done {
+		background: var(--green);
+	}
+
+	.dot.running {
+		background: var(--green);
+		box-shadow: 0 0 0 3px rgb(var(--deep-rgb) / 0.12);
 	}
 
 	.bar {
