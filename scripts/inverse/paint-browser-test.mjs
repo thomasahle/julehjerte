@@ -16,6 +16,16 @@ const disableNumericalKernel=process.env.INVERSE_TEST_DISABLE_NUMERICAL_KERNEL==
 const names=(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',');
 const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan,top-hat,top-hat-independent').split(',');
 const output=process.env.INVERSE_TEST_OUTPUT||`tmp/paint-browser/${new Date().toISOString().replace(/[:.]/g,'-')}`;
+const repeats=Number(process.env.INVERSE_TEST_REPEATS||1);
+assert.ok(Number.isInteger(repeats)&&repeats>=1&&repeats<=10,'Replay count must be between 1 and 10.');
+const engineReference=process.env.INVERSE_TEST_ENGINE_REFERENCE?execFileSync('git',['rev-parse','--verify','--end-of-options',process.env.INVERSE_TEST_ENGINE_REFERENCE+'^{commit}'],{encoding:'utf8'}).trim():null;
+const referenceFiles=new Map(),referenceSourceHashes={};
+if(engineReference){
+ // Read the static snapshot before starting any browser timer. The page and
+ // editor stay current; reports explicitly identify the substituted engine.
+ const files=execFileSync('git',['ls-tree','-r','--name-only',engineReference,'--','static/inverse/core'],{encoding:'utf8'}).trim().split('\n');
+ for(const file of files){const bytes=execFileSync('git',['show',`${engineReference}:${file}`],{maxBuffer:16*1024*1024});referenceFiles.set('/'+file.replace(/^static\//,''),bytes);referenceSourceHashes[file]=createHash('sha256').update(bytes).digest('hex');}
+}
 await fs.mkdir(output,{recursive:true});
 const loader=await createServer({configFile:false,server:{middlewareMode:true,hmr:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
 const dom=new JSDOM('');globalThis.DOMParser=dom.window.DOMParser;
@@ -26,7 +36,7 @@ const {rasterizeDesign}=await loader.ssrLoadModule('/src/lib/paint/rasterize.ts'
 const {frameMismatch}=await loader.ssrLoadModule('/src/lib/paint/frame.ts');
 const {resample,maskMismatch}=await loader.ssrLoadModule('/src/lib/paint/mask.ts');
 const results=[];
-const report={origin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,
+const report={origin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,
  timingVersion:2,timingMethod:'Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.',
  harnessSourceHashes:{},workspaceSourceHashes:{},results};
 for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -34,16 +44,17 @@ for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input
 try{
  for(const browserName of names){
   const browser=await browsers[browserName].launch({headless:true});
-  try{for(const name of cases){
+  try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    const topHat=name==='top-hat'||name==='top-hat-independent',small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
-   const dir=path.join(output,`${browserName}-${name}`);await fs.mkdir(dir,{recursive:true});
-   const row={browser:browserName,browserVersion:browser.version(),name,pageErrors:[]};results.push(row);
+   const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
+   const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
    const context=await browser.newContext({viewport:{width:1440,height:1100},acceptDownloads:true});
    let page;
    try{
     await context.route('**/*',route=>{
      const url=new URL(route.request().url());
      if(disableNumericalKernel&&url.pathname.endsWith('/inverse/core/direct/native/boundary.wasm')){row.blockedKernelRequests=(row.blockedKernelRequests||0)+1;return route.abort();}
+     if(url.origin===new URL(origin).origin&&referenceFiles.has(url.pathname))return route.fulfill({contentType:url.pathname.endsWith('.wasm')?'application/wasm':'text/javascript',body:referenceFiles.get(url.pathname)});
      return url.origin===new URL(origin).origin?route.continue():route.abort();
     });
     page=await context.newPage();page.on('pageerror',e=>row.pageErrors.push(e.message));
