@@ -30,7 +30,7 @@ try{
  for(const browserName of names){
   const browser=await browsers[browserName].launch({headless:true});
   try{for(const name of cases){
-   const topHat=name==='top-hat'||name==='top-hat-independent',free=topHat||name.endsWith('-free');
+   const topHat=name==='top-hat'||name==='top-hat-independent',small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,pageErrors:[]};results.push(row);
    const context=await browser.newContext({viewport:{width:1440,height:1100},acceptDownloads:true});
@@ -59,7 +59,7 @@ try{
      if(name==='hunodan'){
       const metadata=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
       const e=metadata.cases[0],[x,y,x1,y1]=e.photoROI,im=await loadImage(e.source),c=createCanvas(x1-x,y1-y);c.getContext('2d').drawImage(im,-x,-y);await fs.writeFile(file,c.toBuffer('image/png'));
-     }else await fs.writeFile(file,topHat?topHatFixture():free?motifFixture(name.replace('-free','')).original:motifFixture(name).png);
+     }else await fs.writeFile(file,topHat?topHatFixture():free?motifFixture(name.replace(/-free(?:-small)?$/,'')).original:motifFixture(name).png);
      await button('Import picture').click();await page.locator('input[type=file]').setInputFiles(file);
      if(name!=='hunodan')await button('The whole picture').click();
      else await page.locator('button.corner').nth(3).waitFor();
@@ -68,8 +68,8 @@ try{
      await button('Use as mask').click();
      if(free){
       await page.getByRole('radio',{name:'Free',exact:true}).click();
-      await page.locator('#paint-frame-size').focus();await page.locator('#paint-frame-size').press('End');
-      assert.equal(await page.locator('#paint-frame-size').inputValue(),'84');
+      if(!small){await page.locator('#paint-frame-size').focus();await page.locator('#paint-frame-size').press('End');}
+      assert.equal(await page.locator('#paint-frame-size').inputValue(),String(frameSize*100));
       if(name==='top-hat-independent')await page.getByRole('radiogroup',{name:'Between lobes symmetry',exact:true}).getByRole('radio',{name:'Off',exact:true}).click();
      }
     }
@@ -77,6 +77,7 @@ try{
     const start=performance.now();await button('Find the cuts').click();
     await page.waitForFunction(()=>window.__paintQA.result||window.__paintQA.error,{},{timeout:190000});
     const observed=await page.evaluate(()=>window.__paintQA);assert.equal(observed.error,null,JSON.stringify(observed.error));
+    await fs.writeFile(path.join(dir,'prepared.json'),JSON.stringify(observed.prepared));
     await fs.writeFile(path.join(dir,'engine-report.json'),JSON.stringify(observed.result.report,null,2));
     await fs.writeFile(path.join(dir,'cut_geometry.json'),observed.result.files['cut_geometry.json']);
     row.engineError=observed.result.report.imageError.mismatchFraction;
@@ -108,10 +109,16 @@ try{
     }
     const rendered=rasterizeDesign(design,200).data,wanted=resample(Uint8Array.from(observed.prepared.mask),observed.prepared.resolution,200);
     row.wholeOriginalError=maskMismatch(rendered,wanted);
-    const regions=free?frameMismatch(rendered,wanted,200,{mode:'free',shape:'diamond',size:.84}):null;
+    const regions=free?frameMismatch(rendered,wanted,200,{mode:'free',shape:'diamond',size:frameSize}):null;
     row.editableError=regions?.inside??row.wholeOriginalError;
     if(regions)row.borderChange=regions.outside;
-    assert.ok(row.editableError<=(topHat?.01:free||name==='hunodan'?.03:.015),`Editable mismatch ${row.editableError}`);
+    // Keep the historical 200-cell score, but measure the accuracy gate against
+    // the actual solved mask. Nearest-neighbour downsampling moves edge pixels
+    // and can turn a 0.3% source error into 0.6% at a different sampling phase.
+    const resolution=observed.prepared.resolution,sourceMask=Uint8Array.from(observed.prepared.mask),sourceRendered=rasterizeDesign(design,resolution).data;
+    row.sourceResolution=resolution;
+    row.sourceEditableError=free?frameMismatch(sourceRendered,sourceMask,resolution,{mode:'free',shape:'diamond',size:frameSize}).inside:maskMismatch(sourceRendered,sourceMask);
+    assert.ok(row.sourceEditableError<=(small?.005:topHat?.01:free||name==='hunodan'?.03:.015),`Editable source mismatch ${row.sourceEditableError}`);
     if(name==='star'){
      const pendingPDF=page.waitForEvent('download');await button('Download PDF').click();
      const pdfFile=path.join(dir,'template.pdf');await(await pendingPDF).saveAs(pdfFile);
