@@ -105,3 +105,8 @@ free border and retains this final shared-cut recovery and its regression checks
 The later [renderer optimization](CURVE-RENDERING.md) makes candidate mask
 checks cheaper while preserving every binary pixel and individual-path query;
 its production replay rechecks shared controls through SVG export.
+
+The subsequent [shared-run simplification](SHARED-SIMPLIFICATION.md) removes
+redundant subdivisions after alignment. It fits each shared run once, preserves
+paired and self-mirrored copies, and retains the exact visible curves and woven
+mask while reducing the amount of geometry carried into the editor.
