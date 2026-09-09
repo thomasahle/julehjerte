@@ -56,21 +56,39 @@ export class CurveGraph {
 /** Row bins accelerate exact containment of the sampled slit polygons. Only
  * their bounding boxes are indexed; queries still use actual segment crossings.
  */
-export function polygonIndex(graph,points,ns=24,nbins=128){
+function curveIndex(graph,points,ns,nbins,combined=false){
   const sampled=graph.sample(points,ns),bins=Array.from({length:nbins},()=>[]),segments=[],w=graph.width;
+  // Malformed trial paths may have disconnected cubics. Their sampled polygon
+  // bridges those joins, so only continuous paths can cancel complete cubics.
+  if(combined)combined=graph.joins.every(([[a,da],[b,db]])=>graph.edges[a][da===1?3:0]===graph.edges[b][db===1?0:3]);
   function add(ax,ay,bx,by,pi){
     if(ay>by)[ax,ay,bx,by]=[bx,by,ax,ay];
     const id=segments.length;segments.push([ax,ay,bx,by,pi]);if(ay===by)return;
     const lo=clamp(Math.floor(ay/w*nbins),0,nbins-1),hi=clamp(Math.floor(by/w*nbins),0,nbins-1);
     for(let i=lo;i<=hi;i++)bins[i].push(id);
   }
+  const s=sampled.samples;
+  if(combined)graph.edges.forEach((_,e)=>{
+    if(!graph.visible[e])return;
+    for(let j=1;j<=ns;j++){
+      const i=2*(e*(ns+1)+j);add(s[i-2],s[i-1],s[i],s[i+1],-1);
+    }
+  });
   graph.paths.forEach((_,pi)=>{
-    const ids=sampled.groups[pi],s=sampled.samples;
-    for(let i=1;i<ids.length;i++)add(s[2*ids[i-1]],s[2*ids[i-1]+1],s[2*ids[i]],s[2*ids[i]+1],pi);
+    const ids=sampled.groups[pi];
+    if(!combined)for(let i=1;i<ids.length;i++)add(s[2*ids[i-1]],s[2*ids[i-1]+1],s[2*ids[i]],s[2*ids[i]+1],pi);
     const first=ids[0],last=ids.at(-1),f=graph.family[pi];
     add(s[2*last],s[2*last+1],w,w,pi);add(w,w,f===0?w:0,f===0?0:w,pi);add(f===0?w:0,f===0?0:w,s[2*first],s[2*first+1],pi);
   });
-  return{segments,bins,width:w,contains(x,y,exclude=-1,phase=1){
+  return{segments,bins,width:w};
+}
+
+/** Individual path membership is needed by boundary forces, which exclude
+ * the cut receiving the force. Only the combined renderer may cancel shared
+ * curves; their separate path memberships must remain available here. */
+export function polygonIndex(graph,points,ns=24,nbins=128){
+  const index=curveIndex(graph,points,ns,nbins),{segments,bins,width:w}=index;
+  return{...index,contains(x,y,exclude=-1,phase=1){
     let parity=Number(phase===-1);
     for(const id of bins[clamp(Math.floor(y/w*nbins),0,nbins-1)]){
       const s=segments[id];if(s[4]===exclude||y<s[1]||y>=s[3])continue;
@@ -79,10 +97,15 @@ export function polygonIndex(graph,points,ns=24,nbins=128){
   }};
 }
 export function renderCurves(graph,points,phase,n=256,ns=24){
-  const index=polygonIndex(graph,points,ns),mask=new Uint8Array(n*n),w=graph.width;
+  // Even-multiplicity curves cancel exactly, but every path still contributes
+  // its own square closure. Row bins preserve the original crossing arithmetic
+  // and strict pixel-centre convention while avoiding full segment scans.
+  const index=curveIndex(graph,points,ns,128,true),mask=new Uint8Array(n*n),w=graph.width;
   for(let y=0;y<n;y++){
     const yy=(y+.5)*w/n,crossings=[];
-    for(const s of index.segments)if(yy>=s[1]&&yy<s[3])crossings.push(s[0]+(yy-s[1])*(s[2]-s[0])/(s[3]-s[1]));
+    for(const id of index.bins[clamp(Math.floor(yy/w*index.bins.length),0,index.bins.length-1)]){
+      const s=index.segments[id];if(yy>=s[1]&&yy<s[3])crossings.push(s[0]+(yy-s[1])*(s[2]-s[0])/(s[3]-s[1]));
+    }
     crossings.sort((a,b)=>a-b);let at=0,p=Number(phase===-1);
     for(let x=0;x<n;x++){const xx=(x+.5)*w/n;while(at<crossings.length&&crossings[at]<xx){p^=1;at++;}mask[y*n+x]=p;}
   }return mask;
