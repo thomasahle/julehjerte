@@ -139,10 +139,14 @@ describe('the recorded solve', () => {
 	});
 
 	it('never announces a stage it has no words for', () => {
+		// 'working' is the fallback for a stage nobody wrote a sentence for, and
+		// every stage on this recorded path has one. Asserting that it is never
+		// reached is what makes the test fail the day `core/` adds a stage here —
+		// which is how the missing 'directMatching' should have surfaced.
 		let state = IDLE_PROGRESS;
 		for (const event of events) {
 			state = reduceProgress(state, event);
-			expect(state.stage).not.toBe(undefined);
+			expect(state.stage).not.toBe('working');
 		}
 	});
 });
@@ -292,6 +296,17 @@ describe('the stage', () => {
 
 	it('falls back to working for one it has not', () => {
 		expect(reduce({ stage: 'somethingNewInCore' }).stage).toBe('working');
+	});
+
+	it('has words for the matching search, which the star’s run never reaches', () => {
+		// `preferMatchingSolution` announces itself, and `fitDirect` always routes
+		// through it: with "Mellem lapper: Sym" — the common case for a symmetric
+		// mask — it is on, and the panel would otherwise say "Arbejder …" for the
+		// whole of it. The recorded fixture cannot catch this: it was captured with
+		// no symmetry at all, which takes the disabled early return.
+		const state = reduce({ stage: 'directMatching' });
+		expect(state.stage).toBe('directMatching');
+		expect(state.route).toBe('fitter');
 	});
 });
 

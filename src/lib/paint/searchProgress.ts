@@ -35,6 +35,7 @@ export type StageKey =
 	| 'directRefining'
 	| 'directSharing'
 	| 'directPolishing'
+	| 'directMatching'
 	| 'graph'
 	| 'connectors'
 	| 'model'
@@ -54,6 +55,7 @@ const STAGE_KEYS: readonly StageKey[] = [
 	'directRefining',
 	'directSharing',
 	'directPolishing',
+	'directMatching',
 	'graph',
 	'connectors',
 	'model',
@@ -75,7 +77,8 @@ const FITTER_STAGES: readonly string[] = [
 	'directClearance',
 	'directRefining',
 	'directSharing',
-	'directPolishing'
+	'directPolishing',
+	'directMatching'
 ];
 
 /**

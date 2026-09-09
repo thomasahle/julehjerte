@@ -141,6 +141,7 @@
 		directRefining: 'paintStageRefining',
 		directSharing: 'paintStageSharing',
 		directPolishing: 'paintStagePolishing',
+		directMatching: 'paintStageMatching',
 		graph: 'paintStageGraph',
 		connectors: 'paintStageConnectors',
 		model: 'paintStageModel',

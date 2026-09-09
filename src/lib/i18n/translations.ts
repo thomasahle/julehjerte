@@ -304,6 +304,7 @@ export const translations = {
     paintStageRefining: 'Tilpasser kurverne …',
     paintStageSharing: 'Lader snit dele kurver …',
     paintStagePolishing: 'Finpudser kurverne …',
+    paintStageMatching: 'Prøver samme skabelon til begge sider …',
     /** {seconds} = sekunder siden søgningen begyndte */
     paintSearchElapsed: '{seconds} s',
     /** {left}, {right} = strimler i hver retning, som motoren prøver nu */
@@ -810,6 +811,7 @@ export const translations = {
     paintStageRefining: 'Refining the curves …',
     paintStageSharing: 'Letting cuts share curves …',
     paintStagePolishing: 'Polishing the curves …',
+    paintStageMatching: 'Trying one template for both sheets …',
     /** {seconds} = seconds since the search began */
     paintSearchElapsed: '{seconds} s',
     /** {left}, {right} = strips each way in the candidate being tried now */

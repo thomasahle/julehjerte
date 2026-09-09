@@ -200,6 +200,19 @@ describe('FindCutsPanel while searching', () => {
 		}
 	});
 
+	it('has words for the matching search as well', () => {
+		// `preferMatchingSolution` runs whenever "Mellem lapper: Sym" is on, which
+		// is the common case; without a sentence of its own the panel dropped to
+		// "Arbejder …" in the middle of the ordinary fitter route.
+		const panel = searching({ stage: 'directMatching' });
+		try {
+			expect(panel.text).toContain('Prøver samme skabelon til begge sider');
+			expect(panel.text).not.toContain('Arbejder');
+		} finally {
+			panel.cleanup();
+		}
+	});
+
 	it('lists the attempts with the running one marked', () => {
 		const panel = searching(
 			{ stage: 'directInitializing', counts: [4, 4], error: 0.08 },

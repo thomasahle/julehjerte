@@ -168,7 +168,12 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   `core/` sends, and `$lib/paint/searchProgress.reduceProgress` folds the stream into one `SearchProgress` the panel
   reads. The reducer is checked against `src/lib/paint/fixtures/starProgress.json` — every progress event of one
   real search for the star's cuts, re-recordable with `CAPTURE_PROGRESS=1 npx vitest run
-  src/lib/paint/searchProgress.test.ts`, which runs the engine's own `design()`.
+  src/lib/paint/searchProgress.test.ts`, which runs the engine's own `design()`. Every stage on that recorded path
+  has a sentence, and the test asserts that replaying it never falls back to "Arbejder …", which is what makes a
+  stage added in `core/` fail here rather than go quiet on screen. The fixture cannot cover the whole set on its
+  own: it was captured with no symmetry, and `directMatching` — `preferMatchingSolution`, which runs whenever
+  "Samme skabelon til begge sider" is on, the default under Mellem lapper: Sym — takes the disabled early return
+  there. It has its own sentence and its own test.
 
   The mask stays editable-looking but pointer input is ignored until done.
 - After success: "Skabelonen er fundet" with the numbers (n + m snit, minimum clearance in mm, difference from the
