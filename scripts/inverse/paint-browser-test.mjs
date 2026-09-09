@@ -11,6 +11,7 @@ import {motifFixture,topHatFixture} from './motif-fixture.mjs';
 
 const browsers=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 const origin=process.env.INVERSE_TEST_URL||'http://localhost:5200';
+const disableNumericalKernel=process.env.INVERSE_TEST_DISABLE_NUMERICAL_KERNEL==='1';
 const names=(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',');
 const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan,top-hat,top-hat-independent').split(',');
 const output=process.env.INVERSE_TEST_OUTPUT||`tmp/paint-browser/${new Date().toISOString().replace(/[:.]/g,'-')}`;
@@ -24,7 +25,7 @@ const {rasterizeDesign}=await loader.ssrLoadModule('/src/lib/paint/rasterize.ts'
 const {frameMismatch}=await loader.ssrLoadModule('/src/lib/paint/frame.ts');
 const {resample,maskMismatch}=await loader.ssrLoadModule('/src/lib/paint/mask.ts');
 const results=[];
-const report={origin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,workspaceSourceHashes:{},results};
+const report={origin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,workspaceSourceHashes:{},results};
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
  for(const browserName of names){
@@ -36,7 +37,11 @@ try{
    const context=await browser.newContext({viewport:{width:1440,height:1100},acceptDownloads:true});
    let page;
    try{
-    await context.route('**/*',route=>new URL(route.request().url()).origin===new URL(origin).origin?route.continue():route.abort());
+    await context.route('**/*',route=>{
+     const url=new URL(route.request().url());
+     if(disableNumericalKernel&&url.pathname.endsWith('/inverse/core/direct/native/boundary.wasm')){row.blockedKernelRequests=(row.blockedKernelRequests||0)+1;return route.abort();}
+     return url.origin===new URL(origin).origin?route.continue():route.abort();
+    });
     page=await context.newPage();page.on('pageerror',e=>row.pageErrors.push(e.message));
     // Observe the real worker; no target, seed, count or fitted geometry is
     // supplied to it by this test. Capture what the visitor actually solved.
@@ -81,6 +86,9 @@ try{
     await fs.writeFile(path.join(dir,'engine-report.json'),JSON.stringify(observed.result.report,null,2));
     await fs.writeFile(path.join(dir,'cut_geometry.json'),observed.result.files['cut_geometry.json']);
     row.engineError=observed.result.report.imageError.mismatchFraction;
+    row.numericalBackend=observed.result.report.solver.numericalBackend?.backend;
+    row.paperKernels=observed.result.report.solver.paperKernels;
+    if(disableNumericalKernel){assert.ok(row.blockedKernelRequests>0,'The real worker must attempt the blocked kernel request.');assert.equal(row.numericalBackend,'javascript');}
     assert.equal(Boolean(observed.prepared.weights),free,'Free-border importance weights must reach the real worker.');
     assert.equal(observed.result.report.validation.passed,true);
     assert.equal(observed.result.report.manufacturing.status,'pass');

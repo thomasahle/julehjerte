@@ -9,7 +9,7 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 import {cpus} from 'node:os';
-import {materialAudit} from '../../static/inverse/core/material.js';
+import {materialAudit,paperKernelChoices} from '../../static/inverse/core/material.js';
 import {loadNumericalKernel,numericalKernel} from '../../static/inverse/core/numerical-kernel.js';
 import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
 import {settings} from '../../static/inverse/core/settings.js';
@@ -65,4 +65,5 @@ for(const[index,entry]of cases.entries()){
   await fs.writeFile(`${output}/results.json`,JSON.stringify(report,null,2)+'\n');
 }
 report.summary={cases:cases.length,allIdentical:true,medianPairedSaving:median(report.results.map(r=>r.medianPairedSaving)),groups:Object.fromEntries([...new Set(cases.map(e=>e.group))].map(group=>{const rows=report.results.filter(r=>r.group===group);return[group,{cases:rows.length,previousMedianSeconds:median(rows.map(r=>r.previousMedianSeconds)),currentMedianSeconds:median(rows.map(r=>r.currentMedianSeconds)),medianPairedSaving:median(rows.map(r=>r.medianPairedSaving))}];}))};
+report.paperKernels=paperKernelChoices();
 await fs.writeFile(`${output}/results.json`,JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report.summary));
