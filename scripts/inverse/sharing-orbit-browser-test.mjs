@@ -6,7 +6,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
-import {framePaths} from './fixtures/symmetric-frame.mjs';
+import {framePaths,antiSeamPaths} from './fixtures/symmetric-frame.mjs';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {solutionJSON} from '../../static/inverse/core/graph.js';
 import {renderExportedWeave} from './export-renderer.mjs';
@@ -19,18 +19,23 @@ const cases=[
   {name:'both-diagonals',symmetry:{transpose:true,antiTranspose:true}},
   {name:'unequal-mirrors',unequal:true,symmetry:{mirrorX:true,mirrorY:true}},
   {name:'unequal-half-turn',unequal:true,symmetry:{rotate180:true}},
+  {name:'chord-only',symmetry:{withinCurve:'sym'}},
+  {name:'chord-mirrors',unequal:true,symmetry:{withinCurve:'sym',mirrorX:true,mirrorY:true}},
+  {name:'chord-anti',anti:true,symmetry:{withinCurve:'anti',transpose:true}},
 ];
 const report={origin,sourceCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),method:'Analytic fitted perturbations, served cleanup and validation modules; independent resvg comparison with known unperturbed cuts. No fresh optimization or UI injection.',sourceHashes:{},results:[]};
 await fs.mkdir(output,{recursive:true});
-for(const name of ['share','shared-span','sharing-orbit','symmetry']){
+for(const name of ['share','shared-span','sharing-orbit','symmetry','isometry-projection']){
   const file=`static/inverse/core/direct/${name}.js`,source=await fs.readFile(file),response=await fetch(origin+'/'+file.replace(/^static\//,''));
   assert.equal(response.status,200);assert.deepEqual(Buffer.from(await response.arrayBuffer()),source);
   report.sourceHashes[file]=createHash('sha256').update(source).digest('hex');
 }
-const truth=new Map();
-for(const unequal of[false,true]){
-  const graph=new CurveGraph(framePaths(0,unequal),100);
-  truth.set(unequal,await renderExportedWeave(solutionJSON(graph.solution(graph.points,1)),1600));
+const truth=new Map(),kind=spec=>spec.anti?'anti':spec.unequal?'unequal':'frame';
+const pathsFor=(spec,delta)=>spec.anti?antiSeamPaths(delta):framePaths(delta,!!spec.unequal);
+for(const spec of cases){
+  if(truth.has(kind(spec)))continue;
+  const graph=new CurveGraph(pathsFor(spec,0),100);
+  truth.set(kind(spec),await renderExportedWeave(solutionJSON(graph.solution(graph.points,1)),1600));
 }
 for(const name of names){
   const browser=await browsers[name].launch({headless:true});
@@ -54,12 +59,12 @@ for(const name of names){
           if(mask.some((v,i)=>v!==copy[i]))throw new Error('Cleanup modified the source.');
           if(finalizeShared(after,cfg)!==after)throw new Error('Already shared seams were changed again.');
           return{geometry:solutionJSON(after),before:saved,sharing:after.report.finalSharing,validation:validate(after,cfg,{checkImage:false}),material:materialAudit(after,cfg),symmetry:symmetryReport(after,spec.symmetry),hiddenLength:after.graph.edges.filter(e=>!e.visible).reduce((sum,e)=>sum+e.curve.length(),0)};
-        },{spec,paths:framePaths(.16,!!spec.unequal),target:framePaths(0,!!spec.unequal)});
+        },{spec,paths:pathsFor(spec,.16),target:pathsFor(spec,0)});
         assert.equal(actual.sharing.applied,true);assert.equal(actual.sharing.errorAfter,0);
         assert.equal(actual.validation.passed,true);assert.equal(actual.material.passed,true);
-        assert.deepEqual(actual.symmetry.honoured.slice().sort(),Object.keys(spec.symmetry).sort());
+        assert.deepEqual(actual.symmetry.honoured.slice().sort(),Object.entries(spec.symmetry).map(([key,value])=>key==='withinCurve'?key+':'+value:key).sort());
         assert.ok(actual.hiddenLength>84);
-        const target=truth.get(!!spec.unequal),old=await renderExportedWeave(actual.before,1600),rendered=await renderExportedWeave(actual.geometry,1600);
+        const target=truth.get(kind(spec)),old=await renderExportedWeave(actual.before,1600),rendered=await renderExportedWeave(actual.geometry,1600);
         const error=r=>r.coverage.reduce((sum,v,i)=>sum+Math.abs(v-target.coverage[i]),0)/r.coverage.length;
         row.coverageBefore=error(old);row.coverageAfter=error(rendered);assert.ok(row.coverageAfter<row.coverageBefore/5);
         for(let y=0;y<1600;y++)for(let x=0;x<1600;x++){

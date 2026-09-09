@@ -59,9 +59,8 @@ start to its end, `'anti'` reflects through the chord midpoint. Both swap the
 endpoints, so both tie cubic `j` point `k` to cubic `m-1-j` point `3-k` of the
 same cut. The chord map is an affine map determined by the two endpoints, and
 the endpoints are parameters themselves: it is recomputed from the current
-endpoints at each projection step and held fixed inside that step. Each
-endpoint's crossing coordinate is pinned to its square edge, so the chord
-cannot swing between steps.
+endpoints at each projection step and held fixed inside that step. Endpoints stay on their square edges but can move along
+them between steps, changing the chord map.
 
 ### Parameterisation
 
@@ -196,19 +195,26 @@ preference does when it is on is described in
 - **Traced feature recovery is skipped** under a request, for the same reason:
   it routes through the MILP. A symmetric fit is also expected to drop features
   of an asymmetric drawing, so the trigger would fire on constraint cost.
-- **Shared-cut recovery is skipped** under a request. It re-subdivides one cut
-  of a pair, after which the paired cuts no longer hold the same number of
-  cubics and no pairing can follow them.
-- **Hidden-curve rounding (`roundHidden`) is not symmetry aware.** The direct
-  fitter produces no hidden curves once sharing is skipped, so this only
-  matters for imported or traced geometry; the measured `honoured` list will
-  show it if rounding breaks a tie.
-- **A combined `withinCurve` request uses alternating projections.** Within-curve
-  ties are applied first and the square's ties last, so such a request leaves
-  the square symmetries exact and the chord symmetry within floating-point
-  rounding (about 1e-14 mm in practice, far inside the 1e-6 mm report
-  tolerance). The identical-sheet projection never joins that alternation; see
-  rule 3 of the precedence above.
+- **Shared-cut recovery coordinates all requested constraints.** Subdivisions
+  propagate through the square transforms, each chord-symmetric cut's reversal,
+  and existing shared spans. Joint projection then aligns all controls, and
+  the original image, geometry, material and symmetry checks decide acceptance.
+  See [CHORD-PROJECTION.md](CHORD-PROJECTION.md).
+- **Hidden-curve rounding (`roundHidden`) is not symmetry aware.** The automatic
+  fitter uses coordinated shared-cut cleanup and simplification; imported or
+  directly traced geometry can still pass through the separate rounding option.
+  The measured `honoured` list exposes any resulting lost constraint.
+- **Within-curve and square constraints are projected jointly.** A graph of
+  rigid affine point relations reduces every connected component to a single
+  2D root. Cycles and fixed coordinates constrain that root; projecting its
+  mean solves the least-squares problem without successive projections undoing
+  one another. Inconsistent constraints leave the proposed values untouched,
+  and refinement rolls back the update. Accepted refinement checkpoints also
+  measure all requested symmetries directly.
+- **The chord map is frozen during gradient projection.** The projection is
+  exact for that linearized subspace; it does not include derivatives of the
+  endpoint-dependent reflection map itself. The map is recomputed before each
+  coordinate projection and the actual exported constraints are measured.
 - **Adam's per-coordinate scaling** preserves a sign-flipped tie exactly, but
   not a chord reflection that mixes x and y; the projection after every update
   removes that drift rather than relying on the step to respect it.

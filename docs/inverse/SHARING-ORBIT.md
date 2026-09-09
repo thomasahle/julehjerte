@@ -34,9 +34,10 @@ the existing bend and paper-core checks. Final selection additionally checks the
 original source mask and its image features. Deliberate narrow input lines are
 retained. Neither the image nor the acceptance thresholds are changed.
 
-Within-curve chord reflections remain excluded: each cut defines a different
-endpoint-dependent transform, so those constraints do not form the same finite
-square-transform group. They are never discarded to permit a repair.
+The subsequent [joint chord projection](CHORD-PROJECTION.md) also supports
+within-curve symmetry. Its parameter reversal participates in subdivision
+closure, while the distinct spatial maps are solved as joint point constraints
+rather than assumed to form a finite square-transform group.
 
 ## Regression fixtures
 

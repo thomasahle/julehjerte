@@ -24,8 +24,9 @@ then represented once in the graph. The later
 [anti-paired recovery](ANTI-SHARING.md) also supports the between-lobes Anti
 setting, including its reversed partners and parameter intervals.
 [Coordinated square-symmetry repair](SHARING-ORBIT.md) now also supports mirrors,
-half turns and every combination of square transforms. Within-curve chord
-symmetries remain excluded.
+half turns and every combination of square transforms.
+[Joint chord projection](CHORD-PROJECTION.md) also enables within-curve
+symmetries without discarding their constraints.
 
 Proposals can average the near-coincident sections or follow either existing
 section. All options face the same image, geometry, bend and paper-core checks.

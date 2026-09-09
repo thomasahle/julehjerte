@@ -150,8 +150,8 @@ const pathControls=(graph,pi)=>{const ids=[];for(const[e,d]of graph.paths[pi])fo
  * M(p)=L p+t. Both swap the cut's endpoints, so they tie cubic j point k to
  * cubic m-1-j point 3-k of the same cut. The endpoints are parameters too, so
  * the map is recomputed from the current endpoints at every projection step
- * and held fixed inside it; each endpoint's crossing coordinate is pinned to
- * its square edge, so the chord cannot swing between steps.
+ * and held fixed inside it. Endpoints stay on their square edges but may
+ * move along them between steps, changing the chord map.
  */
 export function chordMap(p0,p1,mode){
   if(mode==='anti')return{L:[-1,0,0,-1],t:[p0[0]+p1[0],p0[1]+p1[1]]};

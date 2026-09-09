@@ -3,6 +3,7 @@
  */
 export function installPaintObservation(){
   const qa=window.__paintQA={result:null,error:null,prepared:null,marks:null};
+  window.addEventListener('error',event=>{qa.error={type:'pageerror',message:event.message};if(qa.marks)qa.marks.failed=performance.now();});
   const NativeWorker=window.Worker;let pending=new WeakMap(),observer=null;
   const enabled=button=>button&&!button.matches(':disabled')&&button.getAttribute('aria-disabled')!=='true';
   const checkReady=()=>{

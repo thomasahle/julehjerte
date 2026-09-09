@@ -8,7 +8,7 @@ import {createServer as createHTTPServer} from 'node:http';
 import {createServer} from 'vite';
 import {JSDOM} from 'jsdom';
 import {createCanvas,loadImage} from 'canvas';
-import {motifFixture,topHatFixture} from './motif-fixture.mjs';
+import {motifFixture,topHatFixture,chordFrameFixture} from './motif-fixture.mjs';
 import {installPaintObservation,collectPaintObservation} from './paint-observer.mjs';
 import {stopIntervention,installStopObservation,exerciseStop} from './stop-browser-hooks.mjs';
 
@@ -82,6 +82,7 @@ try{
   const browser=await browsers[browserName].launch({headless:true});
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    interventionArmed=Boolean(intervention);
+   const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
    const topHat=['top-hat','top-hat-independent','top-hat-anti'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -118,7 +119,7 @@ try{
      if(name==='hunodan'){
       const metadata=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
       const e=metadata.cases[0],[x,y,x1,y1]=e.photoROI,im=await loadImage(e.source),c=createCanvas(x1-x,y1-y);c.getContext('2d').drawImage(im,-x,-y);await fs.writeFile(file,c.toBuffer('image/png'));
-     }else await fs.writeFile(file,topHat?topHatFixture(200,{quarterTurns:name==='top-hat-anti'?1:0}):free?motifFixture(name.replace(/-free(?:-small)?$/,'')).original:motifFixture(name).png);
+     }else await fs.writeFile(file,chordMode?chordFrameFixture(chordMode):topHat?topHatFixture(200,{quarterTurns:name==='top-hat-anti'?1:0}):free?motifFixture(name.replace(/-free(?:-small)?$/,'')).original:motifFixture(name).png);
      await button('Import picture').click();await page.locator('input[type=file]').setInputFiles(file);
      if(name!=='hunodan')await button('The whole picture').click();
      else await page.locator('button.corner').nth(3).waitFor();
@@ -134,6 +135,7 @@ try{
      }
     }
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Find the cuts'&&!b.disabled));
+    if(chordMode)await page.getByRole('radiogroup',{name:'Within curve symmetry',exact:true}).getByRole('radio',{name:chordMode==='sym'?'Sym':'Anti',exact:true}).click();
     row.requestedSymmetry=await symmetry();
     if(name==='top-hat-anti'){
      assert.equal(row.requestedSymmetry.lobes,'anti');
@@ -203,6 +205,10 @@ try{
     const shown=summary.match(free?/([\d.]+)% different in the motif/:/([\d.]+)% different from the mask/);
     assert.ok(shown,summary);row.displayedError=Number(shown[1])/100;
     row.honouredSymmetry=await symmetry();
+    if(chordMode){
+     assert.ok(observed.result.report.symmetry.honoured.includes('withinCurve:'+chordMode));
+     assert.equal(row.honouredSymmetry.curve,chordMode,'Conversion must preserve the requested chord symmetry.');
+    }
     if(name==='top-hat-anti'){
      assert.ok(observed.result.report.symmetry.honoured.includes('antiTranspose'),'The final engine curves must retain anti-transposition.');
      assert.equal(row.honouredSymmetry.lobes,'anti','Conversion must retain the requested between-lobes setting.');
@@ -224,6 +230,20 @@ try{
     // A shared engine span must remain one exact span on both editable sheets.
     // Area-error checks alone can miss the long hairline seams in the hat bug.
     const geometry=JSON.parse(observed.result.files['cut_geometry.json']),overlap=inferOverlapRect(design.fingers,design.gridSize);
+    if(chordMode){
+     // Measure every downloaded control directly, in the SVG coordinate
+     // frame, independently of the engine's projector and symmetry reporter.
+     let worst=0;
+     for(const finger of design.fingers){
+      const cut=finger.segments,first=cut[0].p0,last=cut.at(-1).p3,dx=last.x-first.x,dy=last.y-first.y,mx=(first.x+last.x)/2,my=(first.y+last.y)/2;
+      for(let j=0;j<cut.length;j++)for(let k=0;k<4;k++){
+       const p=cut[j]['p'+k],q=cut[cut.length-1-j]['p'+(3-k)],along=((q.x-mx)*dx+(q.y-my)*dy)/(dx*dx+dy*dy);
+       const x=chordMode==='anti'?2*mx-q.x:q.x-2*along*dx,y=chordMode==='anti'?2*my-q.y:q.y-2*along*dy;
+       worst=Math.max(worst,Math.hypot(p.x-x,p.y-y)*100/overlap.width);
+      }
+     }
+     row.exportedChordDeviationMm=worst;assert.ok(worst<1e-6,'Downloaded curves must retain chord symmetry.');
+    }
     row.engineSegments=Object.keys(geometry.curves).length;
     row.editableSegments=design.fingers.reduce((sum,f)=>sum+f.segments.length,0);
     row.sharedSimplification=observed.result.report.solver?.finalSharedSimplification;
@@ -262,7 +282,13 @@ try{
     }
     await page.screenshot({path:path.join(dir,'draw.png'),fullPage:true});
     assert.deepEqual(row.pageErrors,[]);row.passed=true;
-   }catch(error){row.failure=error.stack;process.exitCode=1;if(page)await page.screenshot({path:path.join(dir,'failure.png'),fullPage:true}).catch(()=>{});}
+   }catch(error){
+    row.failure=error.stack;process.exitCode=1;
+    if(page){
+     await page.evaluate(collectPaintObservation).then(value=>fs.writeFile(path.join(dir,'failure-observation.json'),JSON.stringify(value,null,2))).catch(()=>{});
+     await page.screenshot({path:path.join(dir,'failure.png'),fullPage:true}).catch(()=>{});
+    }
+   }
    finally{await context.close();console.log(JSON.stringify(row));await fs.writeFile(path.join(output,'results.json'),JSON.stringify(report,null,2));}
   }}finally{await browser.close();}
  }
