@@ -1,5 +1,9 @@
 # Bound gradient calibration by elapsed time
 
+This records the release at `6dea1a8`. The subsequent
+[identical-sheet paper-audit change](IDENTICAL-PAPER.md) removes repeated work
+inside a complete audit while retaining these calibration rules.
+
 The gradient selector introduced in [GRADIENT-BACKENDS.md](GRADIENT-BACKENDS.md)
 avoids a slower Wasm implementation in Firefox, but its fixed batches repeated
 expensive calls unnecessarily. On the dense grid fixture, the old selector
