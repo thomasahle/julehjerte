@@ -228,8 +228,134 @@ export function defaultAdvanced(symmetry: SymmetrySettings): AdvancedSettings {
 	};
 }
 
-/** Progress from the engine, as the stage names `core/` emits ('graph', 'paper', …). */
-export type StageListener = (stage: string) => void;
+/**
+ * Whether the engine can be asked to stop and hand back its best answer.
+ *
+ * False, and the button that would use it is dormant: today the only way to
+ * interrupt a solve is to terminate the worker, which throws the search away
+ * (see `cancel`). PAINT.md §12 (b) writes down the message that would change
+ * that — `{action:'stop'}`, answered with a normal `result` carrying
+ * `report.stoppedEarly`.
+ *
+ * Flipping this constant is *not* on its own what switches the panel's "Brug
+ * det bedste nu" on, and the panel is written so that it cannot be: the button
+ * is drawn only when this is true **and** the panel has been given an
+ * `onUseBest`, which `PaintPage` does not pass today. Otherwise the day someone
+ * flipped the flag, a primary button would appear beside Afbryd on every search
+ * and do nothing, which is worse than no button. The whole change is this
+ * constant, the message in `InverseWorker`, and that handler.
+ *
+ * Typed `boolean` rather than left as the literal `false`, so that the code
+ * behind the flag is type-checked instead of being narrowed away as dead.
+ */
+export const ENGINE_GRACEFUL_STOP: boolean = false;
+
+/**
+ * One progress event from the engine, whole.
+ *
+ * The bridge used to keep only `event.stage` and throw the rest away, which is
+ * why the panel could say no more than "working". The engine reports a great
+ * deal more per event, and the shapes below are what `static/inverse/core/`
+ * actually sends — read off `direct/fit.js`, `direct/refine.js`, `solver.js`
+ * and `automatic.js`, not invented here.
+ *
+ * Every member extends the same all-optional `ProgressFields` on purpose. The
+ * engine sends a bare `{stage}` for the beginning of each phase and the full
+ * record at each checkpoint (`stage()` in `fit.js` against the `rec` object in
+ * `refineCurves`), so *no* field can be promised by its stage name; and a
+ * shared base means a reader that has narrowed to one member can still read a
+ * field the engine has newly started attaching, rather than failing to compile
+ * the day `core/` grows one. The union is what says which stage sends what.
+ */
+interface ProgressFields {
+	/** Strips per family, `[A, B]` — the engine's A is our right lobe. */
+	counts?: [number, number];
+	/** Share of the square's cells the candidate gets wrong, 0…1. */
+	error?: number;
+	/** The refiner's step number inside one attempt. */
+	step?: number;
+	/** The refiner's own objective; not the same thing as `error`. */
+	score?: number;
+	/**
+	 * Today a validity flag: `check.passed` from `refineCurves`.
+	 *
+	 * PAINT.md §12 (a) asks for the current candidate's `heartcurves-2` solution
+	 * here instead, and the two are told apart by type — a boolean is the flag,
+	 * an object or a string is geometry. `searchProgress.candidateGeometry` is
+	 * the one place that decides.
+	 */
+	geometry?: boolean | string | Record<string, unknown>;
+	/** The material audit's verdict on the unfolded paper. */
+	paper?: string;
+	/** Up to eight validation complaints, for the console. */
+	issues?: unknown[];
+	/** MILP: which round of the cutting-plane loop. */
+	round?: number;
+	/** MILP: seconds of the budget left. */
+	remaining?: number;
+	/** MILP: branch-and-bound nodes explored. */
+	nodes?: number;
+	/** MILP: the relative gap to the best possible answer, 0…1, or null. */
+	gap?: number | null;
+	/** MILP: whether a validated incumbent is already in hand. */
+	validatedIncumbent?: boolean;
+	/** MILP: the size of the model that was built. */
+	variables?: number;
+	constraints?: number;
+	/** Whatever else the engine attaches; nothing here reads it by name. */
+	[key: string]: unknown;
+}
+
+/** One grid seed the count search scored (`fit.js`, inside `directInitializing`). */
+export interface DirectSeedProgress extends ProgressFields {
+	stage: 'directInitializing';
+}
+
+/** One refinement checkpoint of the direct fitter (`refine.js`'s `rec`, spread by `fit.js`). */
+export interface DirectStepProgress extends ProgressFields {
+	stage:
+		| 'directFitting'
+		| 'directClearance'
+		| 'directRefining'
+		| 'directSharing'
+		| 'directPolishing';
+}
+
+/** The MILP route's model, once built (`solver.js`). */
+export interface MilpModelProgress extends ProgressFields {
+	stage: 'model';
+}
+
+/** The MILP route solving, either per round or per logging callback (`solver.js`). */
+export interface MilpSolvingProgress extends ProgressFields {
+	stage: 'solving';
+}
+
+/** The MILP route checking a candidate it has just extracted (`solver.js`). */
+export interface MilpValidatingProgress extends ProgressFields {
+	stage: 'validating';
+}
+
+/**
+ * Any other stage: 'preprocessing', 'graph', 'connectors', 'rounding', 'paper',
+ * 'tolerances', 'exporting' — and whatever `core/` adds next. It is last in the
+ * union and its `stage` is a plain string, so a name nobody has heard of still
+ * reaches the UI as an event rather than as a type error.
+ */
+export interface PlainProgress extends ProgressFields {
+	stage: string;
+}
+
+export type EngineProgress =
+	| DirectSeedProgress
+	| DirectStepProgress
+	| MilpModelProgress
+	| MilpSolvingProgress
+	| MilpValidatingProgress
+	| PlainProgress;
+
+/** Progress from the engine, whole; `event.stage` is the name `core/` emits. */
+export type StageListener = (event: EngineProgress) => void;
 
 let worker: InverseWorker | null = null;
 

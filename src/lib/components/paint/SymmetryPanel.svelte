@@ -21,6 +21,7 @@
 -->
 <script lang="ts">
 	import SymmetryRows from '$lib/components/editor/SymmetryRows.svelte';
+	import PanelHint from './PanelHint.svelte';
 	import { t, type Language } from '$lib/i18n';
 	import type { SymmetrySettings } from '$lib/paint/symmetry';
 
@@ -37,10 +38,17 @@
 	let { value, onChange, found, disabled = false, lang }: Props = $props();
 </script>
 
+<!--
+  The explanation that used to head the panel body is behind the "i" beside the
+  heading: it says what a row does, which is worth reading once and then never
+  again, and at 300px it cost the column a line on every visit. It was the
+  heading's `title` for a while, which bought the same line and took the sentence
+  away from everyone not holding a mouse. The "fundet" tags stay in the body —
+  they are about this mask, not about symmetry.
+-->
 <section class="editor-panel">
-	<h2 class="panel-title">{t('paintSymmetry', lang)}</h2>
+	<PanelHint {lang} heading={t('paintSymmetry', lang)} hint={t('paintSymmetryHint', lang)} />
 	<fieldset class="rows" {disabled}>
-		<p class="lead">{t('paintSymmetryHint', lang)}</p>
 		<SymmetryRows {lang} {value} onChange={onChange} {found} />
 	</fieldset>
 </section>
@@ -60,12 +68,5 @@
 
 	.rows:disabled {
 		opacity: 0.45;
-	}
-
-	.lead {
-		margin: 0;
-		font-size: 13px;
-		line-height: 1.5;
-		color: var(--muted);
 	}
 </style>

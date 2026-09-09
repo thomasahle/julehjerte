@@ -80,15 +80,28 @@
 		paperPair,
 		prepareImage,
 		prepareMask,
-		type AdvancedSettings
+		type AdvancedSettings,
+		type EngineProgress
 	} from '$lib/inverse/engine';
 	import { EngineError, searchTimedOut } from '$lib/inverse/client';
-	import { convertValidatedCutGeometry, CutGeometryError } from '$lib/inverse/toHeartDesign';
+	import {
+		convertValidatedCutGeometry,
+		cutGeometryToDesign,
+		CutGeometryError,
+		type CutGeometry
+	} from '$lib/inverse/toHeartDesign';
+	import {
+		candidateGeometry,
+		createGeometryThrottle,
+		IDLE_PROGRESS,
+		reduceProgress,
+		type SearchProgress
+	} from '$lib/paint/searchProgress';
 	import { DEFAULT_COLORS, DEFAULT_COLORS_HEX, getColors, subscribeColors } from '$lib/stores/colors';
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { toHexColors } from '$lib/utils/heartColors';
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
-	import type { HeartColors } from '$lib/types/heart';
+	import type { HeartColors, HeartDesign } from '$lib/types/heart';
 
 	interface Props {
 		lang: Language;
@@ -140,9 +153,51 @@
 	let canRedo = $state(false);
 	const history = createHistory();
 
-	let stage = $state('');
+	/**
+	 * What the search is doing, folded out of the engine's progress events.
+	 *
+	 * `$state.raw` because the reducer replaces the object rather than mutating
+	 * it: a checkpoint arrives a few times a second and the panel reads the whole
+	 * thing, so per-field reactivity would buy nothing and cost a proxy around an
+	 * array that is rebuilt anyway.
+	 */
+	let progress = $state.raw<SearchProgress>(IDLE_PROGRESS);
 	let elapsed = $state(0);
 	let timer: ReturnType<typeof setInterval> | null = null;
+
+	/**
+	 * The candidate the engine is looking at right now, drawn over the mask.
+	 *
+	 * Dormant: `geometry` on a progress event is a validity flag today, and
+	 * `candidateGeometry` answers null for it, so nothing is ever drawn until the
+	 * engine starts attaching the real thing (PAINT.md §12 (a)). Wired now, so
+	 * that when it does the change is in `core/` alone.
+	 */
+	let candidate = $state.raw<HeartDesign | null>(null);
+
+	/**
+	 * Converting a candidate is a full `cutGeometryToDesign`, so it is held to
+	 * four a second with the latest winning — the engine's own throttle is a
+	 * promise in a document, and this one is in the code that would suffer.
+	 */
+	const candidates = createGeometryThrottle<string | CutGeometry>((geometry) => {
+		try {
+			candidate = cutGeometryToDesign(geometry, {
+				name: t('paintHeartFromMask', lang),
+				colors: toHexColors(colors, DEFAULT_COLORS_HEX),
+				// Coarse, and no `enforce`: this is a picture of where the search has
+				// got to, redrawn a few times a second, not the heart anyone will cut.
+				// The tolerance keeps the conversion cheap and the missing enforcement
+				// keeps it from rasterising two designs to price a correction.
+				tolerance: 1.0
+			});
+		} catch (error) {
+			// A candidate mid-refinement need not be a legal heart — cuts may cross,
+			// a family may be empty. That is not a failure of the search, so it
+			// leaves the last good candidate on screen and says nothing.
+			console.debug('A candidate could not be drawn', error);
+		}
+	});
 	/** The rows the converter could hold the last heart to (PAINT.md §11). */
 	let honoured = $state<SymmetrySettings | null>(null);
 	/** "Vis det beskyttede motiv": the outline over the found heart. */
@@ -230,17 +285,21 @@
 		});
 	}
 
-	// The column's own box changes with the viewport; what is inside it changes with
-	// the tool (the Markér hint) and with the result state (the panels stand down).
+	// The column *and every panel in it*, because only the panels can say that the
+	// fade is needed. The column is pinned top and bottom, so its own box never
+	// changes height whatever it holds: watching it alone caught the viewport and
+	// nothing else, and each content change — the Markér hint appearing, the panels
+	// standing down, Kanten collapsing under Fast — had to be named here by hand as
+	// a `void` line. That list went stale the first time a panel learned a new
+	// height, and it would again; the panels themselves cannot.
 	$effect(() => {
 		const el = leftColumnEl;
-		void tool;
-		void toolsStandby;
 		if (!el) return;
 		void tick().then(measureLeftColumn);
 		if (typeof ResizeObserver === 'undefined') return;
 		const observer = new ResizeObserver(measureLeftColumn);
 		observer.observe(el);
+		for (const panel of el.children) observer.observe(panel);
 		return () => observer.disconnect();
 	});
 
@@ -520,9 +579,17 @@
 		timer = setInterval(() => (elapsed = Math.floor((performance.now() - began) / 1000)), 1000);
 	}
 
+	/**
+	 * The search is over, however it ended: found, failed, Afbryd, or the page
+	 * being left. The candidate goes with the clock, because a conversion still
+	 * waiting in the throttle would otherwise land a picture of a half-finished
+	 * search over the answer a second after it arrived.
+	 */
 	function stopTimer(): void {
 		if (timer) clearInterval(timer);
 		timer = null;
+		candidates.stop();
+		candidate = null;
 	}
 
 	function classify(err: unknown): PaintError {
@@ -536,14 +603,35 @@
 		return { kind: 'engine', detail: err instanceof Error ? err.message : String(err) };
 	}
 
+	/**
+	 * One progress event: the numbers the panel shows, and the candidate it draws.
+	 *
+	 * Both directions of PAINT.md §12 meet here. The reducer takes the whole event
+	 * — it has to, because the fitter says which counts it is trying and how wrong
+	 * they still are, and none of that survived the old `progress(data.event.
+	 * stage)` — and the candidate's cuts are lifted out separately, because they
+	 * are a picture rather than a number and cost a conversion to draw.
+	 */
+	function onProgress(event: EngineProgress): void {
+		progress = reduceProgress(progress, event);
+		const geometry = candidateGeometry(event);
+		if (geometry) candidates.push(geometry);
+	}
+
 	async function find(): Promise<void> {
 		settle();
 		const mask = session.mask;
 		if (!mask || maskEmpty || busy) return;
+		// "Find snit igen", from the panel's own result face: the heart on screen
+		// describes a search that is over, so the canvas goes back to the mask the
+		// new one is about — otherwise the visitor would watch a progress bar under
+		// the very heart they had just been told was not good enough.
+		backToMask();
 		notice = null;
 		session.error = null;
 		session.status = 'searching';
-		stage = 'preprocessing';
+		progress = reduceProgress(IDLE_PROGRESS, { stage: 'preprocessing' });
+		candidate = null;
 		startTimer();
 		try {
 			// The target itself has to be symmetric, or the search spends its time
@@ -555,7 +643,7 @@
 			// Checker patterns may seed the search, but never replace this target.
 			const frame = { ...session.frame };
 			const target = { size: mask.size, data: new Uint8Array(mask.data) };
-			await prepareMask(target, colors, (next) => (stage = next), frame);
+			await prepareMask(target, colors, onProgress, frame);
 			const solved = await findCuts(
 				{
 					colors,
@@ -564,7 +652,7 @@
 					minWidthMm: advanced.minWidthMm,
 					matchingSheets: advanced.matchingSheets
 				},
-				(next) => (stage = next)
+				onProgress
 			);
 
 			const geometry = solved.files['cut_geometry.json'];
@@ -795,6 +883,7 @@
 							{paintValue}
 							{revision}
 							frame={session.frame}
+							{candidate}
 							onFrameSizeStart={recordFrameFold}
 							onFrameSize={resizeFrame}
 							disabled={busy}
@@ -858,10 +947,10 @@
 					<!-- The column runs past one edge or the other and there is more of it
 					     out of sight. macOS draws nothing of an overlay scrollbar until a
 					     gesture starts, so without these a panel is simply not there as far
-					     as anyone can tell. Both edges, not just the bottom: with three
-					     panels the column overflows on every desktop height, so a visitor
-					     who has scrolled down to Kanten needs to be told Værktøj is up
-					     there as much as they needed to be told Kanten was below. -->
+					     as anyone can tell. Both edges, not just the bottom: a short window
+					     or a Kanten expanded under Fri still runs the column past both, so a
+					     visitor who has scrolled down to Kanten needs to be told Værktøj is
+					     up there as much as they needed to be told Kanten was below. -->
 					<div class="left-fade top" class:showing={leftColumnCutTop} aria-hidden="true"></div>
 					<div class="left-fade" class:showing={leftColumnCut} aria-hidden="true"></div>
 					<div class="right-panel" class:collapsed={panelCollapsed} id="paint-panel">
@@ -976,7 +1065,7 @@
 						{showMotif}
 						onShowMotif={(next) => (showMotif = next)}
 						{elapsed}
-						{stage}
+						{progress}
 						{advanced}
 						onAdvanced={(next) => (advanced = next)}
 						onResetAdvanced={() => (advanced = defaultAdvanced(session.symmetry))}
@@ -1083,14 +1172,14 @@
 		border-color: var(--green);
 	}
 
-	/* Three panels now (Værktøj, Symmetri, Kanten), which is taller than any
-	   desktop viewport — measured at 240px over on a 1440 x 950 window — so the
-	   column scrolls as a rule rather than only on a short laptop. It stays centred
-	   while it fits and scrolls from the top when it does not, which is what
-	   `safe center` says; a browser that does not know the keyword falls back to
-	   the top, the same answer for the case that matters. Centring with a transform
-	   instead cut the column off at *both* ends, with the top out of reach
-	   altogether.
+	/* Three panels (Værktøj, Symmetri, Kanten) that fit a desktop window in their
+	   default state — 732px against the 880 a 1440 x 950 viewport leaves — and run
+	   past it on a short one, or with Kanten expanded under Fri. So the column
+	   stays centred while it fits and scrolls from the top when it does not, which
+	   is what `safe center` says; a browser that does not know the keyword falls
+	   back to the top, the same answer for the case that matters. Centring with a
+	   transform instead cut the column off at *both* ends, with the top out of
+	   reach altogether.
 
 	   The padding is for the panels' shadow: `overflow-y: auto` computes overflow-x
 	   to `auto` as well, which clips anything drawn outside the box. */

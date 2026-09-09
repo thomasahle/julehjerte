@@ -98,4 +98,17 @@ declare module '$inverse/core/engine.js' {
     target: { sourceImage: { weights?: Float64Array } };
     preview: { mask: Uint8Array; weights?: Float64Array; resolution: number; metadata: Record<string, unknown> };
   };
+
+  /**
+   * Solve a prepared target and finish it into files and a report — the very
+   * call the worker makes for a 'solve' request, and the only way to get the
+   * real progress stream out of the engine in a test. `onProgress` is handed
+   * each event whole, which is what `src/lib/paint/searchProgress.test.ts`
+   * records to build its fixture.
+   */
+  export function design(
+    target: unknown,
+    settings?: Record<string, unknown>,
+    onProgress?: (event: Record<string, unknown>) => void
+  ): Promise<{ files: Record<string, string>; report: Record<string, unknown> }>;
 }

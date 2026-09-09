@@ -18,7 +18,9 @@
   way the visitor will see it and cannot drift from what is drawn.
 -->
 <script lang="ts">
+	import { tick, untrack } from 'svelte';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
+	import PanelHint from './PanelHint.svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import {
 		clampFrameSize,
@@ -97,6 +99,39 @@
 		onFrameStart?.();
 	}
 
+	/** The panel itself, so that opening it can bring what it opened into view. */
+	let sectionEl = $state.raw<HTMLElement | null>(null);
+	/** The first run of the effect below is the render, not a choice. */
+	let settled = false;
+
+	/**
+	 * Choosing Fri brings the panel's own bottom into view.
+	 *
+	 * Kanten is the last panel of a column that already fills the window, so the
+	 * three controls Fri reveals — the shapes, Størrelse, and the sentence saying
+	 * what the band becomes — appear below the column's bottom edge: measured at
+	 * 1440 × 950, the slider landed under the fade and the hint entirely outside
+	 * the box, with nothing scrolled. The cut-edge fade says there is more down
+	 * there, but a visitor who has just asked for exactly these controls should
+	 * not have to go looking for them. `block: 'nearest'` scrolls the least that
+	 * puts the panel on screen and does nothing when it is already there, so a
+	 * tall window is left alone — and the narrow layout, where the page scrolls
+	 * rather than the column, is served by the same line.
+	 */
+	$effect(() => {
+		const free = frame.mode === 'free';
+		untrack(() => {
+			if (!settled) {
+				settled = true;
+				return;
+			}
+			if (!free) return;
+			// After the fields exist: the panel is measured to its new height, not
+			// the one it had while it was a single row.
+			void tick().then(() => sectionEl?.scrollIntoView?.({ block: 'nearest' }));
+		});
+	});
+
 	/** One shape as an SVG path in the unit square, for the button glyphs. */
 	function glyphPath(shape: FrameShape): string {
 		const outline = shapeOutline(shape, 0.68);
@@ -108,8 +143,29 @@
 	}
 </script>
 
-<section class="editor-panel">
-	<h2 class="panel-title">{tr('paintFrame')}</h2>
+<!--
+  Fast is the state a visitor who has not thought about the band is already in,
+  and in it the shape and the size decide nothing: they describe a motif nobody
+  has asked to protect. So the panel is its one row until Fri is chosen, which
+  is what keeps the three-panel column inside a desktop window. The frame itself
+  is untouched — the shape and the size the visitor last set are still in the
+  store, and choosing Fri brings them back exactly as they were.
+
+  The sentence that used to stand under a Fast panel is behind the "i" beside the
+  heading (the shared `PanelHint`): it says what Fast means, and it is the one
+  thing here that is not already on the segment's own two words. It was the
+  heading's `title` for a while, which is mouse-only — no touch, no keyboard —
+  and that is exactly the visitor who needs telling what an unexplained pair of
+  words does. Only under Fast: a free band explains itself in the note at the
+  panel's foot, and a second sentence saying the same would be one line of the
+  column spent twice.
+-->
+<section class="editor-panel" bind:this={sectionEl}>
+	{#if frame.mode === 'free'}
+		<h2 class="panel-title">{tr('paintFrame')}</h2>
+	{:else}
+		<PanelHint {lang} heading={tr('paintFrame')} hint={tr('paintFrameHintFixed')} />
+	{/if}
 
 	<div class="field">
 		<div class="segmented">
@@ -126,63 +182,65 @@
 		</div>
 	</div>
 
-	<div class="field">
-		<span class="field-label" id="paint-frame-shape">{tr('paintFrameShape')}</span>
-		<div class="shape-grid" role="group" aria-labelledby="paint-frame-shape">
-			{#each SHAPES as item (item.id)}
-				<button
-					type="button"
-					class="shape-btn"
-					class:active={frame.shape === item.id}
-					aria-pressed={frame.shape === item.id}
-					title={tr(item.label)}
-					onclick={() => setShape(item.id)}
-					{disabled}
-				>
-					<!-- The woven square and the shape inside it, turned the quarter of a
-					     right angle the heart turns them: the corners of the viewBox hold
-					     the square's diagonal, which is √2 wide. -->
-					<svg viewBox="-0.25 -0.25 1.5 1.5" width="26" height="26" aria-hidden="true">
-						<g transform="rotate(45 0.5 0.5)">
-							<rect
-								x="0"
-								y="0"
-								width="1"
-								height="1"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="0.05"
-								opacity="0.35"
-							/>
-							<path d={glyphPath(item.id)} fill="currentColor" opacity="0.85" />
-						</g>
-					</svg>
-					<span class="shape-label">{tr(item.label)}</span>
-				</button>
-			{/each}
+	{#if frame.mode === 'free'}
+		<div class="field">
+			<span class="field-label" id="paint-frame-shape">{tr('paintFrameShape')}</span>
+			<div class="shape-grid" role="group" aria-labelledby="paint-frame-shape">
+				{#each SHAPES as item (item.id)}
+					<button
+						type="button"
+						class="shape-btn"
+						class:active={frame.shape === item.id}
+						aria-pressed={frame.shape === item.id}
+						title={tr(item.label)}
+						onclick={() => setShape(item.id)}
+						{disabled}
+					>
+						<!-- The woven square and the shape inside it, turned the quarter of a
+						     right angle the heart turns them: the corners of the viewBox hold
+						     the square's diagonal, which is √2 wide. -->
+						<svg viewBox="-0.25 -0.25 1.5 1.5" width="26" height="26" aria-hidden="true">
+							<g transform="rotate(45 0.5 0.5)">
+								<rect
+									x="0"
+									y="0"
+									width="1"
+									height="1"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="0.05"
+									opacity="0.35"
+								/>
+								<path d={glyphPath(item.id)} fill="currentColor" opacity="0.85" />
+							</g>
+						</svg>
+						<span class="shape-label">{tr(item.label)}</span>
+					</button>
+				{/each}
+			</div>
 		</div>
-	</div>
 
-	<div class="field">
-		<label class="field-label" for="paint-frame-size">
-			{tr('paintFrameSize')}
-			<span class="value">{percent} %</span>
-		</label>
-		<input
-			id="paint-frame-size"
-			type="range"
-			min={Math.round(FRAME_MIN_SIZE * 100)}
-			max={Math.round(FRAME_MAX_SIZE * 100)}
-			step="1"
-			value={percent}
-			onpointerdown={startSize}
-			onkeydown={startSize}
-			oninput={(e) => setSize(e.currentTarget.value)}
-			{disabled}
-		/>
-	</div>
+		<div class="field">
+			<label class="field-label" for="paint-frame-size">
+				{tr('paintFrameSize')}
+				<span class="value">{percent} %</span>
+			</label>
+			<input
+				id="paint-frame-size"
+				type="range"
+				min={Math.round(FRAME_MIN_SIZE * 100)}
+				max={Math.round(FRAME_MAX_SIZE * 100)}
+				step="1"
+				value={percent}
+				onpointerdown={startSize}
+				onkeydown={startSize}
+				oninput={(e) => setSize(e.currentTarget.value)}
+				{disabled}
+			/>
+		</div>
 
-	<p class="note">{tr(frame.mode === 'free' ? 'paintFrameHintFree' : 'paintFrameHintFixed')}</p>
+		<p class="note">{tr('paintFrameHintFree')}</p>
+	{/if}
 </section>
 
 <style>
@@ -287,9 +345,7 @@
 			color 0.15s;
 	}
 
-	/* Not on the chosen one: its own rule below is less specific, so hovering the
-	   button that is already pressed would otherwise wash the green out. */
-	.shape-btn:hover:not(:disabled):not(.active) {
+	.shape-btn:hover:not(:disabled) {
 		background: var(--cream2);
 	}
 
@@ -297,6 +353,15 @@
 		background: var(--green);
 		border-color: var(--green);
 		color: var(--white);
+	}
+
+	/* The chosen shape darkens under the pointer like every other chosen control
+	   in the column. It used to be exempted from hover altogether — `:not(.active)`
+	   on the rule above — which kept the green but left the one button the visitor
+	   is pointing at as the only one that answers to nothing. */
+	.shape-btn.active:hover:not(:disabled) {
+		background: var(--green-hover);
+		border-color: var(--green-hover);
 	}
 
 	.shape-btn:disabled {

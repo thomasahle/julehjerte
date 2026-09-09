@@ -18,6 +18,7 @@ type Props = Parameters<typeof MaskToolPanel>[1];
 
 function render(overrides: Partial<Props> = {}) {
 	const picked: PaintTool[] = [];
+	const history: string[] = [];
 	const target = document.createElement('div');
 	document.body.appendChild(target);
 	const component = mount(MaskToolPanelFixture, {
@@ -32,8 +33,8 @@ function render(overrides: Partial<Props> = {}) {
 			colors: { left: '#ffffff', right: '#b91313' },
 			canUndo: false,
 			canRedo: false,
-			onUndo: () => {},
-			onRedo: () => {},
+			onUndo: () => history.push('undo'),
+			onRedo: () => history.push('redo'),
 			onImport: () => {},
 			onClear: () => {},
 			lang: 'da',
@@ -45,6 +46,8 @@ function render(overrides: Partial<Props> = {}) {
 	return {
 		picked,
 		buttons,
+		history,
+		historyButtons: [...target.querySelectorAll<HTMLButtonElement>('.history button')],
 		byLabel: (label: string) => buttons.find((b) => b.getAttribute('aria-label') === label),
 		cleanup: () => {
 			unmount(component);
@@ -85,6 +88,36 @@ describe('MaskToolPanel', () => {
 			panel.byLabel('Viskelæder')?.click();
 			flushSync();
 			expect(panel.picked).toEqual([]);
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	// Fortryd and Gentag went through the same tooltip trigger as the tools above
+	// them, so they inherited the same one-line trap: the trigger's props carry an
+	// `onclick`, and spreading them last would swallow the undo without a word.
+	it('gives Fortryd and Gentag their own click through the tooltip', () => {
+		const panel = render({ canUndo: true, canRedo: true });
+		try {
+			expect(panel.historyButtons.map((b) => b.getAttribute('aria-label'))).toEqual([
+				'Fortryd',
+				'Gentag'
+			]);
+			for (const button of panel.historyButtons) button.click();
+			flushSync();
+			expect(panel.history).toEqual(['undo', 'redo']);
+		} finally {
+			panel.cleanup();
+		}
+	});
+
+	it('leaves each history button disabled while it has nothing to do', () => {
+		const panel = render({ canUndo: true, canRedo: false });
+		try {
+			expect(panel.historyButtons.map((b) => b.disabled)).toEqual([false, true]);
+			panel.historyButtons[1]?.click();
+			flushSync();
+			expect(panel.history).toEqual([]);
 		} finally {
 			panel.cleanup();
 		}

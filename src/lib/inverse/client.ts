@@ -1,4 +1,11 @@
 /** Typed boundary to the locally hosted, unbundled handoff engine. */
+
+// The progress event's own shape lives one layer up, in `engine.ts`, beside the
+// stages the UI has words for. `import type` is erased before anything runs, so
+// the cycle it makes exists only for the type checker; the wire protocol here
+// still needs no part of the bridge at run time.
+import type { EngineProgress } from './engine';
+
 export type Point = [number, number];
 export type ArtworkInput =
   | { type: 'svg' | 'json'; text: string }
@@ -98,7 +105,7 @@ export class InverseWorker {
     action: 'prepare' | 'solve' | 'saved' | 'archive' | 'detect-crops' | 'refine-crop',
     input: ArtworkInput | undefined,
     settings: Record<string, unknown>,
-    progress: (stage: string) => void = () => {}
+    progress: (event: EngineProgress) => void = () => {}
   ): Promise<T> {
     if (this.rejectPending) return Promise.reject(new Error('The engine is already working.'));
     return new Promise((resolve, reject) => {
@@ -109,7 +116,13 @@ export class InverseWorker {
         worker.onmessage = ({ data }) => {
           if (data.id !== this.sequence) return;
           if (data.type === 'progress') {
-            progress(data.event.stage);
+            // The whole event, not `data.event.stage`: everything the search can
+            // say about itself while it runs — the counts it is trying, the
+            // error, the MILP's round and gap — arrives in these fields, and the
+            // panel is built out of them (PAINT.md §2, and §12 for what is still
+            // missing). The worker's message is untyped, so this is the one cast
+            // in the chain; `searchProgress.ts` reads every field defensively.
+            progress(data.event as EngineProgress);
             return;
           }
           this.rejectPending = null;
