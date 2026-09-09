@@ -11,9 +11,10 @@ import {numericalKernel} from '../numerical-kernel.js';
 import {measuredKernel,sameArray} from '../kernel-choice.js';
 
 const quadratureTables=new Map();
+const gradientWork=new WeakMap();
 const gradientBackend=measuredKernel(sameArray,{
-  key:({quadraturePoints,probabilityCells})=>Math.floor(Math.log2(Math.max(1,quadraturePoints)))+','+Math.floor(Math.log2(probabilityCells)),
-  describe:work=>({...work}),repetitions:16
+  key:work=>work.key,
+  describe:({quadraturePoints,probabilityCells})=>({quadraturePoints,probabilityCells}),repetitions:16
 });
 export const boundaryKernelChoices=()=>gradientBackend.report();
 export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24,native='auto',weights=null}={}){
@@ -24,7 +25,14 @@ export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples
   const javascript=()=>javascriptBoundaryGradient(graph,points,prob,n,phase,index,table);
   const accelerated=()=>nativeBoundaryGradient(graph,points,prob,n,phase,index,table);
   if(native==='auto'&&numericalKernel()?.boundary_gradient){
-    const work={quadraturePoints:graph.visible.reduce((s,v)=>s+Number(v),0)*nquad,probabilityCells:n*n};
+    // A CurveGraph's topology stays fixed while its points move. Retain only
+    // the last workload descriptor per graph, never a gradient or force field.
+    let work=gradientWork.get(graph);
+    if(!work||work.n!==n||work.nquad!==nquad){
+      const quadraturePoints=graph.visible.reduce((s,v)=>s+Number(v),0)*nquad,probabilityCells=n*n;
+      work={n,nquad,quadraturePoints,probabilityCells,key:Math.floor(Math.log2(Math.max(1,quadraturePoints)))+','+Math.floor(Math.log2(probabilityCells))};
+      gradientWork.set(graph,work);
+    }
     return gradientBackend.run(work,javascript,accelerated);
   }
   if(native&&native!=='auto'){const result=accelerated();if(result)return result;}
