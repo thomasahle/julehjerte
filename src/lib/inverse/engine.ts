@@ -4,8 +4,8 @@
  * `client.ts` is the wire protocol: a worker, a request id, and the shapes that
  * travel. This module is the handful of calls the UI actually makes, with the
  * engine's settings filled in once rather than at every call site — the settings
- * a hobbyist's heart is solved with, the mask as an image the engine can
- * classify, and the one worker the whole of Mal shares. The old generator page
+ * a hobbyist's heart is solved with, the mask and its protected region,
+ * and the one worker the whole of Mal shares. The old generator page
  * carried the whole settings form in its markup and handed all twenty-odd keys
  * to every button; here the visitor chooses only what §2 offers them, so the
  * rest lives here, next to the reason it is what it is.
@@ -21,18 +21,11 @@
  * whichever caller was written first; a caller that had to remember to wait
  * would meet the engine's raw English refusal instead.
  *
- * ## The mask's round trip
- *
- * A mask is `0` for the left paper and `1` for the right, so it is sent as a
- * 400 × 400 image painted in exactly those two colours, classified with
- * `mode: 'swatches'` and `swatches: [right, left]`. The engine's classifier
- * gives cell 1 to whichever swatch comes first, which is why the pair is the
- * right colour first — the mask's own convention, upside down from
- * `HeartColors`. `engine.test.ts` sends a mask through the engine's own
- * `prepare` and gets the same cells back, so the two conventions cannot drift.
- *
- * Nothing here assumes a cell is 0 or 1: a third value ("free", PAINT.md §11) is
- * coming, and it will need its own colour rather than a new branch.
+ * A painted mask travels as binary cells, preserving its exact colours and
+ * coordinates. Free-border weights travel beside it: ignored cells keep their
+ * original colour for comparison, but exert no image force. Paper colours are
+ * still sent as [right, left], matching the engine's convention for cell 1.
+ * Imported photographs use the separate pixel classification path.
  */
 
 import { base } from '$app/paths';
@@ -43,15 +36,10 @@ import {
 	type DesignResult,
 	type DetectedCrops,
 	type PixelsInput,
+	type MaskInput,
 	type PreparedArtwork
 } from '$lib/inverse/client';
-import {
-	DEFAULT_FRAME_CELLS,
-	FRAME_MAX_CELLS,
-	FRAME_MIN_CELLS,
-	insideCell,
-	type Frame
-} from '$lib/paint/frame';
+import { insideCell, type Frame } from '$lib/paint/frame';
 import { MASK_SIZE, type Mask } from '$lib/paint/mask';
 import type { SymmetrySettings } from '$lib/paint/symmetry';
 import type { HeartColors } from '$lib/types/heart';
@@ -138,18 +126,8 @@ export function engineSymmetry(rows: SymmetrySettings): EngineSymmetry {
  * The frame as per-cell loss weights: 1 for a cell that must come out as painted,
  * 0 for a cell of a free band the search may fill as it likes.
  *
- * **Nothing sends this to the engine yet, and that is deliberate.** The grid
- * and Bézier losses now accept weights, but initialization, symmetry averaging,
- * final matching and image/feature gates still need the same interpretation
- * throughout the public solver (docs/inverse/WEIGHTED-IMAGE.md). A neutral 0.5
- * probability is insufficient: the soft grid loss attracts predictions to it,
- * and unweighted ranking thresholds it. Until the complete pipeline accepts
- * weights, a free band reaches the engine as `substituteCheckerBand`'s woven
- * pattern instead (PAINT.md §11).
- *
- * It is written now, and tested, so that the day the engine takes weights the
- * change is one added settings key here and the deletion of one function in
- * `$lib/paint/frame` — not a new model of what the mask is.
+ * The weights share the mask's coordinates throughout initialization, fitting,
+ * matching and final validation (docs/inverse/WEIGHTED-IMAGE.md).
  */
 export function frameWeights(mask: Mask, frame: Frame): Float32Array {
 	const weights = new Float32Array(mask.data.length);
@@ -209,20 +187,10 @@ export type AdvancedSettings = {
 	widthMm: number;
 	minWidthMm: number;
 	matchingSheets: boolean;
-	/**
-	 * "Rammens felter": how many checker cells a free band is woven from, per side
-	 * of the square (PAINT.md §11).
-	 *
-	 * The one number here that the engine never sees: it shapes the *target* the
-	 * search is given, in `$lib/paint/frame`, rather than the search. It sits with
-	 * the others because it belongs to the same disclosure and the same Nulstil,
-	 * and because it goes away with the checker when weights arrive.
-	 */
-	frameCells: number;
 };
 
 /** The settings in it that are numbers, which are the ones that have bounds. */
-export type AdvancedNumber = 'widthMm' | 'minWidthMm' | 'frameCells';
+export type AdvancedNumber = 'widthMm' | 'minWidthMm';
 
 /**
  * What each of those numbers may be.
@@ -236,16 +204,12 @@ export type AdvancedNumber = 'widthMm' | 'minWidthMm' | 'frameCells';
  */
 export const ADVANCED_LIMITS: Record<AdvancedNumber, readonly [number, number]> = {
 	widthMm: [20, 300],
-	minWidthMm: [0.5, 30],
-	// Codex's benchmark tried three, four and five and four won on both fixtures;
-	// outside that range the band stops being a weave a heart can be cut from.
-	frameCells: [FRAME_MIN_CELLS, FRAME_MAX_CELLS]
+	minWidthMm: [0.5, 30]
 };
 
 const ADVANCED_DEFAULTS: Record<AdvancedNumber, number> = {
 	widthMm: DEFAULT_WIDTH_MM,
-	minWidthMm: DEFAULT_MIN_WIDTH_MM,
-	frameCells: DEFAULT_FRAME_CELLS
+	minWidthMm: DEFAULT_MIN_WIDTH_MM
 };
 
 /** One typed number brought inside the range; a non-number goes back to the default. */
@@ -260,8 +224,7 @@ export function defaultAdvanced(symmetry: SymmetrySettings): AdvancedSettings {
 	return {
 		widthMm: DEFAULT_WIDTH_MM,
 		minWidthMm: DEFAULT_MIN_WIDTH_MM,
-		matchingSheets: symmetry.lobes === 'sym',
-		frameCells: DEFAULT_FRAME_CELLS
+		matchingSheets: symmetry.lobes === 'sym'
 	};
 }
 
@@ -337,10 +300,8 @@ export function paperPair(colors: HeartColors): PaperPair {
 }
 
 /**
- * The mask as an image the engine can classify.
- *
- * Exported because the test sends exactly this through the engine's own
- * `prepare`; nothing else should need it.
+ * The mask as a two-colour photograph, retained for classification regressions
+ * and historical benchmarks. Paint sends binary cells through `maskToArtwork`.
  */
 export function maskToPixels(mask: Mask, colors: HeartColors): PixelsInput {
 	const [right, left] = paperPair(colors);
@@ -384,16 +345,28 @@ export function maskPrepareSettings(colors: HeartColors): Record<string, unknown
 	};
 }
 
-/** Classify the painted mask, which is what a search is run against. */
+/** Snapshot the drawing without replacing the visitor's border colours. */
+export function maskToArtwork(mask: Mask, frame?: Frame): MaskInput {
+	return {
+		type: 'mask',
+		mask: new Uint8Array(mask.data),
+		resolution: mask.size,
+		...(frame?.mode === 'free' ? { weights: frameWeights(mask, frame) } : {})
+	};
+}
+
+/** Prepare the painted mask and the region the search must preserve. */
 export function prepareMask(
 	mask: Mask,
 	colors: HeartColors,
-	onStage: StageListener = () => {}
+	onStage: StageListener = () => {},
+	frame?: Frame
 ): Promise<PreparedArtwork> {
+	const input = maskToArtwork(mask, frame);
 	return queue(() =>
 		engine().request<PreparedArtwork>(
 			'prepare',
-			maskToPixels(mask, colors),
+			input,
 			maskPrepareSettings(colors),
 			onStage
 		)

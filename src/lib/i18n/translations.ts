@@ -259,7 +259,6 @@ export const translations = {
     paintFrameSize: 'Størrelse',
     paintFrameHintFixed: 'Hele firkanten væves, som du har malet den.',
     paintFrameHintFree: 'Motivet inden for formen holdes; uden om vælger maskinen selv et vævet mønster. Du kan stadig male i båndet – det tælles bare ikke med.',
-    paintFrameCells: 'Rammens felter',
     paintShowMotif: 'Vis det beskyttede motiv',
     paintClearTitle: 'Ryd masken?',
     paintClearPrompt: 'Alt det, du har malet, forsvinder. Det kan ikke fortrydes bagefter.',
@@ -295,7 +294,7 @@ export const translations = {
     /** {left}, {right} = snit i hver lap; {clearance} = mm; {mismatch} = procent */
     paintFoundSummary: '{left} + {right} snit · mindst {clearance} mm mellem snittene · {mismatch}% forskel fra masken',
     /** {motif} = afvigelse inden i formen; {mismatch} = afvigelse i hele firkanten */
-    paintFoundMotifSummary: '{motif}% afvigelse i motivet · {mismatch}% i hele firkanten',
+    paintFoundMotifSummary: '{motif}% afvigelse i motivet · {border}% af den frie kant ændret',
     /** {left}, {right} = snit i hver lap; {clearance} = mm */
     paintFoundCuts: '{left} + {right} snit · mindst {clearance} mm mellem snittene',
     paintFoundIdentical: 'Begge lapper klippes efter samme skabelon.',
@@ -718,7 +717,6 @@ export const translations = {
     paintFrameSize: 'Size',
     paintFrameHintFixed: 'The whole square is woven exactly as you painted it.',
     paintFrameHintFree: 'The motif inside the shape is kept; outside it the machine picks a woven pattern of its own. You can still paint in the band — it simply does not count.',
-    paintFrameCells: 'Squares in the border',
     paintShowMotif: 'Show the protected motif',
     paintClearTitle: 'Clear the mask?',
     paintClearPrompt: 'Everything you have painted goes. This cannot be undone afterwards.',
@@ -754,7 +752,7 @@ export const translations = {
     /** {left}, {right} = cuts per lobe; {clearance} = mm; {mismatch} = per cent */
     paintFoundSummary: '{left} + {right} cuts · at least {clearance} mm between cuts · {mismatch}% different from the mask',
     /** {motif} = difference inside the shape; {mismatch} = difference over the whole square */
-    paintFoundMotifSummary: '{motif}% different in the motif · {mismatch}% over the whole square',
+    paintFoundMotifSummary: '{motif}% different in the motif · {border}% of the free border changed',
     /** {left}, {right} = cuts in each lobe; {clearance} = mm */
     paintFoundCuts: '{left} + {right} cuts · at least {clearance} mm between cuts',
     paintFoundIdentical: 'Both lobes are cut from the same template.',

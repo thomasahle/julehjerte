@@ -82,6 +82,7 @@ declare module '$inverse/locator/locator.js' {
 }
 
 declare module '$inverse/core/engine.js' {
+  import type { ArtworkInput } from '$lib/inverse/client';
   /**
    * Classify artwork into the engine's own two-colour reading of the woven
    * square — the very call the worker makes for a `prepare` request.
@@ -90,17 +91,11 @@ declare module '$inverse/core/engine.js' {
    * worker keeps and we never touch.
    */
   export function prepare(
-    input: {
-      type: 'pixels';
-      rgba: Uint8ClampedArray;
-      imageWidth: number;
-      imageHeight: number;
-      quad?: number[][];
-    },
+    input: ArtworkInput,
     settings?: Record<string, unknown>,
     onProgress?: (event: { stage: string }) => void
   ): {
-    target: unknown;
-    preview: { mask: Uint8Array; resolution: number; metadata: Record<string, unknown> };
+    target: { sourceImage: { weights?: Float64Array } };
+    preview: { mask: Uint8Array; weights?: Float64Array; resolution: number; metadata: Record<string, unknown> };
   };
 }

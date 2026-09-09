@@ -51,12 +51,7 @@
 		type PaintError,
 		type SymmetrySettings
 	} from '$lib/editor/session.svelte';
-	import {
-		clampFrameSize,
-		mismatchInside,
-		shapeCells,
-		solveTargetMask
-	} from '$lib/paint/frame';
+	import { clampFrameSize, frameMismatch, shapeCells } from '$lib/paint/frame';
 	import { createMask, isEmpty, maskMismatch, resample, type Mask } from '$lib/paint/mask';
 	import { detectSymmetry, transformsFor } from '$lib/paint/symmetry';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
@@ -559,21 +554,11 @@
 			setSymmetry(session.symmetry);
 			revision++;
 
-			// What the engine is actually asked to weave. With the band fixed that is
-			// the visitor's mask; with it free the band is replaced by a checker weave
-			// first, because the engine cannot yet be told to ignore a cell — see
-			// `frameWeights` and PAINT.md §11. The visitor's own mask is untouched.
-			//
-			// Nothing folds the target afterwards: the motif came out of the fold
-			// above, and the woven band is symmetric under every symmetry of the
-			// square by construction ($lib/paint/frame). A second fold over the whole
-			// square would undo both — it halved the checker whenever the block count
-			// was even, and it averaged the motif's own edge cells together with the
-			// band the checker had just overwritten.
+			// Preserve the original drawing; a free band carries zero image weight.
+			// Checker patterns may seed the search, but never replace this target.
 			const frame = { ...session.frame };
-			const target = solveTargetMask(mask, frame, advanced.frameCells);
-
-			await prepareMask(target, colors, (next) => (stage = next));
+			const target = { size: mask.size, data: new Uint8Array(mask.data) };
+			await prepareMask(target, colors, (next) => (stage = next), frame);
 			const solved = await findCuts(
 				{
 					colors,
@@ -595,19 +580,13 @@
 				enforce: session.symmetry
 			});
 
-			// The difference the panel reports is measured on the heart about to be
-			// shown, not on the engine's own number: that one describes the solution
-			// before simplifying and before the symmetry correction moved it. It is
-			// measured against the target the engine was given, not against the mask
-			// on screen, because with a free band those differ — and asking a heart to
-			// match a band nobody asked it to weave would be a number about nothing.
+			// Measure the actual editable heart against the original drawing. Changes
+			// outside the protected motif are permitted, and reported separately.
 			const woven = rasterizeDesign(converted.design, COMPARE_SIZE).data;
 			const wanted = resample(target.data, target.size, COMPARE_SIZE);
 			const mismatch = maskMismatch(woven, wanted);
-			// Inside the protected motif the target *is* the visitor's mask, so this
-			// is the number that says whether they got their own picture back.
-			const motifMismatch =
-				frame.mode === 'free' ? mismatchInside(woven, wanted, COMPARE_SIZE, frame) : undefined;
+			const regions = frame.mode === 'free'
+				? frameMismatch(woven, wanted, COMPARE_SIZE, frame) : undefined;
 
 			// The rows the panel shows are the converter's, not `solved.report.symmetry.
 			// honoured` (PAINT.md §11). Both are true statements about different
@@ -630,7 +609,8 @@
 					cuts: [solved.report.slits.left, solved.report.slits.right],
 					clearanceMm: solved.report.validation.minimumInterSlitDistanceLower,
 					mismatch,
-					motifMismatch,
+					motifMismatch: regions?.inside,
+					borderChange: regions?.outside,
 					identical: solved.report.solver.matchingPreference?.identical ?? false
 				}
 			};
@@ -993,7 +973,6 @@
 						result={session.result}
 						{showingResult}
 						{honoured}
-						frame={session.frame}
 						{showMotif}
 						onShowMotif={(next) => (showMotif = next)}
 						{elapsed}

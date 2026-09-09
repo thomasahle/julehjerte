@@ -9,6 +9,7 @@ import {
 	engineSymmetry,
 	frameWeights,
 	maskPrepareSettings,
+	maskToArtwork,
 	maskToPixels,
 	solveSettings,
 	type ImportSettings
@@ -28,10 +29,10 @@ const NO_SYMMETRY = { curve: 'off', lobe: 'off', lobes: 'off' } as const;
 
 /**
  * Send a mask to the engine exactly as `prepareMask` does, and read back the
- * cells it classified.
+ * cells it received, without a colour-classification round trip.
  */
 function roundTrip(mask: Mask, colors = COLORS): Uint8Array {
-	const { preview } = prepare(maskToPixels(mask, colors), maskPrepareSettings(colors));
+	const { preview } = prepare(maskToArtwork(mask), maskPrepareSettings(colors));
 	expect(preview.resolution).toBe(mask.size);
 	return preview.mask;
 }
@@ -416,13 +417,27 @@ describe('frameWeights', () => {
 		expect([...weights].every((w) => w === 1)).toBe(true);
 	});
 
-	it('is not sent to the engine yet, because the engine cannot read it', () => {
-		// PAINT.md §11 and docs/inverse/MOTIF-BORDER.md: the fitter's loss has no
-		// per-cell weight, and a neutral 0.5 probability is not the same as an
-		// ignored cell. Until Codex's lane lands, a free band travels as
-		// `substituteCheckerBand`'s woven pattern instead — so no key of the solve
-		// settings may carry weights, or a reader would think the engine honours them.
-		const sent = solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY });
-		expect(Object.keys(sent).some((key) => /weight/i.test(key))).toBe(false);
+	it('travels with the exact original mask into the public engine', () => {
+		const mask = scribble();
+		const input = maskToArtwork(mask, FREE);
+		const { preview, target } = prepare(input, maskPrepareSettings(COLORS));
+		expect(preview.mask).toEqual(mask.data);
+		expect(preview.weights).toEqual(Float64Array.from(frameWeights(mask, FREE)));
+		expect(target.sourceImage.weights).toEqual(preview.weights);
+		// Owning the input prevents a brush stroke during queued preparation from
+		// changing which drawing the weights describe.
+		mask.data.fill(0);
+		expect(input.mask).toEqual(preview.mask);
+		expect(input.mask.some(Boolean)).toBe(true);
+	});
+
+	it('keeps fixed masks unweighted, at their own pixel resolution', () => {
+		const mask = createMask(0, 64);
+		mask.data[20 * 64 + 31] = 1;
+		const input = maskToArtwork(mask, { ...FREE, mode: 'fixed' });
+		expect(input.weights).toBeUndefined();
+		const { preview } = prepare(input, maskPrepareSettings(COLORS));
+		expect(preview.resolution).toBe(64);
+		expect(preview.mask).toEqual(mask.data);
 	});
 });

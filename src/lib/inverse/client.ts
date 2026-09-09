@@ -2,10 +2,12 @@
 export type Point = [number, number];
 export type ArtworkInput =
   | { type: 'svg' | 'json'; text: string }
+  | { type: 'mask'; mask: Uint8Array; resolution: number; weights?: Float32Array; seedCells?: number }
   | { type: 'pixels'; rgba: Uint8ClampedArray; imageWidth: number; imageHeight: number; quad?: Point[]; roi?: number[]; cropProvenance?: Record<string, unknown> };
 
 /** The pixel arm of ArtworkInput, which corner detection and the mask both need by name. */
 export type PixelsInput = Extract<ArtworkInput, { type: 'pixels' }>;
+export type MaskInput = Extract<ArtworkInput, { type: 'mask' }>;
 
 export interface CropProposal {
   quad: Point[];
@@ -22,6 +24,7 @@ export interface PreparedArtwork {
   vector: string;
   boundaries: string;
   mask: Uint8Array;
+  weights?: Float64Array;
   resolution: number;
   metadata: {
     curves: number;
@@ -44,6 +47,7 @@ export interface DesignResult {
     resolution: number;
     wovenMask: Uint8Array;
     validMask?: Uint8Array;
+    weights?: Float64Array;
   };
   report: {
     templateExportAllowed: boolean;
@@ -55,7 +59,13 @@ export interface DesignResult {
     warnings: string[];
     /** Which of the requested square symmetries the exported cuts satisfy (docs/inverse/SYMMETRY.md). */
     symmetry?: { requested: string[]; honoured: string[]; maxDeviationMm: number | null };
-    imageError?: { mismatchFraction: number; resolution: number } | null;
+    imageError?: {
+      mismatchFraction: number;
+      resolution: number;
+      wholeMismatchFraction?: number;
+      protectedMismatchFraction?: number | null;
+      editableChangeFraction?: number | null;
+    } | null;
     imageFidelity?: { features: { passed: boolean } };
     settings: { width: number; maxImageError?: number; paperColors: [string, string] };
   };

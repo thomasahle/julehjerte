@@ -70,15 +70,10 @@ export type PaintResult = {
 		clearanceMm: number;
 		mismatch: number;
 		identical: boolean;
-		/**
-		 * The difference inside the protected motif alone, when the band was free.
-		 *
-		 * Reported separately because a large, accurately woven band dilutes an error
-		 * in the middle: MOTIF-BORDER.md's three-cell house passes the whole-image
-		 * bar at 1.89 % while its centre is 4.60 % wrong. Undefined when the band was
-		 * fixed, where the whole square *is* the motif.
-		 */
+		/** Difference within the protected motif; undefined for a fixed border. */
 		motifMismatch?: number;
+		/** Permitted changes outside that motif, relative to the original drawing. */
+		borderChange?: number;
 	};
 };
 

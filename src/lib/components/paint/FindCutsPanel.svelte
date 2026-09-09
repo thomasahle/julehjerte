@@ -22,7 +22,6 @@
 	} from '$lib/inverse/engine';
 	import { ENGINE_NOTICES_KEY, engineNoticesHref } from '$lib/inverse/notices';
 	import type { PaintError, PaintResult, PaintStatus } from '$lib/editor/session.svelte';
-	import type { Frame } from '$lib/paint/frame';
 	import type { SymmetrySettings } from '$lib/paint/symmetry';
 
 	interface Props {
@@ -43,8 +42,6 @@
 		showingResult: boolean;
 		/** The rows the heart could actually be held to; null until there is one. */
 		honoured: SymmetrySettings | null;
-		/** "Kanten" as the visitor set it, which decides what the numbers mean. */
-		frame: Frame;
 		/** Whether the found heart is showing the protected outline over it. */
 		showMotif: boolean;
 		onShowMotif: (next: boolean) => void;
@@ -71,7 +68,6 @@
 		result,
 		showingResult,
 		honoured,
-		frame,
 		showMotif,
 		onShowMotif,
 		elapsed,
@@ -208,14 +204,10 @@
 		<div class="summary" role="status">
 			<p class="lead">{tr('paintFound')}</p>
 			{#if result.report.motifMismatch !== undefined}
-				<!-- The motif's own difference comes first, and the whole square after
-				     it: a large, accurately woven band dilutes an error in the middle,
-				     so the middle is the number that says whether this is the heart the
-				     visitor painted (docs/inverse/MOTIF-BORDER.md). -->
 				<p class="numbers">
 					{t('paintFoundMotifSummary', lang, {
 						motif: decimal(100 * result.report.motifMismatch),
-						mismatch: decimal(100 * result.report.mismatch)
+						border: decimal(100 * (result.report.borderChange ?? 0))
 					})}
 				</p>
 				<p class="numbers">
@@ -298,22 +290,6 @@
 					onblur={(e) => commitNumber('minWidthMm', e.currentTarget)}
 				/>
 			</label>
-			{#if frame.mode === 'free'}
-				<!-- Only while the band is free: with the band fixed there is no checker
-				     to count, and a number that changes nothing is worse than no number. -->
-				<label class="field">
-					<span>{tr('paintFrameCells')}</span>
-					<input
-						type="number"
-						min={ADVANCED_LIMITS.frameCells[0]}
-						max={ADVANCED_LIMITS.frameCells[1]}
-						step="1"
-						value={advanced.frameCells}
-						oninput={(e) => setNumber('frameCells', e.currentTarget.value)}
-						onblur={(e) => commitNumber('frameCells', e.currentTarget)}
-					/>
-				</label>
-			{/if}
 			<label class="checkbox">
 				<input
 					type="checkbox"

@@ -51,7 +51,8 @@ export type FrameShape = 'diamond' | 'circle' | 'hexagon';
  * without thinking about the frame still is. `free` throws the band's colours
  * away and lets the search put a supporting weave there. A third state ("Må
  * rettes": keep the cells but let the engine change what it must) needs per-cell
- * loss weights in the engine and waits for them; see §11 and `frameWeights`.
+ * loss weights, which the engine supports; the editor currently exposes only
+ * fixed and free regions. See §11 and `frameWeights`.
  */
 export type FrameMode = 'fixed' | 'free';
 
@@ -239,20 +240,25 @@ export function shapeOutline(shape: FrameShape, size: number): FrameOutline {
  * result is called good. Both arrays are `size × size` cells of the same square.
  */
 export function mismatchInside(a: Uint8Array, b: Uint8Array, size: number, frame: Frame): number {
+	return frameMismatch(a, b, size, frame).inside;
+}
+
+/** Compare the protected motif and permitted border changes independently. */
+export function frameMismatch(a: Uint8Array, b: Uint8Array, size: number, frame: Frame): { inside: number; outside: number } {
 	if (a.length !== b.length || a.length !== size * size) {
 		throw new Error('Masks must both be size × size cells.');
 	}
-	let inside = 0;
-	let differing = 0;
+	const count = [0, 0];
+	const differing = [0, 0];
 	for (let y = 0; y < size; y++) {
 		const row = y * size;
 		for (let x = 0; x < size; x++) {
-			if (!insideCell(frame, size, x, y)) continue;
-			inside++;
-			if ((a[row + x] ? 1 : 0) !== (b[row + x] ? 1 : 0)) differing++;
+			const region = insideCell(frame, size, x, y) ? 1 : 0;
+			count[region]!++;
+			if ((a[row + x] ? 1 : 0) !== (b[row + x] ? 1 : 0)) differing[region]!++;
 		}
 	}
-	return inside ? differing / inside : 0;
+	return { inside: count[1] ? differing[1]! / count[1] : 0, outside: count[0] ? differing[0]! / count[0] : 0 };
 }
 
 /**
@@ -347,8 +353,11 @@ export function substituteCheckerBand(mask: Mask, frame: Frame, cells: number): 
 }
 
 /**
- * The target one search is run against: the visitor's mask when the band is
+ * Historical checker-border benchmark target: the visitor's mask when the band is
  * fixed, and the same mask with a woven band when it is free.
+ *
+ * Paint now sends the original mask and explicit weights through maskToArtwork.
+ * This helper remains for reproducing earlier benchmarks.
  *
  * A copy either way, so that what goes to the engine can never be what is on the
  * canvas. It is handed over as it comes back from here: the mask arrives already

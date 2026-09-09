@@ -19,6 +19,7 @@ import {
 	insideCell,
 	insideShape,
 	mismatchInside,
+	frameMismatch,
 	shapeCells,
 	shapeOutline,
 	sizeFromHandle,
@@ -357,6 +358,7 @@ describe('the two mismatch numbers', () => {
 			}
 		}
 		expect(mismatchInside(a.data, b.data, size, f)).toBe(0);
+		expect(frameMismatch(a.data, b.data, size, f)).toEqual({ inside: 0, outside: 1 });
 		expect(maskMismatch(a.data, b.data)).toBeCloseTo(changed / (size * size), 10);
 	});
 
@@ -371,6 +373,7 @@ describe('the two mismatch numbers', () => {
 			}
 		}
 		expect(mismatchInside(a.data, b.data, size, f)).toBe(1);
+		expect(frameMismatch(a.data, b.data, size, f)).toEqual({ inside: 1, outside: 0 });
 		expect(maskMismatch(a.data, b.data)).toBeLessThan(0.5);
 	});
 
