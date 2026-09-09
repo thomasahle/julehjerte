@@ -87,6 +87,9 @@ try{
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Open in Draw')||document.querySelector('[role=alert]'),{},{timeout:15000});
     assert.equal(await button('Open in Draw').count(),1,await page.locator('body').innerText());
     row.solveAndConversionSeconds=(performance.now()-start)/1000;
+    const summary=await page.locator('.summary[role=status]').innerText();
+    const shown=summary.match(free?/([\d.]+)% different in the motif/:/([\d.]+)% different from the mask/);
+    assert.ok(shown,summary);row.displayedError=Number(shown[1])/100;
     await page.screenshot({path:path.join(dir,'result.png'),fullPage:true});
     await button('Open in Draw').click();await page.waitForURL('**/en/editor/?from=session');
     await button('Export SVG').waitFor();
@@ -118,6 +121,7 @@ try{
     const resolution=observed.prepared.resolution,sourceMask=Uint8Array.from(observed.prepared.mask),sourceRendered=rasterizeDesign(design,resolution).data;
     row.sourceResolution=resolution;
     row.sourceEditableError=free?frameMismatch(sourceRendered,sourceMask,resolution,{mode:'free',shape:'diamond',size:frameSize}).inside:maskMismatch(sourceRendered,sourceMask);
+    assert.ok(Math.abs(row.displayedError-row.sourceEditableError)<=.00051,`Displayed mismatch ${row.displayedError} disagrees with exported heart ${row.sourceEditableError}`);
     assert.ok(row.sourceEditableError<=(small?.005:topHat?.01:free||name==='hunodan'?.03:.015),`Editable source mismatch ${row.sourceEditableError}`);
     if(name==='star'){
      const pendingPDF=page.waitForEvent('download');await button('Download PDF').click();

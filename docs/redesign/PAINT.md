@@ -105,8 +105,9 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   plain words, a bar) and `Afbryd`. The mask stays editable-looking but pointer input is ignored until done.
 - After success: "Skabelonen er fundet" with the numbers (n + m snit, minimum clearance in mm, difference from the
   mask in %), and the buttons `Åbn i Tegn` (primary) and `Tilbage til masken` (outline). The difference is measured
-  on the heart we are about to show — `maskMismatch` of `rasterizeDesign(design, 200)` against the session mask
-  resampled to 200 — not taken from the engine's `report.imageError.mismatchFraction`, which describes the solution
+  on the heart we are about to show — `maskMismatch` of `rasterizeDesign(design, mask.size)` against the original
+  session mask at its own resolution. Downsampling binary edges can exaggerate this error. It is not taken from
+  the engine's `report.imageError.mismatchFraction`, which describes the solution
   before simplifying and before `enforce` (§4) moved it. The canvas shows the found
   heart rendered by our own `PaperHeartSVG` (not the engine's preview), and a small card with the mask. That card is
   one button, labelled "Tilbage til masken" like the panel's — it used to carry a "Ret masken" link of its own beside

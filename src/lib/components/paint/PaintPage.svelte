@@ -52,7 +52,7 @@
 		type SymmetrySettings
 	} from '$lib/editor/session.svelte';
 	import { clampFrameSize, frameMismatch, shapeCells } from '$lib/paint/frame';
-	import { createMask, isEmpty, maskMismatch, resample, type Mask } from '$lib/paint/mask';
+	import { createMask, isEmpty, maskMismatch, type Mask } from '$lib/paint/mask';
 	import { detectSymmetry, transformsFor } from '$lib/paint/symmetry';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
 	import {
@@ -95,9 +95,6 @@
 	}
 
 	let { lang }: Props = $props();
-
-	/** The grid the difference from the mask is measured on (PAINT.md §2). */
-	const COMPARE_SIZE = 200;
 
 	let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let headerEl = $state.raw<HTMLElement | null>(null);
@@ -582,11 +579,13 @@
 
 			// Measure the actual editable heart against the original drawing. Changes
 			// outside the protected motif are permitted, and reported separately.
-			const woven = rasterizeDesign(converted.design, COMPARE_SIZE).data;
-			const wanted = resample(target.data, target.size, COMPARE_SIZE);
+			// Score at the drawing's resolution: shrinking a binary mask moves edge
+			// pixels and can exaggerate the disagreement with the fitted curves.
+			const woven = rasterizeDesign(converted.design, target.size).data;
+			const wanted = target.data;
 			const mismatch = maskMismatch(woven, wanted);
 			const regions = frame.mode === 'free'
-				? frameMismatch(woven, wanted, COMPARE_SIZE, frame) : undefined;
+				? frameMismatch(woven, wanted, target.size, frame) : undefined;
 
 			// The rows the panel shows are the converter's, not `solved.report.symmetry.
 			// honoured` (PAINT.md §11). Both are true statements about different
