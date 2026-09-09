@@ -108,3 +108,12 @@ test('pixel-centre ties and moved endpoint closures retain the renderer conventi
     assert.deepEqual(renderCurves(graph,selected.points,phase,n,32),wanted);
   }
 });
+
+test('native SVG geometry is not simplified using its sampled preview',()=>{
+  const graph=fixture(),n=400,truth=new CurveGraph([[[Cubic.line([25,0],[25,100]).p],[curved]],[[horizontal]]]);
+  const mask=renderCurves(truth,truth.points,1,n,32),solution=graph.solution(graph.points,1,{metadata:{originalCubicsPreserved:true},sourceImage:{mask,resolution:n}});
+  const before=solutionJSON(solution);
+  assert.equal(finalizePrimitives(solution,settings({...DIRECT_PRESET,trials:0})),solution);
+  assert.deepEqual(solutionJSON(solution),before);
+  assert.equal(solution.report.finalPrimitiveSelection,undefined);
+});

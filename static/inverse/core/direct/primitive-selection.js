@@ -20,7 +20,7 @@ import {mismatch} from './grid.js';
  * even a mask-preserving edit can change a later optimizer's trajectory. */
 export function finalizePrimitives(solution,cfg,{deadline=Infinity,onProgress=()=>{}}={}){
   const source=solution.graph.target.sourceImage;
-  if(!source?.mask||performance.now()>=deadline)return solution;
+  if(!source?.mask||solution.graph.target.metadata?.originalCubicsPreserved||performance.now()>=deadline)return solution;
   const start=performance.now(),n=source.resolution,weights=sourceWeights(source),input=solution.graph.target;
   const paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p))),graph=new CurveGraph(paths,input.width),points=graph.points;
   const straight=straightProposal(graph,points,n);if(!straight)return solution;
