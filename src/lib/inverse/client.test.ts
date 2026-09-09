@@ -24,10 +24,20 @@ describe('inverse worker lifecycle', () => {
     const progress = vi.fn();
     const second = engine.request('prepare', { type: 'svg', text: '<svg/>' }, {}, progress);
     reply(workers[0], { id: 1, type: 'result', result: 'stale result' });
-    reply(workers[1], { id: 3, type: 'progress', event: { stage: 'preprocessing' } });
+    // The whole event reaches the listener, not only its stage: the counts and
+    // the error are what the searching panel is built out of (PAINT.md §2).
+    reply(workers[1], {
+      id: 3,
+      type: 'progress',
+      event: { stage: 'directInitializing', counts: [4, 4], error: 0.031 }
+    });
     reply(workers[1], { id: 3, type: 'prepared', preview: 'new artwork' });
     expect(await second).toBe('new artwork');
-    expect(progress).toHaveBeenCalledWith('preprocessing');
+    expect(progress).toHaveBeenCalledWith({
+      stage: 'directInitializing',
+      counts: [4, 4],
+      error: 0.031
+    });
     expect(create).toHaveBeenCalledTimes(2);
   });
 

@@ -582,7 +582,7 @@
 			const frame = { ...session.frame };
 			const target = solveTargetMask(mask, frame, advanced.frameCells);
 
-			await prepareMask(target, colors, (next) => (stage = next));
+			await prepareMask(target, colors, (event) => (stage = event.stage));
 			const solved = await findCuts(
 				{
 					colors,
@@ -591,7 +591,7 @@
 					minWidthMm: advanced.minWidthMm,
 					matchingSheets: advanced.matchingSheets
 				},
-				(next) => (stage = next)
+				(event) => (stage = event.stage)
 			);
 
 			const geometry = solved.files['cut_geometry.json'];
