@@ -124,6 +124,11 @@ variation to investigate, not evidence of a crop or grid-initialization change.
 The report retains every changed error rather than claiming uniform end-result
 improvement from an exactly equivalent initializer.
 
+The subsequent [conversion-fidelity investigation](CONVERSION-FIDELITY.md)
+isolates the large-house regression on fixed fitted geometry. Independent
+simplification of the two editable sheets was opening most of the visible
+seams; a combined-weave check reduces its converted error to 0.0824%.
+
 All **718 application tests and 242 engine tests** pass, together with lint and
 the production build. Svelte checking reports zero errors and seven existing
 warnings. The hat preview and drawing, and the star preview, were visually
