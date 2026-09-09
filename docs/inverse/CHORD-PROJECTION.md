@@ -89,3 +89,52 @@ cut counts and measured image error, omitting the inapplicable clearance.
 Danish and English tests cover both fixed and free borders and verify that
 Open in Draw remains available. The browser observer now reports page errors
 immediately, and failed runs retain their worker observation for diagnosis.
+
+## Fresh browser comparison
+
+With the result-panel fix in both versions, Chromium replays the previous
+engine snapshot (`0d59a90`) and the new engine against the same uploaded pixels.
+The numbers below measure the **downloaded editable SVG** against the prepared
+source mask, rather than substituting the solver's pre-conversion score.
+
+| Artwork / within-curve mode | Previous source disagreement | New source disagreement | Previous / new shared spans |
+| --- | ---: | ---: | ---: |
+| Frame / Sym | 0.15000% | 0.02875% | 0 / 32 |
+| Diagonal / Anti | 0.15000% | 0.00125% | 0 / 2 |
+
+Both fresh cases pass in Chromium, Firefox and WebKit. The enabled Open in Draw
+button appears 2.50–5.28 seconds after the Find click; SVG downloading and
+independent verification follow afterward. Every downloaded chord relation
+agrees within 4e-14 mm in these fixtures. Twenty-one additional served-module
+cleanup replays pass, including unequal counts and combinations of square and
+chord symmetries. Those controlled geometry fixtures are distinct from the six
+fresh image-to-template workflows.
+
+The one-cut crash is retained as a failed UI regression run. The comparison
+above reruns the previous engine with the fixed UI; the 190-second readiness
+failure is not misreported as an algorithmic speed improvement.
+
+## Release regression checks
+
+All 787 application tests and 391 engine tests pass (one optional application
+recording is skipped). Type checking reports zero errors and seven existing
+Svelte warnings; lint and the production build pass.
+
+All 45 current-build browser cases pass: 21 controlled cleanup replays, six
+fresh chord workflows and 18 established Paint workflows. Two additional
+Chromium runs use the previous engine with the same fixed UI for comparison;
+their prepared-mask files match the new runs byte for byte.
+
+The 22 regular Hunodan photographs and 32 free-border perturbation cases retain
+byte-identical exported geometry and pass every existing quality check. Serial
+Node preparation, fitting, validation and export take a 4.88-second median and
+8.02-second maximum for Hunodan, and 4.45 / 8.08 seconds for the perturbations.
+These runs include progress geometry and retained candidate checkpoints, while
+photograph decoding and independent export rendering are measured separately.
+The 18 established browser outputs also retain exactly the preceding geometry
+and source-image errors.
+
+[CHORD-PROJECTION-VALIDATION.json](CHORD-PROJECTION-VALIDATION.json) records the
+per-case browser results, original UI failure, source hashes and artifact
+hashes. All 60 served engine/worker source files match the benchmarked checkout.
+The preview remains at `http://127.0.0.1:5232/en/editor/paint/`.
