@@ -102,3 +102,6 @@ INVERSE_TEST_CASES=top-hat,top-hat-independent,star,hunodan npm run test:inverse
 These measurements used the earlier checker-border UI. The subsequent
 [weighted-image integration](WEIGHTED-IMAGE.md) lets the optimizer choose the
 free border and retains this final shared-cut recovery and its regression checks.
+The later [renderer optimization](CURVE-RENDERING.md) makes candidate mask
+checks cheaper while preserving every binary pixel and individual-path query;
+its production replay rechecks shared controls through SVG export.
