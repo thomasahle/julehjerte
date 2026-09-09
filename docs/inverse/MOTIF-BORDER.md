@@ -1,8 +1,8 @@
 # Creating a heart from a motif, or repairing its border
 
-The [weighted-image follow-up](WEIGHTED-IMAGE.md) adds explicit weights to the
-existing grid and Bézier losses, measures eight paired refinement cases, and
-identifies the remaining work before the public solver can ignore the border.
+The [weighted-image follow-up](WEIGHTED-IMAGE.md) now carries explicit image
+weights through the full solver and Paint's free-border workflow. The checker
+experiments below are preserved as the historical baseline.
 
 The [flettedehjerter.dk archive](https://flettedehjerter.dk/) suggests a useful design workflow: a central silhouette accompanied by a supporting weave near the edges. [Issue #8](https://github.com/thomasahle/julehjerte/issues/8) requests a Moomin house; [issue #9](https://github.com/thomasahle/julehjerte/issues/9) requests a wizard's hat. Neither issue contains a reference drawing. The experiment below uses generic original house and hat silhouettes, not purported reconstructions of those requested designs.
 

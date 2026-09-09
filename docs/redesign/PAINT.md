@@ -488,12 +488,11 @@ weaves the colour-swapped picture), so a failure under symmetry should suggest s
 it, and the notice when it differs from the request, exactly as with the converter's `honoured`. `symmetrize` on
 the mask and `enforce` in the converter stay as the safety net for the MILP route and for `withinCurve` Anti.
 
-**Free cells shipped without the engine's weights; soft cells wait for them.** Codex's motif-border experiment
-(docs/inverse/MOTIF-BORDER.md) shows that an isolated painted motif needs a band of cells the engine may fill with
-a supporting weave, and that a photo crop whose corners sat a little outside the heart needs a band where the
-engine may *change a few cells* while keeping the rest. The second of those needs explicit per-cell loss weights in
-the engine (a 0.5 probability is not ignored) and is Codex's lane; the first works with today's engine the way
-their benchmark did, by preparing a different target, and is built (`$lib/paint/frame`, `FramePanel.svelte`).
+**Free borders use explicit image weights.** The protected motif retains its painted colours with weight 1;
+the surrounding band retains its original colours for comparison but has weight 0 during fitting. The same
+objective now controls initialization, candidate selection, symmetry, refinement, matching and final checks
+(docs/inverse/WEIGHTED-IMAGE.md). Intermediate weights are supported in the engine, but a soft-border UI is not
+exposed yet. Geometry and paper constraints still apply everywhere, including the free border.
 
 - The band outside a protected shape has a segmented control "Kanten: Fast / Fri" in a panel of its own in Mal's
   left column, under Værktøj and Symmetri. *Fast* = as painted, which is what a heart made without thinking about
@@ -516,48 +515,29 @@ their benchmark did, by preparing a different target, and is built (`$lib/paint/
   the soft state needs (fixed 1, soft, free 0; a third colour value would lose the soft state's colours) replaces
   `frameWeights`, not this. `symmetrize` and `detectSymmetry` take an optional region, so the rows are judged and
   folded on the protected motif alone while the band is free; painting still mirrors everything.
-- Until the engine takes weights, a free band reaches it as a **checker weave**: `substituteCheckerBand` keeps every
-  cell inside the shape and replaces the band with a checker of `cells × cells` blocks over the square, `cells`
-  being an "Avanceret" number "Rammens felter" (3–5, default 4, the range and the winner of Codex's benchmark),
-  offered only while the band is free. The phase is the one that agrees with the visitor's own band cells more
-  often; where the band is thinner than one checker block — above 50 % of the square at four blocks a side, 60 % at
-  five, a third at three — those cells *are* the collar along the protected outline, so that is the same thing as
-  continuing the colour the motif has at its edge, and below that it is simply a vote over the whole band. A tie
-  keeps phase 0. The whole substitution is one function, to be deleted when weights arrive.
-- **The blocks are counted from the centre of the square, and the target is not folded afterwards.** The mask
-  arrives at the substitution already folded under the rows (the motif alone while the band is free) and the
-  checker is invariant under all eight symmetries of the square by construction, so the target is symmetric as it
-  comes. Folding it again — which the first build did — was wrong twice over. A checker counted from a *corner* is
-  its own negative under a mirror whenever the block count is even, so at the default of four the fold replaced the
-  band with blocks of twice the size: an effective count of two, outside `ADVANCED_LIMITS.frameCells` and outside
-  anything Codex's benchmark measured. And the same fold averaged the motif's own edge cells together with the band
-  the checker had just overwritten, against MOTIF-BORDER.md's premise that no cell of the centre is changed.
-  Counted from the centre, a mirror sends block `j` to `−j`, whose parity is `j`'s, and the pattern survives every
-  symmetry whatever the count and whether or not the block width divides the mask. Where the shape is one the
-  mirrors do not map onto itself — the hexagon, which they turn a quarter turn — the cells along its edge are left
-  unfolded and keep exactly what the visitor painted; the target is then symmetric everywhere but on that thin
-  edge, and the engine's own symmetrisation absorbs it.
+- Paint sends the binary mask directly, with `frameWeights(mask, frame)` beside it in the same pixel coordinates.
+  It does not classify the drawing's colours again or substitute another target. The mask arrives already folded
+  under the selected rows inside the protected region; weights and weighted colour are averaged together when
+  fitting requested symmetries, so ignored border colours cannot contaminate protected edge cells.
+- The engine can use a centred checker as an initialization proposal, along with uniform and image-informed
+  grids. Every proposal is ranked against the original weighted drawing, so neither checker colour nor checker
+  count is a required part of the answer. The former advanced "Rammens felter" control has been removed.
+  `substituteCheckerBand` and `solveTargetMask` remain only to reproduce the historical checker benchmarks.
 - Changing "Kanten" **is an edit**, not only a setting: the region the rows fold over moves with the shape, so a
   change folds band paint away or stops folding motif paint. Mal records one undo step per gesture
   (`recordFrameFold`; the Størrelse slider and the canvas handle both say when a gesture begins, so a drag is one
   step and not sixty) and, like a change of rows, does not mark the mask dirty — the fold is the visitor's own
   instruction, not an edit they have yet to notice.
-- The result panel reports the difference **inside the protected motif first** and the whole square second, both
-  measured against the target the engine was given (the number MOTIF-BORDER.md asks for: its three-cell house
-  passes the whole-image bar at 1.89 % with a centre that is 4.60 % wrong). A checkbox "Vis det beskyttede motiv"
-  lays the outline over the found heart. The third number — the share of band cells the engine changed — belongs
-  to the soft state and arrives with it.
+- The result panel reports disagreement **inside the protected motif first**, followed by the share of free-border
+  cells changed. Both compare the actual editable heart with the original drawing. The whole-original difference
+  is also retained in the session report and worker report, but permitted border changes are not presented as a
+  fitting failure. "Vis det beskyttede motiv" lays the protected outline over the found heart.
 - The "Kanten" panel lives in Mal only, not in the import dialog: it applies to painted and imported masks
   alike. After a photo import the panel may default to Må rettes, once that state exists. The dialog does not
   detect symmetry itself, though: it is handed the page's `detectOn`, so an imported mask's rows are judged on the
   protected motif exactly as a painted one's are — a crop's corners are the untrustworthy part, and the reason the
   band exists, so they must not decide the rows that are about to fold the picture.
 
-`frameWeights(mask, frame)` in `$lib/inverse/engine` returns the per-cell weights (1 inside, 0 in a free band) and
-is **sent nowhere**: the fitter's loss has no per-cell weight to take. It is written and tested now so that the day
-Codex's lane lands the change is one settings key there and one deleted function in `$lib/paint/frame`. The
-pattern is the norm, not the exception: flettedehjerter.dk's archive of a hundred-odd hearts is central motifs
-inside a woven frame, and several of Codex's photo benchmarks (puppy, Stonehenge, viking ship) come from it.
 
 **Session store as landed.** `session` is a class instance: `mask` and `result` are `$state.raw` (replace, never
 mutate for reactivity; the canvas repaints by box), the small fields plain `$state`. Callers use `setMask(mask,

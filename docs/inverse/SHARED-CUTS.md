@@ -70,7 +70,7 @@ controls on both editable sheets, as well as the editor's own crossing and
 spacing rules.
 The Chromium result reports **0.1% disagreement inside the protected motif**
 and **2.8% across the whole square**; the remaining error is mostly in the fixed
-checker target currently used for the free border.
+checker target used for the free border in that benchmark.
 
 All **12 browser cases pass** in Chromium 145, Firefox 146 and WebKit 26: the
 hat with and without matching sheets, the star, and a Hunodan photo. The star's
@@ -97,5 +97,6 @@ node --test scripts/inverse/sharing.test.mjs
 INVERSE_TEST_CASES=top-hat,top-hat-independent,star,hunodan npm run test:inverse:paint:browser
 ```
 
-The current free-border UI still supplies a fixed checker target. Letting the
-optimizer choose the border through per-cell loss weights remains separate work.
+These measurements used the earlier checker-border UI. The subsequent
+[weighted-image integration](WEIGHTED-IMAGE.md) lets the optimizer choose the
+free border and retains this final shared-cut recovery and its regression checks.
