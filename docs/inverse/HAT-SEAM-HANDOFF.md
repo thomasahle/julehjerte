@@ -106,3 +106,8 @@ The newer Paint integration has since passed 1,041 tests, 18 export workflows,
 a JavaScript-fallback replay and two desktop/phone control replays. See
 [the integration report](REDESIGN-INTEGRATION.md) for the current source commits
 and measurements. Those checks retain the hat fix through the updated interface.
+
+The subsequent [live-preview and budget correction](LIVE-GEOMETRY.md) enables
+candidate cuts during fitting and fixes a refinement allocation that could
+degrade the independent Firefox hat. Its final replay retains the same exported
+hat geometry with previews enabled.

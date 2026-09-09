@@ -173,7 +173,7 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   - the elapsed-time bar and `Afbryd`, as before. `role="status"` is on the stage line and nowhere else: it changes
     a handful of times a search and is news, while the seconds, the error and the attempts change several times a
     second and would be read over each other for the whole wait.
-  - **the candidate's cuts over the mask**, dormant until §12 (a) lands: cyan left, orange right, black halo, the
+  - **the candidate's cuts over the mask**, fed by §12 (a) and (c): cyan left, orange right, black halo, the
     editor's own `LOBE_OUTLINE_COLORS`, as an additive pass in `MaskCanvas` after everything else it draws.
   - **"Brug det bedste nu"**, dormant until §12 (b) lands. The panel draws it only when
     `ENGINE_GRACEFUL_STOP` is true **and** it has been given an `onUseBest`, so flipping the flag on its own
@@ -688,26 +688,23 @@ mutate for reactivity; the canvas repaints by box), the small fields plain `$sta
 parallel full run (11.8 s) and passes alone (3.4 s): give it an explicit timeout or make its sweep cheaper.
 
 **Live search is the stage after the engine symmetry lands** (owner, 2026-09-08, mockup board "mens der søges").
-The engine's progress events already carry the stage, the strip counts being tried with their errors, the
+The engine's progress events already carry the stage, the cut counts being tried with their errors, the
 refinement step, the current mismatch and the validity checks; the UI shows them: a plain-words stage line
 ("Tilpasser kurverne … 12 s · 4 + 4 strimler · afvigelse 1,3 % og faldende"), a list of the attempts with their
-errors (done / running / waiting), and the elapsed-time bar. Two things need a small engine change, done as a
-follow-up lane after `paint-engine-symmetry` (it touches the same fit/refine/worker files): (1) each refinement
-checkpoint attaches the current candidate's cut geometry (the same `heartcurves-2` JSON as the result, throttled
-to a few per second) so the canvas draws the candidate's cuts over the mask in the editor's outline colours
-(cyan left, orange right, black halo) and they settle as the search runs; the conversion uses
-`cutGeometryToDesign` with a coarse tolerance and no enforcement; (2) a graceful stop message ("Brug det bedste
-nu") that makes the fitter return the best validated candidate so far instead of terminating the worker, and a
+errors (done / running / waiting), and the elapsed-time bar. Displayed strip counts add one to each cut count.
+Refinement checkpoints now attach the candidate's `heartcurves-2` geometry at most four times a second, so the
+canvas draws its cuts over the mask in cyan and orange with a black halo. Conversion uses `cutGeometryToDesign`
+with a coarse tolerance and no enforcement. Still pending is a graceful stop message ("Brug det bedste nu")
+that makes the fitter return the best validated candidate so far instead of terminating the worker, and a
 list of the valid alternatives (counts, error, geometry) in the result so the panel can offer "Prøv 3 + 3 i
 stedet" without searching again. The MILP route shows its rounds and gap and attaches an incumbent when one is
 validated.
 
 
-## 12. Engine hooks wanted for the live search
+## 12. Engine hooks for the live search
 
-The UI half of the live search (§2) is built and green. Three things are missing and all three are in `core/`, so
-they are Codex's lane; each is written here as a contract, with what the UI already does with it. The UI is wired
-for all three today and dormant: nothing below is a rewrite when it lands, it is a flag or an `if`.
+The geometry hooks in (a) and (c) are implemented. Paint requests them through `progressGeometry: true`;
+other engine callers retain the default false. The graceful stop in (b) is still pending. Its UI remains dormant.
 
 The paint bridge already carries whatever the engine sends. `client.ts` hands the whole progress event to its
 listener, `EngineProgress` in `src/lib/inverse/engine.ts` types every shape `core/` is known to send with every
@@ -716,7 +713,7 @@ to be *received*. What follows is what has to be attached.
 
 ### (a) The current candidate's geometry on a refinement checkpoint
 
-**Contract.** Under a new solve setting `progressGeometry: true` (default false, validated by `core/settings.js`
+**Implemented.** Under the solve setting `progressGeometry: true` (default false, validated by `core/settings.js`
 like every other setting, silently dropped by an engine that does not know it), each refinement checkpoint's
 progress event carries
 
@@ -730,8 +727,9 @@ The engine throttles it to **at most four a second** across the whole solve, dro
 than queueing them: a checkpoint is every forty gradient steps, which on a fast machine is far more often than
 that, and the serialisation is the expensive part. Nothing else about the event changes.
 
-**`geometry` is already taken, and that is deliberate.** `refineCurves` puts `check.passed` — a boolean — in a field
-of that name today. The two are told apart **by type and by nothing else**: a boolean is the validity flag, an
+**`geometry` is also a validity flag.** `refineCurves` keeps `check.passed` — a boolean — in its stored checkpoint
+history. Published snapshots replace that field in a copy of the event, keeping geometry out of saved histories.
+The two are told apart **by type and by nothing else**: a boolean is the validity flag, an
 object or a string is a solution. `candidateGeometry(event)` in `src/lib/paint/searchProgress.ts` is the one place
 that decides, and it is tested both ways. So the engine may keep sending the boolean when `progressGeometry` is off
 and start sending the solution when it is on, under the same name, without a version negotiation.
@@ -741,8 +739,8 @@ and start sending the solution when it is on, under the same name, without a ver
 the result to `MaskCanvas` as `candidate`. The canvas draws its cuts over the mask in the editor's own colours
 (cyan left, orange right, black halo, `LOBE_OUTLINE_COLORS`) as one additive pass after everything else, so the
 visitor watches the cuts settle onto their drawing. The conversion is throttled again on our side to four a second
-with the latest winning (`createGeometryThrottle`), because the engine's throttle is a promise in this document
-while ours is in the code that would suffer for it. A candidate mid-refinement need not be a *legal* heart — cuts
+with the latest winning (`createGeometryThrottle`), because worker messages can arrive together after the main
+thread has been busy. A candidate mid-refinement need not be a *legal* heart — cuts
 may cross, a family may be short — so the conversion is wrapped: a throw leaves the last good candidate on screen
 and says nothing. The candidate is dropped the moment the search ends, however it ends.
 
@@ -782,7 +780,7 @@ searching again — each entry converts exactly as the winner does.
 
 ### (c) An incumbent from the MILP route
 
-**Contract.** When the MILP route has a validated incumbent, its `solving` events carry it:
+**Implemented.** When the MILP route has a validated incumbent, its `solving` events carry it:
 
 ```js
 { stage: 'solving', round, remaining|nodes, gap, validatedIncumbent: true,
@@ -795,7 +793,8 @@ told from a boolean by its type. The incumbent changes rarely, so no extra throt
 **What the UI does with it.** The same as (a) — the incumbent's cuts are drawn over the mask — with no new code:
 `candidateGeometry` reads the field off any event, whatever its stage. Today the MILP face shows the round, the
 gap and whether an incumbent exists (`validatedIncumbent`), which is already sent; this makes the incumbent
-visible rather than only counted.
+visible rather than only counted. The engine emits a solving event immediately after validation too, so a first
+valid incumbent can be shown even when it ends that MILP search without another round.
 
 ### What the UI must not be asked to do
 

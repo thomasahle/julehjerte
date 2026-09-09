@@ -24,9 +24,10 @@ The reducer retains raw counts for attempt identity. Both languages, both progre
 displays and an unequal-count fixture are checked. Live error remains approximate;
 the final result reports disagreement measured on the converted heart.
 
-The newer UI also describes optional future geometry previews and graceful
-stopping. Those engine hooks remain dormant. Cancel still terminates the worker;
-the QA replay explicitly checks that a new search succeeds afterward.
+At this integration checkpoint, candidate geometry previews and graceful
+stopping were dormant. The subsequent [geometry-streaming change](LIVE-GEOMETRY.md)
+enables candidate previews; graceful stopping is still pending. Cancel terminates
+the worker, and the QA replay checks that a new search succeeds afterward.
 
 ## Verification
 
