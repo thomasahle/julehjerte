@@ -29,3 +29,31 @@ test('slow initialization cannot consume the first refinement while the requeste
   assert.ok(result.report.seconds<cfg.timeLimit,'Additional refinement must stay inside the user budget.');
   assert.ok(result.report.estimatedMaskMismatch<.01);
 });
+
+test('the first refinement budget excludes time reserved for clearance and polishing',async t=>{
+  const cfg=settings({algorithm:'direct',timeLimit:30,earlyStop:false,preferMatchingSheets:false,trials:0,roundHidden:false});
+  const input=prepare({type:'mask',resolution:n,mask,weights},cfg).target;
+  const actualNow=performance.now.bind(performance),started=actualNow();
+  let extraTime=0,refining=false,first=true,firstStarted=0,lastCheckpoint=0;const steps=[];
+  t.mock.method(performance,'now',()=>{
+    // Model the same slow refinement in both implementations, without sleeping.
+    if(refining)extraTime+=20;
+    return actualNow()+extraTime;
+  });
+  const result=await fitDirect(input,cfg,event=>{
+    if(event.stage==='directRefining'){
+      refining=first;
+      if(first&&!Number.isInteger(event.step))firstStarted=actualNow()+extraTime;
+      if(first&&Number.isInteger(event.step)){steps.push(event.step);lastCheckpoint=actualNow()+extraTime;}
+    }else if(refining){refining=false;first=false;}
+  },{countSearch:context=>{
+    const initialized=initializeCounts(context);
+    // There are still about five seconds in the fast allocation. Its old
+    // 3.5-second threshold overlooked the clearance and polishing reserves.
+    extraTime=started+3500-actualNow();
+    return initialized;
+  }});
+  assert.ok(steps.at(-1)===749||lastCheckpoint-firstStarted>=3500,
+    `The first candidate stopped at step ${steps.at(-1)} after ${(lastCheckpoint-firstStarted).toFixed(0)} ms despite the longer user budget.`);
+  assert.ok(result.report.seconds<cfg.timeLimit);
+});

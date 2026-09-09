@@ -25,6 +25,10 @@ import {sourceWeights,initializationMask} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
+function refinementTimeLeft(deadline){
+  const available=deadline-performance.now();
+  return available-1700-Math.min(800,available*.15);
+}
 function refloor(result,floor){
   const {model}=result,controls=gridControls(model,result.floor),z=model.z.slice();
   model.counts.forEach((count,f)=>{for(let j=0;j<model.k;j++){
@@ -160,10 +164,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   let stoppedEarly=false;
   for(let i=0;i<fine.length&&!stoppedEarly;i++){
     // Initialization (including a speculative topology solve) can exhaust the
-    // initial fast allocation on slower browsers. Give the first candidate the
-    // same refinement opportunity as later candidates when the user's budget
-    // permits it. A ten-second request retains its existing deadline.
-    if(i||cfg.timeLimit>fastSeconds&&deadline-performance.now()<3500){
+    // initial fast allocation on slower browsers. Count only time available
+    // to refine: clearance and polishing have their own reserves below. Using
+    // the whole remaining allocation here could leave less than two seconds
+    // for refinement despite a longer user budget. Ten-second requests retain
+    // their existing deadline.
+    if(i||cfg.timeLimit>fastSeconds&&refinementTimeLeft(deadline)<3500){
       if(i&&performance.now()>maxDeadline-1000)break;
       deadline=Math.min(maxDeadline-1300,performance.now()+8700);
     }
