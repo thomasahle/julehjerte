@@ -6,6 +6,7 @@ import {settings} from '../../static/inverse/core/settings.js';
 import {sampleWeave,validate} from '../../static/inverse/core/validate.js';
 import {materialAudit} from '../../static/inverse/core/material.js';
 import {finalizeShared,shareReplacement} from '../../static/inverse/core/direct/share.js';
+import {finalizeFittedSolution} from '../../static/inverse/core/direct/finalize.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {Cubic} from '../../static/inverse/core/bezier.js';
 import {matchingSummary} from '../../static/inverse/core/direct/matching.js';
@@ -79,6 +80,33 @@ test('shared-cut cleanup preserves a narrow line when the input actually asks fo
   solution.graph.target.sourceImage={resolution,mask,probability:Float64Array.from(mask)};
   const after=finalizeShared(solution,cfg);
   assert.deepEqual(sampleWeave(after,resolution),mask);
+});
+
+test('final selection repairs seams in the matching pair that replaces an independent fit',()=>{
+  const before=hat(),source=before.graph.target.sourceImage;
+  // Use the current free-border objective: protect the inner 84% diamond.
+  // The historical fixture also contains a checker border, whose disagreement
+  // must not disqualify an otherwise valid matching pair in this mode.
+  const n=source.resolution;
+  source.weights=Float64Array.from(source.mask,(_,i)=>Number(Math.abs((i%n+.5)/n-.5)<=.42&&Math.abs((Math.floor(i/n)+.5)/n-.5)<=.42));
+  before.graph.edges[1].curve.p[1][0]+=.02;
+  assert.equal(matchingSummary(before).identical,false);
+  assert.equal(hiddenLength(before),0);
+  const original=solutionJSON(before),mask=source.mask.slice();
+  // Exercise the common entry point used by both solve routes. Testing only
+  // finalizeShared misses the original ordering bug: matching can replace
+  // the previously repaired pair after the repair has already finished.
+  const after=finalizeFittedSolution(before,settings({...fixture.settings,timeLimit:30}));
+  assert.equal(after.report.matchingPreference.status,'matched');
+  assert.equal(after.report.finalSharing.applied,true);
+  assert.ok(hiddenLength(after)>200,'The selected matching templates must share the long invisible cuts.');
+  assert.equal(matchingSummary(after).identical,true);
+  assert.deepEqual(symmetryReport(after,cfg.symmetry).honoured,['transpose']);
+  assert.equal(validate(after,cfg,{checkImage:false}).passed,true);
+  assert.equal(materialAudit(after,cfg).passed,true);
+  assert.ok(maskDisagreement(source,sampleWeave(after,source.resolution))<=maskDisagreement(source,sampleWeave(before,source.resolution)));
+  assert.deepEqual(source.mask,mask,'Repair must leave the observed mask intact.');
+  assert.deepEqual(solutionJSON(before),original,'The original fitted curves must remain available.');
 });
 
 test('the hat cleanup also works when the two sheets were fitted independently',()=>{
