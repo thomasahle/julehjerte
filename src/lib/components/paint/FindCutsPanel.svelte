@@ -177,6 +177,11 @@
 	let searching = $derived(status === 'searching');
 	let stageText = $derived(tr(STAGES[progress.stage]));
 
+	// The narrow and wide layouts render this panel in two different places, and
+	// only one at a time — but an id in markup outlives that arrangement, and a
+	// duplicate one would point both lists' labels at the same heading.
+	const attemptsId = $props.id();
+
 	/**
 	 * One decimal in the visitor's own notation: Danish writes 3,9 mm and 1,3 %
 	 * where `toFixed` writes a point.
@@ -327,8 +332,8 @@
 			     their last error. Nothing is invented — a pair the engine has not
 			     mentioned is not in the list at all. -->
 			<div class="attempts">
-				<p class="attempts-title" id="paint-attempts">{tr('paintAttempts')}</p>
-				<ul aria-labelledby="paint-attempts">
+				<p class="attempts-title" id={attemptsId}>{tr('paintAttempts')}</p>
+				<ul aria-labelledby={attemptsId}>
 					{#each progress.attempts as attempt (attempt.counts.join('x'))}
 						<li class="attempt" class:running={attempt.state === 'running'}>
 							<span class="dot {attempt.state}" aria-hidden="true"></span>
