@@ -3,7 +3,8 @@
  * polyline distances near the threshold. It reports PASS / FAIL / UNCERTAIN,
  * not an unsupported claim that a discretized mask proves tensile strength.
  */
-import {pathPolyline,distance,mix,segmentDistance,Cubic,add,mul} from './bezier.js';
+import {pathPolyline,distance,mix,Cubic,add,mul} from './bezier.js';
+import {prepareChord,chordDistance} from './chord-distance.js';
 import {curvesOf} from './graph.js';
 import {segments,lineSimple,lineDistance,keyPoint,pointInRing} from './geometry.js';
 import {closedRings,sampleRings} from './validate.js';
@@ -67,13 +68,22 @@ function labelCore(mask,nx,ny,originY,h,w,offset,minArea,native='auto'){
 function materialFamily(solution,k,cfg,includeMap,native){
   const w=solution.graph.target.width,nx=cfg.materialResolution,ny=3*nx,h=w/nx,originY=-w/2,tol=cfg.geometryTolerance,R=cfg.nominalWidth/2,guard=Math.SQRT2*h/2+tol,lines=unfoldedPolylines(solution,k,tol),ss=lines.flatMap(segments),seeds=new Uint8Array(nx*ny),cell=Math.max(R+5*h,4*h),tiles=new Map();
   for(let si=0;si<ss.length;si++){const s=ss[si],steps=Math.max(1,Math.ceil(distance(s.a,s.b)/(h/3)));for(let t=0;t<=steps;t++){const p=mix(s.a,s.b,t/steps),ix=Math.round(p[0]/h-.5),iy=Math.round((p[1]-originY)/h-.5);if(ix>=0&&ix<nx&&iy>=0&&iy<ny)seeds[iy*nx+ix]=1;}const[ax,ay,bx,by]=s.box;for(let ty=Math.floor(ay/cell);ty<=Math.floor(by/cell);ty++)for(let tx=Math.floor(ax/cell);tx<=Math.floor(bx/cell);tx++){const key=tx+','+ty;if(!tiles.has(key))tiles.set(key,[]);tiles.get(key).push(si);}}
-  const neighborTiles=new Map();
+  const neighborTiles=new Map(),chords=ss.map(s=>prepareChord(s.a,s.b));
   const lattice=paperLattice(w,nx);
   const edt=distanceTransform(seeds,nx,ny,{native}),certain=new Uint8Array(nx*ny),possible=new Uint8Array(nx*ny),paper=includeMap?new Uint8Array(nx*ny):null;
   for(let y=0;y<ny;y++)for(let x=0;x<nx;x++){const i=y*nx+x,xx=lattice.x[x],yy=lattice.y[y],distOutline=lattice.outline[i];if(paper&&distOutline>0)paper[i]=1;if(distOutline<R-guard)continue;let d=Math.sqrt(edt[i])*h;
     // EDT is only an accelerator. Recompute chord distance near either
     // threshold, so lattice seeding does not determine a narrow-neck decision.
-    if(ss.length&&Math.abs(d-R)<4*h+2*tol){d=Infinity;const tx=Math.floor(xx/cell),ty=Math.floor(yy/cell),key=tx+','+ty;let near=neighborTiles.get(key);if(!near){const seen=new Set();for(let j=-1;j<=1;j++)for(let l=-1;l<=1;l++)for(const si of tiles.get((tx+l)+','+(ty+j))||[])seen.add(si);near=[...seen];neighborTiles.set(key,near);}const p=[xx,yy];for(const si of near)d=Math.min(d,segmentDistance(p,ss[si].a,ss[si].b));}
+    if(ss.length&&Math.abs(d-R)<4*h+2*tol){
+      d=Infinity;const tx=Math.floor(xx/cell),ty=Math.floor(yy/cell),key=tx+','+ty;let near=neighborTiles.get(key);
+      if(!near){const seen=new Set();for(let j=-1;j<=1;j++)for(let l=-1;l<=1;l++)for(const si of tiles.get((tx+l)+','+(ty+j))||[])seen.add(si);near=[...seen];neighborTiles.set(key,near);}
+      for(const si of near){
+        d=Math.min(d,chordDistance(xx,yy,chords[si]));
+        // This centre is already outside both cores. A closer chord cannot
+        // change either mask, and no minimum distance is reported here.
+        if(d<=R-guard)break;
+      }
+    }
     const clearance=Math.min(distOutline,d);if(clearance>R+guard)certain[i]=1;if(clearance>R-guard)possible[i]=1;
   }
   const c=labelCore(certain,nx,ny,originY,h,w,R,cfg.minFeatureArea,native),p=labelCore(possible,nx,ny,originY,h,w,R,cfg.minFeatureArea,native),foldY=Math.min(ny-1,Math.round((w-originY)/h-.5)),foldCuts=[0,w,...solution.paths[k].map((_,i)=>{const cc=curvesOf(solution,k,i).at(-1);return cc.p[3][k===0?0:1];})].sort((a,b)=>a-b),fold=[];
