@@ -43,18 +43,21 @@ function coverageError(design: HeartDesign): number {
 
 describe('conversion preserves the combined weave', () => {
   it('rejects simplification that opens seams despite passing all editor geometry rules', () => {
-    const coarse = convertCutGeometry(geometry, { name: 'coarse' }).design;
+    const coarse = convertCutGeometry(geometry, { name: 'coarse' }).design, original = raw();
     expect(findFingersWithIssues(coarse.fingers, intersectionMarginPx(inferOverlapRect(coarse.fingers, coarse.gridSize))).size).toBe(0);
-    expect(mismatch(coarse) - mismatch(raw())).toBeGreaterThan(0.003);
+    expect(mismatch(coarse) - mismatch(original)).toBeGreaterThan(0.003);
     const result = convertValidatedCutGeometry(geometry, { name: 'house', reference: { mask: target, weights } });
-    expect(mismatch(result.design)).toBeLessThanOrEqual(mismatch(raw()));
+    expect(mismatch(result.design)).toBeLessThanOrEqual(mismatch(original));
     expect(result.editorValidation?.tolerance).toBeLessThan(0.1);
     expect(result.editorValidation?.fidelity.passed).toBe(true);
     expect(result.editorValidation?.fidelity.weaveDrift).toHaveLength(2);
     expect(result.editorValidation?.fidelity.weaveDrift.every(row => row.mismatch <= MAXIMUM_WEAVE_DRIFT)).toBe(true);
-    expect(coverageError(result.design)).toBeLessThanOrEqual(coverageError(raw()) + 0.00001);
-    expect(coverageError(coarse) - coverageError(result.design)).toBeGreaterThan(0.003);
-  });
+    const selectedCoverage = coverageError(result.design);
+    expect(selectedCoverage).toBeLessThanOrEqual(coverageError(original) + 0.00001);
+    expect(coverageError(coarse) - selectedCoverage).toBeGreaterThan(0.003);
+    // Three independent 1600² renders can exceed the default five seconds
+    // while the full suite runs concurrently. This is a fidelity assertion.
+  }, 15000);
 
   it('protects the weave when the caller has no source mask', () => {
     const result = convertValidatedCutGeometry(geometry, { name: 'house' });
