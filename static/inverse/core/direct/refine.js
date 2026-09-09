@@ -2,7 +2,7 @@
  * separation, curvature and join costs, and independent geometry checkpoints.
  */
 import {Adam,bernstein,dbernstein,ddbernstein,clamp} from './math.js';
-import {boundaryGradient,boundaryValue} from './boundary.js';
+import {boundaryGradient,createBoundaryEvaluator} from './boundary.js';
 import {renderCurves} from './curves.js';
 import {mismatch} from './grid.js';
 import {validate} from '../validate.js';
@@ -93,6 +93,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
 export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null}={}){
   // Compile the weighted force field once, not on every optimization step.
   const objective=boundaryObjective(prob,weights),force=objective.target;
+  const imageValue=createBoundaryEvaluator(graph,force,n),transposedImageValue=createBoundaryEvaluator(graph,force,n,{transpose:true,rows:193});
   const points=graph.points.slice(),initial=points.slice(),adam=new Adam(points.length,rate*graph.width/100),history=[];
   // Requested symmetries are constraints, not preferences: both the points and
   // the search direction are projected onto their subspace at every step. A
@@ -110,7 +111,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     if(straight&&ties)applyTies(ties,straight,straight,{fixed:graph.fixed,original:initial});
     if(straight&&groups)projectMatching(straight,groups,graph.fixed,initial);
     const proposals=[points,...(straight?[straight]:[])].map(p=>{
-      const error=mismatch(renderCurves(graph,p,phase,n,32),prob,weights),imageScore=(boundaryValue(graph,p,force,n,phase)+boundaryValue(graph,p,force,n,phase,{transpose:true,rows:193}))/2+objective.offset;
+      const error=mismatch(renderCurves(graph,p,phase,n,32),prob,weights),imageScore=(imageValue(p,phase)+transposedImageValue(p,phase))/2+objective.offset;
       const score=imageScore+primitiveCost(graph,p,n)+(cfg.preferMatchingSheets?matchingPenalty(graph,p).loss:0);
       return{graph,points:p.slice(),phase,error,score,primitives:primitiveComplexity(graph,p),straightened:p===straight};
     });
