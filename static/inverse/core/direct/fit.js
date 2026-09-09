@@ -108,7 +108,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       const error=maskDisagreement(source,woven);
       if(candidate.geometryPassed&&candidate.paperPassed&&error<=Math.min(.01,cfg.maxImageError)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Image-derived topology seed followed by joint cubic and straight-span refinement';
-        solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:'validated_topology_seed',seconds:(performance.now()-start)/1000,traceUsed:true,borderCountsAreHardConstraints:false,selectedCounts:solution.paths.map(p=>p.length),attempts,stages:timings,checkpoints:candidate.history,primitives:candidate.primitives,estimatedMaskMismatch:error,topologyInitialization:topology.report};
+        solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:'validated_topology_seed',seconds:(performance.now()-start)/1000,traceUsed:true,borderCountsAreHardConstraints:false,selectedCounts:solution.paths.map(p=>p.length),attempts,stages:timings,checkpoints:candidate.history,primitiveSelection:candidate.primitiveSelection,primitives:candidate.primitives,estimatedMaskMismatch:error,topologyInitialization:topology.report};
         return solution;
       }
       topology.report.refinementRejected={geometry:candidate.geometryPassed,paper:candidate.paperPassed,imageError:error};
@@ -133,7 +133,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       const solution=graph.solution(candidate.points,phase,input),woven=sampleWeave(solution,source.resolution);
       if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
-        solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
+        solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitiveSelection:candidate.primitiveSelection,primitives:candidate.primitives};
         return solution;
       }
     }
@@ -191,6 +191,6 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
     stoppedEarly,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
-    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:false,topologyInitialization:topology?.report,featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
+    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:false,topologyInitialization:topology?.report,featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,primitiveSelection:candidate.primitiveSelection,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

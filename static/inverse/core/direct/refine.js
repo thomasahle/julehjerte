@@ -10,6 +10,7 @@ import {materialAudit} from '../material.js';
 import {matchingGroups,matchingPenalty,projectMatching} from './matching.js';
 import {symmetryTies,applyTies} from './symmetry.js';
 import {straightProposal,primitiveComplexity,primitiveCost} from './primitives.js';
+import {selectStraightProposal} from './primitive-selection.js';
 import {boundaryObjective} from './image-objective.js';
 export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+.35;}
 
@@ -147,5 +148,28 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     if(step%40===0||step===steps-1)checkpoint(step);
   }
   if(completed&&history.at(-1).step!==completed-1)checkpoint(completed-1);
-  return{...(best||bestInvalid),geometryPassed:(best||bestInvalid).validation.passed,paperPassed:!!best,history,steps:completed,stoppedEarly};
+  // Simplify the selected fit without letting a discounted primitive count
+  // promote a different checkpoint's geometry. Doing this inside checkpoint
+  // competition overfit the published star despite a better pixel score.
+  let primitiveSelection=null;
+  if(best&&performance.now()<deadline){
+    const straight=straightProposal(graph,best.points,n);
+    if(straight&&ties)applyTies(ties,straight,straight,{fixed:graph.fixed,original:initial});
+    if(straight&&groups)projectMatching(straight,groups,graph.fixed,initial);
+    const originalMask=straight&&renderCurves(graph,best.points,phase,n,32);
+    const selected=straight&&selectStraightProposal(graph,best.points,straight,prob,n,{mask:originalMask,weights,ties,groups});
+    if(selected){
+      const p=selected.points,error=mismatch(renderCurves(graph,p,phase,n,32),prob,weights);
+      const score=(imageValue(p,phase)+transposedImageValue(p,phase))/2+objective.offset+primitiveCost(graph,p,n)+(cfg.preferMatchingSheets?matchingPenalty(graph,p).loss:0);
+      primitiveSelection={groups:selected.groups,selectedGroups:selected.accepted,errorBefore:best.error,errorAfter:error,applied:false};
+      if(error<=best.error&&score<=best.score&&performance.now()<deadline){
+        const solution=graph.solution(p,phase,input),check=validate(solution,cfg,{checkImage:false}),paper=check.passed?materialAudit(solution,cfg):null;
+        if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){
+          best={...best,points:p,error,score,primitives:primitiveComplexity(graph,p),straightened:true,selective:true,validation:check,paper:paper?.summary};
+          primitiveSelection.applied=true;
+        }
+      }
+    }
+  }
+  return{...(best||bestInvalid),geometryPassed:(best||bestInvalid).validation.passed,paperPassed:!!best,history,steps:completed,stoppedEarly,primitiveSelection};
 }
