@@ -60,6 +60,12 @@ export function orbitSharingReplacement(families,proposal,symmetry,width){
   const paths=families.flat(),a=proposal.i,b=families[0].length+proposal.j;
   const relations=partners(paths,symmetryOrbit(symmetry)||[[1,0,0,1]],width);
   if(!relations)return null;
+  // Chord symmetry reverses the parameter of this same cut, even though its
+  // spatial map differs from the maps of the other cuts. The joint control
+  // projector enforces those maps after these subdivisions agree.
+  if(symmetry?.withinCurve&&symmetry.withinCurve!=='off')relations.forEach((images,i)=>{
+    if(!images.some(r=>r.other===i&&r.reversed))images.push({other:i,reversed:true});
+  });
   let c=expandSpan(paths[a],paths[b],proposal);
   // When two cuts belong to the same orbit, the shared interval must use the
   // same parameter frame. Otherwise repeatedly mirroring and sharing a knot

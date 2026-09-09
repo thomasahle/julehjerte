@@ -8,7 +8,7 @@ import {mismatch} from './grid.js';
 import {validate} from '../validate.js';
 import {materialAudit} from '../material.js';
 import {matchingGroups,matchingPenalty,projectMatching} from './matching.js';
-import {symmetryTies,applyTies} from './symmetry.js';
+import {symmetryTies,applyTies,symmetryReport} from './symmetry.js';
 import {straightProposal,primitiveComplexity,primitiveCost} from './primitives.js';
 import {boundaryObjective} from './image-objective.js';
 export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+.35;}
@@ -106,13 +106,13 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
   const ties=symmetryTies(graph,cfg.symmetry),groups=identicalSheets&&!ties?matchingGroups(graph):null;let stoppedEarly=false;
   const clampAxes=new Uint8Array(points.length);
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
-  const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);if(ties)applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);};
+  const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);return projected;};
   clampPoints();let safe=null,best=null,bestInvalid=null,completed=0;
   const checkpoint=step=>{
     const straight=straightProposal(graph,points,n);
-    if(straight&&ties)applyTies(ties,straight,straight,{fixed:graph.fixed,original:initial});
+    const straightPassed=!straight||!ties||applyTies(ties,straight,straight,{fixed:graph.fixed,original:initial});
     if(straight&&groups)projectMatching(straight,groups,graph.fixed,initial);
-    const proposals=[points,...(straight?[straight]:[])].map(p=>{
+    const proposals=[points,...(straight&&straightPassed?[straight]:[])].map(p=>{
       const error=mismatch(renderCurves(graph,p,phase,n,32),prob,weights),imageScore=(imageValue(p,phase)+transposedImageValue(p,phase))/2+objective.offset;
       const score=imageScore+primitiveCost(graph,p,n)+(cfg.preferMatchingSheets?matchingPenalty(graph,p).loss:0);
       return{graph,points:p.slice(),phase,error,score,primitives:primitiveComplexity(graph,p),straightened:p===straight};
@@ -124,7 +124,12 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     proposals.sort((a,b)=>selection==='mask'?a.error-b.error||a.score-b.score:a.score-b.score);
     let accepted=false;
     for(const value of proposals){
-      const solution=graph.solution(value.points,phase,input),check=validate(solution,cfg,{checkImage:false}),paper=check.passed?materialAudit(solution,cfg):null;
+      const solution=graph.solution(value.points,phase,input),check=validate(solution,cfg,{checkImage:false});
+      if(ties?.withinCurve){
+        const symmetry=symmetryReport(solution,cfg.symmetry);
+        if(symmetry.honoured.length!==symmetry.requested.length){check.passed=false;check.issues.push('Requested cutting symmetries are not satisfied.');}
+      }
+      const paper=check.passed?materialAudit(solution,cfg):null;
       value.validation=check;value.paper=paper?.summary;
       const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec,solution);
       if(!bestInvalid||value.error<bestInvalid.error)bestInvalid=value;
@@ -143,9 +148,12 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     const g=boundaryGradient(graph,points,force,n,phase),penalty=curvePenalty(graph,points,cfg);
     if(cfg.preferMatchingSheets&&!identicalSheets){const matching=matchingPenalty(graph,points);for(let i=0;i<g.length;i++)g[i]+=matching.gradient[i];}
     for(let i=0;i<g.length;i++)g[i]=graph.fixed[i]?0:g[i]+penalty.gradient[i]+.000004*(points[i]-initial[i])/points.length;
-    if(ties)applyTies(ties,g,points,{fixed:graph.fixed,tangent:true});
+    if(ties&&!applyTies(ties,g,points,{fixed:graph.fixed,tangent:true}))break;
     if(groups)projectMatching(g,groups,graph.fixed,new Float64Array(g.length));
-    adam.update(points,g,1);clampPoints();completed++;
+    const previous=ties?.withinCurve?points.slice():null;
+    adam.update(points,g,1);
+    if(!clampPoints()&&previous){points.set(previous);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.5);}
+    completed++;
     if(step%40===0||step===steps-1)checkpoint(step);
   }
   if(completed&&history.at(-1).step!==completed-1)checkpoint(completed-1);

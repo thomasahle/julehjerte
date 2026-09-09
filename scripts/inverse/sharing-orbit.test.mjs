@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {framePaths} from './fixtures/symmetric-frame.mjs';
+import {framePaths,antiSeamPaths} from './fixtures/symmetric-frame.mjs';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {sampleWeave,validate} from '../../static/inverse/core/validate.js';
@@ -60,3 +60,21 @@ test('orbit sharing retains deliberate thin lines and rejects absent input const
   assert.equal(finalizeShared(before,cfg,{deadline:0}),before);
   assert.equal(finalizeShared(before,{...cfg,symmetry:{transpose:true,mirrorX:true}}),before);
 });
+
+for(const mode of['sym','anti'])for(const unequal of(mode==='sym'?[false,true]:[false])){
+  const permitted=mode==='sym'?(unequal?names.slice(0,3):names):['transpose','antiTranspose','rotate180'];
+  for(let bits=0;bits<1<<permitted.length;bits++){
+    const symmetry={withinCurve:mode,...Object.fromEntries(permitted.filter((_,i)=>bits&(1<<i)).map(n=>[n,true]))};
+    test(`shared cuts retain chord ${mode} ${JSON.stringify(symmetry)} ${unequal?'unequal':''}`,()=>{
+      const paths=delta=>mode==='sym'?framePaths(delta,unequal):antiSeamPaths(delta),before=solution(paths(.16)),truth=solution(paths(0));
+      before.graph.target.sourceImage={resolution:400,mask:sampleWeave(truth,400)};
+      const cfg=settings({symmetry}),original=solutionJSON(before),after=finalizeShared(before,cfg),source=before.graph.target.sourceImage;
+      assert.deepEqual(symmetryReport(before,symmetry).honoured,symmetryReport(before,symmetry).requested);
+      assert.equal(after.report.finalSharing?.applied,true,JSON.stringify(after.report.finalSharing));
+      assert.ok(hiddenLength(after)>84);assert.ok(maskDisagreement(source,sampleWeave(after,400))<maskDisagreement(source,sampleWeave(before,400)));
+      assert.equal(validate(after,cfg,{checkImage:false}).passed,true);assert.equal(materialAudit(after,cfg).passed,true);
+      assert.deepEqual(symmetryReport(after,symmetry).honoured,symmetryReport(after,symmetry).requested);
+      assert.deepEqual(solutionJSON(before),original);assert.equal(finalizeShared(after,cfg),after);
+    });
+  }
+}

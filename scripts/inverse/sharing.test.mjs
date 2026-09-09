@@ -163,7 +163,7 @@ test('anti-paired sharing follows crossing positions rather than serialized path
   assert.equal(materialAudit(after,anti).passed,true);
 });
 
-test('shared-cut cleanup respects its budget and unsupported symmetry constraints',()=>{
+test('shared-cut cleanup respects its budget and unsatisfied input constraints',()=>{
   const solution=hat();
   assert.equal(finalizeShared(solution,cfg,{deadline:0}),solution);
   assert.equal(finalizeShared(solution,{...cfg,symmetry:{mirrorX:true}}),solution);

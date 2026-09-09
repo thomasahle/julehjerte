@@ -20,7 +20,6 @@ import {shareReplacement} from './shared-span.js';
 export {shareReplacement} from './shared-span.js';
 
 const curveKey=p=>[p,p.toReversed()].map(c=>c.flat().map(v=>Math.round(v*1e7)).join(',')).sort()[0];
-const supportsSharing=spec=>!spec?.withinCurve||spec.withinCurve==='off';
 const needsOrbit=spec=>{const names=requestedSymmetry(spec);return names.some(n=>n!=='transpose'&&n!=='antiTranspose')||names.length>1;};
 
 function samples(path,step=.2){
@@ -90,9 +89,6 @@ export function sharingReplacement(paths,c,{identicalSheets=false,antiTranspose=
 
 export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},rounds=12,weights=null}={}){
   let best=candidate;const accepted=[],rejected=[],bigN=Math.min(512,2*n),high=resizeObjective(prob,n,bigN,weights),big=high.probability;
-  // Chord reflections depend on each cut's endpoints; they are not square transforms.
-  // Never discard a requested constraint merely to remove a small image seam.
-  if(!supportsSharing(cfg.symmetry))return{...best,sharing:{accepted,rejected,skipped:'unsupported_symmetry'}};
   const identicalSheets=matchingSummary(best.graph.solution(best.points,best.phase,input)).identical;
   const symmetry={...cfg.symmetry,...(identicalSheets?{transpose:true}:{})},antiTranspose=!!cfg.symmetry?.antiTranspose;
   const orbit=needsOrbit(symmetry);
@@ -112,7 +108,7 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
         const ties=symmetryTies(graph,symmetry);
         if(ties){
           if(ties.skipped.length||ties.conflicts.length)continue;
-          applyTies(ties,points,points,{fixed:graph.fixed,original:points.slice()});
+          if(!applyTies(ties,points,points,{fixed:graph.fixed,original:points.slice()}))continue;
         }
         // Projection can make additional orbit copies coincide. Re-index them
         // as genuinely shared graph edges before rendering or exporting.
@@ -136,7 +132,7 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
  * preference. Earlier sharing cannot certify geometry those stages replace. */
 export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{}}={}){
   const input=solution.graph.target,source=input.sourceImage;
-  if(!source||performance.now()>=deadline||!supportsSharing(cfg.symmetry))return solution;
+  if(!source||performance.now()>=deadline)return solution;
   if(needsOrbit(cfg.symmetry)){
     const symmetry=symmetryReport(solution,cfg.symmetry);
     if(symmetry.honoured.length!==symmetry.requested.length)return solution;

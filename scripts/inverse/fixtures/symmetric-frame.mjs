@@ -9,3 +9,10 @@ export function framePaths(delta=0,unequal=false){
   const mirror=p=>p.map(c=>c.map(([x,y])=>[100-x,y])),transpose=p=>p.map(c=>c.map(([x,y])=>[y,x]));
   return[[a,mirror(a)],[transpose(a),...(unequal?[[line([0,45],[100,45])],[line([0,55],[100,55])]]:[]),transpose(mirror(a))]];
 }
+
+/** A single anti-symmetric cut per sheet sharing the central diagonal. */
+export function antiSeamPaths(delta=0){
+  const v=[[20,0],[20-delta,20+delta],[40-delta,40+delta],[60+delta,60-delta],[80+delta,80-delta],[80,100]];
+  const a=v.slice(1).map((b,i)=>[v[i],v[i].map((x,k)=>x+(b[k]-x)/3),v[i].map((x,k)=>x+2*(b[k]-x)/3),b]);
+  return[[a],[a.map(c=>c.map(([x,y])=>[y,x]))]];
+}

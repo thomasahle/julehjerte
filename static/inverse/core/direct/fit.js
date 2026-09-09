@@ -80,10 +80,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       if(model){
         // An exact seed still has to start feasible: project it before scoring.
         const graph=new CurveGraph(gridPaths(model,cfg.width,seed.floor),cfg.width),base=graph.points.slice(),points=graph.points.slice(),ties=symmetryTies(graph,cfg.symmetry);
-        if(ties)applyTies(ties,points,points,{fixed:graph.fixed,original:base});
+        const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:base});
         const solution=graph.solution(points,seed.phase,input),woven=sampleWeave(solution,source.resolution);
         const error=maskDisagreement(source,woven);
-        if(error<=(cfg.earlyStop?Math.min(.005,cfg.maxImageError):0)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed&&validate(solution,cfg).passed&&(!cfg.requireMaterialCore||materialAudit(solution,cfg).passed)){initialWinner={solution,counts:seed.model.counts,error};if(cfg.requireMaterialCore)emitCandidate(onProgress,{stage:"directInitializing",error,geometry:true,paper:"pass"},solution);}
+        if(projected&&error<=(cfg.earlyStop?Math.min(.005,cfg.maxImageError):0)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed&&validate(solution,cfg).passed&&(!cfg.requireMaterialCore||materialAudit(solution,cfg).passed)){initialWinner={solution,counts:seed.model.counts,error};if(cfg.requireMaterialCore)emitCandidate(onProgress,{stage:"directInitializing",error,geometry:true,paper:"pass"},solution);}
       }
     }
     // Use the fixed-size seed search for every count and phase. Only the

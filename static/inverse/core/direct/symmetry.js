@@ -37,6 +37,7 @@ import {SYMMETRIES,requestedSymmetry} from '../settings.js';
 import {curvesOf} from '../graph.js';
 import {projectMatching} from './matching.js';
 import {imageWeights} from './image-objective.js';
+import {isometryProjector,projectIsometries} from './isometry-projection.js';
 
 // D4 elements act on centred pixel coordinates as [a,b,c,d]: (X,Y)->(aX+bY,cX+dY).
 const MATRIX={mirrorX:[-1,0,0,1],mirrorY:[1,0,0,-1],rotate180:[-1,0,0,-1],transpose:[0,1,1,0],antiTranspose:[0,-1,-1,0]};
@@ -161,26 +162,31 @@ export function chordMap(p0,p1,mode){
 }
 const applyMap=(m,x,y,tangent)=>tangent?[m.L[0]*x+m.L[1]*y,m.L[2]*x+m.L[3]*y]:[m.L[0]*x+m.L[1]*y+m.t[0],m.L[2]*x+m.L[3]*y+m.t[1]];
 
-/** Average each tied pair with the image of its partner. The map is an
- * involution, so this is the orthogonal projection onto its fixed set; on a
- * gradient only the linear part applies. Fixed coordinates keep their edge
- * value: the endpoints already satisfy the tie exactly.
+const chordCache=new WeakMap();
+function chordProjector(size,lists,square=null){
+  let cache=chordCache.get(lists);if(!cache)chordCache.set(lists,cache=new Map());
+  let compiled=cache.get(square);if(compiled?.size===size)return compiled;
+  const maps=lists.map(()=>({L:[1,0,0,1],t:[0,0]})),relations=square?square.slice():[];
+  lists.forEach((ids,i)=>{for(let k=0;k<ids.length/2;k++)relations.push({a:ids[k],b:ids[ids.length-1-k],map:maps[i]});});
+  compiled={size,maps,projection:isometryProjector(size,relations)};cache.set(square,compiled);return compiled;
+}
+function projectChords(values,points,lists,mode,options,square=null){
+  const compiled=chordProjector(values.length/2,lists,square);
+  for(let i=0;i<lists.length;i++){
+    const first=lists[i][0],last=lists[i].at(-1),map=chordMap([points[2*first],points[2*first+1]],[points[2*last],points[2*last+1]],mode);
+    if(!map)return false;
+    Object.assign(compiled.maps[i],map);
+  }
+  return projectIsometries(compiled.projection,values,options);
+}
+
+/** Joint projection, including controls shared by several cuts. Sequential
+ * pair averages would let each later cut undo the preceding cut's constraint.
+ * Chord maps are frozen before changing any controls; a gradient uses only
+ * their linear part. An inconsistent system returns false without mutation.
  */
 export function projectWithinCurve(values,points,lists,mode,{fixed=null,tangent=false}={}){
-  for(const ids of lists){
-    const first=ids[0],last=ids.at(-1);
-    const map=chordMap([points[2*first],points[2*first+1]],[points[2*last],points[2*last+1]],mode);
-    if(!map)continue;
-    for(let t=0;t<ids.length/2;t++){
-      const a=ids[t],b=ids[ids.length-1-t];
-      const pa=applyMap(map,values[2*a],values[2*a+1],tangent),pb=applyMap(map,values[2*b],values[2*b+1],tangent);
-      const na=[(values[2*a]+pb[0])/2,(values[2*a+1]+pb[1])/2],nb=[(values[2*b]+pa[0])/2,(values[2*b+1]+pa[1])/2];
-      for(let axis=0;axis<2;axis++){
-        if(!fixed||!fixed[2*a+axis])values[2*a+axis]=na[axis];
-        if(!fixed||!fixed[2*b+axis])values[2*b+axis]=nb[axis];
-      }
-    }
-  }
+  return projectChords(values,points,lists,mode,{fixed,tangent});
 }
 
 const cache=new WeakMap();
@@ -196,10 +202,11 @@ export function symmetryTies(graph,spec){
   const key=names.join('+');
   if(per.has(key))return per.get(key);
   const w=graph.width,order=graph.families.map((paths,f)=>paths.slice().sort((a,b)=>graph.points[2*startPoint(graph,a)+f]-graph.points[2*startPoint(graph,b)+f]));
-  const relations=[],skipped=[];
+  const mode=spec.withinCurve&&spec.withinCurve!=='off'?spec.withinCurve:null;
+  const relations=[],square=[],skipped=[];
   for(const name of SYMMETRIES){
     if(!spec[name])continue;
-    const rule=PAIRING[name],batch=[];
+    const rule=PAIRING[name],batch=[],pointBatch=[],L=MATRIX[name],map={L,t:[w*(1-L[0]-L[1])/2,w*(1-L[2]-L[3])/2]};
     let ok=rule.family(0)===0||order[0].length===order[1].length;
     for(let f=0;ok&&f<2;f++)for(let i=0;ok&&i<order[f].length;i++){
       const f2=rule.family(f),partner=order[f2][rule.index(f,i,order[f2].length)];
@@ -208,26 +215,32 @@ export function symmetryTies(graph,spec){
       if(a.length!==b.length){ok=false;break;}
       for(let t=0;t<a.length;t++){
         const u=reversed?a.length-1-t:t;
+        if(mode)pointBatch.push({a:a[t],b:b[u],map});
         for(let axis=0;axis<2;axis++){const[other,sign,factor]=rule.coords[axis];batch.push([2*a[t]+axis,2*b[u]+other,sign,factor*w]);}
       }
     }
-    if(ok)relations.push(...batch);else skipped.push(name);
+    if(ok){relations.push(...batch);square.push(...pointBatch);}else skipped.push(name);
   }
-  const mode=spec.withinCurve&&spec.withinCurve!=='off'?spec.withinCurve:null;
   const built=affineGroups(graph.points.length,relations);
-  const value={...built,skipped,mode,withinCurve:mode?graph.paths.map((_,pi)=>pathControls(graph,pi)):null};
+  const value={...built,skipped,mode,square,withinCurve:mode?graph.paths.map((_,pi)=>pathControls(graph,pi)):null};
   per.set(key,value);
   return value;
 }
 
-/** Project points (or, with `tangent`, a gradient) onto the requested
- * symmetric subspace. Within-curve ties run first and the affine ties last, so
- * a combined request leaves the square symmetries exact and the chord
- * symmetry within rounding; the report measures what actually holds. */
+/** Project controls or a gradient onto all requested constraints together.
+ * Chord maps use square-projected endpoints so a tilted input chord cannot
+ * disagree with the endpoint positions imposed by the square symmetries.
+ */
 export function applyTies(ties,values,points,{fixed=null,original=null,tangent=false}={}){
+  if(ties.withinCurve){
+    const anchors=points.slice();
+    for(const[i,value]of ties.constants)if(!fixed||!fixed[i])anchors[i]=value;
+    if(ties.groups.length)projectMatching(anchors,ties.groups,fixed,original||points);
+    return projectChords(values,anchors,ties.withinCurve,ties.mode,{fixed,original:original||values,tangent},ties.square);
+  }
   for(const[i,value]of ties.constants)if(!fixed||!fixed[i])values[i]=tangent?0:value;
-  if(ties.withinCurve)projectWithinCurve(values,points,ties.withinCurve,ties.mode,{fixed,tangent});
   if(ties.groups.length)projectMatching(values,ties.groups,fixed,original,tangent);
+  return true;
 }
 
 /** Measured, not assumed: the largest distance between a control point and the
