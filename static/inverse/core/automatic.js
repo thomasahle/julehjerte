@@ -13,6 +13,7 @@ import {materialAudit} from './material.js';
 import {auditImageFeatures} from './image-features.js';
 import {prepareBoundary} from './direct/topology.js';
 import {boundarySVG} from './export.js';
+import {originalMaskBoundaries} from './mask-preview.js';
 
 /** Only the direct fitter enforces requested symmetries. transpose is the one
  * the traced routes already reproduce, through their identical-sheet grid; a
@@ -33,11 +34,18 @@ export function prepareAutomatic(input,raw,onProgress){
   }else{
     value=prepare(input,cfg,onProgress);
     value.target.metadata.automatic={route:'direct',reason:'Joint cubic and straight-span refinement against the original classified image'};
+    if(value.target.sourceImage.weights){
+      const original=originalMaskBoundaries(value.target.sourceImage,value.target.width,value.target.metadata.paperColors);
+      value.preview.boundaries=original.svg;
+      value.preview.metadata.originalBoundariesAvailable=original.segments>0;
+      value.preview.metadata.originalBoundaryMethod='pixel-edges';
+    }
     try{
       value.target.boundarySeed=prepareBoundary(value.target,settings(cfg));
-      const original=value.target.sourceImage.weights?prepareBoundary(value.target,settings(cfg),{useInitializationGuide:false}):value.target.boundarySeed;
-      value.preview.boundaries=boundarySVG(original);
-      value.preview.metadata.originalBoundariesAvailable=original.curves.length>0;
+      if(!value.target.sourceImage.weights){
+        value.preview.boundaries=boundarySVG(value.target.boundarySeed);
+        value.preview.metadata.originalBoundariesAvailable=value.target.boundarySeed.curves.length>0;
+      }
     }catch(error){value.target.metadata.automatic.boundaryEvidenceError=error.message;}
   }
   if(fitterOnly)value.target.metadata.automatic={...value.target.metadata.automatic,route:'direct',reason:'Fit the requested symmetry directly; the traced routes cannot constrain mirrored cuts'};

@@ -31,6 +31,7 @@ export interface PreparedArtwork {
     width: number;
     direct?: boolean;
     originalBoundariesAvailable?: boolean;
+    originalBoundaryMethod?: 'pixel-edges';
     junctionRepairs?: { from: Point[]; to: Point }[];
     preprocessing?: {
       traceChangeFraction: number;
