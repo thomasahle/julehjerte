@@ -113,3 +113,8 @@ zero errors and seven existing warnings; lint and the production build pass.
 All **50 served engine files** match the source hashes in the Node benchmarks.
 [PAPER-TILES-VALIDATION.json](PAPER-TILES-VALIDATION.json) records the comparisons,
 fresh results, profiles, source hashes and exported-artifact hashes.
+
+The subsequent [kernel-calibration investigation](KERNEL-CALIBRATION.md)
+measures the ambiguous-clock opportunity directly. Longer paper calibration
+remains optional after mixed results; exact numeric comparisons became cheaper
+without changing the audit criteria or the production timing policy.
