@@ -115,6 +115,10 @@ measurements; these benchmarks were not rerun for the QA-only change.
 new browser timing and quality result, the comparison, source and artifact
 hashes, smoke runs and reused Node evidence.
 
+The subsequent [boundary-value preparation change](BOUNDARY-VALUES.md)
+addresses repeated image integration inside the worker, with fixed-input
+comparisons and new complete image and browser replays.
+
 ```sh
 node --test scripts/inverse/paint-observer.test.mjs
 INVERSE_TEST_URL=http://127.0.0.1:5232 \
