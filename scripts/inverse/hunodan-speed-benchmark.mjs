@@ -14,6 +14,8 @@ const catalog=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/spe
 const baseline=JSON.parse(await fs.readFile('docs/inverse/HUNODAN-VALIDATION.json'));
 const experiment=process.env.INVERSE_SPEED_MODULE;
 const fitter=experiment?(await import(pathToFileURL(experiment).href)).fitDirect:null;
+const retainCandidates=process.env.INVERSE_SPEED_RETAIN_CANDIDATES==='1';
+if(fitter&&retainCandidates)throw new Error('Retaining checkpoints requires the production design() entry point.');
 const cfg={...AUTOMATIC_PRESET,timeLimit:Number(process.env.INVERSE_SPEED_SECONDS||10),trials:0,earlyStop:false,...JSON.parse(process.env.INVERSE_SPEED_SETTINGS||'{}')};
 const out=process.env.INVERSE_SPEED_OUT||`tmp/inverse-speed/${new Date().toISOString().replace(/[:.]/g,'-')}`;
 await fs.mkdir(out,{recursive:true});
@@ -23,7 +25,7 @@ for(const name of await fs.readdir('static/inverse/core',{recursive:true}))if(/\
   const file=`static/inverse/core/${name}`;engineSha256[file]=hash(await fs.readFile(file));
 }
 if(experiment)engineSha256[experiment]=hash(await fs.readFile(experiment));
-const report={experiment:experiment||'production',cfg,engineSha256,baselineSha256:hash(await fs.readFile('docs/inverse/HUNODAN-VALIDATION.json')),criteria:'Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.',runtime:process.version,platform:process.platform,cpu:cpus()[0]?.model,results};
+const report={experiment:experiment||'production',cfg,retainCandidates,engineSha256,baselineSha256:hash(await fs.readFile('docs/inverse/HUNODAN-VALIDATION.json')),criteria:'Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.',runtime:process.version,platform:process.platform,cpu:cpus()[0]?.model,results};
 for(const e of catalog.cases){
   if(process.env.INVERSE_HUNODAN_IDS&&!process.env.INVERSE_HUNODAN_IDS.split(',').includes(e.id))continue;
   const r={id:e.id};results.push(r);
@@ -34,8 +36,10 @@ for(const e of catalog.cases){
     if(hash(input.rgba)!==e.decodedPixelsSha256)throw new Error('Decoded photograph pixels differ from frozen baseline');
     r.decodeSeconds=(performance.now()-decoded)/1000;
     const cpuStart=process.cpuUsage(),start=performance.now(),p=prepare(input,cfg),prepared=performance.now();r.prepareSeconds=(prepared-start)/1000;
-    const answer=fitter?finish(await fitter(p.target,settings(cfg)),settings(cfg)):await design(p.target,cfg);
+    const candidates=new Map(),options=retainCandidates?{onCandidate:packet=>candidates.set(packet.geometry,packet)}:{};
+    const answer=fitter?finish(await fitter(p.target,settings(cfg)),settings(cfg)):await design(p.target,cfg,()=>{},options);
     r.seconds=(performance.now()-start)/1000;const cpu=process.cpuUsage(cpuStart);r.cpuSeconds=(cpu.user+cpu.system)/1e6;r.solver=answer.report.solver;r.postprocessSeconds=answer.report.postprocessSeconds;
+    if(retainCandidates){r.retainedCandidates=candidates.size;r.retainedBytes=[...candidates.keys()].reduce((sum,s)=>sum+s.length,0);}
     r.exportAllowed=answer.report.templateChecksPassed;
     const replayStart=performance.now(),woven=await renderExportedWeave(answer.files['cut_geometry.json'],p.preview.resolution);
     r.error=woven.mask.reduce((s,v,i)=>s+Number(v!==p.preview.mask[i]),0)/woven.mask.length;

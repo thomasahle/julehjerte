@@ -15,7 +15,7 @@ export function installPaintObservation(){
   };
   document.addEventListener('click',event=>{
     const button=event.target?.closest?.('button');
-    if(!enabled(button)||button.textContent.trim()!=='Find the cuts')return;
+    if(!enabled(button)||!['Find the cuts','Try again'].includes(button.textContent.trim()))return;
     observer?.disconnect();observer=null;pending=new WeakMap();
     qa.result=null;qa.error=null;qa.prepared=null;
     qa.marks={click:performance.now(),prepareSent:null,prepared:null,solveSent:null,result:null,ready:null,failed:null};

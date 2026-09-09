@@ -10,6 +10,7 @@ import {JSDOM} from 'jsdom';
 import {createCanvas,loadImage} from 'canvas';
 import {motifFixture,topHatFixture} from './motif-fixture.mjs';
 import {installPaintObservation,collectPaintObservation} from './paint-observer.mjs';
+import {stopIntervention,installStopObservation,exerciseStop} from './stop-browser-hooks.mjs';
 
 const browsers=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 let origin=process.env.INVERSE_TEST_URL||'http://localhost:5200';
@@ -19,25 +20,33 @@ const names=(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split
 const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan,top-hat,top-hat-independent,top-hat-anti').split(',');
 const output=process.env.INVERSE_TEST_OUTPUT||`tmp/paint-browser/${new Date().toISOString().replace(/[:.]/g,'-')}`;
 const repeats=Number(process.env.INVERSE_TEST_REPEATS||1);
+const stopMode=process.env.INVERSE_TEST_STOP||null;
+const viewport=process.env.INVERSE_TEST_MOBILE==='1'?{width:390,height:844}:{width:1440,height:1100};
 assert.ok(Number.isInteger(repeats)&&repeats>=1&&repeats<=10,'Replay count must be between 1 and 10.');
 const engineReference=process.env.INVERSE_TEST_ENGINE_REFERENCE?execFileSync('git',['rev-parse','--verify','--end-of-options',process.env.INVERSE_TEST_ENGINE_REFERENCE+'^{commit}'],{encoding:'utf8'}).trim():null;
 const referenceFiles=new Map(),referenceSourceHashes={},referenceRequestCounts={};
+assert.ok(!stopMode||!engineReference,'Stop interventions and a reference-engine replay are separate experiments.');
+const intervention=stopMode?await stopIntervention(stopMode,origin):null;
+let interventionArmed=Boolean(intervention);
 let referenceServer=null;
 if(engineReference){
  // Read the static snapshot before starting any browser timer. The page and
  // editor stay current; reports explicitly identify the substituted engine.
- const files=execFileSync('git',['ls-tree','-r','--name-only',engineReference,'--','static/inverse/core'],{encoding:'utf8'}).trim().split('\n');
+ const files=execFileSync('git',['ls-tree','-r','--name-only',engineReference,'--','static/inverse/core','static/inverse/worker.js','static/inverse/worker-bootstrap.js','static/inverse/worker-controller.js','static/inverse/compute-worker.js'],{encoding:'utf8'}).trim().split('\n');
  for(const file of files){const bytes=execFileSync('git',['show',`${engineReference}:${file}`],{maxBuffer:16*1024*1024});referenceFiles.set('/'+file.replace(/^static\//,''),bytes);referenceSourceHashes[file]=createHash('sha256').update(bytes).digest('hex');}
+}
+if(engineReference||intervention){
  // Firefox worker imports can bypass Playwright route overrides. Serve the
  // reference bytes over HTTP so every worker uses the actual snapshot.
  referenceServer=createHTTPServer(async(request,response)=>{
   try{
    const url=new URL(request.url,upstreamOrigin);
    if(url.origin!==new URL(upstreamOrigin).origin){response.writeHead(400);response.end();return;}
-   if(referenceFiles.has(url.pathname)){
+   const bytes=interventionArmed?intervention.files.get(url.pathname):referenceFiles.get(url.pathname);
+   if(bytes){
     referenceRequestCounts[url.pathname]=(referenceRequestCounts[url.pathname]||0)+1;
     response.writeHead(200,{'Content-Type':url.pathname.endsWith('.wasm')?'application/wasm':url.pathname.endsWith('.json')?'application/json':'text/javascript','Cache-Control':'no-store'});
-    response.end(referenceFiles.get(url.pathname));return;
+    response.end(bytes);return;
    }
    const upstream=await fetch(url,{redirect:'manual'}),headers={'Content-Type':upstream.headers.get('content-type')||'application/octet-stream','Cache-Control':'no-store'};
    const location=upstream.headers.get('location');if(location)headers.Location=location.replace(upstreamOrigin,origin);
@@ -48,7 +57,7 @@ if(engineReference){
  origin=`http://127.0.0.1:${referenceServer.address().port}`;
 }
 await fs.mkdir(output,{recursive:true});
-const loader=await createServer({configFile:false,server:{middlewareMode:true,hmr:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
+const loader=await createServer({configFile:false,cacheDir:path.resolve(output,'vite-cache'),server:{middlewareMode:true,hmr:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
 const dom=new JSDOM('');globalThis.DOMParser=dom.window.DOMParser;
 const {parseHeartFromSVG}=await loader.ssrLoadModule('/src/lib/utils/heartDesign.ts');
 const {findFingersWithIssues,intersectionMarginPx}=await loader.ssrLoadModule('/src/lib/editor/curveIssues.ts');
@@ -59,10 +68,11 @@ const {resample,maskMismatch}=await loader.ssrLoadModule('/src/lib/paint/mask.ts
 const {convertCutGeometry}=await loader.ssrLoadModule('/src/lib/inverse/toHeartDesign.ts');
 const {conversionFidelity}=await loader.ssrLoadModule('/src/lib/inverse/conversionFidelity.ts');
 const results=[];
-const report={origin,upstreamOrigin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,referenceRequestCounts,
+const report={origin,upstreamOrigin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,referenceRequestCounts,stopMode,viewport,intervention:intervention&&{hashes:intervention.hashes,method:intervention.method},
  timingVersion:2,timingMethod:'Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.',
  harnessSourceHashes:{},workspaceSourceHashes:{},results};
-for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs','scripts/inverse/motif-fixture.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs','scripts/inverse/motif-fixture.mjs','scripts/inverse/stop-browser-hooks.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of['static/inverse/worker.js','static/inverse/worker-bootstrap.js','static/inverse/worker-controller.js','static/inverse/compute-worker.js','static/inverse/core/engine.js','static/inverse/core/stopped.js','static/inverse/core/progress.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/shared-simplification.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -71,11 +81,12 @@ try{
  for(const browserName of names){
   const browser=await browsers[browserName].launch({headless:true});
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
+   interventionArmed=Boolean(intervention);
    const topHat=['top-hat','top-hat-independent','top-hat-anti'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
    const referenceStart={...referenceRequestCounts};
-   const context=await browser.newContext({viewport:{width:1440,height:1100},acceptDownloads:true});
+   const context=await browser.newContext({viewport,acceptDownloads:true});
    let page;
    try{
     await context.route('**/*',route=>{
@@ -87,6 +98,7 @@ try{
     // Observe the real worker; no target, seed, count or fitted geometry is
     // supplied to it by this test. Capture what the visitor actually solved.
     await page.addInitScript(installPaintObservation);
+    if(stopMode)await page.addInitScript(installStopObservation);
     await page.goto(`${origin}/en/editor/paint/`);
     // The root layout sets the inline paper colours in onMount. Production
     // can finish loading its HTML before dynamic imports attach the handlers.
@@ -141,12 +153,26 @@ try{
      row.symmetryControlChecks={paint:true};
     }
     await button('Find the cuts').click();
+    if(stopMode)await exerciseStop(page,stopMode,{disarm:()=>{interventionArmed=false;},dir});
     await page.waitForFunction(()=>{const qa=window.__paintQA;return qa.error||qa.marks&&qa.marks.ready!==null||qa.result&&document.querySelector('[role=alert]');},{},{timeout:190000});
     const captureStart=performance.now(),observed=await page.evaluate(collectPaintObservation);
     row.captureSeconds=(performance.now()-captureStart)/1000;
     assert.equal(observed.error,null,JSON.stringify(observed.error));
     assert.ok(observed.marks&&observed.marks.ready!==null,'A successful solve must make Open in Draw ready.');
     row.timings=observed.timings;row.pageMarks=observed.marks;
+    if(stopMode){
+     row.stop=await page.evaluate(()=>window.__stopQA);
+     assert.equal(Boolean(observed.result.report.stoppedEarly),stopMode==='keep');
+     if(stopMode==='keep'){
+      assert.equal(row.stop.stopId,row.stop.resultId,'Stop must resolve the existing solve request.');
+      row.stopToReadySeconds=(row.pageMarks.ready-row.stop.stopSent)/1000;
+      assert.ok(row.stopToReadySeconds<10,`Stop waited ${row.stopToReadySeconds} s despite a retained checkpoint.`);
+      assert.ok(observed.result.report.alternatives.length>0);
+      assert.deepEqual(JSON.parse(observed.result.files['report.json']).alternatives,observed.result.report.alternatives);
+      assert.match(await page.locator('.summary[role=status]').innerText(),/Best result from the stopped search/);
+     }
+     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    }
     for(const [key,value]of Object.entries(row.timings))assert.ok(Number.isFinite(value)&&value>=0,`${key}: ${value}`);
     const phases=Object.entries(row.timings).filter(([key])=>key!=='clickToReadySeconds').reduce((sum,[,value])=>sum+value,0);
     assert.ok(Math.abs(phases-row.timings.clickToReadySeconds)<1e-7,'Page-clock phases must sum to DOM readiness.');
