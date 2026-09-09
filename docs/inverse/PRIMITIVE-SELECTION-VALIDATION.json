@@ -1,0 +1,3566 @@
+{
+  "description": "Select non-worsening groups of straight spans only after choosing the complete fitted geometry, preserving shared cuts, symmetry and native SVG curves.",
+  "sourceCommit": "11d2690d9855b3530d6be77cc0421aa580581fd9",
+  "runtime": "v25.6.1",
+  "sourceHashes": {
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "5dba82d1c82e6b34dbce085edf10252093bbacbc15f605cf6530b9e1ebcf9c46",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "d1445856faeb8ecadc8626a1c471341db8a75758cced22f43bf4930fa4d82652",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+    "static/inverse/core/solver.js": "15bb96737f85ca0d290b6a06d792a3b18570f83a39b9801a498c91e3f466e412",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+    "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+    "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+    "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+    "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+    "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+    "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+    "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+  },
+  "servedHashes": {
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "5dba82d1c82e6b34dbce085edf10252093bbacbc15f605cf6530b9e1ebcf9c46",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "d1445856faeb8ecadc8626a1c471341db8a75758cced22f43bf4930fa4d82652",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+    "static/inverse/core/solver.js": "15bb96737f85ca0d290b6a06d792a3b18570f83a39b9801a498c91e3f466e412",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+    "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+    "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+    "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+    "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+    "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+    "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+    "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+  },
+  "artifactHashes": {
+    "tmp/final-primitives-release-replay/results.json": "f2ff019b59b5e9afa4743a27bbae6b34d63fe184f026b0a065c5dd33aaf66337",
+    "tmp/final-primitives-release-hunodan/results.json": "f57c7f629b16128bc4665ace1a2e75227c8805d057394c866d99efd1ddca6c1e",
+    "tmp/final-primitives-release-weighted/results.json": "33661ed4c4254b8e13da62f000454a0463a9fb3681aeda1441ea1dcf0ae7b432",
+    "tmp/final-primitives-browser/results.json": "1b6bc8425ef5c30bd4341910a319f1cc69271cf5c039a7dd5263b7e81f16dc3b",
+    "tmp/final-primitives-fallback/results.json": "416fd3e370fbf05b7fdfec080b9cc09754ec51811b77e4815202efa8139e9544",
+    "tmp/final-primitives-verified-stages.json": "42e06b37a7822ba807baf690aab2ff88f8c35e89bd8dccccb9187f685966ac68",
+    "tmp/final-primitives-build.log": "a2f874e45ae1a3db02e1932cfe80c3e316e887a9e2964645496b6af54ab35021",
+    "tmp/final-primitives-browser.log": "01ac3607ea15a37ebf15c21ca0e8c2420146a03a037dce2dfaa2ef5337a9993c",
+    "tmp/final-primitives-fallback.log": "a78ca3b63b1e91eb7a6b719b396758dccea4da66c83f70b783080eebcaded430",
+    "tmp/final-primitives-verified-test.log": "6c6fe443504972bac5d7d94a98d6f56b91e4f0220ce3e4e32bd39bf2415ebb50",
+    "tmp/final-primitives-verified-check.log": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b",
+    "tmp/final-primitives-verified-buffer.log": "2640de42c0cd275c165227569522ac273b4632d2f34f74076c209fafe474fcd4",
+    "tmp/final-primitives-verified-lint.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/final-primitives-verified-replay.log": "fe13ebc3fdf1fae9c0effe2c11eaae308021fdf3c0d65cb38c60ff24b3028628",
+    "tmp/final-primitives-verified-hunodan.log": "fe9d0aef5d651de05d65104b4540eaa44c6712b8e11ff5bafcf33eb161fa69fb",
+    "tmp/final-primitives-verified-weighted.log": "999ec704203d10313942bea74b6a2cb6d9f8e76b7b204da4f6796878febd2b17"
+  },
+  "validation": {
+    "applicationTests": 722,
+    "engineTests": 248,
+    "focusedBufferTests": 27,
+    "typeErrors": 0,
+    "existingWarnings": 7,
+    "buildPassed": true,
+    "stages": [
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "environment": {
+          "VITEST_MAX_WORKERS": "2"
+        },
+        "exitCode": 0,
+        "seconds": 139.479471458
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "buffer",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "src/lib/inverse/engine.test.ts",
+          "--maxWorkers=2"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 2.687402792
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 8.390005292000001
+      },
+      {
+        "stage": "replay",
+        "command": [
+          "node",
+          "scripts/inverse/primitive-selection-replay.mjs",
+          "--output=tmp/final-primitives-release-replay"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 54.877154540999996
+      },
+      {
+        "stage": "hunodan",
+        "command": [
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "environment": {
+          "INVERSE_SPEED_OUT": "tmp/final-primitives-release-hunodan"
+        },
+        "exitCode": 0,
+        "seconds": 185.17513570900002
+      },
+      {
+        "stage": "weighted",
+        "command": [
+          "node",
+          "scripts/inverse/weighted-solve-benchmark.mjs",
+          "--strategies=weighted",
+          "--variants=original,inverted,shifted,free-noise",
+          "--output=tmp/final-primitives-release-weighted"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 171.596527667
+      }
+    ],
+    "note": "The full suite passed at 9fdcda7. A subsequent test-only change removes a Node type dependency, retaining constructor, length and every scalar comparison; all 27 affected tests and type/lint checks were rerun. The served runtime is unchanged."
+  },
+  "fixedReplay": {
+    "method": "The baseline is the saved final output, not a rerun of the old optimizer. Apply final degree reduction to the identical saved geometry with its original mask, weights, symmetry and matching constraints. No gradient updates, clamping, matching search or shared-cut search. Both outputs are validated and independently rendered from exported curves. Cleanup time excludes input loading and independent checks. Upstream fitter and validator sources must still match the reference.",
+    "referenceCommit": "5c203570baa28b5a9305af8d48d6ad6c1e2876db",
+    "inputReportSha256": "771e5f453865fb063fde78419909a5e2dd92fe20337030def088aa7e2b6fa2bb",
+    "applied": 14,
+    "sourceComparison": {
+      "improved": 8,
+      "unchanged": 16,
+      "worse": 0
+    },
+    "independentComparison": {
+      "improved": 3,
+      "unchanged": 18,
+      "worse": 3
+    },
+    "medianSeconds": 0.20369189599999843,
+    "maximumSeconds": 0.4738134579999969,
+    "rows": [
+      {
+        "id": "chromium-house-free-small",
+        "passed": true,
+        "inputGeometrySha256": "e41ed5646d080cec8b7e26d35688f73895334f167ea3fe5d440f9c6fbb940a70",
+        "inputPreparedSha256": "5910a9b5fd78995278ae851343123483298e4b479cb294e11c11ab76a9be65c9",
+        "previous": {
+          "primitives": {
+            "curved": 5,
+            "straight": 62
+          },
+          "sourceError": 0.0010986328125,
+          "independentError": 0.0010986328125
+        },
+        "current": {
+          "primitives": {
+            "curved": 5,
+            "straight": 62
+          },
+          "sourceError": 0.0010986328125,
+          "independentError": 0.0010986328125,
+          "seconds": 0.005263166000000183,
+          "selection": null,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "chromium-hat-free-small",
+        "passed": true,
+        "inputGeometrySha256": "ddabe33e9b99d9c726acdc6a3258f8e1b727417627470912d7b3e328fc29c192",
+        "inputPreparedSha256": "1fbe927e06204b9eb27c9b7363023f9554e7881ebcba05904553eeda52d856cc",
+        "previous": {
+          "primitives": {
+            "curved": 75,
+            "straight": 0
+          },
+          "sourceError": 0.0034332275390625,
+          "independentError": 0.0034332275390625
+        },
+        "current": {
+          "primitives": {
+            "curved": 17,
+            "straight": 58
+          },
+          "sourceError": 0.003387451171875,
+          "independentError": 0.0035247802734375,
+          "seconds": 0.3374497080000001,
+          "selection": {
+            "groups": 66,
+            "selectedGroups": 58,
+            "curvedBefore": 75,
+            "curvedAfter": 17,
+            "sampledErrorBefore": 0.00347900390625,
+            "sampledErrorAfter": 0.0034027099609375,
+            "applied": true,
+            "sourceErrorBefore": 0.0034637451171875,
+            "sourceErrorAfter": 0.003387451171875,
+            "rejection": null,
+            "seconds": 0.33740058299999964
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "chromium-star",
+        "passed": true,
+        "inputGeometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+        "inputPreparedSha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+        "previous": {
+          "primitives": {
+            "curved": 0,
+            "straight": 84
+          },
+          "sourceError": 0.0016,
+          "independentError": 0.00194375
+        },
+        "current": {
+          "primitives": {
+            "curved": 0,
+            "straight": 84
+          },
+          "sourceError": 0.0016,
+          "independentError": 0.00194375,
+          "seconds": 0.00052599999999984,
+          "selection": null,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "chromium-hat-free",
+        "passed": true,
+        "inputGeometrySha256": "aa2c096e51d0fbeccbf0ae1f386090a82d099a11663b08f0e237afb500cb7b39",
+        "inputPreparedSha256": "e2ba872179493050c158d419aa2f2d1c07fbc0d42bafb4a9589c3bf4f779d8c8",
+        "previous": {
+          "primitives": {
+            "curved": 26,
+            "straight": 73
+          },
+          "sourceError": 0.002063846371882086,
+          "independentError": 0.002170138888888889
+        },
+        "current": {
+          "primitives": {
+            "curved": 26,
+            "straight": 73
+          },
+          "sourceError": 0.002063846371882086,
+          "independentError": 0.002170138888888889,
+          "seconds": 0.003726042000000234,
+          "selection": null,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "chromium-house-free",
+        "passed": true,
+        "inputGeometrySha256": "b011f2521da0dbe7a388dc051d55b00da37fe99a173d3e2f7e974b4faca2a33b",
+        "inputPreparedSha256": "9c19691f6968b65110727be2b7d136d5ea53541109acba44d11afd795cf46125",
+        "previous": {
+          "primitives": {
+            "curved": 101,
+            "straight": 0
+          },
+          "sourceError": 0.0006997590702947846,
+          "independentError": 0.0007174744897959184
+        },
+        "current": {
+          "primitives": {
+            "curved": 21,
+            "straight": 80
+          },
+          "sourceError": 0.0006997590702947846,
+          "independentError": 0.0007174744897959184,
+          "seconds": 0.24862587500000155,
+          "selection": {
+            "groups": 83,
+            "selectedGroups": 80,
+            "curvedBefore": 101,
+            "curvedAfter": 21,
+            "sampledErrorBefore": 0.0006997590702947846,
+            "sampledErrorAfter": 0.0006997590702947846,
+            "applied": true,
+            "sourceErrorBefore": 0.0006997590702947846,
+            "sourceErrorAfter": 0.0006997590702947846,
+            "rejection": null,
+            "seconds": 0.24857716699999946
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "chromium-hunodan",
+        "passed": true,
+        "inputGeometrySha256": "77f0f40dc3dcbd55010d55841aa6403a19e57ba9725ec11aaa5b99fc33c132d6",
+        "inputPreparedSha256": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+        "previous": {
+          "primitives": {
+            "curved": 61,
+            "straight": 0
+          },
+          "sourceError": 0.0094375,
+          "independentError": 0.0095125
+        },
+        "current": {
+          "primitives": {
+            "curved": 52,
+            "straight": 9
+          },
+          "sourceError": 0.00943125,
+          "independentError": 0.0095125,
+          "seconds": 0.2325798330000016,
+          "selection": {
+            "groups": 12,
+            "selectedGroups": 9,
+            "curvedBefore": 61,
+            "curvedAfter": 52,
+            "sampledErrorBefore": 0.00941875,
+            "sampledErrorAfter": 0.00940625,
+            "applied": true,
+            "sourceErrorBefore": 0.0094375,
+            "sourceErrorAfter": 0.00943125,
+            "rejection": null,
+            "seconds": 0.2325296670000007
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "chromium-top-hat",
+        "passed": true,
+        "inputGeometrySha256": "d5bc2af934208988b2fd82c3347ea1ec952570ce421ac5b226026d7099bde90b",
+        "inputPreparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "previous": {
+          "primitives": {
+            "curved": 141,
+            "straight": 19
+          },
+          "sourceError": 0.0031887755102040817,
+          "independentError": 0.0032507794784580497
+        },
+        "current": {
+          "primitives": {
+            "curved": 40,
+            "straight": 120
+          },
+          "sourceError": 0.0031887755102040817,
+          "independentError": 0.0032507794784580497,
+          "seconds": 0.2450349580000002,
+          "selection": {
+            "groups": 54,
+            "selectedGroups": 51,
+            "curvedBefore": 141,
+            "curvedAfter": 40,
+            "sampledErrorBefore": 0.003171060090702948,
+            "sampledErrorAfter": 0.003153344671201814,
+            "applied": true,
+            "sourceErrorBefore": 0.0031887755102040817,
+            "sourceErrorAfter": 0.0031887755102040817,
+            "rejection": null,
+            "seconds": 0.2449899170000026
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "chromium-top-hat-independent",
+        "passed": true,
+        "inputGeometrySha256": "4422fadf39c0872ed6f30ea1520e605c80d57ab0070f361b914b53965e68a513",
+        "inputPreparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "previous": {
+          "primitives": {
+            "curved": 16,
+            "straight": 71
+          },
+          "sourceError": 0.0029584750566893424,
+          "independentError": 0.002914186507936508
+        },
+        "current": {
+          "primitives": {
+            "curved": 16,
+            "straight": 71
+          },
+          "sourceError": 0.0029584750566893424,
+          "independentError": 0.002914186507936508,
+          "seconds": 0.0019092080000009447,
+          "selection": null,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "firefox-house-free-small",
+        "passed": true,
+        "inputGeometrySha256": "47c8698821808673d7a5dc64fc12387e7b11900ff822c1c9e6bbf39f8be7edcf",
+        "inputPreparedSha256": "5910a9b5fd78995278ae851343123483298e4b479cb294e11c11ab76a9be65c9",
+        "previous": {
+          "primitives": {
+            "curved": 5,
+            "straight": 62
+          },
+          "sourceError": 0.0010986328125,
+          "independentError": 0.0010986328125
+        },
+        "current": {
+          "primitives": {
+            "curved": 5,
+            "straight": 62
+          },
+          "sourceError": 0.0010986328125,
+          "independentError": 0.0010986328125,
+          "seconds": 0.0021822919999976874,
+          "selection": null,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "firefox-hat-free-small",
+        "passed": true,
+        "inputGeometrySha256": "630d4cf9882b7df42acfdd172b4af9c03bcdb156d32eb7807bf3e01c3f0fecbf",
+        "inputPreparedSha256": "1fbe927e06204b9eb27c9b7363023f9554e7881ebcba05904553eeda52d856cc",
+        "previous": {
+          "primitives": {
+            "curved": 71,
+            "straight": 0
+          },
+          "sourceError": 0.003448486328125,
+          "independentError": 0.003448486328125
+        },
+        "current": {
+          "primitives": {
+            "curved": 31,
+            "straight": 40
+          },
+          "sourceError": 0.00341796875,
+          "independentError": 0.0034332275390625,
+          "seconds": 0.21984999999999855,
+          "selection": {
+            "groups": 43,
+            "selectedGroups": 40,
+            "curvedBefore": 71,
+            "curvedAfter": 31,
+            "sampledErrorBefore": 0.0034027099609375,
+            "sampledErrorAfter": 0.0033721923828125,
+            "applied": true,
+            "sourceErrorBefore": 0.003448486328125,
+            "sourceErrorAfter": 0.00341796875,
+            "rejection": null,
+            "seconds": 0.2197918750000026
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "firefox-star",
+        "passed": true,
+        "inputGeometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+        "inputPreparedSha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+        "previous": {
+          "primitives": {
+            "curved": 0,
+            "straight": 84
+          },
+          "sourceError": 0.0016,
+          "independentError": 0.00194375
+        },
+        "current": {
+          "primitives": {
+            "curved": 0,
+            "straight": 84
+          },
+          "sourceError": 0.0016,
+          "independentError": 0.00194375,
+          "seconds": 0.00028662500000064026,
+          "selection": null,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "firefox-hat-free",
+        "passed": true,
+        "inputGeometrySha256": "d068eaa4403ccad9460b18d81dfb12abbaafc6c706e0730f94498640be525244",
+        "inputPreparedSha256": "e2ba872179493050c158d419aa2f2d1c07fbc0d42bafb4a9589c3bf4f779d8c8",
+        "previous": {
+          "primitives": {
+            "curved": 101,
+            "straight": 0
+          },
+          "sourceError": 0.0022144274376417234,
+          "independentError": 0.002329577664399093
+        },
+        "current": {
+          "primitives": {
+            "curved": 27,
+            "straight": 74
+          },
+          "sourceError": 0.0021878543083900226,
+          "independentError": 0.002303004535147392,
+          "seconds": 0.20163216699999975,
+          "selection": {
+            "groups": 77,
+            "selectedGroups": 74,
+            "curvedBefore": 101,
+            "curvedAfter": 27,
+            "sampledErrorBefore": 0.0022232851473922904,
+            "sampledErrorAfter": 0.0021967120181405897,
+            "applied": true,
+            "sourceErrorBefore": 0.0022144274376417234,
+            "sourceErrorAfter": 0.0021878543083900226,
+            "rejection": null,
+            "seconds": 0.2015612080000028
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "firefox-house-free",
+        "passed": true,
+        "inputGeometrySha256": "b1a0c83a6355ab555b7966956ece94459f46a690dac6c6b8ff4c289176dd1330",
+        "inputPreparedSha256": "9c19691f6968b65110727be2b7d136d5ea53541109acba44d11afd795cf46125",
+        "previous": {
+          "primitives": {
+            "curved": 101,
+            "straight": 0
+          },
+          "sourceError": 0.0006997590702947846,
+          "independentError": 0.0007174744897959184
+        },
+        "current": {
+          "primitives": {
+            "curved": 21,
+            "straight": 80
+          },
+          "sourceError": 0.0006997590702947846,
+          "independentError": 0.0007174744897959184,
+          "seconds": 0.3020927499999998,
+          "selection": {
+            "groups": 83,
+            "selectedGroups": 80,
+            "curvedBefore": 101,
+            "curvedAfter": 21,
+            "sampledErrorBefore": 0.0006997590702947846,
+            "sampledErrorAfter": 0.0006997590702947846,
+            "applied": true,
+            "sourceErrorBefore": 0.0006997590702947846,
+            "sourceErrorAfter": 0.0006997590702947846,
+            "rejection": null,
+            "seconds": 0.3020095419999998
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "firefox-hunodan",
+        "passed": true,
+        "inputGeometrySha256": "eec6c796734f91dca29bedc531a3937face522aa710259950431b6822a12b724",
+        "inputPreparedSha256": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+        "previous": {
+          "primitives": {
+            "curved": 61,
+            "straight": 0
+          },
+          "sourceError": 0.0094375,
+          "independentError": 0.0095125
+        },
+        "current": {
+          "primitives": {
+            "curved": 52,
+            "straight": 9
+          },
+          "sourceError": 0.00943125,
+          "independentError": 0.0095125,
+          "seconds": 0.41638891700000025,
+          "selection": {
+            "groups": 12,
+            "selectedGroups": 9,
+            "curvedBefore": 61,
+            "curvedAfter": 52,
+            "sampledErrorBefore": 0.00941875,
+            "sampledErrorAfter": 0.00940625,
+            "applied": true,
+            "sourceErrorBefore": 0.0094375,
+            "sourceErrorAfter": 0.00943125,
+            "rejection": null,
+            "seconds": 0.416292042000001
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "firefox-top-hat",
+        "passed": true,
+        "inputGeometrySha256": "94285fc695fbf82087862774349b6c17084b332feacc2998acc82ab8058201d0",
+        "inputPreparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "previous": {
+          "primitives": {
+            "curved": 141,
+            "straight": 19
+          },
+          "sourceError": 0.0031887755102040817,
+          "independentError": 0.0032507794784580497
+        },
+        "current": {
+          "primitives": {
+            "curved": 40,
+            "straight": 120
+          },
+          "sourceError": 0.0031887755102040817,
+          "independentError": 0.0032507794784580497,
+          "seconds": 0.259823124999999,
+          "selection": {
+            "groups": 54,
+            "selectedGroups": 51,
+            "curvedBefore": 141,
+            "curvedAfter": 40,
+            "sampledErrorBefore": 0.003171060090702948,
+            "sampledErrorAfter": 0.003153344671201814,
+            "applied": true,
+            "sourceErrorBefore": 0.0031887755102040817,
+            "sourceErrorAfter": 0.0031887755102040817,
+            "rejection": null,
+            "seconds": 0.25977474999999683
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "firefox-top-hat-independent",
+        "passed": true,
+        "inputGeometrySha256": "1344690e4a256853746245eb1a41626a9a47a2b16f43b3c59f3cacd40466c5c3",
+        "inputPreparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "previous": {
+          "primitives": {
+            "curved": 16,
+            "straight": 71
+          },
+          "sourceError": 0.0029584750566893424,
+          "independentError": 0.002914186507936508
+        },
+        "current": {
+          "primitives": {
+            "curved": 16,
+            "straight": 71
+          },
+          "sourceError": 0.0029584750566893424,
+          "independentError": 0.002914186507936508,
+          "seconds": 0.002003166999998939,
+          "selection": null,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "webkit-house-free-small",
+        "passed": true,
+        "inputGeometrySha256": "de26f510604846e4d7eb19d069c89ce110591575a0c77a0edd77422236ed5e3a",
+        "inputPreparedSha256": "5910a9b5fd78995278ae851343123483298e4b479cb294e11c11ab76a9be65c9",
+        "previous": {
+          "primitives": {
+            "curved": 5,
+            "straight": 62
+          },
+          "sourceError": 0.0010986328125,
+          "independentError": 0.0010986328125
+        },
+        "current": {
+          "primitives": {
+            "curved": 5,
+            "straight": 62
+          },
+          "sourceError": 0.0010986328125,
+          "independentError": 0.0010986328125,
+          "seconds": 0.0017792499999995926,
+          "selection": null,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "webkit-hat-free-small",
+        "passed": true,
+        "inputGeometrySha256": "c768e62d22c691de3f0ef7eea44f4d090746d8e645d41247fbcfbbfc362de8cd",
+        "inputPreparedSha256": "1fbe927e06204b9eb27c9b7363023f9554e7881ebcba05904553eeda52d856cc",
+        "previous": {
+          "primitives": {
+            "curved": 75,
+            "straight": 0
+          },
+          "sourceError": 0.0034637451171875,
+          "independentError": 0.0034332275390625
+        },
+        "current": {
+          "primitives": {
+            "curved": 17,
+            "straight": 58
+          },
+          "sourceError": 0.003387451171875,
+          "independentError": 0.0035247802734375,
+          "seconds": 0.25736116599999515,
+          "selection": {
+            "groups": 66,
+            "selectedGroups": 58,
+            "curvedBefore": 75,
+            "curvedAfter": 17,
+            "sampledErrorBefore": 0.00347900390625,
+            "sampledErrorAfter": 0.0034027099609375,
+            "applied": true,
+            "sourceErrorBefore": 0.0034637451171875,
+            "sourceErrorAfter": 0.003387451171875,
+            "rejection": null,
+            "seconds": 0.2573108330000032
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "webkit-star",
+        "passed": true,
+        "inputGeometrySha256": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+        "inputPreparedSha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+        "previous": {
+          "primitives": {
+            "curved": 0,
+            "straight": 84
+          },
+          "sourceError": 0.0016,
+          "independentError": 0.00194375
+        },
+        "current": {
+          "primitives": {
+            "curved": 0,
+            "straight": 84
+          },
+          "sourceError": 0.0016,
+          "independentError": 0.00194375,
+          "seconds": 0.003982167000001937,
+          "selection": null,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "webkit-hat-free",
+        "passed": true,
+        "inputGeometrySha256": "fa2c6f64c6ae3876f231be204144ec6fba2d18d4869d51972c84a78d76c066cd",
+        "inputPreparedSha256": "e2ba872179493050c158d419aa2f2d1c07fbc0d42bafb4a9589c3bf4f779d8c8",
+        "previous": {
+          "primitives": {
+            "curved": 98,
+            "straight": 1
+          },
+          "sourceError": 0.0022852891156462584,
+          "independentError": 0.002276431405895692
+        },
+        "current": {
+          "primitives": {
+            "curved": 23,
+            "straight": 76
+          },
+          "sourceError": 0.002232142857142857,
+          "independentError": 0.0022675736961451248,
+          "seconds": 0.2874229169999962,
+          "selection": {
+            "groups": 75,
+            "selectedGroups": 75,
+            "curvedBefore": 98,
+            "curvedAfter": 23,
+            "sampledErrorBefore": 0.0022587159863945577,
+            "sampledErrorAfter": 0.0022232851473922904,
+            "applied": true,
+            "sourceErrorBefore": 0.0022852891156462584,
+            "sourceErrorAfter": 0.002232142857142857,
+            "rejection": null,
+            "seconds": 0.2873564999999944
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "webkit-house-free",
+        "passed": true,
+        "inputGeometrySha256": "6c4d4c22e721eca24905da71a11007c35b87ab6f99e3805bd9ec70e5e98a57ad",
+        "inputPreparedSha256": "9c19691f6968b65110727be2b7d136d5ea53541109acba44d11afd795cf46125",
+        "previous": {
+          "primitives": {
+            "curved": 101,
+            "straight": 0
+          },
+          "sourceError": 0.0007086167800453515,
+          "independentError": 0.0007174744897959184
+        },
+        "current": {
+          "primitives": {
+            "curved": 20,
+            "straight": 81
+          },
+          "sourceError": 0.0007086167800453515,
+          "independentError": 0.0007263321995464852,
+          "seconds": 0.4738134579999969,
+          "selection": {
+            "groups": 83,
+            "selectedGroups": 81,
+            "curvedBefore": 101,
+            "curvedAfter": 20,
+            "sampledErrorBefore": 0.0007086167800453515,
+            "sampledErrorAfter": 0.0007086167800453515,
+            "applied": true,
+            "sourceErrorBefore": 0.0007086167800453515,
+            "sourceErrorAfter": 0.0007086167800453515,
+            "rejection": null,
+            "seconds": 0.4733016669999997
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "webkit-hunodan",
+        "passed": true,
+        "inputGeometrySha256": "412d17717b20932c408b3606901c1278e534b4e31fb75d925f22251433358324",
+        "inputPreparedSha256": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+        "previous": {
+          "primitives": {
+            "curved": 61,
+            "straight": 0
+          },
+          "sourceError": 0.0094375,
+          "independentError": 0.0095125
+        },
+        "current": {
+          "primitives": {
+            "curved": 52,
+            "straight": 9
+          },
+          "sourceError": 0.00943125,
+          "independentError": 0.0095125,
+          "seconds": 0.20575162499999713,
+          "selection": {
+            "groups": 12,
+            "selectedGroups": 9,
+            "curvedBefore": 61,
+            "curvedAfter": 52,
+            "sampledErrorBefore": 0.00941875,
+            "sampledErrorAfter": 0.00940625,
+            "applied": true,
+            "sourceErrorBefore": 0.0094375,
+            "sourceErrorAfter": 0.00943125,
+            "rejection": null,
+            "seconds": 0.2057039169999989
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "webkit-top-hat",
+        "passed": true,
+        "inputGeometrySha256": "0073abe5a0a1f55512d82fc72ba9ecc698b0fb4e78faaaf77f096f7bef01ba2a",
+        "inputPreparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "previous": {
+          "primitives": {
+            "curved": 141,
+            "straight": 19
+          },
+          "sourceError": 0.0031887755102040817,
+          "independentError": 0.0032507794784580497
+        },
+        "current": {
+          "primitives": {
+            "curved": 40,
+            "straight": 120
+          },
+          "sourceError": 0.0031887755102040817,
+          "independentError": 0.0032507794784580497,
+          "seconds": 0.1869140830000033,
+          "selection": {
+            "groups": 54,
+            "selectedGroups": 51,
+            "curvedBefore": 141,
+            "curvedAfter": 40,
+            "sampledErrorBefore": 0.003171060090702948,
+            "sampledErrorAfter": 0.003153344671201814,
+            "applied": true,
+            "sourceErrorBefore": 0.0031887755102040817,
+            "sourceErrorAfter": 0.0031887755102040817,
+            "rejection": null,
+            "seconds": 0.18687950000000272
+          },
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      },
+      {
+        "id": "webkit-top-hat-independent",
+        "passed": true,
+        "inputGeometrySha256": "a17b40692f46e582e0632cf121ac7af48f833cb359e833b57ea859e90efdc266",
+        "inputPreparedSha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+        "previous": {
+          "primitives": {
+            "curved": 16,
+            "straight": 71
+          },
+          "sourceError": 0.0029584750566893424,
+          "independentError": 0.002914186507936508
+        },
+        "current": {
+          "primitives": {
+            "curved": 16,
+            "straight": 71
+          },
+          "sourceError": 0.0029584750566893424,
+          "independentError": 0.002914186507936508,
+          "seconds": 0.002318082999998296,
+          "selection": null,
+          "geometryPassed": true,
+          "paperPassed": true
+        }
+      }
+    ]
+  },
+  "freshSolves": {
+    "hunodan": {
+      "method": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately.",
+      "cases": 22,
+      "medianSeconds": 7.501960520500004,
+      "maximumSeconds": 9.521480582999997,
+      "qualityComparison": {
+        "improved": 2,
+        "unchanged": 5,
+        "worse": 15
+      },
+      "previousRun": "tmp/grid-parity-hunodan/results.json",
+      "rows": [
+        {
+          "id": "hjfig-01",
+          "passed": true,
+          "seconds": 6.512882166,
+          "previousSeconds": 4.91206475,
+          "error": 0.009799111111111111,
+          "previousError": 0.009799111111111111,
+          "selection": {
+            "groups": 15,
+            "selectedGroups": 9,
+            "curvedBefore": 61,
+            "curvedAfter": 52,
+            "sampledErrorBefore": 0.009792,
+            "sampledErrorAfter": 0.009784888888888888,
+            "applied": true,
+            "sourceErrorBefore": 0.009813333333333334,
+            "sourceErrorAfter": 0.009806222222222221,
+            "rejection": null,
+            "seconds": 0.13486074999999983
+          }
+        },
+        {
+          "id": "hjfig-02",
+          "passed": true,
+          "seconds": 7.702948708999999,
+          "previousSeconds": 4.839236583,
+          "error": 0.013952,
+          "previousError": 0.013952,
+          "selection": {
+            "groups": 3,
+            "selectedGroups": 1,
+            "curvedBefore": 62,
+            "curvedAfter": 60,
+            "sampledErrorBefore": 0.014065777777777778,
+            "sampledErrorAfter": 0.014065777777777778,
+            "applied": true,
+            "sourceErrorBefore": 0.014065777777777778,
+            "sourceErrorAfter": 0.014065777777777778,
+            "rejection": null,
+            "seconds": 0.1392073330000003
+          }
+        },
+        {
+          "id": "hjfig-03",
+          "passed": true,
+          "seconds": 5.4700581249999995,
+          "previousSeconds": 4.049272457999999,
+          "error": 0.006634666666666666,
+          "previousError": 0.006634666666666666,
+          "selection": null
+        },
+        {
+          "id": "hjfig-04",
+          "passed": true,
+          "seconds": 5.444246082999999,
+          "previousSeconds": 4.279942999999999,
+          "error": 0.013824,
+          "previousError": 0.013788444444444445,
+          "selection": {
+            "groups": 11,
+            "selectedGroups": 10,
+            "curvedBefore": 59,
+            "curvedAfter": 40,
+            "sampledErrorBefore": 0.014001777777777778,
+            "sampledErrorAfter": 0.014001777777777778,
+            "applied": true,
+            "sourceErrorBefore": 0.014001777777777778,
+            "sourceErrorAfter": 0.014001777777777778,
+            "rejection": null,
+            "seconds": 0.12082579199999964
+          }
+        },
+        {
+          "id": "hjfig-05",
+          "passed": true,
+          "seconds": 3.2889767920000015,
+          "previousSeconds": 2.462728917,
+          "error": 0.010231665331208341,
+          "previousError": 0.010055560936523171,
+          "selection": {
+            "groups": 19,
+            "selectedGroups": 7,
+            "curvedBefore": 64,
+            "curvedAfter": 57,
+            "sampledErrorBefore": 0.009474416434062112,
+            "sampledErrorAfter": 0.009448000774859336,
+            "applied": true,
+            "sourceErrorBefore": 0.009518442532733404,
+            "sourceErrorAfter": 0.009500832093264888,
+            "rejection": null,
+            "seconds": 0.1423300420000014
+          }
+        },
+        {
+          "id": "hjfla-01",
+          "passed": true,
+          "seconds": 7.900258167,
+          "previousSeconds": 5.5910234999999995,
+          "error": 0.013414171006944444,
+          "previousError": 0.013434516059027778,
+          "selection": {
+            "groups": 35,
+            "selectedGroups": 25,
+            "curvedBefore": 104,
+            "curvedAfter": 79,
+            "sampledErrorBefore": 0.013353135850694444,
+            "sampledErrorAfter": 0.013332790798611112,
+            "applied": true,
+            "sourceErrorBefore": 0.013332790798611112,
+            "sourceErrorAfter": 0.013298882378472222,
+            "rejection": null,
+            "seconds": 0.17414008299999842
+          }
+        },
+        {
+          "id": "hjcur-01",
+          "passed": true,
+          "seconds": 7.324282665999999,
+          "previousSeconds": 6.134772791,
+          "error": 0.00512,
+          "previousError": 0.00512,
+          "selection": {
+            "groups": 14,
+            "selectedGroups": 5,
+            "curvedBefore": 104,
+            "curvedAfter": 99,
+            "sampledErrorBefore": 0.004928,
+            "sampledErrorAfter": 0.004928,
+            "applied": false,
+            "sourceErrorBefore": 0.004956444444444445,
+            "sourceErrorAfter": 0.004963555555555555,
+            "rejection": "original_image_error",
+            "seconds": 0.03912641699999949
+          }
+        },
+        {
+          "id": "hjcur-02",
+          "passed": true,
+          "seconds": 6.596167290999998,
+          "previousSeconds": 5.306418750000004,
+          "error": 0.005397333333333333,
+          "previousError": 0.005368888888888889,
+          "selection": {
+            "groups": 33,
+            "selectedGroups": 12,
+            "curvedBefore": 104,
+            "curvedAfter": 92,
+            "sampledErrorBefore": 0.005212444444444444,
+            "sampledErrorAfter": 0.005191111111111111,
+            "applied": true,
+            "sourceErrorBefore": 0.005248,
+            "sourceErrorAfter": 0.005233777777777778,
+            "rejection": null,
+            "seconds": 0.13413929199999985
+          }
+        },
+        {
+          "id": "hjcur-03",
+          "passed": true,
+          "seconds": 8.323015708999993,
+          "previousSeconds": 5.263669582999995,
+          "error": 0.004522666666666667,
+          "previousError": 0.004515555555555556,
+          "selection": {
+            "groups": 36,
+            "selectedGroups": 10,
+            "curvedBefore": 104,
+            "curvedAfter": 94,
+            "sampledErrorBefore": 0.004195555555555556,
+            "sampledErrorAfter": 0.004181333333333333,
+            "applied": true,
+            "sourceErrorBefore": 0.004224,
+            "sourceErrorAfter": 0.0042097777777777776,
+            "rejection": null,
+            "seconds": 0.15196262500000013
+          }
+        },
+        {
+          "id": "hjcur-04",
+          "passed": true,
+          "seconds": 9.231085332999996,
+          "previousSeconds": 7.651401208000003,
+          "error": 0.0056248888888888885,
+          "previousError": 0.005532444444444445,
+          "selection": {
+            "groups": 31,
+            "selectedGroups": 16,
+            "curvedBefore": 156,
+            "curvedAfter": 140,
+            "sampledErrorBefore": 0.005397333333333333,
+            "sampledErrorAfter": 0.005376,
+            "applied": true,
+            "sourceErrorBefore": 0.005411555555555556,
+            "sourceErrorAfter": 0.005397333333333333,
+            "rejection": null,
+            "seconds": 0.2829758339999971
+          }
+        },
+        {
+          "id": "hjcur-05",
+          "passed": true,
+          "seconds": 5.141116625000009,
+          "previousSeconds": 3.838126917000001,
+          "error": 0.009436444444444445,
+          "previousError": 0.009429333333333333,
+          "selection": {
+            "groups": 8,
+            "selectedGroups": 5,
+            "curvedBefore": 52,
+            "curvedAfter": 47,
+            "sampledErrorBefore": 0.009258666666666667,
+            "sampledErrorAfter": 0.009251555555555556,
+            "applied": true,
+            "sourceErrorBefore": 0.009265777777777777,
+            "sourceErrorAfter": 0.009258666666666667,
+            "rejection": null,
+            "seconds": 0.09654937500000232
+          }
+        },
+        {
+          "id": "hjhih-01",
+          "passed": true,
+          "seconds": 8.26271695799999,
+          "previousSeconds": 8.888227708999999,
+          "error": 0.0060202958468683725,
+          "previousError": 0.005986737899004,
+          "selection": {
+            "groups": 15,
+            "selectedGroups": 9,
+            "curvedBefore": 117,
+            "curvedAfter": 108,
+            "sampledErrorBefore": 0.0059061988241295065,
+            "sampledErrorAfter": 0.0059061988241295065,
+            "applied": true,
+            "sourceErrorBefore": 0.0059061988241295065,
+            "sourceErrorAfter": 0.0059061988241295065,
+            "rejection": null,
+            "seconds": 0.15604758300000685
+          }
+        },
+        {
+          "id": "hjhih-02",
+          "passed": true,
+          "seconds": 6.362866042000009,
+          "previousSeconds": 6.679106457999994,
+          "error": 0.003899406226779104,
+          "previousError": 0.0038857719392728835,
+          "selection": {
+            "groups": 16,
+            "selectedGroups": 14,
+            "curvedBefore": 84,
+            "curvedAfter": 70,
+            "sampledErrorBefore": 0.003838051933001111,
+            "sampledErrorAfter": 0.00381760050174178,
+            "applied": true,
+            "sourceErrorBefore": 0.0038448690767542214,
+            "sourceErrorAfter": 0.003831234789248001,
+            "rejection": null,
+            "seconds": 0.17847849999999743
+          }
+        },
+        {
+          "id": "hjhih-04",
+          "passed": true,
+          "seconds": 9.521480582999997,
+          "previousSeconds": 8.615781375000006,
+          "error": 0.007756605740406218,
+          "previousError": 0.007653011673756385,
+          "selection": {
+            "groups": 21,
+            "selectedGroups": 19,
+            "curvedBefore": 138,
+            "curvedAfter": 119,
+            "sampledErrorBefore": 0.007542942977940939,
+            "sampledErrorAfter": 0.007536468348775324,
+            "applied": true,
+            "sourceErrorBefore": 0.007581790752934626,
+            "sourceErrorAfter": 0.007575316123769011,
+            "rejection": null,
+            "seconds": 0.16467691700000434
+          }
+        },
+        {
+          "id": "hjstr-01",
+          "passed": true,
+          "seconds": 5.3066067089999995,
+          "previousSeconds": 4.650238333000001,
+          "error": 0.007543348420030173,
+          "previousError": 0.007529570614696785,
+          "selection": {
+            "groups": 39,
+            "selectedGroups": 7,
+            "curvedBefore": 78,
+            "curvedAfter": 71,
+            "sampledErrorBefore": 0.007240236702695628,
+            "sampledErrorAfter": 0.007226458897362239,
+            "applied": true,
+            "sourceErrorBefore": 0.007240236702695628,
+            "sourceErrorAfter": 0.007226458897362239,
+            "rejection": null,
+            "seconds": 0.11320508299999346
+          }
+        },
+        {
+          "id": "hjstr-02",
+          "passed": true,
+          "seconds": 7.842933667000005,
+          "previousSeconds": 6.4151907499999945,
+          "error": 0.004339250493096647,
+          "previousError": 0.0041617357001972385,
+          "selection": {
+            "groups": 38,
+            "selectedGroups": 34,
+            "curvedBefore": 130,
+            "curvedAfter": 96,
+            "sampledErrorBefore": 0.004095989480604865,
+            "sampledErrorAfter": 0.004076265614727153,
+            "applied": true,
+            "sourceErrorBefore": 0.004122287968441814,
+            "sourceErrorAfter": 0.0041025641025641026,
+            "rejection": null,
+            "seconds": 0.21460520900000118
+          }
+        },
+        {
+          "id": "hjstr-03",
+          "passed": true,
+          "seconds": 9.344737041999993,
+          "previousSeconds": 8.81163958300001,
+          "error": 0.005513338293123605,
+          "previousError": 0.005420342225528749,
+          "selection": {
+            "groups": 27,
+            "selectedGroups": 22,
+            "curvedBefore": 182,
+            "curvedAfter": 160,
+            "sampledErrorBefore": 0.0053605590392177705,
+            "sampledErrorAfter": 0.0053605590392177705,
+            "applied": true,
+            "sourceErrorBefore": 0.005407057073015198,
+            "sourceErrorAfter": 0.005407057073015198,
+            "rejection": null,
+            "seconds": 0.2140472080000036
+          }
+        },
+        {
+          "id": "hjsta-01",
+          "passed": true,
+          "seconds": 5.704468541999987,
+          "previousSeconds": 4.7166360830000045,
+          "error": 0.007936288088642659,
+          "previousError": 0.007929362880886427,
+          "selection": {
+            "groups": 15,
+            "selectedGroups": 10,
+            "curvedBefore": 62,
+            "curvedAfter": 52,
+            "sampledErrorBefore": 0.007853185595567866,
+            "sampledErrorAfter": 0.007846260387811634,
+            "applied": true,
+            "sourceErrorBefore": 0.0078601108033241,
+            "sourceErrorAfter": 0.007853185595567866,
+            "rejection": null,
+            "seconds": 0.10140849999999045
+          }
+        },
+        {
+          "id": "hjsta-02",
+          "passed": true,
+          "seconds": 5.4039228329999895,
+          "previousSeconds": 4.468995332999999,
+          "error": 0.0036485460069444445,
+          "previousError": 0.003573947482638889,
+          "selection": {
+            "groups": 23,
+            "selectedGroups": 14,
+            "curvedBefore": 78,
+            "curvedAfter": 64,
+            "sampledErrorBefore": 0.003445095486111111,
+            "sampledErrorAfter": 0.0034383138020833335,
+            "applied": true,
+            "sourceErrorBefore": 0.00347900390625,
+            "sourceErrorAfter": 0.003472222222222222,
+            "rejection": null,
+            "seconds": 0.10977016600000207
+          }
+        },
+        {
+          "id": "hjsta-03",
+          "passed": true,
+          "seconds": 7.6796383750000095,
+          "previousSeconds": 6.6150917079999925,
+          "error": 0.012339030193129683,
+          "previousError": 0.012352664480635904,
+          "selection": {
+            "groups": 21,
+            "selectedGroups": 11,
+            "curvedBefore": 115,
+            "curvedAfter": 104,
+            "sampledErrorBefore": 0.011984538717967945,
+            "sampledErrorAfter": 0.011984538717967945,
+            "applied": true,
+            "sourceErrorBefore": 0.011998173005474167,
+            "sourceErrorAfter": 0.011998173005474167,
+            "rejection": null,
+            "seconds": 0.16675016699999104
+          }
+        },
+        {
+          "id": "hjsta-04",
+          "passed": true,
+          "seconds": 8.762522333000001,
+          "previousSeconds": 6.9804989589999895,
+          "error": 0.005053050026595,
+          "previousError": 0.00500405923686347,
+          "selection": {
+            "groups": 30,
+            "selectedGroups": 24,
+            "curvedBefore": 133,
+            "curvedAfter": 109,
+            "sampledErrorBefore": 0.0048220934464320705,
+            "sampledErrorAfter": 0.004801097393689987,
+            "applied": true,
+            "sourceErrorBefore": 0.004857086867668879,
+            "sourceErrorAfter": 0.004836090814926794,
+            "rejection": null,
+            "seconds": 0.14658058300000265
+          }
+        },
+        {
+          "id": "hjsta-05",
+          "passed": true,
+          "seconds": 7.850022667000012,
+          "previousSeconds": 6.347527291000006,
+          "error": 0.010624446293860237,
+          "previousError": 0.010624446293860237,
+          "selection": {
+            "groups": 10,
+            "selectedGroups": 7,
+            "curvedBefore": 112,
+            "curvedAfter": 105,
+            "sampledErrorBefore": 0.010423098606674005,
+            "sampledErrorAfter": 0.01041638701710113,
+            "applied": true,
+            "sourceErrorBefore": 0.010409675427528256,
+            "sourceErrorAfter": 0.010402963837955382,
+            "rejection": null,
+            "seconds": 0.18618612500000745
+          }
+        }
+      ]
+    },
+    "weighted": {
+      "method": "Fresh automatic mask solves. Frames fixed before fitting. Checker strategy replaces the band; weighted strategy retains the original mask with zero band weights. Exported controls are independently rendered with resvg. Geometric and paper checks remain enabled. Variants swap both colours, translate by one source pixel in both axes with background fill, or alter only zero-weight pixels; the protected frame stays fixed.",
+      "cases": 32,
+      "medianSeconds": 4.961352353999995,
+      "maximumSeconds": 9.253104791999998,
+      "qualityComparison": {
+        "improved": 4,
+        "unchanged": 23,
+        "worse": 5
+      },
+      "previousRun": "tmp/grid-parity-weighted/results.json",
+      "rows": [
+        {
+          "id": "top-hat/0.64/original/weighted",
+          "passed": true,
+          "seconds": 3.0749178749999997,
+          "previousSeconds": 3.299381125,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "selection": {
+            "groups": 2,
+            "selectedGroups": 2,
+            "curvedBefore": 5,
+            "curvedAfter": 1,
+            "sampledErrorBefore": 0.00360107421875,
+            "sampledErrorAfter": 0.00360107421875,
+            "applied": true,
+            "sourceErrorBefore": 0.00360107421875,
+            "sourceErrorAfter": 0.00360107421875,
+            "rejection": null,
+            "seconds": 0.07446904099999983
+          }
+        },
+        {
+          "id": "top-hat/0.64/inverted/weighted",
+          "passed": true,
+          "seconds": 2.7360371669999997,
+          "previousSeconds": 2.493912625000001,
+          "error": 0.003662109375,
+          "previousError": 0.0037841796875,
+          "selection": {
+            "groups": 35,
+            "selectedGroups": 35,
+            "curvedBefore": 72,
+            "curvedAfter": 2,
+            "sampledErrorBefore": 0.00360107421875,
+            "sampledErrorAfter": 0.00360107421875,
+            "applied": true,
+            "sourceErrorBefore": 0.00360107421875,
+            "sourceErrorAfter": 0.00360107421875,
+            "rejection": null,
+            "seconds": 0.07864187499999935
+          }
+        },
+        {
+          "id": "top-hat/0.64/shifted/weighted",
+          "passed": true,
+          "seconds": 2.7527605000000004,
+          "previousSeconds": 2.5767553750000007,
+          "error": 0.00360107421875,
+          "previousError": 0.00408935546875,
+          "selection": {
+            "groups": 32,
+            "selectedGroups": 32,
+            "curvedBefore": 67,
+            "curvedAfter": 3,
+            "sampledErrorBefore": 0.0035400390625,
+            "sampledErrorAfter": 0.0035400390625,
+            "applied": true,
+            "sourceErrorBefore": 0.0035400390625,
+            "sourceErrorAfter": 0.0035400390625,
+            "rejection": null,
+            "seconds": 0.05693166700000074
+          }
+        },
+        {
+          "id": "top-hat/0.64/free-noise/weighted",
+          "passed": true,
+          "seconds": 2.6493070000000007,
+          "previousSeconds": 2.294141584000001,
+          "error": 0.00360107421875,
+          "previousError": 0.00360107421875,
+          "selection": {
+            "groups": 2,
+            "selectedGroups": 2,
+            "curvedBefore": 5,
+            "curvedAfter": 1,
+            "sampledErrorBefore": 0.00360107421875,
+            "sampledErrorAfter": 0.00360107421875,
+            "applied": true,
+            "sourceErrorBefore": 0.00360107421875,
+            "sourceErrorAfter": 0.00360107421875,
+            "rejection": null,
+            "seconds": 0.0487727079999986
+          }
+        },
+        {
+          "id": "top-hat/0.84/original/weighted",
+          "passed": true,
+          "seconds": 6.763981125000002,
+          "previousSeconds": 6.627778042000002,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "selection": null
+        },
+        {
+          "id": "top-hat/0.84/inverted/weighted",
+          "passed": true,
+          "seconds": 9.253104791999998,
+          "previousSeconds": 7.976515625,
+          "error": 0.00021258503401360543,
+          "previousError": 0.00021258503401360543,
+          "selection": null
+        },
+        {
+          "id": "top-hat/0.84/shifted/weighted",
+          "passed": true,
+          "seconds": 7.399340334000001,
+          "previousSeconds": 6.841609,
+          "error": 0.00031887755102040814,
+          "previousError": 0.00035430839002267573,
+          "selection": {
+            "groups": 68,
+            "selectedGroups": 67,
+            "curvedBefore": 82,
+            "curvedAfter": 15,
+            "sampledErrorBefore": 0.00031887755102040814,
+            "sampledErrorAfter": 0.0002834467120181406,
+            "applied": true,
+            "sourceErrorBefore": 0.00031887755102040814,
+            "sourceErrorAfter": 0.0002834467120181406,
+            "rejection": null,
+            "seconds": 0.0672800419999985
+          }
+        },
+        {
+          "id": "top-hat/0.84/free-noise/weighted",
+          "passed": true,
+          "seconds": 6.7676141659999995,
+          "previousSeconds": 7.769136458000001,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "selection": null
+        },
+        {
+          "id": "hat/0.64/original/weighted",
+          "passed": true,
+          "seconds": 2.069735999999997,
+          "previousSeconds": 2.1561388330000044,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "selection": {
+            "groups": 74,
+            "selectedGroups": 65,
+            "curvedBefore": 76,
+            "curvedAfter": 11,
+            "sampledErrorBefore": 0.00018310546875,
+            "sampledErrorAfter": 0.00018310546875,
+            "applied": false,
+            "sourceErrorBefore": 0.0001220703125,
+            "sourceErrorAfter": 0.00018310546875,
+            "rejection": "original_image_error",
+            "seconds": 0.02299720800000068
+          }
+        },
+        {
+          "id": "hat/0.64/inverted/weighted",
+          "passed": true,
+          "seconds": 2.1448812080000064,
+          "previousSeconds": 2.1875476659999986,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "selection": {
+            "groups": 74,
+            "selectedGroups": 65,
+            "curvedBefore": 76,
+            "curvedAfter": 11,
+            "sampledErrorBefore": 0.00018310546875,
+            "sampledErrorAfter": 0.00018310546875,
+            "applied": false,
+            "sourceErrorBefore": 0.0001220703125,
+            "sourceErrorAfter": 0.00018310546875,
+            "rejection": "original_image_error",
+            "seconds": 0.02580895800000144
+          }
+        },
+        {
+          "id": "hat/0.64/shifted/weighted",
+          "passed": true,
+          "seconds": 2.069647499999999,
+          "previousSeconds": 2.2885884159999987,
+          "error": 0.00054931640625,
+          "previousError": 0.00042724609375,
+          "selection": {
+            "groups": 73,
+            "selectedGroups": 64,
+            "curvedBefore": 76,
+            "curvedAfter": 12,
+            "sampledErrorBefore": 0,
+            "sampledErrorAfter": 0,
+            "applied": true,
+            "sourceErrorBefore": 0.00006103515625,
+            "sourceErrorAfter": 0.00006103515625,
+            "rejection": null,
+            "seconds": 0.07085341600000539
+          }
+        },
+        {
+          "id": "hat/0.64/free-noise/weighted",
+          "passed": true,
+          "seconds": 1.988585291999996,
+          "previousSeconds": 2.281786709,
+          "error": 0.00054931640625,
+          "previousError": 0.00054931640625,
+          "selection": {
+            "groups": 74,
+            "selectedGroups": 65,
+            "curvedBefore": 76,
+            "curvedAfter": 11,
+            "sampledErrorBefore": 0.00018310546875,
+            "sampledErrorAfter": 0.00018310546875,
+            "applied": false,
+            "sourceErrorBefore": 0.0001220703125,
+            "sourceErrorAfter": 0.00018310546875,
+            "rejection": "original_image_error",
+            "seconds": 0.021753666999997222
+          }
+        },
+        {
+          "id": "hat/0.84/original/weighted",
+          "passed": true,
+          "seconds": 7.184744417000002,
+          "previousSeconds": 7.225957625000003,
+          "error": 0.00007086167800453515,
+          "previousError": 0.000035430839002267575,
+          "selection": {
+            "groups": 88,
+            "selectedGroups": 80,
+            "curvedBefore": 100,
+            "curvedAfter": 20,
+            "sampledErrorBefore": 0.000035430839002267575,
+            "sampledErrorAfter": 0.000035430839002267575,
+            "applied": true,
+            "sourceErrorBefore": 0.000035430839002267575,
+            "sourceErrorAfter": 0.000035430839002267575,
+            "rejection": null,
+            "seconds": 0.07403904199998942
+          }
+        },
+        {
+          "id": "hat/0.84/inverted/weighted",
+          "passed": true,
+          "seconds": 7.008840624999997,
+          "previousSeconds": 7.008795041999998,
+          "error": 0.0002834467120181406,
+          "previousError": 0.00021258503401360543,
+          "selection": {
+            "groups": 57,
+            "selectedGroups": 46,
+            "curvedBefore": 73,
+            "curvedAfter": 27,
+            "sampledErrorBefore": 0.00017715419501133787,
+            "sampledErrorAfter": 0.00017715419501133787,
+            "applied": true,
+            "sourceErrorBefore": 0.00017715419501133787,
+            "sourceErrorAfter": 0.00017715419501133787,
+            "rejection": null,
+            "seconds": 0.06510070800001268
+          }
+        },
+        {
+          "id": "hat/0.84/shifted/weighted",
+          "passed": true,
+          "seconds": 6.975158917000008,
+          "previousSeconds": 6.912885083000001,
+          "error": 0.0002834467120181406,
+          "previousError": 0.00021258503401360543,
+          "selection": {
+            "groups": 66,
+            "selectedGroups": 57,
+            "curvedBefore": 81,
+            "curvedAfter": 24,
+            "sampledErrorBefore": 0.00010629251700680272,
+            "sampledErrorAfter": 0.00010629251700680272,
+            "applied": true,
+            "sourceErrorBefore": 0.00010629251700680272,
+            "sourceErrorAfter": 0.00010629251700680272,
+            "rejection": null,
+            "seconds": 0.06843925000001036
+          }
+        },
+        {
+          "id": "hat/0.84/free-noise/weighted",
+          "passed": true,
+          "seconds": 7.105169084000008,
+          "previousSeconds": 7.364737208999999,
+          "error": 0.00007086167800453515,
+          "previousError": 0.000035430839002267575,
+          "selection": {
+            "groups": 88,
+            "selectedGroups": 80,
+            "curvedBefore": 100,
+            "curvedAfter": 20,
+            "sampledErrorBefore": 0.000035430839002267575,
+            "sampledErrorAfter": 0.000035430839002267575,
+            "applied": true,
+            "sourceErrorBefore": 0.000035430839002267575,
+            "sourceErrorAfter": 0.000035430839002267575,
+            "rejection": null,
+            "seconds": 0.07533295799999905
+          }
+        },
+        {
+          "id": "house/0.64/original/weighted",
+          "passed": true,
+          "seconds": 3.210541874999995,
+          "previousSeconds": 3.427139249999993,
+          "error": 0,
+          "previousError": 0,
+          "selection": null
+        },
+        {
+          "id": "house/0.64/inverted/weighted",
+          "passed": true,
+          "seconds": 2.024671958000006,
+          "previousSeconds": 2.0761559160000034,
+          "error": 0,
+          "previousError": 0,
+          "selection": null
+        },
+        {
+          "id": "house/0.64/shifted/weighted",
+          "passed": true,
+          "seconds": 3.2533382920000005,
+          "previousSeconds": 3.472332084000009,
+          "error": 0,
+          "previousError": 0,
+          "selection": null
+        },
+        {
+          "id": "house/0.64/free-noise/weighted",
+          "passed": true,
+          "seconds": 3.286959540999989,
+          "previousSeconds": 3.2084811669999906,
+          "error": 0,
+          "previousError": 0,
+          "selection": null
+        },
+        {
+          "id": "house/0.84/original/weighted",
+          "passed": true,
+          "seconds": 7.486514292000007,
+          "previousSeconds": 7.696854042000006,
+          "error": 0,
+          "previousError": 0,
+          "selection": null
+        },
+        {
+          "id": "house/0.84/inverted/weighted",
+          "passed": true,
+          "seconds": 7.16833425,
+          "previousSeconds": 7.434331459000008,
+          "error": 0.003932823129251701,
+          "previousError": 0.003932823129251701,
+          "selection": null
+        },
+        {
+          "id": "house/0.84/shifted/weighted",
+          "passed": true,
+          "seconds": 6.967167084000001,
+          "previousSeconds": 6.958647708999997,
+          "error": 0,
+          "previousError": 0,
+          "selection": {
+            "groups": 85,
+            "selectedGroups": 83,
+            "curvedBefore": 95,
+            "curvedAfter": 12,
+            "sampledErrorBefore": 0,
+            "sampledErrorAfter": 0,
+            "applied": true,
+            "sourceErrorBefore": 0,
+            "sourceErrorAfter": 0,
+            "rejection": null,
+            "seconds": 0.0738655829999916
+          }
+        },
+        {
+          "id": "house/0.84/free-noise/weighted",
+          "passed": true,
+          "seconds": 6.635745167000001,
+          "previousSeconds": 8.02506487500001,
+          "error": 0,
+          "previousError": 0,
+          "selection": null
+        },
+        {
+          "id": "circle/0.64/original/weighted",
+          "passed": true,
+          "seconds": 1.9192261250000155,
+          "previousSeconds": 2.04658924999999,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "selection": {
+            "groups": 59,
+            "selectedGroups": 54,
+            "curvedBefore": 66,
+            "curvedAfter": 12,
+            "sampledErrorBefore": 0.00018310546875,
+            "sampledErrorAfter": 0.00018310546875,
+            "applied": true,
+            "sourceErrorBefore": 0.000244140625,
+            "sourceErrorAfter": 0.000244140625,
+            "rejection": null,
+            "seconds": 0.06808425000001443
+          }
+        },
+        {
+          "id": "circle/0.64/inverted/weighted",
+          "passed": true,
+          "seconds": 1.984511833000026,
+          "previousSeconds": 2.0730652080000147,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "selection": {
+            "groups": 59,
+            "selectedGroups": 54,
+            "curvedBefore": 66,
+            "curvedAfter": 12,
+            "sampledErrorBefore": 0.00018310546875,
+            "sampledErrorAfter": 0.00018310546875,
+            "applied": true,
+            "sourceErrorBefore": 0.000244140625,
+            "sourceErrorAfter": 0.000244140625,
+            "rejection": null,
+            "seconds": 0.07082633399998303
+          }
+        },
+        {
+          "id": "circle/0.64/shifted/weighted",
+          "passed": true,
+          "seconds": 2.042134874999989,
+          "previousSeconds": 2.043329915999988,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "selection": {
+            "groups": 61,
+            "selectedGroups": 55,
+            "curvedBefore": 67,
+            "curvedAfter": 12,
+            "sampledErrorBefore": 0.00018310546875,
+            "sampledErrorAfter": 0.00018310546875,
+            "applied": true,
+            "sourceErrorBefore": 0.00018310546875,
+            "sourceErrorAfter": 0.00018310546875,
+            "rejection": null,
+            "seconds": 0.07175716599999578
+          }
+        },
+        {
+          "id": "circle/0.64/free-noise/weighted",
+          "passed": true,
+          "seconds": 2.0428416250000008,
+          "previousSeconds": 2.0065635419999888,
+          "error": 0.0003662109375,
+          "previousError": 0.0003662109375,
+          "selection": {
+            "groups": 59,
+            "selectedGroups": 54,
+            "curvedBefore": 66,
+            "curvedAfter": 12,
+            "sampledErrorBefore": 0.00018310546875,
+            "sampledErrorAfter": 0.00018310546875,
+            "applied": true,
+            "sourceErrorBefore": 0.000244140625,
+            "sourceErrorAfter": 0.000244140625,
+            "rejection": null,
+            "seconds": 0.07156487499998183
+          }
+        },
+        {
+          "id": "circle/0.84/original/weighted",
+          "passed": true,
+          "seconds": 7.238387667000003,
+          "previousSeconds": 8.415725416,
+          "error": 0.0002834467120181406,
+          "previousError": 0.00035430839002267573,
+          "selection": null
+        },
+        {
+          "id": "circle/0.84/inverted/weighted",
+          "passed": true,
+          "seconds": 7.258852083000005,
+          "previousSeconds": 6.931388040999998,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "selection": {
+            "groups": 88,
+            "selectedGroups": 86,
+            "curvedBefore": 103,
+            "curvedAfter": 17,
+            "sampledErrorBefore": 0.00017715419501133787,
+            "sampledErrorAfter": 0.00017715419501133787,
+            "applied": true,
+            "sourceErrorBefore": 0.00017715419501133787,
+            "sourceErrorAfter": 0.00017715419501133787,
+            "rejection": null,
+            "seconds": 0.07759337499999674
+          }
+        },
+        {
+          "id": "circle/0.84/shifted/weighted",
+          "passed": true,
+          "seconds": 6.748837250000012,
+          "previousSeconds": 6.49499779199998,
+          "error": 0.00031887755102040814,
+          "previousError": 0.00031887755102040814,
+          "selection": {
+            "groups": 85,
+            "selectedGroups": 84,
+            "curvedBefore": 105,
+            "curvedAfter": 21,
+            "sampledErrorBefore": 0.00021258503401360543,
+            "sampledErrorAfter": 0.00021258503401360543,
+            "applied": true,
+            "sourceErrorBefore": 0.00021258503401360543,
+            "sourceErrorAfter": 0.00021258503401360543,
+            "rejection": null,
+            "seconds": 0.07672837500000605
+          }
+        },
+        {
+          "id": "circle/0.84/free-noise/weighted",
+          "passed": true,
+          "seconds": 7.020538749999978,
+          "previousSeconds": 7.011750874999998,
+          "error": 0.0002834467120181406,
+          "previousError": 0.0002834467120181406,
+          "selection": null
+        }
+      ]
+    }
+  },
+  "browser": {
+    "origin": "http://127.0.0.1:5232",
+    "gitCommit": "11d2690d9855b3530d6be77cc0421aa580581fd9",
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "qualityComparison": {
+      "improved": 9,
+      "unchanged": 14,
+      "worse": 1
+    },
+    "sourceHashes": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "src/lib/inverse/engine.ts": "3801ce556deb99d9338d9790867cfe7c9a9b10293b03300f6aae5537f7ed7b96",
+      "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+      "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+      "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+      "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "src/lib/inverse/toHeartDesign.ts": "41edadce4a5be5b8c7dd977a3761e5c7992bb462633f8651e0d9f0293370e931",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "0db3cacfb5b08f7b63586a5515cdea9fa5b8bdea0a494d480e02736ff5cb8832",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904"
+    },
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "f15ff3b217597f7e0df624290682c233b1d31e8435ffadf1ac5f7be3f80e06e4",
+      "scripts/inverse/paint-observer.mjs": "0f5722fac31af0cac42a400dca990cd2201a50b2a4958552c6696d3b33bdb807"
+    },
+    "rows": [
+      {
+        "id": "chromium-house-free-small",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "sourceError": 0.0010986328125,
+        "previousSourceError": 0.0010986328125,
+        "samePreparedSource": true,
+        "sharedSpans": 4,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0010986328125,
+          "sourceError": 0.0010986328125
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019199999988079072,
+          "prepareRoundTripSeconds": 0.3255,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 2.7285,
+          "resultToReadySeconds": 0.10280000001192093,
+          "clickToReadySeconds": 3.176199999988079
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "5910a9b5fd78995278ae851343123483298e4b479cb294e11c11ab76a9be65c9",
+          "cut_geometry.json": "e41ed5646d080cec8b7e26d35688f73895334f167ea3fe5d440f9c6fbb940a70",
+          "editable.svg": "c4777f3a28fac50490fca2607e19060a4acb3c757831692d3cfa3f93f0401acb",
+          "engine-report.json": "fe3384116aa6b172511e33e8ce87e2633761f1f003873f99ebc5f424b36af105"
+        }
+      },
+      {
+        "id": "chromium-hat-free-small",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "sourceError": 0.0035247802734375,
+        "previousSourceError": 0.0035247802734375,
+        "samePreparedSource": true,
+        "sharedSpans": 4,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0035247802734375,
+          "sourceError": 0.0035247802734375
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019,
+          "prepareRoundTripSeconds": 0.2978000000119209,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 2.972800000011921,
+          "resultToReadySeconds": 0.15930000001192093,
+          "clickToReadySeconds": 3.449199999988079
+        },
+        "selection": {
+          "groups": 66,
+          "selectedGroups": 58,
+          "curvedBefore": 75,
+          "curvedAfter": 17,
+          "sampledErrorBefore": 0.00347900390625,
+          "sampledErrorAfter": 0.0034027099609375,
+          "applied": true,
+          "sourceErrorBefore": 0.0034637451171875,
+          "sourceErrorAfter": 0.003387451171875,
+          "rejection": null,
+          "seconds": 0.15410000002384186
+        },
+        "artifacts": {
+          "prepared.json": "1fbe927e06204b9eb27c9b7363023f9554e7881ebcba05904553eeda52d856cc",
+          "cut_geometry.json": "dac027e7b27e1587ba2ade0dace35fc04dedd4d30d4f97a1e719a832dfc52801",
+          "editable.svg": "6f59c50f796934ecc87db4d198973769a9ff873b4dc9df139b802517f1dd3333",
+          "engine-report.json": "4de92aad4af708303fe2845177f0689eb4107fcd50659b95306372c2bd9b0618"
+        }
+      },
+      {
+        "id": "chromium-star",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "sourceError": 0.0016,
+        "previousSourceError": 0.0016,
+        "samePreparedSource": true,
+        "sharedSpans": 12,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.014699999988079072,
+          "prepareRoundTripSeconds": 0.04210000002384186,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 2.0195,
+          "resultToReadySeconds": 0.12260000002384186,
+          "clickToReadySeconds": 2.199100000023842
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+          "cut_geometry.json": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+          "editable.svg": "d2ecb7405bac6637411178db86cb744c1e66766131edf663130a4f761ded4bd7",
+          "engine-report.json": "f67b9cb6a41e3012c5c9a235847ebd4133c3dda79c5ca08c389415afdf59f18d"
+        }
+      },
+      {
+        "id": "chromium-hat-free",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "sourceError": 0.0021169926303854876,
+        "previousSourceError": 0.0021169926303854876,
+        "samePreparedSource": true,
+        "sharedSpans": 67,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00000625
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000021875
+            }
+          ],
+          "originalSourceError": 0.0021169926303854876,
+          "sourceError": 0.0021169926303854876
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019900000035762786,
+          "prepareRoundTripSeconds": 0.3441999999880791,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 8.224199999988079,
+          "resultToReadySeconds": 0.229,
+          "clickToReadySeconds": 8.8175
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "e2ba872179493050c158d419aa2f2d1c07fbc0d42bafb4a9589c3bf4f779d8c8",
+          "cut_geometry.json": "aa2c096e51d0fbeccbf0ae1f386090a82d099a11663b08f0e237afb500cb7b39",
+          "editable.svg": "e36b6329790e3388b85af9032d8266784c7709ad53d7edc648f28bdf76397c86",
+          "engine-report.json": "7801eddf0c43562d0e586f343b0bb8d924e87f64cc4193ceacc529dcf54b1ff0"
+        }
+      },
+      {
+        "id": "chromium-house-free",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "sourceError": 0.0007351899092970522,
+        "previousSourceError": 0.0007351899092970522,
+        "samePreparedSource": true,
+        "sharedSpans": 65,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00003125
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.00005
+            }
+          ],
+          "originalSourceError": 0.0007351899092970522,
+          "sourceError": 0.0007351899092970522
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019599999964237214,
+          "prepareRoundTripSeconds": 0.2965,
+          "preparedToSolveRequestSeconds": 0.00030000001192092895,
+          "solveRoundTripSeconds": 7.953100000023841,
+          "resultToReadySeconds": 0.20430000001192092,
+          "clickToReadySeconds": 8.473800000011922
+        },
+        "selection": {
+          "groups": 83,
+          "selectedGroups": 80,
+          "curvedBefore": 101,
+          "curvedAfter": 21,
+          "sampledErrorBefore": 0.0006997590702947846,
+          "sampledErrorAfter": 0.0006997590702947846,
+          "applied": true,
+          "sourceErrorBefore": 0.0006997590702947846,
+          "sourceErrorAfter": 0.0006997590702947846,
+          "rejection": null,
+          "seconds": 0.11430000001192094
+        },
+        "artifacts": {
+          "prepared.json": "9c19691f6968b65110727be2b7d136d5ea53541109acba44d11afd795cf46125",
+          "cut_geometry.json": "64c4bffff30365d3c8036a3d86ab8cdccfea7a30d88ec1fbf34537f5c6929cc4",
+          "editable.svg": "548482696c714b6df1145c81e1c6c3af406c300ee8fa97cd8013a058c3cac0e5",
+          "engine-report.json": "80634f991a9f51378be306a5911c23bce7b94ac71917190f01a938d2361b2fdc"
+        }
+      },
+      {
+        "id": "chromium-hunodan",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "sourceError": 0.00944375,
+        "previousSourceError": 0.00945625,
+        "samePreparedSource": true,
+        "sharedSpans": 8,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005699999988079071,
+          "prepareRoundTripSeconds": 0.15810000002384186,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 4.442099999964237,
+          "resultToReadySeconds": 0.448,
+          "clickToReadySeconds": 5.0540999999642375
+        },
+        "selection": {
+          "groups": 12,
+          "selectedGroups": 9,
+          "curvedBefore": 61,
+          "curvedAfter": 52,
+          "sampledErrorBefore": 0.00941875,
+          "sampledErrorAfter": 0.00940625,
+          "applied": true,
+          "sourceErrorBefore": 0.0094375,
+          "sourceErrorAfter": 0.00943125,
+          "rejection": null,
+          "seconds": 0.098
+        },
+        "artifacts": {
+          "prepared.json": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+          "cut_geometry.json": "3a228e613cb949c85e39c5f630119bd9ea96db3cccf647c5e857cdf1a6e72acd",
+          "editable.svg": "a7eb34b6f14c6edffe566a2a429198191edfc630901032c9b9a88589f1f772b7",
+          "engine-report.json": "ab378d73b9dba308de58d8a33f8cc089462c442349ee91a65798b002cd974605"
+        }
+      },
+      {
+        "id": "chromium-top-hat",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "sourceError": 0.0032064909297052154,
+        "previousSourceError": 0.003224206349206349,
+        "samePreparedSource": true,
+        "sharedSpans": 114,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.025600000023841857,
+          "prepareRoundTripSeconds": 0.2815,
+          "preparedToSolveRequestSeconds": 0.00009999996423721313,
+          "solveRoundTripSeconds": 10.22219999998808,
+          "resultToReadySeconds": 0.3593000000119209,
+          "clickToReadySeconds": 10.888699999988079
+        },
+        "selection": {
+          "groups": 54,
+          "selectedGroups": 51,
+          "curvedBefore": 141,
+          "curvedAfter": 40,
+          "sampledErrorBefore": 0.003171060090702948,
+          "sampledErrorAfter": 0.003153344671201814,
+          "applied": true,
+          "sourceErrorBefore": 0.0031887755102040817,
+          "sourceErrorAfter": 0.0031887755102040817,
+          "rejection": null,
+          "seconds": 0.1489000000357628
+        },
+        "artifacts": {
+          "prepared.json": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+          "cut_geometry.json": "d2e98879de6b699368b7cc3dbb13b77716bcffa7aadf0aef67388aeba2907da6",
+          "editable.svg": "71c74acb82fb04d178db1b5feb8239e7a1db9a4850ebea8d0ecef7a187590ba3",
+          "engine-report.json": "7d31cc6c5a92fcff0cd2a7599ad8bbfe1c561a8bea1aaeace10c37b1c722535b"
+        }
+      },
+      {
+        "id": "chromium-top-hat-independent",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "sourceError": 0.0029584750566893424,
+        "previousSourceError": 0.0029584750566893424,
+        "samePreparedSource": true,
+        "sharedSpans": 40,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.020099999964237215,
+          "prepareRoundTripSeconds": 0.2939000000357628,
+          "preparedToSolveRequestSeconds": 0.00030000001192092895,
+          "solveRoundTripSeconds": 6.1825,
+          "resultToReadySeconds": 0.1575,
+          "clickToReadySeconds": 6.654300000011921
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+          "cut_geometry.json": "4422fadf39c0872ed6f30ea1520e605c80d57ab0070f361b914b53965e68a513",
+          "editable.svg": "b819281fda120872deaa76fd50f4f76cf8437b7df5adc2e53f29ad5676f626d4",
+          "engine-report.json": "95de5f1950251e919d35c074d9d704f69c4e0b6857c8ffaf6378e5c9c7394aae"
+        }
+      },
+      {
+        "id": "firefox-house-free-small",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "sourceError": 0.0010986328125,
+        "previousSourceError": 0.0010986328125,
+        "samePreparedSource": true,
+        "sharedSpans": 4,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0010986328125,
+          "sourceError": 0.0010986328125
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.017,
+          "prepareRoundTripSeconds": 0.245,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 4.527,
+          "resultToReadySeconds": 0.082,
+          "clickToReadySeconds": 4.871
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "5910a9b5fd78995278ae851343123483298e4b479cb294e11c11ab76a9be65c9",
+          "cut_geometry.json": "47c8698821808673d7a5dc64fc12387e7b11900ff822c1c9e6bbf39f8be7edcf",
+          "editable.svg": "21dc88f57517800933bbb2095fcfd7368d3988ae9103710a65db7c73bdfa1fe4",
+          "engine-report.json": "8550761abb6e2deb24f40f2ae717cafb9de21cf8aba1c6b07603f29f613ca95d"
+        }
+      },
+      {
+        "id": "firefox-hat-free-small",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "sourceError": 0.00335693359375,
+        "previousSourceError": 0.0034637451171875,
+        "samePreparedSource": true,
+        "sharedSpans": 21,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0001125
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.00010625
+            }
+          ],
+          "originalSourceError": 0.00335693359375,
+          "sourceError": 0.00335693359375
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.016,
+          "prepareRoundTripSeconds": 0.245,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 11.31,
+          "resultToReadySeconds": 0.237,
+          "clickToReadySeconds": 11.809
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "1fbe927e06204b9eb27c9b7363023f9554e7881ebcba05904553eeda52d856cc",
+          "cut_geometry.json": "f8904a08f5394c2630b923c8dd36b39b779595d207dea2e0b7d403699e24082e",
+          "editable.svg": "f8b291e3b1be7309bd27ef3c4cfa2857326e9b2584ed437bb319c33eea34eb16",
+          "engine-report.json": "6c8cfe0b6c1db7d0bbcd2d82c85314ca49fc924a52cb0e71174ec0e72b68e1b2"
+        }
+      },
+      {
+        "id": "firefox-star",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "sourceError": 0.0016,
+        "previousSourceError": 0.0016,
+        "samePreparedSource": true,
+        "sharedSpans": 12,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.012,
+          "prepareRoundTripSeconds": 0.034,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 4.593,
+          "resultToReadySeconds": 0.101,
+          "clickToReadySeconds": 4.74
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+          "cut_geometry.json": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+          "editable.svg": "54bbe35af173f75109c6276edc5647eafa478fec6efed7ba62d87f259c61dbb2",
+          "engine-report.json": "ada3381ea6292377fd37fd0ff580cdc2027b38aff64dcf79457a86fb0441b229"
+        }
+      },
+      {
+        "id": "firefox-hat-free",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "sourceError": 0.002063846371882086,
+        "previousSourceError": 0.0022941468253968255,
+        "samePreparedSource": true,
+        "sharedSpans": 67,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0001625
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0001875
+            }
+          ],
+          "originalSourceError": 0.002063846371882086,
+          "sourceError": 0.002063846371882086
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.029,
+          "prepareRoundTripSeconds": 0.339,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 11.922,
+          "resultToReadySeconds": 0.123,
+          "clickToReadySeconds": 12.414
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "e2ba872179493050c158d419aa2f2d1c07fbc0d42bafb4a9589c3bf4f779d8c8",
+          "cut_geometry.json": "b779523ec2c68038e560bc899cfd4f44de680aecd6eb9ba409f651d33941d391",
+          "editable.svg": "ec79dfaf5b82e2a39c7ae76b9d38f78231559b48500721d362b5413d8ae93746",
+          "engine-report.json": "d6026f3367d3a338e902e1e113f8f52d768512271c81b1cda56aa2ce9da8b1f6"
+        }
+      },
+      {
+        "id": "firefox-house-free",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "sourceError": 0.0007351899092970522,
+        "previousSourceError": 0.0007351899092970522,
+        "samePreparedSource": true,
+        "sharedSpans": 65,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00003125
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.00005
+            }
+          ],
+          "originalSourceError": 0.0007351899092970522,
+          "sourceError": 0.0007351899092970522
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019,
+          "prepareRoundTripSeconds": 0.346,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 11.064,
+          "resultToReadySeconds": 0.178,
+          "clickToReadySeconds": 11.607
+        },
+        "selection": {
+          "groups": 83,
+          "selectedGroups": 80,
+          "curvedBefore": 101,
+          "curvedAfter": 21,
+          "sampledErrorBefore": 0.0006997590702947846,
+          "sampledErrorAfter": 0.0006997590702947846,
+          "applied": true,
+          "sourceErrorBefore": 0.0006997590702947846,
+          "sourceErrorAfter": 0.0006997590702947846,
+          "rejection": null,
+          "seconds": 0.164
+        },
+        "artifacts": {
+          "prepared.json": "9c19691f6968b65110727be2b7d136d5ea53541109acba44d11afd795cf46125",
+          "cut_geometry.json": "18e6b78f24fd12e100d5ec5226535909e4f196afc5112c81c4d8406d1a6089b9",
+          "editable.svg": "99c2d776c018a0cebd42ca1d7a6edf7f3899b1b32516d3508014e1124212cbed",
+          "engine-report.json": "57d76956d9d32303c528ea795972477adf65feb845b615214c55653a4c9336d8"
+        }
+      },
+      {
+        "id": "firefox-hunodan",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "sourceError": 0.00944375,
+        "previousSourceError": 0.00945625,
+        "samePreparedSource": true,
+        "sharedSpans": 8,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.007,
+          "prepareRoundTripSeconds": 0.179,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 7.519,
+          "resultToReadySeconds": 0.312,
+          "clickToReadySeconds": 8.017
+        },
+        "selection": {
+          "groups": 12,
+          "selectedGroups": 9,
+          "curvedBefore": 61,
+          "curvedAfter": 52,
+          "sampledErrorBefore": 0.00941875,
+          "sampledErrorAfter": 0.00940625,
+          "applied": true,
+          "sourceErrorBefore": 0.0094375,
+          "sourceErrorAfter": 0.00943125,
+          "rejection": null,
+          "seconds": 0.153
+        },
+        "artifacts": {
+          "prepared.json": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+          "cut_geometry.json": "30ae4b0355e3640d1a3200763a8aa3bd1028a3afdac9019dad61fd52737dfb11",
+          "editable.svg": "b43b280692a9f72969bd194812841c1ae1f43dd6b579e0072cf9687d38ae5d15",
+          "engine-report.json": "3cd57b831c2666a0b108b15adf312b0a8b63b56cfcfc422e4bafb9bf7fb9f98f"
+        }
+      },
+      {
+        "id": "firefox-top-hat",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "sourceError": 0.0032064909297052154,
+        "previousSourceError": 0.003224206349206349,
+        "samePreparedSource": true,
+        "sharedSpans": 114,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.022,
+          "prepareRoundTripSeconds": 0.285,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 18.018,
+          "resultToReadySeconds": 0.391,
+          "clickToReadySeconds": 18.716
+        },
+        "selection": {
+          "groups": 54,
+          "selectedGroups": 51,
+          "curvedBefore": 141,
+          "curvedAfter": 40,
+          "sampledErrorBefore": 0.003171060090702948,
+          "sampledErrorAfter": 0.003153344671201814,
+          "applied": true,
+          "sourceErrorBefore": 0.0031887755102040817,
+          "sourceErrorAfter": 0.0031887755102040817,
+          "rejection": null,
+          "seconds": 0.236
+        },
+        "artifacts": {
+          "prepared.json": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+          "cut_geometry.json": "8a12465dc7d6b0400990df61f75959fad96d9c73cddf02e3887715787c39965a",
+          "editable.svg": "9cee08a4d34072dad1d689a95536c4ab42bc6d3f8c7cfd4a92cf1a82cc0ad6af",
+          "engine-report.json": "10565cbf88f2490e517e7ab398bae716725b595e5c64d3c8dc8a746a83ec726b"
+        }
+      },
+      {
+        "id": "firefox-top-hat-independent",
+        "passed": true,
+        "browserVersion": "146.0.1",
+        "sourceError": 0.0029584750566893424,
+        "previousSourceError": 0.0029584750566893424,
+        "samePreparedSource": true,
+        "sharedSpans": 40,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.018,
+          "prepareRoundTripSeconds": 0.292,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 12.208,
+          "resultToReadySeconds": 0.678,
+          "clickToReadySeconds": 13.197
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+          "cut_geometry.json": "1344690e4a256853746245eb1a41626a9a47a2b16f43b3c59f3cacd40466c5c3",
+          "editable.svg": "f5b43b78791a3ab61df5cc42afa914e29682aa45d3bf6c98de2bcc4a0e44f494",
+          "engine-report.json": "41283198cb8d4754a40f7c66a67c3c268664f099f91f24c3a8901ebb2321abad"
+        }
+      },
+      {
+        "id": "webkit-house-free-small",
+        "passed": true,
+        "browserVersion": "26.0",
+        "sourceError": 0.0010986328125,
+        "previousSourceError": 0.0010986328125,
+        "samePreparedSource": true,
+        "sharedSpans": 4,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0010986328125,
+          "sourceError": 0.0010986328125
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.015000000000000227,
+          "prepareRoundTripSeconds": 0.30299999999999977,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 3.275,
+          "resultToReadySeconds": 0.13,
+          "clickToReadySeconds": 3.723
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "5910a9b5fd78995278ae851343123483298e4b479cb294e11c11ab76a9be65c9",
+          "cut_geometry.json": "de26f510604846e4d7eb19d069c89ce110591575a0c77a0edd77422236ed5e3a",
+          "editable.svg": "2244869c5f8566b0e5b98625792da5dde59e9f636adb859830baf1e1a0343233",
+          "engine-report.json": "3faf52a3b9a0b2447621f99c5dd30674403359584068dcd96f0bd2808b5e7fe8"
+        }
+      },
+      {
+        "id": "webkit-hat-free-small",
+        "passed": true,
+        "browserVersion": "26.0",
+        "sourceError": 0.0035247802734375,
+        "previousSourceError": 0.0035247802734375,
+        "samePreparedSource": true,
+        "sharedSpans": 4,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0035247802734375,
+          "sourceError": 0.0035247802734375
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.015,
+          "prepareRoundTripSeconds": 0.31,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 3.637,
+          "resultToReadySeconds": 0.125,
+          "clickToReadySeconds": 4.088
+        },
+        "selection": {
+          "groups": 66,
+          "selectedGroups": 58,
+          "curvedBefore": 75,
+          "curvedAfter": 17,
+          "sampledErrorBefore": 0.00347900390625,
+          "sampledErrorAfter": 0.0034027099609375,
+          "applied": true,
+          "sourceErrorBefore": 0.0034637451171875,
+          "sourceErrorAfter": 0.003387451171875,
+          "rejection": null,
+          "seconds": 0.19300000000000045
+        },
+        "artifacts": {
+          "prepared.json": "1fbe927e06204b9eb27c9b7363023f9554e7881ebcba05904553eeda52d856cc",
+          "cut_geometry.json": "bd69da13d3e2a96187da380bbe5b4b7512f3b2abfc4215a283d2012dcb63fe2c",
+          "editable.svg": "0e96695f7a65aad2a1408add969da1c8a65f539e8c8ca87209c9c9b586fd4f9c",
+          "engine-report.json": "19698d183b5aaeac313bc00c947f019c776ea2b1c804a2dc41e73f1e09209e6f"
+        }
+      },
+      {
+        "id": "webkit-star",
+        "passed": true,
+        "browserVersion": "26.0",
+        "sourceError": 0.0016,
+        "previousSourceError": 0.0016,
+        "samePreparedSource": true,
+        "sharedSpans": 12,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000625
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.01,
+          "prepareRoundTripSeconds": 0.055,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 2.286,
+          "resultToReadySeconds": 0.206,
+          "clickToReadySeconds": 2.558
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+          "cut_geometry.json": "f3afeaf74cf3c71f0dff6952af4b27f849d818637d89079ea87b64b622593788",
+          "editable.svg": "8d17420d6d012ba3c306a69c53e42ae9ef86a355d68a94cd5914f7d625594d62",
+          "engine-report.json": "cf339636a9dc99ffc02278fb3f0e7b806f16dce8aa3fa1891683a42f4fde5d1c"
+        }
+      },
+      {
+        "id": "webkit-hat-free",
+        "passed": true,
+        "browserVersion": "26.0",
+        "sourceError": 0.0022232851473922904,
+        "previousSourceError": 0.0022675736961451248,
+        "samePreparedSource": true,
+        "sharedSpans": 66,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.000025
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0000078125
+            }
+          ],
+          "originalSourceError": 0.0022232851473922904,
+          "sourceError": 0.0022232851473922904
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.016,
+          "prepareRoundTripSeconds": 0.305,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 9.448,
+          "resultToReadySeconds": 0.167,
+          "clickToReadySeconds": 9.936
+        },
+        "selection": {
+          "groups": 73,
+          "selectedGroups": 73,
+          "curvedBefore": 98,
+          "curvedAfter": 25,
+          "sampledErrorBefore": 0.0022232851473922904,
+          "sampledErrorAfter": 0.0022232851473922904,
+          "applied": true,
+          "sourceErrorBefore": 0.0022232851473922904,
+          "sourceErrorAfter": 0.0022055697278911563,
+          "rejection": null,
+          "seconds": 0.183
+        },
+        "artifacts": {
+          "prepared.json": "e2ba872179493050c158d419aa2f2d1c07fbc0d42bafb4a9589c3bf4f779d8c8",
+          "cut_geometry.json": "f5d6140bb54a0d24639732c46d16fbdf87681c8636180795b4c4851c4682578b",
+          "editable.svg": "6cfc9641add57bf4a645aa4fb5abc4c8ceaa65dbe8cabbee96030ca5dc47016b",
+          "engine-report.json": "184b248176b8a4b3b4fa5dfbfd591e82c704563d56d6cf4c79c907be6f96909e"
+        }
+      },
+      {
+        "id": "webkit-house-free",
+        "passed": true,
+        "browserVersion": "26.0",
+        "sourceError": 0.0007971938775510204,
+        "previousSourceError": 0.000744047619047619,
+        "samePreparedSource": true,
+        "sharedSpans": 48,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00001875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.00000625
+            }
+          ],
+          "originalSourceError": 0.0007971938775510204,
+          "sourceError": 0.0007971938775510204
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.017000000000000227,
+          "prepareRoundTripSeconds": 0.3209999999999998,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 9.58,
+          "resultToReadySeconds": 0.2,
+          "clickToReadySeconds": 10.118
+        },
+        "selection": {
+          "groups": 69,
+          "selectedGroups": 64,
+          "curvedBefore": 88,
+          "curvedAfter": 24,
+          "sampledErrorBefore": 0.000744047619047619,
+          "sampledErrorAfter": 0.000744047619047619,
+          "applied": true,
+          "sourceErrorBefore": 0.0007529053287981859,
+          "sourceErrorAfter": 0.0007529053287981859,
+          "rejection": null,
+          "seconds": 0.183
+        },
+        "artifacts": {
+          "prepared.json": "9c19691f6968b65110727be2b7d136d5ea53541109acba44d11afd795cf46125",
+          "cut_geometry.json": "4babf5c2c9e9ec714871f73047ab82e6d8ee18c83f9e4459bcfcfb916f102c0f",
+          "editable.svg": "b8e890fabb0cdecfeac6dde5ed2f3711b693b4042ff30a9f4e7f7973a3fa28da",
+          "engine-report.json": "03f8a402bb6618959fe18c03cd48b775684c9b6c38cd6f2deac7d039dd0f21a9"
+        }
+      },
+      {
+        "id": "webkit-hunodan",
+        "passed": true,
+        "browserVersion": "26.0",
+        "sourceError": 0.00944375,
+        "previousSourceError": 0.00945625,
+        "samePreparedSource": true,
+        "sharedSpans": 8,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00944375,
+          "sourceError": 0.00944375
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006000000000000227,
+          "prepareRoundTripSeconds": 0.22299999999999978,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 5.947,
+          "resultToReadySeconds": 0.209,
+          "clickToReadySeconds": 6.385
+        },
+        "selection": {
+          "groups": 12,
+          "selectedGroups": 9,
+          "curvedBefore": 61,
+          "curvedAfter": 52,
+          "sampledErrorBefore": 0.00941875,
+          "sampledErrorAfter": 0.00940625,
+          "applied": true,
+          "sourceErrorBefore": 0.0094375,
+          "sourceErrorAfter": 0.00943125,
+          "rejection": null,
+          "seconds": 0.1709999999999991
+        },
+        "artifacts": {
+          "prepared.json": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+          "cut_geometry.json": "3e23af6066f9db0053225e2e9269a2b273050f250e60fe5e15295245743850c0",
+          "editable.svg": "552102cf90544098ccdda2f918210c5e3cab63496500915ad31618f17be169aa",
+          "engine-report.json": "c3fd857ea2e909e1c55519c50f3818058f8728c7c443a343c1286448402770c4"
+        }
+      },
+      {
+        "id": "webkit-top-hat",
+        "passed": true,
+        "browserVersion": "26.0",
+        "sourceError": 0.0032064909297052154,
+        "previousSourceError": 0.003224206349206349,
+        "samePreparedSource": true,
+        "sharedSpans": 114,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.018,
+          "prepareRoundTripSeconds": 0.302,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 13.103,
+          "resultToReadySeconds": 0.236,
+          "clickToReadySeconds": 13.66
+        },
+        "selection": {
+          "groups": 54,
+          "selectedGroups": 51,
+          "curvedBefore": 141,
+          "curvedAfter": 40,
+          "sampledErrorBefore": 0.003171060090702948,
+          "sampledErrorAfter": 0.003153344671201814,
+          "applied": true,
+          "sourceErrorBefore": 0.0031887755102040817,
+          "sourceErrorAfter": 0.0031887755102040817,
+          "rejection": null,
+          "seconds": 0.193
+        },
+        "artifacts": {
+          "prepared.json": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+          "cut_geometry.json": "f08ece38c9fbc875dfea1025431e27458b71610c5b604989cb6206813d429e0d",
+          "editable.svg": "a1b8ddcb5a8de88120fdf326bac8ac51c04ff0fd04b7b099e6bf027ab55e513b",
+          "engine-report.json": "2ea2aa828f65c0526a48340c34241cdb77d3b9ffe7f9cd101345193c1d9dc83a"
+        }
+      },
+      {
+        "id": "webkit-top-hat-independent",
+        "passed": true,
+        "browserVersion": "26.0",
+        "sourceError": 0.0029584750566893424,
+        "previousSourceError": 0.0029584750566893424,
+        "samePreparedSource": true,
+        "sharedSpans": 40,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "numericalBackend": "wasm",
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.014,
+          "prepareRoundTripSeconds": 0.324,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 8.434,
+          "resultToReadySeconds": 0.127,
+          "clickToReadySeconds": 8.899
+        },
+        "selection": null,
+        "artifacts": {
+          "prepared.json": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+          "cut_geometry.json": "a17b40692f46e582e0632cf121ac7af48f833cb359e833b57ea859e90efdc266",
+          "editable.svg": "cda81fa2dce4c4ba3a6440bdfaeb5fd5fc5ac112b724255f77f1919ffd81f920",
+          "engine-report.json": "ea1dc9b2c838b9442e56c83bccf12a01fa2200f4aa90de38f9ff5f1025ccf8aa"
+        }
+      }
+    ]
+  },
+  "fallback": {
+    "origin": "http://127.0.0.1:5232",
+    "gitCommit": "11d2690d9855b3530d6be77cc0421aa580581fd9",
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "qualityComparison": {
+      "improved": 1,
+      "unchanged": 0,
+      "worse": 0
+    },
+    "sourceHashes": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "src/lib/inverse/engine.ts": "3801ce556deb99d9338d9790867cfe7c9a9b10293b03300f6aae5537f7ed7b96",
+      "static/inverse/core/direct/finalize.js": "dd2097b415c274ceec20a485d4a62fab28ffc4ea40f323396a8acb84e5b8c4a7",
+      "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+      "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+      "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "src/lib/inverse/toHeartDesign.ts": "41edadce4a5be5b8c7dd977a3761e5c7992bb462633f8651e0d9f0293370e931",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "0db3cacfb5b08f7b63586a5515cdea9fa5b8bdea0a494d480e02736ff5cb8832",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/direct/refine.js": "9c126408c3f7da97faf100504d57ca884315017a6665ee10259148455716fc9c",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904"
+    },
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "f15ff3b217597f7e0df624290682c233b1d31e8435ffadf1ac5f7be3f80e06e4",
+      "scripts/inverse/paint-observer.mjs": "0f5722fac31af0cac42a400dca990cd2201a50b2a4958552c6696d3b33bdb807"
+    },
+    "rows": [
+      {
+        "id": "chromium-top-hat",
+        "passed": true,
+        "browserVersion": "145.0.7632.6",
+        "sourceError": 0.0032064909297052154,
+        "previousSourceError": 0.003224206349206349,
+        "samePreparedSource": true,
+        "sharedSpans": 114,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0032064909297052154,
+          "sourceError": 0.0032064909297052154
+        },
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "numericalBackend": "javascript",
+        "blockedKernelRequests": 1,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.026,
+          "prepareRoundTripSeconds": 0.323,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 11.308699999988079,
+          "resultToReadySeconds": 0.37310000002384186,
+          "clickToReadySeconds": 12.031
+        },
+        "selection": {
+          "groups": 54,
+          "selectedGroups": 51,
+          "curvedBefore": 141,
+          "curvedAfter": 40,
+          "sampledErrorBefore": 0.003171060090702948,
+          "sampledErrorAfter": 0.003153344671201814,
+          "applied": true,
+          "sourceErrorBefore": 0.0031887755102040817,
+          "sourceErrorAfter": 0.0031887755102040817,
+          "rejection": null,
+          "seconds": 0.16860000002384185
+        },
+        "artifacts": {
+          "prepared.json": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+          "cut_geometry.json": "d2e98879de6b699368b7cc3dbb13b77716bcffa7aadf0aef67388aeba2907da6",
+          "editable.svg": "71c74acb82fb04d178db1b5feb8239e7a1db9a4850ebea8d0ecef7a187590ba3",
+          "engine-report.json": "a745362cf67d4bb216a41146d5eb61f317b5d16341535c43d8ddd16a33cb7139"
+        }
+      }
+    ]
+  },
+  "rejectedExperiments": [
+    {
+      "method": "Selective proposal at every checkpoint",
+      "reason": "Star maximum cut distance plus sampling bound increased from 0.421 to 0.541 mm, failing the unchanged 0.5 mm published-template gate, despite lower pixel error."
+    },
+    {
+      "method": "Selective proposal after each refinement stage",
+      "reason": "Later optimization received different starting geometry; hjfla-01 and hjcur-02 exceeded existing quality caps in the 22-design replay."
+    }
+  ],
+  "limits": [
+    "Fixed-output replay uses an unlimited diagnostic cleanup deadline; production allocates at most 500 ms of remaining budget and can skip reductions. Synchronous validation cannot be preempted.",
+    "Adaptive source disagreement and independent antialiased SVG classification are distinct metrics; the report retains all independent increases. Neither is a proof of continuous equality.",
+    "The selector reduces handle curvature, not zigzag anchors or a wrong cut layout.",
+    "Fresh timed optimization can choose different checkpoints under machine load. This report distinguishes those runs from fixed-geometry comparisons.",
+    "Baseline timing comes from previous executions; this is not a paired randomized performance experiment."
+  ]
+}

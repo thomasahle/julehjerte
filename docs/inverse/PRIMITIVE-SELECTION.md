@@ -94,6 +94,60 @@ artwork recovery.
 This removes unnecessary handle curvature. Zigzags caused by misplaced anchors,
 or a wrong cut layout, still require improvements in the main fitting process.
 
+## Fresh solve verification
+
+All **22 regular Hunodan photographs** pass the existing quality and ten-second
+limits. Preparation, fitting, validation and export take a median **7.50 s**,
+with a maximum **9.52 s**. The final reduction is accepted in 20 cases.
+All **32 weighted motif variants** also pass, with a median **4.96 s** and a
+maximum **9.25 s**; 17 accept a reduction. These are fresh solves from masks
+and grids, not replays seeded with saved cutting paths. Both runs independently
+render the exported curves and retain the existing geometry and paper checks.
+
+Passing the release limits is not a claim that every independent pixel score
+improves. Relative to the previous `grid-parity` runs, the Hunodan scores improve
+in two cases, stay equal in five, and increase in 15; the largest increase is
+**0.0178 percentage point**. Weighted scores improve in four, stay equal in 23,
+and increase in five, by at most **0.0123 percentage point**. Timed fitting and
+the independent rasterizer both differ from the fixed-output, adaptive-source
+comparison above. The report retains each value rather than treating these
+metrics as interchangeable or attributing every difference to one cause.
+
+All **722 application tests and 248 engine tests** pass, along with type checking,
+lint and the production build. Type checking retains seven existing warnings
+and reports zero errors. The full suite passed at `9fdcda7`; a later test-only
+change removes a Node type dependency from buffer assertions. All 27 affected
+tests, type checking and lint passed again, with buffer constructor, length and
+every scalar still checked. The served algorithm and application are unchanged.
+
+## Production browser and export verification
+
+All **24 workflows** pass across Chromium, Firefox and WebKit, including the
+star example, a Hunodan upload, small and large free borders, and matching and
+independent hats. Every prepared source mask is byte-identical to its preceding
+browser input. Checks cover the real worker, visible readiness, Draw, downloaded
+editable SVG, original-mask fidelity at both resolutions, shared controls and
+the editor's crossing and spacing rules. The star also exercises PDF export.
+The matching hat passes again with the actual WebAssembly request blocked;
+the worker reports its JavaScript numerical backend.
+
+All three matching hats retain **114 shared spans** and reduce editable motif
+disagreement from **0.3224% to 0.3206%**. Their curved-span counts drop from 141
+to 40. The independent hats retain **40 shared spans** and unchanged **0.2958%**
+disagreement. The hat preview and editable drawing, the house preview and the
+fixed-output hat images were visually inspected.
+
+Across the 24 fresh browser runs, editable source scores improve in nine cases,
+stay equal in 14 and increase in one. The WebKit large house changes from
+**0.0744% to 0.0797%**; it still passes the comparison against its own unsimplified
+fit. As with the Node results, that distinction is retained in the report.
+
+All **50 served engine files** match the tested source hashes.
+[PRIMITIVE-SELECTION-VALIDATION.json](PRIMITIVE-SELECTION-VALIDATION.json) records
+the fixed-output and fresh comparisons, source and downloaded-artifact hashes,
+timings, rejected experiments and numerical qualifications. The preview used
+for these checks is `http://127.0.0.1:5232/en/editor/paint/`.
+
 ## Reproduction
 
 ```sh
@@ -107,6 +161,10 @@ INVERSE_SPEED_OUT=tmp/final-primitives-release-hunodan \
 node scripts/inverse/weighted-solve-benchmark.mjs \
   --strategies=weighted --variants=original,inverted,shifted,free-noise \
   --output=tmp/final-primitives-release-weighted
+INVERSE_TEST_URL=http://127.0.0.1:5232 \
+INVERSE_TEST_CASES=house-free-small,hat-free-small,star,hat-free,house-free,hunodan,top-hat,top-hat-independent \
+INVERSE_TEST_OUTPUT=tmp/final-primitives-browser \
+  node scripts/inverse/paint-browser-test.mjs
 ```
 
 The saved-output replay needs its named local browser artifacts. The six
