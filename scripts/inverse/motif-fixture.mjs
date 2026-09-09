@@ -3,9 +3,10 @@ import {createCanvas,ImageData} from 'canvas';
 
 /** A plain top hat drawn upright in the heart view. The browser test adds its
  * free border through the real Paint controls; no fitted cuts are supplied. */
-export function topHatFixture(n=200){
+export function topHatFixture(n=200,{quarterTurns=0}={}){
  const canvas=createCanvas(n,n),ctx=canvas.getContext('2d');
  ctx.fillStyle='white';ctx.fillRect(0,0,n,n);ctx.fillStyle='black';ctx.beginPath();
+ if(quarterTurns){ctx.translate(n/2,n/2);ctx.rotate(quarterTurns*Math.PI/2);ctx.translate(-n/2,-n/2);}
  const outline=[[-.12,-.17],[.12,-.17],[.12,.09],[.19,.09],[.19,.16],[-.19,.16],[-.19,.09],[-.12,.09]];
  outline.forEach(([dx,dy],i)=>{const x=(.5+dx+dy)*n,y=(.5-dx+dy)*n;if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y);});
  ctx.closePath();ctx.fill();return canvas.toBuffer('image/png');

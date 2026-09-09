@@ -16,6 +16,7 @@ import {sourceWeights} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
 
 const curveKey=p=>[p,p.toReversed()].map(c=>c.flat().map(v=>Math.round(v*1e7)).join(',')).sort()[0];
+const supportsSharing=spec=>{const names=requestedSymmetry(spec);return!names.length||names.length===1&&(names[0]==='transpose'||names[0]==='antiTranspose');};
 
 function at(path,g,derivative=false,side=1){
   const knot=Math.round(g);if(Math.abs(g-knot)<1e-8)g=knot;
@@ -91,25 +92,34 @@ export function shareReplacement(pathA,pathB,c){
   return[replace(pathA,a0,a1,shared),replace(pathB,Math.min(b0,b1),Math.max(b0,b1),b1>b0?shared:shared.toReversed().map(p=>p.toReversed()))];
 }
 
-/** A shared span and its transpose must be edited together. Copying just one
+/** A shared span and its paired sheet image must be edited together. Copying just one
  * cut breaks the identical-sheet constraint; skipping sharing leaves hairline
  * slivers between cuts that the area loss can barely see. */
-export function sharingReplacement(paths,c,{identicalSheets=false}={}){
+export function sharingReplacement(paths,c,{identicalSheets=false,antiTranspose=false,width=100}={}){
   const next=paths.map(f=>f.slice());
-  if(identicalSheets&&c.i===c.j){
-    // A cut meeting its own transpose can run along the diagonal (forward),
-    // or across it (backward). Both partners need the same interval and cubic
-    // subdivisions so the shared controls can also hold the symmetry ties.
-    const lo=Math.min(c.b0,c.b1),hi=Math.max(c.b0,c.b1);
+  let mateA=c.j,mateB=c.i;
+  if(antiTranspose){
+    if(paths[0].length!==paths[1].length)return null;
+    const order=paths.map((family,f)=>family.map((_,i)=>i).sort((i,j)=>family[i][0][0][f]-family[j][0][0][f])),n=order[0].length;
+    mateA=order[0][n-1-order[1].indexOf(c.j)];mateB=order[1][n-1-order[0].indexOf(c.i)];
+  }
+  const paired=identicalSheets||antiTranspose,self=paired&&mateA===c.i&&mateB===c.j;
+  if(self){
+    // A cut meeting its own image needs corresponding intervals and cubic
+    // subdivisions. Anti-transposition reverses the mate's parameter as well
+    // as its control points; merely swapping coordinates pairs the wrong spans.
+    const m=paths[0][c.i].length;
+    if(paths[1][c.j].length!==m)return null;
+    const b0=antiTranspose?m-c.b0:c.b0,b1=antiTranspose?m-c.b1:c.b1,lo=Math.min(b0,b1),hi=Math.max(b0,b1);
     if(Math.abs(c.a0-lo)>.05||Math.abs(c.a1-hi)>.05)return null;
-    const a0=Math.min(c.a0,lo),a1=Math.max(c.a1,hi);
-    c={...c,a0,a1,b0:c.b1>c.b0?a0:a1,b1:c.b1>c.b0?a1:a0};
+    const a0=Math.min(c.a0,lo),a1=Math.max(c.a1,hi),low=antiTranspose?m-a1:a0,high=antiTranspose?m-a0:a1;
+    c={...c,a0,a1,b0:c.b1>c.b0?low:high,b1:c.b1>c.b0?high:low};
   }
   const [a,b]=shareReplacement(paths[0][c.i],paths[1][c.j],c);
   next[0][c.i]=a;next[1][c.j]=b;
-  if(identicalSheets&&c.i!==c.j){
-    const transpose=p=>p.map(curve=>curve.map(([x,y])=>[y,x]));
-    next[1][c.i]=transpose(a);next[0][c.j]=transpose(b);
+  if(paired&&!self){
+    const image=p=>antiTranspose?p.toReversed().map(curve=>curve.toReversed().map(([x,y])=>[width-y,width-x])):p.map(curve=>curve.map(([x,y])=>[y,x]));
+    next[1][mateB]=image(a);next[0][mateA]=image(b);
   }
   return next;
 }
@@ -118,26 +128,29 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
   let best=candidate;const accepted=[],rejected=[],bigN=Math.min(512,2*n),high=resizeObjective(prob,n,bigN,weights),big=high.probability;
   // Other square/chord symmetries still require their own complete edit orbit.
   // Never discard a requested constraint merely to remove a small image seam.
-  if(requestedSymmetry(cfg.symmetry).some(name=>name!=='transpose'))return{...best,sharing:{accepted,rejected,skipped:'unsupported_symmetry'}};
+  if(!supportsSharing(cfg.symmetry))return{...best,sharing:{accepted,rejected,skipped:'unsupported_symmetry'}};
   const identicalSheets=matchingSummary(best.graph.solution(best.points,best.phase,input)).identical;
+  const symmetry={...cfg.symmetry,...(identicalSheets?{transpose:true}:{})},antiTranspose=!!cfg.symmetry?.antiTranspose;
   let bigError=mismatch(renderCurves(best.graph,best.points,best.phase,bigN,48),big,high.weights);
   for(let round=0;round<rounds&&performance.now()<deadline;round++){
     const paths=best.graph.nested(best.points),before=best.graph.solution(best.points,best.phase,input),ease=easeMetrics(before,cfg);let changed=false;
-    proposals: for(const raw of sharingCandidates(paths))for(const blend of identicalSheets&&raw.i===raw.j?[.5]:[.5,0,1]){
+    proposals: for(const raw of sharingCandidates(paths))for(const blend of !antiTranspose&&identicalSheets&&raw.i===raw.j?[.5]:[.5,0,1]){
       const c={...raw,blend};
       if(performance.now()>deadline)break;
       try{
-        const next=sharingReplacement(paths,c,{identicalSheets});if(!next)continue;
+        const next=sharingReplacement(paths,c,{identicalSheets,antiTranspose,width:best.graph.width});if(!next)continue;
         const graph=new CurveGraph(next,best.graph.width),points=graph.points;
-        if(identicalSheets){
-          const ties=symmetryTies(graph,{transpose:true});
+        const ties=symmetryTies(graph,symmetry);
+        if(ties){
           if(ties.skipped.length||ties.conflicts.length)continue;
           applyTies(ties,points,points,{fixed:graph.fixed,original:points.slice()});
         }
         const error=mismatch(renderCurves(graph,points,best.phase,n,48),prob,weights);
         if(error>best.error+1e-12)continue;
         const highError=mismatch(renderCurves(graph,points,best.phase,bigN,48),big,high.weights);if(highError>bigError+1e-12){rejected.push({reason:'higher_resolution_error',...c});continue;}
-        const solution=graph.solution(points,best.phase,input),check=validate(solution,cfg,{checkImage:false});if(!check.passed){rejected.push({reason:'geometry',issues:check.issues.slice(0,3),...c});continue;}
+        const solution=graph.solution(points,best.phase,input),paired=symmetryReport(solution,symmetry);
+        if(paired.honoured.length!==paired.requested.length){rejected.push({reason:'symmetry',...c});continue;}
+        const check=validate(solution,cfg,{checkImage:false});if(!check.passed){rejected.push({reason:'geometry',issues:check.issues.slice(0,3),...c});continue;}
         const quality=easeMetrics(solution,cfg);if(quality.minimumRadius<Math.min(.45,ease.minimumRadius||Infinity)||quality.sharpTurns>ease.sharpTurns){rejected.push({reason:'cut_quality',...c});continue;}
         if(cfg.requireMaterialCore&&!materialAudit(solution,cfg).passed){rejected.push({reason:'paper',...c});continue;}
         accepted.push({...c,errorBefore:best.error,errorAfter:error,bigErrorBefore:bigError,bigErrorAfter:highError});
@@ -151,7 +164,7 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
  * preference. Earlier sharing cannot certify geometry those stages replace. */
 export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{}}={}){
   const input=solution.graph.target,source=input.sourceImage;
-  if(!source||performance.now()>=deadline||requestedSymmetry(cfg.symmetry).some(name=>name!=='transpose'))return solution;
+  if(!source||performance.now()>=deadline||!supportsSharing(cfg.symmetry))return solution;
   const start=performance.now(),paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p)));
   if(!sharingCandidates(paths).length)return solution;
   onProgress({stage:'directSharing'});

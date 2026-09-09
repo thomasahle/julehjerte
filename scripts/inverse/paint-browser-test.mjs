@@ -16,7 +16,7 @@ let origin=process.env.INVERSE_TEST_URL||'http://localhost:5200';
 const upstreamOrigin=origin;
 const disableNumericalKernel=process.env.INVERSE_TEST_DISABLE_NUMERICAL_KERNEL==='1';
 const names=(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',');
-const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan,top-hat,top-hat-independent').split(',');
+const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan,top-hat,top-hat-independent,top-hat-anti').split(',');
 const output=process.env.INVERSE_TEST_OUTPUT||`tmp/paint-browser/${new Date().toISOString().replace(/[:.]/g,'-')}`;
 const repeats=Number(process.env.INVERSE_TEST_REPEATS||1);
 assert.ok(Number.isInteger(repeats)&&repeats>=1&&repeats<=10,'Replay count must be between 1 and 10.');
@@ -70,7 +70,7 @@ try{
  for(const browserName of names){
   const browser=await browsers[browserName].launch({headless:true});
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
-   const topHat=name==='top-hat'||name==='top-hat-independent',small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
+   const topHat=['top-hat','top-hat-independent','top-hat-anti'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
    const referenceStart={...referenceRequestCounts};
@@ -105,7 +105,7 @@ try{
      if(name==='hunodan'){
       const metadata=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
       const e=metadata.cases[0],[x,y,x1,y1]=e.photoROI,im=await loadImage(e.source),c=createCanvas(x1-x,y1-y);c.getContext('2d').drawImage(im,-x,-y);await fs.writeFile(file,c.toBuffer('image/png'));
-     }else await fs.writeFile(file,topHat?topHatFixture():free?motifFixture(name.replace(/-free(?:-small)?$/,'')).original:motifFixture(name).png);
+     }else await fs.writeFile(file,topHat?topHatFixture(200,{quarterTurns:name==='top-hat-anti'?1:0}):free?motifFixture(name.replace(/-free(?:-small)?$/,'')).original:motifFixture(name).png);
      await button('Import picture').click();await page.locator('input[type=file]').setInputFiles(file);
      if(name!=='hunodan')await button('The whole picture').click();
      else await page.locator('button.corner').nth(3).waitFor();
@@ -117,10 +117,12 @@ try{
       if(!small){await page.locator('#paint-frame-size').focus();await page.locator('#paint-frame-size').press('End');}
       assert.equal(await page.locator('#paint-frame-size').inputValue(),String(frameSize*100));
       if(name==='top-hat-independent')await page.getByRole('radiogroup',{name:'Between lobes symmetry',exact:true}).getByRole('radio',{name:'Off',exact:true}).click();
+      if(name==='top-hat-anti')await page.getByRole('radiogroup',{name:'Between lobes symmetry',exact:true}).getByRole('radio',{name:'Anti',exact:true}).click();
      }
     }
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Find the cuts'&&!b.disabled));
     row.requestedSymmetry=await symmetry();
+    if(name==='top-hat-anti')assert.equal(row.requestedSymmetry.lobes,'anti');
     await button('Find the cuts').click();
     await page.waitForFunction(()=>{const qa=window.__paintQA;return qa.error||qa.marks&&qa.marks.ready!==null||qa.result&&document.querySelector('[role=alert]');},{},{timeout:190000});
     const captureStart=performance.now(),observed=await page.evaluate(collectPaintObservation);
@@ -158,6 +160,10 @@ try{
     const shown=summary.match(free?/([\d.]+)% different in the motif/:/([\d.]+)% different from the mask/);
     assert.ok(shown,summary);row.displayedError=Number(shown[1])/100;
     row.honouredSymmetry=await symmetry();
+    if(name==='top-hat-anti'){
+     assert.ok(observed.result.report.symmetry.honoured.includes('antiTranspose'),'The final engine curves must retain anti-transposition.');
+     assert.equal(row.honouredSymmetry.lobes,'anti','Conversion must retain the requested between-lobes setting.');
+    }
     await page.screenshot({path:path.join(dir,'result.png'),fullPage:true});
     await button('Open in Draw').click();await page.waitForURL('**/en/editor/?from=session');
     await button('Export SVG').waitFor();

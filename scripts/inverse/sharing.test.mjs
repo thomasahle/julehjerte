@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import {loadSolutionJSON,solutionJSON} from '../../static/inverse/core/graph.js';
+import {curvesOf,loadSolutionJSON,solutionJSON} from '../../static/inverse/core/graph.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {sampleWeave,validate} from '../../static/inverse/core/validate.js';
 import {materialAudit} from '../../static/inverse/core/material.js';
 import {finalizeShared,shareReplacement} from '../../static/inverse/core/direct/share.js';
+import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {Cubic} from '../../static/inverse/core/bezier.js';
 import {matchingSummary} from '../../static/inverse/core/direct/matching.js';
 import {symmetryReport} from '../../static/inverse/core/direct/symmetry.js';
@@ -23,6 +24,19 @@ function hat(){
   return solution;
 }
 const hiddenLength=s=>s.graph.edges.filter(e=>!e.visible).reduce((sum,e)=>sum+e.curve.length(),0);
+
+// A quarter turn conjugates reflection in x=y into reflection in x+y=width.
+// Rotate both the photograph mask and complete geometry; no fitted answer is
+// supplied to the optimizer or constructed from the repair being tested.
+function turnedHat(){
+  const original=hat(),w=original.graph.target.width,paths=original.paths.map((family,f)=>family.map((_,i)=>curvesOf(original,f,i).map(c=>c.p)));
+  const turn=p=>p.map(c=>c.map(([x,y])=>[w-y,x])),reverse=p=>p.toReversed().map(c=>c.toReversed());
+  const graph=new CurveGraph([paths[1].toReversed().map(turn),paths[0].map(p=>turn(reverse(p)))],w);
+  const phase=(original.graph.target.phase?-1:1)*(paths[1].length%2?-1:1),solution=graph.solution(graph.points,phase);
+  const {mask,resolution:n}=original.graph.target.sourceImage;
+  solution.graph.target.sourceImage={resolution:n,mask:Uint8Array.from(mask,(_,i)=>mask[(n-1-i%n)*n+Math.floor(i/n)])};
+  return solution;
+}
 
 test('sharing preserves right-angle joins and merges almost identical subdivision points',()=>{
   const vertices=[[20,0],[20,30],[70,30],[70,100]],line=(a,b)=>[a,a.map((v,i)=>v+(b[i]-v)/3),a.map((v,i)=>v+2*(b[i]-v)/3),b];
@@ -79,6 +93,46 @@ test('the hat cleanup also works when the two sheets were fitted independently',
   assert.equal(materialAudit(after,unconstrained).passed,true);
   const source=solution.graph.target.sourceImage;
   assert.ok(maskDisagreement(source,sampleWeave(after,source.resolution))<=maskDisagreement(source,sampleWeave(solution,source.resolution)));
+});
+
+test('an anti-paired hat joins shared spans while retaining reversed cutting paths',async()=>{
+  const before=turnedHat(),source=before.graph.target.sourceImage,anti=settings({...fixture.settings,symmetry:{antiTranspose:true}}),saved=solutionJSON(before);
+  assert.deepEqual(symmetryReport(before,anti.symmetry).honoured,['antiTranspose']);
+  assert.equal(matchingSummary(before).identical,false);
+  assert.equal(hiddenLength(before),0);
+  const after=finalizeShared(before,anti);
+  assert.ok(hiddenLength(after)>200,'The rotated seams must be repaired even when ordinary matching sheets are disabled.');
+  assert.equal(validate(after,anti,{checkImage:false}).passed,true);
+  assert.equal(materialAudit(after,anti).passed,true);
+  assert.ok(maskDisagreement(source,sampleWeave(after,source.resolution))<maskDisagreement(source,sampleWeave(before,source.resolution)));
+  assert.deepEqual(solutionJSON(before),saved,'Cleanup must not alter the original geometry.');
+  // Check the exported partners explicitly, rather than only trusting the
+  // symmetry reporter: cut order, cubic order and all four points reverse.
+  const exported=loadSolutionJSON(solutionJSON(after)),n=exported.paths[0].length;
+  for(let i=0;i<n;i++){
+    const a=curvesOf(exported,0,i),b=curvesOf(exported,1,n-1-i).toReversed();
+    assert.equal(a.length,b.length);
+    for(let j=0;j<a.length;j++)for(let k=0;k<4;k++){
+      const p=a[j].p[k],q=b[j].p[3-k];
+      assert.ok(Math.hypot(p[0]+q[1]-100,p[1]+q[0]-100)<1e-7);
+    }
+  }
+  const resolution=source.resolution*4,target=Uint8Array.from(resize(source.mask,source.resolution,resolution),v=>Number(v>.5));
+  const oldRaster=await renderExportedWeave(saved,resolution),newRaster=await renderExportedWeave(solutionJSON(after),resolution);
+  const coverageError=r=>r.coverage.reduce((sum,v,i)=>sum+Math.abs(v-target[i]),0)/target.length;
+  assert.ok(coverageError(newRaster)<coverageError(oldRaster),'Independent antialiased rendering must confirm the seam improvement.');
+  assert.equal(finalizeShared(after,anti),after,'Already shared anti-paired spans must not be subdivided again.');
+});
+
+test('anti-paired sharing follows crossing positions rather than serialized path indices',()=>{
+  const before=turnedHat(),anti=settings({...fixture.settings,symmetry:{antiTranspose:true}});
+  before.paths[0].reverse();before.paths[1].push(before.paths[1].shift());
+  assert.deepEqual(symmetryReport(before,anti.symmetry).honoured,['antiTranspose']);
+  const after=finalizeShared(before,anti);
+  assert.ok(hiddenLength(after)>200);
+  assert.deepEqual(symmetryReport(after,anti.symmetry).honoured,['antiTranspose']);
+  assert.equal(validate(after,anti,{checkImage:false}).passed,true);
+  assert.equal(materialAudit(after,anti).passed,true);
 });
 
 test('shared-cut cleanup respects its budget and unsupported symmetry constraints',()=>{
