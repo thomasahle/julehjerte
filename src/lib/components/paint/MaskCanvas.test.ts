@@ -22,6 +22,10 @@ import { fitHeart, toScreen } from '$lib/paint/heartLayout';
 import { ROTATE_GAP_PX, placementOf, rotateHandleAt } from '$lib/paint/selection';
 import { DEFAULT_FRAME, type Frame } from '$lib/paint/frame';
 import { NO_SYMMETRY, type SymmetrySettings } from '$lib/paint/symmetry';
+import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
+import { cutGeometryToDesign, type CutGeometry } from '$lib/inverse/toHeartDesign';
+import starSolution from '../../../../static/inverse/examples/star.saved.json';
+import type { HeartDesign } from '$lib/types/heart';
 import type { PaintTool } from '$lib/paint/toolset';
 
 const BOX = 600;
@@ -80,6 +84,8 @@ function render(
 		symmetry?: SymmetrySettings;
 		fill?: 0 | 1;
 		frame?: Frame;
+		/** The cuts of the search in progress, drawn over the mask (PAINT.md §12). */
+		candidate?: HeartDesign | null;
 	} = {}
 ): Harness {
 	const mask = createMask(options.fill ?? 0, SIZE);
@@ -99,6 +105,7 @@ function render(
 			// Fast by default, which is the canvas the painting tests want: nothing is
 			// protected, so the band draws nothing over the cells they sample.
 			frame: options.frame ?? { ...DEFAULT_FRAME },
+			candidate: options.candidate ?? null,
 			onEditStart: () => {},
 			onEditEnd: () => {
 				harness.edits++;
@@ -498,5 +505,64 @@ describe('Markér', () => {
 		expect(event.defaultPrevented).toBe(false);
 		press('Enter');
 		expect(c.mask.data).toEqual(before);
+	});
+});
+
+/**
+ * The candidate the search is looking at, over the mask — PAINT.md §12 (a).
+ *
+ * The pass is additive and its colours are the editor's own, so what has to be
+ * true is exactly that: with no candidate the canvas is what it always was, and
+ * with one there is cyan and orange on it that no paper colour could explain.
+ * The design is the star's real solution, converted the way the page converts a
+ * candidate.
+ */
+describe('MaskCanvas drawing a candidate', () => {
+	// `resolveJsonModule` widens `phase` to number, which the schema pins to 0 | 1;
+	// `toHeartDesign.test.ts` casts the same fixture for the same reason.
+	const star: HeartDesign = cutGeometryToDesign(starSolution as unknown as CutGeometry, {
+		name: 'candidate',
+		tolerance: 1.0
+	});
+
+	/** How many pixels of the drawing sit within `tolerance` of a colour. */
+	function pixelsNear(canvas: HTMLCanvasElement, hex: string, tolerance = 40): number {
+		const ctx = canvas.getContext('2d')!;
+		const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
+		const want = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+		let count = 0;
+		for (let i = 0; i < data.length; i += 4) {
+			const d = Math.hypot(data[i]! - want[0]!, data[i + 1]! - want[1]!, data[i + 2]! - want[2]!);
+			if (d <= tolerance) count++;
+		}
+		return count;
+	}
+
+	/** The component draws in a requested frame, which `flushSync` does not run. */
+	function painted(): Promise<void> {
+		return new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+	}
+
+	it('draws nothing of its own while there is no candidate', async () => {
+		const c = render();
+		await painted();
+		// The right lobe's paper, so a canvas that was never drawn on cannot pass
+		// this by being empty.
+		expect(pixelsNear(c.canvas, '#b91313', 8)).toBeGreaterThan(100);
+		expect(pixelsNear(c.canvas, LOBE_OUTLINE_COLORS.left)).toBe(0);
+		expect(pixelsNear(c.canvas, LOBE_OUTLINE_COLORS.right)).toBe(0);
+	});
+
+	it('draws both lobes’ cuts in the editor’s two colours', async () => {
+		const c = render({ candidate: star });
+		await painted();
+		// Cyan for the left lobe and orange for the right, as "Vis omrids" draws
+		// them in Tegn: the same cuts, and the visitor meets them again there.
+		expect(pixelsNear(c.canvas, LOBE_OUTLINE_COLORS.left)).toBeGreaterThan(100);
+		expect(pixelsNear(c.canvas, LOBE_OUTLINE_COLORS.right)).toBeGreaterThan(100);
+		// And the black halo under both, so neither colour is lost on a paper the
+		// visitor chose. The mask is all zeroes here, so the white left paper is the
+		// only other thing on the square.
+		expect(pixelsNear(c.canvas, '#000000', 20)).toBeGreaterThan(100);
 	});
 });

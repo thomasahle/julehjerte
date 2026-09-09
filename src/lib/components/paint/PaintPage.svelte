@@ -89,13 +89,24 @@
 		type EngineProgress
 	} from '$lib/inverse/engine';
 	import { EngineError, searchTimedOut } from '$lib/inverse/client';
-	import { convertValidatedCutGeometry, CutGeometryError } from '$lib/inverse/toHeartDesign';
-	import { IDLE_PROGRESS, reduceProgress, type SearchProgress } from '$lib/paint/searchProgress';
+	import {
+		convertValidatedCutGeometry,
+		cutGeometryToDesign,
+		CutGeometryError,
+		type CutGeometry
+	} from '$lib/inverse/toHeartDesign';
+	import {
+		candidateGeometry,
+		createGeometryThrottle,
+		IDLE_PROGRESS,
+		reduceProgress,
+		type SearchProgress
+	} from '$lib/paint/searchProgress';
 	import { DEFAULT_COLORS, DEFAULT_COLORS_HEX, getColors, subscribeColors } from '$lib/stores/colors';
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { toHexColors } from '$lib/utils/heartColors';
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
-	import type { HeartColors } from '$lib/types/heart';
+	import type { HeartColors, HeartDesign } from '$lib/types/heart';
 
 	interface Props {
 		lang: Language;
@@ -162,6 +173,39 @@
 	let elapsed = $state(0);
 	let timer: ReturnType<typeof setInterval> | null = null;
 
+	/**
+	 * The candidate the engine is looking at right now, drawn over the mask.
+	 *
+	 * Dormant: `geometry` on a progress event is a validity flag today, and
+	 * `candidateGeometry` answers null for it, so nothing is ever drawn until the
+	 * engine starts attaching the real thing (PAINT.md §12 (a)). Wired now, so
+	 * that when it does the change is in `core/` alone.
+	 */
+	let candidate = $state.raw<HeartDesign | null>(null);
+
+	/**
+	 * Converting a candidate is a full `cutGeometryToDesign`, so it is held to
+	 * four a second with the latest winning — the engine's own throttle is a
+	 * promise in a document, and this one is in the code that would suffer.
+	 */
+	const candidates = createGeometryThrottle<string | CutGeometry>((geometry) => {
+		try {
+			candidate = cutGeometryToDesign(geometry, {
+				name: t('paintHeartFromMask', lang),
+				colors: toHexColors(colors, DEFAULT_COLORS_HEX),
+				// Coarse, and no `enforce`: this is a picture of where the search has
+				// got to, redrawn a few times a second, not the heart anyone will cut.
+				// The tolerance keeps the conversion cheap and the missing enforcement
+				// keeps it from rasterising two designs to price a correction.
+				tolerance: 1.0
+			});
+		} catch (error) {
+			// A candidate mid-refinement need not be a legal heart — cuts may cross,
+			// a family may be empty. That is not a failure of the search, so it
+			// leaves the last good candidate on screen and says nothing.
+			console.debug('A candidate could not be drawn', error);
+		}
+	});
 	/** The rows the converter could hold the last heart to (PAINT.md §11). */
 	let honoured = $state<SymmetrySettings | null>(null);
 	/** "Vis det beskyttede motiv": the outline over the found heart. */
@@ -543,9 +587,17 @@
 		timer = setInterval(() => (elapsed = Math.floor((performance.now() - began) / 1000)), 1000);
 	}
 
+	/**
+	 * The search is over, however it ended: found, failed, Afbryd, or the page
+	 * being left. The candidate goes with the clock, because a conversion still
+	 * waiting in the throttle would otherwise land a picture of a half-finished
+	 * search over the answer a second after it arrived.
+	 */
 	function stopTimer(): void {
 		if (timer) clearInterval(timer);
 		timer = null;
+		candidates.stop();
+		candidate = null;
 	}
 
 	function classify(err: unknown): PaintError {
@@ -560,14 +612,18 @@
 	}
 
 	/**
-	 * One progress event, folded into the picture the panel draws.
+	 * One progress event: the numbers the panel shows, and the candidate it draws.
 	 *
-	 * The reducer takes the whole event: the fitter says which counts it is trying
-	 * and how wrong they still are, and none of that survived the old
-	 * `progress(data.event.stage)`.
+	 * Both directions of PAINT.md §12 meet here. The reducer takes the whole event
+	 * — it has to, because the fitter says which counts it is trying and how wrong
+	 * they still are, and none of that survived the old `progress(data.event.
+	 * stage)` — and the candidate's cuts are lifted out separately, because they
+	 * are a picture rather than a number and cost a conversion to draw.
 	 */
 	function onProgress(event: EngineProgress): void {
 		progress = reduceProgress(progress, event);
+		const geometry = candidateGeometry(event);
+		if (geometry) candidates.push(geometry);
 	}
 
 	async function find(): Promise<void> {
@@ -583,6 +639,7 @@
 		session.error = null;
 		session.status = 'searching';
 		progress = reduceProgress(IDLE_PROGRESS, { stage: 'preprocessing' });
+		candidate = null;
 		startTimer();
 		try {
 			// The target itself has to be symmetric, or the search spends its time
@@ -846,6 +903,7 @@
 							{paintValue}
 							{revision}
 							frame={session.frame}
+							{candidate}
 							onFrameSizeStart={recordFrameFold}
 							onFrameSize={resizeFrame}
 							disabled={busy}
