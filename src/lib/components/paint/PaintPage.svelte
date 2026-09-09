@@ -574,7 +574,8 @@
 			const converted = convertValidatedCutGeometry(geometry, {
 				name: session.sourceName ? t('paintHeartFromImage', lang) : t('paintHeartFromMask', lang),
 				colors: toHexColors(colors, DEFAULT_COLORS_HEX),
-				enforce: session.symmetry
+				enforce: session.symmetry,
+				reference: { mask: target, weights: frame.mode === 'free' ? shapeCells(frame, target.size) : undefined }
 			});
 
 			// Measure the actual editable heart against the original drawing. Changes
