@@ -2,8 +2,65 @@
  * Changed controls connected by a cubic, shared point or requested symmetry
  * move together. Image deltas come from the XOR of their old/new boundaries;
  * accepted groups update the working mask before the next group is scored.
- * This only proposes geometry. Refinement still renders and validates it.
+ * This only proposes geometry. Final selection still renders and validates it.
  */
+import {CurveGraph,renderCurves} from './curves.js';
+import {straightProposal,primitiveComplexity,primitiveCost} from './primitives.js';
+import {createBoundaryEvaluator} from './boundary.js';
+import {matchingGroups,projectMatching,matchingSummary} from './matching.js';
+import {symmetryTies,applyTies,symmetryReport} from './symmetry.js';
+import {sourceWeights,referenceError} from '../image-reference.js';
+import {curvesOf} from '../graph.js';
+import {validate,sampleWeave} from '../validate.js';
+import {materialAudit} from '../material.js';
+import {auditImageFeatures} from '../image-features.js';
+import {mismatch} from './grid.js';
+
+/** Degree reduction belongs after the final choice, not between fitting stages:
+ * even a mask-preserving edit can change a later optimizer's trajectory. */
+export function finalizePrimitives(solution,cfg,{deadline=Infinity,onProgress=()=>{}}={}){
+  const source=solution.graph.target.sourceImage;
+  if(!source?.mask||performance.now()>=deadline)return solution;
+  const start=performance.now(),n=source.resolution,weights=sourceWeights(source),input=solution.graph.target;
+  const paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p))),graph=new CurveGraph(paths,input.width),points=graph.points;
+  const straight=straightProposal(graph,points,n);if(!straight)return solution;
+  const beforeMatching=matchingSummary(solution),ties=symmetryTies(graph,cfg.symmetry),groups=beforeMatching.identical&&!ties?matchingGroups(graph):null;
+  if(ties)applyTies(ties,straight,straight,{fixed:graph.fixed,original:points});
+  if(groups)projectMatching(straight,groups,graph.fixed,points);
+  const phase=input.phase?-1:1,mask=renderCurves(graph,points,phase,n,32);
+  const selected=selectStraightProposal(graph,points,straight,source.mask,n,{mask,weights,ties,groups});
+  if(!selected||performance.now()>=deadline)return solution;
+  const p=selected.points,originalPrimitives=primitiveComplexity(graph,points),primitives=primitiveComplexity(graph,p);
+  const report={groups:selected.groups,selectedGroups:selected.accepted,curvedBefore:originalPrimitives.curved,curvedAfter:primitives.curved,
+    sampledErrorBefore:mismatch(mask,source.mask,weights),sampledErrorAfter:mismatch(renderCurves(graph,p,phase,n,32),source.mask,weights),applied:false};
+  let result=solution,afterMatching=beforeMatching;
+  const accept=()=>{
+    if(primitives.curved>=originalPrimitives.curved)return 'no_degree_reduction';
+    if(report.sampledErrorAfter>report.sampledErrorBefore)return 'sampled_image_error';
+    const value=createBoundaryEvaluator(graph,source.mask,n,{weights}),transposed=createBoundaryEvaluator(graph,source.mask,n,{weights,transpose:true,rows:193});
+    const score=points=>(value(points,phase)+transposed(points,phase))/2+primitiveCost(graph,points,n);
+    if(score(p)>score(points))return 'boundary_objective';
+    const proposal=graph.solution(p,phase,input),woven=sampleWeave(proposal,n);
+    report.sourceErrorBefore=referenceError(source,sampleWeave(solution,n)).mismatchFraction;
+    report.sourceErrorAfter=referenceError(source,woven).mismatchFraction;
+    if(report.sourceErrorAfter>report.sourceErrorBefore)return 'original_image_error';
+    if(performance.now()>=deadline)return 'deadline';
+    const symmetry=symmetryReport(proposal,cfg.symmetry);afterMatching=matchingSummary(proposal);
+    if(symmetry.honoured.length!==symmetry.requested.length||beforeMatching.identical&&!afterMatching.identical)return 'symmetry';
+    if(!auditImageFeatures(source,woven,graph.width).passed)return 'image_features';
+    const check=validate(proposal,cfg,{checkImage:false});if(!check.passed)return 'geometry';
+    if(cfg.requireMaterialCore&&!materialAudit(proposal,cfg).passed)return 'paper';
+    result=proposal;report.applied=true;return null;
+  };
+  onProgress({stage:'directPolishing'});report.rejection=accept();report.seconds=(performance.now()-start)/1000;
+  const matching=solution.report.matchingPreference;
+  result.report={...solution.report,finalPrimitiveSelection:report,stages:[...(solution.report.stages||[]),{stage:'directPolishing',detail:'selective-degree-reduction',seconds:report.seconds}],
+    ...(report.applied?{estimatedMaskMismatch:report.sourceErrorAfter}:{}),
+    ...(report.applied&&matching?{matchingPreference:{...matching,...afterMatching,selectedImageError:report.sourceErrorAfter,
+      ...(Number.isFinite(matching.baselineImageError)?{additionalImageError:report.sourceErrorAfter-matching.baselineImageError}:{})}}:{})};
+  return result;
+}
+
 export function selectStraightProposal(graph,points,proposal,prob,n,{mask,weights=null,ns=32,ties=null,groups=null}={}){
   const changed=Uint8Array.from(points,(v,i)=>Number(v!==proposal[i]));
   if(!changed.some(Boolean))return null;
