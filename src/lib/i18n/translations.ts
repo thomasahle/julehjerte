@@ -277,6 +277,8 @@ export const translations = {
     paintCancelAction: 'Annuller',
     paintSymmetry: 'Symmetri',
     paintSymmetryHint: 'Fundet i masken og slået til; alt du maler, spejles med.',
+    /** {panel} = panelets overskrift, så to knapper på siden kan skelnes */
+    paintPanelHint: 'Forklaring: {panel}',
     paintFindCuts: 'Find snit',
     paintFindCutsHint: 'Computeren leder efter de snit, der væver netop dit mønster.',
     paintAdvanced: 'Avanceret',
@@ -781,6 +783,8 @@ export const translations = {
     paintCancelAction: 'Cancel',
     paintSymmetry: 'Symmetry',
     paintSymmetryHint: 'Found in the mask and switched on; everything you paint is mirrored with it.',
+    /** {panel} = the panel's heading, so two buttons on the page can be told apart */
+    paintPanelHint: 'Explanation: {panel}',
     paintFindCuts: 'Find the cuts',
     paintFindCutsHint: 'The computer looks for the cuts that weave exactly your pattern.',
     paintAdvanced: 'Advanced',

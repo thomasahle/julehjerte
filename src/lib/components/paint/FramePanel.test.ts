@@ -33,7 +33,9 @@ function render(frame: Frame) {
 		shapes: target.querySelectorAll('.shape-btn').length,
 		sliders: target.querySelectorAll("input[type='range']").length,
 		notes: target.querySelectorAll('.note').length,
-		title: target.querySelector<HTMLElement>('.panel-title')?.title ?? '',
+		/** The "i" beside the heading, and the sentence it reveals (PanelHint). */
+		hint: target.querySelector<HTMLButtonElement>('button[aria-expanded]'),
+		hintText: target.querySelector<HTMLElement>('p[id]')?.textContent ?? '',
 		mode: (label: string) =>
 			[...target.querySelectorAll<HTMLElement>("[data-slot='toggle-group-item']")].find(
 				(el) => el.textContent?.trim() === label
@@ -52,8 +54,9 @@ describe('FramePanel', () => {
 			expect(panel.shapes).toBe(0);
 			expect(panel.sliders).toBe(0);
 			expect(panel.notes).toBe(0);
-			// The sentence the body no longer carries is on the heading instead.
-			expect(panel.title).toBe('Hele firkanten væves, som du har malet den.');
+			// The sentence the body no longer carries is behind the heading's "i".
+			expect(panel.hint).not.toBeNull();
+			expect(panel.hintText).toBe('Hele firkanten væves, som du har malet den.');
 		} finally {
 			panel.cleanup();
 		}
@@ -66,7 +69,7 @@ describe('FramePanel', () => {
 			expect(panel.sliders).toBe(1);
 			expect(panel.notes).toBe(1);
 			// Its own hint is in the body, so the heading has nothing left to say.
-			expect(panel.title).toBe('');
+			expect(panel.hint).toBeNull();
 		} finally {
 			panel.cleanup();
 		}

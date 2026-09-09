@@ -20,6 +20,7 @@
 <script lang="ts">
 	import { tick, untrack } from 'svelte';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
+	import PanelHint from './PanelHint.svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import {
 		clampFrameSize,
@@ -150,16 +151,21 @@
   is untouched — the shape and the size the visitor last set are still in the
   store, and choosing Fri brings them back exactly as they were.
 
-  The sentence that used to stand under a Fast panel is the heading's title: it
-  says what Fast means, and it is the one thing here that is not already on the
-  segment's own two words. A title is mouse-only, so the same sentence is also a
-  bullet in the Hjælp dialog — where a visitor on a phone, or on the keyboard,
-  can still find it — exactly as Symmetri's explanation is.
+  The sentence that used to stand under a Fast panel is behind the "i" beside the
+  heading (the shared `PanelHint`): it says what Fast means, and it is the one
+  thing here that is not already on the segment's own two words. It was the
+  heading's `title` for a while, which is mouse-only — no touch, no keyboard —
+  and that is exactly the visitor who needs telling what an unexplained pair of
+  words does. Only under Fast: a free band explains itself in the note at the
+  panel's foot, and a second sentence saying the same would be one line of the
+  column spent twice.
 -->
 <section class="editor-panel" bind:this={sectionEl}>
-	<h2 class="panel-title" title={frame.mode === 'free' ? undefined : tr('paintFrameHintFixed')}>
-		{tr('paintFrame')}
-	</h2>
+	{#if frame.mode === 'free'}
+		<h2 class="panel-title">{tr('paintFrame')}</h2>
+	{:else}
+		<PanelHint {lang} heading={tr('paintFrame')} hint={tr('paintFrameHintFixed')} />
+	{/if}
 
 	<div class="field">
 		<div class="segmented">
