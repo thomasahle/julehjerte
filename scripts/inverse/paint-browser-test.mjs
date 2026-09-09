@@ -65,7 +65,7 @@ const report={origin,upstreamOrigin,gitCommit:execFileSync('git',['rev-parse','H
 for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs','scripts/inverse/motif-fixture.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
-for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/shared-simplification.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
  for(const browserName of names){
@@ -198,6 +198,9 @@ try{
     // A shared engine span must remain one exact span on both editable sheets.
     // Area-error checks alone can miss the long hairline seams in the hat bug.
     const geometry=JSON.parse(observed.result.files['cut_geometry.json']),overlap=inferOverlapRect(design.fingers,design.gridSize);
+    row.engineSegments=Object.keys(geometry.curves).length;
+    row.editableSegments=design.fingers.reduce((sum,f)=>sum+f.segments.length,0);
+    row.sharedSimplification=observed.result.report.solver?.finalSharedSimplification;
     const canonical=p=>[p,p.toReversed()].map(c=>c.flat().map(v=>Math.round(v*1e6)).join(',')).sort()[0];
     const shared=new Set(geometry.A_overlap_paths.flatMap(p=>p.map(r=>r.curve)));
     const common=[...new Set(geometry.B_overlap_paths.flatMap(p=>p.map(r=>r.curve)))].filter(id=>shared.has(id));
