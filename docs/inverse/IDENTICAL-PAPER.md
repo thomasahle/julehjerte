@@ -111,7 +111,9 @@ an example of their limitations: its reported fit changes from 7.07 to 6.99
 seconds, while the surrounding timer rises from 8.97 to 15.20 seconds. That
 increase is outside the reported fitting interval. The timer includes worker
 result capture and three artifact writes before checking Draw readiness;
-further timing instrumentation is needed to attribute the remaining difference.
+the subsequent [page-clock instrumentation](BROWSER-TIMING.md) separates
+worker time, result readiness and later harness work. It establishes a new
+baseline; the historical totals above remain unchanged.
 
 [IDENTICAL-PAPER-VALIDATION.json](IDENTICAL-PAPER-VALIDATION.json) records every
 comparison, backend timing record, profile, gate, source hash and artifact hash.

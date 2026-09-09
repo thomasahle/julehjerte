@@ -1,0 +1,1525 @@
+{
+  "date": "2026-09-09T10:18:04.568Z",
+  "sourceCommit": "b165c941b0601a56fb7b3dae3955d492a523c5e5",
+  "scope": "QA timing correction only; no solver or application changes.",
+  "sources": {
+    "scripts/inverse/paint-browser-test.mjs": "6918bbc6b0826e26fcc12141154b8e17c109f52b77fc153a9776e8fc8b243fdd",
+    "scripts/inverse/paint-observer.mjs": "0f5722fac31af0cac42a400dca990cd2201a50b2a4958552c6696d3b33bdb807",
+    "scripts/inverse/paint-observer.test.mjs": "0149be83ba53c44ff35c32cfeee11c4cb605c3dfa4d655c7fe53b16759c3147a",
+    "scripts/inverse/motif-fixture.mjs": "0e8cbbe3e94466baf83d3ac96099a75c543834adf653dc6be7f339d8f076678c"
+  },
+  "checks": {
+    "applicationTests": 718,
+    "engineTests": 233,
+    "observerTests": 3,
+    "failures": 0,
+    "svelteErrors": 0,
+    "svelteWarnings": 7,
+    "lint": "pass",
+    "build": "pass",
+    "logs": {
+      "unit": {
+        "file": "tmp/page-timing-unit.log",
+        "sha256": "acb18f945c143b70d1d276b10d4a26382f967ad4a8186fde09863c7cba70beb3"
+      },
+      "tests": {
+        "file": "tmp/page-timing-tests.log",
+        "sha256": "e7597b0dbb994c608023656c0c68fcef8eb4e29cb1090ca9bc86e2f5f0378700"
+      },
+      "check": {
+        "file": "tmp/page-timing-check.log",
+        "sha256": "1be3902fa1acaae6b0990406476a41369d095dc32dda58ba4b2a1df01155978b"
+      },
+      "lint": {
+        "file": "tmp/page-timing-lint.log",
+        "sha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+      },
+      "build": {
+        "file": "tmp/page-timing-build.log",
+        "sha256": "378b0334eab8398c5931c0d3d855865111486e897f3c54db9676fbfd1e7d43d8"
+      },
+      "smoke": {
+        "file": "tmp/page-timing-smoke.log",
+        "sha256": "e93cb0367a218317fcc38fe6903b286a6dbefcaa0991d8845bc5ff8494ebe540"
+      },
+      "browser": {
+        "file": "tmp/page-timing-browser.log",
+        "sha256": "cfdf8262ecf5aa94ee1977038ff942d053be4234c70a05741b9e5e71b8f79282"
+      },
+      "fallback": {
+        "file": "tmp/page-timing-fallback.log",
+        "sha256": "66268ff81c154dd995ba7ea0d7149c02719ffc3898fc25cd360633ec3ab6d79a"
+      }
+    }
+  },
+  "browser": {
+    "artifact": {
+      "file": "tmp/page-timing-browser/results.json",
+      "sha256": "25b209efcc7ffc80b8d512815081127ac4e6125ce69c04f59361eb71521df84f"
+    },
+    "origin": "http://127.0.0.1:5232",
+    "gitCommit": "b165c941b0601a56fb7b3dae3955d492a523c5e5",
+    "runtime": "v25.6.1",
+    "disableNumericalKernel": false,
+    "timingVersion": 2,
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "6918bbc6b0826e26fcc12141154b8e17c109f52b77fc153a9776e8fc8b243fdd",
+      "scripts/inverse/paint-observer.mjs": "0f5722fac31af0cac42a400dca990cd2201a50b2a4958552c6696d3b33bdb807"
+    },
+    "workspaceSourceHashes": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "src/lib/inverse/engine.ts": "3801ce556deb99d9338d9790867cfe7c9a9b10293b03300f6aae5537f7ed7b96",
+      "static/inverse/core/direct/finalize.js": "83e635848f6e11019d85a937d172f852140c3d8dc43beec6e61daaf4a7c9dccc",
+      "static/inverse/core/direct/topology.js": "c88821fcc3b5d40b702d5060066d05a1de5d40dd5662c7ec0ced636594cf0a9f",
+      "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+      "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+      "static/inverse/core/direct/initialize.js": "c3890ffca44b970830e25a78690dbb19e01da55b1b0513d7fdcfea777edcd173",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "src/lib/inverse/toHeartDesign.ts": "6517b294d1a96a445586859c4ad05cb21bba2b884f6cda69ac65e49fb599af85",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "c8983c2d37caf4a24d301b8ef93c8ae930ff9ca1bac543ce28d65d7a72d661ab"
+    },
+    "results": [
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "house-free-small",
+        "pageErrors": [],
+        "captureSeconds": 0.9157601249999989,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.015,
+          "prepareRoundTripSeconds": 0.22,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 9.057,
+          "resultToReadySeconds": 0.029,
+          "clickToReadySeconds": 9.321
+        },
+        "pageMarks": {
+          "click": 964,
+          "prepareSent": 979,
+          "prepared": 1199,
+          "solveSent": 1199,
+          "result": 10256,
+          "ready": 10285,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.016177708000001075,
+        "reportedFitSeconds": 8.863,
+        "engineError": 0.0010986328125,
+        "numericalBackend": "wasm",
+        "displayedError": 0.002,
+        "sharedSpans": 4,
+        "wholeOriginalError": 0.2867,
+        "editableError": 0.003173828125,
+        "borderChange": 0.4834010840108401,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0018463134765625,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "hat-free-small",
+        "pageErrors": [],
+        "captureSeconds": 0.9680905839999978,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.017,
+          "prepareRoundTripSeconds": 0.215,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 13.981,
+          "resultToReadySeconds": 0.05,
+          "clickToReadySeconds": 14.263
+        },
+        "pageMarks": {
+          "click": 841,
+          "prepareSent": 858,
+          "prepared": 1073,
+          "solveSent": 1073,
+          "result": 15054,
+          "ready": 15104,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.0032482920000002197,
+        "reportedFitSeconds": 13.785,
+        "engineError": 0.003326416015625,
+        "numericalBackend": "wasm",
+        "displayedError": 0.005,
+        "sharedSpans": 21,
+        "wholeOriginalError": 0.069775,
+        "editableError": 0.0059814453125,
+        "borderChange": 0.11403285907859079,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.004547119140625,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "top-hat",
+        "pageErrors": [],
+        "captureSeconds": 0.9996493340000016,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.022,
+          "prepareRoundTripSeconds": 0.199,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 21.557,
+          "resultToReadySeconds": 0.104,
+          "clickToReadySeconds": 21.882
+        },
+        "pageMarks": {
+          "click": 874,
+          "prepareSent": 896,
+          "prepared": 1095,
+          "solveSent": 1095,
+          "result": 22652,
+          "ready": 22756,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.012664875000002213,
+        "reportedFitSeconds": 21.215,
+        "engineError": 0.0031887755102040817,
+        "numericalBackend": "wasm",
+        "displayedError": 0.004,
+        "sharedSpans": 114,
+        "wholeOriginalError": 0.0348,
+        "editableError": 0.003472222222222222,
+        "borderChange": 0.10988451086956522,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.004446570294784581,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "top-hat-independent",
+        "pageErrors": [],
+        "captureSeconds": 0.9942887500000069,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.016,
+          "prepareRoundTripSeconds": 0.2,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 13.515,
+          "resultToReadySeconds": 0.049,
+          "clickToReadySeconds": 13.78
+        },
+        "pageMarks": {
+          "click": 944,
+          "prepareSent": 960,
+          "prepared": 1160,
+          "solveSent": 1160,
+          "result": 14675,
+          "ready": 14724,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.007369082999997772,
+        "reportedFitSeconds": 13.302,
+        "engineError": 0.0029584750566893424,
+        "numericalBackend": "wasm",
+        "displayedError": 0.004,
+        "sharedSpans": 40,
+        "wholeOriginalError": 0.0521,
+        "editableError": 0.002834467120181406,
+        "borderChange": 0.17017663043478262,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.004030257936507937,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "hat-free",
+        "pageErrors": [],
+        "captureSeconds": 0.9546878750000033,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.016,
+          "prepareRoundTripSeconds": 0.221,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 13.534,
+          "resultToReadySeconds": 0.043,
+          "clickToReadySeconds": 13.814
+        },
+        "pageMarks": {
+          "click": 887,
+          "prepareSent": 903,
+          "prepared": 1124,
+          "solveSent": 1124,
+          "result": 14658,
+          "ready": 14701,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.005313708000001497,
+        "reportedFitSeconds": 13.297,
+        "engineError": 0.00208156179138322,
+        "numericalBackend": "wasm",
+        "displayedError": 0.003,
+        "sharedSpans": 67,
+        "wholeOriginalError": 0.015,
+        "editableError": 0.003826530612244898,
+        "borderChange": 0.041779891304347824,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0027016014739229023,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "house-free",
+        "pageErrors": [],
+        "captureSeconds": 1.0133749589999934,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019,
+          "prepareRoundTripSeconds": 0.302,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 13.968,
+          "resultToReadySeconds": 0.044,
+          "clickToReadySeconds": 14.333
+        },
+        "pageMarks": {
+          "click": 806,
+          "prepareSent": 825,
+          "prepared": 1127,
+          "solveSent": 1127,
+          "result": 15095,
+          "ready": 15139,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.007385167000000365,
+        "reportedFitSeconds": 13.758,
+        "engineError": 0.0006997590702947846,
+        "numericalBackend": "wasm",
+        "displayedError": 0.002,
+        "sharedSpans": 65,
+        "wholeOriginalError": 0.025375,
+        "editableError": 0.0033659297052154196,
+        "borderChange": 0.078125,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0018689767573696146,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "star",
+        "pageErrors": [],
+        "captureSeconds": 0.4579275420000049,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.011,
+          "prepareRoundTripSeconds": 0.032,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 6.032,
+          "resultToReadySeconds": 0.031,
+          "clickToReadySeconds": 6.107
+        },
+        "pageMarks": {
+          "click": 352,
+          "prepareSent": 363,
+          "prepared": 395,
+          "solveSent": 396,
+          "result": 6428,
+          "ready": 6459,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.00209083400000236,
+        "reportedFitSeconds": 5.88,
+        "engineError": 0.0016,
+        "numericalBackend": "wasm",
+        "displayedError": 0.002,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.00171875,
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "browserVersion": "146.0.1",
+        "name": "hunodan",
+        "pageErrors": [],
+        "captureSeconds": 0.5312778749999998,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.009,
+          "prepareRoundTripSeconds": 0.141,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 8.452,
+          "resultToReadySeconds": 0.06,
+          "clickToReadySeconds": 8.662
+        },
+        "pageMarks": {
+          "click": 1517,
+          "prepareSent": 1526,
+          "prepared": 1667,
+          "solveSent": 1667,
+          "result": 10119,
+          "ready": 10179,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.004143165999994381,
+        "reportedFitSeconds": 8.231,
+        "engineError": 0.0094375,
+        "numericalBackend": "wasm",
+        "displayedError": 0.011000000000000001,
+        "sharedSpans": 8,
+        "wholeOriginalError": 0.01345,
+        "editableError": 0.01345,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0106,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "house-free-small",
+        "pageErrors": [],
+        "captureSeconds": 0.9606656669999939,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019100000023841858,
+          "prepareRoundTripSeconds": 0.28960000002384184,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 4.180899999976158,
+          "resultToReadySeconds": 0.0355,
+          "clickToReadySeconds": 4.5255
+        },
+        "pageMarks": {
+          "click": 788.2999999523163,
+          "prepareSent": 807.3999999761581,
+          "prepared": 1097,
+          "solveSent": 1097.3999999761581,
+          "result": 5278.299999952316,
+          "ready": 5313.799999952316,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.004716040999977849,
+        "reportedFitSeconds": 4.017300000011921,
+        "engineError": 0.0010986328125,
+        "numericalBackend": "wasm",
+        "displayedError": 0.002,
+        "sharedSpans": 4,
+        "wholeOriginalError": 0.2867,
+        "editableError": 0.003173828125,
+        "borderChange": 0.4834010840108401,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0018463134765625,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hat-free-small",
+        "pageErrors": [],
+        "captureSeconds": 0.9346505840000172,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.018099999964237213,
+          "prepareRoundTripSeconds": 0.2624000000357628,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 4.124699999988079,
+          "resultToReadySeconds": 0.04340000003576279,
+          "clickToReadySeconds": 4.4488000000119206
+        },
+        "pageMarks": {
+          "click": 623.9000000357628,
+          "prepareSent": 642,
+          "prepared": 904.4000000357628,
+          "solveSent": 904.6000000238419,
+          "result": 5029.300000011921,
+          "ready": 5072.700000047684,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.004496374999987893,
+        "reportedFitSeconds": 3.955800000011921,
+        "engineError": 0.0034637451171875,
+        "numericalBackend": "wasm",
+        "displayedError": 0.005,
+        "sharedSpans": 4,
+        "wholeOriginalError": 0.287425,
+        "editableError": 0.00494384765625,
+        "borderChange": 0.4834010840108401,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0048065185546875,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat",
+        "pageErrors": [],
+        "captureSeconds": 1.3394811249999912,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.024200000047683717,
+          "prepareRoundTripSeconds": 0.24529999995231627,
+          "preparedToSolveRequestSeconds": 0.00020000004768371582,
+          "solveRoundTripSeconds": 9.731299999952316,
+          "resultToReadySeconds": 0.07560000002384186,
+          "clickToReadySeconds": 10.076600000023841
+        },
+        "pageMarks": {
+          "click": 653.6999999880791,
+          "prepareSent": 677.9000000357628,
+          "prepared": 923.1999999880791,
+          "solveSent": 923.4000000357628,
+          "result": 10654.699999988079,
+          "ready": 10730.300000011921,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.0037037920000148007,
+        "reportedFitSeconds": 9.444600000023842,
+        "engineError": 0.0031887755102040817,
+        "numericalBackend": "wasm",
+        "displayedError": 0.004,
+        "sharedSpans": 114,
+        "wholeOriginalError": 0.0348,
+        "editableError": 0.003472222222222222,
+        "borderChange": 0.10988451086956522,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.004446570294784581,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "pageErrors": [],
+        "captureSeconds": 0.9292732919999981,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.018699999988079072,
+          "prepareRoundTripSeconds": 0.24620000004768372,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 6.163,
+          "resultToReadySeconds": 0.06969999998807908,
+          "clickToReadySeconds": 6.497800000011921
+        },
+        "pageMarks": {
+          "click": 715.8000000119209,
+          "prepareSent": 734.5,
+          "prepared": 980.7000000476837,
+          "solveSent": 980.9000000357628,
+          "result": 7143.900000035763,
+          "ready": 7213.600000023842,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.0033781660000095142,
+        "reportedFitSeconds": 5.980699999988079,
+        "engineError": 0.0029584750566893424,
+        "numericalBackend": "wasm",
+        "displayedError": 0.004,
+        "sharedSpans": 40,
+        "wholeOriginalError": 0.0521,
+        "editableError": 0.002834467120181406,
+        "borderChange": 0.17017663043478262,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.004030257936507937,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hat-free",
+        "pageErrors": [],
+        "captureSeconds": 0.9446733749999839,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.018,
+          "prepareRoundTripSeconds": 0.27509999996423723,
+          "preparedToSolveRequestSeconds": 0.00020000004768371582,
+          "solveRoundTripSeconds": 8.016399999976159,
+          "resultToReadySeconds": 0.06769999998807907,
+          "clickToReadySeconds": 8.377399999976157
+        },
+        "pageMarks": {
+          "click": 667,
+          "prepareSent": 685,
+          "prepared": 960.0999999642372,
+          "solveSent": 960.3000000119209,
+          "result": 8976.699999988079,
+          "ready": 9044.399999976158,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.011681582999997771,
+        "reportedFitSeconds": 7.810900000035763,
+        "engineError": 0.002063846371882086,
+        "numericalBackend": "wasm",
+        "displayedError": 0.003,
+        "sharedSpans": 67,
+        "wholeOriginalError": 0.01495,
+        "editableError": 0.0037910997732426305,
+        "borderChange": 0.04169497282608696,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.002807893990929705,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "house-free",
+        "pageErrors": [],
+        "captureSeconds": 0.9687269169999927,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019,
+          "prepareRoundTripSeconds": 0.274,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 8.064200000047684,
+          "resultToReadySeconds": 0.057299999952316286,
+          "clickToReadySeconds": 8.414699999988079
+        },
+        "pageMarks": {
+          "click": 669.8999999761581,
+          "prepareSent": 688.8999999761581,
+          "prepared": 962.8999999761581,
+          "solveSent": 963.0999999642372,
+          "result": 9027.300000011921,
+          "ready": 9084.599999964237,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.0051687919999822045,
+        "reportedFitSeconds": 7.881400000035763,
+        "engineError": 0.0006997590702947846,
+        "numericalBackend": "wasm",
+        "displayedError": 0.002,
+        "sharedSpans": 65,
+        "wholeOriginalError": 0.025375,
+        "editableError": 0.0033659297052154196,
+        "borderChange": 0.078125,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0018689767573696146,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "star",
+        "pageErrors": [],
+        "captureSeconds": 0.49594887500000184,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.012799999952316284,
+          "prepareRoundTripSeconds": 0.0425,
+          "preparedToSolveRequestSeconds": 0.00010000002384185791,
+          "solveRoundTripSeconds": 2.006300000011921,
+          "resultToReadySeconds": 0.03019999998807907,
+          "clickToReadySeconds": 2.091899999976158
+        },
+        "pageMarks": {
+          "click": 234.60000002384186,
+          "prepareSent": 247.39999997615814,
+          "prepared": 289.89999997615814,
+          "solveSent": 290,
+          "result": 2296.300000011921,
+          "ready": 2326.5,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.0035874579999945126,
+        "reportedFitSeconds": 1.869199999988079,
+        "engineError": 0.0016,
+        "numericalBackend": "wasm",
+        "displayedError": 0.002,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.00171875,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hunodan",
+        "pageErrors": [],
+        "captureSeconds": 0.46799308300000847,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005300000011920929,
+          "prepareRoundTripSeconds": 0.1485,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 4.367100000023842,
+          "resultToReadySeconds": 0.09560000002384186,
+          "clickToReadySeconds": 4.616700000047683
+        },
+        "pageMarks": {
+          "click": 1381.2999999523163,
+          "prepareSent": 1386.5999999642372,
+          "prepared": 1535.0999999642372,
+          "solveSent": 1535.2999999523163,
+          "result": 5902.399999976158,
+          "ready": 5998,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.003103292000014335,
+        "reportedFitSeconds": 4.188,
+        "engineError": 0.0094375,
+        "numericalBackend": "wasm",
+        "displayedError": 0.011000000000000001,
+        "sharedSpans": 8,
+        "wholeOriginalError": 0.01345,
+        "editableError": 0.01345,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0106,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "house-free-small",
+        "pageErrors": [],
+        "captureSeconds": 1.0604768329999934,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.015,
+          "prepareRoundTripSeconds": 0.284,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 4.958,
+          "resultToReadySeconds": 0.034,
+          "clickToReadySeconds": 5.291
+        },
+        "pageMarks": {
+          "click": 1283,
+          "prepareSent": 1298,
+          "prepared": 1582,
+          "solveSent": 1582,
+          "result": 6540,
+          "ready": 6574,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.009454375000001165,
+        "reportedFitSeconds": 4.703,
+        "engineError": 0.0010986328125,
+        "numericalBackend": "wasm",
+        "displayedError": 0.002,
+        "sharedSpans": 4,
+        "wholeOriginalError": 0.2867,
+        "editableError": 0.003173828125,
+        "borderChange": 0.4834010840108401,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0018463134765625,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hat-free-small",
+        "pageErrors": [],
+        "captureSeconds": 0.9795137909999757,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.016000000000000226,
+          "prepareRoundTripSeconds": 0.29999999999999977,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 5.242,
+          "resultToReadySeconds": 0.07500000000000091,
+          "clickToReadySeconds": 5.633000000000001
+        },
+        "pageMarks": {
+          "click": 1124,
+          "prepareSent": 1140.0000000000002,
+          "prepared": 1440,
+          "solveSent": 1440,
+          "result": 6682,
+          "ready": 6757.000000000001,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.008800000000017462,
+        "reportedFitSeconds": 4.989,
+        "engineError": 0.0034637451171875,
+        "numericalBackend": "wasm",
+        "displayedError": 0.005,
+        "sharedSpans": 4,
+        "wholeOriginalError": 0.287425,
+        "editableError": 0.00494384765625,
+        "borderChange": 0.4834010840108401,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0048065185546875,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat",
+        "pageErrors": [],
+        "captureSeconds": 1.069791292000009,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.02,
+          "prepareRoundTripSeconds": 0.295,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 15.459,
+          "resultToReadySeconds": 0.119,
+          "clickToReadySeconds": 15.893
+        },
+        "pageMarks": {
+          "click": 891,
+          "prepareSent": 911,
+          "prepared": 1206,
+          "solveSent": 1206,
+          "result": 16665,
+          "ready": 16784,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.00569550000000163,
+        "reportedFitSeconds": 14.964,
+        "engineError": 0.0031887755102040817,
+        "numericalBackend": "wasm",
+        "displayedError": 0.004,
+        "sharedSpans": 114,
+        "wholeOriginalError": 0.0348,
+        "editableError": 0.003472222222222222,
+        "borderChange": 0.10988451086956522,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.004446570294784581,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-independent",
+        "pageErrors": [],
+        "captureSeconds": 1.0051985829999903,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.014,
+          "prepareRoundTripSeconds": 0.28,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 9.68,
+          "resultToReadySeconds": 0.131,
+          "clickToReadySeconds": 10.105
+        },
+        "pageMarks": {
+          "click": 1160,
+          "prepareSent": 1174,
+          "prepared": 1454,
+          "solveSent": 1454,
+          "result": 11134,
+          "ready": 11265,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.012693790999997873,
+        "reportedFitSeconds": 9.166,
+        "engineError": 0.003667091836734694,
+        "numericalBackend": "wasm",
+        "displayedError": 0.004,
+        "sharedSpans": 31,
+        "wholeOriginalError": 0.052525,
+        "editableError": 0.0021967120181405897,
+        "borderChange": 0.17314877717391305,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0040391156462585035,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hat-free",
+        "pageErrors": [],
+        "captureSeconds": 1.1568409160000155,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.016000000000000115,
+          "prepareRoundTripSeconds": 0.6519999999999999,
+          "preparedToSolveRequestSeconds": 0.006,
+          "solveRoundTripSeconds": 12.249,
+          "resultToReadySeconds": 0.116,
+          "clickToReadySeconds": 13.039
+        },
+        "pageMarks": {
+          "click": 808,
+          "prepareSent": 824.0000000000001,
+          "prepared": 1476,
+          "solveSent": 1482,
+          "result": 13731,
+          "ready": 13847,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.013548875000007683,
+        "reportedFitSeconds": 11.926000000000002,
+        "engineError": 0.00208156179138322,
+        "numericalBackend": "wasm",
+        "displayedError": 0.003,
+        "sharedSpans": 67,
+        "wholeOriginalError": 0.015,
+        "editableError": 0.003826530612244898,
+        "borderChange": 0.041779891304347824,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0027016014739229023,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "house-free",
+        "pageErrors": [],
+        "captureSeconds": 1.0082998329999973,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.016,
+          "prepareRoundTripSeconds": 0.283,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 9.572,
+          "resultToReadySeconds": 0.074,
+          "clickToReadySeconds": 9.946
+        },
+        "pageMarks": {
+          "click": 1143,
+          "prepareSent": 1159,
+          "prepared": 1442,
+          "solveSent": 1443,
+          "result": 11015,
+          "ready": 11089,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.017524499999999534,
+        "reportedFitSeconds": 9.222,
+        "engineError": 0.0006997590702947846,
+        "numericalBackend": "wasm",
+        "displayedError": 0.001,
+        "sharedSpans": 64,
+        "wholeOriginalError": 0.025975,
+        "editableError": 0.0033659297052154196,
+        "borderChange": 0.08016304347826086,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0013818027210884354,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "star",
+        "pageErrors": [],
+        "captureSeconds": 0.734398499999952,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.009,
+          "prepareRoundTripSeconds": 0.043,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 2.5740000000000003,
+          "resultToReadySeconds": 0.09099999999999954,
+          "clickToReadySeconds": 2.717
+        },
+        "pageMarks": {
+          "click": 654,
+          "prepareSent": 663,
+          "prepared": 706,
+          "solveSent": 706,
+          "result": 3280.0000000000005,
+          "ready": 3371,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.005623834000027273,
+        "reportedFitSeconds": 2.33,
+        "engineError": 0.0016,
+        "numericalBackend": "wasm",
+        "displayedError": 0.002,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.00171875,
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hunodan",
+        "pageErrors": [],
+        "captureSeconds": 0.4934777080000495,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.008,
+          "prepareRoundTripSeconds": 0.214,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 6.532,
+          "resultToReadySeconds": 0.08200000000000182,
+          "clickToReadySeconds": 6.836000000000002
+        },
+        "pageMarks": {
+          "click": 1691,
+          "prepareSent": 1699,
+          "prepared": 1913,
+          "solveSent": 1913,
+          "result": 8445,
+          "ready": 8527.000000000002,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.004863332999986597,
+        "reportedFitSeconds": 6.261000000000001,
+        "engineError": 0.0094375,
+        "numericalBackend": "wasm",
+        "displayedError": 0.011000000000000001,
+        "sharedSpans": 8,
+        "wholeOriginalError": 0.01345,
+        "editableError": 0.01345,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0106,
+        "passed": true
+      }
+    ]
+  },
+  "fallback": {
+    "artifact": {
+      "file": "tmp/page-timing-fallback/results.json",
+      "sha256": "9d57ce1214b80191f08ffbb2727e1241c7c77858c2747bd0eca76dedf8953b7b"
+    },
+    "origin": "http://127.0.0.1:5232",
+    "gitCommit": "b165c941b0601a56fb7b3dae3955d492a523c5e5",
+    "runtime": "v25.6.1",
+    "disableNumericalKernel": true,
+    "timingVersion": 2,
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "6918bbc6b0826e26fcc12141154b8e17c109f52b77fc153a9776e8fc8b243fdd",
+      "scripts/inverse/paint-observer.mjs": "0f5722fac31af0cac42a400dca990cd2201a50b2a4958552c6696d3b33bdb807"
+    },
+    "workspaceSourceHashes": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "src/lib/inverse/engine.ts": "3801ce556deb99d9338d9790867cfe7c9a9b10293b03300f6aae5537f7ed7b96",
+      "static/inverse/core/direct/finalize.js": "83e635848f6e11019d85a937d172f852140c3d8dc43beec6e61daaf4a7c9dccc",
+      "static/inverse/core/direct/topology.js": "c88821fcc3b5d40b702d5060066d05a1de5d40dd5662c7ec0ced636594cf0a9f",
+      "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+      "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+      "static/inverse/core/direct/initialize.js": "c3890ffca44b970830e25a78690dbb19e01da55b1b0513d7fdcfea777edcd173",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "src/lib/inverse/toHeartDesign.ts": "6517b294d1a96a445586859c4ad05cb21bba2b884f6cda69ac65e49fb599af85",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "c8983c2d37caf4a24d301b8ef93c8ae930ff9ca1bac543ce28d65d7a72d661ab"
+    },
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "star",
+        "pageErrors": [],
+        "blockedKernelRequests": 1,
+        "captureSeconds": 0.5342879579999998,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.014100000023841859,
+          "prepareRoundTripSeconds": 0.039,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 2.0608999999761584,
+          "resultToReadySeconds": 0.0365,
+          "clickToReadySeconds": 2.150699999988079
+        },
+        "pageMarks": {
+          "click": 850.3000000119209,
+          "prepareSent": 864.4000000357628,
+          "prepared": 903.4000000357628,
+          "solveSent": 903.6000000238419,
+          "result": 2964.5,
+          "ready": 3001,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.005139124999999694,
+        "reportedFitSeconds": 1.8953999999761582,
+        "engineError": 0.0016,
+        "numericalBackend": "javascript",
+        "displayedError": 0.002,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.00171875,
+        "passed": true
+      }
+    ]
+  },
+  "smoke": {
+    "artifact": {
+      "file": "tmp/page-timing-smoke/results.json",
+      "sha256": "cbf1b141436eb7444f947d976cf1145b7ad0f9bd76348dccd0a19c63f660440a"
+    },
+    "origin": "http://127.0.0.1:5232",
+    "gitCommit": "662ee9a9048409bebaaff44b9bc1be095622a1f7",
+    "runtime": "v25.6.1",
+    "disableNumericalKernel": false,
+    "timingVersion": 2,
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "6918bbc6b0826e26fcc12141154b8e17c109f52b77fc153a9776e8fc8b243fdd",
+      "scripts/inverse/paint-observer.mjs": "0f5722fac31af0cac42a400dca990cd2201a50b2a4958552c6696d3b33bdb807"
+    },
+    "workspaceSourceHashes": {
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+      "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+      "src/lib/inverse/engine.ts": "3801ce556deb99d9338d9790867cfe7c9a9b10293b03300f6aae5537f7ed7b96",
+      "static/inverse/core/direct/finalize.js": "83e635848f6e11019d85a937d172f852140c3d8dc43beec6e61daaf4a7c9dccc",
+      "static/inverse/core/direct/topology.js": "c88821fcc3b5d40b702d5060066d05a1de5d40dd5662c7ec0ced636594cf0a9f",
+      "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+      "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+      "static/inverse/core/direct/initialize.js": "c3890ffca44b970830e25a78690dbb19e01da55b1b0513d7fdcfea777edcd173",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "src/lib/inverse/toHeartDesign.ts": "6517b294d1a96a445586859c4ad05cb21bba2b884f6cda69ac65e49fb599af85",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "c8983c2d37caf4a24d301b8ef93c8ae930ff9ca1bac543ce28d65d7a72d661ab"
+    },
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "star",
+        "pageErrors": [],
+        "captureSeconds": 0.6009371250000004,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.013,
+          "prepareRoundTripSeconds": 0.03539999997615814,
+          "preparedToSolveRequestSeconds": 0.00019999998807907106,
+          "solveRoundTripSeconds": 2.0355,
+          "resultToReadySeconds": 0.08090000003576278,
+          "clickToReadySeconds": 2.165
+        },
+        "pageMarks": {
+          "click": 447.80000001192093,
+          "prepareSent": 460.80000001192093,
+          "prepared": 496.19999998807907,
+          "solveSent": 496.39999997615814,
+          "result": 2531.899999976158,
+          "ready": 2612.800000011921,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.002726416000000427,
+        "reportedFitSeconds": 1.8689000000357627,
+        "engineError": 0.0016,
+        "numericalBackend": "wasm",
+        "displayedError": 0.002,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.0046,
+        "editableError": 0.0046,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.00171875,
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat",
+        "pageErrors": [],
+        "captureSeconds": 1.012074916999998,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0265,
+          "prepareRoundTripSeconds": 0.42,
+          "preparedToSolveRequestSeconds": 0.002800000011920929,
+          "solveRoundTripSeconds": 10.04019999998808,
+          "resultToReadySeconds": 0.09110000002384186,
+          "clickToReadySeconds": 10.580600000023843
+        },
+        "pageMarks": {
+          "click": 755.6999999880791,
+          "prepareSent": 782.1999999880791,
+          "prepared": 1202.199999988079,
+          "solveSent": 1205,
+          "result": 11245.199999988079,
+          "ready": 11336.300000011921,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.004036292000000686,
+        "reportedFitSeconds": 9.7375,
+        "engineError": 0.0031887755102040817,
+        "numericalBackend": "wasm",
+        "displayedError": 0.004,
+        "sharedSpans": 114,
+        "wholeOriginalError": 0.0348,
+        "editableError": 0.003472222222222222,
+        "borderChange": 0.10988451086956522,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.004446570294784581,
+        "passed": true
+      }
+    ]
+  },
+  "summary": [
+    {
+      "browser": "firefox",
+      "cases": 8,
+      "medianClickToReadySeconds": 13.797,
+      "medianWorkerFraction": 0.9799796356966227,
+      "maximumResultToReadySeconds": 0.104,
+      "medianCaptureSeconds": 0.9613892295000006,
+      "matchingHat": {
+        "clickToPrepareRequestSeconds": 0.022,
+        "prepareRoundTripSeconds": 0.199,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 21.557,
+        "resultToReadySeconds": 0.104,
+        "clickToReadySeconds": 21.882
+      },
+      "independentHat": {
+        "clickToPrepareRequestSeconds": 0.016,
+        "prepareRoundTripSeconds": 0.2,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 13.515,
+        "resultToReadySeconds": 0.049,
+        "clickToReadySeconds": 13.78
+      }
+    },
+    {
+      "browser": "chromium",
+      "cases": 8,
+      "medianClickToReadySeconds": 5.557250000029802,
+      "medianWorkerFraction": 0.9526913697961775,
+      "maximumResultToReadySeconds": 0.09560000002384186,
+      "medianCaptureSeconds": 0.9396619795000005,
+      "matchingHat": {
+        "clickToPrepareRequestSeconds": 0.024200000047683717,
+        "prepareRoundTripSeconds": 0.24529999995231627,
+        "preparedToSolveRequestSeconds": 0.00020000004768371582,
+        "solveRoundTripSeconds": 9.731299999952316,
+        "resultToReadySeconds": 0.07560000002384186,
+        "clickToReadySeconds": 10.076600000023841
+      },
+      "independentHat": {
+        "clickToPrepareRequestSeconds": 0.018699999988079072,
+        "prepareRoundTripSeconds": 0.24620000004768372,
+        "preparedToSolveRequestSeconds": 0.00019999998807907106,
+        "solveRoundTripSeconds": 6.163,
+        "resultToReadySeconds": 0.06969999998807908,
+        "clickToReadySeconds": 6.497800000011921
+      }
+    },
+    {
+      "browser": "webkit",
+      "cases": 8,
+      "medianClickToReadySeconds": 8.391000000000002,
+      "medianWorkerFraction": 0.9514489852483754,
+      "maximumResultToReadySeconds": 0.131,
+      "medianCaptureSeconds": 1.0067492079999938,
+      "matchingHat": {
+        "clickToPrepareRequestSeconds": 0.02,
+        "prepareRoundTripSeconds": 0.295,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 15.459,
+        "resultToReadySeconds": 0.119,
+        "clickToReadySeconds": 15.893
+      },
+      "independentHat": {
+        "clickToPrepareRequestSeconds": 0.014,
+        "prepareRoundTripSeconds": 0.28,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 9.68,
+        "resultToReadySeconds": 0.131,
+        "clickToReadySeconds": 10.105
+      }
+    }
+  ],
+  "comparison": [
+    {
+      "browser": "firefox",
+      "name": "house-free-small",
+      "previousSourceEditableError": 0.0045318603515625,
+      "currentSourceEditableError": 0.0018463134765625,
+      "changePercentagePoints": -0.2685546875,
+      "previousSharedSpans": 26,
+      "currentSharedSpans": 4
+    },
+    {
+      "browser": "firefox",
+      "name": "hat-free-small",
+      "previousSourceEditableError": 0.004547119140625,
+      "currentSourceEditableError": 0.004547119140625,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 21,
+      "currentSharedSpans": 21
+    },
+    {
+      "browser": "firefox",
+      "name": "top-hat",
+      "previousSourceEditableError": 0.004446570294784581,
+      "currentSourceEditableError": 0.004446570294784581,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 114,
+      "currentSharedSpans": 114
+    },
+    {
+      "browser": "firefox",
+      "name": "top-hat-independent",
+      "previousSourceEditableError": 0.004030257936507937,
+      "currentSourceEditableError": 0.004030257936507937,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 40,
+      "currentSharedSpans": 40
+    },
+    {
+      "browser": "firefox",
+      "name": "hat-free",
+      "previousSourceEditableError": 0.0027016014739229023,
+      "currentSourceEditableError": 0.0027016014739229023,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 67,
+      "currentSharedSpans": 67
+    },
+    {
+      "browser": "firefox",
+      "name": "house-free",
+      "previousSourceEditableError": 0.0018689767573696146,
+      "currentSourceEditableError": 0.0018689767573696146,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 65,
+      "currentSharedSpans": 65
+    },
+    {
+      "browser": "firefox",
+      "name": "star",
+      "previousSourceEditableError": 0.00171875,
+      "currentSourceEditableError": 0.00171875,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 12,
+      "currentSharedSpans": 12
+    },
+    {
+      "browser": "firefox",
+      "name": "hunodan",
+      "previousSourceEditableError": 0.0106,
+      "currentSourceEditableError": 0.0106,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 8,
+      "currentSharedSpans": 8
+    },
+    {
+      "browser": "chromium",
+      "name": "house-free-small",
+      "previousSourceEditableError": 0.0018463134765625,
+      "currentSourceEditableError": 0.0018463134765625,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 4,
+      "currentSharedSpans": 4
+    },
+    {
+      "browser": "chromium",
+      "name": "hat-free-small",
+      "previousSourceEditableError": 0.0048065185546875,
+      "currentSourceEditableError": 0.0048065185546875,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 4,
+      "currentSharedSpans": 4
+    },
+    {
+      "browser": "chromium",
+      "name": "top-hat",
+      "previousSourceEditableError": 0.004446570294784581,
+      "currentSourceEditableError": 0.004446570294784581,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 114,
+      "currentSharedSpans": 114
+    },
+    {
+      "browser": "chromium",
+      "name": "top-hat-independent",
+      "previousSourceEditableError": 0.004030257936507937,
+      "currentSourceEditableError": 0.004030257936507937,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 40,
+      "currentSharedSpans": 40
+    },
+    {
+      "browser": "chromium",
+      "name": "hat-free",
+      "previousSourceEditableError": 0.002807893990929705,
+      "currentSourceEditableError": 0.002807893990929705,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 67,
+      "currentSharedSpans": 67
+    },
+    {
+      "browser": "chromium",
+      "name": "house-free",
+      "previousSourceEditableError": 0.0018689767573696146,
+      "currentSourceEditableError": 0.0018689767573696146,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 65,
+      "currentSharedSpans": 65
+    },
+    {
+      "browser": "chromium",
+      "name": "star",
+      "previousSourceEditableError": 0.00171875,
+      "currentSourceEditableError": 0.00171875,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 12,
+      "currentSharedSpans": 12
+    },
+    {
+      "browser": "chromium",
+      "name": "hunodan",
+      "previousSourceEditableError": 0.0106,
+      "currentSourceEditableError": 0.0106,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 8,
+      "currentSharedSpans": 8
+    },
+    {
+      "browser": "webkit",
+      "name": "house-free-small",
+      "previousSourceEditableError": 0.0019683837890625,
+      "currentSourceEditableError": 0.0018463134765625,
+      "changePercentagePoints": -0.01220703125,
+      "previousSharedSpans": 4,
+      "currentSharedSpans": 4
+    },
+    {
+      "browser": "webkit",
+      "name": "hat-free-small",
+      "previousSourceEditableError": 0.0047454833984375,
+      "currentSourceEditableError": 0.0048065185546875,
+      "changePercentagePoints": 0.006103515625,
+      "previousSharedSpans": 4,
+      "currentSharedSpans": 4
+    },
+    {
+      "browser": "webkit",
+      "name": "top-hat",
+      "previousSourceEditableError": 0.004446570294784581,
+      "currentSourceEditableError": 0.004446570294784581,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 114,
+      "currentSharedSpans": 114
+    },
+    {
+      "browser": "webkit",
+      "name": "top-hat-independent",
+      "previousSourceEditableError": 0.0045174319727891155,
+      "currentSourceEditableError": 0.0040391156462585035,
+      "changePercentagePoints": -0.04783163265306119,
+      "previousSharedSpans": 40,
+      "currentSharedSpans": 31
+    },
+    {
+      "browser": "webkit",
+      "name": "hat-free",
+      "previousSourceEditableError": 0.003578514739229025,
+      "currentSourceEditableError": 0.0027016014739229023,
+      "changePercentagePoints": -0.08769132653061226,
+      "previousSharedSpans": 67,
+      "currentSharedSpans": 67
+    },
+    {
+      "browser": "webkit",
+      "name": "house-free",
+      "previousSourceEditableError": 0.0018689767573696146,
+      "currentSourceEditableError": 0.0013818027210884354,
+      "changePercentagePoints": -0.04871740362811792,
+      "previousSharedSpans": 65,
+      "currentSharedSpans": 64
+    },
+    {
+      "browser": "webkit",
+      "name": "star",
+      "previousSourceEditableError": 0.00171875,
+      "currentSourceEditableError": 0.00171875,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 12,
+      "currentSharedSpans": 12
+    },
+    {
+      "browser": "webkit",
+      "name": "hunodan",
+      "previousSourceEditableError": 0.0106,
+      "currentSourceEditableError": 0.0106,
+      "changePercentagePoints": 0,
+      "previousSharedSpans": 8,
+      "currentSharedSpans": 8
+    }
+  ],
+  "visualInspection": [
+    {
+      "file": "tmp/page-timing-browser/firefox-top-hat/result.png",
+      "sha256": "c9005c11b0453eee58c0418b8d9cb62483b06c492ee58e0ba7634ad049cae4b4"
+    },
+    {
+      "file": "tmp/page-timing-browser/firefox-top-hat/draw.png",
+      "sha256": "eb041a3b5d0939516232667911caea5a14962630c576a7da451bcd800779b959"
+    },
+    {
+      "file": "tmp/page-timing-browser/chromium-star/result.png",
+      "sha256": "d943a852239545251589383ae99f48b627670e691caeb369df05f027eabbe094"
+    }
+  ],
+  "engineSha256": {
+    "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+    "static/inverse/core/engine.js": "59e4354b5c7ec6190b140066b24b3f8959e58f5e2f0f0166298522fb485d4740",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+    "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+    "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+    "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+    "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+    "static/inverse/core/kernel-choice.js": "5dba82d1c82e6b34dbce085edf10252093bbacbc15f605cf6530b9e1ebcf9c46",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "d1445856faeb8ecadc8626a1c471341db8a75758cced22f43bf4930fa4d82652",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/settings.js": "2fcdd67395cf3ebfcfcf4c885ea8fa5ae58b43dd52000660d0a52706b3b3665e",
+    "static/inverse/core/solver.js": "1021b7b30bc82ff02f99849c6c84535ee6128f6dea23e7366f2aa028ffaec041",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "53dae44325f1629d9f219e42a5b8ba6e5f67dd5e8bc554b5524ab2a14f519e3a",
+    "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+    "static/inverse/core/direct/curves.js": "18fe358d46448eb844b69fe5f35bee1cc8adb87cd5c5462382a59dbbd92fe08a",
+    "static/inverse/core/direct/finalize.js": "83e635848f6e11019d85a937d172f852140c3d8dc43beec6e61daaf4a7c9dccc",
+    "static/inverse/core/direct/fit.js": "4df61135bc86b6ddb3b0b9f1922f9614c3852d02552c232846ea94d89f31a933",
+    "static/inverse/core/direct/grid.js": "4136f590b11af62de8135c9e23b1f3a48ad2e0dcb9e419e7c2a5f906595caa47",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "c3890ffca44b970830e25a78690dbb19e01da55b1b0513d7fdcfea777edcd173",
+    "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/prefer-matching.js": "1ff682f298014f8c29387ad3bbe330c52e4ee619defd5a2d116cb3703e0f5d48",
+    "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+    "static/inverse/core/direct/refine.js": "f2bc0b7bb92155553909e1a55dd791587ee0979b9acd594d1323b9ced0f7e7ab",
+    "static/inverse/core/direct/share.js": "9a3723c2aea8dfe1bcf24f29e184aa4a90e953098f70ed7d76c038a305e140a7",
+    "static/inverse/core/direct/symmetry.js": "ed9f633ea42af93b46293d0d753e21dd7a5921485d5d55847e5a02665c14cf13",
+    "static/inverse/core/direct/topology.js": "c88821fcc3b5d40b702d5060066d05a1de5d40dd5662c7ec0ced636594cf0a9f",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58"
+  },
+  "served": {
+    "origin": "http://127.0.0.1:5232",
+    "matchingEngineFiles": 49
+  },
+  "reusedNodeEvidence": {
+    "validation": {
+      "file": "docs/inverse/IDENTICAL-PAPER-VALIDATION.json",
+      "sha256": "4ad24082d519d5c3aa151058c93b871e9391a6a8533485a02cc083515746f856"
+    },
+    "reason": "All 49 engine sources are unchanged. These are retained results, not new Node benchmark runs.",
+    "hunodan": {
+      "cases": 22,
+      "passed": 22,
+      "qualityPassed": 22,
+      "speedPassed": 22,
+      "medianSeconds": 5.603470896000003,
+      "maximumSeconds": 9.079525209
+    },
+    "weighted": {
+      "cases": 32,
+      "passed": 32,
+      "qualityPassed": 32,
+      "speedPassed": 32,
+      "medianSeconds": 5.051838313000004,
+      "maximumSeconds": 8.293787374999999,
+      "maximumProtectedError": 0.00408935546875
+    }
+  },
+  "limitations": [
+    "DOM readiness is not a browser paint timestamp. Worker intervals include message transport, scheduling and observer overhead.",
+    "Version 1 totals include driver capture and file writes; they cannot be compared directly with version 2 readiness or reconstructed into its phases.",
+    "Each final browser workflow is one fresh run. Scheduling, JIT and solver deadlines can affect timing and geometry despite unchanged source.",
+    "Raw ignored artifacts are recorded with hashes; the versioned report retains all quality and page-clock timing results."
+  ]
+}
