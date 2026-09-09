@@ -33,9 +33,9 @@ for(const e of catalog.cases){
     const input={type:'pixels',imageWidth:c.width,imageHeight:c.height,rgba:ctx.getImageData(0,0,c.width,c.height).data,quad:e.quad};
     if(hash(input.rgba)!==e.decodedPixelsSha256)throw new Error('Decoded photograph pixels differ from frozen baseline');
     r.decodeSeconds=(performance.now()-decoded)/1000;
-    const start=performance.now(),p=prepare(input,cfg),prepared=performance.now();r.prepareSeconds=(prepared-start)/1000;
+    const cpuStart=process.cpuUsage(),start=performance.now(),p=prepare(input,cfg),prepared=performance.now();r.prepareSeconds=(prepared-start)/1000;
     const answer=fitter?finish(await fitter(p.target,settings(cfg)),settings(cfg)):await design(p.target,cfg);
-    r.seconds=(performance.now()-start)/1000;r.solver=answer.report.solver;r.postprocessSeconds=answer.report.postprocessSeconds;
+    r.seconds=(performance.now()-start)/1000;const cpu=process.cpuUsage(cpuStart);r.cpuSeconds=(cpu.user+cpu.system)/1e6;r.solver=answer.report.solver;r.postprocessSeconds=answer.report.postprocessSeconds;
     r.exportAllowed=answer.report.templateChecksPassed;
     const replayStart=performance.now(),woven=await renderExportedWeave(answer.files['cut_geometry.json'],p.preview.resolution);
     r.error=woven.mask.reduce((s,v,i)=>s+Number(v!==p.preview.mask[i]),0)/woven.mask.length;
@@ -47,7 +47,9 @@ for(const e of catalog.cases){
     for(const[name,data]of Object.entries(answer.files))await fs.writeFile(`${dir}/${name}`,data);
     await fs.writeFile(`${dir}/independent.png`,woven.png);
   }catch(error){r.passed=false;r.failure=error.message;r.failureReport=error.report;}
+  if(!r.passed)process.exitCode=1;
   console.log(e.id,JSON.stringify({seconds:r.seconds,error:r.error,baseline:r.baselineError,quality:r.qualityPassed,passed:r.passed,failure:r.failure}));
   await fs.writeFile(`${out}/results.json`,JSON.stringify(report,null,2));
 }
+if(!results.length)throw new Error('No Hunodan cases selected');
 console.log(out);

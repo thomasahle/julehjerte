@@ -35,9 +35,10 @@ for(const shape of shapes)for(const size of sizes){
   for(const strategy of index++%2?strategies.toReversed():strategies){
     const row={shape,size,variant,strategy};results.push(row);const dir=`${output}/${shape}-${size}-${strategy}${variant==='original'?'':`-${variant}`}`;await fs.mkdir(dir,{recursive:true});
     try{
-      const cfg={...AUTOMATIC_PRESET,timeLimit:seconds,trials:0},start=performance.now();
+      const cfg={...AUTOMATIC_PRESET,timeLimit:seconds,trials:0},cpuStart=process.cpuUsage(),start=performance.now();
       const p=prepare({type:'mask',resolution:n,mask:strategy==='checker'?checker:mask,...(strategy==='weighted'?{weights}:{})},cfg),preparedAt=performance.now(),answer=await design(p.target,cfg);
       Object.assign(row,{seconds:(performance.now()-start)/1000,prepareSeconds:(preparedAt-start)/1000,templateChecksPassed:answer.report.templateChecksPassed,geometryPassed:answer.report.validation.passed,paper:answer.report.manufacturing.status,counts:answer.report.slits,solver:answer.report.solver,imageError:answer.report.imageError});
+      const cpu=process.cpuUsage(cpuStart);row.cpuSeconds=(cpu.user+cpu.system)/1e6;
       const woven=await renderExportedWeave(answer.files['cut_geometry.json'],n);
       row.independent=referenceError({resolution:n,mask,weights},woven.mask);
       row.qualityPassed=row.geometryPassed&&row.paper==='pass'&&row.independent.mismatchFraction<=.03;
@@ -45,9 +46,11 @@ for(const shape of shapes)for(const size of sizes){
       await fs.writeFile(`${dir}/original.png`,original);await fs.writeFile(`${dir}/target.png`,targetCanvas.toBuffer('image/png'));await fs.writeFile(`${dir}/woven.png`,woven.png);
       for(const [name,data] of Object.entries(answer.files))await fs.writeFile(`${dir}/${name}`,data);
     }catch(error){row.failure=error.message;row.failureReport=error.report;row.passed=false;}
+    if(!row.passed)process.exitCode=1;
     console.log(JSON.stringify({shape,size,variant,strategy,seconds:row.seconds,counts:row.counts,protectedError:row.independent?.mismatchFraction,qualityPassed:row.qualityPassed,speedPassed:row.speedPassed,passed:row.passed,failure:row.failure}));
     await fs.writeFile(`${output}/results.json`,JSON.stringify(report,null,2));
   }
   }
 }
+if(!results.length)throw new Error('No weighted cases selected');
 console.log(output);
