@@ -11,7 +11,10 @@ import {matchingPaths,matchingSummary,symmetryEvidence} from './matching.js';
 import {referenceError,sourceWeights} from '../image-reference.js';
 
 export function matchingErrorLimit(baseline,cfg){
-  return Math.min(cfg.maxImageError,baseline+(cfg.matchingErrorAllowance??.01));
+  // Reusing a template has an absolute accuracy allowance. Crossing the
+  // image-fidelity warning must not silently shrink that preference budget.
+  // Geometry, paper support and substantial image features are checked below.
+  return Math.min(1,baseline+(cfg.matchingErrorAllowance??.01));
 }
 
 export function maskDisagreement(source,woven){

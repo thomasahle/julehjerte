@@ -45,6 +45,15 @@ test('stopping prefers a retained matching pair only within the one-percent allo
   const refused=await finishStopped(target,cfg({preferMatchingSheets:true,matchingErrorAllowance:.005}),packets);
   assert.equal(refused.report.imageError.mismatchFraction,0);
   assert.equal(refused.report.solver.matchingPreference.identical,false);
+  const warning=await finishStopped(target,cfg({preferMatchingSheets:true,maxImageError:.003}),packets);
+  assert.equal(warning.report.solver.matchingPreference.identical,true);
+  assert.equal(warning.report.solver.matchingPreference.maximumMatchingImageError,.01);
+  assert.equal(warning.report.imageError.mismatchFraction,accepted.report.imageError.mismatchFraction);
+  assert.equal(warning.report.imageFidelity.passed,false);
+  assert.equal(warning.report.validation.passed,true);
+  assert.equal(warning.report.manufacturing.status,'pass');
+  assert.equal(warning.report.templateExportAllowed,true);
+  assert.match(warning.report.warnings.join('\n'),/above the 0.30% limit/);
 });
 
 test('stopping rejects malformed, geometrically invalid and unsupported paper candidates',async()=>{

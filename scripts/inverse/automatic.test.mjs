@@ -8,7 +8,7 @@ import {matchingErrorLimit,matchingProposals,preferMatchingSolution} from '../..
 import {settings} from '../../static/inverse/core/settings.js';
 import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {solutionJSON} from '../../static/inverse/core/graph.js';
-import {prepare,design} from '../../static/inverse/core/engine.js';
+import {prepare,design,finish} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../src/lib/inverse/presets.js';
 import {checkerPixels} from './fixtures.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
@@ -20,11 +20,40 @@ function asymmetricPair(offset){
   solution.graph.target.sourceImage={mask,resolution:400};return solution;
 }
 
-test('matching uses an absolute one-percentage-point allowance within the global limit',()=>{
+test('matching uses an absolute one-percentage-point allowance independently of the fidelity warning',()=>{
   const cfg=settings();
   assert.equal(matchingErrorLimit(.002,cfg),.012);
-  assert.equal(matchingErrorLimit(.028,cfg),.03);
+  assert.equal(matchingErrorLimit(.028,cfg),.038);
+  assert.equal(matchingErrorLimit(.04,cfg),.05);
+  assert.equal(matchingErrorLimit(.002,{...cfg,maxImageError:0}),.012);
   assert.equal(matchingErrorLimit(.002,{...cfg,matchingErrorAllowance:0}),.002);
+});
+
+for(const [boundary,baseline,expected]of [[47.25,.0275,.0345875],[46.5,.035,.041975]])test(`matching from ${baseline*100}% disagreement keeps valid reusable templates and an honest warning`,async()=>{
+  // Move the observed vertical boundary left of a valid fitted pair. One case
+  // crosses the 3% warning; the other already exceeds it before matching.
+  // Copying the first sheet adds less than one percentage point in both.
+  const original=asymmetricPair(.8),n=400;
+  const targetGraph=new CurveGraph([[[Cubic.line([boundary,0],[boundary,100]).p]],[[Cubic.line([0,50.8],[100,50.8]).p]]]);
+  const mask=sampleWeave(targetGraph.solution(targetGraph.points,1),n);
+  original.graph.target.sourceImage={mask,resolution:n};
+  const before=mask.slice(),cfg=settings({trials:0,roundHidden:false}),matched=preferMatchingSolution(original,cfg,{deadline:0});
+  assert.equal(matched.report.matchingPreference.status,'matched');
+  assert.equal(matched.report.matchingPreference.baselineImageError,baseline);
+  assert.equal(matchingSummary(matched).identical,true);
+  const result=finish(matched,cfg);
+  assert.ok(result.report.imageError.mismatchFraction>cfg.maxImageError);
+  assert.equal(result.report.imageFidelity.passed,false);
+  assert.equal(result.report.validation.passed,true);
+  assert.equal(result.report.manufacturing.status,'pass');
+  assert.equal(result.report.templateExportAllowed,true);
+  assert.match(result.report.warnings.join('\n'),/above the 3.00% limit/);
+  const exported=await renderExportedWeave(result.files['cut_geometry.json'],n);
+  const error=exported.mask.reduce((sum,v,i)=>sum+Number(v!==before[i]),0)/before.length;
+  assert.equal(result.report.imageError.mismatchFraction,error);
+  assert.equal(error,expected);
+  assert.ok(error<=matched.report.matchingPreference.baselineImageError+.01);
+  assert.deepEqual(original.graph.target.sourceImage.mask,before);
 });
 
 test('a valid identical pair is preferred within 1% even after the refinement deadline',async()=>{

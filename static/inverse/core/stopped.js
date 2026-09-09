@@ -12,6 +12,7 @@ import {matchingSummary} from './direct/matching.js';
 import {symmetryReport} from './direct/symmetry.js';
 import {loadNumericalKernel} from './numerical-kernel.js';
 import {finalizeFittedSolution} from './direct/finalize.js';
+import {matchingErrorLimit} from './direct/prefer-matching.js';
 
 const yieldTask=()=>new Promise(resolve=>setTimeout(resolve,0));
 export function stoppedWithoutCandidate(){
@@ -49,12 +50,12 @@ export async function finishStopped(target,cfg,packets,onProgress=()=>{},{cancel
   }
   alive();if(!valid.length)throw stoppedWithoutCandidate();
   valid.sort((a,b)=>Number(b.imagePassed)-Number(a.imagePassed)||a.error-b.error||a.solution.graph.edges.length-b.solution.graph.edges.length);
-  const first=valid[0],matching=cfg.preferMatchingSheets&&valid.find(v=>v.identical&&v.featuresPassed&&v.error<=first.error+cfg.matchingErrorAllowance);
+  const first=valid[0],matching=cfg.preferMatchingSheets&&valid.find(v=>v.identical&&v.featuresPassed&&v.error<=matchingErrorLimit(first.error,cfg));
   const best=matching||first,ordered=[best,...valid.filter(v=>v!==best)];
   const alternatives=ordered.map(v=>({counts:v.solution.paths.map(p=>p.length),error:v.error,checkpointError:v.packet.error,geometry:v.packet.geometry}));
   best.solution.report={algorithm:'stopped-checkpoint',seconds:(performance.now()-startedAt)/1000,imported:false,termination:'user_stop',stoppedEarly:true,
     selectedCounts:best.solution.paths.map(p=>p.length),estimatedMaskMismatch:best.error,
-    matchingPreference:{enabled:cfg.preferMatchingSheets,identical:best.identical,baselineImageError:first.error,additionalImageError:best.error-first.error,maximumAdditionalImageError:cfg.matchingErrorAllowance},
+    matchingPreference:{enabled:cfg.preferMatchingSheets,identical:best.identical,baselineImageError:first.error,additionalImageError:best.error-first.error,maximumAdditionalImageError:cfg.matchingErrorAllowance,maximumMatchingImageError:matchingErrorLimit(first.error,cfg)},
     alternativeErrorMethod:'Forward sampling against the original prepared source, including its validity mask and image-importance weights; checkpoint error retained separately.'};
   await yieldControl();alive();
   // Stop ends the global search, but a retained hat still needs the same exact
