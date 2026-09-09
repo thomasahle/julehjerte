@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {loadNumericalKernel,nativeDistanceTransform,nativeCoreLabels} from '../../static/inverse/core/numerical-kernel.js';
 import {distanceTransform,materialAudit} from '../../static/inverse/core/material.js';
 import {settings} from '../../static/inverse/core/settings.js';
+import {solutionJSON,loadSolutionJSON} from '../../static/inverse/core/graph.js';
 import {fixture} from './fixtures.mjs';
 
 const randomMask=(nx,ny,seed=7)=>{let s=seed;return Uint8Array.from({length:nx*ny},()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return Number(s<0x18000000);});};
@@ -90,4 +91,25 @@ test('native audits preserve complete historical maps, areas, fold intervals and
   const uncertain=withoutTime(materialAudit(fixture('thin'),cfg,{includeMaps:true}));
   assert.equal(uncertain.status,'uncertain');assert.equal(uncertain.passed,false);
   assert.deepEqual(uncertain,withoutTime(materialAudit(fixture('thin'),cfg,{includeMaps:true,native:false})));
+});
+
+test('outline reuse preserves audits after width, resolution and cut changes',async()=>{
+  await loadNumericalKernel();
+  // Complete-map hashes captured from material.js at 0a30976. Revisit inputs
+  // in both directions so changes and evictions cannot leave stale outlines.
+  const cases=[
+    ['straight',20,80,1,'ed6c4df6f9f05006715764b331607940fadf83eaf62661f965be0c9aa9c4f197'],
+    ['neck',100,121,3,'5b1bf309d26cc41b2f7329070f64c62a578f44c6d017b79bb2941ded49f76b72'],
+    ['thin',300,180,5,'d6fbb3c9e1765afafa8f557add53d888bd0bfb4045cfd68bd544bf8f19390d92'],
+    ['straight',100,80,2,'30c77e32dadac4c33a158a416cec6162d45907ce53a9b5715d77a58c7e8efb28'],
+    ['neck',20,180,1,'c8937a814bc4cdfeda9fd17a5ee9785fb53d6780b650e52e4976500b88d30aa2'],
+    ['thin',100,121,.7,'bcbd8f88497a655be861ea2ed7830ee6fd8496c668b064907d480aedbae837f0']
+  ];
+  for(const[name,width,resolution,minWidth,expected]of[...cases,...cases.toReversed()]){
+    const data=solutionJSON(fixture(name));data.square_width_mm=width;
+    for(const curve of Object.values(data.curves))curve.control_points=curve.control_points.map(p=>p.map(v=>v*width/60));
+    const cfg=settings({width,materialResolution:resolution,minWidth,cutError:0,printShrinkPercent:0});
+    const result=withoutTime(materialAudit(loadSolutionJSON(data),cfg,{includeMaps:true}));
+    assert.equal(createHash('sha256').update(JSON.stringify(result)).digest('hex'),expected,`${name}, ${width} mm, ${resolution}`);
+  }
 });
