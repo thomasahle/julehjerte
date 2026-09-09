@@ -156,14 +156,18 @@
 	/**
 	 * The word behind the dot, for a screen reader.
 	 *
-	 * Only the two states the dot alone distinguishes: a waiting row says
-	 * "venter" in the text everybody can see, and a second copy of it would be
-	 * read out twice in a row.
+	 * Only the two states the dot alone distinguishes: a waiting row already says
+	 * "ikke prøvet" in the text everybody can see, and a second copy of it would
+	 * be read out twice in a row — so that one answers null and nothing is drawn.
 	 */
 	const ATTEMPT_STATES: Record<Exclude<AttemptState, 'waiting'>, TranslationKey> = {
 		done: 'paintAttemptDone',
 		running: 'paintAttemptRunning'
 	};
+
+	function attemptWord(state: AttemptState): TranslationKey | null {
+		return state === 'waiting' ? null : ATTEMPT_STATES[state];
+	}
 
 	const TRENDS: Record<ErrorTrend, TranslationKey> = {
 		falling: 'paintSearchFalling',
@@ -338,6 +342,7 @@
 				<p class="attempts-title" id={attemptsId}>{tr('paintAttempts')}</p>
 				<ul aria-labelledby={attemptsId}>
 					{#each progress.attempts as attempt (attempt.counts.join('x'))}
+						{@const word = attemptWord(attempt.state)}
 						<li class="attempt" class:running={attempt.state === 'running'}>
 							<span class="dot {attempt.state}" aria-hidden="true"></span>
 							<span class="attempt-counts">
@@ -346,16 +351,24 @@
 									right: attempt.counts[1]
 								})}
 							</span>
-							{#if attempt.state === 'waiting' || attempt.error === null}
-								<span class="attempt-error">{tr('paintAttemptWaiting')}</span>
-							{:else}
+							{#if attempt.error !== null}
 								<span class="attempt-error">{decimal(100 * attempt.error)} %</span>
-								<!-- The dot is the only thing that tells done from running, so the
-								     word it stands for goes where a screen reader will find it. Not
-								     on a waiting row: there the visible text is already the word,
-								     and both would be read out one after the other. -->
-								<span class="sr-only">{tr(ATTEMPT_STATES[attempt.state])}</span>
+							{:else if attempt.state === 'waiting'}
+								<!-- "ikke prøvet", not "venter". The count search announces every
+								     pair it scored and `gridFinalists` hands the refiner three of
+								     them, so most of a long list is never queued for anything: on
+								     the star, eight pairs were announced and five were still on
+								     screen, unqueued, when the answer arrived. The row says what is
+								     known and makes no promise about what the fitter will do next.
+								     The seed error behind it is not printed either: it measures an
+								     unrefined uniform grid, which is a third quantity again. -->
+								<span class="attempt-error">{tr('paintAttemptWaiting')}</span>
 							{/if}
+							<!-- The dot is the only thing that tells done from running, so the word
+							     it stands for goes where a screen reader will find it. Not on a
+							     waiting row: there the visible text is already the word, and both
+							     would be read out one after the other. -->
+							{#if word}<span class="sr-only">{tr(word)}</span>{/if}
 						</li>
 					{/each}
 				</ul>

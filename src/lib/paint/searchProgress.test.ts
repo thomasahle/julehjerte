@@ -89,7 +89,8 @@ describe('the recorded solve', () => {
 		const state = reduceAll(events);
 		// Eight pairs announced, each once however many times the engine scored it,
 		// in the order the count search ranked them; three of them were refined and
-		// the rest never came up before the answer was good enough.
+		// the rest never came up — `gridFinalists` hands the refiner three, so the
+		// other five were never queued for anything.
 		expect(state.attempts.map((a) => a.counts)).toEqual([
 			[4, 4],
 			[5, 5],
@@ -110,8 +111,11 @@ describe('the recorded solve', () => {
 			'waiting',
 			'waiting'
 		]);
-		// Each finished attempt keeps the last error it reached, not its seed error.
+		// A tried attempt keeps the last error the refiner measured for it; one that
+		// was only ever scored has no number of its own, because the count search's
+		// own error is a different measurement again.
 		expect(state.attempts[0].error!).toBeLessThan(0.08);
+		expect(state.attempts[3].error).toBeNull();
 		expect(state.counts).toEqual([6, 6]);
 	});
 
@@ -176,25 +180,28 @@ function reduce(...list: EngineProgress[]): SearchProgress {
 }
 
 describe('attempts', () => {
-	it('lists a seed as waiting until the fitter reaches it', () => {
+	it('lists a seed as waiting, with no number of its own, until the fitter reaches it', () => {
+		// The seed error is dropped on purpose: it measures an unrefined uniform
+		// grid at 64 cells a side, which is neither the refiner's number nor the
+		// answer's, and the panel prints "ikke prøvet" for such a row.
 		const state = reduce(
 			{ stage: 'directInitializing', counts: [4, 4], error: 0.08 },
 			{ stage: 'directInitializing', counts: [5, 5], error: 0.12 }
 		);
 		expect(state.attempts).toEqual([
-			{ counts: [4, 4], error: 0.08, state: 'waiting' },
-			{ counts: [5, 5], error: 0.12, state: 'waiting' }
+			{ counts: [4, 4], error: null, state: 'waiting' },
+			{ counts: [5, 5], error: null, state: 'waiting' }
 		]);
 	});
 
-	it('keeps the better of a pair’s two phases, which is the one that will be tried', () => {
+	it('lists a pair once however many times the count search scored it', () => {
 		// The count search scores every pair at both phases and announces both; the
 		// star's recorded run does it for all eight pairs it looked at.
 		const state = reduce(
 			{ stage: 'directInitializing', counts: [4, 4], error: 0.08 },
 			{ stage: 'directInitializing', counts: [4, 4], error: 0.13 }
 		);
-		expect(state.attempts).toEqual([{ counts: [4, 4], error: 0.08, state: 'waiting' }]);
+		expect(state.attempts).toEqual([{ counts: [4, 4], error: null, state: 'waiting' }]);
 	});
 
 	it('moves the running mark on and leaves the finished one its last error', () => {
@@ -225,7 +232,7 @@ describe('attempts', () => {
 			{ stage: 'directRefining' },
 			{ stage: 'directClearance' }
 		);
-		expect(state.attempts).toEqual([{ counts: [4, 4], error: 0.08, state: 'waiting' }]);
+		expect(state.attempts).toEqual([{ counts: [4, 4], error: null, state: 'waiting' }]);
 		expect(state.stage).toBe('directClearance');
 	});
 

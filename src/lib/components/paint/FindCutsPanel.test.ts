@@ -256,10 +256,11 @@ describe('FindCutsPanel while searching', () => {
 			expect(rows.map((r) => r.querySelector('.attempt-error')?.textContent?.trim())).toEqual([
 				'2,0 %',
 				'3,1 %',
-				// Announced but not reached: a seed error is not a result, so the row
-				// says so in words rather than printing a number that means something
-				// else from the two above it.
-				'venter'
+				// Announced but not reached — and most never are, since the count
+				// search announces every pair it scored and the refiner is handed
+				// three. The row says that much and no more, and it says it in words:
+				// the seed error behind it is a third measurement again.
+				'ikke prøvet'
 			]);
 			expect(rows.map((r) => r.className.includes('running'))).toEqual([false, true, false]);
 			// The dot is the only thing that tells done from running, so both carry
@@ -331,6 +332,7 @@ describe('FindCutsPanel while searching', () => {
 			lang: 'en',
 			progress: reduceAll([
 				{ stage: 'directInitializing', counts: [4, 4], error: 0.08 },
+				{ stage: 'directInitializing', counts: [5, 5], error: 0.12 },
 				{ stage: 'directRefining', counts: [4, 4], step: 0, error: 0.02 },
 				{ stage: 'directRefining', counts: [4, 4], step: 40, error: 0.013 }
 			])
@@ -340,6 +342,7 @@ describe('FindCutsPanel while searching', () => {
 			expect(panel.text).toContain('4 + 4 strips');
 			expect(panel.text).toContain('the candidate about 1.3 % off');
 			expect(panel.text).toContain('and falling');
+			expect(panel.text).toContain('not tried');
 			expect(panel.text).toContain('Attempts');
 			expect(panel.text).toContain('Stop');
 		} finally {

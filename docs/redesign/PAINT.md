@@ -156,12 +156,15 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
     saying something else was happening — until the answer contradicted it. The counts stay, because those really
     are the winner's, and the running mark in the attempts list is cleared at the same moment: `fit.js` breaks out
     of its loop on a candidate that passes, so nothing ever announces the winner as finished.
-  - the **attempts**: every counts pair the fitter announced, one row each — the pair, its error, and a dot for
-    done / running / waiting with the running row in `--cream2`. A pair announced but not reached says "venter"
-    rather than its seed error, which means something different from the errors above it. A pair is one row however
-    many times the engine scored it (the count search scores each at both phases) and keeps the better of its seed
-    errors, since that is the one `gridFinalists` carries forward. Nothing is invented: a pair the engine has not
-    mentioned is not in the list.
+  - the **attempts**: every counts pair the fitter announced, one row each — the pair, the last error the
+    *refiner* measured for it, and a dot for done / running / waiting with the running row in `--cream2`. A pair
+    that has not been reached says "ikke prøvet" / "not tried", not "venter": the count search announces every pair
+    it scored and `gridFinalists` hands the refiner three of them, so most of a long list is never queued for
+    anything — the star announces eight and leaves five of them there. The word says what is known and promises
+    nothing about what the fitter will do next. Its seed error is not printed either: that one measures an
+    unrefined uniform grid at 64 cells a side, a third quantity again, so the row carries no number until the
+    refiner has measured one. A pair is one row however many times the engine scored it (the count search scores
+    each at both phases). Nothing is invented: a pair the engine has not mentioned is not in the list.
   - the **MILP route's own three numbers** instead of a list, because it counts rounds rather than attempts:
     "Løser … runde 2 · afstand til bedst mulige 3 % · 1 gyldig kandidat". The route is decided by the stages seen:
     'model'/'solving' before any `direct*` means the MILP, and once the fitter has spoken the route stays the

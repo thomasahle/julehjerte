@@ -327,7 +327,8 @@ export const translations = {
     paintAttempts: 'Forsøg',
     /** {left}, {right} = strimler i hver retning */
     paintAttemptCounts: '{left} + {right}',
-    paintAttemptWaiting: 'venter',
+    /** Prøvet er den ikke — og de fleste bliver aldrig prøvet, så der loves intet */
+    paintAttemptWaiting: 'ikke prøvet',
     paintAttemptDone: 'færdig',
     paintAttemptRunning: 'i gang',
     paintUseBest: 'Brug det bedste nu',
@@ -838,7 +839,8 @@ export const translations = {
     paintAttempts: 'Attempts',
     /** {left}, {right} = strips each way */
     paintAttemptCounts: '{left} + {right}',
-    paintAttemptWaiting: 'waiting',
+    /** Not tried — and most never will be, so the word promises nothing */
+    paintAttemptWaiting: 'not tried',
     paintAttemptDone: 'done',
     paintAttemptRunning: 'running',
     paintUseBest: 'Use the best one now',

@@ -111,13 +111,20 @@ const FITTER_STAGES: readonly string[] = [
  */
 const MILP_STAGES: readonly string[] = ['model', 'solving'];
 
-/** How each grid seed is getting on. */
+/**
+ * How each grid seed is getting on.
+ *
+ * 'waiting' is "announced but not reached", not "queued": the count search
+ * scores and announces every pair it considered, and `gridFinalists` then hands
+ * the refiner three of them, so most of a long list is never tried at all. The
+ * panel's word for it says that much and no more.
+ */
 export type AttemptState = 'done' | 'running' | 'waiting';
 
 /** One strip-count pair the fitter announced, and what became of it. */
 export type Attempt = {
 	counts: [number, number];
-	/** The last error measured for it, or null while it has only been announced. */
+	/** The last error the refiner measured for it, or null until it has run. */
 	error: number | null;
 	state: AttemptState;
 };
@@ -264,23 +271,19 @@ export function reduceProgress(state: SearchProgress, event: EngineProgress): Se
 
 	if (raw === 'directInitializing' && counts) {
 		// A seed the count search scored. It is announced before anything runs, so
-		// it goes in as waiting.
+		// it goes in as waiting, and its own error is deliberately dropped: that
+		// number is the mismatch of an *unrefined* uniform grid at 64 cells a side
+		// (`countHypotheses`), which is neither the refiner's number above it in
+		// the panel nor the answer's, and a column of percentages that mean three
+		// different things is worse than a column with a gap in it.
 		//
 		// The same pair arrives more than once — the count search scores each pair
 		// at both phases, and the star's own recorded run announces every pair
-		// twice — and an attempt is one pair (a phase is not something the panel
-		// could say anything useful about). The pair keeps the *better* of its seed
-		// errors, because that is the one the fitter carries forward: `gridFinalists`
-		// ranks the finalists by error, so the worse phase is not what will be tried.
-		const at = attempts.findIndex((a) => same(a.counts, counts));
-		attempts =
-			at === -1
-				? [...attempts, { counts, error, state: 'waiting' as const }]
-				: attempts.map((a, i) =>
-						i === at
-							? { ...a, error: a.error === null || error === null ? (error ?? a.error) : Math.min(a.error, error) }
-							: a
-					);
+		// twice — and an attempt is one pair, because a phase is not something the
+		// panel could say anything useful about.
+		if (!attempts.some((a) => same(a.counts, counts))) {
+			attempts = [...attempts, { counts, error: null, state: 'waiting' as const }];
+		}
 	} else if (counts && RUNNING_STAGES.includes(raw)) {
 		// The fitter has moved on to this seed. Whatever was running is done with
 		// the last error it reported; a seed the initializer never announced (the
