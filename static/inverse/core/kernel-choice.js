@@ -58,4 +58,14 @@ export function measuredKernel(equal,{now=()=>performance.now(),key=size=>Math.f
     report(){return[...choices.values()].map(v=>({...v,...(v.initialTimings?{initialTimings:v.initialTimings.map(t=>({...t}))}:{}),timings:v.timings?.map(t=>({...t,...(t.repetitions?{repetitions:{...t.repetitions}}:{})}))}));}
   };
 }
-export const sameArray=(a,b)=>!!a&&!!b&&a.length===b.length&&a.every((v,i)=>Object.is(v,b[i]));
+export function sameArray(a,b){
+  if(!a||!b||a.length!==b.length)return false;
+  // Calibration compares large dense numeric fields repeatedly. Avoid a
+  // callback per element, retaining Object.is for NaN and signed zero.
+  if(a.length&&ArrayBuffer.isView(a)){
+    for(let i=0;i<a.length;i++)if(!Object.is(a[i],b[i]))return false;
+    return true;
+  }
+  // Keep Array.every's sparse-array and empty typed-array semantics.
+  return a.every((v,i)=>Object.is(v,b[i]));
+}

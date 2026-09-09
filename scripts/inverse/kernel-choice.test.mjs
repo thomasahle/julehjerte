@@ -2,6 +2,30 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {measuredKernel,sameArray} from '../../static/inverse/core/kernel-choice.js';
 
+test('dense numeric comparisons preserve exact values, offsets and array semantics',()=>{
+  const reference=(a,b)=>!!a&&!!b&&a.length===b.length&&a.every((v,i)=>Object.is(v,b[i]));
+  const types=[Uint8Array,Uint16Array,Int32Array,Float32Array,Float64Array,BigInt64Array];
+  for(const Type of types){
+    const big=Type===BigInt64Array,values=big?[1n,2n,3n]:[1,2,3],storage=new Type([big?99n:99,...values,big?99n:99]);
+    const a=storage.subarray(1,4),b=new Type(values);
+    assert.equal(sameArray(a,b),true);assert.equal(sameArray(a,values),true);
+    for(let i=0;i<b.length;i++){const changed=b.slice();changed[i]=big?7n:7;assert.equal(sameArray(a,changed),false);}
+    assert.equal(sameArray(a,b.subarray(1)),false);assert.equal(sameArray(new Type(),new Type()),true);
+  }
+  const pairs=[
+    [Float64Array.of(NaN,Infinity,-Infinity,-0),[NaN,Infinity,-Infinity,-0]],
+    [Float64Array.of(0),Float64Array.of(-0)],
+    [Float64Array.of(1),Float64Array.of(1+Number.EPSILON)],
+    [[,2],[99,2]],[[undefined,2],[99,2]],[[1,2],Float64Array.of(1,2)],
+    [null,null],[[],[]],[[],null]
+  ];
+  for(const[a,b]of pairs)assert.equal(sameArray(a,b),reference(a,b));
+  // A detached view has zero length but still throws when .every is called.
+  const detached=new Float64Array(1);structuredClone(detached,{transfer:[detached.buffer]});
+  assert.throws(()=>sameArray(detached,new Float64Array()),TypeError);
+  assert.throws(()=>sameArray(new DataView(new ArrayBuffer(1)),new DataView(new ArrayBuffer(1))),TypeError);
+});
+
 test('batched measurements resolve sub-clock work and reuse only the decision',()=>{
   let clock=0,value=4,javascriptCalls=0,nativeCalls=0;
   const backend=measuredKernel(sameArray,{now:()=>Math.floor(clock),repetitions:16});

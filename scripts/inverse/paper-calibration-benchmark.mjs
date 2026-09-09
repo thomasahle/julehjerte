@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 import {cpus} from 'node:os';
+import {execFileSync} from 'node:child_process';
 import {materialAudit} from '../../static/inverse/core/material.js';
 import {loadNumericalKernel} from '../../static/inverse/core/numerical-kernel.js';
 import {loadSolutionJSON,solutionJSON} from '../../static/inverse/core/graph.js';
@@ -16,8 +17,19 @@ import {fixture} from './fixtures.mjs';
 
 const output=process.env.INVERSE_CALIBRATION_OUT||'tmp/paper-calibration',origin=process.env.INVERSE_TEST_URL||'http://127.0.0.1:5232';
 const names=(process.env.INVERSE_TEST_BROWSERS||'node').split(','),rounds=4,followups=16;
-const policies={legacy:{repetitions:1,minimumBatchMilliseconds:0},batch4:{repetitions:16,minimumBatchMilliseconds:4},batch8:{repetitions:32,minimumBatchMilliseconds:8},selective8:{repetitions:32,minimumBatchMilliseconds:8,quickDecision:true}};
+const reference=process.env.INVERSE_CALIBRATION_REFERENCE;
+const availablePolicies={legacy:{repetitions:1,minimumBatchMilliseconds:0},batch4:{repetitions:16,minimumBatchMilliseconds:4},batch8:{repetitions:32,minimumBatchMilliseconds:8},selective8:{repetitions:32,minimumBatchMilliseconds:8,quickDecision:true},...(reference?{reference:{reference}}:{})};
+const policyNames=(process.env.INVERSE_CALIBRATION_POLICIES||'legacy,batch4,batch8,selective8').split(',');
+assert.ok(policyNames.length>1&&new Set(policyNames).size===policyNames.length&&policyNames.every(name=>availablePolicies[name]),'Choose distinct available calibration policies');
+const policies=Object.fromEntries(policyNames.map(name=>[name,availablePolicies[name]]));
 const hash=b=>createHash('sha256').update(b).digest('hex'),materialSource=await fs.readFile('static/inverse/core/material.js','utf8');
+const dataURL=source=>'data:text/javascript;base64,'+Buffer.from(source).toString('base64');
+const referenceSources={};let referenceSelector;
+if(reference){
+ for(const name of ['material.js','paper-backend.js','kernel-choice.js'])referenceSources[name]=execFileSync('git',['show',`${reference}:static/inverse/core/${name}`],{encoding:'utf8'});
+ assert.equal(referenceSources['material.js'],materialSource,'Calibration comparisons require the same paper-audit implementation');
+ referenceSelector=referenceSources['paper-backend.js'].replace("'./kernel-choice.js'",`'${dataURL(referenceSources['kernel-choice.js'])}'`);
+}
 const cases=[{id:'straight-80',data:solutionJSON(fixture('straight')),cfg:{width:60,minWidth:3,cutError:0,printShrinkPercent:0,materialResolution:80}},
  {id:'neck-180',data:solutionJSON(fixture('neck')),cfg:{width:60,minWidth:3,cutError:0,printShrinkPercent:0,materialResolution:180}}];
 const hat=await fs.readFile('scripts/inverse/fixtures/free-border-hat.json');
@@ -25,9 +37,8 @@ cases.push({id:'matching-hat-360',data:JSON.parse(hat).geometry,source:'scripts/
 for(const [id,file]of [['hjhih-04','tmp/paper-tiles-hunodan/hjhih-04/cut_geometry.json'],['circle','tmp/paper-tiles-weighted/circle-0.84-weighted/cut_geometry.json']]){
  const data=await fs.readFile(file);cases.push({id,data:JSON.parse(data),source:file,sourceSha256:hash(data),cfg:{width:100,materialResolution:360}});
 }
-const selectorSource=(policy,root)=>`import {measuredKernel} from '${new URL('./kernel-choice.js',root).href}';\nexport {sameArray,sameCore} from '${new URL('./paper-backend.js',root).href}';\nexport const paperBackend=(equal,options={})=>measuredKernel(equal,{...${JSON.stringify(policies[policy])},...options,describe:cells=>({cells})});\n`;
+const selectorSource=(policy,root)=>policy==='reference'?referenceSelector:`import {measuredKernel} from '${new URL('./kernel-choice.js',root).href}';\nexport {sameArray,sameCore} from '${new URL('./paper-backend.js',root).href}';\nexport const paperBackend=(equal,options={})=>measuredKernel(equal,{...${JSON.stringify(policies[policy])},...options,describe:cells=>({cells})});\n`;
 const moduleSource=(selector,root,identity)=>materialSource.replace(/from '(\.[^']+)'/g,(_,p)=>`from '${p==='./paper-backend.js'?selector:new URL(p,root).href}'`)+`\n// isolated ${identity}\n`;
-const dataURL=source=>'data:text/javascript;base64,'+Buffer.from(source).toString('base64');
 
 // Runs unchanged in Node and browsers. It deliberately compares complete
 // audit maps outside every timer and rechecks earlier returned arrays too.
@@ -54,8 +65,8 @@ async function runCase(entry,round,order,followups,loadPolicy,load,settings,refe
 await fs.mkdir(output,{recursive:true});
 const sourceHashes={};for(const name of await fs.readdir('static/inverse/core',{recursive:true}))if(/\.(js|wasm|c)$/.test(name)){const file='static/inverse/core/'+name;sourceHashes[file]=hash(await fs.readFile(file));}
 sourceHashes['scripts/inverse/paper-calibration-benchmark.mjs']=hash(await fs.readFile('scripts/inverse/paper-calibration-benchmark.mjs'));
-const report={runtime:process.version,cpu:cpus()[0]?.model,policies,rounds,followups,sourceHashes,
- method:'Fresh selector instances for each policy, geometry and round. Four rotating policy orders. First complete audit includes calibration and all equality checks performed by the selector. The following 16 complete audits are timed together. Fixture/module/kernel loading and the independent JavaScript/native oracle and map comparisons are outside timers. Common kernel code and scratch memory are warmed before each group. Both audit maps and all fields except elapsed time must equal the JavaScript oracle; first-call returned arrays are rechecked after subsequent calls. Only timing decisions may be retained. No optimizer runs or saved-template seeds.',
+const report={runtime:process.version,cpu:cpus()[0]?.model,policies,rounds,followups,sourceHashes,reference,referenceSourceHashes:Object.fromEntries(Object.entries(referenceSources).map(([file,source])=>[file,hash(source)])),
+ method:'Fresh selector instances for each policy, geometry and round. Four rounds with rotating policy order. The reference policy, when requested, loads both selector and equality code from the named commit with an identical paper-audit source. First complete audit includes calibration and all equality checks performed by the selector. The following 16 complete audits are timed together. Fixture/module/kernel loading and the independent JavaScript/native oracle and map comparisons are outside timers. Common kernel code and scratch memory are warmed before each group. Both audit maps and all fields except elapsed time must equal the JavaScript oracle; first-call returned arrays are rechecked after subsequent calls. Only timing decisions may be retained. No optimizer runs or saved-template seeds.',
  cases:cases.map(({data,...entry})=>({...entry,geometrySha256:hash(JSON.stringify(data))})),results:[]};
 const append=async row=>{report.results.push(row);console.log(JSON.stringify({browser:row.browser,id:row.id,round:row.round,results:row.results.map(({choices,...r})=>r)}));await fs.writeFile(output+'/results.json',JSON.stringify(report,null,2)+'\n');};
 for(const name of names){
