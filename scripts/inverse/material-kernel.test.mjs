@@ -9,7 +9,7 @@ import {fixture} from './fixtures.mjs';
 
 const randomMask=(nx,ny,seed=7)=>{let s=seed;return Uint8Array.from({length:nx*ny},()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return Number(s<0x18000000);});};
 const withoutTime=result=>{delete result.summary.seconds;return result;};
-const bruteDistance=(mask,nx,ny)=>Float64Array.from(mask,(_,i)=>{
+const bruteDistance=(mask,nx,_ny)=>Float64Array.from(mask,(_,i)=>{
   let best=1e12;for(let j=0;j<mask.length;j++)if(mask[j])best=Math.min(best,(i%nx-j%nx)**2+(Math.floor(i/nx)-Math.floor(j/nx))**2);
   return best;
 });

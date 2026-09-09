@@ -23,7 +23,7 @@ for(const [id,file]of[
  ['top-hat','tmp/image-reuse-weighted/top-hat-0.84-weighted/cut_geometry.json']
 ]){const bytes=await fs.readFile(file);cases.push({id,data:JSON.parse(bytes),source:file,sourceSha256:hash(bytes),cfg:{width:100,materialResolution:360}});}
 await fs.mkdir(output,{recursive:true});
-const report={origin,reference,previousMaterialSha256:hash(previous),sourceHashes:{},method:'Same complete audit, including maps. Four rounds rotate policy order after one warmup for each policy and input. Loading, warmups and exact comparisons are outside audit timers. current selects the measured backend; cachedJavaScript and forcedWasm isolate backend costs with the same outline reuse.',cases:cases.map(({data,...entry})=>entry),results:[]};
+const report={origin,reference,previousMaterialSha256:hash(previous),sourceHashes:{},method:'Same complete audit, including maps. Four rounds rotate policy order after one warmup for each policy and input. Loading, warmups and exact comparisons are outside audit timers. current selects the measured backend; cachedJavaScript and forcedWasm isolate backend costs with the same outline reuse.',cases:cases.map(({data:_data,...entry})=>entry),results:[]};
 for(const name of await fs.readdir('static/inverse/core',{recursive:true}))if(/\.(js|wasm|c)$/.test(name)){const file=`static/inverse/core/${name}`;report.sourceHashes[file]=hash(await fs.readFile(file));}
 for(const browserName of(process.env.INVERSE_TEST_BROWSERS||'firefox,chromium,webkit').split(',')){
  const browser=await browsers[browserName].launch({headless:true}),context=await browser.newContext();
@@ -44,7 +44,7 @@ for(const browserName of(process.env.INVERSE_TEST_BROWSERS||'firefox,chromium,we
    const value=await page.evaluate(({entry,index})=>{
     const {current,previous,load,settings,choices}=window.paperBench,solution=load(entry.data),cfg=settings(entry.cfg),policies=['previous','cachedJavaScript','forcedWasm','current'],runs=[];
     const audit=policy=>(policy==='previous'?previous:current)(solution,cfg,{includeMaps:true,native:policy==='cachedJavaScript'?false:policy==='forcedWasm'?true:'auto'});
-    const summary=result=>JSON.stringify({...result,families:result.families.map(({map,...family})=>family),summary:{...result.summary,seconds:undefined}});
+    const summary=result=>JSON.stringify({...result,families:result.families.map(({map:_map,...family})=>family),summary:{...result.summary,seconds:undefined}});
     for(const policy of policies)audit(policy);
     let status;
     for(let round=0;round<policies.length;round++){
