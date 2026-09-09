@@ -14,7 +14,10 @@ const browsers=await import(process.env.PLAYWRIGHT_MODULE||'playwright'),origin=
 const output=process.env.INVERSE_TEST_OUTPUT||'tmp/material-browser-benchmark',reference=process.env.INVERSE_PAPER_REFERENCE||'0a30976';
 const hunodan=process.env.INVERSE_PAPER_HUNODAN||'tmp/image-reuse-hunodan-replay',weighted=process.env.INVERSE_PAPER_WEIGHTED||'tmp/image-reuse-weighted';
 const hash=b=>createHash('sha256').update(b).digest('hex'),previous=execFileSync('git',['show',`${reference}:static/inverse/core/material.js`],{encoding:'utf8'});
-for(const name of['bezier.js','graph.js','geometry.js','validate.js','settings.js'])assert.equal(hash(await fs.readFile(`static/inverse/core/${name}`)),hash(execFileSync('git',['show',`${reference}:static/inverse/core/${name}`])),name);
+const dependencies=['bezier.js','graph.js','geometry.js','validate.js','settings.js',
+ ...['chord-distance.js','paper-backend.js','numerical-kernel.js'].filter(name=>previous.includes(`from './${name}'`)),
+ ...(previous.includes("from './numerical-kernel.js'")?['direct/native/boundary.c','direct/native/boundary.wasm']:[])];
+for(const name of dependencies)assert.equal(hash(await fs.readFile(`static/inverse/core/${name}`)),hash(execFileSync('git',['show',`${reference}:static/inverse/core/${name}`])),name);
 const referenceURL=origin+'/inverse/core/qa-material-reference.js',pageURL=origin+'/inverse/qa-paper.html';
 const referenceBody=previous.replace(/from '(\.[^']+)'/g,(_,p)=>`from '${new URL(p,origin+'/inverse/core/material.js').href}'`);
 const cases=['straight','neck'].map(name=>({id:name,data:solutionJSON(fixture(name)),cfg:{width:60,minWidth:3,cutError:0,printShrinkPercent:0,materialResolution:360}}));
