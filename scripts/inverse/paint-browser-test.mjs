@@ -21,15 +21,16 @@ const {parseHeartFromSVG}=await loader.ssrLoadModule('/src/lib/utils/heartDesign
 const {findFingersWithIssues,intersectionMarginPx}=await loader.ssrLoadModule('/src/lib/editor/curveIssues.ts');
 const {inferOverlapRect}=await loader.ssrLoadModule('/src/lib/utils/overlapRect.ts');
 const {rasterizeDesign}=await loader.ssrLoadModule('/src/lib/paint/rasterize.ts');
+const {frameMismatch}=await loader.ssrLoadModule('/src/lib/paint/frame.ts');
 const {resample,maskMismatch}=await loader.ssrLoadModule('/src/lib/paint/mask.ts');
 const results=[];
 const report={origin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,workspaceSourceHashes:{},results};
-for(const file of ['static/inverse/core/automatic.js','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
  for(const browserName of names){
   const browser=await browsers[browserName].launch({headless:true});
   try{for(const name of cases){
-   const topHat=name==='top-hat'||name==='top-hat-independent';
+   const topHat=name==='top-hat'||name==='top-hat-independent',free=topHat||name.endsWith('-free');
    const dir=path.join(output,`${browserName}-${name}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,pageErrors:[]};results.push(row);
    const context=await browser.newContext({viewport:{width:1440,height:1100},acceptDownloads:true});
@@ -44,7 +45,7 @@ try{
      window.Worker=class extends NativeWorker{constructor(...args){super(...args);this.addEventListener('message',({data})=>{
       if(data.type==='result')window.__paintQA.result=data.result;
       if(data.type==='error')window.__paintQA.error=data;
-      if(data.type==='prepared')window.__paintQA.prepared={mask:Array.from(data.preview.mask),resolution:data.preview.resolution};
+      if(data.type==='prepared')window.__paintQA.prepared={mask:Array.from(data.preview.mask),resolution:data.preview.resolution,weights:data.preview.weights?Array.from(data.preview.weights):null};
      });}};
     });
     await page.goto(`${origin}/en/editor/paint/`);
@@ -58,14 +59,14 @@ try{
      if(name==='hunodan'){
       const metadata=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
       const e=metadata.cases[0],[x,y,x1,y1]=e.photoROI,im=await loadImage(e.source),c=createCanvas(x1-x,y1-y);c.getContext('2d').drawImage(im,-x,-y);await fs.writeFile(file,c.toBuffer('image/png'));
-     }else await fs.writeFile(file,topHat?topHatFixture():motifFixture(name).png);
+     }else await fs.writeFile(file,topHat?topHatFixture():free?motifFixture(name.replace('-free','')).original:motifFixture(name).png);
      await button('Import picture').click();await page.locator('input[type=file]').setInputFiles(file);
      if(name!=='hunodan')await button('The whole picture').click();
      else await page.locator('button.corner').nth(3).waitFor();
      await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Use as mask'&&!b.disabled));
      await page.screenshot({path:path.join(dir,'import.png'),fullPage:true});
      await button('Use as mask').click();
-     if(topHat){
+     if(free){
       await page.getByRole('radio',{name:'Free',exact:true}).click();
       await page.locator('#paint-frame-size').focus();await page.locator('#paint-frame-size').press('End');
       assert.equal(await page.locator('#paint-frame-size').inputValue(),'84');
@@ -79,6 +80,7 @@ try{
     await fs.writeFile(path.join(dir,'engine-report.json'),JSON.stringify(observed.result.report,null,2));
     await fs.writeFile(path.join(dir,'cut_geometry.json'),observed.result.files['cut_geometry.json']);
     row.engineError=observed.result.report.imageError.mismatchFraction;
+    assert.equal(Boolean(observed.prepared.weights),free,'Free-border importance weights must reach the real worker.');
     assert.equal(observed.result.report.validation.passed,true);
     assert.equal(observed.result.report.manufacturing.status,'pass');
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Open in Draw')||document.querySelector('[role=alert]'),{},{timeout:15000});
@@ -104,8 +106,12 @@ try{
     if(topHat){
      assert.ok(common.length>10,'The hat needs exact shared cuts, not independent near matches.');
     }
-    row.editableError=maskMismatch(rasterizeDesign(design,200).data,resample(Uint8Array.from(observed.prepared.mask),observed.prepared.resolution,200));
-    assert.ok(row.editableError<=(topHat?.04:name==='hunodan'?.03:.015),`Editable mismatch ${row.editableError}`);
+    const rendered=rasterizeDesign(design,200).data,wanted=resample(Uint8Array.from(observed.prepared.mask),observed.prepared.resolution,200);
+    row.wholeOriginalError=maskMismatch(rendered,wanted);
+    const regions=free?frameMismatch(rendered,wanted,200,{mode:'free',shape:'diamond',size:.84}):null;
+    row.editableError=regions?.inside??row.wholeOriginalError;
+    if(regions)row.borderChange=regions.outside;
+    assert.ok(row.editableError<=(topHat?.01:free||name==='hunodan'?.03:.015),`Editable mismatch ${row.editableError}`);
     if(name==='star'){
      const pendingPDF=page.waitForEvent('download');await button('Download PDF').click();
      const pdfFile=path.join(dir,'template.pdf');await(await pendingPDF).saveAs(pdfFile);
