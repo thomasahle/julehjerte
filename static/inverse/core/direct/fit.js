@@ -10,7 +10,7 @@ import {sampleWeave,validate} from '../validate.js';
 import {matchingGrid,matchingSummary,symmetryEvidence} from './matching.js';
 import {applyTies,orbitMean,orbitObjective,symmetryOrbit,symmetryTies} from './symmetry.js';
 import {requestedSymmetry} from '../settings.js';
-import {materialAudit} from '../material.js';
+import {materialAudit,paperKernelChoices} from '../material.js';
 import {resize} from './math.js';
 import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,countHypotheses,initializeCounts} from './counts.js';
 import {auditImageFeatures,imageFeatures} from '../image-features.js';
@@ -33,7 +33,9 @@ function refloor(result,floor){
 export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initializeCounts}={}){
   const start=performance.now();
   const solution=await fitIndependent(input,{...cfg,preferMatchingSheets:false},onProgress,countSearch);
-  return finalizeFittedSolution(solution,cfg,{startedAt:start,onProgress});
+  const selected=finalizeFittedSolution(solution,cfg,{startedAt:start,onProgress});
+  selected.report.paperKernels=paperKernelChoices();
+  return selected;
 }
 async function fitIndependent(input,cfg,onProgress,countSearch){
   // Every per-pixel target the search optimizes is the mean over the requested

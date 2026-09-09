@@ -83,7 +83,7 @@ test('native audits preserve complete historical maps, areas, fold intervals and
   const hashes={straight:'dd898579d6c7c89f8abbaa6bced7f141d8d5c32eeec4a3a5f6d0aa7c9aaed8c9',neck:'8918f38e8907de8e201d83b2085fd677707f411ba9accb33c4447eecdfb1b187',thin:'a7a8c91cb8f200ff2a85019dab78f6339b8513622fb0fc729d47b831e7e2876f'};
   for(const name of Object.keys(hashes))for(const resolution of[80,180,360]){
     const cfg=settings({width:60,cutError:0,printShrinkPercent:0,materialResolution:resolution,minWidth:3}),solution=fixture(name);
-    const previous=withoutTime(materialAudit(solution,cfg,{includeMaps:true,native:false})),current=withoutTime(materialAudit(solution,cfg,{includeMaps:true}));
+    const previous=withoutTime(materialAudit(solution,cfg,{includeMaps:true,native:false})),current=withoutTime(materialAudit(solution,cfg,{includeMaps:true,native:true}));
     assert.deepEqual(current,previous);
     if(resolution===180)assert.equal(createHash('sha256').update(JSON.stringify(current)).digest('hex'),hashes[name]);
   }
