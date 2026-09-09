@@ -3,7 +3,7 @@
  * sheet updates and a smooth spline projection preserve independent families.
  */
 import {basisTable} from './math.js';
-import {gridControls,gridSamples,gridModel,gridMask} from './grid.js';
+import {gridControls,gridSamples,gridModel,gridMask,gridParity} from './grid.js';
 import {imageWeights} from './image-objective.js';
 import {initializationImage} from './initialization-image.js';
 
@@ -158,11 +158,13 @@ function initializeFromImage(image,counts,phase,{resolution=96,rounds=18,k=16,fl
     if(performance.now()>deadline){termination='deadline';break;}
     for(const f of round%2?[1,0]:[0,1]){
       const samples=gridSamples(gridControls(model,floor),model,basisTable(n,k),n),count=counts[f],positions=new Float64Array(n*count);
+      const flips=sharedWork?gridParity(samples[1-f],counts[1-f],n,true):null;
       for(let y=0;y<n;y++){
         const row=new Float64Array(n),prior=Array.from(samples[f].slice(y*count,(y+1)*count)),rowWeights=importance?new Float64Array(n):null;
         let allOne=true;
         for(let x=0;x<n;x++){
-          let flip=0;for(let i=0;i<counts[1-f];i++)flip^=Number((y+.5)/n>samples[1-f][x*counts[1-f]+i]);
+          let flip=flips?.[y*n+x]??0;
+          if(!flips)for(let i=0;i<counts[1-f];i++)flip^=Number((y+.5)/n>samples[1-f][x*counts[1-f]+i]);
           const index=f?x*n+y:y*n+x,p=target[index];row[x]=flip?1-p:p;if(rowWeights){rowWeights[x]=importance[index];if(importance[index]!==1)allOne=false;}
         }
         // resizeObjective already validated these weights. Keep the original

@@ -112,11 +112,26 @@ export function gridClearance(model,controls,dc,margin,n=161,weight=30){
     for(let j=0;j<n;j++)for(let k=0;k<model.k;k++){const b=basis[j*model.k+k];if(b)for(let i=0;i<count;i++)dc[f][k*count+i]+=b*ds[j*count+i];}
   });return loss;
 }
+/** Positive-gap grids keep their sampled cuts ordered. Sweep each row once
+ * instead of testing every cut at every pixel. Keep the strict comparison at
+ * pixel centres: rounding a cut to a pixel index changes boundary ties.
+ */
+export function gridParity(samples,count,n,transpose=false){
+  const parity=new Uint8Array(n*n);
+  for(let y=0;y<n;y++){
+    let cut=0;
+    for(let x=0;x<n;x++){
+      const position=(x+.5)/n;
+      while(cut<count&&position>samples[y*count+cut])cut++;
+      parity[transpose?x*n+y:y*n+x]=cut&1;
+    }
+  }
+  return parity;
+}
 export function gridMask(model,n,phase,floor=.008){
-  const samples=gridSamples(gridControls(model,floor),model,basisTable(n,model.k),n),mask=new Uint8Array(n*n);
-  for(let y=0;y<n;y++)for(let x=0;x<n;x++){
-    let v=Number(phase===-1);for(let j=0;j<model.counts[0];j++)v^=Number((x+.5)/n>samples[0][y*model.counts[0]+j]);for(let j=0;j<model.counts[1];j++)v^=Number((y+.5)/n>samples[1][x*model.counts[1]+j]);mask[y*n+x]=v;
-  }return mask;
+  const samples=gridSamples(gridControls(model,floor),model,basisTable(n,model.k),n),mask=gridParity(samples[0],model.counts[0],n),other=gridParity(samples[1],model.counts[1],n,true),bit=Number(phase===-1);
+  for(let i=0;i<mask.length;i++)mask[i]^=other[i]^bit;
+  return mask;
 }
 export function mismatch(mask,prob,weights=null){
   const importance=imageWeights(weights,mask.length);

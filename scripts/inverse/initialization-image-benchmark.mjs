@@ -20,14 +20,15 @@ const arg=name=>process.argv.find(v=>v.startsWith(`--${name}=`))?.slice(name.len
 const corpus=arg('corpus')||'tmp/initialization-corpus',weightedRoot=arg('weighted')||'tmp/phase-robustness-final',browserRoot=arg('browser')||'tmp/phase-browser-final',out=arg('output')||'tmp/initialization-image',reference=arg('reference')||'2243708';
 const direct=path.resolve('static/inverse/core/direct'),url=s=>'data:text/javascript;base64,'+Buffer.from(s).toString('base64');
 const show=file=>execFileSync('git',['show',`${reference}:${file}`],{encoding:'utf8'});
-// The baseline gets its original initializer and count search. All numerical
+// The baseline gets its original grid renderer, initializer and count search. All other numerical
 // dependencies must still equal that commit, so this cannot silently compare
 // two callers of a helper changed after the reference was recorded.
-for(const name of ['grid.js','math.js','image-objective.js','symmetry.js']){
+for(const name of ['math.js','image-objective.js','symmetry.js']){
   const file=`static/inverse/core/direct/${name}`;if(hash(await fs.readFile(file))!==hash(show(file)))throw new Error(`Baseline dependency changed: ${file}`);
 }
-const baselineInit=url(show('static/inverse/core/direct/initialize.js').replace(/from '(\.[^']+)'/g,(_,p)=>`from '${pathToFileURL(path.resolve(direct,p)).href}'`));
-const baselineCounts=url(show('static/inverse/core/direct/counts.js').replace(/from '(\.[^']+)'/g,(_,p)=>`from '${p==='./initialize.js'?baselineInit:pathToFileURL(path.resolve(direct,p)).href}'`));
+const baselineGrid=url(show('static/inverse/core/direct/grid.js').replace(/from '(\.[^']+)'/g,(_,p)=>`from '${pathToFileURL(path.resolve(direct,p)).href}'`));
+const baselineInit=url(show('static/inverse/core/direct/initialize.js').replace(/from '(\.[^']+)'/g,(_,p)=>`from '${p==='./grid.js'?baselineGrid:pathToFileURL(path.resolve(direct,p)).href}'`));
+const baselineCounts=url(show('static/inverse/core/direct/counts.js').replace(/from '(\.[^']+)'/g,(_,p)=>`from '${p==='./initialize.js'?baselineInit:p==='./grid.js'?baselineGrid:pathToFileURL(path.resolve(direct,p)).href}'`));
 const baseline=(await import(baselineCounts)).initializeCounts;
 const manifest=JSON.parse(await fs.readFile(`${corpus}/manifest.json`)),weighted=JSON.parse(await fs.readFile(`${weightedRoot}/results.json`));
 const cases=manifest.cases.map(e=>({id:e.id,group:e.group,sourceSha256:e.preparedSha256,load:async()=>({source:(await readCase(corpus,e)).sourceImage,cfg:settings(manifest.settings)})}));
@@ -52,6 +53,7 @@ const context=({source,cfg})=>{
 };
 const summarize=s=>({counts:s.model.counts,k:s.model.k,phase:s.phase,floor:s.floor,error:s.error,geometrySha256:hash(Buffer.from(s.model.z.buffer,s.model.z.byteOffset,s.model.z.byteLength)),rounds:s.initializationRounds,terminations:s.initializationTerminations,seedKind:s.seedKind});
 const report={reference,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,cpu:cpus()[0]?.model,manifestSha256:hash(await fs.readFile(`${corpus}/manifest.json`)),method:'Fixed sources, every count/phase/layout, alternating policy order, serial replay. Coordinates, scores, initialization rounds, termination reasons and selected seed order must match exactly. Baseline numerical dependencies are checked against the reference commit.',sourceHashes:{},results:[]};
+report.harnessSha256=hash(await fs.readFile('scripts/inverse/initialization-image-benchmark.mjs'));
 for(const name of await fs.readdir('static/inverse/core/direct'))if(name.endsWith('.js'))report.sourceHashes[name]=hash(await fs.readFile(`static/inverse/core/direct/${name}`));
 await fs.mkdir(out,{recursive:true});
 for(const [i,e] of cases.entries()){
