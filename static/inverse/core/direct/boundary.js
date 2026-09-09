@@ -7,14 +7,31 @@ import {bernstein,dbernstein,bilinear} from './math.js';
 import {polygonIndex} from './curves.js';
 import {nativeBoundaryGradient} from './native.js';
 import {boundaryObjective} from './image-objective.js';
+import {numericalKernel} from '../numerical-kernel.js';
+import {measuredKernel,sameArray} from '../kernel-choice.js';
 
 const quadratureTables=new Map();
-export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24,native=true,weights=null}={}){
+const gradientBackend=measuredKernel(sameArray,{
+  key:({quadraturePoints,probabilityCells})=>Math.floor(Math.log2(Math.max(1,quadraturePoints)))+','+Math.floor(Math.log2(probabilityCells)),
+  describe:work=>({...work}),repetitions:16
+});
+export const boundaryKernelChoices=()=>gradientBackend.report();
+export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24,native='auto',weights=null}={}){
   if(weights)prob=boundaryObjective(prob,weights).target;
-  const index=polygonIndex(graph,points,maskSamples),gradient=new Float64Array(points.length),w=graph.width;
+  const index=polygonIndex(graph,points,maskSamples);
   if(!quadratureTables.has(nquad))quadratureTables.set(nquad,{B:Array.from({length:nquad},(_,j)=>bernstein((j+.5)/nquad)),D:Array.from({length:nquad},(_,j)=>dbernstein((j+.5)/nquad))});
-  const {B,D}=quadratureTables.get(nquad);
-  if(native){const result=nativeBoundaryGradient(graph,points,prob,n,phase,index,quadratureTables.get(nquad));if(result)return result;}
+  const table=quadratureTables.get(nquad);
+  const javascript=()=>javascriptBoundaryGradient(graph,points,prob,n,phase,index,table);
+  const accelerated=()=>nativeBoundaryGradient(graph,points,prob,n,phase,index,table);
+  if(native==='auto'&&numericalKernel()?.boundary_gradient){
+    const work={quadraturePoints:graph.visible.reduce((s,v)=>s+Number(v),0)*nquad,probabilityCells:n*n};
+    return gradientBackend.run(work,javascript,accelerated);
+  }
+  if(native&&native!=='auto'){const result=accelerated();if(result)return result;}
+  return javascript();
+}
+function javascriptBoundaryGradient(graph,points,prob,n,phase,index,{B,D}){
+  const gradient=new Float64Array(points.length),w=graph.width,nquad=B.length;
   graph.edges.forEach((ids,e)=>{
     if(!graph.visible[e])return;const[pi,f,direction]=graph.occurrences[e][0];
     for(let j=0;j<nquad;j++){

@@ -16,6 +16,7 @@ import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,countH
 import {auditImageFeatures,imageFeatures} from '../image-features.js';
 import {recoverImageFeatures} from '../feature-recovery.js';
 import {loadBoundaryKernel} from './native.js';
+import {boundaryKernelChoices} from './boundary.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {initializeTopology} from './topology.js';
 import {curvesOf} from '../graph.js';
@@ -34,7 +35,10 @@ export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initial
   const start=performance.now();
   const solution=await fitIndependent(input,{...cfg,preferMatchingSheets:false},onProgress,countSearch);
   const selected=finalizeFittedSolution(solution,cfg,{startedAt:start,onProgress});
+  // numericalBackend describes module loading; these record actual choices
+  // for the individual operations, including a faster JavaScript fallback.
   selected.report.paperKernels=paperKernelChoices();
+  selected.report.boundaryKernels=boundaryKernelChoices();
   return selected;
 }
 async function fitIndependent(input,cfg,onProgress,countSearch){

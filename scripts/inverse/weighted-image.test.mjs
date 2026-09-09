@@ -67,7 +67,7 @@ test('weighted horizontal and vertical boundaries have the analytic normal force
       const coordinate=family===0?i%resolution:Math.floor(i/resolution);return coordinate>=16&&coordinate<48?1:0;
     });
     const js=boundaryGradient(graph,graph.points,probability,resolution,phase,{weights:importance,native:false,nquad:80});
-    const wasm=boundaryGradient(graph,graph.points,probability,resolution,phase,{weights:importance,nquad:80});
+    const wasm=boundaryGradient(graph,graph.points,probability,resolution,phase,{weights:importance,nquad:80,native:true});
     js.forEach((v,i)=>near(v,wasm[i],1e-12));
     const total=js.reduce((s,v,i)=>s+(i%2===family?v:0),0);
     near(total,at===50?-.02*phase:0,1e-12);

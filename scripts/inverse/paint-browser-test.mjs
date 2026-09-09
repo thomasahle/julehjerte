@@ -88,6 +88,7 @@ try{
     row.engineError=observed.result.report.imageError.mismatchFraction;
     row.numericalBackend=observed.result.report.solver.numericalBackend?.backend;
     row.paperKernels=observed.result.report.solver.paperKernels;
+    row.boundaryKernels=observed.result.report.solver.boundaryKernels;
     if(disableNumericalKernel){assert.ok(row.blockedKernelRequests>0,'The real worker must attempt the blocked kernel request.');assert.equal(row.numericalBackend,'javascript');}
     assert.equal(Boolean(observed.prepared.weights),free,'Free-border importance weights must reach the real worker.');
     assert.equal(observed.result.report.validation.passed,true);
