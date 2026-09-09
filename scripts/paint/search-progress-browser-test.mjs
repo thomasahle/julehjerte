@@ -12,7 +12,7 @@ const output = process.env.INVERSE_TEST_OUTPUT || 'tmp/paint-search-progress';
 await fs.mkdir(output, {recursive: true});
 const input = path.join(output, 'hat.png');
 await fs.writeFile(input, topHatFixture(200));
-const loader = await createServer({configFile: false, server: {middlewareMode: true, hmr: false}});
+const loader = await createServer({configFile: false, cacheDir: path.resolve(output, 'vite-cache'), server: {middlewareMode: true, hmr: false}});
 const {fitHeart, toScreen} = await loader.ssrLoadModule('/src/lib/paint/heartLayout.ts');
 const {handlePoint} = await loader.ssrLoadModule('/src/lib/paint/frame.ts');
 const {LOBE_OUTLINE_COLORS} = await loader.ssrLoadModule('/src/lib/editor/outlineColors.ts');
