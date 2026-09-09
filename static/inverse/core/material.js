@@ -7,14 +7,21 @@ import {pathPolyline,distance,mix,segmentDistance,Cubic,add,mul} from './bezier.
 import {curvesOf} from './graph.js';
 import {segments,lineSimple,lineDistance,keyPoint,pointInRing} from './geometry.js';
 import {closedRings,sampleRings} from './validate.js';
-export function distanceTransform(seeds,nx,ny){
+import {nativeDistanceTransform,nativeCoreLabels} from './numerical-kernel.js';
+export function distanceTransform(seeds,nx,ny,{native=true}={}){
+  const accelerated=native&&nativeDistanceTransform(seeds,nx,ny);if(accelerated)return accelerated;
   const count=nx*ny,big=1e12,first=new Float64Array(count),out=new Float64Array(count),size=Math.max(nx,ny),f=new Float64Array(size),d=new Float64Array(size),v=new Int32Array(size),z=new Float64Array(size+1);
   function edt(n){let k=0;v[0]=0;z[0]=-Infinity;z[1]=Infinity;for(let q=1;q<n;q++){let s=((f[q]+q*q)-(f[v[k]]+v[k]*v[k]))/(2*(q-v[k]));while(s<=z[k]&&k>0){k--;s=((f[q]+q*q)-(f[v[k]]+v[k]*v[k]))/(2*(q-v[k]));}k++;v[k]=q;z[k]=s;z[k+1]=Infinity;}k=0;for(let q=0;q<n;q++){while(z[k+1]<q)k++;d[q]=(q-v[k])**2+f[v[k]];}}
   for(let x=0;x<nx;x++){for(let y=0;y<ny;y++)f[y]=seeds[y*nx+x]?0:big;edt(ny);for(let y=0;y<ny;y++)first[y*nx+x]=d[y];}
   for(let y=0;y<ny;y++){for(let x=0;x<nx;x++)f[x]=first[y*nx+x];edt(nx);for(let x=0;x<nx;x++)out[y*nx+x]=d[x];}return out;
 }
 export function unfoldedPolylines(solution,k,tol=.01){const w=solution.graph.target.width;return solution.paths[k].map((_,i)=>{let p=pathPolyline(curvesOf(solution,k,i),tol);if(k===1)p=p.map(([x,y])=>[y,x]);return[...p,...p.slice(0,-1).reverse().map(([x,y])=>[x,2*w-y])];});}
-function labelCore(mask,nx,ny,originY,h,w,offset,minArea){
+function labelCore(mask,nx,ny,originY,h,w,offset,minArea,native=true){
+  const accelerated=native&&nativeCoreLabels(mask,nx,ny,originY,h,w,offset);
+  if(accelerated){
+    const {labels,sizes,anchored}=accelerated,parts=Array.from(sizes,(size,i)=>({id:i+1,anchored:!!anchored[i],area:size*h*h,significant:size*h*h>=minArea}));
+    return{labels,parts,anchors:new Set(parts.filter(p=>p.anchored).map(p=>p.id)),floating:parts.filter(p=>!p.anchored&&p.significant)};
+  }
   const labels=new Int32Array(mask.length),queue=new Int32Array(mask.length),parts=[];let id=0;
   for(let i=0;i<mask.length;i++){
     if(!mask[i]||labels[i])continue;
@@ -32,24 +39,24 @@ function labelCore(mask,nx,ny,originY,h,w,offset,minArea){
   const anchors=new Set(parts.filter(p=>p.anchored).map(p=>p.id)),floating=parts.filter(p=>!p.anchored&&p.significant);
   return{labels,parts,anchors,floating};
 }
-function materialFamily(solution,k,cfg,includeMap){
+function materialFamily(solution,k,cfg,includeMap,native){
   const w=solution.graph.target.width,nx=cfg.materialResolution,ny=3*nx,h=w/nx,originY=-w/2,tol=cfg.geometryTolerance,R=cfg.nominalWidth/2,guard=Math.SQRT2*h/2+tol,lines=unfoldedPolylines(solution,k,tol),ss=lines.flatMap(segments),seeds=new Uint8Array(nx*ny),cell=Math.max(R+5*h,4*h),tiles=new Map();
   for(let si=0;si<ss.length;si++){const s=ss[si],steps=Math.max(1,Math.ceil(distance(s.a,s.b)/(h/3)));for(let t=0;t<=steps;t++){const p=mix(s.a,s.b,t/steps),ix=Math.round(p[0]/h-.5),iy=Math.round((p[1]-originY)/h-.5);if(ix>=0&&ix<nx&&iy>=0&&iy<ny)seeds[iy*nx+ix]=1;}const[ax,ay,bx,by]=s.box;for(let ty=Math.floor(ay/cell);ty<=Math.floor(by/cell);ty++)for(let tx=Math.floor(ax/cell);tx<=Math.floor(bx/cell);tx++){const key=tx+','+ty;if(!tiles.has(key))tiles.set(key,[]);tiles.get(key).push(si);}}
   const neighborTiles=new Map();
-  const edt=distanceTransform(seeds,nx,ny),certain=new Uint8Array(nx*ny),possible=new Uint8Array(nx*ny),paper=includeMap?new Uint8Array(nx*ny):null;
+  const edt=distanceTransform(seeds,nx,ny,{native}),certain=new Uint8Array(nx*ny),possible=new Uint8Array(nx*ny),paper=includeMap?new Uint8Array(nx*ny):null;
   for(let y=0;y<ny;y++)for(let x=0;x<nx;x++){const i=y*nx+x,xx=(x+.5)*h,yy=originY+(y+.5)*h,distOutline=w/2-Math.hypot(xx-w/2,Math.max(0,-yy,yy-2*w));if(paper&&distOutline>0)paper[i]=1;if(distOutline<R-guard)continue;let d=Math.sqrt(edt[i])*h;
     // EDT is only an accelerator. Recompute chord distance near either
     // threshold, so lattice seeding does not determine a narrow-neck decision.
     if(ss.length&&Math.abs(d-R)<4*h+2*tol){d=Infinity;const tx=Math.floor(xx/cell),ty=Math.floor(yy/cell),key=tx+','+ty;let near=neighborTiles.get(key);if(!near){const seen=new Set();for(let j=-1;j<=1;j++)for(let l=-1;l<=1;l++)for(const si of tiles.get((tx+l)+','+(ty+j))||[])seen.add(si);near=[...seen];neighborTiles.set(key,near);}const p=[xx,yy];for(const si of near)d=Math.min(d,segmentDistance(p,ss[si].a,ss[si].b));}
     const clearance=Math.min(distOutline,d);if(clearance>R+guard)certain[i]=1;if(clearance>R-guard)possible[i]=1;
   }
-  const c=labelCore(certain,nx,ny,originY,h,w,R,cfg.minFeatureArea),p=labelCore(possible,nx,ny,originY,h,w,R,cfg.minFeatureArea),foldY=Math.min(ny-1,Math.round((w-originY)/h-.5)),foldCuts=[0,w,...solution.paths[k].map((_,i)=>{const cc=curvesOf(solution,k,i).at(-1);return cc.p[3][k===0?0:1];})].sort((a,b)=>a-b),fold=[];
+  const c=labelCore(certain,nx,ny,originY,h,w,R,cfg.minFeatureArea,native),p=labelCore(possible,nx,ny,originY,h,w,R,cfg.minFeatureArea,native),foldY=Math.min(ny-1,Math.round((w-originY)/h-.5)),foldCuts=[0,w,...solution.paths[k].map((_,i)=>{const cc=curvesOf(solution,k,i).at(-1);return cc.p[3][k===0?0:1];})].sort((a,b)=>a-b),fold=[];
   for(let j=1;j<foldCuts.length;j++){let certainLength=0,possibleLength=0;for(let x=0;x<nx;x++){const xx=(x+.5)*h;if(xx<=foldCuts[j-1]||xx>=foldCuts[j])continue;const index=foldY*nx+x;if(c.anchors.has(c.labels[index]))certainLength+=h;if(p.anchors.has(p.labels[index]))possibleLength+=h;}fold.push({interval:[foldCuts[j-1],foldCuts[j]],certainCoreLength:certainLength,possibleCoreLength:possibleLength});}
   const certainBad=c.floating.length+fold.filter(f=>f.certainCoreLength<h/2).length,possibleBad=p.floating.length+fold.filter(f=>f.possibleCoreLength<h/2).length,status=possibleBad?'fail':certainBad?'uncertain':'pass';
   let map=null;if(includeMap){map=new Uint8Array(nx*ny);for(let i=0;i<map.length;i++){if(!paper[i])continue;if(certain[i])map[i]=c.anchors.has(c.labels[i])?1:3;else if(possible[i])map[i]=2;else map[i]=4;}}
   return{family:k,status,detachedCertainCoreIslands:c.floating.length,detachedPossibleCoreIslands:p.floating.length,detachedPossibleArea:p.floating.reduce((s,x)=>s+x.area,0),foldIntervals:fold,gridSpacing:h,clearanceGuard:guard,resolution:[nx,ny],originY,map,minimumDiameter:cfg.nominalWidth};
 }
-export function materialAudit(solution,cfg,{includeMaps=false}={}){const start=performance.now(),families=[0,1].map(k=>materialFamily(solution,k,cfg,includeMaps)),status=families.some(f=>f.status==='fail')?'fail':families.some(f=>f.status==='uncertain')?'uncertain':'pass';return{passed:status==='pass',status,families,summary:{status,requiredRemainingWidth:cfg.minWidth,nominalDiameter:cfg.nominalWidth,gridSpacing:families[0].gridSpacing,clearanceGuard:families[0].clearanceGuard,families:families.map(({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})=>({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})),method:'Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.',seconds:(performance.now()-start)/1000,limitations:['This replaces the Python GEOS offset implementation; numerical results are not identical.','Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.','Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.','Small tips and features below the explicitly stated area threshold are not certified.']}};}
+export function materialAudit(solution,cfg,{includeMaps=false,native=true}={}){const start=performance.now(),families=[0,1].map(k=>materialFamily(solution,k,cfg,includeMaps,native)),status=families.some(f=>f.status==='fail')?'fail':families.some(f=>f.status==='uncertain')?'uncertain':'pass';return{passed:status==='pass',status,families,summary:{status,requiredRemainingWidth:cfg.minWidth,nominalDiameter:cfg.nominalWidth,gridSpacing:families[0].gridSpacing,clearanceGuard:families[0].clearanceGuard,families:families.map(({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})=>({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})),method:'Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.',seconds:(performance.now()-start)/1000,limitations:['This replaces the Python GEOS offset implementation; numerical results are not identical.','Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.','Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.','Small tips and features below the explicitly stated area threshold are not certified.']}};}
 export function seededRandom(seed=1729){let a=seed>>>0;return()=>{a+=0x6D2B79F5;let t=Math.imul(a^(a>>>15),1|a);t^=t+Math.imul(t^(t>>>7),61|t);return((t^(t>>>14))>>>0)/4294967296;};}
 export function perturbationAudit(solution,cfg,{onProgress=()=>{},resolution=121}={}){
   const w=solution.graph.target.width,baseRings=closedRings(solution,cfg.geometryTolerance),phase=solution.graph.target.phase^(solution.paths[0].length%2)^(solution.paths[1].length%2),baseline=sampleRings(baseRings.flat(),w,phase,resolution),random=seededRandom(cfg.seed),trials=[];let worst=null;
