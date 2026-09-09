@@ -63,9 +63,11 @@
 		 * Ask the engine to stop and hand back its best validated candidate.
 		 *
 		 * Dormant: the button that would call it is drawn only when the engine can
-		 * do this (`ENGINE_GRACEFUL_STOP`), and today it cannot — the only stop
-		 * there is terminates the worker and throws the search away. PAINT.md §12
-		 * (b) is the contract that would change that.
+		 * do this (`ENGINE_GRACEFUL_STOP`) *and* somebody passed a handler, and
+		 * today neither is true — the only stop there is terminates the worker and
+		 * throws the search away. PAINT.md §12 (b) is the contract that would
+		 * change that, and it takes both halves: a flag flipped on its own would
+		 * draw a button that does nothing.
 		 */
 		onUseBest?: () => void;
 		advanced: AdvancedSettings;
@@ -365,11 +367,14 @@
 			<button type="button" class="btn btn-sm btn-outline" onclick={onCancel}>
 				{tr('paintCancel')}
 			</button>
-			{#if ENGINE_GRACEFUL_STOP}
+			{#if ENGINE_GRACEFUL_STOP && onUseBest}
 				<!-- Dormant until the engine can stop without throwing the search away
 				     (PAINT.md §12 (b)). Written now so the day the message exists this
-				     panel needs no new thinking, only the flag. -->
-				<button type="button" class="btn btn-sm btn-primary" onclick={() => onUseBest?.()}>
+				     panel needs no new thinking, only the flag and the handler.
+				     Both, and that is the point of the second half of the condition: the
+				     flag alone would otherwise put a primary button beside Afbryd that
+				     does nothing at all, which is worse than no button. -->
+				<button type="button" class="btn btn-sm btn-primary" onclick={onUseBest}>
 					{tr('paintUseBest')}
 				</button>
 			{/if}

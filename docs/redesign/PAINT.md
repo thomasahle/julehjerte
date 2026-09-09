@@ -160,7 +160,9 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
     second and would be read over each other for the whole wait.
   - **the candidate's cuts over the mask**, dormant until §12 (a) lands: cyan left, orange right, black halo, the
     editor's own `LOBE_OUTLINE_COLORS`, as an additive pass in `MaskCanvas` after everything else it draws.
-  - **"Brug det bedste nu"**, dormant until §12 (b) lands and `ENGINE_GRACEFUL_STOP` is flipped.
+  - **"Brug det bedste nu"**, dormant until §12 (b) lands. The panel draws it only when
+    `ENGINE_GRACEFUL_STOP` is true **and** it has been given an `onUseBest`, so flipping the flag on its own
+    cannot put a primary button beside Afbryd that does nothing.
 
   The plumbing: `client.ts` passes the whole progress event, `EngineProgress` in `engine.ts` types the shapes
   `core/` sends, and `$lib/paint/searchProgress.reduceProgress` folds the stream into one `SearchProgress` the panel
@@ -758,8 +760,9 @@ If there is **no** validated candidate yet, `stop` answers with the engine's ord
 rather than inventing one; the page already tells that story.
 
 **What the UI does with it.** `ENGINE_GRACEFUL_STOP` in `src/lib/inverse/engine.ts` is `false` and the panel's
-"Brug det bedste nu" button is drawn only when it is true; the whole of the change is that constant, the message
-in `InverseWorker`, and passing `onUseBest` from `PaintPage`. The button sits beside `Afbryd` and means the
+"Brug det bedste nu" button is drawn only when it is true **and** the panel has an `onUseBest` — both halves, so
+that flipping the flag alone cannot produce a button that does nothing. The whole of the change is that constant,
+the message in `InverseWorker`, and passing `onUseBest` from `PaintPage`. The button sits beside `Afbryd` and means the
 opposite of it: Afbryd throws the search away (it terminates the worker, which is the only stop there is today),
 this one keeps what it has found. The result goes through the same `convertValidatedCutGeometry` and the same
 success face as a finished search. `report.alternatives` then lets that face offer "Prøv 3 + 3 i stedet" without

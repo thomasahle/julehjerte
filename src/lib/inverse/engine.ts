@@ -272,8 +272,15 @@ export function defaultAdvanced(symmetry: SymmetrySettings): AdvancedSettings {
  * interrupt a solve is to terminate the worker, which throws the search away
  * (see `cancel`). PAINT.md §12 (b) writes down the message that would change
  * that — `{action:'stop'}`, answered with a normal `result` carrying
- * `report.stoppedEarly` — so that when Codex's lane lands, the panel's "Brug
- * det bedste nu" is switched on by flipping this one constant.
+ * `report.stoppedEarly`.
+ *
+ * Flipping this constant is *not* on its own what switches the panel's "Brug
+ * det bedste nu" on, and the panel is written so that it cannot be: the button
+ * is drawn only when this is true **and** the panel has been given an
+ * `onUseBest`, which `PaintPage` does not pass today. Otherwise the day someone
+ * flipped the flag, a primary button would appear beside Afbryd on every search
+ * and do nothing, which is worse than no button. The whole change is this
+ * constant, the message in `InverseWorker`, and that handler.
  *
  * Typed `boolean` rather than left as the literal `false`, so that the code
  * behind the flag is type-checked instead of being narrowed away as dead.
