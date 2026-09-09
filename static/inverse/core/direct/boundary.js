@@ -14,7 +14,7 @@ const quadratureTables=new Map();
 const gradientWork=new WeakMap();
 const gradientBackend=measuredKernel(sameArray,{
   key:work=>work.key,
-  describe:({quadraturePoints,probabilityCells})=>({quadraturePoints,probabilityCells}),repetitions:16
+  describe:({quadraturePoints,probabilityCells})=>({quadraturePoints,probabilityCells}),repetitions:16,minimumBatchMilliseconds:4
 });
 export const boundaryKernelChoices=()=>gradientBackend.report();
 export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24,native='auto',weights=null}={}){

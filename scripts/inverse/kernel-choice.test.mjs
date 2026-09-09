@@ -33,4 +33,34 @@ test('custom workload keys separate decisions and timing batches stay bounded',(
   const records=backend.report();assert.deepEqual(records.map(r=>r.backend),['wasm','javascript']);
   assert.deepEqual(records.map(r=>r.image),[64,400]);records[0].points=7;assert.equal(backend.report()[0].points,100);
   for(const repetitions of[0,.5,65,NaN])assert.throws(()=>measuredKernel(sameArray,{repetitions}),RangeError);
+  for(const minimumBatchMilliseconds of[-1,101,NaN,Infinity])assert.throws(()=>measuredKernel(sameArray,{minimumBatchMilliseconds}),RangeError);
+});
+
+test('adaptive batches avoid repeating slow calls and normalize unequal batch lengths',()=>{
+  for(const [jsCost,nativeCost]of[[20,5],[2,.5]]){
+    let clock=0,jsCalls=0,nativeCalls=0;
+    const backend=measuredKernel(sameArray,{now:()=>clock,repetitions:16,minimumBatchMilliseconds:4});
+    backend.run(1000,()=>{clock+=jsCost;jsCalls++;return [2];},()=>{clock+=nativeCost;nativeCalls++;return [2];});
+    const record=backend.report()[0];assert.equal(record.backend,'wasm');
+    assert.equal(record.maximumTimingRepetitions,16);
+    assert.equal(jsCalls,1+2*Math.max(1,4/jsCost));assert.equal(nativeCalls,1+2*Math.max(1,4/nativeCost));
+    for(const t of record.timings){assert.equal(t.javascript,jsCost);assert.equal(t.wasm,nativeCost);}
+    record.timings[0].repetitions.wasm=100;assert.notEqual(backend.report()[0].timings[0].repetitions.wasm,100);
+  }
+});
+
+test('adaptive batches stop at the call cap when the clock cannot resolve the work',()=>{
+  let calls=0;
+  const backend=measuredKernel(sameArray,{now:()=>0,repetitions:16,minimumBatchMilliseconds:4});
+  const run=()=>{calls++;return [2];};backend.run(1000,run,run);
+  assert.equal(calls,66);assert.equal(backend.report()[0].backend,'javascript');
+  assert.ok(backend.report()[0].timings.every(t=>t.repetitions.javascript===16&&t.repetitions.wasm===16));
+});
+
+test('adaptive selection checks every result in unequal-length batches',()=>{
+  let clock=0,jsCalls=0,nativeCalls=0;
+  const backend=measuredKernel(sameArray,{now:()=>clock,repetitions:16,minimumBatchMilliseconds:4});
+  backend.run(1000,()=>{clock+=4;jsCalls++;return [2];},()=>{clock+=.5;return [++nativeCalls===5?3:2];});
+  assert.equal(jsCalls,2);assert.equal(nativeCalls,9);
+  assert.equal(backend.report()[0].reason,'different_results');
 });
