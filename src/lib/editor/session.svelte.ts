@@ -67,7 +67,8 @@ export type PaintResult = {
 	design: HeartDesign;
 	report: {
 		cuts: [number, number];
-		clearanceMm: number;
+		/** Null when no sheet has two distinct slits to measure between. */
+		clearanceMm: number | null;
 		mismatch: number;
 		identical: boolean;
 		/** The visitor kept a validated checkpoint before the search completed. */

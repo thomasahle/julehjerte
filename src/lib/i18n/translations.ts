@@ -340,6 +340,8 @@ export const translations = {
     paintFoundMotifSummary: '{motif}% afvigelse i motivet · {border}% af den frie kant ændret',
     /** {left}, {right} = snit i hver lap; {clearance} = mm */
     paintFoundCuts: '{left} + {right} snit · mindst {clearance} mm mellem snittene',
+    paintFoundCutsOnly: '{left} + {right} snit',
+    paintFoundSummaryNoClearance: '{left} + {right} snit · {mismatch}% forskel fra masken',
     /**
      * Vises, når afvigelsen er over MEDIOCRE_MISMATCH i FindCutsPanel.svelte.
      *
@@ -853,6 +855,8 @@ export const translations = {
     paintFoundMotifSummary: '{motif}% different in the motif · {border}% of the free border changed',
     /** {left}, {right} = cuts in each lobe; {clearance} = mm */
     paintFoundCuts: '{left} + {right} cuts · at least {clearance} mm between cuts',
+    paintFoundCutsOnly: '{left} + {right} cuts',
+    paintFoundSummaryNoClearance: '{left} + {right} cuts · {mismatch}% different from the mask',
     /**
      * Shown when the difference is above MEDIOCRE_MISMATCH in FindCutsPanel.svelte.
      *

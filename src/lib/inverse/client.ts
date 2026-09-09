@@ -64,7 +64,7 @@ export interface DesignResult {
     templateChecksPassed: boolean;
     slits: { left: number; right: number };
     solver: { imported?: boolean; status?: string; mipGap?: number; matchingPreference?: { enabled: boolean; identical: boolean; minimumIdenticalImageError: number; maximumMatchingImageError?: number; baselineImageError?: number; additionalImageError?: number; maximumAdditionalImageError?: number } };
-    validation: { passed: boolean; minimumInterSlitDistanceLower: number };
+    validation: { passed: boolean; minimumInterSlitDistanceLower: number | null };
     manufacturing: { status: 'pass' | 'fail' | 'uncertain' };
     warnings: string[];
     /** Which of the requested square symmetries the exported cuts satisfy (docs/inverse/SYMMETRY.md). */

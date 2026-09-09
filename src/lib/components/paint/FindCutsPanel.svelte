@@ -179,6 +179,12 @@
 	// duplicate one would point both lists' labels at the same heading.
 	const attemptsId = $props.id();
 
+	const clearanceText = $derived(
+		result?.report.clearanceMm != null && Number.isFinite(result.report.clearanceMm)
+			? decimal(result.report.clearanceMm)
+			: null
+	);
+
 	/**
 	 * One decimal in the visitor's own notation: Danish writes 3,9 mm and 1,3 %
 	 * where `toFixed` writes a point.
@@ -393,18 +399,18 @@
 					})}
 				</p>
 				<p class="numbers">
-					{t('paintFoundCuts', lang, {
+					{t(clearanceText === null ? 'paintFoundCutsOnly' : 'paintFoundCuts', lang, {
 						left: result.report.cuts[0],
 						right: result.report.cuts[1],
-						clearance: decimal(result.report.clearanceMm)
+						clearance: clearanceText ?? ''
 					})}
 				</p>
 			{:else}
 				<p class="numbers">
-					{t('paintFoundSummary', lang, {
+					{t(clearanceText === null ? 'paintFoundSummaryNoClearance' : 'paintFoundSummary', lang, {
 						left: result.report.cuts[0],
 						right: result.report.cuts[1],
-						clearance: decimal(result.report.clearanceMm),
+						clearance: clearanceText ?? '',
 						mismatch: decimal(100 * result.report.mismatch)
 					})}
 				</p>

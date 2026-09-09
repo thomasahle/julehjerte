@@ -85,6 +85,20 @@ function render(overrides: Partial<Props> = {}) {
 const MEDIOCRE = 'Mønsteret er tæt på';
 
 describe('FindCutsPanel', () => {
+	for (const lang of ['da', 'en'] as const) for (const free of [false, true]) {
+		it(`shows a one-cut result without inventing clearance (${lang}, ${free ? 'free' : 'fixed'} border)`, () => {
+			const panel = render({ lang, result: result({ cuts: [1, 1], clearanceMm: null, ...(free ? { motifMismatch: 0.004, borderChange: 0.12 } : {}) }) });
+			try {
+				expect(panel.text).toContain(lang === 'en' ? '1 + 1 cuts' : '1 + 1 snit');
+				expect(panel.text).toContain(lang === 'en' ? '0.4%' : '0,4%');
+				expect(panel.text).not.toMatch(/mm|null|NaN|Infinity/);
+				const open = [...panel.root.querySelectorAll('button')].find(b => b.textContent?.trim() === (lang === 'en' ? 'Open in Draw' : 'Åbn i Tegn'));
+				expect(open).toBeDefined();
+				expect(open?.disabled).toBe(false);
+			} finally { panel.cleanup(); }
+		});
+	}
+
 	it('says nothing extra about a result under one per cent', () => {
 		const panel = render({ result: result({ mismatch: 0.009 }) });
 		try {
