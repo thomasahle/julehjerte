@@ -279,8 +279,8 @@ describe('the error trend', () => {
 	});
 
 	it('calls a move the panel cannot print flat, whichever way it went', () => {
-		// The line reads "afvigelse 0,8 % og faldende": the word is about the number
-		// beside it, and a move under one decimal of a percent does not move that
+		// The line reads "buddets afvigelse ca. 0,8 % og faldende": the word is about
+		// the number beside it, and a move under one decimal of a percent does not move that
 		// number. Measured on Uret v2, a finer threshold gave three different words
 		// in three seconds under an unchanging 0,8 %.
 		expect(reduce(step(0.008), step(0.0079)).errorTrend).toBe('flat');

@@ -203,11 +203,13 @@
 	/**
 	 * The numbers beside the stage, joined into one line.
 	 *
-	 * PAINT.md §2 asks for "Tilpasser kurverne … 12 s · 4 + 4 strimler · afvigelse
-	 * 1,3 % og faldende": the seconds always, then whatever the engine has said so
-	 * far. Each part is left out rather than printed empty, because a search that
-	 * has not yet chosen its strip counts has nothing true to say about them, and
-	 * "0 + 0 strimler" would be a number about nothing.
+	 * PAINT.md §2 asks for "Tilpasser kurverne … 12 s · 4 + 4 strimler · buddets
+	 * afvigelse ca. 1,3 % og faldende": the seconds always, then whatever the
+	 * engine has said so far. Each part is left out rather than printed empty,
+	 * because a search that has not yet chosen its strip counts has nothing true
+	 * to say about them, "0 + 0 strimler" would be a number about nothing, and the
+	 * deviation is gone from `progress` as soon as the refinement it measures is
+	 * over.
 	 */
 	let searchDetails = $derived.by(() => {
 		const parts = [t('paintSearchElapsed', lang, { seconds: elapsed })];

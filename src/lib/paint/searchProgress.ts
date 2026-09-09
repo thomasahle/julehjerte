@@ -179,8 +179,9 @@ export const IDLE_PROGRESS: SearchProgress = {
 /**
  * Below this the error counts as unchanged.
  *
- * One unit of the last digit the panel prints. The line reads "afvigelse 0,8 %
- * og faldende", so the word has to be about the number beside it: measured on
+ * One unit of the last digit the panel prints. The line reads "buddets
+ * afvigelse ca. 0,8 % og faldende", so the word has to be about the number
+ * beside it: measured on
  * Uret v2's own search, a finer threshold had the word alternating between
  * faldende, stigende and stabil once a second under a number that stayed at
  * 0,8 % throughout — three claims a second, none of which the visitor could
