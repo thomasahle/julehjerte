@@ -135,11 +135,15 @@ export const IDLE_PROGRESS: SearchProgress = {
 /**
  * Below this the error counts as unchanged.
  *
- * The panel prints one decimal of a percent, so a move of 0.0001 of the square
- * is the smallest one that shows on screen. Calling anything under it "falling"
- * would put a word on the panel that the number beside it contradicts.
+ * One unit of the last digit the panel prints. The line reads "afvigelse 0,8 %
+ * og faldende", so the word has to be about the number beside it: measured on
+ * Uret v2's own search, a finer threshold had the word alternating between
+ * faldende, stigende and stabil once a second under a number that stayed at
+ * 0,8 % throughout — three claims a second, none of which the visitor could
+ * check. At one decimal of a percent, "faldende" means the number they are
+ * looking at is on its way down.
  */
-export const TREND_EPSILON = 1e-4;
+export const TREND_EPSILON = 1e-3;
 
 /** At most four candidate conversions a second (PAINT.md §12 (a)). */
 export const GEOMETRY_INTERVAL_MS = 250;

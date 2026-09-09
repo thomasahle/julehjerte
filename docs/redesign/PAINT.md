@@ -140,8 +140,10 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   - the **stage in plain words** (scissors glyph, `role="status"`), with the numbers under it as one line —
     "12 s · 4 + 4 strimler · afvigelse 1,3 % og faldende". Each part is left out when there is nothing true to say:
     a search that has not chosen its counts prints no counts. The trend is read off the last two checkpoints of the
-    *same* attempt and is "stabil" under `TREND_EPSILON` (1e-4), which is the smallest move the printed number can
-    show; a jump between two attempts is not a trend and is reported as none.
+    *same* attempt and is "stabil" under `TREND_EPSILON` (1e-3), which is one unit of the last digit the panel
+    prints; a jump between two attempts is not a trend and is reported as none. The threshold was 1e-4 for one
+    round and measured wrong on Uret v2: the word alternated between faldende, stigende and stabil once a second
+    under a number that stayed at 0,8 % throughout — three claims a second, none of which the visitor could check.
   - the **attempts**: every counts pair the fitter announced, one row each — the pair, its error, and a dot for
     done / running / waiting with the running row in `--cream2`. A pair announced but not reached says "venter"
     rather than its seed error, which means something different from the errors above it. A pair is one row however
