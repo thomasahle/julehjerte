@@ -117,6 +117,10 @@ with the same **0.4447%** protected-mask error. Its click-to-ready times are
 preceding single release replay, so the small-house result should not be
 generalized to this larger hat.
 
+The subsequent [ordered-grid sweep](GRID-PARITY.md) targets the separate count
+initialization cost without changing the resulting candidate controls or this
+LP/MILP search.
+
 Twenty browser errors are unchanged. Firefox's small house and WebKit's large
 house improve by 0.268555 and 0.054032 percentage points. The large basic hat
 increases by 0.115150 points in Chromium and 0.092120 in WebKit, remaining at
