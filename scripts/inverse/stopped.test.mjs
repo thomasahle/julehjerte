@@ -70,3 +70,12 @@ test('stopping before a candidate exists reports no solution and finalization ca
   let cancelled=false;
   await assert.rejects(finishStopped(artwork(source),cfg(),[packet(source)],()=>{},{cancelled:()=>cancelled,yieldControl:async()=>{cancelled=true;}}),{name:'AbortError'});
 });
+
+test('a rejected final cleanup cannot replace a valid checkpoint with illegal cuts',async()=>{
+  const source=fixture('straight');
+  const result=await finishStopped(artwork(source),cfg(),[packet(source)],()=>{},{cleanup:solution=>shift(solution,0,20)});
+  assert.ok(result.report.validation.passed);assert.equal(result.report.manufacturing.status,'pass');
+  assert.equal(result.report.solver.finalizationRejected.geometry,false);
+  assert.equal(result.report.imageError.mismatchFraction,0);
+  assert.equal(result.report.alternatives.length,1);
+});

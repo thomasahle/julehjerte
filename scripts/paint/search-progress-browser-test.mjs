@@ -119,7 +119,7 @@ try {
       await page.waitForFunction(() => Object.values(window.__liveQA.candidateStrokes).every(count => count > 0));
       assert.equal(await page.getByRole('radio', {name: 'Free', exact: true}).isDisabled(), true);
       await page.screenshot({path: path.join(output, `${viewport.width}-searching.png`), fullPage: true});
-      await button('Stop').click();
+      await button('Cancel').click();
       await button('Find the cuts').waitFor();
       assert.equal(await page.locator('.attempt-counts').count(), 0);
       await button('Find the cuts').click();

@@ -80,6 +80,7 @@
 		paperPair,
 		prepareImage,
 		prepareMask,
+		useBest as useBestResult,
 		type AdvancedSettings,
 		type EngineProgress
 	} from '$lib/inverse/engine';
@@ -173,6 +174,8 @@
 	 * `candidateGeometry` ignores without clearing the last available preview.
 	 */
 	let candidate = $state.raw<HeartDesign | null>(null);
+	let solveStarted = $state(false);
+	let usingBest = $state(false);
 
 	/**
 	 * Converting a candidate is a full `cutGeometryToDesign`, so it is held to
@@ -585,6 +588,8 @@
 	 * search over the answer a second after it arrived.
 	 */
 	function stopTimer(): void {
+		solveStarted = false;
+		usingBest = false;
 		if (timer) clearInterval(timer);
 		timer = null;
 		candidates.stop();
@@ -643,6 +648,7 @@
 			const frame = { ...session.frame };
 			const target = { size: mask.size, data: new Uint8Array(mask.data) };
 			await prepareMask(target, colors, onProgress, frame);
+			solveStarted = true;
 			const solved = await findCuts(
 				{
 					colors,
@@ -698,7 +704,8 @@
 					mismatch,
 					motifMismatch: regions?.inside,
 					borderChange: regions?.outside,
-					identical: solved.report.solver.matchingPreference?.identical ?? false
+					identical: solved.report.solver.matchingPreference?.identical ?? false,
+					stoppedEarly: solved.report.stoppedEarly ?? false
 				}
 			};
 			session.status = 'done';
@@ -1071,6 +1078,8 @@
 						canFind={!maskEmpty && !busy}
 						onFind={find}
 						onCancel={abort}
+						onUseBest={solveStarted ? () => { if (!usingBest) usingBest = useBestResult(); } : undefined}
+						stopping={usingBest}
 						onOpenInDraw={openInDraw}
 						onBackToMask={backToMask}
 					/>

@@ -228,27 +228,10 @@ export function defaultAdvanced(symmetry: SymmetrySettings): AdvancedSettings {
 	};
 }
 
-/**
- * Whether the engine can be asked to stop and hand back its best answer.
- *
- * False, and the button that would use it is dormant: today the only way to
- * interrupt a solve is to terminate the worker, which throws the search away
- * (see `cancel`). PAINT.md §12 (b) writes down the message that would change
- * that — `{action:'stop'}`, answered with a normal `result` carrying
- * `report.stoppedEarly`.
- *
- * Flipping this constant is *not* on its own what switches the panel's "Brug
- * det bedste nu" on, and the panel is written so that it cannot be: the button
- * is drawn only when this is true **and** the panel has been given an
- * `onUseBest`, which `PaintPage` does not pass today. Otherwise the day someone
- * flipped the flag, a primary button would appear beside Afbryd on every search
- * and do nothing, which is worse than no button. The whole change is this
- * constant, the message in `InverseWorker`, and that handler.
- *
- * Typed `boolean` rather than left as the literal `false`, so that the code
- * behind the flag is type-checked instead of being narrowed away as dead.
+/** The controller can retain a valid checkpoint while stopping computation.
+ * The panel also requires a handler, which Paint supplies only during a solve.
  */
-export const ENGINE_GRACEFUL_STOP: boolean = false;
+export const ENGINE_GRACEFUL_STOP: boolean = true;
 
 /**
  * One progress event from the engine, whole.
@@ -387,9 +370,9 @@ function queue<T>(work: () => Promise<T>): Promise<T> {
 /**
  * Stop the engine: what it is doing now, and what is waiting behind it.
  *
- * Terminating the worker is the only interruption there is — a solve is one
- * long synchronous computation inside it — so the request in flight rejects
- * with an `AbortError` and the next call builds a fresh worker. Afbryd is this,
+ * The request in flight rejects immediately with an `AbortError`; the
+ * controller shuts down its compute worker before being terminated itself.
+ * The next call builds a fresh worker. Afbryd is this,
  * and so is closing the import dialog on a prepare the visitor no longer wants.
  * The artwork prepared inside the worker goes with it, so the next search has
  * to prepare again; `findCuts` is never called on its own, so that costs
@@ -398,6 +381,11 @@ function queue<T>(work: () => Promise<T>): Promise<T> {
 export function cancel(): void {
 	epoch++;
 	worker?.stop();
+}
+
+/** Use the current solve's normal response, without joining the request queue. */
+export function useBest(): boolean {
+	return worker?.useBest() ?? false;
 }
 
 /** The pair every fallback lands on: the site's own default paper. */

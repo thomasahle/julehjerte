@@ -56,17 +56,10 @@
 		elapsed: number;
 		/** What the engine is doing, folded out of its progress events. */
 		progress: SearchProgress;
-		/**
-		 * Ask the engine to stop and hand back its best validated candidate.
-		 *
-		 * Dormant: the button that would call it is drawn only when the engine can
-		 * do this (`ENGINE_GRACEFUL_STOP`) *and* somebody passed a handler, and
-		 * today neither is true — the only stop there is terminates the worker and
-		 * throws the search away. PAINT.md §12 (b) is the contract that would
-		 * change that, and it takes both halves: a flag flipped on its own would
-		 * draw a button that does nothing.
-		 */
+		/** Keep the best validated checkpoint; supplied only during a solve. */
 		onUseBest?: () => void;
+		/** The controller is validating and exporting the retained checkpoint. */
+		stopping?: boolean;
 		advanced: AdvancedSettings;
 		onAdvanced: (next: AdvancedSettings) => void;
 		onResetAdvanced: () => void;
@@ -91,6 +84,7 @@
 		elapsed,
 		progress,
 		onUseBest,
+		stopping = false,
 		advanced,
 		onAdvanced,
 		onResetAdvanced,
@@ -381,14 +375,8 @@
 				{tr('paintCancel')}
 			</button>
 			{#if ENGINE_GRACEFUL_STOP && onUseBest}
-				<!-- Dormant until the engine can stop without throwing the search away
-				     (PAINT.md §12 (b)). Written now so the day the message exists this
-				     panel needs no new thinking, only the flag and the handler.
-				     Both, and that is the point of the second half of the condition: the
-				     flag alone would otherwise put a primary button beside Afbryd that
-				     does nothing at all, which is worse than no button. -->
-				<button type="button" class="btn btn-sm btn-primary" onclick={onUseBest}>
-					{tr('paintUseBest')}
+				<button type="button" class="btn btn-sm btn-primary" onclick={onUseBest} disabled={stopping}>
+					{tr(stopping ? 'paintFinishingBest' : 'paintUseBest')}
 				</button>
 			{/if}
 		</div>
@@ -396,7 +384,7 @@
 		<!-- The answer to a wait that may have lasted a minute or two: it has to say
 		     so on its own, not only to whoever is watching the panel. -->
 		<div class="summary" role="status">
-			<p class="lead">{tr('paintFound')}</p>
+			<p class="lead">{tr(result.report.stoppedEarly ? 'paintStoppedEarly' : 'paintFound')}</p>
 			{#if result.report.motifMismatch !== undefined}
 				<p class="numbers">
 					{t('paintFoundMotifSummary', lang, {

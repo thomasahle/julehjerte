@@ -70,6 +70,8 @@ export type PaintResult = {
 		clearanceMm: number;
 		mismatch: number;
 		identical: boolean;
+		/** The visitor kept a validated checkpoint before the search completed. */
+		stoppedEarly?: boolean;
 		/** Difference within the protected motif; undefined for a fixed border. */
 		motifMismatch?: number;
 		/** Permitted changes outside that motif, relative to the original drawing. */

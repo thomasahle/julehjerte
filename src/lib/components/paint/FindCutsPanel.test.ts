@@ -9,7 +9,7 @@
  * dilute the middle, so a heart that is 4.6 % wrong in the motif can pass the
  * square at 1.9 %. So this mounts the real panel and reads what it says.
  */
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import FindCutsPanel from './FindCutsPanel.svelte';
 import { defaultAdvanced } from '$lib/inverse/engine';
@@ -169,6 +169,41 @@ describe('FindCutsPanel', () => {
  * same reducer the page uses, and reads what it says.
  */
 describe('FindCutsPanel while searching', () => {
+	it('offers the graceful stop handler while a solve is running', () => {
+		const useBest = vi.fn();
+		const panel = render({ status: 'searching', showingResult: false, result: null, onUseBest: useBest });
+		try {
+			const button = [...panel.root.querySelectorAll('button')].find(b => b.textContent?.trim() === 'Brug det bedste nu');
+			expect(button?.disabled).toBe(false);
+			button?.click();
+			expect(useBest).toHaveBeenCalledOnce();
+		} finally { panel.cleanup(); }
+	});
+
+	it('keeps Cancel available while the stopped result is being finalized', () => {
+		const useBest = vi.fn(), cancel = vi.fn();
+		const panel = render({ status: 'searching', showingResult: false, result: null, onUseBest: useBest, onCancel: cancel, stopping: true, lang: 'en' });
+		try {
+			const buttons = [...panel.root.querySelectorAll('button')];
+			const stop = buttons.find(b => b.textContent?.trim() === 'Finishing the best result …');
+			expect(stop?.disabled).toBe(true);
+			stop?.click();
+			expect(useBest).not.toHaveBeenCalled();
+			const abort = buttons.find(b => b.textContent?.trim() === 'Cancel');
+			expect(abort?.disabled).toBe(false);
+			abort?.click();
+			expect(cancel).toHaveBeenCalledOnce();
+		} finally { panel.cleanup(); }
+	});
+
+	it('labels a stopped result and retains the ordinary mismatch warning', () => {
+		const panel = render({ result: result({ stoppedEarly: true, mismatch: .08 }) });
+		try {
+			expect(panel.text).toContain('Bedste resultat fra den stoppede søgning.');
+			expect(panel.text).toContain(MEDIOCRE);
+		} finally { panel.cleanup(); }
+	});
+
 	function searching(...events: Parameters<typeof reduceAll>[0]) {
 		return render({
 			status: 'searching',
@@ -353,7 +388,7 @@ describe('FindCutsPanel while searching', () => {
 			expect(panel.text).toContain('and falling');
 			expect(panel.text).toContain('not tried');
 			expect(panel.text).toContain('Attempts');
-			expect(panel.text).toContain('Stop');
+			expect(panel.text).toContain('Cancel');
 		} finally {
 			panel.cleanup();
 		}

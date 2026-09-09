@@ -694,17 +694,17 @@ refinement step, the current mismatch and the validity checks; the UI shows them
 errors (done / running / waiting), and the elapsed-time bar. Displayed strip counts add one to each cut count.
 Refinement checkpoints now attach the candidate's `heartcurves-2` geometry at most four times a second, so the
 canvas draws its cuts over the mask in cyan and orange with a black halo. Conversion uses `cutGeometryToDesign`
-with a coarse tolerance and no enforcement. Still pending is a graceful stop message ("Brug det bedste nu")
-that makes the fitter return the best validated candidate so far instead of terminating the worker, and a
-list of the valid alternatives (counts, error, geometry) in the result so the panel can offer "Prøv 3 + 3 i
-stedet" without searching again. The MILP route shows its rounds and gap and attaches an incumbent when one is
+with a coarse tolerance and no enforcement. The graceful stop message ("Brug det bedste nu") now returns the
+best retained validated candidate through normal validation and export. The result includes valid alternatives
+(counts, error, geometry); a UI for choosing those alternatives remains future work. The MILP route shows its
+rounds and gap and attaches an incumbent when one is
 validated.
 
 
 ## 12. Engine hooks for the live search
 
 The geometry hooks in (a) and (c) are implemented. Paint requests them through `progressGeometry: true`;
-other engine callers retain the default false. The graceful stop in (b) is still pending. Its UI remains dormant.
+other engine callers retain the default false. The graceful stop in (b) is implemented and enabled during a solve.
 
 The paint bridge already carries whatever the engine sends. `client.ts` hands the whole progress event to its
 listener, `EngineProgress` in `src/lib/inverse/engine.ts` types every shape `core/` is known to send with every
@@ -755,28 +755,42 @@ and says nothing. The candidate is dropped the moment the search ends, however i
 worker.postMessage({ id, action: 'stop' })
 ```
 
-for the request in flight. The fitter finishes the checkpoint it is in, stops, and answers on the **normal result
-channel** — `{ id, type: 'result', result }`, exactly as a completed solve does, with files, comparison and report
-— built from the best **validated** candidate it has so far. It does not terminate, and it does not answer with an
-error. The report carries two additions:
+for the request in flight. The controller answers on the **normal result channel** —
+`{ id, type: 'result', result }`, with files, comparison and report built from the best **validated** checkpoint
+it has retained. The public worker stays alive with its prepared artwork. CPU-bound work runs in a private
+compute worker: Stop terminates that worker immediately, discarding any incomplete checkpoint. This avoids
+waiting for a synchronous Bézier iteration or native HiGHS call to read the message. Retained checkpoints are
+independently rechecked against the original source, geometry, paper and requested symmetry. The selected pair
+receives the usual shared-cut and primitive cleanup, with the original checkpoint available if cleanup fails.
+The report carries two additions:
 
 - `report.stoppedEarly = true`, so the answer can be labelled as one the visitor cut short. (The field already
   exists on some paths with this meaning; this makes it true here too.)
-- `report.alternatives = [{ counts: [a, b], error, geometry }]` — one entry per validated candidate the search
-  produced, best first, `geometry` being that candidate's own `heartcurves-2` solution. `error` is the same measure
-  as the checkpoints' (share of the square's cells the woven candidate gets wrong).
+- `report.alternatives = [{ counts: [a, b], error, checkpointError?, geometry }]` — retained, independently
+  validated snapshots with duplicates removed, selected candidate first. If cleanup changes it, both the final
+  pair and its original checkpoint remain available. Counts are slits, before the UI adds one for strips.
+  `geometry` is the candidate's own `heartcurves-2` solution. `error` is forward-sampled disagreement against
+  the original prepared source, including validity and free-border weights. `checkpointError` preserves the
+  checkpoint's possibly lower-resolution score separately; it need not equal the original-source score.
+
+Private checkpoint packets are retained independently of the four-per-second UI geometry throttle, including
+validated initializers and polishing checkpoints which are not drawn as live previews. No candidate is accepted
+merely because it appeared on the canvas. Matching sheets are preferred within the configured one percentage
+point allowance; image disagreement still appears as a warning when high. Geometry, paper and requested
+symmetry remain mandatory.
 
 If there is **no** validated candidate yet, `stop` answers with the engine's ordinary "no weavable pattern" error
 rather than inventing one; the page already tells that story.
 
-**What the UI does with it.** `ENGINE_GRACEFUL_STOP` in `src/lib/inverse/engine.ts` is `false` and the panel's
+**What the UI does with it.** `ENGINE_GRACEFUL_STOP` in `src/lib/inverse/engine.ts` is `true` and the panel's
 "Brug det bedste nu" button is drawn only when it is true **and** the panel has an `onUseBest` — both halves, so
-that flipping the flag alone cannot produce a button that does nothing. The whole of the change is that constant,
-the message in `InverseWorker`, and passing `onUseBest` from `PaintPage`. The button sits beside `Afbryd` and means the
-opposite of it: Afbryd throws the search away (it terminates the worker, which is the only stop there is today),
-this one keeps what it has found. The result goes through the same `convertValidatedCutGeometry` and the same
-success face as a finished search. `report.alternatives` then lets that face offer "Prøv 3 + 3 i stedet" without
-searching again — each entry converts exactly as the winner does.
+that flipping the flag alone cannot produce a button that does nothing. Paint supplies the handler only after
+preparation, while a solve is in flight. Pressing it disables the button and shows "Gør det bedste resultat klar …";
+`Afbryd` remains available. Afbryd (Cancel in English) rejects immediately, asks the controller to shut down its
+private worker, then terminates the controller after acknowledgment or a one-second fallback. Late responses
+cannot replace the mask or a subsequent search. The kept result goes through the same `convertValidatedCutGeometry`
+and the same success face as a completed search, labelled as stopped early and retaining any fidelity warnings.
+The UI does not yet offer an alternative-candidate chooser.
 
 ### (c) An incumbent from the MILP route
 

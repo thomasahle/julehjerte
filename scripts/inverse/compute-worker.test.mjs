@@ -46,4 +46,9 @@ test('a real compute thread can be stopped at its first valid initializer and ex
   assert.equal(children[0].proxy.terminated,true);
   assert.equal(messages.filter(m=>m.type==='candidate').length,0);
   await handle({data:{id:3,action:'archive'}});assert.equal(messages.at(-1).type,'archive');
+  await handle({data:{id:4,action:'solve',settings:raw}});
+  assert.equal(children.length,2,'The next solve creates a fresh compute thread with the retained artwork.');
+  assert.equal(messages.at(-1).id,4);assert.equal(messages.at(-1).type,'result');
+  assert.equal(Boolean(messages.at(-1).result.report.stoppedEarly),false);
+  assert.equal(messages.at(-1).result.report.imageError.mismatchFraction,0);
 });

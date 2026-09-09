@@ -331,6 +331,8 @@ export const translations = {
     paintAttemptDone: 'færdig',
     paintAttemptRunning: 'i gang',
     paintUseBest: 'Brug det bedste nu',
+    paintFinishingBest: 'Gør det bedste resultat klar …',
+    paintStoppedEarly: 'Bedste resultat fra den stoppede søgning.',
     paintFound: 'Skabelonen er fundet.',
     /** {left}, {right} = snit i hver lap; {clearance} = mm; {mismatch} = procent */
     paintFoundSummary: '{left} + {right} snit · mindst {clearance} mm mellem snittene · {mismatch}% forskel fra masken',
@@ -797,7 +799,7 @@ export const translations = {
     paintMinStripWidth: 'Narrowest strip (mm)',
     paintMatchingSheets: 'One template for both sides',
     paintReset: 'Reset',
-    paintCancel: 'Stop',
+    paintCancel: 'Cancel',
     paintStageWorking: 'Working …',
     paintStagePreparing: 'Separating colours and tracing curves …',
     paintStageGraph: 'Building the pattern …',
@@ -842,6 +844,8 @@ export const translations = {
     paintAttemptDone: 'done',
     paintAttemptRunning: 'running',
     paintUseBest: 'Use the best one now',
+    paintFinishingBest: 'Finishing the best result …',
+    paintStoppedEarly: 'Best result from the stopped search.',
     paintFound: 'The template has been found.',
     /** {left}, {right} = cuts per lobe; {clearance} = mm; {mismatch} = per cent */
     paintFoundSummary: '{left} + {right} cuts · at least {clearance} mm between cuts · {mismatch}% different from the mask',
