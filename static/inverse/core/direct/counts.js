@@ -5,8 +5,9 @@
 import {gridModel,gridMask,mismatch} from './grid.js';
 import {symmetricCounts} from './symmetry.js';
 import {requestedSymmetry} from '../settings.js';
-import {initializeGrid,borderGrid,separableGrid} from './initialize.js';
+import {borderGrid,gridInitializer} from './initialize.js';
 import {resizeObjective} from './image-objective.js';
+import {initializationImage} from './initialization-image.js';
 
 export function borderEvidence(prob,n){
   const rows=[];
@@ -76,25 +77,26 @@ export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit
 // Reuse projection work without pruning any count or phase. The explicit false
 // option preserves the original initializer for paired benchmark comparisons.
 export function initializeCounts({options,fullProb,resolution,prob,n,evidence,weights=null,fullWeights=null,guideProb=null},{rounds=18,sharedWork=true}={}){
-    const seeds=[];
+    const seeds=[],fitter=gridInitializer(fullProb,resolution,{weights:fullWeights,sharedWork}),guideFitter=guideProb?gridInitializer(guideProb,resolution,{sharedWork}):null;
+    const score=sharedWork?initializationImage(prob,n,weights)(n).score:mask=>mismatch(mask,prob,weights);
     for(const o of options){
       const uniform=gridModel(o.counts);uniform.z.fill(0);
-      const raw={model:uniform,phase:o.phase,floor:.008,error:mismatch(gridMask(uniform,n,o.phase),prob,weights),steps:0};
+      const raw={model:uniform,phase:o.phase,floor:.008,error:score(gridMask(uniform,n,o.phase)),steps:0};
       const choices=[raw];
       // Keep both uniform and border-informed proposals: photographed endpoints
       // are useful evidence, but must not eliminate a better interior layout.
-      for(const initial of[null,borderGrid(o.counts,evidence,{sharedWork})?.z,separableGrid(fullProb,resolution,o.counts,o.phase,{sharedWork,weights:fullWeights}).z].filter(v=>v!==undefined)){
-        const result=initializeGrid(fullProb,resolution,o.counts,o.phase,{initial,scoreResolution:96,rounds,sharedWork,weights:fullWeights});
-        result.error=mismatch(gridMask(result.model,n,result.phase,result.floor),prob,weights);
+      for(const initial of[null,borderGrid(o.counts,evidence,{sharedWork})?.z,fitter.separable(o.counts,o.phase).z].filter(v=>v!==undefined)){
+        const result=fitter.initialize(o.counts,o.phase,{initial,scoreResolution:96,rounds});
+        result.error=score(gridMask(result.model,n,result.phase,result.floor));
         choices.push(result);
       }
       // A supporting checker supplies additional layouts, never a required
       // border. Both the guided layout and its weighted refinement compete
       // using only the actual observed-image objective.
       if(guideProb){
-        const guide=initializeGrid(guideProb,resolution,o.counts,o.phase,{scoreResolution:96,rounds,sharedWork});
-        const refined=initializeGrid(fullProb,resolution,o.counts,o.phase,{initial:guide.model.z,scoreResolution:96,rounds,sharedWork,weights:fullWeights});
-        for(const result of[guide,refined]){result.error=mismatch(gridMask(result.model,n,result.phase,result.floor),prob,weights);choices.push(result);}
+        const guide=guideFitter.initialize(o.counts,o.phase,{scoreResolution:96,rounds});
+        const refined=fitter.initialize(o.counts,o.phase,{initial:guide.model.z,scoreResolution:96,rounds});
+        for(const result of[guide,refined]){result.error=score(gridMask(result.model,n,result.phase,result.floor));choices.push(result);}
       }
       const initializationRounds=choices.filter(r=>r!==raw).map(r=>r.steps);
       const initializationTerminations=choices.filter(r=>r!==raw).map(r=>r.termination);

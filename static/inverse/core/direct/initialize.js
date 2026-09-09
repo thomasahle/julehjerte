@@ -3,8 +3,9 @@
  * sheet updates and a smooth spline projection preserve independent families.
  */
 import {basisTable} from './math.js';
-import {gridControls,gridSamples,gridModel,gridMask,mismatch} from './grid.js';
-import {imageWeights,resizeObjective} from './image-objective.js';
+import {gridControls,gridSamples,gridModel,gridMask} from './grid.js';
+import {imageWeights} from './image-objective.js';
+import {initializationImage} from './initialization-image.js';
 
 /** Least-cost alternating runs with exactly `count` transitions. Pixel costs
  * can be soft probabilities. The minimum run length applies to edge runs too.
@@ -13,6 +14,9 @@ const runScratch=new Map();
 export function alternatingRuns(row,count,phase,prior,{minimum=1,weight=.2,pixelWeights=null,weightScale=1}={}){
   const importance=imageWeights(pixelWeights,row.length,{allowEmpty:true});
   if(!importance&&weightScale===1)pixelWeights=null;
+  return fitRuns(row,count,phase,prior,minimum,weight,pixelWeights,weightScale);
+}
+function fitRuns(row,count,phase,prior,minimum,weight,pixelWeights,weightScale){
   const n=row.length,stride=n+1,key=n+','+count;
   let work=runScratch.get(key);
   if(!work){
@@ -102,7 +106,10 @@ function projectRows(model,f,positions,n,floor,sharedWork){
 /** Fit an independent pair of straight strip profiles to the whole image.
  * This supplies a nonuniform alternative to equally spaced starting grids. */
 export function separableGrid(prob,size,counts,phase,{resolution=64,k=16,floor=.008,sharedWork=true,weights=null}={}){
-  const n=resolution,resized=resizeObjective(prob,size,n,weights),target=resized.probability,importance=resized.weights,bit=Number(phase===-1),minimum=Math.max(1,Math.ceil(n*floor));let best=null;
+  return separableFromImage(initializationImage(prob,size,weights,{reuse:sharedWork}),counts,phase,{resolution,k,floor,sharedWork});
+}
+function separableFromImage(image,counts,phase,{resolution=64,k=16,floor=.008,sharedWork=true}={}){
+  const n=resolution,resized=image(n),target=resized.probability,importance=resized.weights,bit=Number(phase===-1),minimum=Math.max(1,Math.ceil(n*floor));let best=null;
   for(const fraction of[.07,.31,.63,.93]){
     const y=Math.floor(n*fraction),row=Array.from(target.slice(y*n,(y+1)*n)),prior=counts.map(c=>Array.from({length:c},(_,i)=>(i+1)/(c+1)));
     const rowWeights=importance?.slice(y*n,(y+1)*n),first=rowWeights?rowWeights.findIndex(w=>w>0):0;
@@ -121,7 +128,7 @@ export function separableGrid(prob,size,counts,phase,{resolution=64,k=16,floor=.
     }
     const model=gridModel(counts,k);model.z.fill(0);
     for(let f=0;f<2;f++){const positions=new Float64Array(n*counts[f]);for(let y=0;y<n;y++)positions.set(cuts[f],y*counts[f]);projectRows(model,f,positions,n,floor,sharedWork);}
-    const error=mismatch(gridMask(model,n,phase,floor),target,importance);if(!best||error<best.error)best={model,error};
+    const error=resized.score(gridMask(model,n,phase,floor));if(!best||error<best.error)best={model,error};
   }
   return best.model;
 }
@@ -141,8 +148,11 @@ export function borderGrid(counts,evidence,{k=16,floor=.008,resolution=96,shared
   return supported?model:null;
 }
 export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=size,deadline=Infinity,sharedWork=true,weights=null}={}){
-  const n=resolution,resized=resizeObjective(prob,size,n,weights),target=resized.probability,importance=resized.weights,weightScale=importance?n*n/importance.reduce((s,w)=>s+w,0):1,model=gridModel(counts,k,0,initial);if(!initial)model.z.fill(0);
-  let best={z:model.z.slice(),error:mismatch(gridMask(model,n,phase,floor),target,importance)},completed=0;const previous=[null,null];
+  return initializeFromImage(initializationImage(prob,size,weights,{reuse:sharedWork}),counts,phase,{resolution,rounds,k,floor,weight,initial,scoreResolution,deadline,sharedWork});
+}
+function initializeFromImage(image,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=96,deadline=Infinity,sharedWork=true}={}){
+  const n=resolution,resized=image(n),target=resized.probability,importance=resized.weights,weightScale=resized.weightScale,model=gridModel(counts,k,0,initial);if(!initial)model.z.fill(0);
+  let best={z:model.z.slice(),error:resized.score(gridMask(model,n,phase,floor))},completed=0;const previous=[null,null];
   let termination='round_limit';
   for(let round=0;round<rounds;round++){
     if(performance.now()>deadline){termination='deadline';break;}
@@ -150,16 +160,19 @@ export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k
       const samples=gridSamples(gridControls(model,floor),model,basisTable(n,k),n),count=counts[f],positions=new Float64Array(n*count);
       for(let y=0;y<n;y++){
         const row=new Float64Array(n),prior=Array.from(samples[f].slice(y*count,(y+1)*count)),rowWeights=importance?new Float64Array(n):null;
+        let allOne=true;
         for(let x=0;x<n;x++){
           let flip=0;for(let i=0;i<counts[1-f];i++)flip^=Number((y+.5)/n>samples[1-f][x*counts[1-f]+i]);
-          const index=f?x*n+y:y*n+x,p=target[index];row[x]=flip?1-p:p;if(rowWeights)rowWeights[x]=importance[index];
+          const index=f?x*n+y:y*n+x,p=target[index];row[x]=flip?1-p:p;if(rowWeights){rowWeights[x]=importance[index];if(importance[index]!==1)allOne=false;}
         }
-        const cuts=alternatingRuns(row,count,Number(phase===-1),prior,{minimum:Math.max(1,Math.ceil(n*floor)),weight,pixelWeights:rowWeights,weightScale});
+        // resizeObjective already validated these weights. Keep the original
+        // all-one arithmetic, while avoiding another validation of every row.
+        const cuts=sharedWork?fitRuns(row,count,Number(phase===-1),prior,Math.max(1,Math.ceil(n*floor)),weight,allOne&&weightScale===1?null:rowWeights,weightScale):alternatingRuns(row,count,Number(phase===-1),prior,{minimum:Math.max(1,Math.ceil(n*floor)),weight,pixelWeights:rowWeights,weightScale});
         positions.set(cuts||prior,y*count);
       }
       projectRows(model,f,positions,n,floor,sharedWork);
     }
-    completed++;const error=mismatch(gridMask(model,n,phase,floor),target,importance);
+    completed++;const error=resized.score(gridMask(model,n,phase,floor));
     if(error<best.error)best={z:model.z.slice(),error};
     if(sharedWork){
       // Sheet update order alternates. Repetition at the same parity proves a
@@ -169,6 +182,15 @@ export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k
       previous[round%2]=model.z.slice();
     }
   }
-  model.z=best.z;const scored=scoreResolution===n?resized:resizeObjective(prob,size,scoreResolution,weights),error=scoreResolution===n?best.error:mismatch(gridMask(model,scoreResolution,phase,floor),scored.probability,scored.weights);
+  model.z=best.z;const scored=scoreResolution===n?resized:image(scoreResolution),error=scoreResolution===n?best.error:scored.score(gridMask(model,scoreResolution,phase,floor));
   return{model,phase,floor,error,steps:completed,termination};
+}
+
+/** One fixed image supplies all count, phase and starting-layout candidates. */
+export function gridInitializer(prob,size,{weights=null,sharedWork=true}={}){
+  const image=initializationImage(prob,size,weights,{reuse:sharedWork});
+  return{
+    initialize:(counts,phase,options={})=>initializeFromImage(image,counts,phase,{scoreResolution:size,...options,sharedWork}),
+    separable:(counts,phase,options={})=>separableFromImage(image,counts,phase,{...options,sharedWork})
+  };
 }
