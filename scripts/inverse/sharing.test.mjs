@@ -167,4 +167,5 @@ test('shared-cut cleanup respects its budget and unsupported symmetry constraint
   const solution=hat();
   assert.equal(finalizeShared(solution,cfg,{deadline:0}),solution);
   assert.equal(finalizeShared(solution,{...cfg,symmetry:{mirrorX:true}}),solution);
+  assert.equal(finalizeShared(solution,{...cfg,symmetry:{withinCurve:'sym'}}),solution);
 });
