@@ -1,5 +1,9 @@
 # Select the gradient backend by measured cost
 
+This records the fixed-batch release at `a420139`. The subsequent
+[adaptive calibration change](CALIBRATION.md) bounds its startup cost while
+retaining the measured backend policy and exact-result checks.
+
 The previous release always used the WebAssembly boundary gradient when the
 module loaded. A browser probe found this kernel slower than JavaScript in
 the packaged Firefox 146 used by QA. Chromium and WebKit benefited from Wasm.
