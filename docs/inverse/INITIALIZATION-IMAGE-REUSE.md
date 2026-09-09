@@ -128,6 +128,30 @@ deliberately failed fitter, an empty
 Hunodan selection and a one-second weighted budget verify unsuccessful exit
 status while retaining the available failure records.
 
+## Production browser and regression checks
+
+All **24 browser workflows** pass: eight each in Firefox 146, Chromium 145 and
+WebKit 26. They import fresh pictures, fit them in the real worker, open the
+result in Draw and export editable SVG. The star's PDF download is checked too.
+The small free-border motifs, larger motifs, hat with and without matching
+sheets, star and Hunodan photograph retain the expected image quality and
+pass the editor's crossing and spacing checks.
+
+The six large-hat outputs retain **32–116 exactly shared spans** through editor
+conversion and SVG export. Their independent editable renderings disagree with
+**0.397–0.508%** of the protected 400-cell source motif. The percentage displayed
+in Paint agrees with that source-resolution result. Browser solve-and-conversion
+times range from **2.73 to 27.61 seconds** across all cases; the ten-second
+Hunodan target above is a separate Node benchmark.
+
+All **718 application tests and 207 engine tests** pass. Svelte checking reports
+zero errors and seven existing warnings; lint and the production build pass.
+The preview serves the same **45 engine files** as the complete-fit benchmarks.
+[INITIALIZATION-IMAGE-REUSE-VALIDATION.json](INITIALIZATION-IMAGE-REUSE-VALIDATION.json)
+records source and log hashes, per-case measurements, the failed initial
+Hunodan batch, paired diagnostic fits, and the intentionally interrupted first
+browser run alongside the completed replay.
+
 ## Reproduction
 
 The preparation and initialization comparisons use the fixed data described in
