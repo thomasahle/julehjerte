@@ -32,9 +32,10 @@ export function referenceError(source,woven){
 /** A deterministic, optional weave proposal outside observed artwork. It is
  * never a scored target. Ignored painted colours cannot change this seed.
  */
-export function initializationMask(source){
+export function initializationMask(source,phase=0){
+  if(phase!==0&&phase!==1)throw new Error('An initialization phase must be zero or one.');
   const weights=sourceWeights(source);if(!weights)return source.mask;
   const n=source.resolution,cells=source.seedCells??4,block=n/cells;
   const index=x=>{const s=(x+.5-n/2)/block;return Math.sign(s)*Math.floor(Math.abs(s)+.5);};
-  return Uint8Array.from(source.mask,(v,i)=>weights[i]>0?v:(index(i%n)+index(Math.floor(i/n)))&1);
+  return Uint8Array.from(source.mask,(v,i)=>weights[i]>0?v:(((index(i%n)+index(Math.floor(i/n)))&1)^phase));
 }
