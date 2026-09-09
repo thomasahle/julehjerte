@@ -122,7 +122,9 @@ initialization equivalence alone cannot guarantee an identical final result.
 The failure also exposed a benchmark-harness bug: failed rows were written to
 JSON while the process still exited successfully. Both complete-fit benchmarks
 now exit unsuccessfully if any requested check fails, and record aggregate
-process CPU time alongside wall time. A deliberately failed fitter, an empty
+process CPU time alongside wall time. The weighted quality gate also requires
+the engine's complete template check; all 32 recorded results satisfy it. A
+deliberately failed fitter, an empty
 Hunodan selection and a one-second weighted budget verify unsuccessful exit
 status while retaining the available failure records.
 

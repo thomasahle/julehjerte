@@ -41,7 +41,7 @@ for(const shape of shapes)for(const size of sizes){
       const cpu=process.cpuUsage(cpuStart);row.cpuSeconds=(cpu.user+cpu.system)/1e6;
       const woven=await renderExportedWeave(answer.files['cut_geometry.json'],n);
       row.independent=referenceError({resolution:n,mask,weights},woven.mask);
-      row.qualityPassed=row.geometryPassed&&row.paper==='pass'&&row.independent.mismatchFraction<=.03;
+      row.qualityPassed=row.templateChecksPassed&&row.geometryPassed&&row.paper==='pass'&&row.independent.mismatchFraction<=.03;
       row.speedPassed=row.seconds<=seconds;row.passed=row.qualityPassed&&row.speedPassed;
       await fs.writeFile(`${dir}/original.png`,original);await fs.writeFile(`${dir}/target.png`,targetCanvas.toBuffer('image/png'));await fs.writeFile(`${dir}/woven.png`,woven.png);
       for(const [name,data] of Object.entries(answer.files))await fs.writeFile(`${dir}/${name}`,data);
