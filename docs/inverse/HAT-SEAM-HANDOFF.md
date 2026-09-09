@@ -111,3 +111,8 @@ The subsequent [live-preview and budget correction](LIVE-GEOMETRY.md) enables
 candidate cuts during fitting and fixes a refinement allocation that could
 degrade the independent Firefox hat. Its final replay retains the same exported
 hat geometry with previews enabled.
+
+The [graceful Stop implementation](GRACEFUL-STOP.md) also applies the common
+shared-cut cleanup to retained checkpoints before export. Keeping a partially
+fitted hat therefore preserves exact shared spans through the same editor
+conversion and downloaded SVG checks as a completed solve.
