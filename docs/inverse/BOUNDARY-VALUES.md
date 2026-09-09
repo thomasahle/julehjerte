@@ -125,6 +125,10 @@ identical-paper release, before this optimization. Exact scalar comparisons and 
 replays establish unchanged objective arithmetic; these timed whole-solve
 differences remain a limitation of the search and candidate selection.
 
+The subsequent [LP topology probes](TOPOLOGY-RELAXATION.md) investigate the
+small-house cutoff and improve its repeated fresh browser results while
+retaining this prepared boundary evaluator.
+
 All **718 application tests and 236 engine tests** pass. Lint and the production
 build pass; Svelte checking reports zero errors and seven existing warnings.
 The Firefox hat preview and drawing, and the Chromium star preview, were
