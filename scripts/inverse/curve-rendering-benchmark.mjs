@@ -46,10 +46,21 @@ function runCase(entry,n,ns,current,previous){
  const check=values=>values.forEach((v,j)=>{if(v.length!==expected[j].length||v.some((x,i)=>x!==expected[j][i]))throw new Error(`${entry.id}/${n}/${ns}/${j}: mask changed`);});
  const evaluate=fn=>inputs.map(({points,phase})=>fn(graph,points,phase,n,ns));
  for(const fn of Object.values(policies))check(evaluate(fn));
- const runs=[];
+ const runs=[],batchSizes=Object.fromEntries(Object.keys(policies).map(k=>[k,1]));
  for(let round=0;round<3;round++){
   const row={},order=Object.keys(policies);order.push(...order.splice(0,round));
-  for(const name of order){const start=performance.now(),values=evaluate(policies[name]);row[name+'Milliseconds']=performance.now()-start;check(values);}
+  for(const name of order){
+   // Some browser clocks round a complete small render to zero. Time enough
+   // repetitions to exceed that resolution, then normalize to four inputs.
+   for(;;){
+    const iterations=batchSizes[name],values=[],start=performance.now();
+    for(let i=0;i<iterations;i++)values.push(evaluate(policies[name]));
+    const elapsed=performance.now()-start;for(const value of values)check(value);
+    if(elapsed>=16){row[name+'Milliseconds']=elapsed/iterations;row[name+'BatchMilliseconds']=elapsed;row[name+'Iterations']=iterations;break;}
+    if(iterations>=1024)throw new Error('Clock resolution prevents a meaningful timing measurement');
+    batchSizes[name]*=2;
+   }
+  }
   runs.push(row);
  }
  // The force field excludes one path at a time; its index must retain even
@@ -62,12 +73,12 @@ function runCase(entry,n,ns,current,previous){
    if(a.contains(x,y,exclude,phase)!==b.contains(x,y,exclude,phase))throw new Error('Excluded-path membership changed');
   }
  }
- return{identicalMasks:true,identicalPathIndex:true,evaluationsPerRound:inputs.length,uniqueCurves:graph.edges.length,sharedCurves:graph.visible.filter(v=>!v).length,curveOccurrences:graph.paths.reduce((s,p)=>s+p.length,0),runs};
+ return{identicalMasks:true,identicalPathIndex:true,inputsPerBatch:inputs.length,minimumTimedMilliseconds:16,uniqueCurves:graph.edges.length,sharedCurves:graph.visible.filter(v=>!v).length,curveOccurrences:graph.paths.reduce((s,p)=>s+p.length,0),runs};
 }
 
 await fs.mkdir(output,{recursive:true});
 const report={reference,previousSourceSha256:hash(previousSource),sourceHashes:{[source]:hash(await fs.readFile(source)),['scripts/inverse/curve-rendering-benchmark.mjs']:hash(await fs.readFile('scripts/inverse/curve-rendering-benchmark.mjs'))},runtime:process.version,cpu:cpus()[0]?.model,
- method:'Fixed geometry, 128/256/400 pixels, 24/48 samples per cubic, original and perturbed controls including endpoints, both phases. Every complete mask must equal the previous renderer. Individual path segments, bins and exclusion queries must also match. Three policy-order rotations after warmup; each timed group renders all four inputs. Index construction and allocation are included; fixture loading and comparison are excluded. Saved fits never initialize an optimizer.',
+ method:'Fixed geometry, 128/256/400 pixels, 24/48 samples per cubic, original and perturbed controls including endpoints, both phases. Every complete mask must equal the previous renderer. Individual path segments, bins and exclusion queries must also match. Three policy-order rotations after warmup. Each policy repeats all four inputs in batches of at least 16 ms to overcome coarse browser clocks; timings are normalized to one batch of four inputs, with actual durations and repetition counts recorded. Index construction and allocation are included; fixture loading and comparison are excluded. Saved fits never initialize an optimizer.',
  cases:cases.map(({paths,...r})=>({...r,geometrySha256:hash(JSON.stringify(paths))})),servedSourceHashes:{},results:[]};
 const append=async r=>{report.results.push(r);console.log(JSON.stringify({browser:r.browser,id:r.id,resolution:r.resolution,samples:r.samples,identical:r.identicalMasks}));await fs.writeFile(output+'/results.json',JSON.stringify(report,null,2)+'\n');};
 for(const name of names){
