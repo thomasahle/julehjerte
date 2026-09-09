@@ -32,6 +32,9 @@ await fs.mkdir(output,{recursive:true});
 const cases=[];
 for(const name of['straight','neck','thin'])for(const resolution of[80,180,360])cases.push({id:`${name}-${resolution}`,group:'controlled',solution:fixture(name),cfg:settings({width:60,materialResolution:resolution,cutError:0,printShrinkPercent:0,minWidth:3})});
 cases.push({id:'thin-uncertain',group:'controlled',solution:fixture('thin'),cfg:settings({width:60,materialResolution:80,cutError:0,printShrinkPercent:0,minWidth:.7})});
+for(const name of['neck','thin'])cases.push({id:`matching-${name}`,group:'controlled',solution:fixture(name,{matching:true}),cfg:settings({width:60,materialResolution:80,cutError:0,printShrinkPercent:0,minWidth:name==='thin'?.7:3})});
+const hatFile='scripts/inverse/fixtures/free-border-hat.json',hatBytes=await fs.readFile(hatFile);
+cases.push({id:'matching-hat',group:'matching-hat',source:hatFile,sourceSha256:hash(hatBytes),solution:loadSolutionJSON(JSON.parse(hatBytes).geometry),cfg:settings({...AUTOMATIC_PRESET,timeLimit:10,trials:0})});
 for(const[dir,group]of[[hunodan,'hunodan'],[weighted,'weighted']]){
   const saved=JSON.parse(await fs.readFile(`${dir}/results.json`));
   for(const row of saved.results){

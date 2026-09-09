@@ -17,6 +17,9 @@ for(const name of['bezier.js','graph.js','geometry.js','validate.js','settings.j
 const referenceURL=origin+'/inverse/core/qa-material-reference.js',pageURL=origin+'/inverse/qa-paper.html';
 const referenceBody=previous.replace(/from '(\.[^']+)'/g,(_,p)=>`from '${new URL(p,origin+'/inverse/core/material.js').href}'`);
 const cases=['straight','neck'].map(name=>({id:name,data:solutionJSON(fixture(name)),cfg:{width:60,minWidth:3,cutError:0,printShrinkPercent:0,materialResolution:360}}));
+for(const name of['neck','thin'])cases.push({id:`matching-${name}`,data:solutionJSON(fixture(name,{matching:true})),cfg:{width:60,minWidth:name==='thin'?.7:3,cutError:0,printShrinkPercent:0,materialResolution:80}});
+const hatFile='scripts/inverse/fixtures/free-border-hat.json',hatBytes=await fs.readFile(hatFile);
+cases.push({id:'matching-hat',data:JSON.parse(hatBytes).geometry,source:hatFile,sourceSha256:hash(hatBytes),cfg:{width:100,materialResolution:360}});
 for(const [id,file]of[
  ['hjcur-04','tmp/image-reuse-hunodan-replay/hjcur-04/cut_geometry.json'],
  ['hjhih-04','tmp/image-reuse-hunodan-replay/hjhih-04/cut_geometry.json'],
