@@ -2,13 +2,37 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fixture} from './fixtures.mjs';
 import {settings} from '../../static/inverse/core/settings.js';
-import {progressReporter} from '../../static/inverse/core/progress.js';
+import {progressReporter,emitCandidate} from '../../static/inverse/core/progress.js';
 import {curvesOf,loadSolutionJSON,solutionJSON} from '../../static/inverse/core/graph.js';
 import {CurveGraph,renderCurves} from '../../static/inverse/core/direct/curves.js';
 import {refineCurves} from '../../static/inverse/core/direct/refine.js';
 import {solveGraph} from '../../static/inverse/core/solver.js';
 import {sampleWeave,validate} from '../../static/inverse/core/validate.js';
 import {materialAudit} from '../../static/inverse/core/material.js';
+
+test('the checkpoint observer retains valid geometry independently of UI snapshots',()=>{
+  const candidates=[],events=[],source=fixture('straight');
+  const reporter=progressReporter(event=>events.push(event),false,{now:()=>{throw new Error('No UI clock needed');},onCandidate:packet=>candidates.push(packet)});
+  const nested=progressReporter(reporter,true);
+  nested({stage:'directRefining',step:0,geometry:false,paper:'pass'},source);
+  nested({stage:'directRefining',step:1,geometry:true,paper:'fail'},source);
+  nested({stage:'directRefining',step:2,error:.125,geometry:true,paper:'pass'},source);
+  emitCandidate(nested,{stage:'directInitializing',error:0,geometry:true,paper:'pass'},source);
+  assert.equal(events.length,3);assert.ok(events.every(e=>typeof e.geometry==='boolean'));
+  assert.equal(candidates.length,2);assert.deepEqual(candidates[0].counts,[2,2]);assert.equal(candidates[0].error,.125);
+  const before=JSON.stringify(solutionJSON(source));assert.equal(candidates[0].geometry,before);
+  source.graph.edges[0].curve.p[1][0]+=10;
+  assert.equal(candidates[0].geometry,before);assert.equal(candidates[1].geometry,before);
+});
+
+test('an observed MILP emits its first validated candidate even with UI geometry disabled',async()=>{
+  const source=fixture('straight'),cfg=settings({width:60,trials:0,timeLimit:5,maxRounds:1}),packets=[];
+  const onProgress=progressReporter(()=>{},false,{onCandidate:p=>packets.push(p)});
+  await solveGraph(source.graph,cfg,{stopAfterValidated:true,coreGate:s=>materialAudit(s,cfg),onProgress});
+  assert.equal(packets.length,1);
+  const saved=loadSolutionJSON(packets[0].geometry);
+  assert.ok(validate(saved,cfg).passed);assert.ok(materialAudit(saved,cfg).passed);
+});
 
 test('geometry progress is opt-in and rejects non-boolean settings',()=>{
   assert.equal(settings().progressGeometry,false);

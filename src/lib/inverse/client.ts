@@ -58,6 +58,8 @@ export interface DesignResult {
     weights?: Float64Array;
   };
   report: {
+    stoppedEarly?: boolean;
+    alternatives?: Array<{ counts: [number, number]; error: number; checkpointError?: number | null; geometry: string }>;
     templateExportAllowed: boolean;
     templateChecksPassed: boolean;
     slits: { left: number; right: number };
@@ -98,6 +100,7 @@ export class InverseWorker {
   private worker: Worker | null = null;
   private sequence = 0;
   private rejectPending: ((error: Error) => void) | null = null;
+  private pendingAction: string | null = null;
 
   constructor(private url: string, private createWorker = (url: string) => new Worker(url)) {}
 
@@ -113,6 +116,7 @@ export class InverseWorker {
         const worker = this.worker ??= this.createWorker(this.url);
         const id = ++this.sequence;
         this.rejectPending = reject;
+        this.pendingAction = action;
         worker.onmessage = ({ data }) => {
           if (data.id !== this.sequence) return;
           if (data.type === 'progress') {
@@ -126,6 +130,7 @@ export class InverseWorker {
             return;
           }
           this.rejectPending = null;
+          this.pendingAction = null;
           if (data.type === 'error') reject(new EngineError(data.message, data.report, data.code));
           else if (data.type === 'prepared') resolve(data.preview as T);
           else if (data.type === 'result') resolve(data.result as T);
@@ -146,12 +151,37 @@ export class InverseWorker {
     });
   }
 
+  /** Keep the current solve's id and promise; its normal result resolves it. */
+  useBest(): boolean {
+    if (!this.worker || !this.rejectPending || this.pendingAction !== 'solve') return false;
+    this.worker.postMessage({ id: this.sequence, action: 'stop' });
+    return true;
+  }
+
   stop(error: Error = new DOMException('Cancelled', 'AbortError')) {
+    const worker = this.worker, id = this.sequence, solving = this.pendingAction === 'solve';
     this.sequence++;
-    this.worker?.terminate();
     this.worker = null;
     this.rejectPending?.(error);
     this.rejectPending = null;
+    this.pendingAction = null;
+    if (!worker) return;
+    if (!solving) { worker.terminate(); return; }
+    // Cancel rejects immediately. Let the responsive controller explicitly
+    // terminate its CPU-bound child before terminating the controller itself;
+    // otherwise a browser may leave the orphan finishing a long native solve.
+    let terminated = false;
+    const terminate = () => {
+      if (terminated) return;
+      terminated = true;
+      clearTimeout(timer);
+      worker.terminate();
+    };
+    const timer = setTimeout(terminate, 1000);
+    worker.onmessage = ({ data }) => { if (data.id === id && data.type === 'cancelled') terminate(); };
+    worker.onerror = event => { event.preventDefault(); terminate(); };
+    worker.onmessageerror = terminate;
+    try { worker.postMessage({ id, action: 'cancel' }); } catch { terminate(); }
   }
 }
 

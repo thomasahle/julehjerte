@@ -1,4 +1,4 @@
-import {progressReporter} from './progress.js';
+import {progressReporter,hasCandidateObserver} from './progress.js';
 /** Two-sheet binary MILP, translated from the Python commodity-flow model.
  * Connectivity and continuous slit labels allow nonmonotone hooked paths.
  * HiGHS is an unmodified, locally vendored WebAssembly dependency. */
@@ -73,7 +73,7 @@ export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coef
       if(necks.length){for(const issue of necks){const chain=[...new Set(issue.edgeChain)],key=`${issue.family}:${chain.sort((a,b)=>a-b).join(',')}`;if(nogoods.has(key))continue;nogoods.add(key);append(chain.map(e=>[x[issue.family][e],1]),-Infinity,chain.length-1);}continue;}
       const check=validate(candidate,cfg,{checkSelfNecks:false});if(check.passed&&coreGate){const core=coreGate(candidate);info.materialCore=core.summary;check.materialCore=core.summary;if(!core.passed){check.passed=false;check.issues.push({type:'material_core',summary:core.summary});}}
       info.validationPassed=check.passed;if(check.passed){if(obj<bestObj){best=candidate;bestObj=obj;best.report.validation=check;append(m.cost.map((c,j)=>[j,c]).filter(([,c])=>c),-Infinity,obj+1e-6);}// Adding the objective row invalidates native.info (including mip_gap). Use the captured bound.
-      if(cfg.progressGeometry)onProgress({stage:'solving',round:round+1,validatedIncumbent:true,gap:Number.isFinite(lower)?objectiveGap(bestObj,lower):null},best);
+      if(cfg.progressGeometry||hasCandidateObserver(onProgress))onProgress({stage:'solving',round:round+1,validatedIncumbent:true,gap:Number.isFinite(lower)?objectiveGap(bestObj,lower):null},best);
       if(stopAfterValidated||status===highs.constants.modelStatus.optimal||objectiveGap(bestObj,lower)<=cfg.relativeGap+1e-9)break;}
       else{info.issues=check.issues.slice(0,8);const active=[];for(const k of[0,1])for(let e=0;e<graph.edges.length;e++)if(values[x[k][e]]>.5)active.push([x[k][e],1]);append(active,-Infinity,active.length-1);}
     }

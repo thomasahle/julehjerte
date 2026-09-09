@@ -2,7 +2,7 @@
  * Geometry and paper checks remain those used by the app's other solver.
  */
 import {fitGrid,gridPaths,gridMask,gridControls} from './grid.js';
-import {progressReporter} from '../progress.js';
+import {progressReporter,emitCandidate,hasCandidateObserver} from '../progress.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves,fittingMargin} from './refine.js';
 import {recoverShared} from './share.js';
@@ -83,7 +83,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         if(ties)applyTies(ties,points,points,{fixed:graph.fixed,original:base});
         const solution=graph.solution(points,seed.phase,input),woven=sampleWeave(solution,source.resolution);
         const error=maskDisagreement(source,woven);
-        if(error<=(cfg.earlyStop?Math.min(.005,cfg.maxImageError):0)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed&&validate(solution,cfg).passed&&(!cfg.requireMaterialCore||materialAudit(solution,cfg).passed))initialWinner={solution,counts:seed.model.counts,error};
+        if(error<=(cfg.earlyStop?Math.min(.005,cfg.maxImageError):0)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed&&validate(solution,cfg).passed&&(!cfg.requireMaterialCore||materialAudit(solution,cfg).passed)){initialWinner={solution,counts:seed.model.counts,error};if(cfg.requireMaterialCore)emitCandidate(onProgress,{stage:"directInitializing",error,geometry:true,paper:"pass"},solution);}
       }
     }
     // Use the fixed-size seed search for every count and phase. Only the
@@ -109,7 +109,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const topologyDeadline=Math.max(deadline,start+Math.min(cfg.timeLimit,15)*1000-1300);
     topology=await initializeTopology(input,cfg,{maximumError:Math.min(.005,coarse[0].error),seconds:Math.min(10,cfg.timeLimit*.5,(topologyDeadline-performance.now()-800)/1000),onProgress});
     if(topology.graph){
-      const candidate=stage('directRefining',()=>refineCurves(topology.graph,fullProb,source.resolution,topology.phase,cfg,{input,weights:fullWeights,steps:80,rate:.008,deadline:Math.min(topologyDeadline,performance.now()+700),onProgress:cfg.progressGeometry?(r,solution)=>onProgress({stage:'directRefining',counts:topology.graph.families.map(f=>f.length),...r},solution):undefined}));
+      const candidate=stage('directRefining',()=>refineCurves(topology.graph,fullProb,source.resolution,topology.phase,cfg,{input,weights:fullWeights,steps:80,rate:.008,deadline:Math.min(topologyDeadline,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:topology.graph.families.map(f=>f.length),...r},solution):undefined}));
       const solution=candidate.graph.solution(candidate.points,candidate.phase,input),woven=sampleWeave(solution,source.resolution);
       const error=maskDisagreement(source,woven);
       if(candidate.geometryPassed&&candidate.paperPassed&&error<=Math.min(.01,cfg.maxImageError)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed){
@@ -135,7 +135,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     recovery=await recoverImageFeatures(input,cfg,Math.min(20,(deadline-performance.now())/1000*.9),onProgress);
     if(recovery.solution){
       const seed=recovery.solution,paths=seed.paths.map((family,f)=>family.map((_,i)=>curvesOf(seed,f,i).map(c=>c.p))),graph=new CurveGraph(paths,cfg.width),phase=seed.graph.target.phase?-1:1;
-      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline,performance.now()+700),onProgress:cfg.progressGeometry?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
+      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
       const solution=graph.solution(candidate.points,phase,input),woven=sampleWeave(solution,source.resolution);
       if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
@@ -192,7 +192,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   if(candidate.paperPassed&&performance.now()<deadline-450){
     const graph=new CurveGraph(candidate.graph.nested(candidate.points),cfg.width);
     const polishing=orbitObjective(Float64Array.from(source.mask),source.resolution,orbit,weights);
-    const polished=stage('directPolishing',()=>refineCurves(graph,polishing.probability,source.resolution,candidate.phase,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false}));
+    const polished=stage('directPolishing',()=>refineCurves(graph,polishing.probability,source.resolution,candidate.phase,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
     if(assess(polished)&&polished.originalImageError<=candidate.originalImageError)candidate={...polished,counts:candidate.counts,sharing:candidate.sharing};
   }
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
