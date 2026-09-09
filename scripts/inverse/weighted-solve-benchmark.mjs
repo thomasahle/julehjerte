@@ -14,6 +14,9 @@ import {referenceError} from '../../static/inverse/core/image-reference.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 
 const arg=name=>process.argv.find(s=>s.startsWith(`--${name}=`))?.slice(name.length+3);
+const progressSetting=arg('progress-geometry')??'false';
+if(!['true','false'].includes(progressSetting))throw new Error('progress-geometry must be true or false.');
+const progressGeometry=progressSetting==='true';
 const output=arg('output')||'tmp/weighted-solve',shapes=(arg('shapes')||'top-hat,hat,house,circle').split(','),sizes=(arg('sizes')||'.64,.84').split(',').map(Number),seconds=Number(arg('seconds')||10),strategies=(arg('strategies')||'checker,weighted').split(','),variants=(arg('variants')||'original').split(','),n=200;
 if(shapes.some(s=>!['top-hat','hat','house','circle'].includes(s))||sizes.some(s=>!Number.isFinite(s)||s<.3||s>.84)||!Number.isFinite(seconds)||seconds<1||seconds>180||strategies.some(s=>!['checker','weighted'].includes(s))||variants.some(v=>!['original','inverted','shifted','free-noise'].includes(v)))throw new Error('Invalid benchmark arguments.');
 await fs.mkdir(output,{recursive:true});
@@ -21,7 +24,7 @@ const results=[],engineSha256={};
 for(const name of await fs.readdir('static/inverse/core',{recursive:true}))if(/\.(js|wasm|c)$/.test(name)){
   const file=`static/inverse/core/${name}`;engineSha256[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 }
-const report={runtime:process.version,cpu:cpus()[0]?.model,engineSha256,resolution:n,seconds,variants,
+const report={runtime:process.version,cpu:cpus()[0]?.model,engineSha256,resolution:n,seconds,variants,progressGeometry,
   method:'Fresh automatic mask solves. Frames fixed before fitting. Checker strategy replaces the band; weighted strategy retains the original mask with zero band weights. Exported controls are independently rendered with resvg. Geometric and paper checks remain enabled. Variants swap both colours, translate by one source pixel in both axes with background fill, or alter only zero-weight pixels; the protected frame stays fixed.',results};
 let index=0;
 for(const shape of shapes)for(const size of sizes){
@@ -35,8 +38,10 @@ for(const shape of shapes)for(const size of sizes){
   for(const strategy of index++%2?strategies.toReversed():strategies){
     const row={shape,size,variant,strategy};results.push(row);const dir=`${output}/${shape}-${size}-${strategy}${variant==='original'?'':`-${variant}`}`;await fs.mkdir(dir,{recursive:true});
     try{
-      const cfg={...AUTOMATIC_PRESET,timeLimit:seconds,trials:0},cpuStart=process.cpuUsage(),start=performance.now();
-      const p=prepare({type:'mask',resolution:n,mask:strategy==='checker'?checker:mask,...(strategy==='weighted'?{weights}:{})},cfg),preparedAt=performance.now(),answer=await design(p.target,cfg);
+      row.geometrySnapshots=0;row.geometryBytes=0;
+      const onProgress=event=>{if(typeof event.geometry==='string'){row.geometrySnapshots++;row.geometryBytes+=event.geometry.length;}};
+      const cfg={...AUTOMATIC_PRESET,timeLimit:seconds,trials:0,progressGeometry},cpuStart=process.cpuUsage(),start=performance.now();
+      const p=prepare({type:'mask',resolution:n,mask:strategy==='checker'?checker:mask,...(strategy==='weighted'?{weights}:{})},cfg),preparedAt=performance.now(),answer=await design(p.target,cfg,onProgress);
       Object.assign(row,{seconds:(performance.now()-start)/1000,prepareSeconds:(preparedAt-start)/1000,templateChecksPassed:answer.report.templateChecksPassed,geometryPassed:answer.report.validation.passed,paper:answer.report.manufacturing.status,counts:answer.report.slits,solver:answer.report.solver,imageError:answer.report.imageError});
       const cpu=process.cpuUsage(cpuStart);row.cpuSeconds=(cpu.user+cpu.system)/1e6;
       const woven=await renderExportedWeave(answer.files['cut_geometry.json'],n);

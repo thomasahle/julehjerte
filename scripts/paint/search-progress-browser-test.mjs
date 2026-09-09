@@ -15,6 +15,7 @@ await fs.writeFile(input, topHatFixture(200));
 const loader = await createServer({configFile: false, server: {middlewareMode: true, hmr: false}});
 const {fitHeart, toScreen} = await loader.ssrLoadModule('/src/lib/paint/heartLayout.ts');
 const {handlePoint} = await loader.ssrLoadModule('/src/lib/paint/frame.ts');
+const {LOBE_OUTLINE_COLORS} = await loader.ssrLoadModule('/src/lib/editor/outlineColors.ts');
 const browser = await chromium.launch({headless: true});
 const results = [];
 
@@ -28,15 +29,32 @@ try {
       const page = await context.newPage();
       page.on('pageerror', error => row.pageErrors.push(error.message));
       await page.addInitScript(installPaintObservation);
-      await page.addInitScript(() => {
+      await page.addInitScript(colours => {
         // Observe real progress without injecting fitted geometry or changing the worker.
-        window.__liveQA = {events: [], displays: []};
+        const empty = () => ({events: [], displays: [], geometryArrivals: [], candidateStrokes: {left: 0, right: 0}, longTasks: []});
+        window.__liveQA = empty();
+        document.addEventListener('click', event => {
+          if (event.target?.closest?.('button')?.textContent.trim() === 'Find the cuts') window.__liveQA = empty();
+        }, true);
+        const stroke = CanvasRenderingContext2D.prototype.stroke;
+        CanvasRenderingContext2D.prototype.stroke = function (...args) {
+          for (const [lobe, colour] of Object.entries(colours)) {
+            if (this.strokeStyle === colour) window.__liveQA.candidateStrokes[lobe]++;
+          }
+          return stroke.apply(this, args);
+        };
+        new PerformanceObserver(list => {
+          for (const entry of list.getEntries()) window.__liveQA.longTasks.push({start: entry.startTime, duration: entry.duration});
+        }).observe({entryTypes: ['longtask']});
         const Worker = window.Worker;
         window.Worker = class extends Worker {
           constructor(...args) {
             super(...args);
             this.addEventListener('message', ({data}) => {
-              if (data.type === 'progress') window.__liveQA.events.push(data.event);
+              if (data.type === 'progress') {
+                window.__liveQA.events.push(data.event);
+                if (typeof data.event.geometry === 'string') window.__liveQA.geometryArrivals.push(performance.now());
+              }
             });
           }
         };
@@ -50,7 +68,7 @@ try {
             previous = key;
           }).observe(document.documentElement, {subtree: true, childList: true, characterData: true});
         });
-      });
+      }, LOBE_OUTLINE_COLORS);
       const button = name => page.getByRole('button', {name, exact: true}).first();
       await page.goto(`${origin}/en/editor/paint/`);
       await page.waitForFunction(() => document.documentElement.style.getPropertyValue('--paper-left') !== '');
@@ -98,12 +116,12 @@ try {
       }
       await button('Find the cuts').click();
       await page.waitForFunction(() => document.querySelectorAll('.attempt-counts').length > 0);
+      await page.waitForFunction(() => Object.values(window.__liveQA.candidateStrokes).every(count => count > 0));
       assert.equal(await page.getByRole('radio', {name: 'Free', exact: true}).isDisabled(), true);
       await page.screenshot({path: path.join(output, `${viewport.width}-searching.png`), fullPage: true});
       await button('Stop').click();
       await button('Find the cuts').waitFor();
       assert.equal(await page.locator('.attempt-counts').count(), 0);
-      await page.evaluate(() => {window.__liveQA = {events: [], displays: []};});
       await button('Find the cuts').click();
       await button('Open in Draw').waitFor({timeout: 190000});
       const observation = await page.evaluate(collectPaintObservation);
@@ -121,6 +139,19 @@ try {
       }
       row.progressEvents = progress.events.length;
       row.progressDisplays = progress.displays.length;
+      const snapshots = progress.events.filter(event => typeof event.geometry === 'string');
+      assert.ok(snapshots.length > 1, 'A fresh fit must stream multiple candidates.');
+      for (const event of snapshots) {
+        assert.ok(event.stage === 'directRefining' || event.stage === 'solving' && event.validatedIncumbent);
+        const geometry = JSON.parse(event.geometry);
+        assert.equal(geometry.schema, 'heartcurves-2');
+        assert.ok(geometry.A_overlap_paths.length > 0 && geometry.B_overlap_paths.length > 0);
+      }
+      assert.ok(Object.values(progress.candidateStrokes).every(count => count > 0), 'Both candidate cut colours must actually reach the canvas.');
+      row.geometrySnapshots = snapshots.length;
+      row.snapshotBytes = snapshots.reduce((bytes, event) => bytes + event.geometry.length, 0);
+      row.candidateStrokes = progress.candidateStrokes;
+      row.longTasks = progress.longTasks;
       row.error = observation.result.report.imageError.mismatchFraction;
       await fs.writeFile(path.join(output, `${viewport.width}-progress.json`), JSON.stringify(progress, null, 2));
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'The page must not overflow horizontally.');
