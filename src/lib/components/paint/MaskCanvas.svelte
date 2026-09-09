@@ -21,7 +21,9 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import { t, type Language } from '$lib/i18n';
-	import type { HeartColors } from '$lib/types/heart';
+	import { LOBE_OUTLINE_COLORS } from '$lib/editor/outlineColors';
+	import { inferOverlapRect } from '$lib/utils/overlapRect';
+	import type { HeartColors, HeartDesign } from '$lib/types/heart';
 	import { clampBox, emptyBox, isEmptyBox, unionBox, type Box, type Mask } from '$lib/paint/mask';
 	import { applySymmetric, applySymmetricEdit, floodFill, rect, stroke } from '$lib/paint/tools';
 	import {
@@ -81,6 +83,14 @@
 		 */
 		frame: Frame;
 		/**
+		 * The cuts the search is looking at right now, drawn over the mask.
+		 *
+		 * Null except while a search is running and the engine is sending its
+		 * candidates (PAINT.md §12 (a)); the drawing is additive, so with nothing
+		 * here the canvas is exactly what it always was.
+		 */
+		candidate?: HeartDesign | null;
+		/**
 		 * A handle was dragged to a new size. Absent — in the small card beside a
 		 * found heart, say — and the handles are not drawn at all.
 		 */
@@ -122,6 +132,7 @@
 		paintValue,
 		revision,
 		frame,
+		candidate = null,
 		onFrameSize,
 		onFrameSizeStart,
 		disabled = false,
@@ -137,6 +148,16 @@
 
 	/** How far one press of a turn key turns the patch: a twelfth of a half turn. */
 	const TURN_STEP = Math.PI / 12;
+
+	/**
+	 * The halo under a candidate's cuts, as `PaperHeart` draws it.
+	 *
+	 * Black rather than a token: the cuts are drawn on the visitor's own paper,
+	 * whatever colours they chose, and the halo's job is to separate a cyan or an
+	 * orange line from it. `LOBE_OUTLINE_COLORS` is a plain hex for the same
+	 * reason, and this is its other half.
+	 */
+	const CANDIDATE_HALO = '#000000';
 
 	/** The site's own paper, as the last resort of `channels` below. */
 	const FALLBACK_PAPER = {
@@ -325,6 +346,53 @@
 
 		drawMirrorLines(ctx);
 		drawFrameOutline(ctx);
+		drawCandidate(ctx);
+		ctx.restore();
+	}
+
+	/**
+	 * The cuts the search is trying right now, over everything else.
+	 *
+	 * The editor's own two colours and its black halo, because they are the same
+	 * cuts the visitor will meet in Tegn if they keep this heart — cyan for the
+	 * left lobe, orange for the right, and a black stroke under both so neither
+	 * disappears into a paper of its own colour. Last of all the passes, and over
+	 * the mirror lines too: it is the thing that is changing.
+	 *
+	 * The design lives in the editor's pixel frame, whose woven square is the
+	 * overlap rectangle; `inferOverlapRect` is how every other reader of a design
+	 * finds it, and dividing by it puts the cuts in the square units this context
+	 * already draws in. Only the cuts are drawn — the four straight fingers along
+	 * the square's own edges are `normalizeHeartDesign`'s bookkeeping, and nobody
+	 * cuts those.
+	 */
+	function drawCandidate(ctx: CanvasRenderingContext2D): void {
+		if (!candidate?.fingers.length) return;
+		const rect = inferOverlapRect(candidate.fingers, candidate.gridSize);
+		if (!(rect.width > 0) || !(rect.height > 0)) return;
+		const x = (v: number) => (v - rect.left) / rect.width;
+		const y = (v: number) => (v - rect.top) / rect.height;
+		ctx.save();
+		ctx.lineCap = 'round';
+		ctx.lineJoin = 'round';
+		for (const finger of candidate.fingers) {
+			if (!finger.id.startsWith('L-cut-') && !finger.id.startsWith('R-cut-')) continue;
+			if (!finger.segments.length) continue;
+			ctx.beginPath();
+			const first = finger.segments[0]!.p0;
+			ctx.moveTo(x(first.x), y(first.y));
+			for (const s of finger.segments) {
+				ctx.bezierCurveTo(x(s.p1.x), y(s.p1.y), x(s.p2.x), y(s.p2.y), x(s.p3.x), y(s.p3.y));
+			}
+			// Two strokes of the one path: the halo first, then the lobe's colour on
+			// top of it, both in screen pixels however the heart is scaled.
+			ctx.strokeStyle = CANDIDATE_HALO;
+			ctx.lineWidth = 4 / layout.scale;
+			ctx.stroke();
+			ctx.strokeStyle = LOBE_OUTLINE_COLORS[finger.lobe];
+			ctx.lineWidth = 2 / layout.scale;
+			ctx.stroke();
+		}
 		ctx.restore();
 	}
 
@@ -1187,6 +1255,9 @@
 		void frame.mode;
 		void frame.shape;
 		void frame.size;
+		// A whole design, replaced rather than mutated: reading the reference is
+		// enough, and reading into it would subscribe to a heart nobody edits here.
+		void candidate;
 		untrack(schedule);
 	});
 

@@ -134,8 +134,63 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
 - Panel "Find snit": one sentence about the search ("Computeren leder efter de snit, der væver netop dit mønster."),
   the primary button `Find snit`, a disclosure "Avanceret" with the engine settings that matter to a hobbyist: Papirets bredde (mm, default 100), Mindste strimmelbredde (mm, 2),
   Samme skabelon til begge sider (checkbox, follows Mellem lapper: Sym), and a "Nulstil" link. Nothing else.
-- While searching: the panel shows a progress row (heart glyph, "Søger efter snit … 12 s", the current stage in
-  plain words, a bar) and `Afbryd`. The mask stays editable-looking but pointer input is ignored until done.
+- **While searching, the panel says what the search is trying** (owner, 2026-09-09; built, §12 for the rest). It was
+  a scissors glyph, a counter and one phrase for up to three minutes, while the engine underneath was announcing
+  every strip-count pair it had scored and reporting a fresh error every forty refinement steps. The face is now:
+  - the **stage in plain words** (scissors glyph, `role="status"`), with the numbers under it as one line —
+    "12 s · 4 + 4 strimler · buddets afvigelse ca. 1,3 % og faldende". Each part is left out when there is nothing
+    true to say: a search that has not chosen its counts prints no counts. The trend is read off the last two
+    checkpoints of the *same* attempt and is "stabil" under `TREND_EPSILON` (1e-3), which is one unit of the last
+    digit the panel prints; a jump between two attempts is not a trend and is reported as none. The threshold was
+    1e-4 for one round and measured wrong on Uret v2: the word alternated between faldende, stigende and stabil
+    once a second under a number that stayed at 0,8 % throughout — three claims a second, none of which the
+    visitor could check.
+  - **the live percentage is not the answer's percentage, and does not pretend to be** (2026-09-09). It is
+    `refineCurves`'s own `mismatch(renderCurves(…), prob)`: the candidate under the gradient against the
+    symmetry-averaged target at the fitting resolution (256 cells at most), over every cell, before simplification
+    and before our symmetry correction. The answer's "forskel fra masken" is measured on the converted heart about
+    to be drawn. Measured on Uret v2 the panel held 0,8 % for the last six seconds and the answer then said 1,6 %.
+    So the line says "buddets afvigelse ca." / "the candidate about … % off" rather than "afvigelse", and the
+    number **goes** the moment the fitter leaves refinement: `directSharing` and `directPolishing` improve the
+    answer and report no error at all, so the last checkpoint's number would otherwise stand — under a stage line
+    saying something else was happening — until the answer contradicted it. The counts stay, because those really
+    are the winner's, and the running mark in the attempts list is cleared at the same moment: `fit.js` breaks out
+    of its loop on a candidate that passes, so nothing ever announces the winner as finished.
+  - the **attempts**: every counts pair the fitter announced, one row each — the pair, the last error the
+    *refiner* measured for it, and a dot for done / running / waiting with the running row in `--cream2`. A pair
+    that has not been reached says "ikke prøvet" / "not tried", not "venter": the count search announces every pair
+    it scored and `gridFinalists` hands the refiner three of them, so most of a long list is never queued for
+    anything — the star announces eight and leaves five of them there. The word says what is known and promises
+    nothing about what the fitter will do next. Its seed error is not printed either: that one measures an
+    unrefined uniform grid at 64 cells a side, a third quantity again, so the row carries no number until the
+    refiner has measured one. A pair is one row however many times the engine scored it (the count search scores
+    each at both phases). Nothing is invented: a pair the engine has not mentioned is not in the list.
+  - the **MILP route's own three numbers** instead of a list, because it counts rounds rather than attempts:
+    "Løser … runde 2 · afstand til bedst mulige 3 % · 1 gyldig kandidat". The route is decided by the stages seen:
+    'model'/'solving' before any `direct*` means the MILP, and once the fitter has spoken the route stays the
+    fitter's — feature recovery builds a graph and solves a model *inside* the direct fit, and reading that as a
+    change of route would put the wrong face on the panel mid-search.
+  - the elapsed-time bar and `Afbryd`, as before. `role="status"` is on the stage line and nowhere else: it changes
+    a handful of times a search and is news, while the seconds, the error and the attempts change several times a
+    second and would be read over each other for the whole wait.
+  - **the candidate's cuts over the mask**, dormant until §12 (a) lands: cyan left, orange right, black halo, the
+    editor's own `LOBE_OUTLINE_COLORS`, as an additive pass in `MaskCanvas` after everything else it draws.
+  - **"Brug det bedste nu"**, dormant until §12 (b) lands. The panel draws it only when
+    `ENGINE_GRACEFUL_STOP` is true **and** it has been given an `onUseBest`, so flipping the flag on its own
+    cannot put a primary button beside Afbryd that does nothing.
+
+  The plumbing: `client.ts` passes the whole progress event, `EngineProgress` in `engine.ts` types the shapes
+  `core/` sends, and `$lib/paint/searchProgress.reduceProgress` folds the stream into one `SearchProgress` the panel
+  reads. The reducer is checked against `src/lib/paint/fixtures/starProgress.json` — every progress event of one
+  real search for the star's cuts, re-recordable with `CAPTURE_PROGRESS=1 npx vitest run
+  src/lib/paint/searchProgress.test.ts`, which runs the engine's own `design()`. Every stage on that recorded path
+  has a sentence, and the test asserts that replaying it never falls back to "Arbejder …", which is what makes a
+  stage added in `core/` fail here rather than go quiet on screen. The fixture cannot cover the whole set on its
+  own: it was captured with no symmetry, and `directMatching` — `preferMatchingSolution`, which runs whenever
+  "Samme skabelon til begge sider" is on, the default under Mellem lapper: Sym — takes the disabled early return
+  there. It has its own sentence and its own test.
+
+  The mask stays editable-looking but pointer input is ignored until done.
 - After success: "Skabelonen er fundet" with the numbers (n + m snit, minimum clearance in mm, difference from the
   mask in %), and the buttons `Åbn i Tegn` (primary) and `Tilbage til masken` (outline). The difference is measured
   on the heart we are about to show — `maskMismatch` of `rasterizeDesign(design, 200)` against the session mask
@@ -655,3 +710,110 @@ list of the valid alternatives (counts, error, geometry) in the result so the pa
 stedet" without searching again. The MILP route shows its rounds and gap and attaches an incumbent when one is
 validated.
 
+
+## 12. Engine hooks wanted for the live search
+
+The UI half of the live search (§2) is built and green. Three things are missing and all three are in `core/`, so
+they are Codex's lane; each is written here as a contract, with what the UI already does with it. The UI is wired
+for all three today and dormant: nothing below is a rewrite when it lands, it is a flag or an `if`.
+
+The paint bridge already carries whatever the engine sends. `client.ts` hands the whole progress event to its
+listener, `EngineProgress` in `src/lib/inverse/engine.ts` types every shape `core/` is known to send with every
+field optional, and unknown fields are tolerated — so an engine that starts attaching a field needs no change here
+to be *received*. What follows is what has to be attached.
+
+### (a) The current candidate's geometry on a refinement checkpoint
+
+**Contract.** Under a new solve setting `progressGeometry: true` (default false, validated by `core/settings.js`
+like every other setting, silently dropped by an engine that does not know it), each refinement checkpoint's
+progress event carries
+
+```js
+{ stage: 'directRefining', counts: [a, b], step, error, score, paper, issues,
+  geometry: { /* the heartcurves-2 solution of the candidate at this checkpoint */ } }
+```
+
+— the same JSON as `files['cut_geometry.json']` in the result, either as the object or as its serialised string.
+The engine throttles it to **at most four a second** across the whole solve, dropping the intermediate ones rather
+than queueing them: a checkpoint is every forty gradient steps, which on a fast machine is far more often than
+that, and the serialisation is the expensive part. Nothing else about the event changes.
+
+**`geometry` is already taken, and that is deliberate.** `refineCurves` puts `check.passed` — a boolean — in a field
+of that name today. The two are told apart **by type and by nothing else**: a boolean is the validity flag, an
+object or a string is a solution. `candidateGeometry(event)` in `src/lib/paint/searchProgress.ts` is the one place
+that decides, and it is tested both ways. So the engine may keep sending the boolean when `progressGeometry` is off
+and start sending the solution when it is on, under the same name, without a version negotiation.
+
+**What the UI does with it.** `PaintPage` lifts it out of the event, converts it with `cutGeometryToDesign` at
+`tolerance: 1.0` and no `enforce` — a picture redrawn four times a second, not the heart anyone will cut — and hands
+the result to `MaskCanvas` as `candidate`. The canvas draws its cuts over the mask in the editor's own colours
+(cyan left, orange right, black halo, `LOBE_OUTLINE_COLORS`) as one additive pass after everything else, so the
+visitor watches the cuts settle onto their drawing. The conversion is throttled again on our side to four a second
+with the latest winning (`createGeometryThrottle`), because the engine's throttle is a promise in this document
+while ours is in the code that would suffer for it. A candidate mid-refinement need not be a *legal* heart — cuts
+may cross, a family may be short — so the conversion is wrapped: a throw leaves the last good candidate on screen
+and says nothing. The candidate is dropped the moment the search ends, however it ends.
+
+**Not wanted.** Geometry on `directInitializing` (a grid seed is not a heart anyone would recognise), on
+`directClearance`, or on the bare `{stage}` events. Only the checkpoints, only under the setting.
+
+### (b) A graceful stop
+
+**Contract.** A new worker message
+
+```js
+worker.postMessage({ id, action: 'stop' })
+```
+
+for the request in flight. The fitter finishes the checkpoint it is in, stops, and answers on the **normal result
+channel** — `{ id, type: 'result', result }`, exactly as a completed solve does, with files, comparison and report
+— built from the best **validated** candidate it has so far. It does not terminate, and it does not answer with an
+error. The report carries two additions:
+
+- `report.stoppedEarly = true`, so the answer can be labelled as one the visitor cut short. (The field already
+  exists on some paths with this meaning; this makes it true here too.)
+- `report.alternatives = [{ counts: [a, b], error, geometry }]` — one entry per validated candidate the search
+  produced, best first, `geometry` being that candidate's own `heartcurves-2` solution. `error` is the same measure
+  as the checkpoints' (share of the square's cells the woven candidate gets wrong).
+
+If there is **no** validated candidate yet, `stop` answers with the engine's ordinary "no weavable pattern" error
+rather than inventing one; the page already tells that story.
+
+**What the UI does with it.** `ENGINE_GRACEFUL_STOP` in `src/lib/inverse/engine.ts` is `false` and the panel's
+"Brug det bedste nu" button is drawn only when it is true **and** the panel has an `onUseBest` — both halves, so
+that flipping the flag alone cannot produce a button that does nothing. The whole of the change is that constant,
+the message in `InverseWorker`, and passing `onUseBest` from `PaintPage`. The button sits beside `Afbryd` and means the
+opposite of it: Afbryd throws the search away (it terminates the worker, which is the only stop there is today),
+this one keeps what it has found. The result goes through the same `convertValidatedCutGeometry` and the same
+success face as a finished search. `report.alternatives` then lets that face offer "Prøv 3 + 3 i stedet" without
+searching again — each entry converts exactly as the winner does.
+
+### (c) An incumbent from the MILP route
+
+**Contract.** When the MILP route has a validated incumbent, its `solving` events carry it:
+
+```js
+{ stage: 'solving', round, remaining|nodes, gap, validatedIncumbent: true,
+  geometry: { /* heartcurves-2 of the incumbent */ } }
+```
+
+Same rule as (a): only under `progressGeometry`, only when the incumbent is validated, at most four a second, and
+told from a boolean by its type. The incumbent changes rarely, so no extra throttle is needed beyond that cap.
+
+**What the UI does with it.** The same as (a) — the incumbent's cuts are drawn over the mask — with no new code:
+`candidateGeometry` reads the field off any event, whatever its stage. Today the MILP face shows the round, the
+gap and whether an incumbent exists (`validatedIncumbent`), which is already sent; this makes the incumbent
+visible rather than only counted.
+
+### What the UI must not be asked to do
+
+- **No new request/response round trip per candidate.** One request is in flight at a time by the engine's own
+  rule (`InverseWorker.request` rejects a second), and Find snit is queued behind the import dialog's prepares. A
+  candidate has to ride on the progress channel.
+- **No unthrottled stream.** The conversion is a full `cutGeometryToDesign`; four a second is what the canvas can
+  redraw over a 400 × 400 mask without the page dropping frames, and the ceiling belongs in the engine as well as
+  here so that the message channel is not the bottleneck either.
+- **No change to the existing event fields.** `counts`, `error`, `step`, `round`, `gap` and `validatedIncumbent`
+  are what the panel's numbers are made of and what `starProgress.json` records; renaming one silently empties a
+  line of the panel. If one has to change, the fixture is re-recorded (`CAPTURE_PROGRESS=1`) and the reducer's
+  tests will say what moved.

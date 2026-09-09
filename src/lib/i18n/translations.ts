@@ -277,6 +277,8 @@ export const translations = {
     paintCancelAction: 'Annuller',
     paintSymmetry: 'Symmetri',
     paintSymmetryHint: 'Fundet i masken og slået til; alt du maler, spejles med.',
+    /** {panel} = panelets overskrift, så to knapper på siden kan skelnes */
+    paintPanelHint: 'Forklaring: {panel}',
     paintFindCuts: 'Find snit',
     paintFindCutsHint: 'Computeren leder efter de snit, der væver netop dit mønster.',
     paintAdvanced: 'Avanceret',
@@ -284,20 +286,52 @@ export const translations = {
     paintMinStripWidth: 'Mindste strimmelbredde (mm)',
     paintMatchingSheets: 'Samme skabelon til begge sider',
     paintReset: 'Nulstil',
-    /** {seconds} = sekunder siden søgningen begyndte */
-    paintSearching: 'Søger efter snit … {seconds} s',
     paintCancel: 'Afbryd',
     paintStageWorking: 'Arbejder …',
     paintStagePreparing: 'Adskiller farver og sporer kurver …',
     paintStageGraph: 'Opbygger mønsteret …',
     paintStageConnectors: 'Finder skjulte forbindelser …',
     paintStageModel: 'Forbereder søgningen …',
-    paintStageSolving: 'Søger efter to passende skabeloner …',
+    paintStageSolving: 'Løser …',
     paintStageValidating: 'Kontrollerer klippelinjerne …',
     paintStageRounding: 'Tilpasser fælles kurver …',
     paintStagePaper: 'Kontrollerer det udfoldede papir …',
     paintStageTolerances: 'Afprøver klippe- og justeringsfejl …',
     paintStageExporting: 'Forbereder filer …',
+    paintStageSeeding: 'Prøver antal strimler …',
+    paintStageFitting: 'Vælger de bedste bud …',
+    paintStageClearance: 'Giver plads mellem snittene …',
+    paintStageRefining: 'Tilpasser kurverne …',
+    paintStageSharing: 'Lader snit dele kurver …',
+    paintStagePolishing: 'Finpudser kurverne …',
+    paintStageMatching: 'Prøver samme skabelon til begge sider …',
+    /** {seconds} = sekunder siden søgningen begyndte */
+    paintSearchElapsed: '{seconds} s',
+    /** {left}, {right} = strimler i hver retning, som motoren prøver nu */
+    paintSearchStrips: '{left} + {right} strimler',
+    /**
+     * {percent} = motorens eget grove mål for buddet, mens det finpudses.
+     * Ikke det samme tal som "forskel fra masken" i svaret: det måles på det
+     * færdige hjerte, dette på buddet midt i søgningen — derfor "buddets" og
+     * "ca.".
+     */
+    paintSearchDeviation: 'buddets afvigelse ca. {percent} %',
+    paintSearchFalling: 'og faldende',
+    paintSearchRising: 'og stigende',
+    paintSearchFlat: 'og stabil',
+    /** {round} = hvilken runde af MILP-søgningen */
+    paintSearchRound: 'runde {round}',
+    /** {percent} = hvor langt buddet er fra det bedst mulige */
+    paintSearchGap: 'afstand til bedst mulige {percent} %',
+    paintSearchIncumbent: '1 gyldig kandidat',
+    paintAttempts: 'Forsøg',
+    /** {left}, {right} = strimler i hver retning */
+    paintAttemptCounts: '{left} + {right}',
+    /** Prøvet er den ikke — og de fleste bliver aldrig prøvet, så der loves intet */
+    paintAttemptWaiting: 'ikke prøvet',
+    paintAttemptDone: 'færdig',
+    paintAttemptRunning: 'i gang',
+    paintUseBest: 'Brug det bedste nu',
     paintFound: 'Skabelonen er fundet.',
     /** {left}, {right} = snit i hver lap; {clearance} = mm; {mismatch} = procent */
     paintFoundSummary: '{left} + {right} snit · mindst {clearance} mm mellem snittene · {mismatch}% forskel fra masken',
@@ -756,6 +790,8 @@ export const translations = {
     paintCancelAction: 'Cancel',
     paintSymmetry: 'Symmetry',
     paintSymmetryHint: 'Found in the mask and switched on; everything you paint is mirrored with it.',
+    /** {panel} = the panel's heading, so two buttons on the page can be told apart */
+    paintPanelHint: 'Explanation: {panel}',
     paintFindCuts: 'Find the cuts',
     paintFindCutsHint: 'The computer looks for the cuts that weave exactly your pattern.',
     paintAdvanced: 'Advanced',
@@ -763,20 +799,51 @@ export const translations = {
     paintMinStripWidth: 'Narrowest strip (mm)',
     paintMatchingSheets: 'One template for both sides',
     paintReset: 'Reset',
-    /** {seconds} = seconds since the search began */
-    paintSearching: 'Searching for cuts … {seconds} s',
     paintCancel: 'Stop',
     paintStageWorking: 'Working …',
     paintStagePreparing: 'Separating colours and tracing curves …',
     paintStageGraph: 'Building the pattern …',
     paintStageConnectors: 'Finding hidden connecting cuts …',
     paintStageModel: 'Preparing the search …',
-    paintStageSolving: 'Searching for two compatible templates …',
+    paintStageSolving: 'Solving …',
     paintStageValidating: 'Checking the selected cuts …',
     paintStageRounding: 'Refining shared curves …',
     paintStagePaper: 'Checking the unfolded paper …',
     paintStageTolerances: 'Testing cutting and alignment sensitivity …',
     paintStageExporting: 'Preparing downloads …',
+    paintStageSeeding: 'Trying numbers of strips …',
+    paintStageFitting: 'Picking the most promising ones …',
+    paintStageClearance: 'Making room between the cuts …',
+    paintStageRefining: 'Refining the curves …',
+    paintStageSharing: 'Letting cuts share curves …',
+    paintStagePolishing: 'Polishing the curves …',
+    paintStageMatching: 'Trying one template for both sheets …',
+    /** {seconds} = seconds since the search began */
+    paintSearchElapsed: '{seconds} s',
+    /** {left}, {right} = strips each way in the candidate being tried now */
+    paintSearchStrips: '{left} + {right} strips',
+    /**
+     * {percent} = the engine's own rough measure of the candidate being refined.
+     * Not the answer's "difference from the mask", which is measured on the
+     * finished heart — hence "the candidate" and "about".
+     */
+    paintSearchDeviation: 'the candidate about {percent} % off',
+    paintSearchFalling: 'and falling',
+    paintSearchRising: 'and rising',
+    paintSearchFlat: 'and steady',
+    /** {round} = which round of the MILP search */
+    paintSearchRound: 'round {round}',
+    /** {percent} = how far the candidate is from the best possible one */
+    paintSearchGap: 'distance to the best possible {percent} %',
+    paintSearchIncumbent: '1 valid candidate',
+    paintAttempts: 'Attempts',
+    /** {left}, {right} = strips each way */
+    paintAttemptCounts: '{left} + {right}',
+    /** Not tried — and most never will be, so the word promises nothing */
+    paintAttemptWaiting: 'not tried',
+    paintAttemptDone: 'done',
+    paintAttemptRunning: 'running',
+    paintUseBest: 'Use the best one now',
     paintFound: 'The template has been found.',
     /** {left}, {right} = cuts per lobe; {clearance} = mm; {mismatch} = per cent */
     paintFoundSummary: '{left} + {right} cuts · at least {clearance} mm between cuts · {mismatch}% different from the mask',

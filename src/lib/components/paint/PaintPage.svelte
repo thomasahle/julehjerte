@@ -85,15 +85,28 @@
 		paperPair,
 		prepareImage,
 		prepareMask,
-		type AdvancedSettings
+		type AdvancedSettings,
+		type EngineProgress
 	} from '$lib/inverse/engine';
 	import { EngineError, searchTimedOut } from '$lib/inverse/client';
-	import { convertValidatedCutGeometry, CutGeometryError } from '$lib/inverse/toHeartDesign';
+	import {
+		convertValidatedCutGeometry,
+		cutGeometryToDesign,
+		CutGeometryError,
+		type CutGeometry
+	} from '$lib/inverse/toHeartDesign';
+	import {
+		candidateGeometry,
+		createGeometryThrottle,
+		IDLE_PROGRESS,
+		reduceProgress,
+		type SearchProgress
+	} from '$lib/paint/searchProgress';
 	import { DEFAULT_COLORS, DEFAULT_COLORS_HEX, getColors, subscribeColors } from '$lib/stores/colors';
 	import { saveUserDesign } from '$lib/stores/collection';
 	import { toHexColors } from '$lib/utils/heartColors';
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
-	import type { HeartColors } from '$lib/types/heart';
+	import type { HeartColors, HeartDesign } from '$lib/types/heart';
 
 	interface Props {
 		lang: Language;
@@ -148,9 +161,51 @@
 	let canRedo = $state(false);
 	const history = createHistory();
 
-	let stage = $state('');
+	/**
+	 * What the search is doing, folded out of the engine's progress events.
+	 *
+	 * `$state.raw` because the reducer replaces the object rather than mutating
+	 * it: a checkpoint arrives a few times a second and the panel reads the whole
+	 * thing, so per-field reactivity would buy nothing and cost a proxy around an
+	 * array that is rebuilt anyway.
+	 */
+	let progress = $state.raw<SearchProgress>(IDLE_PROGRESS);
 	let elapsed = $state(0);
 	let timer: ReturnType<typeof setInterval> | null = null;
+
+	/**
+	 * The candidate the engine is looking at right now, drawn over the mask.
+	 *
+	 * Dormant: `geometry` on a progress event is a validity flag today, and
+	 * `candidateGeometry` answers null for it, so nothing is ever drawn until the
+	 * engine starts attaching the real thing (PAINT.md §12 (a)). Wired now, so
+	 * that when it does the change is in `core/` alone.
+	 */
+	let candidate = $state.raw<HeartDesign | null>(null);
+
+	/**
+	 * Converting a candidate is a full `cutGeometryToDesign`, so it is held to
+	 * four a second with the latest winning — the engine's own throttle is a
+	 * promise in a document, and this one is in the code that would suffer.
+	 */
+	const candidates = createGeometryThrottle<string | CutGeometry>((geometry) => {
+		try {
+			candidate = cutGeometryToDesign(geometry, {
+				name: t('paintHeartFromMask', lang),
+				colors: toHexColors(colors, DEFAULT_COLORS_HEX),
+				// Coarse, and no `enforce`: this is a picture of where the search has
+				// got to, redrawn a few times a second, not the heart anyone will cut.
+				// The tolerance keeps the conversion cheap and the missing enforcement
+				// keeps it from rasterising two designs to price a correction.
+				tolerance: 1.0
+			});
+		} catch (error) {
+			// A candidate mid-refinement need not be a legal heart — cuts may cross,
+			// a family may be empty. That is not a failure of the search, so it
+			// leaves the last good candidate on screen and says nothing.
+			console.debug('A candidate could not be drawn', error);
+		}
+	});
 	/** The rows the converter could hold the last heart to (PAINT.md §11). */
 	let honoured = $state<SymmetrySettings | null>(null);
 	/** "Vis det beskyttede motiv": the outline over the found heart. */
@@ -532,9 +587,17 @@
 		timer = setInterval(() => (elapsed = Math.floor((performance.now() - began) / 1000)), 1000);
 	}
 
+	/**
+	 * The search is over, however it ended: found, failed, Afbryd, or the page
+	 * being left. The candidate goes with the clock, because a conversion still
+	 * waiting in the throttle would otherwise land a picture of a half-finished
+	 * search over the answer a second after it arrived.
+	 */
 	function stopTimer(): void {
 		if (timer) clearInterval(timer);
 		timer = null;
+		candidates.stop();
+		candidate = null;
 	}
 
 	function classify(err: unknown): PaintError {
@@ -546,6 +609,21 @@
 			return err.report ? { kind: 'noSolution', detail: err.message } : { kind: 'engine' };
 		}
 		return { kind: 'engine', detail: err instanceof Error ? err.message : String(err) };
+	}
+
+	/**
+	 * One progress event: the numbers the panel shows, and the candidate it draws.
+	 *
+	 * Both directions of PAINT.md §12 meet here. The reducer takes the whole event
+	 * — it has to, because the fitter says which counts it is trying and how wrong
+	 * they still are, and none of that survived the old `progress(data.event.
+	 * stage)` — and the candidate's cuts are lifted out separately, because they
+	 * are a picture rather than a number and cost a conversion to draw.
+	 */
+	function onProgress(event: EngineProgress): void {
+		progress = reduceProgress(progress, event);
+		const geometry = candidateGeometry(event);
+		if (geometry) candidates.push(geometry);
 	}
 
 	async function find(): Promise<void> {
@@ -560,7 +638,8 @@
 		notice = null;
 		session.error = null;
 		session.status = 'searching';
-		stage = 'preprocessing';
+		progress = reduceProgress(IDLE_PROGRESS, { stage: 'preprocessing' });
+		candidate = null;
 		startTimer();
 		try {
 			// The target itself has to be symmetric, or the search spends its time
@@ -582,7 +661,7 @@
 			const frame = { ...session.frame };
 			const target = solveTargetMask(mask, frame, advanced.frameCells);
 
-			await prepareMask(target, colors, (next) => (stage = next));
+			await prepareMask(target, colors, onProgress);
 			const solved = await findCuts(
 				{
 					colors,
@@ -591,7 +670,7 @@
 					minWidthMm: advanced.minWidthMm,
 					matchingSheets: advanced.matchingSheets
 				},
-				(next) => (stage = next)
+				onProgress
 			);
 
 			const geometry = solved.files['cut_geometry.json'];
@@ -824,6 +903,7 @@
 							{paintValue}
 							{revision}
 							frame={session.frame}
+							{candidate}
 							onFrameSizeStart={recordFrameFold}
 							onFrameSize={resizeFrame}
 							disabled={busy}
@@ -1006,7 +1086,7 @@
 						{showMotif}
 						onShowMotif={(next) => (showMotif = next)}
 						{elapsed}
-						{stage}
+						{progress}
 						{advanced}
 						onAdvanced={(next) => (advanced = next)}
 						onResetAdvanced={() => (advanced = defaultAdvanced(session.symmetry))}

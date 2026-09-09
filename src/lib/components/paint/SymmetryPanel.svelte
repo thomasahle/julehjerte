@@ -21,6 +21,7 @@
 -->
 <script lang="ts">
 	import SymmetryRows from '$lib/components/editor/SymmetryRows.svelte';
+	import PanelHint from './PanelHint.svelte';
 	import { t, type Language } from '$lib/i18n';
 	import type { SymmetrySettings } from '$lib/paint/symmetry';
 
@@ -38,14 +39,15 @@
 </script>
 
 <!--
-  The two lines of explanation that used to head the panel body are the heading's
-  title instead: they say what a row does, which is worth reading once and then
-  never again, and at 300px they cost the column two lines on every visit. The
-  same sentence is in the Hjælp dialog, where it can be found on purpose. The
-  "fundet" tags stay in the body — they are about this mask, not about symmetry.
+  The explanation that used to head the panel body is behind the "i" beside the
+  heading: it says what a row does, which is worth reading once and then never
+  again, and at 300px it cost the column a line on every visit. It was the
+  heading's `title` for a while, which bought the same line and took the sentence
+  away from everyone not holding a mouse. The "fundet" tags stay in the body —
+  they are about this mask, not about symmetry.
 -->
 <section class="editor-panel">
-	<h2 class="panel-title" title={t('paintSymmetryHint', lang)}>{t('paintSymmetry', lang)}</h2>
+	<PanelHint {lang} heading={t('paintSymmetry', lang)} hint={t('paintSymmetryHint', lang)} />
 	<fieldset class="rows" {disabled}>
 		<SymmetryRows {lang} {value} onChange={onChange} {found} />
 	</fieldset>
