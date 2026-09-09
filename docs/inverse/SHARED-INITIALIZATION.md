@@ -92,3 +92,8 @@ comparison separately renders the exported cuts to measure image disagreement.
 Unit regressions check exact equivalence for unequal counts, both phases,
 noisy and soft pixels, varying spline sizes and resolutions, warmed caches and
 the complete default count search.
+
+The later [fixed-image reuse comparison](INITIALIZATION-IMAGE-REUSE.md) also
+shares resampled probabilities, validated weights and scoring data across
+starting grids. It preserves 2,332 selected seeds exactly across 129 inputs,
+including free-border perturbations and production browser masks.
