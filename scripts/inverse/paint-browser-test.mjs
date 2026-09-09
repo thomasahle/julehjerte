@@ -8,6 +8,7 @@ import {createServer} from 'vite';
 import {JSDOM} from 'jsdom';
 import {createCanvas,loadImage} from 'canvas';
 import {motifFixture,topHatFixture} from './motif-fixture.mjs';
+import {installPaintObservation,collectPaintObservation} from './paint-observer.mjs';
 
 const browsers=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 const origin=process.env.INVERSE_TEST_URL||'http://localhost:5200';
@@ -25,7 +26,10 @@ const {rasterizeDesign}=await loader.ssrLoadModule('/src/lib/paint/rasterize.ts'
 const {frameMismatch}=await loader.ssrLoadModule('/src/lib/paint/frame.ts');
 const {resample,maskMismatch}=await loader.ssrLoadModule('/src/lib/paint/mask.ts');
 const results=[];
-const report={origin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,workspaceSourceHashes:{},results};
+const report={origin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,
+ timingVersion:2,timingMethod:'Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.',
+ harnessSourceHashes:{},workspaceSourceHashes:{},results};
+for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
  for(const browserName of names){
@@ -45,14 +49,7 @@ try{
     page=await context.newPage();page.on('pageerror',e=>row.pageErrors.push(e.message));
     // Observe the real worker; no target, seed, count or fitted geometry is
     // supplied to it by this test. Capture what the visitor actually solved.
-    await page.addInitScript(()=>{
-     const NativeWorker=window.Worker;window.__paintQA={result:null,error:null,prepared:null};
-     window.Worker=class extends NativeWorker{constructor(...args){super(...args);this.addEventListener('message',({data})=>{
-      if(data.type==='result')window.__paintQA.result=data.result;
-      if(data.type==='error')window.__paintQA.error=data;
-      if(data.type==='prepared')window.__paintQA.prepared={mask:Array.from(data.preview.mask),resolution:data.preview.resolution,weights:data.preview.weights?Array.from(data.preview.weights):null};
-     });}};
-    });
+    await page.addInitScript(installPaintObservation);
     await page.goto(`${origin}/en/editor/paint/`);
     // The root layout sets the inline paper colours in onMount. Production
     // can finish loading its HTML before dynamic imports attach the handlers.
@@ -79,12 +76,22 @@ try{
      }
     }
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Find the cuts'&&!b.disabled));
-    const start=performance.now();await button('Find the cuts').click();
-    await page.waitForFunction(()=>window.__paintQA.result||window.__paintQA.error,{},{timeout:190000});
-    const observed=await page.evaluate(()=>window.__paintQA);assert.equal(observed.error,null,JSON.stringify(observed.error));
+    await button('Find the cuts').click();
+    await page.waitForFunction(()=>{const qa=window.__paintQA;return qa.error||qa.marks&&qa.marks.ready!==null||qa.result&&document.querySelector('[role=alert]');},{},{timeout:190000});
+    const captureStart=performance.now(),observed=await page.evaluate(collectPaintObservation);
+    row.captureSeconds=(performance.now()-captureStart)/1000;
+    assert.equal(observed.error,null,JSON.stringify(observed.error));
+    assert.ok(observed.marks&&observed.marks.ready!==null,'A successful solve must make Open in Draw ready.');
+    row.timings=observed.timings;row.pageMarks=observed.marks;
+    for(const [key,value]of Object.entries(row.timings))assert.ok(Number.isFinite(value)&&value>=0,`${key}: ${value}`);
+    const phases=Object.entries(row.timings).filter(([key])=>key!=='clickToReadySeconds').reduce((sum,[,value])=>sum+value,0);
+    assert.ok(Math.abs(phases-row.timings.clickToReadySeconds)<1e-7,'Page-clock phases must sum to DOM readiness.');
+    const writeStart=performance.now();
     await fs.writeFile(path.join(dir,'prepared.json'),JSON.stringify(observed.prepared));
     await fs.writeFile(path.join(dir,'engine-report.json'),JSON.stringify(observed.result.report,null,2));
     await fs.writeFile(path.join(dir,'cut_geometry.json'),observed.result.files['cut_geometry.json']);
+    row.artifactWriteSeconds=(performance.now()-writeStart)/1000;
+    row.reportedFitSeconds=observed.result.report.solver.seconds;
     row.engineError=observed.result.report.imageError.mismatchFraction;
     row.numericalBackend=observed.result.report.solver.numericalBackend?.backend;
     row.paperKernels=observed.result.report.solver.paperKernels;
@@ -95,7 +102,6 @@ try{
     assert.equal(observed.result.report.manufacturing.status,'pass');
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Open in Draw')||document.querySelector('[role=alert]'),{},{timeout:15000});
     assert.equal(await button('Open in Draw').count(),1,await page.locator('body').innerText());
-    row.solveAndConversionSeconds=(performance.now()-start)/1000;
     const summary=await page.locator('.summary[role=status]').innerText();
     const shown=summary.match(free?/([\d.]+)% different in the motif/:/([\d.]+)% different from the mask/);
     assert.ok(shown,summary);row.displayedError=Number(shown[1])/100;
