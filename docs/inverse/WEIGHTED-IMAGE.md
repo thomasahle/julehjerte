@@ -6,6 +6,11 @@ motif. The original mask stays intact for comparison. The public binary-mask
 input also accepts intermediate weights, although Paint does not expose a soft
 border control yet. Geometry and paper checks still apply to every cut.
 
+The subsequent [free-border phase correction](FREE-BORDER-PHASES.md) fixes the
+small-house and wizard-hat regressions described below by testing both
+supporting checker phases within a bounded topology budget. This report keeps
+the earlier measurements for comparison.
+
 ## Complete solver and Paint integration
 
 `{type: 'mask', resolution, mask, weights?}` passes binary artwork directly to
