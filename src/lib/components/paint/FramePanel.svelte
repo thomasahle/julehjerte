@@ -117,8 +117,7 @@
 				type="single"
 				role="radiogroup"
 				aria-label={tr('paintFrame')}
-				value={frame.mode}
-				onValueChange={setMode}
+				bind:value={() => frame.mode, setMode}
 				{disabled}
 			>
 				<ToggleGroupItem value="fixed">{tr('paintFrameFixed')}</ToggleGroupItem>

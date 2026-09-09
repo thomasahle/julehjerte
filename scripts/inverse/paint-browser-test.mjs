@@ -62,10 +62,11 @@ const results=[];
 const report={origin,upstreamOrigin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,referenceRequestCounts,
  timingVersion:2,timingMethod:'Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.',
  harnessSourceHashes:{},workspaceSourceHashes:{},results};
-for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs','scripts/inverse/motif-fixture.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
  for(const browserName of names){
   const browser=await browsers[browserName].launch({headless:true});
@@ -122,7 +123,23 @@ try{
     }
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Find the cuts'&&!b.disabled));
     row.requestedSymmetry=await symmetry();
-    if(name==='top-hat-anti')assert.equal(row.requestedSymmetry.lobes,'anti');
+    if(name==='top-hat-anti'){
+     assert.equal(row.requestedSymmetry.lobes,'anti');
+     // Selecting the active radio must not clear the primitive's selection
+     // while leaving the solver's symmetry model unchanged. Exercise pointer
+     // and keyboard input, and prove ordinary mode changes still work.
+     for(const label of['Within curve symmetry','Within lobe symmetry','Between lobes symmetry','Border','Brush','Paints with']){
+      const group=page.getByRole('radiogroup',{name:label,exact:true}),selected=group.getByRole('radio',{checked:true}),word=await selected.getAttribute('aria-label')||(await selected.innerText()).trim(),radio=group.getByRole('radio',{name:word,exact:true});
+      await radio.click();assert.equal(await radio.getAttribute('aria-checked'),'true');
+      await radio.press('Space');assert.equal(await radio.getAttribute('aria-checked'),'true');
+      assert.equal(await group.getByRole('radio',{checked:true}).count(),1);
+     }
+     const between=page.getByRole('radiogroup',{name:'Between lobes symmetry',exact:true});
+     await between.getByRole('radio',{name:'Off',exact:true}).click();assert.equal(await between.getByRole('radio',{name:'Off',exact:true}).getAttribute('aria-checked'),'true');
+     await between.getByRole('radio',{name:'Anti',exact:true}).click();assert.equal(await between.getByRole('radio',{name:'Anti',exact:true}).getAttribute('aria-checked'),'true');
+     assert.deepEqual(await symmetry(),row.requestedSymmetry);
+     row.symmetryControlChecks={paint:true};
+    }
     await button('Find the cuts').click();
     await page.waitForFunction(()=>{const qa=window.__paintQA;return qa.error||qa.marks&&qa.marks.ready!==null||qa.result&&document.querySelector('[role=alert]');},{},{timeout:190000});
     const captureStart=performance.now(),observed=await page.evaluate(collectPaintObservation);
@@ -167,6 +184,12 @@ try{
     await page.screenshot({path:path.join(dir,'result.png'),fullPage:true});
     await button('Open in Draw').click();await page.waitForURL('**/en/editor/?from=session');
     await button('Export SVG').waitFor();
+    if(name==='top-hat-anti'){
+     const radio=page.getByRole('radiogroup',{name:'Between lobes symmetry',exact:true}).getByRole('radio',{name:'Anti',exact:true});
+     await radio.click();assert.equal(await radio.getAttribute('aria-checked'),'true');
+     await radio.press('Space');assert.equal(await radio.getAttribute('aria-checked'),'true');
+     row.symmetryControlChecks.draw=true;
+    }
     assert.doesNotMatch(await page.locator('body').innerText(),/curves must not cross/i);
     const pending=page.waitForEvent('download');await button('Export SVG').click();
     const svgFile=path.join(dir,'editable.svg');await(await pending).saveAs(svgFile);

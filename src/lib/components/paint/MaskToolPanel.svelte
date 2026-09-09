@@ -180,8 +180,7 @@
 					type="single"
 					role="radiogroup"
 					aria-label={tr('paintBrush')}
-					value={brushSize}
-					onValueChange={chooseBrush}
+					bind:value={() => brushSize, chooseBrush}
 					{disabled}
 				>
 					{#each BRUSH_SIZES as size (size)}
@@ -198,8 +197,7 @@
 					type="single"
 					role="radiogroup"
 					aria-label={tr('paintsWith')}
-					value={String(paintValue)}
-					onValueChange={choosePaper}
+					bind:value={() => String(paintValue), choosePaper}
 					{disabled}
 				>
 					{#each PAPERS as value (value)}
