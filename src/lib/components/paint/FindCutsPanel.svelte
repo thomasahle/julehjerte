@@ -150,11 +150,16 @@
 		exporting: 'paintStageExporting'
 	};
 
-	/** The dot beside an attempt, and the word a screen reader gets instead. */
-	const ATTEMPT_STATES: Record<AttemptState, TranslationKey> = {
+	/**
+	 * The word behind the dot, for a screen reader.
+	 *
+	 * Only the two states the dot alone distinguishes: a waiting row says
+	 * "venter" in the text everybody can see, and a second copy of it would be
+	 * read out twice in a row.
+	 */
+	const ATTEMPT_STATES: Record<Exclude<AttemptState, 'waiting'>, TranslationKey> = {
 		done: 'paintAttemptDone',
-		running: 'paintAttemptRunning',
-		waiting: 'paintAttemptWaiting'
+		running: 'paintAttemptRunning'
 	};
 
 	const TRENDS: Record<ErrorTrend, TranslationKey> = {
@@ -333,14 +338,16 @@
 									right: attempt.counts[1]
 								})}
 							</span>
-							<span class="attempt-error">
-								{attempt.state === 'waiting' || attempt.error === null
-									? tr('paintAttemptWaiting')
-									: `${decimal(100 * attempt.error)} %`}
-							</span>
-							<!-- The dot is the only thing that says done from running, so the
-							     word it stands for goes where a screen reader will find it. -->
-							<span class="sr-only">{tr(ATTEMPT_STATES[attempt.state])}</span>
+							{#if attempt.state === 'waiting' || attempt.error === null}
+								<span class="attempt-error">{tr('paintAttemptWaiting')}</span>
+							{:else}
+								<span class="attempt-error">{decimal(100 * attempt.error)} %</span>
+								<!-- The dot is the only thing that tells done from running, so the
+								     word it stands for goes where a screen reader will find it. Not
+								     on a waiting row: there the visible text is already the word,
+								     and both would be read out one after the other. -->
+								<span class="sr-only">{tr(ATTEMPT_STATES[attempt.state])}</span>
+							{/if}
 						</li>
 					{/each}
 				</ul>

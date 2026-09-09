@@ -224,6 +224,14 @@ describe('FindCutsPanel while searching', () => {
 				'venter'
 			]);
 			expect(rows.map((r) => r.className.includes('running'))).toEqual([false, true, false]);
+			// The dot is the only thing that tells done from running, so both carry
+			// the word for a screen reader — and a waiting row does not, because its
+			// visible text is already that word.
+			expect(rows.map((r) => r.querySelector('.sr-only')?.textContent)).toEqual([
+				'færdig',
+				'i gang',
+				undefined
+			]);
 		} finally {
 			panel.cleanup();
 		}
