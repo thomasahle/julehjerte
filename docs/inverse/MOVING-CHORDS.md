@@ -1,5 +1,9 @@
 # Moving endpoints in within-curve symmetry
 
+The subsequent [control-identity correction](CONTROL-IDENTITY.md) resolves the
+accidental parameter sharing diagnosed below, while retaining deliberate shared
+cuts. This report records the preceding endpoint-gradient study.
+
 The previous joint chord projection correctly enforced the geometry, but its
 backward pass froze the reflection frame. This removed legitimate search
 motions: midpoint reflection (`anti`) cancelled a cut's translation, while

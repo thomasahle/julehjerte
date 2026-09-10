@@ -127,3 +127,10 @@ checks retain byte-identical cutting geometry for all 12 established hat and
 star workflows, including their exact shared spans. It also records a separate
 remaining issue with accidentally shared handles in minimal straight grids;
 that diagnostic does not disable deliberate shared cuts in production.
+
+The [control-identity correction](CONTROL-IDENTITY.md) now removes those accidental
+parameter couplings while retaining complete shared cubics. Its new browser QA
+covers matching, independent and Anti hats plus a smaller free-border hat in
+all three browsers. Every hat export preserves its exact common geometry.
+The same QA records an unresolved narrow-return defect in a separate live
+anchor-photo upload; editor conversion correctly blocks that invalid result.

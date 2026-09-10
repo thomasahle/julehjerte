@@ -1,0 +1,2991 @@
+{
+  "implementationCommits": [
+    "e9a966d",
+    "7799e2f"
+  ],
+  "validationCommit": "58632696e440d6b48aa38691bfec43ffd71598c6",
+  "referenceCommit": "28a9c06",
+  "controlled": [
+    {
+      "segmentsPerSeedCut": 1,
+      "cases": 24,
+      "improved": 4,
+      "worse": 0,
+      "beforeTiming": {
+        "medianSeconds": 0.4431135624999997,
+        "maxSeconds": 0.7426182920000001
+      },
+      "afterTiming": {
+        "medianSeconds": 0.4086495420000001,
+        "maxSeconds": 0.543635583
+      },
+      "results": [
+        {
+          "name": "sym-1x1-bend0",
+          "beforePreparedError": 0,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 5e-05,
+          "afterIdeal400Error": 5e-05,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 4.3220627292571254e-14
+          }
+        },
+        {
+          "name": "sym-1x1-bend4",
+          "beforePreparedError": 0.0006,
+          "afterPreparedError": 0.0006,
+          "beforeIdeal400Error": 0.0011375,
+          "afterIdeal400Error": 0.0011375,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 1.5888218580782548e-14
+          }
+        },
+        {
+          "name": "sym-1x2-bend0",
+          "beforePreparedError": 0.00025,
+          "afterPreparedError": 0.00025,
+          "beforeIdeal400Error": 0.0002125,
+          "afterIdeal400Error": 0.0002125,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 2.929642751054232e-14
+          }
+        },
+        {
+          "name": "sym-1x2-bend4",
+          "beforePreparedError": 0.00035,
+          "afterPreparedError": 0.00035,
+          "beforeIdeal400Error": 0.00081875,
+          "afterIdeal400Error": 0.00081875,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 5.728578676879116e-14
+          }
+        },
+        {
+          "name": "sym-2x2-bend0",
+          "beforePreparedError": 0.059,
+          "afterPreparedError": 0.0006,
+          "beforeIdeal400Error": 0.05915,
+          "afterIdeal400Error": 0.000675,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 2.1316282072803006e-14
+          }
+        },
+        {
+          "name": "sym-2x2-bend4",
+          "beforePreparedError": 0.0592,
+          "afterPreparedError": 0.0001,
+          "beforeIdeal400Error": 0.058975,
+          "afterIdeal400Error": 0.0004,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 5.859285502108464e-14
+          }
+        },
+        {
+          "name": "sym-2x3-bend0",
+          "beforePreparedError": 0.00025,
+          "afterPreparedError": 0.00025,
+          "beforeIdeal400Error": 0.000225,
+          "afterIdeal400Error": 0.000225,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 3.552713678800501e-14
+          }
+        },
+        {
+          "name": "sym-2x3-bend4",
+          "beforePreparedError": 0.001,
+          "afterPreparedError": 0.001,
+          "beforeIdeal400Error": 0.0017875,
+          "afterIdeal400Error": 0.0017875,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 3.1776437161565096e-14
+          }
+        },
+        {
+          "name": "sym-3x3-bend0",
+          "beforePreparedError": 0.0001,
+          "afterPreparedError": 0.0001,
+          "beforeIdeal400Error": 7.5e-05,
+          "afterIdeal400Error": 7.5e-05,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 1.5888218580782548e-14
+          }
+        },
+        {
+          "name": "sym-3x3-bend4",
+          "beforePreparedError": 0.0018,
+          "afterPreparedError": 0.0018,
+          "beforeIdeal400Error": 0.0030875,
+          "afterIdeal400Error": 0.0030875,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 2.929642751054232e-14
+          }
+        },
+        {
+          "name": "sym-3x4-bend0",
+          "beforePreparedError": 0,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0.0001625,
+          "afterIdeal400Error": 0.0001625,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 2.929642751054232e-14
+          }
+        },
+        {
+          "name": "sym-3x4-bend4",
+          "beforePreparedError": 0.00215,
+          "afterPreparedError": 0.00215,
+          "beforeIdeal400Error": 0.00386875,
+          "afterIdeal400Error": 0.00386875,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 3.1776437161565096e-14
+          }
+        },
+        {
+          "name": "anti-1x1-bend0",
+          "beforePreparedError": 0,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0,
+          "afterIdeal400Error": 0,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-1x1-bend4",
+          "beforePreparedError": 0.00185,
+          "afterPreparedError": 0.00185,
+          "beforeIdeal400Error": 0.00255,
+          "afterIdeal400Error": 0.00255,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 0
+          }
+        },
+        {
+          "name": "anti-1x2-bend0",
+          "beforePreparedError": 0,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0.005,
+          "afterIdeal400Error": 0.005,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-1x2-bend4",
+          "beforePreparedError": 0.0037,
+          "afterPreparedError": 0.0037,
+          "beforeIdeal400Error": 0.00368125,
+          "afterIdeal400Error": 0.00368125,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 0
+          }
+        },
+        {
+          "name": "anti-2x2-bend0",
+          "beforePreparedError": 0.10815,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0.109525,
+          "afterIdeal400Error": 0.00995,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-2x2-bend4",
+          "beforePreparedError": 0.1075,
+          "afterPreparedError": 0.00525,
+          "beforeIdeal400Error": 0.1083875,
+          "afterIdeal400Error": 0.0044125,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 0
+          }
+        },
+        {
+          "name": "anti-2x3-bend0",
+          "beforePreparedError": 0,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0.005,
+          "afterIdeal400Error": 0.005,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-2x3-bend4",
+          "beforePreparedError": 0.0051,
+          "afterPreparedError": 0.0051,
+          "beforeIdeal400Error": 0.00613125,
+          "afterIdeal400Error": 0.00613125,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 0
+          }
+        },
+        {
+          "name": "anti-3x3-bend0",
+          "beforePreparedError": 0,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0,
+          "afterIdeal400Error": 0,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-3x3-bend4",
+          "beforePreparedError": 0.0046,
+          "afterPreparedError": 0.0046,
+          "beforeIdeal400Error": 0.0070875,
+          "afterIdeal400Error": 0.0070875,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 0
+          }
+        },
+        {
+          "name": "anti-3x4-bend0",
+          "beforePreparedError": 0,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0,
+          "afterIdeal400Error": 0,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-3x4-bend4",
+          "beforePreparedError": 0.0052,
+          "afterPreparedError": 0.0052,
+          "beforeIdeal400Error": 0.008125,
+          "afterIdeal400Error": 0.008125,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 0
+          }
+        }
+      ]
+    },
+    {
+      "segmentsPerSeedCut": 2,
+      "cases": 24,
+      "improved": 18,
+      "worse": 0,
+      "beforeTiming": {
+        "medianSeconds": 0.4456021665000003,
+        "maxSeconds": 0.534344084
+      },
+      "afterTiming": {
+        "medianSeconds": 0.46378454150000004,
+        "maxSeconds": 0.728494541
+      },
+      "results": [
+        {
+          "name": "sym-1x1-bend0",
+          "beforePreparedError": 0.0001,
+          "afterPreparedError": 0.0001,
+          "beforeIdeal400Error": 0.0001,
+          "afterIdeal400Error": 0.00010625,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 7.815970093361102e-14
+          }
+        },
+        {
+          "name": "sym-1x1-bend4",
+          "beforePreparedError": 0.00815,
+          "afterPreparedError": 0.00095,
+          "beforeIdeal400Error": 0.0081625,
+          "afterIdeal400Error": 0.0018125,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 1.2100106776761097e-13
+          }
+        },
+        {
+          "name": "sym-1x2-bend0",
+          "beforePreparedError": 0.020325,
+          "afterPreparedError": 5e-05,
+          "beforeIdeal400Error": 0.021475,
+          "afterIdeal400Error": 7.5e-05,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 6.394884621840902e-14
+          }
+        },
+        {
+          "name": "sym-1x2-bend4",
+          "beforePreparedError": 0.031625,
+          "afterPreparedError": 0.0008,
+          "beforeIdeal400Error": 0.0321625,
+          "afterIdeal400Error": 0.001325,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 6.434238129413513e-14
+          }
+        },
+        {
+          "name": "sym-2x2-bend0",
+          "beforePreparedError": 0.0592,
+          "afterPreparedError": 0.0001,
+          "beforeIdeal400Error": 0.0592,
+          "afterIdeal400Error": 0.000375,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 1.4210854715202004e-13
+          }
+        },
+        {
+          "name": "sym-2x2-bend4",
+          "beforePreparedError": 0.0592,
+          "afterPreparedError": 0.0008,
+          "beforeIdeal400Error": 0.059125,
+          "afterIdeal400Error": 0.000825,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 1.923721465954157e-13
+          }
+        },
+        {
+          "name": "sym-2x3-bend0",
+          "beforePreparedError": 0.03345,
+          "afterPreparedError": 0.0003,
+          "beforeIdeal400Error": 0.0333,
+          "afterIdeal400Error": 0.0001375,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 3.1776437161565096e-14
+          }
+        },
+        {
+          "name": "sym-2x3-bend4",
+          "beforePreparedError": 0.0122,
+          "afterPreparedError": 0.001175,
+          "beforeIdeal400Error": 0.01399375,
+          "afterIdeal400Error": 0.00230625,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 1.4228607195221903e-13
+          }
+        },
+        {
+          "name": "sym-3x3-bend0",
+          "beforePreparedError": 0.0001,
+          "afterPreparedError": 0.0001,
+          "beforeIdeal400Error": 0.000225,
+          "afterIdeal400Error": 0.000225,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 1.2789769243681803e-13
+          }
+        },
+        {
+          "name": "sym-3x3-bend4",
+          "beforePreparedError": 0.008,
+          "afterPreparedError": 0.0021,
+          "beforeIdeal400Error": 0.0090375,
+          "afterIdeal400Error": 0.004075,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 1.2789769243681803e-13
+          }
+        },
+        {
+          "name": "sym-3x4-bend0",
+          "beforePreparedError": 0.00025,
+          "afterPreparedError": 0.00025,
+          "beforeIdeal400Error": 0.00025,
+          "afterIdeal400Error": 0.00025,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 1.2409095402129096e-13
+          }
+        },
+        {
+          "name": "sym-3x4-bend4",
+          "beforePreparedError": 0.002425,
+          "afterPreparedError": 0.002425,
+          "beforeIdeal400Error": 0.004725,
+          "afterIdeal400Error": 0.004725,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:sym"
+            ],
+            "honoured": [
+              "withinCurve:sym"
+            ],
+            "maxDeviationMm": 2.5579538487363607e-13
+          }
+        },
+        {
+          "name": "anti-1x1-bend0",
+          "beforePreparedError": 0.0568,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0.05665,
+          "afterIdeal400Error": 0,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-1x1-bend4",
+          "beforePreparedError": 0.0567,
+          "afterPreparedError": 0.00015,
+          "beforeIdeal400Error": 0.0566875,
+          "afterIdeal400Error": 0.0009125,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 0
+          }
+        },
+        {
+          "name": "anti-1x2-bend0",
+          "beforePreparedError": 0.081075,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0.083125,
+          "afterIdeal400Error": 0.005,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-1x2-bend4",
+          "beforePreparedError": 0.081175,
+          "afterPreparedError": 0.000425,
+          "beforeIdeal400Error": 0.0811875,
+          "afterIdeal400Error": 0.00068125,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-2x2-bend0",
+          "beforePreparedError": 0.1,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0.1012875,
+          "afterIdeal400Error": 0.00995,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-2x2-bend4",
+          "beforePreparedError": 0.10085,
+          "afterPreparedError": 0.0008,
+          "beforeIdeal400Error": 0.1011125,
+          "afterIdeal400Error": 0.0004375,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 3.552713678800501e-15
+          }
+        },
+        {
+          "name": "anti-2x3-bend0",
+          "beforePreparedError": 0.08335,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0.0836375,
+          "afterIdeal400Error": 0.005,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-2x3-bend4",
+          "beforePreparedError": 0.0851,
+          "afterPreparedError": 0.000575,
+          "beforeIdeal400Error": 0.0859125,
+          "afterIdeal400Error": 0.0016375,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 3.552713678800501e-15
+          }
+        },
+        {
+          "name": "anti-3x3-bend0",
+          "beforePreparedError": 0.0568,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0.056675,
+          "afterIdeal400Error": 0,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-3x3-bend4",
+          "beforePreparedError": 0.05715,
+          "afterPreparedError": 0.00035,
+          "beforeIdeal400Error": 0.05855,
+          "afterIdeal400Error": 0.0027875,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 3.552713678800501e-15
+          }
+        },
+        {
+          "name": "anti-3x4-bend0",
+          "beforePreparedError": 0,
+          "afterPreparedError": 0,
+          "beforeIdeal400Error": 0,
+          "afterIdeal400Error": 0,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 7.105427357601002e-15
+          }
+        },
+        {
+          "name": "anti-3x4-bend4",
+          "beforePreparedError": 0.00045,
+          "afterPreparedError": 0.00045,
+          "beforeIdeal400Error": 0.00325625,
+          "afterIdeal400Error": 0.00325625,
+          "geometry": true,
+          "paper": true,
+          "symmetry": {
+            "requested": [
+              "withinCurve:anti"
+            ],
+            "honoured": [
+              "withinCurve:anti"
+            ],
+            "maxDeviationMm": 5.329070518200751e-15
+          }
+        }
+      ]
+    }
+  ],
+  "datasets": {
+    "hunodan": {
+      "cases": 22,
+      "allPassed": true,
+      "timing": {
+        "medianSeconds": 5.329784708000004,
+        "maxSeconds": 8.076588624999989
+      },
+      "changedGeometry": [
+        "hjfig-05"
+      ],
+      "sourceHashDifferencesFromCurrent": [],
+      "results": [
+        {
+          "case": "hjfig-01",
+          "passed": true,
+          "seconds": 4.344315958,
+          "beforeError": 0.009799111111111111,
+          "afterError": 0.009799111111111111
+        },
+        {
+          "case": "hjfig-02",
+          "passed": true,
+          "seconds": 4.270752042,
+          "beforeError": 0.013952,
+          "afterError": 0.013952
+        },
+        {
+          "case": "hjfig-03",
+          "passed": true,
+          "seconds": 3.523694625,
+          "beforeError": 0.006634666666666666,
+          "afterError": 0.006634666666666666
+        },
+        {
+          "case": "hjfig-04",
+          "passed": true,
+          "seconds": 3.935419,
+          "beforeError": 0.013824,
+          "afterError": 0.013824
+        },
+        {
+          "case": "hjfig-05",
+          "passed": true,
+          "seconds": 2.767566874999997,
+          "beforeError": 0.010231665331208341,
+          "afterError": 0.009060571106551963
+        },
+        {
+          "case": "hjfla-01",
+          "passed": true,
+          "seconds": 5.848075624999998,
+          "beforeError": 0.013414171006944444,
+          "afterError": 0.013414171006944444
+        },
+        {
+          "case": "hjcur-01",
+          "passed": true,
+          "seconds": 5.740738791,
+          "beforeError": 0.00512,
+          "afterError": 0.00512
+        },
+        {
+          "case": "hjcur-02",
+          "passed": true,
+          "seconds": 5.323228583000004,
+          "beforeError": 0.005397333333333333,
+          "afterError": 0.005397333333333333
+        },
+        {
+          "case": "hjcur-03",
+          "passed": true,
+          "seconds": 5.336340833000002,
+          "beforeError": 0.004522666666666667,
+          "afterError": 0.004522666666666667
+        },
+        {
+          "case": "hjcur-04",
+          "passed": true,
+          "seconds": 6.915900625000002,
+          "beforeError": 0.0056248888888888885,
+          "afterError": 0.0056248888888888885
+        },
+        {
+          "case": "hjcur-05",
+          "passed": true,
+          "seconds": 3.2828396250000007,
+          "beforeError": 0.009436444444444445,
+          "afterError": 0.009436444444444445
+        },
+        {
+          "case": "hjhih-01",
+          "passed": true,
+          "seconds": 7.0158274579999995,
+          "beforeError": 0.0060202958468683725,
+          "afterError": 0.0060202958468683725
+        },
+        {
+          "case": "hjhih-02",
+          "passed": true,
+          "seconds": 5.169797166999997,
+          "beforeError": 0.003899406226779104,
+          "afterError": 0.003899406226779104
+        },
+        {
+          "case": "hjhih-04",
+          "passed": true,
+          "seconds": 7.406348207999995,
+          "beforeError": 0.007678910190418844,
+          "afterError": 0.007678910190418844
+        },
+        {
+          "case": "hjstr-01",
+          "passed": true,
+          "seconds": 4.466166750000004,
+          "beforeError": 0.007543348420030173,
+          "afterError": 0.007543348420030173
+        },
+        {
+          "case": "hjstr-02",
+          "passed": true,
+          "seconds": 5.936397792000004,
+          "beforeError": 0.004339250493096647,
+          "afterError": 0.004339250493096647
+        },
+        {
+          "case": "hjstr-03",
+          "passed": true,
+          "seconds": 8.076588624999989,
+          "beforeError": 0.005519980869380381,
+          "afterError": 0.005519980869380381
+        },
+        {
+          "case": "hjsta-01",
+          "passed": true,
+          "seconds": 4.4234644160000025,
+          "beforeError": 0.007936288088642659,
+          "afterError": 0.007936288088642659
+        },
+        {
+          "case": "hjsta-02",
+          "passed": true,
+          "seconds": 5.003220333000005,
+          "beforeError": 0.0036485460069444445,
+          "afterError": 0.0036485460069444445
+        },
+        {
+          "case": "hjsta-03",
+          "passed": true,
+          "seconds": 6.706855208000008,
+          "beforeError": 0.012339030193129683,
+          "afterError": 0.012339030193129683
+        },
+        {
+          "case": "hjsta-04",
+          "passed": true,
+          "seconds": 6.566448625000005,
+          "beforeError": 0.005053050026595,
+          "afterError": 0.005053050026595
+        },
+        {
+          "case": "hjsta-05",
+          "passed": true,
+          "seconds": 6.476337541999994,
+          "beforeError": 0.010624446293860237,
+          "afterError": 0.010624446293860237
+        }
+      ]
+    },
+    "weighted": {
+      "cases": 32,
+      "allPassed": true,
+      "timing": {
+        "medianSeconds": 4.478077583499997,
+        "maxSeconds": 8.197021083
+      },
+      "changedGeometry": [
+        "hat-0.64-weighted-inverted",
+        "hat-0.64-weighted-free-noise",
+        "house-0.64-weighted-inverted",
+        "top-hat-0.64-weighted-shifted",
+        "circle-0.64-weighted-free-noise",
+        "top-hat-0.64-weighted-inverted",
+        "top-hat-0.64-weighted-free-noise",
+        "hat-0.64-weighted-shifted",
+        "house-0.64-weighted-shifted",
+        "circle-0.64-weighted-shifted",
+        "top-hat-0.64-weighted",
+        "house-0.64-weighted",
+        "circle-0.64-weighted",
+        "house-0.64-weighted-free-noise",
+        "hat-0.64-weighted",
+        "circle-0.64-weighted-inverted"
+      ],
+      "sourceHashDifferencesFromCurrent": [
+        "static/inverse/core/direct/fit.js"
+      ],
+      "results": [
+        {
+          "case": [
+            "top-hat",
+            0.64,
+            "original",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 2.6523165419999994,
+          "beforeError": 0.00360107421875,
+          "afterError": 0.00360107421875
+        },
+        {
+          "case": [
+            "top-hat",
+            0.64,
+            "inverted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 2.3727502909999996,
+          "beforeError": 0.003662109375,
+          "afterError": 0.003662109375
+        },
+        {
+          "case": [
+            "top-hat",
+            0.64,
+            "shifted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 2.3831064589999995,
+          "beforeError": 0.00360107421875,
+          "afterError": 0.00360107421875
+        },
+        {
+          "case": [
+            "top-hat",
+            0.64,
+            "free-noise",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 2.246543625,
+          "beforeError": 0.00360107421875,
+          "afterError": 0.00360107421875
+        },
+        {
+          "case": [
+            "top-hat",
+            0.84,
+            "original",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 5.840969207999999,
+          "beforeError": 0.0002834467120181406,
+          "afterError": 0.0002834467120181406
+        },
+        {
+          "case": [
+            "top-hat",
+            0.84,
+            "inverted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 8.197021083,
+          "beforeError": 0.00021258503401360543,
+          "afterError": 0.00021258503401360543
+        },
+        {
+          "case": [
+            "top-hat",
+            0.84,
+            "shifted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.019390333,
+          "beforeError": 0.00031887755102040814,
+          "afterError": 0.00031887755102040814
+        },
+        {
+          "case": [
+            "top-hat",
+            0.84,
+            "free-noise",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.070440582999996,
+          "beforeError": 0.0002834467120181406,
+          "afterError": 0.0002834467120181406
+        },
+        {
+          "case": [
+            "hat",
+            0.64,
+            "original",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 1.8947167499999995,
+          "beforeError": 0.00054931640625,
+          "afterError": 0.00054931640625
+        },
+        {
+          "case": [
+            "hat",
+            0.64,
+            "inverted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 1.9453738329999979,
+          "beforeError": 0.00054931640625,
+          "afterError": 0.00054931640625
+        },
+        {
+          "case": [
+            "hat",
+            0.64,
+            "shifted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 1.9437149999999965,
+          "beforeError": 0.00054931640625,
+          "afterError": 0.00054931640625
+        },
+        {
+          "case": [
+            "hat",
+            0.64,
+            "free-noise",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 1.9962342500000014,
+          "beforeError": 0.00054931640625,
+          "afterError": 0.00054931640625
+        },
+        {
+          "case": [
+            "hat",
+            0.84,
+            "original",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.850231667,
+          "beforeError": 7.086167800453515e-05,
+          "afterError": 7.086167800453515e-05
+        },
+        {
+          "case": [
+            "hat",
+            0.84,
+            "inverted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.859717624999997,
+          "beforeError": 0.0002834467120181406,
+          "afterError": 0.0002834467120181406
+        },
+        {
+          "case": [
+            "hat",
+            0.84,
+            "shifted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.943391000000004,
+          "beforeError": 0.0002834467120181406,
+          "afterError": 0.0002834467120181406
+        },
+        {
+          "case": [
+            "hat",
+            0.84,
+            "free-noise",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.7331838329999885,
+          "beforeError": 7.086167800453515e-05,
+          "afterError": 7.086167800453515e-05
+        },
+        {
+          "case": [
+            "house",
+            0.64,
+            "original",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 3.050175292,
+          "beforeError": 0,
+          "afterError": 0
+        },
+        {
+          "case": [
+            "house",
+            0.64,
+            "inverted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 1.8331474170000002,
+          "beforeError": 0,
+          "afterError": 0
+        },
+        {
+          "case": [
+            "house",
+            0.64,
+            "shifted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 3.0933085830000056,
+          "beforeError": 0,
+          "afterError": 0
+        },
+        {
+          "case": [
+            "house",
+            0.64,
+            "free-noise",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 3.115185958999995,
+          "beforeError": 0,
+          "afterError": 0
+        },
+        {
+          "case": [
+            "house",
+            0.84,
+            "original",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.420242834000004,
+          "beforeError": 0,
+          "afterError": 0
+        },
+        {
+          "case": [
+            "house",
+            0.84,
+            "inverted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.688451958999998,
+          "beforeError": 0.003932823129251701,
+          "afterError": 0.003932823129251701
+        },
+        {
+          "case": [
+            "house",
+            0.84,
+            "shifted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.768149082999996,
+          "beforeError": 0,
+          "afterError": 0
+        },
+        {
+          "case": [
+            "house",
+            0.84,
+            "free-noise",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.405952375000008,
+          "beforeError": 0,
+          "afterError": 0
+        },
+        {
+          "case": [
+            "circle",
+            0.64,
+            "original",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 1.8414890830000077,
+          "beforeError": 0.0003662109375,
+          "afterError": 0.0003662109375
+        },
+        {
+          "case": [
+            "circle",
+            0.64,
+            "inverted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 1.8004840409999887,
+          "beforeError": 0.0003662109375,
+          "afterError": 0.0003662109375
+        },
+        {
+          "case": [
+            "circle",
+            0.64,
+            "shifted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 1.8209295830000047,
+          "beforeError": 0.0003662109375,
+          "afterError": 0.0003662109375
+        },
+        {
+          "case": [
+            "circle",
+            0.64,
+            "free-noise",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 1.9715344590000023,
+          "beforeError": 0.0003662109375,
+          "afterError": 0.0003662109375
+        },
+        {
+          "case": [
+            "circle",
+            0.84,
+            "original",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.627322584000009,
+          "beforeError": 0.0002834467120181406,
+          "afterError": 0.0002834467120181406
+        },
+        {
+          "case": [
+            "circle",
+            0.84,
+            "inverted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.678944875000016,
+          "beforeError": 0.0002834467120181406,
+          "afterError": 0.0002834467120181406
+        },
+        {
+          "case": [
+            "circle",
+            0.84,
+            "shifted",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.4187177500000105,
+          "beforeError": 0.00031887755102040814,
+          "afterError": 0.00031887755102040814
+        },
+        {
+          "case": [
+            "circle",
+            0.84,
+            "free-noise",
+            "weighted"
+          ],
+          "passed": true,
+          "seconds": 6.677225417000009,
+          "beforeError": 0.0002834467120181406,
+          "afterError": 0.0002834467120181406
+        }
+      ],
+      "provenance": "Run before 7799e2f. Only fit.js differs: the 80-to-160-step feature-recovery change is excluded when weights are present. All 32 protected-source errors equal the reference."
+    }
+  },
+  "artifacts": [
+    {
+      "path": "tmp/control-identity-before-1/report.json",
+      "sha256": "6a9377ddfa361f1a991a29b537d12878845e69c34afc79f8a70bd808d693c5f0"
+    },
+    {
+      "path": "tmp/control-identity-after-1/report.json",
+      "sha256": "fb2ffdf186d90253c721d26e2f9f8bdb106d5562fb0b4345cfad286992fd18db"
+    },
+    {
+      "path": "tmp/control-identity-before-2/report.json",
+      "sha256": "628b1c70182b99a3b96055881b6ab9677d17b887391886470929c54f89aa59ba"
+    },
+    {
+      "path": "tmp/control-identity-after-2/report.json",
+      "sha256": "9a589933a9eb055a1641072a52fb6809d2bc26af8a65919a163cb552cb44c051"
+    },
+    {
+      "path": "tmp/control-identity-solve-before/results.json",
+      "sha256": "d5ccbf49e233768315e526f49c2f65b3899543da9aa68d63c10b82f73dc55238"
+    },
+    {
+      "path": "tmp/control-identity-solve-after/results.json",
+      "sha256": "3b7ad816e3d1c9d4e576276e7465605c10a3e9ba0a89de9439ffb25e0828c06a"
+    },
+    {
+      "path": "tmp/moving-chord-hunodan/results.json",
+      "sha256": "66c82bcd385a08ada3178981d6e43c18c6e00899e61447e53e7ecc3255624e06"
+    },
+    {
+      "path": "tmp/control-identity-final-hunodan/results.json",
+      "sha256": "96b9537d9d45d5439ef9a77f726922a8d0e1ddac97f14ca38ab7f3a05aac11cf"
+    },
+    {
+      "path": "tmp/moving-chord-weighted/results.json",
+      "sha256": "eda8addcf1e68cd3d7f9d2165850b95dea347f11d84cce35cb4ce9679049425a"
+    },
+    {
+      "path": "tmp/control-identity-weighted/results.json",
+      "sha256": "20489b177e746c1ba0f5d73857913557ecaa0f1d74ef117278022ee4b290e406"
+    },
+    {
+      "path": "tmp/control-identity-browser/results.json",
+      "sha256": "d084fe9791a61bf063de9299f4d8463b48422edde6bcf370f20afc237ea6467d"
+    },
+    {
+      "path": "tmp/control-identity-browser-small-hat/results.json",
+      "sha256": "32dce1f7c5ec4dee5c591ccb7998117c7657a30012279de4027ab75023b5937e"
+    },
+    {
+      "path": "scripts/inverse/fixtures/editor-anchor-return.json",
+      "sha256": "b5b2bfc62c35d28ce27dd33a8d29ac62915c5d0d86fab74b35b6a807c4c17d17"
+    },
+    {
+      "path": "tmp/control-identity-renderer-diagnosis.json",
+      "sha256": "2bcc9d72bc56ef43629dba9afff6310661801ddcefcab234035ae26a8f7372ae"
+    },
+    {
+      "path": "tmp/control-identity-shared-length.json",
+      "sha256": "1a2be923f8ea91d1c24be879832294520685764df55b458fe7aa52e69f1db9fd"
+    }
+  ],
+  "automatic": {
+    "cases": 24,
+    "allPassed": true,
+    "maxIndependentError": 0.003375,
+    "beforeTiming": {
+      "medianSeconds": 2.586589562499997,
+      "maxSeconds": 4.050670082999997
+    },
+    "afterTiming": {
+      "medianSeconds": 2.8149912290000003,
+      "maxSeconds": 4.149804333
+    },
+    "identicalGeometry": true,
+    "identicalMaskHashes": true,
+    "results": [
+      {
+        "name": "sym-1x1-bend0",
+        "expectedCounts": [
+          1,
+          1
+        ],
+        "mode": "sym",
+        "bulge": 0,
+        "inputSha256": "fb800083f4d2adc9d56cd28856774c5b67d30261b3bf031844ddfd55eaf67c49",
+        "preparedSha256": "fb800083f4d2adc9d56cd28856774c5b67d30261b3bf031844ddfd55eaf67c49",
+        "seconds": 2.36532625,
+        "retainedCandidates": 27,
+        "error": 0.001,
+        "foundCounts": [
+          1,
+          1
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 4.4938668397781776e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-1x1-bend4",
+        "expectedCounts": [
+          1,
+          1
+        ],
+        "mode": "sym",
+        "bulge": 4,
+        "inputSha256": "a2347c7a7eb6a027da00fd61c1a839bf4d3f709da35057af46699b9e8bd54422",
+        "preparedSha256": "a2347c7a7eb6a027da00fd61c1a839bf4d3f709da35057af46699b9e8bd54422",
+        "seconds": 2.2192988340000004,
+        "retainedCandidates": 27,
+        "error": 0.000675,
+        "foundCounts": [
+          1,
+          1
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 2.929642751054232e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-1x2-bend0",
+        "expectedCounts": [
+          1,
+          2
+        ],
+        "mode": "sym",
+        "bulge": 0,
+        "inputSha256": "56b3322460cd8b8376752957b814563d1cb722d8b04f6c9cf23bac3920d8847c",
+        "preparedSha256": "56b3322460cd8b8376752957b814563d1cb722d8b04f6c9cf23bac3920d8847c",
+        "seconds": 2.800247624999999,
+        "retainedCandidates": 27,
+        "error": 0.000825,
+        "foundCounts": [
+          1,
+          2
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 4.278033777464534e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-1x2-bend4",
+        "expectedCounts": [
+          1,
+          2
+        ],
+        "mode": "sym",
+        "bulge": 4,
+        "inputSha256": "8b8ea686981a2db070d9d45481486f097508b5da0f16bc3dfc9ae9965ac2727a",
+        "preparedSha256": "8b8ea686981a2db070d9d45481486f097508b5da0f16bc3dfc9ae9965ac2727a",
+        "seconds": 2.5466687080000012,
+        "retainedCandidates": 27,
+        "error": 0.0007,
+        "foundCounts": [
+          1,
+          2
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 4.7664655742347644e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-2x2-bend0",
+        "expectedCounts": [
+          2,
+          2
+        ],
+        "mode": "sym",
+        "bulge": 0,
+        "inputSha256": "a4c76157c092f489abe7c880f71407bd80157fb51338c06e17fc8b3773a6ee37",
+        "preparedSha256": "a4c76157c092f489abe7c880f71407bd80157fb51338c06e17fc8b3773a6ee37",
+        "seconds": 2.9229305000000005,
+        "retainedCandidates": 27,
+        "error": 0.000675,
+        "foundCounts": [
+          2,
+          2
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 4.618527782440651e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-2x2-bend4",
+        "expectedCounts": [
+          2,
+          2
+        ],
+        "mode": "sym",
+        "bulge": 4,
+        "inputSha256": "4e9478ff24437fa2f312bac5651dad6eb8f4d9572b43690336e33d56ff04f520",
+        "preparedSha256": "4e9478ff24437fa2f312bac5651dad6eb8f4d9572b43690336e33d56ff04f520",
+        "seconds": 2.829734833000002,
+        "retainedCandidates": 27,
+        "error": 0.001725,
+        "foundCounts": [
+          2,
+          2
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 3.1776437161565096e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-2x3-bend0",
+        "expectedCounts": [
+          2,
+          3
+        ],
+        "mode": "sym",
+        "bulge": 0,
+        "inputSha256": "7a1ffc7ed0ad48e560b5bc38c9733310a9818631cb36a89b77b027a043bdff9e",
+        "preparedSha256": "7a1ffc7ed0ad48e560b5bc38c9733310a9818631cb36a89b77b027a043bdff9e",
+        "seconds": 3.3006062919999968,
+        "retainedCandidates": 27,
+        "error": 0.001975,
+        "foundCounts": [
+          2,
+          3
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 3.730349362740526e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-2x3-bend4",
+        "expectedCounts": [
+          2,
+          3
+        ],
+        "mode": "sym",
+        "bulge": 4,
+        "inputSha256": "368d898511c6002e81fb83a5189de1ed6dd8daa1f645140d91f2e515013eb900",
+        "preparedSha256": "368d898511c6002e81fb83a5189de1ed6dd8daa1f645140d91f2e515013eb900",
+        "seconds": 3.323872292,
+        "retainedCandidates": 27,
+        "error": 0.001325,
+        "foundCounts": [
+          2,
+          3
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 5.17282919736354e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-3x3-bend0",
+        "expectedCounts": [
+          3,
+          3
+        ],
+        "mode": "sym",
+        "bulge": 0,
+        "inputSha256": "59d82109cfbcd42758da846cf517a611a917388278f450107844e93b173297b7",
+        "preparedSha256": "59d82109cfbcd42758da846cf517a611a917388278f450107844e93b173297b7",
+        "seconds": 3.3733648329999997,
+        "retainedCandidates": 27,
+        "error": 0.003,
+        "foundCounts": [
+          3,
+          3
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 5.684341886080802e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-3x3-bend4",
+        "expectedCounts": [
+          3,
+          3
+        ],
+        "mode": "sym",
+        "bulge": 4,
+        "inputSha256": "25e45ca4591dd364f61fcd2c8f4ce957be72b5505799997b708f85608c82b9aa",
+        "preparedSha256": "25e45ca4591dd364f61fcd2c8f4ce957be72b5505799997b708f85608c82b9aa",
+        "seconds": 3.634827707999997,
+        "retainedCandidates": 27,
+        "error": 0.00155,
+        "foundCounts": [
+          3,
+          3
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 4.4938668397781776e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-3x4-bend0",
+        "expectedCounts": [
+          3,
+          4
+        ],
+        "mode": "sym",
+        "bulge": 0,
+        "inputSha256": "3d8811951df99eb87b1bb6c54483ce918c41ac3a26b7c114a4bf673ab79d0571",
+        "preparedSha256": "3d8811951df99eb87b1bb6c54483ce918c41ac3a26b7c114a4bf673ab79d0571",
+        "seconds": 3.7181282079999947,
+        "retainedCandidates": 27,
+        "error": 0.003375,
+        "foundCounts": [
+          3,
+          4
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 3.197442310920451e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "sym-3x4-bend4",
+        "expectedCounts": [
+          3,
+          4
+        ],
+        "mode": "sym",
+        "bulge": 4,
+        "inputSha256": "89c791e4bc7aa803de68080b3c29b1f92a329c1a9d812f80f2dc6113ea44943d",
+        "preparedSha256": "89c791e4bc7aa803de68080b3c29b1f92a329c1a9d812f80f2dc6113ea44943d",
+        "seconds": 4.149804333,
+        "retainedCandidates": 27,
+        "error": 0.00185,
+        "foundCounts": [
+          3,
+          4
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 3.1776437161565096e-14
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-1x1-bend0",
+        "expectedCounts": [
+          1,
+          1
+        ],
+        "mode": "anti",
+        "bulge": 0,
+        "inputSha256": "ae1cb3e25ab62e0e91348297ed7d2d91e5de09053a945af9727bcc5b6d816ed8",
+        "preparedSha256": "ae1cb3e25ab62e0e91348297ed7d2d91e5de09053a945af9727bcc5b6d816ed8",
+        "seconds": 0.6084150000000009,
+        "retainedCandidates": 1,
+        "error": 0,
+        "foundCounts": [
+          1,
+          1
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-1x1-bend4",
+        "expectedCounts": [
+          1,
+          1
+        ],
+        "mode": "anti",
+        "bulge": 4,
+        "inputSha256": "7a750e39785a22c15620577354c01e43c5abb3fa3217ad530132ed1b9a6aaa77",
+        "preparedSha256": "7a750e39785a22c15620577354c01e43c5abb3fa3217ad530132ed1b9a6aaa77",
+        "seconds": 2.1071953330000035,
+        "retainedCandidates": 27,
+        "error": 0.0004,
+        "foundCounts": [
+          1,
+          1
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 3.552713678800501e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-1x2-bend0",
+        "expectedCounts": [
+          1,
+          2
+        ],
+        "mode": "anti",
+        "bulge": 0,
+        "inputSha256": "b60d9584afbad39864bc49c0dbd4afb9cc7c328aeb07deae37b53021f5ad50d9",
+        "preparedSha256": "b60d9584afbad39864bc49c0dbd4afb9cc7c328aeb07deae37b53021f5ad50d9",
+        "seconds": 0.7223505000000005,
+        "retainedCandidates": 1,
+        "error": 0,
+        "foundCounts": [
+          1,
+          2
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-1x2-bend4",
+        "expectedCounts": [
+          1,
+          2
+        ],
+        "mode": "anti",
+        "bulge": 4,
+        "inputSha256": "8f02cac654f70a7861179ee9e5f7198a06c07f880ecc1d2042f7f538d48b680c",
+        "preparedSha256": "8f02cac654f70a7861179ee9e5f7198a06c07f880ecc1d2042f7f538d48b680c",
+        "seconds": 2.4821244589999987,
+        "retainedCandidates": 27,
+        "error": 0.0012,
+        "foundCounts": [
+          1,
+          2
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 3.552713678800501e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-2x2-bend0",
+        "expectedCounts": [
+          2,
+          2
+        ],
+        "mode": "anti",
+        "bulge": 0,
+        "inputSha256": "a0782b623c81f5abeca434ceb5e523b88150471cf06a5fa030dc00cd3c6aa40c",
+        "preparedSha256": "a0782b623c81f5abeca434ceb5e523b88150471cf06a5fa030dc00cd3c6aa40c",
+        "seconds": 0.6113157910000009,
+        "retainedCandidates": 1,
+        "error": 0,
+        "foundCounts": [
+          2,
+          2
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-2x2-bend4",
+        "expectedCounts": [
+          2,
+          2
+        ],
+        "mode": "anti",
+        "bulge": 4,
+        "inputSha256": "73cb8330af837952a42f254dd1cb11a6da547b63e0bb7696a9ad807b42dc7199",
+        "preparedSha256": "73cb8330af837952a42f254dd1cb11a6da547b63e0bb7696a9ad807b42dc7199",
+        "seconds": 3.0190937919999996,
+        "retainedCandidates": 27,
+        "error": 0.00205,
+        "foundCounts": [
+          2,
+          2
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-2x3-bend0",
+        "expectedCounts": [
+          2,
+          3
+        ],
+        "mode": "anti",
+        "bulge": 0,
+        "inputSha256": "8176967bcffb113af2c965e0eadd40e19e06706d24f9a7ab3b15ed3480b20ac3",
+        "preparedSha256": "8176967bcffb113af2c965e0eadd40e19e06706d24f9a7ab3b15ed3480b20ac3",
+        "seconds": 0.7790707499999989,
+        "retainedCandidates": 1,
+        "error": 0,
+        "foundCounts": [
+          2,
+          3
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-2x3-bend4",
+        "expectedCounts": [
+          2,
+          3
+        ],
+        "mode": "anti",
+        "bulge": 4,
+        "inputSha256": "bcf18632f55c564cc88593ba81d9eafb4574bf6b2062694f5d53c6917a015976",
+        "preparedSha256": "bcf18632f55c564cc88593ba81d9eafb4574bf6b2062694f5d53c6917a015976",
+        "seconds": 3.2488626250000014,
+        "retainedCandidates": 27,
+        "error": 0.001175,
+        "foundCounts": [
+          2,
+          3
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 3.552713678800501e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-3x3-bend0",
+        "expectedCounts": [
+          3,
+          3
+        ],
+        "mode": "anti",
+        "bulge": 0,
+        "inputSha256": "e37a456d9127edc2d62840b93c4cacd9fc5d62cba938793bb737622aff884dcd",
+        "preparedSha256": "e37a456d9127edc2d62840b93c4cacd9fc5d62cba938793bb737622aff884dcd",
+        "seconds": 0.6449084589999984,
+        "retainedCandidates": 1,
+        "error": 0,
+        "foundCounts": [
+          3,
+          3
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-3x3-bend4",
+        "expectedCounts": [
+          3,
+          3
+        ],
+        "mode": "anti",
+        "bulge": 4,
+        "inputSha256": "93fd7f15c7c61ec583e8feceb472a71f18bd872ebc31f6683e66c07042fb8fb8",
+        "preparedSha256": "93fd7f15c7c61ec583e8feceb472a71f18bd872ebc31f6683e66c07042fb8fb8",
+        "seconds": 3.495838582999997,
+        "retainedCandidates": 27,
+        "error": 0.0003,
+        "foundCounts": [
+          3,
+          3
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-3x4-bend0",
+        "expectedCounts": [
+          3,
+          4
+        ],
+        "mode": "anti",
+        "bulge": 0,
+        "inputSha256": "59a87c227e6739db305fec23992a629e9865a5af0883eef949df5dd5de2e7abe",
+        "preparedSha256": "59a87c227e6739db305fec23992a629e9865a5af0883eef949df5dd5de2e7abe",
+        "seconds": 1.0095042089999915,
+        "retainedCandidates": 1,
+        "error": 0,
+        "foundCounts": [
+          3,
+          4
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "passed": true
+      },
+      {
+        "name": "anti-3x4-bend4",
+        "expectedCounts": [
+          3,
+          4
+        ],
+        "mode": "anti",
+        "bulge": 4,
+        "inputSha256": "751253e65bded9372ddde2c5cef3c4d7aa4de4547e05c9265da05827795fd310",
+        "preparedSha256": "751253e65bded9372ddde2c5cef3c4d7aa4de4547e05c9265da05827795fd310",
+        "seconds": 3.9395604170000005,
+        "retainedCandidates": 27,
+        "error": 0.000375,
+        "foundCounts": [
+          3,
+          4
+        ],
+        "geometry": true,
+        "paper": "pass",
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "passed": true
+      }
+    ]
+  },
+  "browser": {
+    "cases": 33,
+    "passed": 31,
+    "results": [
+      {
+        "browser": "chromium",
+        "name": "chord-frame-sym",
+        "passed": true,
+        "sourceEditableError": 5e-05,
+        "sharedSpans": 32,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.013600000023841858,
+          "prepareRoundTripSeconds": 0.08239999997615814,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 4.044599999904633,
+          "resultToReadySeconds": 0.2532000000476837,
+          "clickToReadySeconds": 4.394200000047683
+        },
+        "exportedChordDeviationMm": 2.5263741715914672e-14
+      },
+      {
+        "browser": "chromium",
+        "name": "chord-frame-anti",
+        "passed": true,
+        "sourceEditableError": 1.25e-05,
+        "sharedSpans": 2,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.007299999952316285,
+          "prepareRoundTripSeconds": 0.07610000002384186,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 2.565399999976158,
+          "resultToReadySeconds": 0.04139999997615814,
+          "clickToReadySeconds": 2.6905
+        },
+        "exportedChordDeviationMm": 3.789561257387201e-14
+      },
+      {
+        "browser": "chromium",
+        "name": "star",
+        "passed": true,
+        "sourceEditableError": 0.0016,
+        "sharedSpans": 12,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0125,
+          "prepareRoundTripSeconds": 0.03610000002384186,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 1.8118000000715255,
+          "resultToReadySeconds": 0.09439999997615814,
+          "clickToReadySeconds": 1.9551000000238419
+        }
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat",
+        "passed": true,
+        "sourceEditableError": 0.0032064909297052154,
+        "sharedSpans": 41,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.025300000071525573,
+          "prepareRoundTripSeconds": 0.2407999999523163,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 8.985399999976158,
+          "resultToReadySeconds": 0.29960000002384185,
+          "clickToReadySeconds": 9.5515
+        }
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat-independent",
+        "passed": true,
+        "sourceEditableError": 0.0029584750566893424,
+        "sharedSpans": 30,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0185,
+          "prepareRoundTripSeconds": 0.23780000007152557,
+          "preparedToSolveRequestSeconds": 0.00019999992847442627,
+          "solveRoundTripSeconds": 5.561600000023842,
+          "resultToReadySeconds": 0.1402000000476837,
+          "clickToReadySeconds": 5.958300000071525
+        }
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat-anti",
+        "passed": true,
+        "sourceEditableError": 0.0031887755102040817,
+        "sharedSpans": 39,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.02360000002384186,
+          "prepareRoundTripSeconds": 0.10120000004768372,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 7.745299999952317,
+          "resultToReadySeconds": 0.3432000000476837,
+          "clickToReadySeconds": 8.213700000047684
+        }
+      },
+      {
+        "browser": "chromium",
+        "name": "hat-free-small",
+        "passed": true,
+        "sourceEditableError": 0.0035247802734375,
+        "sharedSpans": 4,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019899999976158142,
+          "prepareRoundTripSeconds": 0.29860000002384185,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 2.862899999976158,
+          "resultToReadySeconds": 0.13939999997615815,
+          "clickToReadySeconds": 3.3211999999284743
+        }
+      },
+      {
+        "browser": "chromium",
+        "name": "house-free-small",
+        "passed": true,
+        "sourceEditableError": 0.0010986328125,
+        "sharedSpans": 4,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.021600000023841857,
+          "prepareRoundTripSeconds": 0.2967000000476837,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 2.705899999976158,
+          "resultToReadySeconds": 0.08810000002384186,
+          "clickToReadySeconds": 3.112700000047684
+        }
+      },
+      {
+        "browser": "chromium",
+        "name": "circle-free-small",
+        "passed": true,
+        "sourceEditableError": 0.00238037109375,
+        "sharedSpans": 4,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0205,
+          "prepareRoundTripSeconds": 0.309,
+          "preparedToSolveRequestSeconds": 0.0006000000238418579,
+          "solveRoundTripSeconds": 2.632700000047684,
+          "resultToReadySeconds": 0.11209999990463257,
+          "clickToReadySeconds": 3.074899999976158
+        }
+      },
+      {
+        "browser": "chromium",
+        "name": "hunodan-hjfig-05",
+        "failure": "AssertionError [ERR_ASSERTION]: A successful solve must make Open in Draw ready.\n    at file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/paint-browser-test.mjs:165:12"
+      },
+      {
+        "browser": "firefox",
+        "name": "chord-frame-sym",
+        "passed": true,
+        "sourceEditableError": 0.00016875,
+        "sharedSpans": 32,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.015,
+          "prepareRoundTripSeconds": 0.082,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 5.753,
+          "resultToReadySeconds": 0.178,
+          "clickToReadySeconds": 6.029
+        },
+        "exportedChordDeviationMm": 2.5263741715914672e-14
+      },
+      {
+        "browser": "firefox",
+        "name": "chord-frame-anti",
+        "passed": true,
+        "sourceEditableError": 1.25e-05,
+        "sharedSpans": 2,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.012,
+          "prepareRoundTripSeconds": 0.085,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 3.788,
+          "resultToReadySeconds": 0.037,
+          "clickToReadySeconds": 3.922
+        },
+        "exportedChordDeviationMm": 3.789561257387201e-14
+      },
+      {
+        "browser": "firefox",
+        "name": "star",
+        "passed": true,
+        "sourceEditableError": 0.0016,
+        "sharedSpans": 12,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.011,
+          "prepareRoundTripSeconds": 0.034,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 4.46,
+          "resultToReadySeconds": 0.086,
+          "clickToReadySeconds": 4.591
+        }
+      },
+      {
+        "browser": "firefox",
+        "name": "top-hat",
+        "passed": true,
+        "sourceEditableError": 0.0032064909297052154,
+        "sharedSpans": 41,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.02,
+          "prepareRoundTripSeconds": 0.207,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 15.935,
+          "resultToReadySeconds": 0.232,
+          "clickToReadySeconds": 16.394
+        }
+      },
+      {
+        "browser": "firefox",
+        "name": "top-hat-independent",
+        "passed": true,
+        "sourceEditableError": 0.0029584750566893424,
+        "sharedSpans": 30,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.017,
+          "prepareRoundTripSeconds": 0.213,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 10.54,
+          "resultToReadySeconds": 0.091,
+          "clickToReadySeconds": 10.862
+        }
+      },
+      {
+        "browser": "firefox",
+        "name": "top-hat-anti",
+        "passed": true,
+        "sourceEditableError": 0.0031887755102040817,
+        "sharedSpans": 39,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.021,
+          "prepareRoundTripSeconds": 0.094,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 11.562,
+          "resultToReadySeconds": 0.238,
+          "clickToReadySeconds": 11.916
+        }
+      },
+      {
+        "browser": "firefox",
+        "name": "hat-free-small",
+        "passed": true,
+        "sourceEditableError": 0.0035247802734375,
+        "sharedSpans": 4,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.016,
+          "prepareRoundTripSeconds": 0.224,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 4.625,
+          "resultToReadySeconds": 0.093,
+          "clickToReadySeconds": 4.959
+        }
+      },
+      {
+        "browser": "firefox",
+        "name": "house-free-small",
+        "passed": true,
+        "sourceEditableError": 0.0010986328125,
+        "sharedSpans": 4,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.016,
+          "prepareRoundTripSeconds": 0.217,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 4.209,
+          "resultToReadySeconds": 0.064,
+          "clickToReadySeconds": 4.506
+        }
+      },
+      {
+        "browser": "firefox",
+        "name": "circle-free-small",
+        "passed": true,
+        "sourceEditableError": 0.00238037109375,
+        "sharedSpans": 4,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.017,
+          "prepareRoundTripSeconds": 0.251,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 4.11,
+          "resultToReadySeconds": 0.074,
+          "clickToReadySeconds": 4.452
+        }
+      },
+      {
+        "browser": "firefox",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "sourceEditableError": 0.01424375,
+        "sharedSpans": 0,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.006,
+          "prepareRoundTripSeconds": 0.17,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 31.053,
+          "resultToReadySeconds": 0.329,
+          "clickToReadySeconds": 31.558
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "chord-frame-sym",
+        "passed": true,
+        "sourceEditableError": 0.0001,
+        "sharedSpans": 32,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.009,
+          "prepareRoundTripSeconds": 0.108,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 3.568,
+          "resultToReadySeconds": 0.121,
+          "clickToReadySeconds": 3.807
+        },
+        "exportedChordDeviationMm": 5.0527483431829344e-14
+      },
+      {
+        "browser": "webkit",
+        "name": "chord-frame-anti",
+        "passed": true,
+        "sourceEditableError": 1.25e-05,
+        "sharedSpans": 2,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.008,
+          "prepareRoundTripSeconds": 0.08,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 2.3060000000000005,
+          "resultToReadySeconds": 0.043999999999999546,
+          "clickToReadySeconds": 2.439
+        },
+        "exportedChordDeviationMm": 3.789561257387201e-14
+      },
+      {
+        "browser": "webkit",
+        "name": "star",
+        "passed": true,
+        "sourceEditableError": 0.0016,
+        "sharedSpans": 12,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.009999999999999943,
+          "prepareRoundTripSeconds": 0.042,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 1.877,
+          "resultToReadySeconds": 0.09,
+          "clickToReadySeconds": 2.02
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat",
+        "passed": true,
+        "sourceEditableError": 0.0032064909297052154,
+        "sharedSpans": 41,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.018999999999999885,
+          "prepareRoundTripSeconds": 0.286,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 9.469,
+          "resultToReadySeconds": 0.175,
+          "clickToReadySeconds": 9.95
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat-independent",
+        "passed": true,
+        "sourceEditableError": 0.0029584750566893424,
+        "sharedSpans": 30,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.015,
+          "prepareRoundTripSeconds": 0.287,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 5.658,
+          "resultToReadySeconds": 0.079,
+          "clickToReadySeconds": 6.039
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat-anti",
+        "passed": true,
+        "sourceEditableError": 0.0031887755102040817,
+        "sharedSpans": 39,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.023,
+          "prepareRoundTripSeconds": 0.123,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 7.406,
+          "resultToReadySeconds": 0.162,
+          "clickToReadySeconds": 7.714
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "hat-free-small",
+        "passed": true,
+        "sourceEditableError": 0.0035247802734375,
+        "sharedSpans": 4,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.014,
+          "prepareRoundTripSeconds": 0.275,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 2.869,
+          "resultToReadySeconds": 0.09700000000000046,
+          "clickToReadySeconds": 3.2560000000000007
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "house-free-small",
+        "passed": true,
+        "sourceEditableError": 0.0010986328125,
+        "sharedSpans": 4,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.015,
+          "prepareRoundTripSeconds": 0.273,
+          "preparedToSolveRequestSeconds": 0.001,
+          "solveRoundTripSeconds": 2.688,
+          "resultToReadySeconds": 0.09000000000000045,
+          "clickToReadySeconds": 3.0670000000000006
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "circle-free-small",
+        "passed": true,
+        "sourceEditableError": 0.00238037109375,
+        "sharedSpans": 4,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.015,
+          "prepareRoundTripSeconds": 0.2920000000000002,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 2.75,
+          "resultToReadySeconds": 0.085,
+          "clickToReadySeconds": 3.142
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "hunodan-hjfig-05",
+        "failure": "AssertionError [ERR_ASSERTION]: A successful solve must make Open in Draw ready.\n    at file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/paint-browser-test.mjs:165:12"
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat-free-small",
+        "passed": true,
+        "sourceEditableError": 0.00384521484375,
+        "sharedSpans": 4,
+        "sharedLengthMm": 85.64979456182819,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.020299999952316284,
+          "prepareRoundTripSeconds": 0.24180000007152558,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 3.044399999976158,
+          "resultToReadySeconds": 0.09689999997615814,
+          "clickToReadySeconds": 3.4037999999523163
+        }
+      },
+      {
+        "browser": "firefox",
+        "name": "top-hat-free-small",
+        "passed": true,
+        "sourceEditableError": 0.0038909912109375,
+        "sharedSpans": 4,
+        "sharedLengthMm": 115.96222025602812,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.021,
+          "prepareRoundTripSeconds": 0.2,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 5.283,
+          "resultToReadySeconds": 0.124,
+          "clickToReadySeconds": 5.628
+        }
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat-free-small",
+        "passed": true,
+        "sourceEditableError": 0.00390625,
+        "sharedSpans": 4,
+        "sharedLengthMm": 85.65026689613413,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.018,
+          "prepareRoundTripSeconds": 0.28,
+          "preparedToSolveRequestSeconds": 0,
+          "solveRoundTripSeconds": 3.247,
+          "resultToReadySeconds": 0.137,
+          "clickToReadySeconds": 3.682
+        }
+      }
+    ],
+    "knownFailures": "Chromium and WebKit anchor uploads: engine accepts a narrow self-return, editor conversion rejects it. Preserved as a converter-rejection regression; solver repair remains open. Initial small-hat assertions counted fragments and were corrected to test geometric shared length."
+  },
+  "sharedLengthReplay": [
+    {
+      "browser": "chromium",
+      "name": "top-hat",
+      "artifact": "tmp/control-identity-browser/chromium-top-hat/cut_geometry.json",
+      "sharedSpans": 41,
+      "sharedLengthMm": 236.91135721080278,
+      "minimumSharedLengthMm": 200,
+      "passed": true
+    },
+    {
+      "browser": "chromium",
+      "name": "top-hat-independent",
+      "artifact": "tmp/control-identity-browser/chromium-top-hat-independent/cut_geometry.json",
+      "sharedSpans": 30,
+      "sharedLengthMm": 71.2051140422349,
+      "minimumSharedLengthMm": 60,
+      "passed": true
+    },
+    {
+      "browser": "chromium",
+      "name": "top-hat-anti",
+      "artifact": "tmp/control-identity-browser/chromium-top-hat-anti/cut_geometry.json",
+      "sharedSpans": 39,
+      "sharedLengthMm": 224.88910310503672,
+      "minimumSharedLengthMm": 200,
+      "passed": true
+    },
+    {
+      "browser": "chromium",
+      "name": "top-hat-free-small",
+      "artifact": "tmp/control-identity-browser-small-hat/chromium-top-hat-free-small/cut_geometry.json",
+      "sharedSpans": 4,
+      "sharedLengthMm": 85.64979456182819,
+      "minimumSharedLengthMm": 80,
+      "passed": true
+    },
+    {
+      "browser": "firefox",
+      "name": "top-hat",
+      "artifact": "tmp/control-identity-browser/firefox-top-hat/cut_geometry.json",
+      "sharedSpans": 41,
+      "sharedLengthMm": 236.91135721082372,
+      "minimumSharedLengthMm": 200,
+      "passed": true
+    },
+    {
+      "browser": "firefox",
+      "name": "top-hat-independent",
+      "artifact": "tmp/control-identity-browser/firefox-top-hat-independent/cut_geometry.json",
+      "sharedSpans": 30,
+      "sharedLengthMm": 71.20511404224274,
+      "minimumSharedLengthMm": 60,
+      "passed": true
+    },
+    {
+      "browser": "firefox",
+      "name": "top-hat-anti",
+      "artifact": "tmp/control-identity-browser/firefox-top-hat-anti/cut_geometry.json",
+      "sharedSpans": 39,
+      "sharedLengthMm": 224.88910310507006,
+      "minimumSharedLengthMm": 200,
+      "passed": true
+    },
+    {
+      "browser": "firefox",
+      "name": "top-hat-free-small",
+      "artifact": "tmp/control-identity-browser-small-hat/firefox-top-hat-free-small/cut_geometry.json",
+      "sharedSpans": 4,
+      "sharedLengthMm": 115.96222025602812,
+      "minimumSharedLengthMm": 80,
+      "passed": true
+    },
+    {
+      "browser": "webkit",
+      "name": "top-hat",
+      "artifact": "tmp/control-identity-browser/webkit-top-hat/cut_geometry.json",
+      "sharedSpans": 41,
+      "sharedLengthMm": 236.9113572108241,
+      "minimumSharedLengthMm": 200,
+      "passed": true
+    },
+    {
+      "browser": "webkit",
+      "name": "top-hat-independent",
+      "artifact": "tmp/control-identity-browser/webkit-top-hat-independent/cut_geometry.json",
+      "sharedSpans": 30,
+      "sharedLengthMm": 71.20511404200474,
+      "minimumSharedLengthMm": 60,
+      "passed": true
+    },
+    {
+      "browser": "webkit",
+      "name": "top-hat-anti",
+      "artifact": "tmp/control-identity-browser/webkit-top-hat-anti/cut_geometry.json",
+      "sharedSpans": 39,
+      "sharedLengthMm": 224.88910310507052,
+      "minimumSharedLengthMm": 200,
+      "passed": true
+    },
+    {
+      "browser": "webkit",
+      "name": "top-hat-free-small",
+      "artifact": "tmp/control-identity-browser-small-hat/webkit-top-hat-free-small/cut_geometry.json",
+      "sharedSpans": 4,
+      "sharedLengthMm": 85.65026689613413,
+      "minimumSharedLengthMm": 80,
+      "passed": true
+    }
+  ],
+  "checks": {
+    "test": {
+      "path": "tmp/control-identity-release-test.log",
+      "sha256": "88f41e8d2261d004531cae821014ba18804da845ffab7895af377d6e96ad5128"
+    },
+    "check": {
+      "path": "tmp/control-identity-release-check.log",
+      "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    "lint": {
+      "path": "tmp/control-identity-release-lint.log",
+      "sha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    "build": {
+      "path": "tmp/control-identity-release-build.log",
+      "sha256": "8c11bfe05147c1e8b7d7563b023001f297ca08d0a6b071e290ce476bb24253ac"
+    },
+    "results": {
+      "applicationPassed": 841,
+      "applicationSkipped": 1,
+      "enginePassed": 483,
+      "svelteErrors": 0,
+      "svelteWarnings": 7,
+      "lint": "passed",
+      "build": "passed"
+    }
+  },
+  "served": {
+    "origin": "http://127.0.0.1:5232",
+    "matchedFiles": 62,
+    "hashes": {
+      "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "static/inverse/core/automatic.js": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "static/inverse/core/border.js": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+      "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+      "static/inverse/core/direct/counts.js": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/finalize.js": "6ad14f5ee83a7efc6d8ae9605f278a65eeef1e2325846221a51f2be2e2ab12d3",
+      "static/inverse/core/direct/fit.js": "346759c64d0c06dacfab5c08d222a4cadc5b150d0b27d68d93b56362c8ca7787",
+      "static/inverse/core/direct/grid.js": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+      "static/inverse/core/direct/matching.js": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+      "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+      "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+      "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+      "static/inverse/core/direct/prefer-matching.js": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+      "static/inverse/core/direct/primitive-selection.js": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "static/inverse/core/direct/primitives.js": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "static/inverse/core/direct/refine.js": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+      "static/inverse/core/direct/share.js": "0dadebbd59b068e8e1e504fdcb16db7197b7828dd7b0499643067828c7eeb8fd",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+      "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "static/inverse/core/direct/topology.js": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+      "static/inverse/core/engine.js": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+      "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "static/inverse/core/feature-recovery.js": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+      "static/inverse/core/geometry.js": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "static/inverse/core/graph.js": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "static/inverse/core/image-features.js": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/input.js": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "static/inverse/core/junctions.js": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+      "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+      "static/inverse/core/material.js": "1d7d4e33811d46aa4e815bf9e4a410a8844c9bba7e50fdb6e0fa850181801898",
+      "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+      "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "static/inverse/core/progress.js": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+      "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "static/inverse/core/solver.js": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+      "static/inverse/core/stopped.js": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+      "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "static/inverse/core/validate.js": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70"
+    }
+  },
+  "referenceSnapshot": {
+    "verifiedFiles": 79,
+    "matchesGit": true
+  }
+}
