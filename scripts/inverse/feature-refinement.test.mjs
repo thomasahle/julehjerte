@@ -14,6 +14,7 @@ test('a recovered photo routing improves the actual exported mask before returni
   const prepared=prepare({type:'pixels',imageWidth:canvas.width,imageHeight:canvas.height,rgba:context.getImageData(0,0,canvas.width,canvas.height).data,quad:entry.quad},cfg);
   const answer=await design(prepared.target,cfg),replay=await renderExportedWeave(answer.files['cut_geometry.json'],prepared.preview.resolution);
   const error=replay.mask.reduce((sum,v,i)=>sum+Number(v!==prepared.preview.mask[i]),0)/replay.mask.length;
+  assert.ok(['javascript','wasm'].includes(answer.report.solver.numericalBackend?.backend),'Recovered routes retain the backend diagnostic.');
   assert.ok(answer.report.solver.featureRecovery?.trigger,'The fixture must exercise recovery from a missing image feature.');
   assert.ok(answer.report.templateChecksPassed&&answer.report.validation.passed);assert.equal(answer.report.manufacturing.status,'pass');
   assert.deepEqual(answer.report.slits,{left:4,right:4});

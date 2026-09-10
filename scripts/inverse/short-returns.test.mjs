@@ -4,6 +4,7 @@ import {Cubic} from '../../static/inverse/core/bezier.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {shortReturnProposal,finalizeShortReturns} from '../../static/inverse/core/direct/short-returns.js';
 import {matchingSummary} from '../../static/inverse/core/direct/matching.js';
+import {symmetryReport} from '../../static/inverse/core/direct/symmetry.js';
 import {sampleWeave,validate} from '../../static/inverse/core/validate.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
@@ -62,4 +63,14 @@ test('cleanup cannot trade away a drawn feature for a simpler cut',()=>{
   seed.graph.target.sourceImage={mask,resolution:400};
   const result=finalizeShortReturns(seed,cfg),after=sampleWeave(result,400);
   assert.deepEqual(after,mask,'No extra mask disagreement is granted for pruning a return.');
+});
+
+for(const mode of ['sym','anti'])test(`paired return contractions retain Within curve ${mode}`,()=>{
+  const first=[[50,0],[50,30],[52,32],[50,31]];
+  const a=chain([...first,...first.toReversed().map(([x,y])=>[mode==='anti'?100-x:x,100-y])]);
+  const graph=new CurveGraph([[a],[transpose(a)]]),p=shortReturnProposal(graph,graph.points,cfg);
+  assert.ok(p);assert.equal(p.removedOccurrences,4);
+  const result=p.graph.solution(p.graph.points,1),symmetry=symmetryReport(result,{withinCurve:mode});
+  assert.deepEqual(symmetry.honoured,symmetry.requested);
+  assert.ok(matchingSummary(result).identical);assert.ok(validate(result,cfg).passed);
 });
