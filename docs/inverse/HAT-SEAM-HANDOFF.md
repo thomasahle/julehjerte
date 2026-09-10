@@ -140,3 +140,8 @@ anchor failure by contracting its short edge at the shared branch and refining
 the result without increasing source error. It preserves the hat regressions
 and all 54 frozen dataset outputs. The invalid historical anchor fixture still
 fails editor validation, as intended.
+
+The [recovery-budget follow-up](RECOVERY-BUDGET.md) diagnoses the slower Firefox
+anchor upload using identical prepared masks and canonical MILP models. It
+lets the sparse routing finish before expanding the graph and retains checked
+repairs after their local refinement cutoff, within the overall solve budget.

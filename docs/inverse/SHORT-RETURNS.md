@@ -1,5 +1,10 @@
 # Short returns at shared cutting junctions
 
+Follow-up: [recovery budgeting](RECOVERY-BUDGET.md) diagnoses the Firefox
+latency recorded below and separates the local refinement cutoff from the
+overall completion deadline. It also preserves the failed allocation-only
+replay that exposed the acceptance bug.
+
 The live Hunodan anchor upload added during control-identity QA exposed a small
 out-and-back spur in `R-cut-2`. Chromium and WebKit returned an engine-validated
 fit which the editor correctly rejected, including without simplification.
