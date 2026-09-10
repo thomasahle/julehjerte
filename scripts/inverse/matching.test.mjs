@@ -62,6 +62,13 @@ test('identical proposals preserve exact transposition and reject unequal counts
   assert.equal(matchingSummary(graph.solution(graph.points,1)).identical,true);
 });
 
+test('matching summary pairs identical cuts after path reordering',()=>{
+  const paths=gridPaths(matchingGrid(gridModel([3,3],8,17)));
+  paths[1]=[paths[1][2],paths[1][0],paths[1][1]];
+  const graph=new CurveGraph(paths),summary=matchingSummary(graph.solution(graph.points,1));
+  assert.equal(summary.identical,true);assert.equal(summary.rmsTemplateDifferenceMm,0);
+});
+
 test('matching projection respects a locked scalar with index zero',()=>{
   const points=Float64Array.from([1,9,7]),fixed=Uint8Array.from([1,0,0]);
   projectMatching(points,[[0,1,2]],fixed,Float64Array.from([1,9,7]));
