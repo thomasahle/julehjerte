@@ -25,6 +25,15 @@ test('a short return becomes a span while matching sheets stay identical',()=>{
   assert.deepEqual(graph.points,original);
 });
 
+test('a narrow return is found when both fitted spans exceed one strip width',()=>{
+  const broad=[line([50,0],[50,45]),
+    [[50,45],[49,44],[50,45],[52,47]],
+    [[52,47],[50,45],[49,45],[50,46]],
+    line([50,46],[50,100])];
+  const graph=new CurveGraph([[broad],[transpose(broad)]]),p=shortReturnProposal(graph,graph.points,cfg);
+  assert.ok(p);assert.equal(p.removedOccurrences,2);assert.equal(p.segmentsAfter,p.segmentsBefore-2);
+});
+
 for(const reverse of [false,true])test(`a ${reverse?'reversed':'forward'} shared return is replaced exactly once`,()=>{
   const common=reverse?A.slice(1,3).toReversed().map(c=>c.toReversed()):A.slice(1,3);
   const B=[line([0,common[0][0][1]],common[0][0]),...common,line(common.at(-1)[3],[100,common.at(-1)[3][1]])];
