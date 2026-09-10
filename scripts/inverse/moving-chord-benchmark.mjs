@@ -4,15 +4,15 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import assert from 'node:assert/strict';
-import {Cubic} from '../../static/inverse/core/bezier.js';
-import {chordMap} from '../../static/inverse/core/direct/symmetry.js';
+import {movingChordPaths} from './fixtures/moving-chords.mjs';
 const root=path.resolve(process.env.INVERSE_TANGENT_ENGINE||'static/inverse'),out=process.env.INVERSE_TANGENT_OUT||'tmp/moving-chord-study';
 const load=file=>import(pathToFileURL(path.join(root,file)).href);
 const {CurveGraph}=await load('core/direct/curves.js'),{refineCurves}=await load('core/direct/refine.js'),{settings}=await load('core/settings.js');
 const {materialAudit}=await load('core/material.js');
 const {sampleWeave,validate}=await load('core/validate.js'),{symmetryReport}=await load('core/direct/symmetry.js'),{solutionJSON}=await load('core/graph.js');
 const independent=process.env.INVERSE_TANGENT_INDEPENDENT==='1',selected=process.env.INVERSE_TANGENT_CASES?.split(',');
-await fs.mkdir(out,{recursive:true});const report={engineRoot:root,independent,method:'Fresh straight grids with supplied counts; 301 refinement steps, 200-pixel optimization, independent 400-pixel geometric scoring.',results:[]};
+const segments=Number(process.env.INVERSE_TANGENT_SEGMENTS||1);assert.ok([1,2,4].includes(segments));
+await fs.mkdir(out,{recursive:true});const report={engineRoot:root,independent,segments,method:'Fresh straight grids with supplied counts; 301 refinement steps, 200-pixel optimization, independent 400-pixel geometric scoring.',results:[]};
 function initialGraph(seed){
  if(!independent)return new CurveGraph(seed,100);
  // Diagnostic only: allocate independent coincident handles, then restore
@@ -25,14 +25,7 @@ function initialGraph(seed){
  })));
  return graph;
 }
-function paths(counts,mode,bulge,target){
- return counts.map((count,f)=>Array.from({length:count},(_,i)=>{
-  const centre=(i+1)*100/(count+1),shift=target&&mode==='anti'?3:0,tilt=target&&mode==='sym'?3:0;
-  const first=[centre+shift-tilt,0],last=[centre+shift+tilt,100],p=Cubic.line(first,last).p;
-  if(target&&bulge){const dx=last[0]-first[0],l=Math.hypot(dx,100),amount=bulge*(i%2?-1:1);p[1]=[p[1][0]+100/l*amount,p[1][1]-dx/l*amount];const m=chordMap(first,last,mode);p[2]=[m.L[0]*p[1][0]+m.L[1]*p[1][1]+m.t[0],m.L[2]*p[1][0]+m.L[3]*p[1][1]+m.t[1]];}
-  return[f?p.map(([x,y])=>[y,x]):p];
- }));
-}
+const paths=(counts,mode,bulge,target)=>movingChordPaths(counts,mode,bulge,{target,segments});
 for(const mode of ['sym','anti'])for(const count of [1,2,3])for(const unequal of [false,true])for(const bulge of [0,4]){
  const counts=[count,count+Number(unequal)],name=`${mode}-${counts.join('x')}-bend${bulge}`,cfg=settings({symmetry:{withinCurve:mode},preferMatchingSheets:false});
  if(selected&&!selected.includes(name))continue;
