@@ -70,7 +70,7 @@ export function shortReturnProposal(graph,points,cfg){
   return {graph:proposal,removedOccurrences,segmentsBefore:graph.edges.length,segmentsAfter:proposal.edges.length};
 }
 
-export function finalizeShortReturns(solution,cfg,{deadline=Infinity,onProgress=()=>{}}={}){
+export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionDeadline=deadline,onProgress=()=>{}}={}){
   const input=solution.graph.target,source=input.sourceImage;
   if(!source?.mask||input.metadata?.originalCubicsPreserved||performance.now()>=deadline)return solution;
   const start=performance.now(),graph=new CurveGraph(solution.paths.map((f,k)=>f.map((_,i)=>curvesOf(solution,k,i).map(c=>c.p))),input.width);
@@ -91,13 +91,15 @@ export function finalizeShortReturns(solution,cfg,{deadline=Infinity,onProgress=
     if(!fitted.geometryPassed||!fitted.paperPassed)return 'refinement_geometry';
     const candidate=fitted.graph.solution(fitted.points,phase,input);report.sourceErrorAfter=error(candidate);
     if(report.sourceErrorAfter>report.sourceErrorBefore)return 'original_image_error';
-    if(performance.now()>=deadline)return 'deadline';
+    if(performance.now()>=completionDeadline)return 'deadline';
     if(!compatible(candidate))return 'symmetry';
     if(!auditImageFeatures(source,sampleWeave(candidate,n),input.width).passed)return 'image_features';
     // The immutable fitted checkpoint already passed geometry and paper
     // checks. Source scoring and symmetry inspection above do not move it;
     // rerunning the same audits here only consumes the cleanup reserve.
-    if(performance.now()>=deadline)return 'deadline';
+    // The phase cutoff stops further refinement. A completed checkpoint may
+    // still be accepted before the overall solve's export reserve begins.
+    if(performance.now()>=completionDeadline)return 'deadline';
     result=candidate;report.applied=true;return null;
   };
   report.rejection=accept();report.seconds=(performance.now()-start)/1000;

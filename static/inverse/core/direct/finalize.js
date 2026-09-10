@@ -9,7 +9,8 @@ export function finalizeFittedSolution(solution,cfg,{startedAt=performance.now()
   const matching=searchMatching?preferMatchingSolution(solution,cfg,{deadline:startedAt+Math.min(timeLimit,10)*1000-400,onProgress}):solution;
   // Repair the actual selected pair after any matching-sheet replacement.
   // Reserve export time and bound cleanup within the requested solve budget.
-  const repaired=finalizeShortReturns(matching,cfg,{deadline:Math.min(startedAt+timeLimit*1000-1000,performance.now()+1000),onProgress});
+  const completionDeadline=startedAt+timeLimit*1000-1000;
+  const repaired=finalizeShortReturns(matching,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,onProgress});
   const shared=finalizeShared(repaired,cfg,{deadline:Math.min(startedAt+timeLimit*1000-1000,performance.now()+2000),onProgress});
   const primitives=finalizePrimitives(shared,cfg,{deadline:Math.min(startedAt+timeLimit*1000-1000,performance.now()+500),onProgress});
   const result=finalizeSharedSimplification(primitives,cfg,{deadline:Math.min(startedAt+timeLimit*1000-1000,performance.now()+500),onProgress});

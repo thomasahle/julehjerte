@@ -117,5 +117,5 @@ declare module '$inverse/core/engine.js' {
 /** Topology simplification uses the same exported geometry checked by Draw. */
 declare module '$inverse/core/direct/short-returns.js' {
   import type { EngineSolution } from '$inverse/core/graph.js';
-  export function finalizeShortReturns(solution: EngineSolution, settings: Record<string, unknown>, options?: { deadline?: number }): EngineSolution;
+  export function finalizeShortReturns(solution: EngineSolution, settings: Record<string, unknown>, options?: { deadline?: number; completionDeadline?: number }): EngineSolution;
 }

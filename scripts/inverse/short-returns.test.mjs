@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
 import {Cubic} from '../../static/inverse/core/bezier.js';
+import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {shortReturnProposal,finalizeShortReturns} from '../../static/inverse/core/direct/short-returns.js';
 import {matchingSummary} from '../../static/inverse/core/direct/matching.js';
@@ -73,4 +75,22 @@ for(const mode of ['sym','anti'])test(`paired return contractions retain Within 
   const result=p.graph.solution(p.graph.points,1),symmetry=symmetryReport(result,{withinCurve:mode});
   assert.deepEqual(symmetry.honoured,symmetry.requested);
   assert.ok(matchingSummary(result).identical);assert.ok(validate(result,cfg).passed);
+});
+
+for(const overallExpired of [false,true])test(`a late repair checkpoint ${overallExpired?'respects the overall deadline':'survives the phase cutoff'}`,async t=>{
+  const geometry=JSON.parse(await fs.readFile('scripts/inverse/fixtures/editor-anchor-return.json'));
+  const source=JSON.parse(await fs.readFile('scripts/inverse/fixtures/anchor-upload-mask.json'));
+  const seed=loadSolutionJSON({...geometry,schema:'heartcurves-2',units:'mm'}),mask=new Uint8Array(source.resolution**2);
+  for(const[start,length]of source.maskRuns)mask.fill(1,start,start+length);
+  seed.graph.target.sourceImage={mask,resolution:source.resolution};
+  // Reproduce a checkpoint finishing just after the local cleanup allowance.
+  // This is virtual elapsed time, independent of test-machine throughput.
+  let now=0;t.mock.method(performance,'now',()=>now);
+  const result=finalizeShortReturns(seed,cfg,{deadline:1000,completionDeadline:overallExpired?1000:9000,onProgress:r=>{if(r.step===120)now=1002;}});
+  const report=result.report.shortReturnRepair;
+  assert.equal(report.refinementSteps,125,'Further refinement stops at the phase cutoff.');
+  assert.ok(report.sourceErrorAfter<report.sourceErrorBefore);
+  assert.equal(report.applied,!overallExpired);
+  assert.equal(report.rejection,overallExpired?'deadline':null);
+  assert.ok(validate(result,cfg).passed);
 });
