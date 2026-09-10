@@ -16,7 +16,7 @@ import {orbitObjective,symmetryOrbit,symmetryReport} from './symmetry.js';
 const pointKey=p=>p.map(v=>Math.round(v*1e7)).join(',');
 
 export function shortReturnProposal(graph,points,cfg){
-  const controls=graph.controls(points),curves=controls.map(c=>new Cubic(c)),vertices=new Map(),plans=new Map(),removed=new Set();
+  const controls=graph.controls(points),curves=controls.map(c=>new Cubic(c)),vertices=new Map(),plans=new Map(),cuts=new Map(),blocked=new Set(),removed=new Set();
   const endpoint=(entry,start)=>graph.edges[entry[0]][start?(entry[1]===1?0:3):(entry[1]===1?3:0)];
   for(const ids of graph.edges)for(const id of [ids[0],ids[3]]){
     const key=pointKey([points[2*id],points[2*id+1]]);
@@ -24,6 +24,7 @@ export function shortReturnProposal(graph,points,cfg){
   }
   for(const [a,b]of graph.joins){
     const joint=endpoint(a,false);
+    if(blocked.has(joint))continue;
     if(joint!==endpoint(b,true)||graph.fixed[2*joint]||graph.fixed[2*joint+1])continue;
     // Coincident independent paths are not necessarily connected. Moving a
     // real shared junction moves its adjacent controls together, but cannot
@@ -35,10 +36,15 @@ export function shortReturnProposal(graph,points,cfg){
     if(la+lb>4*cfg.nominalWidth||la+lb<=2*chord||chord<=cfg.geometryTolerance)continue;
     const cut=la<lb?a:b,target=la<lb?endpoint(a,true):endpoint(b,false);
     if(Math.min(la,lb)>cfg.nominalWidth||distance([points[2*joint],points[2*joint+1]],[points[2*target],points[2*target+1]])<=cfg.geometryTolerance)continue;
-    if(plans.has(joint)&&plans.get(joint)!==target)return null;
-    plans.set(joint,target);removed.add(cut[0]);
+    // Multiple incident branches can suggest different contractions at one
+    // junction. That junction is ambiguous, but unrelated proposals remain
+    // safe to apply. Drop only the competing plan instead of abandoning every
+    // repair found in this graph.
+    if(plans.has(joint)&&plans.get(joint)!==target){plans.delete(joint);cuts.delete(joint);blocked.add(joint);continue;}
+    plans.set(joint,target);cuts.set(joint,cut[0]);
   }
   if(!plans.size)return null;
+  for(const edge of cuts.values())removed.add(edge);
   const destination=id=>{
     const seen=new Set();while(plans.has(id)){if(seen.has(id))return null;seen.add(id);id=plans.get(id);}return id;
   };
@@ -67,7 +73,7 @@ export function shortReturnProposal(graph,points,cfg){
   }));
   if(empty)return null;
   const proposal=new CurveGraph(paths,graph.width);
-  return {graph:proposal,removedOccurrences,segmentsBefore:graph.edges.length,segmentsAfter:proposal.edges.length};
+  return {graph:proposal,removedOccurrences,segmentsBefore:graph.edges.length,segmentsAfter:proposal.edges.length,conflictingJunctions:blocked.size};
 }
 
 export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionDeadline=deadline,onProgress=()=>{}}={}){
@@ -77,7 +83,7 @@ export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionD
   const proposal=shortReturnProposal(graph,graph.points,cfg);if(!proposal||performance.now()>=deadline)return solution;
   const phase=input.phase?-1:1,n=source.resolution,weights=sourceWeights(source),beforeMatching=matchingSummary(solution);
   const error=s=>referenceError(source,sampleWeave(s,n)).mismatchFraction;
-  const report={segmentsBefore:proposal.segmentsBefore,segmentsAfter:proposal.segmentsAfter,removedOccurrences:proposal.removedOccurrences,sourceErrorBefore:error(solution),applied:false};
+  const report={segmentsBefore:proposal.segmentsBefore,segmentsAfter:proposal.segmentsAfter,removedOccurrences:proposal.removedOccurrences,conflictingJunctions:proposal.conflictingJunctions,sourceErrorBefore:error(solution),applied:false};
   const compatible=s=>{const sym=symmetryReport(s,cfg.symmetry);return sym.requested.length===sym.honoured.length&&(!beforeMatching.identical||matchingSummary(s).identical);};
   let result=solution;
   const accept=()=>{
