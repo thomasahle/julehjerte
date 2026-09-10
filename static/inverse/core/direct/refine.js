@@ -152,7 +152,14 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     if(groups)projectMatching(g,groups,graph.fixed,new Float64Array(g.length));
     const previous=ties?.withinCurve?points.slice():null;
     adam.update(points,g,1);
-    if(!clampPoints()&&previous){points.set(previous);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.5);}
+    if(!clampPoints()&&previous){
+      // Adam's coordinate-wise scaling can conflict with shared controls.
+      // Retry its displacement in the true tangent space before rolling back.
+      const displacement=Float64Array.from(points,(v,i)=>v-previous[i]);
+      let recovered=applyTies(ties,displacement,previous,{fixed:graph.fixed,tangent:true});
+      if(recovered){for(let i=0;i<points.length;i++)points[i]=previous[i]+displacement[i];recovered=clampPoints();}
+      if(!recovered){points.set(previous);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.5);}
+    }
     completed++;
     if(step%40===0||step===steps-1)checkpoint(step);
   }

@@ -38,6 +38,7 @@ import {curvesOf} from '../graph.js';
 import {projectMatching} from './matching.js';
 import {imageWeights} from './image-objective.js';
 import {isometryProjector,projectIsometries} from './isometry-projection.js';
+import {chordTangentProjector,projectChordTangent} from './chord-tangent.js';
 
 // D4 elements act on centred pixel coordinates as [a,b,c,d]: (X,Y)->(aX+bY,cX+dY).
 const MATRIX={mirrorX:[-1,0,0,1],mirrorY:[1,0,0,-1],rotate180:[-1,0,0,-1],transpose:[0,1,1,0],antiTranspose:[0,-1,-1,0]};
@@ -172,6 +173,10 @@ function chordProjector(size,lists,square=null){
 }
 function projectChords(values,points,lists,mode,options,square=null){
   const compiled=chordProjector(values.length/2,lists,square);
+  if(options.tangent){
+    compiled.tangent??=chordTangentProjector(values.length/2,lists,square||[]);
+    return projectChordTangent(compiled.tangent,values,points,mode,options);
+  }
   for(let i=0;i<lists.length;i++){
     const first=lists[i][0],last=lists[i].at(-1),map=chordMap([points[2*first],points[2*first+1]],[points[2*last],points[2*last+1]],mode);
     if(!map)return false;
@@ -182,8 +187,8 @@ function projectChords(values,points,lists,mode,options,square=null){
 
 /** Joint projection, including controls shared by several cuts. Sequential
  * pair averages would let each later cut undo the preceding cut's constraint.
- * Chord maps are frozen before changing any controls; a gradient uses only
- * their linear part. An inconsistent system returns false without mutation.
+ * Coordinate projection freezes the chord maps; tangent projection includes
+ * their endpoint derivatives. Failure leaves the supplied values unchanged.
  */
 export function projectWithinCurve(values,points,lists,mode,{fixed=null,tangent=false}={}){
   return projectChords(values,points,lists,mode,{fixed,tangent});
