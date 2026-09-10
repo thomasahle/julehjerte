@@ -5,6 +5,11 @@ latency recorded below and separates the local refinement cutoff from the
 overall completion deadline. It also preserves the failed allocation-only
 replay that exposed the acceptance bug.
 
+Commit `441790d` keeps independent cleanup proposals when another proposal is
+ambiguous at the same junction. Conflicting branches are left untouched; their
+unrelated repairs are still evaluated and accepted only with the same image,
+geometry, paper and symmetry gates.
+
 The live Hunodan anchor upload added during control-identity QA exposed a small
 out-and-back spur in `R-cut-2`. Chromium and WebKit returned an engine-validated
 fit which the editor correctly rejected, including without simplification.
