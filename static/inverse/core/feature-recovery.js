@@ -22,7 +22,12 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
       if(i&&choices[i].neighbors===choices[0].neighbors&&choices[i].connectorVariants===choices[0].connectorVariants)break;
       const at=performance.now(),graphCfg={...cfg,...choices[i]},graph=buildGraph(target,graphCfg,{onProgress}),remaining=seconds-(performance.now()-start)/1000;
       if(remaining<=0)break;
-      const onlyChoice=choices[0].neighbors===choices[1].neighbors&&choices[0].connectorVariants===choices[1].connectorVariants,budget=i||onlyChoice?remaining:Math.min(2,remaining*.6),attempt={...choices[i],budgetSeconds:budget};report.attempts.push(attempt);
+      // A timeout is not evidence that the sparse graph lacks a routing.
+      // Let it use most of this phase before adding a much larger graph; a
+      // fixed two-second cutoff abandoned valid root-node searches on slower
+      // runtimes. If it proves infeasible early, the next graph gets all the
+      // unused time. The phase and overall solve budgets remain unchanged.
+      const onlyChoice=choices[0].neighbors===choices[1].neighbors&&choices[0].connectorVariants===choices[1].connectorVariants,budget=i||onlyChoice?remaining:remaining*.8,attempt={...choices[i],budgetSeconds:budget};report.attempts.push(attempt);
       try{
         solution=await solveGraph(graph,{...graphCfg,timeLimit:budget},{onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
         attempt.solver=solution.report;break;
