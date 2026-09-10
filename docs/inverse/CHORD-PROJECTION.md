@@ -32,12 +32,12 @@ on fixed coordinates. Separate analytic tests cover rotated coordinate frames,
 cycles pinning a root to a line or a point, inconsistent equations and changing
 map offsets.
 
-The gradient still uses the linear part of the frozen chord map. This is an
-orthogonal projection for that subspace, not the full derivative of the
-endpoint-dependent reflection. Recomputing the map and checking the resulting
-coordinates enforces the requested geometry after each update. Failed coordinate
-updates are rolled back, and accepted refinement checkpoints independently
-measure the requested symmetries in addition to geometry and paper checks.
+The original release used only the linear part of the frozen chord map in
+its gradient. The [moving-endpoint correction](MOVING-CHORDS.md) now includes
+translation and rotation of the frame, removing the resulting translation
+and tilt stalls. Coordinate projection still uses the joint isometry solver
+described here. Failed updates are rolled back, and accepted refinement
+checkpoints independently measure symmetry, geometry and paper validity.
 
 ## Shared cuts
 
