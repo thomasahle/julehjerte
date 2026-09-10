@@ -6,10 +6,13 @@ import {applyTies,symmetryTies,symmetryReport,projectWithinCurve} from '../../st
 import {settings} from '../../static/inverse/core/settings.js';
 import {sampleWeave,validate} from '../../static/inverse/core/validate.js';
 import {refineCurves} from '../../static/inverse/core/direct/refine.js';
+import {weldEqualFixturePoints} from './fixtures/shared-controls.mjs';
 
 function crossing(){
   const vertices=[[20,0],[25,25],[35,75],[40,100]],a=vertices.slice(1).map((p,i)=>Cubic.line(vertices[i],p).p),b=a.map(c=>c.map(([x,y])=>[y,x]));
-  return new CurveGraph([[a],[b]],100);
+  // This regression intentionally couples the crossing. Ordinary independent
+  // cuts no longer acquire that coupling merely from equal coordinates.
+  return weldEqualFixturePoints(new CurveGraph([[a],[b]],100));
 }
 const crossingIndex=graph=>{for(let i=0;i<graph.points.length;i+=2)if(graph.points[i]===25&&graph.points[i+1]===25)return i;throw new Error('Missing crossing');};
 const close=(a,b,tol=1e-9)=>a.forEach((v,i)=>assert.ok(Math.abs(v-b[i])<tol,`${i}: ${v} != ${b[i]}`));

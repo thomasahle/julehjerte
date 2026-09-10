@@ -1,19 +1,19 @@
-/** Independent free x/y cubic paths, with exactly shared controls represented
- * once. Canonicalization follows the reference CurveGraph's 1e-7 mm keys.
+/** Independent free x/y cubic paths. Connected anchors and full shared cubics
+ * retain common parameters; unrelated coincident controls stay independent.
  */
 import {bernstein,clamp} from './math.js';
 import {Cubic} from '../bezier.js';
 import {reindex} from '../graph.js';
+import {curveTopology} from './curve-topology.js';
 
 export class CurveGraph {
   constructor(paths,width=100){
     this.sampleTables=new Map();this.width=width;this.edges=[];this.occurrences=[];this.paths=[];this.families=[[],[]];this.family=[];this.joins=[];
-    const points=[],pm=new Map(),em=new Map();
-    const point=p=>{const key=p.map(v=>Math.round(v*1e7)).join(',');if(!pm.has(key)){pm.set(key,points.length/2);points.push(...p);}return pm.get(key);};
-    paths.forEach((family,f)=>family.forEach(path=>{
+    const {points,indices}=curveTopology(paths),em=new Map();
+    indices.forEach((family,f)=>family.forEach(path=>{
       const pi=this.paths.length,occ=[];
       for(const c of path){
-        let ids=c.map(point),reverse=false;
+        let ids=c,reverse=false;
         for(let j=0;j<4;j++){if(ids[j]===ids[3-j])continue;reverse=ids[j]>ids[3-j];break;}
         if(reverse)ids=ids.toReversed();const key=ids.join(',');let e=em.get(key);
         if(e===undefined){e=this.edges.length;em.set(key,e);this.edges.push(ids);this.occurrences.push([]);}

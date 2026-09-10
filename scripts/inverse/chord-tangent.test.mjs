@@ -8,6 +8,7 @@ import {refineCurves} from '../../static/inverse/core/direct/refine.js';
 import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {framePaths,antiSeamPaths} from './fixtures/symmetric-frame.mjs';
+import {weldEqualFixturePoints} from './fixtures/shared-controls.mjs';
 
 const dot=(a,b)=>a.reduce((sum,v,i)=>sum+v*b[i],0);
 const close=(a,b,tolerance=1e-8)=>a.forEach((v,i)=>assert.ok(Math.abs(v-b[i])<tolerance,`${i}: ${v} != ${b[i]}`));
@@ -106,7 +107,7 @@ test('degenerate chords and nonfinite gradients fail without changing the suppli
 
 
 test('Adam can recover a valid update when shared handles couple endpoint motion',()=>{
-  // The straight 2x2 grid has four coincident handles across sheets. This
+  // Deliberately couple four coincident handles across the sheets. This
   // intentionally constrained model cannot reach the independently shifted
   // target, but a valid improvement exists. A coordinate-scaled Adam update
   // used to fail the joint chord projection and repeatedly roll back.
@@ -114,7 +115,7 @@ test('Adam can recover a valid update when shared handles couple endpoint motion
     const x=100*i/3+shift,p=Cubic.line([x,0],[x,100]).p;
     return [f?p.map(([x,y])=>[y,x]):p];
   }));
-  const graph=new CurveGraph(paths(0)),target=new CurveGraph(paths(3)),cfg=settings({symmetry:{withinCurve:'anti'},preferMatchingSheets:false});
+  const graph=weldEqualFixturePoints(new CurveGraph(paths(0))),target=new CurveGraph(paths(3)),cfg=settings({symmetry:{withinCurve:'anti'},preferMatchingSheets:false});
   const truth=target.solution(target.points,1),mask=sampleWeave(truth,200),reference=sampleWeave(truth,400),original=graph.points.slice();
   const error=points=>sampleWeave(graph.solution(points,1),400).reduce((sum,v,i)=>sum+Number(v!==reference[i]),0)/reference.length;
   const fit=refineCurves(graph,Float64Array.from(mask),200,1,cfg,{steps:301,input:{sourceImage:{resolution:200,mask}}});
