@@ -34,6 +34,7 @@ declare module '$inverse/core/graph.js' {
 
   /** Read a saved `heartcurves-2` template back into a solution. Throws on bad input. */
   export function loadSolutionJSON(data: unknown): EngineSolution;
+  export function solutionJSON(solution: EngineSolution): unknown;
 }
 
 declare module '$inverse/core/validate.js' {
@@ -111,4 +112,10 @@ declare module '$inverse/core/engine.js' {
     settings?: Record<string, unknown>,
     onProgress?: (event: Record<string, unknown>) => void
   ): Promise<{ files: Record<string, string>; report: Record<string, unknown> }>;
+}
+
+/** Topology simplification uses the same exported geometry checked by Draw. */
+declare module '$inverse/core/direct/short-returns.js' {
+  import type { EngineSolution } from '$inverse/core/graph.js';
+  export function finalizeShortReturns(solution: EngineSolution, settings: Record<string, unknown>, options?: { deadline?: number }): EngineSolution;
 }
