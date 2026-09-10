@@ -33,9 +33,13 @@ export function shortReturnProposal(graph,points,cfg){
     const A=a[1]===1?curves[a[0]]:curves[a[0]].reversed(),B=b[1]===1?curves[b[0]]:curves[b[0]].reversed();
     if(turnAngle(A,B)<135)continue;
     const la=A.length(),lb=B.length(),chord=distance(A.p[0],B.p[3]);
-    if(la+lb>4*cfg.nominalWidth||la+lb<=2*chord||chord<=cfg.geometryTolerance)continue;
+    // Fitted cubics can spread a narrow return across two spans, making both
+    // slightly longer than the nominal strip width even though their chord is
+    // still a sub-width spur. Keep the extension bounded and require the
+    // short chord so legitimate broad bends remain untouched.
+    if(la+lb>6*cfg.nominalWidth||la+lb<=2*chord||chord<=cfg.geometryTolerance||chord>cfg.nominalWidth)continue;
     const cut=la<lb?a:b,target=la<lb?endpoint(a,true):endpoint(b,false);
-    if(Math.min(la,lb)>cfg.nominalWidth||distance([points[2*joint],points[2*joint+1]],[points[2*target],points[2*target+1]])<=cfg.geometryTolerance)continue;
+    if(Math.min(la,lb)>1.5*cfg.nominalWidth||distance([points[2*joint],points[2*joint+1]],[points[2*target],points[2*target+1]])<=cfg.geometryTolerance)continue;
     // Multiple incident branches can suggest different contractions at one
     // junction. That junction is ambiguous, but unrelated proposals remain
     // safe to apply. Drop only the competing plan instead of abandoning every
