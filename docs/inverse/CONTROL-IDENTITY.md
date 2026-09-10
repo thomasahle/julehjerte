@@ -1,5 +1,9 @@
 # Independent controls and deliberate shared cuts
 
+The subsequent [short-return correction](SHORT-RETURNS.md) repairs the live
+anchor upload failure recorded below. This report preserves the earlier
+results and rejected geometry as historical evidence.
+
 `CurveGraph` previously assigned one parameter to every coordinate rounded to
 1e-7 mm, regardless of how that coordinate was used. A cubic handle is not a
 geometric junction. Two unrelated handles can coincide in a straight starting

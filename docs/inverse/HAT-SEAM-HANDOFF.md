@@ -134,3 +134,9 @@ covers matching, independent and Anti hats plus a smaller free-border hat in
 all three browsers. Every hat export preserves its exact common geometry.
 The same QA records an unresolved narrow-return defect in a separate live
 anchor-photo upload; editor conversion correctly blocks that invalid result.
+
+The [short-return repair](SHORT-RETURNS.md) subsequently resolves that live
+anchor failure by contracting its short edge at the shared branch and refining
+the result without increasing source error. It preserves the hat regressions
+and all 54 frozen dataset outputs. The invalid historical anchor fixture still
+fails editor validation, as intended.
