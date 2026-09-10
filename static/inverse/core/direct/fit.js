@@ -135,7 +135,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     recovery=await recoverImageFeatures(input,cfg,Math.min(20,(deadline-performance.now())/1000*.9),onProgress);
     if(recovery.solution){
       const seed=recovery.solution,paths=seed.paths.map((family,f)=>family.map((_,i)=>curvesOf(seed,f,i).map(c=>c.p))),graph=new CurveGraph(paths,cfg.width),phase=seed.graph.target.phase?-1:1;
-      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
+      // A recovered routing can still differ substantially from the image.
+      // Give it the normal polishing step count within the same time reserve;
+      // eighty steps could return while the image fit was still improving.
+      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:Math.min(deadline,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
       const solution=graph.solution(candidate.points,phase,input),woven=sampleWeave(solution,source.resolution);
       if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
