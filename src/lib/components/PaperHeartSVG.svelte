@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import HeartWeaveFill from './HeartWeaveFill.svelte';
 	import type { Finger, GridSize } from '$lib/types/heart';
 	import {
 		DEFAULT_COLORS,
@@ -133,43 +134,7 @@
 >
 	{#if weaveData}
 		<g transform={heartTransform.transform}>
-			<defs>
-				<!-- Clip path for the overlap rectangle (used for weave pattern) -->
-				<clipPath id="overlap-{componentId}">
-					<rect
-						x={weaveData.overlap.left}
-						y={weaveData.overlap.top}
-						width={weaveData.overlap.width}
-						height={weaveData.overlap.height}
-					/>
-				</clipPath>
-			</defs>
-
-			<!-- Layer 1: Left lobe (direct path fill, no clip-path needed) -->
-			<path d={weaveData.leftLobeClip} fill={heartColors.left} />
-
-			<!-- Layer 2: Right lobe (direct path fill, no clip-path needed) -->
-			<path d={weaveData.rightLobeClip} fill={heartColors.right} />
-
-			<!-- Layer 3: Weave pattern in overlap region -->
-			<!-- Paint left color base, then overlay strips with evenodd for checkerboard effect -->
-			<g clip-path="url(#overlap-{componentId})">
-				<rect
-					x={weaveData.overlap.left}
-					y={weaveData.overlap.top}
-					width={weaveData.overlap.width}
-					height={weaveData.overlap.height}
-					fill={heartColors.left}
-				/>
-				<path
-					d={[
-						...weaveData.rightOnTopStrips.map(s => s.pathData),
-						...weaveData.leftOnTopStrips.map(s => s.pathData)
-					].join(' ')}
-					fill={heartColors.right}
-					fill-rule="evenodd"
-				/>
-			</g>
+			<HeartWeaveFill {fingers} weave={weaveData} colors={heartColors} idPrefix={componentId} />
 		</g>
 	{:else}
 		<!-- Fallback: simple colored rectangle when no data -->

@@ -1,6 +1,7 @@
 import type { HeartDesign } from '$lib/types/heart';
 import type { HeartColors } from '$lib/stores/colors';
 import { computeWeaveData } from '$lib/rendering/svgWeave';
+import { heartPaintPaths } from './heartPaint';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 
 type OverlapLike = { left: number; top: number; width: number; height: number };
@@ -168,20 +169,17 @@ function buildHeartSvgContent(
 	const outlineColor = outline?.color ?? '#111';
 	const outlineWidth = outline?.width ?? Math.max(weaveData.overlap.width, weaveData.overlap.height) * 0.008;
 
-	const stripPath = [
-		...weaveData.rightOnTopStrips.map((s) => s.pathData),
-		...weaveData.leftOnTopStrips.map((s) => s.pathData)
-	].join(' ');
+	const paint = heartPaintPaths(design.fingers, weaveData);
 
 	const markup = [
 		`<g transform="${rotationTransform}">`,
-		`<defs><clipPath id="${clipId}"><rect x="${weaveData.overlap.left}" y="${weaveData.overlap.top}" width="${weaveData.overlap.width}" height="${weaveData.overlap.height}" /></clipPath></defs>`,
+		paint.joined ? '' : `<defs><clipPath id="${clipId}"><rect x="${weaveData.overlap.left}" y="${weaveData.overlap.top}" width="${weaveData.overlap.width}" height="${weaveData.overlap.height}" /></clipPath></defs>`,
 		`<path d="${weaveData.leftLobeClip}" fill="${colors.left}" />`,
-		`<path d="${weaveData.rightLobeClip}" fill="${colors.right}" />`,
-		`<g clip-path="url(#${clipId})">`,
-		`<rect x="${weaveData.overlap.left}" y="${weaveData.overlap.top}" width="${weaveData.overlap.width}" height="${weaveData.overlap.height}" fill="${colors.left}" />`,
-		`<path d="${stripPath}" fill="${colors.right}" fill-rule="evenodd" />`,
-		`</g>`,
+		paint.joined ? '' : `<path d="${weaveData.rightLobeClip}" fill="${colors.right}" />`,
+		paint.joined ? '' : `<g clip-path="url(#${clipId})">`,
+		paint.joined ? '' : `<rect x="${weaveData.overlap.left}" y="${weaveData.overlap.top}" width="${weaveData.overlap.width}" height="${weaveData.overlap.height}" fill="${colors.left}" />`,
+		`<path d="${paint.right}" fill="${colors.right}" fill-rule="evenodd" />`,
+		paint.joined ? '' : `</g>`,
 		outlinePath
 			? `<path d="${outlinePath}" fill="none" stroke="${outlineColor}" stroke-width="${outlineWidth}" stroke-linejoin="round" stroke-linecap="round" />`
 			: '',
