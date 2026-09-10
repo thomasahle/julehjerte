@@ -83,6 +83,12 @@ export function matchingSummary(solution){
     for(let i=1;i<points.length;i++)arc.push(arc[i-1]+Math.hypot(points[i][0]-points[i-1][0],points[i][1]-points[i-1][1]));
     let at=0;return Array.from({length:101},(_,i)=>{const d=arc.at(-1)*i/100;while(at<arc.length-2&&arc[at+1]<d)at++;const t=(d-arc[at])/Math.max(1e-12,arc[at+1]-arc[at]);return points[at].map((v,k)=>v+t*(points[at+1][k]-v));});
   };
+  const oriented=(curves,reverse)=>reverse?curves.toReversed().map(c=>c.reversed()):curves;
+  const controlDifference=(A,B)=>{
+    if(A.length!==B.length)return Infinity;
+    let sum=0;for(let j=0;j<A.length;j++)for(let k=0;k<4;k++)sum+=(A[j].p[k][0]-B[j].p[k][1])**2+(A[j].p[k][1]-B[j].p[k][0])**2;
+    return sum;
+  };
   // A topology repair can reorder paths without changing the physical cuts.
   // Pair vertical and horizontal families by their boundary coordinate rather
   // than by serialized array index before comparing their control points.
@@ -91,9 +97,8 @@ export function matchingSummary(solution){
   }),left=order(0,0),right=order(1,1);
   let sum=0,count=0,identical=true;
   for(let position=0;position<a.length;position++){
-    const i=left[position],j=right[position],A=curvesOf(solution,0,i),B=curvesOf(solution,1,j);
-    if(A.length!==B.length)identical=false;
-    else for(let j=0;j<A.length;j++)for(let k=0;k<4;k++)if(Math.hypot(A[j].p[k][0]-B[j].p[k][1],A[j].p[k][1]-B[j].p[k][0])>=1e-7)identical=false;
+    const i=left[position],j=right[position],A=curvesOf(solution,0,i),rawB=curvesOf(solution,1,j),reverse=controlDifference(A,oriented(rawB,true))<controlDifference(A,rawB),B=oriented(rawB,reverse);
+    if(controlDifference(A,B)>1e-14)identical=false;
     const aa=sample(A),bb=sample(B);for(let j=0;j<aa.length;j++){sum+=(aa[j][0]-bb[j][1])**2+(aa[j][1]-bb[j][0])**2;count++;}
   }
   return{identical,rmsTemplateDifferenceMm:Math.sqrt(sum/Math.max(1,count)),comparison:'Corresponding cuts sampled at uniform arc length in local template coordinates.'};

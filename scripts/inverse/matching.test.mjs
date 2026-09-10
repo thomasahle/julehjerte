@@ -64,7 +64,8 @@ test('identical proposals preserve exact transposition and reject unequal counts
 
 test('matching summary pairs identical cuts after path reordering',()=>{
   const paths=gridPaths(matchingGrid(gridModel([3,3],8,17)));
-  paths[1]=[paths[1][2],paths[1][0],paths[1][1]];
+  const reverse=path=>path.toReversed().map(c=>c.toReversed());
+  paths[1]=[reverse(paths[1][2]),paths[1][0],paths[1][1]];
   const graph=new CurveGraph(paths),summary=matchingSummary(graph.solution(graph.points,1));
   assert.equal(summary.identical,true);assert.equal(summary.rmsTemplateDifferenceMm,0);
 });
