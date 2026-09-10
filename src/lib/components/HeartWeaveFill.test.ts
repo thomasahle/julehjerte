@@ -5,11 +5,11 @@ import catalog from '$lib/data/heart-designs.json';
 import type { HeartDesign } from '$lib/types/heart';
 import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
 
-for (const mode of ['joined', 'clipped'] as const) for (const weaveParity of [0, 1] as const) {
+for (const mode of ['interior', 'outside'] as const) for (const weaveParity of [0, 1] as const) {
 	it(`matches the exported fill in ${mode} phase ${weaveParity}`, async () => {
 		const design = structuredClone(catalog['classic-3x3']) as HeartDesign;
 		design.weaveParity = weaveParity;
-		if (mode === 'clipped') design.fingers[0]!.segments[0]!.p1.y = -100;
+		if (mode === 'outside') design.fingers[0]!.segments[0]!.p1.y = -100;
 		const colors = { left: '#336699', right: '#ffff00' };
 		const target = document.createElement('div');
 		document.body.append(target);
@@ -22,7 +22,7 @@ for (const mode of ['joined', 'clipped'] as const) for (const weaveParity of [0,
 			const exported = new DOMParser().parseFromString(renderHeartSvgMarkup(design, colors), 'image/svg+xml');
 			const paths = (root: ParentNode) => Array.from(root.querySelectorAll('path')).map(p => [p.getAttribute('d'), p.getAttribute('fill'), p.getAttribute('fill-rule')]);
 			expect(paths(target)).toEqual(paths(exported));
-			expect(target.querySelectorAll('clipPath').length).toBe(mode === 'joined' ? 0 : 1);
+			expect(target.querySelectorAll('clipPath').length).toBe(0);
 			expect(target.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
 		} finally {
 			await unmount(component);

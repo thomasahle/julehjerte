@@ -1,5 +1,6 @@
-import type { Finger, Vec } from '$lib/types/heart';
+import type { BezierSegment, Finger, Vec } from '$lib/types/heart';
 import { bezierBBox } from '$lib/geometry/curves';
+import { createBezierLoopClipper, straightBezier } from '$lib/geometry/clipBezierLoop';
 import type { WeaveData } from './svgWeave';
 
 type Edge = { a: Vec; b: Vec; forward: string; backward: string };
@@ -15,15 +16,17 @@ export function heartPaintPaths(fingers: Finger[], weave: WeaveData) {
 	const same = (a: number, b: number) => Math.abs(a - b) <= epsilon;
 	const inside = (x: number, y: number) => x >= o.left - epsilon && x <= o.right + epsilon && y >= o.top - epsilon && y <= o.bottom + epsilon;
 
-	// Unfinished or unrestricted drawings can leave the overlap. Keep clipping
-	// them rather than allowing a strip to repaint the semicircles.
+	// Only prepare geometric clipping when a curve actually leaves the square.
+	let needsClipping = false;
 	for (const finger of fingers) for (const segment of finger.segments) {
+		if (![segment.p0, segment.p1, segment.p2, segment.p3].every(p => Number.isFinite(p.x) && Number.isFinite(p.y))) return separate;
 		if (![segment.p0, segment.p1, segment.p2, segment.p3].every(p => inside(p.x, p.y))) {
 			// A handle outside the square need not put the curve outside it.
 			const b = bezierBBox(segment);
-			if (!inside(b.x, b.y) || !inside(b.x + b.width, b.y + b.height)) return separate;
+			if (!inside(b.x, b.y) || !inside(b.x + b.width, b.y + b.height)) needsClipping = true;
 		}
 	}
+	const clip = needsClipping ? createBezierLoopClipper(o) : null;
 
 	const point = (p: Vec): Vec => ({
 		x: same(p.x, o.left) ? o.left : same(p.x, o.right) ? o.right : p.x,
@@ -61,14 +64,22 @@ export function heartPaintPaths(fingers: Finger[], weave: WeaveData) {
 		const a = sorted[strip.lobe][strip.index]?.segments, b = sorted[strip.lobe][strip.index + 1]?.segments;
 		if (!a?.length || !b?.length) return separate;
 		const start = a[0]!.p0;
+		const loop: BezierSegment[] = [];
+		const addCurve = (p0: Vec, p1: Vec, p2: Vec, p3: Vec) => {
+			if (clip) loop.push({ p0, p1, p2, p3 }); else cubic(p0, p1, p2, p3);
+		};
+		const addLine = (p0: Vec, p3: Vec) => {
+			if (clip) loop.push(straightBezier(p0, p3)); else close(p0, p3);
+		};
 		let current = start;
-		for (const s of a) { cubic(current, s.p1, s.p2, s.p3); current = s.p3; }
-		close(current, b.at(-1)!.p3); current = b.at(-1)!.p3;
+		for (const s of a) { addCurve(current, s.p1, s.p2, s.p3); current = s.p3; }
+		addLine(current, b.at(-1)!.p3); current = b.at(-1)!.p3;
 		for (let i = b.length - 1; i >= 0; i--) {
 			const s = b[i]!;
-			cubic(current, s.p2, s.p1, s.p0); current = s.p0;
+			addCurve(current, s.p2, s.p1, s.p0); current = s.p0;
 		}
-		close(current, start);
+		addLine(current, start);
+		if (clip) for (const s of clip(loop)) cubic(s.p0, s.p1, s.p2, s.p3);
 	}
 
 	const topLeft = { x: o.left, y: o.top }, topRight = { x: o.right, y: o.top };

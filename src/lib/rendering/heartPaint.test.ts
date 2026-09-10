@@ -18,7 +18,7 @@ function overlapPixels(d: HeartDesign, joined: boolean) {
 }
 
 function expectSameWeave(d: HeartDesign) {
-	expect(paintOf(d).joined).toBe(!['amy-pattern', 'triple-heart'].includes(d.id));
+	expect(paintOf(d).joined).toBe(true);
 	const before = overlapPixels(d, false), after = overlapPixels(d, true);
 	const height = before.length / 4 / 384;
 	let difference = 0, stablePixelDrift = 0;
@@ -62,11 +62,11 @@ describe('continuous lobe and weave fills', () => {
 		expect(JSON.stringify(d)).toBe(original);
 	});
 
-	it('keeps clipping when an unfinished curve leaves the overlap', () => {
+	it('clips an unfinished curve geometrically when it leaves the overlap', () => {
 		const d = structuredClone(classic), o = weaveOf(d).overlap;
 		d.fingers[0]!.segments[0]!.p1.y = o.top - 100;
-		expect(paintOf(d).joined).toBe(false);
-		expect(renderHeartSvgMarkup(d, { left: 'white', right: 'red' })).toContain('clip-path=');
+		expectSameWeave(d);
+		expect(renderHeartSvgMarkup(d, { left: 'white', right: 'red' })).not.toContain('clip-path=');
 	});
 
 	it('preserves the weave if the top boundary is curved or missing', () => {
