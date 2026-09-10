@@ -1,0 +1,2692 @@
+{
+  "algorithmCommit": "1056b10",
+  "studyCommit": "977ff2b",
+  "previousEngine": "d325714",
+  "origin": "http://127.0.0.1:5232",
+  "checks": {
+    "application": 840,
+    "engine": 469,
+    "optionalApplicationSkip": 1,
+    "svelteErrors": 0,
+    "existingSvelteWarnings": 7,
+    "lintPassed": true,
+    "buildPassed": true,
+    "initialFailure": "The first full Vitest run timed out in the classic-3x3 rendering test. Its isolated 42-test replay and the full required checks passed subsequently; no pixel assertion failed."
+  },
+  "datasets": {
+    "hunodan": {
+      "cases": 22,
+      "allPassed": true,
+      "medianSeconds": 5.068690104,
+      "maxSeconds": 8.723430332999996,
+      "geometryCompared": 22,
+      "changed": []
+    },
+    "weighted": {
+      "cases": 32,
+      "allPassed": true,
+      "medianSeconds": 4.387414166500005,
+      "maxSeconds": 7.324610499999999,
+      "geometryCompared": 32,
+      "changed": []
+    }
+  },
+  "browserReferenceComparison": [
+    {
+      "browser": "chromium",
+      "name": "chord-frame-sym",
+      "previousSourceError": 0.0002875,
+      "sourceError": 5e-05,
+      "preparedBytesIdentical": true,
+      "previousSharedSpans": 32,
+      "sharedSpans": 32
+    },
+    {
+      "browser": "chromium",
+      "name": "chord-frame-anti",
+      "previousSourceError": 1.25e-05,
+      "sourceError": 1.25e-05,
+      "preparedBytesIdentical": true,
+      "previousSharedSpans": 2,
+      "sharedSpans": 2
+    }
+  ],
+  "browserResults": [
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "chord-frame-sym",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.013100000023841858,
+        "prepareRoundTripSeconds": 0.07589999997615814,
+        "preparedToSolveRequestSeconds": 0.00020000004768371582,
+        "solveRoundTripSeconds": 3.680899999976158,
+        "resultToReadySeconds": 0.2505,
+        "clickToReadySeconds": 4.020600000023842
+      },
+      "sourceEditableError": 5e-05,
+      "sharedSpans": 32,
+      "exportedChordDeviationMm": 2.5263741715914672e-14
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "chord-frame-anti",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.007200000047683716,
+        "prepareRoundTripSeconds": 0.07139999997615815,
+        "preparedToSolveRequestSeconds": 0.0003999999761581421,
+        "solveRoundTripSeconds": 2.5547000000476836,
+        "resultToReadySeconds": 0.04089999997615814,
+        "clickToReadySeconds": 2.6746000000238417
+      },
+      "sourceEditableError": 1.25e-05,
+      "sharedSpans": 2,
+      "exportedChordDeviationMm": 3.789561257387201e-14
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "star",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.012600000023841857,
+        "prepareRoundTripSeconds": 0.036800000071525577,
+        "preparedToSolveRequestSeconds": 0.0003999999761581421,
+        "solveRoundTripSeconds": 1.7482999999523163,
+        "resultToReadySeconds": 0.09510000002384186,
+        "clickToReadySeconds": 1.8932000000476836
+      },
+      "sourceEditableError": 0.0016,
+      "sharedSpans": 12
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "top-hat",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.023700000047683717,
+        "prepareRoundTripSeconds": 0.24209999990463257,
+        "preparedToSolveRequestSeconds": 0.00030000007152557374,
+        "solveRoundTripSeconds": 8.832699999928474,
+        "resultToReadySeconds": 0.28880000007152556,
+        "clickToReadySeconds": 9.387600000023841
+      },
+      "sourceEditableError": 0.0032064909297052154,
+      "sharedSpans": 41
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "top-hat-independent",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.018600000023841858,
+        "prepareRoundTripSeconds": 0.2598000000715256,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 5.445600000023842,
+        "resultToReadySeconds": 0.13460000002384187,
+        "clickToReadySeconds": 5.8589000000953675
+      },
+      "sourceEditableError": 0.0029584750566893424,
+      "sharedSpans": 30
+    },
+    {
+      "browser": "chromium",
+      "browserVersion": "145.0.7632.6",
+      "name": "top-hat-anti",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.023299999952316283,
+        "prepareRoundTripSeconds": 0.0975,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 7.1855,
+        "resultToReadySeconds": 0.293,
+        "clickToReadySeconds": 7.599599999904632
+      },
+      "sourceEditableError": 0.0031887755102040817,
+      "sharedSpans": 39
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "chord-frame-sym",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.012,
+        "prepareRoundTripSeconds": 0.081,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 5.993,
+        "resultToReadySeconds": 0.196,
+        "clickToReadySeconds": 6.283
+      },
+      "sourceEditableError": 0.00016875,
+      "sharedSpans": 32,
+      "exportedChordDeviationMm": 2.5263741715914672e-14
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "chord-frame-anti",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.011,
+        "prepareRoundTripSeconds": 0.083,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 3.719,
+        "resultToReadySeconds": 0.039,
+        "clickToReadySeconds": 3.852
+      },
+      "sourceEditableError": 1.25e-05,
+      "sharedSpans": 2,
+      "exportedChordDeviationMm": 3.789561257387201e-14
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "star",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.01,
+        "prepareRoundTripSeconds": 0.032,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 4.392,
+        "resultToReadySeconds": 0.086,
+        "clickToReadySeconds": 4.521
+      },
+      "sourceEditableError": 0.0016,
+      "sharedSpans": 12
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "top-hat",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.021,
+        "prepareRoundTripSeconds": 0.205,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 16.364,
+        "resultToReadySeconds": 0.242,
+        "clickToReadySeconds": 16.832
+      },
+      "sourceEditableError": 0.0032064909297052154,
+      "sharedSpans": 41
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "top-hat-independent",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.016,
+        "prepareRoundTripSeconds": 0.204,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 10.491,
+        "resultToReadySeconds": 0.091,
+        "clickToReadySeconds": 10.803
+      },
+      "sourceEditableError": 0.0029584750566893424,
+      "sharedSpans": 30
+    },
+    {
+      "browser": "firefox",
+      "browserVersion": "146.0.1",
+      "name": "top-hat-anti",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.021,
+        "prepareRoundTripSeconds": 0.091,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 11.461,
+        "resultToReadySeconds": 0.229,
+        "clickToReadySeconds": 11.802
+      },
+      "sourceEditableError": 0.0031887755102040817,
+      "sharedSpans": 39
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "chord-frame-sym",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.008,
+        "prepareRoundTripSeconds": 0.092,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 3.521,
+        "resultToReadySeconds": 0.124,
+        "clickToReadySeconds": 3.745
+      },
+      "sourceEditableError": 0.0001,
+      "sharedSpans": 32,
+      "exportedChordDeviationMm": 5.0527483431829344e-14
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "chord-frame-anti",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.007,
+        "prepareRoundTripSeconds": 0.082,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 2.3300000000000005,
+        "resultToReadySeconds": 0.042999999999999546,
+        "clickToReadySeconds": 2.463
+      },
+      "sourceEditableError": 1.25e-05,
+      "sharedSpans": 2,
+      "exportedChordDeviationMm": 3.789561257387201e-14
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "star",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009000000000000057,
+        "prepareRoundTripSeconds": 0.04299999999999994,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 1.952,
+        "resultToReadySeconds": 0.092,
+        "clickToReadySeconds": 2.097
+      },
+      "sourceEditableError": 0.0016,
+      "sharedSpans": 12
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "top-hat",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.016,
+        "prepareRoundTripSeconds": 0.291,
+        "preparedToSolveRequestSeconds": 0.001,
+        "solveRoundTripSeconds": 9.829,
+        "resultToReadySeconds": 0.185,
+        "clickToReadySeconds": 10.322
+      },
+      "sourceEditableError": 0.0032064909297052154,
+      "sharedSpans": 41
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "top-hat-independent",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.013,
+        "prepareRoundTripSeconds": 0.294,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 5.79,
+        "resultToReadySeconds": 0.074,
+        "clickToReadySeconds": 6.171
+      },
+      "sourceEditableError": 0.0029584750566893424,
+      "sharedSpans": 30
+    },
+    {
+      "browser": "webkit",
+      "browserVersion": "26.0",
+      "name": "top-hat-anti",
+      "passed": true,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.018,
+        "prepareRoundTripSeconds": 0.139,
+        "preparedToSolveRequestSeconds": 0,
+        "solveRoundTripSeconds": 7.601,
+        "resultToReadySeconds": 0.18,
+        "clickToReadySeconds": 7.938
+      },
+      "sourceEditableError": 0.0031887755102040817,
+      "sharedSpans": 39
+    }
+  ],
+  "controlledStudy": {
+    "before": [
+      {
+        "name": "sym-1x1-bend0",
+        "mode": "sym",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 0,
+        "initialError": 0.03,
+        "error": 0.03,
+        "preparedMaskError": 0.03,
+        "seconds": 0.36956441700000003,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "sym-1x1-bend4",
+        "mode": "sym",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 4,
+        "initialError": 0.0490375,
+        "error": 0.0299375,
+        "preparedMaskError": 0.02905,
+        "seconds": 0.24717387500000007,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "sym-1x2-bend0",
+        "mode": "sym",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.045,
+        "error": 0.045,
+        "preparedMaskError": 0.045,
+        "seconds": 0.39536304099999997,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "sym-1x2-bend4",
+        "mode": "sym",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.0739375,
+        "error": 0.0447125,
+        "preparedMaskError": 0.044425,
+        "seconds": 0.407086417,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "sym-2x2-bend0",
+        "mode": "sym",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.0592,
+        "error": 0.05915,
+        "preparedMaskError": 0.059,
+        "seconds": 0.4121821250000003,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "sym-2x2-bend4",
+        "mode": "sym",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.096625,
+        "error": 0.058975,
+        "preparedMaskError": 0.0592,
+        "seconds": 0.4116547909999999,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "sym-2x3-bend0",
+        "mode": "sym",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.0738,
+        "error": 0.07365,
+        "preparedMaskError": 0.0735,
+        "seconds": 0.42826079100000014,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "sym-2x3-bend4",
+        "mode": "sym",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.1199625,
+        "error": 0.073625,
+        "preparedMaskError": 0.072575,
+        "seconds": 0.41220374999999965,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "sym-3x3-bend0",
+        "mode": "sym",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.0882,
+        "error": 0.08745,
+        "preparedMaskError": 0.0874,
+        "seconds": 0.33627774999999976,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "sym-3x3-bend4",
+        "mode": "sym",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.1414875,
+        "error": 0.0881,
+        "preparedMaskError": 0.0859,
+        "seconds": 0.25625083300000007,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "sym-3x4-bend0",
+        "mode": "sym",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 0,
+        "initialError": 0.102175,
+        "error": 0.101375,
+        "preparedMaskError": 0.1008,
+        "seconds": 0.4988059170000006,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 28
+      },
+      {
+        "name": "sym-3x4-bend4",
+        "mode": "sym",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 4,
+        "initialError": 0.1637375,
+        "error": 0.1017375,
+        "preparedMaskError": 0.099275,
+        "seconds": 0.44957079199999955,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 28
+      },
+      {
+        "name": "anti-1x1-bend0",
+        "mode": "anti",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 0,
+        "initialError": 0.0582,
+        "error": 0.057975,
+        "preparedMaskError": 0.058,
+        "seconds": 0.1997778330000001,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "anti-1x1-bend4",
+        "mode": "anti",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 4,
+        "initialError": 0.0582875,
+        "error": 0.0579625,
+        "preparedMaskError": 0.0579,
+        "seconds": 0.19970599999999922,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "anti-1x2-bend0",
+        "mode": "anti",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.0864,
+        "error": 0.08604375,
+        "preparedMaskError": 0.0866,
+        "seconds": 0.405174,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "anti-1x2-bend4",
+        "mode": "anti",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.08655,
+        "error": 0.08638125,
+        "preparedMaskError": 0.08645,
+        "seconds": 0.4125412920000008,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "anti-2x2-bend0",
+        "mode": "anti",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.1128,
+        "error": 0.1091,
+        "preparedMaskError": 0.1079,
+        "seconds": 0.3974439579999998,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 3.1776437161565096e-14
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "anti-2x2-bend4",
+        "mode": "anti",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.1121625,
+        "error": 0.10865,
+        "preparedMaskError": 0.1084,
+        "seconds": 0.3886410420000002,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 2.0097183471152322e-14
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "anti-2x3-bend0",
+        "mode": "anti",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.1392,
+        "error": 0.13845,
+        "preparedMaskError": 0.1388,
+        "seconds": 0.4213049170000004,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "anti-2x3-bend4",
+        "mode": "anti",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.139225,
+        "error": 0.133275,
+        "preparedMaskError": 0.1329,
+        "seconds": 0.42123162499999944,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 3.552713678800501e-15
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "anti-3x3-bend0",
+        "mode": "anti",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.1638,
+        "error": 0.163,
+        "preparedMaskError": 0.1632,
+        "seconds": 0.25150316600000044,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "anti-3x3-bend4",
+        "mode": "anti",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.1642,
+        "error": 0.1565375,
+        "preparedMaskError": 0.15595,
+        "seconds": 0.265617209,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "anti-3x4-bend0",
+        "mode": "anti",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 0,
+        "initialError": 0.1884,
+        "error": 0.187325,
+        "preparedMaskError": 0.18775,
+        "seconds": 0.4998223339999986,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 28
+      },
+      {
+        "name": "anti-3x4-bend4",
+        "mode": "anti",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 4,
+        "initialError": 0.1884875,
+        "error": 0.1775125,
+        "preparedMaskError": 0.177,
+        "seconds": 0.47058929200000055,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 28
+      }
+    ],
+    "after": [
+      {
+        "name": "sym-1x1-bend0",
+        "mode": "sym",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 0,
+        "initialError": 0.03,
+        "error": 5e-05,
+        "preparedMaskError": 0,
+        "seconds": 0.49553362500000003,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 4.3220627292571254e-14
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "sym-1x1-bend4",
+        "mode": "sym",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 4,
+        "initialError": 0.0490375,
+        "error": 0.0011375,
+        "preparedMaskError": 0.0006,
+        "seconds": 0.39995733299999997,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 1.5888218580782548e-14
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "sym-1x2-bend0",
+        "mode": "sym",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.045,
+        "error": 0.0002125,
+        "preparedMaskError": 0.00025,
+        "seconds": 0.395418625,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 2.929642751054232e-14
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "sym-1x2-bend4",
+        "mode": "sym",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.0739375,
+        "error": 0.00081875,
+        "preparedMaskError": 0.00035,
+        "seconds": 0.3960396250000001,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 5.728578676879116e-14
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "sym-2x2-bend0",
+        "mode": "sym",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.0592,
+        "error": 0.05915,
+        "preparedMaskError": 0.059,
+        "seconds": 0.41288574999999994,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 4.106431705202373e-09
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "sym-2x2-bend4",
+        "mode": "sym",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.096625,
+        "error": 0.058975,
+        "preparedMaskError": 0.0592,
+        "seconds": 0.37933845900000007,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 1.5888218580782548e-14
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "sym-2x3-bend0",
+        "mode": "sym",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.0738,
+        "error": 0.000225,
+        "preparedMaskError": 0.00025,
+        "seconds": 0.43296445799999994,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 3.552713678800501e-14
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "sym-2x3-bend4",
+        "mode": "sym",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.1199625,
+        "error": 0.0017875,
+        "preparedMaskError": 0.001,
+        "seconds": 0.45112204199999995,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 3.1776437161565096e-14
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "sym-3x3-bend0",
+        "mode": "sym",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.0882,
+        "error": 7.5e-05,
+        "preparedMaskError": 0.0001,
+        "seconds": 0.4272854159999997,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 1.5888218580782548e-14
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "sym-3x3-bend4",
+        "mode": "sym",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.1414875,
+        "error": 0.0030875,
+        "preparedMaskError": 0.0018,
+        "seconds": 0.43231891600000016,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 2.929642751054232e-14
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "sym-3x4-bend0",
+        "mode": "sym",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 0,
+        "initialError": 0.102175,
+        "error": 0.0001625,
+        "preparedMaskError": 0,
+        "seconds": 0.4735725419999999,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 2.929642751054232e-14
+        },
+        "initialPoints": 28
+      },
+      {
+        "name": "sym-3x4-bend4",
+        "mode": "sym",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 4,
+        "initialError": 0.1637375,
+        "error": 0.00386875,
+        "preparedMaskError": 0.00215,
+        "seconds": 0.4631774999999998,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 3.1776437161565096e-14
+        },
+        "initialPoints": 28
+      },
+      {
+        "name": "anti-1x1-bend0",
+        "mode": "anti",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 0,
+        "initialError": 0.0582,
+        "error": 0,
+        "preparedMaskError": 0,
+        "seconds": 0.20010845900000004,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "anti-1x1-bend4",
+        "mode": "anti",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 4,
+        "initialError": 0.0582875,
+        "error": 0.00255,
+        "preparedMaskError": 0.00185,
+        "seconds": 0.19907154199999968,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "anti-1x2-bend0",
+        "mode": "anti",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.0864,
+        "error": 0.005,
+        "preparedMaskError": 0,
+        "seconds": 0.4037043329999997,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "anti-1x2-bend4",
+        "mode": "anti",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.08655,
+        "error": 0.00368125,
+        "preparedMaskError": 0.0037,
+        "seconds": 0.38815091699999993,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "anti-2x2-bend0",
+        "mode": "anti",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.1128,
+        "error": 0.109525,
+        "preparedMaskError": 0.10815,
+        "seconds": 0.39399154100000033,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 6.463342632999148e-08
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "anti-2x2-bend4",
+        "mode": "anti",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.1121625,
+        "error": 0.1083875,
+        "preparedMaskError": 0.1075,
+        "seconds": 0.3967843750000002,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 5.025181148722496e-08
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "anti-2x3-bend0",
+        "mode": "anti",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.1392,
+        "error": 0.005,
+        "preparedMaskError": 0,
+        "seconds": 0.41251849999999923,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "anti-2x3-bend4",
+        "mode": "anti",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.139225,
+        "error": 0.00613125,
+        "preparedMaskError": 0.0051,
+        "seconds": 0.4214524160000001,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "anti-3x3-bend0",
+        "mode": "anti",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.1638,
+        "error": 0,
+        "preparedMaskError": 0,
+        "seconds": 0.25758508299999994,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "anti-3x3-bend4",
+        "mode": "anti",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.1642,
+        "error": 0.0070875,
+        "preparedMaskError": 0.0046,
+        "seconds": 0.25591441699999995,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "anti-3x4-bend0",
+        "mode": "anti",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 0,
+        "initialError": 0.1884,
+        "error": 0,
+        "preparedMaskError": 0,
+        "seconds": 0.450235917,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 28
+      },
+      {
+        "name": "anti-3x4-bend4",
+        "mode": "anti",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 4,
+        "initialError": 0.1884875,
+        "error": 0.008125,
+        "preparedMaskError": 0.0052,
+        "seconds": 0.4908954169999997,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 28
+      }
+    ],
+    "independent": [
+      {
+        "name": "sym-1x1-bend0",
+        "mode": "sym",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 0,
+        "initialError": 0.03,
+        "error": 5e-05,
+        "preparedMaskError": 0,
+        "seconds": 0.517540958,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 4.3220627292571254e-14
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "sym-1x1-bend4",
+        "mode": "sym",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 4,
+        "initialError": 0.0490375,
+        "error": 0.0011375,
+        "preparedMaskError": 0.0006,
+        "seconds": 0.38770850000000007,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 1.5888218580782548e-14
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "sym-1x2-bend0",
+        "mode": "sym",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.045,
+        "error": 0.0002125,
+        "preparedMaskError": 0.00025,
+        "seconds": 0.42946616700000007,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 2.929642751054232e-14
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "sym-1x2-bend4",
+        "mode": "sym",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.0739375,
+        "error": 0.00081875,
+        "preparedMaskError": 0.00035,
+        "seconds": 0.39231841600000006,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 5.728578676879116e-14
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "sym-2x2-bend0",
+        "mode": "sym",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.0592,
+        "error": 0.000675,
+        "preparedMaskError": 0.0006,
+        "seconds": 0.41742745800000014,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 2.1316282072803006e-14
+        },
+        "initialPoints": 16
+      },
+      {
+        "name": "sym-2x2-bend4",
+        "mode": "sym",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.096625,
+        "error": 0.0004,
+        "preparedMaskError": 0.0001,
+        "seconds": 0.4037279589999998,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 5.859285502108464e-14
+        },
+        "initialPoints": 16
+      },
+      {
+        "name": "sym-2x3-bend0",
+        "mode": "sym",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.0738,
+        "error": 0.000225,
+        "preparedMaskError": 0.00025,
+        "seconds": 0.4229634580000002,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 3.552713678800501e-14
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "sym-2x3-bend4",
+        "mode": "sym",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.1199625,
+        "error": 0.0017875,
+        "preparedMaskError": 0.001,
+        "seconds": 0.4247094159999997,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 3.1776437161565096e-14
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "sym-3x3-bend0",
+        "mode": "sym",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.0882,
+        "error": 7.5e-05,
+        "preparedMaskError": 0.0001,
+        "seconds": 0.45366495799999984,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 1.5888218580782548e-14
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "sym-3x3-bend4",
+        "mode": "sym",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.1414875,
+        "error": 0.0030875,
+        "preparedMaskError": 0.0018,
+        "seconds": 0.4608445419999998,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 2.929642751054232e-14
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "sym-3x4-bend0",
+        "mode": "sym",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 0,
+        "initialError": 0.102175,
+        "error": 0.0001625,
+        "preparedMaskError": 0,
+        "seconds": 0.4502437920000002,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 2.929642751054232e-14
+        },
+        "initialPoints": 28
+      },
+      {
+        "name": "sym-3x4-bend4",
+        "mode": "sym",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 4,
+        "initialError": 0.1637375,
+        "error": 0.00386875,
+        "preparedMaskError": 0.00215,
+        "seconds": 0.4849617500000004,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:sym"
+          ],
+          "honoured": [
+            "withinCurve:sym"
+          ],
+          "maxDeviationMm": 3.1776437161565096e-14
+        },
+        "initialPoints": 28
+      },
+      {
+        "name": "anti-1x1-bend0",
+        "mode": "anti",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 0,
+        "initialError": 0.0582,
+        "error": 0,
+        "preparedMaskError": 0,
+        "seconds": 0.2004554160000007,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "anti-1x1-bend4",
+        "mode": "anti",
+        "counts": [
+          1,
+          1
+        ],
+        "bulge": 4,
+        "initialError": 0.0582875,
+        "error": 0.00255,
+        "preparedMaskError": 0.00185,
+        "seconds": 0.19949862500000018,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 8
+      },
+      {
+        "name": "anti-1x2-bend0",
+        "mode": "anti",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.0864,
+        "error": 0.005,
+        "preparedMaskError": 0,
+        "seconds": 0.40981145800000013,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "anti-1x2-bend4",
+        "mode": "anti",
+        "counts": [
+          1,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.08655,
+        "error": 0.00368125,
+        "preparedMaskError": 0.0037,
+        "seconds": 0.39570466699999995,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 12
+      },
+      {
+        "name": "anti-2x2-bend0",
+        "mode": "anti",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 0,
+        "initialError": 0.1128,
+        "error": 0.00995,
+        "preparedMaskError": 0,
+        "seconds": 0.23033045800000035,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 16
+      },
+      {
+        "name": "anti-2x2-bend4",
+        "mode": "anti",
+        "counts": [
+          2,
+          2
+        ],
+        "bulge": 4,
+        "initialError": 0.1121625,
+        "error": 0.0044125,
+        "preparedMaskError": 0.00525,
+        "seconds": 0.22726800000000003,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 16
+      },
+      {
+        "name": "anti-2x3-bend0",
+        "mode": "anti",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.1392,
+        "error": 0.005,
+        "preparedMaskError": 0,
+        "seconds": 0.4102669169999999,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "anti-2x3-bend4",
+        "mode": "anti",
+        "counts": [
+          2,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.139225,
+        "error": 0.00613125,
+        "preparedMaskError": 0.0051,
+        "seconds": 0.41887275000000046,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 20
+      },
+      {
+        "name": "anti-3x3-bend0",
+        "mode": "anti",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 0,
+        "initialError": 0.1638,
+        "error": 0,
+        "preparedMaskError": 0,
+        "seconds": 0.2539343339999996,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "anti-3x3-bend4",
+        "mode": "anti",
+        "counts": [
+          3,
+          3
+        ],
+        "bulge": 4,
+        "initialError": 0.1642,
+        "error": 0.0070875,
+        "preparedMaskError": 0.0046,
+        "seconds": 0.26124295900000105,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 24
+      },
+      {
+        "name": "anti-3x4-bend0",
+        "mode": "anti",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 0,
+        "initialError": 0.1884,
+        "error": 0,
+        "preparedMaskError": 0,
+        "seconds": 0.4480842079999984,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 7.105427357601002e-15
+        },
+        "initialPoints": 28
+      },
+      {
+        "name": "anti-3x4-bend4",
+        "mode": "anti",
+        "counts": [
+          3,
+          4
+        ],
+        "bulge": 4,
+        "initialError": 0.1884875,
+        "error": 0.008125,
+        "preparedMaskError": 0.0052,
+        "seconds": 0.4675392500000016,
+        "steps": 301,
+        "geometry": true,
+        "paper": true,
+        "symmetry": {
+          "requested": [
+            "withinCurve:anti"
+          ],
+          "honoured": [
+            "withinCurve:anti"
+          ],
+          "maxDeviationMm": 0
+        },
+        "initialPoints": 28
+      }
+    ]
+  },
+  "servedSource": [
+    {
+      "file": "static/inverse/compute-worker.js",
+      "status": 200,
+      "sha256": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "servedSha256": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/automatic.js",
+      "status": 200,
+      "sha256": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "servedSha256": "4a62007e1c0e0927a1a3027c92886dd78b984261804aa62c06ce3201907e5047",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/bezier.js",
+      "status": 200,
+      "sha256": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "servedSha256": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/border.js",
+      "status": 200,
+      "sha256": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "servedSha256": "d5271e71711f34e5ccb6a58fdea5d426df54381412a66deef1b4622f91d4fa46",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/chord-distance.js",
+      "status": 200,
+      "sha256": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+      "servedSha256": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/crop.js",
+      "status": 200,
+      "sha256": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "servedSha256": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/boundary.js",
+      "status": 200,
+      "sha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+      "servedSha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/chord-tangent.js",
+      "status": 200,
+      "sha256": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+      "servedSha256": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/counts.js",
+      "status": 200,
+      "sha256": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "servedSha256": "454d506bd4537282c3806f7a8fe492827b352fb1874cf958e4ad758d06f60ac9",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/curves.js",
+      "status": 200,
+      "sha256": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+      "servedSha256": "a3cad0cb2c96d62c0e1d99474777157eae8fb3fd6b7631f3af203243f4909ad3",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/finalize.js",
+      "status": 200,
+      "sha256": "6ad14f5ee83a7efc6d8ae9605f278a65eeef1e2325846221a51f2be2e2ab12d3",
+      "servedSha256": "6ad14f5ee83a7efc6d8ae9605f278a65eeef1e2325846221a51f2be2e2ab12d3",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/fit.js",
+      "status": 200,
+      "sha256": "156f5278d3d410041fb4aa4de6fcc603eb92256ef1da068685d84ceac25397f7",
+      "servedSha256": "156f5278d3d410041fb4aa4de6fcc603eb92256ef1da068685d84ceac25397f7",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/grid.js",
+      "status": 200,
+      "sha256": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+      "servedSha256": "57ada8e2f1c794b0012ddedbb8b508f29971186c313e517a8f40ca3788e1dfbd",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/image-objective.js",
+      "status": 200,
+      "sha256": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "servedSha256": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/initialization-image.js",
+      "status": 200,
+      "sha256": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+      "servedSha256": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/initialize.js",
+      "status": 200,
+      "sha256": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "servedSha256": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/isometry-projection.js",
+      "status": 200,
+      "sha256": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+      "servedSha256": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/matching.js",
+      "status": 200,
+      "sha256": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+      "servedSha256": "db113f3e5c6ed3be820f7c863a113e9181a02c7efa5ea66a46e56df7f2428414",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/math.js",
+      "status": 200,
+      "sha256": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "servedSha256": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/native.js",
+      "status": 200,
+      "sha256": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+      "servedSha256": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/native/PROVENANCE.json",
+      "status": 200,
+      "sha256": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+      "servedSha256": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/native/boundary.c",
+      "status": 200,
+      "sha256": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+      "servedSha256": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/native/boundary.wasm",
+      "status": 200,
+      "sha256": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+      "servedSha256": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/prefer-matching.js",
+      "status": 200,
+      "sha256": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+      "servedSha256": "2e07c19f7e09a296bf93677c53ff78de489e85fc3064d295c4149c8cc567cf00",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/primitive-selection.js",
+      "status": 200,
+      "sha256": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "servedSha256": "459913dfdea3130d9365e183248965d6a61553dc591e5c178fd48daf8bce0904",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/primitives.js",
+      "status": 200,
+      "sha256": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "servedSha256": "e2bacf3975240b9c301812193ca80674c300f112aaa657658a1b8c0ab36c971b",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/refine.js",
+      "status": 200,
+      "sha256": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+      "servedSha256": "b5ee17d9c021b724011054544a33dfbdab798ed91adca9c32c6cbb8d2a5fc1ad",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/share.js",
+      "status": 200,
+      "sha256": "0dadebbd59b068e8e1e504fdcb16db7197b7828dd7b0499643067828c7eeb8fd",
+      "servedSha256": "0dadebbd59b068e8e1e504fdcb16db7197b7828dd7b0499643067828c7eeb8fd",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/shared-simplification.js",
+      "status": 200,
+      "sha256": "9617dbe47fc1ac6d6d99a7dc228a160e783cf5a325992d7cc5f5e15719420ed5",
+      "servedSha256": "9617dbe47fc1ac6d6d99a7dc228a160e783cf5a325992d7cc5f5e15719420ed5",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/shared-span.js",
+      "status": 200,
+      "sha256": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+      "servedSha256": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/sharing-orbit.js",
+      "status": 200,
+      "sha256": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+      "servedSha256": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/symmetry.js",
+      "status": 200,
+      "sha256": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "servedSha256": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/direct/topology.js",
+      "status": 200,
+      "sha256": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+      "servedSha256": "bbe79bf0dca7c4786c7728413026fee9f77bb9bca5bb788be7d6674267ad9292",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/engine.js",
+      "status": 200,
+      "sha256": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+      "servedSha256": "f4c7f3f11b4543b9270ef849d3924fd67ea722574abdef8a861b118cdf3731c1",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/export.js",
+      "status": 200,
+      "sha256": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "servedSha256": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/feature-recovery.js",
+      "status": 200,
+      "sha256": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+      "servedSha256": "37831af78afffd94b19a4145091d199f9771d12e505514e88cf1943e6023279e",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/geometry.js",
+      "status": 200,
+      "sha256": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "servedSha256": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/graph.js",
+      "status": 200,
+      "sha256": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "servedSha256": "02e37723c08ada0d38f59e924df2fdf8c5d632595d1358d432a57a0ff1476414",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/image-features.js",
+      "status": 200,
+      "sha256": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "servedSha256": "8e6051d4dad7dd4065d21d4ab2b2e013c1806f1362468aa2f16bdf8cbf5f222a",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/image-reference.js",
+      "status": 200,
+      "sha256": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "servedSha256": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/input.js",
+      "status": 200,
+      "sha256": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "servedSha256": "e2ca80ca68f92878bfa4238bbb312a642dd3b119bff5d7e97dbcb9585371cb87",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/junctions.js",
+      "status": 200,
+      "sha256": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "servedSha256": "88a64707963d278584294e1d6acf0eae2ea17dabb6c31c1344159275937c0250",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/kernel-choice.js",
+      "status": 200,
+      "sha256": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+      "servedSha256": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/mask-preview.js",
+      "status": 200,
+      "sha256": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+      "servedSha256": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/material.js",
+      "status": 200,
+      "sha256": "1d7d4e33811d46aa4e815bf9e4a410a8844c9bba7e50fdb6e0fa850181801898",
+      "servedSha256": "1d7d4e33811d46aa4e815bf9e4a410a8844c9bba7e50fdb6e0fa850181801898",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/numerical-kernel.js",
+      "status": 200,
+      "sha256": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+      "servedSha256": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/paper-backend.js",
+      "status": 200,
+      "sha256": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "servedSha256": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/polygonal.js",
+      "status": 200,
+      "sha256": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "servedSha256": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/portals.js",
+      "status": 200,
+      "sha256": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "servedSha256": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/presets.js",
+      "status": 200,
+      "sha256": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "servedSha256": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/progress.js",
+      "status": 200,
+      "sha256": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+      "servedSha256": "5034d4c14b1abdf9c656208a13f0d24cf7254a1ce6323f452bb45f39d67e5370",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/rounding.js",
+      "status": 200,
+      "sha256": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "servedSha256": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/settings.js",
+      "status": 200,
+      "sha256": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "servedSha256": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/solver.js",
+      "status": 200,
+      "sha256": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+      "servedSha256": "de7d3b887d0b2faf28af21ba9b29de331b4566ff5374523db15fbbb0487dd8ea",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/stopped.js",
+      "status": 200,
+      "sha256": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+      "servedSha256": "f2c50e6dca6ac2a1ea8d7b2fa1c5984109a5502dca728601f4e9e885ebf406a8",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/symmetry.js",
+      "status": 200,
+      "sha256": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "servedSha256": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/unmix.js",
+      "status": 200,
+      "sha256": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "servedSha256": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/validate.js",
+      "status": 200,
+      "sha256": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "servedSha256": "6a584360ef85beb7c969d9ba8db6ef23eb4e74d620237f81ac81cb05770e8273",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/core/zip.js",
+      "status": 200,
+      "sha256": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "servedSha256": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/worker-bootstrap.js",
+      "status": 200,
+      "sha256": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "servedSha256": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/worker-controller.js",
+      "status": 200,
+      "sha256": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "servedSha256": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "matches": true
+    },
+    {
+      "file": "static/inverse/worker.js",
+      "status": 200,
+      "sha256": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "servedSha256": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "matches": true
+    }
+  ],
+  "artifacts": {
+    "tmp/moving-chord-test.log": "b0cb36adfc5a89cdb96e17b96a0d8b1997391d7b92910b7a7ec94029dfc93815",
+    "tmp/moving-chord-render-retry.log": "c81d8d0a9770bb01da13c08b7227c233cfd84d23c79233a91a07c3d1d5d5cc50",
+    "tmp/moving-chord-test-retry.log": "25d9391ca00214af98e3b62bc9dfdeb124cd84a7afe972cffbb592153da77614",
+    "tmp/moving-chord-check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/moving-chord-lint.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/moving-chord-build.log": "34188ad67367418cd30c82c0be44292a3bcf90f80d27090bb78b6f045154596f",
+    "tmp/moving-chord-browser/results.json": "53559096af7a017a1cdbc71f2a4856f3614952a505c3e46de1dcfbe88e87ee7e",
+    "tmp/moving-chord-reference-browser/results.json": "f517f6993acbfede734500f0f35c78d6eaa2b97ab459ad852eca4cd504860321",
+    "tmp/moving-chord-hunodan/results.json": "66c82bcd385a08ada3178981d6e43c18c6e00899e61447e53e7ecc3255624e06",
+    "tmp/moving-chord-weighted/results.json": "eda8addcf1e68cd3d7f9d2165850b95dea347f11d84cce35cb4ce9679049425a",
+    "tmp/moving-chord-final-before/report.json": "b00bdf7f77cfb748beeb1a60e73ab63fcdc4bcfd05dfb2c1a018c636b3c094da",
+    "tmp/moving-chord-final-after/report.json": "4b96eddec5d5a382daeb75277f62eee31fce06ce308f7173a4606a099905e7c3",
+    "tmp/moving-chord-final-independent/report.json": "9c70ff80ae154d3f8833410024e9ce37f6742f4d45b1072b390f72912bf185bc",
+    "tmp/moving-chord-served-source.json": "fb2c7bcc63f72ec2e1c0c6e26406c0771c4b517c606d536235de2b50e5b78027"
+  },
+  "establishedBrowserGeometry": {
+    "previousArtifact": "tmp/lobe-paint-browser/results.json",
+    "cases": 12,
+    "changed": []
+  },
+  "controlledReferenceVerification": {
+    "commit": "d325714",
+    "filesChecked": 78,
+    "allBytesIdentical": true
+  }
+}

@@ -120,3 +120,10 @@ conversion and downloaded SVG checks as a completed solve.
 The subsequent [continuous-fill rendering fix](LOBE-JOINS.md) removes a separate
 antialiasing seam where a lobe meets the woven square. It preserves the fitted
 cuts and shares one contour builder across Paint, Draw and woven SVG previews.
+
+The [moving-endpoint gradient correction](MOVING-CHORDS.md) removes translation
+and tilt stalls when Within curve symmetry is enabled. Its fresh browser
+checks retain byte-identical cutting geometry for all 12 established hat and
+star workflows, including their exact shared spans. It also records a separate
+remaining issue with accidentally shared handles in minimal straight grids;
+that diagnostic does not disable deliberate shared cuts in production.

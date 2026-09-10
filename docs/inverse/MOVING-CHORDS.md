@@ -104,3 +104,49 @@ The reference and candidate studies run serially against identical targets,
 with independent geometric rendering and unchanged geometry/material checks.
 Raw reports are in `tmp/moving-chord-final-{before,after,independent}/`.
 The independent-handle column is an experiment, not released behavior.
+
+## Browser export checks
+
+Eighteen fresh image-to-SVG workflows pass in Chromium, Firefox and WebKit:
+two chord fixtures, a star, and matching, independent and Anti free-border
+hats. The engine receives only uploaded pixels and the UI settings. The test
+opens the result in Draw, downloads SVG, and independently checks its cuts,
+shared spans, chord symmetry and woven-image fidelity.
+
+A separate Chromium replay substitutes the `d325714` engine into the same UI.
+Its prepared-mask files are byte-identical to the candidate runs. The exported
+Sym frame improves from 0.02875% to 0.00500% source-mask disagreement; Anti stays
+at 0.00125%. Across the three browsers, maximum exported chord deviation is
+5.1e-14 mm. The matching hat retains 41 exactly shared spans with 0.32065%
+protected-motif disagreement. This is a fresh reproduction of the silhouette,
+not the unavailable original drawing from the user's screenshot.
+
+All 840 application and 469 engine tests pass. Type checking has zero errors
+and seven existing warnings; lint and the production build pass. The first
+full application run hit the default five-second timeout in an existing
+classic-3x3 render test. Its isolated 42-test replay and the subsequent full
+required checks pass; there was no image assertion failure. That initial
+failed run is retained with the validation artifacts.
+
+## Dataset regression and served source
+
+All 22 regular Hunodan photographs and 32 free-border perturbation cases pass
+their existing quality, feature, paper and ten-second checks. Every exported
+`cut_geometry.json` is byte-identical to the preceding chord-projection release.
+The serial Node runs retain candidate checkpoints and progress geometry.
+
+| Dataset | Cases | Median solve time | Maximum solve time |
+| --- | ---: | ---: | ---: |
+| Hunodan | 22 | 5.069 s | 8.723 s |
+| Free-border perturbations | 32 | 4.387 s | 7.325 s |
+
+These include preparation, solving, validation and export; image decoding and
+the independent export replay are timed separately. They are regression checks
+for the ordinary automatic settings, not a claim about every within-curve
+request or a browser end-to-end ten-second limit.
+
+All 62 served engine and worker files match the benchmarked source. The
+preview remains at <http://127.0.0.1:5232/en/editor/paint/>.
+[MOVING-CHORDS-VALIDATION.json](MOVING-CHORDS-VALIDATION.json) records individual
+study and browser results, source hashes and artifact hashes, including the
+initial application-test timeout and the successful reruns.
