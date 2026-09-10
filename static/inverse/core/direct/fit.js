@@ -59,7 +59,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     start=performance.now(),fastSeconds=Math.min(cfg.timeLimit,10),maxDeadline=start+cfg.timeLimit*1000;
   let deadline=start+fastSeconds*1000-Math.min(1300,fastSeconds*200);
   const numericalBackend=await loadBoundaryKernel();
-  const sourceFeatures=imageFeatures(source,cfg.width),matchingEvidence=symmetryEvidence(source),evidence=borderEvidence(guideProb||fullProb,source.resolution),attempts=[],timings=[];
+  const sourceFeatures=imageFeatures(source,cfg.width),matchingEvidence=symmetryEvidence(source),evidence=borderEvidence(guideProb||fullProb,source.resolution),supportedCounts=supportedBorderCounts(evidence),attempts=[],timings=[];
   const maximumCount=gridCountLimit(evidence);
   // Dense hypotheses take longer to initialize and refine in browser engines.
   // Use the requested budget for them instead of starving the best candidate
@@ -182,9 +182,27 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
     const candidate=stage('directRefining',()=>refineCurves(graph,prob,n,clear.phase,{...cfg,preferMatchingSheets:false},{deadline:end,input,weights:fitWeights,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>onProgress({stage:'directRefining',counts:clear.model.counts,...r},solution)}));
     candidate.counts=clear.model.counts;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop);
-    if(candidate.imagePassed)break;
+    // A slightly more complex grid can win on a single noisy border pixel.
+    // If a lower-count finalist is still available, give it one refinement
+    // pass before accepting the first valid result. This keeps the normal
+    // fast path unchanged while making topology stable under small input
+    // perturbations. The final selector applies the same one-point tolerance.
+    const simplerRemaining=!!supportedCounts&&!weights&&fine.slice(i+1).some(r=>r.model.counts.every((count,j)=>count===supportedCounts[j])&&r.model.counts[0]+r.model.counts[1]<candidate.counts[0]+candidate.counts[1]&&r.error<=candidate.error+.01);
+    if(candidate.imagePassed&&!simplerRemaining)break;
   }
   candidates.sort((a,b)=>Number(b.paperPassed)-Number(a.paperPassed)||Number(b.geometryPassed)-Number(a.geometryPassed)||Number(b.imagePassed)-Number(a.imagePassed)||a.selectionScore-b.selectionScore);
+  // Prefer the simplest valid topology when its independently measured image
+  // disagreement is within one percentage point of the best valid candidate.
+  // This is deliberately applied after geometry and feature gates, so a
+  // simpler but physically invalid or feature-losing fit can never win.
+  const validCandidates=candidates.filter(c=>c.imagePassed),bestError=validCandidates.reduce((best,c)=>Math.min(best,c.originalImageError),Infinity);
+  if(validCandidates.length&&supportedCounts&&!weights){
+    const simple=validCandidates.filter(c=>c.counts.every((count,j)=>count===supportedCounts[j])&&c.originalImageError<=bestError+.01).sort((a,b)=>a.originalImageError-b.originalImageError)[0];
+    if(simple){
+      const rest=candidates.filter(c=>c!==simple);
+      candidates.splice(0,candidates.length,simple,...rest);
+    }
+  }
   let candidate=candidates[0];
   // This optional early pass precedes polishing. The final selected pair also
   // receives sharing recovery after any matching-sheet replacement.
