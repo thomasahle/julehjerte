@@ -1,5 +1,9 @@
 # Continuous lobe and weave rendering
 
+The later [geometric-clipping extension](CLIPPED-FILLS.md) removes the two
+gallery fallbacks described below. This page records the original `c82131f`
+implementation and its validation; all 38 gallery hearts now use joined fills.
+
 The [hat repair](HAT-SEAM-HANDOFF.md) makes nearly coincident cutting curves
 exactly shared. A separate defect could still draw a hairline through a region
 whose geometry was already correct: the SVG renderer painted two overlapping
