@@ -9,6 +9,7 @@ import {createServer} from 'vite';
 import {JSDOM} from 'jsdom';
 import {createCanvas,loadImage} from 'canvas';
 import {motifFixture,topHatFixture,chordFrameFixture} from './motif-fixture.mjs';
+import {Cubic} from '../../static/inverse/core/bezier.js';
 import {installPaintObservation,collectPaintObservation} from './paint-observer.mjs';
 import {stopIntervention,installStopObservation,exerciseStop} from './stop-browser-hooks.mjs';
 
@@ -75,7 +76,7 @@ for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/pain
 for(const file of['static/inverse/worker.js','static/inverse/worker-bootstrap.js','static/inverse/worker-controller.js','static/inverse/compute-worker.js','static/inverse/core/engine.js','static/inverse/core/stopped.js','static/inverse/core/progress.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
-for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/shared-simplification.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
  for(const browserName of names){
@@ -83,7 +84,8 @@ try{
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
-   const topHat=['top-hat','top-hat-independent','top-hat-anti'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
+   const photograph=name==='hunodan'||name.startsWith('hunodan-');
+   const topHat=['top-hat','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
    const referenceStart={...referenceRequestCounts};
@@ -116,12 +118,13 @@ try{
     if(name==='star')await button('Try the star').click();
     else{
      const file=path.join(dir,'input.png');
-     if(name==='hunodan'){
+     if(photograph){
       const metadata=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
-      const e=metadata.cases[0],[x,y,x1,y1]=e.photoROI,im=await loadImage(e.source),c=createCanvas(x1-x,y1-y);c.getContext('2d').drawImage(im,-x,-y);await fs.writeFile(file,c.toBuffer('image/png'));
+      const e=name==='hunodan'?metadata.cases[0]:metadata.cases.find(e=>e.id===name.slice('hunodan-'.length));assert.ok(e,`Unknown photograph ${name}`);
+      const [x,y,x1,y1]=e.photoROI,im=await loadImage(e.source),c=createCanvas(x1-x,y1-y);c.getContext('2d').drawImage(im,-x,-y);await fs.writeFile(file,c.toBuffer('image/png'));
      }else await fs.writeFile(file,chordMode?chordFrameFixture(chordMode):topHat?topHatFixture(200,{quarterTurns:name==='top-hat-anti'?1:0}):free?motifFixture(name.replace(/-free(?:-small)?$/,'')).original:motifFixture(name).png);
      await button('Import picture').click();await page.locator('input[type=file]').setInputFiles(file);
-     if(name!=='hunodan')await button('The whole picture').click();
+     if(!photograph)await button('The whole picture').click();
      else await page.locator('button.corner').nth(3).waitFor();
      await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Use as mask'&&!b.disabled));
      await page.screenshot({path:path.join(dir,'import.png'),fullPage:true});
@@ -254,7 +257,10 @@ try{
     for(const id of common)for(const family of editable)assert.ok(family.has(canonical(geometry.curves[id].control_points)),`Shared span ${id} diverged during conversion/export`);
     row.sharedSpans=common.length;
     if(topHat){
-     assert.ok(common.length>10,'The hat needs exact shared cuts, not independent near matches.');
+     // Measure geometric length: a clean small hat has four long shared
+     // curves, while subdivision gives the larger hat dozens of spans.
+     row.sharedLengthMm=common.reduce((sum,id)=>sum+new Cubic(geometry.curves[id].control_points).length(),0);
+     assert.ok(row.sharedLengthMm>(small?80:200),'The hat must retain its long exact shared cuts.');
     }
     const rendered=rasterizeDesign(design,200).data,wanted=resample(Uint8Array.from(observed.prepared.mask),observed.prepared.resolution,200);
     row.wholeOriginalError=maskMismatch(rendered,wanted);
@@ -274,7 +280,7 @@ try{
     row.conversionFidelity=conversionFidelity(raw.design,{mask:{size:resolution,data:sourceMask},weights:observed.prepared.weights??undefined})(design);
     assert.equal(row.conversionFidelity.passed,true,`Editable SVG lost fitted weave fidelity: ${JSON.stringify(row.conversionFidelity)}`);
     assert.ok(Math.abs(row.displayedError-row.sourceEditableError)<=.00051,`Displayed mismatch ${row.displayedError} disagrees with exported heart ${row.sourceEditableError}`);
-    assert.ok(row.sourceEditableError<=(small?.005:topHat?.01:free||name==='hunodan'?.03:.015),`Editable source mismatch ${row.sourceEditableError}`);
+    assert.ok(row.sourceEditableError<=(small?.005:topHat?.01:free||photograph?.03:.015),`Editable source mismatch ${row.sourceEditableError}`);
     if(name==='star'){
      const pendingPDF=page.waitForEvent('download');await button('Download PDF').click();
      const pdfFile=path.join(dir,'template.pdf');await(await pendingPDF).saveAs(pdfFile);

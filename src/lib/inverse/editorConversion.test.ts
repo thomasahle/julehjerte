@@ -4,6 +4,7 @@ import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIs
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import type { HeartDesign } from '$lib/types/heart';
 import star from '../../../scripts/inverse/fixtures/editor-star-crossing.json';
+import anchor from '../../../scripts/inverse/fixtures/editor-anchor-return.json';
 
 // Fresh result captured from the production Mal → Prøv stjernen → Find snit
 // flow on 2026-09-08. Engine checks passed, but the converted heart warned about
@@ -40,6 +41,14 @@ describe('the final editable heart', () => {
     const invalid = structuredClone(geometry);
     invalid.A_overlap_paths[1] = structuredClone(invalid.A_overlap_paths[0]!);
     expect(() => convertValidatedCutGeometry(invalid, { name: 'invalid', tolerance: 0 })).toThrow(CutGeometryError);
+  });
+
+  it('blocks the photographed anchor’s narrow return even though engine validation accepted it', () => {
+    // Actual Chromium upload/crop/solve result. A short detour escaped the
+    // engine’s local-neighbourhood check; conversion must still reject it.
+    const narrow = anchor as unknown as CutGeometry;
+    expect(issues(convertCutGeometry(narrow, { name: 'anchor', tolerance: 0 }).design)).toEqual(new Set(['R-cut-2']));
+    expect(() => convertValidatedCutGeometry(narrow, { name: 'anchor' })).toThrow(CutGeometryError);
   });
 
   it('refuses cuts that cross inside the same sheet', () => {
