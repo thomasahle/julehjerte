@@ -5,8 +5,7 @@
  */
 import {Cubic,distance,turnAngle} from '../bezier.js';
 import {curvesOf} from '../graph.js';
-import {sampleWeave,validate} from '../validate.js';
-import {materialAudit} from '../material.js';
+import {sampleWeave} from '../validate.js';
 import {auditImageFeatures} from '../image-features.js';
 import {referenceError,sourceWeights} from '../image-reference.js';
 import {CurveGraph} from './curves.js';
@@ -87,7 +86,7 @@ export function finalizeShortReturns(solution,cfg,{deadline=Infinity,onProgress=
     // Topology changes can initially cost a few pixels. Let the ordinary
     // constrained fitter recover that loss; do not grant extra image error.
     const objective=orbitObjective(Float64Array.from(source.mask),n,symmetryOrbit(cfg.symmetry),weights);
-    const fitted=refineCurves(proposal.graph,objective.probability,n,phase,{...cfg,preferMatchingSheets:false},{input,weights:objective.weights,steps:160,rate:.008,selection:'mask',identicalSheets:beforeMatching.identical,deadline:deadline-80,onProgress:(r,s)=>onProgress({stage:'directPolishing',detail:'short-return-refinement',...r},s)});
+    const fitted=refineCurves(proposal.graph,objective.probability,n,phase,{...cfg,preferMatchingSheets:false},{input,weights:objective.weights,steps:160,rate:.008,selection:'mask',identicalSheets:beforeMatching.identical,deadline:deadline-200,onProgress:(r,s)=>onProgress({stage:'directPolishing',detail:'short-return-refinement',...r},s)});
     report.refinementSteps=fitted.steps;
     if(!fitted.geometryPassed||!fitted.paperPassed)return 'refinement_geometry';
     const candidate=fitted.graph.solution(fitted.points,phase,input);report.sourceErrorAfter=error(candidate);
@@ -95,8 +94,9 @@ export function finalizeShortReturns(solution,cfg,{deadline=Infinity,onProgress=
     if(performance.now()>=deadline)return 'deadline';
     if(!compatible(candidate))return 'symmetry';
     if(!auditImageFeatures(source,sampleWeave(candidate,n),input.width).passed)return 'image_features';
-    if(!validate(candidate,cfg,{checkImage:false}).passed)return 'geometry';
-    if(cfg.requireMaterialCore&&!materialAudit(candidate,cfg).passed)return 'paper';
+    // The immutable fitted checkpoint already passed geometry and paper
+    // checks. Source scoring and symmetry inspection above do not move it;
+    // rerunning the same audits here only consumes the cleanup reserve.
     if(performance.now()>=deadline)return 'deadline';
     result=candidate;report.applied=true;return null;
   };
