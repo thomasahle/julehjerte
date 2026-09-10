@@ -116,3 +116,7 @@ The [graceful Stop implementation](GRACEFUL-STOP.md) also applies the common
 shared-cut cleanup to retained checkpoints before export. Keeping a partially
 fitted hat therefore preserves exact shared spans through the same editor
 conversion and downloaded SVG checks as a completed solve.
+
+The subsequent [continuous-fill rendering fix](LOBE-JOINS.md) removes a separate
+antialiasing seam where a lobe meets the woven square. It preserves the fitted
+cuts and shares one contour builder across Paint, Draw and woven SVG previews.

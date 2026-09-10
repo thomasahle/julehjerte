@@ -1,0 +1,664 @@
+{
+  "implementationCommit": "c82131f",
+  "preview": "http://127.0.0.1:5232",
+  "scope": "Continuous fill contours; fitter, source masks and cutting/export geometry unchanged.",
+  "checks": {
+    "applicationPassed": 833,
+    "applicationSkipped": 1,
+    "enginePassed": 391,
+    "typeErrors": 0,
+    "existingTypeWarnings": 7,
+    "lint": "passed",
+    "build": "passed"
+  },
+  "gallery": {
+    "designs": 38,
+    "weavePhases": 2,
+    "joinedDesigns": 36,
+    "clippingFallback": [
+      "amy-pattern",
+      "triple-heart"
+    ],
+    "maximumPermittedCoverageDrift": 0.0005,
+    "uniformRegions": "No channel drift above 1/255 away from edge neighborhoods"
+  },
+  "rendering": {
+    "origin": "http://127.0.0.1:5232",
+    "method": "Production gallery SVG, fractional CSS offsets, both paper palettes; pixel samples across uniform lobe joins.",
+    "results": [
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "size": 144,
+        "dpr": 1,
+        "palette": "paper",
+        "before": {
+          "top": {
+            "max": 69,
+            "mean": 20.13888888888889
+          },
+          "left": {
+            "max": 88,
+            "mean": 27.17534722222222
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "size": 144,
+        "dpr": 1,
+        "palette": "swapped",
+        "before": {
+          "top": {
+            "max": 69,
+            "mean": 20.317708333333332
+          },
+          "left": {
+            "max": 83,
+            "mean": 25.90451388888889
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "size": 600,
+        "dpr": 1,
+        "palette": "paper",
+        "before": {
+          "top": {
+            "max": 44,
+            "mean": 14.777777777777779
+          },
+          "left": {
+            "max": 72,
+            "mean": 21.78472222222222
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "size": 600,
+        "dpr": 1,
+        "palette": "swapped",
+        "before": {
+          "top": {
+            "max": 44,
+            "mean": 15.413194444444445
+          },
+          "left": {
+            "max": 67,
+            "mean": 20.30902777777778
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "size": 267,
+        "dpr": 2,
+        "palette": "paper",
+        "before": {
+          "top": {
+            "max": 85,
+            "mean": 24.098958333333332
+          },
+          "left": {
+            "max": 99,
+            "mean": 22.977430555555557
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "version": "145.0.7632.6",
+        "size": 267,
+        "dpr": 2,
+        "palette": "swapped",
+        "before": {
+          "top": {
+            "max": 86,
+            "mean": 24.22048611111111
+          },
+          "left": {
+            "max": 95,
+            "mean": 21.76736111111111
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "size": 144,
+        "dpr": 1,
+        "palette": "paper",
+        "before": {
+          "top": {
+            "max": 66,
+            "mean": 18.399305555555557
+          },
+          "left": {
+            "max": 103,
+            "mean": 31.76909722222222
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "size": 144,
+        "dpr": 1,
+        "palette": "swapped",
+        "before": {
+          "top": {
+            "max": 66,
+            "mean": 18.45486111111111
+          },
+          "left": {
+            "max": 98,
+            "mean": 30.41840277777778
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "size": 600,
+        "dpr": 1,
+        "palette": "paper",
+        "before": {
+          "top": {
+            "max": 45,
+            "mean": 13.27951388888889
+          },
+          "left": {
+            "max": 69,
+            "mean": 20.26909722222222
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "size": 600,
+        "dpr": 1,
+        "palette": "swapped",
+        "before": {
+          "top": {
+            "max": 45,
+            "mean": 14.065972222222221
+          },
+          "left": {
+            "max": 64,
+            "mean": 18.899305555555557
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "size": 267,
+        "dpr": 2,
+        "palette": "paper",
+        "before": {
+          "top": {
+            "max": 90,
+            "mean": 25.921875
+          },
+          "left": {
+            "max": 93,
+            "mean": 21.866319444444443
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "firefox",
+        "version": "146.0.1",
+        "size": 267,
+        "dpr": 2,
+        "palette": "swapped",
+        "before": {
+          "top": {
+            "max": 90,
+            "mean": 26.05034722222222
+          },
+          "left": {
+            "max": 89,
+            "mean": 20.93923611111111
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "size": 144,
+        "dpr": 1,
+        "palette": "paper",
+        "before": {
+          "top": {
+            "max": 56,
+            "mean": 17.98611111111111
+          },
+          "left": {
+            "max": 76,
+            "mean": 25.40277777777778
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "size": 144,
+        "dpr": 1,
+        "palette": "swapped",
+        "before": {
+          "top": {
+            "max": 57,
+            "mean": 18.541666666666668
+          },
+          "left": {
+            "max": 73,
+            "mean": 23.913194444444443
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "size": 600,
+        "dpr": 1,
+        "palette": "paper",
+        "before": {
+          "top": {
+            "max": 21,
+            "mean": 7.961805555555555
+          },
+          "left": {
+            "max": 70,
+            "mean": 20.163194444444443
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "size": 600,
+        "dpr": 1,
+        "palette": "swapped",
+        "before": {
+          "top": {
+            "max": 22,
+            "mean": 8.51736111111111
+          },
+          "left": {
+            "max": 67,
+            "mean": 18.583333333333332
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "size": 267,
+        "dpr": 2,
+        "palette": "paper",
+        "before": {
+          "top": {
+            "max": 58,
+            "mean": 18.21527777777778
+          },
+          "left": {
+            "max": 79,
+            "mean": 20.01215277777778
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      },
+      {
+        "browser": "webkit",
+        "version": "26.0",
+        "size": 267,
+        "dpr": 2,
+        "palette": "swapped",
+        "before": {
+          "top": {
+            "max": 58,
+            "mean": 18.21527777777778
+          },
+          "left": {
+            "max": 76,
+            "mean": 19.164930555555557
+          }
+        },
+        "after": {
+          "top": {
+            "max": 0,
+            "mean": 0
+          },
+          "left": {
+            "max": 0,
+            "mean": 0
+          }
+        },
+        "passed": true
+      }
+    ]
+  },
+  "freshFits": [
+    {
+      "browser": "chromium",
+      "case": "star",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 12,
+      "sourceEditableError": 0.0016,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "chromium",
+      "case": "top-hat",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 41,
+      "sourceEditableError": 0.0032064909297052154,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "chromium",
+      "case": "top-hat-independent",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 30,
+      "sourceEditableError": 0.0029584750566893424,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "chromium",
+      "case": "top-hat-anti",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 39,
+      "sourceEditableError": 0.0031887755102040817,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "firefox",
+      "case": "star",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 12,
+      "sourceEditableError": 0.0016,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "firefox",
+      "case": "top-hat",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 41,
+      "sourceEditableError": 0.0032064909297052154,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "firefox",
+      "case": "top-hat-independent",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 30,
+      "sourceEditableError": 0.0029584750566893424,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "firefox",
+      "case": "top-hat-anti",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 39,
+      "sourceEditableError": 0.0031887755102040817,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "webkit",
+      "case": "star",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 12,
+      "sourceEditableError": 0.0016,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "webkit",
+      "case": "top-hat",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 41,
+      "sourceEditableError": 0.0032064909297052154,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "webkit",
+      "case": "top-hat-independent",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 30,
+      "sourceEditableError": 0.0029584750566893424,
+      "conversionFidelity": true
+    },
+    {
+      "browser": "webkit",
+      "case": "top-hat-anti",
+      "passed": true,
+      "pageErrors": [],
+      "sharedSpans": 39,
+      "sourceEditableError": 0.0031887755102040817,
+      "conversionFidelity": true
+    }
+  ],
+  "sourceSha256": {
+    "src/lib/rendering/heartPaint.ts": "a60e68b22e18763d409ebb0e94babc0e1417ea9b84da232bdc7b3cc54238ada2",
+    "src/lib/rendering/heartPaint.test.ts": "6871485f7d170f2b5371e6eb72efb72b0cecfea8b5252567d4dca70758ef63cb",
+    "src/lib/rendering/heartSvg.ts": "fa860791b781ff1434a5ab7760156a69a7aeff019279007aac4595dc9aa8c2ec",
+    "src/lib/components/HeartWeaveFill.svelte": "a7c7ec12164ac59e32108d58c074a054ce1beaa631c1683d700e9f0e0f116fb8",
+    "src/lib/components/HeartWeaveFill.test.ts": "f4110785b59537de08db560c1f18bb555fc209ba4d4e724a5ce17b26ba6de6f6",
+    "src/lib/components/PaperHeartSVG.svelte": "face5d053c5bbf91b100ff8fce6d07f912cd9994a6d89c84dcc22dbf95719768",
+    "src/lib/components/PaperHeart.svelte": "1a218f9f40de64ab211beb042b4d909715c054255187d783ac70913752aa6c95",
+    "scripts/inverse/heart-render-browser-test.mjs": "e687e4b98776dacfb3120975029d3aaef28b83c0fc2c170c1a749c80392d6b20"
+  },
+  "artifactReports": [
+    "tmp/lobe-render-browser/report.json",
+    "tmp/lobe-paint-browser/results.json"
+  ],
+  "limitations": [
+    "Out-of-overlap drawings retain the old clipped rendering.",
+    "The original user drawing was unavailable; fresh hat fits use the recreated silhouette.",
+    "No solver speed benchmark was repeated for this renderer change."
+  ]
+}

@@ -20,13 +20,14 @@ function overlapPixels(d: HeartDesign, joined: boolean) {
 function expectSameWeave(d: HeartDesign) {
 	expect(paintOf(d).joined).toBe(!['amy-pattern', 'triple-heart'].includes(d.id));
 	const before = overlapPixels(d, false), after = overlapPixels(d, true);
+	const height = before.length / 4 / 384;
 	let difference = 0, stablePixelDrift = 0;
 	for (let i = 0; i < before.length; i += 4) {
 		const delta = Math.abs(before[i]! - after[i]!);
 		difference += delta;
 		if (delta <= 1) continue;
 		const x = (i / 4) % 384, y = Math.floor(i / 4 / 384);
-		if (x === 0 || y === 0 || x === 383 || y === 383) continue;
+		if (x === 0 || y === 0 || x === 383 || y === height - 1) continue;
 		let uniform = before[i] === 0 || before[i] === 255;
 		for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
 			if (before[i + 4 * (dy * 384 + dx)] !== before[i]) uniform = false;
