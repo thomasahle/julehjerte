@@ -32,9 +32,10 @@ test('coarse routing and common refinement retain photographed tree branches in 
   assert.equal(report.solver.selectedInitialization,'coarse-boundary-topology');
   assert.equal(report.templateChecksPassed,true);assert.equal(report.manufacturing.status,'pass');
   assert.deepEqual(report.slits,{left:3,right:3});
-  assert.equal(report.solver.shortReturnRepair.applied,true);
   // The redundant return used to hide an available improvement until after
   // matching, incorrectly granting a 1% allowance from the worse baseline.
+  // Better junction seeds can avoid that return entirely. Check the actual
+  // baseline and exported branches, rather than requiring a cleanup to run.
   const matching=report.solver.matchingPreference;
   assert.ok(matching.baselineImageError<.015);
   assert.equal(matching.identical,false);

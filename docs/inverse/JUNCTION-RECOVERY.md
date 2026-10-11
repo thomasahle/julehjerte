@@ -1,0 +1,89 @@
+# Recover routing across contour seams and infeasible traces
+
+The red tree on the right of `danish-tree-group` had a plausible automatic crop
+and recognizable branches in its classified mask. The returned 4+4 grid rounded
+those branches away: independent rendering measured **5.973125% disagreement**.
+The detailed trace had consistent 3+3 border counts, but both connector graphs
+were rejected as infeasible. This was not a solver timeout or proof that the
+photographed design was impossible.
+
+## A contour's storage seam was blocking junction repair
+
+`repairJunctions` already looked for nearby, opposed corners with four separated
+arms. It refused edits touching the first or last vertex of any chain. That is
+appropriate for a real open endpoint, but a closed contour's first vertex is
+arbitrary. Two corners only about 0.7 mm apart near the tree's upper-left frame
+junction remained disconnected because one was at that seam.
+
+Closed contours now use circular edit intervals. An edit can wrap across index
+zero, multiple edits cannot overlap, and the unedited arcs connect successive
+repaired junctions. Open endpoints remain fixed; the existing radius, arm-angle,
+spacing and displacement checks are unchanged. The original source chains are
+not mutated.
+
+Where no edit touches the seam, the established head/tail subdivision is retained.
+An initial implementation unnecessarily joined those pieces and regressed the
+Hunodan `hjfig-05` reconstruction. The existing independent-export regression
+caught that change; preserving the subdivision restores its previous result.
+
+Regressions rotate and reverse closed contours, including dense contours with
+multiple edits wrapping across the seam. They check the repaired four-way
+junctions, bounded motion, unchanged inputs and retention of every unaffected
+arc. Dense-chain candidate sampling can still move a chosen centre by half a
+pixel; this is not a claim of exact subpixel invariance to all resampling.
+
+## Retry a different seed after a proved graph failure
+
+The seam correction alone did not solve the group-photo tree. Its traced frame
+also contained a narrow spur near the inward-profile border seam. Changing
+connection density, curve tolerance or maximum span did not produce a solution
+in the diagnostic budgets. The original graph's linear relaxation was already
+infeasible, before integer search.
+
+A surgical diagnostic replaced only that spur's three curves with a chord;
+the graph still proved infeasible. Thus the spur alone is **not** an established
+root cause. The successful smoother seed changes several junction and boundary
+positions. A separate replay with the previous seam logic and the smoother seed
+also found a valid routing, so the seam fix is not claimed to be necessary for
+this particular photo's recovery. The two improvements address distinct
+weaknesses: dependence on contour storage order, and committing to one infeasible
+geometric interpretation of a noisy mask.
+
+Feature recovery now retains its existing 0.3 mm smoothing and both connector
+graphs first. Only if every attempted graph reports `candidate_graph_exhausted`
+and time remains does it trace one additional seed with 0.5 mm smoothing.
+Timeouts do not trigger this retry. The retry shares the original phase budget;
+it does not request more solving time or introduce another user-facing mode.
+
+Only the routing seed is smoothed. The photograph, crop, classified mask and
+probabilities remain unchanged. As before, a candidate must satisfy geometry and
+paper checks before it can seed the common Bézier fitter. Refinement and final
+selection use the original source mask, including its border pixels and small
+features. There is no change to the image-error or feature-retention thresholds.
+
+The new photo regression runs automatic cropping, classification, routing,
+refinement, export and independent resvg rendering. It requires a legal 3+3
+pair below 2.5% disagreement, improving on the previous 5.973125%, and checks
+that the source mask, probabilities and crop coordinates remain unchanged.
+
+## Reproduce
+
+Run CPU-intensive commands serially:
+
+```sh
+node --test --test-concurrency=1 scripts/inverse/junctions.test.mjs scripts/inverse/feature-refinement.test.mjs
+node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=10 --ids=danish-tree-group-right --output=tmp/junction-recovery-tree
+INVERSE_SPEED_OUT=tmp/junction-recovery-hunodan node scripts/inverse/hunodan-speed-benchmark.mjs
+node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=10 --output=tmp/junction-recovery-web
+```
+
+With a production build served on an isolated port, the upload-to-editable-SVG
+workflow includes the new group-photo case:
+
+```sh
+INVERSE_TEST_URL=http://127.0.0.1:5232 INVERSE_TEST_BROWSERS=chromium,webkit INVERSE_TEST_CASES=web-danish-tree-group-right,web-danish-tree-red,web-danish-tree-green,hunodan-hjfig-05,top-hat-preferred,top-hat-independent,web-bibel-checker-3 INVERSE_TEST_OUTPUT=tmp/junction-recovery-browser node scripts/inverse/paint-browser-test.mjs
+```
+
+Set `PLAYWRIGHT_MODULE` to an installed standalone Playwright module when needed.
+As in the other photograph benchmarks, agreement is measured against the
+classified crop, not unavailable original artwork or physically tested templates.
