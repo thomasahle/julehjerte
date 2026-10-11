@@ -552,6 +552,7 @@ export function convertCutGeometry(
       author: opts.author ?? '',
       weaveParity: geometry.phase,
       gridSize: { x: right.length + 1, y: left.length + 1 },
+      overlapAspectRatio: 1,
       colors,
       fingers: [
         ...left.map((segments, i) => toRawFinger(segments, 'left', i)),
@@ -601,6 +602,26 @@ export function cutGeometryToDesign(json: string | CutGeometry, opts: CutGeometr
   return convertCutGeometry(json, opts).design;
 }
 
+/** Preserve the solver's conservative control-hull clearance to paper sides.
+ * A fitted replacement can stay close to the curve yet swing its handles much
+ * nearer an outer edge. Area fidelity and the editor's smaller crossing margin
+ * do not retain this part of the engine's physical validation.
+ */
+function sideClearances(design: HeartDesign): number[] {
+  const rect = inferOverlapRect(design.fingers, design.gridSize);
+  return (['right', 'left'] as const).map((lobe) => {
+    const axis = lobe === 'right' ? 'x' : 'y', offset = axis === 'x' ? rect.left : rect.top;
+    const span = axis === 'x' ? rect.width : rect.height;
+    const cuts = design.fingers.filter(f => f.lobe === lobe && f.id.includes('-cut-'));
+    let minimum = Infinity;
+    for (const cut of cuts) for (const segment of cut.segments) for (const key of ['p0', 'p1', 'p2', 'p3'] as const) {
+      const coordinate = (segment[key][axis] - offset) / span;
+      minimum = Math.min(minimum, coordinate, 1 - coordinate);
+    }
+    return minimum;
+  });
+}
+
 /** Apply the same checks as Tegn to the final geometry, after simplification,
  * normalisation and symmetry correction, and verify simplification preserves
  * the combined weave. A solver's earlier validation cannot certify curves
@@ -631,6 +652,8 @@ export function convertValidatedCutGeometry(json: string | CutGeometry, opts: Va
     // Compare the same symmetry correction at both precisions. A simplifier
     // must not make a correction appear cheap by distorting the source weave.
     if (key(baseline.honoured) !== id) return null;
+    const clearance = sideClearances(candidate.design), originalClearance = sideClearances(baseline.design);
+    if (clearance.some((value, i) => value < originalClearance[i]! - 1e-8)) return null;
     let check = checks.get(id);
     if (!check) { check = conversionFidelity(baseline.design, opts.reference); checks.set(id, check); }
     const fidelity = check(candidate.design);

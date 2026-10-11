@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { detectSymmetryModes, mapSegments, reflectAcrossChordBisector } from '$lib/utils/symmetry';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { maskMismatch } from '$lib/paint/mask';
+import { inferOverlapRect } from '$lib/utils/overlapRect';
+import { normalizeHeartDesign, serializeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
 import {
   convertCutGeometry,
   cutGeometryToDesign,
@@ -655,6 +657,21 @@ describe('cutGeometryToDesign', () => {
         enforceCostLimit: 1
       });
       expect(maskMismatch(rasterizeDesign(asked, N).data, rasterizeDesign(plain, N).data)).toBe(0);
+    });
+
+    it('keeps unequal-count fitted sheets square through editing and saved JSON/SVG', () => {
+      const geometry = lopsided(), design = cutGeometryToDesign(geometry, { name: 'unequal square', tolerance: 0 });
+      expect(design.gridSize).toEqual({ x: 4, y: 5 });
+      const saved = serializeHeartDesign(design);
+      expect(saved.overlapAspectRatio).toBe(1);
+      const copies = [design, normalizeHeartDesign(saved)!, parseHeartFromSVG(serializeHeartToSVG(design), 'unequal.svg')!];
+      for (const copy of copies) {
+        const rect = inferOverlapRect(copy.fingers, copy.gridSize);
+        expect(rect.width).toBe(rect.height);
+        expect(copy.gridSize).toEqual(design.gridSize);
+        expect(maskMismatch(rasterizeDesign(copy, N).data, rasterizeDesign(design, N).data)).toBe(0);
+        expect(maskMismatch(rasterizeDesign(copy, N).data, engineMask(geometry))).toBeLessThan(.003);
+      }
     });
   });
 

@@ -32,9 +32,9 @@ interface OverlapRect {
   height: number;
 }
 
-function getOverlapRect(gridSize: GridSize): OverlapRect {
-  const width = gridSize.x * STRIP_WIDTH;
-  const height = gridSize.y * STRIP_WIDTH;
+function getOverlapRect(gridSize: GridSize, aspectRatio?: number): OverlapRect {
+  const width = aspectRatio === undefined ? gridSize.x * STRIP_WIDTH : Math.max(gridSize.x, gridSize.y * aspectRatio) * STRIP_WIDTH;
+  const height = aspectRatio === undefined ? gridSize.y * STRIP_WIDTH : width / aspectRatio;
   return {
     left: BASE_CENTER - width / 2,
     top: BASE_CENTER - height / 2,
@@ -54,8 +54,8 @@ function pixelToJson(pixelCoord: number, rectOffset: number, rectSize: number): 
 }
 
 /** Transform segments from JSON (0-100) coordinates to internal pixel coordinates */
-function transformSegmentsToPixels(segments: BezierSegment[], gridSize: GridSize): BezierSegment[] {
-  const rect = getOverlapRect(gridSize);
+function transformSegmentsToPixels(segments: BezierSegment[], gridSize: GridSize, aspectRatio?: number): BezierSegment[] {
+  const rect = getOverlapRect(gridSize, aspectRatio);
   return segments.map((seg) => ({
     p0: { x: jsonToPixel(seg.p0.x, rect.left, rect.width), y: jsonToPixel(seg.p0.y, rect.top, rect.height) },
     p1: { x: jsonToPixel(seg.p1.x, rect.left, rect.width), y: jsonToPixel(seg.p1.y, rect.top, rect.height) },
@@ -65,8 +65,7 @@ function transformSegmentsToPixels(segments: BezierSegment[], gridSize: GridSize
 }
 
 /** Transform segments from internal pixel coordinates to JSON (0-100) coordinates */
-function transformSegmentsToJson(segments: BezierSegment[], gridSize: GridSize): BezierSegment[] {
-  const rect = getOverlapRect(gridSize);
+function transformSegmentsToJson(segments: BezierSegment[], rect: OverlapRect): BezierSegment[] {
   return segments.map((seg) => ({
     p0: { x: pixelToJson(seg.p0.x, rect.left, rect.width), y: pixelToJson(seg.p0.y, rect.top, rect.height) },
     p1: { x: pixelToJson(seg.p1.x, rect.left, rect.width), y: pixelToJson(seg.p1.y, rect.top, rect.height) },
@@ -92,6 +91,16 @@ function normalizeGridSize(raw: unknown): GridSize {
 function normalizeWeaveParity(raw: unknown): 0 | 1 {
   const v = typeof raw === 'number' && Number.isFinite(raw) ? Math.round(raw) : 0;
   return v % 2 === 1 ? 1 : 0;
+}
+
+function normalizeAspectRatio(raw: unknown): number | undefined {
+  return typeof raw === 'number' && Number.isFinite(raw) && raw >= 0.01 && raw <= 100 ? raw : undefined;
+}
+
+function serializationRect(design: HeartDesign): OverlapRect {
+  // Read the actual edited frame when an explicit shape is carried. Grid edits
+  // may have changed it since import; strip counts are not physical dimensions.
+  return design.overlapAspectRatio === undefined ? getOverlapRect(design.gridSize) : inferOverlapRectFromFingers(design.fingers, design.gridSize);
 }
 
 function normalizeNodeTypes(
@@ -253,7 +262,7 @@ export function fingerToPathData(finger: Finger): string {
   return segmentsToPathData(finger.segments);
 }
 
-function normalizeFinger(raw: unknown, gridSize: GridSize): Finger | null {
+function normalizeFinger(raw: unknown, gridSize: GridSize, aspectRatio?: number): Finger | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as RawFinger;
 
@@ -272,7 +281,7 @@ function normalizeFinger(raw: unknown, gridSize: GridSize): Finger | null {
   const last = jsonSegments[jsonSegments.length - 1];
   if (first && last) {
     // Transform from JSON 0-100 coords to internal pixel coords
-    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize);
+    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize, aspectRatio);
     const nodeTypes = normalizeNodeTypes(r.nodeTypes, pixelSegments.length);
     return {
       id,
@@ -305,6 +314,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   // Absent or malformed colours leave the heart on the site-wide pair.
   const colors = parseHeartColors(r.colors);
   const gridSize = normalizeGridSize(r.gridSize);
+  const overlapAspectRatio = normalizeAspectRatio(r.overlapAspectRatio);
 
   const fingersRaw = Array.isArray(r.fingers) ? r.fingers : [];
 
@@ -314,7 +324,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   }
 
   let fingers = fingersRaw
-    .map((f) => normalizeFinger(f, gridSize))
+    .map((f) => normalizeFinger(f, gridSize, overlapAspectRatio))
     .filter((f): f is Finger => f !== null);
 
   const rect = inferOverlapRectFromFingers(fingers, gridSize);
@@ -339,6 +349,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
     weaveParity,
     colors,
     gridSize: inferredGrid,
+    ...(overlapAspectRatio === undefined ? {} : { overlapAspectRatio }),
     fingers
   };
 }
@@ -356,6 +367,7 @@ function getFingerPosition(finger: Finger): number {
 }
 
 export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
+  const rect = serializationRect(design);
   // Sort fingers by position so boundaries are at correct positions
   const leftFingers = design.fingers
     .filter((f) => f.lobe === 'left')
@@ -383,9 +395,10 @@ export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
     weaveParity: design.weaveParity ?? 0,
     colors: design.colors,
     gridSize: design.gridSize,
+    ...(design.overlapAspectRatio === undefined ? {} : { overlapAspectRatio: rect.width / rect.height }),
     fingers: interiorFingers.map((f) => {
       // Transform from internal pixel coords to JSON 0-100 coords
-      const jsonSegments = transformSegmentsToJson(f.segments, design.gridSize);
+      const jsonSegments = transformSegmentsToJson(f.segments, rect);
       return {
         id: f.id,
         lobe: f.lobe,
@@ -409,6 +422,7 @@ function escapeXml(str: string): string {
 }
 
 export function serializeHeartToSVG(design: HeartDesign): string {
+  const rect = serializationRect(design);
   // Sort fingers by position so boundaries are at correct positions, then filter out outer boundaries
   const leftFingers = design.fingers
     .filter((f) => f.lobe === 'left')
@@ -421,11 +435,11 @@ export function serializeHeartToSVG(design: HeartDesign): string {
 
   // Transform to 0-100 coords and keep lobe info
   const leftPaths = interiorLeft.map((f) => {
-    const jsonSegments = transformSegmentsToJson(f.segments, design.gridSize);
+    const jsonSegments = transformSegmentsToJson(f.segments, rect);
     return segmentsToPathData(jsonSegments);
   });
   const rightPaths = interiorRight.map((f) => {
-    const jsonSegments = transformSegmentsToJson(f.segments, design.gridSize);
+    const jsonSegments = transformSegmentsToJson(f.segments, rect);
     return segmentsToPathData(jsonSegments);
   });
 
@@ -438,6 +452,7 @@ export function serializeHeartToSVG(design: HeartDesign): string {
     'xmlns:dc="http://purl.org/dc/elements/1.1/"',
     `data-weave-parity="${design.weaveParity ?? 0}"`
   ];
+  if (design.overlapAspectRatio !== undefined) attrs.push(`data-overlap-aspect-ratio="${rect.width / rect.height}"`);
   // The heart's own colours, when it has them. Gallery hearts carry none, so an
   // exported file only pins the colours if the visitor picked them in the editor.
   if (design.colors) {
@@ -1132,6 +1147,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   const source = svg.getAttribute('data-source') || dcSource || undefined;
   const date = svg.getAttribute('data-date') || dcDate || undefined;
   const weaveParity = normalizeWeaveParity(parseInt(svg.getAttribute('data-weave-parity') || '0', 10));
+  const overlapAspectRatio = normalizeAspectRatio(Number(svg.getAttribute('data-overlap-aspect-ratio')));
   const colors = parseHeartColors({
     left: svg.getAttribute('data-color-left'),
     right: svg.getAttribute('data-color-right')
@@ -1365,7 +1381,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     const jsonSegments = parsePathDataToSegments(leftPathData[i]);
     if (!jsonSegments.length) continue;
 
-    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize);
+    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize, overlapAspectRatio);
     fingers.push({
       id: `L-tmp-${i}`,
       lobe: 'left',
@@ -1377,7 +1393,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     const jsonSegments = parsePathDataToSegments(rightPathData[i]);
     if (!jsonSegments.length) continue;
 
-    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize);
+    const pixelSegments = transformSegmentsToPixels(jsonSegments, gridSize, overlapAspectRatio);
     fingers.push({
       id: `R-tmp-${i}`,
       lobe: 'right',
@@ -1409,6 +1425,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     weaveParity,
     colors,
     gridSize: inferredGrid,
+    ...(overlapAspectRatio === undefined ? {} : { overlapAspectRatio }),
     fingers: finalFingers
   };
 }

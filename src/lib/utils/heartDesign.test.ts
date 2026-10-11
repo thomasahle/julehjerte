@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import type { Finger, HeartDesign, LobeId, Vec } from '$lib/types/heart';
 import { MAX_GRID_SIZE } from '$lib/constants';
-import { getCenteredRectParams } from '$lib/utils/overlapRect';
+import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import {
   normalizeHeartDesign,
   parseHeartFromSVG,
@@ -36,6 +36,29 @@ function makeGridDesign(n: number): HeartDesign {
 function lobeFingers(fingers: Finger[], lobe: LobeId): Finger[] {
   return fingers.filter((f) => f.lobe === lobe);
 }
+
+it('retains legacy rectangular grids and serializes the actual frame after editing an explicit shape', () => {
+  const raw = serializeHeartDesign(makeGridDesign(3));
+  raw.gridSize = { x: 3, y: 4 };
+  const legacy = normalizeHeartDesign(raw)!;
+  const rect = inferOverlapRect(legacy.fingers, legacy.gridSize);
+  expect(rect.width / rect.height).toBe(.75);
+  expect(legacy.overlapAspectRatio).toBeUndefined();
+  const square = normalizeHeartDesign({ ...raw, overlapAspectRatio: 1 })!;
+  const original = inferOverlapRect(square.fingers, square.gridSize);
+  // A later edit can change dimensions: saving must read the geometry rather
+  // than stretching it back to stale import metadata.
+  for (const finger of square.fingers) for (const segment of finger.segments)
+    for (const key of ['p0', 'p1', 'p2', 'p3'] as const) segment[key].x = original.left + (segment[key].x - original.left) * 2;
+  const json = serializeHeartDesign(square);
+  expect(json.overlapAspectRatio).toBe(2);
+  for (const copy of [normalizeHeartDesign(json)!, parseHeartFromSVG(serializeHeartToSVG(square), 'edited.svg')!]) {
+    const frame = inferOverlapRect(copy.fingers, copy.gridSize);
+    expect(frame.width / frame.height).toBe(2);
+  }
+  for (const invalid of [NaN, Infinity, 0, -1, '1'])
+    expect(normalizeHeartDesign({ ...raw, overlapAspectRatio: invalid })!.overlapAspectRatio).toBeUndefined();
+});
 
 // Position of a boundary across its lobe (y for left-lobe curves, x for right-lobe curves), sorted.
 function boundaryPositions(fingers: Finger[], lobe: LobeId): number[] {
