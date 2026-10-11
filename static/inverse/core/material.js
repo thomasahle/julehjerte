@@ -12,6 +12,14 @@ import {nativeDistanceTransform,nativeCoreLabels,numericalKernel} from './numeri
 import {paperBackend,sameArray,sameCore} from './paper-backend.js';
 const distanceBackend=paperBackend(sameArray),componentBackend=paperBackend(sameCore);
 export const paperKernelChoices=()=>({distanceTransform:distanceBackend.report(),components:componentBackend.report()});
+/** Carry an explicitly verified finer paper lattice through final cleanup and
+ * export. Every changed geometry is audited again; no paper result is cached.
+ * Physical tolerances and all other requested settings stay unchanged.
+ */
+export function verifiedPaperSettings(solution,cfg){
+  const resolution=solution.report?.paperVerification?.resolution;
+  return Number.isInteger(resolution)&&resolution>cfg.materialResolution&&resolution<=700?{...cfg,materialResolution:resolution}:cfg;
+}
 // Only the capsule outline and pixel positions are fixed across fitted cuts.
 // Bound retained grids; never cache cut clearances, components or decisions.
 const paperLattices=new Map();

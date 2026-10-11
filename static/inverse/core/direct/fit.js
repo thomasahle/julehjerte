@@ -23,6 +23,7 @@ import {initializeTopology,initializeCoarseTopology} from './topology.js';
 import {curvesOf} from '../graph.js';
 import {sourceWeights,initializationMask} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
+import {initializeFeatureSeeds} from './feature-seeds.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 function refinementTimeLeft(deadline){
@@ -128,7 +129,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   }
   const fitSeed=r=>{
     const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{optimizationTarget:gridTarget,weights:fitWeights,steps:150,initial:r.model.z,deadline:performance.now()+800});
-    attempts.push({stage:'fine',counts:r.model.counts,phase:r.phase,error:next.error,steps:next.steps,seconds:(performance.now()-at)/1000});return next.error<r.error?next:r;
+    attempts.push({stage:'fine',counts:r.model.counts,phase:r.phase,error:next.error,steps:next.steps,seconds:(performance.now()-at)/1000});return next.error<r.error?{...next,...(r.seed?{seed:r.seed}:{})}:r;
   };
   const finalists=gridFinalists(coarse,weights?[]:evidence),remainingSeeds=coarse.filter(r=>!finalists.includes(r));
   const fine=stage('directFitting',()=>finalists.map(fitSeed).sort((a,b)=>a.error+.005*(a.model.counts[0]+a.model.counts[1])-b.error-.005*(b.model.counts[0]+b.model.counts[1])));
@@ -188,11 +189,21 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     }
   }
   const floor=fittingMargin(cfg,cfg.width)/cfg.width,candidates=[];
+  let featureInitialization=null;
   const assess=c=>{
-    if(!c.geometryPassed||!c.paperPassed)return false;
+    if(!c.geometryPassed)return false;
     const s=c.graph.solution(c.points,c.phase,input),woven=sampleWeave(s,source.resolution);
     c.originalImageError=maskDisagreement(source,woven);c.originalFeatures=auditImageFeatures(source,woven,cfg.width,sourceFeatures);
-    return c.originalImageError<=cfg.maxImageError&&c.originalFeatures.passed;
+    if(c.originalImageError>cfg.maxImageError||!c.originalFeatures.passed)return false;
+    // An uncertain coarse lattice is not a failed geometric construction.
+    // Spend one finer audit only on an otherwise acceptable candidate. Keep
+    // that resolution through final cleanup/export, which recheck all edits.
+    if(!c.paperPassed&&c.paper?.status==='uncertain'&&cfg.materialResolution<700&&maxDeadline-performance.now()>500){
+      const paper=materialAudit(s,{...cfg,materialResolution:700});
+      c.paperVerification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:700,status:paper.status};
+      c.paperPassed=paper.passed;c.paper=paper.summary;
+    }
+    return c.paperPassed;
   };
   const goodEnough=c=>{
     if(!cfg.earlyStop||c.error>Math.min(.0125,cfg.maxImageError*.5))return false;
@@ -223,7 +234,16 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     attempts.push({stage:'clearance',counts:clear.model.counts,phase:clear.phase,error:clear.error,steps:clear.steps});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
     const candidate=stage('directRefining',()=>refineCurves(graph,prob,n,clear.phase,{...cfg,preferMatchingSheets:false},{deadline:end,input,weights:fitWeights,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>onProgress({stage:'directRefining',counts:clear.model.counts,...r},solution)}));
-    candidate.counts=clear.model.counts;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop);
+    candidate.counts=clear.model.counts;candidate.seed=selected.seed;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop);
+    // Preserve the first refined checkpoint and all existing finalists. Only
+    // unsuccessful feature retention earns this additional initialization;
+    // regular successful designs and exhausted short budgets keep their path.
+    if(!candidate.imagePassed&&candidate.originalFeatures?.missing.length&&!featureInitialization&&!weights&&!symmetryRequested&&maxDeadline-performance.now()>6500){
+      const missed=candidate.originalFeatures.regions.flatMap((r,j)=>r.retainedFraction<candidate.originalFeatures.minimumRetention?[j]:[]);
+      const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:candidate.counts,cfg,evidence,maximumCount}));
+      featureInitialization={...extra.report,scheduled:Math.min(1,extra.seeds.length)};
+      fine.splice(i+1,0,...extra.seeds.slice(0,1).map(r=>stage('directFitting',()=>fitSeed(r))));
+    }
     // Border disagreement must not stop a competitive simpler finalist from
     // receiving curve refinement. Its grid error can overestimate its eventual
     // fit: accepting the first valid dense grid would hide that improvement.
@@ -267,7 +287,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    stoppedEarly,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
+    stoppedEarly,featureInitialization,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

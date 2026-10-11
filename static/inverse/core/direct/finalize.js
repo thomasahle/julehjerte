@@ -4,8 +4,10 @@ import {finalizeShared} from './share.js';
 import {finalizeShortReturns} from './short-returns.js';
 import {finalizePrimitives} from './primitive-selection.js';
 import {finalizeSharedSimplification} from './shared-simplification.js';
+import {verifiedPaperSettings} from '../material.js';
 
 export function finalizeFittedSolution(solution,cfg,{startedAt=performance.now(),timeLimit=cfg.timeLimit,onProgress=()=>{},searchMatching=true,matchingSeeds=[]}={}){
+  cfg=verifiedPaperSettings(solution,cfg);
   // Remove redundant returns before measuring the independent baseline. A
   // small topology repair can unlock substantial refinement; comparing a
   // matching pair against the unrepaired error grants an inflated allowance.
