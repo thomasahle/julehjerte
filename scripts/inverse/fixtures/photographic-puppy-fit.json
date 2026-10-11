@@ -1,0 +1,27 @@
+{
+  "sourceCase": "flettede-puppy",
+  "sourceCatalogue": "scripts/inverse/photo-cases.json",
+  "sourceFileSha256": "2a26b6c1531efa407da71dba64fe5db6a6f2e4a6c25226c84b6e62213784fad0",
+  "decodedPixelsSha256": "11e4028fec88a190b4c55bbc5d4023654c8044d5be7dd8d6ebab0da72d93460c",
+  "quad": [
+    [
+      396.5776133679024,
+      324.65832562544284
+    ],
+    [
+      652.6021087927493,
+      588.9216357580536
+    ],
+    [
+      387.5717494278991,
+      849.5427831428264
+    ],
+    [
+      127.08547783119309,
+      578.0487846921233
+    ]
+  ],
+  "maskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+  "probabilitySha256": "ebed98c3d8137eb36a2c8d2165fcc6afcc7eebe2ec06ca206a56a432d0be47de",
+  "provenance": "Frozen production crop from the original photograph. No cutting paths or solver-adjusted corners. The old ten-second run spent 6.61 seconds on unsuccessful tracing and returned a grid with no free refinement steps; independent mask disagreement was 0.01458125, with the leg opening absent."
+}

@@ -155,8 +155,15 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // A grid can keep most of one large connected region yet miss its branches.
   // Try the detailed routing when poor grids also defeated coarse topology;
   // it must not depend on a spurious missing component near the crop edge.
-  if((!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights&&deadline-performance.now()>2000){
-    recovery=await recoverImageFeatures(input,cfg,Math.min(20,(deadline-performance.now())/1000*.9),onProgress);
+  const competitiveGrid=fine.some(r=>r.error<=cfg.maxImageError);
+  const recoverySeconds=Math.min(20,competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
+  if((!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights&&deadline-performance.now()>2000&&recoverySeconds>=.25){
+    // If a grid already explains most of the image, speculative recovery of
+    // missing details must leave it time for free-curve refinement. Reserve
+    // two seconds plus clearance/polishing. Poor grids still need the larger
+    // routing budget: their topology can prevent useful local refinement.
+    recovery=await recoverImageFeatures(input,cfg,recoverySeconds,onProgress);
+    recovery.report.budgetPolicy=competitiveGrid?'reserve_grid_refinement':'prioritize_routing';
     recovery.report.gridMismatchTrigger=poorGrid&&!boundaryCandidate;
     const seed=recovery.solution||recovery.refinementSeed;
     if(seed){
