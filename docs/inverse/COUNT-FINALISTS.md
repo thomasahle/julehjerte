@@ -78,6 +78,22 @@ as well. All 845 application tests and 535 inverse-engine tests pass; one
 existing application test is skipped. Type checking reports zero errors and
 seven existing warnings; lint and build pass.
 
+The complete **44-photo** replay keeps every input, automatic crop and
+preparation result unchanged. It retains **9 passing candidates, 20 needing
+review and 15 without a crop**; there are no status regressions or measured
+error increases in this run. The checker is the only cut-count change. One
+printed-paper case (`vissevasse-arranged-r3c4`) changes from 5.8375% to 5.818125%
+error with the same 5+5 counts. Its refinement stops at a different checkpoint
+under the wall-clock budget, so that small difference is not attributed to the
+new successful-candidate exit rule. All 29 generated pairs still pass nominal
+geometry and paper checks, including those whose image fidelity needs review.
+
+[Machine-readable measurements](COUNT-FINALISTS-VALIDATION.json) retain the
+individual outcomes, original source hashes, changed engine hash, browser
+counterfactual and stage-specific error measurements. The broad corpus's pass
+rate has not increased: this fix improves one previously passing candidate's
+topology and accuracy, without solving the remaining crop and image-fit failures.
+
 Visual comparison still shows bowed edge regions in the checker. A simpler
 cut count is not proof of exact recovery of the original artwork or physical
 cutting paths. The residual crop/background and boundary-fit errors remain.

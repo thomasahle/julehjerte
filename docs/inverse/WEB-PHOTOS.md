@@ -61,6 +61,13 @@ baseline for further pipeline work; it does not isolate the effect of one recent
 code change. The narrower [curve cleanup study](CURVE-DEGREES.md) has a separate
 fixed-output experiment for that purpose.
 
+A subsequent [cut-count refinement replay](COUNT-FINALISTS.md) retains the same
+9/20/15 outcomes and all automatic crops across the 44 cases, while reducing the
+blue/green checker's cuts from 3+3 to 2+2 and its independent error to 1.4375%.
+Its [measurement ledger](COUNT-FINALISTS-VALIDATION.json) keeps before/after values
+for every case, including the failures. This is improved template selection
+inside the full pipeline, not an increase in the number of passing photographs.
+
 ```sh
 node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=10 --output=tmp/adaptive-primitives-web-all
 ```
