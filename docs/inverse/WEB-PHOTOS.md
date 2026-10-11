@@ -8,6 +8,16 @@ Added 20 source photographs and 44 selected heart instances from Bibelselskabet,
 
 ## Latest template-recovery follow-up
 
+The [endpoint preflight and feature-preserving cleanup](FEATURE-PRESERVING-CLEANUP.md)
+retain **11 passing, 18 needing review and 15 without a crop** in a fresh full
+replay. All passing errors are unchanged. The five-point star improves from
+3.26375% to 3.165% disagreement through exact shared-cut recovery, but still loses
+two regions and remains flagged. Five approximate fits improve and five worsen;
+the [paired record](FEATURE-CLEANUP-VALIDATION.json) retains both directions, the
+unchanged source/crop evidence, all 22 Hunodan cases and 14 browser runs. This
+follow-up identifies separate boundary feasibility, count-shortlist and final
+cleanup issues; it does not attribute all failures to cropping.
+
 The [one-sided endpoint recovery](OPPOSITE-EDGE-RECOVERY.md) keeps the full-photo
 corpus at **11 passing, 18 needing review and 15 without a crop**, with unchanged
 errors for every passing case. It fixes the separate actual cropped-upload tree

@@ -48,3 +48,50 @@ from boundary-spacing infeasibility and the cleanup veto.
 These replays start from saved fitted geometry to isolate cleanup. They do not
 measure fresh end-to-end speed or automatic crop quality. Raw local records:
 `tmp/star-cleanup-replay/results.json` and `tmp/star-count-fitting/results.json`.
+
+## Fresh full-pipeline verification
+
+The [paired validation record](FEATURE-CLEANUP-VALIDATION.json) compares commit
+`58b50ba` with the preceding `c79d9d6` release. It includes the shared endpoint
+preflight changes as well as cleanup. All photo sources, automatic crop
+coordinates and preparation metadata match the earlier run.
+
+- **22/22 regular Hunodan designs pass** within ten seconds. Independent errors
+  are exactly unchanged for every case. Maximum prepare/fit/validate/export time
+  is 8.5466 s; median is 5.1062 s. This track uses frozen photograph crops.
+- **44 photographs:** 11 pass, 18 need review, 15 have no crop, unchanged from
+  the prior release. All 29 generated pairs pass geometry and paper checks.
+  Every passing case retains its exact independent error. Among approximate
+  results, five errors improve, five worsen and eight stay unchanged. Including
+  passing cases, 19 of 29 generated errors are unchanged.
+- **14/14 browser runs pass:** seven uploads/drawings in Chromium and WebKit,
+  through actual workers, editable SVG and PDF export. These use the production
+  180-second solve budget. The paired and independent hats retain 43 and 28
+  exactly shared exported spans respectively, with no editor intersection issues.
+  The physical group-tree crop upload completes in 6.1045/6.588 s and retains
+  nine shared spans. All browser source masks and crop coordinates are unchanged.
+- **QA:** 845 application tests pass with one existing skip; all 551 inverse
+  tests pass; type checking has zero errors and seven existing warnings; lint
+  and the production build pass. Port 5232 serves the rebuilt engine, verified
+  against hashes of all seven changed modules.
+
+The fresh star run reproduces the isolated replay's **3.26375% → 3.165%**
+independent disagreement with 3+3 cuts and two missing regions. The scattered
+blue checker improves from 7.458125% to 7.21625%, but printed lines remain false
+mask boundaries and the output still needs review. Neither is a new passing case.
+
+The record also retains regressions. Red/gold worsens from 13.795625% to
+13.9425%; its selected clearance run stops after 90 steps rather than 100 and
+final cleanup is rejected. Arranged `r4c1` worsens from 6.64875% to 6.775%; its
+incoming fitted checkpoint already has higher error before cleanup, which then
+improves that checkpoint. Timed search trajectories remain a source of variation.
+The other three increases are 1, 14 and 17 pixels out of 160,000 in the independent
+binary export renderer, despite lower engine-sampled error after cleanup. The
+acceptance guard uses the engine's adaptive renderer; it does not guarantee
+non-increase under every antialiasing/threshold convention. These small independent
+regressions are retained rather than rounded away or counted as improvements.
+
+Raw runs are in `tmp/feature-cleanup-{hunodan,web-all,browser}/`; the photo report
+contains original selections, rectified inputs, masks, exported weaves and
+difference panels. The committed record keeps outcomes, source hashes, boundary
+rejection reasons, cleanup decisions and before/after measurements.

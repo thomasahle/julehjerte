@@ -1,0 +1,3768 @@
+{
+  "createdAt": "2026-10-11T21:05:02.935Z",
+  "algorithmCommit": "58b50ba",
+  "baselineCommit": "c79d9d6",
+  "sourceHashes": {
+    "static/inverse/core/graph.js": "2757dfb849f9b6ac35c2469d14428564e1a79d40d5cf6667467625327598ef84",
+    "static/inverse/core/feature-recovery.js": "f58b5702d7a0f1840d2750f055cfd3cbee4e56787c60f6c44e626e4aac29766f",
+    "static/inverse/core/direct/topology.js": "16e3840a83dcc2b1ec61c426008f9410cbf27fddaf62baefad23a17ed799b189",
+    "static/inverse/core/image-features.js": "90554bf9b7b183c64c6f169d3eda5852ae71ef04f41cbadb9ad3ec24c3105edf",
+    "static/inverse/core/direct/primitive-selection.js": "a4a5e0293b9f94c81f7aacb96576fd44e74f4c40c1b9eaac74269d190d3e1c4e",
+    "static/inverse/core/direct/share.js": "6a2983ed48ee401fa3fb722c1ceea8c0eddbd1446cfa3df5bcf269d6ef5a5a3b",
+    "static/inverse/core/direct/short-returns.js": "e272a0b07e341c9a80a8a6a241022de2d5790e966be27e0c142815534b850f9e"
+  },
+  "servedSourceHashes": {
+    "static/inverse/core/graph.js": "2757dfb849f9b6ac35c2469d14428564e1a79d40d5cf6667467625327598ef84",
+    "static/inverse/core/feature-recovery.js": "f58b5702d7a0f1840d2750f055cfd3cbee4e56787c60f6c44e626e4aac29766f",
+    "static/inverse/core/direct/topology.js": "16e3840a83dcc2b1ec61c426008f9410cbf27fddaf62baefad23a17ed799b189",
+    "static/inverse/core/image-features.js": "90554bf9b7b183c64c6f169d3eda5852ae71ef04f41cbadb9ad3ec24c3105edf",
+    "static/inverse/core/direct/primitive-selection.js": "a4a5e0293b9f94c81f7aacb96576fd44e74f4c40c1b9eaac74269d190d3e1c4e",
+    "static/inverse/core/direct/share.js": "6a2983ed48ee401fa3fb722c1ceea8c0eddbd1446cfa3df5bcf269d6ef5a5a3b",
+    "static/inverse/core/direct/short-returns.js": "e272a0b07e341c9a80a8a6a241022de2d5790e966be27e0c142815534b850f9e"
+  },
+  "qa": {
+    "applicationPassed": 845,
+    "applicationExistingSkipped": 1,
+    "inversePassed": 551,
+    "typeErrors": 0,
+    "typeExistingWarnings": 7,
+    "lint": "passed",
+    "build": "passed",
+    "browserPassed": 14
+  },
+  "policy": "Early endpoint feasibility checks and final per-feature non-regression cleanup. Original source, crop, final feature threshold, geometry and paper gates retained. Candidate checks do not establish ground-truth paths or physical assembly.",
+  "isolatedStarReplay": {
+    "maskSha256": "55fb6626496c9149413ffeca95f74b423d29c38020fcbc0a8f28eb91c4b5a5d8",
+    "results": [
+      {
+        "name": "original",
+        "seconds": 1.140653458,
+        "before": 0.0326375,
+        "after": 0.03165,
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "missing": [
+          {
+            "value": 0,
+            "areaMm2": 5,
+            "centerMm": [
+              73.746875,
+              12.7625
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4,
+            "centerMm": [
+              19.13671875,
+              91.8046875
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "accepted": [
+              {
+                "i": 1,
+                "j": 0,
+                "a0": 0.5256099937744176,
+                "a1": 3.2319104340721534,
+                "b0": 4.948025590484928,
+                "b1": 7.7531420098938675,
+                "length": 30.40118685537848,
+                "blend": 0.5,
+                "errorBefore": 0.0339508056640625,
+                "errorAfter": 0.0334930419921875,
+                "bigErrorBefore": 0.0320892333984375,
+                "bigErrorAfter": 0.031646728515625
+              },
+              {
+                "i": 1,
+                "j": 1,
+                "a0": 19.411871130305208,
+                "a1": 21.76077490933191,
+                "b0": 6.926924006738577,
+                "b1": 9.246205201419162,
+                "length": 26.001737369247245,
+                "blend": 0,
+                "errorBefore": 0.0334930419921875,
+                "errorAfter": 0.033111572265625,
+                "bigErrorBefore": 0.031646728515625,
+                "bigErrorAfter": 0.03113555908203125
+              },
+              {
+                "i": 0,
+                "j": 0,
+                "a0": 0.4714488527319361,
+                "a1": 1.2617306648552027,
+                "b0": 3.6697636492134285,
+                "b1": 2.4349887085095454,
+                "length": 11.211455804895419,
+                "blend": 0.5,
+                "errorBefore": 0.033111572265625,
+                "errorAfter": 0.032928466796875,
+                "bigErrorBefore": 0.03113555908203125,
+                "bigErrorAfter": 0.030925750732421875
+              }
+            ],
+            "rejected": [
+              {
+                "reason": "paper",
+                "i": 1,
+                "j": 1,
+                "a0": 19.411871130305208,
+                "a1": 21.76077490933191,
+                "b0": 6.926924006738577,
+                "b1": 9.246205201419162,
+                "length": 26.001737369247245,
+                "blend": 0.5
+              }
+            ],
+            "errorBefore": 0.0325625,
+            "errorAfter": 0.03143125,
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "seconds": 0.6003418330000001
+          },
+          "finalPrimitiveSelection": {
+            "groups": 48,
+            "selectedGroups": 42,
+            "curvedBefore": 105,
+            "curvedAfter": 63,
+            "sampledErrorBefore": 0.0315,
+            "sampledErrorAfter": 0.03139375,
+            "applied": false,
+            "sourceErrorBefore": 0.03143125,
+            "sourceErrorAfter": 0.0313375,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "rejection": "paper",
+            "seconds": 0.1307611669999999
+          },
+          "finalCurvePrimitiveSelection": {
+            "groups": 64,
+            "selectedGroups": 50,
+            "curvedBefore": 105,
+            "curvedAfter": 55,
+            "sampledErrorBefore": 0.03143125,
+            "sampledErrorAfter": 0.03103125,
+            "applied": false,
+            "sourceErrorBefore": 0.03143125,
+            "sourceErrorAfter": 0.03103125,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "rejection": "paper",
+            "seconds": 0.16759420799999997
+          },
+          "finalSharedSimplification": {
+            "segmentsBefore": 105,
+            "segmentsAfter": 87,
+            "applied": true,
+            "maskResolutions": [
+              400,
+              800
+            ],
+            "sampledDeviationLimitMm": 0.02,
+            "rejection": null,
+            "seconds": 0.0928291250000002
+          }
+        }
+      },
+      {
+        "name": "extra-counts",
+        "seconds": 1.0392962499999998,
+        "before": 0.02843125,
+        "after": 0.02815,
+        "checks": false,
+        "geometry": true,
+        "paper": "pass",
+        "missing": [
+          {
+            "value": 0,
+            "areaMm2": 5,
+            "centerMm": [
+              73.746875,
+              12.7625
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4,
+            "centerMm": [
+              19.13671875,
+              91.8046875
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "accepted": [
+              {
+                "i": 1,
+                "j": 0,
+                "a0": 1.9005813963451927,
+                "a1": 3.136837963080357,
+                "b0": 8.34454871587802,
+                "b1": 3.118258627508782,
+                "length": 42.0333575269683,
+                "blend": 0.5,
+                "errorBefore": 0.0301055908203125,
+                "errorAfter": 0.0299835205078125,
+                "bigErrorBefore": 0.028667449951171875,
+                "bigErrorAfter": 0.028533935546875
+              },
+              {
+                "i": 0,
+                "j": 2,
+                "a0": 4.85734454629515,
+                "a1": 8.774196005688763,
+                "b0": 0.7486973686691016,
+                "b1": 2.834077752453779,
+                "length": 34.64394758525407,
+                "blend": 0.5,
+                "errorBefore": 0.0299835205078125,
+                "errorAfter": 0.029815673828125,
+                "bigErrorBefore": 0.028533935546875,
+                "bigErrorAfter": 0.028423309326171875
+              },
+              {
+                "i": 2,
+                "j": 1,
+                "a0": 2.5084871217075673,
+                "a1": 4.729250555186148,
+                "b0": 12.509210139465573,
+                "b1": 9.004926754654093,
+                "length": 32.82923007498272,
+                "blend": 0.5,
+                "errorBefore": 0.029815673828125,
+                "errorAfter": 0.029693603515625,
+                "bigErrorBefore": 0.028423309326171875,
+                "bigErrorAfter": 0.028289794921875
+              },
+              {
+                "i": 1,
+                "j": 2,
+                "a0": 27.03977498099653,
+                "a1": 28.53900251390579,
+                "b0": 20.874229878370883,
+                "b1": 23.84332177420587,
+                "length": 25.807542446033167,
+                "blend": 0.5,
+                "errorBefore": 0.029693603515625,
+                "errorAfter": 0.029571533203125,
+                "bigErrorBefore": 0.028289794921875,
+                "bigErrorAfter": 0.0281524658203125
+              },
+              {
+                "i": 0,
+                "j": 1,
+                "a0": 2.3793932528217345,
+                "a1": 3.9854097572359555,
+                "b0": 0.36455127096081186,
+                "b1": 0.9907141907952446,
+                "length": 13.021525373497191,
+                "blend": 0.5,
+                "errorBefore": 0.029571533203125,
+                "errorAfter": 0.0294647216796875,
+                "bigErrorBefore": 0.0281524658203125,
+                "bigErrorAfter": 0.028049468994140625
+              }
+            ],
+            "rejected": [],
+            "errorBefore": 0.02891875,
+            "errorAfter": 0.028275,
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "seconds": 0.5562437499999998
+          },
+          "finalPrimitiveSelection": {
+            "groups": 93,
+            "selectedGroups": 77,
+            "curvedBefore": 142,
+            "curvedAfter": 65,
+            "sampledErrorBefore": 0.02828125,
+            "sampledErrorAfter": 0.028275,
+            "applied": true,
+            "sourceErrorBefore": 0.028275,
+            "sourceErrorAfter": 0.02826875,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "rejection": null,
+            "seconds": 0.14120554200000016
+          },
+          "finalCurvePrimitiveSelection": {
+            "groups": 31,
+            "selectedGroups": 1,
+            "curvedBefore": 65,
+            "curvedAfter": 64,
+            "sampledErrorBefore": 0.02826875,
+            "sampledErrorAfter": 0.02825,
+            "applied": true,
+            "sourceErrorBefore": 0.02826875,
+            "sourceErrorAfter": 0.02825,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "rejection": null,
+            "seconds": 0.11549916699999994
+          },
+          "finalSharedSimplification": {
+            "segmentsBefore": 145,
+            "segmentsAfter": 119,
+            "applied": true,
+            "maskResolutions": [
+              400,
+              800
+            ],
+            "sampledDeviationLimitMm": 0.02,
+            "rejection": null,
+            "seconds": 0.08706683299999986
+          }
+        }
+      }
+    ]
+  },
+  "hunodan": {
+    "maxSeconds": 8.546566833999998,
+    "medianSeconds": 5.106220083,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 4.567955375,
+        "error": 0.009799111111111111,
+        "beforeError": 0.009799111111111111
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 4.5846515420000005,
+        "error": 0.013923555555555555,
+        "beforeError": 0.013923555555555555
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.7844220830000013,
+        "error": 0.006634666666666666,
+        "beforeError": 0.006634666666666666
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 4.102213083000002,
+        "error": 0.013824,
+        "beforeError": 0.013824
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 3.1563059170000014,
+        "error": 0.009042960667083447,
+        "beforeError": 0.009042960667083447
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 5.386177499999998,
+        "error": 0.013468424479166666,
+        "beforeError": 0.013468424479166666
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.4264382499999995,
+        "error": 0.005148444444444444,
+        "beforeError": 0.005148444444444444
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 4.96890075,
+        "error": 0.005397333333333333,
+        "beforeError": 0.005397333333333333
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 5.243539416,
+        "error": 0.004522666666666667,
+        "beforeError": 0.004522666666666667
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 7.2553854999999965,
+        "error": 0.005639111111111111,
+        "beforeError": 0.005639111111111111
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.4743532909999995,
+        "error": 0.009436444444444445,
+        "beforeError": 0.009436444444444445
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 6.578772167000003,
+        "error": 0.006040430615586996,
+        "beforeError": 0.006040430615586996
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 4.872939832999997,
+        "error": 0.003899406226779104,
+        "beforeError": 0.003899406226779104
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 7.699947708000007,
+        "error": 0.007776029627903062,
+        "beforeError": 0.007776029627903062
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.27550716600001,
+        "error": 0.007550237322696868,
+        "beforeError": 0.007550237322696868
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 6.2484769579999995,
+        "error": 0.004365548980933596,
+        "beforeError": 0.004365548980933596
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 8.546566833999998,
+        "error": 0.0056129769369752365,
+        "beforeError": 0.0056129769369752365
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 4.912857000000003,
+        "error": 0.007929362880886427,
+        "beforeError": 0.007929362880886427
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.3435760420000005,
+        "error": 0.0038045247395833335,
+        "beforeError": 0.0038045247395833335
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 6.2296571249999975,
+        "error": 0.012332213049376572,
+        "beforeError": 0.012332213049376572
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 6.749738916000002,
+        "error": 0.005053050026595,
+        "beforeError": 0.005053050026595
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 6.090960667000006,
+        "error": 0.010624446293860237,
+        "beforeError": 0.010624446293860237
+      }
+    ]
+  },
+  "web": {
+    "counts": {
+      "candidate_needs_review": 18,
+      "candidate_checks_passed": 11,
+      "no_crop": 15
+    },
+    "results": [
+      {
+        "id": "danish-silver-on-tree",
+        "sourceSha256": "960a8d2c6b1123b117fc96b13a915e292a67521590f5603dbdd2a7a75a7463fe",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.03775,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 8.367335166,
+          "fitAndValidationSeconds": 6.984308209
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.03775,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.14586875,
+          "fitAndValidationSeconds": 7.741432957999999
+        },
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.03770625,
+            "errorAfter": 0.03770625,
+            "seconds": 0.0929820839999993
+          },
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.03770625,
+            "errorAfter": 0.03770625,
+            "rejection": null,
+            "seconds": 0.0761924999999992
+          },
+          "finalSharedSimplification": {
+            "applied": true,
+            "rejection": null,
+            "seconds": 0.0431677090000012
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-green-yellow",
+        "sourceSha256": "5957b2a8f5e25981f400cef687784effdb6c8491b8f0886ab5117ea66d610d4f",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0033125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.693436750000001,
+          "fitAndValidationSeconds": 4.971558917
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0033125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 8.252948792000002,
+          "fitAndValidationSeconds": 5.3947794579999995
+        },
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.003075,
+            "errorAfter": 0.0030625,
+            "rejection": null,
+            "seconds": 0.09671099999999933
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.0030625,
+            "errorAfter": 0.00305,
+            "rejection": null,
+            "seconds": 0.08871283399999993
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-silver-white",
+        "sourceSha256": "9a2a6d6fdae42655ec1ee153635ea85556aea24ed79d5960f7837b6bb0a01458",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.0551625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 17,
+          "totalSeconds": 8.767935584,
+          "fitAndValidationSeconds": 7.656036791000003
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.0551625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 17,
+          "totalSeconds": 8.803606917000002,
+          "fitAndValidationSeconds": 7.646624416999999
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 4,
+              "endCount": 3,
+              "message": "Sheet A has 4 start transitions but 3 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 17,
+              "missingAfter": 17,
+              "regressed": []
+            },
+            "errorBefore": 0.05489375,
+            "errorAfter": 0.05489375,
+            "rejection": null,
+            "seconds": 0.08279695799999899
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-red-gold",
+        "sourceSha256": "8de9081d6aad37c1e63600cf1f51f5c205c2d383b89f22a16cb14aab63d36a96",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "error": 0.13795625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 11,
+          "totalSeconds": 10.168345667,
+          "fitAndValidationSeconds": 9.211813916000002
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "error": 0.139425,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 11,
+          "totalSeconds": 10.213718333000001,
+          "fitAndValidationSeconds": 9.223045374999998
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 7,
+              "endCount": 10,
+              "message": "Sheet A has 7 start transitions but 10 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": false,
+            "featureChange": {
+              "passed": false,
+              "missingBefore": 11,
+              "missingAfter": 11,
+              "regressed": [
+                {
+                  "value": 1,
+                  "areaMm2": 3.5,
+                  "centerMm": [
+                    25.183035714285715,
+                    49.566964285714285
+                  ],
+                  "retainedFraction": 0.05357142857142857,
+                  "retainedBefore": 0.08928571428571429,
+                  "requiredRetention": 0.08928571428571429
+                }
+              ]
+            },
+            "errorBefore": 0.1393125,
+            "errorAfter": 0.1393125,
+            "seconds": 0.4598865830000068
+          }
+        },
+        "errorChange": 0.001468749999999991
+      },
+      {
+        "id": "danish-tree-red",
+        "sourceSha256": "6603c4c02f4c45d097a47b06bf003e62d5710ef33ce574b35f2a2e351d274b40",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0205375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 4.626853415999998,
+          "fitAndValidationSeconds": 3.669916624999998
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0205375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 4.642384333000002,
+          "fitAndValidationSeconds": 3.63378125
+        },
+        "boundaryRejections": [],
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.02020625,
+            "errorAfter": 0.02020625,
+            "rejection": null,
+            "seconds": 0.11214687499999855
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.02020625,
+            "errorAfter": 0.02020625,
+            "rejection": null,
+            "seconds": 0.08788324999999896
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-green",
+        "sourceSha256": "5a8c872aeae2452165ddc05753a2255effaba318a7eb4b5b57ad9fb4361c1439",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.01075,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 7.767111709000004,
+          "fitAndValidationSeconds": 6.5264182920000025
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.01075,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 7.846289625000005,
+          "fitAndValidationSeconds": 6.565947124999999
+        },
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.01055625,
+            "errorAfter": 0.01055,
+            "rejection": null,
+            "seconds": 0.09115312499999709
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.01055,
+            "errorAfter": 0.01055,
+            "rejection": null,
+            "seconds": 0.0877285830000037
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-dots",
+        "sourceSha256": "b7a0ae1209a1fbc5092b1e1b453dae5a19decc11c33a12e12b345ba9cfb16063",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.1311,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 7,
+          "totalSeconds": 11.752798375000006,
+          "fitAndValidationSeconds": 9.828400459000004
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.1311,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 7,
+          "totalSeconds": 11.763344624999998,
+          "fitAndValidationSeconds": 9.833959541000004
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_spacing",
+              "family": 1,
+              "side": "start",
+              "positionsMm": [
+                18.25,
+                20.5
+              ],
+              "distanceMm": 2.25,
+              "requiredMm": 2.50501002004008,
+              "outerMargin": false,
+              "message": "Border transitions are closer than the required strip width. Sheet B start border has 2.250 mm between transitions or the paper edge; 2.505 mm is required."
+            }
+          },
+          {
+            "smoothRadius": 0.5,
+            "issue": {
+              "type": "endpoint_spacing",
+              "family": 1,
+              "side": "start",
+              "positionsMm": [
+                18.25,
+                20.5
+              ],
+              "distanceMm": 2.25,
+              "requiredMm": 2.50501002004008,
+              "outerMargin": false,
+              "message": "Border transitions are closer than the required strip width. Sheet B start border has 2.250 mm between transitions or the paper edge; 2.505 mm is required."
+            }
+          }
+        ],
+        "cleanup": {},
+        "errorChange": 0
+      },
+      {
+        "id": "gathering-pink-single",
+        "sourceSha256": "867f0e5852ebeba92db6e89b0d4883f88b12a30226a93bb2042d9bce0e17500b",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 1.8575258749999994
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 1.8619210000000022
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "bibel-checker-2",
+        "sourceSha256": "d715441c747a0f9d93db029c5b97b4c0a9dff0f5d3bd6480a871ae8285abfb4b",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.01753125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 3.437810166999996,
+          "fitAndValidationSeconds": 2.3811032919999997
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "error": 0.01753125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 3.510150874999992,
+          "fitAndValidationSeconds": 2.384135290999999
+        },
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.01734375,
+            "errorAfter": 0.01734375,
+            "rejection": null,
+            "seconds": 0.05121454200000153
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.01734375,
+            "errorAfter": 0.01734375,
+            "rejection": null,
+            "seconds": 0.046246166999990235
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-checker-3",
+        "sourceSha256": "ca918edf5ebf69b903f8f0c95cf048280c7ed4e1dea135f5e14aca3529decbc7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.014375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.164026124999997,
+          "fitAndValidationSeconds": 5.154039541000006
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.014375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.084508374999991,
+          "fitAndValidationSeconds": 5.076207208000007
+        },
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.01414375,
+            "errorAfter": 0.01413125,
+            "rejection": null,
+            "seconds": 0.07289329199999338
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": false,
+            "rejection": "boundary_objective",
+            "seconds": 0.014291958000001614
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-checker-4",
+        "sourceSha256": "8552792996b59b8c94b8ef67759ce53f9799c73683f55d673314415cefd9ac87",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0035625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 5.529132291999995,
+          "fitAndValidationSeconds": 4.273247333000007
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0035625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 5.54523262499999,
+          "fitAndValidationSeconds": 4.297398333000005
+        },
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.0033375,
+            "errorAfter": 0.0033375,
+            "rejection": null,
+            "seconds": 0.08406991700000072
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.0033375,
+            "errorAfter": 0.00331875,
+            "rejection": null,
+            "seconds": 0.08169904200000747
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-narrow-wide",
+        "sourceSha256": "f89f56183194d4035b3e4f0864d5ea7642912342a5717da2ad0c6c38da7da194",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 5
+          },
+          "error": 0.02026875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.953474084000002,
+          "fitAndValidationSeconds": 8.826328457999988
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 5
+          },
+          "error": 0.02026875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 10.157561874999999,
+          "fitAndValidationSeconds": 8.871388124999998
+        },
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.0200125,
+            "errorAfter": 0.01996875,
+            "seconds": 0.4897544999999955
+          },
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.01996875,
+            "errorAfter": 0.01995,
+            "rejection": null,
+            "seconds": 0.0974354170000006
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": false,
+            "rejection": "boundary_objective",
+            "seconds": 0.04136887500000012
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-nested-heart-green",
+        "sourceSha256": "0c426b93e08995e5daf1714aca5cee453e5126781455e1f284f4f00c42a40990",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.8722680840000103
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.8765706669999926
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "bibel-nested-heart-red",
+        "sourceSha256": "2a3c21b4bab08513abb8d5538143dd2670df0ce0fe3048ec16b93359914f97a2",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.02806875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 11.056736458999993,
+          "fitAndValidationSeconds": 9.189295291999995
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.02806875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 11.12373554200001,
+          "fitAndValidationSeconds": 9.194293624999991
+        },
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.02839375,
+            "errorAfter": 0.02800625,
+            "seconds": 0.9117330829999992
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "bibel-angel",
+        "sourceSha256": "524ac9f34366e7db1cdf04687a802e0e89ea36589f8943f72e7fee4d9c6551d9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.8727188339999994
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.8694810829999915
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "danish-tree-group-top",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.3961211669999902
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.3985182919999934
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "danish-tree-group-right",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.019225,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.480614207999999,
+          "fitAndValidationSeconds": 5.502129791
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.019225,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 6.549037249999994,
+          "fitAndValidationSeconds": 5.586312290999995
+        },
+        "boundaryRejections": [],
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.01888125,
+            "errorAfter": 0.01888125,
+            "rejection": null,
+            "seconds": 0.0882483329999959
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.01888125,
+            "errorAfter": 0.01888125,
+            "rejection": null,
+            "seconds": 0.08883941600000253
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "danish-tree-group-left",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.3210300419999985
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.32150320799999466
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "danish-tree-group-bottom",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.28459691700000256
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.2728558750000084
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "gathering-striped-scene-top",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0633125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 19,
+          "totalSeconds": 9.775320667000008,
+          "fitAndValidationSeconds": 8.889815417000005
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.06331875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 19,
+          "totalSeconds": 9.94486787500001,
+          "fitAndValidationSeconds": 9.028120624999996
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 5,
+              "endCount": 6,
+              "message": "Sheet A has 5 start transitions but 6 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 19,
+              "missingAfter": 19,
+              "regressed": []
+            },
+            "errorBefore": 0.0634375,
+            "errorAfter": 0.0633,
+            "seconds": 0.49676949999999487
+          },
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 19,
+              "missingAfter": 19,
+              "regressed": []
+            },
+            "errorBefore": 0.0633,
+            "errorAfter": 0.0633,
+            "rejection": null,
+            "seconds": 0.12509449999999198
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": false,
+            "rejection": "boundary_objective",
+            "seconds": 0.02471691600000486
+          },
+          "finalSharedSimplification": {
+            "applied": true,
+            "rejection": null,
+            "seconds": 0.10458091699999932
+          }
+        },
+        "errorChange": 0.000006249999999999312
+      },
+      {
+        "id": "gathering-striped-scene-bottom",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.21374854099999357
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.21542079099999684
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "gathering-hanging-trio-top",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.90135758299999
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.9122428749999962
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "gathering-hanging-trio-middle",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.19158470899998792
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.189362083
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "gathering-hanging-trio-bottom",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.8071082080000052
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.8209525830000057
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-arranged-r1c1",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.15255354200000876
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.13720270799999706
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-arranged-r1c2",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0270875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 17,
+          "totalSeconds": 9.182625583999995,
+          "fitAndValidationSeconds": 8.404164333000008
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.027175,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 17,
+          "totalSeconds": 9.360719334000008,
+          "fitAndValidationSeconds": 8.545951042
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 6,
+              "endCount": 4,
+              "message": "Sheet A has 6 start transitions but 4 end transitions. Opposite borders must agree."
+            }
+          },
+          {
+            "smoothRadius": 0.3,
+            "borderSeed": {
+              "radiiMm": [
+                6,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2590,
+              "changeFraction": 0.0161875,
+              "initializationOnly": true,
+              "traceImageError": 0.03426875
+            },
+            "issue": {
+              "type": "endpoint_spacing",
+              "family": 1,
+              "side": "start",
+              "positionsMm": [
+                49.75,
+                52
+              ],
+              "distanceMm": 2.25,
+              "requiredMm": 2.50501002004008,
+              "outerMargin": false,
+              "message": "Border transitions are closer than the required strip width. Sheet B start border has 2.250 mm between transitions or the paper edge; 2.505 mm is required."
+            }
+          },
+          {
+            "smoothRadius": 0.5,
+            "borderSeed": {
+              "radiiMm": [
+                6,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2590,
+              "changeFraction": 0.0161875,
+              "initializationOnly": true,
+              "traceImageError": 0.03609375
+            },
+            "issue": {
+              "type": "endpoint_spacing",
+              "family": 1,
+              "side": "start",
+              "positionsMm": [
+                49.75,
+                52
+              ],
+              "distanceMm": 2.25,
+              "requiredMm": 2.50501002004008,
+              "outerMargin": false,
+              "message": "Border transitions are closer than the required strip width. Sheet B start border has 2.250 mm between transitions or the paper edge; 2.505 mm is required."
+            }
+          },
+          {
+            "smoothRadius": 0.3,
+            "borderSeed": {
+              "radiiMm": [
+                7,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2664,
+              "changeFraction": 0.01665,
+              "initializationOnly": true,
+              "traceImageError": 0.0347375
+            },
+            "issue": {
+              "type": "endpoint_spacing",
+              "family": 1,
+              "side": "start",
+              "positionsMm": [
+                49.75,
+                52
+              ],
+              "distanceMm": 2.25,
+              "requiredMm": 2.50501002004008,
+              "outerMargin": false,
+              "message": "Border transitions are closer than the required strip width. Sheet B start border has 2.250 mm between transitions or the paper edge; 2.505 mm is required."
+            }
+          },
+          {
+            "smoothRadius": 0.5,
+            "borderSeed": {
+              "radiiMm": [
+                7,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2664,
+              "changeFraction": 0.01665,
+              "initializationOnly": true,
+              "traceImageError": 0.0366125
+            },
+            "issue": {
+              "type": "endpoint_spacing",
+              "family": 1,
+              "side": "start",
+              "positionsMm": [
+                49.75,
+                52
+              ],
+              "distanceMm": 2.25,
+              "requiredMm": 2.50501002004008,
+              "outerMargin": false,
+              "message": "Border transitions are closer than the required strip width. Sheet B start border has 2.250 mm between transitions or the paper edge; 2.505 mm is required."
+            }
+          },
+          {
+            "smoothRadius": 0.3,
+            "borderSeed": {
+              "radiiMm": [
+                8,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2754,
+              "changeFraction": 0.0172125,
+              "initializationOnly": true,
+              "traceImageError": 0.0350875
+            },
+            "issue": {
+              "type": "endpoint_spacing",
+              "family": 1,
+              "side": "start",
+              "positionsMm": [
+                49.75,
+                52
+              ],
+              "distanceMm": 2.25,
+              "requiredMm": 2.50501002004008,
+              "outerMargin": false,
+              "message": "Border transitions are closer than the required strip width. Sheet B start border has 2.250 mm between transitions or the paper edge; 2.505 mm is required."
+            }
+          },
+          {
+            "smoothRadius": 0.5,
+            "borderSeed": {
+              "radiiMm": [
+                8,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                6,
+                8,
+                4,
+                8
+              ],
+              "transitionsAfter": [
+                4,
+                8,
+                4,
+                8
+              ],
+              "changedPixels": 2754,
+              "changeFraction": 0.0172125,
+              "initializationOnly": true,
+              "traceImageError": 0.03708125
+            },
+            "issue": {
+              "type": "endpoint_spacing",
+              "family": 1,
+              "side": "start",
+              "positionsMm": [
+                49.75,
+                52
+              ],
+              "distanceMm": 2.25,
+              "requiredMm": 2.50501002004008,
+              "outerMargin": false,
+              "message": "Border transitions are closer than the required strip width. Sheet B start border has 2.250 mm between transitions or the paper edge; 2.505 mm is required."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 17,
+              "missingAfter": 17,
+              "regressed": []
+            },
+            "errorBefore": 0.0270625,
+            "errorAfter": 0.0270625,
+            "rejection": null,
+            "seconds": 0.11393595899999491
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 17,
+              "missingAfter": 17,
+              "regressed": []
+            },
+            "errorBefore": 0.0270625,
+            "errorAfter": 0.02705625,
+            "rejection": null,
+            "seconds": 0.11766545800000312
+          }
+        },
+        "errorChange": 0.00008750000000000077
+      },
+      {
+        "id": "vissevasse-arranged-r1c3",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0326375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 2,
+          "totalSeconds": 9.094744833000004,
+          "fitAndValidationSeconds": 8.383138374999994
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.03165,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 2,
+          "totalSeconds": 9.177473791000011,
+          "fitAndValidationSeconds": 8.481675833999994
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 1,
+              "endCount": 3,
+              "message": "Sheet A has 1 start transitions but 3 end transitions. Opposite borders must agree."
+            }
+          },
+          {
+            "smoothRadius": 0.3,
+            "borderSeed": {
+              "radiiMm": [
+                7,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                1,
+                3,
+                3,
+                3
+              ],
+              "transitionsAfter": [
+                3,
+                3,
+                3,
+                3
+              ],
+              "changedPixels": 3694,
+              "changeFraction": 0.0230875,
+              "initializationOnly": true,
+              "traceImageError": 0.0325875
+            },
+            "issue": {
+              "type": "endpoint_spacing",
+              "family": 0,
+              "side": "start",
+              "positionsMm": [
+                15.75,
+                17.25
+              ],
+              "distanceMm": 1.5,
+              "requiredMm": 2.50501002004008,
+              "outerMargin": false,
+              "message": "Border transitions are closer than the required strip width. Sheet A start border has 1.500 mm between transitions or the paper edge; 2.505 mm is required."
+            }
+          },
+          {
+            "smoothRadius": 0.5,
+            "borderSeed": {
+              "radiiMm": [
+                7,
+                3,
+                3,
+                3
+              ],
+              "changedSide": 0,
+              "transitionsBefore": [
+                1,
+                3,
+                3,
+                3
+              ],
+              "transitionsAfter": [
+                3,
+                3,
+                3,
+                3
+              ],
+              "changedPixels": 3694,
+              "changeFraction": 0.0230875,
+              "initializationOnly": true,
+              "traceImageError": 0.0356125
+            },
+            "issue": {
+              "type": "endpoint_spacing",
+              "family": 0,
+              "side": "start",
+              "positionsMm": [
+                15.75,
+                17.25
+              ],
+              "distanceMm": 1.5,
+              "requiredMm": 2.50501002004008,
+              "outerMargin": false,
+              "message": "Border transitions are closer than the required strip width. Sheet A start border has 1.500 mm between transitions or the paper edge; 2.505 mm is required."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "errorBefore": 0.0325625,
+            "errorAfter": 0.03143125,
+            "seconds": 0.2844094160000095
+          },
+          "finalPrimitiveSelection": {
+            "applied": false,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "errorBefore": 0.03143125,
+            "errorAfter": 0.0313375,
+            "rejection": "paper",
+            "seconds": 0.09091187499999069
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": false,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "errorBefore": 0.03143125,
+            "errorAfter": 0.03103125,
+            "rejection": "paper",
+            "seconds": 0.089158666000003
+          },
+          "finalSharedSimplification": {
+            "applied": true,
+            "rejection": null,
+            "seconds": 0.07816787500001374
+          }
+        },
+        "errorChange": -0.0009875000000000023
+      },
+      {
+        "id": "vissevasse-arranged-r1c4",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.007725,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 7.378731,
+          "fitAndValidationSeconds": 6.663865499999985
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.007725,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 7.458915208999999,
+          "fitAndValidationSeconds": 6.747693041999999
+        },
+        "boundaryRejections": [],
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.00758125,
+            "errorAfter": 0.00755,
+            "rejection": null,
+            "seconds": 0.09285020800001803
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.00755,
+            "errorAfter": 0.00755,
+            "rejection": null,
+            "seconds": 0.09041566599998622
+          },
+          "finalSharedSimplification": {
+            "applied": true,
+            "rejection": null,
+            "seconds": 0.06270516599999973
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r2c1",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0826,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.937514208999985,
+          "fitAndValidationSeconds": 9.097311207999999
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0826,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.997405750000006,
+          "fitAndValidationSeconds": 9.118262083000008
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 8,
+              "endCount": 9,
+              "message": "Sheet A has 8 start transitions but 9 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.08255,
+            "errorAfter": 0.082475,
+            "seconds": 0.736666957999987
+          },
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.082475,
+            "errorAfter": 0.08245,
+            "rejection": null,
+            "seconds": 0.10314704100001836
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.08245,
+            "errorAfter": 0.08245,
+            "rejection": null,
+            "seconds": 0.10214595899998676
+          },
+          "finalSharedSimplification": {
+            "applied": false,
+            "rejection": "deadline",
+            "seconds": 0.07457587500000955
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r2c2",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0574125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.890047250000004,
+          "fitAndValidationSeconds": 9.140659583
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0574125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.899531291999999,
+          "fitAndValidationSeconds": 9.13694745800001
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 0,
+              "endCount": 4,
+              "message": "Sheet A has 0 start transitions but 4 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.0588125,
+            "errorAfter": 0.05729375,
+            "seconds": 0.6934702079999843
+          },
+          "finalPrimitiveSelection": {
+            "applied": false,
+            "errorBefore": 0.05729375,
+            "errorAfter": 0.05724375,
+            "rejection": "deadline",
+            "seconds": 0.033043791000003694
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r2c3",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0985125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.594513749999983,
+          "fitAndValidationSeconds": 8.76063829100001
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0985125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 9.632079083000018,
+          "fitAndValidationSeconds": 8.827039709000005
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 1,
+              "endCount": 7,
+              "message": "Sheet A has 1 start transitions but 7 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.09921875,
+            "errorAfter": 0.09855,
+            "seconds": 0.35153691700001943
+          },
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.09855,
+            "errorAfter": 0.098475,
+            "rejection": null,
+            "seconds": 0.10193187500000932
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.098475,
+            "errorAfter": 0.0984,
+            "rejection": null,
+            "seconds": 0.10535479199999827
+          },
+          "finalSharedSimplification": {
+            "applied": true,
+            "rejection": null,
+            "seconds": 0.07102491599999484
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c1",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.14695358400000258
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.15028812499999186
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-arranged-r3c2",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.04849375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 21,
+          "totalSeconds": 9.906124374999985,
+          "fitAndValidationSeconds": 9.10037129099999
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.04849375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 21,
+          "totalSeconds": 10.026254000000016,
+          "fitAndValidationSeconds": 9.19776874999999
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 1,
+              "startCount": 9,
+              "endCount": 3,
+              "message": "Sheet B has 9 start transitions but 3 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": false,
+            "featureChange": {
+              "passed": false,
+              "missingBefore": 21,
+              "missingAfter": 21,
+              "regressed": [
+                {
+                  "value": 0,
+                  "areaMm2": 5.375,
+                  "centerMm": [
+                    5.308139534883721,
+                    58.247093023255815
+                  ],
+                  "retainedFraction": 0,
+                  "retainedBefore": 0.09302325581395349,
+                  "requiredRetention": 0.09302325581395349
+                }
+              ]
+            },
+            "errorBefore": 0.0486375,
+            "errorAfter": 0.0486375,
+            "seconds": 0.7217748330000031
+          },
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 21,
+              "missingAfter": 21,
+              "regressed": []
+            },
+            "errorBefore": 0.0486375,
+            "errorAfter": 0.0486375,
+            "rejection": null,
+            "seconds": 0.11114354099999764
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 21,
+              "missingAfter": 21,
+              "regressed": []
+            },
+            "errorBefore": 0.0486375,
+            "errorAfter": 0.0486375,
+            "rejection": null,
+            "seconds": 0.11495666699999128
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-arranged-r3c3",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.13658125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 3,
+          "totalSeconds": 9.816090708000003,
+          "fitAndValidationSeconds": 8.939509625000007
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.1354,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 3,
+          "totalSeconds": 10.010341291999998,
+          "fitAndValidationSeconds": 9.137060750000003
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 2,
+              "endCount": 8,
+              "message": "Sheet A has 2 start transitions but 8 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 3,
+              "missingAfter": 3,
+              "regressed": []
+            },
+            "errorBefore": 0.13673125,
+            "errorAfter": 0.13555,
+            "seconds": 0.5600099580000096
+          },
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 3,
+              "missingAfter": 3,
+              "regressed": []
+            },
+            "errorBefore": 0.13555,
+            "errorAfter": 0.1355,
+            "rejection": null,
+            "seconds": 0.11474212500001886
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 3,
+              "missingAfter": 3,
+              "regressed": []
+            },
+            "errorBefore": 0.1355,
+            "errorAfter": 0.135275,
+            "rejection": null,
+            "seconds": 0.1227769580000022
+          },
+          "finalSharedSimplification": {
+            "applied": false,
+            "rejection": "deadline",
+            "seconds": 0.0852058749999851
+          }
+        },
+        "errorChange": -0.0011812499999999948
+      },
+      {
+        "id": "vissevasse-arranged-r3c4",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "error": 0.058375,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 10.072548083000001,
+          "fitAndValidationSeconds": 9.219637667000002
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "error": 0.058225,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 10.085664042000019,
+          "fitAndValidationSeconds": 9.229705749999994
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 3,
+              "endCount": 4,
+              "message": "Sheet A has 3 start transitions but 4 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.0590375,
+            "errorAfter": 0.058275,
+            "seconds": 0.7769395829999994
+          }
+        },
+        "errorChange": -0.0001500000000000043
+      },
+      {
+        "id": "vissevasse-arranged-r4c1",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0664875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 24,
+          "totalSeconds": 9.27610279200002,
+          "fitAndValidationSeconds": 8.49145299999998
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.06775,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 24,
+          "totalSeconds": 9.19751662499999,
+          "fitAndValidationSeconds": 8.351796000000002
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 5,
+              "endCount": 13,
+              "message": "Sheet A has 5 start transitions but 13 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 24,
+              "missingAfter": 24,
+              "regressed": []
+            },
+            "errorBefore": 0.0678125,
+            "errorAfter": 0.06769375,
+            "seconds": 0.21804045800000313
+          },
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 24,
+              "missingAfter": 24,
+              "regressed": []
+            },
+            "errorBefore": 0.06769375,
+            "errorAfter": 0.067675,
+            "rejection": null,
+            "seconds": 0.09200504200000433
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 24,
+              "missingAfter": 24,
+              "regressed": []
+            },
+            "errorBefore": 0.067675,
+            "errorAfter": 0.06766875,
+            "rejection": null,
+            "seconds": 0.09094637499999954
+          },
+          "finalSharedSimplification": {
+            "applied": true,
+            "rejection": null,
+            "seconds": 0.06300520800001687
+          }
+        },
+        "errorChange": 0.0012624999999999997
+      },
+      {
+        "id": "vissevasse-arranged-r4c2",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.03785625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 1,
+          "totalSeconds": 9.018962083999998,
+          "fitAndValidationSeconds": 8.230247916000023
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0379625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 1,
+          "totalSeconds": 9.196165000000008,
+          "fitAndValidationSeconds": 8.397668749999983
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 1,
+              "endCount": 3,
+              "message": "Sheet A has 1 start transitions but 3 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 1,
+              "missingAfter": 1,
+              "regressed": []
+            },
+            "errorBefore": 0.03790625,
+            "errorAfter": 0.03783125,
+            "seconds": 0.2471618750000198
+          },
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 1,
+              "missingAfter": 1,
+              "regressed": []
+            },
+            "errorBefore": 0.03783125,
+            "errorAfter": 0.0378125,
+            "rejection": null,
+            "seconds": 0.0923648749999993
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 1,
+              "missingAfter": 1,
+              "regressed": []
+            },
+            "errorBefore": 0.0378125,
+            "errorAfter": 0.03780625,
+            "rejection": null,
+            "seconds": 0.09722970900000655
+          },
+          "finalSharedSimplification": {
+            "applied": true,
+            "rejection": null,
+            "seconds": 0.06534929099999136
+          }
+        },
+        "errorChange": 0.00010625000000000218
+      },
+      {
+        "id": "vissevasse-arranged-r4c3",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.035325,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 30,
+          "totalSeconds": 9.317069250000001,
+          "fitAndValidationSeconds": 8.595793666999992
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0350125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 30,
+          "totalSeconds": 9.445608915999998,
+          "fitAndValidationSeconds": 8.736183709000004
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 4,
+              "endCount": 2,
+              "message": "Sheet A has 4 start transitions but 2 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 30,
+              "missingAfter": 30,
+              "regressed": []
+            },
+            "errorBefore": 0.035275,
+            "errorAfter": 0.0348625,
+            "seconds": 0.43728766599998925
+          },
+          "finalPrimitiveSelection": {
+            "applied": false,
+            "featureChange": {
+              "passed": false,
+              "missingBefore": 30,
+              "missingAfter": 30,
+              "regressed": [
+                {
+                  "value": 0,
+                  "areaMm2": 8.8125,
+                  "centerMm": [
+                    50.4459219858156,
+                    3.375
+                  ],
+                  "retainedFraction": 0.1276595744680851,
+                  "retainedBefore": 0.1347517730496454,
+                  "requiredRetention": 0.1347517730496454
+                }
+              ]
+            },
+            "errorBefore": 0.0348625,
+            "errorAfter": 0.0348625,
+            "rejection": "image_features",
+            "seconds": 0.050579166999988955
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 30,
+              "missingAfter": 30,
+              "regressed": []
+            },
+            "errorBefore": 0.0348625,
+            "errorAfter": 0.03485625,
+            "rejection": null,
+            "seconds": 0.09399287499999627
+          },
+          "finalSharedSimplification": {
+            "applied": true,
+            "rejection": null,
+            "seconds": 0.06636258300000918
+          }
+        },
+        "errorChange": -0.0003125000000000003
+      },
+      {
+        "id": "vissevasse-scattered-pale-fish",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.14726766700000735
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.14465004199999384
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-scattered-yellow-checker",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.1434184580000001
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.14003041700000177
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-scattered-blue-fish",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "no_crop",
+          "totalSeconds": 0.1395101250000007
+        },
+        "after": {
+          "status": "no_crop",
+          "totalSeconds": 0.13741833300000872
+        },
+        "cleanup": {},
+        "errorChange": null
+      },
+      {
+        "id": "vissevasse-scattered-blue-checker",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.07458125,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 2,
+          "totalSeconds": 9.707216458999989,
+          "fitAndValidationSeconds": 8.879108208999998
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "error": 0.0721625,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 2,
+          "totalSeconds": 9.882474334,
+          "fitAndValidationSeconds": 9.021615166999982
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 0,
+              "startCount": 3,
+              "endCount": 4,
+              "message": "Sheet A has 3 start transitions but 4 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalSharing": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "errorBefore": 0.07461875,
+            "errorAfter": 0.07263125,
+            "seconds": 0.6155132500000181
+          },
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "errorBefore": 0.07263125,
+            "errorAfter": 0.07224375,
+            "rejection": null,
+            "seconds": 0.09590762500002166
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 2,
+              "missingAfter": 2,
+              "regressed": []
+            },
+            "errorBefore": 0.07224375,
+            "errorAfter": 0.0719,
+            "rejection": null,
+            "seconds": 0.09234229199998663
+          },
+          "finalSharedSimplification": {
+            "applied": true,
+            "rejection": null,
+            "seconds": 0.06307008400000631
+          }
+        },
+        "errorChange": -0.0024187499999999973
+      },
+      {
+        "id": "vissevasse-scattered-green-checker",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0142,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 5.579574333000026,
+          "fitAndValidationSeconds": 4.759917667000002
+        },
+        "after": {
+          "status": "candidate_checks_passed",
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "error": 0.0142,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 0,
+          "totalSeconds": 5.580782459000009,
+          "fitAndValidationSeconds": 4.778341791999992
+        },
+        "cleanup": {
+          "finalPrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.01403125,
+            "errorAfter": 0.01400625,
+            "rejection": null,
+            "seconds": 0.09373262500000419
+          },
+          "finalCurvePrimitiveSelection": {
+            "applied": true,
+            "featureChange": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "errorBefore": 0.01400625,
+            "errorAfter": 0.01400625,
+            "rejection": null,
+            "seconds": 0.09312424999999348
+          },
+          "finalSharedSimplification": {
+            "applied": true,
+            "rejection": null,
+            "seconds": 0.0668137080000015
+          }
+        },
+        "errorChange": 0
+      },
+      {
+        "id": "vissevasse-scattered-purple-checker",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationMetadataUnchanged": true,
+        "before": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.04591875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 11,
+          "totalSeconds": 8.428107833999995,
+          "fitAndValidationSeconds": 7.6500555000000166
+        },
+        "after": {
+          "status": "candidate_needs_review",
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "error": 0.04591875,
+          "geometry": true,
+          "paper": "pass",
+          "missingRegions": 11,
+          "totalSeconds": 8.440174916999997,
+          "fitAndValidationSeconds": 7.6559810409999915
+        },
+        "boundaryRejections": [
+          {
+            "smoothRadius": 0.3,
+            "issue": {
+              "type": "endpoint_count",
+              "family": 1,
+              "startCount": 2,
+              "endCount": 4,
+              "message": "Sheet B has 2 start transitions but 4 end transitions. Opposite borders must agree."
+            }
+          }
+        ],
+        "cleanup": {
+          "finalCurvePrimitiveSelection": {
+            "applied": false,
+            "rejection": "boundary_objective",
+            "seconds": 0.016267625000007682
+          }
+        },
+        "errorChange": 0
+      }
+    ]
+  },
+  "browser": {
+    "methodology": "Physical ROI uploads, automatic crops and production 180s budget. Find-to-ready measured in each browser; exported editable SVG replayed independently.",
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-danish-tree-group-right",
+        "passed": true,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 6.119200000047684,
+        "afterSeconds": 6.1045,
+        "beforeEngineError": 0.0237625,
+        "afterEngineError": 0.0237625,
+        "beforeEditableError": 0.02385,
+        "afterEditableError": 0.02385,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02385,
+          "sourceError": 0.02385
+        },
+        "sharedSpans": 9,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-danish-tree-red",
+        "passed": true,
+        "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 4.481799999952316,
+        "afterSeconds": 4.515,
+        "beforeEngineError": 0.02020625,
+        "afterEngineError": 0.02020625,
+        "beforeEditableError": 0.02024375,
+        "afterEditableError": 0.02024375,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02024375,
+          "sourceError": 0.02024375
+        },
+        "sharedSpans": 7,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 7.986399999976158,
+        "afterSeconds": 7.945799999952317,
+        "beforeEngineError": 0.01055,
+        "afterEngineError": 0.01055,
+        "beforeEditableError": 0.010575,
+        "afterEditableError": 0.010575,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.010575,
+          "sourceError": 0.010575
+        },
+        "sharedSpans": 3,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 4.943,
+        "afterSeconds": 5.007,
+        "beforeEngineError": 0.0085625,
+        "afterEngineError": 0.0085625,
+        "beforeEditableError": 0.00861875,
+        "afterEditableError": 0.00861875,
+        "counts": [
+          4,
+          4
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00861875,
+          "sourceError": 0.00861875
+        },
+        "sharedSpans": 4,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 7.226,
+        "afterSeconds": 7.268,
+        "beforeEngineError": 0.003941680839002267,
+        "afterEngineError": 0.003941680839002267,
+        "beforeEditableError": 0.0040834041950113375,
+        "afterEditableError": 0.0040834041950113375,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0004625
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.0040834041950113375
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182742,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "passed": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 5.993900000095367,
+        "afterSeconds": 6.022300000071525,
+        "beforeEngineError": 0.0029584750566893424,
+        "afterEngineError": 0.0029584750566893424,
+        "beforeEditableError": 0.0029584750566893424,
+        "afterEditableError": 0.0029584750566893424,
+        "counts": [
+          2,
+          2
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746187121,
+        "pageErrors": []
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-bibel-checker-3",
+        "passed": true,
+        "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 5.891799999952316,
+        "afterSeconds": 5.831200000047684,
+        "beforeEngineError": 0.01413125,
+        "afterEngineError": 0.01413125,
+        "beforeEditableError": 0.0142,
+        "afterEditableError": 0.0142,
+        "counts": [
+          2,
+          2
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0142,
+          "sourceError": 0.0142
+        },
+        "sharedSpans": 0,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-danish-tree-group-right",
+        "passed": true,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 6.711,
+        "afterSeconds": 6.588,
+        "beforeEngineError": 0.0237625,
+        "afterEngineError": 0.0237625,
+        "beforeEditableError": 0.02385,
+        "afterEditableError": 0.02385,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02385,
+          "sourceError": 0.02385
+        },
+        "sharedSpans": 9,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-danish-tree-red",
+        "passed": true,
+        "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 4.647,
+        "afterSeconds": 4.654,
+        "beforeEngineError": 0.02026875,
+        "afterEngineError": 0.02026875,
+        "beforeEditableError": 0.02031875,
+        "afterEditableError": 0.02031875,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02031875,
+          "sourceError": 0.02031875
+        },
+        "sharedSpans": 7,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 8.37,
+        "afterSeconds": 8.446,
+        "beforeEngineError": 0.01054375,
+        "afterEngineError": 0.01054375,
+        "beforeEditableError": 0.01056875,
+        "afterEditableError": 0.01056875,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01056875,
+          "sourceError": 0.01056875
+        },
+        "sharedSpans": 3,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 5.677,
+        "afterSeconds": 5.598,
+        "beforeEngineError": 0.0085625,
+        "afterEngineError": 0.0085625,
+        "beforeEditableError": 0.00861875,
+        "afterEditableError": 0.00861875,
+        "counts": [
+          4,
+          4
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00861875,
+          "sourceError": 0.00861875
+        },
+        "sharedSpans": 4,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 7.548,
+        "afterSeconds": 7.754,
+        "beforeEngineError": 0.003941680839002267,
+        "afterEngineError": 0.003941680839002267,
+        "beforeEditableError": 0.0040834041950113375,
+        "afterEditableError": 0.0040834041950113375,
+        "counts": [
+          3,
+          3
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0004625
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.0040834041950113375
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182341,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-independent",
+        "passed": true,
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 6.033,
+        "afterSeconds": 6.245,
+        "beforeEngineError": 0.0029584750566893424,
+        "afterEngineError": 0.0029584750566893424,
+        "beforeEditableError": 0.0029584750566893424,
+        "afterEditableError": 0.0029584750566893424,
+        "counts": [
+          2,
+          2
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746164283,
+        "pageErrors": []
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-bibel-checker-3",
+        "passed": true,
+        "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+        "sourceMaskUnchanged": true,
+        "cropUnchanged": true,
+        "beforeSeconds": 6.017,
+        "afterSeconds": 5.857,
+        "beforeEngineError": 0.01413125,
+        "afterEngineError": 0.01413125,
+        "beforeEditableError": 0.0142,
+        "afterEditableError": 0.0142,
+        "counts": [
+          2,
+          2
+        ],
+        "checks": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0142,
+          "sourceError": 0.0142
+        },
+        "sharedSpans": 0,
+        "pageErrors": []
+      }
+    ]
+  }
+}

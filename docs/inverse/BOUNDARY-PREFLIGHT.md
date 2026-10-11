@@ -59,3 +59,9 @@ outer margins, unchanged geometry and the invariance to adding hidden connectors
 The captured photographic star must be rejected before connector/model/solver
 progress, with its source pixels preserved. The existing actual-integer-solver
 narrow-strip test remains in the suite as an independent rejection check.
+
+The subsequent [full-pipeline replay](FEATURE-PRESERVING-CLEANUP.md#fresh-full-pipeline-verification)
+validates this preflight together with feature-preserving cleanup. The star's
+three routing attempts now report one count mismatch and two spacing failures
+before connector search. Its improved direct reconstruction still needs review;
+the preflight diagnosis is not a claim that the star has been solved.
