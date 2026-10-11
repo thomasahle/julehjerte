@@ -11,6 +11,10 @@ degree-reduction step in the common fitter, not another image style or solver.
 The original straight/curved checkpoint competition and continuous optimization
 trajectory remain unchanged.
 
+The later [curve-deviation refinement](CURVE-DEGREES.md) adds a second bounded
+pass that measures the actual curve and uses adaptive sampling for edit-group
+selection. The original pass below still runs first.
+
 ## Why placement matters
 
 Two intermediate implementations were rejected by broader tests:

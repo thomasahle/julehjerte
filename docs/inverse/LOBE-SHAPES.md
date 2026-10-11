@@ -117,6 +117,11 @@ inverse-engine tests**. Type checking reports zero errors and seven existing
 warnings. Lint and production build pass. The preview's served crop and fitter
 bytes match the tested source.
 
+The subsequent [template cleanup study](CURVE-DEGREES.md) investigates the
+remaining checker artifacts with fixed crop coordinates. It improves redundant
+curvature selection while preserving the unresolved endpoint distortions as
+separate evidence.
+
 ## Reproduction
 
 ```sh
