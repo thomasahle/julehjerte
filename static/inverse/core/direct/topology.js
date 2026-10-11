@@ -3,7 +3,7 @@
  */
 import {preprocessMask,sampleTarget} from '../input.js';
 import {transposeTarget} from '../symmetry.js';
-import {buildGraph,curvesOf} from '../graph.js';
+import {buildGraph,curvesOf,reindex,boundaryEndpoints} from '../graph.js';
 import {solveGraph} from '../solver.js';
 import {sampleWeave} from '../validate.js';
 import {materialAudit} from '../material.js';
@@ -16,11 +16,11 @@ import {CurveGraph} from './curves.js';
 import {symmetryTies} from './symmetry.js';
 import {initializationMask,sourceWeights} from '../image-reference.js';
 
-export function prepareBoundary(input,cfg,{useInitializationGuide=true,guidePhase=0}={}){
-  if(useInitializationGuide&&guidePhase===0&&input.boundarySeed?.width===cfg.width)return input.boundarySeed;
+export function prepareBoundary(input,cfg,{useInitializationGuide=true,guidePhase=0,borderRadius=0}={}){
+  if(useInitializationGuide&&guidePhase===0&&borderRadius===0&&input.boundarySeed?.width===cfg.width)return input.boundarySeed;
   const source=input.sourceImage,tolerance=Math.max(.35,1.2*cfg.width/source.resolution);
   const mask=useInitializationGuide?initializationMask(source,guidePhase):source.mask;
-  const trace=fitTolerance=>preprocessMask(mask,source.resolution,{...cfg,fitTolerance,maxSpan:40,smoothRadius:0,snapRadius:0,borderRadius:0,polygonal:false,mixedBoundaries:true},input.metadata.preprocessing);
+  const trace=fitTolerance=>preprocessMask(mask,source.resolution,{...cfg,fitTolerance,maxSpan:40,smoothRadius:0,snapRadius:0,borderRadius,polygonal:false,mixedBoundaries:true},input.metadata.preprocessing);
   let target=trace(tolerance);
   // Upsampling a binary mask makes its old pixel stairs look like deliberate
   // tiny corners. Try a smaller graph before handing hundreds of redundant
@@ -43,6 +43,35 @@ export function prepareBoundary(input,cfg,{useInitializationGuide=true,guidePhas
   }
   target.sourceImage=source;
   return target;
+}
+
+function endpointIssue(target,cfg){
+  const graph=reindex({target,edges:target.curves.map(curve=>({curve,visible:true}))});
+  try{
+    for(const [f,ends]of boundaryEndpoints(graph).entries())for(const side of [ends.sources,ends.sinks]){
+      if(!side.length)continue;
+      const positions=[0,...side.map(i=>graph.points[i][f]),target.width];
+      if(positions.some((v,i)=>i&&v-positions[i-1]<cfg.nominalWidth))return 'Border transitions are closer than the required strip width.';
+    }
+  }catch(error){return error.message;}
+  return null;
+}
+
+/** Recover a routing seed from noisy edges without editing its image reference.
+ * Only impossible endpoint counts/spacing trigger the inward-profile proposals.
+ * The smallest repair must pass the original image and feature gates first.
+ */
+export function prepareTopologyBoundary(input,cfg,{maximumError=.005,guidePhase=0}={}){
+  const original=prepareBoundary(input,cfg,{guidePhase}),source=input.sourceImage,issue=endpointIssue(original,cfg);
+  if(!issue||source.weights)return{target:original};
+  const report={trigger:issue,accepted:false,attempts:[]};
+  for(const borderRadius of [.5,1,2,3]){
+    const target=prepareBoundary(input,cfg,{guidePhase,borderRadius}),woven=sampleTarget(target,source.resolution),error=maskDisagreement(source,woven),problem=endpointIssue(target,cfg);
+    const accepted=!problem&&target.curves.length>0&&target.curves.length<=160&&error<=maximumError&&auditImageFeatures(source,woven,cfg.width).passed;
+    report.attempts.push({borderRadius,imageError:error,endpointIssue:problem,segments:target.curves.length,accepted});
+    if(accepted){report.accepted=true;report.borderRadius=borderRadius;report.border=target.metadata.preprocessing.border;return{target,report};}
+  }
+  return{target:original,report};
 }
 
 export async function initializeTopology(input,cfg,{maximumError=.005,seconds=3,onProgress=()=>{}}={}){
@@ -86,7 +115,9 @@ export async function initializeTopology(input,cfg,{maximumError=.005,seconds=3,
 function prepareTopologyPhase(input,cfg,{maximumError,guidePhase,onProgress}){
   const source=input.sourceImage,report={method:'mixed-boundary-topology',accepted:false};
   try{
-    let target=prepareBoundary(input,cfg,{guidePhase});
+    const boundary=prepareTopologyBoundary(input,cfg,{maximumError,guidePhase});
+    let target=boundary.target;
+    if(boundary.report)report.borderRecovery=boundary.report;
     report.boundarySegments=target.curves.length;
     if(target.metadata.boundarySimplification)report.boundarySimplification=target.metadata.boundarySimplification;
     report.traceError=maskDisagreement(source,sampleTarget(target,source.resolution));
