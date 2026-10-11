@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { stabilizeBorder, borderTransitions } from '../../static/inverse/core/border.js';
+import { stabilizeBorder, borderTransitions, oppositeBorderSeeds } from '../../static/inverse/core/border.js';
 import { prepare, design } from '../../static/inverse/core/engine.js';
 import { checkerPixels } from './fixtures.mjs';
 import { GENERAL_PRESET } from '../../src/lib/inverse/presets.js';
@@ -100,5 +100,27 @@ test('the photo preset recovers strip endpoints behind a blurred background frin
     assert.deepEqual(repaired.metadata.transitionsAfter, [5, 5, 5, 5]);
     assert.deepEqual(noisy, before);
     assert.ok(repaired.metadata.editedBandWidthMm <= GENERAL_PRESET.borderRadius);
+  }
+});
+
+
+test('one-sided routing seeds recover hidden endpoints without rewriting the observed mask', () => {
+  const n=128, clean=Uint8Array.from({length:n*n},(_,i)=>(Math.floor((i%n)/32)+Math.floor(Math.floor(i/n)/32))%2);
+  assert.deepEqual(oppositeBorderSeeds(clean,n,100),[],'Consistent borders need no extra search.');
+  let mask=clean.slice();for(let y=0;y<n;y++)for(let x=0;x<10;x++)mask[y*n+x]=Number(y>=n/2);
+  for(let turn=0;turn<4;turn++){
+    const before=mask.slice(),seeds=oppositeBorderSeeds(mask,n,100),inverse=oppositeBorderSeeds(mask.map(v=>v^1),n,100);
+    assert.ok(seeds.length>0);assert.equal(seeds.length,inverse.length);
+    for(const [j,seed]of seeds.entries()){
+      assert.deepEqual(seed.metadata.transitionsAfter,[3,3,3,3]);
+      assert.deepEqual(inverse[j].mask,seed.mask.map(v=>v^1));
+      assert.equal(seed.metadata.initializationOnly,true);
+      assert.equal(seed.metadata.radiiMm.filter(r=>r!==3).length,1);
+      assert.ok(Math.max(...seed.metadata.radiiMm)<=8);
+      const d=Math.ceil(.08*n);
+      for(let y=d;y<n-d;y++)for(let x=d;x<n-d;x++)assert.equal(seed.mask[y*n+x],mask[y*n+x]);
+    }
+    assert.deepEqual(mask,before);
+    mask=Uint8Array.from(mask,(_,i)=>before[(n-1-i%n)*n+Math.floor(i/n)]);
   }
 });

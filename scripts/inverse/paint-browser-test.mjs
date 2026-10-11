@@ -80,7 +80,7 @@ for(const file of['static/inverse/worker.js','static/inverse/worker-bootstrap.js
 for(const file of ['static/inverse/core/feature-recovery.js','static/inverse/core/solver.js','static/inverse/core/crop.js','static/inverse/locator/locator.js','static/inverse/locator/fields.js','static/inverse/locator/math.js','static/inverse/locator/palette.js','static/inverse/locator/anchored.js','static/inverse/locator/grid-refine.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','static/inverse/core/direct/matching.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
-report.workspaceSourceHashes['static/inverse/core/junctions.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/junctions.js')).digest('hex');
+for(const name of ['junctions.js','border.js']){const file=`static/inverse/core/${name}`;report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');}
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
@@ -286,10 +286,10 @@ try{
      assert.equal(row.matchingPreference.identical,false,'Preference cannot override the one-point limit.');
     }
     if(name==='web-danish-tree-group-right'&&!engineReference){
-     assert.equal(observed.result.report.solver.featureRecovery?.seedSmoothingRetry,true);
+     assert.equal(observed.result.report.solver.featureRecovery?.borderSeedRetry,true);
      assert.deepEqual(observed.result.report.slits,{left:3,right:3});
      assert.equal(row.templateChecksPassed,true);assert.equal(row.missingFeatures.length,0);
-     assert.ok(row.engineError<.025,'A smoother initialization must still match the original uploaded mask.');
+     assert.ok(row.engineError<.025,'An edge-profile initialization must still match the original uploaded mask.');
      assert.ok(row.timings.clickToReadySeconds<12,'The fallback should return without exhausting the long browser search.');
     }
     if(name==='noisy-checker'||name==='noisy-tree'){

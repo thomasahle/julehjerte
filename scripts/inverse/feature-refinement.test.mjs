@@ -85,3 +85,20 @@ test('infeasible photograph traces can retry a smoother seed without changing th
   assert.ok(error<.025,`Exported error ${error} must improve on the previous 0.05973125.`);
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);assert.deepEqual(prepared.target.metadata.sourceImage.cropCorners,corners);
 });
+
+
+test('an actual cropped upload recovers its template when one edge hides slit endpoints',async()=>{
+  const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/browser-group-tree.json')),n=fixture.resolution,mask=new Uint8Array(n*n);
+  for(const [start,length]of fixture.maskRuns)mask.fill(1,start,start+length);
+  const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false},prepared=prepare({type:'mask',mask,resolution:n},cfg),source=prepared.target.sourceImage;
+  const before=source.mask.slice(),probability=source.probability.slice();
+  const answer=await design(prepared.target,cfg),recovery=answer.report.solver.featureRecovery;
+  assert.equal(recovery.borderSeedRetry,true);
+  assert.ok(recovery.attempts.some(a=>a.borderSeed?.initializationOnly&&a.solver?.status==='solved'));
+  assert.deepEqual(answer.report.slits,{left:3,right:3});
+  assert.equal(answer.report.templateChecksPassed,true);assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
+  assert.equal(answer.report.imageFidelity.features.missing.length,0);
+  const replay=await renderExportedWeave(answer.files['cut_geometry.json'],n),error=replay.mask.reduce((s,v,i)=>s+Number(v!==before[i]),0)/before.length;
+  assert.ok(error<.025,`Exported error ${error} must improve on the failed browser input, without recropping.`);
+  assert.deepEqual(source.mask,before);assert.deepEqual(source.probability,probability);
+});
