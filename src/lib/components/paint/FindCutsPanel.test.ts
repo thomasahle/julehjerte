@@ -52,7 +52,7 @@ function render(overrides: Partial<Props> = {}) {
 			onShowMotif: () => {},
 			elapsed: 0,
 			progress: IDLE_PROGRESS,
-			advanced: defaultAdvanced({ ...NO_SYMMETRY }),
+			advanced: defaultAdvanced(),
 			onAdvanced: () => {},
 			onResetAdvanced: () => {},
 			canFind: true,
@@ -85,6 +85,20 @@ function render(overrides: Partial<Props> = {}) {
 const MEDIOCRE = 'Mønsteret er tæt på';
 
 describe('FindCutsPanel', () => {
+	for (const lang of ['da', 'en'] as const) {
+		it(`describes matching as an optional bounded preference (${lang})`, () => {
+			const changed = vi.fn();
+			const panel = render({ lang, status: 'idle', showingResult: false, result: null, onAdvanced: changed });
+			try {
+				const checkbox = panel.root.querySelector<HTMLInputElement>('input[aria-describedby="matching-sheets-hint"]')!;
+				expect(checkbox.checked).toBe(true);
+				expect(checkbox.closest('label')?.textContent).toContain(lang === 'en' ? 'Prefer' : 'Foretræk');
+				expect(panel.root.querySelector('#matching-sheets-hint')?.textContent).toContain(lang === 'en' ? '1 percentage point' : '1 procentpoint');
+				checkbox.click();
+				expect(changed).toHaveBeenCalledWith({ ...defaultAdvanced(), matchingSheets: false });
+			} finally { panel.cleanup(); }
+		});
+	}
 	for (const lang of ['da', 'en'] as const) for (const free of [false, true]) {
 		it(`shows a one-cut result without inventing clearance (${lang}, ${free ? 'free' : 'fixed'} border)`, () => {
 			const panel = render({ lang, result: result({ cuts: [1, 1], clearanceMm: null, ...(free ? { motifMismatch: 0.004, borderChange: 0.12 } : {}) }) });

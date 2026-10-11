@@ -139,7 +139,7 @@
 	let showHelp = $state(false);
 	let showImport = $state(false);
 	let showingResult = $state(false);
-	let advanced = $state<AdvancedSettings>(defaultAdvanced(session.symmetry));
+	let advanced = $state<AdvancedSettings>(defaultAdvanced());
 
 	/** Bumped whenever the mask changed other than by a stroke; the canvas watches it. */
 	let revision = $state(0);
@@ -360,12 +360,6 @@
 	 * do nothing and at worst fold it under the rows we are leaving behind.
 	 */
 	function restore(step: MaskStep): void {
-		// The checkbox follows Mellem lapper, as it does when the row is switched by
-		// hand — but only when the row actually moves, so undoing a stroke cannot
-		// quietly re-tick a box the visitor unticked.
-		if (step.symmetry.lobes !== session.symmetry.lobes) {
-			advanced = { ...advanced, matchingSheets: step.symmetry.lobes === 'sym' };
-		}
 		session.mask = step.mask;
 		session.symmetry = { ...step.symmetry };
 		revision++;
@@ -484,7 +478,6 @@
 			syncHistoryFlags();
 		}
 		setSymmetry(next);
-		advanced = { ...advanced, matchingSheets: next.lobes === 'sym' };
 		revision++;
 	}
 
@@ -507,9 +500,6 @@
 
 	function useMask(mask: Mask, found: SymmetrySettings, source: string): void {
 		setMask(mask, { sourceName: source, symmetry: found, found });
-		// The rows arrived with the picture, so the checkbox that follows Mellem
-		// lapper follows them too.
-		advanced = { ...advanced, matchingSheets: found.lobes === 'sym' };
 		resetHistory(history);
 		syncHistoryFlags();
 		showingResult = false;
@@ -1074,7 +1064,7 @@
 						{progress}
 						{advanced}
 						onAdvanced={(next) => (advanced = next)}
-						onResetAdvanced={() => (advanced = defaultAdvanced(session.symmetry))}
+						onResetAdvanced={() => (advanced = defaultAdvanced())}
 						canFind={!maskEmpty && !busy}
 						onFind={find}
 						onCancel={abort}

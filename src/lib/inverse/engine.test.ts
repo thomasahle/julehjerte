@@ -5,6 +5,7 @@ import { symmetrize } from '$lib/paint/symmetry';
 import {
 	ADVANCED_LIMITS,
 	clampAdvanced,
+	defaultAdvanced,
 	ENGINE_SYMMETRY,
 	engineSymmetry,
 	frameWeights,
@@ -133,12 +134,23 @@ describe('the settings a search is run with', () => {
 		expect(engineSettings(on)).not.toHaveProperty('identicalSheets');
 	});
 
-	it('follows Mellem lapper: Sym when the visitor has not touched the checkbox', () => {
+	it('prefers matching sheets without requiring or adding mask symmetry', () => {
 		const sym = solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'sym' } });
 		expect(sym.preferMatchingSheets).toBe(true);
-		expect(solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY }).preferMatchingSheets).toBe(
-			false
-		);
+		const independent = engineSettings(solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY }));
+		expect(independent.preferMatchingSheets).toBe(true);
+		expect(independent.symmetry.transpose).toBe(false);
+		expect(independent.matchingErrorAllowance).toBe(0.01);
+		expect(defaultAdvanced().matchingSheets).toBe(true);
+	});
+
+	it('keeps forced symmetry separate from the optional matching preference', () => {
+		const forced = engineSettings(solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'sym' }, matchingSheets: false }));
+		expect(forced.symmetry.transpose).toBe(true);
+		expect(forced.preferMatchingSheets).toBe(true);
+		const anti = engineSettings(solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'anti' } }));
+		expect(anti.symmetry.antiTranspose).toBe(true);
+		expect(anti.preferMatchingSheets).toBe(false);
 	});
 
 	it('survives the engine’s own settings(), which drops what it does not know', () => {

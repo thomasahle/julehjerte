@@ -506,11 +506,13 @@
 				<input
 					type="checkbox"
 					checked={advanced.matchingSheets}
+					aria-describedby="matching-sheets-hint"
 					onchange={(e) =>
 						onAdvanced({ ...advanced, matchingSheets: e.currentTarget.checked })}
 				/>
 				<span>{tr('paintMatchingSheets')}</span>
 			</label>
+			<p id="matching-sheets-hint" class="note">{tr('paintMatchingSheetsHint')}</p>
 			<div class="advanced-footer">
 				<button type="button" class="link" onclick={onResetAdvanced}>{tr('paintReset')}</button>
 				<!-- The engine is somebody else's work; its licences travel with it.

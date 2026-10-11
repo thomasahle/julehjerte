@@ -172,7 +172,7 @@ export type FindSettings = {
 	symmetry: SymmetrySettings;
 	widthMm?: number;
 	minWidthMm?: number;
-	/** Cut both lobes from one template. Follows Mellem lapper: Sym by default. */
+	/** Prefer one template within 1 percentage point of error, independently of symmetry. */
 	matchingSheets?: boolean;
 };
 
@@ -219,12 +219,12 @@ export function clampAdvanced(key: AdvancedNumber, value: number): number {
 	return Math.min(hi, Math.max(lo, value));
 }
 
-/** What Nulstil goes back to; matching sheets follows Mellem lapper: Sym. */
-export function defaultAdvanced(symmetry: SymmetrySettings): AdvancedSettings {
+/** Reset to the standard fitting preferences, independently of forced symmetry. */
+export function defaultAdvanced(): AdvancedSettings {
 	return {
 		widthMm: DEFAULT_WIDTH_MM,
 		minWidthMm: DEFAULT_MIN_WIDTH_MM,
-		matchingSheets: symmetry.lobes === 'sym'
+		matchingSheets: true
 	};
 }
 
@@ -563,12 +563,12 @@ export function solveSettings(settings: FindSettings): Record<string, unknown> {
 		minWidth: clampAdvanced('minWidthMm', settings.minWidthMm ?? DEFAULT_MIN_WIDTH_MM),
 		cutError: 0.25,
 		timeLimit: MAX_TIME_LIMIT_SECONDS,
-		// "Samme skabelon til begge sider" — the checkbox, which follows Mellem
-		// lapper Sym until the visitor says otherwise. A requested symmetry
+		// Prefer a reusable template even when a photograph has no detected
+		// symmetry. This does not fold the mask. A requested symmetry
 		// overrules it inside `settings()`: the transpose implies matching sheets,
 		// and any other mirror rules them out, because the two families are then
 		// each other's images rather than copies.
-		preferMatchingSheets: settings.matchingSheets ?? settings.symmetry.lobes === 'sym',
+		preferMatchingSheets: settings.matchingSheets ?? true,
 		matchingErrorAllowance: 0.01,
 		progressGeometry: true,
 		earlyStop: false,

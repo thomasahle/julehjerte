@@ -133,7 +133,11 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
 
 - Panel "Find snit": one sentence about the search ("Computeren leder efter de snit, der væver netop dit mønster."),
   the primary button `Find snit`, a disclosure "Avanceret" with the engine settings that matter to a hobbyist: Papirets bredde (mm, default 100), Mindste strimmelbredde (mm, 2),
-  Samme skabelon til begge sider (checkbox, follows Mellem lapper: Sym), and a "Nulstil" link. Nothing else.
+  Foretræk samme skabelon til begge sider (checkbox, on by default independently of the symmetry rows), and a "Nulstil" link. Nothing else.
+  The checkbox is a preference with an absolute one-percentage-point mask-error allowance, not a command to fold
+  the mask. Import, symmetry changes and undo/redo preserve an explicit choice; Reset restores it to on.
+  The explanatory text states the allowance in both languages. Requested symmetry still takes precedence in
+  the solver: transpose requires matching templates, while other enforced transforms retain their existing route.
 - **While searching, the panel says what the search is trying** (owner, 2026-09-09; built, §12 for the rest). It was
   a scissors glyph, a counter and one phrase for up to three minutes, while the engine underneath was announcing
   every strip-count pair it had scored and reporting a fresh error every forty refinement steps. The face is now:
@@ -187,7 +191,7 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   has a sentence, and the test asserts that replaying it never falls back to "Arbejder …", which is what makes a
   stage added in `core/` fail here rather than go quiet on screen. The fixture cannot cover the whole set on its
   own: it was captured with no symmetry, and `directMatching` — `preferMatchingSolution`, which runs whenever
-  "Samme skabelon til begge sider" is on, the default under Mellem lapper: Sym — takes the disabled early return
+  "Foretræk samme skabelon til begge sider" is on, the default preference — takes the disabled early return
   there. It has its own sentence and its own test.
 
   **What "Prøv stjernen" actually shows** (measured on the built site, 2026-09-09). With the settings the mask
@@ -413,8 +417,8 @@ folds the mask with `symmetrize` first**, and `setMask` folds an arriving mask t
 - Settings we pass (from the old page, minus what the owner removed): `{...AUTOMATIC_PRESET, width: 100, minWidth: 2,
   cutError: 0.25, timeLimit: 600, preferMatchingSheets, matchingErrorAllowance: 0.01, earlyStop: false,
   removeSpecks: 0, fillHoles: 0, minRadius: 0.8, kerf: 0, printShrinkPercent: 0.2, materialResolution: 360,
-  trials: 12, requireMaterialCore: true, paperColors: [right, left], resolution: 400}`. "Samme skabelon til begge
-  sider" goes over as `preferMatchingSheets`, defaulting to Mellem lapper Sym. **Not `identicalSheets`**: that key is
+  trials: 12, requireMaterialCore: true, paperColors: [right, left], resolution: 400}`. "Foretræk samme skabelon til begge
+  sider" goes over as `preferMatchingSheets`, defaulting to true. **Not `identicalSheets`**: that key is
   not in `core/settings.js`'s `DEFAULTS`, so `settings(raw)` drops it before a solve ever sees it — it is read off
   the raw object by `prepare` alone. `settings()` is the list of keys the engine accepts, and a key that is not on
   it disappears in silence; `engine.test.ts` puts the whole settings object through it for exactly that reason.
@@ -537,8 +541,8 @@ i lap Anti. Everything else off. Run it after import and after "Mal på hjertet"
 `session.symmetry` and `session.found`.
 
 Solving with symmetry on: `symmetrize` the mask under the active transforms first (so the target itself is
-symmetric), pass `preferMatchingSheets` for Mellem lapper Sym (the only symmetry the engine enforces itself, and see
-§4 for why it is not `identicalSheets`), and give the converter `enforce: session.symmetry` so the resulting fingers
+symmetric), pass the independent `preferMatchingSheets` preference (see §4 for why it is not
+`identicalSheets`), and give the converter `enforce: session.symmetry` so the resulting fingers
 are exact. Inden i
 kurve Anti cannot be expressed on the mask; it is passed to the converter only, so it is the one row that always
 reaches a solve that was never asked to hold it — see the note on what enforcing costs in §4. The rows the panel
