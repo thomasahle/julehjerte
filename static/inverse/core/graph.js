@@ -48,7 +48,7 @@ export function inspectBoundaryEndpoints(graph, minimumWidth = 0) {
       if(distance<minimumWidth-1e-6)return{endpoints,issue:{type:'endpoint_spacing',family,side:side==='sources'?'start':'end',
         positionsMm:positions.slice(i-1,i+1),distanceMm:distance,requiredMm:minimumWidth,
         outerMargin:i===1||i===positions.length-1,
-        message:`Sheet ${family?'B':'A'} ${side==='sources'?'start':'end'} border has ${distance.toFixed(3)} mm between transitions or the paper edge; ${minimumWidth.toFixed(3)} mm is required.`}};
+        message:`Border transitions are closer than the required strip width. Sheet ${family?'B':'A'} ${side==='sources'?'start':'end'} border has ${distance.toFixed(3)} mm between transitions or the paper edge; ${minimumWidth.toFixed(3)} mm is required.`}};
     }
   }
   return{endpoints,issue:null};
