@@ -272,6 +272,11 @@ try{
     if(hardPhoto){
      row.featureNoticeVisible=await page.getByText('Some details of the motif are missing. Compare the template with the mask.',{exact:true}).isVisible();
      assert.equal(row.featureNoticeVisible,row.missingFeatures.length>0,'The page must show the feature failure even below its ordinary percentage warning.');
+     if(name==='hard-flettede-puppy'&&!engineReference){
+      assert.equal(row.templateChecksPassed,true,'The actual uploaded puppy must retain its opening and pass the template checks.');
+      assert.equal(row.missingFeatures.length,0);
+      assert.ok(row.engineError<.018);
+     }
     }
     row.numericalBackend=observed.result.report.solver.numericalBackend?.backend;
     row.paperKernels=observed.result.report.solver.paperKernels;

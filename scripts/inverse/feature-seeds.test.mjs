@@ -40,6 +40,22 @@ test('additional layouts can retain a remote opening without editing the image o
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 
+test('a crop-edge fragment still counts in fidelity but cannot drive an extra cut layout',async()=>{
+  const catalogue=JSON.parse(await fs.readFile('scripts/inverse/hard-photo-cases.json'));
+  const photo=await readHardPhoto(catalogue.source),cfg=settings({...AUTOMATIC_PRESET,trials:0});
+  const quad=[[430.32931226516513,171.9092353088924],[525.2431230765773,267.80938630026435],[403.3299806510149,349.9830567410715],[320.83807769917655,259.9176512630082]];
+  const prepared=prepare({...photo,quad},cfg),source=prepared.target.sourceImage;
+  assert.equal(createHash('sha256').update(source.mask).digest('hex'),'311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e');
+  const features=imageFeatures(source,cfg.width),index=features.findIndex(f=>f.centerMm[1]>98);
+  assert.ok(index>=0);assert.equal(features[index].areaMm2,4.25);
+  const woven=source.mask.slice();for(const pixel of features[index].pixels)woven[pixel]=1-features[index].value;
+  assert.equal(auditImageFeatures(source,woven,cfg.width,features).passed,false,'Do not loosen the final fidelity gate');
+  const result=initializeFeatureSeeds({source,features,missed:[index],counts:[3,3],cfg,evidence:borderEvidence(source.probability,source.resolution),maximumCount:8});
+  assert.equal(result.report.skippedBorderRegions,1);
+  assert.equal(result.report.hypotheses,0);assert.deepEqual(result.seeds,[]);
+  assert.deepEqual(source.mask,prepared.preview.mask);
+});
+
 test('production search recovers the frozen puppy opening and verifies the exported pair',async()=>{
   const imported=await puppy(),cfg={...AUTOMATIC_PRESET,timeLimit:25,trials:0,earlyStop:false};
   const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
