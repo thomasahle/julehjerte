@@ -112,7 +112,8 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
   let bigError=mismatch(renderCurves(best.graph,best.points,best.phase,bigN,48),big,high.weights);
   for(let round=0;round<rounds&&performance.now()<deadline;round++){
     const paths=best.graph.nested(best.points),before=best.graph.solution(best.points,best.phase,input),ease=easeMetrics(before,cfg);let changed=false;
-    proposals: for(const raw of sharingCandidates(paths))for(const blend of !antiTranspose&&identicalSheets&&raw.i===raw.j?[.5]:[.5,0,1]){
+    const order=identicalSheets?templatePathOrder(paths).map(f=>f.map(p=>p.index)):null;
+    proposals: for(const raw of sharingCandidates(paths))for(const blend of !antiTranspose&&identicalSheets&&order[0].indexOf(raw.i)===order[1].indexOf(raw.j)?[.5]:[.5,0,1]){
       const c={...raw,blend};
       if(performance.now()>deadline)break;
       try{
