@@ -56,3 +56,19 @@ test('production search recovers the frozen puppy opening and verifies the expor
   assert.ok(mismatch(replay.mask,source.mask)<.018);
   assert.deepEqual(source.mask,imported.preview.mask);
 });
+
+test('resolving paper uncertainty does not hide the candle’s better ordinary finalist',async()=>{
+  const catalogue=JSON.parse(await fs.readFile('scripts/inverse/hard-photo-cases.json'));
+  const photo=await readHardPhoto(catalogue.source);
+  const quad=[[1010.9144542590817,589.4652765269831],[1103.7537578794381,696.2833649430704],[998.6357722702141,795.1746948683086],[894.9268445855275,683.6338821954087]];
+  const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false},prepared=prepare({...photo,quad},cfg);
+  assert.equal(createHash('sha256').update(prepared.preview.mask).digest('hex'),'263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d');
+  const answer=await design(prepared.target,cfg);
+  assert.ok(answer.report.solver.candidates.some(c=>c.paperVerification?.status==='pass'),
+    'Exercise the formerly uncertain alternative, not a different early-exit route');
+  assert.deepEqual(answer.report.slits,{left:1,right:1});
+  assert.equal(answer.report.templateChecksPassed,true);
+  const replay=await renderExportedWeave(answer.files['cut_geometry.json'],400);
+  assert.ok(mismatch(replay.mask,prepared.preview.mask)<.008,
+    'The 1.9% two-cut candidate must not prevent refinement of the better one-cut candidate');
+});

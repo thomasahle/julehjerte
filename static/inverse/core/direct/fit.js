@@ -234,7 +234,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     attempts.push({stage:'clearance',counts:clear.model.counts,phase:clear.phase,error:clear.error,steps:clear.steps});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
     const candidate=stage('directRefining',()=>refineCurves(graph,prob,n,clear.phase,{...cfg,preferMatchingSheets:false},{deadline:end,input,weights:fitWeights,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>onProgress({stage:'directRefining',counts:clear.model.counts,...r},solution)}));
-    candidate.counts=clear.model.counts;candidate.seed=selected.seed;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop);
+    candidate.counts=clear.model.counts;candidate.seed=selected.seed;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop&&(!candidate.paperVerification||candidate.seed==='feature-weighted-grid'));
     // Preserve the first refined checkpoint and all existing finalists. Only
     // unsuccessful feature retention earns this additional initialization;
     // regular successful designs and exhausted short budgets keep their path.
@@ -249,7 +249,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // fit: accepting the first valid dense grid would hide that improvement.
     // This is a search allowance, not a relaxed final image/feature/paper gate.
     const simplerRemaining=!weights&&fine.slice(i+1).some(r=>r.model.counts[0]+r.model.counts[1]<candidate.counts[0]+candidate.counts[1]&&r.error<=candidate.error+.01);
-    if(candidate.imagePassed&&!simplerRemaining)break;
+    // A newly resolved paper uncertainty must not terminate the ordinary
+    // finalists earlier than before. Their initial grid error can conceal a
+    // much better final fit (the candle's 1+1 layout is one such case).
+    const ordinaryFinalistsRemain=candidate.paperVerification&&candidate.seed!=='feature-weighted-grid'&&fine.slice(i+1).some(r=>r.seed!=='feature-weighted-grid');
+    if(candidate.imagePassed&&!simplerRemaining&&!ordinaryFinalistsRemain)break;
     // Three seeds are the fast path, not evidence that other routings fail.
     // Spend a longer requested budget on an untried layout only when none of
     // the refined candidates passed the original image, feature and paper
