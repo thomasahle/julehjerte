@@ -7,12 +7,14 @@ import {curvePenalty} from '../../static/inverse/core/direct/refine.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {boundaryGradient,boundaryValue} from '../../static/inverse/core/direct/boundary.js';
 import {solutionJSON} from '../../static/inverse/core/graph.js';
-import {sampleWeave} from '../../static/inverse/core/validate.js';
+import {sampleWeave,validate} from '../../static/inverse/core/validate.js';
+import {materialAudit} from '../../static/inverse/core/material.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {checkerPixels} from './fixtures.mjs';
 import {supportedBorderCounts,gridFinalists,gridCountLimit} from '../../static/inverse/core/direct/fit.js';
 import {shareReplacement} from '../../static/inverse/core/direct/share.js';
+import {fitDirect} from '../../static/inverse/core/direct/fit.js';
 
 const near=(a,b,eps=1e-8)=>assert.ok(Math.abs(a-b)<eps,`${a} vs ${b}`);
 const line=(a,b)=>[a,a.map((v,i)=>v+(b[i]-v)/3),a.map((v,i)=>v+2*(b[i]-v)/3),b];
@@ -48,6 +50,27 @@ test('inset evidence reserves a count candidate without treating edge noise as e
   evidence[6].count=2;evidence[7].count=2;
   assert.equal(supportedBorderCounts(evidence),null);
   assert.deepEqual(gridFinalists(coarse,evidence),coarse.slice(0,3));
+});
+
+test('a longer budget can recover a valid layout beyond the first three seeds',{timeout:40000},async()=>{
+  const n=96,model=gridModel([3,3]);model.z.fill(0);
+  const mask=gridMask(model,n,1),sourceImage={mask,probability:Float32Array.from(mask),resolution:n,weights:new Float64Array(n*n).fill(.9)};
+  // A half-turn request routes through grid refinement; uniform non-unit
+  // weights avoid reserving a border-count seed. Supply a deliberately poor
+  // ranking, then a known exact initialization after the fast portfolio.
+  const seeds=[[1,1,1],[1,1,-1],[2,2,1],[3,3,1]].map(([a,b,phase])=>{
+    const model=gridModel([a,b]);model.z.fill(0);
+    const woven=gridMask(model,n,phase),error=woven.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length;
+    return{model,phase,error,floor:.008,steps:0};
+  });
+  const cfg=settings({algorithm:'direct',timeLimit:30,trials:0,symmetry:{rotate180:true}}),input={width:100,curves:[],metadata:{direct:true},sourceImage};
+  const answer=await fitDirect(input,cfg,()=>{},{countSearch:()=>({seeds,report:{strategy:'regression-ranking'}})});
+  assert.deepEqual(answer.report.selectedCounts,[3,3]);
+  assert.equal(answer.report.attempts.filter(a=>a.stage==='clearance').length,4);
+  assert.equal(validate(answer,cfg).passed,true);
+  assert.equal(materialAudit(answer,cfg).passed,true);
+  const independent=await renderExportedWeave(solutionJSON(answer),n);
+  assert.deepEqual(independent.mask,mask,'The later candidate must reconstruct the original checker.');
 });
 
 test('shared replacement cancels reverse-running cuts and preserves adjacent endpoints',()=>{

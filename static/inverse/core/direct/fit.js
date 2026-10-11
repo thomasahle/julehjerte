@@ -120,10 +120,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       topology.report.refinementRejected={geometry:candidate.geometryPassed,paper:candidate.paperPassed,imageError:error};
     }
   }
-  const fine=stage('directFitting',()=>gridFinalists(coarse,weights?[]:evidence).map(r=>{
+  const fitSeed=r=>{
     const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{optimizationTarget:gridTarget,weights:fitWeights,steps:150,initial:r.model.z,deadline:performance.now()+800});
     attempts.push({stage:'fine',counts:r.model.counts,phase:r.phase,error:next.error,steps:next.steps,seconds:(performance.now()-at)/1000});return next.error<r.error?next:r;
-  }).sort((a,b)=>a.error+.005*(a.model.counts[0]+a.model.counts[1])-b.error-.005*(b.model.counts[0]+b.model.counts[1])));
+  };
+  const finalists=gridFinalists(coarse,weights?[]:evidence),remainingSeeds=coarse.filter(r=>!finalists.includes(r));
+  const fine=stage('directFitting',()=>finalists.map(fitSeed).sort((a,b)=>a.error+.005*(a.model.counts[0]+a.model.counts[1])-b.error-.005*(b.model.counts[0]+b.model.counts[1])));
   // A local boundary gradient cannot create a remote missing region. Try an
   // alternate traced routing while there is still time within this search.
   const features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width,sourceFeatures);
@@ -189,6 +191,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // perturbations. The final selector applies the same one-point tolerance.
     const simplerRemaining=!!supportedCounts&&!weights&&fine.slice(i+1).some(r=>r.model.counts.every((count,j)=>count===supportedCounts[j])&&r.model.counts[0]+r.model.counts[1]<candidate.counts[0]+candidate.counts[1]&&r.error<=candidate.error+.01);
     if(candidate.imagePassed&&!simplerRemaining)break;
+    // Three seeds are the fast path, not evidence that other routings fail.
+    // Spend a longer requested budget on an untried layout only when none of
+    // the refined candidates passed the original image, feature and paper
+    // checks. Keep the successful fast path and the finalization reserve.
+    if(i===fine.length-1&&!candidates.some(c=>c.imagePassed)&&remainingSeeds.length&&maxDeadline-performance.now()>4500){
+      fine.push(stage('directFitting',()=>fitSeed(remainingSeeds.shift())));
+    }
   }
   candidates.sort((a,b)=>Number(b.paperPassed)-Number(a.paperPassed)||Number(b.geometryPassed)-Number(a.geometryPassed)||Number(b.imagePassed)-Number(a.imagePassed)||a.selectionScore-b.selectionScore);
   // Prefer the simplest valid topology when its independently measured image
