@@ -14,13 +14,20 @@ const stage = arg('stage') || 'prepare', seconds = Number(arg('seconds') || 10);
 if (!['prepare', 'solve'].includes(stage) || !(seconds >= 1 && seconds <= 180)) throw new Error('Use --stage=prepare|solve and --seconds=1..180');
 const data = await catalogue(), ids = arg('ids')?.split(',');
 if (ids?.some(id => !data.cases.some(c => c.id === id))) throw new Error('Unknown case ID');
+// Explicit diagnostic crops isolate fitting from detection; never mix their
+// scores into the default automatic-crop track without labelling them.
+const cropFile=arg('crop-overrides'),cropBytes=cropFile?await fs.readFile(cropFile):null,crops=cropBytes?JSON.parse(cropBytes):{};
+for(const [id,quad]of Object.entries(crops)){
+  if(!data.cases.some(c=>c.id===id)||!Array.isArray(quad)||quad.length!==4||!quad.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite)))throw new Error(`Invalid diagnostic crop: ${id}`);
+}
 const output = arg('output') || `tmp/inverse-web-photos/${new Date().toISOString().replace(/[:.]/g, '-')}`;
 await fs.mkdir(output, {recursive: true});
 const cfg = {...AUTOMATIC_PRESET, width: 100, timeLimit: seconds, trials: 0};
 const ledger = {
   createdAt: new Date().toISOString(), gitCommit: execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim(),
   manifestSha256: sha256(await fs.readFile(new URL('manifest.json', corpusRoot))), stage, cfg,
-  methodology: 'Original source pixels and a pre-annotated rough ROI only. First automatic crop is fixed before preparation/fitting. No corrected corners or template geometry. Proposal presence and mask agreement do not establish correct cropping or ground-truth recovery.',
+  methodology: cropFile?'Original source pixels, with explicitly labelled manual diagnostic crop overrides. Corners remain fixed during fitting; no template geometry enters the solver. Crop scores have different classified targets and are not directly interchangeable.':'Original source pixels and a pre-annotated rough ROI only. First automatic crop is fixed before preparation/fitting. No corrected corners or template geometry. Proposal presence and mask agreement do not establish correct cropping or ground-truth recovery.',
+  ...(cropFile?{cropOverrides:{file:cropFile,sha256:sha256(cropBytes),quads:crops}}:{}),
   results: [],
 };
 // A commit alone does not identify an experiment run against uncommitted fixes.
@@ -33,7 +40,7 @@ const save = async () => {
   for (const row of ledger.results) counts[row.status] = (counts[row.status] || 0) + 1;
   ledger.counts = counts;
   await fs.writeFile(`${output}/results.json`, JSON.stringify(ledger, null, 2));
-  const rows = ledger.results.map(row => `<article><h2>${escape(row.id)}</h2><p>${escape(row.track)} · ${escape(row.status)} · ${row.totalSeconds.toFixed(2)} s${row.independentError ? ` · ${(100 * row.independentError.mismatchFraction).toFixed(2)}% mask disagreement` : ''}</p><p>${escape(row.message || row.detection?.reason || '')}</p><img loading="lazy" src="${row.id}.png" alt="${escape(row.id)}: source selection, automatic crop, classified mask, exported weave and difference"><p><a href="${escape(row.sourcePage)}">Source and published templates</a></p></article>`).join('\n');
+  const rows = ledger.results.map(row => `<article><h2>${escape(row.id)}</h2><p>${escape(row.track)} · ${escape(row.detection?.cropMode || "automatic")} · ${escape(row.status)} · ${row.totalSeconds.toFixed(2)} s${row.independentError ? ` · ${(100 * row.independentError.mismatchFraction).toFixed(2)}% mask disagreement` : ''}</p><p>${escape(row.message || row.detection?.reason || '')}</p><img loading="lazy" src="${row.id}.png" alt="${escape(row.id)}: source selection, selected crop, classified mask, exported weave and difference"><p><a href="${escape(row.sourcePage)}">Source and published templates</a></p></article>`).join('\n');
   await fs.writeFile(`${output}/report.html`, `<!doctype html><html lang="en"><meta charset="utf-8"><title>Web-heart photograph benchmark</title><style>body{font:16px system-ui;margin:2rem;max-width:1250px}article{border-top:1px solid #bbb;padding:1rem 0}img{max-width:100%;height:auto}h2{font-size:1.1rem}</style><h1>Web-heart photograph benchmark</h1><p>${escape(ledger.methodology)}</p><p>Columns: original photograph with rough selection (blue) and proposed square (magenta), rectified photograph, estimated two-colour mask${stage === 'solve' ? ', independently rendered exported weave, disagreement on observed pixels (magenta/cyan)' : ''}. Grey pixels have no source observations. Proposals require visual review. Printed-paper decorations can invalidate the two-colour assumption.</p><p>${escape(JSON.stringify(counts))}</p>${rows}</html>`);
 };
 
@@ -54,8 +61,9 @@ for (const entry of data.cases.filter(c => !ids || ids.includes(c.id))) {
     currentStage = 'detection';
     const detectionStart = performance.now(), detected = detectHeartCrops(input, {roi: entry.roi || undefined});
     row.detectionSeconds = (performance.now() - detectionStart) / 1000;
-    const candidate = detected.candidates[0];
-    row.detection = {status: detected.status, reason: detected.reason, count: detected.candidates.length, quad: candidate?.quad, needsReview: candidate?.needsReview, warnings: candidate?.warnings, locatorVersion: candidate?.locator.version};
+    const automatic=detected.candidates[0],candidate=crops[entry.id]?{quad:crops[entry.id],needsReview:true}:automatic;
+    row.detection = {status: detected.status, reason: detected.reason, count: detected.candidates.length, quad: candidate?.quad, needsReview: candidate?.needsReview, warnings: candidate?.warnings, locatorVersion: automatic?.locator.version,
+      ...(crops[entry.id]?{cropMode:'manual_diagnostic',automaticQuad:automatic?.quad}:{cropMode:'automatic'})};
     if (!candidate) {row.status = 'no_crop';}
     else {
       line(candidate.quad, '#ff00a8');

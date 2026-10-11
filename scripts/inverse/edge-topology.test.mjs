@@ -58,6 +58,16 @@ test('the original-image error cap can reject every border proposal',()=>{
   assert.deepEqual(input.sourceImage.mask,mask);
 });
 
+test('matching endpoint counts still reject speckles narrower than a strip',()=>{
+  const first=edgeNoise(0),opposite=edgeNoise(2),mask=Uint8Array.from(clean,(v,i)=>v^first[i]^opposite[i]);
+  const input=prepare({type:'mask',mask,resolution:n},cfg).target,result=prepareTopologyBoundary(input,cfg);
+  assert.match(result.report.trigger,/closer than the required strip width/);
+  assert.equal(result.report.accepted,true);
+  assert.equal(result.report.border.changedPixels,40);
+  assert.deepEqual(result.report.border.transitionsBefore,[5,3,5,3]);
+  assert.deepEqual(result.report.border.transitionsAfter,[3,3,3,3]);
+});
+
 test('weighted artwork keeps its existing initialization guide',()=>{
   const mask=edgeNoise(0),weights=new Float64Array(n*n).fill(.9),input=prepare({type:'mask',mask,weights,resolution:n},cfg).target;
   const result=prepareTopologyBoundary(input,cfg);
