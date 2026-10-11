@@ -39,8 +39,14 @@ function refloor(result,floor){
 export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initializeCounts}={}){
   const start=performance.now();
   onProgress=progressReporter(onProgress,cfg.progressGeometry);
-  const solution=await fitIndependent(input,{...cfg,preferMatchingSheets:false},onProgress,countSearch);
-  const selected=finalizeFittedSolution(solution,cfg,{startedAt:start,onProgress});
+  // Reuse the image-derived count/phase seeds for the optional matching
+  // search. A reusable template can need a different routing and cut count
+  // than the best independent pair; copying that pair cannot discover it.
+  let matchingSeeds=[];
+  const solution=await fitIndependent(input,{...cfg,preferMatchingSheets:false},onProgress,args=>{
+    const search=countSearch(args);matchingSeeds=search.seeds;return search;
+  });
+  const selected=finalizeFittedSolution(solution,cfg,{startedAt:start,onProgress,matchingSeeds});
   // numericalBackend describes module loading; these record actual choices
   // for the individual operations, including a faster JavaScript fallback.
   selected.report.paperKernels=paperKernelChoices();
