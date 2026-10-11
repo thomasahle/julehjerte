@@ -25,13 +25,16 @@ coloured fragment near the bottom edge. Both are counted as protected interior
 regions. The original mask and the warning remain intact. This is distinct from
 a failed crop proposal or a high whole-image fitting error.
 
-The eight web selections with a ten-second fitting budget produce six candidates
+The initial eight web selections with a ten-second fitting budget produced six candidates
 passing the existing checks, one candidate needing review (red/white tree), and
 one missing crop (angel). Visual inspection of the blue/green checker confirms
 that its cells now survive classification; the earlier stripes-only conversion
-is no longer present. The green/blue tree passes numerically at 2.65%, but its
-branch tips remain rounded. Component retention and a whole-image average do
-not fully describe that loss of local detail.
+is no longer present. The green/blue tree passed numerically at 2.65%, but its
+branch tips remained rounded. Component retention and a whole-image average do
+not fully describe that loss of local detail. A subsequent
+[coarse-routing improvement](COARSE-TOPOLOGY.md) restores those branches through
+the same curve fitter and fixes the order of repair and matching-sheet selection.
+That report contains the newer measurements and regression evidence.
 
 ## Search and crop distortion are separate contributors
 
@@ -131,6 +134,9 @@ reduces the independently rendered fractional-coverage error from 3.0885% to
 pixels; this fixture isolates seam repair rather than claiming a new photo fit.
 
 ## Regression checks
+
+These measurements describe the border-recovery iteration. The subsequent
+[coarse-routing report](COARSE-TOPOLOGY.md#validation) records the newer checks.
 
 All 842 application tests and 518 inverse-engine tests pass, with one existing
 application-test skip. Type checking reports zero errors and seven existing
