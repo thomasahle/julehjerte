@@ -19,7 +19,7 @@ import {recoverImageFeatures} from '../feature-recovery.js';
 import {loadBoundaryKernel} from './native.js';
 import {boundaryKernelChoices} from './boundary.js';
 import {maskDisagreement} from './prefer-matching.js';
-import {initializeTopology} from './topology.js';
+import {initializeTopology,initializeCoarseTopology} from './topology.js';
 import {curvesOf} from '../graph.js';
 import {sourceWeights,initializationMask} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
@@ -126,6 +126,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   };
   const finalists=gridFinalists(coarse,weights?[]:evidence),remainingSeeds=coarse.filter(r=>!finalists.includes(r));
   const fine=stage('directFitting',()=>finalists.map(fitSeed).sort((a,b)=>a.error+.005*(a.model.counts[0]+a.model.counts[1])-b.error-.005*(b.model.counts[0]+b.model.counts[1])));
+  let coarseTopology=null,boundaryCandidate=null;
+  // Spend this extra routing budget only when even the best initial grid is
+  // far outside the accepted image error and none of the fine grids has
+  // reached it. Retain those grids too: a simplified seed must earn its place
+  // against the original image.
+  if(!topology?.graph&&!weights&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&coarse[0].error>2*cfg.maxImageError&&fine.every(r=>r.error>cfg.maxImageError)&&deadline-performance.now()>3500){
+    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(2.5,(deadline-performance.now()-1700)/1000),onProgress});
+    if(coarseTopology.graph){
+      boundaryCandidate=stage('directRefining',()=>refineCurves(coarseTopology.graph,fullProb,source.resolution,coarseTopology.phase,cfg,{input,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline-1700,performance.now()+500),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:coarseTopology.graph.families.map(f=>f.length),...r},solution):undefined}));
+      boundaryCandidate.counts=coarseTopology.graph.families.map(f=>f.length);boundaryCandidate.seed='coarse-boundary-topology';
+    }
+  }
   // A local boundary gradient cannot create a remote missing region. Try an
   // alternate traced routing while there is still time within this search.
   const features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width,sourceFeatures);
@@ -166,6 +178,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     c.selectionScore=c.originalImageError??Infinity;
     candidates.push(c);
   };
+  if(boundaryCandidate)addCandidate(boundaryCandidate);
   let stoppedEarly=false;
   for(let i=0;i<fine.length&&!stoppedEarly;i++){
     // Initialization (including a speculative topology solve) can exhaust the
@@ -217,18 +230,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // receives sharing recovery after any matching-sheet replacement.
   if(!candidate.matching?.identical&&!symmetryRequested&&candidate.paperPassed&&performance.now()<deadline-1300){
     const shared=stage('directSharing',()=>recoverShared(candidate,prob,n,cfg,{deadline:deadline-1300,input,weights:fitWeights}));
-    if(assess(shared)&&shared.originalImageError<=candidate.originalImageError)candidate=shared;
+    if(assess(shared)&&shared.originalImageError<=candidate.originalImageError)candidate={...shared,seed:candidate.seed};
   }
   if(candidate.paperPassed&&performance.now()<deadline-450){
     const graph=new CurveGraph(candidate.graph.nested(candidate.points),cfg.width);
     const polishing=orbitObjective(Float64Array.from(source.mask),source.resolution,orbit,weights);
     const polished=stage('directPolishing',()=>refineCurves(graph,polishing.probability,source.resolution,candidate.phase,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
-    if(assess(polished)&&polished.originalImageError<=candidate.originalImageError)candidate={...polished,counts:candidate.counts,sharing:candidate.sharing};
+    if(assess(polished)&&polished.originalImageError<=candidate.originalImageError)candidate={...polished,counts:candidate.counts,sharing:candidate.sharing,seed:candidate.seed};
   }
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
     stoppedEarly,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
-    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:false,topologyInitialization:topology?.report,featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
+    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:candidate.seed==='coarse-boundary-topology',topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

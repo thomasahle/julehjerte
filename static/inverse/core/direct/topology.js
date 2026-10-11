@@ -74,6 +74,36 @@ export function prepareTopologyBoundary(input,cfg,{maximumError=.005,guidePhase=
   return{target:original,report};
 }
 
+/** A small routing portfolio for poor grid fits. Coarsening changes only the
+ * seed; its source pixels and the final geometry/paper gates are unchanged.
+ */
+export async function initializeCoarseTopology(input,cfg,{maximumError=Math.min(.025,cfg.maxImageError),seconds=2.5,onProgress=()=>{}}={}){
+  const started=performance.now(),source=input.sourceImage,report={method:'coarse-boundary-topology',maximumError,accepted:false,attempts:[]},candidates=[];
+  const remaining=()=>seconds-(performance.now()-started)/1000;
+  if(source.weights)return{report};
+  for(const borderRadius of [...new Set([.01,.02,.03].map(v=>Math.min(3,v*cfg.width)))])for(const tolerance of [.01,.015]){
+    if(remaining()<.1)break;
+    const options={fitTolerance:Math.min(3,tolerance*cfg.width),smoothRadius:.003*cfg.width,snapRadius:Math.min(3,.0075*cfg.width),borderRadius,maxSpan:40,polygonal:false,mixedBoundaries:true};
+    const attempt={preprocessing:options};report.attempts.push(attempt);
+    try{
+      const target=preprocessMask(source.mask,source.resolution,{...cfg,...options},input.metadata.preprocessing);
+      target.sourceImage=source;
+      const woven=sampleTarget(target,source.resolution),error=maskDisagreement(source,woven),problem=endpointIssue(target,cfg),featuresPassed=auditImageFeatures(source,woven,cfg.width).passed;
+      Object.assign(attempt,{segments:target.curves.length,imageError:error,endpointIssue:problem,featuresPassed});
+      if(!problem&&featuresPassed&&error<=maximumError&&target.curves.length>0&&target.curves.length<=64)candidates.push({target,attempt});
+    }catch(error){attempt.error=error.message;}
+  }
+  candidates.sort((a,b)=>a.attempt.segments-b.attempt.segments||a.attempt.imageError-b.attempt.imageError);
+  for(const {target,attempt}of candidates.slice(0,2)){
+    if(remaining()<.1)break;
+    const seed=await initializeTopology({...input,boundarySeed:target},cfg,{maximumError,seconds:remaining(),onProgress});
+    attempt.routing=seed.report;
+    if(seed.graph){report.accepted=true;report.seconds=(performance.now()-started)/1000;return{...seed,report};}
+  }
+  report.seconds=(performance.now()-started)/1000;
+  return{report};
+}
+
 export async function initializeTopology(input,cfg,{maximumError=.005,seconds=3,onProgress=()=>{}}={}){
   const source=input.sourceImage,weights=source.weights?sourceWeights(source):null;
   if(!weights?.some(w=>w===0))return initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgress});
