@@ -68,7 +68,9 @@ export function repairJunctions(chains,radius,width){
   const result=[];
   for(let k=0;k<info.length;k++){
     const p=info[k].p,es=edits[k].sort((a,b)=>a.lo-b.lo);let start=0,head=[];
-    if(info[k].closed&&es.length){
+    // Keep the established subdivision when no edit touches the seam. Joining
+    // those unaffected head/tail pieces would also change downstream fitting.
+    if(info[k].closed&&es.some(e=>e.lo===0||e.hi>=p.length-2)){
       const count=p.length-1;
       for(let i=0;i<es.length;i++){
         const e=es[i],next=es[(i+1)%es.length],end=next.lo+(i===es.length-1?count:0),part=[e.center];

@@ -69,3 +69,19 @@ test('a recovered photo routing improves the actual exported mask before returni
   // in the independent renderer. Compare the real exported geometry here.
   assert.ok(error<.0095,`Exported disagreement ${100*error}%`);
 });
+
+test('infeasible photograph traces can retry a smoother seed without changing the source target',async()=>{
+  const data=await catalogue(),entry=data.cases.find(c=>c.id==='danish-tree-group-right'),photo=await readPhoto(data.photos.find(p=>p.id===entry.photo));
+  const crop=detectHeartCrops(photo,{roi:entry.roi}).candidates[0];assert.ok(crop);
+  const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false},prepared=prepare({...photo,quad:crop.quad},cfg),source=prepared.target.sourceImage;
+  const mask=source.mask.slice(),probability=source.probability.slice(),corners=structuredClone(prepared.target.metadata.sourceImage.cropCorners);
+  const answer=await design(prepared.target,cfg),recovery=answer.report.solver.featureRecovery;
+  assert.equal(recovery.seedSmoothingRetry,true);
+  assert.ok(recovery.attempts.filter(a=>a.smoothRadius===.3).every(a=>a.solver.termination==='candidate_graph_exhausted'));
+  assert.ok(recovery.attempts.some(a=>a.smoothRadius===.5&&a.solver.status==='solved'));
+  assert.equal(answer.report.templateChecksPassed,true);assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
+  assert.deepEqual(answer.report.slits,{left:3,right:3});
+  const woven=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution),error=woven.mask.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length;
+  assert.ok(error<.025,`Exported error ${error} must improve on the previous 0.05973125.`);
+  assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);assert.deepEqual(prepared.target.metadata.sourceImage.cropCorners,corners);
+});
