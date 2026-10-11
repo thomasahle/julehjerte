@@ -2,7 +2,7 @@
  * their bodies deliberately have no dependencies on the surrounding module.
  */
 export function installPaintObservation(){
-  const qa=window.__paintQA={result:null,error:null,prepared:null,marks:null,solveSettings:null};
+  const qa=window.__paintQA={result:null,error:null,prepared:null,marks:null,solveSettings:null,crop:null};
   window.addEventListener('error',event=>{qa.error={type:'pageerror',message:event.message};if(qa.marks)qa.marks.failed=performance.now();});
   const NativeWorker=window.Worker;let pending=new WeakMap(),observer=null;
   const enabled=button=>button&&!button.matches(':disabled')&&button.getAttribute('aria-disabled')!=='true';
@@ -25,6 +25,7 @@ export function installPaintObservation(){
     constructor(...args){
       super(...args);
       this.addEventListener('message',({data})=>{
+        if(data.type==='crops')qa.crop=data.crops;
         const requests=pending.get(this),action=requests?.get(data.id);
         if(!action||!qa.marks)return;
         if(data.type==='error'){
@@ -57,9 +58,9 @@ export function installPaintObservation(){
  * Node file writes cannot extend the browser timestamps already recorded.
  */
 export function collectPaintObservation(){
-  const {result,error,prepared,marks,solveSettings}=window.__paintQA;
+  const {result,error,prepared,marks,solveSettings,crop}=window.__paintQA;
   const seconds=(start,end)=>marks?.[start]===null||marks?.[end]===null||!marks?null:(marks[end]-marks[start])/1000;
-  return{result,error,solveSettings,prepared:prepared?{mask:Array.from(prepared.mask),resolution:prepared.resolution,weights:prepared.weights?Array.from(prepared.weights):null}:null,
+  return{result,error,solveSettings,crop,prepared:prepared?{mask:Array.from(prepared.mask),resolution:prepared.resolution,weights:prepared.weights?Array.from(prepared.weights):null}:null,
     marks:marks&&{...marks},timings:{
       clickToPrepareRequestSeconds:seconds('click','prepareSent'),
       prepareRoundTripSeconds:seconds('prepareSent','prepared'),

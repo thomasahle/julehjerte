@@ -10,6 +10,7 @@ import {JSDOM} from 'jsdom';
 import {createCanvas,loadImage} from 'canvas';
 import {motifFixture,topHatFixture,chordFrameFixture} from './motif-fixture.mjs';
 import {treeMask} from './tree-fixture.mjs';
+import {heartPhoto} from './crop-fixture.mjs';
 import {catalogue,readPhoto} from './web-photo-data.mjs';
 import {Cubic} from '../../static/inverse/core/bezier.js';
 import {installPaintObservation,collectPaintObservation} from './paint-observer.mjs';
@@ -74,9 +75,9 @@ const results=[];
 const report={origin,upstreamOrigin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,referenceRequestCounts,stopMode,viewport,intervention:intervention&&{hashes:intervention.hashes,method:intervention.method},
  timingVersion:2,timingMethod:'Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.',
  harnessSourceHashes:{},workspaceSourceHashes:{},results};
-for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs','scripts/inverse/motif-fixture.mjs','scripts/inverse/tree-fixture.mjs','scripts/inverse/web-photo-data.mjs','scripts/inverse/stop-browser-hooks.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs','scripts/inverse/motif-fixture.mjs','scripts/inverse/tree-fixture.mjs','scripts/inverse/crop-fixture.mjs','scripts/inverse/web-photo-data.mjs','scripts/inverse/stop-browser-hooks.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of['static/inverse/worker.js','static/inverse/worker-bootstrap.js','static/inverse/worker-controller.js','static/inverse/compute-worker.js','static/inverse/core/engine.js','static/inverse/core/stopped.js','static/inverse/core/progress.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
-for(const file of ['static/inverse/core/feature-recovery.js','static/inverse/core/solver.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of ['static/inverse/core/feature-recovery.js','static/inverse/core/solver.js','static/inverse/core/crop.js','static/inverse/locator/locator.js','static/inverse/locator/fields.js','static/inverse/locator/math.js','static/inverse/locator/palette.js','static/inverse/locator/anchored.js','static/inverse/locator/grid-refine.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','static/inverse/core/direct/matching.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -87,7 +88,7 @@ try{
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
-   const webPhoto=name.startsWith('web-'),photograph=webPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),photograph=unequalLobes||webPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -133,6 +134,8 @@ try{
       const data=await catalogue(),entry=data.cases.find(c=>c.id===name.slice(4));assert.ok(entry,`Unknown photograph ${name}`);
       const photo=data.photos.find(p=>p.id===entry.photo),input=await readPhoto(photo),roi=entry.roi||[0,0,input.imageWidth,input.imageHeight],c=createCanvas(roi[2]-roi[0],roi[3]-roi[1]),ctx=c.getContext('2d'),pixels=ctx.createImageData(input.imageWidth,input.imageHeight);
       pixels.data.set(input.rgba);ctx.putImageData(pixels,-roi[0],-roi[1]);await fs.writeFile(file,c.toBuffer('image/png'));row.sourcePhoto={id:photo.id,sha256:photo.sha256,roi:entry.roi};
+     }else if(unequalLobes){
+      await fs.writeFile(file,heartPhoto({colours:['#ba151a','#f5f2ef'],lobeDepths:[.75,.4]}).canvas.toBuffer('image/png'));
      }else if(photograph){
       const metadata=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
       const e=name==='hunodan'?metadata.cases[0]:metadata.cases.find(e=>e.id===name.slice('hunodan-'.length));assert.ok(e,`Unknown photograph ${name}`);
@@ -229,6 +232,17 @@ try{
       row.referenceEngineRequests[file]=(referenceRequestCounts[file]||0)-(referenceStart[file]||0);
       assert.ok(row.referenceEngineRequests[file]>0,`The reference server must deliver ${file} to this worker.`);
      }
+    }
+    if(observed.crop?.candidates?.[0]){
+     const crop=observed.crop.candidates[0];
+     row.detectedCrop={quad:crop.quad,status:crop.status,locatorVersion:crop.locator.version,lobeRefinement:crop.locator.lobeRefinement};
+    }
+    if(unequalLobes){
+     assert.equal(row.detectedCrop?.lobeRefinement?.accepted,true,'The actual upload must refine the unequal caps.');
+     const expected=[[190,80],[275,155],[190,230],[105,155]];
+     row.cornerError=Math.max(...row.detectedCrop.quad.map((p,i)=>Math.hypot(p[0]-expected[i][0],p[1]-expected[i][1])));
+     assert.ok(row.cornerError<3,`Known overlap displacement: ${row.cornerError}`);
+     assert.deepEqual(observed.result.report.slits,{left:3,right:3});
     }
     row.solveSettings=observed.solveSettings;
     row.matchingPreference=observed.result.report.solver.matchingPreference;
@@ -331,6 +345,12 @@ try{
     // and can turn a 0.3% source error into 0.6% at a different sampling phase.
     const resolution=observed.prepared.resolution,sourceMask=Uint8Array.from(observed.prepared.mask),sourceRendered=rasterizeDesign(design,resolution).data;
     row.sourceResolution=resolution;
+    if(unequalLobes){
+     let differing=0;
+     for(let y=0;y<resolution;y++)for(let x=0;x<resolution;x++)differing+=sourceRendered[y*resolution+x]!==Number((Math.floor(x/resolution*4)+Math.floor(y/resolution*4))%2===0);
+     row.originalArtworkError=differing/resolution**2;
+     assert.ok(row.originalArtworkError<.05,`Original checker artwork disagreement: ${row.originalArtworkError}`);
+    }
     row.sourceEditableError=free?frameMismatch(sourceRendered,sourceMask,resolution,{mode:'free',shape:'diamond',size:frameSize}).inside:maskMismatch(sourceRendered,sourceMask);
     // Check the actual downloaded result, not just the converter's own success
     // flag. Compare the same honoured symmetry with simplification disabled.

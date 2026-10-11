@@ -67,3 +67,13 @@ test('disabled clicks do not arm a run and worker errors never become readiness'
   const result=h.collect();assert.equal(result.error.message,'Controlled worker failure');
   assert.equal(result.marks.failed,2);assert.equal(result.marks.ready,null);assert.equal(result.timings.clickToReadySeconds,null);
 });
+
+
+test('automatic crop evidence survives the Find click without starting its timer early',t=>{
+  const h=harness(t),worker=new h.window.Worker(),crops={candidates:[{quad:[[10,20],[30,40],[50,60],[70,80]]}]};
+  worker.emit({id:1,type:'crops',crops});
+  assert.equal(h.collect().marks,null);
+  assert.deepEqual(h.collect().crop,crops);
+  h.find.click();
+  assert.deepEqual(h.collect().crop,crops);
+});

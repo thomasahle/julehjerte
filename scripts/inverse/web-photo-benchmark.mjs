@@ -28,6 +28,7 @@ await fs.mkdir(output, {recursive: true});
 let detectHeartCrops=currentDetector,locatorReference=null;
 if(arg('locator-reference')){
  const commit=execFileSync('git',['rev-parse','--verify','--end-of-options',arg('locator-reference')+'^{commit}'],{encoding:'utf8'}).trim();
+ await fs.mkdir('tmp',{recursive:true});
  const directory=await fs.mkdtemp('tmp/locator-reference-'),sourceHashes={};
  const files=execFileSync('git',['ls-tree','-r','--name-only',commit,'--','static/inverse/core/crop.js','static/inverse/locator'],{encoding:'utf8'}).trim().split('\n');
  for(const file of files){
