@@ -156,13 +156,14 @@ test('free-curve clearance, curvature and join forces match finite differences',
   }
 });
 
-test('direct image fitting starts without traced endpoints and survives edge noise',async()=>{
+test('direct image fitting starts from pixels and recovers a noisy checker topology',async()=>{
   const input=checkerPixels(128);
   for(const x of[8,12,48,76,113]){const i=4*x;input.rgba.set(input.rgba[i]===255?[190,20,20,255]:[255,255,255,255],i);}
   const cfg={algorithm:'direct',timeLimit:6,trials:0,roundHidden:false},p=prepare(input,cfg);
   assert.equal(p.target.curves.length,0);assert.equal(p.target.metadata.preprocessing.traceUsed,false);
   const before=p.preview.mask.slice(),r=await design(p.target,cfg);
-  assert.equal(r.report.solver.traceUsed,false);assert.equal(r.report.solver.borderCountsAreHardConstraints,false);
+  assert.equal(r.report.solver.traceUsed,true);assert.equal(r.report.solver.borderCountsAreHardConstraints,false);
+  assert.equal(r.report.solver.topologyInitialization.borderRecovery.accepted,true);
   assert.equal(r.report.templateChecksPassed,true);assert.deepEqual(r.report.slits,{left:3,right:3});
   for(let count=1;count<=8;count++)for(const phase of[1,-1]){
     const attempt=r.report.solver.attempts.find(a=>a.stage==='coarse'&&a.counts[0]===count&&a.counts[1]===count&&a.phase===phase);
