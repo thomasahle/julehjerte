@@ -6,6 +6,20 @@ Added 20 source photographs and 44 selected heart instances from Bibelselskabet,
 
 [Dataset and commands](../../scripts/inverse/fixtures/web-photos/README.md) · [Machine-readable baseline](WEB-PHOTOS-BASELINE.json)
 
+## Latest template-recovery follow-up
+
+The [one-sided endpoint recovery](OPPOSITE-EDGE-RECOVERY.md) keeps the full-photo
+corpus at **11 passing, 18 needing review and 15 without a crop**, with unchanged
+errors for every passing case. It fixes the separate actual cropped-upload tree
+failure: Chromium/WebKit now find valid 3+3 templates in 6.12/6.71 seconds rather
+than 75/81 seconds, with unchanged crop coordinates and input mask. Engine error
+falls from 5.250625% to 2.376250%; editable SVG replay measures 2.385000%.
+
+[Paired full-pipeline measurements](OPPOSITE-EDGE-VALIDATION.json) include all
+44 photo outcomes, all 22 regular Hunodan designs, 14 browser runs and explicit
+perturbation probes. This improves template initialization and refinement without
+changing the cropper or final acceptance limits. Interior routing failures remain.
+
 ## Baseline full pipeline replay, 2026-10-11
 
 A fresh run uses the current automatic locator, colour conversion, cut-count

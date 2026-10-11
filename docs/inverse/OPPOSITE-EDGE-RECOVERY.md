@@ -94,3 +94,67 @@ mask. Rotation maps output `(x,y)` to input `(y,399-x)`. These probes retain the
 perturbed mask as their reference and check it is unchanged by fitting. They are
 not claims of exact rotation-invariance or exhaustive robustness. External resvg
 replay is excluded from the timing column.
+
+
+## Corpus results and limits
+
+All **22 regular Hunodan designs** pass with exactly unchanged independent
+export errors. Preparation-through-export timing has a **5.156 s median** and
+**8.446 s maximum**, excluding decoding and external rendering.
+
+The full-photo corpus remains **11 candidate passes, 18 needing review and 15
+without a crop**, across 44 instances from 20 source photos. All 29 generated
+pairs pass geometry and guarded paper checks. Every source hash, automatic crop
+and preparation record is unchanged. All 11 previously passing cases retain
+exactly the same independent error; 26 of the 29 generated outputs have unchanged
+errors overall.
+
+Three needs-review cases vary under the existing timed search, without selecting
+a new border-derived template:
+
+| Case | Previous exported error | New exported error |
+| --- | ---: | ---: |
+| `vissevasse-arranged-r2c2` | 5.739375% | 5.741250% |
+| `vissevasse-arranged-r3c4` | 5.843750% | 5.837500% |
+| `vissevasse-arranged-r4c1` | 6.788125% | 6.648750% |
+
+These still use grid seeds; their clearance or refinement step counts differ.
+The last case still loses 24 protected regions. These variations are retained
+rather than attributed to better routing or presented as solved motifs.
+
+Three additional full-photo cases (`vissevasse-arranged-r1c2`, `r1c3`, `r4c2`)
+reach new MILP graphs after balancing edge counts, but all those graphs prove
+infeasible. Their final errors are unchanged. This separates two failure modes:
+missing/inconsistent border endpoints, and an interior boundary graph that
+cannot be routed by the available connectors. Neither is a proof that the
+physical design is impossible. Two other cases consider deeper profiles but do
+not reach an additional MILP attempt.
+
+**845 application tests and 543 inverse tests pass**, with one existing
+application skip. Type checking reports zero errors and seven existing warnings;
+lint and production build pass. The 14 browser runs cover seven inputs in two
+engines, including source-mask replay, editable conversion, retained shared spans
+and downloaded SVG checks.
+
+[Complete measurements, source hashes and paired outcomes](OPPOSITE-EDGE-VALIDATION.json)
+include every case, failures and perturbations. Local visual artifacts are in
+`tmp/opposite-edge-browser/` and `tmp/opposite-edge-web-all/report.html`.
+
+Reproduce the committed fixed-mask regression and full photo tracks:
+
+```sh
+node --test --test-concurrency=1 scripts/inverse/border.test.mjs scripts/inverse/feature-refinement.test.mjs
+INVERSE_SPEED_OUT=tmp/opposite-edge-hunodan node scripts/inverse/hunodan-speed-benchmark.mjs
+node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=10 --output=tmp/opposite-edge-web-all
+```
+
+For browser QA, use a freshly built preview and your installed Playwright module:
+
+```sh
+PLAYWRIGHT_MODULE=/path/to/playwright/index.mjs \
+INVERSE_TEST_URL=http://127.0.0.1:5232 \
+INVERSE_TEST_BROWSERS=chromium,webkit \
+INVERSE_TEST_CASES=web-danish-tree-group-right,web-danish-tree-red,web-danish-tree-green,hunodan-hjfig-05,top-hat-preferred,top-hat-independent,web-bibel-checker-3 \
+INVERSE_TEST_OUTPUT=tmp/opposite-edge-browser \
+node scripts/inverse/paint-browser-test.mjs
+```

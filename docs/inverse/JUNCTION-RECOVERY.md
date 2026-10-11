@@ -1,5 +1,9 @@
 # Recover routing across contour seams and infeasible traces
 
+Follow-up: the cropped-upload failure recorded below is now recovered by
+[one-sided endpoint inference and common-fitter refinement](OPPOSITE-EDGE-RECOVERY.md).
+The original failed measurements remain here as the baseline.
+
 The red tree on the right of `danish-tree-group` had a plausible automatic crop
 and recognizable branches in its classified mask. The returned 4+4 grid rounded
 those branches away: independent rendering measured **5.973125% disagreement**.
