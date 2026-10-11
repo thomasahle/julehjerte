@@ -66,6 +66,39 @@ refinement, export and independent resvg rendering. It requires a legal 3+3
 pair below 2.5% disagreement, improving on the previous 5.973125%, and checks
 that the source mask, probabilities and crop coordinates remain unchanged.
 
+## Remaining failure found by the browser replay
+
+The new browser case uploads only the photograph's rough selection rectangle.
+The Node photo benchmark supplies the full original photograph plus that
+rectangle to the detector. These are different input contexts: the cropped
+upload produces slightly different automatic corners and a different source
+mask. The new routing passes the full-photo case, but **does not yet solve the
+cropped upload**.
+
+For that upload, Chromium returns a 1+1 approximation after **75.040 s** and
+WebKit after **80.948 s**. Both report **5.250625% engine mask disagreement** and
+failed template checks. The new browser assertions fail before independent
+export replay, so these are not external-renderer measurements. The other six
+cases pass in both browsers, including the existing trees, Hunodan recovery,
+matching and independent free-border hats, and the blue/green checker.
+
+Both established routing attempts stop before MILP search: the left and right
+edges have one versus three transitions. At radii 2–3 mm, the boundary profiles
+give `[3,3,3,1]` transitions (top, right, bottom, left). Shallower profiles do not
+provide reliable replacements: the apparent three left transitions at 0.5 mm
+are at 1%, 98.75% and 99.75% of the edge, not meaningful slit endpoints. A
+diagnostic with a 5 mm band restores 3+3 counts but still yields infeasible
+graphs; simply increasing the border radius is not a verified solution. No
+such radius change has been added to production.
+
+The exact unmodified worker mask is retained in
+[`browser-group-tree.json`](../../scripts/inverse/fixtures/browser-group-tree.json),
+with its source photograph hash, rough ROI, automatic corners and lossless
+run-length encoding. It isolates fitting from future detector changes. This
+failure remains explicit in the browser benchmark rather than being replaced
+with the better full-photo crop. Robust recovery under these boundary changes
+is still outstanding.
+
 ## Reproduce
 
 Run CPU-intensive commands serially:
