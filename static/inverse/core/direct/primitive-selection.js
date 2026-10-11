@@ -14,7 +14,7 @@ import {sourceWeights,referenceError} from '../image-reference.js';
 import {curvesOf} from '../graph.js';
 import {validate,sampleWeave} from '../validate.js';
 import {materialAudit} from '../material.js';
-import {auditImageFeatures} from '../image-features.js';
+import {auditFeatureChange} from '../image-features.js';
 import {mismatch} from './grid.js';
 
 /** Degree reduction belongs after the final choice, not between fitting stages:
@@ -50,13 +50,15 @@ function finalizePrimitivePass(solution,cfg,{deadline=Infinity,onProgress=()=>{}
     const score=points=>(value(points,phase)+transposed(points,phase))/2+primitiveCost(graph,points,n);
     if(score(p)>score(points))return 'boundary_objective';
     const proposal=graph.solution(p,phase,input),woven=sampleWeave(proposal,n);
-    report.sourceErrorBefore=referenceError(source,sampleWeave(solution,n)).mismatchFraction;
+    const before=sampleWeave(solution,n);
+    report.sourceErrorBefore=referenceError(source,before).mismatchFraction;
     report.sourceErrorAfter=referenceError(source,woven).mismatchFraction;
     if(report.sourceErrorAfter>report.sourceErrorBefore)return 'original_image_error';
     if(performance.now()>=deadline)return 'deadline';
     const symmetry=symmetryReport(proposal,cfg.symmetry);afterMatching=matchingSummary(proposal);
     if(symmetry.honoured.length!==symmetry.requested.length||beforeMatching.identical&&!afterMatching.identical)return 'symmetry';
-    if(!auditImageFeatures(source,woven,graph.width).passed)return 'image_features';
+    report.featureChange=auditFeatureChange(source,before,woven,graph.width);
+    if(!report.featureChange.passed)return 'image_features';
     const check=validate(proposal,cfg,{checkImage:false});if(!check.passed)return 'geometry';
     if(cfg.requireMaterialCore&&!materialAudit(proposal,cfg).passed)return 'paper';
     result=proposal;report.applied=true;return null;

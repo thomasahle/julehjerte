@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {auditImageFeatures,imageFeatures} from '../../static/inverse/core/image-features.js';
+import {auditImageFeatures,auditFeatureChange,imageFeatures} from '../../static/inverse/core/image-features.js';
 import {finish} from '../../static/inverse/core/engine.js';
 import {gridModel,gridPaths} from '../../static/inverse/core/direct/grid.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
@@ -77,4 +77,28 @@ test('tiny specks, thin seams, border fragments and unobserved areas do not forc
   const validMask=new Uint8Array(n*n).fill(1);validMask[75*n+75]=0;
   assert.deepEqual(imageFeatures({mask,resolution:n,validMask}),[]);
   assert.equal(auditImageFeatures(null,new Uint8Array(n*n)).referenceAvailable,false);
+});
+
+test('cleanup protects each feature without treating an existing omission as a veto',()=>{
+  const n=100;
+  for(const invert of[0,1])for(const weighted of[false,true]){
+    const mask=new Uint8Array(n*n).fill(invert),regions=[20,60].map(x=>Array.from({length:100},(_,i)=>(20+Math.floor(i/10))*n+x+i%10));
+    for(const region of regions)for(const i of region)mask[i]=1-invert;
+    const source={mask,resolution:n,...(weighted?{weights:Float64Array.from(mask,(_,i)=>i%n<50?.5:1)}:{})},saved=mask.slice();
+    const woven=counts=>{const out=new Uint8Array(n*n).fill(invert);regions.forEach((region,j)=>region.slice(0,counts[j]).forEach(i=>out[i]=1-invert));return out;};
+    const before=woven([90,30]);
+    for(const counts of[[90,30],[90,40],[60,30],[60,60]]){
+      const after=woven(counts),change=auditFeatureChange(source,before,after);
+      assert.equal(change.passed,true);assert.equal(change.missingBefore,1);
+      assert.equal(change.missingAfter,Number(counts[1]<60));
+      assert.equal(auditImageFeatures(source,after).passed,counts[1]>=60,'Final certification still needs all features');
+    }
+    for(const counts of[[59,100],[100,29]]){
+      const change=auditFeatureChange(source,before,woven(counts));
+      assert.equal(change.passed,false,'A gain elsewhere cannot pay for losing an individual feature');
+      assert.equal(change.regressed.length,1);
+      assert.equal(change.regressed[0].requiredRetention,counts[0]===59?.6:.3);
+    }
+    assert.deepEqual(source.mask,saved);
+  }
 });

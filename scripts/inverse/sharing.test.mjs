@@ -14,6 +14,8 @@ import {symmetryReport} from '../../static/inverse/core/direct/symmetry.js';
 import {maskDisagreement} from '../../static/inverse/core/direct/prefer-matching.js';
 import {resize} from '../../static/inverse/core/direct/math.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {auditImageFeatures} from '../../static/inverse/core/image-features.js';
+import {finish} from '../../static/inverse/core/engine.js';
 
 const fixture=JSON.parse(await fs.readFile(new URL('./fixtures/free-border-hat.json',import.meta.url)));
 const cfg=settings(fixture.settings);
@@ -80,6 +82,38 @@ test('shared-cut cleanup preserves a narrow line when the input actually asks fo
   solution.graph.target.sourceImage={resolution,mask,probability:Float64Array.from(mask)};
   const after=finalizeShared(solution,cfg);
   assert.deepEqual(sampleWeave(after,resolution),mask);
+});
+
+test('an unrelated missing detail does not block repair of the hat seams',async()=>{
+  const before=hat(),source=before.graph.target.sourceImage,n=source.resolution;
+  for(let y=50;y<60;y++)for(let x=25;x<35;x++)source.mask[y*n+x]^=1;
+  const saved=source.mask.slice(),initial=auditImageFeatures(source,sampleWeave(before,n));
+  assert.equal(initial.missing.length,1);
+  const after=finalizeShared(before,cfg);
+  assert.equal(after.report.finalSharing.applied,true);
+  assert.deepEqual(after.report.finalSharing.featureChange,{passed:true,missingBefore:1,missingAfter:1,regressed:[]});
+  assert.ok(hiddenLength(after)>200);assert.equal(matchingSummary(after).identical,true);
+  const result=finish(after,settings({...fixture.settings,trials:0}));
+  assert.equal(result.report.validation.passed,true);assert.equal(result.report.manufacturing.status,'pass');
+  assert.equal(result.report.templateChecksPassed,false);
+  assert.equal(result.report.imageFidelity.features.missing.length,1);
+  assert.ok(result.report.warnings.some(s=>s.includes('interior artwork')));
+  const oldRaster=await renderExportedWeave(solutionJSON(before),n*4),newRaster=await renderExportedWeave(solutionJSON(after),n*4);
+  const target=resize(source.mask,n,n*4),error=r=>r.coverage.reduce((s,v,i)=>s+Math.abs(v-Number(target[i]>.5)),0)/target.length;
+  assert.ok(error(newRaster)<error(oldRaster));assert.deepEqual(source.mask,saved);
+});
+
+test('shared-cut cleanup cannot further erode an already missing detail',()=>{
+  const before=hat(),source=before.graph.target.sourceImage,n=source.resolution;
+  // Part of a false seam happens to retain 10% of this source detail. The
+  // proposed sharing removes it, so the missing detail would become worse.
+  for(let y=20;y<30;y++)for(let x=20;x<30;x++)source.mask[y*n+x]^=1;
+  const after=finalizeShared(before,cfg),report=after.report.finalSharing;
+  assert.equal(report.applied,false);assert.equal(after,before);
+  assert.equal(report.featureChange.passed,false);
+  assert.equal(report.featureChange.regressed[0].retainedBefore,.1);
+  assert.equal(report.featureChange.regressed[0].retainedFraction,0);
+  assert.ok(report.rejectedFinalCheck.imageError<report.errorBefore,'Lower global error cannot excuse further feature loss');
 });
 
 test('matching hat cleanup follows physical partners after path reordering',async()=>{

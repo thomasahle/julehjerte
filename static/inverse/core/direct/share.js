@@ -11,7 +11,7 @@ import {applyTies,symmetryTies,symmetryReport} from './symmetry.js';
 import {requestedSymmetry} from '../settings.js';
 import {orbitSharingReplacement} from './sharing-orbit.js';
 import {curvesOf} from '../graph.js';
-import {auditImageFeatures} from '../image-features.js';
+import {auditFeatureChange} from '../image-features.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {sourceWeights} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
@@ -155,7 +155,7 @@ export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{}
   if(!sharingCandidates(paths).length)return solution;
   onProgress({stage:'directSharing'});
   const graph=new CurveGraph(paths,cfg.width),phase=input.phase?-1:1,n=Math.min(256,source.resolution),resized=resizeObjective(source.mask,source.resolution,n,sourceWeights(source)),prob=resized.probability;
-  const before=maskDisagreement(source,sampleWeave(solution,source.resolution));
+  const beforeWoven=sampleWeave(solution,source.resolution),before=maskDisagreement(source,beforeWoven);
   const candidate={graph,points:graph.points,phase,error:mismatch(renderCurves(graph,graph.points,phase,n,48),prob,resized.weights)};
   const shared=recoverShared(candidate,prob,n,cfg,{input,deadline,weights:resized.weights});
   let selected=solution,error=before;
@@ -163,7 +163,8 @@ export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{}
   if(shared.sharing.accepted.length){
     const proposal=shared.graph.solution(shared.points,phase,input),woven=sampleWeave(proposal,source.resolution),nextError=maskDisagreement(source,woven);
     const symmetry=symmetryReport(proposal,cfg.symmetry);
-    if(nextError<=before&&auditImageFeatures(source,woven,cfg.width).passed&&symmetry.honoured.length===symmetry.requested.length){
+    report.featureChange=auditFeatureChange(source,beforeWoven,woven,cfg.width);
+    if(nextError<=before&&report.featureChange.passed&&symmetry.honoured.length===symmetry.requested.length){
       selected=proposal;error=nextError;report.applied=true;report.errorAfter=nextError;
     }else report.rejectedFinalCheck={imageError:nextError,symmetry};
   }

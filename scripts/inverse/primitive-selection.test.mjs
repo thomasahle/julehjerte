@@ -13,6 +13,7 @@ import {DIRECT_PRESET} from '../../static/inverse/core/presets.js';
 import {solutionJSON,curvesOf} from '../../static/inverse/core/graph.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {sampleWeave} from '../../static/inverse/core/validate.js';
+import {finish} from '../../static/inverse/core/engine.js';
 
 const noisy=[[25,0],[25.22,100/3],[24.78,200/3],[25,100]];
 const curved=[[65,0],[65.22,100/3],[65.22,200/3],[65,100]];
@@ -118,6 +119,24 @@ test('native SVG geometry is not simplified using its sampled preview',()=>{
   assert.equal(finalizePrimitives(solution,settings({...DIRECT_PRESET,trials:0})),solution);
   assert.deepEqual(solutionJSON(solution),before);
   assert.equal(solution.report.finalPrimitiveSelection,undefined);
+});
+
+test('an unrelated missing detail cannot prevent useful straight-line cleanup',async()=>{
+  const graph=fixture(),n=400,truth=new CurveGraph([[[Cubic.line([25,0],[25,100]).p],[curved]],[[horizontal]]]);
+  const mask=renderCurves(truth,truth.points,1,n,32);
+  for(let y=40;y<60;y++)for(let x=40;x<60;x++)mask[y*n+x]^=1;
+  const saved=mask.slice(),cfg=settings({...DIRECT_PRESET,trials:0}),solution=graph.solution(graph.points,1,{sourceImage:{mask,resolution:n}});
+  const after=finalizePrimitives(solution,cfg),report=after.report.finalPrimitiveSelection;
+  assert.equal(report.applied,true);assert.equal(report.curvedAfter,1);
+  assert.deepEqual(report.featureChange,{passed:true,missingBefore:1,missingAfter:1,regressed:[]});
+  assert.deepEqual(curvesOf(after,0,1)[0].p,curved);
+  const result=finish(after,cfg);
+  assert.equal(result.report.validation.passed,true);assert.equal(result.report.manufacturing.status,'pass');
+  assert.equal(result.report.templateChecksPassed,false,'Simplification cannot certify a still-missing detail');
+  assert.equal(result.report.imageFidelity.features.missing.length,1);
+  const actual=await renderExportedWeave(solutionJSON(after),n),expected=await renderExportedWeave(solutionJSON(truth.solution(truth.points,1,{})),n);
+  assert.deepEqual(actual.mask,expected.mask);
+  assert.deepEqual(solution.graph.target.sourceImage.mask,saved);
 });
 
 test('final degree reduction measures the curve, not its distant opposing handles',async()=>{

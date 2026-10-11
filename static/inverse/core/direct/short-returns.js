@@ -6,7 +6,7 @@
 import {Cubic,distance,turnAngle} from '../bezier.js';
 import {curvesOf} from '../graph.js';
 import {sampleWeave} from '../validate.js';
-import {auditImageFeatures} from '../image-features.js';
+import {auditFeatureChange} from '../image-features.js';
 import {referenceError,sourceWeights} from '../image-reference.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves} from './refine.js';
@@ -86,8 +86,8 @@ export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionD
   const start=performance.now(),graph=new CurveGraph(solution.paths.map((f,k)=>f.map((_,i)=>curvesOf(solution,k,i).map(c=>c.p))),input.width);
   const proposal=shortReturnProposal(graph,graph.points,cfg);if(!proposal||performance.now()>=deadline)return solution;
   const phase=input.phase?-1:1,n=source.resolution,weights=sourceWeights(source),beforeMatching=matchingSummary(solution);
-  const error=s=>referenceError(source,sampleWeave(s,n)).mismatchFraction;
-  const report={segmentsBefore:proposal.segmentsBefore,segmentsAfter:proposal.segmentsAfter,removedOccurrences:proposal.removedOccurrences,conflictingJunctions:proposal.conflictingJunctions,sourceErrorBefore:error(solution),applied:false};
+  const before=sampleWeave(solution,n);
+  const report={segmentsBefore:proposal.segmentsBefore,segmentsAfter:proposal.segmentsAfter,removedOccurrences:proposal.removedOccurrences,conflictingJunctions:proposal.conflictingJunctions,sourceErrorBefore:referenceError(source,before).mismatchFraction,applied:false};
   const compatible=s=>{const sym=symmetryReport(s,cfg.symmetry);return sym.requested.length===sym.honoured.length&&(!beforeMatching.identical||matchingSummary(s).identical);};
   let result=solution;
   const accept=()=>{
@@ -99,11 +99,12 @@ export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionD
     const fitted=refineCurves(proposal.graph,objective.probability,n,phase,{...cfg,preferMatchingSheets:false},{input,weights:objective.weights,steps:160,rate:.008,selection:'mask',identicalSheets:beforeMatching.identical,deadline:deadline-200,onProgress:(r,s)=>onProgress({stage:'directPolishing',detail:'short-return-refinement',...r},s)});
     report.refinementSteps=fitted.steps;
     if(!fitted.geometryPassed||!fitted.paperPassed)return 'refinement_geometry';
-    const candidate=fitted.graph.solution(fitted.points,phase,input);report.sourceErrorAfter=error(candidate);
+    const candidate=fitted.graph.solution(fitted.points,phase,input),woven=sampleWeave(candidate,n);report.sourceErrorAfter=referenceError(source,woven).mismatchFraction;
     if(report.sourceErrorAfter>report.sourceErrorBefore)return 'original_image_error';
     if(performance.now()>=completionDeadline)return 'deadline';
     if(!compatible(candidate))return 'symmetry';
-    if(!auditImageFeatures(source,sampleWeave(candidate,n),input.width).passed)return 'image_features';
+    report.featureChange=auditFeatureChange(source,before,woven,input.width);
+    if(!report.featureChange.passed)return 'image_features';
     // The immutable fitted checkpoint already passed geometry and paper
     // checks. Source scoring and symmetry inspection above do not move it;
     // rerunning the same audits here only consumes the cleanup reserve.

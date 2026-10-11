@@ -39,3 +39,17 @@ export function auditImageFeatures(source,woven,width=100,features=imageFeatures
   return{passed:missing.length===0,referenceAvailable:!!source,minimumRetention,minimumAreaFraction:.0003,minimumCoreRadiusFraction:.005,borderClearancePixels:BORDER_CLEARANCE_PIXELS,regions,missing,
     method:weights?'Both colours in the observed region; free pixels split components and do not enter their area or retention. At least 60% of each substantial weighted region with a solid core must remain its original colour. Regions touching the square border or its one-pixel neighbourhood are excluded.':'Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement.'};
 }
+
+/** An imperfect fit may still earn a useful cleanup. Preserve the existing
+ * 60% floor for retained features, and do not further erode any missing one.
+ * This compares a proposal with its checkpoint; it does not certify the final
+ * design, which must still pass auditImageFeatures against the source.
+ */
+export function auditFeatureChange(source,before,after,width=100){
+  const features=imageFeatures(source,width),baseline=auditImageFeatures(source,before,width,features),proposal=auditImageFeatures(source,after,width,features);
+  const regressed=proposal.regions.flatMap((region,i)=>{
+    const retainedBefore=baseline.regions[i].retainedFraction,requiredRetention=Math.min(baseline.minimumRetention,retainedBefore);
+    return region.retainedFraction<requiredRetention?[{...region,retainedBefore,requiredRetention}]:[];
+  });
+  return{passed:regressed.length===0,missingBefore:baseline.missing.length,missingAfter:proposal.missing.length,regressed};
+}
