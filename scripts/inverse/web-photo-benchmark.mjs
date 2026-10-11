@@ -23,6 +23,10 @@ const ledger = {
   methodology: 'Original source pixels and a pre-annotated rough ROI only. First automatic crop is fixed before preparation/fitting. No corrected corners or template geometry. Proposal presence and mask agreement do not establish correct cropping or ground-truth recovery.',
   results: [],
 };
+// A commit alone does not identify an experiment run against uncommitted fixes.
+// Record the actual detector, fitter and harness bytes used by this process.
+const sourceFiles=execFileSync('git',['ls-files','--','static/inverse/core','static/inverse/locator','scripts/inverse/web-photo-benchmark.mjs','scripts/inverse/web-photo-data.mjs','scripts/inverse/export-renderer.mjs'],{encoding:'utf8'}).trim().split('\n');
+ledger.sourceHashes=Object.fromEntries(await Promise.all(sourceFiles.map(async file=>[file,sha256(await fs.readFile(file))])));
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const save = async () => {
   const counts = {};

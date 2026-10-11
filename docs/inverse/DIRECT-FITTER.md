@@ -1,5 +1,12 @@
 # Direct Bézier fitting: browser port and photographic benchmark
 
+This is the historical first-port benchmark. The current app uses one automatic
+workflow, expands dense count hypotheses from repeated border evidence, and
+tries additional layouts when the first three fail and budget remains. See the
+[full-pipeline follow-up](FULL-PIPELINE.md) for current photo failures, template
+pairing repairs and verification; the original measurements below remain dated
+to that experiment.
+
 The app now offers **Pattern style → Fit curves to image** at `/en/generate/` and its Danish counterpart. It fits independent cutting curves for both sheets inside the existing JavaScript worker. It needs no Python service, PyTorch runtime, traced interior graph or saved cutting templates. **General** and **Matching sheets** retain their existing solvers.
 
 The first full comparison produced **11/31 accepted pairs, versus 3/31 for tracing**, using the same source photographs, fixed crops, general colour conversion, 60-second search budget and normal app checks. Nine of the 24 complete collage motifs pass direct fitting; two of seven individual photographs pass. The yellow individual star still works with General and fails direct fitting. Choosing whichever method succeeds would give 12/31, but the app does not perform that automatic selection, and it is not the direct fitter's score.
