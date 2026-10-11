@@ -5,6 +5,11 @@ import {components} from './input.js';
 import {distanceTransform} from './material.js';
 import {sourceWeights} from './image-reference.js';
 
+// Interior classification should survive moving the crop by one source cell.
+// A one-pixel background fringe must not turn a boundary-connected region
+// into a mandatory extra motif. These pixels still enter the full image error.
+const BORDER_CLEARANCE_PIXELS=1;
+
 export function imageFeatures(source,width=100){
   if(!source)return [];
   const {mask,resolution:n,validMask}=source,features=[],weights=source.weights?sourceWeights(source):null;
@@ -15,6 +20,7 @@ export function imageFeatures(source,width=100){
     const distance=distanceTransform(Uint8Array.from(observed,(v,i)=>Number(v!==value||(validMask&&!validMask[i]))),n,n);
     for(const part of components(observed,n,value)){
       if(part.border||part.pixels.length<minimumPixels||part.pixels.some(i=>validMask&&!validMask[i]))continue;
+      if(part.pixels.some(i=>Math.min(i%n,n-1-i%n,Math.floor(i/n),n-1-Math.floor(i/n))<=BORDER_CLEARANCE_PIXELS))continue;
       const weightMass=weights?part.pixels.reduce((sum,i)=>sum+weights[i],0):part.pixels.length;
       if(weightMass*active/mass<minimumPixels)continue;
       let radius2=0,x=0,y=0;
@@ -30,6 +36,6 @@ export function auditImageFeatures(source,woven,width=100,features=imageFeatures
   const minimumRetention=.6,weights=source?.weights?sourceWeights(source):null;
   const regions=features.map(({pixels,...f})=>({...f,retainedFraction:pixels.reduce((sum,i)=>sum+(weights?weights[i]:1)*Number(woven[i]===f.value),0)/(f.weightMass??pixels.length)}));
   const missing=regions.filter(r=>r.retainedFraction<minimumRetention);
-  return{passed:missing.length===0,referenceAvailable:!!source,minimumRetention,minimumAreaFraction:.0003,minimumCoreRadiusFraction:.005,regions,missing,
-    method:weights?'Both colours in the observed region; free pixels split components and do not enter their area or retention. At least 60% of each substantial weighted region with a solid core must remain its original colour.':'Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Border regions and tiny or thin classification fragments are excluded.'};
+  return{passed:missing.length===0,referenceAvailable:!!source,minimumRetention,minimumAreaFraction:.0003,minimumCoreRadiusFraction:.005,borderClearancePixels:BORDER_CLEARANCE_PIXELS,regions,missing,
+    method:weights?'Both colours in the observed region; free pixels split components and do not enter their area or retention. At least 60% of each substantial weighted region with a solid core must remain its original colour. Regions touching the square border or its one-pixel neighbourhood are excluded.':'Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement.'};
 }

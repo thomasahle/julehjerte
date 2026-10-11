@@ -133,11 +133,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const finalists=gridFinalists(coarse,weights?[]:evidence),remainingSeeds=coarse.filter(r=>!finalists.includes(r));
   const fine=stage('directFitting',()=>finalists.map(fitSeed).sort((a,b)=>a.error+.005*(a.model.counts[0]+a.model.counts[1])-b.error-.005*(b.model.counts[0]+b.model.counts[1])));
   let coarseTopology=null,boundaryCandidate=null;
+  const poorGrid=coarse[0].error>2*cfg.maxImageError&&fine.every(r=>r.error>cfg.maxImageError);
   // Spend this extra routing budget only when even the best initial grid is
   // far outside the accepted image error and none of the fine grids has
   // reached it. Retain those grids too: a simplified seed must earn its place
   // against the original image.
-  if(!topology?.graph&&!weights&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&coarse[0].error>2*cfg.maxImageError&&fine.every(r=>r.error>cfg.maxImageError)&&deadline-performance.now()>3500){
+  if(!topology?.graph&&!weights&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&poorGrid&&deadline-performance.now()>3500){
     coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(2.5,(deadline-performance.now()-1700)/1000),onProgress});
     if(coarseTopology.graph){
       boundaryCandidate=stage('directRefining',()=>refineCurves(coarseTopology.graph,fullProb,source.resolution,coarseTopology.phase,cfg,{input,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline-1700,performance.now()+500),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:coarseTopology.graph.families.map(f=>f.length),...r},solution):undefined}));
@@ -151,8 +152,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // Traced feature recovery routes through the MILP, which cannot hold a
   // mirrored pairing, and a symmetric fit is expected to drop features of an
   // asymmetric drawing. Stay with the constrained fitter instead.
-  if(!features.passed&&!symmetryRequested&&!weights&&deadline-performance.now()>2000){
+  // A grid can keep most of one large connected region yet miss its branches.
+  // Try the detailed routing when poor grids also defeated coarse topology;
+  // it must not depend on a spurious missing component near the crop edge.
+  if((!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights&&deadline-performance.now()>2000){
     recovery=await recoverImageFeatures(input,cfg,Math.min(20,(deadline-performance.now())/1000*.9),onProgress);
+    recovery.report.gridMismatchTrigger=poorGrid&&!boundaryCandidate;
     const seed=recovery.solution||recovery.refinementSeed;
     if(seed){
       const paths=seed.paths.map((family,f)=>family.map((_,i)=>curvesOf(seed,f,i).map(c=>c.p))),graph=new CurveGraph(paths,cfg.width),phase=seed.graph.target.phase?-1:1,counts=graph.families.map(f=>f.length);

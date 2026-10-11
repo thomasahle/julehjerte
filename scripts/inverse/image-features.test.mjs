@@ -7,6 +7,28 @@ import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {LinearModel} from '../../static/inverse/core/solver.js';
+import {referenceError} from '../../static/inverse/core/image-reference.js';
+
+test('one-pixel crop fringes do not turn border regions into mandatory interior motifs',()=>{
+  for(const n of[100,400,800])for(const invert of[0,1])for(const side of[0,1,2,3]){
+    const width=Math.ceil(2*Math.max(1.5,.005*n))+1,clean=new Uint8Array(n*n).fill(invert),fringe=clean.slice(),interior=clean.slice(),woven=clean.slice();
+    const index=(x,y)=>side===0?y*n+x:side===1?x*n+n-1-y:side===2?(n-1-y)*n+n-1-x:(n-1-x)*n+y;
+    let retainedPixels=0;
+    for(let y=Math.floor(.2*n);y<.35*n;y++)for(let x=0;x<width;x++){
+      clean[index(x,y)]=1-invert;
+      if(x){fringe[index(x,y)]=1-invert;interior[index(x+1,y)]=1-invert;retainedPixels++;}
+    }
+    const source={mask:fringe,resolution:n},before=fringe.slice();
+    assert.deepEqual(imageFeatures({mask:clean,resolution:n}),[]);
+    assert.deepEqual(imageFeatures(source),[],'A one-cell fringe must preserve border classification.');
+    assert.equal(auditImageFeatures(source,woven).passed,true);
+    assert.equal(referenceError(source,woven).mismatchPixels,retainedPixels,'Every fringe pixel remains in the image-error measurement.');
+    assert.deepEqual(fringe,before);
+    const separated=auditImageFeatures({mask:interior,resolution:n},woven);
+    assert.equal(separated.passed,false,'A genuine feature with two cells of clearance must remain protected.');
+    assert.equal(separated.missing.length,1);assert.equal(separated.missing[0].retainedFraction,0);
+  }
+});
 
 test('recovery model canonicalization removes floating-point noise while retaining bounds and integrality',()=>{
   const make=epsilon=>{const m=new LinearModel(),a=m.variable({binary:true,cost:3.14159265+epsilon}),b=m.variable({hi:Infinity});m.row([[a,1.234567890123+epsilon],[b,1]],-Infinity,1.234567890123+epsilon);return m;};

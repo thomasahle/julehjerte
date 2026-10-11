@@ -29,7 +29,7 @@ test('an image-rejected routing is only a provisional refinement seed',async()=>
   assert.deepEqual(target.sourceImage.mask,before);
 });
 
-test('a tree photograph retains its better routing even when an edge feature still needs review',async()=>{
+test('poor grid agreement recovers tree branches without relying on a spurious edge feature',async()=>{
   const data=await catalogue(),entry=data.cases.find(c=>c.id==='danish-tree-red');
   const photo=await readPhoto(data.photos.find(p=>p.id===entry.photo));
   const crop=detectHeartCrops(photo,{roi:entry.roi}).candidates[0];assert.ok(crop);
@@ -38,14 +38,15 @@ test('a tree photograph retains its better routing even when an edge feature sti
   const answer=await design(prepared.target,cfg),report=answer.report,recovery=report.solver.featureRecovery;
   assert.equal(recovery.accepted,false);
   assert.equal(recovery.refinementSeedAvailable,true);
-  assert.equal(report.solver.selectedInitialization,'feature-recovery');
+  assert.equal(recovery.trigger.passed,true,'Missing components are no longer the reason to attempt this routing.');
+  assert.equal(recovery.gridMismatchTrigger,true);
   assert.equal(report.solver.traceUsed,true);
   assert.deepEqual(report.slits,{left:3,right:3});
   assert.equal(report.validation.passed,true);
   assert.equal(report.manufacturing.status,'pass');
-  assert.equal(report.templateChecksPassed,false,'The remaining feature loss must still be reported.');
-  assert.ok(report.warnings.some(w=>w.includes('lost most of their colour')));
-  assert.ok(report.imageFidelity.features.missing.every(f=>f.centerMm[0]>98),'The tree itself must no longer be a missing feature.');
+  assert.equal(report.templateChecksPassed,true);
+  assert.equal(report.imageFidelity.features.borderClearancePixels,1);
+  assert.equal(report.imageFidelity.features.missing.length,0);
   const replay=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution);
   const error=replay.mask.reduce((sum,v,i)=>sum+Number(v!==before[i]),0)/before.length;
   assert.ok(error<.025,`Exported error ${error} must improve on the previous 0.0671125.`);
