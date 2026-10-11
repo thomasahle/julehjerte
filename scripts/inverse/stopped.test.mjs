@@ -8,11 +8,29 @@ import {materialAudit} from '../../static/inverse/core/material.js';
 import {referenceError} from '../../static/inverse/core/image-reference.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
+import {Cubic} from '../../static/inverse/core/bezier.js';
 
 const cfg=extra=>settings({width:60,minWidth:3,cutError:0,printShrinkPercent:0,materialResolution:80,trials:0,preferMatchingSheets:false,...extra});
 const packet=(solution,error=0)=>({geometry:JSON.stringify(solutionJSON(solution)),error});
 const artwork=solution=>({...solution.graph.target,sourceImage:{resolution:160,mask:sampleWeave(solution,160)}});
 const shift=(solution,family,amount)=>{for(const p of solution.graph.edges[solution.paths[family][0][0][0]].curve.p)p[family]+=amount;return solution;};
+
+test('stopping rechecks a finer paper checkpoint without trusting its remembered pass',async()=>{
+  const graph=new CurveGraph([
+    [48.55,51.45].map(x=>[Cubic.line([x,0],[x,100]).p]),
+    [[Cubic.line([0,50],[100,50]).p]]
+  ],100),solution=graph.solution(graph.points,1),target=artwork(solution);
+  const config=settings({trials:0,preferMatchingSheets:false,roundHidden:false}),saved=packet(solution);
+  assert.equal(materialAudit(solution,config).status,'uncertain');
+  const result=await finishStopped(target,config,[{...saved,materialResolution:700}]);
+  assert.equal(result.report.settings.materialResolution,700);
+  assert.equal(result.report.manufacturing.status,'pass');
+  assert.equal(result.report.solver.paperVerification.source,'retained-checkpoint');
+  await assert.rejects(finishStopped(target,config,[saved]),/validated template/);
+  const narrow=shift(solution,0,1);
+  await assert.rejects(finishStopped(target,config,[{...packet(narrow),materialResolution:700}]),/validated template/);
+});
 
 test('stopping rescored candidates uses the original weighted mask and normal exports',async()=>{
   const solution=fixture('straight'),target=artwork(solution),n=target.sourceImage.resolution;

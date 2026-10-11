@@ -43,7 +43,10 @@ test('additional layouts can retain a remote opening without editing the image o
 test('production search recovers the frozen puppy opening and verifies the exported pair',async()=>{
   const imported=await puppy(),cfg={...AUTOMATIC_PRESET,timeLimit:25,trials:0,earlyStop:false};
   const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
-  const answer=await design(prepared.target,cfg),solver=answer.report.solver;
+  const checkpoints=[];
+  const answer=await design(prepared.target,cfg,()=>{},{onCandidate:c=>checkpoints.push(c)}),solver=answer.report.solver;
+  assert.ok(checkpoints.some(c=>c.materialResolution===700&&c.error<.018),
+    'Graceful Stop must retain the candidate after its finer paper check passes');
   assert.equal(solver.selectedInitialization,'feature-weighted-grid');
   assert.ok(solver.candidates.some(c=>!c.featuresPassed&&c.paper),'The previous valid fallback must remain available');
   assert.equal(solver.paperVerification.initialStatus,'uncertain');

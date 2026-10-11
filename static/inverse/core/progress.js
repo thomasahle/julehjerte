@@ -11,7 +11,8 @@ export function progressReporter(onProgress,enabled,{now=()=>performance.now(),o
   let nextGeometry=-Infinity;
   const capture=(event,solution,snapshot)=>{
     if(onCandidate&&solution&&(event.validatedIncumbent===true||event.geometry===true&&event.paper==='pass'))
-      onCandidate({geometry:snapshot(),counts:solution.paths.map(p=>p.length),error:Number.isFinite(event.error)?event.error:null,score:Number.isFinite(event.score)?event.score:null,stage:event.stage,step:event.step});
+      onCandidate({geometry:snapshot(),counts:solution.paths.map(p=>p.length),error:Number.isFinite(event.error)?event.error:null,score:Number.isFinite(event.score)?event.score:null,stage:event.stage,step:event.step,
+        ...(solution.report?.paperVerification?{materialResolution:solution.report.paperVerification.resolution}:{})});
   };
   const report=(event,solution)=>{
     if(!solution){onProgress(event);return;}

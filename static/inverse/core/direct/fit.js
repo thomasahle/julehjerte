@@ -214,6 +214,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     c.matching=matchingSummary(c.graph.solution(c.points,c.phase,input));c.imagePassed=assess(c);
     c.selectionScore=c.originalImageError??Infinity;
     candidates.push(c);
+    // Refinement published this checkpoint as paper-uncertain. If a finer
+    // audit resolves it, retain the now-verified geometry for graceful Stop.
+    if(c.imagePassed&&c.paperVerification?.status==='pass'&&hasCandidateObserver(onProgress)){
+      const solution=c.graph.solution(c.points,c.phase,input);
+      solution.report={paperVerification:c.paperVerification};
+      emitCandidate(onProgress,{stage:'directRefining',error:c.originalImageError,geometry:true,paper:'pass'},solution);
+    }
   };
   if(boundaryCandidate)addCandidate(boundaryCandidate);
   for(const candidate of recoveredCandidates)addCandidate(candidate);

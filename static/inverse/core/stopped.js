@@ -4,7 +4,7 @@
 import {loadSolutionJSON,solutionJSON} from './graph.js';
 import {finish} from './engine.js';
 import {validate,sampleWeave} from './validate.js';
-import {materialAudit} from './material.js';
+import {materialAudit,verifiedPaperSettings} from './material.js';
 import {sampleTarget} from './input.js';
 import {referenceError} from './image-reference.js';
 import {auditImageFeatures,imageFeatures} from './image-features.js';
@@ -41,8 +41,13 @@ export async function finishStopped(target,cfg,packets,onProgress=()=>{},{cancel
     const geometry=validate(solution,cfg),symmetry=symmetryReport(solution,cfg.symmetry);
     if(!geometry.passed||symmetry.requested.some(name=>!symmetry.honoured.includes(name)))continue;
     onProgress({stage:'paper'});
-    const paper=materialAudit(solution,cfg);
+    // The packet carries only a bounded resolution hint, never a cached pass.
+    // Recheck these exact coordinates and all the original physical settings.
+    const paperCfg=verifiedPaperSettings({report:{paperVerification:{resolution:packet.materialResolution}}},cfg);
+    const paper=materialAudit(solution,paperCfg);
     if(cfg.requireMaterialCore&&!paper.passed)continue;
+    if(paper.passed&&paperCfg.materialResolution>cfg.materialResolution)
+      solution.report={paperVerification:{requestedResolution:cfg.materialResolution,resolution:paperCfg.materialResolution,status:'pass',source:'retained-checkpoint'}};
     const woven=sampleWeave(solution,source.resolution),error=referenceError(source,woven).mismatchFraction;
     if(!Number.isFinite(error))continue;
     const featuresPassed=auditImageFeatures(source,woven,cfg.width,features).passed;
@@ -53,7 +58,7 @@ export async function finishStopped(target,cfg,packets,onProgress=()=>{},{cancel
   const first=valid[0],matching=cfg.preferMatchingSheets&&valid.find(v=>v.identical&&v.featuresPassed&&v.error<=matchingErrorLimit(first.error,cfg));
   const best=matching||first,ordered=[best,...valid.filter(v=>v!==best)];
   const alternatives=ordered.map(v=>({counts:v.solution.paths.map(p=>p.length),error:v.error,checkpointError:v.packet.error,geometry:v.packet.geometry}));
-  best.solution.report={algorithm:'stopped-checkpoint',seconds:(performance.now()-startedAt)/1000,imported:false,termination:'user_stop',stoppedEarly:true,
+  best.solution.report={...best.solution.report,algorithm:'stopped-checkpoint',seconds:(performance.now()-startedAt)/1000,imported:false,termination:'user_stop',stoppedEarly:true,
     selectedCounts:best.solution.paths.map(p=>p.length),estimatedMaskMismatch:best.error,
     matchingPreference:{enabled:cfg.preferMatchingSheets,identical:best.identical,baselineImageError:first.error,additionalImageError:best.error-first.error,maximumAdditionalImageError:cfg.matchingErrorAllowance,maximumMatchingImageError:matchingErrorLimit(first.error,cfg)},
     alternativeErrorMethod:'Forward sampling against the original prepared source, including its validity mask and image-importance weights; checkpoint error retained separately.'};
