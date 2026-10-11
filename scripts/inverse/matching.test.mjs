@@ -76,6 +76,15 @@ test('matching projection respects a locked scalar with index zero',()=>{
   assert.deepEqual([...points],[1,1,1]);
 });
 
+test('matching identity tolerance is per control point, independent of cut length',()=>{
+  const paths=gridPaths(matchingGrid(gridModel([3,3],8,17)));
+  for(const path of paths[1])for(const curve of path)for(const point of curve)point[0]+=5e-8;
+  const summary=()=>{const graph=new CurveGraph(paths);return matchingSummary(graph.solution(graph.points,1));};
+  assert.equal(summary().identical,true);
+  paths[1][0][0][1][0]+=2e-7;
+  assert.equal(summary().identical,false);
+});
+
 test('fitted free paths can propose one reusable pattern without changing their input',()=>{
   const paths=gridPaths(gridModel([2,2],8,19)),before=structuredClone(paths);
   // Include a backward-running handle, which an ordered grid cannot encode.
