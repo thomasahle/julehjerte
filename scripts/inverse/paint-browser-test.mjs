@@ -269,12 +269,12 @@ try{
     }
     if(name==='web-danish-tree-red'&&!engineReference){
      assert.equal(observed.result.report.solver.featureRecovery?.refinementSeedAvailable,true);
-     assert.ok(row.missingFeatures.every(f=>f.centerMm[0]>98),'The tree branches must be retained.');
-     if(row.missingFeatures.length){
-      assert.equal(row.templateChecksPassed,false,'The better approximation must retain its outstanding feature warning.');
-      assert.ok(await page.getByText(/The pattern is close, but not exact:/).isVisible());
-     }
+     assert.equal(observed.result.report.solver.featureRecovery.gridMismatchTrigger,true);
+     assert.equal(row.templateChecksPassed,true);
+     assert.equal(row.missingFeatures.length,0);
+     assert.ok(await page.getByText(/The pattern is close, but not exact:/).isVisible());
      assert.ok(row.engineError<.025,'The recovered tree must improve on the discarded-routing result.');
+     assert.ok(row.timings.clickToReadySeconds<12,'A one-pixel crop fringe must not trigger another minute of grid retries.');
     }
     if(name==='web-danish-tree-green'){
      assert.equal(observed.result.report.solver.coarseTopologyInitialization?.accepted,true,'The uploaded photograph must exercise coarse routing.');

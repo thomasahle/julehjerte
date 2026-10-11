@@ -91,7 +91,10 @@ new refinement path. Their observed variations remain recorded; this is not a
 claim that all errors are unchanged. The other 26 rendered outputs have the
 same independent errors, and all candidate pass/review statuses are unchanged.
 
-## Remaining browser search latency
+## Browser search latency before the border-stability correction
+
+The measurements in this section describe the first routing-retention release
+(`ca79a33`). The subsequent border-stability correction is described below.
 
 Both upload-to-editable-SVG replays preserve the recovered branches, display the
 approximation notice and retain the missing-feature failure in their engine
@@ -107,6 +110,62 @@ without displacing the recovered tree. This latency is unresolved; the fast
 Hunodan and short-budget Node timings do not establish fast browser completion
 for this failure case. It is a separate search-budget problem exposed by the
 full-pipeline QA.
+
+## Follow-up: stable interior features and an independent routing trigger
+
+The remaining fragment consists of 141 source pixels at columns 395–398 of
+the 400-pixel crop, with just column 399 between it and the boundary. Its long,
+narrow shape follows the right crop edge. The feature detector previously
+excluded regions touching the exact outermost row/column, but a single-pixel
+background fringe made the same region count as an interior motif. Thus a
+one-cell crop or classification perturbation could change a final acceptance
+decision and trigger another minute of searching.
+
+Interior-feature classification now requires **more than one source pixel of
+clearance from the square boundary**. This is an explicit change to which
+components receive the extra 60% retention check. It does not erase the fringe,
+alter the mask or probabilities, change the crop, or exclude pixels from image
+error. An intentional detail within that one-cell neighbourhood still counts
+towards total mask disagreement, but no longer has a separate interior-feature
+guarantee. Geometry and paper validation and the 3% image-error limit remain
+unchanged. The report records `borderClearancePixels: 1`.
+
+Regressions exercise touching and one-cell-separated regions on all four sides,
+in both colours and at 100, 400 and 800 pixels. They check unchanged masks and
+the full fringe contribution to image error. The same small region with two
+cells of clearance remains protected and fails if omitted. Existing tests also
+retain the rejection of a lost interior motif even below 1% whole-image error.
+
+Removing the false feature exposed a second coupling: the useful detailed
+routing had only been attempted because the initial grid missed that fragment.
+The grid retained almost 90% of the tree's connected region, so its substantial
+branch distortion did not fail the component-retention test. The fitter now also
+tries detailed recovery when the coarse initialization is far outside the image
+limit, every fine grid remains outside it, and coarse topology has supplied no
+candidate. The regression verifies that the tree takes this route even when its
+initial component audit passes.
+
+The fresh ten-second-budget workflow selects the same 3+3 tree and exactly the
+same **2.05375% independently rendered mask error**. It now passes the revised
+interior-feature check. This new pass is due to the explicit border-classification
+policy above, not a claim that the missing fragment was reconstructed. All 22
+regular Hunodan cases retain exactly their previous exported errors and pass
+their speed/quality gates; the slowest is **8.370 seconds**.
+
+The actual editor replay confirms the latency correction:
+
+| Browser | Previous Find to ready | New Find to ready | Editable mask error, before and after |
+| --- | ---: | ---: | ---: |
+| Chromium 145 | 72.393 s | 4.556 s | 2.024375% |
+| WebKit 26 | 75.896 s | 4.600 s | 2.031875% |
+
+These are individual serial replays, not population latency estimates. Both
+reuse the same photograph, automatic crop and source mask. The feature check
+now allows the good routing to finish the search before the extra 18 grid
+attempts. It retains the visible approximation notice because the displayed
+image disagreement remains 2.0%. SVGs still pass the editor's intersection and
+conversion-fidelity checks. The one-pixel rule corrects this measured stall;
+it does not guarantee fast completion for every photograph.
 
 [Detailed measurements and source hashes](PROVISIONAL-ROUTING-VALIDATION.json)
 retain all 44 outcomes, the 22 speed checks, 12 browser runs and the diagnostic
