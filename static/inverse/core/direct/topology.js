@@ -3,7 +3,7 @@
  */
 import {preprocessMask,sampleTarget} from '../input.js';
 import {transposeTarget} from '../symmetry.js';
-import {buildGraph,curvesOf,reindex,boundaryEndpoints} from '../graph.js';
+import {buildGraph,curvesOf,reindex,inspectBoundaryEndpoints} from '../graph.js';
 import {solveGraph} from '../solver.js';
 import {sampleWeave} from '../validate.js';
 import {materialAudit} from '../material.js';
@@ -47,14 +47,7 @@ export function prepareBoundary(input,cfg,{useInitializationGuide=true,guidePhas
 
 function endpointIssue(target,cfg){
   const graph=reindex({target,edges:target.curves.map(curve=>({curve,visible:true}))});
-  try{
-    for(const [f,ends]of boundaryEndpoints(graph).entries())for(const side of [ends.sources,ends.sinks]){
-      if(!side.length)continue;
-      const positions=[0,...side.map(i=>graph.points[i][f]),target.width];
-      if(positions.some((v,i)=>i&&v-positions[i-1]<cfg.nominalWidth))return 'Border transitions are closer than the required strip width.';
-    }
-  }catch(error){return error.message;}
-  return null;
+  return inspectBoundaryEndpoints(graph,cfg.nominalWidth).issue?.message??null;
 }
 
 /** Recover a routing seed from noisy edges without editing its image reference.

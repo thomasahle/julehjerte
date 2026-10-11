@@ -19,7 +19,45 @@ export function buildGraph(target,cfg,{onProgress=()=>{},node=true}={}){
   graph.guides=portals.guides;
   graph.metadata={visibleEdges:visibleCount,hiddenCandidates:edges.length-visibleCount,vertices:points.length,buildSeconds:(performance.now()-start)/1000,guidePortals:portals.added,guideCount:portals.guides.length,guideSkip:portals.skipped||null,candidateMethod:'border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding',delaunayCandidates:false};return graph;
 }
-export function boundaryEndpoints(graph){const result=[],w=graph.target.width;for(const k of[0,1]){const axis=k===0?1:0,sortaxis=1-axis,sources=[],sinks=[];graph.points.forEach((p,v)=>{if(graph.incident[v].filter(e=>graph.edges[e].visible).length%2){if(Math.abs(p[axis])<1e-5)sources.push(v);if(Math.abs(p[axis]-w)<1e-5)sinks.push(v);}});sources.sort((a,b)=>graph.points[a][sortaxis]-graph.points[b][sortaxis]);sinks.sort((a,b)=>graph.points[a][sortaxis]-graph.points[b][sortaxis]);if(sources.length!==sinks.length)throw new Error(`Sheet ${k?'B':'A'} has ${sources.length} start transitions but ${sinks.length} end transitions. Opposite borders must agree.`);result.push({sources,sinks});}return result;}
+/** Necessary boundary conditions, independent of optional hidden connectors.
+ * Counts and spacing can reject a seed; passing them does not prove routability.
+ */
+export function inspectBoundaryEndpoints(graph, minimumWidth = 0) {
+  const endpoints=[],w=graph.target.width;
+  for(const k of[0,1]){
+    const axis=k===0?1:0,sortaxis=1-axis,sources=[],sinks=[];
+    graph.points.forEach((p,v)=>{
+      if(graph.incident[v].filter(e=>graph.edges[e].visible).length%2){
+        if(Math.abs(p[axis])<1e-5)sources.push(v);
+        if(Math.abs(p[axis]-w)<1e-5)sinks.push(v);
+      }
+    });
+    sources.sort((a,b)=>graph.points[a][sortaxis]-graph.points[b][sortaxis]);
+    sinks.sort((a,b)=>graph.points[a][sortaxis]-graph.points[b][sortaxis]);
+    endpoints.push({sources,sinks});
+  }
+  for(const [family,{sources,sinks}]of endpoints.entries())if(sources.length!==sinks.length){
+    return{endpoints,issue:{type:'endpoint_count',family,startCount:sources.length,endCount:sinks.length,
+      message:`Sheet ${family?'B':'A'} has ${sources.length} start transitions but ${sinks.length} end transitions. Opposite borders must agree.`}};
+  }
+  for(const [family,ends]of endpoints.entries())for(const side of ['sources','sinks']){
+    if(!ends[side].length)continue;
+    const positions=[0,...ends[side].map(v=>graph.points[v][family]),w];
+    for(let i=1;i<positions.length;i++){
+      const distance=positions[i]-positions[i-1];
+      if(distance<minimumWidth-1e-6)return{endpoints,issue:{type:'endpoint_spacing',family,side:side==='sources'?'start':'end',
+        positionsMm:positions.slice(i-1,i+1),distanceMm:distance,requiredMm:minimumWidth,
+        outerMargin:i===1||i===positions.length-1,
+        message:`Sheet ${family?'B':'A'} ${side==='sources'?'start':'end'} border has ${distance.toFixed(3)} mm between transitions or the paper edge; ${minimumWidth.toFixed(3)} mm is required.`}};
+    }
+  }
+  return{endpoints,issue:null};
+}
+export function boundaryEndpoints(graph){
+  const {endpoints,issue}=inspectBoundaryEndpoints(graph);
+  if(issue){const error=new Error(issue.message);error.boundaryIssue=issue;throw error;}
+  return endpoints;
+}
 export function curvesOf(solution,k,p){return solution.paths[k][p].map(([e,forward])=>forward?solution.graph.edges[e].curve:solution.graph.edges[e].curve.reversed());}
 export function solutionJSON(solution){const ids=[...new Set(solution.paths.flat(2).map(([e])=>e))].sort((a,b)=>a-b);return{schema:'heartcurves-2',units:'mm',square_width_mm:solution.graph.target.width,phase:solution.graph.target.phase,paper_colors:solution.graph.target.metadata.paperColors||['#bd1111','#ffffff'],curves:Object.fromEntries(ids.map(e=>[String(e),{control_points:solution.graph.edges[e].curve.p,visible_boundary:solution.graph.edges[e].visible}])),A_overlap_paths:solution.paths[0].map(p=>p.map(([e,f])=>({curve:String(e),reverse:!f}))),B_overlap_paths:solution.paths[1].map(p=>p.map(([e,f])=>({curve:String(e),reverse:!f}))),note:'Shared cuts are one control polygon referenced by both sheets; no physical assembly certificate.'};}
 export function loadSolutionJSON(data){if(typeof data==='string')data=JSON.parse(data);if(data.schema!=='heartcurves-2'||data.units!=='mm')throw new Error('Unsupported saved-template schema.');const width=data.square_width_mm;if(!Number.isFinite(width)||width<20||width>300||![0,1].includes(data.phase))throw new Error('Invalid saved dimensions or colour phase.');const entries=Object.entries(data.curves||{});if(entries.length>4000)throw new Error('Saved template has too many curves.');const ids=new Map(),edges=entries.map(([id,x],i)=>{ids.set(id,i);if(typeof x.visible_boundary!=='boolean')throw new Error('Invalid boundary flag.');const c=new Cubic(x.control_points);if(c.p.some(p=>Math.min(...p)<-width||Math.max(...p)>2*width))throw new Error('Saved controls exceed the allowed bounds.');return{curve:c,visible:x.visible_boundary};});const paths=[data.A_overlap_paths,data.B_overlap_paths].map(f=>{if(!Array.isArray(f)||f.length>50)throw new Error('Invalid saved slit families.');return f.map(p=>{if(!Array.isArray(p)||p.length>4000)throw new Error('Invalid saved slit.');return p.map(item=>{if(!ids.has(item.curve)||typeof item.reverse!=='boolean')throw new Error('Unknown curve reference.');return[ids.get(item.curve),!item.reverse];});});});const target={width,phase:data.phase,curves:edges.filter(e=>e.visible).map(e=>e.curve),metadata:{input:'saved template pair',paperColors:data.paper_colors||['#bd1111','#ffffff']}},graph=reindex({target,edges,metadata:{imported:true}});return{graph,paths,report:{imported:true}};}

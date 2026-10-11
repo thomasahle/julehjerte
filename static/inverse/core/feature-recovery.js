@@ -1,7 +1,7 @@
 /** Alternative routing from the same classified image; no reference templates. */
 import {preprocessMask,sampleTarget} from './input.js';
 import {oppositeBorderSeeds} from './border.js';
-import {buildGraph} from './graph.js';
+import {buildGraph,reindex,inspectBoundaryEndpoints} from './graph.js';
 import {solveGraph} from './solver.js';
 import {sampleWeave,validate} from './validate.js';
 import {materialAudit} from './material.js';
@@ -17,6 +17,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
     const choices=[{neighbors:Math.min(8,cfg.neighbors),connectorVariants:1},{neighbors:cfg.neighbors,connectorVariants:cfg.connectorVariants}];
     let solution=null;
     const runSeed=async(smoothRadius,borderSeed=null)=>{
+      const seedStarted=performance.now();
       // Explore these provisional edge interpretations with the sparse graph;
       // densifying an earlier seed can consume the whole remaining budget.
       const graphChoices=borderSeed?choices.slice(0,1):choices;
@@ -28,8 +29,18 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         const sampled=sampleTarget(target,source.resolution),imageError=sampled.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/sampled.length;
         // A larger inset may reach the motif itself. Keep this provisional
         // geometry within a small whole-image error before spending MILP time.
-        if(imageError>Math.min(.05,2*cfg.maxImageError))return;
+        if(imageError>Math.min(.05,2*cfg.maxImageError)){
+          (report.rejectedBorderSeeds??=[]).push({...borderSeed.metadata,smoothRadius,traceImageError:imageError,maximumImageError:Math.min(.05,2*cfg.maxImageError),reason:'seed_image_error'});return;
+        }
         borderSeed.metadata.traceImageError=imageError;
+      }
+      // Hidden connectors cannot change visible border endpoints. Reject
+      // impossible counts or spacing before generating either connector graph
+      // or initializing HiGHS; retain the reason so this is not a search timeout.
+      const boundaryGraph=reindex({target,edges:target.curves.map(curve=>({curve,visible:true}))});
+      const boundaryIssue=inspectBoundaryEndpoints(boundaryGraph,cfg.nominalWidth).issue;
+      if(boundaryIssue){
+        report.attempts.push({stage:'boundary',smoothRadius,...(borderSeed?{borderSeed:{...borderSeed.metadata}}:{}),boundaryIssue,error:boundaryIssue.message,seconds:(performance.now()-seedStarted)/1000});return;
       }
       for(let i=0;i<graphChoices.length;i++){
         if(i&&graphChoices[i].neighbors===graphChoices[0].neighbors&&graphChoices[i].connectorVariants===graphChoices[0].connectorVariants)break;
@@ -47,7 +58,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
       }
     };
     await runSeed(.3);
-    if(!solution&&remaining()>=.25&&report.attempts.length&&report.attempts.every(a=>a.solver?.termination==='candidate_graph_exhausted')){
+    if(!solution&&remaining()>=.25&&report.attempts.length&&report.attempts.every(a=>a.solver?.termination==='candidate_graph_exhausted'||a.boundaryIssue?.type==='endpoint_spacing')){
       // Extra search cannot repair an infeasible traced boundary. Suppress
       // thin raster spurs in the seed; the original image stays unchanged.
       report.seedSmoothingRetry=true;
