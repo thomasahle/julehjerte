@@ -5,6 +5,10 @@ the classified mask, but the previous returned grid fit rounded them away.
 The automatic crop and colour conversion do not explain that loss: a much
 closer routing had already been found from the same mask, then discarded.
 
+The routing-retention measurements below describe commit `ca79a33`. The
+[border-stability follow-up](#follow-up-stable-interior-features-and-an-independent-routing-trigger)
+records the subsequent acceptance-policy change and browser speed correction.
+
 ## Where the candidate was lost
 
 Feature recovery traces the classified image, solves the resulting routing
@@ -167,10 +171,35 @@ image disagreement remains 2.0%. SVGs still pass the editor's intersection and
 conversion-fidelity checks. The one-pixel rule corrects this measured stall;
 it does not guarantee fast completion for every photograph.
 
-[Detailed measurements and source hashes](PROVISIONAL-ROUTING-VALIDATION.json)
+The complete 44-case photo replay now has **10 candidate passes, 19 needing
+review and 15 without a crop**. All 29 generated pairs retain valid geometry
+and guarded paper checks. Source photograph hashes, automatic crop coordinates
+and preparation metadata are unchanged for every case. The browser replays
+also verify the prepared source masks byte for byte.
+
+Of the 29 rendered outputs, 28 retain exactly their preceding independent
+errors. The printed-paper case `vissevasse-arranged-r2c1` changes from 8.258125%
+to 8.260000%, three pixels at 400×400; it still needs review. Its final shared-cut
+and primitive cleanup is now allowed after the edge-feature policy change.
+The internal sampled objective improves from 8.255% to 8.245%, while the
+independent renderer records the small increase above. This is not an
+across-the-board error improvement or exact agreement between renderers.
+
+Current verification passes **845 application tests and 538 inverse tests**,
+with one existing application skip. Type checking has zero errors and seven
+existing warnings; lint and build pass. All 12 Chromium/WebKit workflow replays
+pass, including both independent and matching free-border hats, whose exact
+shared spans survive conversion and export. The regular Hunodan benchmark's
+median is 4.944 s and its maximum is 8.370 s; all 22 errors are unchanged.
+
+[Follow-up measurements and source hashes](BORDER-FEATURE-VALIDATION.json)
+record every photo, speed and browser outcome for this correction. Full local
+visual panels and exports are in `tmp/border-feature-web-all/report.html`.
+
+[Earlier routing-retention measurements](PROVISIONAL-ROUTING-VALIDATION.json)
 retain all 44 outcomes, the 22 speed checks, 12 browser runs and the diagnostic
-refinement probes. Browser stage timings are included so this remaining search
-cost can be investigated independently of crop or renderer time.
+refinement probes from before the border-stability correction. Browser stage
+timings separate the original search cost from crop and renderer time.
 
 Run the checks serially from the repository root:
 

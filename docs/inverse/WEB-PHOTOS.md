@@ -6,7 +6,7 @@ Added 20 source photographs and 44 selected heart instances from Bibelselskabet,
 
 [Dataset and commands](../../scripts/inverse/fixtures/web-photos/README.md) · [Machine-readable baseline](WEB-PHOTOS-BASELINE.json)
 
-## Full pipeline replay, 2026-10-11
+## Baseline full pipeline replay, 2026-10-11
 
 A fresh run uses the current automatic locator, colour conversion, cut-count
 search, common fitter, template checks and independent export renderer. All 44
@@ -53,9 +53,10 @@ Visual inspection identifies different upstream causes:
 The green nested-heart and angel photographs still have no usable proposal.
 The red/white tree is at 6.71125% in this baseline. A subsequent
 [routing-retention fix](PROVISIONAL-ROUTING.md) reduces it to 2.05375% on the same
-crop and mask by refining a previously discarded MILP candidate. It still needs
-review because of a missing classified fragment near the edge, and the browser
-still spends too long trying other layouts. These failures remain in the report.
+crop and mask by refining a previously discarded MILP candidate. That release
+still needed review because of a classified fragment near the edge, and the
+browser spent too long trying other layouts. The follow-up below addresses
+that specific source of instability; these historical failures remain recorded.
 
 [Current measurements and source hashes](CURVE-DEGREES-VALIDATION.json) include
 all 44 outcomes. Full visual panels and exported candidates are generated at
@@ -70,6 +71,25 @@ blue/green checker's cuts from 3+3 to 2+2 and its independent error to 1.4375%.
 Its [measurement ledger](COUNT-FINALISTS-VALIDATION.json) keeps before/after values
 for every case, including the failures. This is improved template selection
 inside the full pipeline, not an increase in the number of passing photographs.
+
+The latest [border-feature and routing-trigger replay](PROVISIONAL-ROUTING.md#follow-up-stable-interior-features-and-an-independent-routing-trigger)
+has **10 passes, 19 needing review and 15 without a crop**, with all 44 source
+photos, automatic crops and preparation metadata unchanged. The two-colour
+track changes to 8/2/2; other tracks retain their previous outcomes. The extra
+pass is the red tree under an explicit revised policy: a component separated
+from the square edge by only one source pixel no longer receives the extra
+interior-feature retention check. Every observed pixel remains in image error,
+and geometry, paper and image-error limits are unchanged. It does not mean the
+edge fragment was reconstructed. Useful routing can now also be triggered by
+poor grid agreement even when the component-retention audit passes.
+
+The tree's error remains 2.05375%; browser completion falls from 72–76 seconds
+to 4.56–4.60 seconds with unchanged editable error. Overall, 28 of 29 exported
+errors are exactly unchanged; `vissevasse-arranged-r2c1` increases by three
+pixels (0.001875 percentage points) and still needs review. All 29 generated
+pairs retain valid geometry and guarded paper checks. The
+[complete follow-up ledger](BORDER-FEATURE-VALIDATION.json) includes these
+limitations alongside the 22 regular Hunodan speed checks and 12 browser runs.
 
 ```sh
 node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=10 --output=tmp/adaptive-primitives-web-all
