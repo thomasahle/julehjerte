@@ -5,6 +5,7 @@
  * This only proposes geometry. Final selection still renders and validates it.
  */
 import {CurveGraph,renderCurves} from './curves.js';
+import {Cubic} from '../bezier.js';
 import {straightProposal,primitiveComplexity,primitiveCost} from './primitives.js';
 import {createBoundaryEvaluator} from './boundary.js';
 import {matchingGroups,projectMatching,matchingSummary} from './matching.js';
@@ -18,21 +19,29 @@ import {mismatch} from './grid.js';
 
 /** Degree reduction belongs after the final choice, not between fitting stages:
  * even a mask-preserving edit can change a later optimizer's trajectory. */
-export function finalizePrimitives(solution,cfg,{deadline=Infinity,onProgress=()=>{}}={}){
+export function finalizePrimitives(solution,cfg,options={}){
+  // Preserve reductions already earned by the original proposal. Broader
+  // eligibility can connect edit groups, so replacing the first pass outright
+  // can lose useful independent changes. Both passes share one deadline.
+  const first=finalizePrimitivePass(solution,cfg,options);
+  return finalizePrimitivePass(first,cfg,{...options,measureCurve:true});
+}
+
+function finalizePrimitivePass(solution,cfg,{deadline=Infinity,onProgress=()=>{},measureCurve=false}={}){
   const source=solution.graph.target.sourceImage;
   if(!source?.mask||solution.graph.target.metadata?.originalCubicsPreserved||performance.now()>=deadline)return solution;
   const start=performance.now(),n=source.resolution,weights=sourceWeights(source),input=solution.graph.target;
   const paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p))),graph=new CurveGraph(paths,input.width),points=graph.points;
-  const straight=straightProposal(graph,points,n);if(!straight)return solution;
+  const straight=straightProposal(graph,points,n,{measureCurve});if(!straight)return solution;
   const beforeMatching=matchingSummary(solution),ties=symmetryTies(graph,cfg.symmetry),groups=beforeMatching.identical&&!ties?matchingGroups(graph):null;
   if(ties)applyTies(ties,straight,straight,{fixed:graph.fixed,original:points});
   if(groups)projectMatching(straight,groups,graph.fixed,points);
-  const phase=input.phase?-1:1,mask=renderCurves(graph,points,phase,n,32);
-  const selected=selectStraightProposal(graph,points,straight,source.mask,n,{mask,weights,ties,groups});
+  const phase=input.phase?-1:1,mask=measureCurve?sampleWeave(solution,n):renderCurves(graph,points,phase,n,32);
+  const selected=selectStraightProposal(graph,points,straight,source.mask,n,{mask,weights,ties,groups,adaptiveTolerance:measureCurve?.01:null});
   if(!selected||performance.now()>=deadline)return solution;
   const p=selected.points,originalPrimitives=primitiveComplexity(graph,points),primitives=primitiveComplexity(graph,p);
   const report={groups:selected.groups,selectedGroups:selected.accepted,curvedBefore:originalPrimitives.curved,curvedAfter:primitives.curved,
-    sampledErrorBefore:mismatch(mask,source.mask,weights),sampledErrorAfter:mismatch(renderCurves(graph,p,phase,n,32),source.mask,weights),applied:false};
+    sampledErrorBefore:mismatch(mask,source.mask,weights),sampledErrorAfter:mismatch(measureCurve?selected.mask:renderCurves(graph,p,phase,n,32),source.mask,weights),applied:false};
   let result=solution,afterMatching=beforeMatching;
   const accept=()=>{
     if(primitives.curved>=originalPrimitives.curved)return 'no_degree_reduction';
@@ -54,14 +63,14 @@ export function finalizePrimitives(solution,cfg,{deadline=Infinity,onProgress=()
   };
   onProgress({stage:'directPolishing'});report.rejection=accept();report.seconds=(performance.now()-start)/1000;
   const matching=solution.report.matchingPreference;
-  result.report={...solution.report,finalPrimitiveSelection:report,stages:[...(solution.report.stages||[]),{stage:'directPolishing',detail:'selective-degree-reduction',seconds:report.seconds}],
+  result.report={...solution.report,[measureCurve?'finalCurvePrimitiveSelection':'finalPrimitiveSelection']:report,stages:[...(solution.report.stages||[]),{stage:'directPolishing',detail:measureCurve?'curve-degree-reduction':'selective-degree-reduction',seconds:report.seconds}],
     ...(report.applied?{estimatedMaskMismatch:report.sourceErrorAfter}:{}),
     ...(report.applied&&matching?{matchingPreference:{...matching,...afterMatching,selectedImageError:report.sourceErrorAfter,
       ...(Number.isFinite(matching.baselineImageError)?{additionalImageError:report.sourceErrorAfter-matching.baselineImageError}:{})}}:{})};
   return result;
 }
 
-export function selectStraightProposal(graph,points,proposal,prob,n,{mask,weights=null,ns=32,ties=null,groups=null}={}){
+export function selectStraightProposal(graph,points,proposal,prob,n,{mask,weights=null,ns=32,ties=null,groups=null,adaptiveTolerance=null}={}){
   const changed=Uint8Array.from(points,(v,i)=>Number(v!==proposal[i]));
   if(!changed.some(Boolean))return null;
   const parent=Int32Array.from(points,(_,i)=>i);
@@ -89,7 +98,14 @@ export function selectStraightProposal(graph,points,proposal,prob,n,{mask,weight
     const index=ids.flatMap(i=>[2*i,2*i+1]).find(i=>changed[i]);
     return index===undefined?null:components.get(root(index));
   };
-  const old=graph.sample(points,ns).samples,next=graph.sample(proposal,ns).samples,w=graph.width;
+  const sample=values=>{
+    if(adaptiveTolerance!==null)return graph.controls(values).map(p=>new Cubic(p).flatten(adaptiveTolerance));
+    const {samples}=graph.sample(values,ns);
+    return graph.edges.map((_,e)=>Array.from({length:ns+1},(_,j)=>{
+      const i=2*(e*(ns+1)+j);return[samples[i],samples[i+1]];
+    }));
+  };
+  const old=sample(points),next=sample(proposal),w=graph.width;
   const add=(component,ax,ay,bx,by)=>{
     if(ay>by)[ax,ay,bx,by]=[bx,by,ax,ay];
     if(ay!==by)component.segments.push([ax,ay,bx,by]);
@@ -97,9 +113,7 @@ export function selectStraightProposal(graph,points,proposal,prob,n,{mask,weight
   graph.edges.forEach((ids,e)=>{
     if(!graph.visible[e])return;
     const component=owner(ids);if(!component)return;
-    for(const samples of [old,next])for(let j=1;j<=ns;j++){
-      const i=2*(e*(ns+1)+j);add(component,samples[i-2],samples[i-1],samples[i],samples[i+1]);
-    }
+    for(const samples of [old[e],next[e]])for(let j=1;j<samples.length;j++)add(component,...samples[j-1],...samples[j]);
   });
   // Include the same square closures as renderCurves if a projected proposal
   // also moved a path endpoint (e.g. a handle welded to an endpoint).

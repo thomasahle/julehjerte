@@ -12,6 +12,7 @@ import {settings} from '../../static/inverse/core/settings.js';
 import {DIRECT_PRESET} from '../../static/inverse/core/presets.js';
 import {solutionJSON,curvesOf} from '../../static/inverse/core/graph.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {sampleWeave} from '../../static/inverse/core/validate.js';
 
 const noisy=[[25,0],[25.22,100/3],[24.78,200/3],[25,100]];
 const curved=[[65,0],[65.22,100/3],[65.22,200/3],[65,100]];
@@ -50,12 +51,13 @@ test('boundary deltas agree with full rendering for both phases, ties, weights a
     [[Cubic.line([0,60],[30,60]).p,shared.toReversed(),Cubic.line([30,30],[100,30]).p],[[[0,50],[40,50.4],[20,49.8],[100,50]]]]
   ]);
   const original=graph.points.slice();
-  for(const n of [100,101,200])for(const phase of [1,-1])for(const weighted of [false,true]){
-    const mask=renderCurves(graph,graph.points,phase,n,32),prob=Float64Array.from(mask,(v,i)=>i%11===0?1-v:v);
+  for(const n of [100,101,200])for(const phase of [1,-1])for(const weighted of [false,true])for(const adaptiveTolerance of [null,.01]){
+    const render=points=>adaptiveTolerance===null?renderCurves(graph,points,phase,n,32):sampleWeave(graph.solution(points,phase,{}),n);
+    const mask=render(graph.points),prob=Float64Array.from(mask,(v,i)=>i%11===0?1-v:v);
     const weights=weighted?Float64Array.from(mask,(_,i)=>i%n<n/3?0:(i%5+1)/5):null;
-    const all=straightProposal(graph,graph.points,n),selected=selectStraightProposal(graph,graph.points,all,prob,n,{mask,weights});
+    const all=straightProposal(graph,graph.points,n),selected=selectStraightProposal(graph,graph.points,all,prob,n,{mask,weights,adaptiveTolerance});
     assert.ok(selected);
-    assert.deepEqual(selected.mask,renderCurves(graph,selected.points,phase,n,32),`${n}/${phase}/${weighted}`);
+    assert.deepEqual(selected.mask,render(selected.points),`${n}/${phase}/${weighted}/${adaptiveTolerance}`);
     assert.ok(mismatch(selected.mask,prob,weights)<=mismatch(mask,prob,weights)+1e-12);
     assert.deepEqual(graph.points,original,'The selection must not mutate the continuous trajectory');
   }
@@ -116,4 +118,38 @@ test('native SVG geometry is not simplified using its sampled preview',()=>{
   assert.equal(finalizePrimitives(solution,settings({...DIRECT_PRESET,trials:0})),solution);
   assert.deepEqual(solutionJSON(solution),before);
   assert.equal(solution.report.finalPrimitiveSelection,undefined);
+});
+
+test('final degree reduction measures the curve, not its distant opposing handles',async()=>{
+  // This S span's handles are 0.4 mm off its chord, but the actual maximum
+  // deviation is 0.4 / (2 sqrt(3)) = 0.11547 mm: below half a 400px pixel.
+  const s=[[25,0],[25.4,100/3],[24.6,200/3],[25,100]],n=400;
+  const graph=new CurveGraph([[[s],[curved]],[[horizontal]]]);
+  const truth=new CurveGraph([[[Cubic.line([25,0],[25,100]).p],[curved]],[[horizontal]]]);
+  const mask=renderCurves(truth,truth.points,1,n,128),saved=mask.slice();
+  const cfg=settings({...DIRECT_PRESET,trials:0}),solution=graph.solution(graph.points,1,{sourceImage:{mask,resolution:n}});
+  const checkpoint=straightProposal(graph,graph.points,n);
+  assert.deepEqual(graph.edges[0].map(i=>[checkpoint[2*i],checkpoint[2*i+1]]),s,'Keep the continuous fitter checkpoint policy unchanged');
+  const finished=finalizePrimitives(solution,cfg);
+  assert.equal(finished.report.finalCurvePrimitiveSelection.applied,true);
+  assert.equal(finished.report.finalCurvePrimitiveSelection.curvedAfter,1);
+  assert.deepEqual(curvesOf(finished,0,1)[0].p,curved,'The real small bend still earns its geometry through mask evidence');
+  assert.deepEqual(mask,saved,'The classified source stays untouched');
+  const rendered=await renderExportedWeave(solutionJSON(finished),n);
+  const expected=await renderExportedWeave(solutionJSON(truth.solution(truth.points,1,{})),n);
+  assert.deepEqual(rendered.mask,expected.mask);
+});
+
+test('curve-based proposals preserve genuine bows, longitudinal overshoot and collapsed chords',()=>{
+  const make=c=>new CurveGraph([[[c]],[]]);
+  for(const p of [
+    [[25,0],[25.4,100/3],[25.4,200/3],[25,100]], // 0.3 mm bow exceeds the 0.25 mm cap.
+    [[25,0],[25,-2],[25,102],[25,100]], // Collinear does not imply a safe replacement segment.
+    [[25,50],[25.01,50.01],[24.99,50.01],[25,50]]
+  ]){const g=make(p);assert.equal(straightProposal(g,g.points,400,{measureCurve:true}),null);}
+  for(const transpose of [false,true]){
+    const p=[[25,0],[25.4,100/3],[24.6,200/3],[25,100]].map(p=>transpose?p.toReversed():p),g=make(p);
+    const result=straightProposal(g,g.points,400,{measureCurve:true});assert.ok(result);
+    assert.deepEqual(g.edges[0].map(i=>[result[2*i],result[2*i+1]]),Cubic.line(p[0],p[3]).p);
+  }
 });
