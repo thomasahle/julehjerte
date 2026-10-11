@@ -67,7 +67,8 @@ export async function prepareCorpus(root){
     await add('collage-'+e.id,'collage',{...input,quad:c.quad},{cropStatus:detected.status,roi:e.roi});
   }
   for(const e of (await json('scripts/inverse/photo-cases.json')).cases){
-    const input=await photo(`tmp/inverse-hard-photos/sources/${e.id}.png`),center=[0,1].map(k=>e.quad.reduce((s,p)=>s+p[k],0)/4),quad=e.quad.map(p=>p.map((v,k)=>center[k]+(v-center[k])*(1-2*(e.cropInsetFraction||0))));
+    const input=await photo(e.file),center=[0,1].map(k=>e.quad.reduce((s,p)=>s+p[k],0)/4),quad=e.quad.map(p=>p.map((v,k)=>center[k]+(v-center[k])*(1-2*(e.cropInsetFraction||0))));
+    if(input.sourceSha256!==e.sha256)throw new Error('Individual photograph source changed');
     await add(e.id,'individual',{...input,quad},{cropStatus:'fixed historical crop'});
   }
   for(const e of (await json('scripts/inverse/fixtures/hard-user/manifest.json')).cases){
