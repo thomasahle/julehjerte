@@ -253,6 +253,8 @@ try{
     if(name==='top-hat-preferred')assert.equal(row.matchingPreference.identical,true,'A reusable hat template must be found without forcing mask symmetry.');
     row.engineError=observed.result.report.imageError.mismatchFraction;
     row.selectedCounts=observed.result.report.solver.selectedCounts;
+    row.templateChecksPassed=observed.result.report.templateChecksPassed;
+    row.missingFeatures=observed.result.report.imageFidelity?.features.missing;
     row.numericalBackend=observed.result.report.solver.numericalBackend?.backend;
     row.paperKernels=observed.result.report.solver.paperKernels;
     row.boundaryKernels=observed.result.report.solver.boundaryKernels;
@@ -264,6 +266,15 @@ try{
      assert.deepEqual(observed.result.report.slits,{left:2,right:2},'Conflicting photo borders must not hide the better simpler finalist.');
      assert.equal(observed.result.report.templateChecksPassed,true);
      assert.ok(row.engineError<.02,'The simpler pair must still explain the uploaded mask.');
+    }
+    if(name==='web-danish-tree-red'&&!engineReference){
+     assert.equal(observed.result.report.solver.featureRecovery?.refinementSeedAvailable,true);
+     assert.ok(row.missingFeatures.every(f=>f.centerMm[0]>98),'The tree branches must be retained.');
+     if(row.missingFeatures.length){
+      assert.equal(row.templateChecksPassed,false,'The better approximation must retain its outstanding feature warning.');
+      assert.ok(await page.getByText(/The pattern is close, but not exact:/).isVisible());
+     }
+     assert.ok(row.engineError<.025,'The recovered tree must improve on the discarded-routing result.');
     }
     if(name==='web-danish-tree-green'){
      assert.equal(observed.result.report.solver.coarseTopologyInitialization?.accepted,true,'The uploaded photograph must exercise coarse routing.');

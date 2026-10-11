@@ -51,8 +51,11 @@ Visual inspection identifies different upstream causes:
   underlying weave has been recovered correctly.
 
 The green nested-heart and angel photographs still have no usable proposal.
-The red/white tree remains at 6.71125% with its current automatic crop. These
-failures are retained, not silently excluded from fitting success figures.
+The red/white tree is at 6.71125% in this baseline. A subsequent
+[routing-retention fix](PROVISIONAL-ROUTING.md) reduces it to 2.05375% on the same
+crop and mask by refining a previously discarded MILP candidate. It still needs
+review because of a missing classified fragment near the edge, and the browser
+still spends too long trying other layouts. These failures remain in the report.
 
 [Current measurements and source hashes](CURVE-DEGREES-VALIDATION.json) include
 all 44 outcomes. Full visual panels and exported candidates are generated at

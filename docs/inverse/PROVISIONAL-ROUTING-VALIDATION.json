@@ -1,0 +1,6810 @@
+{
+  "createdAt": "2026-10-11T18:52:45.476Z",
+  "sourceCommit": "2660c9c5e914f3cceb803cf7401125756b76348f",
+  "algorithmCommit": "2660c9c",
+  "baselineCommit": "ee468d2",
+  "sourceHashes": {
+    "static/inverse/core/feature-recovery.js": "2f671a2a1125eb1efff10a1f825e12ccfb51da973d7f41d9f061648cc1d1e121",
+    "static/inverse/core/direct/fit.js": "4b68a49d398eb4798b1d8569047c1a337b763ea2a656f20042860e182b97ddf7",
+    "scripts/inverse/feature-refinement.test.mjs": "d0373ed5c03245a18540a59be0d2818d5acbc9379a8d3e92c5e2ccc3bff19299",
+    "scripts/inverse/paint-browser-test.mjs": "c773e08b238a9c2b978a7f533bd4a3ac7c805367d262e5c8f14bd086ee9451a3",
+    "scripts/inverse/web-photo-benchmark.mjs": "bebd147c966fd52100210e765617671f57a4d09c33e7c6823ecdb87f64987be0",
+    "scripts/inverse/hunodan-speed-benchmark.mjs": "350a404c8366b0d2b6a9419303b158b6fb23560ad86e143ec9610646c666c123"
+  },
+  "methodology": "Full pipeline from original photographs, fixed automatic crops, unchanged classified masks and fresh geometry. Retained MILP routings are source-derived provisional candidates, not reference templates. Resvg validates exported geometry independently. Reported error is against an estimated mask, not published cutting paths.",
+  "qa": {
+    "applicationPassed": 845,
+    "applicationExistingSkipped": 1,
+    "inversePassed": 537,
+    "typeErrors": 0,
+    "typeExistingWarnings": 7,
+    "lint": "passed",
+    "build": "passed"
+  },
+  "diagnosticTreeProbes": [
+    {
+      "steps": 0,
+      "counts": {
+        "left": 3,
+        "right": 3
+      },
+      "geometry": true,
+      "paper": "pass",
+      "error": 0.03100625,
+      "missingFeatures": [
+        {
+          "value": 1,
+          "areaMm2": 8.8125,
+          "centerMm": [
+            99.22783687943263,
+            80.20833333333333
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "templateChecksPassed": false,
+      "maskUnchanged": true,
+      "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+      "quad": [
+        [
+          594.9223326281342,
+          545.4407619740479
+        ],
+        [
+          903.9724690008255,
+          840.5757044277938
+        ],
+        [
+          598.4190381184407,
+          1165.102659683867
+        ],
+        [
+          292.0160308561468,
+          847.6901776845531
+        ]
+      ],
+      "diagnosticOnly": true
+    },
+    {
+      "steps": 160,
+      "counts": {
+        "left": 3,
+        "right": 3
+      },
+      "geometry": true,
+      "paper": "pass",
+      "error": 0.0205375,
+      "missingFeatures": [
+        {
+          "value": 1,
+          "areaMm2": 8.8125,
+          "centerMm": [
+            99.22783687943263,
+            80.20833333333333
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "templateChecksPassed": false,
+      "maskUnchanged": true,
+      "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+      "quad": [
+        [
+          594.9223326281342,
+          545.4407619740479
+        ],
+        [
+          903.9724690008255,
+          840.5757044277938
+        ],
+        [
+          598.4190381184407,
+          1165.102659683867
+        ],
+        [
+          292.0160308561468,
+          847.6901776845531
+        ]
+      ],
+      "diagnosticOnly": true
+    },
+    {
+      "steps": 750,
+      "counts": {
+        "left": 3,
+        "right": 3
+      },
+      "geometry": true,
+      "paper": "pass",
+      "error": 0.01761875,
+      "missingFeatures": [
+        {
+          "value": 1,
+          "areaMm2": 8.8125,
+          "centerMm": [
+            99.22783687943263,
+            80.20833333333333
+          ],
+          "retainedFraction": 0
+        }
+      ],
+      "templateChecksPassed": false,
+      "maskUnchanged": true,
+      "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+      "quad": [
+        [
+          594.9223326281342,
+          545.4407619740479
+        ],
+        [
+          903.9724690008255,
+          840.5757044277938
+        ],
+        [
+          598.4190381184407,
+          1165.102659683867
+        ],
+        [
+          292.0160308561468,
+          847.6901776845531
+        ]
+      ],
+      "diagnosticOnly": true
+    }
+  ],
+  "hunodan": {
+    "criteria": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.",
+    "medianSeconds": 4.946914250000002,
+    "maxSeconds": 8.380619957999995,
+    "results": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 4.371250625000001,
+        "error": 0.009799111111111111,
+        "beforeError": 0.009799111111111111,
+        "counts": [
+          2,
+          2
+        ]
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 4.5126245,
+        "error": 0.013923555555555555,
+        "beforeError": 0.013923555555555555,
+        "counts": [
+          2,
+          2
+        ]
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.7162199579999995,
+        "error": 0.006634666666666666,
+        "beforeError": 0.006634666666666666,
+        "counts": [
+          2,
+          2
+        ]
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 4.061450416,
+        "error": 0.013824,
+        "beforeError": 0.013824,
+        "counts": [
+          2,
+          2
+        ]
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 3.137370832999997,
+        "error": 0.009042960667083447,
+        "beforeError": 0.009042960667083447,
+        "counts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 5.272185582999999,
+        "error": 0.013468424479166666,
+        "beforeError": 0.013468424479166666,
+        "counts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.517770917000002,
+        "error": 0.005148444444444444,
+        "beforeError": 0.005148444444444444,
+        "counts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 4.946625,
+        "error": 0.005397333333333333,
+        "beforeError": 0.005397333333333333,
+        "counts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 4.947203500000003,
+        "error": 0.004522666666666667,
+        "beforeError": 0.004522666666666667,
+        "counts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 7.065375875000005,
+        "error": 0.005639111111111111,
+        "beforeError": 0.005639111111111111,
+        "counts": [
+          6,
+          6
+        ]
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.3818237500000032,
+        "error": 0.009436444444444445,
+        "beforeError": 0.009436444444444445,
+        "counts": [
+          2,
+          2
+        ]
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 6.348372082999995,
+        "error": 0.006040430615586996,
+        "beforeError": 0.006040430615586996,
+        "counts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 4.801015833000005,
+        "error": 0.003899406226779104,
+        "beforeError": 0.003899406226779104,
+        "counts": [
+          3,
+          3
+        ]
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 7.57499025000001,
+        "error": 0.007776029627903062,
+        "beforeError": 0.007776029627903062,
+        "counts": [
+          5,
+          5
+        ]
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.325947665999993,
+        "error": 0.007550237322696868,
+        "beforeError": 0.007550237322696868,
+        "counts": [
+          3,
+          3
+        ]
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 6.210446582999997,
+        "error": 0.004365548980933596,
+        "beforeError": 0.004365548980933596,
+        "counts": [
+          5,
+          5
+        ]
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 8.380619957999995,
+        "error": 0.0056129769369752365,
+        "beforeError": 0.0056129769369752365,
+        "counts": [
+          7,
+          7
+        ]
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 4.825368999999991,
+        "error": 0.007929362880886427,
+        "beforeError": 0.007929362880886427,
+        "counts": [
+          2,
+          2
+        ]
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.314474916000006,
+        "error": 0.0038045247395833335,
+        "beforeError": 0.0038045247395833335,
+        "counts": [
+          3,
+          3
+        ]
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 6.212695666999993,
+        "error": 0.012332213049376572,
+        "beforeError": 0.012332213049376572,
+        "counts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 6.905899875000003,
+        "error": 0.005053050026595,
+        "beforeError": 0.005053050026595,
+        "counts": [
+          5,
+          5
+        ]
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 6.037016917000001,
+        "error": 0.010624446293860237,
+        "beforeError": 0.010624446293860237,
+        "counts": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "web": {
+    "counts": {
+      "candidate_needs_review": 20,
+      "candidate_checks_passed": 9,
+      "no_crop": 15
+    },
+    "results": [
+      {
+        "id": "danish-silver-on-tree",
+        "status": "candidate_needs_review",
+        "error": 0.03775,
+        "counts": {
+          "left": 1,
+          "right": 1
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 10.260207000000001,
+        "solveAndValidationSeconds": 7.731789583,
+        "track": "two-colour",
+        "sourceSha256": "960a8d2c6b1123b117fc96b13a915e292a67521590f5603dbdd2a7a75a7463fe",
+        "crop": [
+          [
+            3675.0587910188187,
+            941.4244039347897
+          ],
+          [
+            4301.216259950508,
+            1879.5657602327528
+          ],
+          [
+            3034.1125140131558,
+            3153.8443551826886
+          ],
+          [
+            2364.6547122436627,
+            2356.256367005722
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-silver-on-tree",
+          "status": "candidate_needs_review",
+          "error": 0.03775,
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 9.455638041,
+          "solveAndValidationSeconds": 7.1005671659999985
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "danish-green-yellow",
+        "status": "candidate_checks_passed",
+        "error": 0.0033125,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 7.13264825,
+        "solveAndValidationSeconds": 5.241627458000001,
+        "track": "two-colour",
+        "sourceSha256": "5957b2a8f5e25981f400cef687784effdb6c8491b8f0886ab5117ea66d610d4f",
+        "crop": [
+          [
+            611.8509148208856,
+            286.35094865143384
+          ],
+          [
+            1004.8751282970562,
+            698.8338468378164
+          ],
+          [
+            587.4186473166446,
+            1089.821108817554
+          ],
+          [
+            190.47614595917133,
+            686.3303532368276
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-green-yellow",
+          "status": "candidate_checks_passed",
+          "error": 0.0033125,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 6.7153184999999995,
+          "solveAndValidationSeconds": 5.0277041250000005
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "danish-silver-white",
+        "status": "candidate_needs_review",
+        "error": 0.0551625,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 4.3125,
+            "centerMm": [
+              66.88586956521739,
+              46.88949275362319
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.125,
+            "centerMm": [
+              47.79,
+              47.065
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4.375,
+            "centerMm": [
+              76.30357142857143,
+              69.33214285714286
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.6875,
+            "centerMm": [
+              72.79322429906541,
+              71.23014018691589
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.875,
+            "centerMm": [
+              28.20564516129032,
+              71.27822580645162
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.4375,
+            "centerMm": [
+              98.17097701149424,
+              75.13936781609195
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3,
+            "centerMm": [
+              10.083333333333334,
+              77.1875
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.25,
+            "centerMm": [
+              26.903846153846153,
+              77.625
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.4375,
+            "centerMm": [
+              97.46408045977012,
+              82.43247126436782
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.125,
+            "centerMm": [
+              91.86,
+              81.655
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.8125,
+            "centerMm": [
+              10.487903225806452,
+              82.84543010752688
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4.6875,
+            "centerMm": [
+              15.285,
+              85.21166666666667
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.25,
+            "centerMm": [
+              24.79326923076923,
+              87.40384615384615
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.875,
+            "centerMm": [
+              96.12096774193549,
+              87.83467741935483
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.375,
+            "centerMm": [
+              9.157407407407407,
+              90.46296296296296
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3,
+            "centerMm": [
+              90.80729166666669,
+              93.125
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.375,
+            "centerMm": [
+              3.435185185185185,
+              96.26851851851852
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 8.691180625000001,
+        "solveAndValidationSeconds": 7.661401333999998,
+        "track": "two-colour",
+        "sourceSha256": "9a2a6d6fdae42655ec1ee153635ea85556aea24ed79d5960f7837b6bb0a01458",
+        "crop": [
+          [
+            599.1693764177503,
+            669.4541660571701
+          ],
+          [
+            1018.0218109494458,
+            1065.963134187527
+          ],
+          [
+            599.5194263054711,
+            1510.9642520211464
+          ],
+          [
+            206.25924170073043,
+            1093.3670462990751
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-silver-white",
+          "status": "candidate_needs_review",
+          "error": 0.0551625,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 4.3125,
+              "centerMm": [
+                66.88586956521739,
+                46.88949275362319
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.125,
+              "centerMm": [
+                47.79,
+                47.065
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 4.375,
+              "centerMm": [
+                76.30357142857143,
+                69.33214285714286
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.6875,
+              "centerMm": [
+                72.79322429906541,
+                71.23014018691589
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.875,
+              "centerMm": [
+                28.20564516129032,
+                71.27822580645162
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.4375,
+              "centerMm": [
+                98.17097701149424,
+                75.13936781609195
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3,
+              "centerMm": [
+                10.083333333333334,
+                77.1875
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.25,
+              "centerMm": [
+                26.903846153846153,
+                77.625
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.4375,
+              "centerMm": [
+                97.46408045977012,
+                82.43247126436782
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.125,
+              "centerMm": [
+                91.86,
+                81.655
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.8125,
+              "centerMm": [
+                10.487903225806452,
+                82.84543010752688
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 4.6875,
+              "centerMm": [
+                15.285,
+                85.21166666666667
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.25,
+              "centerMm": [
+                24.79326923076923,
+                87.40384615384615
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.875,
+              "centerMm": [
+                96.12096774193549,
+                87.83467741935483
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.375,
+              "centerMm": [
+                9.157407407407407,
+                90.46296296296296
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3,
+              "centerMm": [
+                90.80729166666669,
+                93.125
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.375,
+              "centerMm": [
+                3.435185185185185,
+                96.26851851851852
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 8.773611208000002,
+          "solveAndValidationSeconds": 7.673484292000001
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "danish-red-gold",
+        "status": "candidate_needs_review",
+        "error": 0.139425,
+        "counts": {
+          "left": 6,
+          "right": 6
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 1,
+            "areaMm2": 3.375,
+            "centerMm": [
+              75.41203703703704,
+              15.810185185185185
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 3.9375,
+            "centerMm": [
+              19.34722222222222,
+              19.438492063492063
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 21.75,
+            "centerMm": [
+              53.792385057471265,
+              21.998563218390803
+            ],
+            "retainedFraction": 0.42528735632183906
+          },
+          {
+            "value": 1,
+            "areaMm2": 5.0625,
+            "centerMm": [
+              77.17129629629629,
+              21.35648148148148
+            ],
+            "retainedFraction": 0.2222222222222222
+          },
+          {
+            "value": 1,
+            "areaMm2": 20.3125,
+            "centerMm": [
+              28.326538461538462,
+              22.680384615384614
+            ],
+            "retainedFraction": 0.5538461538461539
+          },
+          {
+            "value": 1,
+            "areaMm2": 8.8125,
+            "centerMm": [
+              11.261524822695035,
+              46.898049645390074
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 18.5,
+            "centerMm": [
+              53.85304054054054,
+              50.27364864864865
+            ],
+            "retainedFraction": 0.5337837837837838
+          },
+          {
+            "value": 1,
+            "areaMm2": 3.5,
+            "centerMm": [
+              25.183035714285715,
+              49.566964285714285
+            ],
+            "retainedFraction": 0.08928571428571429
+          },
+          {
+            "value": 1,
+            "areaMm2": 7.25,
+            "centerMm": [
+              93,
+              54.26724137931034
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 3.75,
+            "centerMm": [
+              80.975,
+              77.39166666666667
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 35.4375,
+            "centerMm": [
+              46.67261904761906,
+              83.6576278659612
+            ],
+            "retainedFraction": 0.43915343915343913
+          }
+        ],
+        "totalSeconds": 10.174274582999999,
+        "solveAndValidationSeconds": 9.218097583000002,
+        "track": "printed-paper",
+        "sourceSha256": "8de9081d6aad37c1e63600cf1f51f5c205c2d383b89f22a16cb14aab63d36a96",
+        "crop": [
+          [
+            562.0280391257645,
+            706.7566839357997
+          ],
+          [
+            968.5562226976498,
+            1135.5086309851997
+          ],
+          [
+            573.5422312055584,
+            1519.7354477775007
+          ],
+          [
+            175.53439595783598,
+            1088.4367795848705
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-red-gold",
+          "status": "candidate_needs_review",
+          "error": 0.13795625,
+          "counts": {
+            "left": 6,
+            "right": 6
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 1,
+              "areaMm2": 3.375,
+              "centerMm": [
+                75.41203703703704,
+                15.810185185185185
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 3.9375,
+              "centerMm": [
+                19.34722222222222,
+                19.438492063492063
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 21.75,
+              "centerMm": [
+                53.792385057471265,
+                21.998563218390803
+              ],
+              "retainedFraction": 0.4166666666666667
+            },
+            {
+              "value": 1,
+              "areaMm2": 5.0625,
+              "centerMm": [
+                77.17129629629629,
+                21.35648148148148
+              ],
+              "retainedFraction": 0.13580246913580246
+            },
+            {
+              "value": 1,
+              "areaMm2": 20.3125,
+              "centerMm": [
+                28.326538461538462,
+                22.680384615384614
+              ],
+              "retainedFraction": 0.556923076923077
+            },
+            {
+              "value": 1,
+              "areaMm2": 8.8125,
+              "centerMm": [
+                11.261524822695035,
+                46.898049645390074
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 18.5,
+              "centerMm": [
+                53.85304054054054,
+                50.27364864864865
+              ],
+              "retainedFraction": 0.5506756756756757
+            },
+            {
+              "value": 1,
+              "areaMm2": 3.5,
+              "centerMm": [
+                25.183035714285715,
+                49.566964285714285
+              ],
+              "retainedFraction": 0.03571428571428571
+            },
+            {
+              "value": 1,
+              "areaMm2": 7.25,
+              "centerMm": [
+                93,
+                54.26724137931034
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 3.75,
+              "centerMm": [
+                80.975,
+                77.39166666666667
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 35.4375,
+              "centerMm": [
+                46.67261904761906,
+                83.6576278659612
+              ],
+              "retainedFraction": 0.47795414462081126
+            }
+          ],
+          "totalSeconds": 10.164897708,
+          "solveAndValidationSeconds": 9.203832874999996
+        },
+        "errorChange": 0.001468749999999991,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "danish-tree-red",
+        "status": "candidate_needs_review",
+        "error": 0.0205375,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "feature-recovery",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 1,
+            "areaMm2": 8.8125,
+            "centerMm": [
+              99.22783687943263,
+              80.20833333333333
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "refinement": {
+          "imageError": 0.02020625,
+          "featuresPassed": false,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "steps": 160
+        },
+        "refinementSeedAvailable": true,
+        "totalSeconds": 9.068535791000002,
+        "solveAndValidationSeconds": 8.083595125,
+        "track": "two-colour",
+        "sourceSha256": "6603c4c02f4c45d097a47b06bf003e62d5710ef33ce574b35f2a2e351d274b40",
+        "crop": [
+          [
+            594.9223326281342,
+            545.4407619740479
+          ],
+          [
+            903.9724690008255,
+            840.5757044277938
+          ],
+          [
+            598.4190381184407,
+            1165.102659683867
+          ],
+          [
+            292.0160308561468,
+            847.6901776845531
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-tree-red",
+          "status": "candidate_needs_review",
+          "error": 0.0671125,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 1,
+              "areaMm2": 8.8125,
+              "centerMm": [
+                99.22783687943263,
+                80.20833333333333
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 10.823773500000003,
+          "solveAndValidationSeconds": 9.848722291999998
+        },
+        "errorChange": -0.046575000000000005,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "danish-tree-green",
+        "status": "candidate_checks_passed",
+        "error": 0.011375,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "coarse-boundary-topology",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 7.757499374999999,
+        "solveAndValidationSeconds": 6.490505583999998,
+        "track": "two-colour",
+        "sourceSha256": "5a8c872aeae2452165ddc05753a2255effaba318a7eb4b5b57ad9fb4361c1439",
+        "crop": [
+          [
+            613.4629495846865,
+            709.8754165460504
+          ],
+          [
+            991.3479406135674,
+            1101.880332092388
+          ],
+          [
+            589.7733778087984,
+            1526.3403443658829
+          ],
+          [
+            201.96444906745154,
+            1085.6004246480518
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-tree-green",
+          "status": "candidate_checks_passed",
+          "error": 0.011375,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "selectedInitialization": "coarse-boundary-topology",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 7.743849457999997,
+          "solveAndValidationSeconds": 6.482047875000004
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "danish-tree-dots",
+        "status": "candidate_needs_review",
+        "error": 0.1311,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 36,
+            "centerMm": [
+              57.86588541666666,
+              18.90407986111111
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 36.4375,
+            "centerMm": [
+              63.70947684391081,
+              33.3192538593482
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 38.4375,
+            "centerMm": [
+              27.024186991869918,
+              46.62052845528455
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 39.1875,
+            "centerMm": [
+              28.894537480063796,
+              63.25657894736842
+            ],
+            "retainedFraction": 0.5598086124401914
+          },
+          {
+            "value": 0,
+            "areaMm2": 40.9375,
+            "centerMm": [
+              23.7543893129771,
+              77.76087786259542
+            ],
+            "retainedFraction": 0.5068702290076336
+          },
+          {
+            "value": 0,
+            "areaMm2": 41.125,
+            "centerMm": [
+              42.49582066869301,
+              84.74924012158053
+            ],
+            "retainedFraction": 0.506079027355623
+          },
+          {
+            "value": 1,
+            "areaMm2": 62.9375,
+            "centerMm": [
+              11.11680734856008,
+              16.753848063555115
+            ],
+            "retainedFraction": 0.5004965243296922
+          }
+        ],
+        "totalSeconds": 12.800738959000002,
+        "solveAndValidationSeconds": 9.863389499999997,
+        "track": "printed-paper",
+        "sourceSha256": "b7a0ae1209a1fbc5092b1e1b453dae5a19decc11c33a12e12b345ba9cfb16063",
+        "crop": [
+          [
+            580.619490138917,
+            603.2344575832992
+          ],
+          [
+            1044.082427083676,
+            1027.6180315158972
+          ],
+          [
+            605.2572739153305,
+            1542.2580832514395
+          ],
+          [
+            155.76190058899786,
+            1049.3581580956206
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-tree-dots",
+          "status": "candidate_needs_review",
+          "error": 0.1311,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 36,
+              "centerMm": [
+                57.86588541666666,
+                18.90407986111111
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 36.4375,
+              "centerMm": [
+                63.70947684391081,
+                33.3192538593482
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 38.4375,
+              "centerMm": [
+                27.024186991869918,
+                46.62052845528455
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 39.1875,
+              "centerMm": [
+                28.894537480063796,
+                63.25657894736842
+              ],
+              "retainedFraction": 0.5598086124401914
+            },
+            {
+              "value": 0,
+              "areaMm2": 40.9375,
+              "centerMm": [
+                23.7543893129771,
+                77.76087786259542
+              ],
+              "retainedFraction": 0.5068702290076336
+            },
+            {
+              "value": 0,
+              "areaMm2": 41.125,
+              "centerMm": [
+                42.49582066869301,
+                84.74924012158053
+              ],
+              "retainedFraction": 0.506079027355623
+            },
+            {
+              "value": 1,
+              "areaMm2": 62.9375,
+              "centerMm": [
+                11.11680734856008,
+                16.753848063555115
+              ],
+              "retainedFraction": 0.5004965243296922
+            }
+          ],
+          "totalSeconds": 11.813431791999996,
+          "solveAndValidationSeconds": 9.886534749999992
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "gathering-pink-single",
+        "status": "no_crop",
+        "totalSeconds": 1.8999696250000124,
+        "track": "printed-paper",
+        "sourceSha256": "867f0e5852ebeba92db6e89b0d4883f88b12a30226a93bb2042d9bce0e17500b",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "gathering-pink-single",
+          "status": "no_crop",
+          "totalSeconds": 1.8502582079999992
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "bibel-checker-2",
+        "status": "candidate_checks_passed",
+        "error": 0.01753125,
+        "counts": {
+          "left": 1,
+          "right": 1
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 3.536025582999995,
+        "solveAndValidationSeconds": 2.428760500000004,
+        "track": "two-colour",
+        "sourceSha256": "d715441c747a0f9d93db029c5b97b4c0a9dff0f5d3bd6480a871ae8285abfb4b",
+        "crop": [
+          [
+            463.32871077227776,
+            163.52690443466037
+          ],
+          [
+            674.7768124351633,
+            380.0728413983725
+          ],
+          [
+            477.2778856976256,
+            588.0147828851123
+          ],
+          [
+            267.8423056748111,
+            383.1302641627054
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "bibel-checker-2",
+          "status": "candidate_checks_passed",
+          "error": 0.01753125,
+          "counts": {
+            "left": 1,
+            "right": 1
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 3.441322374999989,
+          "solveAndValidationSeconds": 2.367928
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "bibel-checker-3",
+        "status": "candidate_checks_passed",
+        "error": 0.014375,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 6.048655207999997,
+        "solveAndValidationSeconds": 5.030382540999999,
+        "track": "two-colour",
+        "sourceSha256": "ca918edf5ebf69b903f8f0c95cf048280c7ed4e1dea135f5e14aca3529decbc7",
+        "crop": [
+          [
+            428.52499957084467,
+            107.94140443033162
+          ],
+          [
+            651.1719003615806,
+            307.87535698407953
+          ],
+          [
+            457.77859974478423,
+            527.5446206961046
+          ],
+          [
+            247.86376696068473,
+            325.5685826170488
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "bibel-checker-3",
+          "status": "candidate_checks_passed",
+          "error": 0.014375,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 6.102752957999997,
+          "solveAndValidationSeconds": 5.106709125000008
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "bibel-checker-4",
+        "status": "candidate_checks_passed",
+        "error": 0.0035625,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 5.571690333999999,
+        "solveAndValidationSeconds": 4.267758541000003,
+        "track": "two-colour",
+        "sourceSha256": "8552792996b59b8c94b8ef67759ce53f9799c73683f55d673314415cefd9ac87",
+        "crop": [
+          [
+            429.70317261193094,
+            122.10481294430112
+          ],
+          [
+            652.5269364078364,
+            331.6303238738545
+          ],
+          [
+            446.11534233992893,
+            562.4943090857911
+          ],
+          [
+            228.89995848689574,
+            353.5303167050975
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "bibel-checker-4",
+          "status": "candidate_checks_passed",
+          "error": 0.0035625,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 5.500320332999996,
+          "solveAndValidationSeconds": 4.247385708000001
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "bibel-narrow-wide",
+        "status": "candidate_checks_passed",
+        "error": 0.02026875,
+        "counts": {
+          "left": 4,
+          "right": 5
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 10.032916750000004,
+        "solveAndValidationSeconds": 8.844145375000007,
+        "track": "two-colour",
+        "sourceSha256": "f89f56183194d4035b3e4f0864d5ea7642912342a5717da2ad0c6c38da7da194",
+        "crop": [
+          [
+            479.4201306253251,
+            106.79662147269192
+          ],
+          [
+            695.726809621462,
+            316.1675646420967
+          ],
+          [
+            492.9391897261545,
+            559.9533150678765
+          ],
+          [
+            258.89314608770366,
+            346.1147488291578
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "bibel-narrow-wide",
+          "status": "candidate_checks_passed",
+          "error": 0.02026875,
+          "counts": {
+            "left": 4,
+            "right": 5
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 9.992737667000009,
+          "solveAndValidationSeconds": 8.829783250000007
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "bibel-nested-heart-green",
+        "status": "no_crop",
+        "totalSeconds": 0.8950144169999985,
+        "track": "two-colour",
+        "sourceSha256": "0c426b93e08995e5daf1714aca5cee453e5126781455e1f284f4f00c42a40990",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "bibel-nested-heart-green",
+          "status": "no_crop",
+          "totalSeconds": 0.8896040409999987
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "bibel-nested-heart-red",
+        "status": "candidate_checks_passed",
+        "error": 0.02806875,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 11.101365834000012,
+        "solveAndValidationSeconds": 9.193414458,
+        "track": "two-colour",
+        "sourceSha256": "2a3c21b4bab08513abb8d5538143dd2670df0ce0fe3048ec16b93359914f97a2",
+        "crop": [
+          [
+            474.0910731679586,
+            138.3127622344359
+          ],
+          [
+            688.8053555743762,
+            358.5571722152888
+          ],
+          [
+            511.29773346920297,
+            576.8853021021612
+          ],
+          [
+            267.703177909864,
+            383.3879679813726
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "bibel-nested-heart-red",
+          "status": "candidate_checks_passed",
+          "error": 0.02806875,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 11.077690042000002,
+          "solveAndValidationSeconds": 9.183645416999992
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "bibel-angel",
+        "status": "no_crop",
+        "totalSeconds": 0.884952707999997,
+        "track": "two-colour",
+        "sourceSha256": "524ac9f34366e7db1cdf04687a802e0e89ea36589f8943f72e7fee4d9c6551d9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "bibel-angel",
+          "status": "no_crop",
+          "totalSeconds": 0.8766718339999934
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "danish-tree-group-top",
+        "status": "no_crop",
+        "totalSeconds": 0.397439458000008,
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-tree-group-top",
+          "status": "no_crop",
+          "totalSeconds": 0.3975059160000092
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "danish-tree-group-right",
+        "status": "candidate_needs_review",
+        "error": 0.05973125,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 9.873102375000002,
+        "solveAndValidationSeconds": 8.966331125000012,
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "crop": [
+          [
+            888.4143842438355,
+            481.8438662465304
+          ],
+          [
+            1043.017551063292,
+            669.9022814798805
+          ],
+          [
+            849.2070483129662,
+            822.1122355074731
+          ],
+          [
+            701.9680460231496,
+            623.8627313099396
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-tree-group-right",
+          "status": "candidate_needs_review",
+          "error": 0.05973125,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 9.950731832999997,
+          "solveAndValidationSeconds": 8.975188957999999
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "danish-tree-group-left",
+        "status": "no_crop",
+        "totalSeconds": 0.32131645800000114,
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-tree-group-left",
+          "status": "no_crop",
+          "totalSeconds": 0.3353884580000013
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "danish-tree-group-bottom",
+        "status": "no_crop",
+        "totalSeconds": 0.2710751659999951,
+        "track": "scene",
+        "sourceSha256": "2f5e6fcf603f627d3184407ff89e078880f62c3f6376af720e6030397d7461bc",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "danish-tree-group-bottom",
+          "status": "no_crop",
+          "totalSeconds": 0.3495062920000055
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "gathering-striped-scene-top",
+        "status": "candidate_needs_review",
+        "error": 0.0633125,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 3.0625,
+            "centerMm": [
+              81.75765306122449,
+              35.21173469387755
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 10.375,
+            "centerMm": [
+              68.644578313253,
+              3.397590361445783
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 6.25,
+            "centerMm": [
+              86.3175,
+              12.2575
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 10.0625,
+            "centerMm": [
+              34.267857142857146,
+              13.68555900621118
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 9.3125,
+            "centerMm": [
+              3.559563758389262,
+              19.661912751677853
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 8,
+            "centerMm": [
+              92.88671875,
+              22.451171875
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 8.4375,
+            "centerMm": [
+              61.389814814814805,
+              27.834259259259262
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 6.75,
+            "centerMm": [
+              43.62268518518518,
+              31.27083333333333
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 5.9375,
+            "centerMm": [
+              24.638157894736842,
+              36.92236842105263
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 8.0625,
+            "centerMm": [
+              87.72189922480621,
+              41.24515503875969
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 13.4375,
+            "centerMm": [
+              67.59360465116279,
+              46.58546511627907
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 11.75,
+            "centerMm": [
+              29.7406914893617,
+              46.63696808510638
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 29.125,
+            "centerMm": [
+              54.9318669527897,
+              58.85675965665236
+            ],
+            "retainedFraction": 0.03648068669527897
+          },
+          {
+            "value": 1,
+            "areaMm2": 10.375,
+            "centerMm": [
+              78.46084337349397,
+              68.33734939759036
+            ],
+            "retainedFraction": 0.4939759036144578
+          },
+          {
+            "value": 1,
+            "areaMm2": 10.0625,
+            "centerMm": [
+              84.79891304347827,
+              68.11723602484471
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 32.5,
+            "centerMm": [
+              76.54134615384615,
+              76.36923076923077
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 51.75,
+            "centerMm": [
+              81.49335748792271,
+              85.64311594202898
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 5.3125,
+            "centerMm": [
+              29.12205882352941,
+              87.64852941176473
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 6.125,
+            "centerMm": [
+              41.232142857142854,
+              95.06377551020408
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 9.696672332999995,
+        "solveAndValidationSeconds": 8.827180584000002,
+        "track": "printed-paper",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "crop": [
+          [
+            227.26145453076103,
+            172.19787670243022
+          ],
+          [
+            419.8048673657847,
+            280.583000509495
+          ],
+          [
+            282.83722802140056,
+            482.1675810932244
+          ],
+          [
+            153.54019488167887,
+            367.20451727567905
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "gathering-striped-scene-top",
+          "status": "candidate_needs_review",
+          "error": 0.0633125,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 3.0625,
+              "centerMm": [
+                81.75765306122449,
+                35.21173469387755
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 10.375,
+              "centerMm": [
+                68.644578313253,
+                3.397590361445783
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 6.25,
+              "centerMm": [
+                86.3175,
+                12.2575
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 10.0625,
+              "centerMm": [
+                34.267857142857146,
+                13.68555900621118
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 9.3125,
+              "centerMm": [
+                3.559563758389262,
+                19.661912751677853
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 8,
+              "centerMm": [
+                92.88671875,
+                22.451171875
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 8.4375,
+              "centerMm": [
+                61.389814814814805,
+                27.834259259259262
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 6.75,
+              "centerMm": [
+                43.62268518518518,
+                31.27083333333333
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 5.9375,
+              "centerMm": [
+                24.638157894736842,
+                36.92236842105263
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 8.0625,
+              "centerMm": [
+                87.72189922480621,
+                41.24515503875969
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 13.4375,
+              "centerMm": [
+                67.59360465116279,
+                46.58546511627907
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 11.75,
+              "centerMm": [
+                29.7406914893617,
+                46.63696808510638
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 29.125,
+              "centerMm": [
+                54.9318669527897,
+                58.85675965665236
+              ],
+              "retainedFraction": 0.03648068669527897
+            },
+            {
+              "value": 1,
+              "areaMm2": 10.375,
+              "centerMm": [
+                78.46084337349397,
+                68.33734939759036
+              ],
+              "retainedFraction": 0.4939759036144578
+            },
+            {
+              "value": 1,
+              "areaMm2": 10.0625,
+              "centerMm": [
+                84.79891304347827,
+                68.11723602484471
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 32.5,
+              "centerMm": [
+                76.54134615384615,
+                76.36923076923077
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 51.75,
+              "centerMm": [
+                81.49335748792271,
+                85.64311594202898
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 5.3125,
+              "centerMm": [
+                29.12205882352941,
+                87.64852941176473
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 6.125,
+              "centerMm": [
+                41.232142857142854,
+                95.06377551020408
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 9.767067458999998,
+          "solveAndValidationSeconds": 8.89525275
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "gathering-striped-scene-bottom",
+        "status": "no_crop",
+        "totalSeconds": 0.21347629200000665,
+        "track": "printed-paper",
+        "sourceSha256": "fee1e0ab49ac2a4d4704e4011ff323cd35f8d754b24a14e45380ccd46f59089d",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "gathering-striped-scene-bottom",
+          "status": "no_crop",
+          "totalSeconds": 0.21513120900001376
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "gathering-hanging-trio-top",
+        "status": "no_crop",
+        "totalSeconds": 0.9191299999999901,
+        "track": "printed-paper",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "gathering-hanging-trio-top",
+          "status": "no_crop",
+          "totalSeconds": 0.9005927090000041
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "gathering-hanging-trio-middle",
+        "status": "no_crop",
+        "totalSeconds": 0.19473766699999395,
+        "track": "printed-paper",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "gathering-hanging-trio-middle",
+          "status": "no_crop",
+          "totalSeconds": 0.18903958300000523
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "gathering-hanging-trio-bottom",
+        "status": "no_crop",
+        "totalSeconds": 0.8055854160000017,
+        "track": "printed-paper",
+        "sourceSha256": "8430404de482224c669c12d30d76ca039a4d582a7b606e0b719d2ed1464341e9",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "gathering-hanging-trio-bottom",
+          "status": "no_crop",
+          "totalSeconds": 0.781648749999993
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r1c1",
+        "status": "no_crop",
+        "totalSeconds": 0.13779429200000595,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r1c1",
+          "status": "no_crop",
+          "totalSeconds": 0.1468453750000044
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r1c2",
+        "status": "candidate_needs_review",
+        "error": 0.0270875,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 8.375,
+            "centerMm": [
+              93.29477611940298,
+              4.544776119402985
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.5,
+            "centerMm": [
+              46.48541666666667,
+              7.2875
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.0625,
+            "centerMm": [
+              3.181701030927835,
+              10.045103092783505
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.3125,
+            "centerMm": [
+              62.011752136752136,
+              20.49465811965812
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.625,
+            "centerMm": [
+              31.950471698113212,
+              22.325471698113212
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.875,
+            "centerMm": [
+              62.74545454545454,
+              34.68409090909091
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.375,
+            "centerMm": [
+              32.45974576271186,
+              36.21822033898305
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7,
+            "centerMm": [
+              18,
+              36.75
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.8125,
+            "centerMm": [
+              94.413,
+              47.367
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.75,
+            "centerMm": [
+              47.9375,
+              49.44444444444444
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.125,
+            "centerMm": [
+              3.9515306122448974,
+              50.936224489795926
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.5,
+            "centerMm": [
+              63.48317307692307,
+              62.64903846153846
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.6875,
+            "centerMm": [
+              33.419392523364486,
+              63.617990654205606
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.5,
+            "centerMm": [
+              18.822115384615383,
+              63.88461538461539
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.0625,
+            "centerMm": [
+              95.01216814159292,
+              89.35287610619469
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.6875,
+            "centerMm": [
+              48.88434579439252,
+              90.43808411214954
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.4375,
+            "centerMm": [
+              4.375,
+              90.875
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 9.28500770799999,
+        "solveAndValidationSeconds": 8.442674042000013,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            521.3070301247682,
+            49.751306143306465
+          ],
+          [
+            618.5814576706026,
+            150.4612464853201
+          ],
+          [
+            521.0913237211223,
+            256.2524464859224
+          ],
+          [
+            413.8366990575314,
+            159.39813647274087
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r1c2",
+          "status": "candidate_needs_review",
+          "error": 0.0270875,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 8.375,
+              "centerMm": [
+                93.29477611940298,
+                4.544776119402985
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.5,
+              "centerMm": [
+                46.48541666666667,
+                7.2875
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.0625,
+              "centerMm": [
+                3.181701030927835,
+                10.045103092783505
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.3125,
+              "centerMm": [
+                62.011752136752136,
+                20.49465811965812
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.625,
+              "centerMm": [
+                31.950471698113212,
+                22.325471698113212
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.875,
+              "centerMm": [
+                62.74545454545454,
+                34.68409090909091
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.375,
+              "centerMm": [
+                32.45974576271186,
+                36.21822033898305
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7,
+              "centerMm": [
+                18,
+                36.75
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.8125,
+              "centerMm": [
+                94.413,
+                47.367
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.75,
+              "centerMm": [
+                47.9375,
+                49.44444444444444
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.125,
+              "centerMm": [
+                3.9515306122448974,
+                50.936224489795926
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.5,
+              "centerMm": [
+                63.48317307692307,
+                62.64903846153846
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.6875,
+              "centerMm": [
+                33.419392523364486,
+                63.617990654205606
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.5,
+              "centerMm": [
+                18.822115384615383,
+                63.88461538461539
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.0625,
+              "centerMm": [
+                95.01216814159292,
+                89.35287610619469
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.6875,
+              "centerMm": [
+                48.88434579439252,
+                90.43808411214954
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.4375,
+              "centerMm": [
+                4.375,
+                90.875
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 9.162779624999995,
+          "solveAndValidationSeconds": 8.375643834000018
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r1c3",
+        "status": "candidate_needs_review",
+        "error": 0.0326375,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 5,
+            "centerMm": [
+              73.746875,
+              12.7625
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4,
+            "centerMm": [
+              19.13671875,
+              91.8046875
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 9.138437791999982,
+        "solveAndValidationSeconds": 8.413698250000015,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            808.5235086741088,
+            38.85002427671212
+          ],
+          [
+            897.2387355371662,
+            146.14275626656803
+          ],
+          [
+            791.1310267587257,
+            253.30788159413737
+          ],
+          [
+            674.9189478578589,
+            133.6827120283013
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r1c3",
+          "status": "candidate_needs_review",
+          "error": 0.0326375,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 5,
+              "centerMm": [
+                73.746875,
+                12.7625
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 4,
+              "centerMm": [
+                19.13671875,
+                91.8046875
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 9.033779333000012,
+          "solveAndValidationSeconds": 8.32793979199999
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r1c4",
+        "status": "candidate_checks_passed",
+        "error": 0.007725,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 7.276127666999994,
+        "solveAndValidationSeconds": 6.542863416000007,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            1061.9572804034103,
+            38.32920578721208
+          ],
+          [
+            1188.4109424477783,
+            136.93590042567195
+          ],
+          [
+            1074.0401667303872,
+            248.71342666646203
+          ],
+          [
+            968.5855171707337,
+            140.2765146051632
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r1c4",
+          "status": "candidate_checks_passed",
+          "error": 0.007725,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 7.314773417000018,
+          "solveAndValidationSeconds": 6.609025792000001
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r2c1",
+        "status": "candidate_needs_review",
+        "error": 0.08258125,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 1,
+            "areaMm2": 3.4375,
+            "centerMm": [
+              18.365909090909092,
+              97.90681818181818
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 9.704230415999977,
+        "solveAndValidationSeconds": 8.854288541999995,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            353.5448267631607,
+            242.78585255648534
+          ],
+          [
+            457.5912123293528,
+            348.3336113073291
+          ],
+          [
+            351.5082874352929,
+            456.6105455197329
+          ],
+          [
+            235.41573309258047,
+            346.94643463123214
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r2c1",
+          "status": "candidate_needs_review",
+          "error": 0.08258125,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 1,
+              "areaMm2": 3.4375,
+              "centerMm": [
+                18.365909090909092,
+                97.90681818181818
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 9.683484333,
+          "solveAndValidationSeconds": 8.872347792000015
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r2c2",
+        "status": "candidate_needs_review",
+        "error": 0.05739375,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 9.930636750000005,
+        "solveAndValidationSeconds": 9.164777417000005,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            657.5998979782407,
+            235.2825588647455
+          ],
+          [
+            752.3451267731036,
+            337.59585455769127
+          ],
+          [
+            650.0481309205427,
+            451.7028297682693
+          ],
+          [
+            532.9712284917887,
+            337.57006779033077
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r2c2",
+          "status": "candidate_needs_review",
+          "error": 0.05739375,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 9.922761208000011,
+          "solveAndValidationSeconds": 9.169475084000005
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r2c3",
+        "status": "candidate_needs_review",
+        "error": 0.0985125,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 9.615703500000004,
+        "solveAndValidationSeconds": 8.808853917,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            939.2899397565939,
+            242.49348228213674
+          ],
+          [
+            1076.223883469362,
+            329.5846214764511
+          ],
+          [
+            964.8000500055981,
+            434.99022881332223
+          ],
+          [
+            847.6416610633447,
+            306.6681306874159
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r2c3",
+          "status": "candidate_needs_review",
+          "error": 0.0985125,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 9.573047833000018,
+          "solveAndValidationSeconds": 8.767493458000011
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r3c1",
+        "status": "no_crop",
+        "totalSeconds": 0.14567304200000944,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r3c1",
+          "status": "no_crop",
+          "totalSeconds": 0.14449124999999186
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r3c2",
+        "status": "candidate_needs_review",
+        "error": 0.04849375,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 6.125,
+            "centerMm": [
+              12.043367346938776,
+              4.780612244897959
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 10.625,
+            "centerMm": [
+              91.59117647058824,
+              5.775
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.625,
+            "centerMm": [
+              41.96933962264151,
+              13.783018867924529
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.875,
+            "centerMm": [
+              27.28989361702128,
+              16.204787234042552
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 10.875,
+            "centerMm": [
+              91.75862068965517,
+              21.102011494252874
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.875,
+            "centerMm": [
+              43.182539682539684,
+              27.863095238095237
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.4375,
+            "centerMm": [
+              28.54490291262136,
+              29.933252427184467
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.5625,
+            "centerMm": [
+              59.19880952380952,
+              39.84404761904762
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.9375,
+            "centerMm": [
+              16.553947368421053,
+              44.669736842105266
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.125,
+            "centerMm": [
+              3.679878048780488,
+              46.164634146341456
+            ],
+            "retainedFraction": 0.3780487804878049
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.4375,
+            "centerMm": [
+              59.793067226890756,
+              53.67331932773109
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.5,
+            "centerMm": [
+              17.926136363636363,
+              57.02556818181818
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.375,
+            "centerMm": [
+              5.308139534883721,
+              58.247093023255815
+            ],
+            "retainedFraction": 0.09302325581395349
+          },
+          {
+            "value": 0,
+            "areaMm2": 8.5,
+            "centerMm": [
+              91.7702205882353,
+              64.78125
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.4375,
+            "centerMm": [
+              45.73419540229886,
+              67.97270114942529
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4.5,
+            "centerMm": [
+              31.868055555555557,
+              68.54861111111111
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.0625,
+            "centerMm": [
+              91.62942477876106,
+              78.32190265486726
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.8125,
+            "centerMm": [
+              32.67607526881721,
+              80.78360215053763
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 8.6875,
+            "centerMm": [
+              61.547661870503596,
+              92.8318345323741
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.25,
+            "centerMm": [
+              21.6975,
+              93.1075
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.625,
+            "centerMm": [
+              9.38888888888889,
+              93.275
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 9.912251874999987,
+        "solveAndValidationSeconds": 9.09835508399998,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            517.9083929038097,
+            429.9681337834105
+          ],
+          [
+            601.6756995408481,
+            533.5827318605574
+          ],
+          [
+            505.95475136969003,
+            646.5440958366516
+          ],
+          [
+            387.20965540302035,
+            549.1318486775283
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r3c2",
+          "status": "candidate_needs_review",
+          "error": 0.04849375,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 6.125,
+              "centerMm": [
+                12.043367346938776,
+                4.780612244897959
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 10.625,
+              "centerMm": [
+                91.59117647058824,
+                5.775
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.625,
+              "centerMm": [
+                41.96933962264151,
+                13.783018867924529
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.875,
+              "centerMm": [
+                27.28989361702128,
+                16.204787234042552
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 10.875,
+              "centerMm": [
+                91.75862068965517,
+                21.102011494252874
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.875,
+              "centerMm": [
+                43.182539682539684,
+                27.863095238095237
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.4375,
+              "centerMm": [
+                28.54490291262136,
+                29.933252427184467
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.5625,
+              "centerMm": [
+                59.19880952380952,
+                39.84404761904762
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.9375,
+              "centerMm": [
+                16.553947368421053,
+                44.669736842105266
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.125,
+              "centerMm": [
+                3.679878048780488,
+                46.164634146341456
+              ],
+              "retainedFraction": 0.3780487804878049
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.4375,
+              "centerMm": [
+                59.793067226890756,
+                53.67331932773109
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.5,
+              "centerMm": [
+                17.926136363636363,
+                57.02556818181818
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.375,
+              "centerMm": [
+                5.308139534883721,
+                58.247093023255815
+              ],
+              "retainedFraction": 0.09302325581395349
+            },
+            {
+              "value": 0,
+              "areaMm2": 8.5,
+              "centerMm": [
+                91.7702205882353,
+                64.78125
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.4375,
+              "centerMm": [
+                45.73419540229886,
+                67.97270114942529
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 4.5,
+              "centerMm": [
+                31.868055555555557,
+                68.54861111111111
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.0625,
+              "centerMm": [
+                91.62942477876106,
+                78.32190265486726
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.8125,
+              "centerMm": [
+                32.67607526881721,
+                80.78360215053763
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 8.6875,
+              "centerMm": [
+                61.547661870503596,
+                92.8318345323741
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.25,
+              "centerMm": [
+                21.6975,
+                93.1075
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.625,
+              "centerMm": [
+                9.38888888888889,
+                93.275
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 9.892237708,
+          "solveAndValidationSeconds": 9.086166334000009
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r3c3",
+        "status": "candidate_needs_review",
+        "error": 0.13658125,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 1,
+            "areaMm2": 53.9375,
+            "centerMm": [
+              52.07546349942063,
+              10.580098493626883
+            ],
+            "retainedFraction": 0.31517960602549244
+          },
+          {
+            "value": 1,
+            "areaMm2": 11.1875,
+            "centerMm": [
+              58.076117318435756,
+              8.299581005586592
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 4.3125,
+            "centerMm": [
+              34.44021739130435,
+              83.91485507246377
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 9.796936166999979,
+        "solveAndValidationSeconds": 8.917947667,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            802.32711491473,
+            430.5445937214524
+          ],
+          [
+            892.6043816680483,
+            551.4125776707572
+          ],
+          [
+            795.6284489233648,
+            655.9774970007879
+          ],
+          [
+            670.7820415671293,
+            536.9756782844511
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r3c3",
+          "status": "candidate_needs_review",
+          "error": 0.13658125,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 1,
+              "areaMm2": 53.9375,
+              "centerMm": [
+                52.07546349942063,
+                10.580098493626883
+              ],
+              "retainedFraction": 0.31517960602549244
+            },
+            {
+              "value": 1,
+              "areaMm2": 11.1875,
+              "centerMm": [
+                58.076117318435756,
+                8.299581005586592
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 4.3125,
+              "centerMm": [
+                34.44021739130435,
+                83.91485507246377
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 9.84671845799999,
+          "solveAndValidationSeconds": 8.933433584000014
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r3c4",
+        "status": "candidate_needs_review",
+        "error": 0.058225,
+        "counts": {
+          "left": 5,
+          "right": 5
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 10.035375,
+        "solveAndValidationSeconds": 9.193027500000026,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            1099.6838642447037,
+            423.92247861963557
+          ],
+          [
+            1219.6184385415934,
+            528.1685562700704
+          ],
+          [
+            1101.9354833337813,
+            641.0038364226098
+          ],
+          [
+            997.0885094257519,
+            522.8807566568004
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r3c4",
+          "status": "candidate_needs_review",
+          "error": 0.05818125,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 10.086666459,
+          "solveAndValidationSeconds": 9.240163333000003
+        },
+        "errorChange": 0.00004375000000000212,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r4c1",
+        "status": "candidate_needs_review",
+        "error": 0.06788125,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 7.8125,
+            "centerMm": [
+              52.98299999999999,
+              2.687
+            ],
+            "retainedFraction": 0.192
+          },
+          {
+            "value": 0,
+            "areaMm2": 8,
+            "centerMm": [
+              38.869140625,
+              4.435546875
+            ],
+            "retainedFraction": 0.15625
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.25,
+            "centerMm": [
+              25.150862068965516,
+              5.864224137931035
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.8125,
+            "centerMm": [
+              11.873,
+              6.903
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 8.5,
+            "centerMm": [
+              54.12867647058823,
+              17.613970588235293
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.5625,
+            "centerMm": [
+              40.16632231404959,
+              19.087809917355372
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.8125,
+            "centerMm": [
+              26.67775229357798,
+              20.40711009174312
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.5625,
+            "centerMm": [
+              83.84607438016528,
+              29.13119834710744
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.3125,
+            "centerMm": [
+              69.29380341880342,
+              30.766025641025646
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.375,
+            "centerMm": [
+              41.47303921568628,
+              32.629901960784316
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.0625,
+            "centerMm": [
+              15.158950617283951,
+              35.526234567901234
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.375,
+            "centerMm": [
+              84.43008474576271,
+              43.73728813559322
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.375,
+            "centerMm": [
+              70.07352941176471,
+              44.8235294117647
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.5625,
+            "centerMm": [
+              16.58452380952381,
+              49.05357142857143
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.375,
+            "centerMm": [
+              17.997881355932204,
+              61.91313559322034
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.1875,
+            "centerMm": [
+              16.345588235294116,
+              65.33578431372548
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.9375,
+            "centerMm": [
+              15.652777777777779,
+              70.81547619047619
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 8.75,
+            "centerMm": [
+              85.73392857142859,
+              71.22321428571429
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.9375,
+            "centerMm": [
+              71.73761261261261,
+              71.85247747747748
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5,
+            "centerMm": [
+              32.50625,
+              73.503125
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 15.5,
+            "centerMm": [
+              76.89818548387096,
+              80.68850806451613
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.5625,
+            "centerMm": [
+              72.48735955056179,
+              84.2064606741573
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.9375,
+            "centerMm": [
+              46.43289473684211,
+              85.37236842105263
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.4375,
+            "centerMm": [
+              33.76293103448276,
+              85.9669540229885
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 8.926046708000008,
+        "solveAndValidationSeconds": 8.15110162500001,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            355.4705619216538,
+            633.9595046207497
+          ],
+          [
+            453.32273986789056,
+            745.4467701989108
+          ],
+          [
+            347.4444813612936,
+            859.8855938172553
+          ],
+          [
+            222.0521895561622,
+            743.4756768548864
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r4c1",
+          "status": "candidate_needs_review",
+          "error": 0.06788125,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 7.8125,
+              "centerMm": [
+                52.98299999999999,
+                2.687
+              ],
+              "retainedFraction": 0.192
+            },
+            {
+              "value": 0,
+              "areaMm2": 8,
+              "centerMm": [
+                38.869140625,
+                4.435546875
+              ],
+              "retainedFraction": 0.15625
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.25,
+              "centerMm": [
+                25.150862068965516,
+                5.864224137931035
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.8125,
+              "centerMm": [
+                11.873,
+                6.903
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 8.5,
+              "centerMm": [
+                54.12867647058823,
+                17.613970588235293
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.5625,
+              "centerMm": [
+                40.16632231404959,
+                19.087809917355372
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.8125,
+              "centerMm": [
+                26.67775229357798,
+                20.40711009174312
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.5625,
+              "centerMm": [
+                83.84607438016528,
+                29.13119834710744
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.3125,
+              "centerMm": [
+                69.29380341880342,
+                30.766025641025646
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.375,
+              "centerMm": [
+                41.47303921568628,
+                32.629901960784316
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.0625,
+              "centerMm": [
+                15.158950617283951,
+                35.526234567901234
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.375,
+              "centerMm": [
+                84.43008474576271,
+                43.73728813559322
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.375,
+              "centerMm": [
+                70.07352941176471,
+                44.8235294117647
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.5625,
+              "centerMm": [
+                16.58452380952381,
+                49.05357142857143
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.375,
+              "centerMm": [
+                17.997881355932204,
+                61.91313559322034
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.1875,
+              "centerMm": [
+                16.345588235294116,
+                65.33578431372548
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.9375,
+              "centerMm": [
+                15.652777777777779,
+                70.81547619047619
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 8.75,
+              "centerMm": [
+                85.73392857142859,
+                71.22321428571429
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.9375,
+              "centerMm": [
+                71.73761261261261,
+                71.85247747747748
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5,
+              "centerMm": [
+                32.50625,
+                73.503125
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 15.5,
+              "centerMm": [
+                76.89818548387096,
+                80.68850806451613
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.5625,
+              "centerMm": [
+                72.48735955056179,
+                84.2064606741573
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.9375,
+              "centerMm": [
+                46.43289473684211,
+                85.37236842105263
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.4375,
+              "centerMm": [
+                33.76293103448276,
+                85.9669540229885
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 8.945778167000011,
+          "solveAndValidationSeconds": 8.156903250000003
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r4c2",
+        "status": "candidate_needs_review",
+        "error": 0.03785625,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 27.5625,
+            "centerMm": [
+              41.43168934240364,
+              13.281462585034014
+            ],
+            "retainedFraction": 0.32653061224489793
+          }
+        ],
+        "totalSeconds": 8.973167291999998,
+        "solveAndValidationSeconds": 8.186395124999981,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            634.907436884193,
+            633.001753857641
+          ],
+          [
+            764.4767233413031,
+            725.6575711364306
+          ],
+          [
+            641.20737935274,
+            856.2801333302166
+          ],
+          [
+            527.7148016435635,
+            742.9081636955389
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r4c2",
+          "status": "candidate_needs_review",
+          "error": 0.03785625,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 27.5625,
+              "centerMm": [
+                41.43168934240364,
+                13.281462585034014
+              ],
+              "retainedFraction": 0.32653061224489793
+            }
+          ],
+          "totalSeconds": 8.97187824999998,
+          "solveAndValidationSeconds": 8.196925416999992
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-arranged-r4c3",
+        "status": "candidate_needs_review",
+        "error": 0.035325,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 8.8125,
+            "centerMm": [
+              50.4459219858156,
+              3.375
+            ],
+            "retainedFraction": 0.12056737588652482
+          },
+          {
+            "value": 0,
+            "areaMm2": 9.75,
+            "centerMm": [
+              38.770833333333336,
+              4.729166666666667
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 8.5,
+            "centerMm": [
+              27.102941176470587,
+              5.9485294117647065
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.625,
+            "centerMm": [
+              15.93888888888889,
+              6.955555555555556
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4.1875,
+            "centerMm": [
+              4.815298507462686,
+              8.375
+            ],
+            "retainedFraction": 0.2537313432835821
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.875,
+            "centerMm": [
+              51.50454545454546,
+              15.552272727272728
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 8.125,
+            "centerMm": [
+              40.04615384615385,
+              16.351923076923075
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 9.125,
+            "centerMm": [
+              52.28082191780822,
+              26.796232876712327
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.25,
+            "centerMm": [
+              40.8575,
+              27.8425
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.0625,
+            "centerMm": [
+              52.80541237113402,
+              38.06829896907217
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.6875,
+            "centerMm": [
+              41.90548780487805,
+              38.864837398373986
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 9.75,
+            "centerMm": [
+              87.82051282051282,
+              46.58333333333334
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 8.125,
+            "centerMm": [
+              76.25576923076923,
+              47.34230769230769
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.625,
+            "centerMm": [
+              21.54166666666667,
+              50.65555555555556
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6,
+            "centerMm": [
+              87.90104166666669,
+              57.5859375
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.4375,
+            "centerMm": [
+              76.50849514563107,
+              57.646844660194176
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.125,
+            "centerMm": [
+              33.02295918367347,
+              59.78061224489796
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4.625,
+            "centerMm": [
+              22.655405405405407,
+              60.17567567567568
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.0625,
+            "centerMm": [
+              12.677469135802468,
+              60.65586419753086
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 7.8125,
+            "centerMm": [
+              87.897,
+              67.475
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.25,
+            "centerMm": [
+              76.64880952380952,
+              67.98809523809524
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.3125,
+            "centerMm": [
+              34.116176470588236,
+              69.25441176470588
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.0625,
+            "centerMm": [
+              23.74537037037037,
+              69.4891975308642
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4.125,
+            "centerMm": [
+              13.852272727272727,
+              69.93181818181819
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.25,
+            "centerMm": [
+              55.3025,
+              78.0875
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.5625,
+            "centerMm": [
+              45.13061797752809,
+              78.53511235955057
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.125,
+            "centerMm": [
+              45.920731707317074,
+              87.34146341463415
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4.1875,
+            "centerMm": [
+              55.968283582089555,
+              87.29664179104479
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 4.4375,
+            "centerMm": [
+              46.50176056338027,
+              95.84683098591549
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.875,
+            "centerMm": [
+              56.479838709677416,
+              95.91532258064517
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 9.281805541999987,
+        "solveAndValidationSeconds": 8.575439916999981,
+        "track": "printed-paper",
+        "sourceSha256": "5e4302e0550db09aea5325ec18d3cf9e94d40010b0b3ce8ae81428834143fee7",
+        "crop": [
+          [
+            973.8324976669008,
+            623.3609690971284
+          ],
+          [
+            1065.245186834688,
+            729.0441764470211
+          ],
+          [
+            964.2913473912381,
+            849.4284101717299
+          ],
+          [
+            836.9621647760885,
+            731.8707834087093
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-arranged-r4c3",
+          "status": "candidate_needs_review",
+          "error": 0.035325,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 8.8125,
+              "centerMm": [
+                50.4459219858156,
+                3.375
+              ],
+              "retainedFraction": 0.12056737588652482
+            },
+            {
+              "value": 0,
+              "areaMm2": 9.75,
+              "centerMm": [
+                38.770833333333336,
+                4.729166666666667
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 8.5,
+              "centerMm": [
+                27.102941176470587,
+                5.9485294117647065
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.625,
+              "centerMm": [
+                15.93888888888889,
+                6.955555555555556
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 4.1875,
+              "centerMm": [
+                4.815298507462686,
+                8.375
+              ],
+              "retainedFraction": 0.2537313432835821
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.875,
+              "centerMm": [
+                51.50454545454546,
+                15.552272727272728
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 8.125,
+              "centerMm": [
+                40.04615384615385,
+                16.351923076923075
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 9.125,
+              "centerMm": [
+                52.28082191780822,
+                26.796232876712327
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.25,
+              "centerMm": [
+                40.8575,
+                27.8425
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.0625,
+              "centerMm": [
+                52.80541237113402,
+                38.06829896907217
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.6875,
+              "centerMm": [
+                41.90548780487805,
+                38.864837398373986
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 9.75,
+              "centerMm": [
+                87.82051282051282,
+                46.58333333333334
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 8.125,
+              "centerMm": [
+                76.25576923076923,
+                47.34230769230769
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.625,
+              "centerMm": [
+                21.54166666666667,
+                50.65555555555556
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6,
+              "centerMm": [
+                87.90104166666669,
+                57.5859375
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.4375,
+              "centerMm": [
+                76.50849514563107,
+                57.646844660194176
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.125,
+              "centerMm": [
+                33.02295918367347,
+                59.78061224489796
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 4.625,
+              "centerMm": [
+                22.655405405405407,
+                60.17567567567568
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.0625,
+              "centerMm": [
+                12.677469135802468,
+                60.65586419753086
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 7.8125,
+              "centerMm": [
+                87.897,
+                67.475
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.25,
+              "centerMm": [
+                76.64880952380952,
+                67.98809523809524
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.3125,
+              "centerMm": [
+                34.116176470588236,
+                69.25441176470588
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.0625,
+              "centerMm": [
+                23.74537037037037,
+                69.4891975308642
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 4.125,
+              "centerMm": [
+                13.852272727272727,
+                69.93181818181819
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.25,
+              "centerMm": [
+                55.3025,
+                78.0875
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.5625,
+              "centerMm": [
+                45.13061797752809,
+                78.53511235955057
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.125,
+              "centerMm": [
+                45.920731707317074,
+                87.34146341463415
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 4.1875,
+              "centerMm": [
+                55.968283582089555,
+                87.29664179104479
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 4.4375,
+              "centerMm": [
+                46.50176056338027,
+                95.84683098591549
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.875,
+              "centerMm": [
+                56.479838709677416,
+                95.91532258064517
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 9.38988625000001,
+          "solveAndValidationSeconds": 8.636766625000018
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-scattered-pale-fish",
+        "status": "no_crop",
+        "totalSeconds": 0.14369399999998858,
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-scattered-pale-fish",
+          "status": "no_crop",
+          "totalSeconds": 0.14661220900001354
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-scattered-yellow-checker",
+        "status": "no_crop",
+        "totalSeconds": 0.1394632500000007,
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-scattered-yellow-checker",
+          "status": "no_crop",
+          "totalSeconds": 0.13827074999999603
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-scattered-blue-fish",
+        "status": "no_crop",
+        "totalSeconds": 0.14034324999997624,
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-scattered-blue-fish",
+          "status": "no_crop",
+          "totalSeconds": 0.13937041699999828
+        },
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-scattered-blue-checker",
+        "status": "candidate_needs_review",
+        "error": 0.07458125,
+        "counts": {
+          "left": 4,
+          "right": 4
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 3.1875,
+            "centerMm": [
+              95.32107843137256,
+              82.96323529411765
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.4375,
+            "centerMm": [
+              86.59318181818182,
+              93.20681818181818
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 9.682030333000002,
+        "solveAndValidationSeconds": 8.87596445899998,
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "crop": [
+          [
+            918.9800033464423,
+            276.7398574694207
+          ],
+          [
+            1032.5056932094149,
+            339.596195531529
+          ],
+          [
+            929.2438497039642,
+            495.2183196153719
+          ],
+          [
+            882.924249646729,
+            353.3907948550058
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-scattered-blue-checker",
+          "status": "candidate_needs_review",
+          "error": 0.07458125,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 3.1875,
+              "centerMm": [
+                95.32107843137256,
+                82.96323529411765
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 3.4375,
+              "centerMm": [
+                86.59318181818182,
+                93.20681818181818
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 9.710735874999983,
+          "solveAndValidationSeconds": 8.881610959000012
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-scattered-green-checker",
+        "status": "candidate_checks_passed",
+        "error": 0.0142,
+        "counts": {
+          "left": 3,
+          "right": 3
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [],
+        "totalSeconds": 5.534015500000009,
+        "solveAndValidationSeconds": 4.735530375000002,
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "crop": [
+          [
+            358.9368143020895,
+            453.0518089082537
+          ],
+          [
+            556.7395351031154,
+            564.7315878146013
+          ],
+          [
+            370.36638342367735,
+            711.0691701087104
+          ],
+          [
+            267.7593492256395,
+            575.0208529932322
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-scattered-green-checker",
+          "status": "candidate_checks_passed",
+          "error": 0.0142,
+          "counts": {
+            "left": 3,
+            "right": 3
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [],
+          "totalSeconds": 5.739615791000018,
+          "solveAndValidationSeconds": 4.908344916000002
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      },
+      {
+        "id": "vissevasse-scattered-purple-checker",
+        "status": "candidate_needs_review",
+        "error": 0.04591875,
+        "counts": {
+          "left": 2,
+          "right": 2
+        },
+        "selectedInitialization": "grid",
+        "geometry": true,
+        "paper": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 13,
+            "centerMm": [
+              97.50841346153848,
+              19.280048076923077
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.4375,
+            "centerMm": [
+              73.14199029126213,
+              87.23179611650485
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 5.625,
+            "centerMm": [
+              76.16388888888889,
+              90.23888888888888
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 6.875,
+            "centerMm": [
+              71.99772727272727,
+              90.7090909090909
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 14.125,
+            "centerMm": [
+              74.03429203539822,
+              97.48340707964603
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 13.375,
+            "centerMm": [
+              7.299065420560748,
+              53.79322429906542
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 3.875,
+            "centerMm": [
+              18.487903225806452,
+              57.346774193548384
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 6,
+            "centerMm": [
+              24.33333333333333,
+              59.09635416666666
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 4.4375,
+            "centerMm": [
+              49.42429577464789,
+              66.16373239436619
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 4.25,
+            "centerMm": [
+              61.82720588235295,
+              69.48161764705883
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 10.9375,
+            "centerMm": [
+              47.58357142857143,
+              89.06642857142857
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 1,
+            "areaMm2": 3.4375,
+            "centerMm": [
+              55.98863636363637,
+              91.70227272727271
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "totalSeconds": 8.473184708999995,
+        "solveAndValidationSeconds": 7.672506209000014,
+        "track": "printed-paper",
+        "sourceSha256": "8828f5d283fe186ffb9567b9bcaf1f9f12b20a39f13003360afecf3e6efefa95",
+        "crop": [
+          [
+            691.6822476267986,
+            400.23694903527405
+          ],
+          [
+            842.8105664885044,
+            530.7934625112307
+          ],
+          [
+            650.5144410228089,
+            650.1011553404667
+          ],
+          [
+            582.1110324513518,
+            521.1396623071844
+          ]
+        ],
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "preparationUnchanged": true,
+        "before": {
+          "id": "vissevasse-scattered-purple-checker",
+          "status": "candidate_needs_review",
+          "error": 0.04591875,
+          "counts": {
+            "left": 2,
+            "right": 2
+          },
+          "selectedInitialization": "grid",
+          "geometry": true,
+          "paper": "pass",
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 13,
+              "centerMm": [
+                97.50841346153848,
+                19.280048076923077
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.4375,
+              "centerMm": [
+                73.14199029126213,
+                87.23179611650485
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 5.625,
+              "centerMm": [
+                76.16388888888889,
+                90.23888888888888
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.875,
+              "centerMm": [
+                71.99772727272727,
+                90.7090909090909
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 14.125,
+              "centerMm": [
+                74.03429203539822,
+                97.48340707964603
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 13.375,
+              "centerMm": [
+                7.299065420560748,
+                53.79322429906542
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 3.875,
+              "centerMm": [
+                18.487903225806452,
+                57.346774193548384
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 6,
+              "centerMm": [
+                24.33333333333333,
+                59.09635416666666
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 4.4375,
+              "centerMm": [
+                49.42429577464789,
+                66.16373239436619
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 4.25,
+              "centerMm": [
+                61.82720588235295,
+                69.48161764705883
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 10.9375,
+              "centerMm": [
+                47.58357142857143,
+                89.06642857142857
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 1,
+              "areaMm2": 3.4375,
+              "centerMm": [
+                55.98863636363637,
+                91.70227272727271
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "totalSeconds": 8.500258583000017,
+          "solveAndValidationSeconds": 7.695726417000027
+        },
+        "errorChange": 0,
+        "groundTruthEvaluated": false
+      }
+    ]
+  },
+  "browser": {
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-danish-tree-red",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+        "crop": [
+          [
+            594.9223326281342,
+            545.4407619740479
+          ],
+          [
+            903.9724690008255,
+            840.5757044277938
+          ],
+          [
+            598.4190381184407,
+            1165.102659683867
+          ],
+          [
+            292.0160308561468,
+            847.6901776845531
+          ]
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "selectedInitialization": "feature-recovery",
+        "gridAttempts": 18,
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.7427000000476837
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.6386000000238419
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 0.5054000000953675
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.2730999999046326
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.3777000000476836
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.2625
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.183200000047684
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.3205
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 3.6935999999046327
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.2032000000476837
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.2782999999523163
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.6625
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.30279999995231627
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.4167000000476837
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 5.472399999976158
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.2761000000238419
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.3623000000715256
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 4.494399999976158
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.27219999992847443
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.3762000000476837
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 4.400700000047684
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.18360000002384186
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.27689999997615816
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.235600000023842
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.3082000000476837
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.3937999999523163
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 5.4915
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.16990000009536743
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.25359999990463256
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.0303000000715254
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.22910000002384187
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.32410000002384187
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 3.1436999999284745
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.3345
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.4376999999284744
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 6.7473999999761585
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.3341000000238419
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.43939999997615814
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 5.8589000000953675
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.16089999997615814
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.23970000004768371
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.1802000000476838
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.13739999997615815
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.208
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.7925
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.1365
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.21579999995231627
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.5983999999761582
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.10369999992847442
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.1687000000476837
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.102
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.10229999995231628
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.15770000004768372
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.0565
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.030700000047683716
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.4405
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.051200000047683714
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.051
+          }
+        ],
+        "refinementSeedAvailable": true,
+        "templateChecksPassed": false,
+        "missingFeatures": [
+          {
+            "value": 1,
+            "areaMm2": 8.8125,
+            "centerMm": [
+              99.22783687943263,
+              80.20833333333333
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "engineError": 0.02020625,
+        "sourceEditableError": 0.02024375,
+        "displayedError": 0.02,
+        "clickToReadySeconds": 72.393,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02024375,
+          "sourceError": 0.02024375
+        },
+        "sharedSpans": 7
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+        "crop": [
+          [
+            613.4629495846865,
+            709.8754165460504
+          ],
+          [
+            991.3479406135674,
+            1101.880332092388
+          ],
+          [
+            589.7733778087984,
+            1526.3403443658829
+          ],
+          [
+            201.96444906745154,
+            1085.6004246480518
+          ]
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "selectedInitialization": "coarse-boundary-topology",
+        "gridAttempts": 1,
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.6027999999523163
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.6393999999761582
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 0.31660000002384187
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.25389999997615814
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.05
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.0265
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.4157000000476837
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "short-return-refinement",
+            "seconds": 0.5545999999046326
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.09260000002384186
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.08919999992847442
+          }
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "engineError": 0.01095625,
+        "sourceEditableError": 0.01104375,
+        "displayedError": 0.011000000000000001,
+        "clickToReadySeconds": 7.827899999976158,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01104375,
+          "sourceError": 0.01104375
+        },
+        "sharedSpans": 4
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+        "crop": [
+          [
+            216.8538757473738,
+            38.328225363387574
+          ],
+          [
+            359.89753198285587,
+            187.87012162871665
+          ],
+          [
+            212.54958628080993,
+            334.34627418104253
+          ],
+          [
+            67.96701146105954,
+            182.82942921221752
+          ]
+        ],
+        "counts": [
+          4,
+          4
+        ],
+        "gridAttempts": 0,
+        "stages": [
+          {
+            "stage": "directPolishing",
+            "detail": "short-return-refinement",
+            "seconds": 0.5492999999523163
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.101
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.09820000004768371
+          }
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "engineError": 0.0085625,
+        "sourceEditableError": 0.00861875,
+        "displayedError": 0.009000000000000001,
+        "clickToReadySeconds": 4.894099999904633,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00861875,
+          "sourceError": 0.00861875
+        },
+        "sharedSpans": 4
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "counts": [
+          3,
+          3
+        ],
+        "selectedInitialization": "grid",
+        "gridAttempts": 1,
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 1.2835999999046326
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.5683999999761581
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.23690000009536744
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.4799000000953675
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.3364000000953674
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.4985
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.38460000002384187
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.051700000047683714
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.09969999992847442
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "shared-run-simplification",
+            "seconds": 0.06620000004768371
+          }
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "engineError": 0.003941680839002267,
+        "sourceEditableError": 0.0040834041950113375,
+        "displayedError": 0.004,
+        "clickToReadySeconds": 7.138100000023842,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0004625
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.0040834041950113375
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182742
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-independent",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "counts": [
+          2,
+          2
+        ],
+        "selectedInitialization": "grid",
+        "gridAttempts": 1,
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 1.3053000000715256
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.5832000000476837
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.22769999992847442
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.493
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.3432999999523163
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.4905
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.10810000002384186
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "shared-run-simplification",
+            "seconds": 0.05160000002384186
+          }
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "engineError": 0.0029584750566893424,
+        "sourceEditableError": 0.0029584750566893424,
+        "displayedError": 0.003,
+        "clickToReadySeconds": 5.986,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746187121
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-bibel-checker-3",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+        "crop": [
+          [
+            428.52499957084467,
+            107.94140443033162
+          ],
+          [
+            651.1719003615806,
+            307.87535698407953
+          ],
+          [
+            457.77859974478423,
+            527.5446206961046
+          ],
+          [
+            247.86376696068473,
+            325.5685826170488
+          ]
+        ],
+        "counts": [
+          2,
+          2
+        ],
+        "selectedInitialization": "grid",
+        "gridAttempts": 2,
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.6353999999761581
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.48890000009536744
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.21860000002384186
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.9244000000953674
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.2047000000476837
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.202899999976158
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.016800000071525573
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.363
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.07330000007152557
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.015
+          }
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "engineError": 0.01413125,
+        "sourceEditableError": 0.0142,
+        "displayedError": 0.013999999999999999,
+        "clickToReadySeconds": 5.870100000023842,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0142,
+          "sourceError": 0.0142
+        },
+        "sharedSpans": 0
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-danish-tree-red",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "242e845545caec329460d2fc50e591a50f485b23da38a67bb2a718397d7351d8",
+        "crop": [
+          [
+            594.9223326281342,
+            545.4407619740479
+          ],
+          [
+            903.9724690008255,
+            840.5757044277938
+          ],
+          [
+            598.4190381184407,
+            1165.102659683867
+          ],
+          [
+            292.0160308561468,
+            847.6901776845531
+          ]
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "selectedInitialization": "feature-recovery",
+        "gridAttempts": 18,
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.631
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.298
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 0.53
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.22199999999999956
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.722000000000001
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.149
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.381
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.188
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 4.026
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.137
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.159
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.926
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.215
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.257
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 6.14
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.189
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.225
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 4.961
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.19
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.222
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 5.099
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.118
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.152
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.678
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.209
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.256
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 6.156
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.106
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.135
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.2800000000000074
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.159
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.191
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 3.544
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.24499999999999272
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.288
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 6.959
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.26799999999999274
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.29600000000000726
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 6.679
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.10499999999999272
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.129
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.4629999999999854
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.079
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.09900000000001455
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.933
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.081
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.099
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.7310000000000145
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.05299999999998545
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.07
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.157
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.051
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.07
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.101
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.047
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.49
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.074
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.074
+          }
+        ],
+        "refinementSeedAvailable": true,
+        "templateChecksPassed": false,
+        "missingFeatures": [
+          {
+            "value": 1,
+            "areaMm2": 8.8125,
+            "centerMm": [
+              99.22783687943263,
+              80.20833333333333
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "engineError": 0.02026875,
+        "sourceEditableError": 0.02031875,
+        "displayedError": 0.02,
+        "clickToReadySeconds": 75.896,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02031875,
+          "sourceError": 0.02031875
+        },
+        "sharedSpans": 7
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+        "crop": [
+          [
+            613.4629495846865,
+            709.8754165460504
+          ],
+          [
+            991.3479406135674,
+            1101.880332092388
+          ],
+          [
+            589.7733778087984,
+            1526.3403443658829
+          ],
+          [
+            201.96444906745154,
+            1085.6004246480518
+          ]
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "selectedInitialization": "coarse-boundary-topology",
+        "gridAttempts": 1,
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.525
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.299
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 0.43799999999999956
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.1680000000000009
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.359
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.033
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.5
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "short-return-refinement",
+            "seconds": 0.642
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.103
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.098
+          }
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "engineError": 0.01095625,
+        "sourceEditableError": 0.01104375,
+        "displayedError": 0.011000000000000001,
+        "clickToReadySeconds": 8.615,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01104375,
+          "sourceError": 0.01104375
+        },
+        "sharedSpans": 4
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba",
+        "crop": [
+          [
+            216.8538757473738,
+            38.328225363387574
+          ],
+          [
+            359.89753198285587,
+            187.87012162871665
+          ],
+          [
+            212.54958628080993,
+            334.34627418104253
+          ],
+          [
+            67.96701146105954,
+            182.82942921221752
+          ]
+        ],
+        "counts": [
+          4,
+          4
+        ],
+        "gridAttempts": 0,
+        "stages": [
+          {
+            "stage": "directPolishing",
+            "detail": "short-return-refinement",
+            "seconds": 0.6989999999999995
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.124
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.125
+          }
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "engineError": 0.0085625,
+        "sourceEditableError": 0.00861875,
+        "displayedError": 0.009000000000000001,
+        "clickToReadySeconds": 5.511000000000001,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.00861875,
+          "sourceError": 0.00861875
+        },
+        "sharedSpans": 4
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-preferred",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "counts": [
+          3,
+          3
+        ],
+        "selectedInitialization": "grid",
+        "gridAttempts": 1,
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 1.174
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.462
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.173
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.782
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.3979999999999991
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.549
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.4690000000000009
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.072
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.1339999999999991
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "shared-run-simplification",
+            "seconds": 0.0990000000000009
+          }
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "engineError": 0.003941680839002267,
+        "sourceEditableError": 0.0040834041950113375,
+        "displayedError": 0.004,
+        "clickToReadySeconds": 7.723,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.0007875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.0004625
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.0040834041950113375
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182341
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "top-hat-independent",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "c41bc699904f56cc07cd003be29111caeec37e585023705b3bc0f57d6c23f00f",
+        "counts": [
+          2,
+          2
+        ],
+        "selectedInitialization": "grid",
+        "gridAttempts": 1,
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 1.178
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.462
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.178
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.779
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.402
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.5500000000000009
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.114
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "shared-run-simplification",
+            "seconds": 0.066
+          }
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "engineError": 0.0029584750566893424,
+        "sourceEditableError": 0.0029584750566893424,
+        "displayedError": 0.003,
+        "clickToReadySeconds": 6.192000000000001,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0.00036875
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0.000325
+            }
+          ],
+          "originalSourceError": 0.0029584750566893424,
+          "sourceError": 0.0029584750566893424
+        },
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746164283
+      },
+      {
+        "browser": "webkit",
+        "browserVersion": "26.0",
+        "name": "web-bibel-checker-3",
+        "passed": true,
+        "pageErrors": [],
+        "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+        "crop": [
+          [
+            428.52499957084467,
+            107.94140443033162
+          ],
+          [
+            651.1719003615806,
+            307.87535698407953
+          ],
+          [
+            457.77859974478423,
+            527.5446206961046
+          ],
+          [
+            247.86376696068473,
+            325.5685826170488
+          ]
+        ],
+        "counts": [
+          2,
+          2
+        ],
+        "selectedInitialization": "grid",
+        "gridAttempts": 2,
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.547
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.361
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.171
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.086
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.107
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.33
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.028
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.358
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.08799999999999909
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.022
+          }
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "engineError": 0.01413125,
+        "sourceEditableError": 0.0142,
+        "displayedError": 0.013999999999999999,
+        "clickToReadySeconds": 5.838,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0142,
+          "sourceError": 0.0142
+        },
+        "sharedSpans": 0
+      }
+    ]
+  },
+  "budgetVariationEvidence": [
+    {
+      "id": "danish-red-gold",
+      "provisionalSeedAvailable": false,
+      "beforeClearanceSteps": [
+        150,
+        100,
+        60
+      ],
+      "afterClearanceSteps": [
+        150,
+        90,
+        60
+      ],
+      "beforeLastCheckpoint": -1,
+      "afterLastCheckpoint": -1
+    },
+    {
+      "id": "vissevasse-arranged-r3c4",
+      "provisionalSeedAvailable": false,
+      "beforeClearanceSteps": [
+        150,
+        150,
+        120
+      ],
+      "afterClearanceSteps": [
+        150,
+        150,
+        120
+      ],
+      "beforeLastCheckpoint": 444,
+      "afterLastCheckpoint": 564
+    }
+  ],
+  "remainingBrowserLatency": {
+    "cause": "The missing edge feature keeps every candidate below full acceptance. The longer browser budget continues all 18 grid/phase refinements despite retaining the better recovered routing.",
+    "resolved": false
+  }
+}
