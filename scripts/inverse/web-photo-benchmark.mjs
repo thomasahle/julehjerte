@@ -1,9 +1,9 @@
 /** Image-only workflow benchmark. All proposals remain reviewable, including failures. */
 import fs from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
+import {pathToFileURL} from 'node:url';
 import {createCanvas} from 'canvas';
-import {catalogue, readPhoto, sha256, corpusRoot} from './web-photo-data.mjs';
-import {detectHeartCrops} from '../../static/inverse/core/crop.js';
+import {detectHeartCrops as currentDetector} from '../../static/inverse/core/crop.js';
 import {prepare, design} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {rectifyMotif} from '../../static/inverse/locator/locator.js';
@@ -11,6 +11,9 @@ import {renderExportedWeave} from './export-renderer.mjs';
 
 const arg = name => process.argv.find(s => s.startsWith(`--${name}=`))?.slice(name.length + 3);
 const stage = arg('stage') || 'prepare', seconds = Number(arg('seconds') || 10);
+const corpus=arg('corpus')||'web';
+if(!['web','hunodan'].includes(corpus))throw new Error('Use --corpus=web|hunodan');
+const {catalogue,readPhoto,sha256,manifestURL}=await import(corpus==='hunodan'?'./hunodan-photo-data.mjs':'./web-photo-data.mjs');
 if (!['prepare', 'solve'].includes(stage) || !(seconds >= 1 && seconds <= 180)) throw new Error('Use --stage=prepare|solve and --seconds=1..180');
 const data = await catalogue(), ids = arg('ids')?.split(',');
 if (ids?.some(id => !data.cases.some(c => c.id === id))) throw new Error('Unknown case ID');
@@ -22,17 +25,30 @@ for(const [id,quad]of Object.entries(crops)){
 }
 const output = arg('output') || `tmp/inverse-web-photos/${new Date().toISOString().replace(/[:.]/g, '-')}`;
 await fs.mkdir(output, {recursive: true});
+let detectHeartCrops=currentDetector,locatorReference=null;
+if(arg('locator-reference')){
+ const commit=execFileSync('git',['rev-parse','--verify','--end-of-options',arg('locator-reference')+'^{commit}'],{encoding:'utf8'}).trim();
+ const directory=await fs.mkdtemp('tmp/locator-reference-'),sourceHashes={};
+ const files=execFileSync('git',['ls-tree','-r','--name-only',commit,'--','static/inverse/core/crop.js','static/inverse/locator'],{encoding:'utf8'}).trim().split('\n');
+ for(const file of files){
+  const bytes=execFileSync('git',['show',`${commit}:${file}`],{maxBuffer:16*1024*1024});
+  await fs.mkdir(`${directory}/${file.slice(0,file.lastIndexOf('/'))}`,{recursive:true});await fs.writeFile(`${directory}/${file}`,bytes);sourceHashes[file]=sha256(bytes);
+ }
+ const module=await fs.realpath(`${directory}/static/inverse/core/crop.js`);
+ ({detectHeartCrops}=await import(pathToFileURL(module).href));locatorReference={commit,directory,sourceHashes};
+}
+
 const cfg = {...AUTOMATIC_PRESET, width: 100, timeLimit: seconds, trials: 0};
 const ledger = {
   createdAt: new Date().toISOString(), gitCommit: execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim(),
-  manifestSha256: sha256(await fs.readFile(new URL('manifest.json', corpusRoot))), stage, cfg,
+  manifestSha256: sha256(await fs.readFile(manifestURL)), stage, corpus, cfg, locatorReference,
   methodology: cropFile?'Original source pixels, with explicitly labelled manual diagnostic crop overrides. Corners remain fixed during fitting; no template geometry enters the solver. Crop scores have different classified targets and are not directly interchangeable.':'Original source pixels and a pre-annotated rough ROI only. First automatic crop is fixed before preparation/fitting. No corrected corners or template geometry. Proposal presence and mask agreement do not establish correct cropping or ground-truth recovery.',
   ...(cropFile?{cropOverrides:{file:cropFile,sha256:sha256(cropBytes),quads:crops}}:{}),
   results: [],
 };
 // A commit alone does not identify an experiment run against uncommitted fixes.
 // Record the actual detector, fitter and harness bytes used by this process.
-const sourceFiles=execFileSync('git',['ls-files','--','static/inverse/core','static/inverse/locator','scripts/inverse/web-photo-benchmark.mjs','scripts/inverse/web-photo-data.mjs','scripts/inverse/export-renderer.mjs'],{encoding:'utf8'}).trim().split('\n');
+const sourceFiles=execFileSync('git',['ls-files','--','static/inverse/core','static/inverse/locator','scripts/inverse/web-photo-benchmark.mjs','scripts/inverse/web-photo-data.mjs','scripts/inverse/hunodan-photo-data.mjs','scripts/inverse/export-renderer.mjs'],{encoding:'utf8'}).trim().split('\n');
 ledger.sourceHashes=Object.fromEntries(await Promise.all(sourceFiles.map(async file=>[file,sha256(await fs.readFile(file))])));
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const save = async () => {
@@ -46,7 +62,7 @@ const save = async () => {
 
 for (const entry of data.cases.filter(c => !ids || ids.includes(c.id))) {
   const photo = data.photos.find(p => p.id === entry.photo);
-  const row = {id: entry.id, photo: photo.id, sourceSha256: photo.sha256, sourcePage: photo.sourcePage, family: photo.family, motif: entry.motif, track: entry.track, regularity: entry.regularity, roi: entry.roi, tags: photo.tags, groundTruthEvaluated: false, cropVisuallyVerified: false, status: 'input_error'};
+  const row = {id: entry.id, photo: photo.id, sourceSha256: photo.sha256, ...(photo.photoROI?{sourcePhotoROI:photo.photoROI}:{}), sourcePage: photo.sourcePage, family: photo.family, motif: entry.motif, track: entry.track, regularity: entry.regularity, roi: entry.roi, tags: photo.tags, groundTruthEvaluated: false, cropVisuallyVerified: false, status: 'input_error'};
   ledger.results.push(row);
   const started = performance.now(), panel = createCanvas(stage === 'solve' ? 1200 : 720, 240), pc = panel.getContext('2d');
   pc.fillStyle = '#ddd'; pc.fillRect(0, 0, panel.width, panel.height);

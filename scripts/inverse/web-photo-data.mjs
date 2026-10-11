@@ -6,10 +6,11 @@ import {fileURLToPath} from 'node:url';
 import {createCanvas, loadImage} from 'canvas';
 
 export const corpusRoot = new URL('./fixtures/web-photos/', import.meta.url);
+export const manifestURL = new URL('manifest.json', corpusRoot);
 export const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
 export async function catalogue() {
-  const data = JSON.parse(await fs.readFile(new URL('manifest.json', corpusRoot)));
+  const data = JSON.parse(await fs.readFile(manifestURL));
   assert.equal(new Set(data.photos.map(p => p.id)).size, data.photos.length, 'Duplicate photo ID');
   assert.equal(new Set(data.photos.map(p => p.sha256)).size, data.photos.length, 'Duplicate image bytes');
   assert.equal(new Set(data.cases.map(c => c.id)).size, data.cases.length, 'Duplicate case ID');
