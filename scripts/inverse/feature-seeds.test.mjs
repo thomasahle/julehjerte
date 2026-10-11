@@ -54,6 +54,13 @@ test('a crop-edge fragment still counts in fidelity but cannot drive an extra cu
   assert.equal(result.report.skippedBorderRegions,1);
   assert.equal(result.report.hypotheses,0);assert.deepEqual(result.seeds,[]);
   assert.deepEqual(source.mask,prepared.preview.mask);
+  const answer=await design(prepared.target,{...cfg,timeLimit:25,earlyStop:false});
+  assert.equal(answer.report.solver.featureInitialization.deferredBorderOnly,true);
+  assert.equal(answer.report.manufacturing.status,'pass');
+  assert.equal(answer.report.validation.passed,true);
+  assert.equal(answer.report.templateChecksPassed,false,'Keep the unresolved boundary feature visible in the report');
+  const replay=await renderExportedWeave(answer.files['cut_geometry.json'],400);
+  assert.ok(mismatch(replay.mask,source.mask)<.01,'Do not replace the close star with the 1.8% seam-producing fit');
 });
 
 test('production search recovers the frozen puppy opening and verifies the exported pair',async()=>{

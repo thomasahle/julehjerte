@@ -250,6 +250,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:candidate.counts,cfg,evidence,maximumCount}));
       featureInitialization={...extra.report,scheduled:Math.min(1,extra.seeds.length)};
       fine.splice(i+1,0,...extra.seeds.slice(0,1).map(r=>stage('directFitting',()=>fitSeed(r))));
+      // A sound close fit with only crop-edge flecks missing is already the
+      // useful fallback. Continuing ordinary layouts can also overfit those
+      // flecks, adding visible seams elsewhere just to clear the feature gate.
+      // Keep the fidelity warning; do not count this as an accepted image.
+      if(!extra.report.emphasizedRegions&&candidate.paperPassed&&candidate.originalImageError<=cfg.maxImageError){
+        featureInitialization.deferredBorderOnly=true;break;
+      }
     }
     // Border disagreement must not stop a competitive simpler finalist from
     // receiving curve refinement. Its grid error can overestimate its eventual
