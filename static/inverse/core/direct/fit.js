@@ -1,9 +1,9 @@
 /** Fresh image-to-curve fitting with optional traced feature recovery.
  * Geometry and paper checks remain those used by the app's other solver.
  */
-import {fitGrid,gridPaths,gridMask,gridControls} from './grid.js';
+import {fitGrid,gridPaths,gridMask,gridControls,mismatch} from './grid.js';
 import {progressReporter,emitCandidate,hasCandidateObserver} from '../progress.js';
-import {CurveGraph} from './curves.js';
+import {CurveGraph,renderCurves} from './curves.js';
 import {refineCurves,fittingMargin} from './refine.js';
 import {recoverShared} from './share.js';
 import {finalizeFittedSolution} from './finalize.js';
@@ -147,19 +147,27 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // A local boundary gradient cannot create a remote missing region. Try an
   // alternate traced routing while there is still time within this search.
   const features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width,sourceFeatures);
-  let recovery=null;
+  let recovery=null;const recoveredCandidates=[];
   // Traced feature recovery routes through the MILP, which cannot hold a
   // mirrored pairing, and a symmetric fit is expected to drop features of an
   // asymmetric drawing. Stay with the constrained fitter instead.
   if(!features.passed&&!symmetryRequested&&!weights&&deadline-performance.now()>2000){
     recovery=await recoverImageFeatures(input,cfg,Math.min(20,(deadline-performance.now())/1000*.9),onProgress);
-    if(recovery.solution){
-      const seed=recovery.solution,paths=seed.paths.map((family,f)=>family.map((_,i)=>curvesOf(seed,f,i).map(c=>c.p))),graph=new CurveGraph(paths,cfg.width),phase=seed.graph.target.phase?-1:1;
+    const seed=recovery.solution||recovery.refinementSeed;
+    if(seed){
+      const paths=seed.paths.map((family,f)=>family.map((_,i)=>curvesOf(seed,f,i).map(c=>c.p))),graph=new CurveGraph(paths,cfg.width),phase=seed.graph.target.phase?-1:1,counts=graph.families.map(f=>f.length);
+      // Refinement can move an endpoint or lose an already useful routing.
+      // Keep the unchanged seed too; neither is a successful result until it
+      // passes the same original-source gates as the independent grids.
+      const raw=graph.solution(graph.points,phase,input),validation=validate(raw,cfg),paper=materialAudit(raw,cfg);
+      recoveredCandidates.push({graph,points:graph.points.slice(),phase,counts,seed:'feature-recovery',error:mismatch(renderCurves(graph,graph.points,phase,n,32),prob),geometryPassed:validation.passed,paperPassed:paper.passed,validation,history:[]});
       // A recovered routing can still differ substantially from the image.
       // Give it the normal polishing step count within the same time reserve;
       // eighty steps could return while the image fit was still improving.
       const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:Math.min(deadline,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
+      candidate.counts=counts;candidate.seed='feature-recovery';recoveredCandidates.push(candidate);
       const solution=graph.solution(candidate.points,phase,input),woven=sampleWeave(solution,source.resolution);
+      recovery.report.refinement={imageError:maskDisagreement(source,woven),featuresPassed:auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed,geometryPassed:candidate.geometryPassed,paperPassed:candidate.paperPassed,steps:candidate.steps};
       if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
         solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
@@ -185,6 +193,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     candidates.push(c);
   };
   if(boundaryCandidate)addCandidate(boundaryCandidate);
+  for(const candidate of recoveredCandidates)addCandidate(candidate);
   let stoppedEarly=false;
   for(let i=0;i<fine.length&&!stoppedEarly;i++){
     // Initialization (including a speculative topology solve) can exhaust the
@@ -247,6 +256,6 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
     stoppedEarly,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
-    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:candidate.seed==='coarse-boundary-topology',topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
+    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

@@ -42,6 +42,11 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
     report.accepted=report.imageError<=cfg.maxImageError&&report.features.passed&&report.geometryPassed&&(!cfg.requireMaterialCore||report.paperPassed);
     report.solver=solution.report;
     if(report.accepted)return{solution,report};
+    // A final image rejection does not invalidate this routing as an initial
+    // geometry for the common fitter. Keep it explicitly provisional: callers
+    // must still apply the original image and feature checks after refinement.
+    report.refinementSeedAvailable=report.geometryPassed&&report.paperPassed;
+    if(report.refinementSeedAvailable)return{solution:null,refinementSeed:solution,report};
   }catch(error){report.error=error.message;report.solver=error.report;}
   finally{report.seconds=(performance.now()-start)/1000;}
   return{solution:null,report};
