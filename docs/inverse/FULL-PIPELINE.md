@@ -33,7 +33,7 @@ is no longer present. The green/blue tree passes numerically at 2.65%, but its
 branch tips remain rounded. Component retention and a whole-image average do
 not fully describe that loss of local detail.
 
-## A search failure beyond cropping
+## Search and crop distortion are separate contributors
 
 The red/white tree's fixed automatic crop and mask preserve its branches. The
 previous fitter returned the same **7.02%** error with either a 10- or 60-second
@@ -66,6 +66,49 @@ independently rendered templates, difference.
 ![Before: tree branch detail lost](pipeline-tree-before.png)
 ![After: better fallback, still imperfect](pipeline-tree-after.png)
 
+A subsequent controlled crop replay changes that diagnosis: cropping is also a
+major contributor in this example. A visually annotated overlap square, fixed
+before fitting, gives **0.75%** disagreement and passes the image, feature,
+geometry and paper checks with the ten-second solver budget. The four corners
+are saved in `scripts/inverse/fixtures/web-photos/tree-diagnostic-crop.json`.
+They are diagnostic annotations, not surveyed ground truth. Each crop produces
+a different classified target, so its percentage is not directly interchangeable
+with the automatic crop's percentage. Adjusting only the top notch still fails
+at 6.12%; inset corners fail at 8.72%.
+
+![Fixed manual crop: branch detail recovered](pipeline-tree-manual.png)
+
+The published [tree template](https://danishthings.com/wp-content/uploads/2022/11/Danish-Things-Julehjerte-med-juletrae-1.pdf)
+has three full-length slits per sheet, including a sharp zigzag. This is a
+supported regular design. An approximate straight-span annotation of it,
+rendered into a clean mask, is recovered from pixels alone at **0.15%** error
+in 1.53 seconds of solver time. No reference paths enter the fitter. This
+isolates a case the main fitter can solve from distortions introduced by the
+photograph, cropping and classification; it is not an exact digitization of
+the published template.
+
+## Small edge perturbations should not imply extra cuts
+
+Changing only **20 of 160,000 pixels (0.0125%)** along the clean tree's edge
+previously produced five inferred endpoints on one side and three on the
+opposite side. The topology initializer rejected it before MILP search; two
+tested orientations then took 9.14–9.79 seconds through grid refinement.
+
+When opposing endpoint counts disagree or endpoint spacing is too narrow,
+the initializer now tries progressively wider inward border profiles. It
+accepts the smallest proposal that retains the original features and differs
+from the original mask by at most the existing 0.5% initialization limit.
+The candidate still has to pass the normal geometry and paper checks. The
+original mask, cached raw trace and final accuracy reference remain unchanged.
+Weighted/free-border artwork keeps its existing guide.
+
+All four perturbed sides now recover **three cuts per sheet**, pass all checks,
+and independently render at **0.16%** disagreement against the noisy input.
+Measured prepare/solve/export/replay times are 1.39–3.36 seconds. The regression
+also covers swapping the two colours and rejecting repairs under a stricter
+error cap. This fixes a template-initialization weakness; it does not repair
+the automatic tree crop or establish robustness to every photographic defect.
+
 ## Matching cuts and invisible seams
 
 A separate template-stage bug paired cuts inconsistently. The diagnostic could
@@ -89,39 +132,56 @@ pixels; this fixture isolates seam repair rather than claiming a new photo fit.
 
 ## Regression checks
 
-All 842 application tests and 502 inverse-engine tests pass, with one existing
+All 842 application tests and 518 inverse-engine tests pass, with one existing
 application-test skip. Type checking reports zero errors and seven existing
 warnings; lint and the static build pass.
 
 The 22 regular Hunodan photographs still pass the frozen benchmark criteria.
-Median prepare/solve/validate/export time is 5.04 seconds, with a maximum of
-8.58 seconds. All 22 independently rendered errors are exactly unchanged from
+Median prepare/solve/validate/export time is 5.30 seconds, with a maximum of
+8.55 seconds. All 22 independently rendered errors are exactly unchanged from
 the preceding count-selection replay. This is a serial Node measurement;
 browser startup and editor conversion are measured separately in the ledger.
+The eight automatic web-photo outcomes and errors are also unchanged by the
+border recovery: six pass, the red tree needs review, and the angel has no crop.
 
-Ten production-browser workflows pass: the star, matching/independent/Anti hats,
-and an automatically cropped Hunodan photograph in both Chromium and WebKit.
+Fourteen production-browser workflows pass: the star, matching/independent/Anti
+hats, an automatically cropped Hunodan photograph, a noisy checker and a noisy
+tree in both Chromium and WebKit.
 They exercise the worker, editable conversion, editor issue checks and downloads.
-The preview's served fitter, matching and sharing modules match the source hashes.
+The checker retains its edge defect and fits through grid initialization. The
+tree retains defects on two edges and exercises the new topology recovery in
+the real worker, with three cuts per sheet and 1.75–1.79 seconds from clicking
+Find to the editable result being ready. Both cases verify the uploaded noisy
+endpoint counts, SVG/PDF exports, source fidelity and editor legality. The
+tree's defect is symmetric so automatic import folding cannot remove it;
+the checker uses unequal strip widths for the same reason.
+
+The preview's served fitter, topology, matching and sharing modules match the source hashes.
 Firefox could not be tested: its launch timed out after 180 seconds before any
 page opened, with native sandbox-extension and framebuffer diagnostics. That
 infrastructure failure is recorded separately from application outcomes.
 
 ## Reproduction
 
-Run CPU benchmarks serially, without a simultaneous build or test run:
+Run CPU benchmarks serially, without a simultaneous build or test run. For
+browser replays, set `PLAYWRIGHT_MODULE` to an existing Playwright installation
+if the package is not available locally:
 
 ```sh
 node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=10 --ids=danish-tree-red,danish-tree-green,bibel-checker-2,bibel-checker-3,bibel-checker-4,bibel-narrow-wide,bibel-nested-heart-red,bibel-angel
 node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=60 --ids=danish-tree-red
+node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=10 --ids=danish-tree-red --crop-overrides=scripts/inverse/fixtures/web-photos/tree-diagnostic-crop.json
+node --test scripts/inverse/edge-topology.test.mjs
 INVERSE_HARD_CROPS=automatic-0,manual-diagnostic node scripts/inverse/hard-user-benchmark.mjs
+INVERSE_TEST_CASES=noisy-checker,noisy-tree INVERSE_TEST_BROWSERS=chromium,webkit INVERSE_TEST_URL=http://127.0.0.1:5232 node scripts/inverse/paint-browser-test.mjs
 ```
 
 Future web-photo runs record hashes of the actual engine, locator and benchmark
 sources, including uncommitted changes. Earlier measurements above identify
 their baseline commit and local artifact directories in the validation ledger.
 
-The next fitting work should target sharp-feature recovery under paper-support
-constraints and boundary-noise-tolerant topology initialization. Simply moving
-crop corners or increasing time on the same smooth grids does not address
-these failures.
+Remaining work spans crop distortion, photographic classification fragments,
+and sharp-feature recovery under paper-support constraints. These experiments
+distinguish the stages: a better crop solves the photographed tree in the
+diagnostic replay, while edge-noise recovery prevents tiny mask changes from
+unnecessarily discarding an otherwise useful topology seed.
