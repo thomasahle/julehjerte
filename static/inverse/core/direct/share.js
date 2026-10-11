@@ -6,7 +6,7 @@ import {CurveGraph,renderCurves} from './curves.js';
 import {mismatch} from './grid.js';
 import {validate,easeMetrics,sampleWeave} from '../validate.js';
 import {materialAudit} from '../material.js';
-import {matchingSummary} from './matching.js';
+import {matchingSummary,templatePathOrder} from './matching.js';
 import {applyTies,symmetryTies,symmetryReport} from './symmetry.js';
 import {requestedSymmetry} from '../settings.js';
 import {orbitSharingReplacement} from './sharing-orbit.js';
@@ -59,6 +59,19 @@ export function sharingCandidates(paths){
  * cut breaks the identical-sheet constraint; skipping sharing leaves hairline
  * slivers between cuts that the area loss can barely see. */
 export function sharingReplacement(paths,c,{identicalSheets=false,antiTranspose=false,width=100}={}){
+  if(identicalSheets&&!antiTranspose){
+    if(paths[0].length!==paths[1].length)return null;
+    const order=templatePathOrder(paths),a=order[0].findIndex(p=>p.index===c.i),b=order[1].findIndex(p=>p.index===c.j);
+    const parameter=(f,i,t)=>order[f][i].reverse?order[f][i].path.length-t:t;
+    let candidate={...c,i:a,j:b,a0:parameter(0,a,c.a0),a1:parameter(0,a,c.a1),b0:parameter(1,b,c.b0),b1:parameter(1,b,c.b1)};
+    if(candidate.a0>candidate.a1)candidate={...candidate,a0:candidate.a1,a1:candidate.a0,b0:candidate.b1,b1:candidate.b0};
+    const next=replaceOrdered(order.map(f=>f.map(p=>p.path)),candidate,{identicalSheets:true,width});
+    if(!next)return null;
+    return order.map((family,f)=>{const out=[];family.forEach((p,i)=>{out[p.index]=p.reverse?next[f][i].toReversed().map(c=>c.toReversed()):next[f][i];});return out;});
+  }
+  return replaceOrdered(paths,c,{identicalSheets,antiTranspose,width});
+}
+function replaceOrdered(paths,c,{identicalSheets=false,antiTranspose=false,width=100}={}){
   const next=paths.map(f=>f.slice());
   let mateA=c.j,mateB=c.i;
   if(antiTranspose){

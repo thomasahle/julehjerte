@@ -82,6 +82,22 @@ test('shared-cut cleanup preserves a narrow line when the input actually asks fo
   assert.deepEqual(sampleWeave(after,resolution),mask);
 });
 
+test('matching hat cleanup follows physical partners after path reordering',async()=>{
+  const before=hat(),source=before.graph.target.sourceImage;
+  before.paths[1].push(before.paths[1].shift());
+  const original=solutionJSON(before),after=finalizeShared(before,cfg);
+  assert.equal(matchingSummary(before).identical,true);
+  assert.equal(after.report.finalSharing.applied,true);
+  assert.ok(hiddenLength(after)>200);
+  assert.equal(matchingSummary(after).identical,true);
+  assert.equal(validate(after,cfg,{checkImage:false}).passed,true);
+  assert.equal(materialAudit(after,cfg).passed,true);
+  assert.deepEqual(solutionJSON(before),original);
+  const baseline=await renderExportedWeave(original,source.resolution*4),repaired=await renderExportedWeave(solutionJSON(after),source.resolution*4);
+  const target=resize(source.mask,source.resolution,source.resolution*4),error=r=>r.coverage.reduce((s,v,i)=>s+Math.abs(v-Number(target[i]>.5)),0)/target.length;
+  assert.ok(error(repaired)<error(baseline),'Exported curves must remove the seams without damaging the motif.');
+});
+
 test('final selection repairs seams in the matching pair that replaces an independent fit',()=>{
   const before=hat(),source=before.graph.target.sourceImage;
   // Use the current free-border objective: protect the inner 84% diamond.

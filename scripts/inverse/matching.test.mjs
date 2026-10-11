@@ -10,6 +10,7 @@ import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
 import {checkerPixels} from './fixtures.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {transposeTarget} from '../../static/inverse/core/symmetry.js';
+import {Cubic} from '../../static/inverse/core/bezier.js';
 
 test('the exact grid rejects asymmetric input with a recoverable code and leaves it untouched',()=>{
   const target={sourceImage:{mask:Uint8Array.from([0,1,0,0]),resolution:2}},before=structuredClone(target);
@@ -68,6 +69,20 @@ test('matching summary pairs identical cuts after path reordering',()=>{
   paths[1]=[reverse(paths[1][2]),paths[1][0],paths[1][1]];
   const graph=new CurveGraph(paths),summary=matchingSummary(graph.solution(graph.points,1));
   assert.equal(summary.identical,true);assert.equal(summary.rmsTemplateDifferenceMm,0);
+});
+
+test('reordered and reversed cuts keep the same pairing during optimization',()=>{
+  const a=[[[10,0],[70,100]],[[30,0],[90,100]]].map(([start,end])=>[Cubic.line(start,end).p]);
+  const b=a.map(p=>p.map(c=>c.map(([x,y])=>[y,x])));
+  // Reversing the first cut moves its serialized start beyond the second cut.
+  const paths=[a,[b[1],b[0].toReversed().map(c=>c.toReversed())]],before=structuredClone(paths);
+  const graph=new CurveGraph(paths),projected=graph.points.slice();
+  assert.equal(matchingSummary(graph.solution(graph.points,1)).identical,true);
+  assert.equal(matchingPenalty(graph,graph.points).loss,0);
+  projectMatching(projected,matchingGroups(graph));
+  assert.deepEqual(projected,graph.points,'Matching projection must not move already matching physical cuts.');
+  assert.deepEqual(matchingPaths(paths),[a,b],'Averaging an identical pair must preserve every control.');
+  assert.deepEqual(paths,before);
 });
 
 test('matching projection respects a locked scalar with index zero',()=>{
