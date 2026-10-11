@@ -90,9 +90,11 @@ lint and the production build pass. Sixteen production-browser workflows pass
 in Chromium and WebKit, including the original green-tree photograph through
 automatic cropping, the actual worker, editable SVG, PDF and editor validation.
 Its click-to-editable time is 7.78 seconds in Chromium and 9.01 seconds in WebKit.
-The browser flow selects between-lobes symmetry Off, disabling the matching-sheet
-preference; the command-line comparison keeps that preference enabled. These
-settings and the two export renderers are recorded separately. Both browser outputs
+That browser replay selected between-lobes symmetry Off, disabling the matching-sheet
+preference; the command-line comparison kept that preference enabled. These
+settings and the two export renderers are recorded separately. A later
+[matching-preference update](MATCHING-SEEDS.md) enables that preference even
+when the imported photo has no detected symmetry. Both browser outputs
 preserve the branches and pass the editor's curve checks; the converted geometry has no sampled weave drift at 400 or 800 pixels.
 
 [The validation ledger](COARSE-TOPOLOGY-VALIDATION.json) records source hashes,
