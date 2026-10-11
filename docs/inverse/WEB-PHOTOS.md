@@ -39,13 +39,13 @@ Visual inspection identifies different upstream causes:
   holes in the mask. The reconstruction remains at 5.51625% disagreement.
 - **Dotted tree:** paper decorations become apparent motif holes before fitting.
   The resulting 13.11% disagreement is not explained by solver runtime alone.
-- **Blue/green 3×3 checker:** it passes at 1.4875%, but uses 3+3 cuts. Top and left
-  inset profiles consistently report two transitions; the other sides are
-  inconsistent. `supportedBorderCounts` is therefore null. A 2+2 grid was tried,
-  but the fitter stops after the denser 3+3 candidate passes, before fully refining
-  and checking the simpler candidate. This is a concrete model-selection issue
-  in addition to border/crop distortion. The evidence does not yet establish
-  that the 2+2 alternative would pass the final paper and image checks.
+- **Blue/green 3×3 checker:** this baseline passes at 1.4875%, but uses 3+3 cuts.
+  Top and left inset profiles consistently report two transitions; the other
+  sides are inconsistent. A subsequent [cut-count investigation](COUNT-FINALISTS.md)
+  confirms premature search termination: a 2+2 finalist was initialized but
+  never given curve refinement. The common fitter now refines it despite the
+  conflicting border evidence and obtains a valid 2+2 pair at 1.4375% on the
+  unchanged crop and mask. Bowed edge regions still remain.
 - **Printed green checkers:** two pass the numerical checks while retaining some
   printed details as geometric defects. A low mask error does not mean the
   underlying weave has been recovered correctly.

@@ -252,6 +252,7 @@ try{
     if(Object.values(row.requestedSymmetry).every(v=>v==='off'))assert.equal(row.matchingPreference.enabled,row.matchingRequested,'No-symmetry solves must honour the independent matching preference.');
     if(name==='top-hat-preferred')assert.equal(row.matchingPreference.identical,true,'A reusable hat template must be found without forcing mask symmetry.');
     row.engineError=observed.result.report.imageError.mismatchFraction;
+    row.selectedCounts=observed.result.report.solver.selectedCounts;
     row.numericalBackend=observed.result.report.solver.numericalBackend?.backend;
     row.paperKernels=observed.result.report.solver.paperKernels;
     row.boundaryKernels=observed.result.report.solver.boundaryKernels;
@@ -259,6 +260,11 @@ try{
     assert.equal(Boolean(observed.prepared.weights),free,'Free-border importance weights must reach the real worker.');
     assert.equal(observed.result.report.validation.passed,true);
     assert.equal(observed.result.report.manufacturing.status,'pass');
+    if(name==='web-bibel-checker-3'&&!engineReference){
+     assert.deepEqual(observed.result.report.slits,{left:2,right:2},'Conflicting photo borders must not hide the better simpler finalist.');
+     assert.equal(observed.result.report.templateChecksPassed,true);
+     assert.ok(row.engineError<.02,'The simpler pair must still explain the uploaded mask.');
+    }
     if(name==='web-danish-tree-green'){
      assert.equal(observed.result.report.solver.coarseTopologyInitialization?.accepted,true,'The uploaded photograph must exercise coarse routing.');
      assert.equal(observed.result.report.templateChecksPassed,true);
