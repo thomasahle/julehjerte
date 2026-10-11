@@ -1,5 +1,8 @@
 # Full-pipeline replay of the original 31 complete hearts
 
+This is the historical baseline. See [the feature integration and export
+QA](FEATURE-INTEGRATION.md) for the newer 16/31 result on the same masks.
+
 The original hard-photo corpus is now committed and runs through the production
 automatic cropper, colour conversion, automatic fitter, independent exported-SVG
 renderer, editable conversion and SVG save/reload. This makes failures reproducible

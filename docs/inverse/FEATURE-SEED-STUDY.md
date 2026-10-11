@@ -1,5 +1,8 @@
 # Full pipeline replay and feature-preserving starting layouts
 
+Historical experiment. The subsequent [production integration and full-pipeline
+QA](FEATURE-INTEGRATION.md) supersede the production score below.
+
 2026-10-12. Production engine: `877c62e`; mask-track benchmark: `eb14ce9`.
 The production score remains **11/31**. This study improves the measurement
 coverage and identifies a promising template-initialization candidate; it does
