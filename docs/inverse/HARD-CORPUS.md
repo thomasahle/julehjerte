@@ -118,3 +118,7 @@ tests, lint and production build. Type checking reported zero errors and seven
 existing warnings. All 59 editor/SVG replays passed. No engine or application code
 changed in this corpus/diagnostic increment; the previous regular-design speed
 checks are not represented as newly rerun measurements here.
+
+The subsequent [refinement-scheduling fix](REFINEMENT-SCHEDULING.md) uses this
+corpus to isolate a fitting-budget failure. It improves the puppy and outlined
+star on unchanged automatic masks while retaining their missing-feature failures.
