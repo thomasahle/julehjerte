@@ -139,17 +139,17 @@ describe('the settings a search is run with', () => {
 		expect(sym.preferMatchingSheets).toBe(true);
 		const independent = engineSettings(solveSettings({ colors: COLORS, symmetry: NO_SYMMETRY }));
 		expect(independent.preferMatchingSheets).toBe(true);
-		expect(independent.symmetry.transpose).toBe(false);
+		expect(independent.symmetry).toMatchObject({ transpose: false });
 		expect(independent.matchingErrorAllowance).toBe(0.01);
 		expect(defaultAdvanced().matchingSheets).toBe(true);
 	});
 
 	it('keeps forced symmetry separate from the optional matching preference', () => {
 		const forced = engineSettings(solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'sym' }, matchingSheets: false }));
-		expect(forced.symmetry.transpose).toBe(true);
+		expect(forced.symmetry).toMatchObject({ transpose: true });
 		expect(forced.preferMatchingSheets).toBe(true);
 		const anti = engineSettings(solveSettings({ colors: COLORS, symmetry: { ...NO_SYMMETRY, lobes: 'anti' } }));
-		expect(anti.symmetry.antiTranspose).toBe(true);
+		expect(anti.symmetry).toMatchObject({ antiTranspose: true });
 		expect(anti.preferMatchingSheets).toBe(false);
 	});
 

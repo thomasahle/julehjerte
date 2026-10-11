@@ -20,7 +20,7 @@ let origin=process.env.INVERSE_TEST_URL||'http://localhost:5200';
 const upstreamOrigin=origin;
 const disableNumericalKernel=process.env.INVERSE_TEST_DISABLE_NUMERICAL_KERNEL==='1';
 const names=(process.env.INVERSE_TEST_BROWSERS||'chromium,firefox,webkit').split(',');
-const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan,top-hat,top-hat-independent,top-hat-anti').split(',');
+const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan,top-hat,top-hat-preferred,top-hat-independent,top-hat-anti').split(',');
 const output=process.env.INVERSE_TEST_OUTPUT||`tmp/paint-browser/${new Date().toISOString().replace(/[:.]/g,'-')}`;
 const repeats=Number(process.env.INVERSE_TEST_REPEATS||1);
 const stopMode=process.env.INVERSE_TEST_STOP||null;
@@ -80,7 +80,7 @@ for(const file of ['static/inverse/core/feature-recovery.js','static/inverse/cor
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','static/inverse/core/direct/matching.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
-for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
  for(const browserName of names){
   const browser=await browsers[browserName].launch({headless:true});
@@ -88,7 +88,7 @@ try{
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
    const webPhoto=name.startsWith('web-'),photograph=webPhoto||name==='hunodan'||name.startsWith('hunodan-');
-   const topHat=['top-hat','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
+   const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
    const referenceStart={...referenceRequestCounts};
@@ -118,6 +118,14 @@ try{
      }
      return rows;
     };
+    const matchingBox=page.locator('input[aria-describedby="matching-sheets-hint"]');
+    assert.equal(await matchingBox.isChecked(),true,'Matching is preferred before any mask is imported.');
+    if(name==='top-hat-independent'){
+     await page.locator('details.advanced > summary').click();
+     await matchingBox.uncheck();await button('Reset').click();
+     assert.equal(await matchingBox.isChecked(),true,'Reset restores the default matching preference.');
+     await matchingBox.uncheck();await page.locator('details.advanced > summary').click();
+    }
     if(name==='star')await button('Try the star').click();
     else{
      const file=path.join(dir,'input.png');
@@ -152,13 +160,22 @@ try{
       await page.getByRole('radio',{name:'Free',exact:true}).click();
       if(!small){await page.locator('#paint-frame-size').focus();await page.locator('#paint-frame-size').press('End');}
       assert.equal(await page.locator('#paint-frame-size').inputValue(),String(frameSize*100));
-      if(name==='top-hat-independent')await page.getByRole('radiogroup',{name:'Between lobes symmetry',exact:true}).getByRole('radio',{name:'Off',exact:true}).click();
+      if(name==='top-hat-independent'||name==='top-hat-preferred')await page.getByRole('radiogroup',{name:'Between lobes symmetry',exact:true}).getByRole('radio',{name:'Off',exact:true}).click();
       if(name==='top-hat-anti')await page.getByRole('radiogroup',{name:'Between lobes symmetry',exact:true}).getByRole('radio',{name:'Anti',exact:true}).click();
      }
     }
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.trim()==='Find the cuts'&&!b.disabled));
     if(chordMode)await page.getByRole('radiogroup',{name:'Within curve symmetry',exact:true}).getByRole('radio',{name:chordMode==='sym'?'Sym':'Anti',exact:true}).click();
+    row.matchingRequested=await matchingBox.isChecked();
+    assert.equal(row.matchingRequested,name!=='top-hat-independent','Import and symmetry changes must preserve the preference.');
     row.requestedSymmetry=await symmetry();
+    if(name==='top-hat-independent'||name==='top-hat-preferred'){
+     await page.getByRole('button',{name:'Undo',exact:true}).click();
+     assert.equal(await matchingBox.isChecked(),row.matchingRequested,'Undoing symmetry must preserve the fitting preference.');
+     await page.getByRole('button',{name:'Redo',exact:true}).click();
+     assert.equal(await matchingBox.isChecked(),row.matchingRequested,'Redoing symmetry must preserve the fitting preference.');
+     assert.deepEqual(await symmetry(),row.requestedSymmetry);
+    }
     if(name==='top-hat-anti'){
      assert.equal(row.requestedSymmetry.lobes,'anti');
      // Selecting the active radio must not clear the primitive's selection
@@ -213,6 +230,11 @@ try{
       assert.ok(row.referenceEngineRequests[file]>0,`The reference server must deliver ${file} to this worker.`);
      }
     }
+    row.solveSettings=observed.solveSettings;
+    row.matchingPreference=observed.result.report.solver.matchingPreference;
+    assert.equal(observed.solveSettings.preferMatchingSheets,row.matchingRequested,'The preference must reach the worker.');
+    if(Object.values(row.requestedSymmetry).every(v=>v==='off'))assert.equal(row.matchingPreference.enabled,row.matchingRequested,'No-symmetry solves must honour the independent matching preference.');
+    if(name==='top-hat-preferred')assert.equal(row.matchingPreference.identical,true,'A reusable hat template must be found without forcing mask symmetry.');
     row.engineError=observed.result.report.imageError.mismatchFraction;
     row.numericalBackend=observed.result.report.solver.numericalBackend?.backend;
     row.paperKernels=observed.result.report.solver.paperKernels;
@@ -225,6 +247,9 @@ try{
      assert.equal(observed.result.report.solver.coarseTopologyInitialization?.accepted,true,'The uploaded photograph must exercise coarse routing.');
      assert.equal(observed.result.report.templateChecksPassed,true);
      assert.deepEqual(observed.result.report.slits,{left:3,right:3});
+     assert.equal(row.matchingPreference.enabled,true);
+     assert.equal(row.matchingPreference.status,'image_bound_exceeds_allowance');
+     assert.equal(row.matchingPreference.identical,false,'Preference cannot override the one-point limit.');
     }
     if(name==='noisy-checker'||name==='noisy-tree'){
      const {mask,resolution:n}=observed.prepared;
