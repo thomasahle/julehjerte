@@ -415,6 +415,9 @@
 					})}
 				</p>
 			{/if}
+			{#if result.report.missingFeatures}
+				<p class="note">{tr('paintFoundMissingFeatures')}</p>
+			{/if}
 		</div>
 		{#if result.report.motifMismatch !== undefined}
 			<label class="checkbox">

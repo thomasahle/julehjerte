@@ -70,6 +70,8 @@ export type PaintResult = {
 		/** Null when no sheet has two distinct slits to measure between. */
 		clearanceMm: number | null;
 		mismatch: number;
+		/** The engine could not retain all substantial regions of the input motif. */
+		missingFeatures?: boolean;
 		identical: boolean;
 		/** The visitor kept a validated checkpoint before the search completed. */
 		stoppedEarly?: boolean;

@@ -123,6 +123,32 @@ describe('FindCutsPanel', () => {
 		}
 	});
 
+	for (const lang of ['da', 'en'] as const) {
+		for (const mismatch of [0.004, 0.017]) {
+			it(`reports missing motif details even with low average error (${lang}, ${mismatch})`, () => {
+				const open = vi.fn();
+				const panel = render({ lang, result: result({ mismatch, missingFeatures: true }), onOpenInDraw: open });
+				try {
+					expect(panel.root.querySelector('[role=status]')?.textContent).toContain(
+						lang === 'en' ? 'Some details of the motif are missing.' : 'Nogle detaljer i motivet mangler.'
+					);
+					const button = [...panel.root.querySelectorAll('button')].find(b => b.textContent?.trim() === (lang === 'en' ? 'Open in Draw' : 'Åbn i Tegn'))!;
+					expect(button.disabled).toBe(false);
+					button.click();
+					expect(open).toHaveBeenCalledOnce();
+				} finally { panel.cleanup(); }
+			});
+		}
+		it(`does not invent a feature failure for clean or older results (${lang})`, () => {
+			for (const missingFeatures of [false, undefined]) {
+				const panel = render({ lang, result: result({ missingFeatures }) });
+				try {
+					expect(panel.text).not.toContain(lang === 'en' ? 'Some details of the motif are missing.' : 'Nogle detaljer i motivet mangler.');
+				} finally { panel.cleanup(); }
+			}
+		});
+	}
+
 	it('calls a result over one per cent close, and offers the search again', () => {
 		const panel = render({ result: result({ mismatch: 0.017 }) });
 		try {

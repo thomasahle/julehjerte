@@ -692,6 +692,7 @@
 					cuts: [solved.report.slits.left, solved.report.slits.right],
 					clearanceMm: solved.report.validation.minimumInterSlitDistanceLower,
 					mismatch,
+					missingFeatures: solved.report.imageFidelity?.features.passed === false,
 					motifMismatch: regions?.inside,
 					borderChange: regions?.outside,
 					identical: solved.report.solver.matchingPreference?.identical ?? false,
