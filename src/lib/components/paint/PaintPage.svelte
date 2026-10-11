@@ -34,7 +34,7 @@
 	import SymmetryPanel from './SymmetryPanel.svelte';
 	import FindCutsPanel from './FindCutsPanel.svelte';
 	import ImportImageDialog from './ImportImageDialog.svelte';
-	import { SITE_TITLE, SITE_TITLE_EN } from '$lib/config';
+	import { pageTitle } from '$lib/seo';
 	import { t, tArray, type Language } from '$lib/i18n';
 	import { editorHref, homeAnchorHref } from '$lib/i18n/routes';
 	import { NARROW_QUERY } from '$lib/breakpoints';
@@ -706,7 +706,7 @@
 </script>
 
 <svelte:head>
-	<title>{heading} - {lang === 'en' ? SITE_TITLE_EN : SITE_TITLE}</title>
+	<title>{pageTitle('paint', lang)}</title>
 </svelte:head>
 
 <div class="paint" bind:this={pageEl}>

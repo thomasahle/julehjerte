@@ -3,7 +3,8 @@
 	import { onMount } from "svelte";
 	import { browser, dev } from "$app/environment";
 	import { page } from "$app/stores";
-	import { SITE_NAME, SITE_TITLE, SITE_TITLE_EN, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID } from "$lib/config";
+	import { SITE_NAME, SITE_DESCRIPTION, SITE_DESCRIPTION_EN, SITE_KEYWORDS, SITE_URL, GA_MEASUREMENT_ID } from "$lib/config";
+	import { pageTitle, socialImage } from "$lib/seo";
 	import { langFromPathname, t } from "$lib/i18n";
 	import { alternatePaths, routeKeyFromPathname } from "$lib/i18n/routes";
 	import * as Tooltip from "$lib/components/ui/tooltip";
@@ -13,7 +14,6 @@
 
 	let { children } = $props();
 	let lang = $derived(langFromPathname($page.url.pathname));
-	let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
 	let ogLocale = $derived(lang === "en" ? "en_GB" : "da_DK");
 
 	// Absolute URLs are built from SITE_URL + the request path, never from `base`: in prerendered
@@ -44,18 +44,8 @@
 						: SITE_DESCRIPTION,
 	);
 
-	// og:title follows the same route table as the description: a link to /om/,
-	// /saadan-goer-du/ or /editor/ used to preview the generic front-page card
-	// under the site title while its own tab said something else.
-	let ogTitle = $derived(
-		routeKey === "howTo"
-			? `${t("howToTitle", lang)} - ${metaTitle}`
-			: routeKey === "about"
-				? `${t("aboutTitle", lang)} - ${metaTitle}`
-				: routeKey === "editor"
-					? `${t("createNewHeartTitle", lang)} - ${metaTitle}`
-					: metaTitle,
-	);
+	let ogTitle = $derived(pageTitle(routeKey, lang));
+	let ogImage = $derived(socialImage(lang));
 
 	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang, og and twitter tags.
 	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);
@@ -153,15 +143,18 @@
 		<meta property="og:url" content={pageUrl} />
 		<meta property="og:title" content={ogTitle} />
 		<meta property="og:description" content={metaDescription} />
-		<meta property="og:image" content="{SITE_URL}/og-image.png" />
+		<meta property="og:image" content={ogImage} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:alt" content={t("socialImageAlt", lang)} />
 
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={ogTitle} />
 		<meta name="twitter:description" content={metaDescription} />
-		<meta name="twitter:image" content="{SITE_URL}/og-image.png" />
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image:alt" content={t("socialImageAlt", lang)} />
 	{/if}
 </svelte:head>
 

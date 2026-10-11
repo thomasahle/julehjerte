@@ -56,7 +56,7 @@ describe('translations', () => {
 
   it('instructions array has same length in both languages', () => {
     expect(translations.da.instructions.length).toBe(translations.en.instructions.length);
-    expect(translations.da.instructions.length).toBe(5);
+    expect(translations.da.instructions.length).toBe(4);
   });
 
   describe('specific translations', () => {

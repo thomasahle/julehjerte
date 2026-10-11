@@ -3,7 +3,7 @@
   import { base } from '$app/paths';
   import { t, langFromPathname } from '$lib/i18n';
   import { href as routeHref } from '$lib/i18n/routes';
-  import { SITE_TITLE } from '$lib/config';
+  import { SITE_NAME } from '$lib/config';
   import PageHeader from '$lib/components/PageHeader.svelte';
 
   let lang = $derived(langFromPathname($page.url.pathname, base));
@@ -18,7 +18,7 @@
 </script>
 
 <svelte:head>
-  <title>{message} - {SITE_TITLE}</title>
+  <title>{message} | {SITE_NAME}</title>
 </svelte:head>
 
 <PageHeader {lang} />

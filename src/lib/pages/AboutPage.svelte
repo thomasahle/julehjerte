@@ -15,7 +15,7 @@
 	import GitHubLink from '$lib/components/GitHubLink.svelte';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import { ExternalIcon, PencilIcon, PlusIcon } from '$lib/components/icons';
-	import { SITE_TITLE, SITE_TITLE_EN } from '$lib/config';
+	import { pageTitle } from '$lib/seo';
 	import { t, type Language } from '$lib/i18n';
 	import { href } from '$lib/i18n/routes';
 
@@ -64,7 +64,7 @@
 </script>
 
 <svelte:head>
-	<title>{t('aboutTitle', lang)} - {lang === 'en' ? SITE_TITLE_EN : SITE_TITLE}</title>
+	<title>{pageTitle('about', lang)}</title>
 </svelte:head>
 
 <PageHeader {lang} active="about" />

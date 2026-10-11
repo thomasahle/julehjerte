@@ -2,14 +2,14 @@
 export const SITE_NAME = 'Juleflet';
 export const SITE_DOMAIN = 'juleflet.dk';
 export const SITE_URL = 'https://juleflet.dk';
-export const SITE_TITLE = 'Juleflet: Flettede Julehjerter Skabeloner og Designer';
-export const SITE_TITLE_EN = 'Juleflet: Woven Christmas Heart Templates and Designer';
+export const SITE_TITLE = 'Flettede julehjerter – skabeloner til print | Juleflet';
+export const SITE_TITLE_EN = 'Woven Christmas hearts – printable templates | Juleflet';
 
 // These are used for SEO meta tags (static, Danish-focused for SEO)
 export const SITE_DESCRIPTION =
-  'Design og print dine egne flettede julehjerter. Skab unikke danske julehjerter med vores gratis online editor.';
+  'Find skabeloner til flettede julehjerter, print dem på A4, og følg vejledningen til at klippe og flette. Du kan også designe dit eget mønster.';
 export const SITE_DESCRIPTION_EN =
-  'Design and print your own woven Christmas hearts. Create unique heart patterns with our free online editor.';
+  'Explore woven Christmas heart templates, print them on A4, and follow the cutting and weaving guide. You can also design your own pattern.';
 export const SITE_KEYWORDS =
   'julehjerter, flettede hjerter, jul, julepynt, dansk tradition, christmas hearts, woven hearts, craft, DIY';
 

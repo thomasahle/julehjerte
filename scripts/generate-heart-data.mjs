@@ -18,10 +18,11 @@
  *                                    the front page is the one page that downloads it, and
  *                                    it downloads nothing else about a heart (see
  *                                    $lib/front/galleryHearts)
- *   static/og/<id>.png               1200x630 Open Graph image per heart (the coloured
- *                                    preview with the name on the site background),
- *                                    rendered with @resvg/resvg-js; gitignored, built on
- *                                    every build
+ *   static/og/social/<lang>/*.png    1200x630 localized social cards for the homepage
+ *                                    and each heart, using the site's landscape;
+ *                                    gitignored and generated on every build
+ *   static/og/<id>.png               Danish cards at the legacy URLs
+ *   static/og-image.png              Danish homepage card at the legacy URL
  *
  * Coordinates are rounded to 1/1000 px (invisible; the symmetry and overlap checks
  * use 3-5 px tolerances) so the JSON stays small and diffs stay readable. The
@@ -36,6 +37,7 @@ import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 import { JSDOM } from 'jsdom';
 import { Resvg } from '@resvg/resvg-js';
+import { socialCardBuilder } from './social-cards.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const heartsJsonPath = path.join(root, 'src/lib/data/hearts.json');
@@ -48,22 +50,13 @@ const ogDir = path.join(root, 'static/og');
 const PHOTO_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 const COORD_DECIMALS = 3;
 
-// Open Graph card: the site's body background (src/routes/+layout.svelte) and the
-// default heart colours (src/lib/stores/colors.ts).
 const OG_WIDTH = 1200;
-const OG_HEIGHT = 630;
-const OG_BACKGROUND = '#f9f9f3';
-const OG_COLORS = { left: '#ffffff', right: 'rgb(185, 19, 19)' };
-// Card text, from the redesign palette in src/app.css: --deep, --muted, --green.
-const OG_TEXT = '#1c3329';
-const OG_TEXT_MUTED = '#5f6d66';
-const OG_WORDMARK = '#2e5041';
+const OG_COLORS = { left: '#ffffff', right: '#b91313' };
 // The card text is set in a vendored font so the images are byte-identical on every
 // machine and in CI, independent of system fonts. scripts/fonts/ holds a Latin subset of
 // Liberation Sans (SIL OFL 1.1), renamed "Juleflet Sans" as the licence requires for
 // modified versions; see scripts/fonts/README.md for how it was made.
 const OG_FONT_FAMILY = 'Juleflet Sans';
-const OG_FONT = `'${OG_FONT_FAMILY}', sans-serif`;
 const OG_FONT_FILES = ['JulefletSans-Regular.ttf', 'JulefletSans-Bold.ttf'].map((file) =>
   path.join(root, 'scripts/fonts', file)
 );
@@ -169,35 +162,6 @@ function formatDesigns(designs) {
     throw new Error('formatDesigns produced JSON that does not match the designs');
   }
   return json;
-}
-
-function escapeXml(str) {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
-// The heart on the left, name and author on the right.
-function buildOgSvg(design, heart) {
-  const heartSize = 540;
-  const heartX = 60;
-  const heartY = (OG_HEIGHT - heartSize) / 2;
-  const [minX, minY, viewWidth, viewHeight] = heart.viewBox.split(' ').map(Number);
-  const scale = heartSize / Math.max(viewWidth, viewHeight);
-  const textX = heartX + heartSize + 70;
-  const maxTextWidth = OG_WIDTH - textX - 50;
-  // Fit long names by shrinking the font; glyph widths are approximate (fonts vary).
-  const nameSize = Math.max(40, Math.min(76, Math.floor(maxTextWidth / (0.6 * design.name.length))));
-  const author = design.author ? `af ${design.author}` : '';
-  return [
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_WIDTH}" height="${OG_HEIGHT}" viewBox="0 0 ${OG_WIDTH} ${OG_HEIGHT}">`,
-    `<rect width="${OG_WIDTH}" height="${OG_HEIGHT}" fill="${OG_BACKGROUND}"/>`,
-    `<g transform="translate(${heartX - minX * scale} ${heartY - minY * scale}) scale(${scale})">${heart.markup}</g>`,
-    `<text x="${textX}" y="290" font-family="${OG_FONT}" font-size="${nameSize}" font-weight="700" fill="${OG_TEXT}">${escapeXml(design.name)}</text>`,
-    author
-      ? `<text x="${textX}" y="340" font-family="${OG_FONT}" font-size="30" fill="${OG_TEXT_MUTED}">${escapeXml(author)}</text>`
-      : '',
-    `<text x="${textX}" y="410" font-family="${OG_FONT}" font-size="30" font-weight="600" fill="${OG_WORDMARK}">juleflet.dk</text>`,
-    '</svg>'
-  ].join('');
 }
 
 function renderOgPng(svg, fontFiles) {
@@ -310,12 +274,27 @@ try {
   for (const file of fs.readdirSync(ogDir)) {
     if (file.endsWith('.png') && !ids.includes(file.slice(0, -4))) fs.unlinkSync(path.join(ogDir, file));
   }
-  for (const id of ids) {
-    const heart = renderHeartSvgInline(designs[id], OG_COLORS, { idPrefix: `og-${id}` });
-    fs.writeFileSync(path.join(ogDir, `${id}.png`), renderOgPng(buildOgSvg(designs[id], heart), fontFiles));
+  const builder = socialCardBuilder(root);
+  const heartImages = Object.fromEntries(ids.map((id) => [
+    id, renderHeartSvgInline(designs[id], OG_COLORS, { idPrefix: `og-${id}` })
+  ]));
+  // Both languages get a public image URL. Keep the previous URLs working too.
+  const socialDir = path.join(ogDir, 'social');
+  fs.rmSync(socialDir, { recursive: true, force: true });
+  for (const lang of ['da', 'en']) {
+    const output = path.join(socialDir, lang);
+    fs.mkdirSync(output, { recursive: true });
+    const home = renderOgPng(builder.home(['stjerne', 'classic-3x3', 'h4h2'].map((id) => heartImages[id]), lang), fontFiles);
+    fs.writeFileSync(path.join(output, 'home.png'), home);
+    if (lang === 'da') fs.writeFileSync(path.join(root, 'static/og-image.png'), home);
+    for (const id of ids) {
+      const png = renderOgPng(builder.heart({ ...designs[id], id }, heartImages[id], lang), fontFiles);
+      fs.writeFileSync(path.join(output, `${id}.png`), png);
+      if (lang === 'da') fs.writeFileSync(path.join(ogDir, `${id}.png`), png);
+    }
   }
   console.log(
-    `heart-data: ${ids.length} Open Graph images -> ${path.relative(root, ogDir)}/ ` +
+    `heart-data: ${2 * (ids.length + 1)} localized social cards plus legacy images -> ${path.relative(root, ogDir)}/ ` +
       `(${((performance.now() - started) / 1000).toFixed(1)}s)`
   );
 } finally {

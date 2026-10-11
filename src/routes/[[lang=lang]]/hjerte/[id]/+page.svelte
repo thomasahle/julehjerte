@@ -31,10 +31,9 @@
     SITE_DESCRIPTION,
     SITE_DESCRIPTION_EN,
     SITE_DOMAIN,
-    SITE_TITLE,
-    SITE_TITLE_EN,
     SITE_URL,
   } from "$lib/config";
+  import { heartPageTitle, socialImage } from "$lib/seo";
   import { stripsLabel as formatStrips, t, type Language } from "$lib/i18n";
   import { editorHref, heartPath, homeAnchorHref } from "$lib/i18n/routes";
   import { lobesShareTemplate } from "$lib/utils/symmetry";
@@ -170,8 +169,7 @@
   let description = $derived(data.description ?? (meta ? null : (design?.description ?? null)));
 
   // SEO
-  let siteTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
-  let pageTitle = $derived(`${info?.name ?? t("template", lang)} - ${siteTitle}`);
+  let pageTitle = $derived(heartPageTitle(heartId, info?.name ?? t("template", lang), lang));
   let metaDescription = $derived.by(() => {
     if (!info) return lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION;
     const intro = t("heartMetaDescription", lang, {
@@ -188,7 +186,8 @@
   let canonicalEn = $derived(`${SITE_URL}${heartPath(heartId, "en")}`);
   let canonicalUrl = $derived(lang === "en" ? canonicalEn : canonicalDa);
   // Gallery hearts get their own 1200x630 card, built by scripts/generate-heart-data.mjs.
-  let ogImage = $derived(meta ? `${SITE_URL}/og/${heartId}.png` : `${SITE_URL}/og-image.png`);
+  let ogImage = $derived(socialImage(lang, meta ? heartId : undefined));
+  let ogImageAlt = $derived(meta ? t("heartSocialImageAlt", lang, { name: info?.name ?? "" }) : t("socialImageAlt", lang));
 
   // Gallery hearts open by id; user-created hearts carry their design in the URL
   // fragment (never sent to the server, so no request-URI limits). A shared heart that
@@ -342,10 +341,13 @@
   <meta property="og:image" content={ogImage} />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:alt" content={ogImageAlt} />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={pageTitle} />
   <meta name="twitter:description" content={metaDescription} />
   <meta name="twitter:image" content={ogImage} />
+  <meta name="twitter:image:alt" content={ogImageAlt} />
   {#if isShared}
     <meta name="robots" content="noindex" />
   {/if}

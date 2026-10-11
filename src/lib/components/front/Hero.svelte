@@ -1,7 +1,7 @@
 <!--
   The front page's hero — docs/redesign/DESIGN.md §3 "Hero".
 
-  Hanging hearts over the winter landscape, with the wordmark, the tagline and
+  Hanging hearts over the winter landscape, with the descriptive heading and
   the two calls to action. <Scene band> under it draws the sky, the snow strip
   and the landscape (which is thereby inlined once for the whole page); the two
   overlay SVGs here are the stacked layout's starry sky and its corner firs, both
@@ -86,17 +86,20 @@
 		</div>
 
 		<div class="hero-text">
-			<h1>{t('siteWordmark', lang)}</h1>
-			<h2>{t('heroTagline', lang)}</h2>
-			<p>{t('heroIntro', lang)}</p>
+			<h1>{t('heroTagline', lang)}</h1>
+			<p>
+				{t('heroIntro', lang)}
+				<a href={routeHref('howTo', lang)}>{t('heroGuideLink', lang)}</a>{lang === 'en' ? ',' : ''}
+				{t('heroIntroEnd', lang)}
+			</p>
 			<div class="hero-btns">
-				<a class="btn btn-primary" href={routeHref('editor', lang)}>
-					<PencilIcon size={18} />
-					{t('createNewHeart', lang)}
-				</a>
-				<a class="btn btn-outline hero-btn-secondary" href="#skabeloner">
+				<a class="btn btn-primary" href="#skabeloner">
 					<ArrowRightIcon size={18} />
 					{t('heroSeeTemplates', lang)}
+				</a>
+				<a class="btn btn-outline" href={routeHref('editor', lang)}>
+					<PencilIcon size={18} />
+					{t('heroDesignHeart', lang)}
 				</a>
 			</div>
 		</div>
@@ -151,20 +154,11 @@
 
 	.hero-text h1 {
 		margin: 0;
-		font-size: 56px;
+		font-size: 52px;
+		text-wrap: balance;
 		font-weight: 600;
-		line-height: 1.05;
+		line-height: 1.08;
 		color: var(--deep);
-	}
-
-	.hero-text h2 {
-		margin: 0;
-		font-size: 24px;
-		/* The mockup leaves the h2 at the default line-height; the inherited 1.5
-		   pushed the paragraph — and the whole page below it — down by 7px. */
-		line-height: normal;
-		font-weight: 500;
-		color: var(--green);
 	}
 
 	.hero-text p {
@@ -174,6 +168,12 @@
 		line-height: 1.55;
 		/* --muted is 4.02:1 on the hero's --sky, under the AA minimum for body text. */
 		color: var(--muted-on-sky);
+	}
+
+	.hero-text p a {
+		color: inherit;
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 
 	.hero-btns {
@@ -214,12 +214,9 @@
 		}
 
 		.hero-text h1 {
-			font-size: 48px;
+			font-size: 44px;
 		}
 
-		.hero-text h2 {
-			font-size: 21px;
-		}
 	}
 
 	@media (max-width: 899px) {
@@ -254,10 +251,6 @@
 			font-size: 44px;
 		}
 
-		.hero-text h2 {
-			font-size: 19px;
-		}
-
 		.hero-text p {
 			font-size: 15px;
 		}
@@ -278,15 +271,7 @@
 
 	@media (max-width: 599px) {
 		.hero-text h1 {
-			font-size: 38px;
-		}
-
-		.hero-text h2 {
-			font-size: 17px;
-		}
-
-		.hero-btn-secondary {
-			display: none;
+			font-size: 36px;
 		}
 
 		.hero-tree-m {

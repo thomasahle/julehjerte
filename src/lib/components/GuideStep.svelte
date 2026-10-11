@@ -1,27 +1,9 @@
-<!--
-  One of the five illustrated drawings on the "Sådan gør du" page —
-  docs/redesign/DESIGN.md §5, ported one-to-one from `guideSvg(step)` in
-  docs/redesign/mockups/build-artboards.mjs: same 240×180 viewBox, same
-  coordinates, same shapes.
-
-  The generator hard-codes the palette as hex; here every fill and stroke comes
-  from a class in the <style> block, so the drawings follow the design tokens in
-  src/app.css — including --red-dark, the shaded top edge of the folded paper.
-
-  Everything is written out inline rather than through {#snippet}s: a snippet is
-  compiled as its own function and would create its elements in the HTML rather
-  than the SVG namespace.
-
-  The drawings are decorative — the numbered step text beside them carries the
-  meaning — so the <svg> is aria-hidden, exactly as in the generator. The small
-  annotation labels it draws ("stiplet linje på folden", "fra folden",
-  "over/under") are part of the drawing and come from the translations.
--->
+<!-- The four preparation drawings. The detailed loop diagrams live in GuideWeave. -->
 <script lang="ts">
 	import { t, type Language } from '$lib/i18n';
 
 	interface Props {
-		/** Which of the five steps to draw, 1-5. */
+		/** Which preparation step to draw, 1-4. */
 		step: number;
 		lang: Language;
 		class?: string;
@@ -51,23 +33,6 @@
 	// Step 4: the same silhouette, now cut out of the coloured paper.
 	const CUT_OUT = template(84, 26, 72, 134).d;
 
-	// Step 5: two lobes woven together on a 3-column grid. The white piece comes
-	// in from the left, the red one from the top; two rows are already woven and
-	// the last white strip is still to go.
-	const X0 = 78;
-	const Y0 = 44;
-	const CELL = 30;
-	const COLS = 3;
-	const WEAVE = CELL * COLS;
-
-	/** The white squares of the finished weave: the checkerboard's even cells. */
-	const wovenCells = [0, 1].flatMap((row) =>
-		[...Array(COLS).keys()]
-			.filter((col) => (row + col) % 2 === 0)
-			.map((col) => ({ x: X0 + col * CELL, y: Y0 + row * CELL }))
-	);
-	/** The seams between the woven cells, one vertical and one horizontal per gap. */
-	const weaveSeams = [1, 2].map((k) => ({ v: X0 + k * CELL, h: Y0 + k * CELL }));
 </script>
 
 <svg viewBox="0 0 240 180" class={className} aria-hidden="true" focusable="false">
@@ -94,8 +59,8 @@
 		<line class="paper-fold" x1="18" y1="88" x2="76" y2="88" />
 		<path class="arrow" d="M86 44 C 110 60, 110 96, 86 116" />
 		<path class="arrow" d="m92 106-6 10-11-3" />
-		<rect class="paper" x="124" y="88" width="72" height="62" rx="2" />
-		<rect class="paper-edge" x="124" y="84" width="72" height="8" rx="2" />
+		<rect class="paper" x="124" y="34" width="72" height="116" rx="2" />
+		<rect class="paper-edge" x="124" y="146" width="72" height="4" rx="2" />
 		<path class="tmpl" d={ON_FOLD.d} stroke-width="1.6" fill-opacity="0.92" />
 		{#each ON_FOLD.strips as strip (strip.x)}
 			<line class="tmpl-strip" x1={strip.x} y1={strip.y1} x2={strip.x} y2={strip.y2} />
@@ -110,8 +75,8 @@
 		<text class="label" x="160" y="170">{t('guideLabelFoldLine', lang)}</text>
 	{:else if step === 3}
 		<!-- Cut the outline, through both layers. -->
-		<rect class="paper" x="70" y="92" width="100" height="70" rx="2" />
-		<rect class="paper-edge" x="70" y="88" width="100" height="8" rx="2" />
+		<rect class="paper" x="70" y="22" width="100" height="140" rx="2" />
+		<rect class="paper-edge" x="70" y="158" width="100" height="4" rx="2" />
 		<path class="tmpl" d={CUTTING.d} stroke-width="1.4" fill-opacity="0.92" />
 		{#each CUTTING.strips as strip (strip.x)}
 			<line class="tmpl-strip" x1={strip.x} y1={strip.y1} x2={strip.x} y2={strip.y2} />
@@ -148,34 +113,6 @@
 		<path class="arrow" d="M192 150 V 84" />
 		<path class="arrow" d="m186 92 6-8 6 8" />
 		<text class="label" x="192" y="72">{t('guideLabelFromFold', lang)}</text>
-	{:else}
-		<!-- Weave: alternately over and under, with one white strip still to go. -->
-		<path class="lobe-white" d="M {X0} {Y0} A {WEAVE / 2} {WEAVE / 2} 0 0 0 {X0} {Y0 + WEAVE} Z" />
-		<path class="paper" d="M {X0} {Y0} A {WEAVE / 2} {WEAVE / 2} 0 0 1 {X0 + WEAVE} {Y0} Z" />
-		{#each [0, 1, 2] as col (col)}
-			<rect class="paper" x={X0 + col * CELL + 1} y={Y0} width={CELL - 2} height={WEAVE + 30} />
-		{/each}
-		<line class="weave-seam" x1={X0} y1={Y0} x2={X0} y2={Y0 + WEAVE} />
-		{#each wovenCells as cell (`${cell.x},${cell.y}`)}
-			<rect class="woven-cell" x={cell.x} y={cell.y} width={CELL} height={CELL} />
-		{/each}
-		{#each weaveSeams as seam (seam.v)}
-			<line class="weave-seam" x1={seam.v} y1={Y0} x2={seam.v} y2={Y0 + 2 * CELL} />
-			<line class="weave-seam" x1={X0} y1={seam.h} x2={X0 + WEAVE} y2={seam.h} />
-		{/each}
-		<rect
-			class="lobe-white"
-			x={X0}
-			y={Y0 + 2 * CELL + 1}
-			width={WEAVE + 40}
-			height={CELL - 2}
-		/>
-		<path class="arrow" d="M{X0 + WEAVE + 46} {Y0 + 2.5 * CELL} h -14" />
-		<path class="arrow" d="m{X0 + WEAVE + 40} {Y0 + 2.5 * CELL - 5} -6 5 6 5" />
-		<!-- The instruction the drawing exists to teach: over, under, over. -->
-		<text class="label small" x={X0 + 0.5 * CELL} y={Y0 + 2 * CELL + 8}>{t('guideLabelOver', lang)}</text>
-		<text class="label small" x={X0 + 1.5 * CELL} y={Y0 + 2 * CELL + 8}>{t('guideLabelUnder', lang)}</text>
-		<text class="label small" x={X0 + 2.5 * CELL} y={Y0 + 2 * CELL + 8}>{t('guideLabelOver', lang)}</text>
 	{/if}
 </svg>
 
@@ -279,22 +216,7 @@
 		stroke-linejoin: round;
 	}
 
-	/* Step 5 — the weave. */
-	.lobe-white {
-		fill: var(--white);
-		stroke: var(--line);
-	}
-
-	.woven-cell {
-		fill: var(--white);
-	}
-
-	.weave-seam {
-		stroke: var(--line);
-		stroke-width: 1;
-	}
-
-	/* The generator's annotation labels: 10.5px muted, 9px on the weave. */
+	/* Labels are repeated in the adjacent preparation instructions. */
 	.label {
 		fill: var(--muted);
 		font-family: inherit;
@@ -302,7 +224,4 @@
 		text-anchor: middle;
 	}
 
-	.label.small {
-		font-size: 9px;
-	}
 </style>

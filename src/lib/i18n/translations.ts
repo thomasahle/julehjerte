@@ -25,7 +25,9 @@ export const translations = {
     siteWordmark: 'Juleflet.dk',
     heroTagline: 'Skabeloner til flettede julehjerter',
     heroGoToHeart: 'Gå til {name} i galleriet',
-    heroIntro: 'Vælg et hjerte, print skabelonen på A4, klip og flet – eller tegn dit eget mønster i editoren.',
+    heroIntro: 'Vælg et julehjerte, hent skabelonen som PDF, og print på A4.',
+    heroGuideLink: 'Følg vejledningen',
+    heroIntroEnd: 'til at klippe og flette, eller tegn dit eget mønster i editoren.',
     heroSeeTemplates: 'Se skabeloner',
     heroScrollHint: 'Scroll for at udforske skabeloner',
 
@@ -53,9 +55,9 @@ export const translations = {
     stepPrintTitle: 'Vælg og print',
     stepPrintHint: 'I 100% størrelse på A4',
     stepCutTitle: 'Klip og fold',
-    stepCutHint: 'Følg de fem trin',
+    stepCutHint: 'Følg vejledningen',
     stepWeaveTitle: 'Flet',
-    stepWeaveHint: 'Skiftevis over og under',
+    stepWeaveHint: 'Ind i og uden om',
     myHeartsEmpty: 'Hjerter du tegner i editoren gemmes her i din browser, så du kan printe og dele dem senere.',
 
     // Category names; the *Lower forms are for mid-sentence use
@@ -99,15 +101,14 @@ export const translations = {
     templateRight: 'Skabelon højre',
     photo: 'Foto',
     instructions: [
-      'Print skabelonen i 100% størrelse på A4',
-      'Fold et stykke farvet papir på midten, og læg skabelonen med den stiplede linje langs folden',
-      'Klip langs de solide ydre linjer – gennem begge lag',
-      'Klip striberne op fra folden langs de buede linjer',
-      'Vend papiret, så farven vender udad, og flet de to halvdele sammen – skiftevis over og under'
+      'Print skabelonen på A4 i 100 % størrelse.',
+      'Fold papiret på midten. Læg skabelonens stiplede linje langs folden.',
+      'Klip omridset gennem begge lag. Klip ikke folden af.',
+      'Klip fra folden langs hver indre linje, helt til linjens endepunkt.'
     ],
     /** {name} = heart name, {x}/{y} = grid columns/rows */
-    heartMetaDescription: '{name} - et flettet julehjerte design med {x}x{y} striber.',
-    heartMetaDownload: 'Download PDF skabelon gratis.',
+    heartMetaDescription: '{name} – et flettet julehjerte med {x} × {y} strimler.',
+    heartMetaDownload: 'Hent skabelonen som PDF til A4.',
     /** {name} = heart name */
     shareText: 'Se dette flettede julehjerte: {name}',
     lobeLeft: 'Venstre',
@@ -415,22 +416,73 @@ export const translations = {
       'Test dit design ved at downloade PDF\'en og prøve at folde det!'
     ],
 
+    // Search titles, social previews and the illustrated weaving guide
+    heroDesignHeart: 'Design dit eget hjerte',
+    howToBrowserTitle: 'Sådan fletter du julehjerter – trin for trin',
+    classicHeartBrowserTitle: 'Klassisk julehjerte – skabelon med 3 strimler',
+    starHeartBrowserTitle: 'Julehjerte med stjerne – skabelon til print',
+    heartBrowserTitle: '{name} – skabelon til julehjerte',
+    socialImageAlt: 'Røde og hvide flettede julehjerter over Juleflets vinterlandskab',
+    heartSocialImageAlt: 'Det flettede julehjerte {name} over Juleflets vinterlandskab',
+    guideStartTitle: 'Begynd med et enkelt mønster',
+    guideStartText: 'Tre brede strimler og lige klip giver plads til at lære fletningen. Brug den samme skabelon til begge farver.',
+    guideStartLink: 'Hent skabelonen til det klassiske 3×3-hjerte',
+    guideMaterialsTitle: 'Det skal du bruge',
+    guideMaterials: [
+      'Papir i to farver, fx glanspapir eller almindeligt farvet papir på 80 g/m².',
+      'En printet skabelon, en saks og evt. papirclips til at holde skabelonen fast.',
+      'En ekstra papirstrimmel og lidt lim til hanken.'
+    ],
+    guidePrepareTitle: 'Print, fold og klip',
+    guidePrepareNote: 'Lav én halvdel i hver farve. Behold papiret foldet: hver strimmel skal være en løkke med to lag, som hænger sammen ved folden.',
+    guideWeaveTitle: 'Sådan fletter du løkkerne sammen',
+    guideWeaveIntro: 'Læg den hvide halvdel fra venstre og den røde oppefra, så de står vinkelret på hinanden. De runde ender vender væk fra hinanden. Begynd med den hvide strimmel nærmest den røde, og arbejd én strimmel helt igennem ad gangen.',
+    guideLoopTitle: 'En strimmel består af to lag',
+    guideLoopText: 'Åbn løkken i den ene farve, og før den anden farves foldede strimmel gennem åbningen. Begge lag skal med igennem. Ved næste krydsning bytter du om på, hvilken løkke du åbner.',
+    guideLoopCaption: 'Nærbilleder af én krydsning. Åbningen er tegnet større, så du kan se de to lag.',
+    guideLoopInside: 'Hvid løkke gennem rød',
+    guideLoopAround: 'Rød løkke gennem hvid',
+    guideWeaveStepTitles: [
+      'Første hvide strimmel',
+      'Anden hvide strimmel',
+      'Tredje hvide strimmel'
+    ],
+    guideWeaveStepTexts: [
+      'Før den hvide løkke gennem den første røde. Åbn derefter den hvide løkke, og før den anden røde igennem den. Før til sidst den hvide gennem den tredje røde.',
+      'Begynd modsat: før den første røde løkke gennem den anden hvide. Før så den hvide gennem den anden røde, og slut med den tredje røde gennem den hvide.',
+      'Gentag rytmen fra den første hvide strimmel: hvid gennem rød, rød gennem hvid, hvid gennem rød. Skub de flettede strimler forsigtigt på plads undervejs, så der er plads til den sidste.'
+    ],
+    guideWeaveDiagramCaption: 'De nummererede rækker er de tre hvide strimler. Tegningen viser mønsteret set forfra; nærbillederne ovenfor viser, hvordan løkkerne føres gennem hinanden.',
+    guideFinishTitle: 'Åbn hjertet, og sæt hanken på',
+    guideFinishText: 'Ret forsigtigt strimlerne til, og åbn hjertet fra toppen. Det skal kunne åbnes som en lille kurv. Lim den ene ende af en papirstrimmel indvendigt på forsiden og den anden indvendigt på bagsiden. Lad limen tørre, før du hænger hjertet op.',
+    guideQuestionsTitle: 'Papir, størrelse og hjælp til fletningen',
+    guideQuestions: [
+      'Hvorfor kan mit julehjerte ikke åbnes?',
+      'Hvorfor er den sidste strimmel svær at få igennem?',
+      'Hvilket papir er bedst til julehjerter?',
+      'Hvordan printer jeg skabelonen i den rigtige størrelse?',
+      'Hvordan laver jeg et større julehjerte?',
+      'Hvordan fletter jeg et hjerte med et andet mønster?'
+    ],
+    guideAnswers: [
+      'Du kan have flettet med enkelte lag i stedet for hele løkker, eller lagt en strimmel uden på den anden uden at føre den gennem åbningen. Flet tilbage til fejlen. Kontrollér, at begge lag føres igennem ved hver krydsning.',
+      'Skub de strimler, du allerede har flettet, tættere op mod de runde ender. Bøj papiret blidt, og undgå at trække hårdt. Tjek også, at alle snit går helt til skabelonens endepunkter, og at begge halvdele er printet i samme størrelse.',
+      'Begynd med tyndt, smidigt papir i to tydeligt forskellige farver. Almindeligt farvet printerpapir på 80 g/m² er et godt sted at starte. Glanspapir giver den klassiske blanke overflade. Stift karton er sværere at bøje gennem løkkerne, især i små hjerter.',
+      'Vælg A4 og 100 % eller »Faktisk størrelse« i printerdialogen. Slå »Tilpas til side« fra. Brug samme indstilling til begge halvdele, og kontrollér forhåndsvisningen, så ingen klippelinjer forsvinder uden for arket.',
+      'Forstør begge halvdele med samme procent. Ved 150 % bliver alle længder halvanden gang så store: 8 cm bliver fx 12 cm. Brug større papir eller udskriv fordelt på flere ark, hvis skabelonen ikke kan være på A4.',
+      'Princippet med hele løkker er det samme. Flere strimler, buer og smalle hjørner kræver mere plads og tålmodighed. Følg den enkelte skabelons klippelinjer og råd; nogle mønstre har forskellige skabeloner til de to halvdele.'
+    ],
+
     // "Sådan gør du" / "How to" page
     howToTitle: 'Sådan fletter du et julehjerte',
-    howToIntro: 'Alle skabeloner på Juleflet.dk printes i 100% størrelse på A4. Du skal bruge papir i to farver og en saks.',
-    /** {n} = step number, 1-5 */
+    howToIntro: 'Et julehjerte flettes af to foldede stykker papir. Strimlerne føres skiftevis ind i og uden om hinanden, så hjertet bliver en lille kurv. Her viser vi det med det klassiske hjerte med tre strimler i hver halvdel.',
+    /** {n} = preparation step number, 1-4 */
     howToStepLabel: 'Trin {n}',
-    howToMetaDescription: 'Illustreret vejledning i fem trin: print skabelonen, fold papiret, klip omridset og striberne, og flet de to halvdele sammen.',
-    tipsTitle: 'Gode råd',
-    tipPaper: 'Brug papir i to farver, 80–120 g. Glanspapir er det klassiske valg, men almindeligt printerpapir fungerer fint.',
-    tipSize: 'Print altid i 100% størrelse. Vil du have et større hjerte, så skalér begge skabeloner lige meget.',
-    tipGlue: 'Lim en strimmel papir på som hank, når hjertet er flettet færdigt.',
+    howToMetaDescription: 'Lær at flette et julehjerte med en illustreret vejledning: print, fold, klip og flet løkkerne sammen. Få råd om papir, størrelse og de typiske fejl.',
 
     // Labels drawn inside the guide illustrations (guideSvg() in the mockup generator)
     guideLabelFoldLine: 'stiplet linje på folden',
     guideLabelFromFold: 'fra folden',
-    guideLabelOver: 'over',
-    guideLabelUnder: 'under',
     switchLanguage: 'Switch to English',
     back: 'Tilbage',
 
@@ -484,7 +536,9 @@ export const translations = {
     siteWordmark: 'Juleflet.dk',
     heroTagline: 'Templates for woven Christmas hearts',
     heroGoToHeart: 'Go to {name} in the gallery',
-    heroIntro: 'Pick a heart, print the template on A4, cut and weave – or draw your own pattern in the editor.',
+    heroIntro: 'Choose a heart, download the PDF template, and print on A4.',
+    heroGuideLink: 'Follow the cutting and weaving guide',
+    heroIntroEnd: 'or draw your own pattern in the editor.',
     heroSeeTemplates: 'Browse templates',
     heroScrollHint: 'Scroll to explore templates',
 
@@ -512,9 +566,9 @@ export const translations = {
     stepPrintTitle: 'Pick and print',
     stepPrintHint: 'At 100% size on A4',
     stepCutTitle: 'Cut and fold',
-    stepCutHint: 'Follow the five steps',
+    stepCutHint: 'Follow the guide',
     stepWeaveTitle: 'Weave',
-    stepWeaveHint: 'Alternating over and under',
+    stepWeaveHint: 'Through and around',
     myHeartsEmpty: 'Hearts you draw in the editor are saved here in your browser, so you can print and share them later.',
 
     // Category names; the *Lower forms are for mid-sentence use
@@ -558,15 +612,14 @@ export const translations = {
     templateRight: 'Template right',
     photo: 'Photo',
     instructions: [
-      'Print the template at 100% size on A4',
-      'Fold a sheet of coloured paper in half and place the template with the dashed line along the fold',
-      'Cut along the solid outer lines – through both layers',
-      'Cut the strips up from the fold along the curved lines',
-      'Turn the paper so the colour faces out and weave the two halves together – alternating over and under'
+      'Print the template on A4 at 100% scale.',
+      'Fold the paper in half. Place the template’s dashed line along the fold.',
+      'Cut the outline through both layers. Do not cut off the fold.',
+      'Cut from the fold along each inner line, right to its endpoint.'
     ],
     /** {name} = heart name, {x}/{y} = grid columns/rows */
-    heartMetaDescription: '{name} - a woven Christmas heart design with a {x}x{y} grid.',
-    heartMetaDownload: 'Download the free PDF template.',
+    heartMetaDescription: '{name} – a woven Christmas heart with a {x} × {y} grid.',
+    heartMetaDownload: 'Download the A4 PDF template.',
     /** {name} = heart name */
     shareText: 'Check out this Danish woven heart design: {name}',
     lobeLeft: 'Left',
@@ -650,13 +703,13 @@ export const translations = {
     editorCurvedSegment: 'Curved segment',
     editorManyStripsHint: 'More than 8 strips requires great precision',
     editorIntersectionWarning: 'Curves must not cross each other – that would cut the paper strips apart.',
-    editorFirstVisitHint: "Tip: Drag a lobe's outer edge to add a strip, and double-click a curve to add a node.",
+    editorFirstVisitHint: 'Tip: Drag a lobe\'s outer edge to add a strip, and double-click a curve to add a node.',
     editorDismissHint: 'Dismiss tip',
     editorDraftPrompt: 'You have a draft from last time. Continue where you left off?',
     editorDraftContinue: 'Continue',
     editorDraftStartOver: 'Start over',
-    editorSnapToOpposite: "Snap to the other lobe's points",
-    editorSnapToOppositeTitle: "A point you drag lands on the nearest point of the other lobe's cuts",
+    editorSnapToOpposite: 'Snap to the other lobe\'s points',
+    editorSnapToOppositeTitle: 'A point you drag lands on the nearest point of the other lobe\'s cuts',
     editorHidePanel: 'Hide panel',
     editorShowPanel: 'Show panel',
     editorCanvasHint: 'Drag a curve to shape the strips · double-click to add a node · drag the edge to add a strip',
@@ -704,8 +757,8 @@ export const translations = {
     paintBrushMedium: 'Medium',
     paintBrushCoarse: 'Coarse',
     paintsWith: 'Paints with',
-    paintsWithLeft: "The left lobe's colour",
-    paintsWithRight: "The right lobe's colour",
+    paintsWithLeft: 'The left lobe\'s colour',
+    paintsWithRight: 'The right lobe\'s colour',
 
     // Paint mode: "Kanten" — the protected motif and the band around it (§11)
     paintFrame: 'Border',
@@ -874,22 +927,73 @@ export const translations = {
       'Test your design by downloading the PDF and trying to fold it!'
     ],
 
+    // Search titles, social previews and the illustrated weaving guide
+    heroDesignHeart: 'Design your own heart',
+    howToBrowserTitle: 'How to weave Christmas hearts – step by step',
+    classicHeartBrowserTitle: 'Classic woven heart – 3-strip template',
+    starHeartBrowserTitle: 'Star Christmas heart – printable template',
+    heartBrowserTitle: '{name} – woven heart template',
+    socialImageAlt: 'Red and white woven Christmas hearts above the Juleflet winter landscape',
+    heartSocialImageAlt: 'The {name} woven Christmas heart above the Juleflet winter landscape',
+    guideStartTitle: 'Start with a simple pattern',
+    guideStartText: 'Three wide strips and straight cuts give you room to learn the weave. Use the same template for both colours.',
+    guideStartLink: 'Get the classic 3×3 heart template',
+    guideMaterialsTitle: 'What you need',
+    guideMaterials: [
+      'Paper in two colours, such as glossy craft paper or ordinary 80 gsm coloured paper.',
+      'A printed template, scissors and optional paper clips to hold the template in place.',
+      'An extra strip of paper and a little glue for the handle.'
+    ],
+    guidePrepareTitle: 'Print, fold and cut',
+    guidePrepareNote: 'Make one half in each colour. Keep the paper folded: each strip must be a two-layer loop, joined at the fold.',
+    guideWeaveTitle: 'How to interlock the loops',
+    guideWeaveIntro: 'Place the white half from the left and the red half from above, at right angles. The rounded ends point away from each other. Start with the white strip nearest the red half, and weave one whole strip at a time.',
+    guideLoopTitle: 'Each strip has two layers',
+    guideLoopText: 'Open the loop in one colour and pass the other colour’s folded strip through the opening. Both layers go through together. At the next crossing, switch which loop you open.',
+    guideLoopCaption: 'Close-ups of one crossing. The opening is exaggerated so you can see both layers.',
+    guideLoopInside: 'White loop through red',
+    guideLoopAround: 'Red loop through white',
+    guideWeaveStepTitles: [
+      'First white strip',
+      'Second white strip',
+      'Third white strip'
+    ],
+    guideWeaveStepTexts: [
+      'Pass the white loop through the first red loop. Then open the white loop and pass the second red one through it. Finally, pass the white loop through the third red one.',
+      'Reverse the sequence: pass the first red loop through the second white loop. Pass the white through the second red, then the third red through the white.',
+      'Repeat the first strip’s sequence: white through red, red through white, white through red. Gently slide the woven strips into place as you go, leaving room for the last strip.'
+    ],
+    guideWeaveDiagramCaption: 'The numbered rows are the three white strips. The drawing shows the pattern from the front; the close-ups above show how the loops pass through each other.',
+    guideFinishTitle: 'Open the heart and add a handle',
+    guideFinishText: 'Gently straighten the strips and open the heart from the top. It should open into a little basket. Glue one end of a paper strip inside the front and the other inside the back. Let the glue dry before hanging it up.',
+    guideQuestionsTitle: 'Paper, sizing and help with the weave',
+    guideQuestions: [
+      'Why won’t my heart open?',
+      'Why is the last strip hard to thread?',
+      'Which paper should I use?',
+      'How do I print the template at the right size?',
+      'How do I make a larger heart?',
+      'How do I weave a different pattern?'
+    ],
+    guideAnswers: [
+      'You may have woven individual layers rather than complete loops, or laid one strip on top of another without threading it through the opening. Unweave back to the mistake. Check that both layers pass through together at every crossing.',
+      'Slide the strips you have already woven closer to the rounded ends. Bend the paper gently without pulling hard. Also check that every cut reaches the template’s endpoint and both halves were printed at the same scale.',
+      'Start with thin, flexible paper in two contrasting colours. Ordinary 80 gsm coloured printer paper is a good starting point. Glossy craft paper gives the traditional shiny finish. Stiff card is harder to bend through the loops, especially in small hearts.',
+      'Choose A4 and 100% or “Actual size” in the print dialog. Turn off “Fit to page”. Use the same settings for both halves and check the print preview so no cutting lines fall outside the sheet.',
+      'Enlarge both halves by the same percentage. At 150%, every length becomes one and a half times as large: 8 cm becomes 12 cm, for example. Use larger paper or tiled printing if the template no longer fits on A4.',
+      'The principle of weaving complete loops stays the same. More strips, curves and narrow corners take more room and patience. Follow each template’s cutting lines and advice; some patterns use a different template for each half.'
+    ],
+
     // "Sådan gør du" / "How to" page
     howToTitle: 'How to weave a Christmas heart',
-    howToIntro: 'Every template on Juleflet.dk prints at 100% size on A4. You need paper in two colours and a pair of scissors.',
-    /** {n} = step number, 1-5 */
+    howToIntro: 'A woven Christmas heart starts with two folded pieces of paper. Pass the strips alternately through and around each other to make a little basket. This guide uses the classic heart with three strips in each half.',
+    /** {n} = preparation step number, 1-4 */
     howToStepLabel: 'Step {n}',
-    howToMetaDescription: 'An illustrated five-step guide: print the template, fold the paper, cut the outline and the strips, and weave the two halves together.',
-    tipsTitle: 'Tips',
-    tipPaper: 'Use paper in two colours, 80–120 gsm. Glossy paper is the classic choice, but ordinary printer paper works fine.',
-    tipSize: 'Always print at 100% size. For a bigger heart, scale both templates by the same amount.',
-    tipGlue: 'Glue on a strip of paper as a handle once the heart is woven.',
+    howToMetaDescription: 'Learn to weave a Christmas heart with illustrated steps: print, fold, cut and interlock the loops. Includes paper advice, sizing and troubleshooting.',
 
     // Labels drawn inside the guide illustrations (guideSvg() in the mockup generator)
     guideLabelFoldLine: 'dashed line on the fold',
     guideLabelFromFold: 'from the fold',
-    guideLabelOver: 'over',
-    guideLabelUnder: 'under',
     switchLanguage: 'Skift til dansk',
     back: 'Back',
 

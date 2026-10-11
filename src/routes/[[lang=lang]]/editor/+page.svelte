@@ -3,7 +3,7 @@
   import { beforeNavigate, goto } from '$app/navigation';
   import { onMount, tick } from 'svelte';
   import PaperHeart from '$lib/components/PaperHeart.svelte';
-  import { SITE_TITLE, SITE_TITLE_EN } from '$lib/config';
+  import { pageTitle } from '$lib/seo';
   import { t, tArray, type Language } from '$lib/i18n';
   import { DEFAULT_COLORS, getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from '$lib/stores/collection';
@@ -716,7 +716,7 @@
 </script>
 
 <svelte:head>
-  <title>{pageHeading} - {lang === 'en' ? SITE_TITLE_EN : SITE_TITLE}</title>
+  <title>{pageTitle('editor', lang)}</title>
 </svelte:head>
 
 <!--

@@ -88,10 +88,11 @@ Skabeloner, Sådan gør du, Om, EN, GitHub. Adapt the existing `PageHeader.svelt
 ### Hero (≥ 900px)
 Grid `minmax(0,1fr) 640px`, gap 40, padding `0 40px 0 80px`, height 660px (600px below 1200px, where the
 hearts block gets `transform: scale(.75)` from the top-left and the h1 drops to 48px).
-Left column (padding-top 88px, gap 18, max-width 560): h1 "Juleflet.dk" 56px; h2 "Skabeloner til flettede
-julehjerter" 24px/500 green; p "Vælg et hjerte, print skabelonen på A4, klip og flet – eller tegn dit eget
-mønster i editoren." 17px `--muted` max-width 480; buttons row: primary "Lav nyt hjerte" (pencil icon) →
-editor, outline "Se skabeloner" (arrow icon) → `#skabeloner`.
+Left column (padding-top 88px, gap 18, max-width 560): the H1 is now “Skabeloner til flettede
+julehjerter” (52px, 44px below 1200; balanced wrapping). The wordmark stays in the navigation.
+The introduction describes choosing a heart, downloading a PDF and printing on A4, and links to the guide.
+Primary “Se skabeloner” (arrow) → `#skabeloner`; outline “Design dit eget hjerte” (pencil) → editor.
+Both actions stay visible on phones, wrapping when needed.
 Right column: a 640×560 block with five hanging hearts at absolute positions, DOM order as listed so long
 ribbons pass behind shorter hearts: (left 230, size 96, ribbon 300, delay 4.4s), (470, 125, 240, 3.5s),
 (300, 170, 120, 1.4s), (40, 220, 40, 0s), (500, 140, 26, 2.6s).
@@ -116,7 +117,7 @@ Stacked and centred (padding `0 24px 22px`): a hearts block (width 100%, max 420
 hearts — jul at left 4% (size 96, ribbon 130), stjerne at right 4% (90, 96), classic-3x3 centred (170, 40) —
 randomised the same way; a starry-sky overlay SVG (viewBox 0 0 420 300, `xMidYMin meet`, absolute top, height
 300, pointer-events none) with 7 gold `<use href="#star">` and 6 white dots (positions in `hero()`);
-then h1 44px (38 below 600), h2 19px (17), p 15px, buttons centred — below 600 only the primary button.
+then h1 44px (36 below 600), p 15px, both buttons centred and wrapping.
 A scroll hint sits absolutely at `bottom:14px` (mouse outline icon 22×34 + "Scroll for at udforske
 skabeloner", 13px `--muted`, `z-index:1`) linking to `#skabeloner`. Below 600 an extra overlay SVG
 (viewBox 0 0 390 230, `xMinYMax meet`, absolute left/bottom, height 230, `z-index:1`) adds two firs in the left
@@ -160,8 +161,8 @@ Toolbar (sticky top 0, z-index 5, `--page` background, flex-wrap, gap 12, paddin
 the split button is `aria-disabled` rather than `disabled` (so it stays focusable and its "Vælg hjerter først"
 hint is reachable from the keyboard) and dims to .75, not .5, so the red still reads as the toolbar's anchor; ghost buttons
 "Vælg alle", "Fravælg alle"; at the right end (`margin-left:auto`) the three steps, each a link to the guide page:
-printer icon "Vælg og print" / "I 100% størrelse på A4"; scissors "Klip og fold" / "Følg de fem trin"; weave
-(hash) icon "Flet" / "Skiftevis over og under". Step = icon 24px green + title 14px/600 `--deep` + hint 12px
+printer icon "Vælg og print" / "I 100% størrelse på A4"; scissors "Klip og fold" / "Følg vejledningen"; weave
+(hash) icon "Flet" / "Ind i og uden om". Step = icon 24px green + title 14px/600 `--deep` + hint 12px
 `--muted`, gap 10, items gap 26. Below 1200 the steps take their own line (`margin-left:0; flex-basis:100%`);
 below 700 they are hidden. The "Foreslå et hjerte" link is removed from the toolbar (it lives on the Om page).
 
@@ -263,24 +264,33 @@ Below the scene: "FLERE {KATEGORI}" heading row with "Se alle N {kategori} →" 
 and a grid `repeat(auto-fill, minmax(150px, 1fr))` of the other hearts in the same category as hanging hearts
 (size 120, ribbon `[26,54,38,66,44][i%5] * 0.6`) with their names, each linking to its detail page.
 
-The five steps the guide page below is built from (Danish; write natural English versions):
-1. Print skabelonen i 100% størrelse på A4
-2. Fold et stykke farvet papir på midten, og læg skabelonen med den stiplede linje langs folden
-3. Klip langs de solide ydre linjer – gennem begge lag
-4. Klip striberne op fra folden langs de buede linjer
-5. Vend papiret, så farven vender udad, og flet de to halvdele sammen – skiftevis over og under
+## 5. “Sådan gør du” page (`/saadan-goer-du/`, English `/en/how-to/`)
 
-## 5. "Sådan gør du" page (`/saadan-goer-du/`, English `/en/how-to/`)
+The guide teaches the classic 3×3 basket in both languages. A materials list and a link to that
+specific template come first. Four `GuideStep` illustrations cover printing at 100%, positioning the
+fold, cutting the outline without removing the fold, and cutting the inner lines from the fold.
 
-Nav link "Sådan gør du" (active). Intro line, then five guide cards in `repeat(auto-fill, minmax(220px, 1fr))`,
-gap 24: each card is white, radius 14, 1px `--line`, with an SVG drawing on top and the numbered step text
-below. (The mockup draws the tinted panel on its own, with the step text on `--page` and no card around it;
-this spec text is the decision — the site keeps the card.) Port the drawings' small annotation labels too:
-"stiplet linje på folden" under step 2, "fra folden" beside step 4's arrow, and over / under / over on step
-5's woven strip — 10.5px (9px on step 5) `--muted`, centred on the coordinates `guideSvg()` uses. Port the five drawings from `guideSvg(step)` in the generator (arch outline + template marks, the fold,
-cutting the outline through both layers, cutting the strips from the fold, weaving over/under) as a
-`GuideStep.svelte` component. Below the cards: short tips (paper, sizes, glue) and a link back to the gallery.
-Add to the sitemap.
+`GuideWeave` adds two enlarged loop-crossing diagrams: both layers of one folded strip pass through
+the other loop. Three separate front views show the alternating pattern after each white strip,
+with a matching prose instruction. These are schematic close-ups, not photographs. Captions explain
+that the openings are exaggerated; the full instructions also work without seeing the diagrams.
+The guide then explains opening the basket and attaching the handle, followed by visible answers
+about mistakes, the final strip, paper choice, printing, enlargement and other patterns.
+
+Four preparation cards and three weaving cards become single-column cards on phones. Text remains
+in the initial HTML. All interface copy is translated in `src/lib/i18n/translations.ts`.
+
+### Titles and social previews
+
+`src/lib/seo.ts` keeps route titles and social titles consistent. Titles end in `| Juleflet`, not the
+whole homepage title. Every public heart has a localized 1200×630 PNG at
+`/og/social/{da,en}/{id}.png`; the main card is `home.png`. Both Open Graph and Twitter metadata point
+to the appropriate image in the prerendered HTML and include descriptive image alt text.
+
+`scripts/social-cards.mjs` composes actual heart SVGs over the site's own winter landscape, using
+vendored fonts. `generate-heart-data.mjs` generates all cards at build time and also refreshes the
+legacy `/og-image.png` and `/og/{id}.png` paths. Designs shared only in URL fragments use the general
+card: a bespoke crawler preview would require a public URL with server-readable design data.
 
 ## 6. "Om" page (`/om/`, English `/en/about/`)
 
