@@ -1,4 +1,4 @@
-/** Real photographed motifs. Fixed reviewed crops; original pixels, no reference cutting paths. */
+/** Original photographed motifs through crop, classification and template fitting. */
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
@@ -7,18 +7,21 @@ import {AUTOMATIC_PRESET,GENERAL_PRESET,SIMPLIFIED_PREPROCESSING} from '../../sr
 import {detectHeartCrops} from '../../static/inverse/core/crop.js';
 import {auditImageFeatures} from '../../static/inverse/core/image-features.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
+import {hardPhotoTarget} from './hard-photo-target.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {writeHardPhotoReport} from './hard-photo-report.mjs';
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-const seconds=Number(args.seconds||10),runId=new Date().toISOString().replace(/[:.]/g,'-')+(args.shard?`-shard-${args.shard.replace('/','-of-')}`:''),output=args.output||`tmp/inverse-hard-photos/${runId}`,cropMode=args.crop||'automatic';
+const seconds=Number(args.seconds||10),runId=new Date().toISOString().replace(/[:.]/g,'-')+(args.shard?`-shard-${args.shard.replace('/','-of-')}`:''),output=args.output||`tmp/inverse-hard-photos/${runId}`,cropMode=args.crop||'automatic',targetMode=args.target||'photo';
 if(!Number.isFinite(seconds)||seconds<1||seconds>180)throw new Error('Use --seconds=1..180');
 if(!['automatic','fixed'].includes(cropMode))throw new Error('Use --crop=automatic|fixed');
+if(!['photo','mask'].includes(targetMode))throw new Error('Use --target=photo|mask');
 if(cropMode==='automatic'&&(args.recrops||args['crop-overrides']))throw new Error('Explicit crop overrides require --crop=fixed');
 const presets=args.presets?args.presets.split(','):['automatic'];
 if(presets.some(p=>!['automatic','general','simplify','mixture','direct','direct-mixture','unmerged'].includes(p)))throw new Error('Unknown preset; use automatic for the production pipeline');
+if(targetMode==='mask'&&presets.some(p=>!['automatic','direct','direct-mixture'].includes(p)))throw new Error('The mask track requires automatic or direct fitting.');
 await fs.mkdir(output,{recursive:true});
 const hash=b=>createHash('sha256').update(b).digest('hex'),collage=JSON.parse(await fs.readFile('scripts/inverse/hard-photo-cases.json')),photos=JSON.parse(await fs.readFile('scripts/inverse/photo-cases.json'));
-const sourceHashes={};async function hashTree(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=`${dir}/${e.name}`;if(e.isDirectory())await hashTree(f);else sourceHashes[f]=hash(await fs.readFile(f));}}await hashTree('static/inverse/core');await hashTree('static/inverse/locator');for(const f of ['scripts/inverse/hard-photo-cases.json','scripts/inverse/photo-cases.json','scripts/inverse/hard-photo-data.mjs','scripts/inverse/hard-photo-benchmark.mjs','scripts/inverse/hard-photo-report.mjs','src/lib/inverse/presets.js'])sourceHashes[f]=hash(await fs.readFile(f));
+const sourceHashes={};async function hashTree(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=`${dir}/${e.name}`;if(e.isDirectory())await hashTree(f);else sourceHashes[f]=hash(await fs.readFile(f));}}await hashTree('static/inverse/core');await hashTree('static/inverse/locator');for(const f of ['scripts/inverse/hard-photo-cases.json','scripts/inverse/photo-cases.json','scripts/inverse/hard-photo-data.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/hard-photo-benchmark.mjs','scripts/inverse/hard-photo-report.mjs','src/lib/inverse/presets.js'])sourceHashes[f]=hash(await fs.readFile(f));
 let cases=[...collage.cases.map(e=>({...e,group:'collage',...collage.source})),...photos.cases.map(e=>({...e,group:'individual',label:e.id,cropStatus:'visually_reviewed'}))].filter(e=>!args.ids||args.ids.split(',').includes(e.id));
 if(!cases.length&&!args.recrops)throw new Error('No cases selected');
 if(args.recrops){
@@ -46,7 +49,7 @@ async function sourcePreview(s,roi,quad,file){
   await fs.writeFile(file,thumb.toBuffer());
 }
 const config={...(args.recrops?{resolution:256}:{}),timeLimit:seconds,trials:0};
-const save=()=>fs.writeFile(`${output}/results.json`,JSON.stringify({runId,shard:args.shard||null,sourceHashes,settings:config,cropMode,presets,criteria:{maximumIndependentImageError:.03,geometryAndPaperRequired:true,sourceFeaturesRequired:true,cropMustBeReviewable:true,groundTruthCuttingPaths:false,physicalAssemblyTested:false},description:cropMode==='automatic'?'Original photograph pixels and rough collage selections only. Production crop proposals remain fixed during fitting. No historical overlap corners, insets or cutting templates enter the solver. All complete cases remain in the denominator, including missing crops.':'Fixed historical assistant-reviewed crops, before solver feedback. These approximate corners were disputed and are not ground truth. This diagnostic track isolates fitting from automatic detection; its targets and scores differ from automatic cropping. Partial/obscured motifs remain in the inventory.',results},null,2));
+const save=()=>fs.writeFile(`${output}/results.json`,JSON.stringify({runId,shard:args.shard||null,sourceHashes,settings:config,cropMode,targetMode,targetDescription:targetMode==='mask'?'Mal import-to-mask track: the classified crop is prepared afresh as binary artwork before fitting. The original photo and mask are unchanged. Browser interaction and editable SVG checks are separate.':'Photo-engine track: retain the classifier probability field. Default Lab and Otsu classification is already binary; explicit mixture mode is continuous. Compare fitting-input hashes before attributing differences to the objective.',presets,criteria:{maximumIndependentImageError:.03,geometryAndPaperRequired:true,sourceFeaturesRequired:true,cropMustBeReviewable:true,groundTruthCuttingPaths:false,physicalAssemblyTested:false},description:cropMode==='automatic'?'Original photograph pixels and rough collage selections only. Production crop proposals remain fixed during fitting. No historical overlap corners, insets or cutting templates enter the solver. All complete cases remain in the denominator, including missing crops.':'Fixed historical assistant-reviewed crops, before solver feedback. These approximate corners were disputed and are not ground truth. This diagnostic track isolates fitting from automatic detection; its targets and scores differ from automatic cropping. Partial/obscured motifs remain in the inventory.',results},null,2));
 for(const e of cases){
   const row={...e,runs:[]};results.push(row);
   if(['incomplete','obscured'].includes(e.cropStatus)){row.status=e.cropStatus;await save();continue;}
@@ -79,7 +82,10 @@ for(const e of cases){
         r.direct=!!p.target.metadata.direct;r.curves=p.target.curves.length;r.preprocessing=p.preview.metadata;r.preprocessSeconds=(performance.now()-start)/1000;
         r.maskSha256=hash(p.preview.mask);const probability=p.target.sourceImage?.probability;if(probability)r.probabilitySha256=hash(new Uint8Array(probability.buffer,probability.byteOffset,probability.byteLength));
         await fs.writeFile(`${dir}/crop.png`,pixelPNG(p.preview.rgb,p.preview.resolution,3));await fs.writeFile(`${folder}/mask.png`,pixelPNG(p.preview.mask,p.preview.resolution));await fs.writeFile(`${folder}/target.svg`,p.preview.vector);
-        const solveStart=performance.now(),result=await design(p.target,cfg);r.solveAndValidationSeconds=(performance.now()-solveStart)/1000;
+        const prepareStart=performance.now(),target=hardPhotoTarget(p,targetMode,cfg);r.maskPreparationSeconds=(performance.now()-prepareStart)/1000;
+        r.fittingMaskSha256=hash(target.sourceImage.mask);const fittingProbability=target.sourceImage.probability;
+        if(fittingProbability){r.fittingProbabilitySha256=hash(new Uint8Array(fittingProbability.buffer,fittingProbability.byteOffset,fittingProbability.byteLength));r.fittingSoftPixels=fittingProbability.reduce((sum,p)=>sum+Number(p>0&&p<1),0);}
+        const solveStart=performance.now(),result=await design(target,cfg);r.solveAndValidationSeconds=(performance.now()-solveStart)/1000;
         const replayStart=performance.now(),rendered=await renderExportedWeave(result.files['cut_geometry.json'],p.preview.resolution);r.independentReplaySeconds=(performance.now()-replayStart)/1000;
         r.report=result.report;r.independentImageError=rendered.mask.reduce((sum,v,i)=>sum+Number(v!==p.preview.mask[i]),0)/rendered.mask.length;
         const band=Math.round(p.preview.resolution*.05);let edgePixels=0,edgeErrors=0,interiorErrors=0;for(let i=0;i<rendered.mask.length;i++){const edge=Math.min(i%p.preview.resolution,Math.floor(i/p.preview.resolution),p.preview.resolution-1-i%p.preview.resolution,p.preview.resolution-1-Math.floor(i/p.preview.resolution))<band;edgePixels+=edge;const miss=rendered.mask[i]!==p.preview.mask[i];if(edge)edgeErrors+=miss;else interiorErrors+=miss;}r.spatialError={bandFraction:.05,edgePixels,edgeErrors,interiorErrors,edgeMismatch:edgeErrors/edgePixels,interiorMismatch:interiorErrors/(rendered.mask.length-edgePixels)};

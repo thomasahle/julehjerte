@@ -122,13 +122,17 @@ still miss the opening, at about 0.47% editable-mask disagreement. With the app'
 62 seconds in Chromium and 72 seconds in WebKit. Extra search does not resolve
 that routing failure.
 
-The photograph-engine benchmark retains the classifier's continuous colour
-probabilities. Mal imports the classified binary mask, then sends that editable
-mask back to the worker; these are distinct fitting inputs even when their binary
-targets match. Both browser puppy masks match the committed regression mask
-byte for byte. Browser scores and times are reported separately from the
-ten-second photograph-engine runs, rather than attributed to speed differences
-alone.
+The photograph-engine benchmark retains the classifier's probability field.
+Mal imports the classified binary mask, then prepares that editable mask afresh.
+**Correction, 2026-10-12:** the default Lab classifier already returns binary
+probabilities. For this puppy, both tracks therefore have identical masks **and
+probability fields**, checked byte for byte against the committed fixture. The
+earlier version of this report incorrectly described them as distinct fitting
+inputs. Explicit `red-white-mixture` classification does produce a continuous
+field, which the mask import discards. Browser scores and times remain separate
+from the ten-second Node runs: their runtime and search allowances differ. The
+new `--target=mask` benchmark records both import and fitting-input hashes rather
+than inferring differences from the workflow alone.
 
 Visual inspection found that the result panel discarded the engine's failed
 feature-retention check. Because the puppy's average error is below the panel's

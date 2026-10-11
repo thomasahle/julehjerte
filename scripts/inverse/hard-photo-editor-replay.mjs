@@ -16,7 +16,7 @@ const benchmark=JSON.parse(await fs.readFile(path.join(args.run,'results.json'))
 await fs.mkdir(output,{recursive:true});
 const hash=b=>createHash('sha256').update(b).digest('hex'),results=[],sourceHashes={};
 for(const file of ['src/lib/inverse/toHeartDesign.ts','src/lib/inverse/conversionFidelity.ts','src/lib/inverse/simplifyCurves.ts','src/lib/utils/heartDesign.ts','src/lib/editor/curveIssues.ts','src/lib/paint/rasterize.ts','scripts/inverse/hard-photo-editor-replay.mjs'])sourceHashes[file]=hash(await fs.readFile(file));
-const ledger={benchmarkRun:args.run,cropMode:benchmark.cropMode,sourceHashes,method:'Saved engine geometry and exact classified mask through production validated conversion, SVG serialization/parsing, editor intersection rules and source-mask replay. No new fitting or crop correction. Not a browser interaction test.',results};
+const ledger={benchmarkRun:args.run,cropMode:benchmark.cropMode,targetMode:benchmark.targetMode||'photo',sourceHashes,method:'Saved engine geometry and exact classified mask through production validated conversion, SVG serialization/parsing, editor intersection rules and source-mask replay. No new fitting or crop correction. Not a browser interaction test.',results};
 const loader=await createServer({configFile:false,cacheDir:path.resolve(output,'vite-cache'),server:{middlewareMode:true,hmr:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
 const dom=new JSDOM('');globalThis.DOMParser=dom.window.DOMParser;
 try{
