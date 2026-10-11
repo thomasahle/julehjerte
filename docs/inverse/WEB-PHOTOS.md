@@ -91,6 +91,23 @@ pairs retain valid geometry and guarded paper checks. The
 [complete follow-up ledger](BORDER-FEATURE-VALIDATION.json) includes these
 limitations alongside the 22 regular Hunodan speed checks and 12 browser runs.
 
+The subsequent [closed-contour and tracing-seed correction](JUNCTION-RECOVERY.md)
+raises the full-photo result to **11 passes, 18 needing review and 15 without a
+crop**, with unchanged sources, crops and preparation metadata. The right-hand
+tree in the group photograph improves from 5.973125% to 1.9225% exported error
+and from 4+4 to 3+3 cuts. This additional pass comes from a better reconstruction
+under unchanged acceptance criteria. The green tree also improves from 1.1375%
+to 1.075%. All 29 generated pairs retain valid geometry and guarded paper checks;
+the [complete ledger](JUNCTION-RECOVERY-VALIDATION.json) preserves two smaller
+time-budget variations in printed-paper cases, including one error increase.
+
+The new browser test exposes a separate unresolved crop variant: uploading
+only the rough-ROI portion of that group photograph produces different corners,
+1-versus-3 edge counts, and a poor 1+1 fit after 75–81 s. Both browser failures
+and their exact source mask are retained. The successful full-photo case does
+not establish success for that cropped upload. All 12 previously established
+browser checks and the 22 regular Hunodan speed/quality checks still pass.
+
 ```sh
 node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=10 --output=tmp/adaptive-primitives-web-all
 ```

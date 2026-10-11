@@ -66,6 +66,44 @@ refinement, export and independent resvg rendering. It requires a legal 3+3
 pair below 2.5% disagreement, improving on the previous 5.973125%, and checks
 that the source mask, probabilities and crop coordinates remain unchanged.
 
+## Complete-corpus measurements
+
+The final 44-case replay has **11 candidate passes, 18 needing review and 15
+without a crop**, compared with 10/19/15 previously. All 29 generated pairs pass
+geometry and guarded paper checks. Source photograph hashes, crop coordinates
+and preparation metadata are unchanged throughout; acceptance thresholds are
+unchanged in this release.
+
+| Full-photo case | Previous exported error | New exported error | New result |
+| --- | ---: | ---: | --- |
+| Group photograph, right-hand red tree | 5.973125% | 1.922500% | 3+3 cuts; candidate checks pass |
+| Green tree | 1.137500% | 1.075000% | 3+3 cuts; candidate checks pass |
+
+The group tree takes 6.457 s including automatic detection, preparation, fitting,
+export and external rendering in this serial run. These are single-run timings,
+not latency distributions. The reconstructed branch outlines were visually checked
+in the generated comparison panels.
+
+Of the other 27 generated outputs, 25 have exactly unchanged exported errors.
+Two printed-paper cases retain their needs-review status with time-budget
+variation: `danish-red-gold` changes from 13.9425% to 13.795625%, and
+`vissevasse-arranged-r3c4` from 5.8225% to 5.84375%. Both still select grid seeds;
+their clearance/refinement checkpoint counts differ. These figures are retained
+rather than claiming every case improves or attributing all variation to the
+junction change.
+
+All **22 regular Hunodan cases** pass with exactly unchanged exported errors.
+Median preparation-through-export time is 5.343 s and the maximum is 8.419 s,
+excluding decoding and external replay. **845 application tests and 541 inverse
+tests pass**, with one existing application skip. Type checking has zero errors
+and seven existing warnings; lint and build pass. Browser QA has **12 passes
+and two new failures**, detailed below.
+
+The [measurement ledger](JUNCTION-RECOVERY-VALIDATION.json) records every case,
+before/after values, source hashes, browser failures and diagnostic ablations.
+Local visual panels and exported curves are in
+`tmp/circular-junction-web-all/report.html`.
+
 ## Remaining failure found by the browser replay
 
 The new browser case uploads only the photograph's rough selection rectangle.
