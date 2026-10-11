@@ -13,6 +13,7 @@ import {treeMask} from './tree-fixture.mjs';
 import {heartPhoto} from './crop-fixture.mjs';
 import {catalogue,readPhoto} from './web-photo-data.mjs';
 import {readHardPhoto} from './hard-photo-data.mjs';
+import {auditEditablePaper} from './editable-paper-audit.mjs';
 import {auditImageFeatures,auditFeatureChange} from '../../static/inverse/core/image-features.js';
 import {Cubic} from '../../static/inverse/core/bezier.js';
 import {installPaintObservation,collectPaintObservation} from './paint-observer.mjs';
@@ -77,12 +78,12 @@ const results=[];
 const report={origin,upstreamOrigin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,referenceRequestCounts,stopMode,viewport,intervention:intervention&&{hashes:intervention.hashes,method:intervention.method},
  timingVersion:2,timingMethod:'Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.',
  harnessSourceHashes:{},workspaceSourceHashes:{},results};
-for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs','scripts/inverse/motif-fixture.mjs','scripts/inverse/tree-fixture.mjs','scripts/inverse/crop-fixture.mjs','scripts/inverse/web-photo-data.mjs','scripts/inverse/hard-photo-data.mjs','scripts/inverse/stop-browser-hooks.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs','scripts/inverse/motif-fixture.mjs','scripts/inverse/tree-fixture.mjs','scripts/inverse/crop-fixture.mjs','scripts/inverse/web-photo-data.mjs','scripts/inverse/hard-photo-data.mjs','scripts/inverse/editable-paper-audit.mjs','scripts/inverse/stop-browser-hooks.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of['static/inverse/worker.js','static/inverse/worker-bootstrap.js','static/inverse/worker-controller.js','static/inverse/compute-worker.js','static/inverse/core/engine.js','static/inverse/core/stopped.js','static/inverse/core/progress.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/feature-recovery.js','static/inverse/core/solver.js','static/inverse/core/crop.js','static/inverse/locator/locator.js','static/inverse/locator/fields.js','static/inverse/locator/math.js','static/inverse/locator/palette.js','static/inverse/locator/anchored.js','static/inverse/locator/grid-refine.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
-for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','static/inverse/core/direct/matching.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','static/inverse/core/direct/feature-seeds.js','static/inverse/core/direct/matching.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
-for(const name of ['junctions.js','border.js']){const file=`static/inverse/core/${name}`;report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');}
+for(const name of ['junctions.js','border.js','material.js','validate.js','settings.js']){const file=`static/inverse/core/${name}`;report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');}
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
@@ -213,14 +214,20 @@ try{
     row.timings=observed.timings;row.pageMarks=observed.marks;
     if(stopMode){
      row.stop=await page.evaluate(()=>window.__stopQA);
-     assert.equal(Boolean(observed.result.report.stoppedEarly),stopMode==='keep');
-     if(stopMode==='keep'){
+     const keep=stopMode==='keep'||stopMode==='keep-finer';
+     assert.equal(Boolean(observed.result.report.stoppedEarly),keep);
+     if(keep){
       assert.equal(row.stop.stopId,row.stop.resultId,'Stop must resolve the existing solve request.');
       row.stopToReadySeconds=(row.pageMarks.ready-row.stop.stopSent)/1000;
       assert.ok(row.stopToReadySeconds<10,`Stop waited ${row.stopToReadySeconds} s despite a retained checkpoint.`);
       assert.ok(observed.result.report.alternatives.length>0);
       assert.deepEqual(JSON.parse(observed.result.files['report.json']).alternatives,observed.result.report.alternatives);
       assert.match(await page.locator('.summary[role=status]').innerText(),/Best result from the stopped search/);
+      if(stopMode==='keep-finer'){
+       assert.equal(observed.result.report.settings.materialResolution,700);
+       assert.equal(observed.result.report.solver.paperVerification.source,'retained-checkpoint');
+       assert.equal(observed.result.report.templateChecksPassed,true);
+      }
      }
      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
     }
@@ -394,6 +401,9 @@ try{
      assert.ok(row.originalArtworkError<.05,`Original checker artwork disagreement: ${row.originalArtworkError}`);
     }
     row.sourceEditableError=free?frameMismatch(sourceRendered,sourceMask,resolution,{mode:'free',shape:'diamond',size:frameSize}).inside:maskMismatch(sourceRendered,sourceMask);
+    row.physical=auditEditablePaper(design,overlap,observed.result.report.settings,observed.result.report.slits);
+    if(observed.result.report.validation.passed)assert.equal(row.physical.geometry.passed,true,'Downloaded SVG must retain the engine geometry constraints');
+    if(observed.result.report.templateChecksPassed)assert.equal(row.physical.paper?.status,'pass','Downloaded SVG must retain the verified paper support');
     // Check the actual downloaded result, not just the converter's own success
     // flag. Compare the same honoured symmetry with simplification disabled.
     const raw=convertCutGeometry(geometry,{name:'unsimplified',tolerance:0,enforce:row.honouredSymmetry});
