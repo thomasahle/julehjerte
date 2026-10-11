@@ -45,25 +45,38 @@ export function repairJunctions(chains,radius,width){
   }
   pairs.sort((a,b)=>a.score-b.score);
   const edits=info.map(()=>[]),moves=[];
+  const overlaps=(a,b,period)=>[0,...period?[-period,period]:[]].some(d=>a.lo<=b.hi+d&&a.hi>=b.lo+d);
   for(const {i,j}of pairs){
     const a=nodes[i],b=nodes[j],center=mix(a.p,b.p,.5);
     if(moves.some(m=>distance(m.to,center)<3*support))continue;
     const changes=[];
     for(const v of[a,b]){
-      const c=info[v.k];let lo=v.i,hi=v.i;
-      while(lo>0&&distance(c.p[lo-1],center)<=radius)lo--;
-      while(hi<c.p.length-1&&distance(c.p[hi+1],center)<=radius)hi++;
-      // Do not edit an existing endpoint or the arbitrary seam of a closed chain.
-      if(lo===0||hi===c.p.length-1||edits[v.k].some(e=>lo<=e.hi&&hi>=e.lo))break;
+      const c=info[v.k],count=c.p.length-Number(c.closed),point=i=>c.p[(i+count)%count];let lo=v.i,hi=v.i;
+      while((c.closed?hi-lo+1<count:lo>0)&&distance(point(lo-1),center)<=radius)lo--;
+      while((c.closed?hi-lo+1<count:hi<count-1)&&distance(point(hi+1),center)<=radius)hi++;
+      // Real open endpoints are fixed. A closed chain's storage seam has no
+      // geometric meaning: use a circular interval, including across index 0.
+      if(c.closed){if(hi-lo+1===count)break;if(lo<0){lo+=count;hi+=count;}}
+      else if(lo===0||hi===count-1)break;
+      if([...edits[v.k],...changes.filter(e=>e.k===v.k)].some(e=>overlaps({lo,hi},e,c.closed?count:0)))break;
       changes.push({k:v.k,lo,hi,center});
     }
     if(changes.length!==2)continue;
     for(const e of changes)edits[e.k].push(e);
-    moves.push({from:[a.p,b.p],to:center,maximumMoveMm:Math.max(...changes.flatMap(e=>info[e.k].p.slice(e.lo,e.hi+1).map(p=>distance(p,center))))});
+    moves.push({from:[a.p,b.p],to:center,maximumMoveMm:Math.max(...changes.flatMap(e=>{const c=info[e.k],count=c.p.length-Number(c.closed);return Array.from({length:e.hi-e.lo+1},(_,j)=>distance(c.p[(e.lo+j)%count],center));}))});
   }
   const result=[];
   for(let k=0;k<info.length;k++){
     const p=info[k].p,es=edits[k].sort((a,b)=>a.lo-b.lo);let start=0,head=[];
+    if(info[k].closed&&es.length){
+      const count=p.length-1;
+      for(let i=0;i<es.length;i++){
+        const e=es[i],next=es[(i+1)%es.length],end=next.lo+(i===es.length-1?count:0),part=[e.center];
+        for(let j=e.hi+1;j<end;j++)part.push(p[j%count]);
+        part.push(next.center);result.push(part);
+      }
+      continue;
+    }
     for(const e of es){const part=[...head,...p.slice(start,e.lo),e.center];if(part.length>1)result.push(part);head=[e.center];start=e.hi+1;}
     const tail=[...head,...p.slice(start)];if(tail.length>1)result.push(tail);
   }
