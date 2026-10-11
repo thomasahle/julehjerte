@@ -122,3 +122,9 @@ checks are not represented as newly rerun measurements here.
 The subsequent [refinement-scheduling fix](REFINEMENT-SCHEDULING.md) uses this
 corpus to isolate a fitting-budget failure. It improves the puppy and outlined
 star on unchanged automatic masks while retaining their missing-feature failures.
+
+The [imported-mask replay and feature-seed study](FEATURE-SEED-STUDY.md) follows
+the same 31 complete hearts through Mal's binary preparation and editable SVG
+conversion. It records the unchanged 11/31 production result and an experimental
+5+3 puppy routing, including the finer paper analysis needed to resolve its
+coarse-grid uncertainty.
