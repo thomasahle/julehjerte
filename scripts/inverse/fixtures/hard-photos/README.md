@@ -48,3 +48,19 @@ shifts. The recorded time limit covers fitting; detection, preparation, external
 rendering and artifact writing have separate costs. Reports retain failures,
 source hashes, effective corners, mask/probability hashes, feature checks and
 independently rendered exports. No published cutting paths initialize fitting.
+
+Replay every saved pair through the production editable conversion and SVG
+save/reload path, without rerunning the fitter:
+
+```sh
+node scripts/inverse/hard-photo-editor-replay.mjs --run=tmp/hard-automatic --output=tmp/hard-editor-automatic
+node scripts/inverse/hard-photo-editor-replay.mjs --run=tmp/hard-fixed --output=tmp/hard-editor-fixed
+```
+
+This checks editor geometry rules and rendering fidelity, including the exact
+classified source-mask hash. It also records remaining mask disagreement and
+missing features. A legal conversion is distinct from an acceptable reconstruction.
+Conversion failures give a nonzero exit status; a faithfully converted poor
+reconstruction remains visible in the report. This isolates the final stage and
+does not replace browser interaction QA. The current full-corpus results and
+visual diagnosis are in [HARD-CORPUS.md](../../../../docs/inverse/HARD-CORPUS.md).

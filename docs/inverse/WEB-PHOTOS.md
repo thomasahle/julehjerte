@@ -136,6 +136,12 @@ browser checks and the 22 regular Hunodan speed/quality checks still pass.
 node scripts/inverse/web-photo-benchmark.mjs --stage=solve --seconds=10 --output=tmp/adaptive-primitives-web-all
 ```
 
+The separate [original hard-photo corpus](HARD-CORPUS.md) is now also committed
+and replayed through the full pipeline. Its 31 complete motifs are a distinct
+dataset from these 44 selections: 11 pass with automatic crops and 15 with the
+historical approximate corners. The comparison isolates crop-dependent outcomes,
+missing template features and editor conversion without combining denominators.
+
 ## First pass, 2026-09-08
 
 The Node benchmark uses the same detector, preparation and automatic solver modules as the site. It receives only source pixels and the pre-annotated rough rectangle for group photos. This run does not replace browser QA. No detector, classifier or fitter was tuned on these new cases before recording the results.
