@@ -11,6 +11,11 @@ no reference cutting paths enter the solver.
 pass/failure stages and candidates. A passed template check is not a claim of
 recovering the original artwork or of physical assembly.
 
+The later [lobe-shape study](LOBE-SHAPES.md) adds known-artwork comparisons
+through exported templates, and an automatic crop-to-export track for all 22
+regular Hunodan photographs. It distinguishes a good fit to a distorted crop
+from recovery of the original motif.
+
 ## What the failures actually show
 
 The two automatic orange crops pass at **1.65% and 1.51%** mask disagreement

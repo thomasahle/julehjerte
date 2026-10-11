@@ -8,6 +8,11 @@ The user can select corners around the perimeter in either direction, drag each 
 
 The source archive's locator uses pixel-centre coordinates while the inverse engine uses pixel-edge coordinates. The adapter adds 0.5 pixels when passing corners to preprocessing and subtracts it for the original-photo preview. A numerical test checks both rectifiers against the same perspective crop to within one colour-channel rounding unit. Source file and decoded-pixel SHA-256 hashes, dimensions, rough region, proposed corners, locator evidence/warnings, manual-edit state and accepted corners are carried into `report.json` through `report.input.sourceImage.cropProvenance`. Reports preserve provenance, not the complete original photo; retain the source file for reproducibility.
 
+The later [lobe-shape refinement](LOBE-SHAPES.md) removes the semicircle
+assumption when the red/white outline provides stronger evidence for unequal
+lobe depths. Its regressions run through cut-count selection and independent
+template rendering, with known artwork as a separate reference.
+
 ## Validation
 
 The supplied archive's integrity tool verified all 165 payload files. Its own 66 tests passed locally, including 32 known-homography analytic fixtures and the JUL/checkerboard discrimination regression. These are development fixtures, not held-out real-photo accuracy measurements. Four compact synthetic fixtures are retained in this repository: clean, blurred/uneven lighting, handle, and occlusion. The integrated suite adds tests for ROI selection, malformed regions, blank/transparent images, rectifier agreement, fitting from a rough region recovered from existing corners, and provenance retention. User photographs are not redistributed.
