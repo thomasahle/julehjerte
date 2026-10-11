@@ -6,11 +6,15 @@ import {finalizePrimitives} from './primitive-selection.js';
 import {finalizeSharedSimplification} from './shared-simplification.js';
 
 export function finalizeFittedSolution(solution,cfg,{startedAt=performance.now(),timeLimit=cfg.timeLimit,onProgress=()=>{},searchMatching=true}={}){
-  const matching=searchMatching?preferMatchingSolution(solution,cfg,{deadline:startedAt+Math.min(timeLimit,10)*1000-400,onProgress}):solution;
-  // Repair the actual selected pair after any matching-sheet replacement.
-  // Reserve export time and bound cleanup within the requested solve budget.
+  // Remove redundant returns before measuring the independent baseline. A
+  // small topology repair can unlock substantial refinement; comparing a
+  // matching pair against the unrepaired error grants an inflated allowance.
   const completionDeadline=startedAt+timeLimit*1000-1000;
-  const repaired=finalizeShortReturns(matching,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,onProgress});
+  const independent=finalizeShortReturns(solution,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,onProgress});
+  const matching=searchMatching?preferMatchingSolution(independent,cfg,{deadline:startedAt+Math.min(timeLimit,10)*1000-400,onProgress}):independent;
+  // A replacement pair can introduce different returns and shared seams.
+  // Repair that selected geometry too, within the same export reserve.
+  const repaired=matching===independent?matching:finalizeShortReturns(matching,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,onProgress});
   const shared=finalizeShared(repaired,cfg,{deadline:Math.min(startedAt+timeLimit*1000-1000,performance.now()+2000),onProgress});
   const primitives=finalizePrimitives(shared,cfg,{deadline:Math.min(startedAt+timeLimit*1000-1000,performance.now()+500),onProgress});
   const result=finalizeSharedSimplification(primitives,cfg,{deadline:Math.min(startedAt+timeLimit*1000-1000,performance.now()+500),onProgress});

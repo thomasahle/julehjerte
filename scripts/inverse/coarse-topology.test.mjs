@@ -32,12 +32,17 @@ test('coarse routing and common refinement retain photographed tree branches in 
   assert.equal(report.solver.selectedInitialization,'coarse-boundary-topology');
   assert.equal(report.templateChecksPassed,true);assert.equal(report.manufacturing.status,'pass');
   assert.deepEqual(report.slits,{left:3,right:3});
-  assert.ok(report.solver.matchingPreference.baselineImageError<.023);
-  assert.equal(report.solver.matchingPreference.identical,true);
-  assert.ok(report.solver.matchingPreference.additionalImageError<=.01);
+  assert.equal(report.solver.shortReturnRepair.applied,true);
+  // The redundant return used to hide an available improvement until after
+  // matching, incorrectly granting a 1% allowance from the worse baseline.
+  const matching=report.solver.matchingPreference;
+  assert.ok(matching.baselineImageError<.015);
+  assert.equal(matching.identical,false);
+  assert.equal(matching.status,'image_bound_exceeds_allowance');
+  assert.ok(matching.minimumIdenticalImageError>matching.maximumMatchingImageError);
   const replay=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution),n=source.resolution;
   const error=replay.mask.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/replay.mask.length;
-  assert.ok(error<.03,`Exported mask disagreement: ${error}`);
+  assert.ok(error<.015,`Exported mask disagreement: ${error}`);
   // Whole-image averages can hide lost branches behind a good frame. The
   // central 60% square had 4.12% disagreement with the previous rounded fit.
   let centralError=0,centralPixels=0;
