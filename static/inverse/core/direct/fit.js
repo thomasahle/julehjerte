@@ -203,12 +203,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
     const candidate=stage('directRefining',()=>refineCurves(graph,prob,n,clear.phase,{...cfg,preferMatchingSheets:false},{deadline:end,input,weights:fitWeights,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>onProgress({stage:'directRefining',counts:clear.model.counts,...r},solution)}));
     candidate.counts=clear.model.counts;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop);
-    // A slightly more complex grid can win on a single noisy border pixel.
-    // If a lower-count finalist is still available, give it one refinement
-    // pass before accepting the first valid result. This keeps the normal
-    // fast path unchanged while making topology stable under small input
-    // perturbations. The final selector applies the same one-point tolerance.
-    const simplerRemaining=!!supportedCounts&&!weights&&fine.slice(i+1).some(r=>r.model.counts.every((count,j)=>count===supportedCounts[j])&&r.model.counts[0]+r.model.counts[1]<candidate.counts[0]+candidate.counts[1]&&r.error<=candidate.error+.01);
+    // Border disagreement must not stop a competitive simpler finalist from
+    // receiving curve refinement. Its grid error can overestimate its eventual
+    // fit: accepting the first valid dense grid would hide that improvement.
+    // This is a search allowance, not a relaxed final image/feature/paper gate.
+    const simplerRemaining=!weights&&fine.slice(i+1).some(r=>r.model.counts[0]+r.model.counts[1]<candidate.counts[0]+candidate.counts[1]&&r.error<=candidate.error+.01);
     if(candidate.imagePassed&&!simplerRemaining)break;
     // Three seeds are the fast path, not evidence that other routings fail.
     // Spend a longer requested budget on an untried layout only when none of
@@ -247,7 +246,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    stoppedEarly,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
+    stoppedEarly,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:candidate.seed==='coarse-boundary-topology',topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }
