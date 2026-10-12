@@ -101,5 +101,7 @@ for(const overallExpired of [false,true])test(`a late repair checkpoint ${overal
   assert.ok(report.sourceErrorAfter<report.sourceErrorBefore);
   assert.equal(report.applied,!overallExpired);
   assert.equal(report.rejection,overallExpired?'deadline':null);
-  assert.ok(validate(result,cfg).passed);
+  // An expired repair returns the original narrow neck. The validator now
+  // catches that defect too; only the accepted repair is geometry-valid.
+  assert.equal(validate(result,cfg).passed,!overallExpired);
 });

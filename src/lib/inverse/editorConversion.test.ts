@@ -5,6 +5,7 @@ import { inferOverlapRect } from '$lib/utils/overlapRect';
 import type { HeartDesign } from '$lib/types/heart';
 import star from '../../../scripts/inverse/fixtures/editor-star-crossing.json';
 import anchor from '../../../scripts/inverse/fixtures/editor-anchor-return.json';
+import gift from '../../../scripts/inverse/fixtures/editor-gift-return.json';
 import sideClearance from '../../../scripts/inverse/fixtures/editor-side-clearance.json';
 
 // Fresh result captured from the production Mal → Prøv stjernen → Find snit
@@ -65,6 +66,12 @@ describe('the final editable heart', () => {
     const narrow = anchor as unknown as CutGeometry;
     expect(issues(convertCutGeometry(narrow, { name: 'anchor', tolerance: 0 }).design)).toEqual(new Set(['R-cut-2']));
     expect(() => convertValidatedCutGeometry(narrow, { name: 'anchor' })).toThrow(CutGeometryError);
+  });
+
+  it('rejects the photographed gift return even without simplification', () => {
+    const narrow = gift as unknown as CutGeometry;
+    expect(issues(convertCutGeometry(narrow, { name: 'gift', tolerance: 0 }).design)).toEqual(new Set(['L-cut-0']));
+    expect(() => convertValidatedCutGeometry(narrow, { name: 'gift' })).toThrow(CutGeometryError);
   });
 
   it('refuses cuts that cross inside the same sheet', () => {
