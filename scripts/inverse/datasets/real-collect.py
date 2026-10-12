@@ -419,10 +419,10 @@ def export(args):
         row['exactDuplicateGroup'] = row['sha256']
         row.setdefault('nearDuplicateGroup', row['id'])
         row['sourceGroups'] = sorted({g for o in row['origins'] for g in o.get('sourceGroups', [o['sourceGroup']])})
-        existing = any(o.get('existingFile') for o in row['origins'])
+        existing = any(o.get('existingFile') for o in row['origins']) or row.get('qaReserved',False)
         host_groups = {'publisher:' + urlsplit(page).netloc.removeprefix('www.') for origin in row['origins'] for page in origin['sourcePages'] if 'pinterest.' not in urlsplit(page).netloc}
         host_groups.update('publisher:' + urlsplit(link).netloc.removeprefix('www.') for origin in row['origins'] for link in origin.get('observedSourceLinks', []))
-        row['sourceGroups'] = sorted(set(row['sourceGroups']) | host_groups)
+        row['sourceGroups'] = sorted(set(row['sourceGroups']) | host_groups | set(row.get('reviewedSourceGroups',[])))
         row['splitStatus'] = 'qa-reserved' if existing else 'unassigned'
         row['trainingEligibility'] = 'excluded-existing-qa' if existing else 'pending-rights-family-and-instance-review'
         row.setdefault('familyId', None)

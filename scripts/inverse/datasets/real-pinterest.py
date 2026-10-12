@@ -136,7 +136,9 @@ def main():
     out=args.output.resolve();out.mkdir(parents=True,exist_ok=True)
     lock=(out/'.import.lock').open('a');fcntl.flock(lock.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
     fetcher=common.Fetcher(out,minimum_delay=args.minimum_delay,jitter=.5)
-    pins=json.loads(args.selection.read_text())
+    selection_bytes=args.selection.read_bytes()
+    pins=json.loads(selection_bytes)
+    selection_hash=common.digest(selection_bytes)
     queue=[{**pin,'depth':0} for pin in pins]
     imported_path=out/'imports.json'
     prior=json.loads(imported_path.read_text()) if imported_path.exists() else {'pins':[]}
@@ -144,7 +146,7 @@ def main():
     seen=set();related=[];stopped=None
     def checkpoint():
         common.save(imported_path,{'policy':'Bounded user-authorized public pin selection and literally exposed related pin records; no boards, login, private APIs or invented image upgrades.',
-                                  'selectionFile':str(args.selection),'selectionSha256':common.digest(args.selection.read_bytes()),
+                                  'selectionFile':str(args.selection),'selectionSha256':selection_hash,
                                   'maximumPins':args.max_pins,'maximumRelatedDepth':args.related_depth,
                                   'minimumHostDelaySeconds':args.minimum_delay,'hostJitterSeconds':.5,
                                   'startedFromPriorRows':len(prior['pins']),'publicRelatedDiscoveries':related,
