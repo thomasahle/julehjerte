@@ -31,6 +31,12 @@ raised junction F1 from 61.92% to 82.05% on channel views and from 57.40% to
 recipe groups. These are repeatedly inspected synthetic diagnostics; no
 real-photo or full-solver improvement is established yet.
 
+The [corrected app baseline and controlled diagnosis](app-baseline-correction.md)
+also compare the automatic fitter's actual boundary initializer. Earlier trace
+comparisons used the older `GENERAL_PRESET`; their frozen inputs and model
+results remain unchanged. Candidate-knot F1 alone does not establish whether
+the current application can reconstruct a template.
+
 Of the real-source files, 475 are reserved by existing QA or connected source
 groups. Remaining files still need instance, motif-family and usage review;
 they are not automatically a labeled training set. The

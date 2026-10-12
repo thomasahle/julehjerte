@@ -1,5 +1,10 @@
 # Boundary localization and junction follow-up
 
+**Baseline correction:** "existing trace" in this historical report means the
+older `GENERAL_PRESET` trace. The [current app comparison](app-baseline-correction.md)
+adds the automatic fitter's actual mixed boundary initializer without changing
+the images, masks, labels or trained networks.
+
 The original neural experiment's boundary metric allowed several predicted
 pixels to match the same reference pixel. Thick neural ribbons could therefore
 earn a high score without locating the cutting boundary accurately. This

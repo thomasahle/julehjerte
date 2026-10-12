@@ -1,5 +1,11 @@
 # Boundary and junction learning experiment
 
+**Baseline correction:** the trace comparator below uses the older
+`GENERAL_PRESET` configuration. It is not the automatic app's current mixed
+boundary initializer. The [corrected comparison](app-baseline-correction.md)
+replays that initializer on unchanged inputs and checkpoints. Historical scores
+below remain intact; no full-template advantage follows from junction F1.
+
 This experiment asks whether a small CNN improves visible boundaries and useful
 junctions over the current photographic preprocessing. It is an offline
 component comparison. The model does not yet propose complete hidden routes,
