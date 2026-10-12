@@ -64,13 +64,19 @@ test('a coarse paper pass retains a better uncertain alternative without certify
 test('fresh photographic fitting selects and exports the finer-verified alternative',async()=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/floral-checker-refinement-checkpoint.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
-  const cfg={...AUTOMATIC_PRESET,trials:0,timeLimit:10,earlyStop:false},crop=prepare({...photo,quad:fixture.quad},cfg);
+  const cfg={...AUTOMATIC_PRESET,trials:0,timeLimit:180,earlyStop:false},crop=prepare({...photo,quad:fixture.quad},cfg);
   // Only the image and frozen crop enter design(); never the saved curves
   // used by the separate deterministic checkpoint regression above.
   const input=prepare({type:'mask',mask:crop.preview.mask,resolution:400},cfg).target,packets=[];
   const answer=await design(input,cfg,()=>{},{onCandidate:p=>packets.push(p)});
   assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.settings.materialResolution,700);
+  const budget=answer.report.solver.refinementBudget;
+  // design() deducts its setup time before handing the allowance to the fitter.
+  assert.ok(budget.requestedSeconds>179&&budget.requestedSeconds<=180);
+  assert.equal(budget.maximumSearchSeconds,25);
+  assert.equal(budget.verifiedAlternative,true);
+  assert.ok(answer.report.solver.seconds<32,'An accepted alternative must not wait for the full 180-second seed portfolio');
   assert.ok(answer.report.solver.candidates.some(c=>c.paperVerification?.source==='retained-refinement-alternative'));
   assert.ok(packets.some(p=>p.materialResolution===700&&p.error<.03),'Stop must receive the now-verified alternative');
   const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],400);
