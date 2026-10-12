@@ -10,6 +10,7 @@ import {readHardPhoto} from './hard-photo-data.mjs';
 import {hardPhotoTarget} from './hard-photo-target.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {writeHardPhotoReport} from './hard-photo-report.mjs';
+import {cropEvidence} from './crop-evidence.mjs';
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
 const seconds=Number(args.seconds||10),runId=new Date().toISOString().replace(/[:.]/g,'-')+(args.shard?`-shard-${args.shard.replace('/','-of-')}`:''),output=args.output||`tmp/inverse-hard-photos/${runId}`,cropMode=args.crop||'automatic',targetMode=args.target||'photo';
 if(!Number.isFinite(seconds)||seconds<1||seconds>180)throw new Error('Use --seconds=1..180');
@@ -21,7 +22,7 @@ if(presets.some(p=>!['automatic','general','simplify','mixture','direct','direct
 if(targetMode==='mask'&&presets.some(p=>!['automatic','direct','direct-mixture'].includes(p)))throw new Error('The mask track requires automatic or direct fitting.');
 await fs.mkdir(output,{recursive:true});
 const hash=b=>createHash('sha256').update(b).digest('hex'),collage=JSON.parse(await fs.readFile('scripts/inverse/hard-photo-cases.json')),photos=JSON.parse(await fs.readFile('scripts/inverse/photo-cases.json'));
-const sourceHashes={};async function hashTree(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=`${dir}/${e.name}`;if(e.isDirectory())await hashTree(f);else sourceHashes[f]=hash(await fs.readFile(f));}}await hashTree('static/inverse/core');await hashTree('static/inverse/locator');for(const f of ['scripts/inverse/hard-photo-cases.json','scripts/inverse/photo-cases.json','scripts/inverse/hard-photo-data.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/hard-photo-benchmark.mjs','scripts/inverse/hard-photo-report.mjs','scripts/inverse/export-renderer.mjs','src/lib/inverse/presets.js'])sourceHashes[f]=hash(await fs.readFile(f));
+const sourceHashes={};async function hashTree(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=`${dir}/${e.name}`;if(e.isDirectory())await hashTree(f);else sourceHashes[f]=hash(await fs.readFile(f));}}await hashTree('static/inverse/core');await hashTree('static/inverse/locator');for(const f of ['scripts/inverse/hard-photo-cases.json','scripts/inverse/photo-cases.json','scripts/inverse/hard-photo-data.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/hard-photo-benchmark.mjs','scripts/inverse/hard-photo-report.mjs','scripts/inverse/crop-evidence.mjs','scripts/inverse/export-renderer.mjs','src/lib/inverse/presets.js'])sourceHashes[f]=hash(await fs.readFile(f));
 let cases=[...collage.cases.map(e=>({...e,group:'collage',...collage.source})),...photos.cases.map(e=>({...e,group:'individual',label:e.id,cropStatus:'visually_reviewed'}))].filter(e=>!args.ids||args.ids.split(',').includes(e.id));
 if(!cases.length&&!args.recrops)throw new Error('No cases selected');
 if(args.recrops){
@@ -73,7 +74,7 @@ for(const e of cases){
     let quad;
     if(cropMode==='automatic'){
       const scale=e.variant?.scale||1,roi=e.roi?.map(v=>v*scale),started=performance.now(),detected=detectHeartCrops(s,{roi}),candidate=detected.candidates[0];
-      row.detectionSeconds=(performance.now()-started)/1000;row.detection={status:detected.status,reason:detected.reason,roi,count:detected.candidates.length,candidate};
+      row.detectionSeconds=(performance.now()-started)/1000;row.detection={status:detected.status,reason:detected.reason,roi,count:detected.candidates.length,candidate,assessment:cropEvidence(candidate,{width:s.imageWidth,height:s.imageHeight})};
       if(!candidate){row.status='no_crop';row.input={fileSha256:s.fileSha256,rgbaSha256:s.rgbaSha256,width:s.imageWidth,height:s.imageHeight};await sourcePreview(s,roi||[0,0,s.imageWidth,s.imageHeight],null,`${dir}/source.png`);row.hasSourcePreview=true;await save();continue;}
       quad=candidate.quad;row.locatorStatus=detected.status;
     }else{
