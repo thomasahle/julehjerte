@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
+import {loadSolutionJSON,curvesOf} from '../../static/inverse/core/graph.js';
 import {validate} from '../../static/inverse/core/validate.js';
 import {shortSelfReturns} from '../../static/inverse/core/self-returns.js';
 import {settings} from '../../static/inverse/core/settings.js';
@@ -51,5 +51,26 @@ test('ordinary right-angle corners stay valid when their legs are subdivided',()
     }
     const graph=new CurveGraph([[curves],[[Cubic.line([0,80],[100,80]).p]]]);
     assert.deepEqual(shortSelfReturns(graph.solution(graph.points,1),cfg),[]);
+  }
+});
+
+test('reflecting a short return cannot hide it from the spatial candidate search',async()=>{
+  const geometry=JSON.parse(await fs.readFile('scripts/inverse/fixtures/editor-anchor-return.json'));
+  const source=loadSolutionJSON({...geometry,schema:'heartcurves-2',units:'mm'}),width=source.graph.target.width;
+  let reference;
+  for(const flips of [[false,false],[true,false],[false,true],[true,true]]){
+    const paths=source.paths.map((paths,family)=>paths.map((_,slit)=>{
+      let curves=curvesOf(source,family,slit).map(c=>c.p.map(p=>p.map((v,axis)=>flips[axis]?width-v:v)));
+      // Preserve the required endpoint order after reflecting its travel axis.
+      if(flips[1-family])curves=curves.reverse().map(c=>c.reverse());
+      return curves;
+    }));
+    const model=new CurveGraph(paths),issues=shortSelfReturns(model.solution(model.points,1),cfg);
+    const gaps=issues.map(i=>i.distanceUpper).sort((a,b)=>a-b);
+    assert.ok(gaps.length,'Every reflection must expose the original short return');
+    if(reference){
+      assert.equal(gaps.length,reference.length);
+      gaps.forEach((gap,i)=>assert.ok(Math.abs(gap-reference[i])<1e-8));
+    }else reference=gaps;
   }
 });

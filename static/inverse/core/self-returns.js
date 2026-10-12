@@ -35,7 +35,10 @@ export function shortSelfReturns(solution,cfg){
     });
     const pairs=new Map();
     for(const [i,j]of nearbyPairs(segments.map(s=>s.p),margin)){
-      const a=segments[i],b=segments[j];if(b.order<=a.order+1)continue;
+      // The broad phase orders pairs by spatial position, not path position.
+      // Restore curve order before checking adjacency or signed arc distance.
+      const [a,b]=segments[i].order<segments[j].order?[segments[i],segments[j]]:[segments[j],segments[i]];
+      if(b.order<=a.order+1)continue;
       const key=`${a.order}:${b.order}`;
       const q=closest(...a.p,...b.p);if(q.gap>=margin)continue;
       const along=b.arc+q.v*b.length-a.arc-q.u*a.length;
