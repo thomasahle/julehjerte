@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { syntheticPhoto, project } from './synthetic-photo.mjs';
 import { sha256 } from './synthetic-geometry.mjs';
+import { createCanvas, loadImage } from 'canvas';
 
 function fixture() {
   const n = 32;
@@ -88,8 +89,36 @@ test('joint identity interventions preserve all images and actual legacy label f
   assert.deepEqual(legacy, baseline.labels); assert.deepEqual(baselinePerturbations, p); assert.deepEqual(recorded.requested, interventions);
 });
 
+test('localized glare changes photographed colors without changing geometry or material labels', async () => {
+  const baseline = await baselinePromise, glare = { center: [.5, .5], sigma: [.3, .25], amount: .85 }, before = structuredClone(glare);
+  const actual = await syntheticPhoto({ ...fixture(), interventions: { glare } });
+  unchangedParameters(actual, baseline, []); sameGeometry(actual, baseline); sameFiles(actual, baseline, targetFiles);
+  assert.notEqual(sha256(actual.files['photo.jpg']), sha256(baseline.files['photo.jpg']));
+  assert.notEqual(sha256(actual.files['crop.png']), sha256(baseline.files['crop.png']));
+  const decode = async bytes => {
+    const image = await loadImage(bytes), ctx = createCanvas(image.width, image.height).getContext('2d');
+    ctx.drawImage(image, 0, 0); return ctx.getImageData(0, 0, image.width, image.height).data;
+  };
+  const valid = await decode(baseline.files['crop-overlap-valid.png']);
+  const brightness = async result => {
+    const pixels = await decode(result.files['crop.png']); let sum = 0, count = 0;
+    for (let i = 0; i < valid.length; i += 4) if (valid[i] === 255) { sum += pixels[i] + pixels[i + 1] + pixels[i + 2]; count += 3; }
+    return sum / count;
+  };
+  const mild = await syntheticPhoto({ ...fixture(), interventions: { glare: { ...glare, amount: .4 } } });
+  assert.ok(await brightness(mild) > await brightness(baseline) + 5, 'Glare must brighten the photographed overlap.');
+  assert.ok(await brightness(actual) > await brightness(mild) + 5, 'Stronger glare must brighten it further.');
+  assert.deepEqual(actual.labels.interventions, { requested: { glare }, applied: { glare } });
+  assert.deepEqual(glare, before);
+  glare.center[0] = 0; assert.deepEqual(actual.labels.perturbations.glare, before, 'Recorded parameters cannot alias caller-owned arrays.');
+  const noop = await syntheticPhoto({ ...fixture(), interventions: { glare: { ...before, amount: 0 } } });
+  sameFiles(noop, baseline); sameGeometry(noop, baseline);
+});
+
 test('invalid interventions fail before reading image buffers', async () => {
   const invalid = [null, [], new Date(0), { [Symbol('unknown')]: 1 }, { palette: new Array(2) }, { palette: [new Array(3), [255, 255, 255]] }, { bogus: 1 }, { palette: [[0, 0], [255, 255, 255]] }, { palette: [[0, 0, NaN], [255, 255, 255]] }, { palette: [[0, 0, 256], [255, 255, 255]] }, { blurSigmaPixels: -1 }, { blurSigmaPixels: Infinity }, { lowResolution: 8 }, { lowResolution: 64.5 }, { lowResolutionScale: 0 }, { lowResolutionScale: 1.1 }, { lowResolution: 32, lowResolutionScale: .5 }, { jpegQuality: 2 }, { cropNoisePixels: -1 }, { cropNoisePixels: 17 }];
   const coverage = new Proxy({}, { get() { throw new Error('IMAGE_BUFFER_TOUCHED'); } });
+  const glare = { center: [.5, .5], sigma: [.2, .2], amount: .8 };
+  invalid.push(...[null, [], {}, { ...glare, extra: 1 }, { ...glare, amount: NaN }, { ...glare, amount: 1.1 }, { ...glare, center: new Array(2) }, { ...glare, center: [-.1, .5] }, { ...glare, sigma: [0, .2] }].map(glare => ({ glare })));
   for (const interventions of invalid) await assert.rejects(syntheticPhoto({ ...fixture(), coverage, interventions }), error => error.message !== 'IMAGE_BUFFER_TOUCHED');
 });

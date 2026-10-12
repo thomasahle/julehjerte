@@ -129,10 +129,13 @@ Supported interventions:
 | `lowResolutionScale` | Greater than 0 and at most 1; rounded to pixels and clamped to at least 16 |
 | `jpegQuality` | 0–1 |
 | `cropNoisePixels` | 0 to one quarter of the output resolution; zero uses the actual physical quadrilateral |
+| `glare` | `{center: [x, y], sigma: [sx, sy], amount}`; normalized photo center in 0–1, widths in 0.01–1 and amount in 0–1 |
 
 Choose either a low-resolution size or scale. Invalid, conflicting and unknown fields are rejected before touching image buffers. Nonempty intervention runs require an integer output resolution from 16 to 4096. This API changes only the offline renderer; dataset generation defaults and live fitting are unaffected.
 
 Every original random draw is still consumed, including overridden draws. Palette changes therefore recolor the **same synthetic scene**. They do not change camera pose, slit geometry, crop perturbation or latent target PNGs. Crop intervention changes the crop-coordinate labels and crop raster together, while leaving the full photograph unchanged. The renderer still applies its normal clipping, blur, resampling and JPEG stages afterward, so their visible consequences can interact with the changed palette.
+
+Glare blends paper pixels toward white with a Gaussian spatial profile, after sampled illumination/noise and before clipping, blur and JPEG. Its center and widths use full-photograph coordinates, not rectified-crop coordinates. It consumes no random draws and preserves all four material/validity target PNGs, geometry and crop coordinates. Amount zero reproduces the original image bytes. This is an empirical sRGB stressor for washed-out paper, not a calibrated specular-reflection or foil model. It can deliberately destroy color contrast, so not every stressed image is recoverable from its pixels alone.
 
 Only intervention runs receive `labels.baselinePerturbations` and `labels.interventions` (`requested` and effective `applied` values). Existing `labels.perturbations` always describes the actual run. Omitting interventions or passing `{}` preserves the previous files and labels byte for byte. Identity interventions also reproduce the same image bytes and add only the explicit intervention metadata.
 
@@ -158,6 +161,8 @@ node scripts/inverse/datasets/synthetic-intervention-probe.mjs \
 The source and selection shown above are the defaults; the output directory must be fresh. Selection is an array of explicit view-ID rows. The tool verifies source assets, checks graph/cut agreement, independently renders 512-pixel canonical coverage, and **requires all six regenerated baseline image files plus common label fields to match the original**. A mismatch stops the replay; it never silently refreshes the source dataset.
 
 Each selected view receives six variants: baseline, red/cream palette, zero blur, full resolution, JPEG quality 1 and exact crop. The output manifest provides `rows` with source/design IDs, variant name and hashed image/label assets, plus retained per-design graphs and source cut hashes. Geometry/camera, nonintervened scalar parameters and appropriate target-PNG identities are asserted during generation. `--verify` subsequently checks all saved asset hashes and baseline/target identities. There is no fitting, model inference or scoring in this tool. Reference graphs are labels, never initialization for a blind fitter.
+
+The optional `--profile=glare` instead generates four variants: baseline, centered glare at amounts 0.55 and 0.85, and offset glare at amount 0.85. Both widths are 0.22 of the photograph dimensions; centers are `[0.5, 0.5]` or `[0.65, 0.38]`. The default `standard` profile retains the original six variants. Both profiles require exact baseline replay and unchanged targets.
 
 The first run reproduced six previously selected difficult views and generated **36 controlled rows in 4.885 seconds**. All **36 baseline image hashes** matched the original; all **258 saved assets** passed verification. [Replay evidence](synthetic-intervention-probe.json)
 

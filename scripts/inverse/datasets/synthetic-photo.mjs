@@ -76,7 +76,7 @@ function grayPNG(values, n) {
 function checkedInterventions(value, resolution) {
   if (value === undefined) return null;
   if (value === null || typeof value !== 'object' || Array.isArray(value) || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) throw new Error('Photo interventions must be an object.');
-  const keys = Reflect.ownKeys(value), allowed = new Set(['palette', 'blurSigmaPixels', 'lowResolution', 'lowResolutionScale', 'jpegQuality', 'cropNoisePixels']);
+  const keys = Reflect.ownKeys(value), allowed = new Set(['palette', 'blurSigmaPixels', 'lowResolution', 'lowResolutionScale', 'jpegQuality', 'cropNoisePixels', 'glare']);
   if (keys.some(key => !allowed.has(key))) throw new Error('Unknown photo intervention.');
   if (!keys.length) return null;
   if (!Number.isInteger(resolution) || resolution < 16 || resolution > 4096) throw new Error('Intervened photos require an integer resolution from 16 to 4096.');
@@ -84,6 +84,12 @@ function checkedInterventions(value, resolution) {
   const requested = {};
   for (const key of keys) {
     const v = value[key];
+    if (key === 'glare') {
+      if (!v || typeof v !== 'object' || Array.isArray(v) || ![Object.prototype, null].includes(Object.getPrototypeOf(v)) || Reflect.ownKeys(v).some(k => !['center', 'sigma', 'amount'].includes(k))) throw new Error('glare requires center, sigma and amount.');
+      for (const field of ['center', 'sigma']) if (!Array.isArray(v[field]) || v[field].length !== 2 || [0, 1].some(i => !Number.isFinite(v[field][i]) || v[field][i] < (field === 'sigma' ? .01 : 0) || v[field][i] > 1)) throw new Error(`Invalid glare ${field}.`);
+      if (!Number.isFinite(v.amount) || v.amount < 0 || v.amount > 1) throw new Error('Invalid glare amount.');
+      requested.glare = { center: v.center.slice(), sigma: v.sigma.slice(), amount: v.amount }; continue;
+    }
     if (key === 'palette') {
       if (!Array.isArray(v) || v.length !== 2 || [0, 1].some(i => !Array.isArray(v[i]) || v[i].length !== 3 || [0, 1, 2].some(k => !Number.isFinite(v[i][k]) || v[i][k] < 0 || v[i][k] > 255))) throw new Error('palette must contain two RGB triples with finite channels from 0 to 255.');
       requested.palette = v.map(color => color.slice()); continue;
@@ -115,9 +121,14 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
     const illumination = exposure * (1 + light[0] * (x / resolution - .5) + light[1] * (y / resolution - .5) - vignette * ((x / resolution - .5) ** 2 + (y / resolution - .5) ** 2));
     const grain = backgroundStyle === 'wood-stripes' ? 9 * Math.sin(y * .14 + 1.4 * Math.sin(x * .02)) : 4 * Math.sin(x * .21) * Math.sin(y * .23);
     const shadow = !m.foreground && material(project(inverse, [x - 3, y - 4]), coverage, canonicalResolution).foreground ? .78 : 1;
+    // An empirical photographic stressor, not a calibrated foil BRDF. Keep
+    // coverage/geometry labels and the legacy noise sequence independent of it.
+    const glare = requested?.glare;
+    const highlight = glare && m.foreground ? glare.amount * Math.exp(-.5 * (((x + .5) / resolution - glare.center[0]) ** 2 / glare.sigma[0] ** 2 + ((y + .5) / resolution - glare.center[1]) ** 2 / glare.sigma[1] ** 2)) : 0;
     for (let k = 0; k < 3; k++) {
       const base = m.foreground ? palette[0][k] * m.fractionA + palette[1][k] * (1 - m.fractionA) + gaussian() * texture : (background[k] + grain) * shadow;
-      pixels[4 * index + k] = base * illumination + gaussian() * noiseSigma;
+      const value = base * illumination + gaussian() * noiseSigma;
+      pixels[4 * index + k] = highlight ? (1 - highlight) * value + highlight * 255 : value;
     }
     pixels[4 * index + 3] = 255;
   }
@@ -152,13 +163,14 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
       nodesPhoto: graph.nodes.map(p => project(h, p)), nodesCrop: graph.nodes.map(p => project(canonicalToCrop, p)),
       exactCurveProjection: 'Apply the homography to the canonical cubic at each parameter value. Projected control polygons are not ordinary polynomial cubics.',
       coverageSupervision: 'Fraction of paper A before blur/JPEG, bilinearly sampled from an independently rendered canonical mask. Use overlap-valid maps; backgrounds and lobes are outside the graph task.',
-      perturbations: { angle, palette, light, exposure, vignette, noiseSigma, texture, background, backgroundStyle, blurSigmaPixels: sigma, lowResolution: lowSize, jpegQuality, cropNoisePixels },
+      perturbations: { angle, palette, light, exposure, vignette, noiseSigma, texture, background, backgroundStyle, blurSigmaPixels: sigma, lowResolution: lowSize, jpegQuality, cropNoisePixels, ...(requested?.glare ? { glare: requested.glare } : {}) },
       limitations: ['Procedural 2D planar photographs, not measured camera physics.', 'No paper thickness, actual occlusion, folds, specular foil or calibrated lens distortion.', 'Colors are empirically mixed in sRGB; target material coverage is saved separately.', 'Photometric views do not create new routing topologies.']
     }
   };
   if (requested) {
     const actual = result.labels.perturbations;
     result.labels.baselinePerturbations = { ...actual, palette: baselinePalette, blurSigmaPixels: baselineSigma, lowResolution: baselineLowSize, jpegQuality: baselineJpegQuality, cropNoisePixels: baselineCropNoise };
+    delete result.labels.baselinePerturbations.glare;
     const applied = {};
     for (const key of Object.keys(requested)) {
       const actualKey = key === 'lowResolutionScale' ? 'lowResolution' : key;

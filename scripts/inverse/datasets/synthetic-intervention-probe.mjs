@@ -19,6 +19,12 @@ export const PROBE_VARIANTS = [
   { name: 'jpeg1', interventions: { jpegQuality: 1 } },
   { name: 'exact-crop', interventions: { cropNoisePixels: 0 } }
 ];
+export const GLARE_VARIANTS = [
+  { name: 'baseline' },
+  { name: 'glare-mild', interventions: { glare: { center: [.5, .5], sigma: [.22, .22], amount: .55 } } },
+  { name: 'glare-strong', interventions: { glare: { center: [.5, .5], sigma: [.22, .22], amount: .85 } } },
+  { name: 'glare-offset', interventions: { glare: { center: [.65, .38], sigma: [.22, .22], amount: .85 } } }
+];
 const IMAGE_FILES = ['photo.jpg', 'crop.png', 'photo-paper-a.png', 'photo-overlap-valid.png', 'crop-paper-a.png', 'crop-overlap-valid.png'];
 const TARGET_FILES = IMAGE_FILES.slice(2);
 const root = fileURLToPath(new URL('../../../', import.meta.url));
@@ -67,7 +73,9 @@ function assertControlledVariant(result, baseline, variant) {
   return { cameraAndPhotoNodesUnchanged: true, cropAndCropNodesUnchanged: !exactCrop, unchangedTargetPNGs: exactCrop ? TARGET_FILES.slice(0, 2) : TARGET_FILES, nonintervenedParametersUnchanged: true, ...(exactCrop ? { originalPhotoUnchanged: true, physicalCropVerified: true } : {}) };
 }
 
-export async function replayInterventions({ dataset = 'tmp/heart-training-synthetic/batch-v1', selection = 'tmp/heart-learning/localization-corners-v1/worst-distinct-designs.json', output }) {
+export async function replayInterventions({ dataset = 'tmp/heart-training-synthetic/batch-v1', selection = 'tmp/heart-learning/localization-corners-v1/worst-distinct-designs.json', output, profile = 'standard' }) {
+  if (!['standard', 'glare'].includes(profile)) throw new Error('Unknown intervention profile. Use standard or glare.');
+  const variants = profile === 'glare' ? GLARE_VARIANTS : PROBE_VARIANTS;
   if (!output) throw new Error('Provide a fresh --output directory.');
   const started = performance.now(), sourceDataset = path.resolve(dataset), sourceSelection = path.resolve(selection), out = path.resolve(output);
   const sourceBytes = await fs.readFile(path.join(sourceDataset, 'manifest.json')), original = JSON.parse(sourceBytes);
@@ -87,7 +95,7 @@ export async function replayInterventions({ dataset = 'tmp/heart-training-synthe
     sourceHashes: Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, sha256(await fs.readFile(path.join(root, file)))]))),
     sourceDataset, sourceManifestSha256: sha256(sourceBytes), sourceSelection, sourceSelectionSha256: sha256(selectionBytes),
     scope: 'Paired photographic diagnostic on explicitly selected existing views. Selection may depend on prior model errors; this is not a random evaluation sample or independent generalization benchmark. No fitting, model inference or model scoring.',
-    variants: PROBE_VARIANTS, canonicalResolution: 512,
+    profile, variants, canonicalResolution: 512,
     designs: [], rows: [], baselineIdentities: [],
     limitations: ['Reference graph/cuts are ground-truth labels; never pass them to a blind fitter as initialization.', 'Changing photo corruption can interact with downstream clipping/JPEG; nonintervened random draws and parameters remain fixed.', 'Exact-crop changes the crop-coordinate targets as well as the input crop; compare them in their own coordinate system.', 'Original admission records are checked; this replay does not repeat physical-paper audits.']
   };
@@ -116,7 +124,7 @@ export async function replayInterventions({ dataset = 'tmp/heart-training-synthe
       const { designId: _designId, graphPath: _graphPath, ...sourceLabelFields } = labels;
       assert.deepEqual(baseline.labels, sourceLabelFields, `${sourceView.id}: baseline label fields`);
       manifest.baselineIdentities.push({ sourceViewId: sourceView.id, designId: design.id, seed: sourceView.seed, imageHashes: Object.fromEntries(IMAGE_FILES.map(name => [name, sourceView.assets[name].sha256])), allSixImageHashesMatch: true, commonLabelFieldsMatch: true, sourceLabelsSha256: sourceView.assets['labels.json'].sha256 });
-      for (const variant of PROBE_VARIANTS) {
+      for (const variant of variants) {
         const result = variant.name === 'baseline' ? baseline : await syntheticPhoto({ ...input, interventions: variant.interventions });
         const invariants = assertControlledVariant(result, baseline, variant), id = `${sourceView.id}--${variant.name}`, folder = path.join('views', id), assets = {};
         for (const [name, bytes] of Object.entries(result.files)) assets[name] = await writeAsset(path.join(folder, name), bytes);
@@ -124,9 +132,9 @@ export async function replayInterventions({ dataset = 'tmp/heart-training-synthe
         assets['labels.json'] = await writeAsset(path.join(folder, 'labels.json'), JSON.stringify(savedLabels, null, 2) + '\n');
         manifest.rows.push({ id, sourceViewId: sourceView.id, designId: design.id, variant: variant.name, sourceSplit: sourceView.split, selectedAnalysisSplit: chosen.split ?? null, sourceLabelsSha256: sourceView.assets['labels.json'].sha256, assets, invariants });
       }
-      await save(); process.stdout.write(`${manifest.baselineIdentities.length}/${selected.length}: ${sourceView.id}, six variants; baseline and invariants verified\n`);
+      await save(); process.stdout.write(`${manifest.baselineIdentities.length}/${selected.length}: ${sourceView.id}, ${variants.length} variants; baseline and invariants verified\n`);
     }
-    manifest.status = 'complete'; manifest.summary = { selectedViews: selected.length, designs: manifest.designs.length, variantsPerView: PROBE_VARIANTS.length, generatedRows: manifest.rows.length, matchedOriginalImageHashes: selected.length * IMAGE_FILES.length, seconds: (performance.now() - started) / 1000 };
+    manifest.status = 'complete'; manifest.summary = { selectedViews: selected.length, designs: manifest.designs.length, variantsPerView: variants.length, generatedRows: manifest.rows.length, matchedOriginalImageHashes: selected.length * IMAGE_FILES.length, seconds: (performance.now() - started) / 1000 };
     const escape = text => String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
     const sections = selected.map(source => `<section><h2>${escape(source.id)}</h2><div class="row">${manifest.rows.filter(row => row.sourceViewId === source.id).map(row => `<figure><img src="${row.assets['crop.png'].path}" alt="${escape(row.variant)} crop"><figcaption>${escape(row.variant)}</figcaption></figure>`).join('')}</div></section>`);
     await fs.writeFile(path.join(out, 'index.html'), `<!doctype html><html lang="en"><meta charset="utf-8"><title>Controlled synthetic-photo interventions</title><style>body{font:15px system-ui;margin:24px;background:#eee;color:#222}.row{display:flex;gap:8px}figure{margin:0;flex:1;min-width:0}img{width:100%}section{padding:16px;background:white;margin:16px 0}</style><h1>Controlled synthetic-photo interventions</h1><p>Same selected geometry, camera and random draws. This is a diagnostic sample, with no model fitting or scoring.</p>${sections.join('')}</html>`);
@@ -151,7 +159,7 @@ export async function verifyInterventionProbe(directory) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   const args = Object.fromEntries(process.argv.slice(2).map(arg => { const at = arg.indexOf('='); if (!arg.startsWith('--') || at < 0) throw new Error('Use --option=value.'); return [arg.slice(2, at), arg.slice(at + 1)]; }));
-  for (const key of Object.keys(args)) if (!['dataset', 'selection', 'output', 'verify'].includes(key)) throw new Error(`Unknown argument ${key}.`);
+  for (const key of Object.keys(args)) if (!['dataset', 'selection', 'output', 'verify', 'profile'].includes(key)) throw new Error(`Unknown argument ${key}.`);
   const result = args.verify ? await verifyInterventionProbe(args.verify) : (await replayInterventions(args)).summary;
   process.stdout.write(JSON.stringify(result, null, 2) + '\n');
 }
