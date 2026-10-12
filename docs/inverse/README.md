@@ -98,7 +98,7 @@ preparation, solver startup and post-solve rendering: they are not browser
 click-to-ready times. Aggregate timings over differently successful case sets
 should not be treated as a speed comparison.
 
-The remaining eligible case, `squares`, is retained as a failed oracle witness.
+In the initial study, the remaining eligible case, `squares`, failed its oracle witness.
 A 0.000004 mm visible fragment becomes two duplicate self-loops after the normal
 graph splitting and endpoint normalization; the embedded routing fails
 self-intersection and edge-parity checks. No tolerance or witness requirement
@@ -132,8 +132,8 @@ Repeating the full gallery study three times improves the exact-boundary
 heuristic variant from 22/24 to 23/24. The five-point star now solves at zero
 sampled mask error without any supplied connectors; all other case statuses and
 measured errors are unchanged. The blind raster variant remains 9/24. Thus the
-fix repairs candidate coverage but does not resolve the earlier tracing losses,
-and the `squares` witness failure remains outstanding.
+fix repairs candidate coverage but does not resolve the earlier tracing losses.
+The `squares` witness still failed at this stage; the next follow-up addresses it.
 
 The full photo workflow retains 23/31 accepted cases, with all 28 generated
 pairs passing editable conversion, editor intersection rules and the nominal
@@ -159,6 +159,61 @@ limitations: the Viking still has thin seams and distorted frame details, and
 Stonehenge still loses sun rays; passing the numerical gates is not exact motif
 recovery.
 
+### Follow-up: closed curves and collapsed boundary fragments
+
+The next graph fix, `c105a1b`, resolves two opposite endpoint-handling errors.
+Noding discarded a genuine closed cubic because its first and last points
+coincided, regardless of the shape between them. Graph construction instead
+split every near-closed segment, including a 0.000004 mm straight fragment in
+`squares`. Endpoint normalization turned that fragment into two duplicate
+self-loops, preventing a valid routing.
+
+Both stages now inspect the whole cubic control hull. Only a segment whose four
+control points share one five-decimal graph vertex key can collapse. Genuine
+closed curves are recursively subdivided into edges with distinct endpoints;
+even tiny bridges across distinct vertex cells remain connected. The existing
+endpoint and adjacent-handle normalization is measured in graph metadata.
+The independent geometry, paper and image acceptance rules are unchanged.
+
+Five focused tests preserve closed-contour area at two scales, preserve the
+rendered mask through graph construction, reject artificial self-loops, retain
+a tiny bridge across vertex cells, and retain nonzero excursions when a cubic's
+midpoint returns to its start. All five failed before the fix. A sixth test
+loads the actual `squares` reference and solves it with ordinary connector
+proposals and unknown sheet ownership. Oracle witnesses now also require an
+independent rendering check after their paths are remapped through normalized
+edges.
+
+Across all 38 gallery entries and three repetitions, the 24 eligible references
+now all pass the exact-boundary heuristic variant, up from 23. The other 14
+remain excluded under the existing import, geometry and paper criteria. The
+`squares` solution has zero sampled mask error and a preview identical to its
+reference, with no oracle connectors added. Its ordinary candidate graph takes
+0.986 seconds at the median; supplying only the known hidden connectors reduces
+that to 0.075 seconds. All other case statuses and image errors are unchanged.
+The blind raster strategy remains 9/24. Exact geometry and reference vertices
+are supplied in the successful oracle experiment; this is evidence about graph
+construction and search, not 24 successful photographic reconstructions.
+
+The regular Hunodan replay passes 22/22 in under ten seconds, with a maximum of
+8.923 seconds and all 22 errors identical to the preceding run. The hard-photo
+workflow remains 23/31 accepted: three cases have no crop and five generated
+pairs fail image/detail acceptance. All 28 generated pairs pass editable
+conversion, editor intersections and nominal geometry/paper checks; their crops,
+masks and fitting probabilities are unchanged. Ten time-limited fits have
+different measured errors, including increases of up to 0.074375 percentage
+points. These measurements are retained rather than presented as uniform photo
+improvements. Visual review still finds Viking seams/frame defects and lost
+Stonehenge sun rays.
+
+All 607 inverse tests and 855 application tests pass (one existing application
+skip), as do lint and the production build. Type checking reports zero errors
+and seven existing warnings. Fourteen Chromium/WebKit workflows pass, including
+the star, closed circle, independent-sheet free-border hat, Viking and Stonehenge
+photos, Hunodan `hjfig-05`, and bird mask. All 65 served engine/worker JavaScript
+hashes match the source. See the per-case results and unchanged acceptance
+criteria in [CLOSED-BOUNDARY-VALIDATION.json](CLOSED-BOUNDARY-VALIDATION.json).
+
 ### Candidate learning tasks
 
 The following are proposals, not measured model performance:
@@ -173,6 +228,7 @@ The following are proposals, not measured model performance:
 | Partial sheet assignment | Graph and image features → several uncertain A/B assignments | Let MILP finish each proposal, releasing fixed choices on failure. A/B exchange and path order must not create artificial training errors. |
 | Bézier initialization | Rectified mask → a few coarse template pairs | Existing optimization refines them. Predict shared spans as shared objects so refinement cannot split an invisible seam. |
 | Learned repair selection | Current candidate, residual image and validation defects → regions whose topology/curves should be reopened | Useful after a nearly correct fit; retain a valid incumbent and accept only checked improvements. |
+| Free-border completion | Fixed central motif and the user-permitted border band → several boundary completions and endpoint hypotheses | Can make simple blobs weaveable without learning an unconstrained redraw. Never change pixels outside the permitted region. |
 | Crop/mask uncertainty | Photo → corner alternatives, paper probabilities and uncertainty | Helps upstream failures. Graph learning alone cannot fix missing crops or incorrect classified targets. |
 
 Other directions worth comparing are retrieval of a small set of validated
@@ -209,6 +265,11 @@ absent from one reference as impossible. Use multiple valid routings where
 available, sheet-swap-invariant targets, rendering agreement and solver-validated
 alternatives. The useful metric is whether a small proposed graph contains a
 valid low-error pair, not exact recovery of an arbitrary reference's edge IDs.
+Likewise, an arbitrary extra Bézier knot does not change the design: training
+targets should canonicalize equivalent subdivisions and distinguish visible
+corners from latent junctions where a hidden shared cut meets a boundary. The
+latter may have no local image evidence; predict alternatives using wider motif
+context, rather than treating one reference position as uniquely observable.
 Measure that coverage, full-pipeline feature retention and editable legality,
 and time to a valid result including inference and model loading. Perturbation
 tests and the regular Hunodan speed/error gate remain required.
@@ -222,6 +283,29 @@ cost and WASM/WebGPU performance must be measured on target devices; its
 [documentation](https://onnxruntime.ai/docs/tutorials/web/ep-webgpu.html) recommends
 WASM for lightweight models and describes the CPU–GPU data transfers to account for.
 No model or runtime dependency was added by this experiment.
+
+A first prototype should separate boundary reconstruction from connection
+ranking so the two can be evaluated independently. Feed a small encoder-decoder
+the rectified soft mask, image gradients and classification uncertainty; predict
+boundary distance, junction heatmaps, subpixel offsets and tangent directions.
+Convert these into a few alternative vector boundaries and additional junction
+proposals. A pair scorer can then combine local image features with endpoint
+distance, tangent alignment, boundary degree and geometric clearance to rank
+ordinary and newly proposed connectors. Start with a small graph, expand on
+failure, and retain the existing geometric proposals as a fallback. Scores
+should guide candidate order or break ties, never override legality or the
+image-error limits. Each boundary hypothesis still needs its own consistent
+MILP; a probability map is not by itself a replacement for the current exact
+boundary constraints.
+
+Before training, compare four ablations on held-out motifs: predicted boundaries
+with ordinary connectors, ordinary boundaries with learned ranking, the combined
+model, and the unchanged full pipeline. Add a boundary-only oracle and a
+junction-only oracle to separate the two sources of the present 9/24 to 24/24
+gap. Benchmark a non-neural simplifier and a small feature-based classifier too.
+The current results favor better boundaries and vertices first; compact-graph
+speedups justify ranking as a second target. They do not establish that missing
+hidden connectors are the dominant remaining failure on photographs.
 
 Reproduce the gallery study with:
 
