@@ -158,3 +158,69 @@ independent replay and artifact writes. The separate regular benchmark's
 10-second gate includes preparation, solve, validation and export, but excludes
 decoding and independent replay. Actual browser tests measure click-to-ready
 with the page clock and audit the downloaded editable geometry.
+
+## Follow-up: defer speculative routing and finish accepted-route polishing
+
+Commits `1991e27` and `4c6f1a7` extend the scheduling fix to longer requests and
+remove a premature polishing cutoff. The complete follow-up measurements are
+in [DEFERRED-ROUTING-VALIDATION.json](DEFERRED-ROUTING-VALIDATION.json).
+
+When feature protection selects a different grid that retains the source
+regions, a longer search now tries a short routing probe before refining that
+grid. If no candidate passes the original image, feature, geometry and paper
+checks after its first refinement, the unused routing allowance remains
+available. A regression expires the first probe by advancing the test clock;
+the real photograph then needs the resumed routing to recover a valid 4 + 4
+pair below 0.95% independently rendered disagreement. Ordinary finalists and
+the useful tree smoothing/border retries remain available.
+
+The regular benchmark exposed a separate source of timing sensitivity. A
+recovered `hjfig-05` route stopped polishing after 125 of 160 steps at the
+existing 0.7-second cap, despite finishing the overall request in about four
+seconds. Its exported error rose from 0.9043% to 0.9351%. An already accepted
+route now gets the remaining existing deadline to finish its 160-step polish;
+provisional routes retain their small allowance. A controlled 450 ms checkpoint
+delay reproduces 1.0152% error before this fix and passes the below-0.91% export
+regression afterward, within the ten-second request. No source pixels or
+acceptance thresholds change.
+
+The final fresh Viking replay falls from **30.68 to 24.54 seconds**, with
+**byte-identical exported cutting geometry and rendered preview** and 2.2656%
+source-mask disagreement. Actual browser click-to-ready times improve from
+32.85 to 26.65 seconds in Chromium and 36.62 to 32.26 in WebKit. Chromium's
+engine error is unchanged; WebKit's is slightly lower. Browser source-resolution
+editable errors are recorded separately from the older, differently sampled
+200-cell diagnostic.
+
+All **22 regular Hunodan designs** pass again, with a maximum of **9.29 seconds**.
+Against the preceding verified run, 21 have identical independently rendered
+error and `hjstr-03` improves from 0.5653% to 0.5580%; none is worse. The final
+ten-second hard-photo run reaches **23/31**, retaining every previous success.
+All 28 produced pairs pass editable conversion, editor intersections and paper
+checks; 23 also pass the image/feature gates. The three crop failures and 16
+partial/obscured motifs remain visible in the ledger. All crop, mask and fitting
+probability hashes for the 28 prepared inputs are unchanged.
+
+All **855 application tests** (one existing skip), **589 inverse tests**, type
+checking, lint and build pass. Type checking retains the same seven warnings.
+All **24 real browser workflows** pass in Chromium and WebKit, including the
+star, independently fitted free-border hat, difficult photographs and masks,
+both tree regressions, and `hjfig-05`. Both Stop-during-detail checks retain an
+editable valid candidate, in 3.78/4.05 seconds after Stop. All **65 served engine
+and worker files** match the tested source. The rebuilt preview remains at
+<http://127.0.0.1:5232/en/editor/paint/>. Nothing was pushed or deployed.
+
+The limitations above remain. Viking still has visible thin seams and distorted
+border details, and Stonehenge loses sun rays. Viking's short-budget result has
+varied across earlier runs; the latest 23/31 is not a claim of guaranteed
+ten-second photographic reconstruction or exact recovery of the original cuts.
+
+The remaining failures also help scope a future learned graph proposal. Three
+cases have no crop (`nested-squares`, `santa`, `bibel-star-outline`), and three
+stop traced recovery at inconsistent endpoint counts (`jigsaw`,
+`crossed-ribbons`, `bauble`). `outline-star` reaches routing time limits; `bird`
+exhausts some candidate graphs and times out on smoother alternatives. These
+are observed stages, not complete causal diagnoses. Ranking existing hidden
+connectors alone cannot affect the six failures before graph search. Oracle
+experiments should therefore separate crop/mask/endpoint corrections, candidate
+coverage, graph pruning and curve initialization. No neural model was trained.
