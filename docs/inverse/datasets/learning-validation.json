@@ -1,0 +1,126 @@
+{
+  "schema": "heart-data-learning-validation-1",
+  "date": "2026-10-12",
+  "sourceCommitAtRecording": "b3c4907295c1df2ed683f84cf34d79ea4408e125",
+  "scope": "Offline dataset and neural experiment tooling; no production engine change in this milestone.",
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 7.27082625,
+      "log": "tmp/heart-learning/qa/0.log",
+      "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.550125,
+      "log": "tmp/heart-learning/qa/1.log",
+      "logSha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    {
+      "command": [
+        "npm",
+        "exec",
+        "vitest",
+        "run",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 33.848569291000004,
+      "log": "tmp/heart-learning/qa/2.log",
+      "logSha256": "7b439e1da4ff5992454d424236fd8b128b3e65ef53a2d7b6b11c4a1728e9e574"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 436.259503916,
+      "log": "tmp/heart-learning/qa/3.log",
+      "logSha256": "9e1b35b15901c33b36078e10c9410df7b6bd0b3b5717c39314890c83e7b1f602"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 10.318128625000043,
+      "log": "tmp/heart-learning/qa/4.log",
+      "logSha256": "a29b1d9da8aa550467c4e66e579de777ee7fee9791d1aa8aca6289996d6c466e"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/inverse/learning/data.test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.7524515000000065,
+      "log": "tmp/heart-learning/qa/5.log",
+      "logSha256": "eb8c88bdf6d7bffd457b38469078be30b7e97db745e82c5f24162939bad78be2"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/inverse/learning/model.test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 3.798379917000034,
+      "log": "tmp/heart-learning/qa/6.log",
+      "logSha256": "3e78d813cbcc327d11d335c245510c854d301dc8c8a5def0c7d008dc99698865"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/inverse/datasets/real-collect.test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.10857974999998987,
+      "log": "tmp/heart-learning/qa/7.log",
+      "logSha256": "fc924f6e1fea3cec579bda3420051891bdf01c960fe5ca7e49fdfc8005bd9c0c"
+    }
+  ],
+  "totals": {
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "inversePassed": 632,
+    "learningLabelTestsPassed": 7,
+    "learningModelTestsPassed": 2,
+    "collectorTestsPassed": 13,
+    "typeCheckErrors": 0,
+    "existingTypeCheckWarnings": 7
+  },
+  "sourceHashes": {
+    "scripts/inverse/datasets/real-audit.py": "c04a7b01cfd6bf8a9bf1bab3f64d7ca8f7368456806c6577def80b196abd166a",
+    "scripts/inverse/datasets/real-collect.py": "acd7467a8e22086c29345093f7875ef04caf60b234e4ed29e2cdf3a195343249",
+    "scripts/inverse/datasets/real-collect.test.py": "71b1ac78c986d27d49877111eba67dc8c58e82668532646d589646249af3ccaa",
+    "scripts/inverse/datasets/real-pinterest.py": "246fffee1b569fc64a20284110a5d95fe78ffc323238095522bffc8fcf2c3a6f",
+    "scripts/inverse/datasets/synthetic-correct-metadata.mjs": "c23d2794fb3c181aa06f6744a4e281395247228e4f54ef4cfa8c752bd4304a64",
+    "scripts/inverse/datasets/synthetic-generate.mjs": "c7de56bb448d0af0fe650fffd075013aa3a2cf4ce8f34dc8f994089ccb23d704",
+    "scripts/inverse/datasets/synthetic-geometry.mjs": "4894a7605f6032c113b182b33846bfa52c5dd7689f79b6005f3eaa97ac6f0622",
+    "scripts/inverse/datasets/synthetic-photo.mjs": "fdbeff0ed4f51387bc5c843b49ddbb091d92d258bcab2e3717c23293bdcd9a61",
+    "scripts/inverse/datasets/synthetic-training.test.mjs": "f33be598c68d51a9ac1e5b1d8f81df70914feee117531a2fdcd0ae3c1bb99e7d",
+    "scripts/inverse/datasets/synthetic-verify.mjs": "3726c8c6b0354d0f32b6b425f12788bc9323e7023b3000a384fbead72c5baf99",
+    "scripts/inverse/learning/data.py": "f75e7818fc89abfa99970f0cd86b01ca912d29ad54f85537ef923d5a470e0b26",
+    "scripts/inverse/learning/data.test.py": "f452add2d6c27bcf2994eaf9d32bb8dee703143bd37ee765cdb0eb7332147764",
+    "scripts/inverse/learning/model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b",
+    "scripts/inverse/learning/model.test.py": "92590682b56a328eb7e1a9ea1e733068adb78dfce05ed29563c778e35f92be7f",
+    "scripts/inverse/learning/prepare.mjs": "6f29378ddb1b2151885c8691c31c21a56365068cf49f9aa1002c13f7feede480",
+    "scripts/inverse/learning/train.py": "77b939f3bff64f9fcc0c4e447309151c72c50f730eae0bdd0bdd270431e75fa0"
+  },
+  "realManifestSha256": "a900f3f3baaeba87e4d5bb3eedc595f0276ca1684110cdd4dc1f3ba1cc531dd8",
+  "experimentEvidenceSha256": "6df0044834b7c2f544e4d99b80431c4aad37667c3dd878b4f3a497aec5fe26fc"
+}

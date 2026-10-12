@@ -2,21 +2,28 @@
 
 This collection prepares a small photo-to-graph model for the existing solver.
 It contains downloaded source images, synthetic images with exact cut labels,
-and a verified pretrained encoder checkpoint. No model has been trained or
-added to the website yet.
+and verified pretrained encoder checkpoints. A first synthetic-only neural
+comparison is complete; no learned model has been added to the website.
 
 The 2026-10-12 snapshot contains:
 
 | Asset | Verified count | Meaning |
 | --- | ---: | --- |
-| Real-source image files | 672 | Includes templates, process shots and rejected/uncertain material. |
-| Files containing assembled-heart photographs | 397 | Includes multi-heart scenes and mixed photo/template pages; 345 reviewed near-duplicate groups. |
-| Public Pinterest imports | 42 of 45 selected pins | 22 contain assembled-heart photographs; these are a subset of the real-source totals. |
+| Real-source image files | 1,034 | Includes templates, process shots and rejected/uncertain material. |
+| Files containing assembled-heart photographs | 573 | Includes multi-heart scenes and mixed photo/template pages; 461 reviewed near-duplicate groups. |
+| Public Pinterest imports | 470 of 487 selected pins | 198 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
 | Synthetic cutting geometries | 128 | Color phase is excluded from geometry identity; only three procedural recipe groups. |
 | Synthetic photographic views | 512 | Exact curve/phase/projection labels; all 3,968 referenced assets verified. |
-| Pretrained encoder checkpoint | 1 | MobileNetV3-Small; downloaded, not trained or deployed. |
+| Pretrained encoder checkpoints | 2 | MobileNetV3-Small: researched timm LAMB weights and the TorchVision weights used by the experiment. |
+| Trained proposal models | 2 | Same 880,466-parameter network, random versus ImageNet encoder; synthetic-only, offline. |
 
-Of the real-source files, 372 are reserved by existing QA or connected source
+The latest [Pinterest expansion](real-pinterest-expansion.md) downloaded 428 of
+442 visited pins, including all four user-supplied examples. After merging, it
+added 362 source files, 176 photo-containing files and 116 reviewed photo groups
+to the previous snapshot. These are source-image counts, not heart-instance
+or independent motif-family counts.
+
+Of the real-source files, 475 are reserved by existing QA or connected source
 groups. Remaining files still need instance, motif-family and usage review;
 they are not automatically a labeled training set. The
 [real audit](real-validation.json) and [synthetic batch evidence](synthetic-batch.json)
@@ -35,7 +42,8 @@ its individual heart instances have been annotated.
 Open `tmp/heart-training-real/index.html` for the filterable local photo gallery,
 and `tmp/heart-training-synthetic/batch-v1/index.html` for synthetic comparisons.
 
-Public Pinterest pins can be imported from an explicit URL list. The importer
+Public Pinterest pins can be imported from an explicit URL list or bounded
+keyword discovery and related pin records exposed by public pages. The importer
 uses the main image advertised by the public page, choosing its original-size
 URL when the page actually supplies one. It records the pin and image URLs;
 it does not infer missing full-resolution URLs. Some returned pins contain
@@ -49,10 +57,20 @@ paper checks run before admission, followed by an independent exported render.
 These are planar simulations with limited procedural motif diversity, not
 substitutes for real photographs.
 
-The selected first encoder is [MobileNetV3-Small](pretrained-models.md), with an
-approximately 10.2 MB checkpoint already downloaded and hash-verified. The
+The selected first encoder is [MobileNetV3-Small](pretrained-models.md). The
 research document compares eight pretrained alternatives and records their
-sources. Browser inference speed and ONNX export remain unmeasured.
+sources. The runnable experiment uses the already installed TorchVision model
+and its separately hash-verified checkpoint, rather than the researched timm
+LAMB checkpoint. Browser inference speed and ONNX export remain unmeasured.
+
+The [first neural comparison](boundary-learning.md) trained both initializations
+for 20 epochs against exact synthetic boundary and junction labels. Pretraining
+helps this small network: held-out channel/frame junction F1 is 43.58%/41.82%,
+versus 3.20%/8.88% from random initialization and 17.81%/21.10% from the existing
+trace. However, the pretrained model loses to the trace on development junction
+F1 and still misses most held-out corners. Thick neural boundary predictions
+also flatter the pixel-tolerance metric. This is a useful starting experiment,
+not evidence of a better complete solver or real-photo reconstruction.
 
 ## What the network should learn
 
@@ -111,17 +129,20 @@ The Node dataset tests are included in `npm run test:inverse`. The Python
 collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
-Snapshot verification passed five Node dataset tests, ten offline collector
-tests, Python compilation and project lint. The synthetic verifier checked all
-3,968 referenced assets, and the real-image audit checked all 672 source files
-and decoded image identities. A Chromium check of the local gallery verified
-the complete inventory, photo/template/all filters and image loading without
-page errors. The earlier application/solver release checks are recorded in
+Snapshot verification passed five Node dataset tests, thirteen offline collector
+tests and nine learning-label/model tests. The complete application and inverse
+suites passed 855 and 632 tests respectively (one application test skipped),
+along with type checking, lint and build. Type checking retains seven existing
+warnings. [Command records and source hashes](learning-validation.json) retain
+the checks. The synthetic verifier checked all 3,968 referenced assets, and the
+real-image audit checked all 1,034 source files and decoded image identities.
+Gallery browser checks are recorded in the real-photo collection report.
+The earlier application/solver release checks are recorded in
 [the solver validation report](../CONNECTOR-RETRY-VALIDATION.json); data tooling
 does not change production inference.
 
-Before evaluating a learned proposal model, compare against the current
-geometric pipeline and the same small network initialized randomly. Report
+The initial component comparison includes the current geometric preprocessing
+and the same small network initialized randomly. Next, report
 whole-pipeline time, valid-solution recall, mask and feature error, candidate
 graph size, and sensitivity to crop/color/noise perturbations on held-out real
 photographs. A lower pixel error must not conceal missing rays or false seams.
