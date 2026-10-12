@@ -7,6 +7,9 @@ Run `npm run test:inverse:paint:browser` against the built app for the actual Pa
 [COUNT-STRATEGIES.md](COUNT-STRATEGIES.md) compares count initialization on the frozen photo dataset, separating the cost of finding initial grids from complete solve time and measured reconstruction quality.
 
 Current full-pipeline investigations are recorded in
+[SHARING-SOURCE-VALIDATION.json](SHARING-SOURCE-VALIDATION.json) (checking each
+shared-cut repair against the original mask, and separating crop, classification
+and template-fitting failures),
 [FEATURE-RETRY.md](FEATURE-RETRY.md) (recovering an opening lost after a one-pixel
 crop shift, including refinement of an uncertain paper proposal),
 [FEATURE-ENCLOSURE.md](FEATURE-ENCLOSURE.md) (preserving enclosed details through
@@ -19,6 +22,22 @@ crop perturbations and editable exports) and
 (dense photographic patterns and independent finer paper audits). These distinguish
 image agreement, source-feature retention, legal geometry and nominal paper checks;
 the historical reconstruction counts below describe earlier implementations.
+
+Shared-cut cleanup now checks proposed alignments against the original-resolution
+mask and its protected details before accepting each edit. Previously, one bad
+edit could make the final check discard a whole batch of useful seam repairs.
+The batch keeps the incoming template's image-error ceiling, so complementary
+alignments can trade a few boundary pixels without making that fit worse. The
+geometry, paper, symmetry and final whole-batch checks still apply. The 22 regular
+Hunodan designs retain or improve their independent errors and remain below
+nine seconds for preparation, solving, validation and export in this run.
+
+The diagnostic photo runs also expose limits upstream of fitting: the automatic
+jigsaw crop is distorted, and the bauble loses much of its frame during colour
+classification even with a historical hand-reviewed crop. Both automatic masks
+can receive low-error template fits with a longer budget. That does not establish
+correct reconstruction of the photographed hearts; the full-pipeline evidence
+retains the source photographs, crops, masks and exported weaves separately.
 
 ## Historical integration notes
 
