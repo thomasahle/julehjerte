@@ -7,6 +7,7 @@ import {dot,mul,angle} from './bezier.js';
 import {boundaryEndpoints} from './graph.js';
 import {nearbyPairs,lineDistance,improperIntersection} from './geometry.js';
 import {validate,selfNecks} from './validate.js';
+import {shortSelfReturns} from './self-returns.js';
 let runtimePromise;
 export async function solverRuntime(){return runtimePromise??=loadHighs({locateFile:file=>new URL('../vendor/'+file,import.meta.url).href,print:()=>{},printErr:()=>{}});}
 export class LinearModel{
@@ -69,7 +70,7 @@ export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coef
       const values=native.getSolution().colValue,residual=m.residual(values);
       if(relaxationOnly){info.relaxationResidual=residual;if(residual>2e-5)break;}
       else if(residual>2e-5)throw new Error(`MILP result fails independent integrality/row checks (${residual}).`);
-      const candidate={graph,paths:extract(graph,x,z,values,endpoints),report:{}},obj=native.getObjectiveValue(),necks=selfNecks(candidate,cfg);info.objective=obj;info.selfNeckChains=necks.length;onProgress({stage:'validating',round:round+1});
+      const candidate={graph,paths:extract(graph,x,z,values,endpoints),report:{}},obj=native.getObjectiveValue(),shortReturns=shortSelfReturns(candidate,cfg),necks=[...selfNecks(candidate,cfg),...shortReturns];info.objective=obj;info.selfNeckChains=necks.length;info.shortReturnChains=shortReturns.length;onProgress({stage:'validating',round:round+1});
       if(necks.length){for(const issue of necks){const chain=[...new Set(issue.edgeChain)],key=`${issue.family}:${chain.sort((a,b)=>a-b).join(',')}`;if(nogoods.has(key))continue;nogoods.add(key);append(chain.map(e=>[x[issue.family][e],1]),-Infinity,chain.length-1);}continue;}
       const check=validate(candidate,cfg,{checkSelfNecks:false});if(check.passed&&coreGate){const core=coreGate(candidate);info.materialCore=core.summary;check.materialCore=core.summary;if(!core.passed){check.passed=false;check.issues.push({type:'material_core',summary:core.summary});}}
       info.validationPassed=check.passed;if(check.passed){if(obj<bestObj){best=candidate;bestObj=obj;best.report.validation=check;append(m.cost.map((c,j)=>[j,c]).filter(([,c])=>c),-Infinity,obj+1e-6);}// Adding the objective row invalidates native.info (including mip_gap). Use the captured bound.

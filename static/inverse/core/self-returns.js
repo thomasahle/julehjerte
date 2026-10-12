@@ -53,7 +53,8 @@ export function shortSelfReturns(solution,cfg){
       // around the same bend. Otherwise subdivision creates false returns.
       if(pair.arcSeparation<2*margin||pair.arcSeparation>local)continue;
       if(pair.points.some(p=>[curves[0].p[0],curves.at(-1).p[3]].some(end=>distance(p,end)<.01*width)))continue;
-      issues.push(pair);if(++found>=4)break;
+      issues.push({...pair,edgeChain:solution.paths[family][slit].slice(pair.curves[0],pair.curves[1]+1).map(([edge])=>edge)});
+      if(++found>=4)break;
     }
   }
   return issues;

@@ -8,6 +8,7 @@ import {settings} from '../../static/inverse/core/settings.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {Cubic} from '../../static/inverse/core/bezier.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
+import {solveGraph} from '../../static/inverse/core/solver.js';
 
 const cfg=settings(AUTOMATIC_PRESET);
 for(const name of ['gift','anchor'])test(`the saved ${name} return is rejected before editable conversion`,async()=>{
@@ -18,10 +19,27 @@ for(const name of ['gift','anchor'])test(`the saved ${name} return is rejected b
     assert.ok(issue.distanceUpper<issue.required);assert.ok(issue.arcSeparation>=2*issue.required);
     assert.ok(issue.arcSeparation<=cfg.localNeighborhoodFactor*cfg.nominalWidth);
     assert.ok(issue.curves[1]>issue.curves[0]+1);
+    assert.deepEqual(issue.edgeChain,solution.paths[issue.family][issue.slit].slice(issue.curves[0],issue.curves[1]+1).map(([edge])=>edge));
     assert.ok(Math.hypot(...issue.points[0].map((v,i)=>v-issue.points[1][i]))<issue.required);
   }
   assert.ok(validate(solution,cfg).issues.some(i=>i.type==='short_self_clearance'));
   assert.equal(JSON.stringify(geometry),before);
+});
+
+test('MILP routing excludes an integral short-return chain before publishing an incumbent',async()=>{
+  const points=[[50,0],[50,45],[51,45],[54,45],[54,45.7],[51,45.7],[50,45.7],[50,100]];
+  const path=points.slice(1).map((p,i)=>Cubic.line(points[i],p).p);
+  const model=new CurveGraph([[path],[[Cubic.line([0,80],[100,80]).p]]]),graph=model.solution(model.points,1).graph;
+  let audits=0,incumbents=0;
+  await assert.rejects(solveGraph(graph,settings({...AUTOMATIC_PRESET,timeLimit:5,maxRounds:2}),{
+    onProgress:r=>{if(r.validatedIncumbent)incumbents++;},
+    coreGate:()=>{audits++;return{passed:true,summary:{status:'pass'}};}
+  }),error=>{
+    assert.equal(error.report.termination,'candidate_graph_exhausted');
+    assert.ok(error.report.history[0].shortReturnChains>0);
+    return true;
+  });
+  assert.equal(audits,0);assert.equal(incumbents,0,'An uneditable chain must never become a validated candidate');
 });
 
 test('ordinary right-angle corners stay valid when their legs are subdivided',()=>{
