@@ -108,3 +108,46 @@ The study starts from fresh image-derived grids. Its fixed-step experiments have
 no production time limit; their scores must be distinguished from the timed
 end-to-end benchmark. Each run records source hashes and keeps the original
 mask and probability hashes inspectable.
+
+## Release QA
+
+[Machine-readable evidence](SMALL-FEATURE-VALIDATION.json) records paired results,
+source hashes, renderer resolutions and browser timings. Production code is
+`aef8405`; later commits add QA and this report.
+
+- **22/22 regular Hunodan designs** pass with exactly unchanged errors. The
+  slowest preparation + solve + validation + export is **8.29 s**. None needs
+  the new detail step. Decode and independent rendering are timed separately.
+- The complete ten-second photographic run retains **16/31**, with all previous
+  successes preserved. Three cases have no crop proposal. All 28 produced pairs
+  pass engine and editable-SVG geometry/paper checks. Among the 12 image
+  failures, nine exceed the mask-error threshold and seven lose a tracked
+  region; four have both problems. These are failure categories, not proof
+  that every remaining cause has been isolated.
+- The selected eight-case run with a 25-second search allowance retains **6/8**.
+  All eight pairs survive editable conversion and physical checks; the same six
+  pass image fidelity afterward. The bird improves to **2.3388%** independent
+  disagreement in **22.65 s** including preparation and validation. Outline-star
+  and crossed-ribbons still carry missing-region warnings. These warnings are
+  not counted as successes despite their lower overall errors.
+- **Eight browser cases pass:** Chromium and WebKit × bird mask, original puppy
+  photograph with automatic cropping, star example and free-border top hat.
+  The actual downloaded SVGs pass editable geometry, paper and image checks.
+  The star and bird PDF downloads are checked as well. The hat retains its long
+  exact shared cuts.
+- In Chromium/WebKit respectively, the bird's editable error is **2.4531% /
+  2.4588%**, eye component IoU **91.07% / 89.29%**, and click-to-ready time
+  **24.42 / 26.53 s**. The app uses its normal longer maximum budget, so these
+  browser times are distinct from the 25-second engine experiment above.
+- **Two additional Stop tests pass**, interrupting the real worker during the
+  new detail-polishing stage. Finalization completes in **6.63 / 6.30 s** and
+  rechecks the retained geometry at paper resolution 700 before editable export.
+  The QA proxy introduces the pause; it supplies no seed or cutting geometry.
+- `npm test`: **854 application tests pass, one existing skip; 569 inverse tests
+  pass**. `npm run check`: no errors, seven existing warnings. Lint and production
+  build pass. Served fitter hashes match the checked source.
+
+Crop coordinates, classified masks and fitting-probability hashes are identical
+in the paired photo sweeps. Small changes in a few unchanged fitting paths are
+consistent with their time-bounded refinement; they are not attributed to the
+new local-detail method.

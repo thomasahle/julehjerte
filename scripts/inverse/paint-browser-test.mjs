@@ -228,7 +228,7 @@ try{
     row.timings=observed.timings;row.pageMarks=observed.marks;
     if(stopMode){
      row.stop=await page.evaluate(()=>window.__stopQA);
-     const keep=stopMode==='keep'||stopMode==='keep-finer';
+     const keep=stopMode==='keep'||stopMode==='keep-finer'||stopMode==='keep-detail';
      assert.equal(Boolean(observed.result.report.stoppedEarly),keep);
      if(keep){
       assert.equal(row.stop.stopId,row.stop.resultId,'Stop must resolve the existing solve request.');
@@ -237,7 +237,7 @@ try{
       assert.ok(observed.result.report.alternatives.length>0);
       assert.deepEqual(JSON.parse(observed.result.files['report.json']).alternatives,observed.result.report.alternatives);
       assert.match(await page.locator('.summary[role=status]').innerText(),/Best result from the stopped search/);
-      if(stopMode==='keep-finer'){
+      if(stopMode==='keep-finer'||stopMode==='keep-detail'){
        assert.equal(observed.result.report.settings.materialResolution,700);
        assert.equal(observed.result.report.solver.paperVerification.source,'retained-checkpoint');
        assert.equal(observed.result.report.templateChecksPassed,true);

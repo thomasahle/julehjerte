@@ -8,7 +8,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 
 export async function stopIntervention(mode,origin){
-  assert.ok(['keep','keep-finer','empty','cancel-finishing'].includes(mode));
+  assert.ok(['keep','keep-finer','keep-detail','empty','cancel-finishing'].includes(mode));
   const files=new Map(),hashes={};
   const replace=async(file,from,to)=>{
     const source=await fs.readFile('static'+file,'utf8');
@@ -21,7 +21,7 @@ export async function stopIntervention(mode,origin){
     hashes[file]={original:createHash('sha256').update(source).digest('hex'),served:createHash('sha256').update(modified).digest('hex')};
   };
   const blocked=`self.postMessage({id,type:'progress',event:{stage:'qaComputeBlocked'}});const until=performance.now()+30000;while(performance.now()<until){/* deliberately busy private worker */}`;
-  const condition=mode==='keep-finer'?'candidate.materialResolution===700&&candidate.error!==null&&candidate.error<=.03':'candidate.error!==null&&candidate.error<=.006';
+  const condition=mode==='keep-detail'?"candidate.stage==='directPolishing'&&candidate.materialResolution===700&&candidate.error!==null&&candidate.error<=.026":mode==='keep-finer'?'candidate.materialResolution===700&&candidate.error!==null&&candidate.error<=.03':'candidate.error!==null&&candidate.error<=.006';
   if(mode==='empty')await replace('/inverse/compute-worker.js','    const result=await design',`    ${blocked}\n    const result=await design`);
   else await replace('/inverse/compute-worker.js',
     "{onCandidate:candidate=>self.postMessage({id,type:'candidate',candidate})}",
@@ -29,7 +29,7 @@ export async function stopIntervention(mode,origin){
   if(mode==='cancel-finishing')await replace('/inverse/core/stopped.js',
     '  alive();if(!packets.length)',
     "  onProgress({stage:'qaFinishingCheckpoint'});await new Promise(resolve=>setTimeout(resolve,2000));\n  alive();if(!packets.length)");
-  return{files,hashes,method:'HTTP source override: block the actual compute worker for 30 s before fitting (empty), or immediately after a real validated checkpoint with error <= 0.6% (keep), or finer paper resolution 700 and original-image error <= 3% (keep-finer). Cancel-finishing additionally yields for 2 s in finalization. No geometry, counts or seed is supplied.'};
+  return{files,hashes,method:'HTTP source override: block the actual compute worker for 30 s before fitting (empty), or immediately after a real validated checkpoint with error <= 0.6% (keep), or finer paper resolution 700 and original-image error <= 3% (keep-finer), or the new detail-polishing stage with resolution 700 and original-image error <= 2.6% (keep-detail). Cancel-finishing additionally yields for 2 s in finalization. No geometry, counts or seed is supplied.'};
 }
 
 /** Serialized by Playwright; no module dependencies in the body. */
@@ -59,7 +59,7 @@ export async function exerciseStop(page,mode,{disarm,dir}){
   await page.waitForFunction(()=>window.__stopQA.blocked!==null,null,{timeout:90000});
   await page.screenshot({path:path.join(dir,'before-stop.png'),fullPage:true});
   await button('Use the best one now').click();
-  if(mode==='keep'||mode==='keep-finer')return;
+  if(mode==='keep'||mode==='keep-finer'||mode==='keep-detail')return;
   if(mode==='empty'){
     await page.waitForFunction(()=>window.__paintQA.error!==null);
     const error=await page.evaluate(()=>window.__paintQA.error);
