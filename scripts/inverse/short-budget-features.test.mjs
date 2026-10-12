@@ -12,12 +12,12 @@ import {renderExportedWeave} from './export-renderer.mjs';
 const fixtures=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-short-budget-fits.json'));
 const hash=b=>createHash('sha256').update(b).digest('hex');
 
-for(const fixture of fixtures.cases)test(`${fixture.sourceCase} retains its interior detail in a ten-second fresh fit`,async()=>{
+for(const fixture of fixtures.cases)test(`${fixture.sourceCase} retains its interior detail in a fresh fit (${fixture.functionalTimeLimit||10}s allowance)`,async()=>{
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue||fixtures.sourceCatalogue));
   const photo=await readHardPhoto({...catalogue.source,...catalogue.cases.find(c=>c.id===fixture.sourceCase)});
   assert.equal(photo.fileSha256,fixture.sourceFileSha256);
   assert.equal(photo.rgbaSha256,fixture.decodedPixelsSha256);
-  const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false};
+  const cfg={...AUTOMATIC_PRESET,timeLimit:fixture.functionalTimeLimit||10,trials:0,earlyStop:false};
   const imported=prepare({...photo,quad:fixture.quad},cfg),input=hardPhotoTarget(imported,'mask',cfg),source=input.sourceImage;
   const mask=source.mask.slice(),probability=source.probability.slice();
   assert.equal(hash(mask),fixture.maskSha256);

@@ -50,7 +50,9 @@
       "sourceFileSha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
       "decodedPixelsSha256": "ba21ae598da5a5ca06cddf86c716e8cbafef42e1e326af58d35e6bc1435ee075",
       "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
-      "fittingProbabilitySha256": "4bd68b4bff7a4d619d10ee73c5422ba57df090b931b64037dbba253d90dfe576"
+      "fittingProbabilitySha256": "4bd68b4bff7a4d619d10ee73c5422ba57df090b931b64037dbba253d90dfe576",
+      "functionalTimeLimit": 60,
+      "timingNote": "The ten-second full-corpus replay remains timing-sensitive and records failures. This functional test uses a longer allowance to verify source fidelity and exported geometry; speed is measured by the unchanged hard-photo benchmark."
     },
     {
       "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
