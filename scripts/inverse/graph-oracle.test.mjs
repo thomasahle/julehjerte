@@ -11,6 +11,8 @@ import {solveGraph} from '../../static/inverse/core/solver.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {referenceEnvironment} from './reference.mjs';
+import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
 
 const cfg=settings({...AUTOMATIC_PRESET,width:60,timeLimit:3,trials:0,neighbors:8,connectorVariants:1});
 const pathsOf=s=>s.paths.map((family,k)=>family.map((_,p)=>curvesOf(s,k,p).map(c=>c.p)));
@@ -82,4 +84,28 @@ test('a tiny visible fragment no longer needs an oracle to restore its valid con
   assert.deepEqual(diagnosis,[]);
   assert.equal(augmented.addedConnectors,0);
   assert.equal(validate(augmented.witness,cfg).passed,true);
+});
+
+test('the gallery square retains a valid witness and solves after its subcell boundary stub collapses',async()=>{
+  const env=await referenceEnvironment();
+  try{
+    const ref=await env.load('squares',400),loaded=loadSolutionJSON(ref.cuts),curves=new CurveGraph(canonicalReferenceLines(pathsOf(loaded)),100);
+    const reference=curves.solution(curves.points,ref.cuts.phase?-1:1),settings100=settings({...AUTOMATIC_PRESET,width:100,timeLimit:5,trials:0,neighbors:8,connectorVariants:1});
+    assert.equal(validate(reference,settings100).passed,true);
+    const before=JSON.stringify(solutionJSON(reference)),[heuristic,augmented,compact]=oracleGraphVariants(reference,settings100);
+    assert.equal(heuristic.graph.metadata.vertexNormalization.collapsedSegments,1);
+    assert.equal(augmented.addedConnectors,0);
+    const mask=Uint8Array.from({length:400**2},(_,i)=>Number(ref.input.rgba[4*i]<128));
+    for(const variant of [augmented,compact]){
+      assert.equal(validate(variant.witness,settings100).passed,true);
+      assert.equal(materialAudit(variant.witness,settings100).passed,true);
+      const rendered=await renderExportedWeave(solutionJSON(variant.witness),400);
+      assert.equal(rendered.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0),0);
+    }
+    assert.equal(JSON.stringify(solutionJSON(reference)),before,'The original reference stays inspectable.');
+    const solved=await solveGraph(heuristic.graph,settings100,{stopAfterValidated:true,coreGate:s=>materialAudit(s,settings100)});
+    assert.equal(validate(solved,settings100).passed,true);
+    const rendered=await renderExportedWeave(solutionJSON(solved),400);
+    assert.equal(rendered.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0),0);
+  }finally{await env.close();}
 });

@@ -9,7 +9,7 @@ import {referenceEnvironment} from '../reference.mjs';
 import {renderExportedWeave} from '../export-renderer.mjs';
 import {Cubic,sub,add,dot,distance,segmentDistance} from '../../../static/inverse/core/bezier.js';
 import {keyPoint,improperIntersection,lineDistance,bbox,boxDistance} from '../../../static/inverse/core/geometry.js';
-import {buildGraph,reindex,curvesOf,solutionJSON,loadSolutionJSON,inspectBoundaryEndpoints,visibleEndpointNeighborhoods} from '../../../static/inverse/core/graph.js';
+import {buildGraph,reindex,curvesOf,solutionJSON,loadSolutionJSON,inspectBoundaryEndpoints,visibleEndpointNeighborhoods,graphCurveParts} from '../../../static/inverse/core/graph.js';
 import {CurveGraph} from '../../../static/inverse/core/direct/curves.js';
 import {curveKey} from '../../../static/inverse/core/symmetry.js';
 import {preprocessMask} from '../../../static/inverse/core/input.js';
@@ -105,15 +105,19 @@ export function oracleGraphVariants(reference,cfg){
   // Apply that same bounded normalization to the known witness's hidden ends;
   // otherwise tiny endpoint shifts can look like a missing visible edge. Record
   // the movement and validate the resulting witness before any solve.
-  const vertices=new Map(heuristic.points.map(p=>[keyPoint(p,5),p])),known=copyGraph(reference.graph);
+  const vertices=new Map(heuristic.points.map(p=>[keyPoint(p,5),p])),known=copyGraph(reference.graph),knownEdges=[];
+  const referenceNormalization={collapsedSegments:0,closedSplits:0};
   let maximumNormalizationMm=0;
-  for(const edge of known.edges){
-    const p=edge.curve.p.map(q=>[...q]),a=vertices.get(keyPoint(p[0],5))||p[0],b=vertices.get(keyPoint(p[3],5))||p[3],d0=sub(a,p[0]),d1=sub(b,p[3]);
+  const pieces=known.edges.map(edge=>graphCurveParts(edge.curve,referenceNormalization).map(part=>{
+    const p=part.p,a=vertices.get(keyPoint(p[0],5))||p[0],b=vertices.get(keyPoint(p[3],5))||p[3],d0=sub(a,p[0]),d1=sub(b,p[3]);
     maximumNormalizationMm=Math.max(maximumNormalizationMm,distance(a,p[0]),distance(b,p[3]));
-    edge.curve=new Cubic([a,add(p[1],d0),add(p[2],d1),b]);
-  }
+    const index=knownEdges.length;
+    knownEdges.push({visible:edge.visible,curve:new Cubic([a,add(p[1],d0),add(p[2],d1),b])});
+    return index;
+  }));
   if(maximumNormalizationMm>Math.SQRT2*1e-5)throw new Error('Reference normalization exceeds the graph vertex key.');
-  const normalized={...reference,graph:copyGraph(known)};
+  const paths=reference.paths.map(f=>f.map(p=>p.flatMap(([e,forward])=>(forward?pieces[e]:pieces[e].toReversed()).map(i=>[i,forward]))));
+  const normalized={...reference,graph:copyGraph(known,knownEdges),paths};
   const lookup=new Set(augmented.edges.map(e=>curveKey(e.curve.p))),needed=new Set();
   let added=0;
   for(const edge of normalized.graph.edges)if(!edge.visible){
@@ -123,8 +127,8 @@ export function oracleGraphVariants(reference,cfg){
   const completed=copyGraph(augmented),compact=copyGraph(completed,completed.edges.filter(e=>e.visible||needed.has(curveKey(e.curve.p))));
   return[
     {name:'exact-boundary-heuristic',graph:heuristic,oracle:'Visible boundary geometry and reference subdivision only'},
-    {name:'exact-boundary-plus-connectors',graph:completed,witness:referenceWitness(normalized,completed),maximumNormalizationMm,addedConnectors:added,oracle:'Exact visible boundaries/subdivision and known hidden connectors; heuristic decoys retained'},
-    {name:'exact-boundary-compact',graph:compact,witness:referenceWitness(normalized,compact),maximumNormalizationMm,addedConnectors:added,oracle:'Exact visible boundaries/subdivision and only known hidden connectors'},
+    {name:'exact-boundary-plus-connectors',graph:completed,witness:referenceWitness(normalized,completed),maximumNormalizationMm,referenceNormalization,addedConnectors:added,oracle:'Exact visible boundaries/subdivision and known hidden connectors; heuristic decoys retained'},
+    {name:'exact-boundary-compact',graph:compact,witness:referenceWitness(normalized,compact),maximumNormalizationMm,referenceNormalization,addedConnectors:added,oracle:'Exact visible boundaries/subdivision and only known hidden connectors'},
   ];
 }
 
@@ -171,13 +175,15 @@ export async function runGraphOracle({ids,output,seconds=3,repeats=1}){
         for(const variant of variants)if(variant.witness){
           variant.witnessValidation=validate(variant.witness,cfg);
           variant.witnessPaper=variant.witnessValidation.passed?materialAudit(variant.witness,cfg).summary:null;
+          variant.witnessImageError=error((await renderExportedWeave(solutionJSON(variant.witness),400)).mask);
         }
         for(let repeat=0;repeat<repeats;repeat++)for(let j=0;j<variants.length;j++){
-          const v=variants[(j+repeat)%variants.length],result={name:v.name,repeat,oracle:v.oracle,addedConnectors:v.addedConnectors,maximumReferenceNormalizationMm:v.maximumNormalizationMm};
+          const v=variants[(j+repeat)%variants.length],result={name:v.name,repeat,oracle:v.oracle,addedConnectors:v.addedConnectors,maximumReferenceNormalizationMm:v.maximumNormalizationMm,referenceNormalization:v.referenceNormalization};
           row.variants.push(result);
           if(v.buildError){result.status='graph_construction_failure';result.error=v.buildError;await save();continue;}
           if(v.witness){
-            result.witnessValidated=!!(v.witnessValidation.passed&&v.witnessPaper?.status==='pass');
+            result.witnessImageError=v.witnessImageError;
+            result.witnessValidated=!!(v.witnessValidation.passed&&v.witnessPaper?.status==='pass'&&v.witnessImageError<=.001);
             if(!result.witnessValidated){result.status='oracle_witness_failure';result.witnessValidation=v.witnessValidation;result.witnessPaper=v.witnessPaper;await save();continue;}
           }
           const graph=copyGraph(v.graph);result.graph=graph.metadata;

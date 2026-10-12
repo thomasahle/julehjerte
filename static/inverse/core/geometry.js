@@ -29,7 +29,19 @@ export function nodeCurves(curves,tol=.01){
     for(let it=0;it<20;it++){const diff=sub(curves[i].point(t),curves[j].point(s)),a=curves[i].derivative(t),b=curves[j].derivative(s),det=cross(a,b);if(distance(diff,[0,0])<1e-10||Math.abs(det)<1e-14)break;const dt=-cross(diff,b)/det,ds=-cross(diff,a)/det;t=clamp(t+dt);s=clamp(s+ds);}
     if(distance(curves[i].point(t),curves[j].point(s))<1e-6){cuts[i].push(t);cuts[j].push(s);}
   }
-  const unique=new Map();for(let i=0;i<curves.length;i++){const c=curves[i],vals=cuts[i].sort((a,b)=>a-b),merged=[0];for(const t of vals)if(distance(c.point(t),c.point(merged.at(-1)))>1e-5)merged.push(t);if(merged.at(-1)<1)merged[merged.length-1]=1;
+  const unique=new Map();for(let i=0;i<curves.length;i++){
+    const c=curves[i],vals=cuts[i].sort((a,b)=>a-b),merged=[0];
+    for(const t of vals){
+      const lo=merged.at(-1);if(t<=lo)continue;
+      if(distance(c.point(t),c.point(lo))>1e-5){merged.push(t);continue;}
+      // Nearby endpoints can enclose a real loop or cross a vertex-cell
+      // boundary. Merge only an arc whose entire control hull belongs to one
+      // graph vertex; endpoint distance alone discards the intervening shape.
+      const arc=c.subcurve(lo,t),key=keyPoint(arc.p[0]);
+      if(arc.p.some(p=>keyPoint(p)!==key))merged.push(t);
+    }
+    if(merged.length===1)continue;
+    if(merged.at(-1)<1)merged[merged.length-1]=1;
     for(let k=1;k<merged.length;k++){if(merged[k]-merged[k-1]<1e-10)continue;const cc=c.subcurve(merged[k-1],merged[k]),keys=[cc.p,cc.p.slice().reverse()].map(ps=>ps.map(p=>keyPoint(p,6)).join(';')),key=keys.sort()[0];if(unique.has(key))unique.delete(key);else unique.set(key,cc);}}
   return [...unique.values()];
 }
