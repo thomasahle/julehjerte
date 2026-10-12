@@ -42,6 +42,140 @@ can receive low-error template fits with a longer budget. That does not establis
 correct reconstruction of the photographed hearts; the full-pipeline evidence
 retains the source photographs, crops, masks and exported weaves separately.
 
+## Learned graph proposals: controlled experiment
+
+Before training a model, `scripts/inverse/experiments/graph-oracle.mjs` measures
+what better graph proposals could accomplish. It explicitly supplies privileged
+reference information to selected experimental variants. **These results are
+not blind reconstructions, a trained network, or new application success rates.**
+The normal browser engine is unchanged. The experiment and five regressions are
+committed in `e8bc579`; per-case outcomes, exclusions, timings, source hashes and
+export hashes are in [GRAPH-ORACLE-VALIDATION.json](GRAPH-ORACLE-VALIDATION.json).
+
+All 38 gallery identifiers were attempted. Twenty-four imported square
+references passed the existing geometry/paper checks and reproduced the gallery
+mask within 0.1%. Eleven references failed that eligibility gate and three have
+rectangular overlaps unsupported by this importer. They remain in the report;
+this does not establish that the published designs are impossible. Eligible
+cases use the same 400-pixel mask and a 100 mm overlap. Success requires the
+normal geometry and nominal paper checks plus at most 1% disagreement with an
+independent rendering of the exported curves.
+
+| Information available to the experiment | 1-second run | 3-second run, passes on all three repeats |
+| --- | ---: | ---: |
+| Raster tracing and sparse heuristic connectors | 8/24 | 9/24 |
+| Exact visible curves and reference vertices, heuristic connectors | 22/24 | 22/24 |
+| Same boundaries plus missing reference connectors | 23/24 | 23/24 |
+| Same boundaries with only reference connectors | 23/24 | 23/24 |
+
+This baseline is one trace strategy, not the application's automatic pipeline
+with direct fitting and retries. It uses the photographic simplification preset
+(including the 3 mm border stabilization band) on clean masks; it is not a tuned
+clean-artwork tracing baseline. Ordinary preprocessing and graph-construction
+improvements may recover part of the gap without learning. The oracle exposes reference subdivision and
+anchors that may be invisible in the image, so its gain cannot be attributed
+only to better tracing. The compact variant restricts connectors to one known
+valid routing, while leaving sheet ownership unknown to HiGHS. It is not a
+search over every possible valid pair. Repeat order rotates between variants.
+
+The five-point star isolates a candidate-generation defect. Both raster and
+exact-boundary heuristic graphs are exhausted. Two missing straight reference
+connections, 19.22 and 12.00 mm long, are within the neighbour budget but fail
+the connector clearance pre-filter. Tiny intervening boundary fragments make
+nearby edges appear nonincident: their endpoints are only 0.001042 and 0.01586 mm
+away. The complete reference routing passes the normal geometry and paper
+checks. Adding those two connectors produces a valid zero-mask-error result
+in a median 0.077 seconds; its preview is byte-identical to the independently
+rendered reference. An edge ranker cannot recover candidates removed before
+ranking. This is also an opportunity for a deterministic graph-construction fix.
+
+Pruning can help after coverage is correct. For `juletrae`, reducing 40 heuristic
+hidden candidates to the reference's zero reduces median solve time from
+0.435 to 0.042 seconds, at the same 0.095625% error. For `plus`, 90 to zero reduces
+0.756 to 0.051 seconds, at zero error. Those are paired three-repeat comparisons.
+Times include model construction and in-solver validation, but exclude graph
+preparation, solver startup and post-solve rendering: they are not browser
+click-to-ready times. Aggregate timings over differently successful case sets
+should not be treated as a speed comparison.
+
+The remaining eligible case, `squares`, is retained as a failed oracle witness.
+A 0.000004 mm visible fragment becomes two duplicate self-loops after the normal
+graph splitting and endpoint normalization; the embedded routing fails
+self-intersection and edge-parity checks. No tolerance or witness requirement
+was relaxed to make it pass. The experiments therefore expose representation
+issues as well as opportunities for learning.
+
+### Candidate learning tasks
+
+The following are proposals, not measured model performance:
+
+| Task | Suggested inputs and outputs | Role and limitation |
+| --- | --- | --- |
+| Boundary and junction prediction | Soft mask, uncertainty and gradients → boundary distance field, junction heatmaps, subpixel positions and tangents | Preserve lines, corners and small details while avoiding pixel staircases. Also needs an ordinary geometry baseline. |
+| Missing-connector proposals | Junction features, local image patches and graph context → endpoint pairs and a few straight/curved connection candidates | Addresses coverage. Hidden routes are not uniquely determined by the picture; offer alternatives. |
+| Candidate ranking | Generous geometric candidate pool → usefulness scores | Try a small high-recall graph first, then expand. Never permanently remove a route merely because its learned score is low. |
+| Local junction routing | Incident directions and nearby boundaries → likely continuations, crossings or shared spans | A compact classification problem; global parity/connectivity still belongs to the solver. |
+| Endpoint/count hypotheses | Smoothed border bands and interior features → distributions over endpoints and slit counts | Test a few plausible hypotheses jointly, instead of trusting each noisy outermost transition. |
+| Partial sheet assignment | Graph and image features → several uncertain A/B assignments | Let MILP finish each proposal, releasing fixed choices on failure. A/B exchange and path order must not create artificial training errors. |
+| Bézier initialization | Rectified mask → a few coarse template pairs | Existing optimization refines them. Predict shared spans as shared objects so refinement cannot split an invisible seam. |
+| Learned repair selection | Current candidate, residual image and validation defects → regions whose topology/curves should be reopened | Useful after a nearly correct fit; retain a valid incumbent and accept only checked improvements. |
+| Crop/mask uncertainty | Photo → corner alternatives, paper probabilities and uncertainty | Helps upstream failures. Graph learning alone cannot fix missing crops or incorrect classified targets. |
+
+Other directions worth comparing are retrieval of a small set of validated
+topologies followed by deformation; a motif grammar that separates a regular
+grid/frame from a central shape; and predicting two latent sheet-parity fields
+whose XOR reproduces the image. The last can use rendering supervision, but
+without ordered-cut and connectivity constraints the factorization admits many
+useless solutions. Learning internal branch-and-bound choices is another option,
+but requires more solver integration and cannot repair a graph that lacks any
+valid routing. These are lower-priority experiments than boundary/vertex
+prediction and candidate coverage, given the results above.
+
+A small CNN for image features plus a lightweight pair scorer is a practical
+first architecture to investigate. A GNN becomes useful if interactions among
+candidate edges defeat the pair scorer; a logistic or small MLP baseline should
+be measured first. Image-to-junction/segment proposals have precedent in
+[HAWP](https://arxiv.org/abs/2003.01663). Partial assignments followed by an exact
+solver are studied in [Neural Diving](https://arxiv.org/abs/2012.13349), and learned
+selection of variables to reopen is studied in
+[learned large-neighborhood search](https://arxiv.org/abs/2107.10201). These papers
+motivate designs; their reported gains do not transfer automatically to hearts.
+
+Training should start from varied, independently validated template pairs:
+render their weaves, then add blur, resampling, crop offsets, lighting and colour
+variation while retaining clean geometry labels. Include curved and angular
+motifs, shared cuts, unequal counts, and nearly ambiguous junctions. Generate
+new topologies as well as deformations; thousands of corruptions of a few
+hearts are not thousands of independent designs. Keep real photographs and
+entire motif families held out, grouping crops and all augmentations of a source
+in one split. Fine-tune photo processing only on reviewed real examples.
+
+Several template pairs may render the same motif. Do not label every connector
+absent from one reference as impossible. Use multiple valid routings where
+available, sheet-swap-invariant targets, rendering agreement and solver-validated
+alternatives. The useful metric is whether a small proposed graph contains a
+valid low-error pair, not exact recovery of an arbitrary reference's edge IDs.
+Measure that coverage, full-pipeline feature retention and editable legality,
+and time to a valid result including inference and model loading. Perturbation
+tests and the regular Hunodan speed/error gate remain required.
+
+The intended hybrid is: uncertain image/boundary proposals → small candidate
+graph → HiGHS routing → Bézier refinement → independent export validation.
+On failure, expand candidates or retry another topology using the original
+mask. Confidence guides search; it does not replace image, geometry or paper
+checks. Browser deployment could use ONNX Runtime Web, but model size, loading
+cost and WASM/WebGPU performance must be measured on target devices; its
+[documentation](https://onnxruntime.ai/docs/tutorials/web/ep-webgpu.html) recommends
+WASM for lightweight models and describes the CPU–GPU data transfers to account for.
+No model or runtime dependency was added by this experiment.
+
+Reproduce the gallery study with:
+
+```sh
+node scripts/inverse/experiments/graph-oracle.mjs --ids=all --seconds=3 --repeats=3 --output=tmp/graph-oracle-replay
+node --test --test-concurrency=1 scripts/inverse/graph-oracle.test.mjs
+```
+
 ## Historical integration notes
 
 The sections below record earlier releases and experiments. Their standalone-page controls, browser commands and deployment instructions refer to those releases.
