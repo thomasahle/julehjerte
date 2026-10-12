@@ -19,7 +19,7 @@ const hash=b=>createHash('sha256').update(b).digest('hex'),manifestBytes=await f
 if(manifest.status!=='complete')throw new Error('Require a complete intervention probe.');
 await fs.mkdir(path.dirname(output),{recursive:true});await fs.mkdir(output);
 const report={schema:'heart-photo-pipeline-1',status:'running',probe,probeManifestSha256:hash(manifestBytes),
-  scope:'Selected synthetic photographic failures; automatic crop with no ROI, hints, known template or manual edits. Unresolved crops remain failures. Source labels score the outputs but never enter detection or fitting.',
+  scope:(manifest.scope||'Selected synthetic photographic failures.')+' Automatic crop with no ROI, hints, known template or manual edits. Unresolved crops remain failures. Source labels score the outputs but never enter detection or fitting.',
   configuration:{...AUTOMATIC_PRESET,timeLimit:seconds,trials:0,resolution:384},sourceHashes:{},rows:[]};
 for(const file of ['scripts/inverse/learning/photo-pipeline.mjs','scripts/inverse/learning/photo-labels.mjs','scripts/inverse/export-renderer.mjs','scripts/inverse/datasets/synthetic-photo.mjs',...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator)\/.+\.js$/.test(p)).map(p=>`static/inverse/${p}`)])report.sourceHashes[file]=hash(await fs.readFile(file));
 const save=()=>fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
