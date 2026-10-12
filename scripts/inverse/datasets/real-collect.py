@@ -11,6 +11,7 @@ import html
 import io
 import json
 import re
+import random
 import time
 from collections import Counter
 from datetime import datetime, timezone
@@ -110,8 +111,9 @@ class Page(HTMLParser):
 
 
 class Fetcher:
-    def __init__(self, out, offline=False):
+    def __init__(self, out, offline=False, minimum_delay=.15, jitter=0):
         self.out, self.offline, self.robots, self.last = out, offline, {}, {}
+        self.minimum_delay, self.jitter = minimum_delay, jitter
         self.rate_limited_hosts = set()
         self.requests_file = out / 'requests.json'
         self.requests = json.loads(self.requests_file.read_text()) if self.requests_file.exists() else {}
@@ -151,7 +153,7 @@ class Fetcher:
                 self.robots[origin] = rp
             if not self.robots[origin].can_fetch(USER_AGENT, url):
                 raise PermissionError('Disallowed by robots.txt: ' + url)
-        time.sleep(max(0, .15 - (time.monotonic() - self.last.get(host, 0))))
+        time.sleep(max(0, self.minimum_delay + random.uniform(0, self.jitter) - (time.monotonic() - self.last.get(host, 0))))
         req = Request(url, headers={'User-Agent': USER_AGENT})
         try:
             with urlopen(req, timeout=25) as response:
@@ -164,7 +166,8 @@ class Fetcher:
             code = error.code if isinstance(error, HTTPError) else None
             if code == 429:
                 self.rate_limited_hosts.add(host)
-            self.requests[url] = {'url': url, 'retrievedAt': now(), 'error': str(error), 'httpStatus': code}
+            self.requests[url] = {'url': url, 'retrievedAt': now(), 'error': str(error), 'httpStatus': code,
+                                  'retryAfter': error.headers.get('Retry-After') if isinstance(error, HTTPError) and error.headers else None}
             save(self.requests_file, self.requests)
             raise
         finally:

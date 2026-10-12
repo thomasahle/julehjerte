@@ -1,6 +1,8 @@
 """Offline tests for collection identity and public-pin parsing (no network)."""
 import importlib.util
 import io
+import json
+import base64
 import tempfile
 import unittest
 from pathlib import Path
@@ -76,6 +78,27 @@ class CollectionTests(unittest.TestCase):
     def test_pin_source_links_parsed_without_executing_script(self):
         text='<script data-relay-completed-request="true">window.fn("ignored", {"data":{"link":"https://artist.example/hearts","images_orig":{"url":"https://i.pinimg.com/originals/x.jpg"}}});</script>'
         self.assertEqual(pinterest.source_links(text),['https://artist.example/hearts'])
+
+    def test_related_pin_requires_literal_link_or_typed_public_record(self):
+        record={'__typename':'Pin','id':base64.b64encode(b'Pin:456').decode(),'images_orig':{'url':'https://i.pinimg.com/originals/actual.jpg'}}
+        text='<script type="application/json">'+json.dumps({'pinId':'999','boardId':'888','main':record})+'</script><a href="/pin/123/">Main</a>'
+        records=pinterest.public_related_records(text,'https://dk.pinterest.com/pin/123/')
+        self.assertEqual(len(records),1)
+        self.assertEqual(records[0]['url'],'https://dk.pinterest.com/pin/456/')
+        self.assertEqual(records[0]['imageUrl'],'https://i.pinimg.com/originals/actual.jpg')
+        self.assertEqual(records[0]['parentPin'],'https://dk.pinterest.com/pin/123/')
+
+    def test_pin_resume_preserves_new_queries_and_related_parent_evidence(self):
+        row={'url':'https://dk.pinterest.com/pin/123/','queries':['old'],'pageSha256':'page-sha',
+             'publicRelatedPins':[{'url':'https://dk.pinterest.com/pin/456/','parentPin':'https://dk.pinterest.com/pin/123/'}]}
+        pinterest.merge_discovery(row,{'url':row['url'],'queries':['new'],'parentPin':'https://dk.pinterest.com/pin/789/'})
+        self.assertEqual(row['queries'],['new','old'])
+        self.assertEqual(len(row['discoveryPaths']),2)
+        queue=[];related=[]
+        pinterest.enqueue_related(row,0,2,queue,related)
+        self.assertEqual(queue[0]['parentPageSha256'],'page-sha')
+        self.assertEqual(queue[0]['depth'],1)
+        self.assertEqual(len(related),1)
 
 
 if __name__=='__main__':unittest.main()
