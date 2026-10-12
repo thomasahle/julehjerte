@@ -35,12 +35,20 @@ test('reusable detector leaves the upright fit unchanged and rotates fields with
   assert.throws(()=>detect(Infinity),/finite/);
 });
 
-for(const angle of [45,90,135,180,225,270,315])test(`automatic crop recovers a heart rotated ${angle} degrees`,()=>{
+for(const angle of [27,45,65,90,135,180,207,225,270,315])test(`automatic crop recovers a heart rotated ${angle} degrees`,()=>{
   const {input,quad}=turnedPhoto(angle),original=input.rgba.slice(),result=detectHeartCrops(input),candidate=result.candidates[0];
   assert.ok(candidate);assert.ok(error(candidate.quad,quad)<6);
   assert.deepEqual(candidate.provenance.sourceDimensions,[input.imageWidth,input.imageHeight]);
   assert.equal(candidate.outline.length,4);assert.ok(supportedCropOutline(candidate.locator));
   assert.deepEqual(input.rgba,original);
+});
+
+test('a rough selection keeps source coordinates when the selected heart is sideways',()=>{
+  const input=heartPhoto({width:720,hearts:[[190,80,85,75,-85,75],[600,160,-75,85,-75,-85]]}),roi=[410,25,665,290];
+  const result=detectHeartCrops(input,{roi}),candidate=result.candidates[0];
+  assert.ok(candidate);assert.ok(error(candidate.quad,[[600,160],[525,245],[450,160],[525,75]])<6);
+  assert.deepEqual(candidate.provenance.roughRegion,roi);
+  assert.deepEqual(candidate.provenance.sourceDimensions,[720,320]);
 });
 
 test('an unsupported paper lobe cannot certify an orientation',()=>{

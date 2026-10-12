@@ -19,6 +19,7 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
   onProgress({ stage: 'detecting' });
   const image = { width: input.imageWidth, height: input.imageHeight, data: input.rgba };
   const started = performance.now(), detectors = new Map(), attempts = [];
+  let orientationSearch = null;
   const detector = palette => {
     if (!detectors.has(palette)) detectors.set(palette, createMotifDetector(image, { roi, maxSize: 650, palette }));
     return detectors.get(palette);
@@ -47,20 +48,25 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
     // explains another pose. Shape fits finish synchronously, so check the
     // shared deadline between hypotheses rather than starting new ones.
     const deadline = performance.now() + 2000;
+    orientationSearch = { timeLimitMs: 2000, timeLimitReached: false, models: [], attempts };
     search: for (const palette of ['adaptive', 'pale', undefined, 'anchored']) {
-      const detect = detector(palette);
-      for (const degrees of detect.orientations()) {
-        if (performance.now() >= deadline) break search;
+      if (performance.now() >= deadline) { orientationSearch.timeLimitReached = true; break; }
+      const detect = detector(palette), angles = detect.orientations();
+      orientationSearch.models.push({ palette: palette || 'red-white', hypotheses: angles.length });
+      for (const degrees of angles) {
+        if (performance.now() >= deadline) { orientationSearch.timeLimitReached = true; break search; }
         const rotated = detect(degrees), supported = supportedCropOutline(rotated);
         attempts.push({ palette: palette || 'red-white', degrees, status: rotated.status, supported, score: rotated.score ?? null });
         if (supported) { proposal = rotated; break search; }
       }
     }
+    orientationSearch.selectedDegrees = proposal.evidence?.workingRotation?.degrees ?? null;
   }
   proposal.elapsedMs = performance.now() - started;
   return {
     status: proposal.status,
     reason: proposal.reason,
+    ...(orientationSearch ? { orientationSearch } : {}),
     candidates: proposal.quad ? [{
       quad: pixelCentresToEdges(proposal.quad),
       outline: proposal.outline.map(pixelCentresToEdges),
@@ -75,7 +81,7 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
         proposedPixelCentreCorners: proposal.quad,
         proposedPixelEdgeCorners: pixelCentresToEdges(proposal.quad),
         coordinateConvention: 'Pixel-edge coordinates for the inverse engine; locator coordinates + 0.5 pixels',
-        ...(attempts.length ? { orientationSearch: { attempts, selectedDegrees: proposal.evidence?.workingRotation?.degrees ?? 0 } } : {}),
+        ...(orientationSearch ? { orientationSearch } : {}),
       },
     }] : [],
   };
