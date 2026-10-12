@@ -138,3 +138,50 @@ starts after detection and source-thumbnail creation; it includes preparation,
 solving, validation, exports, independent replay and artifact writes. The
 ten-second solver allowance is not a click-to-ready promise. Browser timings use
 the page clock from the Find click until the editable result is ready.
+
+For the ten-second puppy run, solve and validation take **9.387 seconds**. The
+recorded post-detection total is **9.854 seconds**, and crop detection adds another
+**0.901 seconds**. Neither figure includes photograph decoding or source-thumbnail
+creation. These limits matter when comparing solver speed with the upload flow.
+
+## Browser and release verification
+
+All eight normal browser cases pass in Chromium and WebKit: the original puppy
+photograph through automatic crop detection, the frozen bird mask, the free-border
+hat with independent sheets, and the star example. Checks include real workers,
+editable conversion, source-feature retention, legal cuts, paper support and
+SVG/PDF downloads. The hat also checks that shared cuts survive conversion.
+
+| Case | Chromium Find-to-ready | WebKit Find-to-ready |
+| --- | ---: | ---: |
+| Puppy photograph | 18.68 s | 23.97 s |
+| Bird mask | 24.47 s | 26.83 s |
+| Free-border hat | 6.11 s | 6.26 s |
+| Star example | 1.91 s | 2.10 s |
+
+These use the application's normal 180-second maximum, not the ten-second
+benchmark setting. Crop selection happens before the Find click. The puppy's
+editable output has 1.19% disagreement in both browsers and retains a separate
+opening. Its full component overlap with the source opening is only 0.54–0.55,
+so this is improved feature retention, not exact shape recovery. The bird eye
+remains separate with component overlap of 0.86–0.91.
+
+Both additional Stop checks pass. A QA-only HTTP proxy pauses the compute worker
+immediately after its first qualifying finer-verified candidate; the user-facing
+Stop action retains that candidate, revalidates it and exports editable geometry.
+Stop-to-ready takes 3.49–3.92 seconds. The final opening remains separate, and the
+actual retained paper resolution is used by export and the independent re-audit.
+The proxy intervention is never included in the production build.
+
+`npm test` passes **854 application tests** (one existing skip) and **572 inverse
+tests**. `npm run check` has no errors and seven existing warnings; lint and the
+production build pass. An older budget test expected the original puppy to reach
+unsuccessful traced recovery. That fixture now succeeds earlier, so the regression
+uses the unresolved half-resolution perturbation to keep testing recovery-budget
+reservation. The corrected full suite was rerun successfully.
+
+The [machine-readable validation ledger](FEATURE-CHECKPOINT-VALIDATION.json)
+records per-case outcomes, unchanged inputs, source hashes, independent component
+measurements, rejected prototypes and artifact checksums. Scores measure agreement
+with classified photographs, not original cutting paths. Paper checks remain
+nominal geometric tests; these fitted hearts have not been physically assembled.
