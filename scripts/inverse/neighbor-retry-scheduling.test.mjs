@@ -53,3 +53,22 @@ test('neighbor expansion remains available after every ordinary boundary hypothe
   assert.ok(attempts.slice(first).every(a=>a.neighborExpansion&&a.initialAttempt<first&&a.solver?.termination==='candidate_graph_exhausted'));
   assert.deepEqual(source.mask,before);
 });
+
+test('a photographed boundary contradiction skips denser graphs but still tries another trace',async()=>{
+  const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-warped-checker-routing.json'));
+  const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
+  const photo=await readHardPhoto({...catalogue.source,...catalogue.cases.find(c=>c.id===fixture.sourceCase)});
+  assert.equal(photo.fileSha256,fixture.sourceFileSha256);assert.equal(photo.rgbaSha256,fixture.decodedPixelsSha256);
+  const cfg=settings({...AUTOMATIC_PRESET,timeLimit:3,trials:0}),prepared=prepare({...photo,quad:fixture.quad},cfg);
+  const input=hardPhotoTarget(prepared,'mask',cfg),source=input.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
+  const hash=b=>createHash('sha256').update(b).digest('hex');
+  assert.equal(hash(source.mask),fixture.maskSha256);
+  assert.equal(hash(new Uint8Array(source.probability.buffer,source.probability.byteOffset,source.probability.byteLength)),fixture.fittingProbabilitySha256);
+  const result=await recoverImageFeatures(input,cfg,3);
+  assert.equal(result.solution,null);assert.equal(result.refinementSeed,undefined);
+  assert.equal(result.report.seedSmoothingRetry,true,'A different trace can repair a contradiction that hidden connectors cannot.');
+  assert.deepEqual(result.report.attempts.map(a=>a.smoothRadius),[.3,.5]);
+  assert.ok(result.report.attempts.every(a=>a.solver?.connectorIndependentIssue?.type==='visible_edge_margin'));
+  assert.equal(result.report.deferredNeighborExpansions,0);
+  assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+});

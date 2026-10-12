@@ -84,3 +84,19 @@ test('exhaustion without any new connections does not repeat the same MILP',asyn
   await assert.rejects(solveBoundary(target,wide,{stopAfterValidated:true,onProgress:p=>{if(p.stage==='model')models++;}}),e=>e.report?.termination==='candidate_graph_exhausted'&&!e.report.neighborRetry);
   assert.equal(models,1);
 });
+
+test('extra connectors cannot repair a visible curve forbidden by both sheet margins',async()=>{
+  const {target}=fixture();let models=0;
+  target.curves.push(Cubic.line([1,10],[10,1]));
+  const initial=buildGraph({...target,curves:target.curves.slice()},cfg);
+  const expanded=buildGraph({...target,curves:target.curves.slice()},cfg,{unconnectedNeighbors:true});
+  assert.ok(expanded.metadata.hiddenCandidates>initial.metadata.hiddenCandidates,'There must be a larger pool to skip.');
+  await assert.rejects(solveBoundary(target,cfg,{stopAfterValidated:true,onProgress:p=>{if(p.stage==='model')models++;}}),error=>{
+    assert.equal(error.report.termination,'candidate_graph_exhausted');
+    assert.equal(error.report.connectorIndependentIssue?.type,'visible_edge_margin');
+    assert.deepEqual(error.report.connectorIndependentIssue?.clearancesMm,[1,1]);
+    assert.equal(error.report.neighborRetry,undefined);
+    return true;
+  });
+  assert.equal(models,1,'An already contradictory visible boundary cannot benefit from a second connector pool.');
+});

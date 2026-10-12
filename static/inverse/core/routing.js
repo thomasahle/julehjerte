@@ -1,6 +1,6 @@
 /** Preserve the small graph first; enlarge it only after proven exhaustion. */
 import {buildGraph} from './graph.js';
-import {solveGraph} from './solver.js';
+import {solveGraph,visibleMarginIssue} from './solver.js';
 
 export async function solveBoundary(target,cfg,{initialGraph=null,node=true,expandNeighbors=true,unconnectedNeighbors=false,announceGraph=true,...options}={}){
   const started=performance.now(),remaining=()=>cfg.timeLimit-(performance.now()-started)/1000;
@@ -12,7 +12,10 @@ export async function solveBoundary(target,cfg,{initialGraph=null,node=true,expa
   try{
     return await solveGraph(graph,{...cfg,timeLimit:Math.max(.001,remaining())},options);
   }catch(first){
-    if(!expandNeighbors||unconnectedNeighbors||first.report?.termination!=='candidate_graph_exhausted'||remaining()<.1)throw first;
+    if(first.report?.termination!=='candidate_graph_exhausted')throw first;
+    const issue=visibleMarginIssue(graph,cfg);
+    if(issue){first.report.connectorIndependentIssue=issue;throw first;}
+    if(!expandNeighbors||unconnectedNeighbors||remaining()<.1)throw first;
     let expanded;
     try{expanded=buildGraph(fresh(),cfg,{node,onProgress:options.onProgress,unconnectedNeighbors:true});}
     catch(error){first.report.neighborExpansionError=error.message;throw first;}

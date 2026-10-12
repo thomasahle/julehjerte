@@ -31,12 +31,27 @@ export function constrainTurnCost(model, variable, a, b, cost) {
 export function objectiveGap(objective, lower) {
   return Number.isFinite(lower) ? Math.max(0, (objective - lower) / Math.max(1e-12, Math.abs(objective))) : Infinity;
 }
+function sheetClearance(curve,axis,width){
+  return Math.min(...curve.p.map(p=>Math.min(p[axis],width-p[axis])));
+}
+/** The current segmentation may require a visible edge that neither sheet
+ * can use. More hidden connectors cannot change these two existing bounds.
+ * Another trace or boundary subdivision may still make the artwork routable.
+ */
+export function visibleMarginIssue(graph,cfg){
+  for(const [edge,item]of graph.edges.entries())if(item.visible){
+    const clearancesMm=[0,1].map(axis=>sheetClearance(item.curve,axis,graph.target.width));
+    if(clearancesMm.every(d=>d<cfg.nominalWidth))return{type:'visible_edge_margin',edge,clearancesMm,requiredMm:cfg.nominalWidth,
+      message:'A visible curve is forbidden on both sheets by the current control-hull margin bounds. Hidden connectors cannot repair this boundary segmentation.'};
+  }
+  return null;
+}
 export function formulate(graph,cfg,{onProgress=()=>{}}={}){
   const E=graph.edges.length,V=graph.points.length,w=graph.target.width,tol=cfg.geometryTolerance,endpoints=boundaryEndpoints(graph),m=new LinearModel(),x=[[],[]],z=[[],[]],flow=[[],[]],labels=[[],[]],lines=graph.edges.map(e=>e.curve.flatten(tol));
   const balance=graph.edges.map(edge=>{if(edge.visible)return 0;const on=p=>graph.guides?.some(g=>Math.abs(dot(p,g.normal)-g.offset)<2*tol),aligned=graph.guides?.some(g=>edge.curve.p.every(p=>Math.abs(dot(p,g.normal)-g.offset)<2*tol));let gridCost=(on(edge.curve.p[0])||on(edge.curve.p[3]))&&!aligned?cfg.gridPreference/2:0;let sum=0;for(const v of [edge.u,edge.v]){if(on(graph.points[v]))continue;const visible=graph.incident[v].filter(e=>graph.edges[e].visible);if(visible.length!==2)continue;const h=edge.u===v?edge.curve.tangent(0):mul(edge.curve.tangent(1),-1),angles=visible.map(e=>{const c=graph.edges[e];return angle(h,c.u===v?c.curve.tangent(0):mul(c.curve.tangent(1),-1));});sum+=((angles[0]-angles[1])/90)**2;}return gridCost+cfg.junctionBalancePenalty*sum/2;});
   for(const k of[0,1]){const K=endpoints[k].sources.length,M=Math.max(1,K),sources=new Set(endpoints[k].sources),sinks=new Set(endpoints[k].sinks);
     for(let v=0;v<V;v++)labels[k][v]=m.variable({hi:Math.max(0,K-1)});for(const verts of[endpoints[k].sources,endpoints[k].sinks])verts.forEach((v,i)=>{m.lb[labels[k][v]]=i;m.ub[labels[k][v]]=i;});
-    for(let e=0;e<E;e++){const edge=graph.edges[e],c=edge.curve,cost=balance[e]+c.length()+cfg.bendingPenalty*Math.min(c.bending(),1e4)+(edge.visible?0:cfg.connectorPenalty/2),axis=k===0?0:1,side=Math.min(...c.p.map(p=>Math.min(p[axis],w-p[axis])));x[k][e]=m.variable({cost,binary:true,hi:K>0&&side>=cfg.nominalWidth?1:0});z[k][e]=[];flow[k][e]=[];
+    for(let e=0;e<E;e++){const edge=graph.edges[e],c=edge.curve,cost=balance[e]+c.length()+cfg.bendingPenalty*Math.min(c.bending(),1e4)+(edge.visible?0:cfg.connectorPenalty/2),side=sheetClearance(c,k,w);x[k][e]=m.variable({cost,binary:true,hi:K>0&&side>=cfg.nominalWidth?1:0});z[k][e]=[];flow[k][e]=[];
       for(const d of[0,1]){z[k][e][d]=m.variable({binary:true});flow[k][e][d]=m.variable({hi:Math.max(1,V)});m.row([[flow[k][e][d],1],[z[k][e][d],-Math.max(1,V)]],-Infinity,0);}m.row([[z[k][e][0],1],[z[k][e][1],1],[x[k][e],-1]],0,0);
       for(const sign of[-1,1])m.row([[labels[k][edge.u],sign],[labels[k][edge.v],-sign],[x[k][e],M]],-Infinity,M);
     }

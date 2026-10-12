@@ -56,6 +56,8 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
           attempt.solver=solution.report;break;
         }catch(error){
           attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;
+          // This boundary needs a new trace, not more optional connections.
+          if(error.report?.connectorIndependentIssue)break;
           // The later ordinary graph covers this sparse proposal. Defer only
           // the final exhausted pool for each boundary interpretation.
           if(error.report?.termination==='candidate_graph_exhausted'&&(onlyChoice||i===graphChoices.length-1))deferred.push({target,graphCfg,initialAttempt:report.attempts.length-1});

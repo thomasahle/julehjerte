@@ -1,0 +1,27 @@
+{
+  "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
+  "sourceCase": "warped-checker",
+  "provenance": "Frozen automatic crop from the 7b7d17a replay. Its exhausted routing graphs contain a visible curve disabled on both sheets by the existing control-hull margin bounds. No template geometry enters reconstruction.",
+  "quad": [
+    [
+      998.2530765587323,
+      363.7238980735932
+    ],
+    [
+      1096.3865456915516,
+      461.96008142010237
+    ],
+    [
+      1002.2309362631387,
+      545.1738162267161
+    ],
+    [
+      895.5674576930575,
+      447.165395114315
+    ]
+  ],
+  "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+  "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+  "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+  "fittingProbabilitySha256": "6d30f7ef6bbd7c811440dbd2fdec7c590efbfefc2796da6c25583a61fe5ce6d8"
+}
