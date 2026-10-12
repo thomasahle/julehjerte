@@ -6,6 +6,7 @@ import {imageWeights,resizeObjective} from './image-objective.js';
 
 export function gridModel(counts,k=16,seed=0,initial=null){
   const normal=randomNormal(seed),offsets=[0,k*(counts[0]+1)],size=offsets[1]+k*(counts[1]+1);
+  if(initial&&initial.length!==size)throw new Error(`Grid initialization has ${initial.length} parameters; ${k} controls and ${counts.join('+')} cuts require ${size}.`);
   return{counts:[...counts],k,offsets,z:initial?Float64Array.from(initial):Float64Array.from({length:size},()=>normal()*.06)};
 }
 export function gridControls(model,floor=.008){

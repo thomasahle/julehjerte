@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {initializeGrid,separableGrid,borderGrid} from '../../static/inverse/core/direct/initialize.js';
-import {gridModel,gridMask} from '../../static/inverse/core/direct/grid.js';
+import {gridModel,gridMask,fitGrid} from '../../static/inverse/core/direct/grid.js';
 import {borderEvidence,initializeCounts} from '../../static/inverse/core/direct/counts.js';
 
 test('shared spline work preserves every initializer coordinate on unequal, noisy grids',()=>{
@@ -56,5 +56,23 @@ test('the default count search retains every hypothesis, phase and seed order',(
     assert.equal(seed.floor,prior.floor);
     assert.equal(seed.error,prior.error);
     assert.equal(seed.seedKind,prior.seedKind);
+  }
+});
+
+test('count initialization and continuation preserve a finer spline dimension',()=>{
+  const n=96,k=24,counts=[2,3],prob=Float64Array.from(gridMask(gridModel(counts,k,91),n,-1));
+  const options=[1,-1].map(phase=>({counts,phase})),weights=Float64Array.from(prob,v=>v?1:.25);
+  const context={options,fullProb:prob,resolution:n,prob,n,evidence:borderEvidence(prob,n),weights,fullWeights:weights,guideProb:prob};
+  const result=initializeCounts(context,{k}),baseline=initializeCounts(context,{k,sharedWork:false});
+  for(const [i,seed] of result.seeds.entries()){
+    assert.equal(seed.model.k,k);assert.deepEqual(seed.model,baseline.seeds[i].model);
+    assert.equal(seed.model.z.length,k*(counts[0]+counts[1]+2));assert.ok(Number.isFinite(seed.error));
+    const continued=fitGrid(prob,n,counts,seed.phase,{k,initial:seed.model.z,steps:0,floor:seed.floor});
+    assert.equal(continued.model.k,k);assert.deepEqual(continued.model.z,seed.model.z);
+    assert.deepEqual(gridMask(continued.model,n,seed.phase,seed.floor),gridMask(seed.model,n,seed.phase,seed.floor));
+    const fitted=fitGrid(prob,n,counts,seed.phase,{k,initial:seed.model.z,steps:2,floor:seed.floor});
+    assert.ok(fitted.model.z.every(Number.isFinite));assert.ok(fitted.error<=continued.error);
+    assert.throws(()=>fitGrid(prob,n,counts,seed.phase,{initial:seed.model.z,steps:1}),/Grid initialization has/,
+      'A forgotten spline dimension must fail explicitly instead of silently reinterpreting the parameters');
   }
 });
