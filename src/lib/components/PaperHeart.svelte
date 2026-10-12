@@ -400,6 +400,15 @@
 		return fingers.find((f) => f.id === id);
 	}
 
+	function getEditableFingerById(id: string): Finger | undefined {
+		const finger = getFingerById(id);
+		if (!finger) return undefined;
+		const index = boundaryIndexFromId(id);
+		// The first and last boundaries are placeholders for pulling in a new cut.
+		// They become editable only after that drag adds a replacement outer edge.
+		return index > 0 && index < boundaryCurveCount(gridSize, finger.lobe) - 1 ? finger : undefined;
+	}
+
 	function getDragBaseFinger(fingerId: string): Finger | null {
 		const base = dragSnapshot?.fingers.find((f) => f.id === fingerId);
 		return base ?? getFingerById(fingerId) ?? null;
@@ -1512,7 +1521,7 @@
 		if (readonly) return;
 		const fingerId = selectedFingerId;
 		if (!fingerId) return;
-		const finger = getFingerById(fingerId);
+		const finger = getEditableFingerById(fingerId);
 		if (!finger) return;
 
 		const before = snapshotState();
@@ -1570,7 +1579,7 @@
 		if (readonly) return;
 		if (!selectedFingerId) return;
 		if (selectedAnchors.length !== 2) return;
-		const finger = getFingerById(selectedFingerId);
+		const finger = getEditableFingerById(selectedFingerId);
 		if (!finger) return;
 		const segs = fingerToSegments(finger);
 		const a = selectedAnchors[0]!;
@@ -1591,7 +1600,7 @@
 	function insertNodeAtCurveHit(hitInfo: CurveHit) {
 		if (readonly) return;
 		const fingerId = hitInfo.fingerId;
-		const finger = getFingerById(fingerId);
+		const finger = getEditableFingerById(fingerId);
 		if (!finger) return;
 
 		const n = fingerToSegments(finger).length;
@@ -1711,7 +1720,7 @@
 		if (readonly) return;
 		const fingerId = selectedFingerId;
 		if (!fingerId) return;
-		const finger = getFingerById(fingerId);
+		const finger = getEditableFingerById(fingerId);
 		if (!finger) return;
 
 		const before = snapshotState();
@@ -1738,7 +1747,7 @@
 		if (readonly) return;
 		const fingerId = selectedFingerId;
 		if (!fingerId) return;
-		const finger = getFingerById(fingerId);
+		const finger = getEditableFingerById(fingerId);
 		if (!finger) return;
 
 		const before = snapshotState();
@@ -1793,7 +1802,7 @@
 		if (readonly) return;
 		const fingerId = selectedFingerId;
 		if (!fingerId) return;
-		const finger = getFingerById(fingerId);
+		const finger = getEditableFingerById(fingerId);
 		if (!finger) return;
 
 		const segs = cloneSegments(fingerToSegments(finger));
@@ -1864,7 +1873,7 @@
 		if (readonly) return;
 		const fingerId = selectedFingerId;
 		if (!fingerId) return;
-		const finger = getFingerById(fingerId);
+		const finger = getEditableFingerById(fingerId);
 		if (!finger) return;
 		const segCount = fingerToSegments(finger).length;
 		const targets = selectedAnchors.filter((idx) => idx >= 0 && idx <= segCount);
@@ -2315,6 +2324,13 @@
 		e.stopPropagation();
 		const p = localPointFromClient(e.clientX, e.clientY);
 		if (!p) return;
+		if (!getEditableFingerById(fingerId)) {
+			clearSelection();
+			selectedFingerId = fingerId;
+			lastFingerClickId = null;
+			beginDrag(e, { kind: 'path', fingerId });
+			return;
+		}
 		const now = performance.now();
 		if (
 			lastFingerClickId === fingerId &&
@@ -2373,7 +2389,7 @@
 	const HIT_STROKE_WIDTH = 14;
 
 	function handleAnchorPointerDown(e: PointerEvent, fingerId: string, anchorIdx: number) {
-		if (readonly) return;
+		if (readonly || !getEditableFingerById(fingerId)) return;
 		e.stopPropagation();
 		selectedFingerId = fingerId;
 		selectedSegments = [];
@@ -2392,7 +2408,7 @@
 		segmentIndex: number,
 		handle: 'p1' | 'p2'
 	) {
-		if (readonly) return;
+		if (readonly || !getEditableFingerById(fingerId)) return;
 		e.stopPropagation();
 		selectedFingerId = fingerId;
 		selectedSegments = [];
@@ -2843,7 +2859,7 @@
 		});
 
 	// UI derived
-	let selectedFinger = $derived(selectedFingerId ? getFingerById(selectedFingerId) : undefined);
+	let selectedFinger = $derived(selectedFingerId ? getEditableFingerById(selectedFingerId) : undefined);
 	let selectedSegCount = $derived(selectedFinger ? fingerToSegments(selectedFinger).length : 0);
 	let canInsertNode = $derived(selectedAnchors.length === 2 && Math.abs(selectedAnchors[0]! - selectedAnchors[1]!) === 1);
 	let canDeleteNode = $derived(selectedAnchors.some((idx) => idx >= 1 && idx <= selectedSegCount - 1));

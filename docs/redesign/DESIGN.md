@@ -301,6 +301,11 @@ issues, and contact. Add to the sitemap.
 
 ## 7. Editor (`/editor/`)
 
+The four outer boundary curves are handles for pulling in new cuts, not editable cuts themselves.
+Selecting them shows no anchor or control handles and enables no node or segment tools; double-clicking
+does not insert a node. Dragging the whole edge inward creates a real cut and restores the outer edge.
+That new cut supports normal editing, symmetry, undo and redo.
+
 Keep every existing tool (undo/redo, insert/delete node, corner/smooth/symmetric, straighten line/curve, …) as
 44px icon buttons with tooltips — nothing removed, no labels under icons. Apply the palette: page background,
 panels white with 1px `--line` and radius 12, section titles 12px uppercase `--muted`, green accents, red
