@@ -1,0 +1,824 @@
+{
+  "method": "Visually checked paired original-file thumbnails; these edges identify shared source-photo/composite content, not an assertion that all distinct photos are different motifs.",
+  "expansionConfirmedPairs": [
+    {
+      "a": "real-960a8d2c6b1123b1",
+      "b": "real-6338000308844af2",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.005412581699346405
+    },
+    {
+      "a": "real-9a2a6d6fdae42655",
+      "b": "real-435d9b64bd9bebc6",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.005009191176470589
+    },
+    {
+      "a": "real-32a7d5c332a2f426",
+      "b": "real-75db1198f4cd4fdf",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0007199754901960785
+    },
+    {
+      "a": "real-4cc2b77e50e1cbed",
+      "b": "real-a3b842df586a4082",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.006178513071895425
+    },
+    {
+      "a": "real-4cc2b77e50e1cbed",
+      "b": "real-ad0434f484ebf6f8",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0006178513071895425
+    },
+    {
+      "a": "real-0871c106cf029808",
+      "b": "real-d738f564a8ad8b40",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.00505514705882353
+    },
+    {
+      "a": "real-902bc6920f02f7d5",
+      "b": "real-de6a15fc125b0480",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.004998978758169934
+    },
+    {
+      "a": "real-1aa258b2d15f1f4a",
+      "b": "real-24a1cbc63d863851",
+      "dhashDistance": 8,
+      "meanThumbnailRgbError": 0.009180964052287582
+    },
+    {
+      "a": "real-1aa258b2d15f1f4a",
+      "b": "real-ae5bef18320bc117",
+      "dhashDistance": 8,
+      "meanThumbnailRgbError": 0.009288194444444444
+    },
+    {
+      "a": "real-948b9733b79c3fd9",
+      "b": "real-cecff305de6c5457",
+      "dhashDistance": 9,
+      "meanThumbnailRgbError": 0.0012408088235294117
+    },
+    {
+      "a": "real-7775ee2ff125ebab",
+      "b": "real-cecff305de6c5457",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.0006076388888888889
+    },
+    {
+      "a": "real-3e688a50ef76ead4",
+      "b": "real-2502cdec0720f4ea",
+      "dhashDistance": 15,
+      "meanThumbnailRgbError": 0.0009599673202614379
+    },
+    {
+      "a": "real-24e2ca8f45a29917",
+      "b": "real-ff4240f1f14d1573",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0003727532679738562
+    },
+    {
+      "a": "real-24e2ca8f45a29917",
+      "b": "real-7f06080553e19f72",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0003370098039215686
+    },
+    {
+      "a": "real-244e402c52bbed30",
+      "b": "real-5f35b1a308c9a7c7",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.00065359477124183
+    },
+    {
+      "a": "real-c9d8feafba346b53",
+      "b": "real-222ae136b9e71f2c",
+      "dhashDistance": 10,
+      "meanThumbnailRgbError": 0.0009191176470588235
+    },
+    {
+      "a": "real-68493a3e46089309",
+      "b": "real-b838e930409ee3ba",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.00029105392156862745
+    },
+    {
+      "a": "real-c0ad47a394836a36",
+      "b": "real-eb60ff94dfc6e2f8",
+      "dhashDistance": 15,
+      "meanThumbnailRgbError": 0.0009037990196078432
+    },
+    {
+      "a": "real-595a9a519300a129",
+      "b": "real-39387bb6fee13819",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0004136029411764706
+    },
+    {
+      "a": "real-166384f60ac6ab1b",
+      "b": "real-a00683bb6c6f39a5",
+      "dhashDistance": 11,
+      "meanThumbnailRgbError": 0.0009497549019607843
+    },
+    {
+      "a": "real-af7f2ccf71251dab",
+      "b": "real-7fce8bdf7db42599",
+      "dhashDistance": 9,
+      "meanThumbnailRgbError": 0.0006587009803921569
+    },
+    {
+      "a": "real-f411246440acd5de",
+      "b": "real-8913638b176b8279",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.00033190359477124184
+    },
+    {
+      "a": "real-01f90ff206285fe8",
+      "b": "real-e4edfd794b9fc721",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0004238153594771242
+    },
+    {
+      "a": "real-b6e54105b2f1c2a1",
+      "b": "real-90571d95a8d6c038",
+      "dhashDistance": 7,
+      "meanThumbnailRgbError": 0.000980392156862745
+    },
+    {
+      "a": "real-3d9558d1fa590589",
+      "b": "real-6be95e771be59614",
+      "dhashDistance": 9,
+      "meanThumbnailRgbError": 0.0009548611111111111
+    },
+    {
+      "a": "real-419aba77e1e140cd",
+      "b": "real-6256c06fa5b0d652",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0008118872549019608
+    },
+    {
+      "a": "real-a0381c8c238c4fcd",
+      "b": "real-51b0988ff747e95d",
+      "dhashDistance": 8,
+      "meanThumbnailRgbError": 0.000883374183006536
+    },
+    {
+      "a": "real-a0381c8c238c4fcd",
+      "b": "real-4a2401e5a44ffdf0",
+      "dhashDistance": 10,
+      "meanThumbnailRgbError": 0.000980392156862745
+    },
+    {
+      "a": "real-789b2b863caf286f",
+      "b": "real-fdfdd21df0175396",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0005310457516339869
+    },
+    {
+      "a": "real-ad9df6d604ca5f4d",
+      "b": "real-8c898cec838b574d",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.001005923202614379
+    },
+    {
+      "a": "real-a0970891e458479e",
+      "b": "real-bc5a1fcda2264672",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.000980392156862745
+    },
+    {
+      "a": "real-4f793697a43ff418",
+      "b": "real-c5f6dfec1d3a0b88",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.0007863562091503268
+    },
+    {
+      "a": "real-e98d1f8050b45736",
+      "b": "real-25f75dc14c004d4f",
+      "dhashDistance": 6,
+      "meanThumbnailRgbError": 0.0009650735294117647
+    },
+    {
+      "a": "real-ab26ee1b60ca6232",
+      "b": "real-97080d7b20cf402d",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0005923202614379085
+    },
+    {
+      "a": "real-f44cb051ef8d1954",
+      "b": "real-0982acb4dab4efa8",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.0004391339869281046
+    },
+    {
+      "a": "real-2c10050e5d215444",
+      "b": "real-b8ba303d67cb07a3",
+      "dhashDistance": 13,
+      "meanThumbnailRgbError": 0.0038398692810457514
+    },
+    {
+      "a": "real-2c10050e5d215444",
+      "b": "real-3b0a99c5d7eced26",
+      "dhashDistance": 13,
+      "meanThumbnailRgbError": 0.003201593137254902
+    },
+    {
+      "a": "real-07fdbff0a17da618",
+      "b": "real-4d8b522de7e49959",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.0009242238562091503
+    },
+    {
+      "a": "real-84125d6aad701fd6",
+      "b": "real-a35f09b2ea345c33",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0007710375816993464
+    },
+    {
+      "a": "real-bf0885c5188246b4",
+      "b": "real-a968692c8dd8f093",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0007608251633986928
+    },
+    {
+      "a": "real-da9633a6ed0ebb38",
+      "b": "real-cecff305de6c5457",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.0006076388888888889
+    },
+    {
+      "a": "real-0eea9506360f2de4",
+      "b": "real-e6d6c75ff7cfaaaa",
+      "dhashDistance": 16,
+      "meanThumbnailRgbError": 0.006260212418300654
+    },
+    {
+      "a": "real-ac8f68abd8e74a08",
+      "b": "real-daa7ef84717c4e68",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0054023692810457515
+    },
+    {
+      "a": "real-7c5d890d6641b64f",
+      "b": "real-0e9418ce51faaea6",
+      "dhashDistance": 15,
+      "meanThumbnailRgbError": 0.003880718954248366
+    },
+    {
+      "a": "real-0f3e8ed408ab8af8",
+      "b": "real-6c466839ca2ebaac",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0016748366013071894
+    },
+    {
+      "a": "real-ea9fe430bd0814f1",
+      "b": "real-e309ca2a1bdda7d6",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0007097630718954248
+    },
+    {
+      "a": "real-95e70312b230847d",
+      "b": "real-2448ab24ca1c609d",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.00012765522875816994
+    },
+    {
+      "a": "real-37f660dff26baeed",
+      "b": "real-dd762884326d08c9",
+      "dhashDistance": 5,
+      "meanThumbnailRgbError": 0.0009548611111111111
+    },
+    {
+      "a": "real-b1ac910ac7ce28be",
+      "b": "real-6371cd75bccbb741",
+      "dhashDistance": 13,
+      "meanThumbnailRgbError": 0.004074754901960785
+    },
+    {
+      "a": "real-dfa7e4b71b43aa86",
+      "b": "real-77308e2aaec2d07b",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.00416156045751634
+    },
+    {
+      "a": "real-a69a95d0e89344af",
+      "b": "real-d3f063052599e167",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.004023692810457516
+    },
+    {
+      "a": "real-202b8421f50252f2",
+      "b": "real-406c611213aafbb0",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0014961192810457517
+    },
+    {
+      "a": "real-202b8421f50252f2",
+      "b": "real-75077d57affeb008",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0005106209150326798
+    },
+    {
+      "a": "real-23512cb6f4f65f0c",
+      "b": "real-1031a761b9a31912",
+      "dhashDistance": 5,
+      "meanThumbnailRgbError": 0.0049683415032679736
+    },
+    {
+      "a": "real-931ac5ea86dbe082",
+      "b": "real-a96b58bb0d45cb5c",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.001159109477124183
+    },
+    {
+      "a": "real-68d8f25d8891df62",
+      "b": "real-b3c470391d3cf907",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0006280637254901961
+    },
+    {
+      "a": "real-039100dc78d455d3",
+      "b": "real-a35f09b2ea345c33",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0003114787581699346
+    },
+    {
+      "a": "real-24a1cbc63d863851",
+      "b": "real-ae5bef18320bc117",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0015676062091503269
+    },
+    {
+      "a": "real-003f2ae778894c59",
+      "b": "real-416060b3bd2c0031",
+      "dhashDistance": 8,
+      "meanThumbnailRgbError": 0.0006076388888888889
+    },
+    {
+      "a": "real-3b93f826d20af475",
+      "b": "real-43d7a8a786cd73d1",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.0009957107843137254
+    },
+    {
+      "a": "real-9b28db6ab35ef3f5",
+      "b": "real-09409d7763d0a1d5",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0012203839869281046
+    },
+    {
+      "a": "real-b8ba303d67cb07a3",
+      "b": "real-3b0a99c5d7eced26",
+      "dhashDistance": 6,
+      "meanThumbnailRgbError": 0.0010671977124183005
+    },
+    {
+      "a": "real-193d3f51d7e88264",
+      "b": "real-1c04d01708859b11",
+      "dhashDistance": 9,
+      "meanThumbnailRgbError": 0.0007097630718954248
+    },
+    {
+      "a": "real-2c9395fc67c25a6d",
+      "b": "real-148e1e1ad0185b13",
+      "dhashDistance": 10,
+      "meanThumbnailRgbError": 0.0019199346405228757
+    },
+    {
+      "a": "real-a3b842df586a4082",
+      "b": "real-ad0434f484ebf6f8",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.00558108660130719
+    },
+    {
+      "a": "real-ff4240f1f14d1573",
+      "b": "real-7f06080553e19f72",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0001787173202614379
+    },
+    {
+      "a": "real-eac020a5d3632fbe",
+      "b": "real-c35c65105c12f76e",
+      "dhashDistance": 11,
+      "meanThumbnailRgbError": 0.005953839869281045
+    },
+    {
+      "a": "real-406c611213aafbb0",
+      "b": "real-75077d57affeb008",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0014961192810457517
+    },
+    {
+      "a": "real-51b0988ff747e95d",
+      "b": "real-4a2401e5a44ffdf0",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.0003829656862745098
+    },
+    {
+      "a": "real-5f5b5e210b9fc9b4",
+      "b": "real-e66de65d01214dc5",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.000980392156862745
+    },
+    {
+      "a": "real-5f5b5e210b9fc9b4",
+      "b": "real-35b815ac1607f33e",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.0007352941176470588
+    },
+    {
+      "a": "real-e66de65d01214dc5",
+      "b": "real-35b815ac1607f33e",
+      "dhashDistance": 6,
+      "meanThumbnailRgbError": 0.0008169934640522876
+    },
+    {
+      "a": "real-44f16928dc0c9e15",
+      "b": "real-7c27cf6d1500b5b5",
+      "dhashDistance": 6,
+      "meanThumbnailRgbError": 0.0012510212418300653
+    },
+    {
+      "a": "real-6599bf9afb0a05e2",
+      "b": "real-f26466c3afb3c5f7",
+      "dhashDistance": 12,
+      "meanThumbnailRgbError": 0.004473039215686274
+    },
+    {
+      "a": "real-6599bf9afb0a05e2",
+      "b": "real-9cea22df8118056d",
+      "dhashDistance": 8,
+      "meanThumbnailRgbError": 0.0008272058823529412
+    },
+    {
+      "a": "real-3346ede51fb9b467",
+      "b": "real-2af80a66db41e306",
+      "dhashDistance": 15,
+      "meanThumbnailRgbError": 0.006326593137254902
+    },
+    {
+      "a": "real-8cff68865816d9f3",
+      "b": "real-19e88a55e6eeaca8",
+      "dhashDistance": 5,
+      "meanThumbnailRgbError": 0.0019250408496732027
+    },
+    {
+      "a": "real-f26466c3afb3c5f7",
+      "b": "real-9cea22df8118056d",
+      "dhashDistance": 12,
+      "meanThumbnailRgbError": 0.0036458333333333334
+    },
+    {
+      "a": "real-2502cdec0720f4ea",
+      "b": "real-9f02d4edc7e68398",
+      "dhashDistance": 6,
+      "meanThumbnailRgbError": 0.00027573529411764705
+    },
+    {
+      "a": "real-3934a53b839a3fb1",
+      "b": "real-493199c831737b5b",
+      "dhashDistance": 9,
+      "meanThumbnailRgbError": 0.0038092320261437908
+    },
+    {
+      "a": "real-d8d847cf07f2fc4c",
+      "b": "real-caf94851327096b8",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 2.0424836601307188e-05
+    },
+    {
+      "a": "real-298e43cf1e27aac7",
+      "b": "real-22fe64177cee4718",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0007965686274509804
+    },
+    {
+      "a": "real-6603c4c02f4c45d0",
+      "b": "real-9abcfa9f8d5925cc",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.00013276143790849672
+    },
+    {
+      "a": "real-03bb71e121076620",
+      "b": "real-4c3ea5a027ce8142",
+      "dhashDistance": 9,
+      "meanThumbnailRgbError": 0.0008476307189542484
+    },
+    {
+      "a": "real-ee1fef56037b0e40",
+      "b": "real-fcbcc23efea92b93",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0010774101307189543
+    },
+    {
+      "a": "real-ee1fef56037b0e40",
+      "b": "real-4ac11f8df948f1ba",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.0003421160130718954
+    },
+    {
+      "a": "real-595a9a519300a129",
+      "b": "real-16aacf570fb434b4",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.001312295751633987
+    },
+    {
+      "a": "real-930a184bd227f588",
+      "b": "real-248c0093f1a08d05",
+      "dhashDistance": 6,
+      "meanThumbnailRgbError": 0.0005770016339869281
+    },
+    {
+      "a": "real-37a7e9639bd98518",
+      "b": "real-9e792000cb92ef12",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.0005821078431372549
+    },
+    {
+      "a": "real-3811c51258ad133a",
+      "b": "real-7f271d24c0fff6cc",
+      "dhashDistance": 16,
+      "meanThumbnailRgbError": 0.001011029411764706
+    },
+    {
+      "a": "real-f24df29c4af5c31d",
+      "b": "real-45ad148d9ec045be",
+      "dhashDistance": 9,
+      "meanThumbnailRgbError": 0.0011182598039215686
+    },
+    {
+      "a": "real-2989bd9c8b3da345",
+      "b": "real-7af8118b33b4c9bc",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.00043402777777777775
+    },
+    {
+      "a": "real-2989bd9c8b3da345",
+      "b": "real-dc237f0bfa87d00c",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.00044934640522875815
+    },
+    {
+      "a": "real-c8a692b1d8a1886b",
+      "b": "real-455ba30ae8f1b089",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.000934436274509804
+    },
+    {
+      "a": "real-f6436a28a5dd5389",
+      "b": "real-5de4284671214757",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.0006638071895424837
+    },
+    {
+      "a": "real-94264cab2acc3077",
+      "b": "real-dd92e949699b8f77",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0013225081699346406
+    },
+    {
+      "a": "real-98f81232246fbe1b",
+      "b": "real-4adf76e184612299",
+      "dhashDistance": 5,
+      "meanThumbnailRgbError": 0.0006689133986928105
+    },
+    {
+      "a": "real-d15bb3f44028c7c9",
+      "b": "real-e0daa1ecef842ec3",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.0011131535947712418
+    },
+    {
+      "a": "real-296731914436783e",
+      "b": "real-e9600478525b9218",
+      "dhashDistance": 7,
+      "meanThumbnailRgbError": 0.0007097630718954248
+    },
+    {
+      "a": "real-296731914436783e",
+      "b": "real-d418c93a07bd4ea0",
+      "dhashDistance": 7,
+      "meanThumbnailRgbError": 0.0010161356209150328
+    },
+    {
+      "a": "real-71a290452cfd00c8",
+      "b": "real-2694dd4fe8ff1230",
+      "dhashDistance": 5,
+      "meanThumbnailRgbError": 0.0029871323529411763
+    },
+    {
+      "a": "real-4a482742ecc28484",
+      "b": "real-b7db4cb85e258c97",
+      "dhashDistance": 5,
+      "meanThumbnailRgbError": 0.0007506127450980393
+    },
+    {
+      "a": "real-9a88a2ce27e40b16",
+      "b": "real-41b7c3e0b79f1265",
+      "dhashDistance": 5,
+      "meanThumbnailRgbError": 0.003967524509803921
+    },
+    {
+      "a": "real-ac8f68abd8e74a08",
+      "b": "real-c92993580ebfeb4b",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.00548406862745098
+    },
+    {
+      "a": "real-e0f461391b5a2045",
+      "b": "real-f5907a48aa32692e",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.00034722222222222224
+    },
+    {
+      "a": "real-09d262f320d669ab",
+      "b": "real-fcdd225ecb323763",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0001480800653594771
+    },
+    {
+      "a": "real-1db272762714e67c",
+      "b": "real-1a58d86fe8f91cdd",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0021752450980392158
+    },
+    {
+      "a": "real-50aeac7c2242db50",
+      "b": "real-2f9a61b59d2df6ac",
+      "dhashDistance": 6,
+      "meanThumbnailRgbError": 0.003962418300653595
+    },
+    {
+      "a": "real-254ce19337cbd897",
+      "b": "real-03bf997e482bdba7",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0005004084967320261
+    },
+    {
+      "a": "real-1a7cfc6be8b164b5",
+      "b": "real-7465353dcfcca3b4",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.004207516339869281
+    },
+    {
+      "a": "real-702942779385436c",
+      "b": "real-146aa89cba13c6b5",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0041921977124183005
+    },
+    {
+      "a": "real-564a039e27aae41a",
+      "b": "real-b5317080eec610dc",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.0041462418300653595
+    },
+    {
+      "a": "real-94d662fe74e85011",
+      "b": "real-786047907b47ae64",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.005570874183006536
+    },
+    {
+      "a": "real-ee16e831a16f39e3",
+      "b": "real-5a0cd01adbc155a3",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.005627042483660131
+    },
+    {
+      "a": "real-4959a2aac579ad3c",
+      "b": "real-eb7f1c99733e287e",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0009497549019607843
+    },
+    {
+      "a": "real-daa7ef84717c4e68",
+      "b": "real-c92993580ebfeb4b",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0006638071895424837
+    },
+    {
+      "a": "real-39387bb6fee13819",
+      "b": "real-16aacf570fb434b4",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.001011029411764706
+    },
+    {
+      "a": "real-fcbcc23efea92b93",
+      "b": "real-4ac11f8df948f1ba",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0009906045751633986
+    },
+    {
+      "a": "real-cbd96cdd5aeec59f",
+      "b": "real-a2a36d4ceec82039",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0007965686274509804
+    },
+    {
+      "a": "real-cbd96cdd5aeec59f",
+      "b": "real-7fd1f8d76f0724da",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.0
+    },
+    {
+      "a": "real-cbd96cdd5aeec59f",
+      "b": "real-8263c16fc1ed0070",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.001409313725490196
+    },
+    {
+      "a": "real-a2a36d4ceec82039",
+      "b": "real-7fd1f8d76f0724da",
+      "dhashDistance": 1,
+      "meanThumbnailRgbError": 0.0007965686274509804
+    },
+    {
+      "a": "real-a2a36d4ceec82039",
+      "b": "real-8263c16fc1ed0070",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0013276143790849674
+    },
+    {
+      "a": "real-7fd1f8d76f0724da",
+      "b": "real-8263c16fc1ed0070",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.001409313725490196
+    },
+    {
+      "a": "real-c7444331bcc9115c",
+      "b": "real-ea928ed12a13fa03",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.001358251633986928
+    },
+    {
+      "a": "real-e9600478525b9218",
+      "b": "real-d418c93a07bd4ea0",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.00031658496732026145
+    },
+    {
+      "a": "real-b9eb5b1cec90ee4f",
+      "b": "real-9f7e5dc4ca5593af",
+      "dhashDistance": 6,
+      "meanThumbnailRgbError": 0.0004136029411764706
+    },
+    {
+      "a": "real-c2b4b2a2dc381659",
+      "b": "real-32a532730ce24b19",
+      "dhashDistance": 10,
+      "meanThumbnailRgbError": 0.0016135620915032679
+    },
+    {
+      "a": "real-3a89de4eae04a025",
+      "b": "real-0d51442459c3d4c9",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.0010927287581699347
+    },
+    {
+      "a": "real-ce4ebe6f8aae2577",
+      "b": "real-1b93b6f011e0cdfd",
+      "dhashDistance": 2,
+      "meanThumbnailRgbError": 0.001210171568627451
+    },
+    {
+      "a": "real-592223f36bcf2c87",
+      "b": "real-7e2c5568d27c2860",
+      "dhashDistance": 5,
+      "meanThumbnailRgbError": 0.001031454248366013
+    },
+    {
+      "a": "real-cdeca454740bf54c",
+      "b": "real-b71eab334c0050f3",
+      "dhashDistance": 3,
+      "meanThumbnailRgbError": 0.0006127450980392157
+    },
+    {
+      "a": "real-af21a4ef38355dfa",
+      "b": "real-0eb4a193bbb474ba",
+      "dhashDistance": 4,
+      "meanThumbnailRgbError": 0.004166666666666667
+    },
+    {
+      "a": "real-7af8118b33b4c9bc",
+      "b": "real-dc237f0bfa87d00c",
+      "dhashDistance": 0,
+      "meanThumbnailRgbError": 0.00011744281045751634
+    },
+    {
+      "a": "real-99d2af6fb071519a",
+      "b": "real-c7d6b1cf842c7054",
+      "reviewReason": "Visual match of a cropped/resized version of the same source photograph; aspect ratios may differ."
+    },
+    {
+      "a": "real-debdf749b044c07a",
+      "b": "real-3934a53b839a3fb1",
+      "reviewReason": "Visual match of the same product/template composite."
+    },
+    {
+      "a": "real-debdf749b044c07a",
+      "b": "real-493199c831737b5b",
+      "reviewReason": "Visual match of the same product/template composite."
+    }
+  ]
+}

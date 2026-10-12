@@ -1,4 +1,6 @@
-# Real heart photograph collection
+# Real heart photograph collection — initial snapshot
+
+This page records the initial collection at commit `ade443a`. The larger Pinterest follow-up is documented in [the expansion report](real-pinterest-expansion.md); `real-manifest.json`, `real-validation.json` and the local gallery now describe that merged inventory. The initial manifest and audit remain preserved in Git and under `tmp/heart-training-real/snapshots/initial-ade443a/`.
 
 The first collection contains **397 visually reviewed source files showing assembled paper hearts**, representing **345 reviewed near-duplicate groups**. These are not 345 independent motifs: different photographs of the same design remain useful photographic observations, and motif-family annotation is still pending. The files include 29 composites combining photographs and cutting templates, 57 multiple-heart scenes and eight photographic collages. Individual heart instances have not been counted or annotated.
 

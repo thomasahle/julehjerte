@@ -117,7 +117,8 @@
   "real-32a7d5c332a2f426": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-32a7d5c332a2f426"
   },
   "real-c5d2c4465ca58e36": {
     "kind": "mixed-photo-template",
@@ -142,7 +143,8 @@
   "real-4cc2b77e50e1cbed": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-4cc2b77e50e1cbed"
   },
   "real-b5a247ab3a19ac71": {
     "kind": "mixed-photo-template",
@@ -192,7 +194,8 @@
   "real-0871c106cf029808": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-0871c106cf029808"
   },
   "real-d1861c472ab65dab": {
     "kind": "mixed-photo-template",
@@ -212,7 +215,8 @@
   "real-902bc6920f02f7d5": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-902bc6920f02f7d5"
   },
   "real-64a728a6b94dce08": {
     "kind": "mixed-photo-template",
@@ -294,7 +298,8 @@
   "real-1aa258b2d15f1f4a": {
     "kind": "photo-collage",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-1aa258b2d15f1f4a"
   },
   "real-80a705792f8bd691": {
     "kind": "photo",
@@ -352,7 +357,8 @@
   "real-3e688a50ef76ead4": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-3e688a50ef76ead4"
   },
   "real-d54ec64b0457f3c6": {
     "kind": "photo",
@@ -399,12 +405,14 @@
   "real-03bb71e121076620": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-03bb71e121076620"
   },
   "real-24e2ca8f45a29917": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-24e2ca8f45a29917"
   },
   "real-ce66f9634c2c613b": {
     "kind": "photo",
@@ -443,17 +451,20 @@
   "real-244e402c52bbed30": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-244e402c52bbed30"
   },
   "real-ee1fef56037b0e40": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-ee1fef56037b0e40"
   },
   "real-c9d8feafba346b53": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-c9d8feafba346b53"
   },
   "real-8a7a88483c5173aa": {
     "kind": "photo",
@@ -463,7 +474,8 @@
   "real-68493a3e46089309": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-68493a3e46089309"
   },
   "real-1ec8546a47a099fd": {
     "kind": "photo",
@@ -473,7 +485,8 @@
   "real-c0ad47a394836a36": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-c0ad47a394836a36"
   },
   "real-d398688392864ff9": {
     "kind": "photo",
@@ -488,7 +501,8 @@
   "real-595a9a519300a129": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-595a9a519300a129"
   },
   "real-15a419338c8bc59f": {
     "kind": "photo",
@@ -528,7 +542,8 @@
   "real-930a184bd227f588": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-930a184bd227f588"
   },
   "real-50a45ceb62bf9930": {
     "kind": "photo",
@@ -564,7 +579,8 @@
   "real-166384f60ac6ab1b": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-166384f60ac6ab1b"
   },
   "real-1859a05e6bd4b785": {
     "kind": "photo",
@@ -589,7 +605,8 @@
   "real-37a7e9639bd98518": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-37a7e9639bd98518"
   },
   "real-62c08ae913493d5e": {
     "kind": "photo",
@@ -599,7 +616,8 @@
   "real-3811c51258ad133a": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-3811c51258ad133a"
   },
   "real-05883d5bff86b6a0": {
     "kind": "photo",
@@ -659,7 +677,8 @@
   "real-af7f2ccf71251dab": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-af7f2ccf71251dab"
   },
   "real-0f157ff3706a4810": {
     "kind": "photo",
@@ -674,7 +693,8 @@
   "real-f411246440acd5de": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-f411246440acd5de"
   },
   "real-14344b2a2d6587ca": {
     "kind": "photo",
@@ -684,7 +704,8 @@
   "real-01f90ff206285fe8": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-01f90ff206285fe8"
   },
   "real-de3d10d1519b97cd": {
     "kind": "photo",
@@ -709,7 +730,8 @@
   "real-b6e54105b2f1c2a1": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-b6e54105b2f1c2a1"
   },
   "real-a7242ab79d00542c": {
     "kind": "photo",
@@ -724,12 +746,14 @@
   "real-3d9558d1fa590589": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-3d9558d1fa590589"
   },
   "real-419aba77e1e140cd": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-419aba77e1e140cd"
   },
   "real-d99dfd2f1acf8e10": {
     "kind": "photo",
@@ -744,7 +768,8 @@
   "real-a0381c8c238c4fcd": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-a0381c8c238c4fcd"
   },
   "real-8b91ecf546833a3f": {
     "kind": "photo",
@@ -769,12 +794,14 @@
   "real-789b2b863caf286f": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-789b2b863caf286f"
   },
   "real-f24df29c4af5c31d": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-f24df29c4af5c31d"
   },
   "real-b70d3839a8dc1940": {
     "kind": "photo",
@@ -784,7 +811,8 @@
   "real-2989bd9c8b3da345": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-2989bd9c8b3da345"
   },
   "real-bab61895d8f1628f": {
     "kind": "template-render",
@@ -804,7 +832,8 @@
   "real-ad9df6d604ca5f4d": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-ad9df6d604ca5f4d"
   },
   "real-b9b62ff4dd6b3f12": {
     "kind": "template-render",
@@ -824,7 +853,8 @@
   "real-c8a692b1d8a1886b": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-c8a692b1d8a1886b"
   },
   "real-f2e6049e004bd456": {
     "kind": "template-render",
@@ -834,7 +864,8 @@
   "real-a0970891e458479e": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-a0970891e458479e"
   },
   "real-7f9415c8f16e07c4": {
     "kind": "template-render",
@@ -844,12 +875,14 @@
   "real-4f793697a43ff418": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-4f793697a43ff418"
   },
   "real-e98d1f8050b45736": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-e98d1f8050b45736"
   },
   "real-85d386bdc4866c37": {
     "kind": "template-render",
@@ -870,7 +903,8 @@
   "real-f6436a28a5dd5389": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-f6436a28a5dd5389"
   },
   "real-2e58e0dbf4a0b0af": {
     "kind": "template-render",
@@ -891,7 +925,8 @@
   "real-94264cab2acc3077": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-94264cab2acc3077"
   },
   "real-3fe69d77e4344b21": {
     "kind": "template-render",
@@ -901,7 +936,8 @@
   "real-98f81232246fbe1b": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-98f81232246fbe1b"
   },
   "real-9186b7d28dfd46f7": {
     "kind": "template-render",
@@ -926,12 +962,14 @@
   "real-ab26ee1b60ca6232": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-ab26ee1b60ca6232"
   },
   "real-f44cb051ef8d1954": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-f44cb051ef8d1954"
   },
   "real-bad8ede0b27056d7": {
     "kind": "template-render",
@@ -986,7 +1024,8 @@
   "real-d15bb3f44028c7c9": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-d15bb3f44028c7c9"
   },
   "real-5d4ce39749eb0d54": {
     "kind": "template-render",
@@ -996,7 +1035,8 @@
   "real-2c10050e5d215444": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-2c10050e5d215444"
   },
   "real-026d7fe0fbe15fa2": {
     "kind": "template-render",
@@ -1046,7 +1086,8 @@
   "real-07fdbff0a17da618": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-07fdbff0a17da618"
   },
   "real-337081d2c9cee8e0": {
     "kind": "template-render",
@@ -1061,7 +1102,8 @@
   "real-84125d6aad701fd6": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-039100dc78d455d3"
   },
   "real-14be8f4d3c0b1fa5": {
     "kind": "template-render",
@@ -1097,7 +1139,8 @@
   "real-296731914436783e": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-296731914436783e"
   },
   "real-40bbd38e213d7675": {
     "kind": "template-render",
@@ -1153,7 +1196,8 @@
   "real-bf0885c5188246b4": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "nearDuplicateGroup": "real-bf0885c5188246b4"
   },
   "real-15939d3c175588e6": {
     "kind": "template-render",
@@ -1272,7 +1316,8 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-71a290452cfd00c8"
   },
   "real-11a80a5dfdda3c84": {
     "kind": "template-render",
@@ -1345,7 +1390,8 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-4a482742ecc28484"
   },
   "real-b115722089acde95": {
     "kind": "template-render",
@@ -2563,7 +2609,8 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-0eea9506360f2de4"
   },
   "real-2d07904c55d76cf2": {
     "kind": "template-render",
@@ -2695,7 +2742,8 @@
     "kind": "photo-process",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-ac8f68abd8e74a08"
   },
   "real-e23411cec94d318a": {
     "kind": "photo-process",
@@ -2744,13 +2792,15 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-7c5d890d6641b64f"
   },
   "real-e0f461391b5a2045": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-e0f461391b5a2045"
   },
   "real-de7e62aae42eed8e": {
     "kind": "photo-process",
@@ -2869,19 +2919,22 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-1db272762714e67c"
   },
   "real-50aeac7c2242db50": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-50aeac7c2242db50"
   },
   "real-254ce19337cbd897": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-254ce19337cbd897"
   },
   "real-d505efb2876b532f": {
     "kind": "photo-process",
@@ -2959,43 +3012,50 @@
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-1a7cfc6be8b164b5"
   },
   "real-702942779385436c": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-702942779385436c"
   },
   "real-564a039e27aae41a": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-564a039e27aae41a"
   },
   "real-0f3e8ed408ab8af8": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-0f3e8ed408ab8af8"
   },
   "real-ea9fe430bd0814f1": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-ea9fe430bd0814f1"
   },
   "real-95e70312b230847d": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-95e70312b230847d"
   },
   "real-37f660dff26baeed": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-37f660dff26baeed"
   },
   "real-3ffccdaebd18ef38": {
     "kind": "photo-process",
@@ -3007,13 +3067,15 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-b1ac910ac7ce28be"
   },
   "real-94d662fe74e85011": {
     "kind": "photo-process",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-94d662fe74e85011"
   },
   "real-71bb39ebf3e84a40": {
     "kind": "photo-process",
@@ -3025,7 +3087,8 @@
     "kind": "photo-process",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-ee16e831a16f39e3"
   },
   "real-e41962e12b384764": {
     "kind": "photo-process",
@@ -3912,7 +3975,8 @@
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-202b8421f50252f2"
   },
   "real-c2eaff0dda61b372": {
     "kind": "photo-other-material",
@@ -3960,7 +4024,8 @@
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
     "tags": [
       "felt-or-crochet"
-    ]
+    ],
+    "nearDuplicateGroup": "real-23512cb6f4f65f0c"
   },
   "real-eeaf37d2a40af624": {
     "kind": "template-render",
@@ -4008,7 +4073,8 @@
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-931ac5ea86dbe082"
   },
   "real-27c86e56296f2df5": {
     "kind": "photo",
@@ -4032,7 +4098,8 @@
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-68d8f25d8891df62"
   },
   "real-ff14bc0c1e9ee8c3": {
     "kind": "mixed-photo-template",
@@ -4086,7 +4153,8 @@
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-039100dc78d455d3"
   },
   "real-8621f1cd8d96e80f": {
     "kind": "photo-process",
@@ -4143,7 +4211,8 @@
     "kind": "photo-multiple",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "nearDuplicateGroup": "real-4959a2aac579ad3c"
   },
   "real-0982988df803ea58": {
     "kind": "photo-collage",
@@ -4311,12 +4380,14 @@
   "real-6338000308844af2": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-960a8d2c6b1123b1"
   },
   "real-435d9b64bd9bebc6": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-9a2a6d6fdae42655"
   },
   "real-a4265c4935eb9162": {
     "kind": "photo",
@@ -4341,7 +4412,8 @@
   "real-b3c470391d3cf907": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-68d8f25d8891df62"
   },
   "real-954f4c84a573a02b": {
     "kind": "photo",
@@ -4366,17 +4438,20 @@
   "real-e4edfd794b9fc721": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-01f90ff206285fe8"
   },
   "real-90571d95a8d6c038": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-b6e54105b2f1c2a1"
   },
   "real-b838e930409ee3ba": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-68493a3e46089309"
   },
   "real-9624b3ee2deff1c3": {
     "kind": "photo",
@@ -4401,17 +4476,20 @@
   "real-77308e2aaec2d07b": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-c9b9f7614b1de23b"
   },
   "real-fdfdd21df0175396": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-789b2b863caf286f"
   },
   "real-ff4240f1f14d1573": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-24e2ca8f45a29917"
   },
   "real-26c948c0aa94f483": {
     "kind": "photo",
@@ -4421,12 +4499,14 @@
   "real-5f35b1a308c9a7c7": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-244e402c52bbed30"
   },
   "real-222ae136b9e71f2c": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-c9d8feafba346b53"
   },
   "real-3fc6a994117b952f": {
     "kind": "photo",
@@ -4446,7 +4526,8 @@
   "real-9b28db6ab35ef3f5": {
     "kind": "photo-multiple",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-09409d7763d0a1d5"
   },
   "real-cabbdffee0ef0597": {
     "kind": "photo-multiple",
@@ -4466,7 +4547,8 @@
   "real-99d2af6fb071519a": {
     "kind": "photo-multiple",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-99d2af6fb071519a"
   },
   "real-fa5e91c95de5edce": {
     "kind": "photo-multiple",
@@ -4481,7 +4563,8 @@
   "real-2c9395fc67c25a6d": {
     "kind": "photo-multiple",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-148e1e1ad0185b13"
   },
   "real-ef991d0a9c6fe0f2": {
     "kind": "photo-multiple",
@@ -4496,17 +4579,20 @@
   "real-09409d7763d0a1d5": {
     "kind": "photo-multiple",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-09409d7763d0a1d5"
   },
   "real-c7d6b1cf842c7054": {
     "kind": "photo-multiple",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-99d2af6fb071519a"
   },
   "real-148e1e1ad0185b13": {
     "kind": "photo-multiple",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-148e1e1ad0185b13"
   },
   "real-3bdd5d33834be573": {
     "kind": "photo-collage",
@@ -4521,12 +4607,14 @@
   "real-24a1cbc63d863851": {
     "kind": "photo-collage",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-1aa258b2d15f1f4a"
   },
   "real-ae5bef18320bc117": {
     "kind": "photo-collage",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-1aa258b2d15f1f4a"
   },
   "real-d655daacff9539f6": {
     "kind": "mixed-photo-template",
@@ -4541,7 +4629,8 @@
   "real-d738f564a8ad8b40": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-0871c106cf029808"
   },
   "real-68ac6f59a93fe017": {
     "kind": "mixed-photo-template",
@@ -4551,47 +4640,56 @@
   "real-003f2ae778894c59": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-003f2ae778894c59"
   },
   "real-a3b842df586a4082": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-4cc2b77e50e1cbed"
   },
   "real-de6a15fc125b0480": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-902bc6920f02f7d5"
   },
   "real-416060b3bd2c0031": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-003f2ae778894c59"
   },
   "real-ad0434f484ebf6f8": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-4cc2b77e50e1cbed"
   },
   "real-e6d6c75ff7cfaaaa": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-0eea9506360f2de4"
   },
   "real-3b93f826d20af475": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-3b93f826d20af475"
   },
   "real-dd762884326d08c9": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-37f660dff26baeed"
   },
   "real-bc5a1fcda2264672": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-a0970891e458479e"
   },
   "real-a58a2fbd25fa0c55": {
     "kind": "template-render",
@@ -4606,7 +4704,8 @@
   "real-25f75dc14c004d4f": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-e98d1f8050b45736"
   },
   "real-054427580c1f2d02": {
     "kind": "template-render",
@@ -4616,7 +4715,8 @@
   "real-b8ba303d67cb07a3": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-2c10050e5d215444"
   },
   "real-18cedc04096998a6": {
     "kind": "template-render",
@@ -4631,12 +4731,14 @@
   "real-a968692c8dd8f093": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-bf0885c5188246b4"
   },
   "real-8c898cec838b574d": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-ad9df6d604ca5f4d"
   },
   "real-72a4573839f53637": {
     "kind": "template-render",
@@ -4646,7 +4748,8 @@
   "real-43d7a8a786cd73d1": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-3b93f826d20af475"
   },
   "real-36840a84d27b8a10": {
     "kind": "template-render",
@@ -4656,7 +4759,8 @@
   "real-3b0a99c5d7eced26": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-2c10050e5d215444"
   },
   "real-4b2f24f6b54b19a9": {
     "kind": "template-render",
@@ -4676,12 +4780,14 @@
   "real-193d3f51d7e88264": {
     "kind": "photo-process",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-193d3f51d7e88264"
   },
   "real-1c04d01708859b11": {
     "kind": "photo-process",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-193d3f51d7e88264"
   },
   "real-d6697719605170b6": {
     "kind": "unrelated",
@@ -4711,12 +4817,14 @@
   "real-51b0988ff747e95d": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-a0381c8c238c4fcd"
   },
   "real-cecff305de6c5457": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-948b9733b79c3fd9"
   },
   "real-80794af7903e5d29": {
     "kind": "photo",
@@ -4751,7 +4859,8 @@
   "real-6be95e771be59614": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-3d9558d1fa590589"
   },
   "real-cda1cd38e225d1de": {
     "kind": "photo",
@@ -4766,7 +4875,8 @@
   "real-a96b58bb0d45cb5c": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-931ac5ea86dbe082"
   },
   "real-e9131a2d52b78220": {
     "kind": "photo",
@@ -4781,7 +4891,8 @@
   "real-8cff68865816d9f3": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-19e88a55e6eeaca8"
   },
   "real-f6e5e128449e3cb9": {
     "kind": "photo",
@@ -4796,12 +4907,14 @@
   "real-1031a761b9a31912": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-23512cb6f4f65f0c"
   },
   "real-2502cdec0720f4ea": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-3e688a50ef76ead4"
   },
   "real-65e0031723ed4dfe": {
     "kind": "photo",
@@ -4816,12 +4929,14 @@
   "real-7f06080553e19f72": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-24e2ca8f45a29917"
   },
   "real-d3f063052599e167": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-9d16c75dcd2cf474"
   },
   "real-9f80cf5d3b921291": {
     "kind": "photo",
@@ -4841,17 +4956,20 @@
   "real-39387bb6fee13819": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-595a9a519300a129"
   },
   "real-4a2401e5a44ffdf0": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-a0381c8c238c4fcd"
   },
   "real-6256c06fa5b0d652": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-419aba77e1e140cd"
   },
   "real-e041c294abff3538": {
     "kind": "photo-multiple",
@@ -4911,7 +5029,8 @@
   "real-d8d847cf07f2fc4c": {
     "kind": "photo-multiple",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-caf94851327096b8"
   },
   "real-033505d6b0f908c5": {
     "kind": "photo-multiple",
@@ -4951,12 +5070,14 @@
   "real-debdf749b044c07a": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-3934a53b839a3fb1"
   },
   "real-c5f6dfec1d3a0b88": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-4f793697a43ff418"
   },
   "real-64320468c795388b": {
     "kind": "template-render",
@@ -4966,37 +5087,44 @@
   "real-6599bf9afb0a05e2": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-6599bf9afb0a05e2"
   },
   "real-3346ede51fb9b467": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-2af80a66db41e306"
   },
   "real-4d8b522de7e49959": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-07fdbff0a17da618"
   },
   "real-e309ca2a1bdda7d6": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-ea9fe430bd0814f1"
   },
   "real-f26466c3afb3c5f7": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-6599bf9afb0a05e2"
   },
   "real-2448ab24ca1c609d": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-95e70312b230847d"
   },
   "real-6c466839ca2ebaac": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-0f3e8ed408ab8af8"
   },
   "real-fee6583ba3012cfe": {
     "kind": "template-render",
@@ -5006,17 +5134,20 @@
   "real-3934a53b839a3fb1": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-3934a53b839a3fb1"
   },
   "real-6371cd75bccbb741": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-b1ac910ac7ce28be"
   },
   "real-493199c831737b5b": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-3934a53b839a3fb1"
   },
   "real-502a14a8558d191b": {
     "kind": "photo-process",
@@ -5031,7 +5162,8 @@
   "real-daa7ef84717c4e68": {
     "kind": "photo-process",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-ac8f68abd8e74a08"
   },
   "real-d7aee6314d83e462": {
     "kind": "photo-process",
@@ -5056,7 +5188,8 @@
   "real-eac020a5d3632fbe": {
     "kind": "photo-other-material",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-c35c65105c12f76e"
   },
   "real-6a19c4ff7d7dcc2c": {
     "kind": "photo-other-material",
@@ -5111,12 +5244,14 @@
   "real-298e43cf1e27aac7": {
     "kind": "photo-other-material",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-22fe64177cee4718"
   },
   "real-c35c65105c12f76e": {
     "kind": "photo-other-material",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-c35c65105c12f76e"
   },
   "real-755f52b5cd6d5418": {
     "kind": "unrelated",
@@ -5136,20 +5271,23 @@
   "real-406c611213aafbb0": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-202b8421f50252f2"
   },
   "real-5f5b5e210b9fc9b4": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-35b815ac1607f33e"
   },
   "real-e66de65d01214dc5": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-35b815ac1607f33e"
   },
   "real-eb73a7ad764d9940": {
-    "kind": "photo",
+    "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
   },
@@ -5161,7 +5299,8 @@
   "real-44f16928dc0c9e15": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-44f16928dc0c9e15"
   },
   "real-d723a0e07d6fe39b": {
     "kind": "unrelated",
@@ -5171,17 +5310,20 @@
   "real-0982acb4dab4efa8": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-f44cb051ef8d1954"
   },
   "real-75077d57affeb008": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-202b8421f50252f2"
   },
   "real-35b815ac1607f33e": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-35b815ac1607f33e"
   },
   "real-d6d0462384722949": {
     "kind": "photo",
@@ -5191,7 +5333,8 @@
   "real-8913638b176b8279": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-f411246440acd5de"
   },
   "real-990ac34431be87fe": {
     "kind": "photo",
@@ -5201,12 +5344,14 @@
   "real-19e88a55e6eeaca8": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-19e88a55e6eeaca8"
   },
   "real-9f02d4edc7e68398": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-3e688a50ef76ead4"
   },
   "real-71c9d8c230d054b6": {
     "kind": "photo-multiple",
@@ -5226,7 +5371,8 @@
   "real-caf94851327096b8": {
     "kind": "photo-multiple",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-caf94851327096b8"
   },
   "real-3e3d4dc9445e3a92": {
     "kind": "photo-multiple",
@@ -5236,7 +5382,8 @@
   "real-75db1198f4cd4fdf": {
     "kind": "mixed-photo-template",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-32a7d5c332a2f426"
   },
   "real-023072a8519c1f2c": {
     "kind": "template-render",
@@ -5246,7 +5393,8 @@
   "real-9cea22df8118056d": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-6599bf9afb0a05e2"
   },
   "real-73e531c0f50a7459": {
     "kind": "template-render",
@@ -5256,17 +5404,20 @@
   "real-2af80a66db41e306": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-2af80a66db41e306"
   },
   "real-a35f09b2ea345c33": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-039100dc78d455d3"
   },
   "real-0e9418ce51faaea6": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-7c5d890d6641b64f"
   },
   "real-0c47d0557dd2f0a7": {
     "kind": "photo-process",
@@ -5286,12 +5437,14 @@
   "real-22fe64177cee4718": {
     "kind": "photo-other-material",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-22fe64177cee4718"
   },
   "real-7c27cf6d1500b5b5": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-44f16928dc0c9e15"
   },
   "real-ebcc1641b1ca1828": {
     "kind": "unrelated",
@@ -5301,37 +5454,44 @@
   "real-eb60ff94dfc6e2f8": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-c0ad47a394836a36"
   },
   "real-a00683bb6c6f39a5": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-166384f60ac6ab1b"
   },
   "real-7fce8bdf7db42599": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-af7f2ccf71251dab"
   },
   "real-7f271d24c0fff6cc": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-3811c51258ad133a"
   },
   "real-fcbcc23efea92b93": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-ee1fef56037b0e40"
   },
   "real-9e792000cb92ef12": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-37a7e9639bd98518"
   },
   "real-16aacf570fb434b4": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-595a9a519300a129"
   },
   "real-a414dfffbd2362ae": {
     "kind": "photo",
@@ -5341,7 +5501,8 @@
   "real-41b7c3e0b79f1265": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-9a88a2ce27e40b16"
   },
   "real-f882e57ac79e63d3": {
     "kind": "photo",
@@ -5351,17 +5512,20 @@
   "real-b5317080eec610dc": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-564a039e27aae41a"
   },
   "real-7465353dcfcca3b4": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-1a7cfc6be8b164b5"
   },
   "real-146aa89cba13c6b5": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-702942779385436c"
   },
   "real-962159dea653810f": {
     "kind": "photo",
@@ -5431,7 +5595,8 @@
   "real-fcdd225ecb323763": {
     "kind": "photo-collage",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-f0f9b861895076dc"
   },
   "real-0b78cbe36da884d2": {
     "kind": "photo-collage",
@@ -5446,12 +5611,14 @@
   "real-97080d7b20cf402d": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-ab26ee1b60ca6232"
   },
   "real-dd92e949699b8f77": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-94264cab2acc3077"
   },
   "real-4cfd9b27abdcc1f4": {
     "kind": "template-render",
@@ -5461,7 +5628,8 @@
   "real-455ba30ae8f1b089": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-c8a692b1d8a1886b"
   },
   "real-4d90fdb49607b772": {
     "kind": "template-render",
@@ -5471,7 +5639,8 @@
   "real-1a58d86fe8f91cdd": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-1db272762714e67c"
   },
   "real-7e3e92b38ec1ec32": {
     "kind": "template-render",
@@ -5481,7 +5650,8 @@
   "real-c92993580ebfeb4b": {
     "kind": "photo-process",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-ac8f68abd8e74a08"
   },
   "real-32221d4bfe826284": {
     "kind": "photo-process",
@@ -5491,12 +5661,14 @@
   "real-5a0cd01adbc155a3": {
     "kind": "photo-process",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-ee16e831a16f39e3"
   },
   "real-786047907b47ae64": {
     "kind": "photo-process",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-94d662fe74e85011"
   },
   "real-bf8bbe58705d3c6c": {
     "kind": "photo-process",
@@ -5591,17 +5763,20 @@
   "real-cbd96cdd5aeec59f": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-7fd1f8d76f0724da"
   },
   "real-a2a36d4ceec82039": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-7fd1f8d76f0724da"
   },
   "real-7fd1f8d76f0724da": {
     "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-7fd1f8d76f0724da"
   },
   "real-4f48def4b67f9093": {
     "kind": "unrelated",
@@ -5636,12 +5811,14 @@
   "real-248c0093f1a08d05": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-930a184bd227f588"
   },
   "real-4c3ea5a027ce8142": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-03bb71e121076620"
   },
   "real-b3949371312a953e": {
     "kind": "photo-multiple",
@@ -5666,12 +5843,14 @@
   "real-03bf997e482bdba7": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-254ce19337cbd897"
   },
   "real-e9600478525b9218": {
     "kind": "template-render",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-296731914436783e"
   },
   "real-71cbab9bdd68b70e": {
     "kind": "photo-other-material",
@@ -5696,7 +5875,8 @@
   "real-c7444331bcc9115c": {
     "kind": "photo-other-material",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-c7444331bcc9115c"
   },
   "real-78e269b0293c5a33": {
     "kind": "photo-other-material",
@@ -5770,6 +5950,376 @@
   },
   "real-ad4cc8926e759f1c": {
     "kind": "unknown",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-3a89de4eae04a025": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-0d51442459c3d4c9"
+  },
+  "real-cdae5c890b6933cd": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-45ad148d9ec045be": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-f24df29c4af5c31d"
+  },
+  "real-1fa372c6288da69f": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-af21a4ef38355dfa": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-0eb4a193bbb474ba"
+  },
+  "real-0eb4a193bbb474ba": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-0eb4a193bbb474ba"
+  },
+  "real-df27aec172744811": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-9b47cfbdf0004f4d": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-4ac11f8df948f1ba": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-ee1fef56037b0e40"
+  },
+  "real-e1b1492e32f6cdf5": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-668dcbee05542ab8": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-9abcfa9f8d5925cc": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-6603c4c02f4c45d0"
+  },
+  "real-1415adadb1ab2607": {
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-c2b4b2a2dc381659": {
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-32a532730ce24b19"
+  },
+  "real-f40897a2be20271c": {
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-592223f36bcf2c87": {
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-592223f36bcf2c87"
+  },
+  "real-38dacccc0131fd13": {
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-ca2f9adc67ee4cea": {
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-09caf4139d61fe63": {
+    "kind": "photo-collage",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-b7db4cb85e258c97": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-4a482742ecc28484"
+  },
+  "real-e0daa1ecef842ec3": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-d15bb3f44028c7c9"
+  },
+  "real-4adf76e184612299": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-98f81232246fbe1b"
+  },
+  "real-5de4284671214757": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-f6436a28a5dd5389"
+  },
+  "real-2694dd4fe8ff1230": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-71a290452cfd00c8"
+  },
+  "real-f5907a48aa32692e": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-e0f461391b5a2045"
+  },
+  "real-01c620a1a0f69baa": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-ce4ebe6f8aae2577": {
+    "kind": "photo-process",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-1b93b6f011e0cdfd"
+  },
+  "real-1b93b6f011e0cdfd": {
+    "kind": "photo-process",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-1b93b6f011e0cdfd"
+  },
+  "real-cdeca454740bf54c": {
+    "kind": "photo-process",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-b71eab334c0050f3"
+  },
+  "real-b71eab334c0050f3": {
+    "kind": "photo-process",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-b71eab334c0050f3"
+  },
+  "real-2ffe49a537a63948": {
+    "kind": "photo-process",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-084783825bad4b25": {
+    "kind": "photo-other-material",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-a9c6331f7e672498": {
+    "kind": "photo-other-material",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-4d1e79047481f987": {
+    "kind": "photo-other-material",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-f644e28ddbc8f932": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-b9eb5b1cec90ee4f": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-9f7e5dc4ca5593af"
+  },
+  "real-7346432a6c833a9e": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-f8206b4b5e402409": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-3a95592be7ab742d": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-b3669804835fee95": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-9cb9c7cffeb47c5c": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-cb72fd8d560fe5f7": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-edf2c5134aecd981": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-b9f1c8504f114592": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-cdb605096b68e06f": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-fe7904eba94c3a67": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-67afd8ac21b3b658": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-8263c16fc1ed0070": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-7fd1f8d76f0724da"
+  },
+  "real-7db4d660b77dfca2": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-d6ce3f1d53c5d8ea": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-31ed1172998ab1c5": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-0d51442459c3d4c9": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-0d51442459c3d4c9"
+  },
+  "real-7af8118b33b4c9bc": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-2989bd9c8b3da345"
+  },
+  "real-dc237f0bfa87d00c": {
+    "kind": "photo",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-2989bd9c8b3da345"
+  },
+  "real-32a532730ce24b19": {
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-32a532730ce24b19"
+  },
+  "real-7e2c5568d27c2860": {
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-592223f36bcf2c87"
+  },
+  "real-eb7f1c99733e287e": {
+    "kind": "photo-collage",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-4959a2aac579ad3c"
+  },
+  "real-2f9a61b59d2df6ac": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-50aeac7c2242db50"
+  },
+  "real-d418c93a07bd4ea0": {
+    "kind": "template-render",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-296731914436783e"
+  },
+  "real-64a046b35a43c9e4": {
+    "kind": "photo-process",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-ea928ed12a13fa03": {
+    "kind": "photo-other-material",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-c7444331bcc9115c"
+  },
+  "real-3ee407c8b580b2c9": {
+    "kind": "photo-other-material",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-314d789b493a8774": {
+    "kind": "photo-other-material",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-9f7e5dc4ca5593af": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-9f7e5dc4ca5593af"
+  },
+  "real-e5779a29f477257f": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-4e9f921bf368670b": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-ecb98893fe2697df": {
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-contact-sheet",
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+  },
+  "real-17f4bbbb4686bf5e": {
+    "kind": "unrelated",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
   }
