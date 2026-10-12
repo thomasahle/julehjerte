@@ -44,6 +44,13 @@ now considers whole curve joins, and a separate fix stops straight cuts from
 being rejected as zero-radius bends. The [diagnosis](app-baseline-correction.md#full-fitting-exposed-a-separate-seam-defect)
 records the remaining border defects and the limited synthetic scope.
 
+The [glare diagnosis](glare-classification.md) adds 96 controlled views with
+unchanged material labels. A proposed covariance classifier recovers some
+washed-out motifs but shifts clean boundaries and can change the inferred cut
+counts. Nine exported-pair checks show why lower error against a changed mask
+can hide worse artwork recovery. The glare controls are available for future
+training and QA; the production classifier remains unchanged.
+
 The [rotation study](oriented-photo-recovery.md) linked a remaining frame defect
 to crop geometry and introduced pose search using a fixed paper segmentation.
 The [background-model follow-up](background-photo-recovery.md) now recovers
