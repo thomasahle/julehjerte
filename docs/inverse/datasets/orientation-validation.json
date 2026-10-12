@@ -1,0 +1,354 @@
+{
+  "schema": "heart-oriented-photo-validation-1",
+  "date": "2026-10-12",
+  "sourceCommit": "4a58d47a89006182c0a4804907b5edb0dcea2cb6",
+  "scope": "Rotation-aware crop detection, full photographic replay and common-coordinate exported-template comparison. No production neural model.",
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 7.460308958,
+      "log": "tmp/heart-learning/orientation-qa/0.log",
+      "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.637798291999999,
+      "log": "tmp/heart-learning/orientation-qa/1.log",
+      "logSha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    {
+      "command": [
+        "npm",
+        "exec",
+        "vitest",
+        "run",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 37.263537375,
+      "log": "tmp/heart-learning/orientation-qa/2.log",
+      "logSha256": "73fb44b1d4159f674c4b174e3527891605af7e137d83a32df8ead0be05a6b76a"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 518.4572722500001,
+      "log": "tmp/heart-learning/orientation-qa/3.log",
+      "logSha256": "f77ad7943fc97939a8e86b5548dc8d4f06d836a0ba3150d57f337fc5ab501eda"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 12.373240583999973,
+      "log": "tmp/heart-learning/orientation-qa/4.log",
+      "logSha256": "1a0d7157fb20ee8a82fd701e652ce0fa9bc93e26665d69de496489c4a4e8f0f7"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:learning"
+      ],
+      "exitCode": 0,
+      "seconds": 16.565743792000035,
+      "log": "tmp/heart-learning/orientation-qa/5.log",
+      "logSha256": "6a07cbf39e9344691524d2f9600dd6ba7bd0d6f51cfc4830e4469617468ab751"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/inverse/datasets/real-collect.test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.16552275000003647,
+      "log": "tmp/heart-learning/orientation-qa/6.log",
+      "logSha256": "0d5f8346517fbbc9f8c76001a173ca4ace78dc0d43bc08446621d0299d7dcd04"
+    }
+  ],
+  "counts": {
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "inversePassed": 662,
+    "learningPassed": 33,
+    "collectorPassed": 13,
+    "typeErrors": 0,
+    "existingTypeWarnings": 7
+  },
+  "browser": {
+    "url": "http://127.0.0.1:5232/en/editor/paint/",
+    "version": "145.0.7632.6",
+    "status": "passed",
+    "rows": [
+      {
+        "id": "frame-764510-v3--baseline",
+        "status": "passed",
+        "file": "tmp/heart-learning/color-interventions-v1/views/frame-764510-v3--baseline/photo.jpg",
+        "sha256": "d3b202927a2baed2793432a48af6169c5359be9455c002b223fd1289af10972f",
+        "secondsToMask": 1.946,
+        "secondsToTemplates": 5.74,
+        "cornerErrorsPixels": [
+          1.2941892066064338,
+          0.6114073623391468,
+          3.907747540560774,
+          0.4493425717099781
+        ],
+        "appliedMask": true,
+        "errors": [],
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "report.html"
+        ],
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 400,
+          "mismatchPixels": 704,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0044,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 1.464710494699548,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.01684375,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0044375,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.014437499999999999,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.005100000023841858,
+          "selectedImageError": 0.0044,
+          "additionalImageError": -3.749999999999934e-05
+        }
+      },
+      {
+        "id": "frame-829086-v3--baseline",
+        "status": "passed",
+        "file": "tmp/heart-learning/color-interventions-v1/views/frame-829086-v3--baseline/photo.jpg",
+        "sha256": "2c13c6fb735ef12e6ca9c9482394fd1ee11621b8c19360efc404253419d52ad7",
+        "secondsToMask": 3.167,
+        "secondsToTemplates": 8.336,
+        "cornerErrorsPixels": [
+          1.1148232329429655,
+          0.9658896003032976,
+          1.5726556441334447,
+          0.6915338769108152
+        ],
+        "appliedMask": true,
+        "errors": [],
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "imageError": {
+          "reference": "Classified input crop before border repair, cleanup or tracing",
+          "resolution": 400,
+          "mismatchPixels": 1322,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0082625,
+          "method": "Forward sampling of both slit families at input resolution",
+          "independentExportRenderer": false
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.0074875,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0024125,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.0124125,
+          "attempts": [
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.0489625,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.0489625,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "matching-grid",
+              "counts": [
+                2,
+                2
+              ],
+              "phase": 1,
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.00905,
+              "withinAllowance": true,
+              "featuresPassed": true,
+              "geometryPassed": true,
+              "paperPassed": true
+            }
+          ],
+          "status": "matched",
+          "seconds": 0.6011000000238419,
+          "selectedImageError": 0.0082625,
+          "additionalImageError": 0.005850000000000001
+        }
+      },
+      {
+        "id": "selected-sideways-heart",
+        "status": "passed",
+        "file": "tmp/heart-learning/orientation-browser-v2/two-hearts.png",
+        "sha256": "75e53ba8dde3352206f8a6dfa0b8956923ee3a29bccea954bb521840a95727d0",
+        "secondsToMask": 5.61,
+        "cornerErrorsPixels": [
+          0.5837354045484525,
+          1.4088407356537862,
+          0.931934380319744,
+          0.7687917110365199
+        ],
+        "appliedMask": true,
+        "errors": []
+      }
+    ],
+    "servedSources": [
+      {
+        "url": "http://127.0.0.1:5232/inverse/core/crop.js",
+        "sha256": "755328bd5db310551816e630ab44564ff2a011eee9aaacb97177bc8abcedab14"
+      },
+      {
+        "url": "http://127.0.0.1:5232/inverse/locator/locator.js",
+        "sha256": "b076ecec04b3bc65aef2d8ad03ccabd45fbc6802eee96b9ed3f4eecf9f8d989f"
+      },
+      {
+        "url": "http://127.0.0.1:5232/inverse/locator/orientation.js",
+        "sha256": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28"
+      }
+    ],
+    "evidence": [
+      {
+        "path": "tmp/heart-learning/orientation-browser-v2/frame-764510-v3--baseline-cuts.json",
+        "sha256": "1e850d864302efc888e31b26f9e642d72ced5edca403fce571b3c3e7dd0d5069"
+      },
+      {
+        "path": "tmp/heart-learning/orientation-browser-v2/frame-764510-v3--baseline-templates.png",
+        "sha256": "dda63a4b7741acb8f2c297aba2275792f8e366e49b3d7f2509030a358dd24a9a"
+      },
+      {
+        "path": "tmp/heart-learning/orientation-browser-v2/frame-764510-v3--baseline.png",
+        "sha256": "4932153756f4eab727ea220e6e48952463c3463afcf72415d7ad6199aea34bd2"
+      },
+      {
+        "path": "tmp/heart-learning/orientation-browser-v2/frame-829086-v3--baseline-cuts.json",
+        "sha256": "28b05d1350acfb3e1a1e748b691f89a9534239e584ce4d667a04728f0295716b"
+      },
+      {
+        "path": "tmp/heart-learning/orientation-browser-v2/frame-829086-v3--baseline-templates.png",
+        "sha256": "4ed880acb0e9142887cfcf085a5839620f1ea5ca33686b46fc188164f34439b4"
+      },
+      {
+        "path": "tmp/heart-learning/orientation-browser-v2/frame-829086-v3--baseline.png",
+        "sha256": "aa854199694aca73ee688ddeb954e052f16da5a1fc8dd5e0fe400abcf2c2c9b5"
+      },
+      {
+        "path": "tmp/heart-learning/orientation-browser-v2/report.json",
+        "sha256": "7c2aee656865a74e6a7e51d16f51b942ba03a65546ed63a48c5cc6310e0315d8"
+      },
+      {
+        "path": "tmp/heart-learning/orientation-browser-v2/selected-sideways-heart.png",
+        "sha256": "7ba18b221014d4736993b8393f3546256809d8bf6dc88cbc374c4c2a9957e734"
+      },
+      {
+        "path": "tmp/heart-learning/orientation-browser-v2/two-hearts.png",
+        "sha256": "75e53ba8dde3352206f8a6dfa0b8956923ee3a29bccea954bb521840a95727d0"
+      }
+    ],
+    "runner": {
+      "path": "tmp/heart-learning/browser-orientation-check.mjs",
+      "sha256": "8090a56c3426bf27ddbe30281f4f3d2f59e3659b50579fb86d53c44b412bfa7b"
+    },
+    "initialHarnessFailure": {
+      "record": {
+        "path": "tmp/heart-learning/orientation-browser-v1/report.json",
+        "sha256": "6af01cbd7e401b0460bb2aef8a042bb9134f95f808019e966344ce20fa29ccd5"
+      },
+      "reason": "Wrong translated Paint URL (/en/editor/mal/), then preview connection refused. Restarted preview and used /en/editor/paint/ for all successful checks."
+    }
+  },
+  "resultRecord": {
+    "path": "docs/inverse/datasets/oriented-photo-results.json",
+    "sha256": "f6deb13f37820b1360990e02294b055b27a73dacc2b058e527711f5409e7e874"
+  },
+  "extraDiagnostics": {
+    "oraclePoseRunner": {
+      "path": "tmp/heart-learning/crop-diagnosis-v1/fixed-fields-oracle-pose.mjs",
+      "sha256": "705bb45883502065cfa9daa97a440662e4d3d5ee1dcb2dfb07f0002475394aad"
+    },
+    "oraclePoseResult": {
+      "path": "tmp/heart-learning/crop-diagnosis-v1/fixed-fields-oracle-pose.json",
+      "sha256": "041fbb46d3ee387888a83c082a16a46f6b1426254b8013bb8ae7a5fe16f8cd66"
+    }
+  }
+}

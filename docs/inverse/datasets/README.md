@@ -44,6 +44,14 @@ now considers whole curve joins, and a separate fix stops straight cuts from
 being rejected as zero-radius bends. The [diagnosis](app-baseline-correction.md#full-fitting-exposed-a-separate-seam-defect)
 records the remaining border defects and the limited synthetic scope.
 
+The [full photograph-to-template follow-up](oriented-photo-recovery.md) traces
+one remaining frame defect to crop geometry. Reusing a fixed paper segmentation
+while testing supported orientations recovers two of six selected difficult
+photographs automatically; four remain unresolved. Both recovered frames yield
+checked template pairs in under six seconds. Comparison at the same physical
+material locations improves one reconstruction's error and worsens the other's
+while allowing identical sheets within the user's one-percentage-point limit.
+
 Of the real-source files, 475 are reserved by existing QA or connected source
 groups. Remaining files still need instance, motif-family and usage review;
 they are not automatically a labeled training set. The
@@ -150,12 +158,13 @@ The Node dataset tests are included in `npm run test:inverse`. The Python
 collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
-The latest regression run passed 855 application tests (one skipped), 646
+The latest regression run passed 855 application tests (one skipped), 662
 inverse tests, 33 offline learning tests and
 13 collector tests, along with type checking, lint and build. Type checking
 retains seven existing warnings and no errors.
-[Command records and browser regression evidence](intervention-validation.json)
-retain these checks; the [previous localization validation](localization-validation.json)
+[Command records and browser regression evidence](orientation-validation.json)
+retain these checks; the [previous intervention validation](intervention-validation.json),
+[localization validation](localization-validation.json)
 and [earlier snapshot validation](learning-validation.json) remain
 available. The synthetic verifiers checked all 5,952 referenced assets across
 the original batch and corner supplement, and the real-image audit checked
@@ -163,7 +172,8 @@ all 1,034 source files and decoded image identities.
 Gallery browser checks are recorded in the real-photo collection report.
 The earlier application/solver release checks are recorded in
 [the solver validation report](../CONNECTOR-RETRY-VALIDATION.json). Neural
-inference remains offline; the latest shared-cut fixes change geometric fitting.
+inference remains offline; the shared-cut fixes change geometric fitting and
+the orientation search changes photographic crop proposals.
 
 The corrected component comparison uses the current app initializer; the
 initial experiment also tests the same small network initialized randomly.
