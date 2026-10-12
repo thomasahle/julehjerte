@@ -150,22 +150,24 @@ The Node dataset tests are included in `npm run test:inverse`. The Python
 collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
-The latest regression run passed 855 application tests (one skipped), 635
-inverse tests (including eight dataset tests), 31 offline learning tests and
+The latest regression run passed 855 application tests (one skipped), 646
+inverse tests, 33 offline learning tests and
 13 collector tests, along with type checking, lint and build. Type checking
 retains seven existing warnings and no errors.
-[Command records and source hashes](localization-validation.json) retain these
-checks; the [earlier snapshot validation](learning-validation.json) remains
+[Command records and browser regression evidence](intervention-validation.json)
+retain these checks; the [previous localization validation](localization-validation.json)
+and [earlier snapshot validation](learning-validation.json) remain
 available. The synthetic verifiers checked all 5,952 referenced assets across
 the original batch and corner supplement, and the real-image audit checked
 all 1,034 source files and decoded image identities.
 Gallery browser checks are recorded in the real-photo collection report.
 The earlier application/solver release checks are recorded in
-[the solver validation report](../CONNECTOR-RETRY-VALIDATION.json); data tooling
-does not change production inference.
+[the solver validation report](../CONNECTOR-RETRY-VALIDATION.json). Neural
+inference remains offline; the latest shared-cut fixes change geometric fitting.
 
-The initial component comparison includes the current geometric preprocessing
-and the same small network initialized randomly. Next, report
+The corrected component comparison uses the current app initializer; the
+initial experiment also tests the same small network initialized randomly.
+The selected synthetic interventions now include full solves. Next, report
 whole-pipeline time, valid-solution recall, mask and feature error, candidate
 graph size, and sensitivity to crop/color/noise perturbations on held-out real
 photographs. A lower pixel error must not conceal missing rays or false seams.

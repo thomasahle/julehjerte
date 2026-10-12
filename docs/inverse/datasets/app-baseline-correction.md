@@ -148,6 +148,26 @@ acceptance comparison coerced that value to zero and rejected it as a tight
 bend. Cleanup now treats that sentinel as infinite radius. The regression
 retains identical sheets and exactly reproduces the requested channel mask.
 
+The final fresh 36-view replay passes the same formal gates, taking at most
+9.397 seconds per prepare/solve/export run. All classified masks and traced
+initializers are byte-identical to the initial replay. The seam case improves
+from 0.974% to 0.859% independent-export disagreement with the latent label;
+the exact-crop frame also improves slightly. Thirty-three views retain exactly
+the same latent-label error. The red/cream version of the seam case worsens
+from 0.808% to 0.816% latent-label error, and its final classified-input error
+also increases slightly. Non-worsening edits against an incoming candidate
+do not guarantee that a different final cleanup sequence beats the previous
+sequence. The comparison retains that regression rather than claiming a
+uniform improvement.
+
+[Per-view measurements, source hashes and all three solver replays](photographic-intervention-results.json)
+retain the evidence. The straight-radius correction produces the same 36
+exported geometries as the paired-knot-only replay; its separate procedural
+regression exercises the newly repaired case. The
+[validation record](intervention-validation.json) includes 646 inverse tests,
+855 application tests, 33 learning tests, 13 collector tests, type checking,
+lint, build, and two regressions using the shipped browser modules.
+
 The border defect and rounded corner/crop-edge distortions remain separate
 quality issues. This repair is not a neural inference change, and these
 selected synthetic replays do not establish real-photograph reconstruction

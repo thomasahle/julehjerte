@@ -1,0 +1,192 @@
+{
+  "schema": "heart-intervention-validation-1",
+  "date": "2026-10-12",
+  "productionCommit": "01d9c76",
+  "sourceCommitAtRecording": "1288cbd3b0ee6b96977b0b749376ab13627ebf3b",
+  "scope": "Controlled photo diagnostics, corrected app initializer comparison, paired-knot shared-cut recovery and straight-radius cleanup; no production neural inference.",
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 7.258019958,
+      "log": "tmp/heart-learning/intervention-qa/0.log",
+      "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.418508584,
+      "log": "tmp/heart-learning/intervention-qa/1.log",
+      "logSha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    {
+      "command": [
+        "npm",
+        "exec",
+        "vitest",
+        "run",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 33.83325,
+      "log": "tmp/heart-learning/intervention-qa/2.log",
+      "logSha256": "7a704684154b542ab49013ed0c447c3df272e2a2be2d8dab527b5e249bc434b1"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 433.51132658399996,
+      "log": "tmp/heart-learning/intervention-qa/3.log",
+      "logSha256": "4ecb8312730642358e4ef5cdb3377bdf1fbfee253f90af8563628d679d5c04d9"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 9.818606458999966,
+      "log": "tmp/heart-learning/intervention-qa/4.log",
+      "logSha256": "cb57bebeb3399fbd03ca0b07ba542fb9b5801e2308cd45e463a6d5e6d9a05531"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:learning"
+      ],
+      "exitCode": 0,
+      "seconds": 9.133488082999975,
+      "log": "tmp/heart-learning/intervention-qa/5.log",
+      "logSha256": "e1b20ae6e9258c46f2c72bacbdfa9655648aa13a33c04f7a48df685644cc74b7"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/inverse/datasets/real-collect.test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.11511720900000455,
+      "log": "tmp/heart-learning/intervention-qa/6.log",
+      "logSha256": "f41f027eb8de778295ce32988da832be6619310d72b84bd0c842ca544e1496d2"
+    }
+  ],
+  "totals": {
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "inversePassed": 646,
+    "learningPassed": 33,
+    "learningModules": 7,
+    "collectorPassed": 13,
+    "checkErrors": 0,
+    "existingCheckWarnings": 7
+  },
+  "browser": {
+    "method": "Owned Playwright Chromium against rebuilt local preview; calls shipped JS modules on the frozen channel fixture and a straight-pair regression, not an end-to-end editor interaction.",
+    "artifact": "tmp/heart-learning/intervention-qa/browser-sharing.json",
+    "sha256": "b1b2d2bdeefc774fdad5373a7d672aab952f1b86ea6370bfc90d7386c2063d57",
+    "result": {
+      "url": "http://127.0.0.1:5232/",
+      "browser": "145.0.7632.6",
+      "photographed": {
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 5,
+              "a1": 36,
+              "b0": 5,
+              "b1": 36,
+              "length": 60.06923948681085,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0181427001953125,
+              "errorAfter": 0.0162353515625,
+              "bigErrorBefore": 0.017932891845703125,
+              "bigErrorAfter": 0.016513824462890625,
+              "sourceErrorBefore": 0.017930772569444444,
+              "sourceErrorAfter": 0.016404893663194444
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.017930772569444444,
+          "errorAfter": 0.016404893663194444,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.16120000004768373
+        },
+        "identical": true,
+        "hiddenLength": 59.8703404241352,
+        "geometry": true,
+        "paper": true
+      },
+      "straight": {
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 1,
+              "a1": 3,
+              "b0": 1,
+              "b1": 3,
+              "length": 56.568940246683184,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0015869140625,
+              "errorAfter": 3.0517578125e-05,
+              "bigErrorBefore": 0.00081634521484375,
+              "bigErrorAfter": 3.814697265625e-05,
+              "sourceErrorBefore": 0.0010443793402777778,
+              "sourceErrorAfter": 0
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.0010443793402777778,
+          "errorAfter": 0,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.09730000007152557
+        },
+        "minimumRadius": null,
+        "identical": true,
+        "exactMask": true
+      }
+    }
+  },
+  "finalProbe": {
+    "artifact": "tmp/heart-learning/color-solves-final-v1/report.json",
+    "sha256": "971b9ed45dfa3e0e92b8329071c879ca54a3344d3579681b7600c6f6b5409d43",
+    "views": 36,
+    "formalCheckedPairs": 36,
+    "maximumPrepareSolveExportSeconds": 9.397347750000002,
+    "classificationAndTraceAssetsUnchanged": 36,
+    "allGeometriesMatchPairedKnotsReplay": true,
+    "visualCaveat": "Known frame border and rounded corner/crop-edge defects remain."
+  }
+}
