@@ -53,6 +53,12 @@ identity. Full per-image reports and unselected six-view comparisons are at
 `tmp/heart-learning/imagenet-final/` and `tmp/heart-learning/random-final/`.
 Nothing from this experiment is loaded by the website.
 
+The [localization follow-up](boundary-localization.md) replaces the permissive
+boundary score with shared thinning and one-to-one matching. It also compares
+a balanced junction loss and classical corner detectors, and audits missing
+corner types in the synthetic training set. The original measurements above
+remain as the initial experiment record.
+
 ## Data and supervision
 
 The inputs are the 512 synthetic views from the validated 128-design batch.
