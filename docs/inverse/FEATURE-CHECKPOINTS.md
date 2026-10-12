@@ -45,6 +45,55 @@ preference, then fits and independently renders fresh curves with the fix. It al
 checks that the recovered opening remains a separate component with reasonable
 overlap. No saved template is supplied to the fit.
 
+## Dataset and export results
+
+The complete automatic-crop, import-to-mask benchmark improves from **20/31 to
+21/31** accepted photographs with a ten-second fitting allowance. The new success
+is the puppy. Every previous success remains accepted, and all crop coordinates,
+classified-mask hashes and fitting-input hashes are unchanged. The 16 incomplete
+or obscured inventory entries remain excluded; three complete photographs with no
+crop remain failures in the denominator.
+
+The puppy's disagreement increases from 0.4963% to **1.2013%**, because the old fit
+erased its small opening and failed the source-feature check. A lower whole-image
+error alone would select that incomplete reconstruction. The new pair passes the
+same source-feature, geometry and nominal paper checks.
+
+![Source masks, old and selected exported weaves, rejected weighted fits, and editable SVG replays](feature-checkpoints.png)
+
+All **22 regular Hunodan photographs** pass with exactly unchanged image errors.
+The slowest preparation + solve + validation + export takes **8.376 seconds**;
+decoding and the independent external renderer are excluded. Five ordinary hard
+photo fits change slightly in the time-bounded rerun, without invoking the new
+early layout. Four improve; the dense checker changes from 0.69625% to 0.70000%
+error, a six-pixel difference. The hard-photo errors are not described as uniformly
+unchanged or lower.
+
+The targeted 25-second rerun passes all four cases: bird, crown, puppy and
+Stonehenge. The first three retain their previous independent-render errors;
+Stonehenge changes from 2.6394% to 2.4919%. This is a four-case check, not a rerun
+of the entire earlier longer-budget dataset.
+
+The frozen-crop perturbation test improves from **1/4 to 2/4** accepted results:
+
+| Perturbation | Result | Remaining limitation |
+| --- | --- | --- |
+| Crop moved right one original-image pixel | Fails source-feature check | Opening lost during later fitting |
+| Crop moved down one original-image pixel | Pass, 1.26% disagreement | Separate opening still larger than the source |
+| JPEG quality 75 | Pass, 1.57% disagreement | Existing success retained |
+| Half-resolution photograph | Fails source-feature check | Ordinary feature initializer finds no acceptable seed |
+
+All **28 produced ten-second pairs**, **four perturbation pairs** and **four
+longer-budget pairs** pass editable conversion, SVG serialization/parsing, the
+editor's intersection rules and the geometry/paper re-audit. Complete acceptance
+remains 21, two and four respectively. Export validity does not promote an
+inaccurate or feature-losing reconstruction into a success.
+
+The remaining ten-second failures span the pipeline: three missing crops, two
+unrepresented small source regions near the crop boundary, and five fits above
+the image-error limit. The boundary regions may be motif details or photographic
+artifacts; this change neither classifies them as noise nor relaxes their check.
+
 ## Experiments rejected after visual inspection
 
 More numerical passes did not always mean better reconstructions. Stronger
