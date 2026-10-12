@@ -13,6 +13,17 @@ export function supportedCropOutline(proposal) {
   return !!proposal?.quad && !!e && [...e.lowerEdgeSupport, ...e.lobeOutlineSupport].every(v => v >= .65) && e.capColourLoss.every(v => v <= .30);
 }
 
+/** A fit can explain both lobes while its tilted lower edges have too few
+ * sampled inliers. Its notch-to-tip direction can seed one upright retry;
+ * the original support checks still decide whether that retry is usable.
+ */
+function outlineOrientation(proposal) {
+  const e = proposal?.evidence, q = e?.rejectedQuad;
+  if (!q || !e.lobeOutlineSupport.every(v => v >= .65) || !e.capColourLoss.every(v => v <= .30) || !e.lowerEdgeSupport.every(v => v >= .4)) return null;
+  const dx = q[2][0] - q[0][0], dy = q[2][1] - q[0][1];
+  return (90 - Math.atan2(dy, dx) * 180 / Math.PI + 360) % 360;
+}
+
 export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {} } = {}) {
   if (input.imageWidth * input.imageHeight > 24e6) throw new Error('Image exceeds 24 megapixels.');
   if (input.imageWidth < 24 || input.imageHeight < 24) return { status: 'not_found', reason: 'The image is too small for automatic outline fitting.', candidates: [] };
@@ -51,13 +62,18 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
     orientationSearch = { timeLimitMs: 2000, timeLimitReached: false, models: [], attempts };
     search: for (const palette of ['adaptive', 'pale', undefined, 'anchored']) {
       if (performance.now() >= deadline) { orientationSearch.timeLimitReached = true; break; }
-      const detect = detector(palette), angles = detect.orientations();
+      const detect = detector(palette), angles = detect.orientations(), pending = angles.map(degrees => ({ degrees }));
       orientationSearch.models.push({ palette: palette || 'red-white', hypotheses: angles.length });
-      for (const degrees of angles) {
+      for (let index = 0; index < pending.length; index++) {
         if (performance.now() >= deadline) { orientationSearch.timeLimitReached = true; break search; }
+        const { degrees, refinedFrom } = pending[index];
         const rotated = detect(degrees), supported = supportedCropOutline(rotated);
-        attempts.push({ palette: palette || 'red-white', degrees, status: rotated.status, supported, score: rotated.score ?? null });
+        attempts.push({ palette: palette || 'red-white', degrees, ...(refinedFrom === undefined ? {} : { refinedFrom }), status: rotated.status, supported, score: rotated.score ?? null });
         if (supported) { proposal = rotated; break search; }
+        const refined = refinedFrom === undefined ? outlineOrientation(rotated) : null;
+        if (refined !== null && pending.every(p => Math.min(Math.abs(p.degrees - refined), 360 - Math.abs(p.degrees - refined)) > .5)) {
+          pending.splice(index + 1, 0, { degrees: refined, refinedFrom: degrees });
+        }
       }
     }
     orientationSearch.selectedDegrees = proposal.evidence?.workingRotation?.degrees ?? null;

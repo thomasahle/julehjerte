@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {createCanvas,loadImage} from 'canvas';
 import {heartPhoto} from './crop-fixture.mjs';
 import {correlatedBackground} from '../../static/inverse/locator/background.js';
 import {makePaletteFields} from '../../static/inverse/locator/palette.js';
@@ -57,4 +60,19 @@ test('background texture alone supplies neither two papers nor a heart',()=>{
   const {source}=shadedPhoto({background:[67,84,155],colours:['#21552d','#d41b2e'],empty:true});
   assert.equal(makePaletteFields({width:source.imageWidth,height:source.imageHeight,data:source.rgba}),null);
   assert.deepEqual(detectHeartCrops(source).candidates,[]);
+});
+
+test('a blurred diagonal channel recovers its physical corners despite background shading',async()=>{
+  const fixture=new URL('./fixtures/locator/dark-channel-shaded.jpg',import.meta.url),bytes=await fs.readFile(fixture);
+  const labels=JSON.parse(await fs.readFile(new URL('./fixtures/locator/dark-channel-shaded.json',import.meta.url)));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),labels.photoSha256);
+  const im=await loadImage(bytes),canvas=createCanvas(im.width,im.height),ctx=canvas.getContext('2d');ctx.drawImage(im,0,0);
+  const original=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+  for(const gain of [.9,1,1.1]){
+    const rgba=original.slice();for(let i=0;i<rgba.length;i++)if(i%4<3)rgba[i]*=gain;
+    const input={imageWidth:im.width,imageHeight:im.height,rgba},result=detectHeartCrops(input),candidate=result.candidates[0];
+    assert.ok(candidate,`gain ${gain}`);assert.ok(supportedCropOutline(candidate.locator));
+    const maximum=Math.max(...labels.knownPixelEdgeCorners.map((p,i)=>Math.hypot(p[0]-candidate.quad[i][0],p[1]-candidate.quad[i][1])));
+    assert.ok(maximum<6,`gain ${gain}: ${maximum} px`);
+  }
 });
