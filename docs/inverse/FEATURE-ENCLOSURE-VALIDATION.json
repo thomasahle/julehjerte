@@ -1,0 +1,3092 @@
+{
+  "productionCommit": "d7c46c7227643019cfb5007138adbe041c62ca33",
+  "scope": "Enclosure-aware feature fidelity, one bounded alternate feature routing and local detail refinement, followed by independent editable export and browser QA. Source photographs, crop proposals and classified targets unchanged.",
+  "requiredChecks": {
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "inversePassed": 584,
+    "checkErrors": 0,
+    "checkWarnings": 7,
+    "lint": "pass",
+    "build": "pass"
+  },
+  "regular": {
+    "passed": 22,
+    "maximumSeconds": 9.135085124999998,
+    "timing": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.",
+    "allErrorsAndCutGeometryUnchanged": true,
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 4.665237416999999,
+        "error": 0.009799111111111111,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 4.946028541999999,
+        "error": 0.013923555555555555,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.9312573330000014,
+        "error": 0.006634666666666666,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 4.453635666,
+        "error": 0.013824,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 3.3238917919999986,
+        "error": 0.009042960667083447,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 5.707901874999999,
+        "error": 0.013468424479166666,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.701016957999997,
+        "error": 0.005148444444444444,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 5.210328459000004,
+        "error": 0.005397333333333333,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 5.417410125000002,
+        "error": 0.004522666666666667,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 7.597174208000004,
+        "error": 0.005639111111111111,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.587577250000002,
+        "error": 0.009436444444444445,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 7.053659749999999,
+        "error": 0.006040430615586996,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 5.1842449580000025,
+        "error": 0.003899406226779104,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 8.206222250000007,
+        "error": 0.007776029627903062,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.422066959000003,
+        "error": 0.007550237322696868,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 6.7675864579999905,
+        "error": 0.004365548980933596,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 9.135085124999998,
+        "error": 0.0056129769369752365,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 5.085366666000001,
+        "error": 0.007929362880886427,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.716628624999998,
+        "error": 0.0038045247395833335,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 6.646957708000001,
+        "error": 0.012332213049376572,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 7.292130500000014,
+        "error": 0.005053050026595,
+        "sameGeometry": true
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 6.380828875000007,
+        "error": 0.010624446293860237,
+        "sameGeometry": true
+      }
+    ]
+  },
+  "hard10": {
+    "inventory": 47,
+    "excluded": 16,
+    "noCrop": 3,
+    "enginePassed": 21,
+    "exported": 28,
+    "converted": 28,
+    "completePassed": 21,
+    "unchangedInputs": true,
+    "rows": [
+      {
+        "id": "oval-figure",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "eight-point-star",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "small-figure",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "deer",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "top-checker",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "top-candle",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "top-tree",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "partial-top-right",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "partial-left-checker",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "nested-squares",
+        "status": "no_crop",
+        "completePassed": false
+      },
+      {
+        "id": "outline-star",
+        "status": "failed",
+        "enginePassed": false,
+        "conversionPassed": true,
+        "completePassed": false,
+        "independentError": 0.0081625,
+        "editableError": 0.00829375,
+        "solveAndValidationSeconds": 9.040172125000002,
+        "missingFeatures": 1,
+        "featureComponents": [
+          {
+            "centerMm": [
+              7.154411764705881,
+              98.7904411764706
+            ],
+            "sourceAreaMm2": 4.25,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          },
+          {
+            "centerMm": [
+              46.24285714285714,
+              47.06449357520786
+            ],
+            "sourceAreaMm2": 826.875,
+            "intersectionPixels": 13073,
+            "retention": 0.9881330309901738,
+            "predictedComponentAreaMm2": 826.75,
+            "touchesBorder": false,
+            "componentIoU": 0.9766903249906612
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": false,
+        "previousIndependentError": 0.0081625
+      },
+      {
+        "id": "floral-checker",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0236,
+        "editableError": 0.02365,
+        "solveAndValidationSeconds": 9.489868541999998,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              14.525882552613714,
+              35.2750339443313
+            ],
+            "sourceAreaMm2": 92.0625,
+            "intersectionPixels": 1428,
+            "retention": 0.9694501018329938,
+            "predictedComponentAreaMm2": 93,
+            "touchesBorder": false,
+            "componentIoU": 0.9315068493150684
+          },
+          {
+            "centerMm": [
+              25.52094491201224,
+              45.63552027543994
+            ],
+            "sourceAreaMm2": 81.6875,
+            "intersectionPixels": 1266,
+            "retention": 0.9686304514154552,
+            "predictedComponentAreaMm2": 82.75,
+            "touchesBorder": false,
+            "componentIoU": 0.9274725274725275
+          },
+          {
+            "centerMm": [
+              63.03643977191732,
+              81.50365288667142
+            ],
+            "sourceAreaMm2": 87.6875,
+            "intersectionPixels": 1378,
+            "retention": 0.9821810406272273,
+            "predictedComponentAreaMm2": 89.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.9490358126721763
+          },
+          {
+            "centerMm": [
+              59.299654229655836,
+              14.245939208748794
+            ],
+            "sourceAreaMm2": 388.625,
+            "intersectionPixels": 3956,
+            "retention": 0.6362174332582824,
+            "predictedComponentAreaMm2": 249.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.6318479476122025
+          },
+          {
+            "centerMm": [
+              27.92652770585189,
+              10.435201967892283
+            ],
+            "sourceAreaMm2": 120.6875,
+            "intersectionPixels": 1903,
+            "retention": 0.9854997410668047,
+            "predictedComponentAreaMm2": 2811.8125,
+            "touchesBorder": true,
+            "componentIoU": 0.042272919119443766
+          },
+          {
+            "centerMm": [
+              40.47696458218041,
+              21.41166297731046
+            ],
+            "sourceAreaMm2": 112.9375,
+            "intersectionPixels": 1780,
+            "retention": 0.9850581073602657,
+            "predictedComponentAreaMm2": 114.5,
+            "touchesBorder": false,
+            "componentIoU": 0.9575040344271114
+          },
+          {
+            "centerMm": [
+              79.24166666666666,
+              58.34155555555556
+            ],
+            "sourceAreaMm2": 140.625,
+            "intersectionPixels": 2229,
+            "retention": 0.9906666666666667,
+            "predictedComponentAreaMm2": 142.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.9708188153310104
+          },
+          {
+            "centerMm": [
+              14.958003169572107,
+              94.03129952456419
+            ],
+            "sourceAreaMm2": 78.875,
+            "intersectionPixels": 1226,
+            "retention": 0.971473851030111,
+            "predictedComponentAreaMm2": 92.625,
+            "touchesBorder": true,
+            "componentIoU": 0.8076416337285902
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0236
+      },
+      {
+        "id": "dense-checker",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.00698125,
+        "editableError": 0.00685625,
+        "solveAndValidationSeconds": 9.216494375000002,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              17.927420929324484,
+              81.03919367434595
+            ],
+            "sourceAreaMm2": 160.0625,
+            "intersectionPixels": 2546,
+            "retention": 0.9941429129246389,
+            "predictedComponentAreaMm2": 160.6875,
+            "touchesBorder": false,
+            "componentIoU": 0.9845320959010054
+          },
+          {
+            "centerMm": [
+              68.64148841354724,
+              18.760918003565063
+            ],
+            "sourceAreaMm2": 140.25,
+            "intersectionPixels": 2229,
+            "retention": 0.9933155080213903,
+            "predictedComponentAreaMm2": 141.0625,
+            "touchesBorder": false,
+            "componentIoU": 0.9810739436619719
+          },
+          {
+            "centerMm": [
+              44.13039643005396,
+              19.175539643005397
+            ],
+            "sourceAreaMm2": 150.5625,
+            "intersectionPixels": 2382,
+            "retention": 0.9887920298879203,
+            "predictedComponentAreaMm2": 150.375,
+            "touchesBorder": false,
+            "componentIoU": 0.9790382244143033
+          },
+          {
+            "centerMm": [
+              80.54124656278644,
+              31.432974335472046
+            ],
+            "sourceAreaMm2": 136.375,
+            "intersectionPixels": 2164,
+            "retention": 0.9917506874427131,
+            "predictedComponentAreaMm2": 136.375,
+            "touchesBorder": false,
+            "componentIoU": 0.9836363636363636
+          },
+          {
+            "centerMm": [
+              56.57634302069573,
+              32.30950022016733
+            ],
+            "sourceAreaMm2": 141.9375,
+            "intersectionPixels": 2261,
+            "retention": 0.9955966534566271,
+            "predictedComponentAreaMm2": 142.75,
+            "touchesBorder": false,
+            "componentIoU": 0.9856146469049695
+          },
+          {
+            "centerMm": [
+              68.50580601092896,
+              44.32411202185792
+            ],
+            "sourceAreaMm2": 137.25,
+            "intersectionPixels": 2181,
+            "retention": 0.9931693989071039,
+            "predictedComponentAreaMm2": 137.0625,
+            "touchesBorder": false,
+            "componentIoU": 0.9877717391304348
+          },
+          {
+            "centerMm": [
+              44.212221746575345,
+              44.673052226027394
+            ],
+            "sourceAreaMm2": 146,
+            "intersectionPixels": 2318,
+            "retention": 0.9922945205479452,
+            "predictedComponentAreaMm2": 147.3125,
+            "touchesBorder": false,
+            "componentIoU": 0.976
+          },
+          {
+            "centerMm": [
+              80.811122357175,
+              56.15716374269007
+            ],
+            "sourceAreaMm2": 138.9375,
+            "intersectionPixels": 2206,
+            "retention": 0.9923526765632029,
+            "predictedComponentAreaMm2": 139.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.9830659536541889
+          },
+          {
+            "centerMm": [
+              62.73976672535211,
+              63.16180677816901
+            ],
+            "sourceAreaMm2": 284,
+            "intersectionPixels": 4509,
+            "retention": 0.9922975352112676,
+            "predictedComponentAreaMm2": 283.875,
+            "touchesBorder": false,
+            "componentIoU": 0.9851431068385406
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.007025
+      },
+      {
+        "id": "bird",
+        "status": "failed",
+        "enginePassed": false,
+        "conversionPassed": true,
+        "completePassed": false,
+        "independentError": 0.05708125,
+        "editableError": 0.05708125,
+        "solveAndValidationSeconds": 9.211096792000005,
+        "missingFeatures": 2,
+        "featureComponents": [
+          {
+            "centerMm": [
+              62.78570082893745,
+              50.15438960060286
+            ],
+            "sourceAreaMm2": 82.9375,
+            "intersectionPixels": 1153,
+            "retention": 0.8688771665410701,
+            "predictedComponentAreaMm2": 119.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.5540605478135512
+          },
+          {
+            "centerMm": [
+              23.56590909090909,
+              45.58863636363636
+            ],
+            "sourceAreaMm2": 3.4375,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          },
+          {
+            "centerMm": [
+              71.08376288659794,
+              97.48840206185567
+            ],
+            "sourceAreaMm2": 6.0625,
+            "intersectionPixels": 13,
+            "retention": 0.13402061855670103,
+            "predictedComponentAreaMm2": 5577.1875,
+            "touchesBorder": true,
+            "componentIoU": 0.00014554574054792373
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": false,
+        "previousIndependentError": 0.05708125
+      },
+      {
+        "id": "leaf",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0265125,
+        "editableError": 0.0263,
+        "solveAndValidationSeconds": 7.679576582999995,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              47.192743735416464,
+              42.4492619458253
+            ],
+            "sourceAreaMm2": 1232.125,
+            "intersectionPixels": 19543,
+            "retention": 0.9913259612458152,
+            "predictedComponentAreaMm2": 1232.125,
+            "touchesBorder": false,
+            "componentIoU": 0.982801106361579
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0265125
+      },
+      {
+        "id": "partial-right-checker",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "partial-left-abstract",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "gift",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0229375,
+        "editableError": 0.02324375,
+        "solveAndValidationSeconds": 9.473414167000003,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              53.88213680643795,
+              45.44615628970775
+            ],
+            "sourceAreaMm2": 737.8125,
+            "intersectionPixels": 11775,
+            "retention": 0.9974587039390089,
+            "predictedComponentAreaMm2": 738.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.993587039068433
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0229375
+      },
+      {
+        "id": "gingerbread",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.01591875,
+        "editableError": 0.01603125,
+        "solveAndValidationSeconds": 9.357302500000005,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              90.57519841269841,
+              89.32738095238095
+            ],
+            "sourceAreaMm2": 78.75,
+            "intersectionPixels": 1246,
+            "retention": 0.9888888888888889,
+            "predictedComponentAreaMm2": 97.9375,
+            "touchesBorder": true,
+            "componentIoU": 0.7881087919038583
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.01595625
+      },
+      {
+        "id": "white-birds",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.00379375,
+        "editableError": 0.00375,
+        "solveAndValidationSeconds": 5.4940176249999935,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              39.17172245467224,
+              93.17590655509065
+            ],
+            "sourceAreaMm2": 224.0625,
+            "intersectionPixels": 3550,
+            "retention": 0.9902370990237099,
+            "predictedComponentAreaMm2": 227.5625,
+            "touchesBorder": true,
+            "componentIoU": 0.9657236126224157
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.00379375
+      },
+      {
+        "id": "flower",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.01145,
+        "editableError": 0.0115,
+        "solveAndValidationSeconds": 5.494245458000005,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              50.61021719858156,
+              49.9063164893617
+            ],
+            "sourceAreaMm2": 705,
+            "intersectionPixels": 10997,
+            "retention": 0.9749113475177305,
+            "predictedComponentAreaMm2": 719.6875,
+            "touchesBorder": false,
+            "componentIoU": 0.932107136802848
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.01145
+      },
+      {
+        "id": "warped-checker",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0203875,
+        "editableError": 0.0205875,
+        "solveAndValidationSeconds": 9.626657749999998,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              10.975553505535055,
+              69.03436346863468
+            ],
+            "sourceAreaMm2": 67.75,
+            "intersectionPixels": 1075,
+            "retention": 0.9916974169741697,
+            "predictedComponentAreaMm2": 382,
+            "touchesBorder": true,
+            "componentIoU": 0.1756248978925012
+          },
+          {
+            "centerMm": [
+              21.01590909090909,
+              78.11515151515151
+            ],
+            "sourceAreaMm2": 41.25,
+            "intersectionPixels": 647,
+            "retention": 0.9803030303030303,
+            "predictedComponentAreaMm2": 85.625,
+            "touchesBorder": false,
+            "componentIoU": 0.467823571945047
+          },
+          {
+            "centerMm": [
+              24.767042213348546,
+              9.798274386765545
+            ],
+            "sourceAreaMm2": 109.5625,
+            "intersectionPixels": 951,
+            "retention": 0.54249857387336,
+            "predictedComponentAreaMm2": 67.0625,
+            "touchesBorder": true,
+            "componentIoU": 0.5072
+          },
+          {
+            "centerMm": [
+              54.14643845089903,
+              8.587309820193637
+            ],
+            "sourceAreaMm2": 45.1875,
+            "intersectionPixels": 690,
+            "retention": 0.9543568464730291,
+            "predictedComponentAreaMm2": 46.375,
+            "touchesBorder": false,
+            "componentIoU": 0.8903225806451613
+          },
+          {
+            "centerMm": [
+              76.7798473967684,
+              15.442324955116696
+            ],
+            "sourceAreaMm2": 34.8125,
+            "intersectionPixels": 545,
+            "retention": 0.9784560143626571,
+            "predictedComponentAreaMm2": 37.625,
+            "touchesBorder": false,
+            "componentIoU": 0.8876221498371335
+          },
+          {
+            "centerMm": [
+              14.913541666666667,
+              17.516145833333333
+            ],
+            "sourceAreaMm2": 30,
+            "intersectionPixels": 474,
+            "retention": 0.9875,
+            "predictedComponentAreaMm2": 32.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.9097888675623801
+          },
+          {
+            "centerMm": [
+              80.47292258522727,
+              30.022105823863637
+            ],
+            "sourceAreaMm2": 176,
+            "intersectionPixels": 2198,
+            "retention": 0.7805397727272727,
+            "predictedComponentAreaMm2": 139.6875,
+            "touchesBorder": false,
+            "componentIoU": 0.7704171048019628
+          },
+          {
+            "centerMm": [
+              90.93970070422536,
+              44.63116197183099
+            ],
+            "sourceAreaMm2": 35.5,
+            "intersectionPixels": 560,
+            "retention": 0.9859154929577465,
+            "predictedComponentAreaMm2": 38.5,
+            "touchesBorder": false,
+            "componentIoU": 0.8974358974358975
+          },
+          {
+            "centerMm": [
+              85.50289735099336,
+              70.6237582781457
+            ],
+            "sourceAreaMm2": 37.75,
+            "intersectionPixels": 579,
+            "retention": 0.9586092715231788,
+            "predictedComponentAreaMm2": 41,
+            "touchesBorder": false,
+            "componentIoU": 0.8502202643171806
+          },
+          {
+            "centerMm": [
+              77.04087677725119,
+              79.04798578199052
+            ],
+            "sourceAreaMm2": 26.375,
+            "intersectionPixels": 413,
+            "retention": 0.9786729857819905,
+            "predictedComponentAreaMm2": 28.5625,
+            "touchesBorder": false,
+            "componentIoU": 0.8862660944206009
+          },
+          {
+            "centerMm": [
+              42.29851046698873,
+              91.51308373590982
+            ],
+            "sourceAreaMm2": 38.8125,
+            "intersectionPixels": 614,
+            "retention": 0.9887278582930756,
+            "predictedComponentAreaMm2": 39.875,
+            "touchesBorder": false,
+            "componentIoU": 0.951937984496124
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0200375
+      },
+      {
+        "id": "round-checker",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0127,
+        "editableError": 0.0125625,
+        "solveAndValidationSeconds": 9.428601750000002,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              47.687676236862345,
+              47.747452576262496
+            ],
+            "sourceAreaMm2": 975.25,
+            "intersectionPixels": 15574,
+            "retention": 0.9980774160471674,
+            "predictedComponentAreaMm2": 975.625,
+            "touchesBorder": false,
+            "componentIoU": 0.9957800511508952
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0127
+      },
+      {
+        "id": "santa",
+        "status": "no_crop",
+        "completePassed": false
+      },
+      {
+        "id": "partial-left-diamonds",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "fine-checker",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.02434375,
+        "editableError": 0.02449375,
+        "solveAndValidationSeconds": 9.700369542,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              43.16470286885246,
+              74.25025614754098
+            ],
+            "sourceAreaMm2": 61,
+            "intersectionPixels": 965,
+            "retention": 0.9887295081967213,
+            "predictedComponentAreaMm2": 61.875,
+            "touchesBorder": false,
+            "componentIoU": 0.964035964035964
+          },
+          {
+            "centerMm": [
+              36.213202866593164,
+              82.97781146637266
+            ],
+            "sourceAreaMm2": 56.6875,
+            "intersectionPixels": 885,
+            "retention": 0.9757442116868799,
+            "predictedComponentAreaMm2": 57.3125,
+            "touchesBorder": false,
+            "componentIoU": 0.9424920127795527
+          },
+          {
+            "centerMm": [
+              50.459657398212514,
+              13.88766137040715
+            ],
+            "sourceAreaMm2": 62.9375,
+            "intersectionPixels": 993,
+            "retention": 0.9860973187686196,
+            "predictedComponentAreaMm2": 66.0625,
+            "touchesBorder": false,
+            "componentIoU": 0.927170868347339
+          },
+          {
+            "centerMm": [
+              61.27082492940702,
+              22.36602460669625
+            ],
+            "sourceAreaMm2": 154.9375,
+            "intersectionPixels": 2432,
+            "retention": 0.9810407422347721,
+            "predictedComponentAreaMm2": 263.5,
+            "touchesBorder": true,
+            "componentIoU": 0.5704902650715459
+          },
+          {
+            "centerMm": [
+              79.73599320882852,
+              29.595500848896435
+            ],
+            "sourceAreaMm2": 73.625,
+            "intersectionPixels": 1161,
+            "retention": 0.9855687606112055,
+            "predictedComponentAreaMm2": 75.0625,
+            "touchesBorder": false,
+            "componentIoU": 0.9532019704433498
+          },
+          {
+            "centerMm": [
+              67.14314240073026,
+              41.20692606115929
+            ],
+            "sourceAreaMm2": 136.9375,
+            "intersectionPixels": 2153,
+            "retention": 0.9826563213144682,
+            "predictedComponentAreaMm2": 138.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.9530765825586542
+          },
+          {
+            "centerMm": [
+              83.849128540305,
+              44.51633986928105
+            ],
+            "sourceAreaMm2": 57.375,
+            "intersectionPixels": 900,
+            "retention": 0.9803921568627451,
+            "predictedComponentAreaMm2": 58.3125,
+            "touchesBorder": false,
+            "componentIoU": 0.9463722397476341
+          },
+          {
+            "centerMm": [
+              72.7082538167939,
+              52.115696564885496
+            ],
+            "sourceAreaMm2": 65.5,
+            "intersectionPixels": 1025,
+            "retention": 0.9780534351145038,
+            "predictedComponentAreaMm2": 67.875,
+            "touchesBorder": false,
+            "componentIoU": 0.9242560865644724
+          },
+          {
+            "centerMm": [
+              50.67158859470469,
+              53.5193482688391
+            ],
+            "sourceAreaMm2": 61.375,
+            "intersectionPixels": 965,
+            "retention": 0.9826883910386965,
+            "predictedComponentAreaMm2": 62.3125,
+            "touchesBorder": false,
+            "componentIoU": 0.9516765285996055
+          },
+          {
+            "centerMm": [
+              33.10610465116279,
+              53.90140503875969
+            ],
+            "sourceAreaMm2": 64.5,
+            "intersectionPixels": 1020,
+            "retention": 0.9883720930232558,
+            "predictedComponentAreaMm2": 64.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.9723546234509056
+          },
+          {
+            "centerMm": [
+              81.40264423076923,
+              59.370432692307695
+            ],
+            "sourceAreaMm2": 65,
+            "intersectionPixels": 1020,
+            "retention": 0.9807692307692307,
+            "predictedComponentAreaMm2": 66.625,
+            "touchesBorder": false,
+            "componentIoU": 0.9392265193370166
+          },
+          {
+            "centerMm": [
+              57.74856321839081,
+              60.3441091954023
+            ],
+            "sourceAreaMm2": 65.25,
+            "intersectionPixels": 1030,
+            "retention": 0.9865900383141762,
+            "predictedComponentAreaMm2": 66.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.9493087557603687
+          },
+          {
+            "centerMm": [
+              65.38287766450416,
+              67.38519462465246
+            ],
+            "sourceAreaMm2": 67.4375,
+            "intersectionPixels": 1065,
+            "retention": 0.9870250231696015,
+            "predictedComponentAreaMm2": 68.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9629294755877035
+          },
+          {
+            "centerMm": [
+              72.96075197889182,
+              74.6773306948109
+            ],
+            "sourceAreaMm2": 71.0625,
+            "intersectionPixels": 1122,
+            "retention": 0.9868073878627969,
+            "predictedComponentAreaMm2": 73.25,
+            "touchesBorder": false,
+            "componentIoU": 0.945240101095198
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.02601875
+      },
+      {
+        "id": "orb",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.01336875,
+        "editableError": 0.01338125,
+        "solveAndValidationSeconds": 9.297996291999997,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              87.89890599675851,
+              74.40511885467315
+            ],
+            "sourceAreaMm2": 231.375,
+            "intersectionPixels": 3669,
+            "retention": 0.9910858995137763,
+            "predictedComponentAreaMm2": 275.625,
+            "touchesBorder": true,
+            "componentIoU": 0.825793382849426
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0133875
+      },
+      {
+        "id": "stacked-hearts",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.00753125,
+        "editableError": 0.00755,
+        "solveAndValidationSeconds": 5.392845125000007,
+        "missingFeatures": 0,
+        "featureComponents": [],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.00753125
+      },
+      {
+        "id": "jigsaw",
+        "status": "failed",
+        "enginePassed": false,
+        "conversionPassed": true,
+        "completePassed": false,
+        "independentError": 0.06653125,
+        "editableError": 0.06696875,
+        "solveAndValidationSeconds": 9.288483333000011,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              23.3444773923125,
+              31.319773923124945
+            ],
+            "sourceAreaMm2": 700.8125,
+            "intersectionPixels": 10175,
+            "retention": 0.9074288771961116,
+            "predictedComponentAreaMm2": 682.625,
+            "touchesBorder": false,
+            "componentIoU": 0.850752508361204
+          },
+          {
+            "centerMm": [
+              46.48157689643228,
+              50.10529961898165
+            ],
+            "sourceAreaMm2": 721.75,
+            "intersectionPixels": 10347,
+            "retention": 0.8959993072393488,
+            "predictedComponentAreaMm2": 711.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.8217121982210928
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": false,
+        "previousIndependentError": 0.06653125
+      },
+      {
+        "id": "candle",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0048375,
+        "editableError": 0.0048,
+        "solveAndValidationSeconds": 4.4402771669999925,
+        "missingFeatures": 0,
+        "featureComponents": [],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0048375
+      },
+      {
+        "id": "maple-leaf",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0139625,
+        "editableError": 0.0140375,
+        "solveAndValidationSeconds": 9.364897832999995,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              15.547989580550361,
+              18.88481832754475
+            ],
+            "sourceAreaMm2": 233.9375,
+            "intersectionPixels": 3732,
+            "retention": 0.9970611808709591,
+            "predictedComponentAreaMm2": 234.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9928172386272945
+          },
+          {
+            "centerMm": [
+              52.623195498589205,
+              54.0216130055338
+            ],
+            "sourceAreaMm2": 2857.4375,
+            "intersectionPixels": 45602,
+            "retention": 0.9974408889083314,
+            "predictedComponentAreaMm2": 2858.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9946127505507208
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0139625
+      },
+      {
+        "id": "crown",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0237375,
+        "editableError": 0.02383125,
+        "solveAndValidationSeconds": 9.514880541999998,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              24.177188552188554,
+              86.79671717171718
+            ],
+            "sourceAreaMm2": 18.5625,
+            "intersectionPixels": 276,
+            "retention": 0.9292929292929293,
+            "predictedComponentAreaMm2": 19.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.8414634146341463
+          },
+          {
+            "centerMm": [
+              27.931122448979593,
+              10.159908700322234
+            ],
+            "sourceAreaMm2": 58.1875,
+            "intersectionPixels": 914,
+            "retention": 0.9817400644468314,
+            "predictedComponentAreaMm2": 169.4375,
+            "touchesBorder": true,
+            "componentIoU": 0.3350439882697947
+          },
+          {
+            "centerMm": [
+              42.44271501925546,
+              25.677310654685492
+            ],
+            "sourceAreaMm2": 243.4375,
+            "intersectionPixels": 3872,
+            "retention": 0.9940949935815148,
+            "predictedComponentAreaMm2": 247.875,
+            "touchesBorder": false,
+            "componentIoU": 0.9706693406868889
+          },
+          {
+            "centerMm": [
+              37.98430994879648,
+              50.03882734363784
+            ],
+            "sourceAreaMm2": 1306.0625,
+            "intersectionPixels": 20789,
+            "retention": 0.9948317940374216,
+            "predictedComponentAreaMm2": 1306.375,
+            "touchesBorder": false,
+            "componentIoU": 0.9894811994288434
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.02386875
+      },
+      {
+        "id": "partial-bottom-left",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "bottom-diamonds",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "crossed-ribbons",
+        "status": "failed",
+        "enginePassed": false,
+        "conversionPassed": true,
+        "completePassed": false,
+        "independentError": 0.02153125,
+        "editableError": 0.02159375,
+        "solveAndValidationSeconds": 4.310429165999987,
+        "missingFeatures": 1,
+        "featureComponents": [
+          {
+            "centerMm": [
+              48.64583333333334,
+              98.73263888888889
+            ],
+            "sourceAreaMm2": 4.5,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": false,
+        "previousIndependentError": 0.02153125
+      },
+      {
+        "id": "bauble",
+        "status": "failed",
+        "enginePassed": false,
+        "conversionPassed": true,
+        "completePassed": false,
+        "independentError": 0.0926125,
+        "editableError": 0.092675,
+        "solveAndValidationSeconds": 8.983402666000009,
+        "missingFeatures": 5,
+        "featureComponents": [
+          {
+            "centerMm": [
+              34.50897714907508,
+              13.189200217627857
+            ],
+            "sourceAreaMm2": 114.875,
+            "intersectionPixels": 626,
+            "retention": 0.3405875952121872,
+            "predictedComponentAreaMm2": 51.4375,
+            "touchesBorder": false,
+            "componentIoU": 0.3076167076167076
+          },
+          {
+            "centerMm": [
+              68.6657586763519,
+              24.045702179176757
+            ],
+            "sourceAreaMm2": 77.4375,
+            "intersectionPixels": 424,
+            "retention": 0.34221146085552867,
+            "predictedComponentAreaMm2": 41.0625,
+            "touchesBorder": false,
+            "componentIoU": 0.28804347826086957
+          },
+          {
+            "centerMm": [
+              10.211181496758986,
+              26.01878314672952
+            ],
+            "sourceAreaMm2": 106.0625,
+            "intersectionPixels": 1432,
+            "retention": 0.8438420742486741,
+            "predictedComponentAreaMm2": 105.5625,
+            "touchesBorder": false,
+            "componentIoU": 0.7328556806550666
+          },
+          {
+            "centerMm": [
+              37.45990928793652,
+              58.03706697661411
+            ],
+            "sourceAreaMm2": 1787.9375,
+            "intersectionPixels": 28383,
+            "retention": 0.9921697486629146,
+            "predictedComponentAreaMm2": 1794.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.9810583802841243
+          },
+          {
+            "centerMm": [
+              82.81174033149173,
+              39.64074585635359
+            ],
+            "sourceAreaMm2": 56.5625,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          },
+          {
+            "centerMm": [
+              79.33070321151716,
+              57.12140088593577
+            ],
+            "sourceAreaMm2": 56.4375,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          },
+          {
+            "centerMm": [
+              72.49754901960785,
+              72.13480392156863
+            ],
+            "sourceAreaMm2": 3.1875,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          },
+          {
+            "centerMm": [
+              75.94506920415225,
+              77.95025951557093
+            ],
+            "sourceAreaMm2": 18.0625,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": false,
+        "previousIndependentError": 0.0926125
+      },
+      {
+        "id": "glare-motif",
+        "status": "obscured",
+        "completePassed": false
+      },
+      {
+        "id": "bottom-flower",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0093875,
+        "editableError": 0.00935625,
+        "solveAndValidationSeconds": 7.851798167000001,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              49.98983884046219,
+              51.74011757551186
+            ],
+            "sourceAreaMm2": 616.625,
+            "intersectionPixels": 9831,
+            "retention": 0.996452463004257,
+            "predictedComponentAreaMm2": 616.4375,
+            "touchesBorder": false,
+            "componentIoU": 0.9932309557486361
+          },
+          {
+            "centerMm": [
+              27.519194915254232,
+              74.39838983050848
+            ],
+            "sourceAreaMm2": 368.75,
+            "intersectionPixels": 5864,
+            "retention": 0.9938983050847457,
+            "predictedComponentAreaMm2": 369.375,
+            "touchesBorder": false,
+            "componentIoU": 0.986209216279852
+          },
+          {
+            "centerMm": [
+              14.62016648764769,
+              92.40588077336197
+            ],
+            "sourceAreaMm2": 58.1875,
+            "intersectionPixels": 864,
+            "retention": 0.9280343716433942,
+            "predictedComponentAreaMm2": 57.75,
+            "touchesBorder": false,
+            "componentIoU": 0.8718466195761857
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0093875
+      },
+      {
+        "id": "faceted-star",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0065,
+        "editableError": 0.0065125,
+        "solveAndValidationSeconds": 9.113690792000009,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              25.75426099401509,
+              72.37236533957845
+            ],
+            "sourceAreaMm2": 480.375,
+            "intersectionPixels": 7650,
+            "retention": 0.9953161592505855,
+            "predictedComponentAreaMm2": 481.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9888831437435367
+          },
+          {
+            "centerMm": [
+              24.407251264755484,
+              23.962858347386167
+            ],
+            "sourceAreaMm2": 370.625,
+            "intersectionPixels": 5902,
+            "retention": 0.9952782462057336,
+            "predictedComponentAreaMm2": 371.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.9891067538126361
+          },
+          {
+            "centerMm": [
+              47.27466367713005,
+              47.36154708520179
+            ],
+            "sourceAreaMm2": 27.875,
+            "intersectionPixels": 434,
+            "retention": 0.9730941704035875,
+            "predictedComponentAreaMm2": 28.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.9136842105263158
+          },
+          {
+            "centerMm": [
+              53.390625,
+              53.23229166666667
+            ],
+            "sourceAreaMm2": 15,
+            "intersectionPixels": 226,
+            "retention": 0.9416666666666667,
+            "predictedComponentAreaMm2": 15.875,
+            "touchesBorder": false,
+            "componentIoU": 0.8432835820895522
+          },
+          {
+            "centerMm": [
+              77.73363244435532,
+              74.99260577501504
+            ],
+            "sourceAreaMm2": 311.6875,
+            "intersectionPixels": 4951,
+            "retention": 0.9927812312011229,
+            "predictedComponentAreaMm2": 311.625,
+            "touchesBorder": false,
+            "componentIoU": 0.9858622062923138
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0065
+      },
+      {
+        "id": "partial-bottom-right",
+        "status": "incomplete",
+        "completePassed": false
+      },
+      {
+        "id": "bibel-star-8",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.003675,
+        "editableError": 0.00365,
+        "solveAndValidationSeconds": 3.7054226250000064,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              51.97184444560017,
+              51.77494409194924
+            ],
+            "sourceAreaMm2": 2403.5,
+            "intersectionPixels": 38355,
+            "retention": 0.9973736218015394,
+            "predictedComponentAreaMm2": 2402.0625,
+            "touchesBorder": false,
+            "componentIoU": 0.9953547516478953
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.003675
+      },
+      {
+        "id": "bibel-star-curved",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.00663125,
+        "editableError": 0.00635625,
+        "solveAndValidationSeconds": 6.918838791999995,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              65.01138010142478,
+              20.551980198019802
+            ],
+            "sourceAreaMm2": 517.625,
+            "intersectionPixels": 8268,
+            "retention": 0.9983095870562666,
+            "predictedComponentAreaMm2": 517.75,
+            "touchesBorder": false,
+            "componentIoU": 0.9963846710050615
+          },
+          {
+            "centerMm": [
+              85.46151726671563,
+              82.71555841293167
+            ],
+            "sourceAreaMm2": 85.0625,
+            "intersectionPixels": 1354,
+            "retention": 0.9948567229977957,
+            "predictedComponentAreaMm2": 85.75,
+            "touchesBorder": false,
+            "componentIoU": 0.9818709209572154
+          },
+          {
+            "centerMm": [
+              66.61249264273101,
+              93.33325976064353
+            ],
+            "sourceAreaMm2": 318.5625,
+            "intersectionPixels": 5087,
+            "retention": 0.9980380616048656,
+            "predictedComponentAreaMm2": 328.9375,
+            "touchesBorder": true,
+            "componentIoU": 0.9647259624502181
+          },
+          {
+            "centerMm": [
+              6.498408965135584,
+              14.840550636413946
+            ],
+            "sourceAreaMm2": 112.9375,
+            "intersectionPixels": 1804,
+            "retention": 0.9983397897066962,
+            "predictedComponentAreaMm2": 116.5625,
+            "touchesBorder": true,
+            "componentIoU": 0.9657387580299786
+          },
+          {
+            "centerMm": [
+              41.932974443918596,
+              59.440014197823004
+            ],
+            "sourceAreaMm2": 264.125,
+            "intersectionPixels": 4218,
+            "retention": 0.9981069569332702,
+            "predictedComponentAreaMm2": 264.125,
+            "touchesBorder": false,
+            "componentIoU": 0.9962210675484175
+          },
+          {
+            "centerMm": [
+              16.943706293706295,
+              84.02255244755244
+            ],
+            "sourceAreaMm2": 89.375,
+            "intersectionPixels": 1422,
+            "retention": 0.9944055944055944,
+            "predictedComponentAreaMm2": 89.75,
+            "touchesBorder": false,
+            "componentIoU": 0.9847645429362881
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.00663125
+      },
+      {
+        "id": "bibel-star-outline",
+        "status": "no_crop",
+        "completePassed": false
+      },
+      {
+        "id": "bibel-cross",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.00243125,
+        "editableError": 0.002425,
+        "solveAndValidationSeconds": 3.4419401249999937,
+        "missingFeatures": 0,
+        "featureComponents": [],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.00243125
+      },
+      {
+        "id": "flettede-puppy",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.01059375,
+        "editableError": 0.01071875,
+        "solveAndValidationSeconds": 9.350479541000007,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              61.219298245614034,
+              75.54385964912281
+            ],
+            "sourceAreaMm2": 7.125,
+            "intersectionPixels": 113,
+            "retention": 0.9912280701754386,
+            "predictedComponentAreaMm2": 9.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.7151898734177216
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.01209375
+      },
+      {
+        "id": "flettede-stonehenge",
+        "status": "failed",
+        "enginePassed": false,
+        "conversionPassed": true,
+        "completePassed": false,
+        "independentError": 0.05144375,
+        "editableError": 0.05119375,
+        "solveAndValidationSeconds": 9.750671833,
+        "missingFeatures": 1,
+        "featureComponents": [
+          {
+            "centerMm": [
+              16.558987997817784,
+              15.198104200763776
+            ],
+            "sourceAreaMm2": 114.5625,
+            "intersectionPixels": 1795,
+            "retention": 0.9792689579923622,
+            "predictedComponentAreaMm2": 114.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.9563132658497603
+          },
+          {
+            "centerMm": [
+              56.4875478927203,
+              61.352969348659
+            ],
+            "sourceAreaMm2": 32.625,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": false,
+        "previousIndependentError": 0.05144375
+      },
+      {
+        "id": "flettede-viking",
+        "status": "failed",
+        "enginePassed": false,
+        "conversionPassed": true,
+        "completePassed": false,
+        "independentError": 0.05656875,
+        "editableError": 0.056425,
+        "solveAndValidationSeconds": 9.810625292000012,
+        "missingFeatures": 1,
+        "featureComponents": [
+          {
+            "centerMm": [
+              47.41287878787879,
+              56.99560606060606
+            ],
+            "sourceAreaMm2": 51.5625,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          },
+          {
+            "centerMm": [
+              14.408517350157728,
+              15.145011829652997
+            ],
+            "sourceAreaMm2": 158.5,
+            "intersectionPixels": 2518,
+            "retention": 0.9929022082018928,
+            "predictedComponentAreaMm2": 719.3125,
+            "touchesBorder": true,
+            "componentIoU": 0.21844365402966948
+          },
+          {
+            "centerMm": [
+              85.19735169491526,
+              15.877012711864406
+            ],
+            "sourceAreaMm2": 147.5,
+            "intersectionPixels": 2146,
+            "retention": 0.9093220338983051,
+            "predictedComponentAreaMm2": 2250.5,
+            "touchesBorder": false,
+            "componentIoU": 0.059245762243940146
+          },
+          {
+            "centerMm": [
+              45.96876810195018,
+              48.65838804144944
+            ],
+            "sourceAreaMm2": 1942.125,
+            "intersectionPixels": 28157,
+            "retention": 0.9061273090043123,
+            "predictedComponentAreaMm2": 2250.5,
+            "touchesBorder": false,
+            "componentIoU": 0.7233654463712267
+          },
+          {
+            "centerMm": [
+              95.61345327604725,
+              95.43461331901182
+            ],
+            "sourceAreaMm2": 58.1875,
+            "intersectionPixels": 891,
+            "retention": 0.9570354457572503,
+            "predictedComponentAreaMm2": 65.5625,
+            "touchesBorder": true,
+            "componentIoU": 0.8181818181818182
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": false,
+        "previousIndependentError": 0.05656875
+      }
+    ]
+  },
+  "perturbations": {
+    "inventory": 4,
+    "excluded": 0,
+    "noCrop": 0,
+    "enginePassed": 3,
+    "exported": 4,
+    "converted": 4,
+    "completePassed": 3,
+    "unchangedInputs": true,
+    "rows": [
+      {
+        "id": "flettede-puppy--crop-x-plus-1",
+        "status": "failed",
+        "enginePassed": false,
+        "conversionPassed": true,
+        "completePassed": false,
+        "independentError": 0.00469375,
+        "editableError": 0.00450625,
+        "solveAndValidationSeconds": 8.6619385,
+        "missingFeatures": 1,
+        "featureComponents": [
+          {
+            "centerMm": [
+              61.013392857142854,
+              75.70982142857143
+            ],
+            "sourceAreaMm2": 7,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": false,
+        "previousIndependentError": 0.00488125
+      },
+      {
+        "id": "flettede-puppy--crop-y-plus-1",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.01258125,
+        "editableError": 0.0126625,
+        "solveAndValidationSeconds": 9.328512375,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              61.025,
+              75.38369565217391
+            ],
+            "sourceAreaMm2": 7.1875,
+            "intersectionPixels": 112,
+            "retention": 0.9739130434782609,
+            "predictedComponentAreaMm2": 12.375,
+            "touchesBorder": false,
+            "componentIoU": 0.5572139303482587
+          },
+          {
+            "centerMm": [
+              70.73833275503122,
+              94.76162387231088
+            ],
+            "sourceAreaMm2": 360.25,
+            "intersectionPixels": 5036,
+            "retention": 0.8736988202637057,
+            "predictedComponentAreaMm2": 322.0625,
+            "touchesBorder": true,
+            "componentIoU": 0.8563169528991668
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.01258125
+      },
+      {
+        "id": "flettede-puppy--jpeg-75",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.01375625,
+        "editableError": 0.01403125,
+        "solveAndValidationSeconds": 9.322949042,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              61.195247933884296,
+              75.54028925619835
+            ],
+            "sourceAreaMm2": 7.5625,
+            "intersectionPixels": 118,
+            "retention": 0.9752066115702479,
+            "predictedComponentAreaMm2": 7.625,
+            "touchesBorder": false,
+            "componentIoU": 0.944
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.01595625
+      },
+      {
+        "id": "flettede-puppy--half-resolution",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.008238001314924392,
+        "editableError": 0.008402366863905325,
+        "solveAndValidationSeconds": 9.389166583000002,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              61.31181318681318,
+              75.46474358974359
+            ],
+            "sourceAreaMm2": 7.363576594345823,
+            "intersectionPixels": 107,
+            "retention": 0.9553571428571429,
+            "predictedComponentAreaMm2": 12.360289283366203,
+            "touchesBorder": false,
+            "componentIoU": 0.5544041450777202
+          },
+          {
+            "centerMm": [
+              70.90919442469196,
+              94.86480017475124
+            ],
+            "sourceAreaMm2": 362.72189349112415,
+            "intersectionPixels": 5511,
+            "retention": 0.9989124524197933,
+            "predictedComponentAreaMm2": 367.1268902038132,
+            "touchesBorder": true,
+            "componentIoU": 0.9858676207513417
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.008277449046679815
+      }
+    ]
+  },
+  "hard25": {
+    "inventory": 4,
+    "excluded": 0,
+    "noCrop": 0,
+    "enginePassed": 4,
+    "exported": 4,
+    "converted": 4,
+    "completePassed": 4,
+    "unchangedInputs": true,
+    "rows": [
+      {
+        "id": "bird",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.0233875,
+        "editableError": 0.02415625,
+        "solveAndValidationSeconds": 22.953921625,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              62.78570082893745,
+              50.15438960060286
+            ],
+            "sourceAreaMm2": 82.9375,
+            "intersectionPixels": 1327,
+            "retention": 1,
+            "predictedComponentAreaMm2": 97.625,
+            "touchesBorder": false,
+            "componentIoU": 0.8495518565941101
+          },
+          {
+            "centerMm": [
+              23.56590909090909,
+              45.58863636363636
+            ],
+            "sourceAreaMm2": 3.4375,
+            "intersectionPixels": 52,
+            "retention": 0.9454545454545454,
+            "predictedComponentAreaMm2": 3.3125,
+            "touchesBorder": false,
+            "componentIoU": 0.9285714285714286
+          },
+          {
+            "centerMm": [
+              71.08376288659794,
+              97.48840206185567
+            ],
+            "sourceAreaMm2": 6.0625,
+            "intersectionPixels": 97,
+            "retention": 1,
+            "predictedComponentAreaMm2": 5605.25,
+            "touchesBorder": true,
+            "componentIoU": 0.0010815753088622274
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0233875
+      },
+      {
+        "id": "crown",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.02385,
+        "editableError": 0.02393125,
+        "solveAndValidationSeconds": 24.510598166999998,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              24.177188552188554,
+              86.79671717171718
+            ],
+            "sourceAreaMm2": 18.5625,
+            "intersectionPixels": 274,
+            "retention": 0.9225589225589226,
+            "predictedComponentAreaMm2": 19.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.8303030303030303
+          },
+          {
+            "centerMm": [
+              27.931122448979593,
+              10.159908700322234
+            ],
+            "sourceAreaMm2": 58.1875,
+            "intersectionPixels": 915,
+            "retention": 0.9828141783029001,
+            "predictedComponentAreaMm2": 169.5,
+            "touchesBorder": true,
+            "componentIoU": 0.3354105571847507
+          },
+          {
+            "centerMm": [
+              42.44271501925546,
+              25.677310654685492
+            ],
+            "sourceAreaMm2": 243.4375,
+            "intersectionPixels": 3872,
+            "retention": 0.9940949935815148,
+            "predictedComponentAreaMm2": 247.875,
+            "touchesBorder": false,
+            "componentIoU": 0.9706693406868889
+          },
+          {
+            "centerMm": [
+              37.98430994879648,
+              50.03882734363784
+            ],
+            "sourceAreaMm2": 1306.0625,
+            "intersectionPixels": 20788,
+            "retention": 0.9947839402785089,
+            "predictedComponentAreaMm2": 1306.125,
+            "touchesBorder": false,
+            "componentIoU": 0.9895749036035607
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.0237375
+      },
+      {
+        "id": "flettede-puppy",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.01073125,
+        "editableError": 0.010675,
+        "solveAndValidationSeconds": 17.437532583,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              61.219298245614034,
+              75.54385964912281
+            ],
+            "sourceAreaMm2": 7.125,
+            "intersectionPixels": 113,
+            "retention": 0.9912280701754386,
+            "predictedComponentAreaMm2": 9.75,
+            "touchesBorder": false,
+            "componentIoU": 0.7197452229299363
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.01200625
+      },
+      {
+        "id": "flettede-stonehenge",
+        "status": "validated",
+        "enginePassed": true,
+        "conversionPassed": true,
+        "completePassed": true,
+        "independentError": 0.02491875,
+        "editableError": 0.0248,
+        "solveAndValidationSeconds": 14.881140207999998,
+        "missingFeatures": 0,
+        "featureComponents": [
+          {
+            "centerMm": [
+              16.558987997817784,
+              15.198104200763776
+            ],
+            "sourceAreaMm2": 114.5625,
+            "intersectionPixels": 1823,
+            "retention": 0.994544462629569,
+            "predictedComponentAreaMm2": 115.125,
+            "touchesBorder": false,
+            "componentIoU": 0.984341252699784
+          },
+          {
+            "centerMm": [
+              56.4875478927203,
+              61.352969348659
+            ],
+            "sourceAreaMm2": 32.625,
+            "intersectionPixels": 413,
+            "retention": 0.7911877394636015,
+            "predictedComponentAreaMm2": 29.0625,
+            "touchesBorder": false,
+            "componentIoU": 0.7195121951219512
+          }
+        ],
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "previousEnginePassed": true,
+        "previousIndependentError": 0.02491875
+      }
+    ]
+  },
+  "browser": {
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "rows": [
+      {
+        "browser": "chromium",
+        "name": "hard-flettede-puppy",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.0106,
+        "featureComponents": [
+          {
+            "centerMm": [
+              61.219298245614034,
+              75.54385964912281
+            ],
+            "sourceAreaMm2": 7.125,
+            "intersectionPixels": 113,
+            "retention": 0.9912280701754386,
+            "predictedComponentAreaMm2": 9.5625,
+            "touchesBorder": false,
+            "componentIoU": 0.7337662337662337
+          }
+        ],
+        "missingFeatures": 0,
+        "clickToReadySeconds": 19.0255
+      },
+      {
+        "browser": "chromium",
+        "name": "hard-flettede-puppy-half",
+        "workflowPassed": true,
+        "classifiedMaskSha256": "848080620307356f73d0e344e06efe6241a5b4f29d49c6630b3f40607729c469",
+        "templateChecksPassed": true,
+        "editableError": 0.00915,
+        "featureComponents": [
+          {
+            "centerMm": [
+              60.95764462809918,
+              75.62913223140495
+            ],
+            "sourceAreaMm2": 7.5625,
+            "intersectionPixels": 120,
+            "retention": 0.9917355371900827,
+            "predictedComponentAreaMm2": 10,
+            "touchesBorder": false,
+            "componentIoU": 0.7453416149068323
+          }
+        ],
+        "missingFeatures": 0,
+        "clickToReadySeconds": 22.159699999928474
+      },
+      {
+        "browser": "chromium",
+        "name": "bird-mask",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.02455,
+        "featureComponents": [
+          {
+            "centerMm": [
+              62.78570082893745,
+              50.15438960060286
+            ],
+            "sourceAreaMm2": 82.9375,
+            "intersectionPixels": 1327,
+            "retention": 1,
+            "predictedComponentAreaMm2": 97.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.8468410976388002
+          },
+          {
+            "centerMm": [
+              23.56590909090909,
+              45.58863636363636
+            ],
+            "sourceAreaMm2": 3.4375,
+            "intersectionPixels": 51,
+            "retention": 0.9272727272727272,
+            "predictedComponentAreaMm2": 3.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9107142857142857
+          },
+          {
+            "centerMm": [
+              71.08376288659794,
+              97.48840206185567
+            ],
+            "sourceAreaMm2": 6.0625,
+            "intersectionPixels": 97,
+            "retention": 1,
+            "predictedComponentAreaMm2": 5607.625,
+            "touchesBorder": true,
+            "componentIoU": 0.001081117228773322
+          }
+        ],
+        "missingFeatures": 0,
+        "clickToReadySeconds": 25.20039999997616
+      },
+      {
+        "browser": "chromium",
+        "name": "gift-mask",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.02245,
+        "featureComponents": [
+          {
+            "centerMm": [
+              53.88213680643795,
+              45.44615628970775
+            ],
+            "sourceAreaMm2": 737.8125,
+            "intersectionPixels": 11776,
+            "retention": 0.9975434138077086,
+            "predictedComponentAreaMm2": 738.375,
+            "touchesBorder": false,
+            "componentIoU": 0.9943426496664697
+          }
+        ],
+        "missingFeatures": 0,
+        "clickToReadySeconds": 19.322799999952316
+      },
+      {
+        "browser": "chromium",
+        "name": "top-hat-independent",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.0029584750566893424,
+        "clickToReadySeconds": 6.2816000000238414
+      },
+      {
+        "browser": "chromium",
+        "name": "star",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.0016,
+        "clickToReadySeconds": 2.019899999976158
+      },
+      {
+        "browser": "webkit",
+        "name": "hard-flettede-puppy",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.0106625,
+        "featureComponents": [
+          {
+            "centerMm": [
+              61.219298245614034,
+              75.54385964912281
+            ],
+            "sourceAreaMm2": 7.125,
+            "intersectionPixels": 113,
+            "retention": 0.9912280701754386,
+            "predictedComponentAreaMm2": 9.625,
+            "touchesBorder": false,
+            "componentIoU": 0.7290322580645161
+          }
+        ],
+        "missingFeatures": 0,
+        "clickToReadySeconds": 20.601
+      },
+      {
+        "browser": "webkit",
+        "name": "hard-flettede-puppy-half",
+        "workflowPassed": true,
+        "classifiedMaskSha256": "848080620307356f73d0e344e06efe6241a5b4f29d49c6630b3f40607729c469",
+        "templateChecksPassed": true,
+        "editableError": 0.0090375,
+        "featureComponents": [
+          {
+            "centerMm": [
+              60.95764462809918,
+              75.62913223140495
+            ],
+            "sourceAreaMm2": 7.5625,
+            "intersectionPixels": 120,
+            "retention": 0.9917355371900827,
+            "predictedComponentAreaMm2": 9.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.759493670886076
+          }
+        ],
+        "missingFeatures": 0,
+        "clickToReadySeconds": 24.379
+      },
+      {
+        "browser": "webkit",
+        "name": "bird-mask",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.0245875,
+        "featureComponents": [
+          {
+            "centerMm": [
+              62.78570082893745,
+              50.15438960060286
+            ],
+            "sourceAreaMm2": 82.9375,
+            "intersectionPixels": 1327,
+            "retention": 1,
+            "predictedComponentAreaMm2": 97.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.8479233226837061
+          },
+          {
+            "centerMm": [
+              23.56590909090909,
+              45.58863636363636
+            ],
+            "sourceAreaMm2": 3.4375,
+            "intersectionPixels": 50,
+            "retention": 0.9090909090909091,
+            "predictedComponentAreaMm2": 3.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.8928571428571429
+          },
+          {
+            "centerMm": [
+              71.08376288659794,
+              97.48840206185567
+            ],
+            "sourceAreaMm2": 6.0625,
+            "intersectionPixels": 97,
+            "retention": 1,
+            "predictedComponentAreaMm2": 5608,
+            "touchesBorder": true,
+            "componentIoU": 0.0010810449358059915
+          }
+        ],
+        "missingFeatures": 0,
+        "clickToReadySeconds": 26.63
+      },
+      {
+        "browser": "webkit",
+        "name": "gift-mask",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.0223875,
+        "featureComponents": [
+          {
+            "centerMm": [
+              53.88213680643795,
+              45.44615628970775
+            ],
+            "sourceAreaMm2": 737.8125,
+            "intersectionPixels": 11777,
+            "retention": 0.9976281236764083,
+            "predictedComponentAreaMm2": 738.4375,
+            "touchesBorder": false,
+            "componentIoU": 0.9944270877311492
+          }
+        ],
+        "missingFeatures": 0,
+        "clickToReadySeconds": 24.236
+      },
+      {
+        "browser": "webkit",
+        "name": "top-hat-independent",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.0029584750566893424,
+        "clickToReadySeconds": 6.4350000000000005
+      },
+      {
+        "browser": "webkit",
+        "name": "star",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.0016,
+        "clickToReadySeconds": 2.178
+      }
+    ],
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "78328eba3e2fab7b22c96962ebcb7e71a717fbfde687dc1741dab05ed7e3d8f9",
+      "scripts/inverse/paint-observer.mjs": "ecd64762564fd41b3e872a330b5449ce9d8f7671906510b8f37b4a54c76ab67c",
+      "scripts/inverse/motif-fixture.mjs": "4c735dc7b27f39ce30362830ef911b79347a8b7f43d01b4eaeaf5750460355f1",
+      "scripts/inverse/tree-fixture.mjs": "771d6383cf90e840c911543258e26cd82c5d287336e65f53898045f429a1d84a",
+      "scripts/inverse/crop-fixture.mjs": "29d35f169e1c599ebdea6a20147d7cd8fddf22f0d53aaa3a8d690156161307bd",
+      "scripts/inverse/web-photo-data.mjs": "6fd029ea17d02efc1ca72cb2080f0dfc9b972d14ab1b5f7911002ae43608fee5",
+      "scripts/inverse/hard-photo-data.mjs": "1dd31822bf42b54f40c871de7903bbc0be0245c6c41a8d6669002c1eb17e6c9f",
+      "scripts/inverse/editable-paper-audit.mjs": "f34d170dfb9830c4ba51c5fa2565a0740977a994130313afd2dcd79f065c2429",
+      "scripts/inverse/feature-component-metrics.mjs": "655cb4d75a7e5e09c4386204409eabb41fb8cf98bc5c9b5f32a143759d86fc8e",
+      "scripts/inverse/fixtures/photographic-bird-fit.json": "cbcbb713ddc5c3e55f57d892d1fcdf41408fa26fa8f97cf96c615e2fcc3a9dc8",
+      "scripts/inverse/fixtures/photographic-checkerboard-fits.json": "0ee81f7c7609d66f75879218ce3c174ad3d9891a3bbc96e08a11a59ecaedf7fd",
+      "scripts/inverse/stop-browser-hooks.mjs": "f16ce129c448832d997ca6dd7d216f8e818374cbcf0d3d42ed2df6e93190a09c",
+      "scripts/inverse/fixtures/photographic-gift-fit.json": "3f628a763911f70f6da2b3a84524dd561bd3cfa5982b17a5d4a1ae39f5280e31",
+      "scripts/inverse/fixtures/browser-puppy-half-mask.json": "73da68cccbf9ad38996b4aa9d91914d1a546a0cfb347617f1daee261e26ad161"
+    },
+    "workspaceSourceHashes": {
+      "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "static/inverse/core/engine.js": "d87cb82eeb445bd93ad7814b58899555c1eeeb1c394d9e8f2975b350734fc54e",
+      "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+      "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+      "static/inverse/core/feature-recovery.js": "17337f5e6c95efbf94a7ea9c338e1accd92b8f4991782c6abc7652846b02c653",
+      "static/inverse/core/solver.js": "560e3cd353ceea897d4b96e153cf3da488054c2ee3ba003a9f0edc790ad0210b",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/locator/locator.js": "c8fb2bb7261337f38d00e9e2fad16ea50796b8c7cc64ae15f78d44c1745d2727",
+      "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+      "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+      "static/inverse/locator/palette.js": "502affe56bd94f932f115d637085979ae466da0da951a1a7258f33d8810394e1",
+      "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+      "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+      "static/inverse/core/automatic.js": "a926c0a7ed790a4ebe78e9dadba8ba7aa77ea9d2ef999e1cfd1cfde74272b76a",
+      "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "src/lib/inverse/engine.ts": "8f6674a430cb5f89ff597eb1f290a730173a5d82afcb42263a14762ded568618",
+      "static/inverse/core/direct/finalize.js": "0eeb4fac8d8c26d3f1acf6341159ba29b1850da47c58d8b45ecb70b6590b9e2e",
+      "static/inverse/core/direct/topology.js": "16e3840a83dcc2b1ec61c426008f9410cbf27fddaf62baefad23a17ed799b189",
+      "static/inverse/core/direct/fit.js": "23f1a9c6720c51df0bf41efe4923d59484c216cebf353b2349d9a333a264f70e",
+      "static/inverse/core/direct/share.js": "bcc6d5bf9489cbe134c0d1723a850d3bc4ac6c69421e8975d0589eb43ab32b99",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "38b429832cff5844bef49d4e393d18cb59d689578c6a39f7e1860a257bb34ea8",
+      "static/inverse/core/direct/feature-seeds.js": "8d13605875bf0f4dfe74c0bc18ac7145023c895754e9842499d6d00879999c45",
+      "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+      "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "src/lib/inverse/toHeartDesign.ts": "eb405a8bb15abebd46f07ed17457ebc44735221e92b9bc866a4ad5dc3c05c66f",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "266fe756e5876ffe4293518a87d48c6f0f1813f37e112e19712678101f8d47af",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/feature-shapes.js": "464cd2e62bdc9c1046bcca83c993788d80382eabfae726362d411a0c3de79284",
+      "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+      "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+      "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+      "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+      "static/inverse/core/material.js": "b38677af5801e894eb869d38df247ea02c06ba2bd773d606da97494e2297ce29",
+      "static/inverse/core/validate.js": "1625909f0db6745596ab64bc44b99c306dec0377d1322e7eb31e2f860e5b8224",
+      "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "static/inverse/core/direct/refine.js": "7bb1e8f18ff62c6c4cf5f2c5e7f6c398ca7a7ffed0668bc4b8dfef0c8c73953d",
+      "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+      "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+      "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+      "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+      "src/lib/components/paint/FramePanel.svelte": "9d048e201f9c83b3343d487f716dc835cfe9e61067fa228c8b4c043f7624bc1f",
+      "src/lib/components/paint/MaskToolPanel.svelte": "b37ff23378e86b8411f911a2c2106d8d3f410ab395b0c08915d4329b4ec143cb",
+      "src/lib/i18n/translations.ts": "408c079b8f04fd6da92d8b463442b7cbfb64846b5005e0b7e875dd4b8efff758",
+      "src/lib/components/paint/FindCutsPanel.svelte": "f47863c444d17e05c6d3076595c00e5c8c0e1b29ce1c7a11878a49299d0a48e1"
+    }
+  },
+  "stop": {
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "rows": [
+      {
+        "browser": "chromium",
+        "name": "hard-flettede-puppy",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.01226875,
+        "featureComponents": [
+          {
+            "centerMm": [
+              61.219298245614034,
+              75.54385964912281
+            ],
+            "sourceAreaMm2": 7.125,
+            "intersectionPixels": 104,
+            "retention": 0.9122807017543859,
+            "predictedComponentAreaMm2": 10.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.5621621621621622
+          }
+        ],
+        "missingFeatures": 0,
+        "clickToReadySeconds": 10.439699999928475,
+        "stopToReadySeconds": 3.925799999952316
+      },
+      {
+        "browser": "webkit",
+        "name": "hard-flettede-puppy",
+        "workflowPassed": true,
+        "templateChecksPassed": true,
+        "editableError": 0.01226875,
+        "featureComponents": [
+          {
+            "centerMm": [
+              61.219298245614034,
+              75.54385964912281
+            ],
+            "sourceAreaMm2": 7.125,
+            "intersectionPixels": 104,
+            "retention": 0.9122807017543859,
+            "predictedComponentAreaMm2": 10.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.5683060109289617
+          }
+        ],
+        "missingFeatures": 0,
+        "clickToReadySeconds": 10.355,
+        "stopToReadySeconds": 3.604
+      }
+    ],
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "78328eba3e2fab7b22c96962ebcb7e71a717fbfde687dc1741dab05ed7e3d8f9",
+      "scripts/inverse/paint-observer.mjs": "ecd64762564fd41b3e872a330b5449ce9d8f7671906510b8f37b4a54c76ab67c",
+      "scripts/inverse/motif-fixture.mjs": "4c735dc7b27f39ce30362830ef911b79347a8b7f43d01b4eaeaf5750460355f1",
+      "scripts/inverse/tree-fixture.mjs": "771d6383cf90e840c911543258e26cd82c5d287336e65f53898045f429a1d84a",
+      "scripts/inverse/crop-fixture.mjs": "29d35f169e1c599ebdea6a20147d7cd8fddf22f0d53aaa3a8d690156161307bd",
+      "scripts/inverse/web-photo-data.mjs": "6fd029ea17d02efc1ca72cb2080f0dfc9b972d14ab1b5f7911002ae43608fee5",
+      "scripts/inverse/hard-photo-data.mjs": "1dd31822bf42b54f40c871de7903bbc0be0245c6c41a8d6669002c1eb17e6c9f",
+      "scripts/inverse/editable-paper-audit.mjs": "f34d170dfb9830c4ba51c5fa2565a0740977a994130313afd2dcd79f065c2429",
+      "scripts/inverse/feature-component-metrics.mjs": "655cb4d75a7e5e09c4386204409eabb41fb8cf98bc5c9b5f32a143759d86fc8e",
+      "scripts/inverse/fixtures/photographic-bird-fit.json": "cbcbb713ddc5c3e55f57d892d1fcdf41408fa26fa8f97cf96c615e2fcc3a9dc8",
+      "scripts/inverse/fixtures/photographic-checkerboard-fits.json": "0ee81f7c7609d66f75879218ce3c174ad3d9891a3bbc96e08a11a59ecaedf7fd",
+      "scripts/inverse/stop-browser-hooks.mjs": "f16ce129c448832d997ca6dd7d216f8e818374cbcf0d3d42ed2df6e93190a09c",
+      "scripts/inverse/fixtures/photographic-gift-fit.json": "3f628a763911f70f6da2b3a84524dd561bd3cfa5982b17a5d4a1ae39f5280e31",
+      "scripts/inverse/fixtures/browser-puppy-half-mask.json": "73da68cccbf9ad38996b4aa9d91914d1a546a0cfb347617f1daee261e26ad161"
+    },
+    "workspaceSourceHashes": {
+      "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "static/inverse/core/engine.js": "d87cb82eeb445bd93ad7814b58899555c1eeeb1c394d9e8f2975b350734fc54e",
+      "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+      "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+      "static/inverse/core/feature-recovery.js": "17337f5e6c95efbf94a7ea9c338e1accd92b8f4991782c6abc7652846b02c653",
+      "static/inverse/core/solver.js": "560e3cd353ceea897d4b96e153cf3da488054c2ee3ba003a9f0edc790ad0210b",
+      "static/inverse/core/crop.js": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88",
+      "static/inverse/locator/locator.js": "c8fb2bb7261337f38d00e9e2fad16ea50796b8c7cc64ae15f78d44c1745d2727",
+      "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+      "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+      "static/inverse/locator/palette.js": "502affe56bd94f932f115d637085979ae466da0da951a1a7258f33d8810394e1",
+      "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+      "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+      "static/inverse/core/automatic.js": "a926c0a7ed790a4ebe78e9dadba8ba7aa77ea9d2ef999e1cfd1cfde74272b76a",
+      "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "src/lib/inverse/engine.ts": "8f6674a430cb5f89ff597eb1f290a730173a5d82afcb42263a14762ded568618",
+      "static/inverse/core/direct/finalize.js": "0eeb4fac8d8c26d3f1acf6341159ba29b1850da47c58d8b45ecb70b6590b9e2e",
+      "static/inverse/core/direct/topology.js": "16e3840a83dcc2b1ec61c426008f9410cbf27fddaf62baefad23a17ed799b189",
+      "static/inverse/core/direct/fit.js": "23f1a9c6720c51df0bf41efe4923d59484c216cebf353b2349d9a333a264f70e",
+      "static/inverse/core/direct/share.js": "bcc6d5bf9489cbe134c0d1723a850d3bc4ac6c69421e8975d0589eb43ab32b99",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "38b429832cff5844bef49d4e393d18cb59d689578c6a39f7e1860a257bb34ea8",
+      "static/inverse/core/direct/feature-seeds.js": "8d13605875bf0f4dfe74c0bc18ac7145023c895754e9842499d6d00879999c45",
+      "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+      "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "src/lib/inverse/toHeartDesign.ts": "eb405a8bb15abebd46f07ed17457ebc44735221e92b9bc866a4ad5dc3c05c66f",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "266fe756e5876ffe4293518a87d48c6f0f1813f37e112e19712678101f8d47af",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/feature-shapes.js": "464cd2e62bdc9c1046bcca83c993788d80382eabfae726362d411a0c3de79284",
+      "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+      "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+      "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+      "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+      "static/inverse/core/material.js": "b38677af5801e894eb869d38df247ea02c06ba2bd773d606da97494e2297ce29",
+      "static/inverse/core/validate.js": "1625909f0db6745596ab64bc44b99c306dec0377d1322e7eb31e2f860e5b8224",
+      "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "static/inverse/core/direct/refine.js": "7bb1e8f18ff62c6c4cf5f2c5e7f6c398ca7a7ffed0668bc4b8dfef0c8c73953d",
+      "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+      "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+      "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+      "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+      "src/lib/components/paint/FramePanel.svelte": "9d048e201f9c83b3343d487f716dc835cfe9e61067fa228c8b4c043f7624bc1f",
+      "src/lib/components/paint/MaskToolPanel.svelte": "b37ff23378e86b8411f911a2c2106d8d3f410ab395b0c08915d4329b4ec143cb",
+      "src/lib/i18n/translations.ts": "408c079b8f04fd6da92d8b463442b7cbfb64846b5005e0b7e875dd4b8efff758",
+      "src/lib/components/paint/FindCutsPanel.svelte": "f47863c444d17e05c6d3076595c00e5c8c0e1b29ce1c7a11878a49299d0a48e1"
+    }
+  },
+  "artifacts": {
+    "hunodan": {
+      "file": "tmp/enclosure-hunodan/results.json",
+      "sha256": "73b1f0305b5d1a595235f1193dc24fb6735f1c48e497b36bcbdaeffc3a883858"
+    },
+    "hard10": {
+      "file": "tmp/enclosure-hard10/results.json",
+      "sha256": "948bf6fb7389c81f862d14fb2717593fa1798cb920370daef8c1be2c82dcd155"
+    },
+    "editor10": {
+      "file": "tmp/enclosure-editor10/results.json",
+      "sha256": "b60b5c485d8294cb596433cc20f2dbc1bb67a93ba40356c759439881b28cd069"
+    },
+    "perturb": {
+      "file": "tmp/enclosure-perturb/results.json",
+      "sha256": "e64a79fb0636c370d4c9fed262034088f6cf998eac9d161298fbf8454e8a9cfd"
+    },
+    "editor-perturb": {
+      "file": "tmp/enclosure-editor-perturb/results.json",
+      "sha256": "211cfa205b0502184150ab9b894f5f82490fa069c763e11dc557239de22f70b0"
+    },
+    "hard25": {
+      "file": "tmp/enclosure-hard25/results.json",
+      "sha256": "ecb4cf5b8f8a2a785cc9c8e12d243f781089869b33cd0c14313e342fe708a14e"
+    },
+    "editor25": {
+      "file": "tmp/enclosure-editor25/results.json",
+      "sha256": "912af505c49caef3ed0e1ee81f2323450dcabea211de67d3f648893aac822a15"
+    },
+    "browser": {
+      "file": "tmp/enclosure-browser/results.json",
+      "sha256": "0a0e8f96167f74af6cc92a2d5ffb35275e8e2053de76fc03a4994f253e769c20"
+    },
+    "stop": {
+      "file": "tmp/enclosure-stop/results.json",
+      "sha256": "61081adbc132fae7a5b6741efd8dcf38ed5afe9fbb41fb82080104d0f26ff585"
+    },
+    "all-tests": {
+      "file": "tmp/enclosure-all-tests.log",
+      "sha256": "b2f2138ef5210df5adddbd3834f828fe0b53a4e654d3c4b32a36c34a41ba1b4c"
+    },
+    "check": {
+      "file": "tmp/enclosure-check.log",
+      "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    "lint": {
+      "file": "tmp/enclosure-lint.log",
+      "sha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    "build": {
+      "file": "tmp/enclosure-build.log",
+      "sha256": "474359c0e1ad49e6ecfa78766d88d460c5c88e08b1cfa3e1d88304a1f56dbb0d"
+    },
+    "metric-parity": {
+      "file": "tmp/enclosure-metric-parity.log",
+      "sha256": "4cd70de7200b75a447d557bdd73c21fbf6ddc79036567925ebb039adb3bf2f83"
+    }
+  },
+  "limitations": [
+    "Source-image agreement is not agreement with unavailable original cutting templates.",
+    "The fixed-crop half-resolution opening remains oversized and its outline has visible defects; the horizontal one-pixel crop shift still loses its opening.",
+    "Three complete photographs have no crop and remain failures.",
+    "Enclosure is a raster check for small substantial interior features, not a proof of exact continuous topology or identical source shapes.",
+    "No physical cutting or assembly test.",
+    "The improved actual browser upload still has visible frame defects and an oversized, angular opening. Passing the stated checks does not imply exact motif reconstruction."
+  ],
+  "qaCommit": "86c57a57f4df6711bcd16c4c83c91dc54c6d2610",
+  "servedAssets": {
+    "origin": "http://127.0.0.1:5232",
+    "passed": 65,
+    "rows": [
+      {
+        "file": "static/inverse/core/automatic.js",
+        "sha256": "a926c0a7ed790a4ebe78e9dadba8ba7aa77ea9d2ef999e1cfd1cfde74272b76a"
+      },
+      {
+        "file": "static/inverse/core/bezier.js",
+        "sha256": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d"
+      },
+      {
+        "file": "static/inverse/core/border.js",
+        "sha256": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f"
+      },
+      {
+        "file": "static/inverse/core/chord-distance.js",
+        "sha256": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04"
+      },
+      {
+        "file": "static/inverse/core/crop.js",
+        "sha256": "3df8552bf3f7b8304607d2c2e101c0c65c2cc668c4bc9517da0f241185e3ec88"
+      },
+      {
+        "file": "static/inverse/core/engine.js",
+        "sha256": "d87cb82eeb445bd93ad7814b58899555c1eeeb1c394d9e8f2975b350734fc54e"
+      },
+      {
+        "file": "static/inverse/core/export.js",
+        "sha256": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c"
+      },
+      {
+        "file": "static/inverse/core/feature-recovery.js",
+        "sha256": "17337f5e6c95efbf94a7ea9c338e1accd92b8f4991782c6abc7652846b02c653"
+      },
+      {
+        "file": "static/inverse/core/feature-shapes.js",
+        "sha256": "464cd2e62bdc9c1046bcca83c993788d80382eabfae726362d411a0c3de79284"
+      },
+      {
+        "file": "static/inverse/core/geometry.js",
+        "sha256": "b43be516cfd52f6aada04db99991c2943f2ae1f1c9ad0fb3c094b22d4274c54a"
+      },
+      {
+        "file": "static/inverse/core/graph.js",
+        "sha256": "2757dfb849f9b6ac35c2469d14428564e1a79d40d5cf6667467625327598ef84"
+      },
+      {
+        "file": "static/inverse/core/image-features.js",
+        "sha256": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1"
+      },
+      {
+        "file": "static/inverse/core/image-reference.js",
+        "sha256": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b"
+      },
+      {
+        "file": "static/inverse/core/input.js",
+        "sha256": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc"
+      },
+      {
+        "file": "static/inverse/core/junctions.js",
+        "sha256": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104"
+      },
+      {
+        "file": "static/inverse/core/kernel-choice.js",
+        "sha256": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63"
+      },
+      {
+        "file": "static/inverse/core/mask-preview.js",
+        "sha256": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b"
+      },
+      {
+        "file": "static/inverse/core/material.js",
+        "sha256": "b38677af5801e894eb869d38df247ea02c06ba2bd773d606da97494e2297ce29"
+      },
+      {
+        "file": "static/inverse/core/numerical-kernel.js",
+        "sha256": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e"
+      },
+      {
+        "file": "static/inverse/core/paper-backend.js",
+        "sha256": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81"
+      },
+      {
+        "file": "static/inverse/core/polygonal.js",
+        "sha256": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4"
+      },
+      {
+        "file": "static/inverse/core/portals.js",
+        "sha256": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40"
+      },
+      {
+        "file": "static/inverse/core/presets.js",
+        "sha256": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf"
+      },
+      {
+        "file": "static/inverse/core/progress.js",
+        "sha256": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7"
+      },
+      {
+        "file": "static/inverse/core/rounding.js",
+        "sha256": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295"
+      },
+      {
+        "file": "static/inverse/core/self-returns.js",
+        "sha256": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486"
+      },
+      {
+        "file": "static/inverse/core/settings.js",
+        "sha256": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48"
+      },
+      {
+        "file": "static/inverse/core/solver.js",
+        "sha256": "560e3cd353ceea897d4b96e153cf3da488054c2ee3ba003a9f0edc790ad0210b"
+      },
+      {
+        "file": "static/inverse/core/stopped.js",
+        "sha256": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1"
+      },
+      {
+        "file": "static/inverse/core/symmetry.js",
+        "sha256": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83"
+      },
+      {
+        "file": "static/inverse/core/unmix.js",
+        "sha256": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf"
+      },
+      {
+        "file": "static/inverse/core/validate.js",
+        "sha256": "1625909f0db6745596ab64bc44b99c306dec0377d1322e7eb31e2f860e5b8224"
+      },
+      {
+        "file": "static/inverse/core/zip.js",
+        "sha256": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b"
+      },
+      {
+        "file": "static/inverse/core/direct/boundary.js",
+        "sha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e"
+      },
+      {
+        "file": "static/inverse/core/direct/chord-tangent.js",
+        "sha256": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c"
+      },
+      {
+        "file": "static/inverse/core/direct/counts.js",
+        "sha256": "38b429832cff5844bef49d4e393d18cb59d689578c6a39f7e1860a257bb34ea8"
+      },
+      {
+        "file": "static/inverse/core/direct/curve-topology.js",
+        "sha256": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986"
+      },
+      {
+        "file": "static/inverse/core/direct/curves.js",
+        "sha256": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c"
+      },
+      {
+        "file": "static/inverse/core/direct/feature-details.js",
+        "sha256": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09"
+      },
+      {
+        "file": "static/inverse/core/direct/feature-seeds.js",
+        "sha256": "8d13605875bf0f4dfe74c0bc18ac7145023c895754e9842499d6d00879999c45"
+      },
+      {
+        "file": "static/inverse/core/direct/finalize.js",
+        "sha256": "0eeb4fac8d8c26d3f1acf6341159ba29b1850da47c58d8b45ecb70b6590b9e2e"
+      },
+      {
+        "file": "static/inverse/core/direct/fit.js",
+        "sha256": "23f1a9c6720c51df0bf41efe4923d59484c216cebf353b2349d9a333a264f70e"
+      },
+      {
+        "file": "static/inverse/core/direct/grid.js",
+        "sha256": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79"
+      },
+      {
+        "file": "static/inverse/core/direct/image-objective.js",
+        "sha256": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f"
+      },
+      {
+        "file": "static/inverse/core/direct/initialization-image.js",
+        "sha256": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7"
+      },
+      {
+        "file": "static/inverse/core/direct/initialize.js",
+        "sha256": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46"
+      },
+      {
+        "file": "static/inverse/core/direct/isometry-projection.js",
+        "sha256": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83"
+      },
+      {
+        "file": "static/inverse/core/direct/matching.js",
+        "sha256": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559"
+      },
+      {
+        "file": "static/inverse/core/direct/math.js",
+        "sha256": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a"
+      },
+      {
+        "file": "static/inverse/core/direct/native.js",
+        "sha256": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46"
+      },
+      {
+        "file": "static/inverse/core/direct/prefer-matching.js",
+        "sha256": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633"
+      },
+      {
+        "file": "static/inverse/core/direct/primitive-selection.js",
+        "sha256": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7"
+      },
+      {
+        "file": "static/inverse/core/direct/primitives.js",
+        "sha256": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5"
+      },
+      {
+        "file": "static/inverse/core/direct/refine.js",
+        "sha256": "7bb1e8f18ff62c6c4cf5f2c5e7f6c398ca7a7ffed0668bc4b8dfef0c8c73953d"
+      },
+      {
+        "file": "static/inverse/core/direct/share.js",
+        "sha256": "bcc6d5bf9489cbe134c0d1723a850d3bc4ac6c69421e8975d0589eb43ab32b99"
+      },
+      {
+        "file": "static/inverse/core/direct/shared-simplification.js",
+        "sha256": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821"
+      },
+      {
+        "file": "static/inverse/core/direct/shared-span.js",
+        "sha256": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0"
+      },
+      {
+        "file": "static/inverse/core/direct/sharing-orbit.js",
+        "sha256": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd"
+      },
+      {
+        "file": "static/inverse/core/direct/short-returns.js",
+        "sha256": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269"
+      },
+      {
+        "file": "static/inverse/core/direct/symmetry.js",
+        "sha256": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3"
+      },
+      {
+        "file": "static/inverse/core/direct/topology.js",
+        "sha256": "16e3840a83dcc2b1ec61c426008f9410cbf27fddaf62baefad23a17ed799b189"
+      },
+      {
+        "file": "static/inverse/worker.js",
+        "sha256": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70"
+      },
+      {
+        "file": "static/inverse/worker-bootstrap.js",
+        "sha256": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2"
+      },
+      {
+        "file": "static/inverse/worker-controller.js",
+        "sha256": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4"
+      },
+      {
+        "file": "static/inverse/compute-worker.js",
+        "sha256": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d"
+      }
+    ]
+  },
+  "actualUploadComparison": {
+    "sourceMaskSha256": "848080620307356f73d0e344e06efe6241a5b4f29d49c6630b3f40607729c469",
+    "resolution": 400,
+    "measurements": [
+      {
+        "directory": "tmp/short-return-reflection-browser/chromium-hard-flettede-puppy-half",
+        "error": 0.01790625,
+        "features": [
+          {
+            "centerMm": [
+              60.95764462809918,
+              75.62913223140495
+            ],
+            "sourceAreaMm2": 7.5625,
+            "intersectionPixels": 115,
+            "retention": 0.9504132231404959,
+            "predictedComponentAreaMm2": 4515,
+            "touchesBorder": true,
+            "componentIoU": 0.0015917836281593445
+          }
+        ]
+      },
+      {
+        "directory": "tmp/enclosure-browser/chromium-hard-flettede-puppy-half",
+        "error": 0.00915,
+        "features": [
+          {
+            "centerMm": [
+              60.95764462809918,
+              75.62913223140495
+            ],
+            "sourceAreaMm2": 7.5625,
+            "intersectionPixels": 120,
+            "retention": 0.9917355371900827,
+            "predictedComponentAreaMm2": 10,
+            "touchesBorder": false,
+            "componentIoU": 0.7453416149068323
+          }
+        ]
+      }
+    ]
+  },
+  "figure": {
+    "file": "docs/inverse/feature-enclosure.png",
+    "sha256": "793eb0871edb58bafdb8a45e46ab8dc8303cb6d4f31597065059618b46511d77"
+  }
+}

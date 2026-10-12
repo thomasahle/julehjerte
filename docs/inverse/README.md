@@ -7,6 +7,8 @@ Run `npm run test:inverse:paint:browser` against the built app for the actual Pa
 [COUNT-STRATEGIES.md](COUNT-STRATEGIES.md) compares count initialization on the frozen photo dataset, separating the cost of finding initial grids from complete solve time and measured reconstruction quality.
 
 Current full-pipeline investigations are recorded in
+[FEATURE-ENCLOSURE.md](FEATURE-ENCLOSURE.md) (preserving enclosed details through
+actual upload, alternate template fitting and editable export),
 [FEATURE-RESOLUTION.md](FEATURE-RESOLUTION.md) (small-feature spline capacity and
 rejected fits that fail editable export),
 [FEATURE-CHECKPOINTS.md](FEATURE-CHECKPOINTS.md) (small motif details, initialization,
