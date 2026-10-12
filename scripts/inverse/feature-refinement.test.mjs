@@ -53,13 +53,18 @@ test('poor grid agreement recovers tree branches without relying on a spurious e
   assert.deepEqual(source.mask,before);assert.deepEqual(source.probability,probability);
 });
 
-test('a recovered photo routing improves the actual exported mask before returning',async()=>{
+test('an accepted photo routing retains polishing time when a refinement checkpoint is slow',async t=>{
   const catalog=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
   const entry=catalog.cases.find(r=>r.id==='hjfig-05'),im=await loadImage(entry.source),[x,y,x1,y1]=entry.photoROI;
   const canvas=createCanvas(x1-x,y1-y),context=canvas.getContext('2d');context.drawImage(im,-x,-y);
   const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false,progressGeometry:true};
   const prepared=prepare({type:'pixels',imageWidth:canvas.width,imageHeight:canvas.height,rgba:context.getImageData(0,0,canvas.width,canvas.height).data,quad:entry.quad},cfg);
-  const answer=await design(prepared.target,cfg),replay=await renderExportedWeave(answer.files['cut_geometry.json'],prepared.preview.resolution);
+  const actualNow=performance.now.bind(performance);let checkpointDelay=0;
+  t.mock.method(performance,'now',()=>actualNow()+checkpointDelay);
+  const answer=await design(prepared.target,cfg,event=>{
+    if(event.stage==='directRefining'&&event.step===80)checkpointDelay=450;
+  }),replay=await renderExportedWeave(answer.files['cut_geometry.json'],prepared.preview.resolution);
+  assert.equal(checkpointDelay,450,'Exercise an expensive checkpoint without sleeping or replacing the candidate.');
   const error=replay.mask.reduce((sum,v,i)=>sum+Number(v!==prepared.preview.mask[i]),0)/replay.mask.length;
   assert.ok(['javascript','wasm'].includes(answer.report.solver.numericalBackend?.backend),'Recovered routes retain the backend diagnostic.');
   assert.ok(answer.report.solver.featureRecovery?.trigger,'The fixture must exercise recovery from a missing image feature.');
@@ -67,7 +72,8 @@ test('a recovered photo routing improves the actual exported mask before returni
   assert.deepEqual(answer.report.slits,{left:4,right:4});
   // The early 80-step result scored better internally but regressed to 1.0355%
   // in the independent renderer. Compare the real exported geometry here.
-  assert.ok(error<.0095,`Exported disagreement ${100*error}%`);
+  assert.ok(error<.0091,`Exported disagreement ${100*error}% must retain the known fit while the search still has time.`);
+  assert.ok(answer.report.solver.seconds<cfg.timeLimit);
 });
 
 test('an expired routing probe resumes after an unsuccessful first grid in a longer search',async t=>{

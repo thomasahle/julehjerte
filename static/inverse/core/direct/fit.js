@@ -226,7 +226,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // A recovered routing can still differ substantially from the image.
       // Give it the normal polishing step count within the same time reserve;
       // eighty steps could return while the image fit was still improving.
-      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:Math.min(until,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
+      // An already accepted route needs no reserved grid search. A fixed
+      // 0.7-second polish could lose known image quality on a slow checkpoint
+      // even with seconds left in the requested budget. Provisional routings
+      // retain their small allowance before the remaining grid candidates.
+      const polishDeadline=recovery.solution?until:Math.min(until,performance.now()+700);
+      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:polishDeadline,onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
       candidate.counts=counts;candidate.seed='feature-recovery';recoveredCandidates.push(candidate);
       const solution=graph.solution(candidate.points,phase,input),woven=sampleWeave(solution,source.resolution);
       recovery.report.refinement={imageError:maskDisagreement(source,woven),featuresPassed:auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed,geometryPassed:candidate.geometryPassed,paperPassed:candidate.paperPassed,steps:candidate.steps};
