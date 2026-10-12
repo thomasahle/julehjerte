@@ -2,6 +2,7 @@
 import argparse
 import json
 import platform
+import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -103,6 +104,7 @@ def main():
     parser.add_argument('--batch-size', type=int, default=8)
     parser.add_argument('--seed', type=int, default=1729)
     parser.add_argument('--device', choices=['cpu', 'mps', 'cuda'], default='mps')
+    parser.add_argument('--evaluate-run', help='Evaluate an existing selected checkpoint in a new output directory; never retrain or overwrite its evidence')
     args = parser.parse_args()
     if args.epochs < 1 or args.batch_size < 1:
         raise ValueError('Epochs and batch size must be positive')
@@ -138,13 +140,32 @@ def main():
         report['baseline'] = {s: evaluate(v) for s, v in splits.items()}
         # Both initializations construct the same random decoder before training;
         # loading encoder weights does not advance the random generator.
-        model = ProposalNet(args.initialization, 'tmp/heart-training-models/torchvision').to(device)
+        model = ProposalNet('random' if args.evaluate_run else args.initialization, 'tmp/heart-training-models/torchvision').to(device)
         report['initialization'] = model.initialization
         report['parameters'] = sum(p.numel() for p in model.parameters())
         optimizer = torch.optim.AdamW(model.parameters(), lr=3e-4, weight_decay=1e-4)
         report['optimizer'] = {'name': 'AdamW', 'learningRate': 3e-4, 'weightDecay': 1e-4}
         best = float('inf'); report['status'] = 'training'; save()
-        for epoch in range(args.epochs):
+        if args.evaluate_run:
+            previous = Path(args.evaluate_run)
+            prior = json.loads((previous/'report.json').read_text())
+            for field in ['preparedManifestSha256', 'datasetManifestSha256', 'splits', 'parameters']:
+                if prior[field] != report[field]: raise ValueError('Evaluation recovery differs in '+field)
+            for field in ['initialization', 'seed', 'epochs']:
+                if prior['arguments'][field] != vars(args)[field]: raise ValueError('Evaluation recovery differs in '+field)
+            if prior['sourceHashes']['model.py'] != report['sourceHashes']['model.py']:
+                raise ValueError('Evaluation recovery model implementation differs')
+            if len(prior['history']) != args.epochs or not prior.get('selectedEpoch'):
+                raise ValueError('Evaluation recovery requires completed training and a selected checkpoint')
+            checkpoint_hash = digest((previous/'model.pt').read_bytes())
+            if prior.get('checkpointSha256', checkpoint_hash) != checkpoint_hash:
+                raise ValueError('Evaluation recovery checkpoint checksum mismatch')
+            report['evaluationRecovery'] = {'directory': str(previous), 'reportSha256': digest((previous/'report.json').read_bytes()),
+                                            'checkpointSha256': checkpoint_hash, 'originalSourceHashes': prior['sourceHashes']}
+            for field in ['history', 'selectedEpoch', 'initialization', 'optimizer']:
+                report[field] = prior[field]
+            shutil.copyfile(previous/'model.pt', output/'model.pt')
+        for epoch in range(0 if args.evaluate_run else args.epochs):
             epoch_start = time.perf_counter(); model.train(); total = 0
             order = rng.permutation(len(splits['train']))
             for start in range(0, len(order), args.batch_size):

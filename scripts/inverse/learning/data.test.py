@@ -40,6 +40,11 @@ class LabelTests(unittest.TestCase):
         recovered = detect_nodes(node_heatmap(points, 80), .5)
         np.testing.assert_allclose(recovered, points)
 
+    def test_half_precision_evaluation_predictions(self):
+        points = np.array([[10.5, 20.5], [60.5, 50.5]])
+        recovered = detect_nodes(node_heatmap(points, 80).astype(np.float16), .5)
+        np.testing.assert_allclose(recovered, points)
+
 
 if __name__ == '__main__':
     unittest.main()

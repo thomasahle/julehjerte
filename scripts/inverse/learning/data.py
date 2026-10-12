@@ -88,6 +88,9 @@ def node_heatmap(points, resolution, sigma=2):
 
 
 def detect_nodes(heat, threshold=.25, radius=4, maximum=512):
+    # Predictions are stored in float16 to bound evaluation memory, while
+    # scipy.ndimage's maximum filter requires at least float32 on this platform.
+    heat = np.asarray(heat, dtype=np.float32)
     peaks = (heat >= threshold) & (heat == maximum_filter(heat, size=2*radius+1, mode='constant'))
     y, x = np.where(peaks)
     order = np.argsort(-heat[y, x], kind='stable')[:maximum]
