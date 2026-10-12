@@ -1,8 +1,8 @@
 /** Alternative routing from the same classified image; no reference templates. */
 import {preprocessMask,sampleTarget} from './input.js';
 import {oppositeBorderSeeds} from './border.js';
-import {buildGraph,reindex,inspectBoundaryEndpoints} from './graph.js';
-import {solveGraph} from './solver.js';
+import {reindex,inspectBoundaryEndpoints} from './graph.js';
+import {solveBoundary} from './routing.js';
 import {sampleWeave,validate} from './validate.js';
 import {materialAudit} from './material.js';
 import {auditFeatureFidelity} from './feature-shapes.js';
@@ -45,13 +45,13 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
       for(let i=0;i<graphChoices.length;i++){
         if(i&&graphChoices[i].neighbors===graphChoices[0].neighbors&&graphChoices[i].connectorVariants===graphChoices[0].connectorVariants)break;
         if(remaining()<.1)break;
-        const at=performance.now(),graphCfg={...cfg,...graphChoices[i]},graph=buildGraph(target,graphCfg,{onProgress}),left=remaining();
+        const at=performance.now(),graphCfg={...cfg,...graphChoices[i]},left=remaining();
         if(left<=0)break;
         // A timeout is not evidence that the sparse graph lacks a routing.
         // Let it use most of this phase before adding a much larger graph.
         const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=i||onlyChoice?left:left*.8,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{})};report.attempts.push(attempt);
         try{
-          solution=await solveGraph(graph,{...graphCfg,timeLimit:budget},{onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
+          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
           attempt.solver=solution.report;break;
         }catch(error){attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;}
         finally{attempt.seconds=(performance.now()-at)/1000;}

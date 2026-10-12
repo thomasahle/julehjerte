@@ -17,6 +17,7 @@ import {curveKey} from '../../../static/inverse/core/symmetry.js';
 import {preprocessMask} from '../../../static/inverse/core/input.js';
 import {targetSVG} from '../../../static/inverse/core/export.js';
 import {solveGraph,solverRuntime} from '../../../static/inverse/core/solver.js';
+import {solveBoundary} from '../../../static/inverse/core/routing.js';
 import {validate} from '../../../static/inverse/core/validate.js';
 import {materialAudit} from '../../../static/inverse/core/material.js';
 import {settings} from '../../../static/inverse/core/settings.js';
@@ -79,7 +80,7 @@ export function explainMissingConnectors(reference,graph,cfg){
     if(edge.visible||keys.has(curveKey(edge.curve.p)))return[];
     const ends=[edge.curve.p[0],edge.curve.p[3]],vertices=ends.map(p=>graph.points.findIndex(q=>keyPoint(p)===keyPoint(q)));
     const rank=(v,k,skipVisible)=>v<0?null:eligible.filter(other=>other!==v&&(!skipVisible||!adjacent[v].has(other))).sort((a,b)=>distance(graph.points[v],graph.points[a])-distance(graph.points[v],graph.points[b])).indexOf(vertices[1-k])+1;
-    const ranks=vertices.map((v,k)=>rank(v,k,true));
+    const ranks=vertices.map((v,k)=>rank(v,k,graph.metadata.unconnectedNeighbors));
     const row={referenceEdge:index,controlPoints:edge.curve.p,lengthMm:edge.curve.length(),vertices,eligible:vertices.map(v=>eligible.includes(v)),nearestRanks:ranks,unfilteredNearestRanks:vertices.map((v,k)=>rank(v,k,false))};
     if(vertices.some(v=>v<0)){row.reason='missing_vertex';return[row];}
     if(row.eligible.some(v=>!v)){row.reason='ineligible_vertex';return[row];}
@@ -138,16 +139,17 @@ export function oracleGraphVariants(reference,cfg){
   ];
 }
 
-export async function runGraphOracle({ids,output,seconds=3,repeats=1,study='connectors'}){
+export async function runGraphOracle({ids,output,seconds=3,repeats=1,study='connectors',neighborRetry=false}){
   if(!Number.isFinite(seconds)||seconds<.1||seconds>180||!Number.isInteger(repeats)||repeats<1)throw new Error('Use a positive bounded time limit and integer repeat count.');
   if(!['connectors','boundaries'].includes(study))throw new Error('Choose the connectors or boundaries study.');
+  if(typeof neighborRetry!=='boolean')throw new Error('neighborRetry must be a boolean.');
   const raw={...AUTOMATIC_PRESET,...SIMPLIFIED_PREPROCESSING,algorithm:'trace',neighbors:8,connectorVariants:1,timeLimit:seconds,trials:0},cfg=settings(raw);
   const hash=bytes=>createHash('sha256').update(bytes).digest('hex'),sourceHashes={};
   for(const file of ['scripts/inverse/experiments/graph-oracle.mjs','scripts/inverse/reference.mjs','scripts/inverse/export-renderer.mjs','static/inverse/core/input.js','static/inverse/core/graph.js','static/inverse/core/geometry.js','static/inverse/core/solver.js','static/inverse/core/validate.js','static/inverse/core/material.js','static/inverse/core/direct/curves.js'])sourceHashes[file]=hash(await fs.readFile(file));
   for(const file of ['scripts/inverse/experiments/graph-boundary-ablations.mjs','static/inverse/core/bezier.js','static/inverse/core/polygonal.js','static/inverse/core/junctions.js','static/inverse/core/border.js'])sourceHashes[file]=hash(await fs.readFile(file));
-  for(const file of ['static/inverse/core/export.js','package-lock.json'])sourceHashes[file]=hash(await fs.readFile(file));
+  for(const file of ['static/inverse/core/export.js','static/inverse/core/routing.js','package-lock.json'])sourceHashes[file]=hash(await fs.readFile(file));
   const ledger={purpose:'Oracle headroom experiment, not a reconstruction benchmark or trained model.',settings:raw,sourceHashes,repeats,criteria:{referenceImportError:.001,exportedImageError:.01,unchangedGeometryAndPaperRules:true},solverStartupExcluded:true,results:[],limitations:['Clean square gallery renderings only; no photograph crop or colour-classification evaluation.','Oracle variants expose exact visible geometry and the reference subdivision, including anchors a photograph may not reveal.','The compact graph is restricted to one known valid routing, not all valid template pairs. Missing reference edges do not prove that another routing is unavailable.','HiGHS is still given unknown sheet ownership; independent exported rendering and the normal geometry/paper checks remain required.']};
-  Object.assign(ledger,{study,runtime:process.version,platform:process.platform,cpu:cpus()[0]?.model});
+  Object.assign(ledger,{study,neighborRetry,runtime:process.version,platform:process.platform,cpu:cpus()[0]?.model});
   if(study==='boundaries')ledger.limitations.push('Removing straight anchors is a partial junction ablation: original curved anchors remain.','Projection adds knots to existing traced curves; it cannot move an incorrect boundary, join nearby curves, or repair a missing image feature.','Boundary preprocessing is cached within each case; per-variant preparation timings include only the work performed for that variant.','Boundary diagnostics use cubic monotone-interval intersections and a 1e-9 mm pixel-centre tie convention; final acceptance still uses independently rendered exported SVGs.');
   await fs.mkdir(output,{recursive:true});
   const save=()=>fs.writeFile(path.join(output,'results.json'),JSON.stringify(ledger,null,2)+'\n');
@@ -217,8 +219,10 @@ export async function runGraphOracle({ids,output,seconds=3,repeats=1,study='conn
           if(result.boundaryIssue){result.status='boundary_preflight';await save();continue;}
           const at=performance.now();
           try{
-            const solution=await solveGraph(graph,cfg,{coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:s=>materialAudit(s,cfg)});
+            const options={coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:s=>materialAudit(s,cfg)};
+            const solution=neighborRetry?await solveBoundary(graph.target,cfg,{...options,initialGraph:graph,node:false}):await solveGraph(graph,cfg,options);
             result.solveSeconds=(performance.now()-at)/1000;result.solver=solution.report;
+            result.selectedGraph=solution.graph.metadata;
             const exported=solutionJSON(solution),rendered=await renderExportedWeave(exported,400);
             result.referenceImageError=error(rendered.mask);result.geometry=validate(solution,cfg);result.paper=materialAudit(solution,cfg).summary;
             result.passed=result.geometry.passed&&result.paper.status==='pass'&&result.referenceImageError<=.01;
@@ -245,7 +249,7 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(path.resolve(process.argv[1]
     ?JSON.parse(await fs.readFile('src/lib/data/hearts.json','utf8')).categories.flatMap(c=>c.hearts)
     :args.ids?.split(',')||['classic-3x3','5star','flower','ramme','sun','circle','juletrae','amy-pattern'];
   const output=args.output||`tmp/graph-oracle-${new Date().toISOString().replace(/[:.]/g,'-')}`;
-  const report=await runGraphOracle({ids,output,seconds:Number(args.seconds||3),repeats:Number(args.repeats||1),study:args.study||'connectors'});
+  const report=await runGraphOracle({ids,output,seconds:Number(args.seconds||3),repeats:Number(args.repeats||1),study:args.study||'connectors',neighborRetry:args['neighbor-retry']==='true'});
   console.log(JSON.stringify({output,cases:report.results.length,evaluated:report.results.filter(r=>r.status==='evaluated').length}));
   if(!report.results.some(r=>r.status==='evaluated'))process.exitCode=1;
 }

@@ -42,7 +42,7 @@ export function graphCurveParts(curve,stats=null,depth=0){
   if(stats)stats.closedSplits++;
   return curve.split().flatMap(part=>graphCurveParts(part,stats,depth+1));
 }
-export function buildGraph(target,cfg,{onProgress=()=>{},node=true}={}){
+export function buildGraph(target,cfg,{onProgress=()=>{},node=true,unconnectedNeighbors=false}={}){
   const start=performance.now(),noded=node?nodeCurves(target.curves,cfg.geometryTolerance):target.curves,portals=cfg.gridPortals?guidePortals(noded,target.width,cfg.geometryTolerance):{curves:noded,guides:[],added:0},curves=portals.curves,edges=[];
   const vertexNormalization={collapsedSegments:0,closedSplits:0,maximumEndpointMoveMm:0};
   for(const curve of curves)for(const part of graphCurveParts(curve,vertexNormalization))edges.push({curve:part,visible:true});
@@ -50,10 +50,10 @@ export function buildGraph(target,cfg,{onProgress=()=>{},node=true}={}){
   const graph=reindex({target,edges}),{points,incident}=graph,w=target.width,tol=cfg.geometryTolerance;
   for(const e of edges){const p=e.curve.p.map(q=>[...q]),d0=sub(points[e.u],p[0]),d1=sub(points[e.v],p[3]);vertexNormalization.maximumEndpointMoveMm=Math.max(vertexNormalization.maximumEndpointMoveMm,norm(d0),norm(d1));p[0]=points[e.u];p[1]=add(p[1],d0);p[2]=add(p[2],d1);p[3]=points[e.v];e.curve=new Cubic(p);}
   target.curves=edges.map(e=>e.curve);const visibleCount=edges.length,lines=edges.map(e=>e.curve.flatten(tol)),boxes=lines.map(bbox),eligible=points.map((p,i)=>i).filter(v=>incident[v].length===2&&Math.min(...points[v])>1e-6&&Math.max(...points[v])<w-1e-6),pairs=guidePairs(points,eligible,portals.guides,tol),visiblePairs=new Set(edges.map(e=>[Math.min(e.u,e.v),Math.max(e.u,e.v)].join(',')));
-  // Existing visible edges cannot also be optional connectors. Remove their
-  // endpoints before taking the budget, or harmless boundary subdivisions can
-  // consume every slot and exclude a necessary connection to another contour.
-  for(const u of eligible){const adjacent=new Set(incident[u].map(i=>edges[i].u===u?edges[i].v:edges[i].u));const near=eligible.filter(v=>v!==u&&!adjacent.has(v)).map(v=>({v,d:distance(points[u],points[v])})).sort((a,b)=>a.d-b.d).slice(0,cfg.neighbors);for(const {v}of near)pairs.add([Math.min(u,v),Math.max(u,v)].join(','));}
+  // The optional expansion excludes visible neighbors before taking the
+  // budget. Keep the established smaller pool first: extra candidates can
+  // slow search even when all old routes remain available.
+  for(const u of eligible){const adjacent=unconnectedNeighbors?new Set(incident[u].map(i=>edges[i].u===u?edges[i].v:edges[i].u)):null;const near=eligible.filter(v=>v!==u&&!adjacent?.has(v)).map(v=>({v,d:distance(points[u],points[v])})).sort((a,b)=>a.d-b.d).slice(0,cfg.neighbors);for(const {v}of near)pairs.add([Math.min(u,v),Math.max(u,v)].join(','));}
   if(cfg.gridPortals){const corners=eligible.map(v=>{const outs=incident[v].slice(0,2).map(e=>edges[e].u===v?edges[e].curve.tangent(0):mul(edges[e].curve.tangent(1),-1));return{v,bisector:add(outs[0],outs[1])};}).filter(c=>norm(c.bisector)>.3);for(const a of corners){const candidates=corners.filter(b=>b.v!==a.v).map(b=>{const d=unit(sub(points[b.v],points[a.v])),alignment=Math.min(Math.abs(dot(d,unit(a.bisector))),Math.abs(dot(d,unit(b.bisector))));return{v:b.v,alignment,distance:distance(points[a.v],points[b.v])};}).filter(b=>b.alignment>=Math.cos(20*Math.PI/180)).sort((a,b)=>b.alignment-a.alignment||a.distance-b.distance).slice(0,2);for(const b of candidates)pairs.add([Math.min(a.v,b.v),Math.max(a.v,b.v)].join(','));}}
   const preferred=(v,toward)=>{const outs=incident[v].slice(0,2).map(i=>{const e=edges[i];return e.u===v?e.curve.tangent(0):mul(e.curve.tangent(1),-1);});let b=mul(add(outs[0],outs[1]),-1);if(norm(b)<.1)b=[-outs[0][1],outs[0][0]];b=unit(b);return dot(b,toward)<0?mul(b,-1):b;};
   const endpointEdges=visibleEndpointNeighborhoods(graph,2*tol);
@@ -61,7 +61,7 @@ export function buildGraph(target,cfg,{onProgress=()=>{},node=true}={}){
   let checked=0;for(const pair of [...pairs].sort()){if(visiblePairs.has(pair))continue;const[u,v]=pair.split(',').map(Number),a=points[u],b=points[v],d=distance(a,b);if(d<5*tol)continue;const variants=[Cubic.line(a,b)];if(cfg.connectorVariants>1){const ta=preferred(u,unit(sub(b,a))),tb=preferred(v,unit(sub(a,b)));for(const f of cfg.connectorVariants===2?[.24]:[.15,.32])variants.push(new Cubic([a,add(a,mul(ta,f*d)),add(b,mul(tb,f*d)),b]));}for(const c of variants)if(clear(c,u,v)){const i=edges.length;edges.push({u,v,curve:c,visible:false});incident[u].push(i);incident[v].push(i);}if(++checked%100===0)onProgress({stage:'connectors',checked,total:pairs.size});if(edges.length>2200)throw new Error('Candidate graph too large. Reduce connection neighbours or image detail.');}
   if(target.metadata.identicalSheets){const keys=new Set(edges.map(e=>curveKey(e.curve.p)));for(const e of [...edges]){const p=transposedKey(e.curve),key=curveKey(p);if(!keys.has(key)){if(e.visible)throw new Error('Identical-sheet boundary subdivision is inconsistent.');edges.push({curve:new Cubic(p),visible:false});keys.add(key);}}reindex(graph);const lookup=new Map(edges.map((e,i)=>[curveKey(e.curve.p),i]));graph.transpose=edges.map(e=>lookup.get(curveKey(transposedKey(e.curve))));}
   graph.guides=portals.guides;
-  graph.metadata={visibleEdges:visibleCount,hiddenCandidates:edges.length-visibleCount,vertices:points.length,buildSeconds:(performance.now()-start)/1000,guidePortals:portals.added,guideCount:portals.guides.length,guideSkip:portals.skipped||null,vertexNormalization,candidateMethod:'border-inferred guide portals, nearest unconnected portal neighbours and tangent-shaped cubic variants; adaptive noding',delaunayCandidates:false};return graph;
+  graph.metadata={visibleEdges:visibleCount,hiddenCandidates:edges.length-visibleCount,vertices:points.length,buildSeconds:(performance.now()-start)/1000,guidePortals:portals.added,guideCount:portals.guides.length,guideSkip:portals.skipped||null,vertexNormalization,unconnectedNeighbors,candidateMethod:`border-inferred guide portals, nearest ${unconnectedNeighbors?'unconnected ':''}portal neighbours and tangent-shaped cubic variants; adaptive noding`,delaunayCandidates:false};return graph;
 }
 /** Necessary boundary conditions, independent of optional hidden connectors.
  * Counts and spacing can reject a seed; passing them does not prove routability.

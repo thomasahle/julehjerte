@@ -4,7 +4,7 @@
 import {preprocessMask,sampleTarget} from '../input.js';
 import {transposeTarget} from '../symmetry.js';
 import {buildGraph,curvesOf,reindex,inspectBoundaryEndpoints} from '../graph.js';
-import {solveGraph} from '../solver.js';
+import {solveBoundary} from '../routing.js';
 import {sampleWeave} from '../validate.js';
 import {materialAudit} from '../material.js';
 import {auditImageFeatures} from '../image-features.js';
@@ -149,7 +149,8 @@ function prepareTopologyPhase(input,cfg,{maximumError,guidePhase,onProgress}){
     const guideSource=source.weights?{mask:initializationMask(source,guidePhase),resolution:source.resolution}:source;
     if(symmetryEvidence(guideSource).minimumIdenticalImageError<=.005){target=transposeTarget({...target,sourceImage:guideSource});target.sourceImage=source;report.matchingProposal=true;}
     const graphCfg=settings({...cfg,...MATCHING_GRID_PRESET,maxTurn:cfg.maxTurn,localNeighborhoodFactor:cfg.localNeighborhoodFactor});
-    return{graph:buildGraph(target,graphCfg,{onProgress}),cfg:graphCfg,report};
+    const seed={...target,curves:target.curves.slice()};
+    return{graph:buildGraph(target,graphCfg,{onProgress}),target:seed,cfg:graphCfg,report};
   }catch(error){report.error=error.message;return{report};}
 }
 
@@ -159,7 +160,7 @@ async function initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgres
   try{
     if(!phase.graph)return{report};
     const graphCfg=settings({...phase.cfg,timeLimit:Math.max(.1,seconds-(performance.now()-start)/1000),...(relaxationOnly?{maxRounds:1}:{})});
-    const solution=await solveGraph(phase.graph,graphCfg,{onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,relaxationOnly,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
+    const solution=await solveBoundary(phase.target,graphCfg,{initialGraph:phase.graph,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,relaxationOnly,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
     report.solver=solution.report;report.imageError=maskDisagreement(source,sampleWeave(solution,source.resolution));
     if(report.imageError>maximumError||!auditImageFeatures(source,sampleWeave(solution,source.resolution),cfg.width).passed)return{report};
     const paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p)));

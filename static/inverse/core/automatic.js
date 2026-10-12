@@ -7,8 +7,7 @@ import {maskDisagreement} from './direct/prefer-matching.js';
 import {finalizeFittedSolution} from './direct/finalize.js';
 import {fitDirect} from './direct/fit.js';
 import {sampleWeave} from './validate.js';
-import {buildGraph} from './graph.js';
-import {solveGraph} from './solver.js';
+import {solveBoundary} from './routing.js';
 import {materialAudit} from './material.js';
 import {auditFeatureFidelity} from './feature-shapes.js';
 import {prepareBoundary} from './direct/topology.js';
@@ -59,8 +58,7 @@ export async function solveAutomatic(target,cfg,onProgress){
   else if(route==='vector'){
     const traceCfg=settings({...cfg,...GENERAL_PRESET,timeLimit:Math.max(.1,Math.min(3,cfg.timeLimit*.4))});
     try{
-      onProgress({stage:'graph'});
-      const graph=buildGraph(target,traceCfg,{onProgress}),solution=await solveGraph(graph,traceCfg,{onProgress,coefficientQuantum:1e-7,coreGate:traceCfg.requireMaterialCore?s=>materialAudit(s,traceCfg):null});
+      const solution=await solveBoundary(target,traceCfg,{onProgress,coefficientQuantum:1e-7,coreGate:traceCfg.requireMaterialCore?s=>materialAudit(s,traceCfg):null});
       const woven=sampleWeave(solution,target.sourceImage.resolution),error=maskDisagreement(target.sourceImage,woven);
       // <=1% is already within the matching allowance of any possible better
       // image fit (whose error cannot be negative). Keep the original mask.
