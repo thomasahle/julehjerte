@@ -460,6 +460,11 @@ in [CONNECTOR-RETRY-VALIDATION.json](CONNECTOR-RETRY-VALIDATION.json).
 
 ### Candidate learning tasks
 
+The [training-data overview](datasets/README.md) now links the collected real
+photographs, Pinterest importer, validated synthetic generator and pretrained
+model comparison. These prepare learning experiments; no neural model has
+been trained or integrated into the live solver.
+
 The following are proposals, not measured model performance:
 
 | Task | Suggested inputs and outputs | Role and limitation |
