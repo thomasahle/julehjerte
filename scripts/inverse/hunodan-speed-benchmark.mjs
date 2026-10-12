@@ -24,6 +24,7 @@ const engineSha256={};
 for(const name of await fs.readdir('static/inverse/core',{recursive:true}))if(/\.(js|wasm|c)$/.test(name)){
   const file=`static/inverse/core/${name}`;engineSha256[file]=hash(await fs.readFile(file));
 }
+engineSha256['scripts/inverse/export-renderer.mjs']=hash(await fs.readFile('scripts/inverse/export-renderer.mjs'));
 if(experiment)engineSha256[experiment]=hash(await fs.readFile(experiment));
 const report={experiment:experiment||'production',cfg,retainCandidates,engineSha256,baselineSha256:hash(await fs.readFile('docs/inverse/HUNODAN-VALIDATION.json')),criteria:'Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.',runtime:process.version,platform:process.platform,cpu:cpus()[0]?.model,results};
 for(const e of catalog.cases){
