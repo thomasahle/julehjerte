@@ -1,7 +1,7 @@
 /** Alternative routing from the same classified image; no reference templates. */
 import {preprocessMask,sampleTarget} from './input.js';
 import {oppositeBorderSeeds} from './border.js';
-import {reindex,inspectBoundaryEndpoints} from './graph.js';
+import {buildGraph,reindex,inspectBoundaryEndpoints} from './graph.js';
 import {solveBoundary} from './routing.js';
 import {sampleWeave,validate} from './validate.js';
 import {materialAudit} from './material.js';
@@ -15,7 +15,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
     // First preserve the established trace and vary optional hidden connectors;
     // coarsening the contours themselves can remove necessary routing choices.
     const choices=[{neighbors:Math.min(8,cfg.neighbors),connectorVariants:1},{neighbors:cfg.neighbors,connectorVariants:cfg.connectorVariants}];
-    let solution=null;
+    let solution=null;const deferred=[];
     const runSeed=async(smoothRadius,borderSeed=null)=>{
       const seedStarted=performance.now();
       // Explore these provisional edge interpretations with the sparse graph;
@@ -51,9 +51,14 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         // Let it use most of this phase before adding a much larger graph.
         const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=i||onlyChoice?left:left*.8,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{})};report.attempts.push(attempt);
         try{
-          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
+          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{expandNeighbors:false,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
           attempt.solver=solution.report;break;
-        }catch(error){attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;}
+        }catch(error){
+          attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;
+          // The later ordinary graph covers this sparse proposal. Defer only
+          // the final exhausted pool for each boundary interpretation.
+          if(error.report?.termination==='candidate_graph_exhausted'&&(onlyChoice||i===graphChoices.length-1))deferred.push({target,graphCfg,initialAttempt:report.attempts.length-1});
+        }
         finally{attempt.seconds=(performance.now()-at)/1000;}
       }
     };
@@ -78,6 +83,28 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         }
         if(solution||remaining()<.25||report.attempts.some(a=>a.solver&&a.solver.termination!=='candidate_graph_exhausted'))break;
       }
+    }
+    // All established border/smoothing alternatives get their turn before
+    // densifying one speculative interpretation. The leaf photo needs a later
+    // border seed; immediate expansion spent its entire remaining budget on an
+    // earlier seed that never yielded a validated routing.
+    report.deferredNeighborExpansions=deferred.length;
+    for(const pending of deferred){
+      if(solution||remaining()<.1)break;
+      const at=performance.now(),original=report.attempts[pending.initialAttempt];
+      let graph;
+      try{graph=buildGraph({...pending.target,curves:pending.target.curves.slice()},pending.graphCfg,{onProgress,unconnectedNeighbors:true});}
+      catch(error){(report.rejectedNeighborExpansions??=[]).push({initialAttempt:pending.initialAttempt,error:error.message,seconds:(performance.now()-at)/1000});continue;}
+      if(graph.metadata.hiddenCandidates<=original.solver.graph.hiddenCandidates)continue;
+      const budget=remaining();if(budget<.1)break;
+      const attempt={neighbors:pending.graphCfg.neighbors,connectorVariants:pending.graphCfg.connectorVariants,smoothRadius:original.smoothRadius,
+        ...(original.borderSeed?{borderSeed:{...original.borderSeed}}:{}),neighborExpansion:true,initialAttempt:pending.initialAttempt,
+        addedCandidates:graph.metadata.hiddenCandidates-original.solver.graph.hiddenCandidates,budgetSeconds:budget};report.attempts.push(attempt);
+      try{
+        solution=await solveBoundary(pending.target,{...pending.graphCfg,timeLimit:budget},{initialGraph:graph,expandNeighbors:false,unconnectedNeighbors:true,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
+        attempt.solver=solution.report;
+      }catch(error){attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;}
+      finally{attempt.seconds=(performance.now()-at)/1000;}
     }
     if(!solution)throw new Error('Feature recovery found no validated routing within its budget.');
     const woven=sampleWeave(solution,source.resolution);
