@@ -62,6 +62,12 @@ does not improve every artwork score; the report preserves those tradeoffs.
 Common-coordinate comparisons document accuracy tradeoffs, including the
 preference for matching sheets within the user's one-percentage-point limit.
 
+The [real-photo crop follow-up](../REAL-CROP-EVIDENCE.md) retains unresolved
+jigsaw and bauble examples and rejects several apparently promising crop
+alternatives. Longer fitting can pass numerical checks on distorted crops.
+Reports now expose crop evidence separately, and these QA-reserved examples
+are not converted into automatic training labels.
+
 Of the real-source files, 475 are reserved by existing QA or connected source
 groups. Remaining files still need instance, motif-family and usage review;
 they are not automatically a labeled training set. The

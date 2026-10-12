@@ -53,6 +53,11 @@ can receive low-error template fits with a longer budget. That does not establis
 correct reconstruction of the photographed hearts; the full-pipeline evidence
 retains the source photographs, crops, masks and exported weaves separately.
 
+The [real-crop evidence follow-up](REAL-CROP-EVIDENCE.md) reproduces both
+failures and records rejected segmentation and edge-search alternatives.
+Benchmark reports now show crop support and out-of-photo corners separately
+from numerical template acceptance, including when longer fitting passes.
+
 ## Learned graph proposals: controlled experiment
 
 Before training a model, `scripts/inverse/experiments/graph-oracle.mjs` measures
