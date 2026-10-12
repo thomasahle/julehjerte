@@ -7,10 +7,12 @@ Run `npm run test:inverse:paint:browser` against the built app for the actual Pa
 [COUNT-STRATEGIES.md](COUNT-STRATEGIES.md) compares count initialization on the frozen photo dataset, separating the cost of finding initial grids from complete solve time and measured reconstruction quality.
 
 Current full-pipeline investigations are recorded in
+[FEATURE-RESOLUTION.md](FEATURE-RESOLUTION.md) (small-feature spline capacity and
+rejected fits that fail editable export),
 [FEATURE-CHECKPOINTS.md](FEATURE-CHECKPOINTS.md) (small motif details, initialization,
 crop perturbations and editable exports) and
 [UNCERTAIN-REFINEMENT-CHECKPOINTS.md](UNCERTAIN-REFINEMENT-CHECKPOINTS.md)
-(dense photographic patterns and independent finer paper audits). Both distinguish
+(dense photographic patterns and independent finer paper audits). These distinguish
 image agreement, source-feature retention, legal geometry and nominal paper checks;
 the historical reconstruction counts below describe earlier implementations.
 
