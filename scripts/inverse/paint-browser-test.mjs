@@ -316,10 +316,10 @@ try{
       assert.equal(row.classifiedMaskSha256,frozen.maskSha256,'Template improvements must use the same browser-classified pixels');
       assert.deepEqual(row.detectedCrop.quad,frozen.detectedCrop.quad,'The automatic crop remains fixed in this fitting regression');
      }
-     if(['hard-flettede-puppy','hard-flettede-puppy-half'].includes(name)&&!engineReference){
-      assert.equal(row.templateChecksPassed,true,'The actual uploaded puppy must retain its opening and pass the template checks.');
+     if(['hard-flettede-puppy','hard-flettede-puppy-half','hard-flettede-stonehenge','hard-flettede-viking'].includes(name)&&!engineReference){
+      assert.equal(row.templateChecksPassed,true,'The actual uploaded photograph must retain its interior features and pass the template checks.');
       assert.equal(row.missingFeatures.length,0);
-      assert.ok(row.engineError<.018);
+      assert.ok(row.engineError<(name.startsWith('hard-flettede-puppy')?.018:.03));
      }
     }
     row.numericalBackend=observed.result.report.solver.numericalBackend?.backend;

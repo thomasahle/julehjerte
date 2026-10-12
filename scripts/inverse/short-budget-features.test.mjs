@@ -10,11 +10,11 @@ import {hardPhotoTarget} from './hard-photo-target.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 
 const fixtures=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-short-budget-fits.json'));
-const catalogue=JSON.parse(await fs.readFile(fixtures.sourceCatalogue));
 const hash=b=>createHash('sha256').update(b).digest('hex');
 
 for(const fixture of fixtures.cases)test(`${fixture.sourceCase} retains its interior detail in a ten-second fresh fit`,async()=>{
-  const photo=await readHardPhoto(catalogue.cases.find(c=>c.id===fixture.sourceCase));
+  const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue||fixtures.sourceCatalogue));
+  const photo=await readHardPhoto({...catalogue.source,...catalogue.cases.find(c=>c.id===fixture.sourceCase)});
   assert.equal(photo.fileSha256,fixture.sourceFileSha256);
   assert.equal(photo.rgbaSha256,fixture.decodedPixelsSha256);
   const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false};

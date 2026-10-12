@@ -180,8 +180,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // A grid can omit a remote opening which no local boundary gradient can
   // see. A short search cannot afford to discover that only after spending
   // its time on routing and refinement. Try the existing image-derived layout
-  // early for poor grids too; keep every ordinary finalist as a fallback.
-  if((competitiveGrid||shortBudget&&poorGrid)&&!features.passed&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
+  // early for poor grids that lose colours too. A coarse opening joined to the
+  // background may still close during refinement; do not displace that routing
+  // just for enclosure. Keep every ordinary finalist as a fallback.
+  const lostColour=features.regions.some(r=>r.retainedFraction<features.minimumRetention);
+  if((competitiveGrid||shortBudget&&poorGrid&&lostColour)&&!features.passed&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
     const missed=features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]);
     const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
     earlyFeatureInitialization={...extra.report,stage:'before-recovery',scheduled:0};
