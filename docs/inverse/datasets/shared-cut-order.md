@@ -60,8 +60,8 @@ node --test --test-concurrency=1 scripts/inverse/sharing-order.test.mjs
 The full Paint → Draw → SVG replay rejected the anti-symmetric hat after
 download. Spacing, intersections and edge parity passed, but its independent
 forward check reported one wrong pixel. Repeating the browser case with engine
-commit `ae7bdd3` reproduced the failure, so the cleanup retry did not introduce
-it.
+commit `ae7bdd3` reproduced the failure with a byte-identical exported geometry
+file, so the cleanup retry did not introduce it.
 
 The exported curves were still exactly shared. At one sample, traversing the
 same straight segment in opposite directions produced crossing coordinates
@@ -109,6 +109,28 @@ for `hjcur-02`; its new retry did not run. A subsequent paired replay took
 with identical independent image error. That checks the observed overrun
 without replacing the original failed timing record. Runtime remains sensitive
 to machine load; this is a measured benchmark result, not a hard latency bound.
+
+## Verification and artifacts
+
+The final checks pass: 855 application tests (one existing skip), 677 inverse
+tests, type checking, lint and build. Type checking retains seven existing
+warnings and no errors.
+
+All 16 Chromium cases pass: six photograph uploads through template generation,
+one selected-heart import, and nine Paint → Draw → downloaded-SVG round trips.
+The round trips recheck intersections, spacing, paper support, source fidelity
+and exact shared spans in the actual downloaded files; the star also checks a
+PDF download. The previously failing anti-symmetric hat reports zero forward
+sample mismatches. The six uploads take 4.83–7.83 seconds to templates in this
+browser run. The preview is running at `http://127.0.0.1:5232/editor/mal/`.
+
+The [results record](shared-cut-order-results.json) retains per-case measurements,
+code and artifact hashes, command outcomes, both failing browser replays, the
+final passing browser results and the earlier timing overrun. Independent
+1536-pixel exported-curve renders reduce the pale frame's fractional coverage
+error from 0.67247% to 0.67069%; white seam coverage in the inspected interior
+band falls from 10.247 equivalent pixels to zero. Full images and logs remain
+under `tmp/heart-learning/` rather than being shipped to visitors.
 
 This fixes one source of false seams. It does not establish that every proposed
 alignment will be found, that photographed corners are exact, or that aggregate

@@ -1,0 +1,5023 @@
+{
+  "schema": "shared-cut-order-1",
+  "scope": "Cleanup ordering regression; six selected synthetic photographs, 24 previously frozen synthetic photographs, 22 regular Hunodan inputs with frozen crops, and six actual browser uploads plus an ROI check. Real photographs are not new unseen evaluations.",
+  "timingLimitations": "Unrelated headless Firefox jobs were observed consuming CPU during the preceding 24-photo replay. Repeated timings and the earlier Hunodan timing failure are retained; wall-clock variation prevents a strict isolated speed comparison.",
+  "records": {
+    "diagnosticBefore": {
+      "path": "tmp/heart-learning/background-pipeline-v2/report.json",
+      "sha256": "e8ceb5067c4384bbe55edee99da41281bfc247d9b1231dd963f4ac6d151441a8"
+    },
+    "diagnosticAfter": {
+      "path": "tmp/heart-learning/seam-pipeline-v3/report.json",
+      "sha256": "e2f69ba25ea5e366e074f45d1818ed6411e1adbd3affa691b725e57729e68de7"
+    },
+    "coverageBefore": {
+      "path": "tmp/heart-learning/background-coverage-pipeline-v1/report.json",
+      "sha256": "f8ea0aec5558e88b4c0f533835c3e2db0de946189134354fad243f5deec86c2c"
+    },
+    "coverageAfter": {
+      "path": "tmp/heart-learning/seam-coverage-pipeline-v3/report.json",
+      "sha256": "d1bc74de563448bb01b71aaf0c79c80b21461b4185c56d3ae68cbd27246c2902"
+    },
+    "hunodan": {
+      "path": "tmp/heart-learning/seam-hunodan-v2/results.json",
+      "sha256": "d2a15dee23b3bbebf795b59960666c263cdbc96d75d786d305dff0daaf067c8c"
+    },
+    "qa": {
+      "path": "tmp/heart-learning/seam-qa-v2/report.json",
+      "sha256": "e2eb552c051614feddffacef29d0222ee67f0cd57b5abced07766f2a42f8e3b5"
+    },
+    "browser": {
+      "path": "tmp/heart-learning/seam-browser-v2/report.json",
+      "sha256": "2809cd1431f6b599b45a32257b2b5f778cb2a7b382449837dcfd7c2d56792062"
+    },
+    "editableBrowser": {
+      "path": "tmp/heart-learning/seam-editable-browser-v2/results.json",
+      "sha256": "3ea60ccb96e2c2f6ba3d4572ba08e8ce1e8201c21d828dc9a3982f89fff2c47a"
+    },
+    "previousQa": {
+      "path": "tmp/heart-learning/seam-qa-v1/report.json",
+      "sha256": "bedb28eaf60adfa139bc0bffb09847f35db9ee2ce76f06c9e54d26c1724819cc"
+    },
+    "previousHunodan": {
+      "path": "tmp/heart-learning/seam-hunodan-v1/results.json",
+      "sha256": "133240ae82c2a25fb60218af3c2286b0647b4fcd55598c16f4b4a47b0380e5cc"
+    },
+    "initialEditableBrowser": {
+      "path": "tmp/heart-learning/seam-editable-browser-v1/results.json",
+      "sha256": "403203a3a4468e68c636642137adcccc4fc3c3cfef723a9eb6cc6615697abb7b"
+    },
+    "referenceEditableBrowser": {
+      "path": "tmp/heart-learning/seam-editable-before/results.json",
+      "sha256": "37c372e09242b0d1dc1b2a2e838e4c5383358cf83e175fc4bbb8017b530f46ac"
+    },
+    "timingControlBefore": {
+      "path": "tmp/heart-learning/seam-hunodan-control-before/results.json",
+      "sha256": "3b48fd35dceaa48a273ca0f431c40116bd32349f4e4fa84d201402f4811a0733"
+    },
+    "timingControlAfter": {
+      "path": "tmp/heart-learning/seam-hunodan-control-after/results.json",
+      "sha256": "919be81edf89c50f8e2dc0c535b0f653897e6e62b98f63d8dc091bdd74246eff"
+    }
+  },
+  "rows": [
+    {
+      "group": "diagnostic",
+      "id": "channel-715069-v3--baseline",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 4.988704041,
+        "sourceError": 0.009202745225694444,
+        "latentError": 0.008879199972317382,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 6.5635362876794305,
+              "a1": 6.998543552783298,
+              "b0": 6.5635362876794305,
+              "b1": 6.998543552783298,
+              "length": 24.624923716306533,
+              "blend": 0.5,
+              "errorBefore": 0.0120391845703125,
+              "errorAfter": 0.0102386474609375,
+              "bigErrorBefore": 0.0114593505859375,
+              "bigErrorAfter": 0.009429931640625,
+              "sourceErrorBefore": 0.011522081163194444,
+              "sourceErrorAfter": 0.009779188368055556
+            },
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 6,
+              "a1": 15,
+              "b0": 6,
+              "b1": 15,
+              "length": 56.604315147442016,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0102386474609375,
+              "errorAfter": 0.0096588134765625,
+              "bigErrorBefore": 0.009429931640625,
+              "bigErrorAfter": 0.008991241455078125,
+              "sourceErrorBefore": 0.009779188368055556,
+              "sourceErrorAfter": 0.009528266059027778
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.011522081163194444,
+          "errorAfter": 0.009528266059027778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.14360404199999993
+        },
+        "geometry": {
+          "path": "channel-715069-v3--baseline/cut_geometry.json",
+          "sha256": "106d9d8b00b48916f24bdf0bc8656937a2e9c3379129e09a0df007173c47cfd8"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 4.38100625,
+        "sourceError": 0.009202745225694444,
+        "latentError": 0.008879199972317382,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 6.5635362876794305,
+              "a1": 6.998543552783298,
+              "b0": 6.5635362876794305,
+              "b1": 6.998543552783298,
+              "length": 24.624923716306533,
+              "blend": 0.5,
+              "errorBefore": 0.0120391845703125,
+              "errorAfter": 0.0102386474609375,
+              "bigErrorBefore": 0.0114593505859375,
+              "bigErrorAfter": 0.009429931640625,
+              "sourceErrorBefore": 0.011522081163194444,
+              "sourceErrorAfter": 0.009779188368055556
+            },
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 6,
+              "a1": 15,
+              "b0": 6,
+              "b1": 15,
+              "length": 56.604315147442016,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0102386474609375,
+              "errorAfter": 0.0096588134765625,
+              "bigErrorBefore": 0.009429931640625,
+              "bigErrorAfter": 0.008991241455078125,
+              "sourceErrorBefore": 0.009779188368055556,
+              "sourceErrorAfter": 0.009528266059027778
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.011522081163194444,
+          "errorAfter": 0.009528266059027778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.1270433750000002
+        },
+        "geometry": {
+          "path": "channel-715069-v3--baseline/cut_geometry.json",
+          "sha256": "106d9d8b00b48916f24bdf0bc8656937a2e9c3379129e09a0df007173c47cfd8"
+        }
+      }
+    },
+    {
+      "group": "diagnostic",
+      "id": "channel-783681-v0--baseline",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 4.732158833000001,
+        "sourceError": 0.011603461371527778,
+        "latentError": 0.005309867732289607,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "channel-783681-v0--baseline/cut_geometry.json",
+          "sha256": "8acf209ab878f40217572632c781bfc129bb3e0f2d36cbacb1c4331db3f086c4"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 4.386372417,
+        "sourceError": 0.011603461371527778,
+        "latentError": 0.005309867732289607,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "channel-783681-v0--baseline/cut_geometry.json",
+          "sha256": "8acf209ab878f40217572632c781bfc129bb3e0f2d36cbacb1c4331db3f086c4"
+        }
+      }
+    },
+    {
+      "group": "diagnostic",
+      "id": "channel-795789-v2--baseline",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 4.375382167,
+        "sourceError": 0.0020751953125,
+        "latentError": 0.002159662231604678,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 4.253465364235526,
+              "a1": 9.998725156806037,
+              "b0": 4.544939531128707,
+              "b1": 10.079491007327398,
+              "length": 61.023249734139355,
+              "blend": 0,
+              "errorBefore": 0.00244140625,
+              "errorAfter": 0.00244140625,
+              "bigErrorBefore": 0.002376556396484375,
+              "bigErrorAfter": 0.002361297607421875,
+              "sourceErrorBefore": 0.0020955403645833335,
+              "sourceErrorAfter": 0.0020751953125
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.0020955403645833335,
+          "errorAfter": 0.0020751953125,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.10520749999999862
+        },
+        "geometry": {
+          "path": "channel-795789-v2--baseline/cut_geometry.json",
+          "sha256": "0244cc3ca31fac27e7742ec8655186dbe321adfb2d392e734d7d9b5d10540145"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 4.113310874999999,
+        "sourceError": 0.0020751953125,
+        "latentError": 0.002159662231604678,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 4.253465364235526,
+              "a1": 9.998725156806037,
+              "b0": 4.544939531128707,
+              "b1": 10.079491007327398,
+              "length": 61.023249734139355,
+              "blend": 0,
+              "errorBefore": 0.00244140625,
+              "errorAfter": 0.00244140625,
+              "bigErrorBefore": 0.002376556396484375,
+              "bigErrorAfter": 0.002361297607421875,
+              "sourceErrorBefore": 0.0020955403645833335,
+              "sourceErrorAfter": 0.0020751953125
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.0020955403645833335,
+          "errorAfter": 0.0020751953125,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.09847120899999937
+        },
+        "geometry": {
+          "path": "channel-795789-v2--baseline/cut_geometry.json",
+          "sha256": "0244cc3ca31fac27e7742ec8655186dbe321adfb2d392e734d7d9b5d10540145"
+        }
+      }
+    },
+    {
+      "group": "diagnostic",
+      "id": "frame-764510-v3--baseline",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 3.0874934169999997,
+        "sourceError": 0.004475911458333333,
+        "latentError": 0.0045323983826639205,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "geometry": {
+          "path": "frame-764510-v3--baseline/cut_geometry.json",
+          "sha256": "b143073d10e1de011bc0fe80f02ebd28be11a17a4248e87cd895fae0097926e0"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 2.8027967499999997,
+        "sourceError": 0.004475911458333333,
+        "latentError": 0.0045323983826639205,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "geometry": {
+          "path": "frame-764510-v3--baseline/cut_geometry.json",
+          "sha256": "b143073d10e1de011bc0fe80f02ebd28be11a17a4248e87cd895fae0097926e0"
+        }
+      }
+    },
+    {
+      "group": "diagnostic",
+      "id": "frame-829086-v3--baseline",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 5.548073541999998,
+        "sourceError": 0.007846408420138888,
+        "latentError": 0.0079155131754332,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 2,
+              "a1": 3,
+              "b0": 2,
+              "b1": 3,
+              "length": 24.46027340183811,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0109100341796875,
+              "errorAfter": 0.010223388671875,
+              "bigErrorBefore": 0.010829925537109375,
+              "bigErrorAfter": 0.01049041748046875,
+              "sourceErrorBefore": 0.010308159722222222,
+              "sourceErrorAfter": 0.009860568576388888
+            },
+            {
+              "i": 1,
+              "j": 1,
+              "a0": 18,
+              "a1": 19,
+              "b0": 18,
+              "b1": 19,
+              "length": 23.961261604915922,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.010223388671875,
+              "errorAfter": 0.0095672607421875,
+              "bigErrorBefore": 0.01049041748046875,
+              "bigErrorAfter": 0.010089874267578125,
+              "sourceErrorBefore": 0.009860568576388888,
+              "sourceErrorAfter": 0.009419759114583334
+            },
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 8.014047053448769,
+              "a1": 8.980524255732071,
+              "b0": 19.963933416209994,
+              "b1": 19.005168932848402,
+              "length": 22.822069773517104,
+              "blend": 1,
+              "errorBefore": 0.0095672607421875,
+              "errorAfter": 0.0079803466796875,
+              "bigErrorBefore": 0.010089874267578125,
+              "bigErrorAfter": 0.008419036865234375,
+              "sourceErrorBefore": 0.009419759114583334,
+              "sourceErrorAfter": 0.00787353515625
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "cut_quality",
+              "i": 1,
+              "j": 0,
+              "a0": 8.014047053448769,
+              "a1": 8.980524255732071,
+              "b0": 19.963933416209994,
+              "b1": 19.005168932848402,
+              "length": 22.822069773517104,
+              "blend": 0.5
+            },
+            {
+              "reason": "cut_quality",
+              "i": 1,
+              "j": 0,
+              "a0": 8.014047053448769,
+              "a1": 8.980524255732071,
+              "b0": 19.963933416209994,
+              "b1": 19.005168932848402,
+              "length": 22.822069773517104,
+              "blend": 0
+            }
+          ],
+          "errorBefore": 0.010308159722222222,
+          "errorAfter": 0.00787353515625,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.2588247910000027
+        },
+        "geometry": {
+          "path": "frame-829086-v3--baseline/cut_geometry.json",
+          "sha256": "eb0ceb17d29d0cf973c6e1e41bb56b2afa21a07e2951e657f58be3db7f3d95fd"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 4.7091077079999994,
+        "sourceError": 0.007846408420138888,
+        "latentError": 0.0079155131754332,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 2,
+              "a1": 3,
+              "b0": 2,
+              "b1": 3,
+              "length": 24.46027340183811,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0109100341796875,
+              "errorAfter": 0.010223388671875,
+              "bigErrorBefore": 0.010829925537109375,
+              "bigErrorAfter": 0.01049041748046875,
+              "sourceErrorBefore": 0.010308159722222222,
+              "sourceErrorAfter": 0.009860568576388888
+            },
+            {
+              "i": 1,
+              "j": 1,
+              "a0": 18,
+              "a1": 19,
+              "b0": 18,
+              "b1": 19,
+              "length": 23.961261604915922,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.010223388671875,
+              "errorAfter": 0.0095672607421875,
+              "bigErrorBefore": 0.01049041748046875,
+              "bigErrorAfter": 0.010089874267578125,
+              "sourceErrorBefore": 0.009860568576388888,
+              "sourceErrorAfter": 0.009419759114583334
+            },
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 8.014047053448769,
+              "a1": 8.980524255732071,
+              "b0": 19.963933416209994,
+              "b1": 19.005168932848402,
+              "length": 22.822069773517104,
+              "blend": 1,
+              "errorBefore": 0.0095672607421875,
+              "errorAfter": 0.0079803466796875,
+              "bigErrorBefore": 0.010089874267578125,
+              "bigErrorAfter": 0.008419036865234375,
+              "sourceErrorBefore": 0.009419759114583334,
+              "sourceErrorAfter": 0.00787353515625
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "cut_quality",
+              "i": 1,
+              "j": 0,
+              "a0": 8.014047053448769,
+              "a1": 8.980524255732071,
+              "b0": 19.963933416209994,
+              "b1": 19.005168932848402,
+              "length": 22.822069773517104,
+              "blend": 0.5
+            },
+            {
+              "reason": "cut_quality",
+              "i": 1,
+              "j": 0,
+              "a0": 8.014047053448769,
+              "a1": 8.980524255732071,
+              "b0": 19.963933416209994,
+              "b1": 19.005168932848402,
+              "length": 22.822069773517104,
+              "blend": 0
+            }
+          ],
+          "errorBefore": 0.010308159722222222,
+          "errorAfter": 0.00787353515625,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.23789770900000076
+        },
+        "geometry": {
+          "path": "frame-829086-v3--baseline/cut_geometry.json",
+          "sha256": "eb0ceb17d29d0cf973c6e1e41bb56b2afa21a07e2951e657f58be3db7f3d95fd"
+        }
+      }
+    },
+    {
+      "group": "diagnostic",
+      "id": "frame-756438-v0--baseline",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 6.137439875,
+        "sourceError": 0.006069607204861111,
+        "latentError": 0.01712492135810236,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [],
+          "rejected": [
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 1,
+              "a0": 17.36230600188408,
+              "a1": 19.285773262800756,
+              "b0": 18.397282332399982,
+              "b1": 20.67431975348846,
+              "length": 20.820914101059515,
+              "blend": 1
+            }
+          ],
+          "errorBefore": 0.006069607204861111,
+          "errorAfter": 0.006069607204861111,
+          "applied": false,
+          "seconds": 0.0623996670000015
+        },
+        "geometry": {
+          "path": "frame-756438-v0--baseline/cut_geometry.json",
+          "sha256": "dcad0c511a7514bf01c259531abef4c523f6ee662d7c7693f977097d3e8a0257"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 5.854629166999999,
+        "sourceError": 0.006049262152777778,
+        "latentError": 0.017131834931521057,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [],
+          "rejected": [
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 1,
+              "a0": 17.36230600188408,
+              "a1": 19.285773262800756,
+              "b0": 18.397282332399982,
+              "b1": 20.67431975348846,
+              "length": 20.820914101059515,
+              "blend": 1
+            }
+          ],
+          "errorBefore": 0.006069607204861111,
+          "errorAfter": 0.006069607204861111,
+          "applied": false,
+          "seconds": 0.06252325000000201
+        },
+        "sharingAfterPrimitives": {
+          "accepted": [
+            {
+              "i": 1,
+              "j": 1,
+              "a0": 17.32295285540436,
+              "a1": 19.239762706476416,
+              "b0": 18.352112435739397,
+              "b1": 20.600389321383318,
+              "length": 20.818473612347844,
+              "blend": 0.5,
+              "errorBefore": 0.006103515625,
+              "errorAfter": 0.0060882568359375,
+              "bigErrorBefore": 0.00672149658203125,
+              "bigErrorAfter": 0.00670623779296875,
+              "sourceErrorBefore": 0.006069607204861111,
+              "sourceErrorAfter": 0.006049262152777778
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.006069607204861111,
+          "errorAfter": 0.006049262152777778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.12133654200000092
+        },
+        "geometry": {
+          "path": "frame-756438-v0--baseline/cut_geometry.json",
+          "sha256": "3eb519fdaa1a6b8e25450d891ddbfc88fa2312fa49dbaa0b5ba1072109ce7452"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "channel-787717-v3",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 3.9247687499999997,
+        "sourceError": 0.005343967013888889,
+        "latentError": 0.004256489599449889,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "channel-787717-v3/cut_geometry.json",
+          "sha256": "72d1c06c6132c832551d2c0711a29ed7f3b19191aba4a37382598526f177ba0f"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 3.595737458,
+        "sourceError": 0.005343967013888889,
+        "latentError": 0.004256489599449889,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "channel-787717-v3/cut_geometry.json",
+          "sha256": "72d1c06c6132c832551d2c0711a29ed7f3b19191aba4a37382598526f177ba0f"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "channel-799825-v2",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 3.392161083,
+        "sourceError": 0.0025431315104166665,
+        "latentError": 0.008301123780965874,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "channel-799825-v2/cut_geometry.json",
+          "sha256": "8483eb778de42a37a4817b99dc7a3e03c2d6378d00c418922c1f87e3797bf432"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 3.18492175,
+        "sourceError": 0.0025431315104166665,
+        "latentError": 0.008301123780965874,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "channel-799825-v2/cut_geometry.json",
+          "sha256": "8483eb778de42a37a4817b99dc7a3e03c2d6378d00c418922c1f87e3797bf432"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "channel-815969-v3",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 4.058128334,
+        "sourceError": 0.0016276041666666667,
+        "latentError": 0.0015318132312124512,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "channel-815969-v3/cut_geometry.json",
+          "sha256": "7fe990e362a00c42e60db18dbc374a8f10404d188286e820e1920d0c5d67f7e0"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 3.9901390419999996,
+        "sourceError": 0.0016276041666666667,
+        "latentError": 0.0015318132312124512,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "channel-815969-v3/cut_geometry.json",
+          "sha256": "7fe990e362a00c42e60db18dbc374a8f10404d188286e820e1920d0c5d67f7e0"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "channel-820005-v3",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 3.9751495000000014,
+        "sourceError": 0.014146592881944444,
+        "latentError": 0.011795382029025286,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 3.9754109911944933,
+              "a1": 9.016566459685308,
+              "b0": 3.9754109911944933,
+              "b1": 9.016566459685308,
+              "length": 52.418121774220936,
+              "blend": 0.5,
+              "errorBefore": 0.0155181884765625,
+              "errorAfter": 0.014068603515625,
+              "bigErrorBefore": 0.015071868896484375,
+              "bigErrorAfter": 0.014339447021484375,
+              "sourceErrorBefore": 0.015109592013888888,
+              "sourceErrorAfter": 0.014146592881944444
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.015109592013888888,
+          "errorAfter": 0.014146592881944444,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.11651774999999907
+        },
+        "geometry": {
+          "path": "channel-820005-v3/cut_geometry.json",
+          "sha256": "26258da7aca6bda0b2ede117ecd8104cea47264ffa87a0a8e380bcd106f86ea1"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 3.980187667,
+        "sourceError": 0.014146592881944444,
+        "latentError": 0.011795382029025286,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 3.9754109911944933,
+              "a1": 9.016566459685308,
+              "b0": 3.9754109911944933,
+              "b1": 9.016566459685308,
+              "length": 52.418121774220936,
+              "blend": 0.5,
+              "errorBefore": 0.0155181884765625,
+              "errorAfter": 0.014068603515625,
+              "bigErrorBefore": 0.015071868896484375,
+              "bigErrorAfter": 0.014339447021484375,
+              "sourceErrorBefore": 0.015109592013888888,
+              "sourceErrorAfter": 0.014146592881944444
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.015109592013888888,
+          "errorAfter": 0.014146592881944444,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.09690570800000023
+        },
+        "geometry": {
+          "path": "channel-820005-v3/cut_geometry.json",
+          "sha256": "26258da7aca6bda0b2ede117ecd8104cea47264ffa87a0a8e380bcd106f86ea1"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "channel-779645-v2",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 2.7654124589999993,
+        "sourceError": 0.001369900173611111,
+        "latentError": 0.006025710614732416,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "channel-779645-v2/cut_geometry.json",
+          "sha256": "6381a7fe6d3860e5e9c1fe3123b65a724678b13989872bd630c8ae96779e1280"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 2.5141165410000013,
+        "sourceError": 0.001369900173611111,
+        "latentError": 0.006025710614732416,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "channel-779645-v2/cut_geometry.json",
+          "sha256": "6381a7fe6d3860e5e9c1fe3123b65a724678b13989872bd630c8ae96779e1280"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "channel-723141-v2",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 3.260674583,
+        "sourceError": 0.006754557291666667,
+        "latentError": 0.007095800164699424,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 8,
+              "a1": 10,
+              "b0": 8,
+              "b1": 10,
+              "length": 56.471610049903916,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0083465576171875,
+              "errorAfter": 0.00714111328125,
+              "bigErrorBefore": 0.007221221923828125,
+              "bigErrorAfter": 0.00676727294921875,
+              "sourceErrorBefore": 0.007575141059027778,
+              "sourceErrorAfter": 0.006781684027777778
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.007575141059027778,
+          "errorAfter": 0.006781684027777778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.089796792000001
+        },
+        "geometry": {
+          "path": "channel-723141-v2/cut_geometry.json",
+          "sha256": "572722d16b4d0246919a4811df5b5efd8c3e4a4f1fc1627f21c6930916ecde8f"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 3.0725706250000004,
+        "sourceError": 0.006754557291666667,
+        "latentError": 0.007095800164699424,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 8,
+              "a1": 10,
+              "b0": 8,
+              "b1": 10,
+              "length": 56.471610049903916,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0083465576171875,
+              "errorAfter": 0.00714111328125,
+              "bigErrorBefore": 0.007221221923828125,
+              "bigErrorAfter": 0.00676727294921875,
+              "sourceErrorBefore": 0.007575141059027778,
+              "sourceErrorAfter": 0.006781684027777778
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.007575141059027778,
+          "errorAfter": 0.006781684027777778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.08798412499999904
+        },
+        "geometry": {
+          "path": "channel-723141-v2/cut_geometry.json",
+          "sha256": "572722d16b4d0246919a4811df5b5efd8c3e4a4f1fc1627f21c6930916ecde8f"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "channel-767537-v2",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 3.7039105420000014,
+        "sourceError": 0.009596082899305556,
+        "latentError": 0.0074843727133987,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 3.1147482464709997,
+              "a1": 3.9981384500313055,
+              "b0": 3.1147482464709997,
+              "b1": 3.9981384500313055,
+              "length": 57.635814519207834,
+              "blend": 0.5,
+              "errorBefore": 0.0123443603515625,
+              "errorAfter": 0.010528564453125,
+              "bigErrorBefore": 0.011386871337890625,
+              "bigErrorAfter": 0.010223388671875,
+              "sourceErrorBefore": 0.011257595486111112,
+              "sourceErrorAfter": 0.009853786892361112
+            },
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 3.522783362289494,
+              "a1": 22.98098458112168,
+              "b0": 3.522783362289494,
+              "b1": 22.98098458112168,
+              "length": 61.29171491565044,
+              "blend": 0.5,
+              "errorBefore": 0.010528564453125,
+              "errorAfter": 0.010284423828125,
+              "bigErrorBefore": 0.010223388671875,
+              "bigErrorAfter": 0.010013580322265625,
+              "sourceErrorBefore": 0.009853786892361112,
+              "sourceErrorAfter": 0.009650336371527778
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.011257595486111112,
+          "errorAfter": 0.009650336371527778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.1323935420000016
+        },
+        "geometry": {
+          "path": "channel-767537-v2/cut_geometry.json",
+          "sha256": "e7b8fc9d7c76aacdd6f6ab3b3cb766cf7af17771fdc05305311d2eb13559ab3e"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 3.74514775,
+        "sourceError": 0.009596082899305556,
+        "latentError": 0.0074843727133987,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 3.1147482464709997,
+              "a1": 3.9981384500313055,
+              "b0": 3.1147482464709997,
+              "b1": 3.9981384500313055,
+              "length": 57.635814519207834,
+              "blend": 0.5,
+              "errorBefore": 0.0123443603515625,
+              "errorAfter": 0.010528564453125,
+              "bigErrorBefore": 0.011386871337890625,
+              "bigErrorAfter": 0.010223388671875,
+              "sourceErrorBefore": 0.011257595486111112,
+              "sourceErrorAfter": 0.009853786892361112
+            },
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 3.522783362289494,
+              "a1": 22.98098458112168,
+              "b0": 3.522783362289494,
+              "b1": 22.98098458112168,
+              "length": 61.29171491565044,
+              "blend": 0.5,
+              "errorBefore": 0.010528564453125,
+              "errorAfter": 0.010284423828125,
+              "bigErrorBefore": 0.010223388671875,
+              "bigErrorAfter": 0.010013580322265625,
+              "sourceErrorBefore": 0.009853786892361112,
+              "sourceErrorAfter": 0.009650336371527778
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.011257595486111112,
+          "errorAfter": 0.009650336371527778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.10176895800000056
+        },
+        "geometry": {
+          "path": "channel-767537-v2/cut_geometry.json",
+          "sha256": "e7b8fc9d7c76aacdd6f6ab3b3cb766cf7af17771fdc05305311d2eb13559ab3e"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "channel-824041-v3",
+      "referenceSlits": [
+        1,
+        1
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 2.344293958000002,
+        "sourceError": 0.008734809027777778,
+        "latentError": 0.008168188867826985,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 5.002112261351091,
+              "a1": 5.998209479283348,
+              "b0": 5.002112261351091,
+              "b1": 5.998209479283348,
+              "length": 63.6602462559927,
+              "blend": 0.5,
+              "errorBefore": 0.0108795166015625,
+              "errorAfter": 0.009124755859375,
+              "bigErrorBefore": 0.00986480712890625,
+              "bigErrorAfter": 0.00897979736328125,
+              "sourceErrorBefore": 0.009908040364583334,
+              "sourceErrorAfter": 0.008734809027777778
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "geometry",
+              "issues": [
+                {
+                  "type": "maximum_turn",
+                  "family": 0,
+                  "slit": 0,
+                  "angle": 179.99999879258175
+                },
+                {
+                  "type": "self_intersection",
+                  "family": 0,
+                  "slit": 0
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 179.99999879258175
+                }
+              ],
+              "i": 0,
+              "j": 0,
+              "a0": 3,
+              "a1": 6,
+              "b0": 3,
+              "b1": 6,
+              "length": 64.56092694309916,
+              "proposal": "paired-knots",
+              "blend": 0.5
+            }
+          ],
+          "errorBefore": 0.009908040364583334,
+          "errorAfter": 0.008734809027777778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.08481312500000059
+        },
+        "geometry": {
+          "path": "channel-824041-v3/cut_geometry.json",
+          "sha256": "cebe93f69ac9e725467e211e4005c8554acfb3a19c4ccdb0f7fe94ce0153c36c"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 2.3046485420000025,
+        "sourceError": 0.008734809027777778,
+        "latentError": 0.008168188867826985,
+        "slits": {
+          "left": 1,
+          "right": 1
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 5.002112261351091,
+              "a1": 5.998209479283348,
+              "b0": 5.002112261351091,
+              "b1": 5.998209479283348,
+              "length": 63.6602462559927,
+              "blend": 0.5,
+              "errorBefore": 0.0108795166015625,
+              "errorAfter": 0.009124755859375,
+              "bigErrorBefore": 0.00986480712890625,
+              "bigErrorAfter": 0.00897979736328125,
+              "sourceErrorBefore": 0.009908040364583334,
+              "sourceErrorAfter": 0.008734809027777778
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "geometry",
+              "issues": [
+                {
+                  "type": "maximum_turn",
+                  "family": 0,
+                  "slit": 0,
+                  "angle": 179.99999879258175
+                },
+                {
+                  "type": "self_intersection",
+                  "family": 0,
+                  "slit": 0
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 179.99999879258175
+                }
+              ],
+              "i": 0,
+              "j": 0,
+              "a0": 3,
+              "a1": 6,
+              "b0": 3,
+              "b1": 6,
+              "length": 64.56092694309916,
+              "proposal": "paired-knots",
+              "blend": 0.5
+            }
+          ],
+          "errorBefore": 0.009908040364583334,
+          "errorAfter": 0.008734809027777778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.081830667000002
+        },
+        "geometry": {
+          "path": "channel-824041-v3/cut_geometry.json",
+          "sha256": "cebe93f69ac9e725467e211e4005c8554acfb3a19c4ccdb0f7fe94ce0153c36c"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "frame-732222-v0",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 3.361137332999999,
+        "sourceError": 0.008205837673611112,
+        "latentError": 0.007362429873534646,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 5.004009196361494,
+              "a1": 5.587308659282633,
+              "b0": 8.984577771810688,
+              "b1": 8.392045983603555,
+              "length": 19.432051346970994,
+              "blend": 0.5,
+              "errorBefore": 0.01177978515625,
+              "errorAfter": 0.00897216796875,
+              "bigErrorBefore": 0.0114288330078125,
+              "bigErrorAfter": 0.00891876220703125,
+              "sourceErrorBefore": 0.011433919270833334,
+              "sourceErrorAfter": 0.0089111328125
+            },
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 5.011419060648654,
+              "a1": 11.660087508785677,
+              "b0": 14.996660353211004,
+              "b1": 8.291844101012765,
+              "length": 28.8303930448149,
+              "blend": 0.5,
+              "errorBefore": 0.00897216796875,
+              "errorAfter": 0.008331298828125,
+              "bigErrorBefore": 0.00891876220703125,
+              "bigErrorAfter": 0.0082244873046875,
+              "sourceErrorBefore": 0.0089111328125,
+              "sourceErrorAfter": 0.008232964409722222
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.011433919270833334,
+          "errorAfter": 0.008232964409722222,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.1429529169999987
+        },
+        "geometry": {
+          "path": "frame-732222-v0/cut_geometry.json",
+          "sha256": "92ee4d18c60d251036ce8d8af251b15d2e5109662d97cbb32149286c0fbba525"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 3.332433499999999,
+        "sourceError": 0.007961697048611112,
+        "latentError": 0.00714508877025687,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 5.004009196361494,
+              "a1": 5.587308659282633,
+              "b0": 8.984577771810688,
+              "b1": 8.392045983603555,
+              "length": 19.432051346970994,
+              "blend": 0.5,
+              "errorBefore": 0.01177978515625,
+              "errorAfter": 0.00897216796875,
+              "bigErrorBefore": 0.0114288330078125,
+              "bigErrorAfter": 0.00891876220703125,
+              "sourceErrorBefore": 0.011433919270833334,
+              "sourceErrorAfter": 0.0089111328125
+            },
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 5.011419060648654,
+              "a1": 11.660087508785677,
+              "b0": 14.996660353211004,
+              "b1": 8.291844101012765,
+              "length": 28.8303930448149,
+              "blend": 0.5,
+              "errorBefore": 0.00897216796875,
+              "errorAfter": 0.008331298828125,
+              "bigErrorBefore": 0.00891876220703125,
+              "bigErrorAfter": 0.0082244873046875,
+              "sourceErrorBefore": 0.0089111328125,
+              "sourceErrorAfter": 0.008232964409722222
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.011433919270833334,
+          "errorAfter": 0.008232964409722222,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.1333869999999988
+        },
+        "sharingAfterPrimitives": {
+          "accepted": [
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 5.023585537765074,
+              "a1": 26.644906400093593,
+              "b0": 29.99461100834652,
+              "b1": 8.200550668475392,
+              "length": 31.830949224906508,
+              "blend": 0.5,
+              "errorBefore": 0.00830078125,
+              "errorAfter": 0.008056640625,
+              "bigErrorBefore": 0.008209228515625,
+              "bigErrorAfter": 0.00798797607421875,
+              "sourceErrorBefore": 0.008205837673611112,
+              "sourceErrorAfter": 0.007961697048611112
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.008205837673611112,
+          "errorAfter": 0.007961697048611112,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.10427200000000085
+        },
+        "geometry": {
+          "path": "frame-732222-v0/cut_geometry.json",
+          "sha256": "c1234b17c2e5521f47a240d439d64d3f1166145310d1864d32fe853e076805f2"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "frame-780654-v2",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 4.212325083000003,
+        "sourceError": 0.010701497395833334,
+        "latentError": 0.010744629388639446,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 11.250344775884516,
+              "a1": 12.97236050996656,
+              "b0": 19.99836393585357,
+              "b1": 18.94996251604951,
+              "length": 20.8166691353184,
+              "blend": 1,
+              "errorBefore": 0.0110626220703125,
+              "errorAfter": 0.0110626220703125,
+              "bigErrorBefore": 0.01071929931640625,
+              "bigErrorAfter": 0.010711669921875,
+              "sourceErrorBefore": 0.010701497395833334,
+              "sourceErrorAfter": 0.010701497395833334
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "source_image_error",
+              "errorLimit": 0.010701497395833334,
+              "errorBefore": 0.010701497395833334,
+              "errorAfter": 0.010715060763888888,
+              "i": 1,
+              "j": 0,
+              "a0": 11.250344775884516,
+              "a1": 12.97236050996656,
+              "b0": 19.99836393585357,
+              "b1": 18.94996251604951,
+              "length": 20.8166691353184,
+              "blend": 0.5
+            }
+          ],
+          "errorBefore": 0.010701497395833334,
+          "errorAfter": 0.010701497395833334,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.11943620799999917
+        },
+        "geometry": {
+          "path": "frame-780654-v2/cut_geometry.json",
+          "sha256": "29c59596cd00689f7080adcf1b7cbe0a61f44e252ff629068141288503a42683"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 3.9623799999999973,
+        "sourceError": 0.010701497395833334,
+        "latentError": 0.010744629388639446,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 11.250344775884516,
+              "a1": 12.97236050996656,
+              "b0": 19.99836393585357,
+              "b1": 18.94996251604951,
+              "length": 20.8166691353184,
+              "blend": 1,
+              "errorBefore": 0.0110626220703125,
+              "errorAfter": 0.0110626220703125,
+              "bigErrorBefore": 0.01071929931640625,
+              "bigErrorAfter": 0.010711669921875,
+              "sourceErrorBefore": 0.010701497395833334,
+              "sourceErrorAfter": 0.010701497395833334
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "source_image_error",
+              "errorLimit": 0.010701497395833334,
+              "errorBefore": 0.010701497395833334,
+              "errorAfter": 0.010715060763888888,
+              "i": 1,
+              "j": 0,
+              "a0": 11.250344775884516,
+              "a1": 12.97236050996656,
+              "b0": 19.99836393585357,
+              "b1": 18.94996251604951,
+              "length": 20.8166691353184,
+              "blend": 0.5
+            }
+          ],
+          "errorBefore": 0.010701497395833334,
+          "errorAfter": 0.010701497395833334,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.1171416659999959
+        },
+        "geometry": {
+          "path": "frame-780654-v2/cut_geometry.json",
+          "sha256": "29c59596cd00689f7080adcf1b7cbe0a61f44e252ff629068141288503a42683"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "frame-728186-v1",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 6.729734457999999,
+        "sourceError": 0.012383355034722222,
+        "latentError": 0.007691089490680493,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "geometry": {
+          "path": "frame-728186-v1/cut_geometry.json",
+          "sha256": "a36d540078e23de102b33e434c605e25636c2632c1f80791bcaecb75df42b83e"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 6.663164917000002,
+        "sourceError": 0.012383355034722222,
+        "latentError": 0.007691089490680493,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "geometry": {
+          "path": "frame-728186-v1/cut_geometry.json",
+          "sha256": "a36d540078e23de102b33e434c605e25636c2632c1f80791bcaecb75df42b83e"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "frame-752402-v2",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 3.004122166000001,
+        "sourceError": 0.006049262152777778,
+        "latentError": 0.006161875614821292,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 3,
+              "a1": 4,
+              "b0": 3,
+              "b1": 4,
+              "length": 25.06067740670041,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0098114013671875,
+              "errorAfter": 0.009124755859375,
+              "bigErrorBefore": 0.00934600830078125,
+              "bigErrorAfter": 0.008998870849609375,
+              "sourceErrorBefore": 0.009304470486111112,
+              "sourceErrorAfter": 0.008829752604166666
+            },
+            {
+              "i": 1,
+              "j": 1,
+              "a0": 6,
+              "a1": 7,
+              "b0": 6,
+              "b1": 7,
+              "length": 24.367482336956392,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.009124755859375,
+              "errorAfter": 0.008453369140625,
+              "bigErrorBefore": 0.008998870849609375,
+              "bigErrorAfter": 0.008655548095703125,
+              "sourceErrorBefore": 0.008829752604166666,
+              "sourceErrorAfter": 0.008382161458333334
+            },
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 1.512838534889051,
+              "a1": 1.9856988273134832,
+              "b0": 16.482253321728095,
+              "b1": 16.00620324752169,
+              "length": 11.810184921480094,
+              "blend": 0.5,
+              "errorBefore": 0.008453369140625,
+              "errorAfter": 0.006439208984375,
+              "bigErrorBefore": 0.008655548095703125,
+              "bigErrorAfter": 0.006725311279296875,
+              "sourceErrorBefore": 0.008382161458333334,
+              "sourceErrorAfter": 0.006293402777777778
+            },
+            {
+              "i": 0,
+              "j": 1,
+              "a0": 16.012142643667467,
+              "a1": 19.996782552251638,
+              "b0": 4.987359882969879,
+              "b1": 1.005607055168254,
+              "length": 24.820603437375254,
+              "blend": 0.5,
+              "errorBefore": 0.006439208984375,
+              "errorAfter": 0.00616455078125,
+              "bigErrorBefore": 0.006725311279296875,
+              "bigErrorAfter": 0.006526947021484375,
+              "sourceErrorBefore": 0.006293402777777778,
+              "sourceErrorAfter": 0.006076388888888889
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.009304470486111112,
+          "errorAfter": 0.006076388888888889,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.21563762500000302
+        },
+        "geometry": {
+          "path": "frame-752402-v2/cut_geometry.json",
+          "sha256": "fa88bfd867290ce52f5c2637dc122e8a20899bc355d9c9b30006bf2a7c36a906"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 2.9144312500000016,
+        "sourceError": 0.006049262152777778,
+        "latentError": 0.006161875614821292,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 3,
+              "a1": 4,
+              "b0": 3,
+              "b1": 4,
+              "length": 25.06067740670041,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0098114013671875,
+              "errorAfter": 0.009124755859375,
+              "bigErrorBefore": 0.00934600830078125,
+              "bigErrorAfter": 0.008998870849609375,
+              "sourceErrorBefore": 0.009304470486111112,
+              "sourceErrorAfter": 0.008829752604166666
+            },
+            {
+              "i": 1,
+              "j": 1,
+              "a0": 6,
+              "a1": 7,
+              "b0": 6,
+              "b1": 7,
+              "length": 24.367482336956392,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.009124755859375,
+              "errorAfter": 0.008453369140625,
+              "bigErrorBefore": 0.008998870849609375,
+              "bigErrorAfter": 0.008655548095703125,
+              "sourceErrorBefore": 0.008829752604166666,
+              "sourceErrorAfter": 0.008382161458333334
+            },
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 1.512838534889051,
+              "a1": 1.9856988273134832,
+              "b0": 16.482253321728095,
+              "b1": 16.00620324752169,
+              "length": 11.810184921480094,
+              "blend": 0.5,
+              "errorBefore": 0.008453369140625,
+              "errorAfter": 0.006439208984375,
+              "bigErrorBefore": 0.008655548095703125,
+              "bigErrorAfter": 0.006725311279296875,
+              "sourceErrorBefore": 0.008382161458333334,
+              "sourceErrorAfter": 0.006293402777777778
+            },
+            {
+              "i": 0,
+              "j": 1,
+              "a0": 16.012142643667467,
+              "a1": 19.996782552251638,
+              "b0": 4.987359882969879,
+              "b1": 1.005607055168254,
+              "length": 24.820603437375254,
+              "blend": 0.5,
+              "errorBefore": 0.006439208984375,
+              "errorAfter": 0.00616455078125,
+              "bigErrorBefore": 0.006725311279296875,
+              "bigErrorAfter": 0.006526947021484375,
+              "sourceErrorBefore": 0.006293402777777778,
+              "sourceErrorAfter": 0.006076388888888889
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.009304470486111112,
+          "errorAfter": 0.006076388888888889,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.19765116699999635
+        },
+        "geometry": {
+          "path": "frame-752402-v2/cut_geometry.json",
+          "sha256": "fa88bfd867290ce52f5c2637dc122e8a20899bc355d9c9b30006bf2a7c36a906"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "frame-808906-v0",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 8.030412749999996,
+        "sourceError": 0.01251220703125,
+        "latentError": 0.008410163538579738,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 2,
+              "a1": 19,
+              "b0": 2,
+              "b1": 19,
+              "length": 31.86883337063436,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.013916015625,
+              "errorAfter": 0.0130157470703125,
+              "bigErrorBefore": 0.014354705810546875,
+              "bigErrorAfter": 0.0139312744140625,
+              "sourceErrorBefore": 0.013678656684027778,
+              "sourceErrorAfter": 0.013095431857638888
+            },
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 3.016941561006112,
+              "a1": 19.738926496923224,
+              "b0": 47.96118826347179,
+              "b1": 32.15525519417377,
+              "length": 31.030129936510033,
+              "blend": 0.5,
+              "errorBefore": 0.0130157470703125,
+              "errorAfter": 0.0130157470703125,
+              "bigErrorBefore": 0.0139312744140625,
+              "bigErrorAfter": 0.013916015625,
+              "sourceErrorBefore": 0.013095431857638888,
+              "sourceErrorAfter": 0.013095431857638888
+            },
+            {
+              "i": 1,
+              "j": 1,
+              "a0": 46,
+              "a1": 62,
+              "b0": 46,
+              "b1": 62,
+              "length": 30.86910685734309,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0130157470703125,
+              "errorAfter": 0.0121612548828125,
+              "bigErrorBefore": 0.013916015625,
+              "bigErrorAfter": 0.01351165771484375,
+              "sourceErrorBefore": 0.013095431857638888,
+              "sourceErrorAfter": 0.01251220703125
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.013678656684027778,
+          "errorAfter": 0.01251220703125,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.2342595829999991
+        },
+        "geometry": {
+          "path": "frame-808906-v0/cut_geometry.json",
+          "sha256": "57a503432488ce2169acb8d63b1f37fb9269841e1456b4d443e884fe7e8491e3"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 7.1102931669999965,
+        "sourceError": 0.01251220703125,
+        "latentError": 0.008410163538579738,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 0,
+              "a0": 2,
+              "a1": 19,
+              "b0": 2,
+              "b1": 19,
+              "length": 31.86883337063436,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.013916015625,
+              "errorAfter": 0.0130157470703125,
+              "bigErrorBefore": 0.014354705810546875,
+              "bigErrorAfter": 0.0139312744140625,
+              "sourceErrorBefore": 0.013678656684027778,
+              "sourceErrorAfter": 0.013095431857638888
+            },
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 3.016941561006112,
+              "a1": 19.738926496923224,
+              "b0": 47.96118826347179,
+              "b1": 32.15525519417377,
+              "length": 31.030129936510033,
+              "blend": 0.5,
+              "errorBefore": 0.0130157470703125,
+              "errorAfter": 0.0130157470703125,
+              "bigErrorBefore": 0.0139312744140625,
+              "bigErrorAfter": 0.013916015625,
+              "sourceErrorBefore": 0.013095431857638888,
+              "sourceErrorAfter": 0.013095431857638888
+            },
+            {
+              "i": 1,
+              "j": 1,
+              "a0": 46,
+              "a1": 62,
+              "b0": 46,
+              "b1": 62,
+              "length": 30.86910685734309,
+              "proposal": "paired-knots",
+              "blend": 0.5,
+              "errorBefore": 0.0130157470703125,
+              "errorAfter": 0.0121612548828125,
+              "bigErrorBefore": 0.013916015625,
+              "bigErrorAfter": 0.01351165771484375,
+              "sourceErrorBefore": 0.013095431857638888,
+              "sourceErrorAfter": 0.01251220703125
+            }
+          ],
+          "rejected": [],
+          "errorBefore": 0.013678656684027778,
+          "errorAfter": 0.01251220703125,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.2346305410000059
+        },
+        "geometry": {
+          "path": "frame-808906-v0/cut_geometry.json",
+          "sha256": "57a503432488ce2169acb8d63b1f37fb9269841e1456b4d443e884fe7e8491e3"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "frame-1821017-v3",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 6.090594957999994,
+        "sourceError": 0.008070203993055556,
+        "latentError": 0.007990117673940363,
+        "slits": {
+          "left": 2,
+          "right": 3
+        },
+        "checks": true,
+        "geometry": {
+          "path": "frame-1821017-v3/cut_geometry.json",
+          "sha256": "b70d6afe6d2868b8e069472e4f05dce1eee949c394b7fe236f6bdf20f726789b"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 6.052043209000003,
+        "sourceError": 0.008070203993055556,
+        "latentError": 0.007990117673940363,
+        "slits": {
+          "left": 2,
+          "right": 3
+        },
+        "checks": true,
+        "geometry": {
+          "path": "frame-1821017-v3/cut_geometry.json",
+          "sha256": "b70d6afe6d2868b8e069472e4f05dce1eee949c394b7fe236f6bdf20f726789b"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "frame-804870-v0",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 5.328584083000002,
+        "sourceError": 0.009514702690972222,
+        "latentError": 0.006612285255221851,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "geometry": {
+          "path": "frame-804870-v0/cut_geometry.json",
+          "sha256": "c59720d1bde93c7b80fcdff5abfbeb78d1445efd1c2d5b716c5e583258d04b7c"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 5.471474833,
+        "sourceError": 0.009514702690972222,
+        "latentError": 0.006612285255221851,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "geometry": {
+          "path": "frame-804870-v0/cut_geometry.json",
+          "sha256": "c59720d1bde93c7b80fcdff5abfbeb78d1445efd1c2d5b716c5e583258d04b7c"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "frame-776618-v2",
+      "referenceSlits": [
+        2,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 5.496842833000002,
+        "sourceError": 0.0013563368055555555,
+        "latentError": 0.0025495517723497,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "geometry": {
+          "path": "frame-776618-v2/cut_geometry.json",
+          "sha256": "395eaea5e69a337be666fcf723629129b55346b97c77a6ec6477d911c0f29b93"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 5.124520165999995,
+        "sourceError": 0.0013563368055555555,
+        "latentError": 0.0025495517723497,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "checks": true,
+        "geometry": {
+          "path": "frame-776618-v2/cut_geometry.json",
+          "sha256": "395eaea5e69a337be666fcf723629129b55346b97c77a6ec6477d911c0f29b93"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "shared-lattice-714060-v1",
+      "referenceSlits": [
+        7,
+        3
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 10.87720925,
+        "sourceError": 0.002936469184027778,
+        "latentError": 0.014254415993427359,
+        "slits": {
+          "left": 3,
+          "right": 7
+        },
+        "checks": true,
+        "geometry": {
+          "path": "shared-lattice-714060-v1/cut_geometry.json",
+          "sha256": "6da0d3509e6a91d25ffa667184df5b805aae9d94da3e0e95ba262e1e34aca7ca"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 10.884553,
+        "sourceError": 0.002936469184027778,
+        "latentError": 0.014254415993427359,
+        "slits": {
+          "left": 3,
+          "right": 7
+        },
+        "checks": true,
+        "geometry": {
+          "path": "shared-lattice-714060-v1/cut_geometry.json",
+          "sha256": "6da0d3509e6a91d25ffa667184df5b805aae9d94da3e0e95ba262e1e34aca7ca"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "shared-lattice-734240-v0",
+      "referenceSlits": [
+        6,
+        5
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 11.388701167000006,
+        "sourceError": 0.005093044704861111,
+        "latentError": 0.010018742075960532,
+        "slits": {
+          "left": 5,
+          "right": 6
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 2,
+              "a0": 6.321740077331071,
+              "a1": 6.748595042663333,
+              "b0": 1.7124953542353034,
+              "b1": 1.9903599979571713,
+              "length": 3.0003759185132424,
+              "blend": 1,
+              "errorBefore": 0.0062103271484375,
+              "errorAfter": 0.006195068359375,
+              "bigErrorBefore": 0.008880615234375,
+              "bigErrorAfter": 0.0088653564453125,
+              "sourceErrorBefore": 0.005126953125,
+              "sourceErrorAfter": 0.005099826388888889
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "higher_resolution_error",
+              "i": 0,
+              "j": 2,
+              "a0": 6.321740077331071,
+              "a1": 6.748595042663333,
+              "b0": 1.7124953542353034,
+              "b1": 1.9903599979571713,
+              "length": 3.0003759185132424,
+              "blend": 0.5
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 0,
+              "j": 2,
+              "a0": 6.321740077331071,
+              "a1": 6.748595042663333,
+              "b0": 1.7124953542353034,
+              "b1": 1.9903599979571713,
+              "length": 3.0003759185132424,
+              "blend": 0
+            }
+          ],
+          "errorBefore": 0.005126953125,
+          "errorAfter": 0.005099826388888889,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.2660844170000055
+        },
+        "geometry": {
+          "path": "shared-lattice-734240-v0/cut_geometry.json",
+          "sha256": "986d5da53f6059fd2297f1c8e66f86a3214bedd539ab14f29605263bd91f0002"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 11.309500999999988,
+        "sourceError": 0.005099826388888889,
+        "latentError": 0.010011851606857395,
+        "slits": {
+          "left": 5,
+          "right": 6
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 0,
+              "j": 2,
+              "a0": 6.321740077331071,
+              "a1": 6.748595042663333,
+              "b0": 1.7124953542353034,
+              "b1": 1.9903599979571713,
+              "length": 3.0003759185132424,
+              "blend": 1,
+              "errorBefore": 0.0062103271484375,
+              "errorAfter": 0.006195068359375,
+              "bigErrorBefore": 0.008880615234375,
+              "bigErrorAfter": 0.0088653564453125,
+              "sourceErrorBefore": 0.005126953125,
+              "sourceErrorAfter": 0.005099826388888889
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "higher_resolution_error",
+              "i": 0,
+              "j": 2,
+              "a0": 6.321740077331071,
+              "a1": 6.748595042663333,
+              "b0": 1.7124953542353034,
+              "b1": 1.9903599979571713,
+              "length": 3.0003759185132424,
+              "blend": 0.5
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 0,
+              "j": 2,
+              "a0": 6.321740077331071,
+              "a1": 6.748595042663333,
+              "b0": 1.7124953542353034,
+              "b1": 1.9903599979571713,
+              "length": 3.0003759185132424,
+              "blend": 0
+            }
+          ],
+          "errorBefore": 0.005126953125,
+          "errorAfter": 0.005099826388888889,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.2577451250000013
+        },
+        "geometry": {
+          "path": "shared-lattice-734240-v0/cut_geometry.json",
+          "sha256": "c0cd285204bf33fd665c11dc24e1299e1d9a6fdb53ce45cc5e3e700cd95a42cf"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "shared-lattice-839176-v0",
+      "referenceSlits": [
+        6,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 7.723680666,
+        "sourceError": 0.0034315321180555555,
+        "latentError": 0.004499221552368607,
+        "slits": {
+          "left": 2,
+          "right": 6
+        },
+        "checks": true,
+        "geometry": {
+          "path": "shared-lattice-839176-v0/cut_geometry.json",
+          "sha256": "63ecbfe2d074108ac3bab79b81c0a7a59d28863fb78c4db0063ce7129f0ae15f"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 7.515670166999989,
+        "sourceError": 0.0034315321180555555,
+        "latentError": 0.004499221552368607,
+        "slits": {
+          "left": 2,
+          "right": 6
+        },
+        "checks": true,
+        "geometry": {
+          "path": "shared-lattice-839176-v0/cut_geometry.json",
+          "sha256": "63ecbfe2d074108ac3bab79b81c0a7a59d28863fb78c4db0063ce7129f0ae15f"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "shared-lattice-718096-v3",
+      "referenceSlits": [
+        4,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 7.042977375000002,
+        "sourceError": 0.004570855034722222,
+        "latentError": 0.006901569483421682,
+        "slits": {
+          "left": 2,
+          "right": 4
+        },
+        "checks": true,
+        "geometry": {
+          "path": "shared-lattice-718096-v3/cut_geometry.json",
+          "sha256": "bbab87a3f5a0d24cce360df2cbe1550d211d907021c5c3c97ab7264a95b4e380"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 6.849737084000008,
+        "sourceError": 0.004570855034722222,
+        "latentError": 0.006901569483421682,
+        "slits": {
+          "left": 2,
+          "right": 4
+        },
+        "checks": true,
+        "geometry": {
+          "path": "shared-lattice-718096-v3/cut_geometry.json",
+          "sha256": "bbab87a3f5a0d24cce360df2cbe1550d211d907021c5c3c97ab7264a95b4e380"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "shared-lattice-758456-v1",
+      "referenceSlits": [
+        3,
+        2
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 5.578356458000009,
+        "sourceError": 0.0020887586805555555,
+        "latentError": 0.002337315936370011,
+        "slits": {
+          "left": 2,
+          "right": 3
+        },
+        "checks": true,
+        "geometry": {
+          "path": "shared-lattice-758456-v1/cut_geometry.json",
+          "sha256": "9ba6c0d6a039b43523e7e1fcc8172ebf0af56e7013b2dc1c832b1649d1a6501c"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 5.323634165999989,
+        "sourceError": 0.0020887586805555555,
+        "latentError": 0.002337315936370011,
+        "slits": {
+          "left": 2,
+          "right": 3
+        },
+        "checks": true,
+        "geometry": {
+          "path": "shared-lattice-758456-v1/cut_geometry.json",
+          "sha256": "9ba6c0d6a039b43523e7e1fcc8172ebf0af56e7013b2dc1c832b1649d1a6501c"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "shared-lattice-726168-v3",
+      "referenceSlits": [
+        6,
+        4
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 10.696128832999996,
+        "sourceError": 0.00665283203125,
+        "latentError": 0.01531054071841768,
+        "slits": {
+          "left": 4,
+          "right": 6
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 4,
+              "j": 2,
+              "a0": 8.245133074125773,
+              "a1": 8.691896695027754,
+              "b0": 9.336640303972809,
+              "b1": 9.776866420349679,
+              "length": 3.003410666623786,
+              "blend": 0.5,
+              "errorBefore": 0.0080413818359375,
+              "errorAfter": 0.008026123046875,
+              "bigErrorBefore": 0.009647369384765625,
+              "bigErrorAfter": 0.0096435546875,
+              "sourceErrorBefore": 0.006673177083333333,
+              "sourceErrorAfter": 0.00665283203125
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.6280639682825297,
+              "a1": 2.996398930252138,
+              "b0": 3.551585478600476,
+              "b1": 3.9987609847768146,
+              "length": 3.004334335798699,
+              "blend": 0.5
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.6280639682825297,
+              "a1": 2.996398930252138,
+              "b0": 3.551585478600476,
+              "b1": 3.9987609847768146,
+              "length": 3.004334335798699,
+              "blend": 0
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.6280639682825297,
+              "a1": 2.996398930252138,
+              "b0": 3.551585478600476,
+              "b1": 3.9987609847768146,
+              "length": 3.004334335798699,
+              "blend": 1
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.6280639682825297,
+              "a1": 2.996398930252138,
+              "b0": 3.551585478600476,
+              "b1": 3.9987609847768146,
+              "length": 3.004334335798699,
+              "blend": 0.5
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.6280639682825297,
+              "a1": 2.996398930252138,
+              "b0": 3.551585478600476,
+              "b1": 3.9987609847768146,
+              "length": 3.004334335798699,
+              "blend": 0
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.6280639682825297,
+              "a1": 2.996398930252138,
+              "b0": 3.551585478600476,
+              "b1": 3.9987609847768146,
+              "length": 3.004334335798699,
+              "blend": 1
+            }
+          ],
+          "errorBefore": 0.006673177083333333,
+          "errorAfter": 0.00665283203125,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.29941049999999814
+        },
+        "geometry": {
+          "path": "shared-lattice-726168-v3/cut_geometry.json",
+          "sha256": "0b3a6d9c13694b57bb344646de2507345f286ca9b692eca13d461667c2052eb7"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 10.458481749999992,
+        "sourceError": 0.0069580078125,
+        "latentError": 0.01555301534517995,
+        "slits": {
+          "left": 4,
+          "right": 6
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [],
+          "rejected": [
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.631850658686628,
+              "a1": 2.9974083383610086,
+              "b0": 3.5548945033505723,
+              "b1": 4.001293870110054,
+              "length": 3.003825287280165,
+              "blend": 0.5
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.631850658686628,
+              "a1": 2.9974083383610086,
+              "b0": 3.5548945033505723,
+              "b1": 4.001293870110054,
+              "length": 3.003825287280165,
+              "blend": 0
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.631850658686628,
+              "a1": 2.9974083383610086,
+              "b0": 3.5548945033505723,
+              "b1": 4.001293870110054,
+              "length": 3.003825287280165,
+              "blend": 1
+            }
+          ],
+          "errorBefore": 0.0069580078125,
+          "errorAfter": 0.0069580078125,
+          "applied": false,
+          "seconds": 0.09622258400000283
+        },
+        "sharingAfterPrimitives": {
+          "accepted": [],
+          "rejected": [
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.631850658686628,
+              "a1": 2.9974083383610086,
+              "b0": 3.5548945033505723,
+              "b1": 4.001293870110054,
+              "length": 3.003825287280165,
+              "blend": 0.5
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.631850658686628,
+              "a1": 2.9974083383610086,
+              "b0": 3.5548945033505723,
+              "b1": 4.001293870110054,
+              "length": 3.003825287280165,
+              "blend": 0
+            },
+            {
+              "reason": "higher_resolution_error",
+              "i": 1,
+              "j": 0,
+              "a0": 2.631850658686628,
+              "a1": 2.9974083383610086,
+              "b0": 3.5548945033505723,
+              "b1": 4.001293870110054,
+              "length": 3.003825287280165,
+              "blend": 1
+            }
+          ],
+          "errorBefore": 0.0069580078125,
+          "errorAfter": 0.0069580078125,
+          "applied": false,
+          "seconds": 0.09172612500000105
+        },
+        "geometry": {
+          "path": "shared-lattice-726168-v3/cut_geometry.json",
+          "sha256": "69ae91dc24af8c704434d112310ffd071bbb278c827350fe8b43fa8b0668cd53"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "shared-lattice-778636-v2",
+      "referenceSlits": [
+        5,
+        3
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 8.40067512499998,
+        "sourceError": 0.002143012152777778,
+        "latentError": 0.00808144130393306,
+        "slits": {
+          "left": 3,
+          "right": 5
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 2.9695999154549413,
+              "a1": 3.452528735032024,
+              "b0": 4.2701963516054535,
+              "b1": 4.733986459757645,
+              "length": 3.404343484647889,
+              "blend": 0,
+              "errorBefore": 0.00335693359375,
+              "errorAfter": 0.0032958984375,
+              "bigErrorBefore": 0.00577545166015625,
+              "bigErrorAfter": 0.0057525634765625,
+              "sourceErrorBefore": 0.002163357204861111,
+              "sourceErrorAfter": 0.0021565755208333335
+            },
+            {
+              "i": 1,
+              "j": 2,
+              "a0": 13.641267983554272,
+              "a1": 14.100077562995626,
+              "b0": 6.973322164001933,
+              "b1": 7.518112430158202,
+              "length": 3.003828635250798,
+              "blend": 0.5,
+              "errorBefore": 0.0032958984375,
+              "errorAfter": 0.0032806396484375,
+              "bigErrorBefore": 0.0057525634765625,
+              "bigErrorAfter": 0.005741119384765625,
+              "sourceErrorBefore": 0.0021565755208333335,
+              "sourceErrorAfter": 0.002143012152777778
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "source_image_error",
+              "errorLimit": 0.002163357204861111,
+              "errorBefore": 0.002163357204861111,
+              "errorAfter": 0.002170138888888889,
+              "i": 1,
+              "j": 0,
+              "a0": 2.9695999154549413,
+              "a1": 3.452528735032024,
+              "b0": 4.2701963516054535,
+              "b1": 4.733986459757645,
+              "length": 3.404343484647889,
+              "blend": 0.5
+            }
+          ],
+          "errorBefore": 0.002163357204861111,
+          "errorAfter": 0.002143012152777778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.2941247909999947
+        },
+        "geometry": {
+          "path": "shared-lattice-778636-v2/cut_geometry.json",
+          "sha256": "fe3eab1c197cbd1f93af48268998302129062dc16cb9b94ac7a7f7e2c5ad5559"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 8.138064125000005,
+        "sourceError": 0.002143012152777778,
+        "latentError": 0.00808144130393306,
+        "slits": {
+          "left": 3,
+          "right": 5
+        },
+        "checks": true,
+        "sharing": {
+          "accepted": [
+            {
+              "i": 1,
+              "j": 0,
+              "a0": 2.9695999154549413,
+              "a1": 3.452528735032024,
+              "b0": 4.2701963516054535,
+              "b1": 4.733986459757645,
+              "length": 3.404343484647889,
+              "blend": 0,
+              "errorBefore": 0.00335693359375,
+              "errorAfter": 0.0032958984375,
+              "bigErrorBefore": 0.00577545166015625,
+              "bigErrorAfter": 0.0057525634765625,
+              "sourceErrorBefore": 0.002163357204861111,
+              "sourceErrorAfter": 0.0021565755208333335
+            },
+            {
+              "i": 1,
+              "j": 2,
+              "a0": 13.641267983554272,
+              "a1": 14.100077562995626,
+              "b0": 6.973322164001933,
+              "b1": 7.518112430158202,
+              "length": 3.003828635250798,
+              "blend": 0.5,
+              "errorBefore": 0.0032958984375,
+              "errorAfter": 0.0032806396484375,
+              "bigErrorBefore": 0.0057525634765625,
+              "bigErrorAfter": 0.005741119384765625,
+              "sourceErrorBefore": 0.0021565755208333335,
+              "sourceErrorAfter": 0.002143012152777778
+            }
+          ],
+          "rejected": [
+            {
+              "reason": "source_image_error",
+              "errorLimit": 0.002163357204861111,
+              "errorBefore": 0.002163357204861111,
+              "errorAfter": 0.002170138888888889,
+              "i": 1,
+              "j": 0,
+              "a0": 2.9695999154549413,
+              "a1": 3.452528735032024,
+              "b0": 4.2701963516054535,
+              "b1": 4.733986459757645,
+              "length": 3.404343484647889,
+              "blend": 0.5
+            }
+          ],
+          "errorBefore": 0.002163357204861111,
+          "errorAfter": 0.002143012152777778,
+          "applied": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "seconds": 0.29270295800000895
+        },
+        "geometry": {
+          "path": "shared-lattice-778636-v2/cut_geometry.json",
+          "sha256": "fe3eab1c197cbd1f93af48268998302129062dc16cb9b94ac7a7f7e2c5ad5559"
+        }
+      }
+    },
+    {
+      "group": "coverage",
+      "id": "lattice-713051-v1",
+      "referenceSlits": [
+        1,
+        6
+      ],
+      "cropUnchanged": true,
+      "maskUnchanged": true,
+      "before": {
+        "status": "checked-pair",
+        "seconds": 6.599976334000006,
+        "sourceError": 0.001736111111111111,
+        "latentError": 0.00340710840488489,
+        "slits": {
+          "left": 6,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "lattice-713051-v1/cut_geometry.json",
+          "sha256": "306c595ff178b55d946495e33df4b03da98acf3a68b14980480a8ab5682f4420"
+        }
+      },
+      "after": {
+        "status": "checked-pair",
+        "seconds": 6.241163707999993,
+        "sourceError": 0.001736111111111111,
+        "latentError": 0.00340710840488489,
+        "slits": {
+          "left": 6,
+          "right": 1
+        },
+        "checks": true,
+        "geometry": {
+          "path": "lattice-713051-v1/cut_geometry.json",
+          "sha256": "306c595ff178b55d946495e33df4b03da98acf3a68b14980480a8ab5682f4420"
+        }
+      }
+    }
+  ],
+  "sourceHashes": {
+    "scripts/inverse/learning/photo-pipeline.mjs": "aa2a7b4eb892704d5681e597b853e687c7bb5e7339a03960df3d9b63b464d1e4",
+    "scripts/inverse/learning/photo-labels.mjs": "ab66c6583737634b22a0cb8b7de88721f160677d29379881010e0b10bb560ed8",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "scripts/inverse/datasets/synthetic-photo.mjs": "0dec8a848f741960bb7cdd921a910815de80bfdf49f9255546fd003474677211",
+    "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+    "static/inverse/locator/background.js": "eae48361dab5485076b8442949ad750b83a381631e007e6d0e9e60c43bb279b8",
+    "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/locator.js": "b076ecec04b3bc65aef2d8ad03ccabd45fbc6802eee96b9ed3f4eecf9f8d989f",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "cb79dd6d90d22b6bea6bb4bd0593cc8e32a18a09116084e53f5d942bcbef3c04",
+    "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "5106e25e15a23740776dfced1f95e3be005fa5217d837f4400c5ee3399190c42",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "e9ada76afbaa0ef4bd957cbc4c8c20f09f471cf6ba0c33b84a774aba10a9da84",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "b38677af5801e894eb869d38df247ea02c06ba2bd773d606da97494e2297ce29",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "af2ab7ff657356438dafdc6e41adfd1bb737fe368fb094cada4f8dd2bb7ffce5",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "c4e1362454df612592753de03af71522de75cb87227417bb0d43c077940588d5",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "0184fc04b25d28e1ea9d21d778711870a2429087fce2b937b6bb0c90266043b6",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/counts.js": "38b429832cff5844bef49d4e393d18cb59d689578c6a39f7e1860a257bb34ea8",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "8d13605875bf0f4dfe74c0bc18ac7145023c895754e9842499d6d00879999c45",
+    "static/inverse/core/direct/finalize.js": "2730887151dcae876569c8a5fb2ba8831a1ce4320e92d1735077c4bfe9b90df5",
+    "static/inverse/core/direct/fit.js": "a86a3ff6c104b2be384718cd4b6d0751e5204c71bd7b3c97467fbe6f388b7a4c",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "7bb1e8f18ff62c6c4cf5f2c5e7f6c398ca7a7ffed0668bc4b8dfef0c8c73953d",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ce6ceff1d1742efd45ae1be71ff58e88d44a6c0dac4b53d141121d68f141a173"
+  },
+  "hunodan": {
+    "criteria": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case’s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.",
+    "results": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.751402791,
+        "error": 0.009799111111111111,
+        "baselineError": 0.009841777777777777,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 5.060755709,
+        "error": 0.013923555555555555,
+        "baselineError": 0.0072106666666666664,
+        "matchingAllowance": 0.01,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 614.5422222222222,
+              "centerMm": [
+                86.0866774666358,
+                49.79115945383014
+              ],
+              "retainedFraction": 0.9894700300856283
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 4.1376560829999995,
+        "error": 0.006634666666666666,
+        "baselineError": 0.007089777777777778,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 4.514264916999998,
+        "error": 0.013824,
+        "baselineError": 0.004771555555555556,
+        "matchingAllowance": 0.01,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 3.4144426249999995,
+        "error": 0.009042960667083447,
+        "baselineError": 0.01776012820399933,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 673.7754140654579,
+              "centerMm": [
+                49.27363300609139,
+                25.667927238432654
+              ],
+              "retainedFraction": 0.9898065865133299
+            },
+            {
+              "value": 1,
+              "areaMm2": 1038.5756676557862,
+              "centerMm": [
+                32.966478528471676,
+                59.554166567083826
+              ],
+              "retainedFraction": 0.9923696481559983
+            },
+            {
+              "value": 1,
+              "areaMm2": 35.0447745423487,
+              "centerMm": [
+                35.846890237537835,
+                36.380716639577706
+              ],
+              "retainedFraction": 0.9874371859296482
+            },
+            {
+              "value": 1,
+              "areaMm2": 350.71190201551474,
+              "centerMm": [
+                77.40787814085233,
+                47.865483199741334
+              ],
+              "retainedFraction": 0.9942254581973387
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 5.686224791000001,
+        "error": 0.013468424479166666,
+        "baselineError": 0.013509114583333334,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 0,
+              "areaMm2": 271.87771267361114,
+              "centerMm": [
+                59.865985127213776,
+                13.517209975471856
+              ],
+              "retainedFraction": 0.9925168371164879
+            },
+            {
+              "value": 1,
+              "areaMm2": 137.93945312500003,
+              "centerMm": [
+                17.459951655195017,
+                39.454661381514256
+              ],
+              "retainedFraction": 0.9941002949852508
+            },
+            {
+              "value": 1,
+              "areaMm2": 244.14062500000006,
+              "centerMm": [
+                32.82009548611111,
+                53.04137731481481
+              ],
+              "retainedFraction": 0.9969444444444444
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 5.602921208,
+        "error": 0.005148444444444444,
+        "baselineError": 0.005831111111111111,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 0,
+              "areaMm2": 166.82666666666665,
+              "centerMm": [
+                63.06007388462632,
+                91.61341290139244
+              ],
+              "retainedFraction": 0.9923273657289002
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.556810709000005,
+        "error": 0.005397333333333333,
+        "baselineError": 0.005745777777777778,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 408.03555555555556,
+              "centerMm": [
+                67.53219472522365,
+                66.7074241896131
+              ],
+              "retainedFraction": 0.9966887417218543
+            },
+            {
+              "value": 1,
+              "areaMm2": 398.3644444444444,
+              "centerMm": [
+                89.70396287040343,
+                88.89263358324408
+              ],
+              "retainedFraction": 0.9935737236701179
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 6.494483583000001,
+        "error": 0.004522666666666667,
+        "baselineError": 0.005688888888888889,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 64.92444444444445,
+              "centerMm": [
+                42.04994523548741,
+                41.886673968601684
+              ],
+              "retainedFraction": 0.9912376779846659
+            },
+            {
+              "value": 1,
+              "areaMm2": 60.586666666666666,
+              "centerMm": [
+                58.26134585289515,
+                42.09546165884194
+              ],
+              "retainedFraction": 0.9847417840375586
+            },
+            {
+              "value": 1,
+              "areaMm2": 55.68,
+              "centerMm": [
+                50.17369093231162,
+                50.136228182205194
+              ],
+              "retainedFraction": 0.9936143039591315
+            },
+            {
+              "value": 1,
+              "areaMm2": 60.30222222222222,
+              "centerMm": [
+                58.15723270440252,
+                58.25094339622642
+              ],
+              "retainedFraction": 0.9917452830188679
+            },
+            {
+              "value": 1,
+              "areaMm2": 1077.76,
+              "centerMm": [
+                81.5354798979502,
+                82.23476730887657
+              ],
+              "retainedFraction": 0.9986144101346002
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 8.970584750000002,
+        "error": 0.005553777777777778,
+        "baselineError": 0.006492444444444445,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 132.4088888888889,
+              "centerMm": [
+                29.463945578231293,
+                85.46136770497672
+              ],
+              "retainedFraction": 0.9957035445757251
+            },
+            {
+              "value": 1,
+              "areaMm2": 118.82666666666667,
+              "centerMm": [
+                49.87775782964293,
+                95.82054657889488
+              ],
+              "retainedFraction": 0.988031119090365
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.8392250420000056,
+        "error": 0.009436444444444445,
+        "baselineError": 0.009820444444444444,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 256,
+              "centerMm": [
+                50.93918518518519,
+                49.712222222222216
+              ],
+              "retainedFraction": 0.9922222222222222
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 7.473405583,
+        "error": 0.006040430615586996,
+        "baselineError": 0.007107573357674032,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 0,
+              "areaMm2": 233.76466482321666,
+              "centerMm": [
+                27.780343905780708,
+                7.688602970162997
+              ],
+              "retainedFraction": 0.9936836060867069
+            },
+            {
+              "value": 0,
+              "areaMm2": 222.82477381943133,
+              "centerMm": [
+                44.66461701729197,
+                30.483254260565577
+              ],
+              "retainedFraction": 0.994277108433735
+            },
+            {
+              "value": 0,
+              "areaMm2": 221.81803538350016,
+              "centerMm": [
+                29.183957420457308,
+                46.82805139018444
+              ],
+              "retainedFraction": 0.9969742813918305
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 5.367549415999995,
+        "error": 0.003899406226779104,
+        "baselineError": 0.004369789145743716,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 0,
+              "areaMm2": 388.0318224270396,
+              "centerMm": [
+                8.788295239161187,
+                37.257137038103956
+              ],
+              "retainedFraction": 0.9954321855235418
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 8.602669500000003,
+        "error": 0.007776029627903062,
+        "baselineError": 0.009679570602593737,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 0,
+              "areaMm2": 52.83297399141465,
+              "centerMm": [
+                2.741917377638078,
+                68.08517936436661
+              ],
+              "retainedFraction": 0.9889705882352942
+            },
+            {
+              "value": 1,
+              "areaMm2": 86.95426969420328,
+              "centerMm": [
+                53.82172001083746,
+                4.464294172592218
+              ],
+              "retainedFraction": 0.9910647803425168
+            },
+            {
+              "value": 1,
+              "areaMm2": 321.9185621143549,
+              "centerMm": [
+                67.51487720548046,
+                17.646965500441148
+              ],
+              "retainedFraction": 0.9925583266291231
+            },
+            {
+              "value": 1,
+              "areaMm2": 157.7219664743702,
+              "centerMm": [
+                93.1039705519832,
+                67.37738001228394
+              ],
+              "retainedFraction": 0.9946633825944171
+            },
+            {
+              "value": 1,
+              "areaMm2": 320.170412239639,
+              "centerMm": [
+                73.96143841801806,
+                86.54988589497192
+              ],
+              "retainedFraction": 0.9935288169868554
+            },
+            {
+              "value": 1,
+              "areaMm2": 162.38369947361267,
+              "centerMm": [
+                93.06280969599572,
+                92.82357524623495
+              ],
+              "retainedFraction": 0.9932216905901117
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 4.809343917000006,
+        "error": 0.007550237322696868,
+        "baselineError": 0.008177127465366042,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 288.02502049448543,
+              "centerMm": [
+                89.85270198077669,
+                60.53371677021597
+              ],
+              "retainedFraction": 0.9944989237024635
+            },
+            {
+              "value": 1,
+              "areaMm2": 276.6583310944399,
+              "centerMm": [
+                73.68348129790549,
+                73.03509060869384
+              ],
+              "retainedFraction": 0.9957669322709163
+            },
+            {
+              "value": 1,
+              "areaMm2": 294.5694780278449,
+              "centerMm": [
+                60.93332989597067,
+                89.04420448379406
+              ],
+              "retainedFraction": 0.9948550046772685
+            },
+            {
+              "value": 1,
+              "areaMm2": 230.15823809425393,
+              "centerMm": [
+                91.35661207569046,
+                90.80072526103346
+              ],
+              "retainedFraction": 0.994612391499551
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 9.611946541000012,
+        "error": 0.0043852728468113085,
+        "baselineError": 0.004464168310322156,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 727.8763971071662,
+              "centerMm": [
+                24.67420078792132,
+                25.212613689264398
+              ],
+              "retainedFraction": 0.9952127179116611
+            },
+            {
+              "value": 1,
+              "areaMm2": 316.3708086785009,
+              "centerMm": [
+                55.38120510689089,
+                25.510902231600486
+              ],
+              "retainedFraction": 0.9989609310058188
+            },
+            {
+              "value": 1,
+              "areaMm2": 257.9224194608809,
+              "centerMm": [
+                49.561919514761726,
+                50.547298313038816
+              ],
+              "retainedFraction": 0.9989803721641601
+            },
+            {
+              "value": 1,
+              "areaMm2": 298.15910585141347,
+              "centerMm": [
+                74.5463206400362,
+                45.158086676278515
+              ],
+              "retainedFraction": 0.9966923925027563
+            },
+            {
+              "value": 1,
+              "areaMm2": 297.370151216305,
+              "centerMm": [
+                24.667851494073027,
+                55.952170388385284
+              ],
+              "retainedFraction": 0.995135971700199
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 9.399884999999994,
+        "error": 0.005692687852056542,
+        "baselineError": 0.007439685407588479,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 79.31236050589858,
+              "centerMm": [
+                46.32181526187639,
+                30.9841734445423
+              ],
+              "retainedFraction": 0.9874371859296482
+            },
+            {
+              "value": 1,
+              "areaMm2": 157.6947603358486,
+              "centerMm": [
+                30.640247874308447,
+                31.152454858909667
+              ],
+              "retainedFraction": 0.9962089300758215
+            },
+            {
+              "value": 1,
+              "areaMm2": 36.6005951748326,
+              "centerMm": [
+                40.02914101820495,
+                40.579686418320954
+              ],
+              "retainedFraction": 0.985480943738657
+            },
+            {
+              "value": 1,
+              "areaMm2": 36.534169412264845,
+              "centerMm": [
+                52.75585754451734,
+                40.4639175257732
+              ],
+              "retainedFraction": 0.9872727272727273
+            },
+            {
+              "value": 1,
+              "areaMm2": 39.7890317780848,
+              "centerMm": [
+                46.402724472058246,
+                46.73876564032839
+              ],
+              "retainedFraction": 0.993322203672788
+            },
+            {
+              "value": 1,
+              "areaMm2": 39.523328727813784,
+              "centerMm": [
+                58.91341072511478,
+                46.58689248895435
+              ],
+              "retainedFraction": 0.984873949579832
+            },
+            {
+              "value": 1,
+              "areaMm2": 74.46327983845252,
+              "centerMm": [
+                68.30345236671971,
+                52.76757221552921
+              ],
+              "retainedFraction": 0.9955396966993756
+            },
+            {
+              "value": 1,
+              "areaMm2": 34.873525348070984,
+              "centerMm": [
+                52.73514972999509,
+                53.10235640648012
+              ],
+              "retainedFraction": 0.9942857142857143
+            },
+            {
+              "value": 1,
+              "areaMm2": 39.25762567754277,
+              "centerMm": [
+                58.96152772690006,
+                59.29034311929806
+              ],
+              "retainedFraction": 0.988155668358714
+            },
+            {
+              "value": 1,
+              "areaMm2": 39.65618025294929,
+              "centerMm": [
+                46.316850575903565,
+                59.44132172891952
+              ],
+              "retainedFraction": 0.9932998324958124
+            },
+            {
+              "value": 1,
+              "areaMm2": 144.2103305345945,
+              "centerMm": [
+                68.24928651816114,
+                68.63297591969115
+              ],
+              "retainedFraction": 0.9958544449562413
+            },
+            {
+              "value": 1,
+              "areaMm2": 72.20480391114889,
+              "centerMm": [
+                52.682000967383985,
+                68.72540046851734
+              ],
+              "retainedFraction": 0.9954001839926403
+            },
+            {
+              "value": 1,
+              "areaMm2": 608.8585396960356,
+              "centerMm": [
+                86.78441843568004,
+                87.15698536275927
+              ],
+              "retainedFraction": 0.9958542439450142
+            },
+            {
+              "value": 1,
+              "areaMm2": 155.30343288340947,
+              "centerMm": [
+                58.8815006217315,
+                87.17733898917922
+              ],
+              "retainedFraction": 0.9970059880239521
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 5.376196000000011,
+        "error": 0.007929362880886427,
+        "baselineError": 0.008206371191135734,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 1059.4875346260387,
+              "centerMm": [
+                49.75551377627021,
+                50.077206628572206
+              ],
+              "retainedFraction": 0.9930060788286816
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.749199374999996,
+        "error": 0.0038045247395833335,
+        "baselineError": 0.003851996527777778,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 293.24001736111114,
+              "centerMm": [
+                61.149193936941096,
+                38.90621386447734
+              ],
+              "retainedFraction": 0.9958371877890841
+            },
+            {
+              "value": 1,
+              "areaMm2": 274.65820312500006,
+              "centerMm": [
+                40.44077932098765,
+                59.731931584362144
+              ],
+              "retainedFraction": 0.994320987654321
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 7.042724875,
+        "error": 0.012332213049376572,
+        "baselineError": 0.0126798873807852,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 142.61464731506797,
+              "centerMm": [
+                19.75772431593188,
+                19.651513411778804
+              ],
+              "retainedFraction": 0.9760994263862333
+            },
+            {
+              "value": 1,
+              "areaMm2": 1755.5508593009704,
+              "centerMm": [
+                51.02625809387311,
+                50.80360814582476
+              ],
+              "retainedFraction": 0.9953789996893445
+            },
+            {
+              "value": 1,
+              "areaMm2": 139.4787611886372,
+              "centerMm": [
+                82.9002141349484,
+                81.71098673077952
+              ],
+              "retainedFraction": 0.9833822091886608
+            },
+            {
+              "value": 1,
+              "areaMm2": 131.29818868490483,
+              "centerMm": [
+                18.80885179852994,
+                83.00255674038645
+              ],
+              "retainedFraction": 0.9844236760124611
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 7.4282789579999955,
+        "error": 0.0050250552896055544,
+        "baselineError": 0.006172839506172839,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 0,
+              "areaMm2": 194.7733826040704,
+              "centerMm": [
+                20.86900436702808,
+                44.142108074914404
+              ],
+              "retainedFraction": 0.9978440531800216
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 6.772395166000002,
+        "error": 0.010624446293860237,
+        "baselineError": 0.012731885419742812,
+        "matchingAllowance": 0,
+        "qualityPassed": true,
+        "speedPassed": true,
+        "features": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 296.45091143386395,
+              "centerMm": [
+                24.819644074178782,
+                25.76212842280356
+              ],
+              "retainedFraction": 0.9895856916459135
+            },
+            {
+              "value": 1,
+              "areaMm2": 309.00158393513914,
+              "centerMm": [
+                49.27119017929892,
+                50.7144046852703
+              ],
+              "retainedFraction": 0.988488271068636
+            },
+            {
+              "value": 1,
+              "areaMm2": 304.77328250422823,
+              "centerMm": [
+                74.30204138916241,
+                74.77082722415116
+              ],
+              "retainedFraction": 0.9889892094252367
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "exportAllowed": true
+      }
+    ]
+  },
+  "qa": [
+    {
+      "command": [
+        "node",
+        "scripts/inverse/learning/photo-pipeline.mjs",
+        "--probe=tmp/heart-learning/color-interventions-v1",
+        "--output=tmp/heart-learning/seam-pipeline-v3"
+      ],
+      "exitCode": 0,
+      "seconds": 26.449614166,
+      "log": "tmp/heart-learning/seam-qa-v2/0.log",
+      "logSha256": "f9c1ae617a685a95507aead7fb91a77119e5a1021e0f0c0408d7ed5eb32f2967"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/inverse/learning/photo-pipeline.mjs",
+        "--probe=tmp/heart-learning/background-coverage-input-v1",
+        "--output=tmp/heart-learning/seam-coverage-pipeline-v3"
+      ],
+      "exitCode": 0,
+      "seconds": 134.026015833,
+      "log": "tmp/heart-learning/seam-qa-v2/1.log",
+      "logSha256": "7b46bdde2b3704df981f38e8d54f15fde1039f34a0e730af4353c236eb1a001b"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/inverse/hunodan-speed-benchmark.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 136.11598558300003,
+      "log": "tmp/heart-learning/seam-qa-v2/2.log",
+      "logSha256": "1d898fe14952fd0d9b478c420484a671c3e110f804966abef70de40e499fba93"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 7.618605708000018,
+      "log": "tmp/heart-learning/seam-qa-v2/3.log",
+      "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.887464082999998,
+      "log": "tmp/heart-learning/seam-qa-v2/4.log",
+      "logSha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    {
+      "command": [
+        "npm",
+        "exec",
+        "vitest",
+        "run",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 35.106471082999974,
+      "log": "tmp/heart-learning/seam-qa-v2/5.log",
+      "logSha256": "280f6e9978db052762b4920655c45fcd71b6f993f891591cb68a7105c7d7dd6a"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 499.95990300000005,
+      "log": "tmp/heart-learning/seam-qa-v2/6.log",
+      "logSha256": "9931b7e85b67ed7663db7dfe47a274a6960b9b2b300a2a5e9e9a210a3059caa4"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 10.249317583999982,
+      "log": "tmp/heart-learning/seam-qa-v2/7.log",
+      "logSha256": "2b88613b2e36abb8da22e97556ff04ca5715a143119c1819ca03b510c4bcab75"
+    }
+  ],
+  "tests": {
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "inversePassed": 677,
+    "typeErrors": 0,
+    "existingTypeWarnings": 7
+  },
+  "timingControl": {
+    "scope": "One before/after replay of the sole Hunodan timing failure; not a new full-batch latency claim.",
+    "before": [
+      {
+        "id": "hjcur-02",
+        "seconds": 5.953384750000001,
+        "cpuSeconds": 7.860141,
+        "error": 0.005397333333333333,
+        "passed": true
+      }
+    ],
+    "after": [
+      {
+        "id": "hjcur-02",
+        "seconds": 6.028538958,
+        "cpuSeconds": 7.972424,
+        "error": 0.005397333333333333,
+        "passed": true
+      }
+    ]
+  },
+  "browser": {
+    "status": "passed",
+    "browser": "145.0.7632.6",
+    "rows": [
+      {
+        "id": "channel-715069-v3--baseline",
+        "status": "passed",
+        "errors": [],
+        "secondsToTemplates": 7.354,
+        "checks": true,
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "sourceError": 0.0094375
+      },
+      {
+        "id": "channel-783681-v0--baseline",
+        "status": "passed",
+        "errors": [],
+        "secondsToTemplates": 5.629,
+        "checks": true,
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "sourceError": 0.00589375
+      },
+      {
+        "id": "channel-795789-v2--baseline",
+        "status": "passed",
+        "errors": [],
+        "secondsToTemplates": 5.013,
+        "checks": true,
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "sourceError": 0.00424375
+      },
+      {
+        "id": "frame-764510-v3--baseline",
+        "status": "passed",
+        "errors": [],
+        "secondsToTemplates": 4.825,
+        "checks": true,
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "report.html"
+        ],
+        "sourceError": 0.0044
+      },
+      {
+        "id": "frame-829086-v3--baseline",
+        "status": "passed",
+        "errors": [],
+        "secondsToTemplates": 7.833,
+        "checks": true,
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "sourceError": 0.0082625
+      },
+      {
+        "id": "frame-756438-v0--baseline",
+        "status": "passed",
+        "errors": [],
+        "secondsToTemplates": 7.368,
+        "checks": true,
+        "files": [
+          "cut_geometry.json",
+          "report.json",
+          "vector_target.svg",
+          "processed_design.svg",
+          "weave_preview.svg",
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "template_left.svg",
+          "template_right.svg",
+          "print_templates.html",
+          "disturbance.svg",
+          "report.html"
+        ],
+        "sourceError": 0.00554375
+      },
+      {
+        "id": "selected-sideways-heart",
+        "status": "passed",
+        "errors": []
+      }
+    ]
+  },
+  "previousQa": [
+    {
+      "command": [
+        "node",
+        "scripts/inverse/learning/photo-pipeline.mjs",
+        "--probe=tmp/heart-learning/color-interventions-v1",
+        "--output=tmp/heart-learning/seam-pipeline-v2"
+      ],
+      "exitCode": 0,
+      "seconds": 26.839304583,
+      "log": "tmp/heart-learning/seam-qa-v1/0.log",
+      "logSha256": "0148df0081020160575a019419467baeb3cfd935911aa74deae19d0a5e17456c"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/inverse/learning/photo-pipeline.mjs",
+        "--probe=tmp/heart-learning/background-coverage-input-v1",
+        "--output=tmp/heart-learning/seam-coverage-pipeline-v2"
+      ],
+      "exitCode": 0,
+      "seconds": 157.6697685,
+      "log": "tmp/heart-learning/seam-qa-v1/1.log",
+      "logSha256": "d5e73185401080a8a30331af501ab08c181a68f380937511cf65d00a1fba3b07"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/inverse/hunodan-speed-benchmark.mjs"
+      ],
+      "exitCode": 1,
+      "seconds": 176.15130841599998,
+      "log": "tmp/heart-learning/seam-qa-v1/2.log",
+      "logSha256": "77665fd66f9575a045d28bda46682edc3dcd75ee31cb042ed534115e98fc377e"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 7.437708625,
+      "log": "tmp/heart-learning/seam-qa-v1/3.log",
+      "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.70739475,
+      "log": "tmp/heart-learning/seam-qa-v1/4.log",
+      "logSha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    {
+      "command": [
+        "npm",
+        "exec",
+        "vitest",
+        "run",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 40.509767084,
+      "log": "tmp/heart-learning/seam-qa-v1/5.log",
+      "logSha256": "9a7961cd82be3b989899d2293fd1f29115cae1e8401aab4208e46258107b37c2"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 489.97962770799995,
+      "log": "tmp/heart-learning/seam-qa-v1/6.log",
+      "logSha256": "cba74512a6c026154abdbda1095e489ab52e4b0040baa2d24fbdce5c8ca51fd6"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 9.777243666999993,
+      "log": "tmp/heart-learning/seam-qa-v1/7.log",
+      "logSha256": "ca66ff3f60d07593032101138f6617f08ae2ab47eb4ad5df355261b9767d12ef"
+    }
+  ],
+  "previousHunodan": [
+    {
+      "id": "hjfig-01",
+      "seconds": 5.829532875000001,
+      "error": 0.009799111111111111,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjfig-02",
+      "seconds": 7.134488459,
+      "error": 0.013923555555555555,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjfig-03",
+      "seconds": 6.906992624999999,
+      "error": 0.006634666666666666,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjfig-04",
+      "seconds": 7.860643790999998,
+      "error": 0.013824,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjfig-05",
+      "seconds": 6.602757333999998,
+      "error": 0.009042960667083447,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjfla-01",
+      "seconds": 9.291546542000004,
+      "error": 0.013346354166666666,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjcur-01",
+      "seconds": 9.139077458,
+      "error": 0.005148444444444444,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjcur-02",
+      "seconds": 10.286704333000001,
+      "error": 0.005347555555555556,
+      "qualityPassed": true,
+      "speedPassed": false
+    },
+    {
+      "id": "hjcur-03",
+      "seconds": 7.757594958000001,
+      "error": 0.004522666666666667,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjcur-04",
+      "seconds": 9.49951804200001,
+      "error": 0.0056248888888888885,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjcur-05",
+      "seconds": 4.892232541999998,
+      "error": 0.009436444444444445,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjhih-01",
+      "seconds": 9.447558292000002,
+      "error": 0.006040430615586996,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjhih-02",
+      "seconds": 6.942953458000003,
+      "error": 0.003899406226779104,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjhih-04",
+      "seconds": 9.665856083000007,
+      "error": 0.008216304411164851,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjstr-01",
+      "seconds": 7.160625125000006,
+      "error": 0.007550237322696868,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjstr-02",
+      "seconds": 9.753225459000008,
+      "error": 0.004253780407626561,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjstr-03",
+      "seconds": 9.995038833999992,
+      "error": 0.006861781273249017,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjsta-01",
+      "seconds": 9.277310417,
+      "error": 0.007929362880886427,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjsta-02",
+      "seconds": 5.676199332999997,
+      "error": 0.0038045247395833335,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjsta-03",
+      "seconds": 7.246239082999993,
+      "error": 0.012332213049376572,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjsta-04",
+      "seconds": 7.214118167000008,
+      "error": 0.0050250552896055544,
+      "qualityPassed": true,
+      "speedPassed": true
+    },
+    {
+      "id": "hjsta-05",
+      "seconds": 6.608074084000021,
+      "error": 0.010624446293860237,
+      "qualityPassed": true,
+      "speedPassed": true
+    }
+  ],
+  "initialEditableBrowser": [
+    {
+      "name": "star",
+      "passed": true,
+      "geometry": {
+        "passed": true,
+        "issues": [],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 3.899551791079895,
+        "minimumOuterSideClearance": 10,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 0,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    },
+    {
+      "name": "hat",
+      "passed": true,
+      "geometry": {
+        "passed": true,
+        "issues": [],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 5.9869032547955605,
+        "minimumOuterSideClearance": 18.2420267754882,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 0,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    },
+    {
+      "name": "house",
+      "passed": true,
+      "geometry": {
+        "passed": true,
+        "issues": [],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 3.584382545115336,
+        "minimumOuterSideClearance": 18.222431808342673,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 0,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    },
+    {
+      "name": "circle",
+      "passed": true,
+      "geometry": {
+        "passed": true,
+        "issues": [],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 5.039986327531399,
+        "minimumOuterSideClearance": 18.22209063718482,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 0,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    },
+    {
+      "name": "hunodan",
+      "passed": true,
+      "geometry": {
+        "passed": true,
+        "issues": [],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 34.43161793345184,
+        "minimumOuterSideClearance": 3.2678471206992725,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 0,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    },
+    {
+      "name": "top-hat",
+      "passed": true,
+      "geometry": {
+        "passed": true,
+        "issues": [],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 3.4122249283037394,
+        "minimumOuterSideClearance": 3.2678471206992725,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 0,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    },
+    {
+      "name": "top-hat-preferred",
+      "passed": true,
+      "geometry": {
+        "passed": true,
+        "issues": [],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 6.7945678233843,
+        "minimumOuterSideClearance": 3.2678471206992725,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 0,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    },
+    {
+      "name": "top-hat-independent",
+      "passed": true,
+      "geometry": {
+        "passed": true,
+        "issues": [],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 3.2449674471812786,
+        "minimumOuterSideClearance": 3.2678471206992676,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 0,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    },
+    {
+      "name": "top-hat-anti",
+      "passed": false,
+      "failure": "AssertionError [ERR_ASSERTION]: Downloaded SVG must retain the engine geometry constraints\n\nfalse !== true\n\n    at file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/paint-browser-test.mjs:466:56",
+      "geometry": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 1
+          }
+        ],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 5.665630127394667,
+        "minimumOuterSideClearance": 3.1539711944407145,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 1,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    }
+  ],
+  "referenceExport": {
+    "path": "tmp/heart-learning/seam-editable-before/chromium-top-hat-anti/cut_geometry.json",
+    "sha256": "f4d06c962c2065de89553b2a036cdd5e88a7d8e52a862192187f669462b34a13"
+  },
+  "initialExport": {
+    "path": "tmp/heart-learning/seam-editable-browser-v1/chromium-top-hat-anti/cut_geometry.json",
+    "sha256": "f4d06c962c2065de89553b2a036cdd5e88a7d8e52a862192187f669462b34a13"
+  },
+  "referenceEditableBrowser": [
+    {
+      "name": "top-hat-anti",
+      "passed": false,
+      "failure": "AssertionError [ERR_ASSERTION]: Downloaded SVG must retain the engine geometry constraints\n\nfalse !== true\n\n    at file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/paint-browser-test.mjs:466:56",
+      "geometry": {
+        "passed": false,
+        "issues": [
+          {
+            "type": "forward_sample_mismatch",
+            "pixels": 1
+          }
+        ],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 5.665630127394667,
+        "minimumOuterSideClearance": 3.1539711944407145,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 1,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      }
+    }
+  ],
+  "editableBrowser": {
+    "gitCommit": "3ff96f6542216b9c7a8b7ebed9eaabd90875760b",
+    "origin": "http://127.0.0.1:5232",
+    "rows": [
+      {
+        "name": "top-hat-anti",
+        "passed": true,
+        "pageErrors": [],
+        "sharedSpans": 39,
+        "sharedLengthMm": 224.88910310503672,
+        "sourceEditableError": 0.0031887755102040817,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.024,
+          "prepareRoundTripSeconds": 0.10239999997615815,
+          "preparedToSolveRequestSeconds": 0.00020000004768371582,
+          "solveRoundTripSeconds": 7.941099999904632,
+          "resultToReadySeconds": 0.2935,
+          "clickToReadySeconds": 8.361199999928475
+        }
+      },
+      {
+        "name": "star",
+        "passed": true,
+        "pageErrors": [],
+        "sharedSpans": 12,
+        "sourceEditableError": 0.0016,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.009100000023841858,
+          "prepareRoundTripSeconds": 0.036199999928474426,
+          "preparedToSolveRequestSeconds": 0.0005,
+          "solveRoundTripSeconds": 1.9733000000715255,
+          "resultToReadySeconds": 0.09929999995231628,
+          "clickToReadySeconds": 2.118399999976158
+        }
+      },
+      {
+        "name": "hat",
+        "passed": true,
+        "pageErrors": [],
+        "sharedSpans": 9,
+        "sourceEditableError": 0.001575,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005599999904632568,
+          "prepareRoundTripSeconds": 0.2337000000476837,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 1.8543999999761582,
+          "resultToReadySeconds": 0.051300000071525576,
+          "clickToReadySeconds": 2.145399999976158
+        }
+      },
+      {
+        "name": "house",
+        "passed": true,
+        "pageErrors": [],
+        "sharedSpans": 9,
+        "sourceEditableError": 0.0005,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005600000023841858,
+          "prepareRoundTripSeconds": 0.21929999995231628,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 2.2493000000715258,
+          "resultToReadySeconds": 0.0445,
+          "clickToReadySeconds": 2.5191000000238417
+        }
+      },
+      {
+        "name": "circle",
+        "passed": true,
+        "pageErrors": [],
+        "sharedSpans": 9,
+        "sourceEditableError": 0.00095,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005600000023841858,
+          "prepareRoundTripSeconds": 0.26,
+          "preparedToSolveRequestSeconds": 0.00019999992847442627,
+          "solveRoundTripSeconds": 2.0078000000715255,
+          "resultToReadySeconds": 0.0495,
+          "clickToReadySeconds": 2.323100000023842
+        }
+      },
+      {
+        "name": "hunodan",
+        "passed": true,
+        "pageErrors": [],
+        "sharedSpans": 5,
+        "sourceEditableError": 0.00944375,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005600000023841858,
+          "prepareRoundTripSeconds": 0.153,
+          "preparedToSolveRequestSeconds": 0.0007999999523162842,
+          "solveRoundTripSeconds": 4.671800000071525,
+          "resultToReadySeconds": 0.4132999999523163,
+          "clickToReadySeconds": 5.2445
+        }
+      },
+      {
+        "name": "top-hat",
+        "passed": true,
+        "pageErrors": [],
+        "sharedSpans": 41,
+        "sharedLengthMm": 236.91135721080278,
+        "sourceEditableError": 0.0032064909297052154,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.025199999928474427,
+          "prepareRoundTripSeconds": 0.2641000000238419,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 10.142599999904633,
+          "resultToReadySeconds": 0.29290000009536743,
+          "clickToReadySeconds": 10.725100000023842
+        }
+      },
+      {
+        "name": "top-hat-preferred",
+        "passed": true,
+        "pageErrors": [],
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182742,
+        "sourceEditableError": 0.004118835034013606,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.02010000002384186,
+          "prepareRoundTripSeconds": 0.24089999997615813,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 7.583600000023842,
+          "resultToReadySeconds": 0.20739999997615816,
+          "clickToReadySeconds": 8.052399999976158
+        }
+      },
+      {
+        "name": "top-hat-independent",
+        "passed": true,
+        "pageErrors": [],
+        "sharedSpans": 28,
+        "sharedLengthMm": 71.12407746187121,
+        "sourceEditableError": 0.0029584750566893424,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.020299999952316284,
+          "prepareRoundTripSeconds": 0.2522000000476837,
+          "preparedToSolveRequestSeconds": 0.0005,
+          "solveRoundTripSeconds": 6.194600000023842,
+          "resultToReadySeconds": 0.2372999999523163,
+          "clickToReadySeconds": 6.704899999976158
+        }
+      }
+    ]
+  },
+  "paleFrameIndependent": [
+    {
+      "label": "before",
+      "geometry": {
+        "path": "tmp/heart-learning/background-pipeline-v2/frame-756438-v0--baseline/cut_geometry.json",
+        "sha256": "dcad0c511a7514bf01c259531abef4c523f6ee662d7c7693f977097d3e8a0257"
+      },
+      "png": {
+        "path": "tmp/heart-learning/seam-evidence-v2/before.png",
+        "sha256": "8c84f1a5d6c4d824c883b84145a04daed7abf177ceb90d7d7222f52d708b0f17"
+      },
+      "resolution": 1536,
+      "coverageError": 0.006724666351588995,
+      "binaryError": 0.006653679741753472,
+      "seamWhiteCoverage": 10.24705821275711
+    },
+    {
+      "label": "after",
+      "geometry": {
+        "path": "tmp/heart-learning/seam-pipeline-v3/frame-756438-v0--baseline/cut_geometry.json",
+        "sha256": "3eb519fdaa1a6b8e25450d891ddbfc88fa2312fa49dbaa0b5ba1072109ce7452"
+      },
+      "png": {
+        "path": "tmp/heart-learning/seam-evidence-v2/after.png",
+        "sha256": "9f87f8ae2da76747cbafe66cdb58b28c4a8d6514fed94f746326a5b25a7dbfdc"
+      },
+      "resolution": 1536,
+      "coverageError": 0.006706932580966749,
+      "binaryError": 0.006646050347222222,
+      "seamWhiteCoverage": 0
+    }
+  ]
+}

@@ -165,12 +165,12 @@ The Node dataset tests are included in `npm run test:inverse`. The Python
 collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
-The latest regression run passed 855 application tests (one skipped), 670
-inverse tests, 33 offline learning tests and
-13 collector tests, along with type checking, lint and build. Type checking
-retains seven existing warnings and no errors.
-[Command records and browser regression evidence](background-validation.json)
-retain these checks; the [previous orientation validation](orientation-validation.json),
+The [shared-cut follow-up](shared-cut-order-results.json) passed 855 application
+tests (one skipped), 677 inverse tests and 16 Chromium cases, along with type
+checking, lint and build. Type checking retains seven existing warnings and no
+errors. The [preceding background validation](background-validation.json) also
+records 33 offline learning tests and 13 collector tests. The
+[previous orientation validation](orientation-validation.json),
 [intervention validation](intervention-validation.json),
 [localization validation](localization-validation.json)
 and [earlier snapshot validation](learning-validation.json) remain
