@@ -107,7 +107,8 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
   const clampAxes=new Uint8Array(points.length);
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
   const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);return projected;};
-  clampPoints();let safe=null,best=null,bestInvalid=null,completed=0;
+  clampPoints();let safe=null,best=null,bestUncertain=null,bestInvalid=null,completed=0;
+  const better=(value,previous)=>!previous||(selection==='mask'?value.error<previous.error||value.error===previous.error&&value.score<previous.score:value.score<previous.score);
   const checkpoint=step=>{
     const straight=straightProposal(graph,points,n);
     const straightPassed=!straight||!ties||applyTies(ties,straight,straight,{fixed:graph.fixed,original:initial});
@@ -133,9 +134,14 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
       value.validation=check;value.paper=paper?.summary;
       const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec,solution);
       if(!bestInvalid||value.error<bestInvalid.error)bestInvalid=value;
+      // More optimization must not replace a geometry-valid uncertain paper
+      // checkpoint with an illegal curve merely because its image error is
+      // lower. Retain it for the caller's independent finer paper audit. It
+      // remains unaccepted here and never becomes a safe rollback position.
+      if(check.passed&&paper?.status==='uncertain'&&better(value,bestUncertain))bestUncertain=value;
       if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){
         safe=value.points.slice();accepted=true;
-        if(!best||(selection==='mask'?value.error<best.error||value.error===best.error&&value.score<best.score:value.score<best.score))best=value;
+        if(better(value,best))best=value;
         if(stopWhen&&step>=80&&stopWhen(best))stoppedEarly=true;
         break;
       }
@@ -164,5 +170,6 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     if(step%40===0||step===steps-1)checkpoint(step);
   }
   if(completed&&history.at(-1).step!==completed-1)checkpoint(completed-1);
-  return{...(best||bestInvalid),geometryPassed:(best||bestInvalid).validation.passed,paperPassed:!!best,history,steps:completed,stoppedEarly};
+  const selected=best||bestUncertain||bestInvalid;
+  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,stoppedEarly};
 }
