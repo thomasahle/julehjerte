@@ -12,7 +12,7 @@ import torch
 
 from data import Corpus, digest, scores, detect_nodes, point_counts
 from metrics import thin_boundary, pixel_matching_counts
-from classical import corner_response
+from classical import corner_response, corner_nodes
 from model import ProposalNet
 from train import infer
 
@@ -91,19 +91,25 @@ def main():
         report['baseline'] = aggregate(baseline); report['baselineRows'] = baseline
         # Scales and this threshold list are fixed before scoring recipe
         # holdouts; only the lattice development views choose the threshold.
-        responses = [corner_response(i['mask'])*i['valid'] for i in items]
-        threshold_search = []
-        for threshold in [1e-6, 3e-6, 1e-5, 3e-5, 1e-4, 3e-4]:
-            counts = np.zeros(3, np.int64)
-            for item, response in zip(items, responses):
-                if item['split'] == 'development': counts += point_counts(detect_nodes(response, threshold), item['nodes'])
-            threshold_search.append({'threshold': threshold, **scores(counts)})
-        classical_threshold = max(threshold_search, key=lambda x: x['f1'])['threshold']
-        classical_rows = [{**row, 'junctions': scores(point_counts(detect_nodes(response, classical_threshold), item['nodes']))}
-                          for row, item, response in zip(baseline, items, responses)]
-        report['classical'] = {'name': 'Harris response of production mask', 'selectedThreshold': classical_threshold,
-                               'thresholdSearch': threshold_search, 'metrics': aggregate(classical_rows), 'rows': classical_rows,
-                               'note': 'Boundary scores reuse the original trace. Only junction proposals differ.'}
+        responses = [corner_response(i['mask']) for i in items]
+        report['classical'] = {}
+        for refined in [False, True]:
+            threshold_search = []
+            for threshold in [1e-6, 3e-6, 1e-5, 3e-5, 1e-4, 3e-4]:
+                counts = np.zeros(3, np.int64)
+                for item, response in zip(items, responses):
+                    if item['split'] == 'development':
+                        nodes = corner_nodes(item['mask'], response, threshold, item['valid'], refined)
+                        counts += point_counts(nodes, item['nodes'])
+                threshold_search.append({'threshold': threshold, **scores(counts)})
+            threshold = max(threshold_search, key=lambda x: x['f1'])['threshold']
+            rows = [{**row, 'junctions': scores(point_counts(corner_nodes(item['mask'], response, threshold, item['valid'], refined), item['nodes']))}
+                    for row, item, response in zip(baseline, items, responses)]
+            name = 'harris-refined' if refined else 'harris'
+            report['classical'][name] = {'selectedThreshold': threshold, 'thresholdSearch': threshold_search,
+                                         'metrics': aggregate(rows), 'rows': rows,
+                                         'note': 'Boundary scores reuse the original trace. Only junction proposals differ.'}
+            print(name, json.dumps(report['classical'][name]['metrics']), flush=True)
         del responses
         save()
         for directory in args.run:
