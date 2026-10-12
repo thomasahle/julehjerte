@@ -1,0 +1,75 @@
+{
+  "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
+  "description": "Frozen production automatic crops for photo-mask replay. Original photograph pixels only; no fitted or published cutting paths. Corners and classifications are diagnostic references, not ground truth.",
+  "cases": [
+    {
+      "sourceCase": "floral-checker",
+      "quad": [
+        [
+          637.713936325853,
+          172.55782760328333
+        ],
+        [
+          725.4227705830424,
+          253.30008188828606
+        ],
+        [
+          631.0724913134218,
+          329.0430481823762
+        ],
+        [
+          530.8384533560435,
+          248.12682310994776
+        ]
+      ],
+      "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+      "fittingProbabilitySha256": "e313c969d2d90163073f4473b4745d28cbc604f8e86580b5c1d0fbe841aa5d0e"
+    },
+    {
+      "sourceCase": "warped-checker",
+      "quad": [
+        [
+          998.2530765587323,
+          363.7238980735932
+        ],
+        [
+          1096.3865456915516,
+          461.96008142010237
+        ],
+        [
+          1002.2309362631387,
+          545.1738162267161
+        ],
+        [
+          895.5674576930575,
+          447.165395114315
+        ]
+      ],
+      "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+      "fittingProbabilitySha256": "6d30f7ef6bbd7c811440dbd2fdec7c590efbfefc2796da6c25583a61fe5ce6d8"
+    },
+    {
+      "sourceCase": "fine-checker",
+      "quad": [
+        [
+          229.66038288348437,
+          621.0634317239716
+        ],
+        [
+          303.26962840988,
+          706.260228818081
+        ],
+        [
+          203.48424563134648,
+          800.9466783307623
+        ],
+        [
+          121.2368454904982,
+          720.6371610504564
+        ]
+      ],
+      "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+      "fittingProbabilitySha256": "2bb2d7cffd27b2a4a9eeb309df0dfb31868906dca393ff84bb11e4d4e1b8388a"
+    }
+  ]
+}
