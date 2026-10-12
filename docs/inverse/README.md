@@ -280,9 +280,9 @@ acceptance continues to use independently rendered exported SVGs. The
 reference and variant boundary SVG/PNG artifacts are saved for inspection.
 
 The learning target should therefore combine a compact boundary representation,
-useful junction placement and connector ranking. The next ordinary baselines to
-compare are a clean-trace tolerance sweep and a candidate budget that does not
-spend its nearest-neighbor slots on already-visible connections. This experiment
+useful junction placement and connector ranking. A clean-trace tolerance sweep
+remains useful; the neighbor-budget alternative is evaluated in the next
+follow-up. This experiment
 does not establish that a neural network is required or that a junction-only
 model would improve the full photographic pipeline.
 
@@ -324,16 +324,16 @@ at about 1.68 seconds with three pixels of exported-mask disagreement.
 However, applying the expanded pool everywhere makes several other cases slower.
 All three-repeat successes in the fixed three-second gallery study are:
 
-| Graph construction | Established pool | Always-expanded pool |
-| --- | ---: | ---: |
-| Photo-oriented trace | 9/24 | 9/24 |
-| Same trace plus projected reference junctions | 8/24 | 6/24 |
-| Clean trace | 6/24 | 5/24 |
-| Clean trace plus projected reference junctions | 6/24 | 5/24 |
-| Clean trace with uniform subdivisions | 2/24 | 2/24 |
-| Exact boundary and reference subdivision | 24/24 | 23/24 |
-| Exact boundary with straight interior anchors removed | 23/24 | 23/24 |
-| Previous variant with uniform subdivisions | 12/24 | 10/24 |
+| Graph construction | Established pool | Always-expanded pool | Per-graph retry (`ca030d4`) |
+| --- | ---: | ---: | ---: |
+| Photo-oriented trace | 9/24 | 9/24 | 9/24 |
+| Same trace plus projected reference junctions | 8/24 | 6/24 | 8/24 |
+| Clean trace | 6/24 | 5/24 | 6/24 |
+| Clean trace plus projected reference junctions | 6/24 | 5/24 | 6/24 |
+| Clean trace with uniform subdivisions | 2/24 | 2/24 | 2/24 |
+| Exact boundary and reference subdivision | 24/24 | 23/24 | 24/24 |
+| Exact boundary with straight interior anchors removed | 23/24 | 23/24 | 23/24 |
+| Previous variant with uniform subdivisions | 12/24 | 10/24 | 12/24 |
 
 The projected simple-star graph grows from 97 to 117 hidden candidates. It finds
 candidate routings, but they fail the existing narrow-neck checks before the
@@ -345,7 +345,7 @@ The rejected experiment, paired outcomes, solver histories for changed cases,
 and restored-connector diagnostic are preserved in
 [CONNECTOR-EXPANSION-EXPERIMENT.json](CONNECTOR-EXPANSION-EXPERIMENT.json).
 
-The selected implementation (`ca030d4`) preserves the established smaller graph
+The next implementation (`ca030d4`) preserves the established smaller graph
 first. Only a `candidate_graph_exhausted` result, with time remaining, permits a
 second graph whose neighbor budget excludes existing visible pairs. A timeout
 is not a trigger. If there are no added candidates, the same MILP is not rerun.
@@ -363,6 +363,100 @@ cover this recovery, quarter-turn/reflection cases, unchanged visible coordinate
 a crossing blocker, successful first solves, cached topology graphs, and avoiding
 a repeated MILP when expansion adds nothing. All 30 focused tests pass, including
 the existing automatic-star, coarse-topology and graph regressions.
+
+The conditional replay preserves every previous successful case across all
+three repetitions. It adds no gallery successes: its demonstrated recovery is
+the reduced regression fixture. Eight case/variant pairs try the expansion in
+all three repeats; seven still prove exhausted, while the clean circle with
+reference junctions changes from exhaustion to a timeout. These remain failures.
+All 192 visible boundaries and all reference masks are unchanged. Synchronous
+model construction and validation can finish beyond the nominal time allowance;
+the measured solve durations, including those overruns, remain in the report.
+
+The full photographic workflow exposed a scheduling problem that the gallery
+study could not: immediate expansion of one provisional border consumed the
+time needed to try another border. The leaf moved from 2.65125% disagreement to
+5.078125% and failed the paper checks; the hard-photo run fell from 23/31 to
+22/31. Its crop, classified mask and fitting probabilities were unchanged. The
+earlier border's small graph proved exhausted in about 3.59 seconds, but its
+expanded graph consumed the remaining allowance. The established workflow had
+then tried four later border/smoothing proposals and found a usable refinement
+seed. This was a search-scheduling regression, not a cropping change.
+
+The scheduling correction (`7b7d17a`) queues connector expansion until after the
+established smoothing and border alternatives. It preserves single-boundary
+recovery for vector inputs and topology initialization. The queues retain only
+the final exhausted pool of each interpretation; an expansion that adds no
+candidates is not solved, and a graph-construction rejection does not prevent trying
+later queued proposals. No provisional border may use the new expansion ahead
+of an existing border alternative.
+
+A frozen-photo regression fails before this scheduling correction and passes
+afterward. It verifies the later valid leaf routing, unchanged mask/probabilities,
+independent rendering and geometry/paper checks. A separate closed-motif fixture
+verifies that expansion still runs after every ordinary hypothesis is exhausted;
+the new recovery is deferred, not disabled. The fresh ten-second leaf replay
+again passes at approximately 2.65% disagreement. The browser replay now also
+includes its frozen classified mask, uploaded as pixels without template paths.
+
+The full suite then caught a duplicate graph-progress notification introduced
+by the shared routing helper. The existing slow-probe regression expected one
+notification per recovery phase, but received an extra event inside the resumed
+phase. Commit `53b823e` lets recovery retain ownership of that notification; the
+unchanged regression passes again.
+
+The first deferred-expansion photo replay also spent more time on unsuccessful
+checkerboard routing. The warped checker has a concrete connector-independent
+contradiction: a visible curve joins adjacent square borders, so its minimum
+control-hull clearance is zero in both directions. The existing MILP disables
+that entire curve on both sheets, while requiring every visible curve to belong
+to one sheet. Additional hidden connections cannot satisfy these bounds with
+that segmentation. This does not prove that the photographed design is illegal;
+different subdivision, tracing or initialization may still recover it.
+
+Commit `c69c9b9` records that contradiction after an exhausted solve and skips
+both the denser ordinary pool and deferred expansion of the same boundary. It
+still tries the alternative smoothed trace. The margin calculation is shared
+with the existing MILP variable bounds; no geometry or image acceptance rule is
+relaxed. Two regressions fail before the change and pass afterward, including
+the original warped-checker pixels at frozen automatic corners. Its routing
+attempts fall from five to two, with the input mask and probabilities unchanged.
+All 16 focused routing, scheduling and feature-refinement tests pass.
+
+The same diagnostic finds neither a doubly forbidden visible edge nor an
+impossible local junction assignment in the fine checker. Its failed connector
+expansions remain real extra work; the warped-checker explanation cannot be
+generalized to that case. The release comparison retains all measured errors
+and stage timings rather than attributing the entire quality difference to
+uncontrolled timing variation.
+
+The final Node replay retains 22/22 regular Hunodan passes, with identical
+independent errors and a maximum prepare/solve/validate/export time of 9.00
+seconds. The photo run remains 23/31 accepted; all 28 generated pairs pass
+editable conversion, editor intersections and nominal paper checks. Crops,
+masks and probability fields are unchanged. Twelve final errors increase by up
+to 0.16 percentage points relative to the earlier release replay; no uniform
+photographic quality improvement is claimed.
+
+To distinguish repeatability from the new search overhead, three paired replays
+alternate the old and current engines on the same frozen checkerboard masks.
+The warped checker's errors are identical within each pair (2.175625%, then
+2.096875% twice), while median feature-routing time falls from 0.533 to 0.192
+seconds. On the fine checker, median routing time rises from 0.646 to 0.837
+seconds and median error rises from 2.578125% to 2.631875%. That small quality
+regression remains unresolved; the extra optional searches have not helped this
+input. Both engines' older single-run values differ from these fresh replays.
+The comparison records all repeats and does not select only the best outcomes.
+
+Release checks pass: 627 inverse tests, 855 application tests (one existing
+skip), type checking, lint and production build. Sixteen browser replays pass
+across Chromium and WebKit, including editable SVG and PDF export, and all 66
+served engine files match their source hashes. The browser runs use the normal
+application budgets rather than the ten-second benchmark budget. Visual review
+still finds fine seams in the Viking and missing small rays in Stonehenge;
+passing aggregate image error is not sufficient evidence of motif fidelity.
+The complete results, paired repeats, source hashes and limitations are recorded
+in [CONNECTOR-RETRY-VALIDATION.json](CONNECTOR-RETRY-VALIDATION.json).
 
 ### Candidate learning tasks
 
@@ -477,6 +571,17 @@ node scripts/inverse/experiments/graph-oracle.mjs --study=boundaries --ids=all -
 node scripts/inverse/experiments/graph-pool-diagnostic.mjs --run=tmp/boundary-junction-replay --output=tmp/boundary-junction-pool.json
 node --test --test-concurrency=1 scripts/inverse/graph-boundary-ablations.test.mjs scripts/inverse/intersection-endpoints.test.mjs
 ```
+
+Replay the conditional neighbor expansion with:
+
+```sh
+node scripts/inverse/experiments/graph-oracle.mjs --study=boundaries --neighbor-retry=true --ids=all --seconds=3 --repeats=3 --output=tmp/connector-neighbor-replay
+node --test --test-concurrency=1 scripts/inverse/connector-budget.test.mjs
+```
+
+The rejected always-expanded study used commit `5b8bc5c`. The current default
+graph preserves the established pool, and the application uses the conditional
+retry above.
 
 ## Historical integration notes
 
