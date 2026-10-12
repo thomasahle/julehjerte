@@ -1,0 +1,1418 @@
+{
+  "schema": "canonical-junction-coverage-1",
+  "preparedManifestSha256": "4be61d42373722e3ead15fc27e2a5baffb485cc5e2e6c8468df5e8347c02a0a8",
+  "scope": "Visible canonical geometry before photographic projection. Degree-two turns under 20 degrees are excluded; right angle is 90 +/- 5 degrees.",
+  "base": {
+    "development": {
+      "designs": 13,
+      "counts": {
+        "branch": 184,
+        "obtuse": 132
+      },
+      "rows": [
+        {
+          "id": "lattice-1826062",
+          "geometrySha256": "b8c72023dc6d5c93f37907903810efdc3c344b2b98d9c82010c7f472a88226d3",
+          "counts": {
+            "branch": 18
+          }
+        },
+        {
+          "id": "lattice-757447",
+          "geometrySha256": "1f37ec791e77cad394fbc1ae6a137986d4e0b89cd5ae40aaf36aeff7939f5022",
+          "counts": {
+            "branch": 35
+          }
+        },
+        {
+          "id": "lattice-769555",
+          "geometrySha256": "78585e7d4fda1c1f7bfa110a88899c018df3ae0936293256d01d28d376fca3c7",
+          "counts": {
+            "branch": 4
+          }
+        },
+        {
+          "id": "lattice-773591",
+          "geometrySha256": "eaa74223278e9f2ee980a6595ae864f0214aa0e93fef573cb759afc9890529c3",
+          "counts": {
+            "branch": 21
+          }
+        },
+        {
+          "id": "lattice-781663",
+          "geometrySha256": "4a1039301c349ef7b93329ee7a52ff70e6de44f7180f8f6d1b3215bfb8b07f39",
+          "counts": {
+            "branch": 6
+          }
+        },
+        {
+          "id": "lattice-801843",
+          "geometrySha256": "281036f9af7ad38f1dddf6b902a566e2b81cc10cd7bbfb1b6feecbd63fdd30bf",
+          "counts": {
+            "branch": 12
+          }
+        },
+        {
+          "id": "lattice-805879",
+          "geometrySha256": "0b18a66dee97419bd1353e6cf7b03bfc1bcbdd5050c7d145a9624efe3d795457",
+          "counts": {
+            "branch": 4
+          }
+        },
+        {
+          "id": "lattice-809915",
+          "geometrySha256": "3a70cc73d2ad1e4130a8cf0c6e674495ae2d299e9327aa05ee9c748f0a629545",
+          "counts": {
+            "branch": 35
+          }
+        },
+        {
+          "id": "lattice-834131",
+          "geometrySha256": "838b0c9c1f52771d24ffe1cc4cba682d344a57b6c236cd66f9027705babe65cf",
+          "counts": {
+            "branch": 35
+          }
+        },
+        {
+          "id": "shared-lattice-718096",
+          "geometrySha256": "5c5dd66690eed579ced659f6d35b552eda374bc1c0c179a7056499e0b75db8b2",
+          "counts": {
+            "branch": 2,
+            "obtuse": 36
+          }
+        },
+        {
+          "id": "shared-lattice-754420",
+          "geometrySha256": "c5fc2a897d7ad35cc44d5532b6f6d46807f04b7ed2d8d406beb55c4e77518e5f",
+          "counts": {
+            "branch": 10,
+            "obtuse": 60
+          }
+        },
+        {
+          "id": "shared-lattice-794780",
+          "geometrySha256": "9e3783b1d18526f6ad258fba7cad47e3dfe07599e471b316a3d8f16e4251e1ee",
+          "counts": {
+            "obtuse": 24,
+            "branch": 2
+          }
+        },
+        {
+          "id": "shared-lattice-827068",
+          "geometrySha256": "94df9f5afd30a123a353e51f613453521c5a642e76d59b8fc1a90c568bd94d09",
+          "counts": {
+            "obtuse": 12
+          }
+        }
+      ]
+    },
+    "recipe-test": {
+      "designs": 32,
+      "counts": {
+        "right": 256
+      },
+      "rows": [
+        {
+          "id": "frame-1716081",
+          "geometrySha256": "ea7633234473c714354e21d71b9bf2dced5bd4637feea660b25be8f3b2586b7f",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-1736261",
+          "geometrySha256": "e75836f29e44040e53bdf3d3f64939d12e60e3df05a2122a3b6c647ef8edfa38",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-1744333",
+          "geometrySha256": "62279a8797f472877edf295c6f4d3496d32619affd27124d840b47d258125a32",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-1784693",
+          "geometrySha256": "8e67f7b8014b6c5b24b0665f5f73510ace4a0b38a0c7a071141c64dee1eb1681",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-1821017",
+          "geometrySha256": "a024373ca4e5a6093b881086789874699f45f8309d057cf19f9a9458ee78818f",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-2772588",
+          "geometrySha256": "e850f5bef388e97ac78b34ee0869bea465c90449adeb26f0cc33cab3ef060cef",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-720114",
+          "geometrySha256": "6e8f76cd353356d7347e5f4702944c8ab64ae49b9b2b2576b6bef22cd5088988",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-724150",
+          "geometrySha256": "0dd9389a9fc83bf8614f9b1fedca4eb72e12faa6ecb4b9fe501424a203689ff3",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-728186",
+          "geometrySha256": "f97b0e90f3e70965f46ddeef8b74411f6ee2aa3a952d5970e9a98081030919f9",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-732222",
+          "geometrySha256": "dc7dc00b68223c063fab6eab106527d7f2fec5f69d10ac37995643eca419e0d0",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-740294",
+          "geometrySha256": "bfe1f45408b637ee7a6accfbd3f4720e6eed98472639fa4f50eb87282bfb3e0b",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-748366",
+          "geometrySha256": "c30b7917e21e18eafc9e0e8232e05b9ee192ebc9af54f8f58ec18a35aec7b820",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-752402",
+          "geometrySha256": "8ca90dc31524b3ea09b89da15848c828c83e7165a7929aa4b0587ec7fefafb70",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-756438",
+          "geometrySha256": "23cb8681bcdebc1d45b8fcd4e2053b51c917f41ec7dbcba3377b7b86934004c4",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-760474",
+          "geometrySha256": "90d257a6637096f62b509786a02b3b08f8fa73b29b2b4cf84d1d1bd69ce4aba8",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-764510",
+          "geometrySha256": "0609fbb3f61fbaae599f694267171ef3f42c1fbf428fc78acaf54d0f6f11dab3",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-768546",
+          "geometrySha256": "a58569232b9cf13f5522eb8bd33d35d193a0f86a941e048329ebe8a3caf5c50e",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-776618",
+          "geometrySha256": "4aa54d73e72ef577c27240e3faa5e9acb9b54bc4aca855ad18244c2eea718eee",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-780654",
+          "geometrySha256": "67003a5b0634b99ae080342162862e33e0d5908b3f46914675724f242e03b4a6",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-788726",
+          "geometrySha256": "d4093fe0527ef12a4163b3b572f1f313a88221d342cbdfe8873475ce46baeffd",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-792762",
+          "geometrySha256": "c704a959cb5afafc8392f1b8061f1e5b934b98dcccd138838f5ec53533f9ba13",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-796798",
+          "geometrySha256": "f3c347bf6203daa841166d62c55ff9e474a4ec1769dec21a0b466db9d34dc91c",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-800834",
+          "geometrySha256": "0c223ec4b7a92844ae0a84342476f252089c2ca5b4d5bae863bbcd788885b815",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-804870",
+          "geometrySha256": "57e4cb2df112d1b44879ed865fde374d6ef63f2be41379a99f57cdcb4431994e",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-808906",
+          "geometrySha256": "133b1f2783f203c679a9eb34049d82fc8016c971421d81195e93a14b1b3d0dd8",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-812942",
+          "geometrySha256": "53d71878bebac3d3240a5cc21c81af7d3c2f2174dccd5d0c4068325481a03d06",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-816978",
+          "geometrySha256": "3281af0f0ac3b2ab13770c5be0110e9bad67b8fe51a4a0172f88222c33c00a74",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-825050",
+          "geometrySha256": "3e699370593ecfdba8eb7c9f1ab40ef70beecab1229ae7df62e58f71b5da9bf8",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-829086",
+          "geometrySha256": "e163cc5f691724728db0464e77dda8824881537488167d6bedb78f0e92add6cf",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-833122",
+          "geometrySha256": "f0ab38f1c4aa6d073a7d28e8498b5b56bd8bbaa5312447f185d834c50c90ef08",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-837158",
+          "geometrySha256": "2c6aed76b16ffdcca84f9f847a46f2b5c8f52147d4a5fd4fee8560779c0f93da",
+          "counts": {
+            "right": 8
+          }
+        },
+        {
+          "id": "frame-841194",
+          "geometrySha256": "fbf86fce5ffc14950eb2bb6b9c33568056ed2f3820bf1b970f4a87b053b3ef87",
+          "counts": {
+            "right": 8
+          }
+        }
+      ]
+    },
+    "recipe-validation": {
+      "designs": 32,
+      "counts": {
+        "right": 64
+      },
+      "rows": [
+        {
+          "id": "channel-715069",
+          "geometrySha256": "0fb139d134b8a78a185076d4e9f88317a098d0382395855605e16360b54edd5b",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-719105",
+          "geometrySha256": "4f167dc7069d25a610fc3a9faf8b9cae8bbc9a2b989f7391c8a8d1acb9c937b9",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-723141",
+          "geometrySha256": "6f23fdb2a025cd6dd03213a1574a58e8680ccd127aa85419fca65b48e7fd5c87",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-727177",
+          "geometrySha256": "7856161647afeb38563aa6dacec59736d5a8ae42db2d11f8345634173b98f7d6",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-731213",
+          "geometrySha256": "e0e5f296257072a709e25c7dd71a6813bdaaabfc81e9e77f39679b74536f574a",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-735249",
+          "geometrySha256": "e9658c87d44cbe171fd548717f631fc4bb37d95c3462ccdf103278a10b094af0",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-739285",
+          "geometrySha256": "3b9ec9f639c5c52702cb63c11308ba7c4736032aff320a4fd356f305c04646eb",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-743321",
+          "geometrySha256": "8ee59681bf8a28fc3bb1721383498974eff94aefeeec300afc4ea579ae9d1ae6",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-747357",
+          "geometrySha256": "5d3aa973f8f332052e27173f45c8a4465ede39ef6535e41ec69cd4caeb8505a2",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-751393",
+          "geometrySha256": "7a5a070f1dd5d95d64b7879dfdedf79fdd8ff7582a76cd6d44332100fd8228b5",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-755429",
+          "geometrySha256": "a5c64bb7bb25b75c980a92c381eb0a32dffa1259d84fad088d9cbf664f278ca2",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-759465",
+          "geometrySha256": "38ada426b22eae0fb5000f41e78e3e83f5087f9f16f7cd3c019139a3d4a82477",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-763501",
+          "geometrySha256": "4e771f295d1616a6148c0a8685814a63cf2ea4886a5e8c56fe3390813c36e4fc",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-767537",
+          "geometrySha256": "72d99571d49d784888198b21dea34ba39a3ca8e10cb6c487e7a71e6477d6e248",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-771573",
+          "geometrySha256": "42417cf7d601035c0f2dd52c4a1c2b26c64590b03a68175ae402f6302a9ea941",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-775609",
+          "geometrySha256": "0065e643fb56ef1ca3215fe9f3a14434d4f4ff1bf9687ac92a76f6dee898d416",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-779645",
+          "geometrySha256": "aa6aac123e2c3775f5576e81badb2cd5190123c1c7eb66081f015f919c9de2b0",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-783681",
+          "geometrySha256": "a97c7ed001327418a68715cf0f1c8414a36ec2cc753f40b403cfa8e779ade8c4",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-787717",
+          "geometrySha256": "b003c8fc6485b342146368ba34183ac0f9304fa9a14ad0a256c207bd2db2120c",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-791753",
+          "geometrySha256": "91c185b986f829698b84659b9a7cc4c995497bd18a82398aaa69bd6a2da98ccb",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-795789",
+          "geometrySha256": "5e32396cfef3b502e938439fef8b30612c272af92733fe8575f3ae61b6e3a16f",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-799825",
+          "geometrySha256": "fd64d1bc68f161f9b057765f8af1add2ea20886d013233760142e7a94b1502c3",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-803861",
+          "geometrySha256": "158b5ff122a0e53b6d40d1c6858a818bce0f41c2e8f334841761711bfbc37f0f",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-807897",
+          "geometrySha256": "30773f1e9c233e84dc4e7fa188bfdab793bb9ea531ce08936497d328b5e75d42",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-811933",
+          "geometrySha256": "430b1ce552103276ec1a6998f0d34d3b065c946dd911ca28ae4310d6eefdd17c",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-815969",
+          "geometrySha256": "1629a5f4b4feb4ec625ee9a5dd50cb6e967cc20b3ac1bf2c3f3e2ebf99922a89",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-820005",
+          "geometrySha256": "d627c6d3aea74d581c63b65dda664cd61b183b9fd7ae371065742c6878d39dc1",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-824041",
+          "geometrySha256": "9f990d50e37771565c06b38906523691f8cbc9d46e8bb0ce278998786d4a27ea",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-828077",
+          "geometrySha256": "2a45cd342029c271730848f3790e68c45433575d4f5925012e13dcf919e238ad",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-832113",
+          "geometrySha256": "12193e0a52eeee069d77e0ea6488e203006fb78a330831ba0cfd467f25004b12",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-836149",
+          "geometrySha256": "247a2bdb8047df48321c2a8cea1cd2f5f7eddec980307f149ecbee7540b22a9e",
+          "counts": {
+            "right": 2
+          }
+        },
+        {
+          "id": "channel-840185",
+          "geometrySha256": "1bfdeae1d7803398fef57f690411a9de5a23d63edfc95ad012ff49def7f97d96",
+          "counts": {
+            "right": 2
+          }
+        }
+      ]
+    },
+    "train": {
+      "designs": 51,
+      "counts": {
+        "branch": 429,
+        "obtuse": 1380
+      },
+      "rows": [
+        {
+          "id": "lattice-713051",
+          "geometrySha256": "da17d25d08adac321c532e55f8f75d95c2eaba1a87f4ed4f1e9738fa313eb13f",
+          "counts": {
+            "branch": 6
+          }
+        },
+        {
+          "id": "lattice-717087",
+          "geometrySha256": "2a3dc8602bef30d054d3a3e636e6fac50afd96895ff1e2fd6ba041023710b1a0",
+          "counts": {
+            "branch": 25
+          }
+        },
+        {
+          "id": "lattice-721123",
+          "geometrySha256": "beadf77122c897521f3787ad32cd9871ae93d7ade9d4a226b2286e11d238b152",
+          "counts": {
+            "branch": 2
+          }
+        },
+        {
+          "id": "lattice-725159",
+          "geometrySha256": "9eacb39c893c0f846b892bf7e0d15b295246180848b4efab31c4d214c8abfd0d",
+          "counts": {
+            "branch": 12
+          }
+        },
+        {
+          "id": "lattice-729195",
+          "geometrySha256": "a5438142ee53e2eefdfb7dda88f4fa920f3555532811cfcd62320eea3b4adc4c",
+          "counts": {
+            "branch": 18
+          }
+        },
+        {
+          "id": "lattice-733231",
+          "geometrySha256": "7d72eed29b206fe28fac1fa652a5f2fe45905479b6382559c78f0a73ada18beb",
+          "counts": {
+            "branch": 5
+          }
+        },
+        {
+          "id": "lattice-737267",
+          "geometrySha256": "29348d4ac6460a6b8e75a80ac53d453a32236fce335174aa730b548bc0ffbb10",
+          "counts": {
+            "branch": 12
+          }
+        },
+        {
+          "id": "lattice-741303",
+          "geometrySha256": "9b1765a767f8a41a5cf9ed44c2ac7126ab737bf45a470e1dd1b44a981d15aedf",
+          "counts": {
+            "branch": 28
+          }
+        },
+        {
+          "id": "lattice-745339",
+          "geometrySha256": "50cdb9830b2ba31862cc1ed404370abf444657eadd93921630a294ae19f9b1bc",
+          "counts": {
+            "branch": 6
+          }
+        },
+        {
+          "id": "lattice-749375",
+          "geometrySha256": "3db59af3a98dd2942f69faca089eb59181b003df3f7eec02abddf389763a6039",
+          "counts": {
+            "branch": 6
+          }
+        },
+        {
+          "id": "lattice-753411",
+          "geometrySha256": "e20734d69e88521ee7f2dc3e736846c6bcfdf82a8c581b65756094606a73fd47",
+          "counts": {
+            "branch": 14
+          }
+        },
+        {
+          "id": "lattice-761483",
+          "geometrySha256": "bed26f02eba813ba9803c61a425e27661ee4c5c10c116dce67f9462b75aa6292",
+          "counts": {
+            "branch": 1
+          }
+        },
+        {
+          "id": "lattice-765519",
+          "geometrySha256": "2592a9a1f73bac5398a5d1111b705fa0180244716ea5046838db9eb55ac1305e",
+          "counts": {
+            "branch": 3
+          }
+        },
+        {
+          "id": "lattice-777627",
+          "geometrySha256": "b53d764df4401700e4003d7abf8672526a78586169584da7892997035886acdc",
+          "counts": {
+            "branch": 7
+          }
+        },
+        {
+          "id": "lattice-785699",
+          "geometrySha256": "0ed4aa3936315b569b81e1bf09fa0634155417e19a63af20d5a353d114fb65f2",
+          "counts": {
+            "branch": 7
+          }
+        },
+        {
+          "id": "lattice-789735",
+          "geometrySha256": "7dcaaaa720b714eabcc50bd407a7a19bac4f244cb2427c460bbb7647e606ecd2",
+          "counts": {
+            "branch": 8
+          }
+        },
+        {
+          "id": "lattice-793771",
+          "geometrySha256": "3e4e63c9b2bc735bb330a169fb38d6646e59564acecba82c4ef939f00bf41b3b",
+          "counts": {
+            "branch": 2
+          }
+        },
+        {
+          "id": "lattice-797807",
+          "geometrySha256": "5905343d1dc78025caaea44ae1378abcf2fcc913ca386e82665eb7917b63376a",
+          "counts": {
+            "branch": 14
+          }
+        },
+        {
+          "id": "lattice-813951",
+          "geometrySha256": "92efc17e2306add781e5cabff74c4f80940d452023bdb0bb515d9a6f54d56925",
+          "counts": {
+            "branch": 7
+          }
+        },
+        {
+          "id": "lattice-817987",
+          "geometrySha256": "8c76fc568c6c81e5bf56ce96b97168eabe5b448ca7f97293f21ff16820f853c8",
+          "counts": {
+            "branch": 24
+          }
+        },
+        {
+          "id": "lattice-822023",
+          "geometrySha256": "8c33b7909765db1daa89b6b5f62575377126a7312570cc5b792bc65cf4c26c3c",
+          "counts": {
+            "branch": 15
+          }
+        },
+        {
+          "id": "lattice-830095",
+          "geometrySha256": "3b4a4e817cfdd314701d6b27a3af4e08d844c5eb439c487cf5476e0bcac15e29",
+          "counts": {
+            "branch": 2
+          }
+        },
+        {
+          "id": "lattice-838167",
+          "geometrySha256": "2ef82a415753eaff61f501954373bfdb8430324303209d88ffeeda22f28bd040",
+          "counts": {
+            "branch": 30
+          }
+        },
+        {
+          "id": "shared-lattice-714060",
+          "geometrySha256": "f0d705abcf5d4211576e00690372841dae2def075d22b07762eb9179dd8b42be",
+          "counts": {
+            "branch": 10,
+            "obtuse": 66
+          }
+        },
+        {
+          "id": "shared-lattice-722132",
+          "geometrySha256": "5ee9535f8368ce0106ae81e2b4992d52f99d13a4a5f1a8ca5e089053037dd77a",
+          "counts": {
+            "obtuse": 36,
+            "branch": 6
+          }
+        },
+        {
+          "id": "shared-lattice-726168",
+          "geometrySha256": "d13980c753e132dd2df476746f6e657192b64273d469743d24c1d9ad427a44fe",
+          "counts": {
+            "branch": 8,
+            "obtuse": 96
+          }
+        },
+        {
+          "id": "shared-lattice-730204",
+          "geometrySha256": "233a0ba906adf5696c40e3985610bb57c3376eb05ee24202fe7db974cfa7a465",
+          "counts": {
+            "obtuse": 30,
+            "branch": 4
+          }
+        },
+        {
+          "id": "shared-lattice-734240",
+          "geometrySha256": "afded8ee36f95dd191dd6bea91c55d266ee40fd05177ee47414f4c44dfde02a0",
+          "counts": {
+            "obtuse": 114,
+            "branch": 11
+          }
+        },
+        {
+          "id": "shared-lattice-738276",
+          "geometrySha256": "ec53fd5c569baab6219e41664c13e101d4baef8e1cb742bddbb49cd7ccd1efd8",
+          "counts": {
+            "obtuse": 66,
+            "branch": 10
+          }
+        },
+        {
+          "id": "shared-lattice-742312",
+          "geometrySha256": "be30310d50cd7c1fb0fdf93377f86d4c74914d3eb089555af5e98fe07dd6eb56",
+          "counts": {
+            "branch": 2,
+            "obtuse": 30
+          }
+        },
+        {
+          "id": "shared-lattice-746348",
+          "geometrySha256": "46e6d0b4627bca6f617ad2e80b666c65c3b01bbc084eae838118d420c09fb62f",
+          "counts": {
+            "branch": 2,
+            "obtuse": 12
+          }
+        },
+        {
+          "id": "shared-lattice-750384",
+          "geometrySha256": "672324da59da3ef42774947ff604b6157837cd7f30831e93dde560088e24fb5f",
+          "counts": {
+            "obtuse": 96,
+            "branch": 12
+          }
+        },
+        {
+          "id": "shared-lattice-758456",
+          "geometrySha256": "9989c7c101ee52ae2b25a40bc727eb8c580ecc00cf16cc5ee39424a45c000e33",
+          "counts": {
+            "obtuse": 18,
+            "branch": 3
+          }
+        },
+        {
+          "id": "shared-lattice-762492",
+          "geometrySha256": "33515d93e8564f79f8c92971fb201a625b0a0305b659b9ac848843450250cc04",
+          "counts": {
+            "branch": 3,
+            "obtuse": 30
+          }
+        },
+        {
+          "id": "shared-lattice-766528",
+          "geometrySha256": "14f9ff2ea0e335008d224e8d0e04ec8827a18c2adfccd54f9f507ee6abd372a2",
+          "counts": {
+            "obtuse": 24,
+            "branch": 2
+          }
+        },
+        {
+          "id": "shared-lattice-770564",
+          "geometrySha256": "9601a581470e4d546f2745782e0e15cdd813f7d18ae5b68b8ee475291a045bd3",
+          "counts": {
+            "branch": 1,
+            "obtuse": 18
+          }
+        },
+        {
+          "id": "shared-lattice-774600",
+          "geometrySha256": "52ce2f531f893dc9ab0466f9b62776c146c1294433b73e169f27e25e8e9f636b",
+          "counts": {
+            "obtuse": 12,
+            "branch": 1
+          }
+        },
+        {
+          "id": "shared-lattice-778636",
+          "geometrySha256": "2364e628872f7a3586d730c215abafaf9d6feae7e925d32bc12d5369c47e55a9",
+          "counts": {
+            "branch": 8,
+            "obtuse": 42
+          }
+        },
+        {
+          "id": "shared-lattice-782672",
+          "geometrySha256": "bdf013421f34e58397e6cefa0fd276fbbec44d61de602cc6be6ee7a9dea90f52",
+          "counts": {
+            "obtuse": 60,
+            "branch": 2
+          }
+        },
+        {
+          "id": "shared-lattice-786708",
+          "geometrySha256": "87f2f7604b3c139cea9132e2ed2ad317de3566a6fd993e96ca7babc4d891004a",
+          "counts": {
+            "branch": 19,
+            "obtuse": 102
+          }
+        },
+        {
+          "id": "shared-lattice-790744",
+          "geometrySha256": "f61a78c77edaa89e13e0c3fd3a03d130715ea56a571811d89acabf362b171b4a",
+          "counts": {
+            "obtuse": 18
+          }
+        },
+        {
+          "id": "shared-lattice-798816",
+          "geometrySha256": "6cb4b6f7eb6efc1f52c5fbc8a51f8821a97e66d9475fc8a917ad30bfe5f46a8e",
+          "counts": {
+            "branch": 14,
+            "obtuse": 168
+          }
+        },
+        {
+          "id": "shared-lattice-802852",
+          "geometrySha256": "5ebc17dba28c032868bf2e57420061fc7fabc2350a6235b4859858d1be7f5ff3",
+          "counts": {
+            "branch": 12,
+            "obtuse": 36
+          }
+        },
+        {
+          "id": "shared-lattice-806888",
+          "geometrySha256": "792106916999b03b7e16cc7af45fd4e4c91e889b6a0298dcaadd833c1f71a490",
+          "counts": {
+            "obtuse": 126,
+            "branch": 21
+          }
+        },
+        {
+          "id": "shared-lattice-810924",
+          "geometrySha256": "1b9b1abe46e63a547ada2d18c3d0f7489de2d9fc3f13c75d0818cdd565c4a2da",
+          "counts": {
+            "obtuse": 12
+          }
+        },
+        {
+          "id": "shared-lattice-814960",
+          "geometrySha256": "d7610be4c6f39d99e1f1fab52865476c57c8cb1b0a13e49f6fb13adfc9c78fb4",
+          "counts": {
+            "branch": 5,
+            "obtuse": 12
+          }
+        },
+        {
+          "id": "shared-lattice-818996",
+          "geometrySha256": "9a8491b762eef1ef3fa25621332e62aabd54eb6c141938cebd09d4d2571e6f3b",
+          "counts": {
+            "obtuse": 42,
+            "branch": 8
+          }
+        },
+        {
+          "id": "shared-lattice-823032",
+          "geometrySha256": "1c38f62acbe536e11070a36deca9b2893cd608f63bbfe4a91d67bbcba1822fb8",
+          "counts": {
+            "obtuse": 12
+          }
+        },
+        {
+          "id": "shared-lattice-831104",
+          "geometrySha256": "833111f9500b1c1938e4f9fe24eb7bdd33b45e5af404103c27fb5bd91d0bdcb0",
+          "counts": {
+            "branch": 6,
+            "obtuse": 54
+          }
+        },
+        {
+          "id": "shared-lattice-835140",
+          "geometrySha256": "245ca50ba96d78dc0e47c7855883b1138e784fcdf910e73e797acda5a0667a66",
+          "counts": {
+            "obtuse": 6
+          }
+        },
+        {
+          "id": "shared-lattice-839176",
+          "geometrySha256": "4e89d17eb87068cb5567a4894a4f7db0569d0e16c885b435ee7d87ecd60cd85d",
+          "counts": {
+            "obtuse": 42,
+            "branch": 5
+          }
+        }
+      ]
+    }
+  },
+  "supplements": [
+    {
+      "prepared": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/prepared-corners-v1",
+      "preparedManifestSha256": "590b175ff4c748bf5bfba190c2f8c12444ff823db6058b2461171df98a93bb5a",
+      "designs": 51,
+      "counts": {
+        "branch": 206,
+        "obtuse": 810,
+        "right": 378,
+        "acute": 114
+      },
+      "rows": [
+        {
+          "id": "corner-lattice-1008112",
+          "geometrySha256": "88758554a86a51dbbef19e66fcbf75d7d461e8448c955fa70f013c6b8db54b04",
+          "counts": {
+            "branch": 14,
+            "obtuse": 30,
+            "right": 12
+          }
+        },
+        {
+          "id": "corner-lattice-1010130",
+          "geometrySha256": "0e891bd75e02cfcbd54f88a39d2e8f8d262def0b19c59a24ec060c7d4aa401c8",
+          "counts": {
+            "obtuse": 64,
+            "branch": 15,
+            "right": 24,
+            "acute": 6
+          }
+        },
+        {
+          "id": "corner-lattice-1021229",
+          "geometrySha256": "1fdad0e0633bc04972038187deb94f3a9f97bd633edb2bcdbab5f5acd3619b41",
+          "counts": {
+            "branch": 1,
+            "obtuse": 2,
+            "right": 6
+          }
+        },
+        {
+          "id": "corner-lattice-1035355",
+          "geometrySha256": "4be9812cb43d2d995eb0cda9a6e3baafadfc53cc4d7b9c58b7667ca63daf743b",
+          "counts": {
+            "branch": 2,
+            "obtuse": 6,
+            "right": 12
+          }
+        },
+        {
+          "id": "corner-lattice-1061589",
+          "geometrySha256": "55a7f44c1ba379a82ab04f4121c1afcd884ed5e9ba764bdce1b0b6495e716536",
+          "counts": {
+            "right": 12,
+            "branch": 1,
+            "obtuse": 14
+          }
+        },
+        {
+          "id": "corner-lattice-1063607",
+          "geometrySha256": "412b4877d2a0205a17a027064ca0b4464737ae95f56204c958d8b7cbb3900b49",
+          "counts": {
+            "obtuse": 4
+          }
+        },
+        {
+          "id": "corner-lattice-12145",
+          "geometrySha256": "640eccc05e9ae31df5e3592dd9ca53cafb97f7c7e02bfa360582e21c1d94e484",
+          "counts": {
+            "branch": 3,
+            "obtuse": 2
+          }
+        },
+        {
+          "id": "corner-lattice-13154",
+          "geometrySha256": "bea130df8f3274603f3cbe77ad8e946897cd5f06e2ae83836a2b1f2ac4490c77",
+          "counts": {
+            "branch": 2,
+            "right": 12,
+            "obtuse": 4
+          }
+        },
+        {
+          "id": "corner-lattice-15172",
+          "geometrySha256": "d7709388fbaa4ae7129e94efe42905b69fd544d0ad4a50ab2126bb467255a76d",
+          "counts": {
+            "branch": 2,
+            "right": 6,
+            "obtuse": 6
+          }
+        },
+        {
+          "id": "corner-lattice-18199",
+          "geometrySha256": "cc023af58c91e799ad34251addd4d8e6e66248483a8debcf6436c841ab28b31a",
+          "counts": {
+            "right": 6,
+            "branch": 3,
+            "obtuse": 6
+          }
+        },
+        {
+          "id": "corner-lattice-2002061",
+          "geometrySha256": "7003fa8a3ae1606720791d817881512a8880add92ba7bcf11382dfc41343f50c",
+          "counts": {
+            "branch": 23,
+            "acute": 24,
+            "obtuse": 60,
+            "right": 36
+          }
+        },
+        {
+          "id": "corner-lattice-2007106",
+          "geometrySha256": "bdd053a2f8ef89226fc781838db1edd99dc599b64bff89feb0b1519a0dd0ca65",
+          "counts": {
+            "obtuse": 16,
+            "right": 6,
+            "branch": 2
+          }
+        },
+        {
+          "id": "corner-lattice-2009124",
+          "geometrySha256": "7e80c36dc3c6935b5b213165149409f9d0b4adc8ddf83a8890fc48c20331fb8c",
+          "counts": {
+            "branch": 1,
+            "right": 6,
+            "obtuse": 2
+          }
+        },
+        {
+          "id": "corner-lattice-2017196",
+          "geometrySha256": "b0aea40901bf8583fccf6bb0e31f3bb3e3be563f8dbfa953832b5bcdedd1d33c",
+          "counts": {
+            "branch": 1,
+            "obtuse": 2,
+            "right": 12
+          }
+        },
+        {
+          "id": "corner-lattice-20217",
+          "geometrySha256": "2dec6d57351137f950c817e2898d7a5bcf3a6216d90007f5a1d9c57fe30c64d8",
+          "counts": {
+            "obtuse": 26,
+            "branch": 5,
+            "right": 18
+          }
+        },
+        {
+          "id": "corner-lattice-2030313",
+          "geometrySha256": "f4030e6262c4fa6f3fe647ceb43c3374efceb3ec50a266bc064ebbe27c259003",
+          "counts": {
+            "obtuse": 12,
+            "branch": 1
+          }
+        },
+        {
+          "id": "corner-lattice-2033340",
+          "geometrySha256": "708c121d5dbe455d1f3c08f40feb3460c3d816c1ee3cfa92f924e036d931f0eb",
+          "counts": {
+            "obtuse": 16,
+            "branch": 1
+          }
+        },
+        {
+          "id": "corner-lattice-2045448",
+          "geometrySha256": "3f3e9e54d384def24e696c8ea631231442e7cd4828a721ef84e75af08261993f",
+          "counts": {
+            "obtuse": 24,
+            "branch": 3
+          }
+        },
+        {
+          "id": "corner-lattice-22235",
+          "geometrySha256": "79d80d0691ad10a5cd2e2418a34b2032b789ab983d758b2f20b9e927207c3325",
+          "counts": {
+            "branch": 4,
+            "acute": 6,
+            "right": 12
+          }
+        },
+        {
+          "id": "corner-lattice-24253",
+          "geometrySha256": "e24ba6d4331713c240e32521aec56012d831185fb32602701ff40722d8f7a9cf",
+          "counts": {
+            "branch": 8,
+            "obtuse": 34,
+            "right": 24
+          }
+        },
+        {
+          "id": "corner-lattice-25262",
+          "geometrySha256": "c0fdf168d974b34358d28b4f15f6ad672fe00cebb4acbbe3738f37c829caa1c0",
+          "counts": {
+            "obtuse": 20,
+            "branch": 8,
+            "right": 6
+          }
+        },
+        {
+          "id": "corner-lattice-28289",
+          "geometrySha256": "bf154f7e1bbd3a7d4e0f49b43bf2c5e7323ce69b6909df8395de8a4928b610f7",
+          "counts": {
+            "right": 6
+          }
+        },
+        {
+          "id": "corner-lattice-3001055",
+          "geometrySha256": "05298c25979a9b0583f60ef9aa9cec07e52daf0600ca4ddfd8e587bc4512bda0",
+          "counts": {
+            "branch": 3,
+            "obtuse": 22,
+            "right": 6
+          }
+        },
+        {
+          "id": "corner-lattice-3014172",
+          "geometrySha256": "dd099d8a2db476b251beca70ff2600f2bc446d3f38c7fdb8975f78c34989035b",
+          "counts": {
+            "obtuse": 38,
+            "branch": 9,
+            "right": 6,
+            "acute": 12
+          }
+        },
+        {
+          "id": "corner-lattice-3016190",
+          "geometrySha256": "2e56478dedcd0d44f4554e2fbd58ac8c28aa20807ca5d0326bd0d7f796ff2757",
+          "counts": {
+            "obtuse": 14
+          }
+        },
+        {
+          "id": "corner-lattice-3041415",
+          "geometrySha256": "06c533a79c9d777e9c619e172b8cb7230104f6f3b5be2047a6c4c901f5a09059",
+          "counts": {
+            "right": 12,
+            "obtuse": 12,
+            "branch": 1
+          }
+        },
+        {
+          "id": "corner-lattice-3042424",
+          "geometrySha256": "23080c58d9724d7fc471dcbc932881eab74c34679e33f9ea7a6e9d4f37d14619",
+          "counts": {
+            "obtuse": 4,
+            "branch": 1
+          }
+        },
+        {
+          "id": "corner-lattice-3044442",
+          "geometrySha256": "e7ee3b1630a85e84e852e097b282866e67ee534b16e14894b21c7d3fa19f8f48",
+          "counts": {
+            "obtuse": 26,
+            "acute": 6,
+            "branch": 4,
+            "right": 12
+          }
+        },
+        {
+          "id": "corner-lattice-3056550",
+          "geometrySha256": "a19c59d1e1525f2cccebc01da700e78cab2f000b2aa39b7a9dd6d2ab37b8e830",
+          "counts": {
+            "obtuse": 6
+          }
+        },
+        {
+          "id": "corner-lattice-3059577",
+          "geometrySha256": "defb78d05df5f8e49c8c422d0edffcb47f4d72e005a9b134308f747f22b6ff1e",
+          "counts": {
+            "obtuse": 6
+          }
+        },
+        {
+          "id": "corner-lattice-3064",
+          "geometrySha256": "c9a7515f81d258c873b4087f13f872df972c55fbf02b24a882915a60683be685",
+          "counts": {
+            "obtuse": 20,
+            "branch": 7,
+            "right": 18
+          }
+        },
+        {
+          "id": "corner-lattice-32325",
+          "geometrySha256": "7adb98f23d1502295eed449154d8536fd88224cf97cd0a649df8b2921db6fbaf",
+          "counts": {
+            "obtuse": 14,
+            "branch": 6,
+            "right": 6
+          }
+        },
+        {
+          "id": "corner-lattice-37370",
+          "geometrySha256": "45d878c6293a277777afaa7264412680527d64598b36288f271b8ec2005e6c12",
+          "counts": {
+            "branch": 6,
+            "obtuse": 20,
+            "acute": 12
+          }
+        },
+        {
+          "id": "corner-lattice-4038391",
+          "geometrySha256": "6102abdad415bcdd984613e577db0b010692925de3ad192c9cd99c6898f4b9e2",
+          "counts": {
+            "obtuse": 12,
+            "right": 6,
+            "branch": 2
+          }
+        },
+        {
+          "id": "corner-lattice-4052517",
+          "geometrySha256": "6923421b24bac7cb1c2f86f32c60f2762914c81bba21414adf04c4a44db3405f",
+          "counts": {
+            "obtuse": 42,
+            "branch": 16,
+            "acute": 18,
+            "right": 30
+          }
+        },
+        {
+          "id": "corner-lattice-43424",
+          "geometrySha256": "353d7abf12d372e18a004959ef7d37b1760cfae1d1ae72c07da001651971bfbb",
+          "counts": {
+            "branch": 2,
+            "obtuse": 12
+          }
+        },
+        {
+          "id": "corner-lattice-46451",
+          "geometrySha256": "1b494772bc298164fd932ef3190b789034b0a1b0fcacfbe16fe26039ec98fb0f",
+          "counts": {
+            "obtuse": 4
+          }
+        },
+        {
+          "id": "corner-lattice-47460",
+          "geometrySha256": "cacfbb630190db9f365bd29bdae944115dfb1567dc400a3e6afeb8a07c4b6e32",
+          "counts": {
+            "obtuse": 10,
+            "branch": 1,
+            "right": 6
+          }
+        },
+        {
+          "id": "corner-lattice-49478",
+          "geometrySha256": "af0daef48a8d9f1e5ddd18774207e65f644557f3a39d0f68d169154d11b19b52",
+          "counts": {
+            "branch": 5,
+            "obtuse": 36,
+            "right": 6
+          }
+        },
+        {
+          "id": "corner-lattice-5029313",
+          "geometrySha256": "0dbf4ac1f098bf7fbf9f435c7ff849afdd09f455dd35121a5449ebb06b0d7d4d",
+          "counts": {
+            "branch": 4,
+            "obtuse": 10
+          }
+        },
+        {
+          "id": "corner-lattice-5048484",
+          "geometrySha256": "afb390c40fcc72f12aae24ccd31b08f3827ed1c637a917dfd3dda1b1cf673e89",
+          "counts": {
+            "branch": 4,
+            "obtuse": 12
+          }
+        },
+        {
+          "id": "corner-lattice-50487",
+          "geometrySha256": "2f87ea1cf9b7452da91f1475ffddadd8a44ce0f2136285a7a624eda1c4c47dc0",
+          "counts": {
+            "obtuse": 18,
+            "branch": 2,
+            "right": 6
+          }
+        },
+        {
+          "id": "corner-lattice-5053529",
+          "geometrySha256": "73170d9ac52f628381aefc2dd7493ae3852da5665b2f2ad7b4e8d2e10d1c1062",
+          "counts": {
+            "obtuse": 8
+          }
+        },
+        {
+          "id": "corner-lattice-5082",
+          "geometrySha256": "99908268256f7f9d4269427edf5e0a8260867954af38b3ec657e3fe53054db55",
+          "counts": {
+            "obtuse": 8,
+            "branch": 2
+          }
+        },
+        {
+          "id": "corner-lattice-54523",
+          "geometrySha256": "fc3e29ef6208002ad7c4ef9a90690b4be8535d3727509bf3b5834fc83a5da4ce",
+          "counts": {
+            "acute": 30,
+            "obtuse": 44,
+            "branch": 20,
+            "right": 30
+          }
+        },
+        {
+          "id": "corner-lattice-55532",
+          "geometrySha256": "aea478bc6ae26c2e3363c3deeb62f2b853540b73265af1b0e4ba7fd4ae70dc47",
+          "counts": {
+            "obtuse": 4,
+            "right": 6
+          }
+        },
+        {
+          "id": "corner-lattice-58559",
+          "geometrySha256": "db85a77f218e0e6b4709f895525cdc70d830c5c6f047dec3eba8bb6628e482c6",
+          "counts": {
+            "right": 6,
+            "obtuse": 2
+          }
+        },
+        {
+          "id": "corner-lattice-60577",
+          "geometrySha256": "24eb159adff2c0dd0b922218067c98fd27204f508d8d44a06f4fb866ac4ac9f7",
+          "counts": {
+            "branch": 3,
+            "obtuse": 10
+          }
+        },
+        {
+          "id": "corner-lattice-6091",
+          "geometrySha256": "39d203a8839271192a9be5d97386e5fcfe3e0a394046c40f1e0817180d86c520",
+          "counts": {
+            "branch": 3,
+            "obtuse": 8,
+            "right": 6
+          }
+        },
+        {
+          "id": "corner-lattice-62595",
+          "geometrySha256": "83bbec7ab4038e42d257a2629f0043c258b67bb6cbf078f13990e6e9b2f83e76",
+          "counts": {
+            "obtuse": 18,
+            "branch": 3
+          }
+        },
+        {
+          "id": "corner-lattice-7027301",
+          "geometrySha256": "69a97c6d66612c351210b5a0ca7d55320b42e04c8a0f5db52e322bb49d12a3da",
+          "counts": {
+            "obtuse": 20,
+            "branch": 2
+          }
+        }
+      ]
+    }
+  ],
+  "fullReportPath": "tmp/heart-learning/coverage-corners-v1.json",
+  "fullReportSha256": "dd267dc042b922b138ce848a46dcbbfb69e7d7e284e9a6b53e5387c3364be567"
+}

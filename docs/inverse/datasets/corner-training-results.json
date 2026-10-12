@@ -1,0 +1,2382 @@
+{
+  "schema": "heart-boundary-localization-1",
+  "status": "complete",
+  "arguments": {
+    "prepared": "tmp/heart-learning/prepared-v1",
+    "run": [
+      "tmp/heart-learning/balanced-corners-v1"
+    ],
+    "output": "tmp/heart-learning/localization-corners-v1",
+    "device": "mps"
+  },
+  "sourceHashes": {
+    "metrics.py": "96b099fa0ad61afd75d16becfc07264b4c60c329b1de596f5ee90049ef07d49e",
+    "losses.test.py": "7bb818061b6c7ffb20a9a562f50c20321e790852d6fbf7359e0cdcaf8b453587",
+    "classical.test.py": "385312c4b1753281d6c69e0d655696d14fdb812edc0693e2c918f1519ebbcc7c",
+    "coverage.py": "bd39679bd01ddd800e68d7966fa1d5bda49096ede0cacbc0de41b30aecb6193c",
+    "test.py": "1b4717925fca025c7f07a34382b7b401ed322fa00f7840f85beb6ae3aaa0c7fa",
+    "model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b",
+    "localization.py": "df5b2f6ba0c1347f5b34e64570c296fe20d00f6ac4c01ebf4df8e8b5edfc941f",
+    "classical.py": "4aa37fab61594f5e33fbcb292ed622661264f12c3caf0b6cd717441252603a6a",
+    "coverage.test.py": "cd0643062d188fc17f114e1749437a31e4e5fd5d81d9334ea24bec54faae3c89",
+    "train.py": "ea74131a7ffe96703770c24b63cf571b0488c90b7dfc9952eabf062b46f89fed",
+    "data.test.py": "52a631b7ad49f31641674e1728d4f4f6dacaafd0736a0738a0ddce937acd82f4",
+    "metrics.test.py": "98583d9e8b6edb0f405b38e2ef12b327295c673335a996225c66086a3aac4a4e",
+    "losses.py": "6b0a54a2ee7c0770671847cd4d198ff7e6efc62947b1a703394125ce03880cec",
+    "model.test.py": "92590682b56a328eb7e1a9ea1e733068adb78dfce05ed29563c778e35f92be7f",
+    "data.py": "c4c1c890daff9fa5ccc618d55150b2da7f92e359c50cd0d9d1e689b5283fc54b"
+  },
+  "runtime": {
+    "python": "3.9.6",
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "torch": "2.8.0",
+    "device": "mps"
+  },
+  "protocol": [
+    "Identical Guo\u2013Hall thinning of prediction and reference within the known valid region.",
+    "Maximum-cardinality one-to-one matching at Euclidean radii 1, 2, 3 pixels.",
+    "Saved checkpoint and development-selected thresholds remain frozen; no training or retuning.",
+    "Synthetic component evaluation; recipe holdouts are not topology-disjoint or unseen real photographs.",
+    "Raster pixel counts are not arc length; this does not certify graph connectivity or cutting legality."
+  ],
+  "preparedManifestSha256": "4be61d42373722e3ead15fc27e2a5baffb485cc5e2e6c8468df5e8347c02a0a8",
+  "datasetManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d",
+  "baseline": {
+    "development": {
+      "views": 52,
+      "boundary": {
+        "1": {
+          "precision": 0.9271200490143079,
+          "recall": 0.879973728859942,
+          "f1": 0.9029318750592307,
+          "matched": 128624,
+          "predicted": 138735,
+          "target": 146168
+        },
+        "2": {
+          "precision": 0.9879266226979493,
+          "recall": 0.9376881396748946,
+          "f1": 0.9621520306911475,
+          "matched": 137060,
+          "predicted": 138735,
+          "target": 146168
+        },
+        "3": {
+          "precision": 0.9941543229898728,
+          "recall": 0.9435991461879482,
+          "f1": 0.96821725288958,
+          "matched": 137924,
+          "predicted": 138735,
+          "target": 146168
+        }
+      },
+      "junctions": {
+        "precision": 0.7512953367875648,
+        "recall": 0.5735759493670886,
+        "f1": 0.6505159264244056,
+        "matched": 725,
+        "predicted": 965,
+        "target": 1264
+      },
+      "viewsWithEveryJunctionRecovered": 35,
+      "viewsWithReferenceJunctions": 52,
+      "nonemptyViewsWithEveryJunctionRecovered": 35,
+      "maximumJunctionProposals": 68,
+      "macroBoundaryF1": {
+        "1": 0.8417739834160403,
+        "2": 0.9062900945137594,
+        "3": 0.9153981702456296
+      },
+      "rawBoundaryPixels": 138838,
+      "thinBoundaryPixels": 138735
+    },
+    "recipe-test": {
+      "views": 128,
+      "boundary": {
+        "1": {
+          "precision": 0.8564330978394158,
+          "recall": 0.832729482534481,
+          "f1": 0.844414976599064,
+          "matched": 108254,
+          "predicted": 126401,
+          "target": 129999
+        },
+        "2": {
+          "precision": 0.980640975941646,
+          "recall": 0.9534996423049408,
+          "f1": 0.9668798751950077,
+          "matched": 123954,
+          "predicted": 126401,
+          "target": 129999
+        },
+        "3": {
+          "precision": 0.9922627194405108,
+          "recall": 0.9647997292286864,
+          "f1": 0.9783385335413416,
+          "matched": 125423,
+          "predicted": 126401,
+          "target": 129999
+        }
+      },
+      "junctions": {
+        "precision": 0.38402061855670105,
+        "recall": 0.1455078125,
+        "f1": 0.21104815864022666,
+        "matched": 149,
+        "predicted": 388,
+        "target": 1024
+      },
+      "viewsWithEveryJunctionRecovered": 0,
+      "viewsWithReferenceJunctions": 128,
+      "nonemptyViewsWithEveryJunctionRecovered": 0,
+      "maximumJunctionProposals": 17,
+      "macroBoundaryF1": {
+        "1": 0.8348200665772195,
+        "2": 0.9577328796822229,
+        "3": 0.969305854218353
+      },
+      "rawBoundaryPixels": 126691,
+      "thinBoundaryPixels": 126401
+    },
+    "recipe-validation": {
+      "views": 128,
+      "boundary": {
+        "1": {
+          "precision": 0.8253651528453987,
+          "recall": 0.7846276414128002,
+          "f1": 0.804481008226851,
+          "matched": 41364,
+          "predicted": 50116,
+          "target": 52718
+        },
+        "2": {
+          "precision": 0.9512331391172479,
+          "recall": 0.9042831670397208,
+          "f1": 0.9271641674932415,
+          "matched": 47672,
+          "predicted": 50116,
+          "target": 52718
+        },
+        "3": {
+          "precision": 0.9681139755766621,
+          "recall": 0.9203308167988163,
+          "f1": 0.9436178695762102,
+          "matched": 48518,
+          "predicted": 50116,
+          "target": 52718
+        }
+      },
+      "junctions": {
+        "precision": 0.25547445255474455,
+        "recall": 0.13671875,
+        "f1": 0.178117048346056,
+        "matched": 35,
+        "predicted": 137,
+        "target": 256
+      },
+      "viewsWithEveryJunctionRecovered": 1,
+      "viewsWithReferenceJunctions": 128,
+      "nonemptyViewsWithEveryJunctionRecovered": 1,
+      "maximumJunctionProposals": 9,
+      "macroBoundaryF1": {
+        "1": 0.7847985678809655,
+        "2": 0.9047105862918252,
+        "3": 0.9201300295382138
+      },
+      "rawBoundaryPixels": 50258,
+      "thinBoundaryPixels": 50116
+    }
+  },
+  "models": {
+    "balanced-corners-v1": {
+      "reportPath": "tmp/heart-learning/balanced-corners-v1/report.json",
+      "reportSha256": "32b636dd752d7ccaecee321fbbf6bb5a27269ce4dbc5f2577c84fd3ee448a31d",
+      "checkpointSha256": "99001a3bf232c230a209a13cc5fd5a9b9d363dd131edc1ece937e1b9b6f668b9",
+      "thresholds": [
+        0.6,
+        0.4
+      ],
+      "selectedEpoch": 20,
+      "initialization": {
+        "name": "imagenet",
+        "torchvision": "0.23.0",
+        "url": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth",
+        "sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+        "bytes": 10306551,
+        "weights": "TorchVision MobileNet_V3_Small_Weights.IMAGENET1K_V1",
+        "note": "Different checkpoint from the researched timm LAMB weights; TorchVision is already installed."
+      },
+      "metrics": {
+        "development": {
+          "views": 52,
+          "boundary": {
+            "1": {
+              "precision": 0.9009717755351003,
+              "recall": 0.8892849324065459,
+              "f1": 0.895090207960336,
+              "matched": 129985,
+              "predicted": 144272,
+              "target": 146168
+            },
+            "2": {
+              "precision": 0.9751303094155485,
+              "recall": 0.9624815281046467,
+              "f1": 0.9687646329706652,
+              "matched": 140684,
+              "predicted": 144272,
+              "target": 146168
+            },
+            "3": {
+              "precision": 0.9827686591992902,
+              "recall": 0.9700207979858793,
+              "f1": 0.9763531194050408,
+              "matched": 141786,
+              "predicted": 144272,
+              "target": 146168
+            }
+          },
+          "junctions": {
+            "precision": 0.731418918918919,
+            "recall": 0.685126582278481,
+            "f1": 0.7075163398692811,
+            "matched": 866,
+            "predicted": 1184,
+            "target": 1264
+          },
+          "viewsWithEveryJunctionRecovered": 23,
+          "viewsWithReferenceJunctions": 52,
+          "nonemptyViewsWithEveryJunctionRecovered": 23,
+          "maximumJunctionProposals": 60,
+          "macroBoundaryF1": {
+            "1": 0.8735702368067,
+            "2": 0.953744180642463,
+            "3": 0.9632544138989126
+          },
+          "rawBoundaryPixels": 541258,
+          "thinBoundaryPixels": 144272
+        },
+        "recipe-test": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.8673867341031657,
+              "recall": 0.875960584312187,
+              "f1": 0.8716525759425604,
+              "matched": 113874,
+              "predicted": 131284,
+              "target": 129999
+            },
+            "2": {
+              "precision": 0.9496968404375248,
+              "recall": 0.9590843006484665,
+              "f1": 0.9543674865949947,
+              "matched": 124680,
+              "predicted": 131284,
+              "target": 129999
+            },
+            "3": {
+              "precision": 0.9591420127357485,
+              "recall": 0.9686228355602735,
+              "f1": 0.9638591106195198,
+              "matched": 125920,
+              "predicted": 131284,
+              "target": 129999
+            }
+          },
+          "junctions": {
+            "precision": 0.8649669499527857,
+            "recall": 0.89453125,
+            "f1": 0.8795007201152185,
+            "matched": 916,
+            "predicted": 1059,
+            "target": 1024
+          },
+          "viewsWithEveryJunctionRecovered": 71,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 71,
+          "maximumJunctionProposals": 16,
+          "macroBoundaryF1": {
+            "1": 0.8672700778101744,
+            "2": 0.9501681775621666,
+            "3": 0.9598520084540627
+          },
+          "rawBoundaryPixels": 554256,
+          "thinBoundaryPixels": 131284
+        },
+        "recipe-validation": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.7707311296816322,
+              "recall": 0.8642399180545545,
+              "f1": 0.8148115029687388,
+              "matched": 45561,
+              "predicted": 59114,
+              "target": 52718
+            },
+            "2": {
+              "precision": 0.8420847853300403,
+              "recall": 0.9442505406123146,
+              "f1": 0.8902460834108306,
+              "matched": 49779,
+              "predicted": 59114,
+              "target": 52718
+            },
+            "3": {
+              "precision": 0.8533511520113679,
+              "recall": 0.9568837968056452,
+              "f1": 0.9021568066385293,
+              "matched": 50445,
+              "predicted": 59114,
+              "target": 52718
+            }
+          },
+          "junctions": {
+            "precision": 0.7724137931034483,
+            "recall": 0.875,
+            "f1": 0.8205128205128206,
+            "matched": 224,
+            "predicted": 290,
+            "target": 256
+          },
+          "viewsWithEveryJunctionRecovered": 101,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 101,
+          "maximumJunctionProposals": 5,
+          "macroBoundaryF1": {
+            "1": 0.8214741606929942,
+            "2": 0.8961404973732744,
+            "3": 0.9074320558493665
+          },
+          "rawBoundaryPixels": 242861,
+          "thinBoundaryPixels": 59114
+        }
+      },
+      "evaluationSeconds": 7.354195749999999
+    }
+  },
+  "classical": {
+    "harris": {
+      "selectedThreshold": 0.0003,
+      "thresholdSearch": [
+        {
+          "threshold": 1e-06,
+          "precision": 0.17280453257790368,
+          "recall": 0.43433544303797467,
+          "f1": 0.24724161224949331,
+          "matched": 549,
+          "predicted": 3177,
+          "target": 1264
+        },
+        {
+          "threshold": 3e-06,
+          "precision": 0.17486338797814208,
+          "recall": 0.43037974683544306,
+          "f1": 0.24868571428571426,
+          "matched": 544,
+          "predicted": 3111,
+          "target": 1264
+        },
+        {
+          "threshold": 1e-05,
+          "precision": 0.18072289156626506,
+          "recall": 0.4272151898734177,
+          "f1": 0.2539981185324553,
+          "matched": 540,
+          "predicted": 2988,
+          "target": 1264
+        },
+        {
+          "threshold": 3e-05,
+          "precision": 0.21176941553242595,
+          "recall": 0.4185126582278481,
+          "f1": 0.2812333864965444,
+          "matched": 529,
+          "predicted": 2498,
+          "target": 1264
+        },
+        {
+          "threshold": 0.0001,
+          "precision": 0.26345177664974617,
+          "recall": 0.41060126582278483,
+          "f1": 0.32096474953617804,
+          "matched": 519,
+          "predicted": 1970,
+          "target": 1264
+        },
+        {
+          "threshold": 0.0003,
+          "precision": 0.6142506142506142,
+          "recall": 0.39556962025316456,
+          "f1": 0.48123195380173245,
+          "matched": 500,
+          "predicted": 814,
+          "target": 1264
+        }
+      ],
+      "metrics": {
+        "development": {
+          "views": 52,
+          "boundary": {
+            "1": {
+              "precision": 0.9271200490143079,
+              "recall": 0.879973728859942,
+              "f1": 0.9029318750592307,
+              "matched": 128624,
+              "predicted": 138735,
+              "target": 146168
+            },
+            "2": {
+              "precision": 0.9879266226979493,
+              "recall": 0.9376881396748946,
+              "f1": 0.9621520306911475,
+              "matched": 137060,
+              "predicted": 138735,
+              "target": 146168
+            },
+            "3": {
+              "precision": 0.9941543229898728,
+              "recall": 0.9435991461879482,
+              "f1": 0.96821725288958,
+              "matched": 137924,
+              "predicted": 138735,
+              "target": 146168
+            }
+          },
+          "junctions": {
+            "precision": 0.6142506142506142,
+            "recall": 0.39556962025316456,
+            "f1": 0.48123195380173245,
+            "matched": 500,
+            "predicted": 814,
+            "target": 1264
+          },
+          "viewsWithEveryJunctionRecovered": 2,
+          "viewsWithReferenceJunctions": 52,
+          "nonemptyViewsWithEveryJunctionRecovered": 2,
+          "maximumJunctionProposals": 49,
+          "macroBoundaryF1": {
+            "1": 0.8417739834160403,
+            "2": 0.9062900945137594,
+            "3": 0.9153981702456296
+          },
+          "rawBoundaryPixels": 138838,
+          "thinBoundaryPixels": 138735
+        },
+        "recipe-test": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.8564330978394158,
+              "recall": 0.832729482534481,
+              "f1": 0.844414976599064,
+              "matched": 108254,
+              "predicted": 126401,
+              "target": 129999
+            },
+            "2": {
+              "precision": 0.980640975941646,
+              "recall": 0.9534996423049408,
+              "f1": 0.9668798751950077,
+              "matched": 123954,
+              "predicted": 126401,
+              "target": 129999
+            },
+            "3": {
+              "precision": 0.9922627194405108,
+              "recall": 0.9647997292286864,
+              "f1": 0.9783385335413416,
+              "matched": 125423,
+              "predicted": 126401,
+              "target": 129999
+            }
+          },
+          "junctions": {
+            "precision": 0.3392857142857143,
+            "recall": 0.1298828125,
+            "f1": 0.18785310734463276,
+            "matched": 133,
+            "predicted": 392,
+            "target": 1024
+          },
+          "viewsWithEveryJunctionRecovered": 0,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 0,
+          "maximumJunctionProposals": 11,
+          "macroBoundaryF1": {
+            "1": 0.8348200665772195,
+            "2": 0.9577328796822229,
+            "3": 0.969305854218353
+          },
+          "rawBoundaryPixels": 126691,
+          "thinBoundaryPixels": 126401
+        },
+        "recipe-validation": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.8253651528453987,
+              "recall": 0.7846276414128002,
+              "f1": 0.804481008226851,
+              "matched": 41364,
+              "predicted": 50116,
+              "target": 52718
+            },
+            "2": {
+              "precision": 0.9512331391172479,
+              "recall": 0.9042831670397208,
+              "f1": 0.9271641674932415,
+              "matched": 47672,
+              "predicted": 50116,
+              "target": 52718
+            },
+            "3": {
+              "precision": 0.9681139755766621,
+              "recall": 0.9203308167988163,
+              "f1": 0.9436178695762102,
+              "matched": 48518,
+              "predicted": 50116,
+              "target": 52718
+            }
+          },
+          "junctions": {
+            "precision": 0.1619047619047619,
+            "recall": 0.06640625,
+            "f1": 0.09418282548476455,
+            "matched": 17,
+            "predicted": 105,
+            "target": 256
+          },
+          "viewsWithEveryJunctionRecovered": 2,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 2,
+          "maximumJunctionProposals": 5,
+          "macroBoundaryF1": {
+            "1": 0.7847985678809655,
+            "2": 0.9047105862918252,
+            "3": 0.9201300295382138
+          },
+          "rawBoundaryPixels": 50258,
+          "thinBoundaryPixels": 50116
+        }
+      },
+      "note": "Boundary scores reuse the original trace. Only junction proposals differ."
+    },
+    "harris-refined": {
+      "selectedThreshold": 0.0003,
+      "thresholdSearch": [
+        {
+          "threshold": 1e-06,
+          "precision": 0.2800766283524904,
+          "recall": 0.5783227848101266,
+          "f1": 0.37738771295818274,
+          "matched": 731,
+          "predicted": 2610,
+          "target": 1264
+        },
+        {
+          "threshold": 3e-06,
+          "precision": 0.2825322391559203,
+          "recall": 0.571993670886076,
+          "f1": 0.37823698665969135,
+          "matched": 723,
+          "predicted": 2559,
+          "target": 1264
+        },
+        {
+          "threshold": 1e-05,
+          "precision": 0.28390668248319495,
+          "recall": 0.5680379746835443,
+          "f1": 0.37859214342209335,
+          "matched": 718,
+          "predicted": 2529,
+          "target": 1264
+        },
+        {
+          "threshold": 3e-05,
+          "precision": 0.3334907888521493,
+          "recall": 0.5585443037974683,
+          "f1": 0.41762792073351074,
+          "matched": 706,
+          "predicted": 2117,
+          "target": 1264
+        },
+        {
+          "threshold": 0.0001,
+          "precision": 0.4087418783225044,
+          "recall": 0.5474683544303798,
+          "f1": 0.4680419343929658,
+          "matched": 692,
+          "predicted": 1693,
+          "target": 1264
+        },
+        {
+          "threshold": 0.0003,
+          "precision": 0.8973277074542897,
+          "recall": 0.504746835443038,
+          "f1": 0.6460759493670886,
+          "matched": 638,
+          "predicted": 711,
+          "target": 1264
+        }
+      ],
+      "metrics": {
+        "development": {
+          "views": 52,
+          "boundary": {
+            "1": {
+              "precision": 0.9271200490143079,
+              "recall": 0.879973728859942,
+              "f1": 0.9029318750592307,
+              "matched": 128624,
+              "predicted": 138735,
+              "target": 146168
+            },
+            "2": {
+              "precision": 0.9879266226979493,
+              "recall": 0.9376881396748946,
+              "f1": 0.9621520306911475,
+              "matched": 137060,
+              "predicted": 138735,
+              "target": 146168
+            },
+            "3": {
+              "precision": 0.9941543229898728,
+              "recall": 0.9435991461879482,
+              "f1": 0.96821725288958,
+              "matched": 137924,
+              "predicted": 138735,
+              "target": 146168
+            }
+          },
+          "junctions": {
+            "precision": 0.8973277074542897,
+            "recall": 0.504746835443038,
+            "f1": 0.6460759493670886,
+            "matched": 638,
+            "predicted": 711,
+            "target": 1264
+          },
+          "viewsWithEveryJunctionRecovered": 13,
+          "viewsWithReferenceJunctions": 52,
+          "nonemptyViewsWithEveryJunctionRecovered": 13,
+          "maximumJunctionProposals": 37,
+          "macroBoundaryF1": {
+            "1": 0.8417739834160403,
+            "2": 0.9062900945137594,
+            "3": 0.9153981702456296
+          },
+          "rawBoundaryPixels": 138838,
+          "thinBoundaryPixels": 138735
+        },
+        "recipe-test": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.8564330978394158,
+              "recall": 0.832729482534481,
+              "f1": 0.844414976599064,
+              "matched": 108254,
+              "predicted": 126401,
+              "target": 129999
+            },
+            "2": {
+              "precision": 0.980640975941646,
+              "recall": 0.9534996423049408,
+              "f1": 0.9668798751950077,
+              "matched": 123954,
+              "predicted": 126401,
+              "target": 129999
+            },
+            "3": {
+              "precision": 0.9922627194405108,
+              "recall": 0.9647997292286864,
+              "f1": 0.9783385335413416,
+              "matched": 125423,
+              "predicted": 126401,
+              "target": 129999
+            }
+          },
+          "junctions": {
+            "precision": 0.73125,
+            "recall": 0.228515625,
+            "f1": 0.3482142857142857,
+            "matched": 234,
+            "predicted": 320,
+            "target": 1024
+          },
+          "viewsWithEveryJunctionRecovered": 0,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 0,
+          "maximumJunctionProposals": 9,
+          "macroBoundaryF1": {
+            "1": 0.8348200665772195,
+            "2": 0.9577328796822229,
+            "3": 0.969305854218353
+          },
+          "rawBoundaryPixels": 126691,
+          "thinBoundaryPixels": 126401
+        },
+        "recipe-validation": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.8253651528453987,
+              "recall": 0.7846276414128002,
+              "f1": 0.804481008226851,
+              "matched": 41364,
+              "predicted": 50116,
+              "target": 52718
+            },
+            "2": {
+              "precision": 0.9512331391172479,
+              "recall": 0.9042831670397208,
+              "f1": 0.9271641674932415,
+              "matched": 47672,
+              "predicted": 50116,
+              "target": 52718
+            },
+            "3": {
+              "precision": 0.9681139755766621,
+              "recall": 0.9203308167988163,
+              "f1": 0.9436178695762102,
+              "matched": 48518,
+              "predicted": 50116,
+              "target": 52718
+            }
+          },
+          "junctions": {
+            "precision": 0.55,
+            "recall": 0.171875,
+            "f1": 0.2619047619047619,
+            "matched": 44,
+            "predicted": 80,
+            "target": 256
+          },
+          "viewsWithEveryJunctionRecovered": 7,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 7,
+          "maximumJunctionProposals": 5,
+          "macroBoundaryF1": {
+            "1": 0.7847985678809655,
+            "2": 0.9047105862918252,
+            "3": 0.9201300295382138
+          },
+          "rawBoundaryPixels": 50258,
+          "thinBoundaryPixels": 50116
+        }
+      },
+      "note": "Boundary scores reuse the original trace. Only junction proposals differ."
+    }
+  },
+  "comparisonModels": {
+    "imagenet-final": {
+      "reportPath": "tmp/heart-learning/imagenet-final/report.json",
+      "reportSha256": "666ee492ce7b4f83723a51cc129499f2734453c53f341b344af30618eee81ddc",
+      "checkpointSha256": "78fba55f0db89010161849e7f43390c0982fd19f745a08fc8a8ec5b3c9627c73",
+      "thresholds": [
+        0.5,
+        0.4
+      ],
+      "selectedEpoch": 19,
+      "initialization": {
+        "name": "imagenet",
+        "torchvision": "0.23.0",
+        "url": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth",
+        "sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+        "bytes": 10306551,
+        "weights": "TorchVision MobileNet_V3_Small_Weights.IMAGENET1K_V1",
+        "note": "Different checkpoint from the researched timm LAMB weights; TorchVision is already installed."
+      },
+      "metrics": {
+        "development": {
+          "views": 52,
+          "boundary": {
+            "1": {
+              "precision": 0.9008570102895821,
+              "recall": 0.90324831700509,
+              "f1": 0.9020510788319372,
+              "matched": 132026,
+              "predicted": 146556,
+              "target": 146168
+            },
+            "2": {
+              "precision": 0.9747673244357106,
+              "recall": 0.9773548245854086,
+              "f1": 0.9760593596698597,
+              "matched": 142858,
+              "predicted": 146556,
+              "target": 146168
+            },
+            "3": {
+              "precision": 0.9823071044515407,
+              "recall": 0.9849146187948115,
+              "f1": 0.983609133518263,
+              "matched": 143963,
+              "predicted": 146556,
+              "target": 146168
+            }
+          },
+          "junctions": {
+            "precision": 0.5768261964735516,
+            "recall": 0.5435126582278481,
+            "f1": 0.5596741344195519,
+            "matched": 687,
+            "predicted": 1191,
+            "target": 1264
+          },
+          "viewsWithEveryJunctionRecovered": 3,
+          "viewsWithReferenceJunctions": 52,
+          "nonemptyViewsWithEveryJunctionRecovered": 3,
+          "maximumJunctionProposals": 60,
+          "macroBoundaryF1": {
+            "1": 0.8857218910957341,
+            "2": 0.9676897257973758,
+            "3": 0.9767814692582382
+          },
+          "rawBoundaryPixels": 626213,
+          "thinBoundaryPixels": 146556
+        },
+        "recipe-test": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.8711655504730778,
+              "recall": 0.8775452118862452,
+              "f1": 0.8743437440122629,
+              "matched": 114080,
+              "predicted": 130951,
+              "target": 129999
+            },
+            "2": {
+              "precision": 0.9517300364258386,
+              "recall": 0.9586996823052485,
+              "f1": 0.9552021460049818,
+              "matched": 124630,
+              "predicted": 130951,
+              "target": 129999
+            },
+            "3": {
+              "precision": 0.960847950760208,
+              "recall": 0.967884368341295,
+              "f1": 0.9643533243916458,
+              "matched": 125824,
+              "predicted": 130951,
+              "target": 129999
+            }
+          },
+          "junctions": {
+            "precision": 0.624031007751938,
+            "recall": 0.314453125,
+            "f1": 0.41818181818181815,
+            "matched": 322,
+            "predicted": 516,
+            "target": 1024
+          },
+          "viewsWithEveryJunctionRecovered": 1,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 1,
+          "maximumJunctionProposals": 10,
+          "macroBoundaryF1": {
+            "1": 0.868978886547952,
+            "2": 0.9502040605115778,
+            "3": 0.9595509600905008
+          },
+          "rawBoundaryPixels": 579691,
+          "thinBoundaryPixels": 130951
+        },
+        "recipe-validation": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.7962924354564092,
+              "recall": 0.8693994461094883,
+              "f1": 0.8312416119554572,
+              "matched": 45833,
+              "predicted": 57558,
+              "target": 52718
+            },
+            "2": {
+              "precision": 0.8684283679071545,
+              "recall": 0.9481581243598012,
+              "f1": 0.9065435815589974,
+              "matched": 49985,
+              "predicted": 57558,
+              "target": 52718
+            },
+            "3": {
+              "precision": 0.8775843496994337,
+              "recall": 0.9581547099662354,
+              "f1": 0.9161014182596395,
+              "matched": 50512,
+              "predicted": 57558,
+              "target": 52718
+            }
+          },
+          "junctions": {
+            "precision": 0.5732484076433121,
+            "recall": 0.3515625,
+            "f1": 0.4358353510895884,
+            "matched": 90,
+            "predicted": 157,
+            "target": 256
+          },
+          "viewsWithEveryJunctionRecovered": 22,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 22,
+          "maximumJunctionProposals": 3,
+          "macroBoundaryF1": {
+            "1": 0.8333215070560112,
+            "2": 0.9080055001878107,
+            "3": 0.9171484721645982
+          },
+          "rawBoundaryPixels": 258707,
+          "thinBoundaryPixels": 57558
+        }
+      },
+      "evaluationSeconds": 7.595705250000002
+    },
+    "random-final": {
+      "reportPath": "tmp/heart-learning/random-final/report.json",
+      "reportSha256": "055e4a77cfa33843d069c1c6c3fc1f3b8fb5cec586a579213c275fe788071515",
+      "checkpointSha256": "7326d53429276ba21e9dcd8cab3a88c9c40ae53904eeb3a90308b22369287219",
+      "thresholds": [
+        0.6,
+        0.3
+      ],
+      "selectedEpoch": 20,
+      "initialization": {
+        "name": "random",
+        "torchvision": "0.23.0"
+      },
+      "metrics": {
+        "development": {
+          "views": 52,
+          "boundary": {
+            "1": {
+              "precision": 0.9057709680916417,
+              "recall": 0.8574174922007552,
+              "f1": 0.8809312100881093,
+              "matched": 125327,
+              "predicted": 138365,
+              "target": 146168
+            },
+            "2": {
+              "precision": 0.9719654536913237,
+              "recall": 0.9200782661047562,
+              "f1": 0.945310385790049,
+              "matched": 134486,
+              "predicted": 138365,
+              "target": 146168
+            },
+            "3": {
+              "precision": 0.9803129404112312,
+              "recall": 0.9279801324503312,
+              "f1": 0.9534289520020526,
+              "matched": 135641,
+              "predicted": 138365,
+              "target": 146168
+            }
+          },
+          "junctions": {
+            "precision": 0.30279652844744454,
+            "recall": 0.24841772151898733,
+            "f1": 0.27292481529769663,
+            "matched": 314,
+            "predicted": 1037,
+            "target": 1264
+          },
+          "viewsWithEveryJunctionRecovered": 0,
+          "viewsWithReferenceJunctions": 52,
+          "nonemptyViewsWithEveryJunctionRecovered": 0,
+          "maximumJunctionProposals": 67,
+          "macroBoundaryF1": {
+            "1": 0.8266828011033177,
+            "2": 0.8941943485534536,
+            "3": 0.9045686994421381
+          },
+          "rawBoundaryPixels": 419511,
+          "thinBoundaryPixels": 138365
+        },
+        "recipe-test": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.8546662836647076,
+              "recall": 0.8468295909968538,
+              "f1": 0.8507298903425733,
+              "matched": 110087,
+              "predicted": 128807,
+              "target": 129999
+            },
+            "2": {
+              "precision": 0.9530693207667286,
+              "recall": 0.9443303410026231,
+              "f1": 0.948679706034636,
+              "matched": 122762,
+              "predicted": 128807,
+              "target": 129999
+            },
+            "3": {
+              "precision": 0.9646525421755029,
+              "recall": 0.955807352364249,
+              "f1": 0.9602095778304987,
+              "matched": 124254,
+              "predicted": 128807,
+              "target": 129999
+            }
+          },
+          "junctions": {
+            "precision": 0.070446735395189,
+            "recall": 0.1201171875,
+            "f1": 0.0888086642599278,
+            "matched": 123,
+            "predicted": 1746,
+            "target": 1024
+          },
+          "viewsWithEveryJunctionRecovered": 0,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 0,
+          "maximumJunctionProposals": 75,
+          "macroBoundaryF1": {
+            "1": 0.8433315837772435,
+            "2": 0.9409925400989998,
+            "3": 0.9525331734236333
+          },
+          "rawBoundaryPixels": 445589,
+          "thinBoundaryPixels": 128807
+        },
+        "recipe-validation": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.753904011461318,
+              "recall": 0.7985507796198642,
+              "f1": 0.7755854013522724,
+              "matched": 42098,
+              "predicted": 55840,
+              "target": 52718
+            },
+            "2": {
+              "precision": 0.8484240687679083,
+              "recall": 0.8986683865093517,
+              "f1": 0.8728237439893882,
+              "matched": 47376,
+              "predicted": 55840,
+              "target": 52718
+            },
+            "3": {
+              "precision": 0.8620702005730659,
+              "recall": 0.9131226526044235,
+              "f1": 0.8868623224451446,
+              "matched": 48138,
+              "predicted": 55840,
+              "target": 52718
+            }
+          },
+          "junctions": {
+            "precision": 0.020364415862808145,
+            "recall": 0.07421875,
+            "f1": 0.031959629941127,
+            "matched": 19,
+            "predicted": 933,
+            "target": 256
+          },
+          "viewsWithEveryJunctionRecovered": 1,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 1,
+          "maximumJunctionProposals": 34,
+          "macroBoundaryF1": {
+            "1": 0.7750129841988449,
+            "2": 0.8690271177561678,
+            "3": 0.8818443098010094
+          },
+          "rawBoundaryPixels": 189182,
+          "thinBoundaryPixels": 55840
+        }
+      },
+      "evaluationSeconds": 6.036536583
+    },
+    "balanced-v1": {
+      "reportPath": "tmp/heart-learning/balanced-v1/report.json",
+      "reportSha256": "a797edc30cd0c214e0fb79ee6f10f8c2a9907a092d0df9a74df3d074ead82a79",
+      "checkpointSha256": "585b41b557d21b793da3f30bf8762c7fc194cc24b8f0edd87572ced58f3d1ef4",
+      "thresholds": [
+        0.5,
+        0.4
+      ],
+      "selectedEpoch": 20,
+      "initialization": {
+        "name": "imagenet",
+        "torchvision": "0.23.0",
+        "url": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth",
+        "sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+        "bytes": 10306551,
+        "weights": "TorchVision MobileNet_V3_Small_Weights.IMAGENET1K_V1",
+        "note": "Different checkpoint from the researched timm LAMB weights; TorchVision is already installed."
+      },
+      "metrics": {
+        "development": {
+          "views": 52,
+          "boundary": {
+            "1": {
+              "precision": 0.8928712817222503,
+              "recall": 0.8949359640961085,
+              "f1": 0.8939024306908027,
+              "matched": 130811,
+              "predicted": 146506,
+              "target": 146168
+            },
+            "2": {
+              "precision": 0.9684859323167652,
+              "recall": 0.9707254665863937,
+              "f1": 0.9696044062677245,
+              "matched": 141889,
+              "predicted": 146506,
+              "target": 146168
+            },
+            "3": {
+              "precision": 0.9770180060884879,
+              "recall": 0.9792772699906956,
+              "f1": 0.9781463334631707,
+              "matched": 143139,
+              "predicted": 146506,
+              "target": 146168
+            }
+          },
+          "junctions": {
+            "precision": 0.737649063032368,
+            "recall": 0.685126582278481,
+            "f1": 0.7104183757178016,
+            "matched": 866,
+            "predicted": 1174,
+            "target": 1264
+          },
+          "viewsWithEveryJunctionRecovered": 24,
+          "viewsWithReferenceJunctions": 52,
+          "nonemptyViewsWithEveryJunctionRecovered": 24,
+          "maximumJunctionProposals": 59,
+          "macroBoundaryF1": {
+            "1": 0.8763377501550605,
+            "2": 0.9577711732442419,
+            "3": 0.9678844264406922
+          },
+          "rawBoundaryPixels": 643003,
+          "thinBoundaryPixels": 146506
+        },
+        "recipe-test": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.8477712990440968,
+              "recall": 0.8746067277440596,
+              "f1": 0.8609799593355874,
+              "matched": 113698,
+              "predicted": 134114,
+              "target": 129999
+            },
+            "2": {
+              "precision": 0.9287397288873644,
+              "recall": 0.9581381395241502,
+              "f1": 0.9432099139383521,
+              "matched": 124557,
+              "predicted": 134114,
+              "target": 129999
+            },
+            "3": {
+              "precision": 0.9393351924482157,
+              "recall": 0.9690689928384064,
+              "f1": 0.9539704596138774,
+              "matched": 125978,
+              "predicted": 134114,
+              "target": 129999
+            }
+          },
+          "junctions": {
+            "precision": 0.7633711507293355,
+            "recall": 0.4599609375,
+            "f1": 0.5740402193784279,
+            "matched": 471,
+            "predicted": 617,
+            "target": 1024
+          },
+          "viewsWithEveryJunctionRecovered": 1,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 1,
+          "maximumJunctionProposals": 9,
+          "macroBoundaryF1": {
+            "1": 0.8582215874371457,
+            "2": 0.9406833819767929,
+            "3": 0.9515221194372105
+          },
+          "rawBoundaryPixels": 647229,
+          "thinBoundaryPixels": 134114
+        },
+        "recipe-validation": {
+          "views": 128,
+          "boundary": {
+            "1": {
+              "precision": 0.7310955249157227,
+              "recall": 0.8680147198300391,
+              "f1": 0.7936934671187851,
+              "matched": 45760,
+              "predicted": 62591,
+              "target": 52718
+            },
+            "2": {
+              "precision": 0.8000191720854436,
+              "recall": 0.9498463522895406,
+              "f1": 0.8685185024586113,
+              "matched": 50074,
+              "predicted": 62591,
+              "target": 52718
+            },
+            "3": {
+              "precision": 0.8101324471569396,
+              "recall": 0.9618536363291476,
+              "f1": 0.8794976974910892,
+              "matched": 50707,
+              "predicted": 62591,
+              "target": 52718
+            }
+          },
+          "junctions": {
+            "precision": 0.6666666666666666,
+            "recall": 0.578125,
+            "f1": 0.6192468619246863,
+            "matched": 148,
+            "predicted": 222,
+            "target": 256
+          },
+          "viewsWithEveryJunctionRecovered": 45,
+          "viewsWithReferenceJunctions": 128,
+          "nonemptyViewsWithEveryJunctionRecovered": 45,
+          "maximumJunctionProposals": 4,
+          "macroBoundaryF1": {
+            "1": 0.802284024606723,
+            "2": 0.8760929367013739,
+            "3": 0.8868485622277716
+          },
+          "rawBoundaryPixels": 298073,
+          "thinBoundaryPixels": 62591
+        }
+      },
+      "evaluationSeconds": 6.934415207999997
+    }
+  },
+  "frozenBaselineEqualityVerified": true,
+  "fullReportPath": "tmp/heart-learning/localization-corners-v1/report.json",
+  "fullReportSha256": "b2e11385039c702227c5564970ac997d974facff2bad28df558e462f3fedef59",
+  "priorFullReportPath": "tmp/heart-learning/localization-v5/report.json",
+  "priorFullReportSha256": "2d6f2cc8e70cf24ec40d763d542c3899069d6df6d45558eeb11b58cdd17e411f",
+  "training": {
+    "arguments": {
+      "prepared": "tmp/heart-learning/prepared-v1",
+      "output": "tmp/heart-learning/balanced-corners-v1",
+      "initialization": "imagenet",
+      "epochs": 20,
+      "batch_size": 8,
+      "seed": 1729,
+      "device": "mps",
+      "loss": "balanced-mse",
+      "extra_prepared": [
+        "tmp/heart-learning/prepared-corners-v1"
+      ],
+      "views_per_epoch": 204,
+      "evaluate_run": null
+    },
+    "sourceCommit": "29fd826bea109a9fbb7d60ff4f8405ece079d449",
+    "sourceHashes": {
+      "metrics.py": "96b099fa0ad61afd75d16becfc07264b4c60c329b1de596f5ee90049ef07d49e",
+      "losses.test.py": "7bb818061b6c7ffb20a9a562f50c20321e790852d6fbf7359e0cdcaf8b453587",
+      "classical.test.py": "385312c4b1753281d6c69e0d655696d14fdb812edc0693e2c918f1519ebbcc7c",
+      "coverage.py": "bd39679bd01ddd800e68d7966fa1d5bda49096ede0cacbc0de41b30aecb6193c",
+      "test.py": "1b4717925fca025c7f07a34382b7b401ed322fa00f7840f85beb6ae3aaa0c7fa",
+      "model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b",
+      "localization.py": "df5b2f6ba0c1347f5b34e64570c296fe20d00f6ac4c01ebf4df8e8b5edfc941f",
+      "classical.py": "4aa37fab61594f5e33fbcb292ed622661264f12c3caf0b6cd717441252603a6a",
+      "coverage.test.py": "cd0643062d188fc17f114e1749437a31e4e5fd5d81d9334ea24bec54faae3c89",
+      "train.py": "ea74131a7ffe96703770c24b63cf571b0488c90b7dfc9952eabf062b46f89fed",
+      "data.test.py": "52a631b7ad49f31641674e1728d4f4f6dacaafd0736a0738a0ddce937acd82f4",
+      "metrics.test.py": "98583d9e8b6edb0f405b38e2ef12b327295c673335a996225c66086a3aac4a4e",
+      "losses.py": "6b0a54a2ee7c0770671847cd4d198ff7e6efc62947b1a703394125ce03880cec",
+      "model.test.py": "92590682b56a328eb7e1a9ea1e733068adb78dfce05ed29563c778e35f92be7f",
+      "data.py": "c4c1c890daff9fa5ccc618d55150b2da7f92e359c50cd0d9d1e689b5283fc54b"
+    },
+    "runtime": {
+      "python": "3.9.6",
+      "torch": "2.8.0",
+      "device": "mps",
+      "threads": 2
+    },
+    "loss": "balanced-mse",
+    "history": [
+      {
+        "epoch": 1,
+        "trainLoss": 0.13137572273319842,
+        "developmentLoss": 0.11938479428107922,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 7.0561812910000015
+      },
+      {
+        "epoch": 2,
+        "trainLoss": 0.08946762657633014,
+        "developmentLoss": 0.08961723744869232,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 3.926482458999999
+      },
+      {
+        "epoch": 3,
+        "trainLoss": 0.06878012564836763,
+        "developmentLoss": 0.07416231701007256,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 4.0250921250000005
+      },
+      {
+        "epoch": 4,
+        "trainLoss": 0.05917859165107503,
+        "developmentLoss": 0.06395996935092486,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 4.0035550409999985
+      },
+      {
+        "epoch": 5,
+        "trainLoss": 0.05110897737390855,
+        "developmentLoss": 0.05912609398365021,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 3.984731625000002
+      },
+      {
+        "epoch": 6,
+        "trainLoss": 0.044597852244681005,
+        "developmentLoss": 0.05289001275713627,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 3.974272499999998
+      },
+      {
+        "epoch": 7,
+        "trainLoss": 0.041436843427957275,
+        "developmentLoss": 0.04609919282106253,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 3.9740218340000055
+      },
+      {
+        "epoch": 8,
+        "trainLoss": 0.039528877565673755,
+        "developmentLoss": 0.04317377020533268,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 4.0318709589999955
+      },
+      {
+        "epoch": 9,
+        "trainLoss": 0.03605637713974597,
+        "developmentLoss": 0.04443639860703395,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 3.987670417000004
+      },
+      {
+        "epoch": 10,
+        "trainLoss": 0.03550492511952624,
+        "developmentLoss": 0.04027283248993067,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 3.9989037499999966
+      },
+      {
+        "epoch": 11,
+        "trainLoss": 0.034599306390565986,
+        "developmentLoss": 0.036618029268888325,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 3.957982541000007
+      },
+      {
+        "epoch": 12,
+        "trainLoss": 0.033646013806847966,
+        "developmentLoss": 0.03603884434470764,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 3.9903592499999974
+      },
+      {
+        "epoch": 13,
+        "trainLoss": 0.033334027099258756,
+        "developmentLoss": 0.03429139835330156,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 3.982559500000008
+      },
+      {
+        "epoch": 14,
+        "trainLoss": 0.032223515029923586,
+        "developmentLoss": 0.03533538402273105,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 3.9849386250000123
+      },
+      {
+        "epoch": 15,
+        "trainLoss": 0.03218914331028275,
+        "developmentLoss": 0.03272217311538183,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 4.118576417
+      },
+      {
+        "epoch": 16,
+        "trainLoss": 0.03200095373333669,
+        "developmentLoss": 0.030606638067043744,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 5.587176709000005
+      },
+      {
+        "epoch": 17,
+        "trainLoss": 0.031173884284262564,
+        "developmentLoss": 0.03067460799446473,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 6.1622017919999905
+      },
+      {
+        "epoch": 18,
+        "trainLoss": 0.03074601763749824,
+        "developmentLoss": 0.030071752289166816,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 6.388045958000006
+      },
+      {
+        "epoch": 19,
+        "trainLoss": 0.029855031008813895,
+        "developmentLoss": 0.029320109062469922,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 6.169802915999995
+      },
+      {
+        "epoch": 20,
+        "trainLoss": 0.030630342297109904,
+        "developmentLoss": 0.028942296997858927,
+        "trainingViews": 204,
+        "optimizerUpdates": 26,
+        "seconds": 6.256773416999991
+      }
+    ],
+    "extraTraining": [
+      {
+        "prepared": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/prepared-corners-v1",
+        "preparedManifestSha256": "590b175ff4c748bf5bfba190c2f8c12444ff823db6058b2461171df98a93bb5a",
+        "datasetManifestSha256": "180ecc34ae4294b3e9a70d90009cd2610f918394c0fa531fa64b3aaad0b27732",
+        "designs": [
+          "corner-lattice-1008112",
+          "corner-lattice-1010130",
+          "corner-lattice-1021229",
+          "corner-lattice-1035355",
+          "corner-lattice-1061589",
+          "corner-lattice-1063607",
+          "corner-lattice-12145",
+          "corner-lattice-13154",
+          "corner-lattice-15172",
+          "corner-lattice-18199",
+          "corner-lattice-2002061",
+          "corner-lattice-2007106",
+          "corner-lattice-2009124",
+          "corner-lattice-2017196",
+          "corner-lattice-20217",
+          "corner-lattice-2030313",
+          "corner-lattice-2033340",
+          "corner-lattice-2045448",
+          "corner-lattice-22235",
+          "corner-lattice-24253",
+          "corner-lattice-25262",
+          "corner-lattice-28289",
+          "corner-lattice-3001055",
+          "corner-lattice-3014172",
+          "corner-lattice-3016190",
+          "corner-lattice-3041415",
+          "corner-lattice-3042424",
+          "corner-lattice-3044442",
+          "corner-lattice-3056550",
+          "corner-lattice-3059577",
+          "corner-lattice-3064",
+          "corner-lattice-32325",
+          "corner-lattice-37370",
+          "corner-lattice-4038391",
+          "corner-lattice-4052517",
+          "corner-lattice-43424",
+          "corner-lattice-46451",
+          "corner-lattice-47460",
+          "corner-lattice-49478",
+          "corner-lattice-5029313",
+          "corner-lattice-5048484",
+          "corner-lattice-50487",
+          "corner-lattice-5053529",
+          "corner-lattice-5082",
+          "corner-lattice-54523",
+          "corner-lattice-55532",
+          "corner-lattice-58559",
+          "corner-lattice-60577",
+          "corner-lattice-6091",
+          "corner-lattice-62595",
+          "corner-lattice-7027301"
+        ],
+        "views": 204,
+        "excludedNonTrainingViews": 52
+      }
+    ],
+    "splits": {
+      "development": {
+        "views": 52,
+        "designs": [
+          "lattice-1826062",
+          "lattice-757447",
+          "lattice-769555",
+          "lattice-773591",
+          "lattice-781663",
+          "lattice-801843",
+          "lattice-805879",
+          "lattice-809915",
+          "lattice-834131",
+          "shared-lattice-718096",
+          "shared-lattice-754420",
+          "shared-lattice-794780",
+          "shared-lattice-827068"
+        ]
+      },
+      "recipe-test": {
+        "views": 128,
+        "designs": [
+          "frame-1716081",
+          "frame-1736261",
+          "frame-1744333",
+          "frame-1784693",
+          "frame-1821017",
+          "frame-2772588",
+          "frame-720114",
+          "frame-724150",
+          "frame-728186",
+          "frame-732222",
+          "frame-740294",
+          "frame-748366",
+          "frame-752402",
+          "frame-756438",
+          "frame-760474",
+          "frame-764510",
+          "frame-768546",
+          "frame-776618",
+          "frame-780654",
+          "frame-788726",
+          "frame-792762",
+          "frame-796798",
+          "frame-800834",
+          "frame-804870",
+          "frame-808906",
+          "frame-812942",
+          "frame-816978",
+          "frame-825050",
+          "frame-829086",
+          "frame-833122",
+          "frame-837158",
+          "frame-841194"
+        ]
+      },
+      "recipe-validation": {
+        "views": 128,
+        "designs": [
+          "channel-715069",
+          "channel-719105",
+          "channel-723141",
+          "channel-727177",
+          "channel-731213",
+          "channel-735249",
+          "channel-739285",
+          "channel-743321",
+          "channel-747357",
+          "channel-751393",
+          "channel-755429",
+          "channel-759465",
+          "channel-763501",
+          "channel-767537",
+          "channel-771573",
+          "channel-775609",
+          "channel-779645",
+          "channel-783681",
+          "channel-787717",
+          "channel-791753",
+          "channel-795789",
+          "channel-799825",
+          "channel-803861",
+          "channel-807897",
+          "channel-811933",
+          "channel-815969",
+          "channel-820005",
+          "channel-824041",
+          "channel-828077",
+          "channel-832113",
+          "channel-836149",
+          "channel-840185"
+        ]
+      },
+      "train": {
+        "views": 408,
+        "designs": [
+          "corner-lattice-1008112",
+          "corner-lattice-1010130",
+          "corner-lattice-1021229",
+          "corner-lattice-1035355",
+          "corner-lattice-1061589",
+          "corner-lattice-1063607",
+          "corner-lattice-12145",
+          "corner-lattice-13154",
+          "corner-lattice-15172",
+          "corner-lattice-18199",
+          "corner-lattice-2002061",
+          "corner-lattice-2007106",
+          "corner-lattice-2009124",
+          "corner-lattice-2017196",
+          "corner-lattice-20217",
+          "corner-lattice-2030313",
+          "corner-lattice-2033340",
+          "corner-lattice-2045448",
+          "corner-lattice-22235",
+          "corner-lattice-24253",
+          "corner-lattice-25262",
+          "corner-lattice-28289",
+          "corner-lattice-3001055",
+          "corner-lattice-3014172",
+          "corner-lattice-3016190",
+          "corner-lattice-3041415",
+          "corner-lattice-3042424",
+          "corner-lattice-3044442",
+          "corner-lattice-3056550",
+          "corner-lattice-3059577",
+          "corner-lattice-3064",
+          "corner-lattice-32325",
+          "corner-lattice-37370",
+          "corner-lattice-4038391",
+          "corner-lattice-4052517",
+          "corner-lattice-43424",
+          "corner-lattice-46451",
+          "corner-lattice-47460",
+          "corner-lattice-49478",
+          "corner-lattice-5029313",
+          "corner-lattice-5048484",
+          "corner-lattice-50487",
+          "corner-lattice-5053529",
+          "corner-lattice-5082",
+          "corner-lattice-54523",
+          "corner-lattice-55532",
+          "corner-lattice-58559",
+          "corner-lattice-60577",
+          "corner-lattice-6091",
+          "corner-lattice-62595",
+          "corner-lattice-7027301",
+          "lattice-713051",
+          "lattice-717087",
+          "lattice-721123",
+          "lattice-725159",
+          "lattice-729195",
+          "lattice-733231",
+          "lattice-737267",
+          "lattice-741303",
+          "lattice-745339",
+          "lattice-749375",
+          "lattice-753411",
+          "lattice-761483",
+          "lattice-765519",
+          "lattice-777627",
+          "lattice-785699",
+          "lattice-789735",
+          "lattice-793771",
+          "lattice-797807",
+          "lattice-813951",
+          "lattice-817987",
+          "lattice-822023",
+          "lattice-830095",
+          "lattice-838167",
+          "shared-lattice-714060",
+          "shared-lattice-722132",
+          "shared-lattice-726168",
+          "shared-lattice-730204",
+          "shared-lattice-734240",
+          "shared-lattice-738276",
+          "shared-lattice-742312",
+          "shared-lattice-746348",
+          "shared-lattice-750384",
+          "shared-lattice-758456",
+          "shared-lattice-762492",
+          "shared-lattice-766528",
+          "shared-lattice-770564",
+          "shared-lattice-774600",
+          "shared-lattice-778636",
+          "shared-lattice-782672",
+          "shared-lattice-786708",
+          "shared-lattice-790744",
+          "shared-lattice-798816",
+          "shared-lattice-802852",
+          "shared-lattice-806888",
+          "shared-lattice-810924",
+          "shared-lattice-814960",
+          "shared-lattice-818996",
+          "shared-lattice-823032",
+          "shared-lattice-831104",
+          "shared-lattice-835140",
+          "shared-lattice-839176"
+        ]
+      }
+    },
+    "trainingPolicy": {
+      "availableViews": 408,
+      "sampledViewsPerEpoch": 204,
+      "optimizerUpdatesPerEpoch": 26
+    },
+    "initialization": {
+      "name": "imagenet",
+      "torchvision": "0.23.0",
+      "url": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth",
+      "sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+      "bytes": 10306551,
+      "weights": "TorchVision MobileNet_V3_Small_Weights.IMAGENET1K_V1",
+      "note": "Different checkpoint from the researched timm LAMB weights; TorchVision is already installed."
+    },
+    "optimizer": {
+      "name": "AdamW",
+      "learningRate": 0.0003,
+      "weightDecay": 0.0001
+    },
+    "parameters": 880466,
+    "selectedEpoch": 20,
+    "selectedThresholds": [
+      0.6,
+      0.4
+    ],
+    "nativeInferenceSeconds": {
+      "median": 0.01108252099999163,
+      "samples": [
+        0.011049958999990395,
+        0.010850499999975227,
+        0.011104125000002796,
+        0.011005791999991743,
+        0.011154042000015352,
+        0.01108908399999109,
+        0.010994707999998354,
+        0.011239082999992434,
+        0.01107595799999217,
+        0.011263167000009844
+      ],
+      "scope": "Warm native batch-one forward plus CPU output transfer, excluding input preprocessing"
+    },
+    "checkpointSha256": "99001a3bf232c230a209a13cc5fd5a9b9d363dd131edc1ece937e1b9b6f668b9"
+  },
+  "trainingReportSha256": "32b636dd752d7ccaecee321fbbf6bb5a27269ce4dbc5f2577c84fd3ee448a31d",
+  "fixedEvaluationDesignsVerified": true,
+  "paletteDiagnostics": [
+    {
+      "split": "recipe-test",
+      "palette": "blue/white",
+      "views": 24,
+      "matched": 183,
+      "predicted": 209,
+      "target": 192,
+      "precision": 0.8755980861244019,
+      "recall": 0.953125,
+      "f1": 0.912718204488778,
+      "allJunctionsRecovered": 16
+    },
+    {
+      "split": "recipe-test",
+      "palette": "gold/cream",
+      "views": 18,
+      "matched": 128,
+      "predicted": 139,
+      "target": 144,
+      "precision": 0.920863309352518,
+      "recall": 0.8888888888888888,
+      "f1": 0.9045936395759717,
+      "allJunctionsRecovered": 8
+    },
+    {
+      "split": "recipe-test",
+      "palette": "green/red",
+      "views": 19,
+      "matched": 114,
+      "predicted": 151,
+      "target": 152,
+      "precision": 0.7549668874172185,
+      "recall": 0.75,
+      "f1": 0.7524752475247525,
+      "allJunctionsRecovered": 5
+    },
+    {
+      "split": "recipe-test",
+      "palette": "pale beige/cream",
+      "views": 18,
+      "matched": 114,
+      "predicted": 143,
+      "target": 144,
+      "precision": 0.7972027972027972,
+      "recall": 0.7916666666666666,
+      "f1": 0.794425087108014,
+      "allJunctionsRecovered": 5
+    },
+    {
+      "split": "recipe-test",
+      "palette": "purple/pink",
+      "views": 18,
+      "matched": 139,
+      "predicted": 151,
+      "target": 144,
+      "precision": 0.9205298013245033,
+      "recall": 0.9652777777777778,
+      "f1": 0.9423728813559322,
+      "allJunctionsRecovered": 14
+    },
+    {
+      "split": "recipe-test",
+      "palette": "red/cream",
+      "views": 31,
+      "matched": 238,
+      "predicted": 266,
+      "target": 248,
+      "precision": 0.8947368421052632,
+      "recall": 0.9596774193548387,
+      "f1": 0.9260700389105059,
+      "allJunctionsRecovered": 23
+    },
+    {
+      "split": "recipe-validation",
+      "palette": "blue/white",
+      "views": 16,
+      "matched": 29,
+      "predicted": 36,
+      "target": 32,
+      "precision": 0.8055555555555556,
+      "recall": 0.90625,
+      "f1": 0.8529411764705882,
+      "allJunctionsRecovered": 13
+    },
+    {
+      "split": "recipe-validation",
+      "palette": "gold/cream",
+      "views": 24,
+      "matched": 43,
+      "predicted": 50,
+      "target": 48,
+      "precision": 0.86,
+      "recall": 0.8958333333333334,
+      "f1": 0.8775510204081632,
+      "allJunctionsRecovered": 19
+    },
+    {
+      "split": "recipe-validation",
+      "palette": "green/red",
+      "views": 21,
+      "matched": 29,
+      "predicted": 55,
+      "target": 42,
+      "precision": 0.5272727272727272,
+      "recall": 0.6904761904761905,
+      "f1": 0.5979381443298969,
+      "allJunctionsRecovered": 12
+    },
+    {
+      "split": "recipe-validation",
+      "palette": "pale beige/cream",
+      "views": 17,
+      "matched": 29,
+      "predicted": 35,
+      "target": 34,
+      "precision": 0.8285714285714286,
+      "recall": 0.8529411764705882,
+      "f1": 0.8405797101449275,
+      "allJunctionsRecovered": 13
+    },
+    {
+      "split": "recipe-validation",
+      "palette": "purple/pink",
+      "views": 22,
+      "matched": 39,
+      "predicted": 48,
+      "target": 44,
+      "precision": 0.8125,
+      "recall": 0.8863636363636364,
+      "f1": 0.8478260869565217,
+      "allJunctionsRecovered": 17
+    },
+    {
+      "split": "recipe-validation",
+      "palette": "red/cream",
+      "views": 28,
+      "matched": 55,
+      "predicted": 66,
+      "target": 56,
+      "precision": 0.8333333333333334,
+      "recall": 0.9821428571428571,
+      "f1": 0.9016393442622951,
+      "allJunctionsRecovered": 27
+    }
+  ],
+  "paletteDiagnosticScope": "Post-hoc descriptive grouping by known simulator palette prototypes. Photometric views share geometries; these are not independent samples or a controlled causal experiment.",
+  "inspectedFailures": {
+    "selection": "Three lowest-recall distinct designs per recipe split, ties by F1 then id; post-hoc diagnostic inspection.",
+    "rows": [
+      {
+        "id": "channel-715069-v3",
+        "designId": "channel-715069",
+        "split": "recipe-validation",
+        "boundary": {
+          "1": {
+            "precision": 0.8809523809523809,
+            "recall": 0.8644859813084113,
+            "f1": 0.8726415094339623,
+            "matched": 370,
+            "predicted": 420,
+            "target": 428
+          },
+          "2": {
+            "precision": 0.9880952380952381,
+            "recall": 0.969626168224299,
+            "f1": 0.9787735849056605,
+            "matched": 415,
+            "predicted": 420,
+            "target": 428
+          },
+          "3": {
+            "precision": 0.9952380952380953,
+            "recall": 0.9766355140186916,
+            "f1": 0.9858490566037736,
+            "matched": 418,
+            "predicted": 420,
+            "target": 428
+          }
+        },
+        "junctions": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0,
+          "matched": 0,
+          "predicted": 2,
+          "target": 2
+        },
+        "rawBoundaryPixels": 1831,
+        "thinBoundaryPixels": 420,
+        "perturbations": {
+          "angle": 0.20182634772320895,
+          "palette": [
+            [
+              33.50607093423605,
+              80.8292427547276,
+              44.46526759117842
+            ],
+            [
+              212.15233535692096,
+              27.17552112042904,
+              46.56711437553167
+            ]
+          ],
+          "light": [
+            -0.14372320845723152,
+            0.1418381551746279
+          ],
+          "exposure": 1.0254140791483222,
+          "vignette": 0.11486785640008748,
+          "noiseSigma": 1.751290500862524,
+          "texture": 1.0923410538583993,
+          "background": [
+            78.90334542375058,
+            84.01751994155347,
+            80.58636024128646
+          ],
+          "backgroundStyle": "soft-cloth",
+          "blurSigmaPixels": 1.1278059067088178,
+          "lowResolution": 355,
+          "jpegQuality": 0.8753024324565194,
+          "cropNoisePixels": 5.711262831062079
+        }
+      },
+      {
+        "id": "channel-783681-v0",
+        "designId": "channel-783681",
+        "split": "recipe-validation",
+        "boundary": {
+          "1": {
+            "precision": 0.9453681710213777,
+            "recall": 0.9234338747099768,
+            "f1": 0.9342723004694836,
+            "matched": 398,
+            "predicted": 421,
+            "target": 431
+          },
+          "2": {
+            "precision": 0.995249406175772,
+            "recall": 0.9721577726218097,
+            "f1": 0.9835680751173709,
+            "matched": 419,
+            "predicted": 421,
+            "target": 431
+          },
+          "3": {
+            "precision": 1.0,
+            "recall": 0.9767981438515081,
+            "f1": 0.988262910798122,
+            "matched": 421,
+            "predicted": 421,
+            "target": 431
+          }
+        },
+        "junctions": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0,
+          "matched": 0,
+          "predicted": 2,
+          "target": 2
+        },
+        "rawBoundaryPixels": 1769,
+        "thinBoundaryPixels": 421,
+        "perturbations": {
+          "angle": -0.6546612722868823,
+          "palette": [
+            [
+              22.89069138839841,
+              92.83734494820237,
+              48.526018135249615
+            ],
+            [
+              199.42559153214097,
+              33.973001182079315,
+              46.44802883267403
+            ]
+          ],
+          "light": [
+            0.2490966953337192,
+            0.16222955170087516
+          ],
+          "exposure": 0.9882147400639951,
+          "vignette": 0.19454812491312623,
+          "noiseSigma": 1.9218040099134668,
+          "texture": 0.8180891770869494,
+          "background": [
+            65.54468906018883,
+            150.0008158478886,
+            69.20093375723809
+          ],
+          "backgroundStyle": "wood-stripes",
+          "blurSigmaPixels": 1.1704491372918708,
+          "lowResolution": 199,
+          "jpegQuality": 0.6134846922568976,
+          "cropNoisePixels": 5.9459989823698995
+        }
+      },
+      {
+        "id": "channel-795789-v2",
+        "designId": "channel-795789",
+        "split": "recipe-validation",
+        "boundary": {
+          "1": {
+            "precision": 0.8170731707317073,
+            "recall": 0.8014354066985646,
+            "f1": 0.8091787439613527,
+            "matched": 335,
+            "predicted": 410,
+            "target": 418
+          },
+          "2": {
+            "precision": 0.9658536585365853,
+            "recall": 0.9473684210526315,
+            "f1": 0.9565217391304348,
+            "matched": 396,
+            "predicted": 410,
+            "target": 418
+          },
+          "3": {
+            "precision": 0.9804878048780488,
+            "recall": 0.9617224880382775,
+            "f1": 0.9710144927536232,
+            "matched": 402,
+            "predicted": 410,
+            "target": 418
+          }
+        },
+        "junctions": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0,
+          "matched": 0,
+          "predicted": 2,
+          "target": 2
+        },
+        "rawBoundaryPixels": 1523,
+        "thinBoundaryPixels": 410,
+        "perturbations": {
+          "angle": -2.751096071131146,
+          "palette": [
+            [
+              28.765687603503466,
+              87.98887138068676,
+              56.23879639059305
+            ],
+            [
+              212.42258725687861,
+              28.195066660642624,
+              33.87335677072406
+            ]
+          ],
+          "light": [
+            0.22755004987120625,
+            0.1228503245394677
+          ],
+          "exposure": 1.041599381621927,
+          "vignette": 0.06260535675100982,
+          "noiseSigma": 1.9521805089665576,
+          "texture": 1.8007965445518495,
+          "background": [
+            67.64300445560366,
+            84.76715780328959,
+            155.0039470056072
+          ],
+          "backgroundStyle": "wood-stripes",
+          "blurSigmaPixels": 0.500546450621914,
+          "lowResolution": 379,
+          "jpegQuality": 0.5987650378164835,
+          "cropNoisePixels": 2.1298505626022814
+        }
+      },
+      {
+        "id": "frame-764510-v3",
+        "designId": "frame-764510",
+        "split": "recipe-test",
+        "boundary": {
+          "1": {
+            "precision": 0.7714932126696833,
+            "recall": 0.7437295528898582,
+            "f1": 0.7573570238756245,
+            "matched": 682,
+            "predicted": 884,
+            "target": 917
+          },
+          "2": {
+            "precision": 0.9389140271493213,
+            "recall": 0.9051254089422028,
+            "f1": 0.9217101610216546,
+            "matched": 830,
+            "predicted": 884,
+            "target": 917
+          },
+          "3": {
+            "precision": 0.9694570135746606,
+            "recall": 0.9345692475463467,
+            "f1": 0.9516935036091059,
+            "matched": 857,
+            "predicted": 884,
+            "target": 917
+          }
+        },
+        "junctions": {
+          "precision": 0.2857142857142857,
+          "recall": 0.25,
+          "f1": 0.26666666666666666,
+          "matched": 2,
+          "predicted": 7,
+          "target": 8
+        },
+        "rawBoundaryPixels": 3575,
+        "thinBoundaryPixels": 884,
+        "perturbations": {
+          "angle": 1.8976870700550332,
+          "palette": [
+            [
+              28.792854513972998,
+              89.12395052984357,
+              46.63219325989485
+            ],
+            [
+              207.62205253914,
+              41.90521802008152,
+              32.49192837998271
+            ]
+          ],
+          "light": [
+            0.10594008103944363,
+            -0.17491604313254355
+          ],
+          "exposure": 1.0064876087009906,
+          "vignette": 0.1872864260803908,
+          "noiseSigma": 1.8731343566440048,
+          "texture": 0.7883797772228718,
+          "background": [
+            135.6819472834468,
+            112.94717307668179,
+            73.96382152568549
+          ],
+          "backgroundStyle": "soft-cloth",
+          "blurSigmaPixels": 1.1996946853934787,
+          "lowResolution": 289,
+          "jpegQuality": 0.6550772006856277,
+          "cropNoisePixels": 9.427563766121864
+        }
+      },
+      {
+        "id": "frame-829086-v3",
+        "designId": "frame-829086",
+        "split": "recipe-test",
+        "boundary": {
+          "1": {
+            "precision": 0.8800834202294057,
+            "recall": 0.8465396188565697,
+            "f1": 0.8629856850715747,
+            "matched": 844,
+            "predicted": 959,
+            "target": 997
+          },
+          "2": {
+            "precision": 0.9708029197080292,
+            "recall": 0.9338014042126379,
+            "f1": 0.9519427402862985,
+            "matched": 931,
+            "predicted": 959,
+            "target": 997
+          },
+          "3": {
+            "precision": 0.9885297184567258,
+            "recall": 0.950852557673019,
+            "f1": 0.9693251533742332,
+            "matched": 948,
+            "predicted": 959,
+            "target": 997
+          }
+        },
+        "junctions": {
+          "precision": 0.375,
+          "recall": 0.375,
+          "f1": 0.375,
+          "matched": 3,
+          "predicted": 8,
+          "target": 8
+        },
+        "rawBoundaryPixels": 3951,
+        "thinBoundaryPixels": 959,
+        "perturbations": {
+          "angle": -0.8149045759093938,
+          "palette": [
+            [
+              24.930849883705378,
+              80.40291721746325,
+              44.41752315312624
+            ],
+            [
+              202.9059548638761,
+              30.159498386085033,
+              45.63077990710735
+            ]
+          ],
+          "light": [
+            -0.00015268097631632171,
+            -0.20541119696572424
+          ],
+          "exposure": 0.8442446012049913,
+          "vignette": 0.1605110806412995,
+          "noiseSigma": 0.9391428767237813,
+          "texture": 0.6532457023859024,
+          "background": [
+            91.89555564429611,
+            93.33208157680929,
+            99.1339229606092
+          ],
+          "backgroundStyle": "soft-cloth",
+          "blurSigmaPixels": 1.1846125192590988,
+          "lowResolution": 282,
+          "jpegQuality": 0.743326086869929,
+          "cropNoisePixels": 5.429368675768376
+        }
+      },
+      {
+        "id": "frame-756438-v0",
+        "designId": "frame-756438",
+        "split": "recipe-test",
+        "boundary": {
+          "1": {
+            "precision": 0.5901942645698427,
+            "recall": 0.6070409134157945,
+            "f1": 0.5984990619136961,
+            "matched": 638,
+            "predicted": 1081,
+            "target": 1051
+          },
+          "2": {
+            "precision": 0.8057354301572618,
+            "recall": 0.8287345385347288,
+            "f1": 0.8170731707317073,
+            "matched": 871,
+            "predicted": 1081,
+            "target": 1051
+          },
+          "3": {
+            "precision": 0.8723404255319149,
+            "recall": 0.8972407231208372,
+            "f1": 0.8846153846153847,
+            "matched": 943,
+            "predicted": 1081,
+            "target": 1051
+          }
+        },
+        "junctions": {
+          "precision": 0.42857142857142855,
+          "recall": 0.375,
+          "f1": 0.39999999999999997,
+          "matched": 3,
+          "predicted": 7,
+          "target": 8
+        },
+        "rawBoundaryPixels": 5069,
+        "thinBoundaryPixels": 1081,
+        "perturbations": {
+          "angle": 0.5899732526054966,
+          "palette": [
+            [
+              195.63184936344624,
+              198.0006459467113,
+              178.34331273660064
+            ],
+            [
+              244.7543564811349,
+              238.9719669111073,
+              217.3843445070088
+            ]
+          ],
+          "light": [
+            0.17853812039829792,
+            -0.16649602157995105
+          ],
+          "exposure": 0.8065061680041253,
+          "vignette": 0.13964505614712835,
+          "noiseSigma": 0.6648231164086611,
+          "texture": 1.7689974509179591,
+          "background": [
+            107.18248282559216,
+            75.20639087073505,
+            156.9036503182724
+          ],
+          "backgroundStyle": "soft-cloth",
+          "blurSigmaPixels": 1.1712227096781134,
+          "lowResolution": 376,
+          "jpegQuality": 0.7623706213687547,
+          "cropNoisePixels": 4.724461673229933
+        }
+      }
+    ],
+    "image": "tmp/heart-learning/localization-corners-v1/worst-distinct-designs.png",
+    "imageSha256": "bac76de3576532d527ccc1642fb0a802e8b8966a33d572e9918d223243bc411a"
+  }
+}

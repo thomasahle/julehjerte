@@ -128,10 +128,79 @@ original split and leaves all original evaluation views fixed. A fixed
 `--views-per-epoch=204` keeps a 20-epoch, batch-eight run at 520 optimizer
 updates even when more training views are available.
 
+The first supplementary batch contributes 51 training designs (204 views),
+with 378 right, 114 acute and 810 obtuse corners plus 206 branches. Its other
+13 designs are excluded from this experiment. Production preprocessing
+completed on all 256 supplementary views without a trace exception. The
+combined available training pool has 102 designs and 408 views; each epoch
+samples 204 views without replacement, using the recorded seed. The original
+52 development, 128 channel and 128 frame views remain unchanged.
+
 These recipe splits have now been inspected repeatedly to guide development.
 They are diagnostic comparisons, **not pristine test sets or verified
 topology-disjoint samples**. New real-photo labels and genuinely unseen motif
 families are still needed to assess generalization.
+
+## Fixed-budget corner supplement result
+
+The supplementary run completed all 20 epochs and 520 optimizer updates.
+Development loss selected epoch 20; development F1 selected boundary/junction
+thresholds 0.6/0.4. Neither recipe holdout selected a checkpoint or threshold.
+The architecture, ImageNet initialization, optimizer, batch size and seed remain
+the same as the balanced-loss comparison. Training plus development checks
+took 93.6 seconds, excluding data loading and final evaluation.
+
+| Split | Balanced junction F1 | With corner data | All corners, balanced | All corners, with data |
+| --- | ---: | ---: | ---: | ---: |
+| Development | 71.04% | 70.75% | 24/52 | 23/52 |
+| Channel | 61.92% | 82.05% | 45/128 | 101/128 |
+| Frame | 57.40% | 87.95% | 1/128 | 71/128 |
+
+The large improvement on the right-angle recipes, with nearly unchanged
+development scores, supports the missing-corner-coverage diagnosis. It is one
+seed and budget, and does not isolate corner angle from all other differences
+in the new straight-lattice examples. Supplement sampling replaces some
+original training views at each epoch rather than adding extra updates.
+
+Boundary F1 at three pixels is 97.64% on development, 90.22% on channel and
+96.39% on frame. The latter two improve over balanced-loss-only training but
+remain below the production trace's 94.36% and 97.83%. Junction recall is
+87.50% and 89.45% on those recipes; precision is 77.24% and 86.50%. Missing
+junctions and false proposals still make this unsuitable as a hard graph
+filter. The result favors investigating learned corner proposals alongside
+the existing trace, not replacing the geometric boundary representation.
+
+[Comparison records](corner-training-results.json) retain model/checkpoint
+hashes, the complete training history, all three localization tolerances and
+native inference timings. [Coverage records](corner-training-coverage.json)
+retain per-design geometry hashes and junction types. Exact equality checks
+confirm the original evaluation design lists and the independently rerun trace
+and Harris baseline records. Full per-view results and first-six comparisons
+are in `tmp/heart-learning/localization-corners-v1/`.
+
+### Remaining errors
+
+The three lowest-recall channel designs and three lowest-recall frame designs
+were inspected separately, with one view per design. Five use green/red paper;
+the sixth uses pale beige/cream. Several have approximately one-pixel blur in
+the full photograph, which becomes broader in the rectified crop. The three
+channel cases each contain two proposed and two reference corners, but no
+pair lies within the fixed three-pixel tolerance: these are positional errors,
+not simply absent proposals. The overlays show rounded or displaced corners
+in the trace as well as errors in the learned positions.
+
+Post-hoc grouping of all recipe views confirms weaker green/red results:
+channel junction F1 is 59.79% for green/red versus 90.16% for red/cream;
+frame F1 is 75.25% versus 92.61%. Pale frame views also lag at 79.44%.
+The group sizes, counts and all six palettes are retained in the comparison
+records. This is descriptive evidence, not a controlled recoloring experiment:
+pose, blur, crop error and design can differ between groups. It does not yet
+separate errors in color preprocessing from the network's RGB dependence.
+
+No production model, solver, browser inference or cutting rules changed.
+The next useful checks are controlled recoloring/crop perturbations and checked
+real-photo corner labels before measuring whether neural proposals actually
+improve valid-template recovery and solver time.
 
 ```sh
 python3 scripts/inverse/learning/metrics.test.py
@@ -145,6 +214,18 @@ python3 scripts/inverse/learning/localization.py \
   --run=tmp/heart-learning/random-final \
   --run=tmp/heart-learning/balanced-run \
   --output=tmp/heart-learning/localization-new
+
+# Generate the optional supplement as documented in synthetic-training.md.
+node scripts/inverse/learning/prepare.mjs \
+  --dataset=tmp/heart-training-synthetic/corner-lattice-v1 \
+  --resolution=384 --output=tmp/heart-learning/prepared-corners-new
+python3 scripts/inverse/learning/train.py --initialization=imagenet \
+  --loss=balanced-mse --epochs=20 --batch-size=8 --views-per-epoch=204 \
+  --extra-prepared=tmp/heart-learning/prepared-corners-new \
+  --output=tmp/heart-learning/balanced-corners-new
+python3 scripts/inverse/learning/localization.py \
+  --run=tmp/heart-learning/balanced-corners-new \
+  --output=tmp/heart-learning/localization-corners-new
 ```
 
 The original objective remains the default `weighted-mse`. The experimental

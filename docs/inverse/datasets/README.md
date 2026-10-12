@@ -12,16 +12,24 @@ The 2026-10-12 snapshot contains:
 | Real-source image files | 1,034 | Includes templates, process shots and rejected/uncertain material. |
 | Files containing assembled-heart photographs | 573 | Includes multi-heart scenes and mixed photo/template pages; 461 reviewed near-duplicate groups. |
 | Public Pinterest imports | 470 of 487 selected pins | 198 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
-| Synthetic cutting geometries | 128 | Color phase is excluded from geometry identity; only three procedural recipe groups. |
-| Synthetic photographic views | 512 | Exact curve/phase/projection labels; all 3,968 referenced assets verified. |
+| Synthetic cutting geometries | 192 | Original 128 plus 64 mixed-angle lattices; color phase is excluded from geometry identity; still only three recipe groups. |
+| Synthetic photographic views | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
 | Pretrained encoder checkpoints | 2 | MobileNetV3-Small: researched timm LAMB weights and the TorchVision weights used by the experiment. |
-| Trained proposal models | 2 | Same 880,466-parameter network, random versus ImageNet encoder; synthetic-only, offline. |
+| Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
 
 The latest [Pinterest expansion](real-pinterest-expansion.md) downloaded 428 of
 442 visited pins, including all four user-supplied examples. After merging, it
 added 362 source files, 176 photo-containing files and 116 reviewed photo groups
 to the previous snapshot. These are source-image counts, not heart-instance
 or independent motif-family counts.
+
+The [localization follow-up](boundary-localization.md) found that the original
+synthetic training split contained no acute or right-angle degree-two corners.
+Adding a validated corner supplement at the same 520-update training budget
+raised junction F1 from 61.92% to 82.05% on channel views and from 57.40% to
+87.95% on frame views. The existing trace still has better boundary F1 on both
+recipe groups. These are repeatedly inspected synthetic diagnostics; no
+real-photo or full-solver improvement is established yet.
 
 Of the real-source files, 475 are reserved by existing QA or connected source
 groups. Remaining files still need instance, motif-family and usage review;
