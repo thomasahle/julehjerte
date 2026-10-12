@@ -312,6 +312,58 @@ validated source hashes. Per-case outcomes, timings, source hashes, input
 identity checks and the candidate-pool audit are recorded in
 [BOUNDARY-JUNCTION-VALIDATION.json](BOUNDARY-JUNCTION-VALIDATION.json).
 
+### Follow-up: retry an exhausted graph with more useful neighbor slots
+
+The candidate-budget experiment (`5b8bc5c`) excludes already-connected visible
+neighbors before taking the nearest-neighbor budget. Previously these pairs
+occupied slots and were discarded afterward, so adding a harmless boundary
+anchor could exclude a useful hidden connector. This expansion restores a known
+12 mm connection in the subdivided star, which solves in all three repetitions
+at about 1.68 seconds with three pixels of exported-mask disagreement.
+
+However, applying the expanded pool everywhere makes several other cases slower.
+All three-repeat successes in the fixed three-second gallery study are:
+
+| Graph construction | Established pool | Always-expanded pool |
+| --- | ---: | ---: |
+| Photo-oriented trace | 9/24 | 9/24 |
+| Same trace plus projected reference junctions | 8/24 | 6/24 |
+| Clean trace | 6/24 | 5/24 |
+| Clean trace plus projected reference junctions | 6/24 | 5/24 |
+| Clean trace with uniform subdivisions | 2/24 | 2/24 |
+| Exact boundary and reference subdivision | 24/24 | 23/24 |
+| Exact boundary with straight interior anchors removed | 23/24 | 23/24 |
+| Previous variant with uniform subdivisions | 12/24 | 10/24 |
+
+The projected simple-star graph grows from 97 to 117 hidden candidates. It finds
+candidate routings, but they fail the existing narrow-neck checks before the
+budget expires. Even the exact `squares` case regresses after adding two optional
+connections. These results reject always expanding the default pool; the initial
+release replay was deliberately stopped during Hunodan testing and is not used
+as completed release evidence. All 192 visible boundary variants are unchanged.
+The rejected experiment, paired outcomes, solver histories for changed cases,
+and restored-connector diagnostic are preserved in
+[CONNECTOR-EXPANSION-EXPERIMENT.json](CONNECTOR-EXPANSION-EXPERIMENT.json).
+
+The selected implementation (`ca030d4`) preserves the established smaller graph
+first. Only a `candidate_graph_exhausted` result, with time remaining, permits a
+second graph whose neighbor budget excludes existing visible pairs. A timeout
+is not a trigger. If there are no added candidates, the same MILP is not rerun.
+Both graph construction and the second solve use the remaining deadline, and
+neither changes the input boundary. The common routing helper is used by the
+traced API, automatic vector route, topology initializer and feature recovery.
+Intersection, clearance, minimum connector length, graph-size and final
+geometry/paper/image checks are unchanged.
+
+A reduced valid fixture places two visible neighbors close to each end of a
+necessary shared cut. With two neighbors allowed, the first graph excludes that
+cut and HiGHS exhausts it. The conditional expansion solves and its independently
+rendered export exactly matches the unchanged reference mask. Six regressions
+cover this recovery, quarter-turn/reflection cases, unchanged visible coordinates,
+a crossing blocker, successful first solves, cached topology graphs, and avoiding
+a repeated MILP when expansion adds nothing. All 30 focused tests pass, including
+the existing automatic-star, coarse-topology and graph regressions.
+
 ### Candidate learning tasks
 
 The following are proposals, not measured model performance:
