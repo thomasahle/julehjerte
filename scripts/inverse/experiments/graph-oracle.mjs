@@ -71,14 +71,16 @@ export function referenceWitness(reference,graph){
 export function explainMissingConnectors(reference,graph,cfg){
   if(cfg.connectorVariants!==1||cfg.gridPortals)throw new Error('This diagnostic requires the sparse straight-connector pool.');
   const visible=graph.edges.map((e,i)=>e.visible?i:-1).filter(i=>i>=0),keys=new Set(graph.edges.map(e=>curveKey(e.curve.p)));
+  const adjacent=graph.points.map((_,v)=>new Set(graph.incident[v].filter(i=>graph.edges[i].visible).map(i=>graph.edges[i].u===v?graph.edges[i].v:graph.edges[i].u)));
   const endpointEdges=visibleEndpointNeighborhoods(graph,2*cfg.geometryTolerance);
   const degree=v=>graph.incident[v].filter(e=>graph.edges[e].visible).length;
   const eligible=graph.points.flatMap((p,v)=>degree(v)===2&&Math.min(...p)>1e-6&&Math.max(...p)<graph.target.width-1e-6?[v]:[]);
   return reference.graph.edges.flatMap((edge,index)=>{
     if(edge.visible||keys.has(curveKey(edge.curve.p)))return[];
     const ends=[edge.curve.p[0],edge.curve.p[3]],vertices=ends.map(p=>graph.points.findIndex(q=>keyPoint(p)===keyPoint(q)));
-    const ranks=vertices.map((v,k)=>v<0?null:eligible.filter(other=>other!==v).sort((a,b)=>distance(graph.points[v],graph.points[a])-distance(graph.points[v],graph.points[b])).indexOf(vertices[1-k])+1);
-    const row={referenceEdge:index,controlPoints:edge.curve.p,lengthMm:edge.curve.length(),vertices,eligible:vertices.map(v=>eligible.includes(v)),nearestRanks:ranks};
+    const rank=(v,k,skipVisible)=>v<0?null:eligible.filter(other=>other!==v&&(!skipVisible||!adjacent[v].has(other))).sort((a,b)=>distance(graph.points[v],graph.points[a])-distance(graph.points[v],graph.points[b])).indexOf(vertices[1-k])+1;
+    const ranks=vertices.map((v,k)=>rank(v,k,true));
+    const row={referenceEdge:index,controlPoints:edge.curve.p,lengthMm:edge.curve.length(),vertices,eligible:vertices.map(v=>eligible.includes(v)),nearestRanks:ranks,unfilteredNearestRanks:vertices.map((v,k)=>rank(v,k,false))};
     if(vertices.some(v=>v<0)){row.reason='missing_vertex';return[row];}
     if(row.eligible.some(v=>!v)){row.reason='ineligible_vertex';return[row];}
     const [u,v]=vertices,a=graph.points[u],b=graph.points[v],candidate=Cubic.line(a,b);
