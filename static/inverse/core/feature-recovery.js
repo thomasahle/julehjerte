@@ -72,6 +72,13 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
       report.seedSmoothingRetry=true;
       await runSeed(.5);
     }
+    if(!solution&&remaining()>=.25&&report.attempts.some(a=>a.solver?.connectorIndependentIssue?.type==='visible_edge_self_intersection'||a.solver?.history?.some(h=>h.selfIntersectionChains>0))&&report.attempts.every(a=>a.solver?.termination==='candidate_graph_exhausted')){
+      // A locally crossing raster spur can make both established traces
+      // infeasible. Chain cuts establish exhaustion quickly enough to try one
+      // smoother seed; all image, feature and paper checks stay unchanged.
+      report.seedIntersectionRetry=true;
+      await runSeed(.75);
+    }
     if(!solution&&remaining()>=.25){
       // A fringe can hide endpoints on just one side. Try deeper profiles on
       // that side only, retaining the ordinary interpretation elsewhere. A

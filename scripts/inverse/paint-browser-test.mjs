@@ -89,6 +89,8 @@ report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash
 report.workspaceSourceHashes['static/inverse/core/feature-shapes.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/feature-shapes.js')).digest('hex');
 for(const file of ['source.json','native.png','downsample.png']){const name='scripts/inverse/fixtures/flower-resolution/'+file;report.harnessSourceHashes[name]=createHash('sha256').update(await fs.readFile(name)).digest('hex');}
 report.workspaceSourceHashes['static/inverse/core/self-returns.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/self-returns.js')).digest('hex');
+for(const file of ['scripts/inverse/fixtures/photographic-anchor-perturbation.json','scripts/inverse/fixtures/photographic-anchor-perturbation.png'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+report.workspaceSourceHashes['static/inverse/core/self-intersections.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/self-intersections.js')).digest('hex');
 report.workspaceSourceHashes['static/inverse/core/direct/grid.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/direct/grid.js')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/photographic-gift-fit.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-gift-fit.json')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/browser-puppy-half-mask.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/browser-puppy-half-mask.json')).digest('hex');
@@ -102,8 +104,8 @@ try{
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
-   const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name);
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||['leaf-mask','bird-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask';
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||['leaf-mask','bird-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -159,7 +161,10 @@ try{
       // Hold crop/classification fixed to isolate the real worker and editor
       // path. Upload pixels, never saved cutting paths or a fitting seed.
       let fixture,photo;
-      if(flowerMask){
+      if(anchorMask){
+       fixture={...JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-anchor-perturbation.json')),quad:null};
+       photo=await readHardPhoto({file:fixture.maskFile,sha256:fixture.imageSha256,width:fixture.resolution,height:fixture.resolution});
+      }else if(flowerMask){
        const data=JSON.parse(await fs.readFile('scripts/inverse/fixtures/flower-resolution/source.json')),entry=data.cases.find(c=>c.variant===name.slice(7,-5));
        assert.ok(entry);fixture={...entry,quad:null,sourceCase:name.slice(0,-5)};
        photo=await readHardPhoto({file:entry.rectifiedPhoto,sha256:entry.sha256,width:400,height:400});
@@ -171,7 +176,7 @@ try{
       }
       const mask=prepare({...photo,quad:fixture.quad},AUTOMATIC_PRESET).preview.mask;
       assert.equal(createHash('sha256').update(mask).digest('hex'),fixture.maskSha256);
-      const c=createCanvas(400,400),ctx=c.getContext('2d'),pixels=ctx.createImageData(400,400);
+      const n=Math.sqrt(mask.length),c=createCanvas(n,n),ctx=c.getContext('2d'),pixels=ctx.createImageData(n,n);
       for(let i=0;i<mask.length;i++)pixels.data.set(mask[i]?[185,19,19,255]:[255,255,255,255],4*i);
       ctx.putImageData(pixels,0,0);await fs.writeFile(file,c.toBuffer('image/png'));
       row.sourcePhoto={id:fixture.sourceCase,sha256:photo.fileSha256,quad:fixture.quad,fixedMaskSha256:fixture.maskSha256};
@@ -309,6 +314,9 @@ try{
     row.featureRecovery=observed.result.report.solver.featureRecovery;
     row.templateChecksPassed=observed.result.report.templateChecksPassed;
     row.missingFeatures=observed.result.report.imageFidelity?.features.missing;
+    if(anchorMask&&!engineReference){
+     assert.deepEqual(row.selectedCounts,[4,4]);assert.ok(row.engineError<.025);
+    }
     if(flowerMask&&!engineReference){
      assert.deepEqual(row.selectedCounts,[3,3]);assert.ok(row.engineError<.01);
     }
@@ -489,6 +497,7 @@ try{
     }
     assert.ok(Math.abs(row.displayedError-row.sourceEditableError)<=.00051,`Displayed mismatch ${row.displayedError} disagrees with exported heart ${row.sourceEditableError}`);
     assert.ok(row.sourceEditableError<=(small ? .005 : topHat ? .01 : free||photograph||photoMask ? .03 : .015),`Editable source mismatch ${row.sourceEditableError}`);
+    if(anchorMask&&!engineReference)assert.ok(row.sourceEditableError<.025,'The editable anchor must retain the recovered fit.');
     if(flowerMask&&!engineReference)assert.ok(row.sourceEditableError<.01,'The editable flower must preserve the improved fit.');
     if(name==='star'||photoMask){
      const pendingPDF=page.waitForEvent('download');await button('Download PDF').click();

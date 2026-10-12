@@ -8,6 +8,7 @@ import {boundaryEndpoints} from './graph.js';
 import {nearbyPairs,lineDistance,improperIntersection} from './geometry.js';
 import {validate,selfNecks} from './validate.js';
 import {shortSelfReturns} from './self-returns.js';
+import {selfIntersectionChains} from './self-intersections.js';
 let runtimePromise;
 export async function solverRuntime(){return runtimePromise??=loadHighs({locateFile:file=>new URL('../vendor/'+file,import.meta.url).href,print:()=>{},printErr:()=>{}});}
 export class LinearModel{
@@ -91,7 +92,22 @@ export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coef
       info.validationPassed=check.passed;if(check.passed){if(obj<bestObj){best=candidate;bestObj=obj;best.report.validation=check;append(m.cost.map((c,j)=>[j,c]).filter(([,c])=>c),-Infinity,obj+1e-6);}// Adding the objective row invalidates native.info (including mip_gap). Use the captured bound.
       if(cfg.progressGeometry||hasCandidateObserver(onProgress))onProgress({stage:'solving',round:round+1,validatedIncumbent:true,gap:Number.isFinite(lower)?objectiveGap(bestObj,lower):null},best);
       if(stopAfterValidated||status===highs.constants.modelStatus.optimal||objectiveGap(bestObj,lower)<=cfg.relativeGap+1e-9)break;}
-      else{info.issues=check.issues.slice(0,8);const active=[];for(const k of[0,1])for(let e=0;e<graph.edges.length;e++)if(values[x[k][e]]>.5)active.push([x[k][e],1]);append(active,-Infinity,active.length-1);}
+      else{
+        info.issues=check.issues.slice(0,8);
+        // Reject the offending chain, not just this entire template pair.
+        // Otherwise equivalent choices on unrelated slits can repeatedly
+        // present the same local crossing until the routing budget expires.
+        let added=0;
+        for(const issue of selfIntersectionChains(candidate,cfg,check.issues)){
+          const chain=issue.directedChain,key=`crossing:${issue.family}:${chain.map(([edge,forward])=>`${edge}/${Number(forward)}`).sort().join(',')}`;
+          if(nogoods.has(key))continue;
+          // Keep direction: reversed adaptive flattening and inexact joins can
+          // differ. The opposite traversal must be validated on its own.
+          nogoods.add(key);append(chain.map(([edge,forward])=>[z[issue.family][edge][forward?0:1],1]),-Infinity,chain.length-1);added++;
+        }
+        info.selfIntersectionChains=added;
+        if(!added){const active=[];for(const k of[0,1])for(let e=0;e<graph.edges.length;e++)if(values[x[k][e]]>.5)active.push([x[k][e],1]);append(active,-Infinity,active.length-1);}
+      }
     }
   }finally{native?.dispose();}
   const report={...form.metadata,coefficientQuantum,stopAfterValidated,...(relaxationOnly?{relaxationOnly:true,relaxationBound:Number.isFinite(lower)?lower:null}:{}),graph:graph.metadata,history,elapsedSeconds:(performance.now()-start)/1000,solverVersion:highs.version,solverRuntime:'locally hosted HiGHS WebAssembly',physicalAssemblyTested:false};
