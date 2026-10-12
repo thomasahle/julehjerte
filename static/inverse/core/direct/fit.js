@@ -218,14 +218,30 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   };
   const addCandidate=c=>{
     c.matching=matchingSummary(c.graph.solution(c.points,c.phase,input));c.imagePassed=assess(c);
-    c.selectionScore=c.originalImageError??Infinity;
-    candidates.push(c);
-    // Refinement published this checkpoint as paper-uncertain. If a finer
-    // audit resolves it, retain the now-verified geometry for graceful Stop.
-    if(c.imagePassed&&c.paperVerification?.status==='pass'&&hasCandidateObserver(onProgress)){
-      const solution=c.graph.solution(c.points,c.phase,input);
-      solution.report={paperVerification:c.paperVerification};
-      emitCandidate(onProgress,{stage:'directRefining',error:c.originalImageError,geometry:true,paper:'pass'},solution);
+    const proposals=[c];
+    if(!c.imagePassed&&c.paperAlternative){
+      const alternative={...c,...c.paperAlternative,paperAlternative:null,paperVerification:null};
+      // Score against the original objective before competing with other
+      // routings. assess() also checks every source feature and independently
+      // resolves paper uncertainty; an unverified alternative cannot win.
+      alternative.error=mismatch(renderCurves(alternative.graph,alternative.points,alternative.phase,n,32),prob,fitWeights);
+      if(assess(alternative)){
+        alternative.imagePassed=true;
+        alternative.matching=matchingSummary(alternative.graph.solution(alternative.points,alternative.phase,input));
+        alternative.paperVerification={...alternative.paperVerification,source:'retained-refinement-alternative',incumbentImageError:c.originalImageError};
+        proposals.push(alternative);
+      }
+    }
+    for(const proposal of proposals){
+      proposal.selectionScore=proposal.originalImageError??Infinity;
+      candidates.push(proposal);
+      // Refinement published this checkpoint as paper-uncertain. If a finer
+      // audit resolves it, retain the now-verified geometry for graceful Stop.
+      if(proposal.imagePassed&&proposal.paperVerification?.status==='pass'&&hasCandidateObserver(onProgress)){
+        const solution=proposal.graph.solution(proposal.points,proposal.phase,input);
+        solution.report={paperVerification:proposal.paperVerification};
+        emitCandidate(onProgress,{stage:'directRefining',error:proposal.originalImageError,geometry:true,paper:'pass'},solution);
+      }
     }
   };
   if(boundaryCandidate)addCandidate(boundaryCandidate);
@@ -292,7 +308,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // Spend a longer requested budget on an untried layout only when none of
     // the refined candidates passed the original image, feature and paper
     // checks. Keep the successful fast path and the finalization reserve.
-    if(i===fine.length-1&&!candidates.some(c=>c.imagePassed)&&remainingSeeds.length&&maxDeadline-performance.now()>4500){
+    // The extra verified checkpoint is a final-choice fallback. Preserve the
+    // existing search allowance too: a later routing can still be much better
+    // than this newly acceptable alternative (e.g. the three-cut maple leaf).
+    if(i===fine.length-1&&!candidates.some(c=>c.imagePassed&&c.paperVerification?.source!=='retained-refinement-alternative')&&remainingSeeds.length&&maxDeadline-performance.now()>4500){
       fine.push(stage('directFitting',()=>fitSeed(remainingSeeds.shift())));
     }
   }

@@ -171,5 +171,10 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
   }
   if(completed&&history.at(-1).step!==completed-1)checkpoint(completed-1);
   const selected=best||bestUncertain||bestInvalid;
-  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,stoppedEarly};
+  // A coarse-lattice pass can be a much poorer image fit than an uncertain
+  // checkpoint. Keep that alternative available for a finer independent
+  // audit by the caller, without treating it as accepted or using it for
+  // rollback here. Ordinary callers still receive the verified incumbent.
+  const paperAlternative=bestUncertain&&bestUncertain!==selected?{...bestUncertain,geometryPassed:true,paperPassed:false}:null;
+  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,stoppedEarly,paperAlternative};
 }
