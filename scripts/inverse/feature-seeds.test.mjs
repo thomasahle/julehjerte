@@ -76,6 +76,28 @@ test('the full fitter retains the bird eye through clearance, refinement and ind
   assert.deepEqual(source.mask,prepared.preview.mask);
 });
 
+test('a short search reserves enough local refinement to close the photographed bird eye',async()=>{
+  const prepared=await bird(),source=prepared.target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
+  const answer=await design(prepared.target,{...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false});
+  const solver=answer.report.solver;
+  assert.equal(solver.earlyFeatureInitialization.enclosurePending,true,'The initial colour-retaining grid has an open eye.');
+  assert.equal(solver.featureRecovery.budgetPolicy,'probe_before_grid_refinement');
+  assert.equal(solver.earlyFeatureInitialization.detailHandoff,true);
+  assert.equal(solver.featureDetail.applied,true);
+  assert.ok(solver.seconds<10);
+  assert.equal(answer.report.templateChecksPassed,true);assert.equal(answer.report.validation.passed,true);
+  assert.equal(answer.report.manufacturing.status,'pass');assert.equal(answer.report.settings.materialResolution,700);
+  for(const resolution of [400,800]){
+    const woven=await renderExportedWeave(answer.files['cut_geometry.json'],resolution);
+    const expected=Uint8Array.from({length:resolution**2},(_,i)=>mask[Math.floor(Math.floor(i/resolution)*400/resolution)*400+Math.floor((i%resolution)*400/resolution)]);
+    assert.ok(mismatch(woven.mask,expected)<.03,'The unchanged source mask, not the weighted refinement objective, defines acceptance.');
+    const eye=featureComponentMetrics({mask:expected,resolution},woven.mask).find(f=>f.centerMm[0]<30);
+    assert.equal(eye.touchesBorder,false,'A narrow connecting seam is not an eye.');
+    assert.ok(eye.componentIoU>.8,'The eye must retain its small shape, not inflate into a different region.');
+  }
+  assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+});
+
 test('additional layouts can retain a remote opening without editing the image or using weighted final scores',async()=>{
   const source=(await puppy()).target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
   const cfg=settings({...AUTOMATIC_PRESET,trials:0}),features=imageFeatures(source);

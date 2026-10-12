@@ -192,9 +192,15 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     if(extra.seeds.length){
       const seed=stage('directFitting',()=>fitSeed(extra.seeds[0]));
       const audit=auditFeatureFidelity(source,gridMask(seed.model,source.resolution,seed.phase,seed.floor),cfg,sourceFeatures);
-      if(audit.passed){
+      // The coarse grid only needs to retain the colours to earn refinement.
+      // A short search can close an initially open eye in the detail pass;
+      // enclosure remains mandatory when accepting the resulting template.
+      const enclosurePending=!audit.passed&&audit.regions.every(r=>r.retainedFraction>=audit.minimumRetention);
+      if(audit.passed||shortBudget&&enclosurePending){
         fine.unshift(seed);features=audit;
-        earlyFeatureInitialization.scheduled=1;featureInitialization=earlyFeatureInitialization;
+        earlyFeatureInitialization.scheduled=1;
+        earlyFeatureInitialization.enclosurePending=enclosurePending;
+        featureInitialization=earlyFeatureInitialization;
         featureAlternatives=extra.seeds.slice(1,2);
       }
     }
@@ -203,7 +209,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // Only shorten routing when colour protection actually selected a different
   // layout. Otherwise trees can lose useful smoothing/edge-profile retries.
   const featurePreferredGrid=colourPreferredGrid||earlyFeatureInitialization?.scheduled===1;
-  const reserveRefinement=competitiveGrid||shortBudget&&featurePreferredGrid,probeRouting=featurePreferredGrid&&features.passed;
+  const reserveRefinement=competitiveGrid||shortBudget&&featurePreferredGrid,probeRouting=featurePreferredGrid&&(features.passed||shortBudget&&earlyFeatureInitialization?.enclosurePending===true);
   const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
   const needsRecovery=(!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights;
   const fullRecoverySeconds=Math.min(20,competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
@@ -307,12 +313,16 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   let featureDetail=null;
   const refineFeatureDetail=candidate=>{
     const canRefine=candidate.geometryPassed&&(candidate.paperPassed||candidate.paper?.status==='uncertain');
-    if(!canRefine||searchDeadline()-performance.now()<=4000)return candidate;
+    // A promising short-budget fit must still get its local shape pass.
+    // Keep the ordinary finalization reserve, rather than requiring the
+    // longer search's extra three seconds after this bounded refinement.
+    const detailReserve=shortBudget?1700:3000;
+    if(!canRefine||searchDeadline()-performance.now()<=detailReserve+(shortBudget?600:1000))return candidate;
     const plan=featureDetailPlan(candidate.graph,candidate.points,source,sourceFeatures,cfg,n);
     if(plan){
       const detailCfg={...cfg,preferMatchingSheets:false,materialResolution:Math.max(cfg.materialResolution,700)};
       const verification={requestedResolution:cfg.materialResolution,resolution:detailCfg.materialResolution,source:'feature-detail-refinement'};
-      const refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:.035,deadline:Math.min(searchDeadline()-3000,performance.now()+1800),onProgress:(r,solution)=>{
+      const refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:shortBudget?.07:.035,deadline:Math.min(searchDeadline()-detailReserve,performance.now()+1800),onProgress:(r,solution)=>{
         solution.report={paperVerification:{...verification,status:r.paper}};
         onProgress({stage:'directPolishing',detail:'small-feature-shape',counts:candidate.counts,...r,weightedError:r.error,error:maskDisagreement(source,sampleWeave(solution,source.resolution))},solution);
       }}));
@@ -322,7 +332,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // cost a few source pixels; it must still pass the unchanged original
       // image and feature limits. An accepted incumbent cannot lose accuracy.
       const accepted=assess(refined)&&(!candidate.imagePassed||refined.originalImageError<=candidate.originalImageError);
-      featureDetail={...plan.report,applied:accepted,errorBefore:candidate.originalImageError,errorAfter:refined.originalImageError,geometryPassed:refined.geometryPassed,paperStatus:refined.paper?.status,featuresPassed:refined.originalFeatures?.passed,steps:refined.steps};
+      featureDetail={...plan.report,refinementRate:shortBudget?.07:.035,finalizationReserveSeconds:detailReserve/1000,applied:accepted,errorBefore:candidate.originalImageError,errorAfter:refined.originalImageError,geometryPassed:refined.geometryPassed,paperStatus:refined.paper?.status,featuresPassed:refined.originalFeatures?.passed,steps:refined.steps};
       if(accepted)return{...refined,counts:candidate.counts,seed:candidate.seed,matching:matchingSummary(plan.graph.solution(refined.points,refined.phase,input))};
     }
     return candidate;
@@ -352,7 +362,17 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridColours:null}));
     attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob):clear.error,steps:clear.steps,...(protectedObjective?{weightedError:clear.error}:{})});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
-    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>{
+    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
+      if(goodEnough(value))return true;
+      if(!shortBudget||!selected.protectFeatures||!earlyFeatureInitialization?.enclosurePending)return false;
+      // Hand a checked colour-retaining fit to local shape refinement as soon
+      // as its global error is acceptable. Waiting for the broad stage's
+      // deadline both starves detail and changes its initial geometry with
+      // machine speed. This does not accept an open feature as a result.
+      const woven=sampleWeave(value.graph.solution(value.points,value.phase,input),source.resolution);
+      if(maskDisagreement(source,woven)>cfg.maxImageError||!auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed)return false;
+      earlyFeatureInitialization.detailHandoff=true;return true;
+    },onProgress:(r,solution)=>{
       if(protectedObjective){
         r.weightedError=r.error;r.error=maskDisagreement(source,sampleWeave(solution,source.resolution));
         solution.report={paperVerification:{...verification,status:r.paper}};
