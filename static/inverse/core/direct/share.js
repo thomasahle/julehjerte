@@ -34,7 +34,7 @@ function samples(path,step=.2){
     out.push({p:curves[k].point(u),tan:unit(curves[k].derivative(u)),g,s});
   }return out;
 }
-export function sharingCandidates(paths){
+export function sharingCandidates(paths,{identicalSheets=false}={}){
   const all=paths.map(f=>f.map(p=>samples(p))),keys=paths.map(f=>f.map(p=>p.map(curveKey))),out=[],cell=.6;
   all[1].forEach((B,j)=>{
     const common=new Set(keys[1][j]);
@@ -54,7 +54,35 @@ export function sharingCandidates(paths){
         lo=hi+1;
       }
     });
-  });return out.sort((a,b)=>b.length-a.length);
+  });
+  if(identicalSheets){
+    // A matching cut can nearly coincide with its own transposed image.
+    // Nearest-point matching can stop inside a cubic (or split at a small
+    // wobble), creating a tight bend when the shared span is attached there.
+    // Also propose whole runs whose controls lie within the same movement
+    // radius of the diagonal. Keeping the existing joins avoids that partial
+    // cubic attachment. The image, symmetry and cutting checks still decide.
+    const order=templatePathOrder(paths);
+    if(order[0].length===order[1].length)for(let i=0;i<order[0].length;i++){
+      const a=order[0][i],b=order[1][i],n=a.path.length;
+      if(b.path.length!==n)continue;
+      const common=new Set(keys[1][b.index]);
+      const near=c=>c.every(([x,y])=>Math.abs(x-y)/Math.SQRT2<=cell);
+      for(let lo=0;lo<n;){
+        if(!near(a.path[lo])){lo++;continue;}
+        let hi=lo+1;while(hi<n&&near(a.path[hi]))hi++;
+        const run=a.path.slice(lo,hi),length=run.reduce((s,p)=>s+new Cubic(p).length(),0);
+        const independent=run.reduce((s,p)=>s+(common.has(curveKey(p))?0:new Cubic(p).length()),0);
+        if(lo>0&&hi<n&&independent>=3){
+          const parameter=(p,t)=>p.reverse?n-t:t;
+          const a0=parameter(a,lo),a1=parameter(a,hi),b0=parameter(b,lo),b1=parameter(b,hi);
+          out.push({i:a.index,j:b.index,a0:Math.min(a0,a1),a1:Math.max(a0,a1),b0:a0<a1?b0:b1,b1:a0<a1?b1:b0,length,proposal:'paired-knots'});
+        }
+        lo=hi;
+      }
+    }
+  }
+  return out.sort((a,b)=>b.length-a.length);
 }
 /** A shared span and its paired sheet image must be edited together. Copying just one
  * cut breaks the identical-sheet constraint; skipping sharing leaves hairline
@@ -124,7 +152,7 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
   for(let round=0;round<rounds&&performance.now()<deadline;round++){
     const paths=best.graph.nested(best.points),before=best.graph.solution(best.points,best.phase,input),ease=easeMetrics(before,cfg);let changed=false;
     const order=identicalSheets?templatePathOrder(paths).map(f=>f.map(p=>p.index)):null;
-    proposals: for(const raw of sharingCandidates(paths))for(const blend of !antiTranspose&&identicalSheets&&order[0].indexOf(raw.i)===order[1].indexOf(raw.j)?[.5]:[.5,0,1]){
+    proposals: for(const raw of sharingCandidates(paths,{identicalSheets}))for(const blend of !antiTranspose&&identicalSheets&&order[0].indexOf(raw.i)===order[1].indexOf(raw.j)?[.5]:[.5,0,1]){
       const c={...raw,blend};
       if(performance.now()>deadline)break;
       try{
@@ -169,7 +197,7 @@ export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{}
     if(symmetry.honoured.length!==symmetry.requested.length)return solution;
   }
   const start=performance.now(),paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p)));
-  if(!sharingCandidates(paths).length)return solution;
+  if(!sharingCandidates(paths,{identicalSheets:matchingSummary(solution).identical}).length)return solution;
   onProgress({stage:'directSharing'});
   const graph=new CurveGraph(paths,cfg.width),phase=input.phase?-1:1,n=Math.min(256,source.resolution),resized=resizeObjective(source.mask,source.resolution,n,sourceWeights(source)),prob=resized.probability;
   const beforeWoven=sampleWeave(solution,source.resolution),before=maskDisagreement(source,beforeWoven);
