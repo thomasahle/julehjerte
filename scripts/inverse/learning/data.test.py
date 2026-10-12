@@ -45,6 +45,12 @@ class LabelTests(unittest.TestCase):
         recovered = detect_nodes(node_heatmap(points, 80).astype(np.float16), .5)
         np.testing.assert_allclose(recovered, points)
 
+    def test_tied_peak_is_one_detection(self):
+        points = np.array([[10, 20], [60, 50]])
+        for dtype in [np.float32, np.float16]:
+            recovered = detect_nodes(node_heatmap(points, 80).astype(dtype), .5)
+            self.assertEqual(point_counts(recovered, points), [2, 2, 2])
+
 
 if __name__ == '__main__':
     unittest.main()

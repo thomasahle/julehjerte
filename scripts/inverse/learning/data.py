@@ -93,8 +93,19 @@ def detect_nodes(heat, threshold=.25, radius=4, maximum=512):
     heat = np.asarray(heat, dtype=np.float32)
     peaks = (heat >= threshold) & (heat == maximum_filter(heat, size=2*radius+1, mode='constant'))
     y, x = np.where(peaks)
-    order = np.argsort(-heat[y, x], kind='stable')[:maximum]
-    return np.column_stack([x[order]+.5, y[order]+.5]).astype(np.float32)
+    order = np.argsort(-heat[y, x], kind='stable')
+    # Equal maxima can occupy several adjacent pixels (even an exact Gaussian
+    # centered at integer coordinates has four). Keep one local proposal,
+    # instead of counting a perfect response as duplicate false positives.
+    blocked = np.zeros(heat.shape, dtype=bool)
+    selected = []
+    for i in order:
+        px, py = x[i], y[i]
+        if blocked[py, px]: continue
+        selected.append([px+.5, py+.5])
+        blocked[max(0, py-radius):py+radius+1, max(0, px-radius):px+radius+1] = True
+        if len(selected) >= maximum: break
+    return np.asarray(selected, dtype=np.float32).reshape(-1, 2)
 
 
 def point_counts(predicted, target, tolerance=3):
