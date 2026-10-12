@@ -66,7 +66,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     classified=source.probability||Float32Array.from(source.mask),objective=orbitObjective(classified,source.resolution,orbit,weights),fullProb=objective.probability,fullWeights=objective.weights,
     n=Math.min(256,source.resolution),resized=resizeObjective(fullProb,source.resolution,n,fullWeights),prob=resized.probability,fitWeights=resized.weights,
     gridTarget=fullWeights?null:resize(fullProb,source.resolution,96),rawGuide=weights?Float64Array.from(initializationMask(source)):null,guideProb=rawGuide&&orbit?orbitMean(rawGuide,source.resolution,orbit):rawGuide,
-    start=performance.now(),fastSeconds=Math.min(cfg.timeLimit,10);
+    start=performance.now(),fastSeconds=Math.min(cfg.timeLimit,10),shortBudget=cfg.timeLimit<=fastSeconds;
   let deadline=start+fastSeconds*1000-Math.min(1300,fastSeconds*200);
   const numericalBackend=await loadBoundaryKernel();
   const sourceFeatures=imageFeatures(source,cfg.width),matchingEvidence=symmetryEvidence(source),evidence=borderEvidence(guideProb||fullProb,source.resolution),supportedCounts=supportedBorderCounts(evidence),attempts=[],timings=[];
@@ -142,8 +142,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   };
   const finalists=gridFinalists(coarse,weights?[]:evidence),remainingSeeds=coarse.filter(r=>!finalists.includes(r));
   const fine=stage('directFitting',()=>finalists.map(fitSeed).sort((a,b)=>a.error+.005*(a.model.counts[0]+a.model.counts[1])-b.error-.005*(b.model.counts[0]+b.model.counts[1])));
-  let coarseTopology=null,boundaryCandidate=null;
+  let coarseTopology=null,boundaryCandidate=null,finalistPreference=null;
   const poorGrid=coarse[0].error>2*cfg.maxImageError&&fine.every(r=>r.error>cfg.maxImageError);
+  // On a poor fit, the cut-count bonus can put a simpler grid that erases an
+  // opening ahead of a better image fit that keeps it. Order the existing
+  // finalists by colour retention first; no count/phase seed is discarded.
+  if(poorGrid&&!weights&&!symmetryRequested&&sourceFeatures.length){
+    const retained=new Map(fine.map(seed=>[seed,retainsGridColours(seed)]));
+    const describe=seed=>({counts:seed.model.counts,phase:seed.phase,error:seed.error,featuresRetained:retained.get(seed)});
+    finalistPreference={before:fine.map(describe)};
+    fine.sort((a,b)=>Number(retained.get(b))-Number(retained.get(a)));
+    finalistPreference.after=fine.map(describe);
+  }
   // Spend this extra routing budget only when even the best initial grid is
   // far outside the accepted image error and none of the fine grids has
   // reached it. Retain those grids too: a simplified seed must earn its place
@@ -167,10 +177,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // it must not depend on a spurious missing component near the crop edge.
   const competitiveGrid=fine.some(r=>r.error<=cfg.maxImageError);
   let featureInitialization=null,earlyFeatureInitialization=null,featureAlternatives=[];
-  // A close grid can omit a remote opening which no local boundary gradient
-  // can see. Try the cheap image-derived layout before spending the remaining
-  // fast budget on traced routing. Keep every ordinary finalist as a fallback.
-  if(competitiveGrid&&!features.passed&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
+  // A grid can omit a remote opening which no local boundary gradient can
+  // see. A short search cannot afford to discover that only after spending
+  // its time on routing and refinement. Try the existing image-derived layout
+  // early for poor grids too; keep every ordinary finalist as a fallback.
+  if((competitiveGrid||shortBudget&&poorGrid)&&!features.passed&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
     const missed=features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]);
     const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
     earlyFeatureInitialization={...extra.report,stage:'before-recovery',scheduled:0};
@@ -184,14 +195,17 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       }
     }
   }
-  const recoverySeconds=Math.min(20,competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
+  const reserveRefinement=competitiveGrid||shortBudget,probeRouting=shortBudget&&sourceFeatures.length>0&&features.passed;
+  const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
   if((!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights&&deadline-performance.now()>2000&&recoverySeconds>=.25){
-    // If a grid already explains most of the image, speculative recovery of
-    // missing details must leave it time for free-curve refinement. Reserve
-    // two seconds plus clearance/polishing. Poor grids still need the larger
-    // routing budget: their topology can prevent useful local refinement.
+    // Leave two seconds plus clearance/polishing for short searches, even
+    // when the grids fit poorly. Otherwise failed routing can consume the
+    // entire allowance and return an untouched grid. If that grid already
+    // keeps every source feature, probe routing briefly before refining it:
+    // some regular designs have a fast exact routing despite poor grids.
+    // Longer searches retain the larger speculative routing allowance.
     recovery=await recoverImageFeatures(input,cfg,recoverySeconds,onProgress);
-    recovery.report.budgetPolicy=competitiveGrid?'reserve_grid_refinement':'prioritize_routing';
+    recovery.report.budgetPolicy=probeRouting?'probe_before_grid_refinement':reserveRefinement?'reserve_grid_refinement':'prioritize_routing';
     recovery.report.gridMismatchTrigger=poorGrid&&!boundaryCandidate;
     const seed=recovery.solution||recovery.refinementSeed;
     if(seed){
@@ -210,7 +224,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       recovery.report.refinement={imageError:maskDisagreement(source,woven),featuresPassed:auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed,geometryPassed:candidate.geometryPassed,paperPassed:candidate.paperPassed,steps:candidate.steps};
       if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
-        solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
+        solution.report={countSearch:countSearchReport,finalistPreference,algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
         return solution;
       }
     }
@@ -420,7 +434,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   }
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
-  solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
+  solution.report={countSearch:countSearchReport,finalistPreference,algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
     stoppedEarly,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,featureDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
