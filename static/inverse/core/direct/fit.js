@@ -23,9 +23,10 @@ import {initializeTopology,initializeCoarseTopology} from './topology.js';
 import {curvesOf} from '../graph.js';
 import {sourceWeights,initializationMask} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
-import {initializeFeatureSeeds} from './feature-seeds.js';
+import {initializeFeatureSeeds,featureRefinementObjective} from './feature-seeds.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
+const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid'].includes(c.seed);
 function refinementTimeLeft(deadline){
   const available=deadline-performance.now();
   return available-1700-Math.min(800,available*.15);
@@ -128,6 +129,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     }
   }
   const fitSeed=r=>{
+    // Unweighted fine-grid polishing can erase a small opening before the
+    // geometry stage starts. Its extra routing goes straight to clearance,
+    // retaining the same region emphasis through both refinement stages.
+    if(r.protectFeatures)return r;
     const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{optimizationTarget:gridTarget,weights:fitWeights,steps:150,initial:r.model.z,deadline:performance.now()+800});
     attempts.push({stage:'fine',counts:r.model.counts,phase:r.phase,error:next.error,steps:next.steps,seconds:(performance.now()-at)/1000});return next.error<r.error?{...next,...(r.seed?{seed:r.seed}:{})}:r;
   };
@@ -237,11 +242,25 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       deadline=Math.min(maxDeadline-1300,performance.now()+8700);
     }
     const selected=fine[i],remaining=deadline-performance.now(),allocation=remaining,end=Math.min(deadline-1700,performance.now()+allocation);
-    const clear=stage('directClearance',()=>fitGrid(prob,n,selected.model.counts,selected.phase,{optimizationTarget:gridTarget,weights:fitWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15)}));
-    attempts.push({stage:'clearance',counts:clear.model.counts,phase:clear.phase,error:clear.error,steps:clear.steps});
+    const protectedObjective=selected.protectFeatures?featureRefinementObjective(source,sourceFeatures,n):null;
+    const objectiveProb=protectedObjective?.probability||prob,objectiveWeights=protectedObjective?.weights||fitWeights;
+    const refinementCfg=protectedObjective?{...cfg,materialResolution:Math.max(cfg.materialResolution,700)}:cfg;
+    const verification=protectedObjective?{requestedResolution:cfg.materialResolution,resolution:refinementCfg.materialResolution,source:'feature-preserving-refinement'}:null;
+    const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{optimizationTarget:protectedObjective?null:gridTarget,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15)}));
+    attempts.push({stage:'clearance',counts:clear.model.counts,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob):clear.error,steps:clear.steps,...(protectedObjective?{weightedError:clear.error}:{})});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
-    const candidate=stage('directRefining',()=>refineCurves(graph,prob,n,clear.phase,{...cfg,preferMatchingSheets:false},{deadline:end,input,weights:fitWeights,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>onProgress({stage:'directRefining',counts:clear.model.counts,...r},solution)}));
-    candidate.counts=clear.model.counts;candidate.seed=selected.seed;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop&&(!candidate.paperVerification||candidate.seed==='feature-weighted-grid'));
+    const candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>{
+      if(protectedObjective){
+        r.weightedError=r.error;r.error=maskDisagreement(source,sampleWeave(solution,source.resolution));
+        solution.report={paperVerification:{...verification,status:r.paper}};
+      }
+      onProgress({stage:'directRefining',counts:clear.model.counts,...r},solution);
+    }}));
+    if(protectedObjective){
+      candidate.error=mismatch(renderCurves(graph,candidate.points,candidate.phase,n,32),prob);
+      candidate.paperVerification={...verification,status:candidate.paper?.status};
+    }
+    candidate.counts=clear.model.counts;candidate.seed=selected.seed;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop&&(!candidate.paperVerification||featureSeed(candidate)));
     // Preserve the first refined checkpoint and all existing finalists. Only
     // unsuccessful feature retention earns this additional initialization;
     // regular successful designs and exhausted short budgets keep their path.
@@ -266,7 +285,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // A newly resolved paper uncertainty must not terminate the ordinary
     // finalists earlier than before. Their initial grid error can conceal a
     // much better final fit (the candle's 1+1 layout is one such case).
-    const ordinaryFinalistsRemain=candidate.paperVerification&&candidate.seed!=='feature-weighted-grid'&&fine.slice(i+1).some(r=>r.seed!=='feature-weighted-grid');
+    const ordinaryFinalistsRemain=candidate.paperVerification&&!featureSeed(candidate)&&fine.slice(i+1).some(r=>!featureSeed(r));
     if(candidate.imagePassed&&!simplerRemaining&&!ordinaryFinalistsRemain)break;
     // Three seeds are the fast path, not evidence that other routings fail.
     // Spend a longer requested budget on an untried layout only when none of

@@ -6,7 +6,7 @@ import {prepare,design} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {imageFeatures,auditImageFeatures} from '../../static/inverse/core/image-features.js';
-import {initializeFeatureSeeds} from '../../static/inverse/core/direct/feature-seeds.js';
+import {initializeFeatureSeeds,featureRefinementObjective} from '../../static/inverse/core/direct/feature-seeds.js';
 import {borderEvidence} from '../../static/inverse/core/direct/counts.js';
 import {gridMask,mismatch} from '../../static/inverse/core/direct/grid.js';
 import {resize} from '../../static/inverse/core/direct/math.js';
@@ -21,6 +21,50 @@ async function puppy(){
   assert.equal(createHash('sha256').update(prepared.preview.mask).digest('hex'),fixture.maskSha256);
   return prepared;
 }
+
+async function bird(){
+  const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-bird-fit.json'));
+  const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
+  const crop=prepare({...photo,quad:fixture.quad},AUTOMATIC_PRESET);
+  const prepared=prepare({type:'mask',mask:crop.preview.mask,resolution:400},AUTOMATIC_PRESET),source=prepared.target.sourceImage;
+  assert.equal(createHash('sha256').update(source.mask).digest('hex'),fixture.maskSha256);
+  assert.equal(createHash('sha256').update(new Uint8Array(source.probability.buffer)).digest('hex'),fixture.fittingProbabilitySha256);
+  return prepared;
+}
+
+test('a missing opening can need a joint count change and continued region protection',async()=>{
+  const source=(await bird()).target.sourceImage,cfg=settings(AUTOMATIC_PRESET),features=imageFeatures(source);
+  assert.equal(features.length,3);assert.equal(features[1].areaMm2,3.4375);
+  const result=initializeFeatureSeeds({source,features,missed:[1,2],counts:[4,4],cfg,evidence:borderEvidence(source.probability,400),maximumCount:8});
+  assert.equal(result.report.jointHypotheses,2);
+  assert.equal(result.report.hypotheses,12,'Only the adjacent joint count pair is added, not a full Cartesian search');
+  assert.ok(result.report.attempts.filter(a=>!a.protectFeatures).every(a=>!a.featuresPassed));
+  assert.deepEqual(result.seeds[0].model.counts,[5,5]);
+  assert.equal(result.seeds[0].protectFeatures,true);
+  assert.equal(result.seeds[0].featuresPassed,true);
+  assert.equal(result.seeds[0].error,mismatch(gridMask(result.seeds[0].model,256,result.seeds[0].phase,result.seeds[0].floor),resize(source.probability,400,256)));
+  const original=source.probability.slice(),objective=featureRefinementObjective(source,features,400);
+  for(const feature of features)for(const pixel of feature.pixels)assert.equal(objective.weights[pixel],1);
+  assert.equal(objective.weights[0],1/16);
+  assert.deepEqual(objective.probability,Float64Array.from(original));
+  assert.deepEqual(source.probability,original,'Region protection changes importance, never source colours');
+});
+
+test('the full fitter retains the bird eye through clearance, refinement and independent export',async()=>{
+  const prepared=await bird(),source=prepared.target.sourceImage,checkpoints=[];
+  const answer=await design(prepared.target,{...AUTOMATIC_PRESET,timeLimit:25,trials:0,earlyStop:false},()=>{},{onCandidate:c=>checkpoints.push(c)});
+  assert.equal(answer.report.solver.selectedInitialization,'feature-preserving-grid');
+  assert.ok(answer.report.solver.candidates.some(c=>!c.featuresPassed&&c.paper),'The old fallback remains available');
+  assert.ok(checkpoints.some(c=>c.materialResolution===700&&c.error<.03),'Stop must receive original-image scores and the actual paper resolution');
+  assert.equal(answer.report.settings.materialResolution,700);
+  assert.equal(answer.report.manufacturing.status,'pass');
+  assert.equal(answer.report.validation.passed,true);
+  assert.equal(answer.report.templateChecksPassed,true);
+  const replay=await renderExportedWeave(answer.files['cut_geometry.json'],400),audit=auditImageFeatures(source,replay.mask);
+  assert.equal(audit.passed,true);assert.ok(audit.regions[1].retainedFraction>=.6);
+  assert.ok(mismatch(replay.mask,source.mask)<.03,'A weighted search score must not certify the original image');
+  assert.deepEqual(source.mask,prepared.preview.mask);
+});
 
 test('additional layouts can retain a remote opening without editing the image or using weighted final scores',async()=>{
   const source=(await puppy()).target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();

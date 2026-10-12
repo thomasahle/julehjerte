@@ -1,6 +1,6 @@
 /** Additional layouts for substantial regions missed by a refined grid.
- * Importance changes initialization only. Keep the original image objective
- * for ranking and refinement, and retain all ordinary search candidates.
+ * Rank and validate against the original image. Ordinary candidates remain
+ * available when a feature-preserving proposal fails its physical checks.
  */
 import {initializeCounts} from './counts.js';
 import {resizeObjective} from './image-objective.js';
@@ -27,14 +27,35 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
   const boost=16,n=Math.min(256,resolution),fullProb=source.probability||Float32Array.from(source.mask),fullWeights=new Float64Array(resolution*resolution).fill(1/boost);
   for(const index of interior)for(const pixel of features[index].pixels)fullWeights[pixel]=1;
   const weighted=resizeObjective(fullProb,resolution,n,fullWeights),original=resizeObjective(fullProb,resolution,n);
-  const search=initializeCounts({options,fullProb,resolution,prob:weighted.probability,n,evidence,weights:weighted.weights,fullWeights});
   const attempts=[];
-  for(const seed of search.seeds){
-    const woven=gridMask(seed.model,resolution,seed.phase,seed.floor),audit=auditImageFeatures(source,woven,cfg.width,features);
-    seed.error=mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability);
-    seed.featuresPassed=audit.passed;seed.seed='feature-weighted-grid';
-    attempts.push({counts:seed.model.counts,phase:seed.phase,error:seed.error,featuresPassed:audit.passed,missing:audit.missing.length});
+  const search=(options,protectFeatures=false)=>initializeCounts({options,fullProb,resolution,prob:weighted.probability,n,evidence,weights:weighted.weights,fullWeights}).seeds.map(seed=>{
+      const woven=gridMask(seed.model,resolution,seed.phase,seed.floor),audit=auditImageFeatures(source,woven,cfg.width,features);
+      seed.error=mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability);
+      seed.featuresPassed=audit.passed;seed.seed=protectFeatures?'feature-preserving-grid':'feature-weighted-grid';
+      if(protectFeatures)seed.protectFeatures=true;
+      attempts.push({counts:seed.model.counts,phase:seed.phase,error:seed.error,featuresPassed:audit.passed,missing:audit.missing.length,protectFeatures});
+      return seed;
+    }).filter(s=>s.featuresPassed&&s.error<=(protectFeatures?Math.min(.12,4*cfg.maxImageError):Math.min(.1,3*cfg.maxImageError))).sort((a,b)=>a.error-b.error);
+  let seeds=search(options),jointHypotheses=0;
+  if(!seeds.length){
+    // An isolated opening can require an additional cut in both sheets.
+    // Changing only one count cannot propose that routing. Try just this
+    // adjacent pair, in both phases, after the existing starts have failed.
+    const pair=counts.map(c=>c+1);
+    if(pair.every(c=>c<=maximumCount&&(c+1)*(cfg.nominalWidth+.35)<cfg.width)){
+      const joint=[1,-1].map(phase=>({counts:pair,phase}));jointHypotheses=joint.length;
+      seeds=search(joint,true);
+    }
   }
-  const seeds=search.seeds.filter(s=>s.featuresPassed&&s.error<=Math.min(.1,3*cfg.maxImageError)).sort((a,b)=>a.error-b.error);
-  return{seeds,report:{...report,hypotheses:options.length,attempts,retained:seeds.length}};
+  return{seeds,report:{...report,hypotheses:options.length+jointHypotheses,jointHypotheses,attempts,retained:seeds.length}};
+}
+
+/** Preserve every existing region during the extra routing's clearance and
+ * curve stages, including regions the ordinary fit already explained. This
+ * is a search objective only; it never replaces the original image scores.
+ */
+export function featureRefinementObjective(source,features,n){
+  const weights=new Float64Array(source.mask.length).fill(1/16);
+  for(const feature of features)for(const pixel of feature.pixels)weights[pixel]=1;
+  return resizeObjective(source.probability||Float32Array.from(source.mask),source.resolution,n,weights);
 }
