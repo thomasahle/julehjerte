@@ -45,8 +45,8 @@ export function auditImageFeatures(source,woven,width=100,features=imageFeatures
  * This compares a proposal with its checkpoint; it does not certify the final
  * design, which must still pass auditImageFeatures against the source.
  */
-export function auditFeatureChange(source,before,after,width=100){
-  const features=imageFeatures(source,width),baseline=auditImageFeatures(source,before,width,features),proposal=auditImageFeatures(source,after,width,features);
+export function auditFeatureChange(source,before,after,width=100,features=imageFeatures(source,width)){
+  const baseline=auditImageFeatures(source,before,width,features),proposal=auditImageFeatures(source,after,width,features);
   const regressed=proposal.regions.flatMap((region,i)=>{
     const retainedBefore=baseline.regions[i].retainedFraction,requiredRetention=Math.min(baseline.minimumRetention,retainedBefore);
     return region.retainedFraction<requiredRetention?[{...region,retainedBefore,requiredRetention}]:[];

@@ -7,7 +7,8 @@ import {validate,sampleWeave} from './validate.js';
 import {materialAudit,verifiedPaperSettings} from './material.js';
 import {sampleTarget} from './input.js';
 import {referenceError} from './image-reference.js';
-import {auditImageFeatures,imageFeatures} from './image-features.js';
+import {imageFeatures} from './image-features.js';
+import {auditFeatureFidelity} from './feature-shapes.js';
 import {matchingSummary} from './direct/matching.js';
 import {symmetryReport} from './direct/symmetry.js';
 import {loadNumericalKernel} from './numerical-kernel.js';
@@ -50,7 +51,7 @@ export async function finishStopped(target,cfg,packets,onProgress=()=>{},{cancel
       solution.report={paperVerification:{requestedResolution:cfg.materialResolution,resolution:paperCfg.materialResolution,status:'pass',source:'retained-checkpoint'}};
     const woven=sampleWeave(solution,source.resolution),error=referenceError(source,woven).mismatchFraction;
     if(!Number.isFinite(error))continue;
-    const featuresPassed=auditImageFeatures(source,woven,cfg.width,features).passed;
+    const featuresPassed=auditFeatureFidelity(source,woven,cfg,features).passed;
     valid.push({solution,error,packet,featuresPassed,imagePassed:featuresPassed&&error<=cfg.maxImageError,identical:matchingSummary(solution).identical});
   }
   alive();if(!valid.length)throw stoppedWithoutCandidate();

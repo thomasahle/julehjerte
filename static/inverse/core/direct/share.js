@@ -11,7 +11,7 @@ import {applyTies,symmetryTies,symmetryReport} from './symmetry.js';
 import {requestedSymmetry} from '../settings.js';
 import {orbitSharingReplacement} from './sharing-orbit.js';
 import {curvesOf} from '../graph.js';
-import {auditFeatureChange} from '../image-features.js';
+import {auditFeatureFidelityChange} from '../feature-shapes.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {sourceWeights} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
@@ -163,7 +163,7 @@ export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{}
   if(shared.sharing.accepted.length){
     const proposal=shared.graph.solution(shared.points,phase,input),woven=sampleWeave(proposal,source.resolution),nextError=maskDisagreement(source,woven);
     const symmetry=symmetryReport(proposal,cfg.symmetry);
-    report.featureChange=auditFeatureChange(source,beforeWoven,woven,cfg.width);
+    report.featureChange=auditFeatureFidelityChange(source,beforeWoven,woven,cfg);
     if(nextError<=before&&report.featureChange.passed&&symmetry.honoured.length===symmetry.requested.length){
       selected=proposal;error=nextError;report.applied=true;report.errorAfter=nextError;
     }else report.rejectedFinalCheck={imageError:nextError,symmetry};

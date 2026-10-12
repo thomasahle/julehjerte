@@ -4,7 +4,8 @@
 import {curvesOf} from '../graph.js';
 import {sampleWeave,validate} from '../validate.js';
 import {materialAudit} from '../material.js';
-import {auditImageFeatures,imageFeatures} from '../image-features.js';
+import {imageFeatures} from '../image-features.js';
+import {auditFeatureFidelity} from '../feature-shapes.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves} from './refine.js';
 import {matchingGrid,matchingPaths,matchingSummary,symmetryEvidence} from './matching.js';
@@ -58,7 +59,7 @@ export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200
     const woven=sampleWeave(candidate,source.resolution),error=maskDisagreement(source,woven);
     Object.assign(attempt,{imageError:error,withinAllowance:error<=limit});
     if(error>limit)return false;
-    attempt.featuresPassed=auditImageFeatures(source,woven,cfg.width,features).passed;
+    attempt.featuresPassed=auditFeatureFidelity(source,woven,cfg,features).passed;
     attempt.geometryPassed=validate(candidate,cfg).passed;
     attempt.paperPassed=!cfg.requireMaterialCore||attempt.geometryPassed&&materialAudit(candidate,cfg).passed;
     return attempt.featuresPassed&&attempt.geometryPassed&&attempt.paperPassed&&matchingSummary(candidate).identical;

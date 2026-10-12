@@ -6,7 +6,7 @@
 import {Cubic,distance,turnAngle} from '../bezier.js';
 import {curvesOf} from '../graph.js';
 import {sampleWeave} from '../validate.js';
-import {auditFeatureChange} from '../image-features.js';
+import {auditFeatureFidelityChange} from '../feature-shapes.js';
 import {referenceError,sourceWeights} from '../image-reference.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves} from './refine.js';
@@ -103,7 +103,7 @@ export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionD
     if(report.sourceErrorAfter>report.sourceErrorBefore)return 'original_image_error';
     if(performance.now()>=completionDeadline)return 'deadline';
     if(!compatible(candidate))return 'symmetry';
-    report.featureChange=auditFeatureChange(source,before,woven,input.width);
+    report.featureChange=auditFeatureFidelityChange(source,before,woven,cfg);
     if(!report.featureChange.passed)return 'image_features';
     // The immutable fitted checkpoint already passed geometry and paper
     // checks. Source scoring and symmetry inspection above do not move it;

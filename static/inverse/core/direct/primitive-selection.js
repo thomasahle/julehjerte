@@ -14,7 +14,7 @@ import {sourceWeights,referenceError} from '../image-reference.js';
 import {curvesOf} from '../graph.js';
 import {validate,sampleWeave} from '../validate.js';
 import {materialAudit} from '../material.js';
-import {auditFeatureChange} from '../image-features.js';
+import {auditFeatureFidelityChange} from '../feature-shapes.js';
 import {mismatch} from './grid.js';
 
 /** Degree reduction belongs after the final choice, not between fitting stages:
@@ -57,7 +57,7 @@ function finalizePrimitivePass(solution,cfg,{deadline=Infinity,onProgress=()=>{}
     if(performance.now()>=deadline)return 'deadline';
     const symmetry=symmetryReport(proposal,cfg.symmetry);afterMatching=matchingSummary(proposal);
     if(symmetry.honoured.length!==symmetry.requested.length||beforeMatching.identical&&!afterMatching.identical)return 'symmetry';
-    report.featureChange=auditFeatureChange(source,before,woven,graph.width);
+    report.featureChange=auditFeatureFidelityChange(source,before,woven,cfg);
     if(!report.featureChange.passed)return 'image_features';
     const check=validate(proposal,cfg,{checkImage:false});if(!check.passed)return 'geometry';
     if(cfg.requireMaterialCore&&!materialAudit(proposal,cfg).passed)return 'paper';

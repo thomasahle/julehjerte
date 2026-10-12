@@ -7,14 +7,8 @@ import {Cubic} from '../bezier.js';
 import {distanceTransform} from '../material.js';
 import {CurveGraph} from './curves.js';
 import {resizeObjective} from './image-objective.js';
-
-export function smallInteriorFeatures(source,features,cfg){
-  const n=source.resolution,scale=cfg.width/n;
-  return features.filter(f=>f.areaMm2<=4*cfg.nominalWidth**2&&f.pixels.every(pixel=>{
-    const x=pixel%n+.5,y=Math.floor(pixel/n)+.5;
-    return Math.min(x,y,n-x,n-y)*scale>cfg.nominalWidth;
-  }));
-}
+import {smallInteriorFeatures} from '../feature-shapes.js';
+export {smallInteriorFeatures} from '../feature-shapes.js';
 
 export function featureDetailPlan(graph,points,source,features,cfg,n=256){
   const selected=smallInteriorFeatures(source,features,cfg);
