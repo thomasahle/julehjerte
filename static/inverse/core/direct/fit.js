@@ -169,7 +169,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // A local boundary gradient cannot create a remote missing region. Try an
   // alternate traced routing while there is still time within this search.
   let features=auditFeatureFidelity(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg,sourceFeatures);
-  let recovery=null;const recoveredCandidates=[];
+  let recovery=null;const recoveredCandidates=[],recoveryHistory=[];
   // Traced feature recovery routes through the MILP, which cannot hold a
   // mirrored pairing, and a symmetric fit is expected to drop features of an
   // asymmetric drawing. Stay with the constrained fitter instead.
@@ -203,16 +203,17 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // Only shorten routing when colour protection actually selected a different
   // layout. Otherwise trees can lose useful smoothing/edge-profile retries.
   const featurePreferredGrid=colourPreferredGrid||earlyFeatureInitialization?.scheduled===1;
-  const reserveRefinement=competitiveGrid||shortBudget&&featurePreferredGrid,probeRouting=shortBudget&&featurePreferredGrid&&features.passed;
+  const reserveRefinement=competitiveGrid||shortBudget&&featurePreferredGrid,probeRouting=featurePreferredGrid&&features.passed;
   const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
-  if((!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights&&deadline-performance.now()>2000&&recoverySeconds>=.25){
-    // Leave two seconds plus clearance/polishing for a competitive grid or
-    // a short search with a better feature-preserving layout. Failed routing
-    // must not consume that candidate's refinement time. Probe routing first:
-    // some regular designs have a fast exact routing despite poor grids.
-    // Longer searches retain the larger speculative routing allowance.
-    recovery=await recoverImageFeatures(input,cfg,recoverySeconds,onProgress);
-    recovery.report.budgetPolicy=probeRouting?'probe_before_grid_refinement':reserveRefinement?'reserve_grid_refinement':'prioritize_routing';
+  const needsRecovery=(!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights;
+  const fullRecoverySeconds=Math.min(20,competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
+  // A longer allowance need not delay a useful grid behind the entire routing
+  // search. Keep its unused routing budget as a fallback after the first grid;
+  // retaining a source region never certifies the resulting cutting geometry.
+  const deferredFeatureRecovery=!shortBudget&&probeRouting&&needsRecovery?{maximumSeconds:fullRecoverySeconds,attempted:false}:null;
+  const attemptRecovery=async(seconds,budgetPolicy,until=deadline)=>{
+    recovery=await recoverImageFeatures(input,cfg,seconds,onProgress);
+    recovery.report.budgetPolicy=budgetPolicy;recoveryHistory.push(recovery.report);
     recovery.report.gridMismatchTrigger=poorGrid&&!boundaryCandidate;
     const seed=recovery.solution||recovery.refinementSeed;
     if(seed){
@@ -225,17 +226,23 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // A recovered routing can still differ substantially from the image.
       // Give it the normal polishing step count within the same time reserve;
       // eighty steps could return while the image fit was still improving.
-      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:Math.min(deadline,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
+      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:Math.min(until,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
       candidate.counts=counts;candidate.seed='feature-recovery';recoveredCandidates.push(candidate);
       const solution=graph.solution(candidate.points,phase,input),woven=sampleWeave(solution,source.resolution);
       recovery.report.refinement={imageError:maskDisagreement(source,woven),featuresPassed:auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed,geometryPassed:candidate.geometryPassed,paperPassed:candidate.paperPassed,steps:candidate.steps};
       if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
-        solution.report={countSearch:countSearchReport,finalistPreference,algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
+        solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
         return solution;
       }
     }
+    return null;
+  };
+  if(needsRecovery&&deadline-performance.now()>2000&&recoverySeconds>=.25){
+    const recovered=await attemptRecovery(recoverySeconds,probeRouting?'probe_before_grid_refinement':reserveRefinement?'reserve_grid_refinement':'prioritize_routing');
+    if(recovered)return recovered;
   }
+  if(deferredFeatureRecovery)deferredFeatureRecovery.remainingSeconds=Math.max(0,fullRecoverySeconds-(recovery?.report.seconds||0));
   const floor=fittingMargin(cfg,cfg.width)/cfg.width,candidates=[];
   let verifiedAlternative=false;
   // Keep the established 25-second photographic comparison allowance after
@@ -364,6 +371,16 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       if(detailed!==candidate){addCandidate(detailed);candidate=detailed;}
     }
     stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop&&(!candidate.paperVerification||featureSeed(candidate)));
+    if(i===0&&deferredFeatureRecovery&&!candidates.some(c=>c.imagePassed)){
+      const seconds=Math.min(deferredFeatureRecovery.remainingSeconds,(searchDeadline()-performance.now()-2200)/1000);
+      if(seconds>=.25){
+        deferredFeatureRecovery.attempted=true;
+        const before=recoveredCandidates.length,until=Math.min(searchDeadline()-1300,performance.now()+seconds*1000+700);
+        const recovered=await attemptRecovery(seconds,'after_grid_refinement',until);
+        if(recovered)return recovered;
+        for(const proposal of recoveredCandidates.slice(before))addCandidate(proposal);
+      }
+    }
     // Preserve the first refined checkpoint and all existing finalists. Only
     // unsuccessful feature retention earns this additional initialization;
     // regular successful designs and exhausted short budgets keep their path.
@@ -441,7 +458,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   }
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
-  solution.report={countSearch:countSearchReport,finalistPreference,algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
+  solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
     stoppedEarly,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,featureDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;

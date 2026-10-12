@@ -70,6 +70,37 @@ test('a recovered photo routing improves the actual exported mask before returni
   assert.ok(error<.0095,`Exported disagreement ${100*error}%`);
 });
 
+test('an expired routing probe resumes after an unsuccessful first grid in a longer search',async t=>{
+  const catalog=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
+  const entry=catalog.cases.find(r=>r.id==='hjfig-05'),im=await loadImage(entry.source),[x,y,x1,y1]=entry.photoROI;
+  const canvas=createCanvas(x1-x,y1-y),context=canvas.getContext('2d');context.drawImage(im,-x,-y);
+  const cfg={...AUTOMATIC_PRESET,timeLimit:60,trials:0,earlyStop:false};
+  const prepared=prepare({type:'pixels',imageWidth:canvas.width,imageHeight:canvas.height,rgba:context.getImageData(0,0,canvas.width,canvas.height).data,quad:entry.quad},cfg);
+  const source=prepared.target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
+  const actualNow=performance.now.bind(performance);let elapsed=0,graphEvents=0;
+  t.mock.method(performance,'now',()=>actualNow()+elapsed);
+  const answer=await design(prepared.target,cfg,event=>{
+    // Expire the initial short probe as on a slower browser, without a sleep
+    // or supplying saved paths. The subsequent routing uses the real pixels.
+    if(event.stage==='graph'&&++graphEvents===1)elapsed+=1000;
+  });
+  const solver=answer.report.solver,attempts=solver.featureRecoveryAttempts;
+  assert.equal(solver.deferredFeatureRecovery.attempted,true);
+  assert.equal(graphEvents,2);
+  assert.equal(attempts.length,2);
+  assert.equal(attempts[0].budgetPolicy,'probe_before_grid_refinement');
+  assert.equal(attempts[0].accepted,false);
+  assert.equal(attempts[1].budgetPolicy,'after_grid_refinement');
+  assert.ok(attempts[1].budgetSeconds<=solver.deferredFeatureRecovery.remainingSeconds);
+  assert.ok(answer.report.templateChecksPassed&&answer.report.validation.passed);
+  assert.equal(answer.report.manufacturing.status,'pass');
+  assert.deepEqual(answer.report.slits,{left:4,right:4});
+  const replay=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution);
+  const error=replay.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
+  assert.ok(error<.0095,`Resumed routing must retain the known exported quality: ${100*error}% disagreement.`);
+  assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+});
+
 test('infeasible photograph traces can retry a smoother seed without changing the source target',async()=>{
   const data=await catalogue(),entry=data.cases.find(c=>c.id==='danish-tree-group-right'),photo=await readPhoto(data.photos.find(p=>p.id===entry.photo));
   const crop=detectHeartCrops(photo,{roi:entry.roi}).candidates[0];assert.ok(crop);
