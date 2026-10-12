@@ -1,0 +1,1558 @@
+{
+  "schema": "woven-heart-corner-supplement-evidence-1",
+  "dataset": "tmp/heart-training-synthetic/corner-lattice-v1",
+  "command": "node scripts/inverse/datasets/synthetic-generate.mjs --recipes=corner-lattice --seed=37 --designs=64 --views=4 --resolution=384 --canonicalResolution=512 --output=tmp/heart-training-synthetic/corner-lattice-v1",
+  "sourceCommit": "ea2accf8afc3c06ad038f3c3a1ee7c55406dafed",
+  "sourceHashes": {
+    "scripts/inverse/datasets/synthetic-generate.mjs": "94c9dccce81f514c230d998d500f2096302118bf2b84edd930a3b5aca2bdebd4",
+    "scripts/inverse/datasets/synthetic-geometry.mjs": "b00f12055e06130e09b564f59a10cec85dde1dce1fce020dd4d2e04a0560bf41",
+    "scripts/inverse/datasets/synthetic-photo.mjs": "fdbeff0ed4f51387bc5c843b49ddbb091d92d258bcab2e3717c23293bdcd9a61",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/validate.js": "1625909f0db6745596ab64bc44b99c306dec0377d1322e7eb31e2f860e5b8224",
+    "static/inverse/core/material.js": "b38677af5801e894eb869d38df247ea02c06ba2bd773d606da97494e2297ce29",
+    "static/inverse/core/geometry.js": "e9ada76afbaa0ef4bd957cbc4c8c20f09f471cf6ba0c33b84a774aba10a9da84",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "package-lock.json": "c2f54196ad3330233440428238539cc2cb12119454ac4da0f35693832bb7e6c6"
+  },
+  "options": {
+    "designs": 64,
+    "views": 4,
+    "seed": 37,
+    "resolution": 384,
+    "canonicalResolution": 512,
+    "recipes": [
+      "corner-lattice"
+    ]
+  },
+  "summary": {
+    "baseDesigns": 64,
+    "distinctGeometry": 64,
+    "distinctTopologies": 55,
+    "broadFamilies": 1,
+    "photographicViews": 256,
+    "bySplit": {
+      "train": {
+        "designs": 64,
+        "views": 256
+      },
+      "validation": {
+        "designs": 0,
+        "views": 0
+      },
+      "test": {
+        "designs": 0,
+        "views": 0
+      }
+    },
+    "rejectedCandidates": 103,
+    "maximumRendererDisagreement": 0.003101348876953125
+  },
+  "timing": {
+    "seconds": 44.382640333000005,
+    "scope": "Generation, all candidate geometry/paper/render checks and asset writes; excludes later verifier/contact sheets",
+    "summary": {
+      "baseDesigns": 64,
+      "distinctGeometry": 64,
+      "distinctTopologies": 55,
+      "broadFamilies": 1,
+      "photographicViews": 256,
+      "bySplit": {
+        "train": {
+          "designs": 64,
+          "views": 256
+        },
+        "validation": {
+          "designs": 0,
+          "views": 0
+        },
+        "test": {
+          "designs": 0,
+          "views": 0
+        }
+      },
+      "rejectedCandidates": 103,
+      "maximumRendererDisagreement": 0.003101348876953125
+    }
+  },
+  "verification": {
+    "passed": true,
+    "designs": 64,
+    "views": 256,
+    "familyGroups": 1,
+    "checkedAssets": 1984,
+    "manifestSha256": "180ecc34ae4294b3e9a70d90009cd2610f918394c0fa531fa64b3aaad0b27732",
+    "scope": "Asset integrity, recorded admission checks, recipe-group isolation (not topology disjointness) and projective label consistency; does not rerun physical or image simulation."
+  },
+  "attempts": {
+    "total": 167,
+    "accepted": 64,
+    "rejected": 103,
+    "acceptanceFraction": 0.38323353293413176,
+    "maximumAttemptsPerDesign": 10,
+    "rejectionTypesCountedOncePerCandidate": {
+      "nonlocal_self_clearance": 103
+    }
+  },
+  "cornerAudit": {
+    "scope": "Visible canonical degree-two nodes only, before perspective/photometry. Outgoing tangent angle <160 degrees; right=90±5deg, acute<85deg, otherwise obtuse. Visible degree>=3 counted as branches. Exact right tolerance 1e-6deg reported separately.",
+    "counts": {
+      "acute": 132,
+      "right": 426,
+      "obtuse": 986,
+      "branch": 270,
+      "exactRight": 426,
+      "smoothDegreeTwo": 496,
+      "boundaryOrOpenEndpoint": 804
+    },
+    "designsWithRightCorners": 36,
+    "designsWithAcuteCorners": 9
+  },
+  "splitPolicy": {
+    "unit": "procedural-recipe holdout, not topology-disjoint evaluation",
+    "familySplits": {
+      "procedural-lattice": "train",
+      "procedural-channel": "validation",
+      "procedural-frame": "test"
+    },
+    "topologyDisjoint": false,
+    "realMotifFamilyDisjointness": "not established",
+    "existingGalleryIncluded": false,
+    "existingPhotoQAIncluded": false,
+    "existingHunodanQAIncluded": false,
+    "explanation": "All transformations/count/style variants of the lattice family stay in train. Channel/frame recipe groups are held out, but simplified routing topologies can also occur in the training lattice recipes. Existing evaluation photographs and templates are not read."
+  },
+  "designs": [
+    {
+      "id": "corner-lattice-37",
+      "geometrySha256": "38edd2566ea87e32a61eaec6c15c910dbe7d8be99c019b74a1ef98e9456912a0",
+      "topologySha256": "2b1c728f000aba931ca90fb644d2c7b0e7a033de3f4fe01bda0d20ef744359a1",
+      "counts": [
+        4,
+        7
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.0018768310546875,
+      "visibleJunctions": {
+        "acute": 18,
+        "right": 6,
+        "obtuse": 26,
+        "branch": 17,
+        "exactRight": 6,
+        "smoothDegreeTwo": 16,
+        "boundaryOrOpenEndpoint": 22
+      }
+    },
+    {
+      "id": "corner-lattice-3001055",
+      "geometrySha256": "05298c25979a9b0583f60ef9aa9cec07e52daf0600ca4ddfd8e587bc4512bda0",
+      "topologySha256": "78cb1990e07fa61021dfb13d0cae773b925a4abc068ed095bfe4c022a30179ad",
+      "counts": [
+        3,
+        3
+      ],
+      "attempts": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000072479248046875,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 22,
+        "branch": 3,
+        "exactRight": 6,
+        "smoothDegreeTwo": 8,
+        "boundaryOrOpenEndpoint": 12
+      }
+    },
+    {
+      "id": "corner-lattice-2002061",
+      "geometrySha256": "7003fa8a3ae1606720791d817881512a8880add92ba7bcf11382dfc41343f50c",
+      "topologySha256": "609e26b0c571cfceec7745137dcc9e941a60c7571629d5eb0f6d61abf5b26b85",
+      "counts": [
+        7,
+        7
+      ],
+      "attempts": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000152587890625,
+      "visibleJunctions": {
+        "acute": 24,
+        "right": 36,
+        "obtuse": 60,
+        "branch": 23,
+        "exactRight": 36,
+        "smoothDegreeTwo": 36,
+        "boundaryOrOpenEndpoint": 28
+      }
+    },
+    {
+      "id": "corner-lattice-3064",
+      "geometrySha256": "c9a7515f81d258c873b4087f13f872df972c55fbf02b24a882915a60683be685",
+      "topologySha256": "0e5acc37c9e02a35dc86d28a04fc1d000d2fd452cd4a45a4d5c06726513c5b8d",
+      "counts": [
+        7,
+        2
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000003814697265625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 18,
+        "obtuse": 20,
+        "branch": 7,
+        "exactRight": 18,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 18
+      }
+    },
+    {
+      "id": "corner-lattice-5004088",
+      "geometrySha256": "bbffe6e08afa012bac76114513b0ef1d91239502caa1d0ff7760d52b21dc8482",
+      "topologySha256": "bd86f80f6bbb29fe834892da81cbabdcaede4f0bc0e6a204b6fd6bed76f5424f",
+      "counts": [
+        4,
+        2
+      ],
+      "attempts": 6,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.001216888427734375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 4,
+        "branch": 7,
+        "exactRight": 0,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 12
+      }
+    },
+    {
+      "id": "corner-lattice-5082",
+      "geometrySha256": "99908268256f7f9d4269427edf5e0a8260867954af38b3ec657e3fe53054db55",
+      "topologySha256": "8250dc4beee508e5b837788562f883a063b43348833210088fbbb2b1245724ca",
+      "counts": [
+        4,
+        1
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.001739501953125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 8,
+        "branch": 2,
+        "exactRight": 0,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 10
+      }
+    },
+    {
+      "id": "corner-lattice-6091",
+      "geometrySha256": "39d203a8839271192a9be5d97386e5fcfe3e0a394046c40f1e0817180d86c520",
+      "topologySha256": "c425cf1daddd28cda5177509ba17a5aa65bdc4f1b4cca42c84eb115a0c0bd579",
+      "counts": [
+        3,
+        2
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00002288818359375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 8,
+        "branch": 3,
+        "exactRight": 6,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 10
+      }
+    },
+    {
+      "id": "corner-lattice-2007106",
+      "geometrySha256": "bdd053a2f8ef89226fc781838db1edd99dc599b64bff89feb0b1519a0dd0ca65",
+      "topologySha256": "bdadf944cc55c6dda6bf87f11f1ed9d63e7397689a769a0f63aa9e45c49e8ed3",
+      "counts": [
+        1,
+        6
+      ],
+      "attempts": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00183868408203125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 16,
+        "branch": 2,
+        "exactRight": 6,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 14
+      }
+    },
+    {
+      "id": "corner-lattice-1008112",
+      "geometrySha256": "88758554a86a51dbbef19e66fcbf75d7d461e8448c955fa70f013c6b8db54b04",
+      "topologySha256": "4dc8bb8d48e1d25b0d7471904ba4f7fa1c3528e1d07e1b9c2f79231f90b50967",
+      "counts": [
+        6,
+        4
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.003040313720703125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 12,
+        "obtuse": 30,
+        "branch": 14,
+        "exactRight": 12,
+        "smoothDegreeTwo": 18,
+        "boundaryOrOpenEndpoint": 20
+      }
+    },
+    {
+      "id": "corner-lattice-2009124",
+      "geometrySha256": "7e80c36dc3c6935b5b213165149409f9d0b4adc8ddf83a8890fc48c20331fb8c",
+      "topologySha256": "c77c2ca74daf9de0ff5a1e898ae6dd6f64b3f559fcb58ea1ff451fe53d44f124",
+      "counts": [
+        1,
+        3
+      ],
+      "attempts": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.0000152587890625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 2,
+        "branch": 1,
+        "exactRight": 6,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 8
+      }
+    },
+    {
+      "id": "corner-lattice-1010130",
+      "geometrySha256": "0e891bd75e02cfcbd54f88a39d2e8f8d262def0b19c59a24ec060c7d4aa401c8",
+      "topologySha256": "e0b1351eb6d9a90f12e017784f9a17ec95f4596e9446092035ffd6e283a0c7a2",
+      "counts": [
+        5,
+        7
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00014495849609375,
+      "visibleJunctions": {
+        "acute": 6,
+        "right": 24,
+        "obtuse": 64,
+        "branch": 15,
+        "exactRight": 24,
+        "smoothDegreeTwo": 26,
+        "boundaryOrOpenEndpoint": 24
+      }
+    },
+    {
+      "id": "corner-lattice-1011139",
+      "geometrySha256": "a8df386325f97c99d280217628a6aef38697b2d7661b78501b96248299bcfea4",
+      "topologySha256": "717bbf7a34af8aeafde1b13ed629beb529f685c70262865b5f26dfbc4d10894e",
+      "counts": [
+        6,
+        6
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.003101348876953125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 18,
+        "obtuse": 60,
+        "branch": 21,
+        "exactRight": 18,
+        "smoothDegreeTwo": 12,
+        "boundaryOrOpenEndpoint": 24
+      }
+    },
+    {
+      "id": "corner-lattice-12145",
+      "geometrySha256": "640eccc05e9ae31df5e3592dd9ca53cafb97f7c7e02bfa360582e21c1d94e484",
+      "topologySha256": "14667e2bf3816bcc34d9be69b9c913351787b3238c4a97373590cffa6b831e70",
+      "counts": [
+        2,
+        2
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000030517578125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 2,
+        "branch": 3,
+        "exactRight": 0,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 8
+      }
+    },
+    {
+      "id": "corner-lattice-13154",
+      "geometrySha256": "bea130df8f3274603f3cbe77ad8e946897cd5f06e2ae83836a2b1f2ac4490c77",
+      "topologySha256": "f2c7b32440f7059521c9a6f07667dd99648a42ccc814ef48a81e6664e3057ad2",
+      "counts": [
+        1,
+        5
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000072479248046875,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 12,
+        "obtuse": 4,
+        "branch": 2,
+        "exactRight": 12,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 12
+      }
+    },
+    {
+      "id": "corner-lattice-3014172",
+      "geometrySha256": "dd099d8a2db476b251beca70ff2600f2bc446d3f38c7fdb8975f78c34989035b",
+      "topologySha256": "737cce827fe67e64f47072bef569292677a4b0d3861f6499edd9baa09a3132de",
+      "counts": [
+        7,
+        3
+      ],
+      "attempts": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000125885009765625,
+      "visibleJunctions": {
+        "acute": 12,
+        "right": 6,
+        "obtuse": 38,
+        "branch": 9,
+        "exactRight": 6,
+        "smoothDegreeTwo": 16,
+        "boundaryOrOpenEndpoint": 20
+      }
+    },
+    {
+      "id": "corner-lattice-15172",
+      "geometrySha256": "d7709388fbaa4ae7129e94efe42905b69fd544d0ad4a50ab2126bb467255a76d",
+      "topologySha256": "2ac6f6d9aa3029bbb1e47c80b28ecd63da70887dad3c5c85bf60a0d3fbb2a381",
+      "counts": [
+        2,
+        2
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000186920166015625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 6,
+        "branch": 2,
+        "exactRight": 6,
+        "smoothDegreeTwo": 0,
+        "boundaryOrOpenEndpoint": 8
+      }
+    },
+    {
+      "id": "corner-lattice-3016190",
+      "geometrySha256": "2e56478dedcd0d44f4554e2fbd58ac8c28aa20807ca5d0326bd0d7f796ff2757",
+      "topologySha256": "eb8cb8d87f17b481d953ac723b988abfeb17d616682c18210e58e9276d7298e8",
+      "counts": [
+        1,
+        4
+      ],
+      "attempts": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.001766204833984375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 14,
+        "branch": 0,
+        "exactRight": 0,
+        "smoothDegreeTwo": 10,
+        "boundaryOrOpenEndpoint": 10
+      }
+    },
+    {
+      "id": "corner-lattice-2017196",
+      "geometrySha256": "b0aea40901bf8583fccf6bb0e31f3bb3e3be563f8dbfa953832b5bcdedd1d33c",
+      "topologySha256": "ffe31fc34052b9bf6d47a76bdc5126cf85dc6e81ff255423b4f4067b3e6728b7",
+      "counts": [
+        4,
+        1
+      ],
+      "attempts": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.002048492431640625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 12,
+        "obtuse": 2,
+        "branch": 1,
+        "exactRight": 12,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 10
+      }
+    },
+    {
+      "id": "corner-lattice-18199",
+      "geometrySha256": "cc023af58c91e799ad34251addd4d8e6e66248483a8debcf6436c841ab28b31a",
+      "topologySha256": "06aebf5ecb9a5de77501e2c9c82725b110363987d3470932782800068ac82ce1",
+      "counts": [
+        3,
+        2
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00006103515625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 6,
+        "branch": 3,
+        "exactRight": 6,
+        "smoothDegreeTwo": 6,
+        "boundaryOrOpenEndpoint": 10
+      }
+    },
+    {
+      "id": "corner-lattice-1019211",
+      "geometrySha256": "4961a730bc7a044c79425d6baaf7938dc5c9d8c20f6b486dd21a69ceff205138",
+      "topologySha256": "b583789dd8994e9516c95da6acec067798c81f3ea0f1b2e99dfbc89bc2b47fd1",
+      "counts": [
+        2,
+        4
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.001552581787109375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 30,
+        "branch": 2,
+        "exactRight": 0,
+        "smoothDegreeTwo": 6,
+        "boundaryOrOpenEndpoint": 12
+      }
+    },
+    {
+      "id": "corner-lattice-20217",
+      "geometrySha256": "2dec6d57351137f950c817e2898d7a5bcf3a6216d90007f5a1d9c57fe30c64d8",
+      "topologySha256": "ea116ed3093d7c622f66a9c798a11df368c420ce0e9b020f62f33034823ed0c3",
+      "counts": [
+        2,
+        7
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000171661376953125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 18,
+        "obtuse": 26,
+        "branch": 5,
+        "exactRight": 18,
+        "smoothDegreeTwo": 10,
+        "boundaryOrOpenEndpoint": 18
+      }
+    },
+    {
+      "id": "corner-lattice-1021229",
+      "geometrySha256": "1fdad0e0633bc04972038187deb94f3a9f97bd633edb2bcdbab5f5acd3619b41",
+      "topologySha256": "c77c2ca74daf9de0ff5a1e898ae6dd6f64b3f559fcb58ea1ff451fe53d44f124",
+      "counts": [
+        1,
+        3
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000110626220703125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 2,
+        "branch": 1,
+        "exactRight": 6,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 8
+      }
+    },
+    {
+      "id": "corner-lattice-22235",
+      "geometrySha256": "79d80d0691ad10a5cd2e2418a34b2032b789ab983d758b2f20b9e927207c3325",
+      "topologySha256": "11ea92d023044dd05fbb9fe124ae2ef8c93c243c763ede68fa61a547e305a722",
+      "counts": [
+        7,
+        1
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000034332275390625,
+      "visibleJunctions": {
+        "acute": 6,
+        "right": 12,
+        "obtuse": 0,
+        "branch": 4,
+        "exactRight": 12,
+        "smoothDegreeTwo": 0,
+        "boundaryOrOpenEndpoint": 16
+      }
+    },
+    {
+      "id": "corner-lattice-23244",
+      "geometrySha256": "17989b565d37f70c501838181ddf6618d4bbbca35a248610e239542330362c6e",
+      "topologySha256": "11be365fd94de98ade84f36f1669d9d90a2fa682752239e9356a7dafa17f971c",
+      "counts": [
+        1,
+        1
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.0000457763671875,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 2,
+        "branch": 0,
+        "exactRight": 0,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 4
+      }
+    },
+    {
+      "id": "corner-lattice-24253",
+      "geometrySha256": "e24ba6d4331713c240e32521aec56012d831185fb32602701ff40722d8f7a9cf",
+      "topologySha256": "18821fb1fc318c43a6999e6e31e91d057ff3f85e159d9fc619497273688f47e9",
+      "counts": [
+        7,
+        3
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000026702880859375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 24,
+        "obtuse": 34,
+        "branch": 8,
+        "exactRight": 24,
+        "smoothDegreeTwo": 20,
+        "boundaryOrOpenEndpoint": 20
+      }
+    },
+    {
+      "id": "corner-lattice-25262",
+      "geometrySha256": "c0fdf168d974b34358d28b4f15f6ad672fe00cebb4acbbe3738f37c829caa1c0",
+      "topologySha256": "95ccf3d82ff8119b66663e31813f491236eb0cd2018fdbd2ac07336c0821646b",
+      "counts": [
+        5,
+        3
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000091552734375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 20,
+        "branch": 8,
+        "exactRight": 6,
+        "smoothDegreeTwo": 16,
+        "boundaryOrOpenEndpoint": 16
+      }
+    },
+    {
+      "id": "corner-lattice-2026277",
+      "geometrySha256": "2c2d30dc626a7b2cef1104e1722f27ddd1ec68e38cbc84e2b6f504ab3cea087c",
+      "topologySha256": "9bfdfe2611fc96f355b22483e61a54a950f571e14fc238f44a1e836c330c73a2",
+      "counts": [
+        3,
+        1
+      ],
+      "attempts": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 4,
+        "branch": 2,
+        "exactRight": 0,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 8
+      }
+    },
+    {
+      "id": "corner-lattice-7027301",
+      "geometrySha256": "69a97c6d66612c351210b5a0ca7d55320b42e04c8a0f5db52e322bb49d12a3da",
+      "topologySha256": "a60525e48e485b9de8f30284690a8f0dbee075be762792bdd1261451a21cac47",
+      "counts": [
+        4,
+        2
+      ],
+      "attempts": 8,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.0009307861328125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 20,
+        "branch": 2,
+        "exactRight": 0,
+        "smoothDegreeTwo": 16,
+        "boundaryOrOpenEndpoint": 12
+      }
+    },
+    {
+      "id": "corner-lattice-28289",
+      "geometrySha256": "bf154f7e1bbd3a7d4e0f49b43bf2c5e7323ce69b6909df8395de8a4928b610f7",
+      "topologySha256": "11be365fd94de98ade84f36f1669d9d90a2fa682752239e9356a7dafa17f971c",
+      "counts": [
+        1,
+        1
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 0,
+        "branch": 0,
+        "exactRight": 6,
+        "smoothDegreeTwo": 0,
+        "boundaryOrOpenEndpoint": 4
+      }
+    },
+    {
+      "id": "corner-lattice-5029313",
+      "geometrySha256": "0dbf4ac1f098bf7fbf9f435c7ff849afdd09f455dd35121a5449ebb06b0d7d4d",
+      "topologySha256": "9c176c6412ad04b2ea53967446c9c7787403e48d94aeab124ff0b42ccb0eb87a",
+      "counts": [
+        6,
+        1
+      ],
+      "attempts": 6,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.001953125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 10,
+        "branch": 4,
+        "exactRight": 0,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 14
+      }
+    },
+    {
+      "id": "corner-lattice-2030313",
+      "geometrySha256": "f4030e6262c4fa6f3fe647ceb43c3374efceb3ec50a266bc064ebbe27c259003",
+      "topologySha256": "9600e78de8fbca4152f08ecf9079684254730cb44efe239f528046d3e8ca11e0",
+      "counts": [
+        4,
+        1
+      ],
+      "attempts": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00179290771484375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 12,
+        "branch": 1,
+        "exactRight": 0,
+        "smoothDegreeTwo": 6,
+        "boundaryOrOpenEndpoint": 10
+      }
+    },
+    {
+      "id": "corner-lattice-1031319",
+      "geometrySha256": "7122ef07f5189481eb82646c6a4b569389369728cf90479bc4a12c534b7ce299",
+      "topologySha256": "d59bbf211f42044ae8d7f259b9181996ab2968f141bca388f10bb82643bc961f",
+      "counts": [
+        5,
+        1
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000003814697265625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 6,
+        "branch": 4,
+        "exactRight": 0,
+        "smoothDegreeTwo": 0,
+        "boundaryOrOpenEndpoint": 12
+      }
+    },
+    {
+      "id": "corner-lattice-32325",
+      "geometrySha256": "7adb98f23d1502295eed449154d8536fd88224cf97cd0a649df8b2921db6fbaf",
+      "topologySha256": "ac4483f2a646caf8d5ab2317b8ea009875be2d52ddf6f5df138ed00187737a46",
+      "counts": [
+        4,
+        3
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.001804351806640625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 14,
+        "branch": 6,
+        "exactRight": 6,
+        "smoothDegreeTwo": 16,
+        "boundaryOrOpenEndpoint": 14
+      }
+    },
+    {
+      "id": "corner-lattice-2033340",
+      "geometrySha256": "708c121d5dbe455d1f3c08f40feb3460c3d816c1ee3cfa92f924e036d931f0eb",
+      "topologySha256": "cd5e9dba5b6a0ee39a260ae910fa63e0da2fa0733b1f2ce1dc9462f111419709",
+      "counts": [
+        1,
+        5
+      ],
+      "attempts": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.0000457763671875,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 16,
+        "branch": 1,
+        "exactRight": 0,
+        "smoothDegreeTwo": 8,
+        "boundaryOrOpenEndpoint": 12
+      }
+    },
+    {
+      "id": "corner-lattice-1034346",
+      "geometrySha256": "d79bf2f88652ad25bc872fa2326967e6dc5a27c93b543d4fb07083f350ac7f43",
+      "topologySha256": "556fe768df0e217621adadbc9e0abcdb8306559261e964ea14c668a28ce9bee2",
+      "counts": [
+        1,
+        3
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 4,
+        "branch": 2,
+        "exactRight": 0,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 8
+      }
+    },
+    {
+      "id": "corner-lattice-1035355",
+      "geometrySha256": "4be9812cb43d2d995eb0cda9a6e3baafadfc53cc4d7b9c58b7667ca63daf743b",
+      "topologySha256": "aa7585cd658202ae15c275fc36184e3d57b3e9abf1bd608cc776afd1755cfd83",
+      "counts": [
+        5,
+        1
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000263214111328125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 12,
+        "obtuse": 6,
+        "branch": 2,
+        "exactRight": 12,
+        "smoothDegreeTwo": 0,
+        "boundaryOrOpenEndpoint": 12
+      }
+    },
+    {
+      "id": "corner-lattice-3036370",
+      "geometrySha256": "0013c19feedb6b9896d76a0af4e5c23aa057b5d193adec5a3fe8229fa2007eb1",
+      "topologySha256": "def188769f4e19707ad89498aa29ff20a7cb49ab60f40a4775e8e584701c1b0f",
+      "counts": [
+        3,
+        4
+      ],
+      "attempts": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.001644134521484375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 12,
+        "obtuse": 24,
+        "branch": 4,
+        "exactRight": 12,
+        "smoothDegreeTwo": 12,
+        "boundaryOrOpenEndpoint": 14
+      }
+    },
+    {
+      "id": "corner-lattice-37370",
+      "geometrySha256": "45d878c6293a277777afaa7264412680527d64598b36288f271b8ec2005e6c12",
+      "topologySha256": "8676e48346b2ac255884e0c560d6a70685c04f4e66a31ddb0cea245d7631dc6d",
+      "counts": [
+        7,
+        2
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00003814697265625,
+      "visibleJunctions": {
+        "acute": 12,
+        "right": 0,
+        "obtuse": 20,
+        "branch": 6,
+        "exactRight": 0,
+        "smoothDegreeTwo": 16,
+        "boundaryOrOpenEndpoint": 18
+      }
+    },
+    {
+      "id": "corner-lattice-4038391",
+      "geometrySha256": "6102abdad415bcdd984613e577db0b010692925de3ad192c9cd99c6898f4b9e2",
+      "topologySha256": "c67deb0a53d50bcc6f577dd8599ef445861fa3c33baf0f5bc33fbdd1de6d8fa5",
+      "counts": [
+        7,
+        1
+      ],
+      "attempts": 5,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000026702880859375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 12,
+        "branch": 2,
+        "exactRight": 6,
+        "smoothDegreeTwo": 12,
+        "boundaryOrOpenEndpoint": 16
+      }
+    },
+    {
+      "id": "corner-lattice-9039415",
+      "geometrySha256": "6620a59d34a729e6bc045f0a8ed5a401d6f927c47bacb4223b1e1285a0e3b000",
+      "topologySha256": "4d2b13ddbeb00f35eb5addd4b77316ad94eb3479b66dfb3d97e92273ad0a7e0c",
+      "counts": [
+        3,
+        2
+      ],
+      "attempts": 10,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000026702880859375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 12,
+        "obtuse": 2,
+        "branch": 3,
+        "exactRight": 12,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 10
+      }
+    },
+    {
+      "id": "corner-lattice-40397",
+      "geometrySha256": "80acaae727427edc12e6fae670e407fa7df1cce25448c6bbb108d2f66e5aa8af",
+      "topologySha256": "049ab895d875d1353430c165121c21b8385dca75624b10f1fcbe5e8dfc5af80b",
+      "counts": [
+        2,
+        1
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00003814697265625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 8,
+        "branch": 0,
+        "exactRight": 0,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 6
+      }
+    },
+    {
+      "id": "corner-lattice-3041415",
+      "geometrySha256": "06c533a79c9d777e9c619e172b8cb7230104f6f3b5be2047a6c4c901f5a09059",
+      "topologySha256": "e989f273f7a6a6b88c031792b1f190896a48017159179785b9fe30d793c689ab",
+      "counts": [
+        6,
+        1
+      ],
+      "attempts": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00191497802734375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 12,
+        "obtuse": 12,
+        "branch": 1,
+        "exactRight": 12,
+        "smoothDegreeTwo": 6,
+        "boundaryOrOpenEndpoint": 14
+      }
+    },
+    {
+      "id": "corner-lattice-3042424",
+      "geometrySha256": "23080c58d9724d7fc471dcbc932881eab74c34679e33f9ea7a6e9d4f37d14619",
+      "topologySha256": "15fcafa21fd73051bc7dbdbe7bc4a645d7767654f21db4e02ef6503379bcc467",
+      "counts": [
+        1,
+        2
+      ],
+      "attempts": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 4,
+        "branch": 1,
+        "exactRight": 0,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 6
+      }
+    },
+    {
+      "id": "corner-lattice-43424",
+      "geometrySha256": "353d7abf12d372e18a004959ef7d37b1760cfae1d1ae72c07da001651971bfbb",
+      "topologySha256": "20990bbb17b3f41b85e77298e376a090a3fca744b02fc5c103721fac773f5cfd",
+      "counts": [
+        1,
+        5
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000034332275390625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 12,
+        "branch": 2,
+        "exactRight": 0,
+        "smoothDegreeTwo": 6,
+        "boundaryOrOpenEndpoint": 12
+      }
+    },
+    {
+      "id": "corner-lattice-3044442",
+      "geometrySha256": "e7ee3b1630a85e84e852e097b282866e67ee534b16e14894b21c7d3fa19f8f48",
+      "topologySha256": "f560fe0ea6c623c37c89630c0bdae584b066b74543484915175485a446654720",
+      "counts": [
+        7,
+        2
+      ],
+      "attempts": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00008392333984375,
+      "visibleJunctions": {
+        "acute": 6,
+        "right": 12,
+        "obtuse": 26,
+        "branch": 4,
+        "exactRight": 12,
+        "smoothDegreeTwo": 16,
+        "boundaryOrOpenEndpoint": 18
+      }
+    },
+    {
+      "id": "corner-lattice-2045448",
+      "geometrySha256": "3f3e9e54d384def24e696c8ea631231442e7cd4828a721ef84e75af08261993f",
+      "topologySha256": "e16d64495aba69acf3ab16b2e8272ac387c92fadce7423e0d8b74102298e3297",
+      "counts": [
+        4,
+        2
+      ],
+      "attempts": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00099945068359375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 24,
+        "branch": 3,
+        "exactRight": 0,
+        "smoothDegreeTwo": 6,
+        "boundaryOrOpenEndpoint": 12
+      }
+    },
+    {
+      "id": "corner-lattice-46451",
+      "geometrySha256": "1b494772bc298164fd932ef3190b789034b0a1b0fcacfbe16fe26039ec98fb0f",
+      "topologySha256": "30ff6f75431c6718f8fe30483f3a91e6c2d03b49bf3a93a774fb9eeab336590f",
+      "counts": [
+        1,
+        2
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000049591064453125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 4,
+        "branch": 0,
+        "exactRight": 0,
+        "smoothDegreeTwo": 8,
+        "boundaryOrOpenEndpoint": 6
+      }
+    },
+    {
+      "id": "corner-lattice-47460",
+      "geometrySha256": "cacfbb630190db9f365bd29bdae944115dfb1567dc400a3e6afeb8a07c4b6e32",
+      "topologySha256": "2f3decc34d2f8020dc44824a959eafa496eabaeada02f8ab161f262521de79b9",
+      "counts": [
+        1,
+        4
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00174713134765625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 10,
+        "branch": 1,
+        "exactRight": 6,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 10
+      }
+    },
+    {
+      "id": "corner-lattice-5048484",
+      "geometrySha256": "afb390c40fcc72f12aae24ccd31b08f3827ed1c637a917dfd3dda1b1cf673e89",
+      "topologySha256": "d8faa5cf8d2b1c32bec8062a43e717813cfa72c3ee335e655afa8e9b4711f4c5",
+      "counts": [
+        7,
+        1
+      ],
+      "attempts": 6,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 12,
+        "branch": 4,
+        "exactRight": 0,
+        "smoothDegreeTwo": 6,
+        "boundaryOrOpenEndpoint": 16
+      }
+    },
+    {
+      "id": "corner-lattice-49478",
+      "geometrySha256": "af0daef48a8d9f1e5ddd18774207e65f644557f3a39d0f68d169154d11b19b52",
+      "topologySha256": "7e14915dcb6fd56ac5732df28427a840c68df64ece560665ef1c2ba058a58b60",
+      "counts": [
+        2,
+        7
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000030517578125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 36,
+        "branch": 5,
+        "exactRight": 6,
+        "smoothDegreeTwo": 12,
+        "boundaryOrOpenEndpoint": 18
+      }
+    },
+    {
+      "id": "corner-lattice-50487",
+      "geometrySha256": "2f87ea1cf9b7452da91f1475ffddadd8a44ce0f2136285a7a624eda1c4c47dc0",
+      "topologySha256": "e96d43303f5c349449270c0af74ad77137694c642a66ee432c25ef260ff66902",
+      "counts": [
+        1,
+        6
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.0019683837890625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 18,
+        "branch": 2,
+        "exactRight": 6,
+        "smoothDegreeTwo": 0,
+        "boundaryOrOpenEndpoint": 14
+      }
+    },
+    {
+      "id": "corner-lattice-1051499",
+      "geometrySha256": "c792e0d3ace2d1f5114c6e52d952d5293135ce2a1d471f567589d6712ad59d26",
+      "topologySha256": "31b0a22b14997855a0f60a57a4764eb538ff83ceb9c877d6bad6f7bcd34d9c82",
+      "counts": [
+        3,
+        1
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000026702880859375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 2,
+        "branch": 2,
+        "exactRight": 0,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 8
+      }
+    },
+    {
+      "id": "corner-lattice-4052517",
+      "geometrySha256": "6923421b24bac7cb1c2f86f32c60f2762914c81bba21414adf04c4a44db3405f",
+      "topologySha256": "bddd59f739bdb2ad95b376b082ca5163da98ccfb224845e41f5d015f14d160c5",
+      "counts": [
+        5,
+        7
+      ],
+      "attempts": 5,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000064849853515625,
+      "visibleJunctions": {
+        "acute": 18,
+        "right": 30,
+        "obtuse": 42,
+        "branch": 16,
+        "exactRight": 30,
+        "smoothDegreeTwo": 24,
+        "boundaryOrOpenEndpoint": 24
+      }
+    },
+    {
+      "id": "corner-lattice-5053529",
+      "geometrySha256": "73170d9ac52f628381aefc2dd7493ae3852da5665b2f2ad7b4e8d2e10d1c1062",
+      "topologySha256": "30ff6f75431c6718f8fe30483f3a91e6c2d03b49bf3a93a774fb9eeab336590f",
+      "counts": [
+        1,
+        2
+      ],
+      "attempts": 6,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000057220458984375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 8,
+        "branch": 0,
+        "exactRight": 0,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 6
+      }
+    },
+    {
+      "id": "corner-lattice-54523",
+      "geometrySha256": "fc3e29ef6208002ad7c4ef9a90690b4be8535d3727509bf3b5834fc83a5da4ce",
+      "topologySha256": "0fc5869983a3663a17b54bb005eed7c6f9c8683bfa989cfdf795646b1da666b3",
+      "counts": [
+        6,
+        7
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.001811981201171875,
+      "visibleJunctions": {
+        "acute": 30,
+        "right": 30,
+        "obtuse": 44,
+        "branch": 20,
+        "exactRight": 30,
+        "smoothDegreeTwo": 28,
+        "boundaryOrOpenEndpoint": 26
+      }
+    },
+    {
+      "id": "corner-lattice-55532",
+      "geometrySha256": "aea478bc6ae26c2e3363c3deeb62f2b853540b73265af1b0e4ba7fd4ae70dc47",
+      "topologySha256": "049ab895d875d1353430c165121c21b8385dca75624b10f1fcbe5e8dfc5af80b",
+      "counts": [
+        2,
+        1
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000003814697265625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 4,
+        "branch": 0,
+        "exactRight": 6,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 6
+      }
+    },
+    {
+      "id": "corner-lattice-3056550",
+      "geometrySha256": "a19c59d1e1525f2cccebc01da700e78cab2f000b2aa39b7a9dd6d2ab37b8e830",
+      "topologySha256": "11be365fd94de98ade84f36f1669d9d90a2fa682752239e9356a7dafa17f971c",
+      "counts": [
+        1,
+        1
+      ],
+      "attempts": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000057220458984375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 6,
+        "branch": 0,
+        "exactRight": 0,
+        "smoothDegreeTwo": 0,
+        "boundaryOrOpenEndpoint": 4
+      }
+    },
+    {
+      "id": "corner-lattice-5057565",
+      "geometrySha256": "e7d2ec2321db4ae0b8fe635fcd3bd5a7988847e48d280e4943f2f7d6394906c7",
+      "topologySha256": "11be365fd94de98ade84f36f1669d9d90a2fa682752239e9356a7dafa17f971c",
+      "counts": [
+        1,
+        1
+      ],
+      "attempts": 6,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 4,
+        "branch": 0,
+        "exactRight": 0,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 4
+      }
+    },
+    {
+      "id": "corner-lattice-58559",
+      "geometrySha256": "db85a77f218e0e6b4709f895525cdc70d830c5c6f047dec3eba8bb6628e482c6",
+      "topologySha256": "30ff6f75431c6718f8fe30483f3a91e6c2d03b49bf3a93a774fb9eeab336590f",
+      "counts": [
+        1,
+        2
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.00002288818359375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 6,
+        "obtuse": 2,
+        "branch": 0,
+        "exactRight": 6,
+        "smoothDegreeTwo": 4,
+        "boundaryOrOpenEndpoint": 6
+      }
+    },
+    {
+      "id": "corner-lattice-3059577",
+      "geometrySha256": "defb78d05df5f8e49c8c422d0edffcb47f4d72e005a9b134308f747f22b6ff1e",
+      "topologySha256": "049ab895d875d1353430c165121c21b8385dca75624b10f1fcbe5e8dfc5af80b",
+      "counts": [
+        2,
+        1
+      ],
+      "attempts": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000034332275390625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 6,
+        "branch": 0,
+        "exactRight": 0,
+        "smoothDegreeTwo": 6,
+        "boundaryOrOpenEndpoint": 6
+      }
+    },
+    {
+      "id": "corner-lattice-60577",
+      "geometrySha256": "24eb159adff2c0dd0b922218067c98fd27204f508d8d44a06f4fb866ac4ac9f7",
+      "topologySha256": "ff54a7d42ec205f83bfded9557407b5c214a59d66e7fc49cf2b02a9b610b922e",
+      "counts": [
+        3,
+        2
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000026702880859375,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 10,
+        "branch": 3,
+        "exactRight": 0,
+        "smoothDegreeTwo": 8,
+        "boundaryOrOpenEndpoint": 10
+      }
+    },
+    {
+      "id": "corner-lattice-1061589",
+      "geometrySha256": "55a7f44c1ba379a82ab04f4121c1afcd884ed5e9ba764bdce1b0b6495e716536",
+      "topologySha256": "bdbb03d01d16af6e721b4c66b62ce763bd309ffef5830dd837d2370ebf14863a",
+      "counts": [
+        1,
+        7
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.000034332275390625,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 12,
+        "obtuse": 14,
+        "branch": 1,
+        "exactRight": 12,
+        "smoothDegreeTwo": 10,
+        "boundaryOrOpenEndpoint": 16
+      }
+    },
+    {
+      "id": "corner-lattice-62595",
+      "geometrySha256": "83bbec7ab4038e42d257a2629f0043c258b67bb6cbf078f13990e6e9b2f83e76",
+      "topologySha256": "f632c0041b7d3ca441cb0c4be20fd81cbc2e5127d6b8fcdb798480e1d2a99f85",
+      "counts": [
+        6,
+        1
+      ],
+      "attempts": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0.001911163330078125,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 18,
+        "branch": 3,
+        "exactRight": 0,
+        "smoothDegreeTwo": 0,
+        "boundaryOrOpenEndpoint": 14
+      }
+    },
+    {
+      "id": "corner-lattice-1063607",
+      "geometrySha256": "412b4877d2a0205a17a027064ca0b4464737ae95f56204c958d8b7cbb3900b49",
+      "topologySha256": "11be365fd94de98ade84f36f1669d9d90a2fa682752239e9356a7dafa17f971c",
+      "counts": [
+        1,
+        1
+      ],
+      "attempts": 2,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "rendererDisagreement": 0,
+      "visibleJunctions": {
+        "acute": 0,
+        "right": 0,
+        "obtuse": 4,
+        "branch": 0,
+        "exactRight": 0,
+        "smoothDegreeTwo": 2,
+        "boundaryOrOpenEndpoint": 4
+      }
+    }
+  ],
+  "visualInspection": {
+    "allDesignsContactSheetSha256": "bf11b727046e15cbbcf3a051cec0b6775df9a2d183c34de286981adb47a466a7",
+    "selectedViewsContactSheetSha256": "68fe2d830bd6192d02dbb2d7f9b2a998d29a0a128bc11688c8b5c2a44dd20d69",
+    "selectedIndices": [
+      0,
+      2,
+      63
+    ],
+    "status": "reviewed",
+    "scope": "First photograph of every admitted design, plus canonical/photo/imperfect-crop/coverage panels for design indices0,2,63.",
+    "result": "Observed coherent silhouettes and label alignment; the new acute/right-angle notches are present, and photographic blur can obscure the smallest ones. No real-photo reconstruction or model-accuracy claim."
+  },
+  "limitations": [
+    "A training-only supplement; existing development/recipe holdouts are unchanged.",
+    "Recipe groups are not topology-disjoint and incidence hashes are not graph-isomorphism certificates.",
+    "Sharper offsets are selected against by unchanged geometry/paper gates; actual accepted corner counts are reported.",
+    "Synthetic planar photos still lack real folds, foil and scene clutter; extra examples are not evidence of better model accuracy.",
+    "Verification checks asset integrity and recorded admission evidence; generation itself ran every existing geometry/paper/independent-render check."
+  ]
+}
