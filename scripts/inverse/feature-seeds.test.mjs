@@ -12,6 +12,7 @@ import {gridMask,mismatch} from '../../static/inverse/core/direct/grid.js';
 import {resize} from '../../static/inverse/core/direct/math.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {featureComponentMetrics} from './feature-component-metrics.mjs';
 
 async function puppy(){
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json'));
@@ -63,6 +64,14 @@ test('the full fitter retains the bird eye through clearance, refinement and ind
   const replay=await renderExportedWeave(answer.files['cut_geometry.json'],400),audit=auditImageFeatures(source,replay.mask);
   assert.equal(audit.passed,true);assert.ok(audit.regions[1].retainedFraction>=.6);
   assert.ok(mismatch(replay.mask,source.mask)<.03,'A weighted search score must not certify the original image');
+  assert.equal(answer.report.solver.featureDetail.applied,true);
+  for(const resolution of [400,800]){
+    const woven=resolution===400?replay:await renderExportedWeave(answer.files['cut_geometry.json'],resolution);
+    const mask=Uint8Array.from({length:resolution**2},(_,i)=>source.mask[Math.floor(Math.floor(i/resolution)*400/resolution)*400+Math.floor((i%resolution)*400/resolution)]);
+    const eye=featureComponentMetrics({mask,resolution},woven.mask).find(f=>f.centerMm[0]<30);
+    assert.equal(eye.touchesBorder,false,'Retaining eye pixels must not hide an unwanted connecting seam');
+    assert.ok(eye.componentIoU>.8,'Refinement must recover the small shape, not merely enlarge its white region');
+  }
   assert.deepEqual(source.mask,prepared.preview.mask);
 });
 

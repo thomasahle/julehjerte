@@ -16,6 +16,7 @@ import {readHardPhoto} from './hard-photo-data.mjs';
 import {prepare} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {auditEditablePaper} from './editable-paper-audit.mjs';
+import {featureComponentMetrics} from './feature-component-metrics.mjs';
 import {auditImageFeatures,auditFeatureChange} from '../../static/inverse/core/image-features.js';
 import {Cubic} from '../../static/inverse/core/bezier.js';
 import {installPaintObservation,collectPaintObservation} from './paint-observer.mjs';
@@ -416,6 +417,12 @@ try{
     row.sourceResolution=resolution;
     if(hardPhoto||photoMask){
      row.editableFeatures=auditImageFeatures({mask:sourceMask,resolution},sourceRendered);
+     row.featureComponents=featureComponentMetrics({mask:sourceMask,resolution},sourceRendered);
+     if(photoMask&&!stopMode){
+      const eye=row.featureComponents.find(f=>f.centerMm[0]<30);
+      assert.equal(eye.touchesBorder,false,'The exported eye must remain separate from the background');
+      assert.ok(eye.componentIoU>.8,'The editable eye must retain its shape after simplification');
+     }
      if(row.missingFeatures.length)assert.equal(row.templateChecksPassed,false,'Low mean error cannot certify a pair with lost source regions.');
      assert.equal(row.editableFeatures.passed,!row.missingFeatures.length,'SVG conversion must preserve the observed feature outcome.');
     }

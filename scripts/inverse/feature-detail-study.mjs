@@ -11,7 +11,7 @@ import {resizeObjective} from '../../static/inverse/core/direct/image-objective.
 import {settings} from '../../static/inverse/core/settings.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {Cubic} from '../../static/inverse/core/bezier.js';
-import {components} from '../../static/inverse/core/input.js';
+import {featureComponentMetrics} from './feature-component-metrics.mjs';
 import {imageFeatures,auditImageFeatures} from '../../static/inverse/core/image-features.js';
 import {materialAudit} from '../../static/inverse/core/material.js';
 import {validate} from '../../static/inverse/core/validate.js';
@@ -60,20 +60,9 @@ function subdivide(graph,points,maximumLength){
   return new CurveGraph(graph.families.map(f=>f.map(pi=>graph.paths[pi].flatMap(([e,d])=>d===1?pieces[e]:pieces[e].toReversed().map(p=>p.toReversed())))),graph.width);
 }
 
-function componentMetrics(mask){
-  const byColour=[0,1].map(value=>{
-    const parts=components(mask,400,value),labels=new Int32Array(mask.length).fill(-1);
-    parts.forEach((part,i)=>{for(const pixel of part.pixels)labels[pixel]=i;});return{parts,labels};
-  });
-  return features.map(feature=>{
-    const {parts,labels}=byColour[feature.value],intersections=new Map();
-    for(const pixel of feature.pixels){const id=labels[pixel];if(id>=0)intersections.set(id,(intersections.get(id)||0)+1);}
-    const best=[...intersections].sort((a,b)=>b[1]-a[1])[0],part=best&&parts[best[0]],intersection=best?.[1]||0;
-    return{centerMm:feature.centerMm,sourceAreaMm2:feature.areaMm2,intersectionPixels:intersection,retention:intersection/feature.pixels.length,predictedComponentAreaMm2:part?.pixels.length/16||0,touchesBorder:part?.border??null,componentIoU:intersection/(feature.pixels.length+(part?.pixels.length||0)-intersection)};
-  });
-}
+const componentMetrics=mask=>featureComponentMetrics(source,mask,cfg.width);
 const sourceHashes={};for(const name of await fs.readdir('static/inverse/core',{recursive:true}))if(/\.(js|wasm|c)$/.test(name)){const file='static/inverse/core/'+name;sourceHashes[file]=hash(await fs.readFile(file));}
-sourceHashes['scripts/inverse/feature-detail-study.mjs']=hash(await fs.readFile('scripts/inverse/feature-detail-study.mjs'));
+for(const file of ['scripts/inverse/feature-detail-study.mjs','scripts/inverse/feature-component-metrics.mjs'])sourceHashes[file]=hash(await fs.readFile(file));
 const rows=[],report={fixture,cfg,refinementCfg,sourceHashes,regions,search:search.report,sourceComponents:componentMetrics(source.mask),method:'Fresh image-derived grid; fixed iterations without production deadlines. Report original mask error and matched four-connected component overlap independently. Subdivision also changes regularizer sampling/normalization; its before/after costs are recorded.',rows};
 const fit=(graph,steps)=>refineCurves(graph,objective.probability,256,seed.phase,refinementCfg,{input,weights:objective.weights,steps,rate:.05});
 async function record(id,graph,points,extra={}){
