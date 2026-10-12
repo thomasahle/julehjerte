@@ -142,16 +142,17 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   };
   const finalists=gridFinalists(coarse,weights?[]:evidence),remainingSeeds=coarse.filter(r=>!finalists.includes(r));
   const fine=stage('directFitting',()=>finalists.map(fitSeed).sort((a,b)=>a.error+.005*(a.model.counts[0]+a.model.counts[1])-b.error-.005*(b.model.counts[0]+b.model.counts[1])));
-  let coarseTopology=null,boundaryCandidate=null,finalistPreference=null;
+  let coarseTopology=null,boundaryCandidate=null,finalistPreference=null,colourPreferredGrid=false;
   const poorGrid=coarse[0].error>2*cfg.maxImageError&&fine.every(r=>r.error>cfg.maxImageError);
   // On a poor fit, the cut-count bonus can put a simpler grid that erases an
   // opening ahead of a better image fit that keeps it. Order the existing
   // finalists by colour retention first; no count/phase seed is discarded.
   if(poorGrid&&!weights&&!symmetryRequested&&sourceFeatures.length){
-    const retained=new Map(fine.map(seed=>[seed,retainsGridColours(seed)]));
+    const originalFirst=fine[0],retained=new Map(fine.map(seed=>[seed,retainsGridColours(seed)]));
     const describe=seed=>({counts:seed.model.counts,phase:seed.phase,error:seed.error,featuresRetained:retained.get(seed)});
     finalistPreference={before:fine.map(describe)};
     fine.sort((a,b)=>Number(retained.get(b))-Number(retained.get(a)));
+    colourPreferredGrid=!retained.get(originalFirst)&&retained.get(fine[0]);
     finalistPreference.after=fine.map(describe);
   }
   // Spend this extra routing budget only when even the best initial grid is
@@ -198,13 +199,16 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       }
     }
   }
-  const reserveRefinement=competitiveGrid||shortBudget,probeRouting=shortBudget&&sourceFeatures.length>0&&features.passed;
+  // Retaining a large region does not mean a coarse grid keeps its branches.
+  // Only shorten routing when colour protection actually selected a different
+  // layout. Otherwise trees can lose useful smoothing/edge-profile retries.
+  const featurePreferredGrid=colourPreferredGrid||earlyFeatureInitialization?.scheduled===1;
+  const reserveRefinement=competitiveGrid||shortBudget&&featurePreferredGrid,probeRouting=shortBudget&&featurePreferredGrid&&features.passed;
   const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
   if((!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights&&deadline-performance.now()>2000&&recoverySeconds>=.25){
-    // Leave two seconds plus clearance/polishing for short searches, even
-    // when the grids fit poorly. Otherwise failed routing can consume the
-    // entire allowance and return an untouched grid. If that grid already
-    // keeps every source feature, probe routing briefly before refining it:
+    // Leave two seconds plus clearance/polishing for a competitive grid or
+    // a short search with a better feature-preserving layout. Failed routing
+    // must not consume that candidate's refinement time. Probe routing first:
     // some regular designs have a fast exact routing despite poor grids.
     // Longer searches retain the larger speculative routing allowance.
     recovery=await recoverImageFeatures(input,cfg,recoverySeconds,onProgress);
