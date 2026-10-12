@@ -48,8 +48,8 @@
     "views": 36,
     "familyGroups": 3,
     "checkedAssets": 288,
-    "manifestSha256": "7c64cdf838a4fe22445125fdf7f14224d63ffe53ae390cccfaadd20042c0024b",
-    "scope": "Asset integrity, recorded admission checks, family isolation and projective label consistency; does not rerun physical or image simulation."
+    "manifestSha256": "479ddd307fd7516af2f14fdba560b21fc010428e94f8c45a214388c7a7ca7a45",
+    "scope": "Asset integrity, recorded admission checks, recipe-group isolation (not topology disjointness) and projective label consistency; does not rerun physical or image simulation."
   },
   "designs": [
     {
@@ -60,12 +60,13 @@
         1,
         6
       ],
-      "geometrySha256": "ea3c92c8e8f94fa7051b09c357e0feabe93aa36d19fe3e2685d2afcc41d14aeb",
+      "geometrySha256": "da17d25d08adac321c532e55f8f75d95c2eaba1a87f4ed4f1e9738fa313eb13f",
       "topologySha256": "36341b1781f30f7421ee040c3a60f5e01bd76209aa25a1dc9d9f74281a095965",
       "sharedEdges": 0,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0.001651763916015625
+      "independentRenderError": 0.001651763916015625,
+      "serializedDesignSha256": "ea3c92c8e8f94fa7051b09c357e0feabe93aa36d19fe3e2685d2afcc41d14aeb"
     },
     {
       "id": "shared-lattice-714060",
@@ -75,12 +76,13 @@
         7,
         3
       ],
-      "geometrySha256": "cf54d48e9e63588739a6d0d0b35d0c04455a90130c12f22e20aa32152535821c",
+      "geometrySha256": "f0d705abcf5d4211576e00690372841dae2def075d22b07762eb9179dd8b42be",
       "topologySha256": "a030d3ab33252147208007dac108eb5fec673fdf8e7ea74d633c8382dea261db",
       "sharedEdges": 11,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0.002742767333984375
+      "independentRenderError": 0.002742767333984375,
+      "serializedDesignSha256": "cf54d48e9e63588739a6d0d0b35d0c04455a90130c12f22e20aa32152535821c"
     },
     {
       "id": "channel-715069",
@@ -90,12 +92,13 @@
         1,
         1
       ],
-      "geometrySha256": "db0e19e98ca5beaa2694aec6412394ae4d354302e82fe6cc6f3927a21ecd83af",
+      "geometrySha256": "0fb139d134b8a78a185076d4e9f88317a098d0382395855605e16360b54edd5b",
       "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
       "sharedEdges": 1,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0
+      "independentRenderError": 0,
+      "serializedDesignSha256": "db0e19e98ca5beaa2694aec6412394ae4d354302e82fe6cc6f3927a21ecd83af"
     },
     {
       "id": "frame-1716081",
@@ -105,12 +108,13 @@
         2,
         2
       ],
-      "geometrySha256": "094a54050dfd133ff4cda088f6a253bb6bd60afbc78efb2d652cf9ca843b0b62",
+      "geometrySha256": "ea7633234473c714354e21d71b9bf2dced5bd4637feea660b25be8f3b2586b7f",
       "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
       "sharedEdges": 4,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0
+      "independentRenderError": 0,
+      "serializedDesignSha256": "094a54050dfd133ff4cda088f6a253bb6bd60afbc78efb2d652cf9ca843b0b62"
     },
     {
       "id": "lattice-717087",
@@ -120,12 +124,13 @@
         5,
         5
       ],
-      "geometrySha256": "b62d202abfdd2c5dcb3c07abdeaab2e01ceef7a5498b0d5d35a2d44bcfe362e6",
+      "geometrySha256": "2a3dc8602bef30d054d3a3e636e6fac50afd96895ff1e2fd6ba041023710b1a0",
       "topologySha256": "0161976170526a0cad9c7df782e86c4c5a4dbd6471f8f5e5477e8b9d90183f48",
       "sharedEdges": 0,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0
+      "independentRenderError": 0,
+      "serializedDesignSha256": "b62d202abfdd2c5dcb3c07abdeaab2e01ceef7a5498b0d5d35a2d44bcfe362e6"
     },
     {
       "id": "shared-lattice-718096",
@@ -135,12 +140,13 @@
         4,
         2
       ],
-      "geometrySha256": "2101f8264b819ec56beff781727f059ce556cee04c42497d0357ecb1c2c9792c",
+      "geometrySha256": "5c5dd66690eed579ced659f6d35b552eda374bc1c0c179a7056499e0b75db8b2",
       "topologySha256": "87b2100af5628db554c96ee079ac09de50209dbf2a1fc2edff6ee77fe81d896c",
       "sharedEdges": 6,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0.001171112060546875
+      "independentRenderError": 0.001171112060546875,
+      "serializedDesignSha256": "2101f8264b819ec56beff781727f059ce556cee04c42497d0357ecb1c2c9792c"
     },
     {
       "id": "channel-719105",
@@ -150,12 +156,13 @@
         1,
         1
       ],
-      "geometrySha256": "11e4a24331c1e986f9b311d56e60ff21f27156a456c005c8ae2448c468943ecc",
+      "geometrySha256": "4f167dc7069d25a610fc3a9faf8b9cae8bbc9a2b989f7391c8a8d1acb9c937b9",
       "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
       "sharedEdges": 1,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0.00045013427734375
+      "independentRenderError": 0.00045013427734375,
+      "serializedDesignSha256": "11e4a24331c1e986f9b311d56e60ff21f27156a456c005c8ae2448c468943ecc"
     },
     {
       "id": "frame-720114",
@@ -165,12 +172,13 @@
         2,
         2
       ],
-      "geometrySha256": "fc9085ebabee41b37e018c9c9a4febe11a93412ad8d0c51e55452147e88730d5",
+      "geometrySha256": "6e8f76cd353356d7347e5f4702944c8ab64ae49b9b2b2576b6bef22cd5088988",
       "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
       "sharedEdges": 4,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0
+      "independentRenderError": 0,
+      "serializedDesignSha256": "fc9085ebabee41b37e018c9c9a4febe11a93412ad8d0c51e55452147e88730d5"
     },
     {
       "id": "lattice-721123",
@@ -180,12 +188,13 @@
         2,
         1
       ],
-      "geometrySha256": "a2c5dd95f17d05002342d56b2a9687ddc8cd36694446f7baac657337633a6abe",
+      "geometrySha256": "beadf77122c897521f3787ad32cd9871ae93d7ade9d4a226b2286e11d238b152",
       "topologySha256": "af24e8b1b597e0a40f8a6a0b808997a7329dda08c11bc94b579df5fc34e0cfbb",
       "sharedEdges": 0,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0
+      "independentRenderError": 0,
+      "serializedDesignSha256": "a2c5dd95f17d05002342d56b2a9687ddc8cd36694446f7baac657337633a6abe"
     },
     {
       "id": "shared-lattice-722132",
@@ -195,12 +204,13 @@
         2,
         6
       ],
-      "geometrySha256": "3c8203b6229b59cb1183ca95a47220e3a03c961fb293d15a4400f7b87c124173",
+      "geometrySha256": "5ee9535f8368ce0106ae81e2b4992d52f99d13a4a5f1a8ca5e089053037dd77a",
       "topologySha256": "5f6cfd7aa96511640346d88fee7433697bbb45f5790270a42c5f67b4d69d7613",
       "sharedEdges": 6,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0.001705169677734375
+      "independentRenderError": 0.001705169677734375,
+      "serializedDesignSha256": "3c8203b6229b59cb1183ca95a47220e3a03c961fb293d15a4400f7b87c124173"
     },
     {
       "id": "channel-723141",
@@ -210,12 +220,13 @@
         1,
         1
       ],
-      "geometrySha256": "91e1e2b986de9b4278c844c137d1213e8648d322b0576909cb1f30bfea3c308a",
+      "geometrySha256": "6f23fdb2a025cd6dd03213a1574a58e8680ccd127aa85419fca65b48e7fd5c87",
       "topologySha256": "e8615e8a14bf1b29e945d74ed8dffbb8514a44465864af67a1dbb3a94dc20409",
       "sharedEdges": 1,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0.00058746337890625
+      "independentRenderError": 0.00058746337890625,
+      "serializedDesignSha256": "91e1e2b986de9b4278c844c137d1213e8648d322b0576909cb1f30bfea3c308a"
     },
     {
       "id": "frame-724150",
@@ -225,12 +236,13 @@
         2,
         2
       ],
-      "geometrySha256": "5d1db0f7abbc114a1ed413682408ef799e988d8c8575f0acd68446c86d0b66c2",
+      "geometrySha256": "0dd9389a9fc83bf8614f9b1fedca4eb72e12faa6ecb4b9fe501424a203689ff3",
       "topologySha256": "610ea5dc4666bc7dca2f2716d0536f2d5f6850625ca8c2f99a4c826161be99eb",
       "sharedEdges": 4,
       "geometryPassed": true,
       "paperStatus": "pass",
-      "independentRenderError": 0
+      "independentRenderError": 0,
+      "serializedDesignSha256": "5d1db0f7abbc114a1ed413682408ef799e988d8c8575f0acd68446c86d0b66c2"
     }
   ],
   "rejections": [
@@ -274,13 +286,42 @@
   },
   "focusedTests": {
     "command": "node --test --test-concurrency=1 scripts/inverse/datasets/synthetic-training.test.mjs",
-    "passed": 4
+    "passed": 5
   },
   "limitations": [
     "Synthetic 2D images supplement real photographs; they do not establish real-world accuracy.",
-    "Broad procedural families are limited; view count is not motif/topology diversity.",
+    "Procedural recipe groups are limited and share simplified routing topologies; this is not topology-disjoint evaluation. View count is not motif/topology diversity.",
     "Graph labels are valid witnesses, not unique ground truth; unlisted connections must not automatically become negative examples.",
     "Geometry and nominal paper-core checks are numerical and do not certify physical assembly.",
     "Independent renderer comparison is raster evidence, not a proof of exact equality."
-  ]
+  ],
+  "splitPolicy": {
+    "unit": "procedural-recipe holdout, not topology-disjoint evaluation",
+    "familySplits": {
+      "procedural-lattice": "train",
+      "procedural-channel": "validation",
+      "procedural-frame": "test"
+    },
+    "existingGalleryIncluded": false,
+    "existingPhotoQAIncluded": false,
+    "existingHunodanQAIncluded": false,
+    "explanation": "Lattice recipe variants stay in train and channel/frame recipe groups are held out. Simplified routing topologies and motifs can nevertheless cross these groups. Existing evaluation photographs/templates were not read.",
+    "topologyDisjoint": false,
+    "realMotifFamilyDisjointness": "not established"
+  },
+  "metadataCorrections": [
+    {
+      "script": "scripts/inverse/datasets/synthetic-correct-metadata.mjs",
+      "scriptSha256": "c23d2794fb3c181aa06f6744a4e281395247228e4f54ef4cfa8c752bd4304a64",
+      "originalManifest": "manifest-before-recipe-clarification.json",
+      "originalManifestSha256": "7c64cdf838a4fe22445125fdf7f14224d63ffe53ae390cccfaadd20042c0024b",
+      "changes": [
+        "Describe recipe holdout accurately; simplified routing topologies cross recipe groups.",
+        "Recompute geometry hashes/count excluding color phase and paper palette; retain original full-design identity separately."
+      ],
+      "unchanged": "All cut, graph, photo, crop, coverage, per-view label and validation assets; original generation source hashes."
+    }
+  ],
+  "verifierSha256": "3726c8c6b0354d0f32b6b425f12788bc9323e7023b3000a384fbead72c5baf99",
+  "reproductionNote": "Generation command describes original frozen producer source hashes. Later metadata correction is recorded separately; current generator also excludes color phase from geometry deduplication and describes recipe holdout accurately."
 }

@@ -12,7 +12,7 @@ test('projective labels follow the true image transform, including imperfect cro
   near(project(cropToPhoto, project(canonicalToCrop, [44, 63])), project(h, [44, 63]));
 });
 
-test('procedural labels preserve shared edge identity, family separation and reproducibility', () => {
+test('procedural labels preserve shared edge identity, recipe grouping and reproducibility', () => {
   for (const recipe of RECIPES) {
     const a = proceduralDesign(713051, recipe), b = proceduralDesign(713051, recipe), labels = graphLabels(a);
     assert.deepEqual(a.cuts, b.cuts); assert.equal(a.topologySha256, b.topologySha256);
@@ -48,4 +48,14 @@ test('photographic perturbations are deterministic and preserve the exact witnes
   assert.deepEqual(a.labels, b.labels);
   graph.nodes.forEach((p, i) => near(project(a.labels.canonicalToPhoto, p), a.labels.nodesPhoto[i]));
   assert.ok(a.files['crop-overlap-valid.png'].length > 20);
+});
+
+test('opposite color phases of identical cut geometry do not count as new base geometry', () => {
+  const a = proceduralDesign(26, 'lattice'), b = proceduralDesign(33, 'lattice');
+  assert.deepEqual(a.cuts.curves, b.cuts.curves);
+  assert.deepEqual(a.cuts.A_overlap_paths, b.cuts.A_overlap_paths);
+  assert.deepEqual(a.cuts.B_overlap_paths, b.cuts.B_overlap_paths);
+  assert.notEqual(a.cuts.phase, b.cuts.phase);
+  assert.notEqual(a.serializedDesignSha256, b.serializedDesignSha256);
+  assert.equal(a.geometrySha256, b.geometrySha256);
 });

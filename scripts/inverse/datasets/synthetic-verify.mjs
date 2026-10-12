@@ -2,7 +2,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { FAMILY_SPLITS, sha256 } from './synthetic-geometry.mjs';
+import { FAMILY_SPLITS, geometryHash, sha256 } from './synthetic-geometry.mjs';
 import { SQUARE, project } from './synthetic-photo.mjs';
 
 export async function verifySynthetic(directory) {
@@ -10,7 +10,8 @@ export async function verifySynthetic(directory) {
   if (manifest.schema !== 'woven-heart-synthetic-dataset-1' || manifest.status !== 'complete') throw new Error('Dataset is not a complete supported synthetic generation.');
   if (manifest.splitPolicy.existingGalleryIncluded || manifest.splitPolicy.existingPhotoQAIncluded || manifest.splitPolicy.existingHunodanQAIncluded || manifest.sourceProvenance.externalAssets.length) throw new Error('Unreviewed source or evaluation-set inclusion.');
   if (manifest.baseDesigns.length !== manifest.options.designs || manifest.views.length !== manifest.options.designs * manifest.options.views) throw new Error('Generation is missing requested designs or views.');
-  const designs = new Map(), groups = new Map(); let assets = 0;
+  if (manifest.splitPolicy.topologyDisjoint !== false) throw new Error('Recipe holdout must not claim topology-disjoint evaluation.');
+  const designs = new Map(), groups = new Map(), geometries = new Set(); let assets = 0;
   const readAsset = async asset => {
     const full = path.resolve(root, asset.path);
     if (!full.startsWith(root + path.sep)) throw new Error('Asset escapes dataset directory.');
@@ -20,11 +21,13 @@ export async function verifySynthetic(directory) {
   };
   for (const design of manifest.baseDesigns) {
     if (designs.has(design.id)) throw new Error('Duplicate design id.');
-    if (FAMILY_SPLITS[design.familyId] !== design.split || design.groupId !== design.familyId || groups.has(design.groupId) && groups.get(design.groupId) !== design.split) throw new Error('Motif family crosses dataset splits.');
+    if (FAMILY_SPLITS[design.familyId] !== design.split || design.groupId !== design.familyId || groups.has(design.groupId) && groups.get(design.groupId) !== design.split) throw new Error('Recipe group crosses dataset splits.');
     if (!design.validation.passed || !design.validation.geometry.passed || design.validation.paper?.status !== 'pass' || design.validation.rendererDisagreement > .005) throw new Error('An admitted design did not pass validation.');
     groups.set(design.groupId, design.split); designs.set(design.id, design);
     for (const asset of Object.values(design.assets)) { await readAsset(asset); assets++; }
     const graph = JSON.parse(await readAsset(design.assets['graph.json'])), cuts = JSON.parse(await readAsset(design.assets['cuts.json']));
+    if (geometryHash(cuts) !== design.geometrySha256) throw new Error('Geometry identity differs from exported cuts.');
+    geometries.add(design.geometrySha256);
     if (graph.phase !== cuts.phase || graph.paperAMaskValue !== 1 || graph.canonicalPngPaperA !== 'black' || graph.coveragePngPaperA !== 'white (255)') throw new Error('Graph phase or paper-color encoding differs from exported cuts.');
   }
   const seen = new Set();
@@ -43,8 +46,9 @@ export async function verifySynthetic(directory) {
     if (labels.nodesPhoto.length !== graph.nodes.length || labels.nodesCrop.length !== graph.nodes.length) throw new Error('Graph node label count differs.');
     for (const [i, p] of graph.nodes.entries()) if (!near(project(labels.canonicalToPhoto, p), labels.nodesPhoto[i]) || !near(project(labels.canonicalToCrop, p), labels.nodesCrop[i])) throw new Error('Projected graph node differs.');
   }
+  if (manifest.summary.distinctGeometry !== geometries.size) throw new Error('Geometry diversity count differs.');
   if (manifest.summary.baseDesigns !== designs.size || manifest.summary.photographicViews !== seen.size) throw new Error('Summary counts differ from dataset.');
-  return { passed: true, designs: designs.size, views: seen.size, familyGroups: groups.size, checkedAssets: assets, manifestSha256: sha256(await fs.readFile(path.join(root, 'manifest.json'))), scope: 'Asset integrity, recorded admission checks, family isolation and projective label consistency; does not rerun physical or image simulation.' };
+  return { passed: true, designs: designs.size, views: seen.size, familyGroups: groups.size, checkedAssets: assets, manifestSha256: sha256(await fs.readFile(path.join(root, 'manifest.json'))), scope: 'Asset integrity, recorded admission checks, recipe-group isolation (not topology disjointness) and projective label consistency; does not rerun physical or image simulation.' };
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   if (process.argv.length !== 3) throw new Error('Usage: node scripts/inverse/datasets/synthetic-verify.mjs DATASET_DIRECTORY');

@@ -9,6 +9,9 @@ import { settings } from '../../../static/inverse/core/settings.js';
 import { renderExportedWeave } from '../export-renderer.mjs';
 
 export const sha256 = value => createHash('sha256').update(value).digest('hex');
+export function geometryHash(cuts) {
+  return sha256(JSON.stringify({ units: cuts.units, width: cuts.square_width_mm, curves: cuts.curves, A: cuts.A_overlap_paths, B: cuts.B_overlap_paths }));
+}
 export function random(seed) {
   let state = seed >>> 0;
   return () => {
@@ -23,7 +26,7 @@ const lines = points => points.slice(1).map((p, i) => Cubic.line(points[i], p).p
 const transpose = path => path.map(c => c.map(([x, y]) => [y, x]));
 const mirror = path => path.map(c => c.map(([x, y]) => [100 - x, y]));
 
-/** Variations of a routing family stay together, including count and style changes. */
+/** Recipe variants stay together; recipe groups are not topology-disjoint families. */
 export function proceduralDesign(seed, recipe = RECIPES[seed % RECIPES.length]) {
   if (!RECIPES.includes(recipe)) throw new Error('Unknown procedural recipe.');
   const rng = random(seed), between = (a, b) => a + (b - a) * rng();
@@ -74,7 +77,7 @@ export function proceduralDesign(seed, recipe = RECIPES[seed % RECIPES.length]) 
   const cuts = solutionJSON(solution);
   // Endpoint identities/edge incidence capture shared routing, not just slit counts.
   const topology = { paths: solution.paths, edges: solution.graph.edges.map(e => [e.u, e.v, e.visible]) };
-  return { id: `${recipe}-${seed}`, seed, recipe, familyId, groupId: familyId, split: FAMILY_SPLITS[familyId], parameters, cuts, solution, graph, phase, geometrySha256: sha256(JSON.stringify(cuts)), topologySha256: sha256(JSON.stringify(topology)) };
+  return { id: `${recipe}-${seed}`, seed, recipe, familyId, groupId: familyId, split: FAMILY_SPLITS[familyId], parameters, cuts, solution, graph, phase, geometrySha256: geometryHash(cuts), serializedDesignSha256: sha256(JSON.stringify(cuts)), topologySha256: sha256(JSON.stringify(topology)) };
 }
 
 export async function validateDesign(design, resolution = 256) {
