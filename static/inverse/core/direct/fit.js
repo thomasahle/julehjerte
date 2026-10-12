@@ -154,7 +154,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   }
   // A local boundary gradient cannot create a remote missing region. Try an
   // alternate traced routing while there is still time within this search.
-  const features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width,sourceFeatures);
+  let features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width,sourceFeatures);
   let recovery=null;const recoveredCandidates=[];
   // Traced feature recovery routes through the MILP, which cannot hold a
   // mirrored pairing, and a symmetric fit is expected to drop features of an
@@ -163,6 +163,23 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // Try the detailed routing when poor grids also defeated coarse topology;
   // it must not depend on a spurious missing component near the crop edge.
   const competitiveGrid=fine.some(r=>r.error<=cfg.maxImageError);
+  let featureInitialization=null,earlyFeatureInitialization=null;
+  // A close grid can omit a remote opening which no local boundary gradient
+  // can see. Try the cheap image-derived layout before spending the remaining
+  // fast budget on traced routing. Keep every ordinary finalist as a fallback.
+  if(competitiveGrid&&!features.passed&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
+    const missed=features.regions.flatMap((r,j)=>r.retainedFraction<features.minimumRetention?[j]:[]);
+    const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
+    earlyFeatureInitialization={...extra.report,stage:'before-recovery',scheduled:0};
+    if(extra.seeds.length){
+      const seed=stage('directFitting',()=>fitSeed(extra.seeds[0]));
+      const audit=auditImageFeatures(source,gridMask(seed.model,source.resolution,seed.phase,seed.floor),cfg.width,sourceFeatures);
+      if(audit.passed){
+        fine.unshift(seed);features=audit;
+        earlyFeatureInitialization.scheduled=1;featureInitialization=earlyFeatureInitialization;
+      }
+    }
+  }
   const recoverySeconds=Math.min(20,competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
   if((!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights&&deadline-performance.now()>2000&&recoverySeconds>=.25){
     // If a grid already explains most of the image, speculative recovery of
@@ -195,7 +212,6 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     }
   }
   const floor=fittingMargin(cfg,cfg.width)/cfg.width,candidates=[];
-  let featureInitialization=null;
   let verifiedAlternative=false;
   // Keep the established 25-second photographic comparison allowance after
   // finding an acceptable alternative. The app's longer maximum is useful
@@ -372,7 +388,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    stoppedEarly,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},featureInitialization,featureDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
+    stoppedEarly,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,featureDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

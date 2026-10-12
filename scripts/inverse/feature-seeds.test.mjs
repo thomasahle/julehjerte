@@ -116,15 +116,19 @@ test('a crop-edge fragment still counts in fidelity but cannot drive an extra cu
   assert.ok(mismatch(replay.mask,source.mask)<.01,'Do not replace the close star with the 1.8% seam-producing fit');
 });
 
-test('production search recovers the frozen puppy opening and verifies the exported pair',async()=>{
-  const imported=await puppy(),cfg={...AUTOMATIC_PRESET,timeLimit:25,trials:0,earlyStop:false};
+test('early feature routing recovers the frozen puppy opening within a ten-second search',async()=>{
+  const imported=await puppy(),cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false};
   const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
   const checkpoints=[];
   const answer=await design(prepared.target,cfg,()=>{},{onCandidate:c=>checkpoints.push(c)}),solver=answer.report.solver;
   assert.ok(checkpoints.some(c=>c.materialResolution===700&&c.error<.018),
     'Graceful Stop must retain the candidate after its finer paper check passes');
   assert.equal(solver.selectedInitialization,'feature-weighted-grid');
-  assert.ok(solver.candidates.some(c=>!c.featuresPassed&&c.paper),'The previous valid fallback must remain available');
+  assert.equal(solver.earlyFeatureInitialization.stage,'before-recovery');
+  assert.equal(solver.earlyFeatureInitialization.scheduled,1);
+  assert.equal(solver.featureRecovery,null,'A feature-retaining grid must not spend the fast budget on traced recovery');
+  assert.ok(solver.attempts.some(a=>a.stage==='fine'&&a.counts.every(c=>c===3)),
+    'The ordinary three-cut finalist is still initialized as a fallback');
   assert.equal(solver.paperVerification.initialStatus,'uncertain');
   assert.equal(answer.report.settings.materialResolution,solver.paperVerification.resolution);
   assert.equal(answer.report.manufacturing.status,'pass');
