@@ -143,3 +143,22 @@ node --test --test-concurrency=1 scripts/inverse/datasets/synthetic-intervention
 ```
 
 Disabling blur, downsampling or crop noise does not remove illumination, texture, sensor noise or JPEG chroma subsampling. These controls enable a causal diagnostic; an intervention result is not itself evidence of better training or real-photo performance.
+
+For an exact replay of selected existing views, use the diagnostic tool:
+
+```sh
+node scripts/inverse/datasets/synthetic-intervention-probe.mjs \
+  --dataset=tmp/heart-training-synthetic/batch-v1 \
+  --selection=tmp/heart-learning/localization-corners-v1/worst-distinct-designs.json \
+  --output=tmp/heart-learning/color-interventions-v1
+node scripts/inverse/datasets/synthetic-intervention-probe.mjs \
+  --verify=tmp/heart-learning/color-interventions-v1
+```
+
+The source and selection shown above are the defaults; the output directory must be fresh. Selection is an array of explicit view-ID rows. The tool verifies source assets, checks graph/cut agreement, independently renders 512-pixel canonical coverage, and **requires all six regenerated baseline image files plus common label fields to match the original**. A mismatch stops the replay; it never silently refreshes the source dataset.
+
+Each selected view receives six variants: baseline, red/cream palette, zero blur, full resolution, JPEG quality 1 and exact crop. The output manifest provides `rows` with source/design IDs, variant name and hashed image/label assets, plus retained per-design graphs and source cut hashes. Geometry/camera, nonintervened scalar parameters and appropriate target-PNG identities are asserted during generation. `--verify` subsequently checks all saved asset hashes and baseline/target identities. There is no fitting, model inference or scoring in this tool. Reference graphs are labels, never initialization for a blind fitter.
+
+The first run reproduced six previously selected difficult views and generated **36 controlled rows in 4.885 seconds**. All **36 baseline image hashes** matched the original; all **258 saved assets** passed verification. [Replay evidence](synthetic-intervention-probe.json)
+
+These six views were selected from earlier model errors. They support paired diagnosis of those cases, not an unbiased estimate of generalization or a new independent test set. Exact-crop variants have different crop-coordinate targets and must be evaluated against those corresponding labels. Any reconstruction/model comparison belongs in a separate report.

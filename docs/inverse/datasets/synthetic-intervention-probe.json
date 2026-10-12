@@ -1,0 +1,1029 @@
+{
+  "schema": "woven-heart-selected-intervention-replay-evidence-1",
+  "output": "tmp/heart-learning/color-interventions-v1",
+  "command": "node scripts/inverse/datasets/synthetic-intervention-probe.mjs --output=tmp/heart-learning/color-interventions-v1",
+  "sourceCommit": "3bd5c75bb58d292641af5fa35a71b05fb191aa9c",
+  "sourceHashes": {
+    "scripts/inverse/datasets/synthetic-intervention-probe.mjs": "c569967a1d941c0f9bd0838d6bcdfc96aa44ccaa0cc554ac42d341b768515730",
+    "scripts/inverse/datasets/synthetic-photo.mjs": "0dec8a848f741960bb7cdd921a910815de80bfdf49f9255546fd003474677211",
+    "scripts/inverse/datasets/synthetic-geometry.mjs": "b00f12055e06130e09b564f59a10cec85dde1dce1fce020dd4d2e04a0560bf41",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "package-lock.json": "c2f54196ad3330233440428238539cc2cb12119454ac4da0f35693832bb7e6c6"
+  },
+  "sourceDataset": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-training-synthetic/batch-v1",
+  "sourceManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d",
+  "sourceSelection": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/localization-corners-v1/worst-distinct-designs.json",
+  "sourceSelectionSha256": "36493fd4e0cc39ad52845c967e68b460df731076809ab68a34c141c29aa4866d",
+  "scope": "Paired photographic diagnostic on explicitly selected existing views. Selection may depend on prior model errors; this is not a random evaluation sample or independent generalization benchmark. No fitting, model inference or model scoring.",
+  "summary": {
+    "selectedViews": 6,
+    "designs": 6,
+    "variantsPerView": 6,
+    "generatedRows": 36,
+    "matchedOriginalImageHashes": 36,
+    "seconds": 4.884639209000001
+  },
+  "verification": {
+    "passed": true,
+    "rows": 36,
+    "checkedAssets": 258,
+    "manifestSha256": "f2924c177f4775094500d1d1bdea75e86efd1f6983fd3261d744994a292fe070",
+    "scope": "All saved asset hashes and original baseline/target identities. Generation also asserted poses, scalar parameters and exact-crop transforms."
+  },
+  "variants": [
+    {
+      "name": "baseline"
+    },
+    {
+      "name": "palette-red-cream",
+      "interventions": {
+        "palette": [
+          [
+            176,
+            18,
+            28
+          ],
+          [
+            241,
+            237,
+            218
+          ]
+        ]
+      }
+    },
+    {
+      "name": "blur0",
+      "interventions": {
+        "blurSigmaPixels": 0
+      }
+    },
+    {
+      "name": "full-resolution",
+      "interventions": {
+        "lowResolutionScale": 1
+      }
+    },
+    {
+      "name": "jpeg1",
+      "interventions": {
+        "jpegQuality": 1
+      }
+    },
+    {
+      "name": "exact-crop",
+      "interventions": {
+        "cropNoisePixels": 0
+      }
+    }
+  ],
+  "baselineIdentities": [
+    {
+      "sourceViewId": "channel-715069-v3",
+      "designId": "channel-715069",
+      "seed": 3702608276,
+      "imageHashes": {
+        "photo.jpg": "cdf12ae979a607d84c9baaeed6d5ce1f0c440855afcef47fefaf44d996108b33",
+        "crop.png": "87161724001c56fc62121ec3a0351210a5563ede3ed4075a1ac5d959082cb690",
+        "photo-paper-a.png": "42f7a33eeeb86bf8b551d32a67f56d423aa4b46bf6dfb9ebbffa7de79209f1dc",
+        "photo-overlap-valid.png": "a2ab735814707b6b90dbfb68e3bf92cef73c987032e4aaccb6a9e75e96840466",
+        "crop-paper-a.png": "fb1b5608e293f20852760af1801da79cf449fbe3df9887850803776a172bef96",
+        "crop-overlap-valid.png": "01aeffce235e5a2a262ae7c30dac941191b2fad11cd0fe20d138703821427403"
+      },
+      "allSixImageHashesMatch": true,
+      "commonLabelFieldsMatch": true,
+      "sourceLabelsSha256": "72cfe4d81c7c1a5180edbac1d4d83817773a0c7f607b8048140443e6bc43e4b1"
+    },
+    {
+      "sourceViewId": "channel-783681-v0",
+      "designId": "channel-783681",
+      "seed": 1175146381,
+      "imageHashes": {
+        "photo.jpg": "28b926b7095ed343e1a5e8682cbf474055908ecbcec3b4582ac02fa9200b114e",
+        "crop.png": "23ceeb0cae585228bc1abe250b591141b501ae88524291b2684bed171556c0db",
+        "photo-paper-a.png": "efc32b7173ec6933e09a6964cc698f02c0d7cefd8c371836e428f9f79998db83",
+        "photo-overlap-valid.png": "70cdb75fc3fc03c1b1d9fd8c33dc2353d8fa631dcd06882e420d972006099d9d",
+        "crop-paper-a.png": "071dac6d33f4a89d2c7e179e169ab82294806c77ad8617362eb45d7ab4f309b9",
+        "crop-overlap-valid.png": "a7db51e48cddcbc73fcc58012a07e794c6ca16070117e39ca996fd8724ee2afd"
+      },
+      "allSixImageHashesMatch": true,
+      "commonLabelFieldsMatch": true,
+      "sourceLabelsSha256": "d6e2ed66fecaf7efc0c1fac1f4c76bfba049e2b3979e90eb6e167c28e36d6ee3"
+    },
+    {
+      "sourceViewId": "channel-795789-v2",
+      "designId": "channel-795789",
+      "seed": 2390382035,
+      "imageHashes": {
+        "photo.jpg": "36731c0b1bf368e65ae743ae1c84ad7fbaf51559dd63e7bf4ee2f91e9aecd78a",
+        "crop.png": "68f96108a38116d843d38cbc9702a20995c9ca89739419d471058e2e71d2183e",
+        "photo-paper-a.png": "9470cc304c781e6e4267b4fd926640023d5c4d32adb061289a90eac4db58968b",
+        "photo-overlap-valid.png": "2ec7a894fc1b3684b63118c5954c9bf948b6676a34d7c24110915d5251e05316",
+        "crop-paper-a.png": "f99ad37916a520103905e5ee995d0b2c49a16c6aba3e3f37145be03f7db719c8",
+        "crop-overlap-valid.png": "1e7ab799b7fbb761fe40ec76e7bb1a28e96884bd08e99719f5c6570774640a5b"
+      },
+      "allSixImageHashesMatch": true,
+      "commonLabelFieldsMatch": true,
+      "sourceLabelsSha256": "4001c96bed5b19b57c6006d23c39d03d897fd84241ba943c180575830dc82151"
+    },
+    {
+      "sourceViewId": "frame-764510-v3",
+      "designId": "frame-764510",
+      "seed": 229744311,
+      "imageHashes": {
+        "photo.jpg": "d3b202927a2baed2793432a48af6169c5359be9455c002b223fd1289af10972f",
+        "crop.png": "7ff71061cbea069321f2317c0e02f1ea92f379825e0b4a6859aaa8ed99a9cfb1",
+        "photo-paper-a.png": "c48b55bb026c23c490e63ea288accc02e5824e5f35409ad810918bcee67a0c7d",
+        "photo-overlap-valid.png": "036532c67fd1ba9071907aedeee62c78c486f17188b7ed51550f459167be7a49",
+        "crop-paper-a.png": "1f5745c86a53d409efcb014dc2d118ca4fed3158e07f2cd0b1d7325ceab0f2b7",
+        "crop-overlap-valid.png": "26d0d9950aabc5a8df0add695dd8064126ffec9e23b2dd407edf6d1cf49773c8"
+      },
+      "allSixImageHashesMatch": true,
+      "commonLabelFieldsMatch": true,
+      "sourceLabelsSha256": "c766cad03acc20762ac7907e3645d5d912e5cf75fcf2d60c7aeb7c20426dd768"
+    },
+    {
+      "sourceViewId": "frame-829086-v3",
+      "designId": "frame-829086",
+      "seed": 1303511927,
+      "imageHashes": {
+        "photo.jpg": "2c13c6fb735ef12e6ca9c9482394fd1ee11621b8c19360efc404253419d52ad7",
+        "crop.png": "5bdc661638cf6dbe877c6633f6f9e1f0aed999a5db5193332e2611070145e676",
+        "photo-paper-a.png": "ba86bea809b5b23c1e574170db08acd600ae661c2810c051e82cb9d287fe6757",
+        "photo-overlap-valid.png": "02a06b2c256f26bfa93f172ec26fecc930198a5d97825342662d92c19104ce61",
+        "crop-paper-a.png": "619f51b0154a4c8392ac3f34bffdc5f6797074d22a2a96d607e2e8f430932c95",
+        "crop-overlap-valid.png": "1ed4914de28e8adb0828dfff7bcf634171bb922cd0966ca1f582549d3a7c8876"
+      },
+      "allSixImageHashesMatch": true,
+      "commonLabelFieldsMatch": true,
+      "sourceLabelsSha256": "365ba549dc5c0afcf74fae50709390e530ed31533c90b7f57844f36c73b472cd"
+    },
+    {
+      "sourceViewId": "frame-756438-v0",
+      "designId": "frame-756438",
+      "seed": 722150668,
+      "imageHashes": {
+        "photo.jpg": "004f539ac42c4ffabca3bf94c60de5a79438a3c091e25a61d2438da87c7f22ae",
+        "crop.png": "632132df0307b551a27e0df93c4c41aff90fde8ec040622e3b9ba3676a430e94",
+        "photo-paper-a.png": "e40b138c00551015a9a9dd110550a4f67c95be36fbdde230660176bfa447506f",
+        "photo-overlap-valid.png": "d9ce5f106cce4b0f0fe640f2086b17c156c1717e6f426e113ee3228867162f11",
+        "crop-paper-a.png": "e1e0d961aed1eb373b6c23d183f4360a11c1d63ef53d3540fb9d81085a6f89f3",
+        "crop-overlap-valid.png": "ee2f7ed78c3440c33bf6293c29ca9f78d9f4331d0b6c86e46c0725bac963ba20"
+      },
+      "allSixImageHashesMatch": true,
+      "commonLabelFieldsMatch": true,
+      "sourceLabelsSha256": "a9bc9cafd880a0158505a9a8ebb26fbf78cecdfbb15236988352adb5d652973e"
+    }
+  ],
+  "designs": [
+    {
+      "id": "channel-715069",
+      "sourceId": "channel-715069",
+      "sourceSplit": "validation",
+      "geometrySha256": "0fb139d134b8a78a185076d4e9f88317a098d0382395855605e16360b54edd5b",
+      "assets": {
+        "graph.json": {
+          "path": "designs/channel-715069/graph.json",
+          "sha256": "6de40053974a3248e1ec6562e85f545f50a30f27a44f9d159397970024fe1862"
+        }
+      },
+      "sourceGraph": {
+        "path": "designs/channel-715069/graph.json",
+        "sha256": "6de40053974a3248e1ec6562e85f545f50a30f27a44f9d159397970024fe1862"
+      },
+      "sourceCuts": {
+        "path": "designs/channel-715069/cuts.json",
+        "sha256": "580b1598df0fa26131ead965150a1d84f0c1b5d55bc28d02f8c4b72f6bb8fe49"
+      },
+      "sourceCanonical": {
+        "path": "designs/channel-715069/canonical.png",
+        "sha256": "b5d9c6870df28a6f077d2ea204293f0903a6ea49327e53e9f68416f2694a1317"
+      },
+      "independentCanonicalIdentity": true,
+      "originalAdmissionPassed": true
+    },
+    {
+      "id": "channel-783681",
+      "sourceId": "channel-783681",
+      "sourceSplit": "validation",
+      "geometrySha256": "a97c7ed001327418a68715cf0f1c8414a36ec2cc753f40b403cfa8e779ade8c4",
+      "assets": {
+        "graph.json": {
+          "path": "designs/channel-783681/graph.json",
+          "sha256": "a6d9896dd1d4e1668a42e6b602d43f18a4a8ddd88b5a0447ededd0d4076b2158"
+        }
+      },
+      "sourceGraph": {
+        "path": "designs/channel-783681/graph.json",
+        "sha256": "a6d9896dd1d4e1668a42e6b602d43f18a4a8ddd88b5a0447ededd0d4076b2158"
+      },
+      "sourceCuts": {
+        "path": "designs/channel-783681/cuts.json",
+        "sha256": "adcded81c4f73545f374685b5422c29848b9a6a5f89740cae5bf7a4202d09317"
+      },
+      "sourceCanonical": {
+        "path": "designs/channel-783681/canonical.png",
+        "sha256": "b82dcc75e047fc9f0f24ea2e7c1165ff9eeeeff71a96c6054cf0bd3a2bb62baa"
+      },
+      "independentCanonicalIdentity": true,
+      "originalAdmissionPassed": true
+    },
+    {
+      "id": "channel-795789",
+      "sourceId": "channel-795789",
+      "sourceSplit": "validation",
+      "geometrySha256": "5e32396cfef3b502e938439fef8b30612c272af92733fe8575f3ae61b6e3a16f",
+      "assets": {
+        "graph.json": {
+          "path": "designs/channel-795789/graph.json",
+          "sha256": "db312a67a9927ab565281ff88a28b330072d896d8fadff84d80b62e9226051b7"
+        }
+      },
+      "sourceGraph": {
+        "path": "designs/channel-795789/graph.json",
+        "sha256": "db312a67a9927ab565281ff88a28b330072d896d8fadff84d80b62e9226051b7"
+      },
+      "sourceCuts": {
+        "path": "designs/channel-795789/cuts.json",
+        "sha256": "20ae0f4080347281c8e0d78b3226cb3ea9be3eeb20f7a68e1fb16b078e12621b"
+      },
+      "sourceCanonical": {
+        "path": "designs/channel-795789/canonical.png",
+        "sha256": "b1eb41918276bf851f12d5ec7e8144be41ea4a62e58953fee628fb6692f17d3e"
+      },
+      "independentCanonicalIdentity": true,
+      "originalAdmissionPassed": true
+    },
+    {
+      "id": "frame-764510",
+      "sourceId": "frame-764510",
+      "sourceSplit": "test",
+      "geometrySha256": "0609fbb3f61fbaae599f694267171ef3f42c1fbf428fc78acaf54d0f6f11dab3",
+      "assets": {
+        "graph.json": {
+          "path": "designs/frame-764510/graph.json",
+          "sha256": "822f4a0d711c075d640bbad1c92e5979b65259449f3b82828933111ceccabf52"
+        }
+      },
+      "sourceGraph": {
+        "path": "designs/frame-764510/graph.json",
+        "sha256": "822f4a0d711c075d640bbad1c92e5979b65259449f3b82828933111ceccabf52"
+      },
+      "sourceCuts": {
+        "path": "designs/frame-764510/cuts.json",
+        "sha256": "ffd2621a2b189946b9ebf0dc6767652a02bfda33ec7ea16cc34b3d91154e6568"
+      },
+      "sourceCanonical": {
+        "path": "designs/frame-764510/canonical.png",
+        "sha256": "e7fca981254d8066463a2654cdff79101e5a71987d0029b262d4d97113742e48"
+      },
+      "independentCanonicalIdentity": true,
+      "originalAdmissionPassed": true
+    },
+    {
+      "id": "frame-829086",
+      "sourceId": "frame-829086",
+      "sourceSplit": "test",
+      "geometrySha256": "e163cc5f691724728db0464e77dda8824881537488167d6bedb78f0e92add6cf",
+      "assets": {
+        "graph.json": {
+          "path": "designs/frame-829086/graph.json",
+          "sha256": "fb01470a421f7b18ad75c13df1f80e893282e369ef2de3c0d46f78867aa6f3f1"
+        }
+      },
+      "sourceGraph": {
+        "path": "designs/frame-829086/graph.json",
+        "sha256": "fb01470a421f7b18ad75c13df1f80e893282e369ef2de3c0d46f78867aa6f3f1"
+      },
+      "sourceCuts": {
+        "path": "designs/frame-829086/cuts.json",
+        "sha256": "84b28d6ca7a0fe50104fbc04589eb8471abbdf8fff5455937437b0e80963871c"
+      },
+      "sourceCanonical": {
+        "path": "designs/frame-829086/canonical.png",
+        "sha256": "7c9f94c6ce822ca847423880a7b3703e0aa25461d84ac6249c057318afcd13dc"
+      },
+      "independentCanonicalIdentity": true,
+      "originalAdmissionPassed": true
+    },
+    {
+      "id": "frame-756438",
+      "sourceId": "frame-756438",
+      "sourceSplit": "test",
+      "geometrySha256": "23cb8681bcdebc1d45b8fcd4e2053b51c917f41ec7dbcba3377b7b86934004c4",
+      "assets": {
+        "graph.json": {
+          "path": "designs/frame-756438/graph.json",
+          "sha256": "08195ac4dfa09964b25031f65d751434e30ecc3d16a7280355dfb3aa1cf13731"
+        }
+      },
+      "sourceGraph": {
+        "path": "designs/frame-756438/graph.json",
+        "sha256": "08195ac4dfa09964b25031f65d751434e30ecc3d16a7280355dfb3aa1cf13731"
+      },
+      "sourceCuts": {
+        "path": "designs/frame-756438/cuts.json",
+        "sha256": "4e66e9241ad4f56c5366b213c254ad8ae97120bf9db8e6cf4cf72a84a4bc8e62"
+      },
+      "sourceCanonical": {
+        "path": "designs/frame-756438/canonical.png",
+        "sha256": "033595d1855d0af9718773f1d751fa9cb23dbb03c41b310bedfd5d0dd9ca5f8d"
+      },
+      "independentCanonicalIdentity": true,
+      "originalAdmissionPassed": true
+    }
+  ],
+  "rows": [
+    {
+      "id": "channel-715069-v3--baseline",
+      "sourceViewId": "channel-715069-v3",
+      "designId": "channel-715069",
+      "variant": "baseline",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-715069-v3--palette-red-cream",
+      "sourceViewId": "channel-715069-v3",
+      "designId": "channel-715069",
+      "variant": "palette-red-cream",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-715069-v3--blur0",
+      "sourceViewId": "channel-715069-v3",
+      "designId": "channel-715069",
+      "variant": "blur0",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-715069-v3--full-resolution",
+      "sourceViewId": "channel-715069-v3",
+      "designId": "channel-715069",
+      "variant": "full-resolution",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-715069-v3--jpeg1",
+      "sourceViewId": "channel-715069-v3",
+      "designId": "channel-715069",
+      "variant": "jpeg1",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-715069-v3--exact-crop",
+      "sourceViewId": "channel-715069-v3",
+      "designId": "channel-715069",
+      "variant": "exact-crop",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": false,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true,
+        "originalPhotoUnchanged": true,
+        "physicalCropVerified": true
+      }
+    },
+    {
+      "id": "channel-783681-v0--baseline",
+      "sourceViewId": "channel-783681-v0",
+      "designId": "channel-783681",
+      "variant": "baseline",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-783681-v0--palette-red-cream",
+      "sourceViewId": "channel-783681-v0",
+      "designId": "channel-783681",
+      "variant": "palette-red-cream",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-783681-v0--blur0",
+      "sourceViewId": "channel-783681-v0",
+      "designId": "channel-783681",
+      "variant": "blur0",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-783681-v0--full-resolution",
+      "sourceViewId": "channel-783681-v0",
+      "designId": "channel-783681",
+      "variant": "full-resolution",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-783681-v0--jpeg1",
+      "sourceViewId": "channel-783681-v0",
+      "designId": "channel-783681",
+      "variant": "jpeg1",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-783681-v0--exact-crop",
+      "sourceViewId": "channel-783681-v0",
+      "designId": "channel-783681",
+      "variant": "exact-crop",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": false,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true,
+        "originalPhotoUnchanged": true,
+        "physicalCropVerified": true
+      }
+    },
+    {
+      "id": "channel-795789-v2--baseline",
+      "sourceViewId": "channel-795789-v2",
+      "designId": "channel-795789",
+      "variant": "baseline",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-795789-v2--palette-red-cream",
+      "sourceViewId": "channel-795789-v2",
+      "designId": "channel-795789",
+      "variant": "palette-red-cream",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-795789-v2--blur0",
+      "sourceViewId": "channel-795789-v2",
+      "designId": "channel-795789",
+      "variant": "blur0",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-795789-v2--full-resolution",
+      "sourceViewId": "channel-795789-v2",
+      "designId": "channel-795789",
+      "variant": "full-resolution",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-795789-v2--jpeg1",
+      "sourceViewId": "channel-795789-v2",
+      "designId": "channel-795789",
+      "variant": "jpeg1",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "channel-795789-v2--exact-crop",
+      "sourceViewId": "channel-795789-v2",
+      "designId": "channel-795789",
+      "variant": "exact-crop",
+      "sourceSplit": "validation",
+      "selectedAnalysisSplit": "recipe-validation",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": false,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true,
+        "originalPhotoUnchanged": true,
+        "physicalCropVerified": true
+      }
+    },
+    {
+      "id": "frame-764510-v3--baseline",
+      "sourceViewId": "frame-764510-v3",
+      "designId": "frame-764510",
+      "variant": "baseline",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-764510-v3--palette-red-cream",
+      "sourceViewId": "frame-764510-v3",
+      "designId": "frame-764510",
+      "variant": "palette-red-cream",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-764510-v3--blur0",
+      "sourceViewId": "frame-764510-v3",
+      "designId": "frame-764510",
+      "variant": "blur0",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-764510-v3--full-resolution",
+      "sourceViewId": "frame-764510-v3",
+      "designId": "frame-764510",
+      "variant": "full-resolution",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-764510-v3--jpeg1",
+      "sourceViewId": "frame-764510-v3",
+      "designId": "frame-764510",
+      "variant": "jpeg1",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-764510-v3--exact-crop",
+      "sourceViewId": "frame-764510-v3",
+      "designId": "frame-764510",
+      "variant": "exact-crop",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": false,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true,
+        "originalPhotoUnchanged": true,
+        "physicalCropVerified": true
+      }
+    },
+    {
+      "id": "frame-829086-v3--baseline",
+      "sourceViewId": "frame-829086-v3",
+      "designId": "frame-829086",
+      "variant": "baseline",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-829086-v3--palette-red-cream",
+      "sourceViewId": "frame-829086-v3",
+      "designId": "frame-829086",
+      "variant": "palette-red-cream",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-829086-v3--blur0",
+      "sourceViewId": "frame-829086-v3",
+      "designId": "frame-829086",
+      "variant": "blur0",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-829086-v3--full-resolution",
+      "sourceViewId": "frame-829086-v3",
+      "designId": "frame-829086",
+      "variant": "full-resolution",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-829086-v3--jpeg1",
+      "sourceViewId": "frame-829086-v3",
+      "designId": "frame-829086",
+      "variant": "jpeg1",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-829086-v3--exact-crop",
+      "sourceViewId": "frame-829086-v3",
+      "designId": "frame-829086",
+      "variant": "exact-crop",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": false,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true,
+        "originalPhotoUnchanged": true,
+        "physicalCropVerified": true
+      }
+    },
+    {
+      "id": "frame-756438-v0--baseline",
+      "sourceViewId": "frame-756438-v0",
+      "designId": "frame-756438",
+      "variant": "baseline",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-756438-v0--palette-red-cream",
+      "sourceViewId": "frame-756438-v0",
+      "designId": "frame-756438",
+      "variant": "palette-red-cream",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-756438-v0--blur0",
+      "sourceViewId": "frame-756438-v0",
+      "designId": "frame-756438",
+      "variant": "blur0",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-756438-v0--full-resolution",
+      "sourceViewId": "frame-756438-v0",
+      "designId": "frame-756438",
+      "variant": "full-resolution",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-756438-v0--jpeg1",
+      "sourceViewId": "frame-756438-v0",
+      "designId": "frame-756438",
+      "variant": "jpeg1",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": true,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png",
+          "crop-paper-a.png",
+          "crop-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true
+      }
+    },
+    {
+      "id": "frame-756438-v0--exact-crop",
+      "sourceViewId": "frame-756438-v0",
+      "designId": "frame-756438",
+      "variant": "exact-crop",
+      "sourceSplit": "test",
+      "selectedAnalysisSplit": "recipe-test",
+      "invariants": {
+        "cameraAndPhotoNodesUnchanged": true,
+        "cropAndCropNodesUnchanged": false,
+        "unchangedTargetPNGs": [
+          "photo-paper-a.png",
+          "photo-overlap-valid.png"
+        ],
+        "nonintervenedParametersUnchanged": true,
+        "originalPhotoUnchanged": true,
+        "physicalCropVerified": true
+      }
+    }
+  ],
+  "limitations": [
+    "Reference graph/cuts are ground-truth labels; never pass them to a blind fitter as initialization.",
+    "Changing photo corruption can interact with downstream clipping/JPEG; nonintervened random draws and parameters remain fixed.",
+    "Exact-crop changes the crop-coordinate targets as well as the input crop; compare them in their own coordinate system.",
+    "Original admission records are checked; this replay does not repeat physical-paper audits."
+  ]
+}
