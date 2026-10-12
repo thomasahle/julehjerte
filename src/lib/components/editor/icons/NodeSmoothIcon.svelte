@@ -1,9 +1,4 @@
-<!--
-  Smooth node: collinear handles of independent length.
-  Ported from the `I` icon map in docs/redesign/mockups/build-artboards.mjs
-  (stroke 1.8, 24-unit grid, currentColor) so the editor tool rail can paint
-  every icon green on white and white on the active green button.
--->
+<!-- Smooth: a continuous U-shaped curve around a square point. -->
 <script lang="ts">
 	import type { IconProps } from '$lib/components/icons/types';
 
@@ -16,7 +11,7 @@
 	viewBox="0 0 24 24"
 	fill="none"
 	stroke="currentColor"
-	stroke-width="2"
+	stroke-width="1.7"
 	stroke-linecap="round"
 	stroke-linejoin="round"
 	aria-hidden="true"
@@ -24,7 +19,6 @@
 	class={className}
 	{...rest}
 >
-	<path d="M4 16c4-8 12-8 16 0" />
-	<path d="M7 8h10" />
-	<circle cx="12" cy="10" r="2.5" fill="currentColor" />
+	<path d="M3 5C3 11 5 15 7.5 16.5M21 5C21 11 19 15 16.5 16.5" />
+	<rect x="9" y="15.5" width="6" height="6" fill="var(--node-icon-accent, currentColor)" stroke="none" />
 </svg>

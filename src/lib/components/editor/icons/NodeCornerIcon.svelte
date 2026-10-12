@@ -1,9 +1,4 @@
-<!--
-  Corner node: the two handles move independently.
-  Ported from the `I` icon map in docs/redesign/mockups/build-artboards.mjs
-  (stroke 1.8, 24-unit grid, currentColor) so the editor tool rail can paint
-  every icon green on white and white on the active green button.
--->
+<!-- Corner: two curves meet at an angle around a distinct diamond point. -->
 <script lang="ts">
 	import type { IconProps } from '$lib/components/icons/types';
 
@@ -16,7 +11,7 @@
 	viewBox="0 0 24 24"
 	fill="none"
 	stroke="currentColor"
-	stroke-width="2"
+	stroke-width="1.7"
 	stroke-linecap="round"
 	stroke-linejoin="round"
 	aria-hidden="true"
@@ -24,6 +19,6 @@
 	class={className}
 	{...rest}
 >
-	<path d="M4 18 12 6l8 12" />
-	<circle cx="12" cy="6" r="2.5" fill="currentColor" />
+	<path d="M3 5C6.5 6.3 8.2 10 9.2 13.7M21 5C17.5 6.3 15.8 10 14.8 13.7" />
+	<path d="m12 15 3.5 3.5-3.5 3.5-3.5-3.5Z" fill="var(--node-icon-accent, currentColor)" stroke="none" />
 </svg>

@@ -1,9 +1,4 @@
-<!--
-  Curve node: give a straight corner a pair of handles.
-  Ported from the `I` icon map in docs/redesign/mockups/build-artboards.mjs
-  (stroke 1.8, 24-unit grid, currentColor) so the editor tool rail can paint
-  every icon green on white and white on the active green button.
--->
+<!-- Curve point: the round point distinguishes this action from the three node types. -->
 <script lang="ts">
 	import type { IconProps } from '$lib/components/icons/types';
 
@@ -16,7 +11,7 @@
 	viewBox="0 0 24 24"
 	fill="none"
 	stroke="currentColor"
-	stroke-width="2"
+	stroke-width="1.7"
 	stroke-linecap="round"
 	stroke-linejoin="round"
 	aria-hidden="true"
@@ -24,7 +19,6 @@
 	class={className}
 	{...rest}
 >
-	<path d="M4 17c4-10 12-10 16 0" />
-	<path d="M8 9.5 12 7l4 2.5" />
-	<circle cx="12" cy="7" r="2.5" fill="currentColor" />
+	<path d="M3 5C3 11 5 15 7.5 16.5M21 5C21 11 19 15 16.5 16.5" />
+	<circle cx="12" cy="18.5" r="3.5" fill="var(--node-icon-accent, currentColor)" stroke="none" />
 </svg>

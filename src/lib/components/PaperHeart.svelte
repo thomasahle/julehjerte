@@ -3022,6 +3022,7 @@
 		label: string;
 		tip?: string;
 		icon: Component<IconProps>;
+		iconSize?: number;
 		onclick: () => void;
 		disabled?: boolean;
 		pressed?: boolean;
@@ -3044,7 +3045,7 @@
 							disabled={o.disabled ?? false}
 							onclick={o.onclick}
 						>
-							<Icon size={20} />
+							<Icon size={o.iconSize ?? 20} />
 						</button>
 					</span>
 				{/snippet}
@@ -3432,6 +3433,7 @@
 							label: tr('editorCornerNode'),
 							tip: tr('editorCorner'),
 							icon: NodeCornerIcon,
+							iconSize: 24,
 							onclick: () => setSelectedAnchorsNodeType('corner'),
 							disabled: !validAnchors.length,
 							pressed: nodeTypeSelected === 'corner'
@@ -3440,6 +3442,7 @@
 							label: tr('editorSmoothNode'),
 							tip: tr('editorSmooth'),
 							icon: NodeSmoothIcon,
+							iconSize: 24,
 							onclick: () => setSelectedAnchorsNodeType('smooth'),
 							disabled: !validAnchors.length,
 							pressed: nodeTypeSelected === 'smooth'
@@ -3448,6 +3451,7 @@
 							label: tr('editorSymmetricNode'),
 							tip: tr('editorSymmetric'),
 							icon: NodeSymmetricIcon,
+							iconSize: 24,
 							onclick: () => {
 								makeSelectedAnchorsCurved();
 								setSelectedAnchorsNodeType('symmetric');
@@ -3458,6 +3462,7 @@
 						{@render toolButton({
 							label: tr('editorCurveNode'),
 							icon: NodeCurveIcon,
+							iconSize: 24,
 							onclick: makeSelectedAnchorsCurved,
 							disabled: !validAnchors.length
 						})}
@@ -3871,13 +3876,21 @@
 			transition: background-color 0.15s, color 0.15s;
 		}
 
-		.tool-btn:hover:not(:disabled) {
+		.tool-btn:hover:not(:disabled):not(.active) {
 			background: var(--cream2);
 		}
 
 		.tool-btn.active {
 			background: var(--green);
 			color: var(--white);
+		}
+
+		.node-type-controls {
+			--node-icon-accent: var(--red);
+		}
+
+		.node-type-controls .tool-btn.active {
+			--node-icon-accent: var(--gold);
 		}
 
 		.tool-btn:disabled {

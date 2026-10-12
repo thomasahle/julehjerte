@@ -1,9 +1,4 @@
-<!--
-  Symmetric node: collinear handles of equal length.
-  Ported from the `I` icon map in docs/redesign/mockups/build-artboards.mjs
-  (stroke 1.8, 24-unit grid, currentColor) so the editor tool rail can paint
-  every icon green on white and white on the active green button.
--->
+<!-- Symmetric: the square point has two aligned handles of equal length. -->
 <script lang="ts">
 	import type { IconProps } from '$lib/components/icons/types';
 
@@ -16,7 +11,7 @@
 	viewBox="0 0 24 24"
 	fill="none"
 	stroke="currentColor"
-	stroke-width="2"
+	stroke-width="1.7"
 	stroke-linecap="round"
 	stroke-linejoin="round"
 	aria-hidden="true"
@@ -24,9 +19,11 @@
 	class={className}
 	{...rest}
 >
-	<path d="M4 16c4-8 12-8 16 0" />
-	<path d="M5 10h14" />
-	<circle cx="5" cy="10" r="1.6" fill="currentColor" />
-	<circle cx="19" cy="10" r="1.6" fill="currentColor" />
-	<circle cx="12" cy="10" r="2.5" fill="currentColor" />
+	<path d="M3 5C3 10 5 13.3 7.5 14.5M21 5C21 10 19 13.3 16.5 14.5" />
+	<g fill="var(--node-icon-accent, currentColor)" stroke="none">
+		<rect x="9" y="15.5" width="6" height="6" />
+		<circle cx="3" cy="18.5" r="1.8" />
+		<circle cx="21" cy="18.5" r="1.8" />
+	</g>
+	<path d="M5 18.5H7M17 18.5h2" stroke="var(--node-icon-accent, currentColor)" />
 </svg>

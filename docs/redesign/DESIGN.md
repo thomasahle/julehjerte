@@ -315,6 +315,11 @@ Selecting them shows no anchor or control handles and enables no node or segment
 does not insert a node. Dragging the whole edge inward creates a real cut and restores the outer edge.
 That new cut supports normal editing, symmetry, undo and redo.
 
+The four point-type icons follow the owner's point-types reference: a diamond at a corner, a square
+on a smooth curve, a square with equal handles for symmetry, and a circle for creating curve handles.
+These glyphs are 24px within the existing 44px buttons. Curves use the button text colour; points are
+red on white and gold on the selected green button, with gaps separating the shapes from the curves.
+
 Keep every existing tool (undo/redo, insert/delete node, corner/smooth/symmetric, straighten line/curve, …) as
 44px icon buttons with tooltips — nothing removed, no labels under icons. Apply the palette: page background,
 panels white with 1px `--line` and radius 12, section titles 12px uppercase `--muted`, green accents, red
