@@ -35,6 +35,11 @@ shared-cut validation run, the 22 regular Hunodan designs retained or improved
 their independent errors and remained below nine seconds for preparation,
 solving, validation and export.
 
+The [shared-cut ordering follow-up](datasets/shared-cut-order.md) also retries
+alignment when final straight-span selection changes the curves. This removes
+a photographed frame seam that was rejected before straightening, while
+retaining useful earlier alignments and the same total sharing budget.
+
 The diagnostic photo runs also expose limits upstream of fitting: the automatic
 jigsaw crop is distorted, and the bauble loses much of its frame during colour
 classification even with a historical hand-reviewed crop. Both automatic masks

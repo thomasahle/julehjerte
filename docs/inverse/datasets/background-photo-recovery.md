@@ -134,8 +134,10 @@ Visual inspection found a faint remaining diagonal seam in the pale frame
 geometry. Shared-cut recovery proposes joining that span but rejects the edit
 because its higher-resolution image error increases. The pair passes existing
 aggregate checks; that does not make the seam a convincing reconstruction.
-This remains a quality defect and a concrete next case for shared-cut and
-image-objective work. No acceptance threshold was weakened to hide it.
+The [shared-cut ordering follow-up](shared-cut-order.md) resolves this seam by
+retrying alignment after straight-span selection changes the curves. The
+original rejection and its geometry remain recorded here; no acceptance
+threshold was weakened to hide it.
 
 ## Limits and reproduction
 

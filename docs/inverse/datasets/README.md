@@ -51,9 +51,11 @@ all six diagnostic photographs and all 24 photographs in an additional
 family-balanced synthetic sample. It separates background brightness variation
 from color changes and refines the orientation of promising rejected outlines.
 All 30 complete replays produce checked templates; three of the additional
-sample's dense lattices exceed ten seconds overall. A faint seam in the pale
-diagnostic frame and an unnecessary extra cut in another frame remain visible
-quality/complexity issues despite passing aggregate checks.
+sample's dense lattices exceed ten seconds overall. A
+[shared-cut ordering follow-up](shared-cut-order.md) resolves the pale frame's
+faint seam by retrying alignment after straight-span selection, retaining the
+useful earlier alignments and the existing cleanup budget. The unnecessary
+extra cut in another frame remains a complexity issue despite passing checks.
 Common-coordinate comparisons document accuracy tradeoffs, including the
 preference for matching sheets within the user's one-percentage-point limit.
 
