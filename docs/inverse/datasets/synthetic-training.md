@@ -4,6 +4,10 @@ This offline generator supplies reproducible images **with a known, validated cu
 
 The first inspected pilot contains **12 base designs, 36 photographic views, 8 stored graph-incidence signatures and 3 broad motif families**. The 36 views are not 36 independent motifs. All admitted designs passed the existing geometric and nominal paper-core checks, and an independent render from exported cuts agreed with the geometric renderer to within **0.275%** at 512 pixels. One frame candidate failed the unchanged geometry gate and was rejected. [Pilot evidence](synthetic-pilot.json)
 
+The subsequent inspected batch contains **128 validated designs and 512 views at 384 pixels**, with 56 stored incidence signatures and the same 3 broad families. It took **81.1 seconds** including validation and file writes; all 3,968 referenced assets passed hash and label-consistency verification. Eight invalid candidates were rejected/resampled; the maximum renderer disagreement was **0.327%** at 512 pixels. The conservative split has 64 training designs (256 views), 32 validation designs (128 views) and 32 test designs (128 views). [Batch evidence](synthetic-batch.json)
+
+Reproduce that batch with `--designs=128 --views=4 --resolution=384 --canonicalResolution=512` and a fresh output directory. The pilot and batch use overlapping seeds, so **do not concatenate them as independent designs**; the batch supersedes the pilot for training.
+
 Generate and inspect a new dataset:
 
 ```sh

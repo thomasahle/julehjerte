@@ -9,6 +9,7 @@ export async function verifySynthetic(directory) {
   const root = path.resolve(directory), manifest = JSON.parse(await fs.readFile(path.join(root, 'manifest.json'), 'utf8'));
   if (manifest.schema !== 'woven-heart-synthetic-dataset-1' || manifest.status !== 'complete') throw new Error('Dataset is not a complete supported synthetic generation.');
   if (manifest.splitPolicy.existingGalleryIncluded || manifest.splitPolicy.existingPhotoQAIncluded || manifest.splitPolicy.existingHunodanQAIncluded || manifest.sourceProvenance.externalAssets.length) throw new Error('Unreviewed source or evaluation-set inclusion.');
+  if (manifest.baseDesigns.length !== manifest.options.designs || manifest.views.length !== manifest.options.designs * manifest.options.views) throw new Error('Generation is missing requested designs or views.');
   const designs = new Map(), groups = new Map(); let assets = 0;
   const readAsset = async asset => {
     const full = path.resolve(root, asset.path);
@@ -23,6 +24,8 @@ export async function verifySynthetic(directory) {
     if (!design.validation.passed || !design.validation.geometry.passed || design.validation.paper?.status !== 'pass' || design.validation.rendererDisagreement > .005) throw new Error('An admitted design did not pass validation.');
     groups.set(design.groupId, design.split); designs.set(design.id, design);
     for (const asset of Object.values(design.assets)) { await readAsset(asset); assets++; }
+    const graph = JSON.parse(await readAsset(design.assets['graph.json'])), cuts = JSON.parse(await readAsset(design.assets['cuts.json']));
+    if (graph.phase !== cuts.phase || graph.paperAMaskValue !== 1 || graph.canonicalPngPaperA !== 'black' || graph.coveragePngPaperA !== 'white (255)') throw new Error('Graph phase or paper-color encoding differs from exported cuts.');
   }
   const seen = new Set();
   for (const view of manifest.views) {
