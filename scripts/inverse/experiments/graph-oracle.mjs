@@ -5,6 +5,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
+import {cpus} from 'node:os';
+import {Resvg} from '@resvg/resvg-js';
 import {referenceEnvironment} from '../reference.mjs';
 import {renderExportedWeave} from '../export-renderer.mjs';
 import {Cubic,sub,add,dot,distance,segmentDistance} from '../../../static/inverse/core/bezier.js';
@@ -13,11 +15,13 @@ import {buildGraph,reindex,curvesOf,solutionJSON,loadSolutionJSON,inspectBoundar
 import {CurveGraph} from '../../../static/inverse/core/direct/curves.js';
 import {curveKey} from '../../../static/inverse/core/symmetry.js';
 import {preprocessMask} from '../../../static/inverse/core/input.js';
+import {targetSVG} from '../../../static/inverse/core/export.js';
 import {solveGraph,solverRuntime} from '../../../static/inverse/core/solver.js';
 import {validate} from '../../../static/inverse/core/validate.js';
 import {materialAudit} from '../../../static/inverse/core/material.js';
 import {settings} from '../../../static/inverse/core/settings.js';
 import {AUTOMATIC_PRESET,SIMPLIFIED_PREPROCESSING} from '../../../static/inverse/core/presets.js';
+import {boundaryAblationVariants} from './graph-boundary-ablations.mjs';
 
 /** Canonicalize only exact straight loci. Split at existing reference anchors
  * so different line parameterizations/subdivisions can share the same edge.
@@ -132,12 +136,17 @@ export function oracleGraphVariants(reference,cfg){
   ];
 }
 
-export async function runGraphOracle({ids,output,seconds=3,repeats=1}){
+export async function runGraphOracle({ids,output,seconds=3,repeats=1,study='connectors'}){
   if(!Number.isFinite(seconds)||seconds<.1||seconds>180||!Number.isInteger(repeats)||repeats<1)throw new Error('Use a positive bounded time limit and integer repeat count.');
+  if(!['connectors','boundaries'].includes(study))throw new Error('Choose the connectors or boundaries study.');
   const raw={...AUTOMATIC_PRESET,...SIMPLIFIED_PREPROCESSING,algorithm:'trace',neighbors:8,connectorVariants:1,timeLimit:seconds,trials:0},cfg=settings(raw);
   const hash=bytes=>createHash('sha256').update(bytes).digest('hex'),sourceHashes={};
   for(const file of ['scripts/inverse/experiments/graph-oracle.mjs','scripts/inverse/reference.mjs','scripts/inverse/export-renderer.mjs','static/inverse/core/input.js','static/inverse/core/graph.js','static/inverse/core/geometry.js','static/inverse/core/solver.js','static/inverse/core/validate.js','static/inverse/core/material.js','static/inverse/core/direct/curves.js'])sourceHashes[file]=hash(await fs.readFile(file));
+  for(const file of ['scripts/inverse/experiments/graph-boundary-ablations.mjs','static/inverse/core/bezier.js','static/inverse/core/polygonal.js','static/inverse/core/junctions.js','static/inverse/core/border.js'])sourceHashes[file]=hash(await fs.readFile(file));
+  for(const file of ['static/inverse/core/export.js','package-lock.json'])sourceHashes[file]=hash(await fs.readFile(file));
   const ledger={purpose:'Oracle headroom experiment, not a reconstruction benchmark or trained model.',settings:raw,sourceHashes,repeats,criteria:{referenceImportError:.001,exportedImageError:.01,unchangedGeometryAndPaperRules:true},solverStartupExcluded:true,results:[],limitations:['Clean square gallery renderings only; no photograph crop or colour-classification evaluation.','Oracle variants expose exact visible geometry and the reference subdivision, including anchors a photograph may not reveal.','The compact graph is restricted to one known valid routing, not all valid template pairs. Missing reference edges do not prove that another routing is unavailable.','HiGHS is still given unknown sheet ownership; independent exported rendering and the normal geometry/paper checks remain required.']};
+  Object.assign(ledger,{study,runtime:process.version,platform:process.platform,cpu:cpus()[0]?.model});
+  if(study==='boundaries')ledger.limitations.push('Removing straight anchors is a partial junction ablation: original curved anchors remain.','Projection adds knots to existing traced curves; it cannot move an incorrect boundary, join nearby curves, or repair a missing image feature.','Boundary preprocessing is cached within each case; per-variant preparation timings include only the work performed for that variant.','Boundary diagnostics use cubic monotone-interval intersections and a 1e-9 mm pixel-centre tie convention; final acceptance still uses independently rendered exported SVGs.');
   await fs.mkdir(output,{recursive:true});
   const save=()=>fs.writeFile(path.join(output,'results.json'),JSON.stringify(ledger,null,2)+'\n');
   const env=await referenceEnvironment();
@@ -157,28 +166,42 @@ export async function runGraphOracle({ids,output,seconds=3,repeats=1}){
         await fs.writeFile(path.join(output,`${id}-reference.png`),referenceRender.png);
         if(!geometry.passed||paper?.status!=='pass'||row.reference.renderError>.001){row.status='reference_not_eligible';await save();continue;}
         const variants=[],started=performance.now();
-        try{
-          const traced=preprocessMask(mask,400,raw),raster=buildGraph(traced,cfg);
-          variants.push({name:'raster-heuristic',graph:raster,oracle:false});
-        }catch(e){variants.push({name:'raster-heuristic',buildError:e.message,oracle:false});}
-        row.preparationSeconds={raster:(performance.now()-started)/1000};
-        const oracleStart=performance.now();
-        try{
-          const oracles=oracleGraphVariants(reference,cfg);
-          row.missingReferenceConnectors=explainMissingConnectors(oracles[1].witness,oracles[0].graph,cfg);
-          variants.push(...oracles);
-        }catch(e){
-          row.oracleConstructionError=e.message;
-          for(const name of ['exact-boundary-heuristic','exact-boundary-plus-connectors','exact-boundary-compact'])variants.push({name,buildError:e.message,oracle:true});
+        if(study==='boundaries'){
+          variants.push(...boundaryAblationVariants({mask,n:400,reference,raw,cfg}));
+          row.preparationSeconds={allBoundaryVariants:(performance.now()-started)/1000};
+        }else{
+          try{
+            const traced=preprocessMask(mask,400,raw),raster=buildGraph(traced,cfg);
+            variants.push({name:'raster-heuristic',graph:raster,oracle:false});
+          }catch(e){variants.push({name:'raster-heuristic',buildError:e.message,oracle:false});}
+          row.preparationSeconds={raster:(performance.now()-started)/1000};
+          const oracleStart=performance.now();
+          try{
+            const oracles=oracleGraphVariants(reference,cfg);
+            row.missingReferenceConnectors=explainMissingConnectors(oracles[1].witness,oracles[0].graph,cfg);
+            variants.push(...oracles);
+          }catch(e){
+            row.oracleConstructionError=e.message;
+            for(const name of ['exact-boundary-heuristic','exact-boundary-plus-connectors','exact-boundary-compact'])variants.push({name,buildError:e.message,oracle:true});
+          }
+          row.preparationSeconds.oracleGroup=(performance.now()-oracleStart)/1000;
         }
-        row.preparationSeconds.oracleGroup=(performance.now()-oracleStart)/1000;
+        if(study==='boundaries')for(const variant of variants){
+          const target=variant.graph?.target||variant.boundaryTarget;if(!target)continue;
+          const stem=`${id}-${variant.name}-boundary`;
+          await fs.writeFile(path.join(output,`${stem}.json`),JSON.stringify({width:target.width,phase:target.phase,stage:variant.graph?'after graph normalization':'before failed graph construction',curves:target.curves.map(c=>c.p)}));
+          try{
+            const svg=targetSVG({...target,metadata:{...target.metadata,paperColors:['#000000','#ffffff']}}),png=new Resvg(svg,{fitTo:{mode:'width',value:400},font:{loadSystemFonts:false}}).render().asPng();
+            await fs.writeFile(path.join(output,`${stem}.svg`),svg);await fs.writeFile(path.join(output,`${stem}.png`),png);
+          }catch(error){variant.diagnostics={...variant.diagnostics,boundaryPreviewError:error.message};}
+        }
         for(const variant of variants)if(variant.witness){
           variant.witnessValidation=validate(variant.witness,cfg);
           variant.witnessPaper=variant.witnessValidation.passed?materialAudit(variant.witness,cfg).summary:null;
           variant.witnessImageError=error((await renderExportedWeave(solutionJSON(variant.witness),400)).mask);
         }
         for(let repeat=0;repeat<repeats;repeat++)for(let j=0;j<variants.length;j++){
-          const v=variants[(j+repeat)%variants.length],result={name:v.name,repeat,oracle:v.oracle,addedConnectors:v.addedConnectors,maximumReferenceNormalizationMm:v.maximumNormalizationMm,referenceNormalization:v.referenceNormalization};
+          const v=variants[(j+repeat)%variants.length],result={name:v.name,repeat,oracle:v.oracle,addedConnectors:v.addedConnectors,maximumReferenceNormalizationMm:v.maximumNormalizationMm,referenceNormalization:v.referenceNormalization,diagnostics:v.diagnostics};
           row.variants.push(result);
           if(v.buildError){result.status='graph_construction_failure';result.error=v.buildError;await save();continue;}
           if(v.witness){
@@ -220,7 +243,7 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(path.resolve(process.argv[1]
     ?JSON.parse(await fs.readFile('src/lib/data/hearts.json','utf8')).categories.flatMap(c=>c.hearts)
     :args.ids?.split(',')||['classic-3x3','5star','flower','ramme','sun','circle','juletrae','amy-pattern'];
   const output=args.output||`tmp/graph-oracle-${new Date().toISOString().replace(/[:.]/g,'-')}`;
-  const report=await runGraphOracle({ids,output,seconds:Number(args.seconds||3),repeats:Number(args.repeats||1)});
+  const report=await runGraphOracle({ids,output,seconds:Number(args.seconds||3),repeats:Number(args.repeats||1),study:args.study||'connectors'});
   console.log(JSON.stringify({output,cases:report.results.length,evaluated:report.results.filter(r=>r.status==='evaluated').length}));
   if(!report.results.some(r=>r.status==='evaluated'))process.exitCode=1;
 }
