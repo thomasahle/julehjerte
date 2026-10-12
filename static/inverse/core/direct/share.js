@@ -178,7 +178,10 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
           if(!change.passed){rejected.push({reason:'source_features',featureChange:change,...c});continue;}
         }
         const check=validate(solution,cfg,{checkImage:false});if(!check.passed){rejected.push({reason:'geometry',issues:check.issues.slice(0,3),...c});continue;}
-        const quality=easeMetrics(solution,cfg);if(quality.minimumRadius<Math.min(.45,ease.minimumRadius||Infinity)||quality.sharpTurns>ease.sharpTurns){rejected.push({reason:'cut_quality',...c});continue;}
+        // A null minimum denotes entirely straight geometry (infinite radius),
+        // not a zero-radius bend. In particular, exact diagonal sharing can
+        // turn every remaining cubic into a straight segment.
+        const quality=easeMetrics(solution,cfg);if((quality.minimumRadius??Infinity)<Math.min(.45,ease.minimumRadius??Infinity)||quality.sharpTurns>ease.sharpTurns){rejected.push({reason:'cut_quality',...c});continue;}
         if(cfg.requireMaterialCore&&!materialAudit(solution,cfg).passed){rejected.push({reason:'paper',...c});continue;}
         accepted.push({...c,errorBefore:best.error,errorAfter:error,bigErrorBefore:bigError,bigErrorAfter:highError,...(source?{sourceErrorBefore:sourceError,sourceErrorAfter:nextSourceError}:{})});
         best={...best,graph,points:points.slice(),error,geometryPassed:true,validation:check};bigError=highError;sourceWoven=woven;sourceError=nextSourceError;changed=true;break proposals;
