@@ -214,6 +214,104 @@ photos, Hunodan `hjfig-05`, and bird mask. All 65 served engine/worker JavaScrip
 hashes match the source. See the per-case results and unchanged acceptance
 criteria in [CLOSED-BOUNDARY-VALIDATION.json](CLOSED-BOUNDARY-VALIDATION.json).
 
+### Follow-up: boundary quality versus junction placement
+
+The next study (`8b32f16`) tests eight graph constructions on the same 38 gallery
+entries. The same 24 references qualify, and each variant gets three repetitions
+with a three-second solve allowance. Source masks, geometry/paper requirements
+and the 1% independent exported-image error limit are unchanged. Known hidden
+connections and sheet ownership are never supplied in these variants.
+
+| Graph construction | Passes on all three repetitions |
+| --- | ---: |
+| Original photo-oriented trace | 9/24 |
+| Same trace plus projected reference junctions | 8/24 |
+| Clean-mask trace: no border repair, smoothing or snapping; 0.25 mm mixed straight/cubic fitting | 6/24 |
+| Clean trace plus projected reference junctions | 6/24 |
+| Clean trace subdivided to at most 8 mm per segment | 2/24 |
+| Exact boundary and reference subdivision | 24/24 |
+| Exact boundary with straight degree-two interior anchors removed | 23/24 |
+| Previous variant subdivided to at most 8 mm per segment | 12/24 |
+
+These are controlled constructions, not a tuned portfolio or the automatic
+application pipeline. The clean trace is one fixed preprocessing choice, not
+the best attainable non-neural vectorizer. Projected junctions are reference
+visible-edge endpoints projected onto the existing trace within 1 mm. They add
+Bézier subdivisions rather than moving the contour or repairing its topology.
+Removing straight anchors retains corners, intersections already represented
+as vertices, and all curved anchors; exact variants retain the reference's
+intersection subdivision policy. This is a partial junction ablation, not a
+complete boundary-only oracle.
+
+The `squares` case isolates a useful missing-junction effect. Its clean trace has
+zero sampled mask error but its sparse graph is exhausted. Adding eight
+projected reference junctions produces a valid reconstruction, while removing
+ten straight anchors from the exact reference makes that graph unroutable.
+The clean-trace total remains 6/24 because `explosion` then times out after its
+own junction additions. Cleaner boundaries and extra junctions do not by
+themselves ensure a compact, tractable routing problem.
+
+The star's clean trace improves sampled boundary disagreement from 1.106875% to
+0.1525%, but its candidate count increases from 65 to 370; it times out at the
+three-second limit. The exact reference uses 30 candidates and succeeds. Dense
+subdivision also changes candidate coverage: the star's known 12 mm connection
+falls to nearest-neighbor ranks 9 and 17, outside this study's limit of eight.
+`graph-pool-diagnostic.mjs` reconstructs all recorded exact-boundary graphs and
+finds this new loss in one of the 24 cases. The production recovery route already
+has a denser fallback; this diagnoses the sparse first proposal, not every
+application search. Missing one reference edge does not prove that alternative
+valid routings are absent.
+
+The study exposed another deterministic geometry failure, fixed in `3d48a04`:
+collinear endpoints separated only by tolerated roundoff could return segment
+parameters outside `[0,1]`. In the star trace this produced an invalid cubic
+interval `[1, 1.0000000000015086]`. Endpoint contacts and interpolated curve
+parameters are now clamped to their valid domain, with the existing contact
+tolerance unchanged. Three regressions fail before the fix and pass afterward,
+including the actual failure reduced to two adjacent star fragments.
+
+Boundary diagnostics use cubic ray intersections instead of adaptive chords,
+whose rasterization can vary when an unchanged curve is subdivided. Remaining
+diagnostic differences affect 34 pixels across three variant/case pairs;
+closest-point calculations place all of them numerically on both versions of
+the boundary (largest computed distance 1.6 × 10⁻¹³ mm). These ambiguous samples are retained
+in the report rather than counted as real image improvements. Final template
+acceptance continues to use independently rendered exported SVGs. The
+reference and variant boundary SVG/PNG artifacts are saved for inspection.
+
+The learning target should therefore combine a compact boundary representation,
+useful junction placement and connector ranking. The next ordinary baselines to
+compare are a clean-trace tolerance sweep and a candidate budget that does not
+spend its nearest-neighbor slots on already-visible connections. This experiment
+does not establish that a neural network is required or that a junction-only
+model would improve the full photographic pipeline.
+
+The endpoint-fix release replay retains 22/22 regular Hunodan passes under ten
+seconds (maximum 8.927 seconds), with all errors identical to the previous run.
+The hard-photo workflow remains 23/31 accepted, with all 28 generated pairs
+passing editable conversion, editor intersection checks, and nominal geometry
+and paper checks. All crop coordinates, classified masks and fitting
+probabilities are unchanged. Nine time-limited fits have different measured
+errors, including increases up to 0.0325 percentage points; these are recorded
+without claiming a uniform photographic improvement.
+
+Visual inspection of the ten-second photo benchmark still finds unwanted seams
+in the Viking reconstruction and loss of fine sun rays in Stonehenge. These cases
+pass the current numerical gates; that does not make them faithful photographic
+reconstructions. Preserve
+their source/mask/weave comparisons in evaluation, and do not treat every
+accepted solver output as a clean training label. Geometry validity and visual
+fidelity need separate checks when selecting training examples.
+
+Release checks pass: 617 inverse tests and 855 application tests (one existing
+skip), type checking with zero errors and seven existing warnings, lint and the
+production build. Fourteen browser workflows pass across Chromium and WebKit,
+covering star, circle, independently fitted free-border hat, Viking, Stonehenge,
+Hunodan `hjfig-05` and bird mask. All 65 served engine/worker files match the
+validated source hashes. Per-case outcomes, timings, source hashes, input
+identity checks and the candidate-pool audit are recorded in
+[BOUNDARY-JUNCTION-VALIDATION.json](BOUNDARY-JUNCTION-VALIDATION.json).
+
 ### Candidate learning tasks
 
 The following are proposals, not measured model performance:
@@ -274,6 +372,12 @@ Measure that coverage, full-pipeline feature retention and editable legality,
 and time to a valid result including inference and model loading. Perturbation
 tests and the regular Hunodan speed/error gate remain required.
 
+Longer offline searches can provide several validated alternatives and the cost
+of finding them. Keep timeouts as unresolved examples, not evidence that an
+edge or routing is impossible. Even proven infeasibility applies to the supplied
+graph and boundary hypothesis; it does not rule out a better trace or additional
+connectors. This distinction matters when training from solver logs.
+
 The intended hybrid is: uncertain image/boundary proposals → small candidate
 graph → HiGHS routing → Bézier refinement → independent export validation.
 On failure, expand candidates or retry another topology using the original
@@ -300,18 +404,26 @@ boundary constraints.
 
 Before training, compare four ablations on held-out motifs: predicted boundaries
 with ordinary connectors, ordinary boundaries with learned ranking, the combined
-model, and the unchanged full pipeline. Add a boundary-only oracle and a
-junction-only oracle to separate the two sources of the present 9/24 to 24/24
-gap. Benchmark a non-neural simplifier and a small feature-based classifier too.
-The current results favor better boundaries and vertices first; compact-graph
-speedups justify ranking as a second target. They do not establish that missing
-hidden connectors are the dominant remaining failure on photographs.
+model, and the unchanged full pipeline. Extend the partial junction ablations
+above to isolate curved subdivisions and the reference's intersection-noding
+policy. Benchmark a non-neural simplifier and a small feature-based classifier
+too. The current results favor jointly improving boundary representation,
+junction placement and graph size. They do not establish that missing hidden
+connectors are the dominant remaining failure on photographs.
 
 Reproduce the gallery study with:
 
 ```sh
 node scripts/inverse/experiments/graph-oracle.mjs --ids=all --seconds=3 --repeats=3 --output=tmp/graph-oracle-replay
 node --test --test-concurrency=1 scripts/inverse/graph-oracle.test.mjs
+```
+
+Reproduce the boundary/junction study and its candidate-pool diagnostic with:
+
+```sh
+node scripts/inverse/experiments/graph-oracle.mjs --study=boundaries --ids=all --seconds=3 --repeats=3 --output=tmp/boundary-junction-replay
+node scripts/inverse/experiments/graph-pool-diagnostic.mjs --run=tmp/boundary-junction-replay --output=tmp/boundary-junction-pool.json
+node --test --test-concurrency=1 scripts/inverse/graph-boundary-ablations.test.mjs scripts/inverse/intersection-endpoints.test.mjs
 ```
 
 ## Historical integration notes
