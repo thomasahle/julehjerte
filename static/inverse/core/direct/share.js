@@ -12,6 +12,7 @@ import {requestedSymmetry} from '../settings.js';
 import {orbitSharingReplacement} from './sharing-orbit.js';
 import {curvesOf} from '../graph.js';
 import {auditFeatureFidelityChange} from '../feature-shapes.js';
+import {imageFeatures} from '../image-features.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {sourceWeights} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
@@ -110,6 +111,12 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
     if(paired.honoured.length!==paired.requested.length)return{...best,sharing:{accepted,rejected,skipped:'input_symmetry'}};
   }
   let bigError=mismatch(renderCurves(best.graph,best.points,best.phase,bigN,48),big,high.weights);
+  // Reduced fitting scales can miss a narrow source feature or disagree on
+  // edge pixels. Check each edit against the original artwork, so one bad
+  // edit cannot undo the useful sharing accumulated earlier in the batch.
+  const source=input.sourceImage,features=source&&imageFeatures(source,cfg.width);
+  let sourceWoven=source&&sampleWeave(best.graph.solution(best.points,best.phase,input),source.resolution);
+  let sourceError=source&&maskDisagreement(source,sourceWoven);
   for(let round=0;round<rounds&&performance.now()<deadline;round++){
     const paths=best.graph.nested(best.points),before=best.graph.solution(best.points,best.phase,input),ease=easeMetrics(before,cfg);let changed=false;
     const order=identicalSheets?templatePathOrder(paths).map(f=>f.map(p=>p.index)):null;
@@ -132,11 +139,17 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
         const highError=mismatch(renderCurves(graph,points,best.phase,bigN,48),big,high.weights);if(highError>bigError+1e-12){rejected.push({reason:'higher_resolution_error',...c});continue;}
         const solution=graph.solution(points,best.phase,input),paired=symmetryReport(solution,symmetry);
         if(paired.honoured.length!==paired.requested.length){rejected.push({reason:'symmetry',...c});continue;}
+        const woven=source&&sampleWeave(solution,source.resolution),nextSourceError=source&&maskDisagreement(source,woven);
+        if(source&&nextSourceError>sourceError){rejected.push({reason:'source_image_error',errorBefore:sourceError,errorAfter:nextSourceError,...c});continue;}
+        if(source){
+          const change=auditFeatureFidelityChange(source,sourceWoven,woven,cfg,features);
+          if(!change.passed){rejected.push({reason:'source_features',featureChange:change,...c});continue;}
+        }
         const check=validate(solution,cfg,{checkImage:false});if(!check.passed){rejected.push({reason:'geometry',issues:check.issues.slice(0,3),...c});continue;}
         const quality=easeMetrics(solution,cfg);if(quality.minimumRadius<Math.min(.45,ease.minimumRadius||Infinity)||quality.sharpTurns>ease.sharpTurns){rejected.push({reason:'cut_quality',...c});continue;}
         if(cfg.requireMaterialCore&&!materialAudit(solution,cfg).passed){rejected.push({reason:'paper',...c});continue;}
-        accepted.push({...c,errorBefore:best.error,errorAfter:error,bigErrorBefore:bigError,bigErrorAfter:highError});
-        best={...best,graph,points:points.slice(),error,geometryPassed:true,validation:check};bigError=highError;changed=true;break proposals;
+        accepted.push({...c,errorBefore:best.error,errorAfter:error,bigErrorBefore:bigError,bigErrorAfter:highError,...(source?{sourceErrorBefore:sourceError,sourceErrorAfter:nextSourceError}:{})});
+        best={...best,graph,points:points.slice(),error,geometryPassed:true,validation:check};bigError=highError;sourceWoven=woven;sourceError=nextSourceError;changed=true;break proposals;
       }catch(e){rejected.push({reason:e.message,...c});}
     }if(!changed)break;
   }return{...best,sharing:{accepted,rejected}};

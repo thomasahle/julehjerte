@@ -103,17 +103,27 @@ test('an unrelated missing detail does not block repair of the hat seams',async(
   assert.ok(error(newRaster)<error(oldRaster));assert.deepEqual(source.mask,saved);
 });
 
-test('shared-cut cleanup cannot further erode an already missing detail',()=>{
+test('sharing retains useful edits while rejecting an edit that erodes a missing detail',async()=>{
   const before=hat(),source=before.graph.target.sourceImage,n=source.resolution;
   // Part of a false seam happens to retain 10% of this source detail. The
   // proposed sharing removes it, so the missing detail would become worse.
   for(let y=20;y<30;y++)for(let x=20;x<30;x++)source.mask[y*n+x]^=1;
-  const after=finalizeShared(before,cfg),report=after.report.finalSharing;
-  assert.equal(report.applied,false);assert.equal(after,before);
-  assert.equal(report.featureChange.passed,false);
-  assert.equal(report.featureChange.regressed[0].retainedBefore,.1);
-  assert.equal(report.featureChange.regressed[0].retainedFraction,0);
-  assert.ok(report.rejectedFinalCheck.imageError<report.errorBefore,'Lower global error cannot excuse further feature loss');
+  const saved=solutionJSON(before),mask=source.mask.slice(),after=finalizeShared(before,cfg),report=after.report.finalSharing;
+  assert.equal(report.applied,true,'One damaging edit must not discard the other useful alignments.');
+  assert.ok(hiddenLength(after)>150);
+  assert.equal(report.featureChange.passed,true);
+  const rejected=report.rejected.find(r=>r.reason==='source_features');
+  assert.equal(rejected.featureChange.regressed[0].retainedBefore,.1);
+  assert.equal(rejected.featureChange.regressed[0].retainedFraction,0);
+  assert.ok(report.errorAfter<report.errorBefore);
+  assert.equal(auditImageFeatures(source,sampleWeave(after,n)).missing[0].retainedFraction,.1,'The partially retained detail must remain intact.');
+  assert.equal(validate(after,cfg,{checkImage:false}).passed,true);
+  assert.equal(materialAudit(after,cfg).passed,true);
+  assert.equal(matchingSummary(after).identical,true);
+  assert.deepEqual(source.mask,mask);assert.deepEqual(solutionJSON(before),saved);
+  const oldRaster=await renderExportedWeave(saved,n*4),newRaster=await renderExportedWeave(solutionJSON(after),n*4);
+  const target=resize(source.mask,n,n*4),error=r=>r.coverage.reduce((s,v,i)=>s+Math.abs(v-Number(target[i]>.5)),0)/target.length;
+  assert.ok(error(newRaster)<error(oldRaster),'Independent rendering must confirm the retained alignments remove visible seams.');
 });
 
 test('matching hat cleanup follows physical partners after path reordering',async()=>{

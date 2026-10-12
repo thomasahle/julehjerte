@@ -37,8 +37,8 @@ export function auditFeatureFidelity(source,woven,cfg,features=imageFeatures(sou
  * its incoming checkpoint kept enclosed. Existing colour-retention rules and
  * their treatment of already missing regions remain unchanged.
  */
-export function auditFeatureFidelityChange(source,before,after,cfg){
-  const features=imageFeatures(source,cfg.width),retention=auditFeatureChange(source,before,after,cfg.width,features);
+export function auditFeatureFidelityChange(source,before,after,cfg,features=imageFeatures(source,cfg.width)){
+  const retention=auditFeatureChange(source,before,after,cfg.width,features);
   const selected=smallInteriorFeatures(source,features,cfg);
   if(!selected.length)return retention;
   const a=featureComponentMetrics(source,before,cfg.width,selected),b=featureComponentMetrics(source,after,cfg.width,selected);
