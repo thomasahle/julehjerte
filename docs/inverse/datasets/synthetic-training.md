@@ -71,3 +71,24 @@ This is a **procedural-recipe holdout**, not topology-disjoint evaluation or an 
 Prioritize additional valid routing families and a verified motif/topology split and several distinct valid witnesses for the same mask before multiplying views of existing designs. Keep counts of base designs, recipe groups, routing signatures and views separate. Fit augmentation ranges to the newly collected photographs, particularly pale paper, foil, lighting and crop error. Controlled real-photo comparisons should decide which effects help; greater synthetic distortion is not automatically better training.
 
 For initial learning, these labels support a boundary/junction model and a connection-proposal scorer. The existing MILP, Bézier refinement and independent validators should continue to decide whether a proposed graph yields a usable template pair.
+
+## Optional corner-lattice training supplement
+
+The original training lattice recipes do not cover the full visible-corner distribution: an audit of `batch-v1` found no exact right-angle degree-two corners in its training group, while the channel/frame recipe holdouts contain them. The optional **`corner-lattice`** recipe supplies straight boundaries with varied acute, exact right and obtuse corners. It is assigned to the existing training lattice group; it does not replace or edit the original development/recipe holdouts.
+
+Select it explicitly when generating a separate supplement:
+
+```sh
+node scripts/inverse/datasets/synthetic-generate.mjs \
+  --recipes=corner-lattice --seed=37 --designs=64 --views=4 \
+  --resolution=384 --canonicalResolution=512 \
+  --output=tmp/heart-training-synthetic/corner-lattice-v1
+```
+
+The default list and order remain `lattice,shared-lattice,channel,frame`. `--recipes` accepts a comma-separated list of unique known recipe names; selected recipes are recorded in the manifest. Existing recipes preserve their random draws, floating-point operations and generated geometry. A regression checks their controls, graph labels, metadata and hashes against the pre-extension implementation for eight fixed seeds per recipe.
+
+The new recipe varies shared-span offsets among 0.15, 0.5, 0.7, 1 and 1.25 times the local radius. Warping is disabled in this recipe so right angles remain exact. Offset 0.5 also provides collinear degree-two examples; not every new anchor is a genuine corner. Labels still identify the actual visible graph, rather than treating a requested offset as a guarantee of an accepted corner.
+
+Sharper configurations can violate the ordinary slit self-clearance rule and are rejected by the unchanged validation pipeline. Among the first 100 small diagnostic seeds, 29 passed the geometry stage; only one of those included the largest offset. This is a sampling bias to measure in the generated supplement, not a reason to relax the gates. Seed **37** is an admitted fixture with 4 × 7 slits and **18 acute, 6 exact right and 38 obtuse visible degree-two corners**. It also passes paper validation and independent exported rendering (0.188% disagreement at 512 pixels). Seed 713051 is retained in a regression as a rejected self-clearance example.
+
+Adding this supplement addresses a measured training-data gap. It does not establish that a learned junction model improves, and does not make the recipe split topology-disjoint. Compare models using the same original evaluation records and the same number of optimizer updates before attributing any change to the additional corner data.

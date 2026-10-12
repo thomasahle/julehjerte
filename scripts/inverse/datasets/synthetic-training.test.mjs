@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { RECIPES, proceduralDesign, validateDesign, graphLabels, sha256 } from './synthetic-geometry.mjs';
+import { generateSynthetic } from './synthetic-generate.mjs';
 import { homography, project, invert, multiply, SQUARE, syntheticPhoto } from './synthetic-photo.mjs';
 
 const near = (a, b) => a.forEach((v, i) => assert.ok(Math.abs(v - b[i]) < 1e-7, `${a} differs from ${b}`));
@@ -58,4 +59,54 @@ test('opposite color phases of identical cut geometry do not count as new base g
   assert.notEqual(a.cuts.phase, b.cuts.phase);
   assert.notEqual(a.serializedDesignSha256, b.serializedDesignSha256);
   assert.equal(a.geometrySha256, b.geometrySha256);
+});
+
+// Recorded before corner-lattice existed, at source commit 703756f. Include
+// metadata, cut serialization and graph labels so RNG/numeric changes surface.
+test('optional corner generation preserves existing four recipes byte for byte', () => {
+  const seeds = [0, 1, 7, 26, 33, 713051, 714060, 827068];
+  const expected = {
+    lattice: 'a95948c7427533785608c50feff030f9115cc16f3471f8def0a60122f28445ee',
+    'shared-lattice': '523f91327b49dfdf913a1d79f10c4dac7c2a9d61fe1d84f90bbfc8e2816d3eb9',
+    channel: '374dbabf89415f6accff4ab248bb49a7a9630efcd61ea9d4a43a422b41479b4d',
+    frame: '53a9bbd7ee617eaf278c17d01e17dd0be72689c056e4b9a9ab14679c804e023d'
+  };
+  assert.deepEqual(RECIPES, ['lattice', 'shared-lattice', 'channel', 'frame']);
+  for (const recipe of RECIPES) {
+    const actual = sha256(JSON.stringify(seeds.map(seed => {
+      const d = proceduralDesign(seed, recipe);
+      return { parameters: d.parameters, cuts: d.cuts, labels: graphLabels(d), geometrySha256: d.geometrySha256, topologySha256: d.topologySha256 };
+    })));
+    assert.equal(actual, expected[recipe], recipe);
+  }
+});
+
+test('the optional corner lattice admits acute, exact right and obtuse visible corners under unchanged gates', async () => {
+  const design = proceduralDesign(37, 'corner-lattice'), labels = graphLabels(design), angles = [];
+  assert.equal(design.split, 'train'); assert.equal(design.familyId, 'procedural-lattice');
+  assert.equal(design.parameters.amplitude, 0);
+  for (const [i] of labels.nodes.entries()) {
+    const edges = labels.edges.filter(e => e.visible && (e.from === i || e.to === i));
+    if (edges.length !== 2) continue;
+    const vectors = edges.map(e => { const p = e.from === i ? e.cubic : e.cubic.toReversed(); return [p[1][0] - p[0][0], p[1][1] - p[0][1]]; });
+    const [a, b] = vectors, cosine = (a[0] * b[0] + a[1] * b[1]) / Math.hypot(...a) / Math.hypot(...b);
+    angles.push(Math.acos(Math.max(-1, Math.min(1, cosine))) * 180 / Math.PI);
+  }
+  assert.ok(angles.some(a => a < 89.9), 'Accepted geometry must really contain acute visible corners.');
+  assert.ok(angles.some(a => Math.abs(a - 90) < 1e-6), 'Accepted geometry must really contain right-angle visible corners.');
+  assert.ok(angles.some(a => a > 90.1 && a < 179), 'Accepted geometry must really contain obtuse visible corners.');
+  const checked = await validateDesign(design, 512);
+  assert.equal(checked.geometry.passed, true, JSON.stringify(checked.geometry.issues));
+  assert.equal(checked.paper?.status, 'pass'); assert.equal(checked.passed, true);
+  // The larger backtracking corners in this seed violate existing clearance:
+  // requesting angle diversity must not bypass the ordinary rejection gate.
+  const rejected = await validateDesign(proceduralDesign(713051, 'corner-lattice'), 512);
+  assert.equal(rejected.passed, false);
+  assert.ok(rejected.geometry.issues.some(i => i.type === 'nonlocal_self_clearance'));
+});
+
+test('explicit recipe selection rejects empty, unknown and duplicated lists before creating output', async () => {
+  for (const recipes of [[], ['unknown'], ['corner-lattice', 'corner-lattice'], 'corner-lattice']) {
+    await assert.rejects(generateSynthetic({ output: 'tmp/unused-invalid-recipe-output', recipes }), /nonempty unique recipe list/);
+  }
 });

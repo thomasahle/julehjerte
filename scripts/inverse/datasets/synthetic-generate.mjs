@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { RECIPES, FAMILY_SPLITS, proceduralDesign, validateDesign, graphLabels, sha256 } from './synthetic-geometry.mjs';
+import { RECIPES, ALL_RECIPES, FAMILY_SPLITS, proceduralDesign, validateDesign, graphLabels, sha256 } from './synthetic-geometry.mjs';
 import { syntheticPhoto } from './synthetic-photo.mjs';
 
 const root = fileURLToPath(new URL('../../../', import.meta.url));
@@ -13,8 +13,10 @@ const SOURCE_FILES = [
   'static/inverse/core/graph.js', 'static/inverse/core/bezier.js', 'static/inverse/core/validate.js', 'static/inverse/core/material.js',
   'static/inverse/core/geometry.js', 'static/inverse/core/settings.js', 'static/inverse/core/self-returns.js', 'package-lock.json'
 ];
-export async function generateSynthetic({ output, designs = 12, views = 3, seed = 713051, resolution = 256, canonicalResolution = 512 }) {
+export async function generateSynthetic({ output, designs = 12, views = 3, seed = 713051, resolution = 256, canonicalResolution = 512, recipes = RECIPES }) {
   if (!output || !Number.isInteger(designs) || designs < 4 || designs > 10000 || !Number.isInteger(views) || views < 1 || views > 1000 || !Number.isInteger(seed) || seed < 0 || seed > 0xffffffff || !Number.isInteger(resolution) || resolution < 64 || resolution > 1024 || !Number.isInteger(canonicalResolution) || canonicalResolution < resolution || canonicalResolution > 2048) throw new Error('Require output, 4–10000 designs, 1–1000 views, uint32 seed, resolution 64–1024 and canonical resolution at least image resolution (at most 2048).');
+  if (!Array.isArray(recipes) || recipes.length === 0 || new Set(recipes).size !== recipes.length || recipes.some(recipe => !ALL_RECIPES.includes(recipe))) throw new Error(`Choose a nonempty unique recipe list from ${ALL_RECIPES.join(', ')}.`);
+  const selectedRecipes = recipes.slice();
   const out = path.resolve(output);
   // An accidental rerun must not overwrite a previously inspected experiment.
   await fs.mkdir(path.dirname(out), { recursive: true });
@@ -22,7 +24,7 @@ export async function generateSynthetic({ output, designs = 12, views = 3, seed 
   const sourceHashes = Object.fromEntries(await Promise.all(SOURCE_FILES.map(async file => [file, sha256(await fs.readFile(path.join(root, file)))])));
   const manifest = {
     schema: 'woven-heart-synthetic-dataset-1', status: 'generating', sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(), sourceHashes,
-    options: { designs, views, seed, resolution, canonicalResolution }, runtime: { node: process.version, platform: process.platform, arch: process.arch },
+    options: { designs, views, seed, resolution, canonicalResolution, recipes: selectedRecipes }, runtime: { node: process.version, platform: process.platform, arch: process.arch },
     splitPolicy: { unit: 'procedural-recipe holdout, not topology-disjoint evaluation', familySplits: FAMILY_SPLITS, topologyDisjoint: false, realMotifFamilyDisjointness: 'not established', existingGalleryIncluded: false, existingPhotoQAIncluded: false, existingHunodanQAIncluded: false, explanation: 'All transformations/count/style variants of the lattice family stay in train. Channel/frame recipe groups are held out, but simplified routing topologies can also occur in the training lattice recipes. Existing evaluation photographs and templates are not read.' },
     sourceProvenance: { sourceType: 'procedural', externalAssets: [], labelSource: 'Generated template pair, independently rendered and validated before image synthesis', physicalAssemblyTested: false },
     baseDesigns: [], views: [], rejected: [],
@@ -33,7 +35,7 @@ export async function generateSynthetic({ output, designs = 12, views = 3, seed 
   const geometries = new Set();
   try {
     for (let i = 0; i < designs; i++) {
-      const recipe = RECIPES[i % RECIPES.length]; let design, validation;
+      const recipe = selectedRecipes[i % selectedRecipes.length]; let design, validation;
       for (let attempt = 0; attempt < 40; attempt++) {
         const candidate = proceduralDesign((seed + i * 1009 + attempt * 1000003) >>> 0, recipe), result = await validateDesign(candidate, canonicalResolution);
         if (result.passed && !geometries.has(candidate.geometrySha256)) { design = candidate; validation = result; break; }
@@ -71,8 +73,8 @@ export async function generateSynthetic({ output, designs = 12, views = 3, seed 
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   const args = Object.fromEntries(process.argv.slice(2).map(arg => { const at = arg.indexOf('='); if (!arg.startsWith('--') || at < 0) throw new Error('Use --option=value.'); return [arg.slice(2, at), arg.slice(at + 1)]; }));
-  const known = new Set(['output', 'designs', 'views', 'seed', 'resolution', 'canonicalResolution']);
+  const known = new Set(['output', 'designs', 'views', 'seed', 'resolution', 'canonicalResolution', 'recipes']);
   for (const key of Object.keys(args)) if (!known.has(key)) throw new Error(`Unknown argument ${key}.`);
-  const options = Object.fromEntries(Object.entries(args).map(([k, v]) => [k, k === 'output' ? v : Number(v)]));
+  const options = Object.fromEntries(Object.entries(args).map(([k, v]) => [k, k === 'output' ? v : k === 'recipes' ? v.split(',') : Number(v)]));
   const result = await generateSynthetic(options); process.stdout.write(JSON.stringify(result.summary) + '\n');
 }

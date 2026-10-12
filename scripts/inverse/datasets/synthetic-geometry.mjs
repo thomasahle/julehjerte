@@ -20,7 +20,10 @@ export function random(seed) {
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
   };
 }
+// Keep the default recipes/order stable: existing dataset replays depend on it.
 export const RECIPES = ['lattice', 'shared-lattice', 'channel', 'frame'];
+export const OPTIONAL_RECIPES = ['corner-lattice'];
+export const ALL_RECIPES = [...RECIPES, ...OPTIONAL_RECIPES];
 export const FAMILY_SPLITS = Object.freeze({ 'procedural-lattice': 'train', 'procedural-channel': 'validation', 'procedural-frame': 'test' });
 const lines = points => points.slice(1).map((p, i) => Cubic.line(points[i], p).p);
 const transpose = path => path.map(c => c.map(([x, y]) => [y, x]));
@@ -28,18 +31,22 @@ const mirror = path => path.map(c => c.map(([x, y]) => [100 - x, y]));
 
 /** Recipe variants stay together; recipe groups are not topology-disjoint families. */
 export function proceduralDesign(seed, recipe = RECIPES[seed % RECIPES.length]) {
-  if (!RECIPES.includes(recipe)) throw new Error('Unknown procedural recipe.');
+  if (!ALL_RECIPES.includes(recipe)) throw new Error('Unknown procedural recipe.');
   const rng = random(seed), between = (a, b) => a + (b - a) * rng();
   let paths, parameters;
-  if (recipe === 'lattice' || recipe === 'shared-lattice') {
+  if (recipe === 'lattice' || recipe === 'shared-lattice' || recipe === 'corner-lattice') {
+    const corners = recipe === 'corner-lattice', hasSharedCuts = recipe === 'shared-lattice' || corners;
     const counts = [1 + Math.floor(rng() * 7), 1 + Math.floor(rng() * 7)];
     const xs = Array.from({ length: counts[0] }, (_, i) => 100 * (i + 1) / (counts[0] + 1));
     const ys = Array.from({ length: counts[1] }, (_, i) => 100 * (i + 1) / (counts[1] + 1));
     const radius = Math.min(100 / (counts[0] + 1), 100 / (counts[1] + 1)) * between(.18, .3);
-    const shared = ys.map(() => xs.map(() => recipe === 'shared-lattice' && rng() < .55));
-    if (recipe === 'shared-lattice') shared[Math.floor(rng() * ys.length)][Math.floor(rng() * xs.length)] = true;
+    const shared = ys.map(() => xs.map(() => hasSharedCuts && rng() < .55));
+    if (hasSharedCuts) shared[Math.floor(rng() * ys.length)][Math.floor(rng() * xs.length)] = true;
     // A common mild displacement keeps nominal intersections at common anchors.
-    const amplitude = rng() < .35 ? 0 : between(.15, 1.2);
+    // New corner fixtures stay straight so right angles remain exactly right.
+    // The legacy branch retains precisely the previous RNG draws and operations.
+    const amplitude = corners ? 0 : rng() < .35 ? 0 : between(.15, 1.2);
+    const offsetFractions = corners ? shared.map(row => row.map(on => on ? [.15, .5, .7, 1, 1.25][Math.floor(rng() * 5)] : null)) : null;
     const warp = ([x, y]) => [x + amplitude * Math.sin(Math.PI * x / 100) * Math.sin(2 * Math.PI * y / 100), y + amplitude * Math.sin(Math.PI * y / 100) * Math.sin(2 * Math.PI * x / 100)];
     const makePath = (family, index) => {
       const fixed = (family ? ys : xs)[index], other = family ? xs : ys;
@@ -48,7 +55,10 @@ export function proceduralDesign(seed, recipe = RECIPES[seed % RECIPES.length]) 
       for (const [j, value] of other.entries()) {
         const x = family ? value : fixed, y = family ? fixed : value;
         if (shared[family ? index : j][family ? j : index]) {
-          anchors.push(point(value - radius), [x - radius / 3, y - radius / 3], [x + radius / 3, y + radius / 3], point(value + radius));
+          // radius / 3 is intentional: replacing it with multiplication changes
+          // old floating-point controls and invalidates recorded dataset hashes.
+          const offset = corners ? radius * offsetFractions[family ? index : j][family ? j : index] : radius / 3;
+          anchors.push(point(value - radius), [x - offset, y - offset], [x + offset, y + offset], point(value + radius));
         } else anchors.push(point(value));
       }
       anchors.push(point(100));
@@ -56,6 +66,7 @@ export function proceduralDesign(seed, recipe = RECIPES[seed % RECIPES.length]) 
     };
     paths = counts.map((count, family) => Array.from({ length: count }, (_, i) => makePath(family, i)));
     parameters = { counts, radius, shared, amplitude, style: amplitude === 0 ? 'piecewise-straight' : 'warped-cubic-lattice' };
+    if (corners) parameters.sharedOffsetFractions = offsetFractions;
   } else if (recipe === 'channel') {
     const a = between(22, 34), b = between(64, 78), bend = between(-4, 4);
     // Shared control polygon is referenced exactly by both sheets, even curved.
