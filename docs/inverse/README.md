@@ -48,8 +48,8 @@ Before training a model, `scripts/inverse/experiments/graph-oracle.mjs` measures
 what better graph proposals could accomplish. It explicitly supplies privileged
 reference information to selected experimental variants. **These results are
 not blind reconstructions, a trained network, or new application success rates.**
-The normal browser engine is unchanged. The experiment and five regressions are
-committed in `e8bc579`; per-case outcomes, exclusions, timings, source hashes and
+The initial study did not change the browser engine. The experiment and five
+regressions are committed in `e8bc579`; per-case outcomes, exclusions, timings, source hashes and
 export hashes are in [GRAPH-ORACLE-VALIDATION.json](GRAPH-ORACLE-VALIDATION.json).
 
 All 38 gallery identifiers were attempted. Twenty-four imported square
@@ -104,6 +104,60 @@ graph splitting and endpoint normalization; the embedded routing fails
 self-intersection and edge-parity checks. No tolerance or witness requirement
 was relaxed to make it pass. The experiments therefore expose representation
 issues as well as opportunities for learning.
+
+### Follow-up: connector adjacency across tiny boundary fragments
+
+The initial study led to a deterministic graph-construction fix in `ecb35f1`.
+Previously, an optional connector was exempt from the proximity filter only for
+visible edges incident directly to its endpoints. Subdividing one of those
+visible edges 0.0001 mm from the junction could make the otherwise identical
+connector disappear. The same condition removed the star's two reference
+connections.
+
+Candidate construction now follows connected visible fragments for at most twice
+the existing geometry tolerance (0.02 mm with the default settings) to determine
+local adjacency. It uses control-polygon lengths, an upper bound on curve arc
+length, so spatially close endpoints reached through a long detour are not
+treated as adjacent. Optional hidden candidates cannot extend this neighborhood.
+The intersection filter and the final geometry, paper and export checks are
+unchanged; no source boundary coordinates or masks are moved.
+
+Seven focused regressions cover one or several small fragments, reversed edges
+and rotation, production noding, an unrelated nearby boundary, a long detour,
+hidden-edge isolation, and a crossing away from the junction. They also solve a
+subdivided fixture with HiGHS and compare its exported rendering with the
+unchanged reference mask. Three cases failed before the fix.
+
+Repeating the full gallery study three times improves the exact-boundary
+heuristic variant from 22/24 to 23/24. The five-point star now solves at zero
+sampled mask error without any supplied connectors; all other case statuses and
+measured errors are unchanged. The blind raster variant remains 9/24. Thus the
+fix repairs candidate coverage but does not resolve the earlier tracing losses,
+and the `squares` witness failure remains outstanding.
+
+The full photo workflow retains 23/31 accepted cases, with all 28 generated
+pairs passing editable conversion, editor intersection rules and the nominal
+paper checks. Crops, classified masks and fitting probabilities are unchanged.
+All 22 regular Hunodan inputs pass the established quality gate in under ten
+seconds (maximum 9.124 seconds). Twenty-one errors are identical to the preceding
+run; `hjstr-03` changes from 0.557976% to 0.561298%, five pixels at 388 × 388.
+That case rejects tracing before graph construction and uses the unchanged
+time-limited direct fitter. A separate V8 coverage replay confirms zero calls to
+both `buildGraph` and the new adjacency helper for that case. Instrumentation
+substantially slows that diagnostic, so its timing and error are excluded from
+the production benchmark. The variation is retained in the evidence rather
+than described as unchanged quality. See
+[CONNECTOR-SUBDIVISION-VALIDATION.json](CONNECTOR-SUBDIVISION-VALIDATION.json).
+
+Validation passed all 601 inverse tests and 855 application tests (one existing
+skip), lint and the production build. Type checking has no errors and seven
+existing warnings. Twelve Chromium/WebKit workflows cover the star example,
+independent-sheet free-border hat, Viking and Stonehenge photos, Hunodan
+`hjfig-05`, and bird mask, including editable export checks. All 65 served engine
+and worker JavaScript hashes match the source. Visual checks retain the photo
+limitations: the Viking still has thin seams and distorted frame details, and
+Stonehenge still loses sun rays; passing the numerical gates is not exact motif
+recovery.
 
 ### Candidate learning tasks
 
