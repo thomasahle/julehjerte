@@ -40,6 +40,12 @@ alignment when final straight-span selection changes the curves. This removes
 a photographed frame seam that was rejected before straightening, while
 retaining useful earlier alignments and the same total sharing budget.
 
+The [shadow-edge follow-up](datasets/shadow-edge-recovery.md) removes an extra
+cut caused by crop refinement following a cast shadow. Background-aware edge
+contrast recovers two matching cuts per sheet for that frame. The report
+includes 30 synthetic pipeline replays, unchanged crops for the 22 real Hunodan
+photos, browser QA, and the synthetic cases whose artwork errors increase.
+
 The diagnostic photo runs also expose limits upstream of fitting: the automatic
 jigsaw crop is distorted, and the bauble loses much of its frame during colour
 classification even with a historical hand-reviewed crop. Both automatic masks

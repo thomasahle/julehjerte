@@ -110,6 +110,10 @@ counted as an automatic success or a production fix.
 
 ## Image error and remaining artifacts
 
+Follow-up: the [shadow-edge correction](shadow-edge-recovery.md) resolves the
+extra-cut frame automatically. The original measurement below is retained;
+the follow-up includes both the gains and the other cases' accuracy tradeoffs.
+
 The six diagnostic reconstructions are also compared with the earlier fits
 from supplied noisy corners, using the same physical material locations and
 common observed coverage as in the preceding study. Four improve that score;

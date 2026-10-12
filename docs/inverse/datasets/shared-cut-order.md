@@ -134,5 +134,6 @@ under `tmp/heart-learning/` rather than being shipped to visitors.
 
 This fixes one source of false seams. It does not establish that every proposed
 alignment will be found, that photographed corners are exact, or that aggregate
-image agreement proves the intended design. The extra-cut frame and strong
+image agreement proves the intended design. The extra-cut frame is addressed
+by the later [shadow-edge study](shadow-edge-recovery.md). Strong
 paper-shading failures from the background study remain separate issues.

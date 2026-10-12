@@ -54,8 +54,11 @@ All 30 complete replays produce checked templates; three of the additional
 sample's dense lattices exceed ten seconds overall. A
 [shared-cut ordering follow-up](shared-cut-order.md) resolves the pale frame's
 faint seam by retrying alignment after straight-span selection, retaining the
-useful earlier alignments and the existing cleanup budget. The unnecessary
-extra cut in another frame remains a complexity issue despite passing checks.
+useful earlier alignments and the existing cleanup budget. The
+[shadow-edge follow-up](shadow-edge-recovery.md) removes another frame's extra
+cut by keeping physical-edge refinement from following the background shadow.
+All 24 coverage cases now recover their source cut counts. The correction
+does not improve every artwork score; the report preserves those tradeoffs.
 Common-coordinate comparisons document accuracy tradeoffs, including the
 preference for matching sheets within the user's one-percentage-point limit.
 
@@ -165,7 +168,14 @@ The Node dataset tests are included in `npm run test:inverse`. The Python
 collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
-The [shared-cut follow-up](shared-cut-order-results.json) passed 855 application
+The [shadow-edge follow-up](shadow-edge-results.json) passed 855 application
+tests (one skipped), 681 inverse tests and eight Chromium flows, along with
+type checking, lint and build. All 30 synthetic pipeline replays pass, all 24
+coverage cases recover their source cut counts, and all 22 real Hunodan crops
+are unchanged. Common-coordinate errors include two channel regressions,
+documented alongside the corrected frame.
+
+The earlier [shared-cut follow-up](shared-cut-order-results.json) passed 855 application
 tests (one skipped), 677 inverse tests and 16 Chromium cases, along with type
 checking, lint and build. Type checking retains seven existing warnings and no
 errors. The [preceding background validation](background-validation.json) also
