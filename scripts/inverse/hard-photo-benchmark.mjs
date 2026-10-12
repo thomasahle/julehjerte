@@ -6,7 +6,7 @@ import {prepare,design} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET,GENERAL_PRESET,SIMPLIFIED_PREPROCESSING} from '../../src/lib/inverse/presets.js';
 import {detectHeartCrops} from '../../static/inverse/core/crop.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
-import {readHardPhoto} from './hard-photo-data.mjs';
+import {readHardPhoto,hardPhotoCatalogCases} from './hard-photo-data.mjs';
 import {hardPhotoTarget} from './hard-photo-target.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {writeHardPhotoReport} from './hard-photo-report.mjs';
@@ -17,13 +17,16 @@ if(!Number.isFinite(seconds)||seconds<1||seconds>180)throw new Error('Use --seco
 if(!['automatic','fixed'].includes(cropMode))throw new Error('Use --crop=automatic|fixed');
 if(!['photo','mask'].includes(targetMode))throw new Error('Use --target=photo|mask');
 if(cropMode==='automatic'&&(args.recrops||args['crop-overrides']))throw new Error('Explicit crop overrides require --crop=fixed');
+if(args.catalog&&args.recrops)throw new Error('Use --catalog or --recrops, not both');
 const presets=args.presets?args.presets.split(','):['automatic'];
 if(presets.some(p=>!['automatic','general','simplify','mixture','direct','direct-mixture','unmerged'].includes(p)))throw new Error('Unknown preset; use automatic for the production pipeline');
 if(targetMode==='mask'&&presets.some(p=>!['automatic','direct','direct-mixture'].includes(p)))throw new Error('The mask track requires automatic or direct fitting.');
 await fs.mkdir(output,{recursive:true});
 const hash=b=>createHash('sha256').update(b).digest('hex'),collage=JSON.parse(await fs.readFile('scripts/inverse/hard-photo-cases.json')),photos=JSON.parse(await fs.readFile('scripts/inverse/photo-cases.json'));
 const sourceHashes={};async function hashTree(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=`${dir}/${e.name}`;if(e.isDirectory())await hashTree(f);else sourceHashes[f]=hash(await fs.readFile(f));}}await hashTree('static/inverse/core');await hashTree('static/inverse/locator');for(const f of ['scripts/inverse/hard-photo-cases.json','scripts/inverse/photo-cases.json','scripts/inverse/hard-photo-data.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/hard-photo-benchmark.mjs','scripts/inverse/hard-photo-report.mjs','scripts/inverse/crop-evidence.mjs','scripts/inverse/export-renderer.mjs','src/lib/inverse/presets.js'])sourceHashes[f]=hash(await fs.readFile(f));
-let cases=[...collage.cases.map(e=>({...e,group:'collage',...collage.source})),...photos.cases.map(e=>({...e,group:'individual',label:e.id,cropStatus:'visually_reviewed'}))].filter(e=>!args.ids||args.ids.split(',').includes(e.id));
+let cases=[...collage.cases.map(e=>({...e,group:'collage',...collage.source})),...photos.cases.map(e=>({...e,group:'individual',label:e.id,cropStatus:'visually_reviewed'}))];
+if(args.catalog){const bytes=await fs.readFile(args.catalog);sourceHashes[args.catalog]=hash(bytes);cases=hardPhotoCatalogCases(JSON.parse(bytes));}
+cases=cases.filter(e=>!args.ids||args.ids.split(',').includes(e.id));
 if(!cases.length&&!args.recrops)throw new Error('No cases selected');
 if(args.recrops){
   const root=args.recrops,entries=JSON.parse(await fs.readFile(`${root}/cases.json`));
@@ -69,7 +72,7 @@ for(const e of cases){
       const v=e.variant,scale=v.scale||1;const canvas=createCanvas(Math.round(s.imageWidth*scale),Math.round(s.imageHeight*scale)),ctx=canvas.getContext('2d');ctx.drawImage(s.canvas,0,0,canvas.width,canvas.height);
       if(v.jpeg){const encoded=canvas.toBuffer('image/jpeg',{quality:v.jpeg});ctx.drawImage(await loadImage(encoded),0,0);}
       const rgba=ctx.getImageData(0,0,canvas.width,canvas.height).data;s={...s,canvas,rgba,imageWidth:canvas.width,imageHeight:canvas.height,rgbaSha256:hash(rgba)};
-      baseQuad=e.quad.map(([x,y])=>[(x+(v.dx||0))*scale,(y+(v.dy||0))*scale]);
+      baseQuad=e.quad?.map(([x,y])=>[(x+(v.dx||0))*scale,(y+(v.dy||0))*scale]);
     }
     let quad;
     if(cropMode==='automatic'){
@@ -78,6 +81,7 @@ for(const e of cases){
       if(!candidate){row.status='no_crop';row.input={fileSha256:s.fileSha256,rgbaSha256:s.rgbaSha256,width:s.imageWidth,height:s.imageHeight};await sourcePreview(s,roi||[0,0,s.imageWidth,s.imageHeight],null,`${dir}/source.png`);row.hasSourcePreview=true;await save();continue;}
       quad=candidate.quad;row.locatorStatus=detected.status;
     }else{
+      if(!Array.isArray(baseQuad)||baseQuad.length!==4)throw new Error('Fixed cropping requires four recorded corners');
       const center=[0,1].map(k=>baseQuad.reduce((sum,p)=>sum+p[k],0)/4);quad=baseQuad.map(p=>p.map((v,k)=>center[k]+(v-center[k])*(1-(e.cropInsetFraction||0))));
     }
     row.effectiveQuad=quad;row.input={fileSha256:s.fileSha256,rgbaSha256:s.rgbaSha256,width:s.imageWidth,height:s.imageHeight};
@@ -87,7 +91,7 @@ for(const e of cases){
     for(const name of presets){
       const cfg={...GENERAL_PRESET,...(name==='automatic'?AUTOMATIC_PRESET:name==='simplify'?SIMPLIFIED_PREPROCESSING:name==='mixture'?{mode:'red-white-mixture'}:name==='direct'?{algorithm:'direct',roundHidden:false}:name==='direct-mixture'?{algorithm:'direct',roundHidden:false,mode:'red-white-mixture'}:name==='unmerged'?{snapRadius:0}:{}),...config,...(e.diagnostic||{})},r={preset:name,settings:cfg};row.runs.push(r);const start=performance.now();const folder=`${dir}/${name}`;await fs.mkdir(folder);
       try{
-        const p=prepare({type:'pixels',rgba:s.rgba,imageWidth:s.imageWidth,imageHeight:s.imageHeight,quad,cropProvenance:{method:cropMode==='automatic'?'First production automatic crop from source pixels and optional rough ROI':e.provenance||e.cropNote||'Fixed visual annotation, not solver-derived',catalog:args['crop-overrides']||(args.recrops?`${args.recrops}/cases.json`:e.group==='individual'?'scripts/inverse/photo-cases.json':'scripts/inverse/hard-photo-cases.json'),status:row.locatorStatus||e.cropStatus,case:e.id}},cfg);
+        const p=prepare({type:'pixels',rgba:s.rgba,imageWidth:s.imageWidth,imageHeight:s.imageHeight,quad,cropProvenance:{method:cropMode==='automatic'?'First production automatic crop from source pixels and optional rough ROI':e.provenance||e.cropNote||'Fixed visual annotation, not solver-derived',catalog:args['crop-overrides']||args.catalog||(args.recrops?`${args.recrops}/cases.json`:e.group==='individual'?'scripts/inverse/photo-cases.json':'scripts/inverse/hard-photo-cases.json'),status:row.locatorStatus||e.cropStatus,case:e.id}},cfg);
         r.direct=!!p.target.metadata.direct;r.curves=p.target.curves.length;r.preprocessing=p.preview.metadata;r.preprocessSeconds=(performance.now()-start)/1000;
         r.maskSha256=hash(p.preview.mask);const probability=p.target.sourceImage?.probability;if(probability)r.probabilitySha256=hash(new Uint8Array(probability.buffer,probability.byteOffset,probability.byteLength));
         await fs.writeFile(`${dir}/crop.png`,pixelPNG(p.preview.rgb,p.preview.resolution,3));await fs.writeFile(`${folder}/mask.png`,pixelPNG(p.preview.mask,p.preview.resolution));await fs.writeFile(`${folder}/target.svg`,p.preview.vector);

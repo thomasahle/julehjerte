@@ -49,6 +49,16 @@ rendering and artifact writing have separate costs. Reports retain failures,
 source hashes, effective corners, mask/probability hashes, feature checks and
 independently rendered exports. No published cutting paths initialize fitting.
 
+For a controlled source-image comparison, `--catalog=path/to/catalog.json`
+replaces the default inventory without changing the frozen inputs. Its format
+is `{ "source": { "file": "...", "sha256": "...", "width": 0, "height": 0 },
+"cases": [{ "id": "example", "roi": [0, 0, 100, 100] }] }`, with actual source
+dimensions in place of zero. Image paths are relative to the repository. The
+catalogue and photograph hashes are recorded; automatic cropping needs only
+rough rectangles, while `--crop=fixed` additionally requires `quad` corners.
+Do not assume that different downloads of the same arrangement have identical
+framing or that scaling historical coordinates establishes their alignment.
+
 Replay every saved pair through the production editable conversion and SVG
 save/reload path, without rerunning the fitter:
 

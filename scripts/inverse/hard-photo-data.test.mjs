@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import {readHardPhoto} from './hard-photo-data.mjs';
+import {readHardPhoto,hardPhotoCatalogCases} from './hard-photo-data.mjs';
 
 const collage=JSON.parse(await fs.readFile(new URL('./hard-photo-cases.json',import.meta.url))),photos=JSON.parse(await fs.readFile(new URL('./photo-cases.json',import.meta.url)));
 
@@ -21,4 +21,14 @@ test('the original 31 complete hard hearts have reproducible committed photograp
 test('the frozen loader refuses mismatched file or decoded-pixel evidence',async()=>{
   await assert.rejects(readHardPhoto({...photos.cases[0],sha256:'0'.repeat(64)}),/Source photograph changed/);
   await assert.rejects(readHardPhoto({...photos.cases[0],decodedPixelsSha256:'0'.repeat(64)}),/Decoded source pixels changed/);
+});
+
+test('an alternate photo catalogue preserves source identity and requires no fitted corners',async()=>{
+  const [entry]=hardPhotoCatalogCases({source:collage.source,cases:[{id:'rough-selection',roi:[10,20,130,160],file:'wrong-photo.png',sha256:'0'.repeat(64)}]});
+  assert.equal(entry.file,collage.source.file);assert.equal(entry.sha256,collage.source.sha256);
+  assert.equal(entry.quad,undefined);assert.equal(entry.cropStatus,'needs_review');
+  assert.deepEqual(entry.roi,[10,20,130,160]);
+  await readHardPhoto(entry);
+  for(const entries of [[{id:'../escape',roi:[0,0,100,100]}],[{id:'one',roi:[0,0,100,100]},{id:'one',roi:[0,0,100,100]}],[{id:'one',roi:[0,0,0,100]}]])assert.throws(()=>hardPhotoCatalogCases({source:collage.source,cases:entries}));
+  assert.throws(()=>hardPhotoCatalogCases({source:{file:'unknown.png'},cases:[{id:'one',roi:[0,0,100,100]}]}),/SHA-256/);
 });
