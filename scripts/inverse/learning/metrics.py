@@ -56,20 +56,23 @@ def pixel_matching_counts(prediction, target, tolerance=3):
         return [0, n_pred, n_target]
     indices = np.full(target.shape, -1, dtype=np.int32)
     indices[target] = np.arange(n_target)
-    rows, columns = [], []
     height, width = target.shape
     radius = int(np.floor(tolerance))
-    for dy in range(-radius, radius+1):
-        for dx in range(-radius, radius+1):
-            if dx*dx+dy*dy > tolerance*tolerance:
-                continue
-            xx, yy = px+dx, py+dy
-            keep = np.flatnonzero((xx >= 0) & (xx < width) & (yy >= 0) & (yy < height))
-            neighbors = indices[yy[keep], xx[keep]]
-            connected = neighbors >= 0
-            rows.append(keep[connected]); columns.append(neighbors[connected])
-    rows, columns = np.concatenate(rows), np.concatenate(columns)
-    graph = csr_matrix((np.ones(len(rows), np.uint8), (rows, columns)), shape=(n_pred, n_target))
+    offsets = sorted((dx*dx+dy*dy, dy, dx) for dy in range(-radius, radius+1)
+                     for dx in range(-radius, radius+1) if dx*dx+dy*dy <= tolerance*tolerance)
+    neighbors = np.full((n_pred, len(offsets)), -1, dtype=np.int32)
+    for column, (_, dy, dx) in enumerate(offsets):
+        xx, yy = px+dx, py+dy
+        keep = np.flatnonzero((xx >= 0) & (xx < width) & (yy >= 0) & (yy < height))
+        neighbors[keep, column] = indices[yy[keep], xx[keep]]
+    connected = neighbors >= 0
+    indptr = np.r_[0, np.cumsum(connected.sum(axis=1))]
+    columns = neighbors[connected]
+    # Offer nearest neighbors first. CSR construction from (row, column)
+    # triples sorts by raster index, causing unnecessarily long augmenting
+    # paths on nearly coincident contours. This changes traversal, not the
+    # feasible edges or the maximum-cardinality matching objective.
+    graph = csr_matrix((np.ones(len(columns), np.uint8), columns, indptr), shape=(n_pred, n_target))
     matching = maximum_bipartite_matching(graph, perm_type='column')
     return [int(np.sum(matching >= 0)), n_pred, n_target]
 

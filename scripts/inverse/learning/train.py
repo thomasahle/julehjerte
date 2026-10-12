@@ -14,6 +14,7 @@ import torch
 
 from data import Corpus, digest, detect_nodes, point_counts, scores
 from model import ProposalNet, heatmap_loss
+from losses import LOSSES
 
 
 def boundary_counts(predicted, target, valid, tolerance=3):
@@ -65,14 +66,14 @@ def synchronize(device):
         torch.cuda.synchronize()
 
 
-def infer(model, items, device, batch_size, return_predictions=True):
+def infer(model, items, device, batch_size, return_predictions=True, loss_function=heatmap_loss):
     model.eval(); total = 0; predictions = []
     with torch.no_grad():
         for start in range(0, len(items), batch_size):
             batch = items[start:start+batch_size]
             rgb, mask, target, valid = tensors(batch, device)
             logits = model(rgb, mask)
-            total += float(heatmap_loss(logits, target, valid).cpu())*len(batch)
+            total += float(loss_function(logits, target, valid).cpu())*len(batch)
             if return_predictions:
                 predictions.extend(torch.sigmoid(logits).cpu().numpy().astype(np.float16))
     return total/max(1, len(items)), predictions
@@ -104,6 +105,7 @@ def main():
     parser.add_argument('--batch-size', type=int, default=8)
     parser.add_argument('--seed', type=int, default=1729)
     parser.add_argument('--device', choices=['cpu', 'mps', 'cuda'], default='mps')
+    parser.add_argument('--loss', choices=sorted(LOSSES), default='weighted-mse')
     parser.add_argument('--evaluate-run', help='Evaluate an existing selected checkpoint in a new output directory; never retrain or overwrite its evidence')
     args = parser.parse_args()
     if args.epochs < 1 or args.batch_size < 1:
@@ -112,6 +114,7 @@ def main():
     torch.set_num_threads(2); torch.set_num_interop_threads(1)
     torch.manual_seed(args.seed); rng = np.random.default_rng(args.seed)
     device = torch.device(args.device)
+    loss_function = LOSSES[args.loss]
     code = Path(__file__).parent
     report = {'schema': 'heart-boundary-learning-1', 'status': 'loading', 'arguments': vars(args),
               'sourceCommit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
@@ -122,7 +125,7 @@ def main():
                               'Known overlap validity masks define supervision/scoring regions, but are not network inputs.',
                               'Only visible corners/branches are junction targets. Smooth degree-two knots, boundary endpoints and unobservable shared-cut anchors are not targets.',
                               'Native PyTorch timings do not establish ONNX/browser speed.', 'Fixed seeds are recorded; exact MPS training determinism is not claimed.'],
-              'history': []}
+              'loss': args.loss, 'history': []}
     def save():
         temp = output/'report.writing.json'; temp.write_text(json.dumps(report, indent=2)+'\n'); temp.replace(output/'report.json')
     save()
@@ -153,6 +156,8 @@ def main():
                 if prior[field] != report[field]: raise ValueError('Evaluation recovery differs in '+field)
             for field in ['initialization', 'seed', 'epochs']:
                 if prior['arguments'][field] != vars(args)[field]: raise ValueError('Evaluation recovery differs in '+field)
+            if prior['arguments'].get('loss', 'weighted-mse') != args.loss:
+                raise ValueError('Evaluation recovery differs in loss')
             if prior['sourceHashes']['model.py'] != report['sourceHashes']['model.py']:
                 raise ValueError('Evaluation recovery model implementation differs')
             if len(prior['history']) != args.epochs or not prior.get('selectedEpoch'):
@@ -176,11 +181,11 @@ def main():
                 if rng.random() < .5: rgb, mask, target, valid = [x.flip(-1) for x in [rgb, mask, target, valid]]
                 if rng.random() < .5: rgb, mask, target, valid = [x.flip(-2) for x in [rgb, mask, target, valid]]
                 optimizer.zero_grad(set_to_none=True)
-                loss = heatmap_loss(model(rgb, mask), target, valid)
+                loss = loss_function(model(rgb, mask), target, valid)
                 if not torch.isfinite(loss): raise ValueError('Nonfinite training loss')
                 loss.backward(); torch.nn.utils.clip_grad_norm_(model.parameters(), 5); optimizer.step()
                 total += float(loss.detach().cpu())*len(batch)
-            development_loss, _ = infer(model, splits['development'], device, args.batch_size, False)
+            development_loss, _ = infer(model, splits['development'], device, args.batch_size, False, loss_function)
             entry = {'epoch': epoch+1, 'trainLoss': total/len(order), 'developmentLoss': development_loss, 'seconds': time.perf_counter()-epoch_start}
             report['history'].append(entry)
             if development_loss < best:
