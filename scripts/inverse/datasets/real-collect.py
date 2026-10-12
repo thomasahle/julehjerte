@@ -245,7 +245,28 @@ def discover(args, seeds, fetcher):
             save(path, {'pages': list(pages.values()), 'candidates': list(candidates.values()), 'errors': errors})
 
 
-def existing_candidates():
+def pinterest_runs(output=DEFAULT_OUTPUT):
+    """Only the two explicitly authorized collection ledgers, not arbitrary caches."""
+    result=[]
+    for folder in ('pinterest','pinterest-expanded'):
+        path=output/folder/'imports.json'
+        if path.exists():result.append({'path':str(path.relative_to(ROOT)),**json.loads(path.read_text())})
+    return result
+
+
+def pinterest_inventory(output=DEFAULT_OUTPUT):
+    runs=pinterest_runs(output);pins={}
+    for run in runs:
+        for row in run['pins']:
+            ident=re.search(r'(\d+)/?$',urlsplit(row['url']).path).group(1)
+            old=pins.get(ident)
+            if old is None or (old['status']!='downloaded' and row['status']=='downloaded'):
+                pins[ident]={**row,'runReferences':[] if old is None else old['runReferences']}
+            if run['path'] not in pins[ident]['runReferences']:pins[ident]['runReferences'].append(run['path'])
+    return {'runs':runs,'pins':list(pins.values())}
+
+
+def existing_candidates(output=DEFAULT_OUTPUT):
     rows = []
     base = ROOT / 'scripts/inverse/fixtures'
     d = json.loads((base / 'web-photos/manifest.json').read_text())
@@ -270,16 +291,16 @@ def existing_candidates():
     rows.append({'imageUrl': None, 'sourcePages': [], 'source': 'user-collage', 'sourceGroup': 'user-pinterest-collage',
                  'existingFile': d['source']['file'], 'author': None, 'rights': {'status': 'unknown', 'fact': 'User-provided Pinterest collage; original author not established.'},
                  'priorReview': 'photo-collage'})
-    pins = DEFAULT_OUTPUT / 'pinterest/imports.json'
-    if pins.exists():
-        for pin in json.loads(pins.read_text())['pins']:
+    for run in pinterest_runs(output):
+        for pin in run['pins']:
             if pin['status'] != 'downloaded':
                 continue
             rows.append({'imageUrl': pin['imageUrl'], 'sourcePages': [pin['url']], 'source': 'pinterest',
                          'sourceGroup': 'pinterest-pin-' + pin['url'].split('/')[-2], 'importFile': pin['file'],
                          'author': None, 'rights': {'status': 'unknown', 'fact': 'Pinterest uploader is not assumed to be the photographer or rights holder; original source rights remain unverified.'},
                          'observedSourceLinks': pin['observedSourceLinks'], 'pinTitle': pin.get('title'),
-                         'publicPinRetrievedAt': pin['retrievedAt']})
+                         'publicPinRetrievedAt': pin['retrievedAt'], 'publicPinPageSha256':pin.get('pageSha256'),
+                         'pinDiscoveryPaths':pin.get('discoveryPaths',[]),'pinImportLedger':run['path']})
     return rows
 
 
@@ -296,6 +317,11 @@ def merge_origin(asset, origin):
             if origin.get('rights') not in facts:
                 facts.append(origin.get('rights'))
             old['rights'] = origin.get('rights')
+        for key in ('pinDiscoveryPaths','observedSourceLinks'):
+            if key in origin:
+                values=old.setdefault(key,[])
+                for value in origin[key]:
+                    if value not in values:values.append(value)
         for key, value in origin.items():
             if key not in old:
                 old[key] = value
@@ -308,7 +334,7 @@ def collect(args, fetcher):
     path = args.output / 'assets.json'
     assets = json.loads(path.read_text()) if path.exists() else []
     by_hash = {r['sha256']: r for r in assets}
-    candidates = existing_candidates() + discovery['candidates']
+    candidates = existing_candidates(args.output) + discovery['candidates']
     failures = []
     for index, candidate in enumerate(candidates):
         url = candidate['imageUrl']
@@ -418,7 +444,9 @@ def export(args):
                         'sourcePages':len(discovery['pages']), 'visuallyReviewedFiles':sum(a['reviewStatus'].startswith('visually-reviewed') for a in assets), 'reviewedPhotoFileHashes':sum(a['kind'] in ('photo','photo-multiple','photo-collage','mixed-photo-template') for a in assets), 'photoNearDuplicateGroups':len({a['nearDuplicateGroup'] for a in assets if a['kind'] in ('photo','photo-multiple','photo-collage','mixed-photo-template')}), 'qaReservedFiles':sum(a['splitStatus']=='qa-reserved' for a in assets)},
               'splitPolicy':'Keep all files/crops from a source photo, near-duplicate group and motif family together. SourceGroups conservatively include publishers and UNVERIFIED source links observed in pin JSON; these possible connections can over-reserve QA and do not establish motif families, authorship or image origin. No random image-level split; family annotation remains pending.',
               'rightsPolicy':'Public accessibility and craft-template download permission do not establish training or redistribution rights. Rights facts are retained per origin; all assets remain not-cleared unless separately reviewed.',
-              'assets': assets, 'pages':discovery['pages'], 'pinterestCollection':json.loads((args.output/'pinterest/imports.json').read_text()) if (args.output/'pinterest/imports.json').exists() else None, 'collectionErrors':discovery['errors'] + json.loads((args.output/'download-errors.json').read_text())}
+              'assets': assets, 'pages':discovery['pages'],
+              'pinterestCollection':pinterest_inventory(args.output),
+              'collectionErrors':discovery['errors'] + json.loads((args.output/'download-errors.json').read_text())}
     save(ROOT / 'docs/inverse/datasets/real-manifest.json', result)
     write_gallery(args.output, assets)
     print(json.dumps(result['counts'], indent=2))
