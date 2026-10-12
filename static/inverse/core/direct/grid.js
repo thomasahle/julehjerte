@@ -145,16 +145,20 @@ export function gridPaths(model,width=100,floor=.008){
     return xs.map((x,k)=>(f?[ys[k],x]:[x,ys[k]]).map(v=>v*width));
   })));
 }
-export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed=0,floor=.008,clearance=0,resolution=96,optimizationTarget=null,weights=null,deadline=Infinity,onProgress=()=>{}}={}){
+export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed=0,floor=.008,clearance=0,resolution=96,optimizationTarget=null,weights=null,deadline=Infinity,onProgress=()=>{},preferCheckpoint=null}={}){
   if(optimizationTarget&&optimizationTarget.length!==resolution*resolution)throw new Error('Optimization target must match the grid resolution.');
   if(optimizationTarget&&imageWeights(weights,prob.length))throw new Error('Weighted grids must resample their target and weights together.');
   const resized=weights?resizeObjective(prob,size,resolution,weights):null,target=optimizationTarget||resized?.probability||resize(prob,size,resolution),model=gridModel(counts,k,seed,initial),adam=new Adam(model.z.length,initial ? .015 : .04);
-  let best={z:model.z.slice(),error:mismatch(gridMask(model,size,phase,floor),prob,weights),step:-1},completed=0;
+  // Keep a feature-retaining point while following the original gradient.
+  // If none exists, return the ordinary best fallback; this is not a geometry
+  // or source-fidelity certificate. Callers still validate the final curves.
+  const preferred=()=>!preferCheckpoint||preferCheckpoint({model,phase,floor});
+  let best={z:model.z.slice(),error:mismatch(gridMask(model,size,phase,floor),prob,weights),step:-1,preferred:preferred()},completed=0;
   for(let step=0;step<steps;step++){
     if(step%10===0&&performance.now()>deadline)break;
     const progress=step/Math.max(1,steps-1),epsilon=initial?.length?(.012*(1-progress)**2+.003):(.035*(1-progress)**2+.004);
     const value=gridLoss(model,target,resolution,phase,epsilon,{floor,clearance,weights:resized?.weights});adam.update(model.z,value.gradient,3);completed++;
-    if(step%30===0||step===steps-1){const error=mismatch(gridMask(model,size,phase,floor),prob,weights);if(error<best.error)best={z:model.z.slice(),error,step};onProgress({step,error,loss:value.loss});}
+    if(step%30===0||step===steps-1){const error=mismatch(gridMask(model,size,phase,floor),prob,weights);const retained=preferred();if(retained&&!best.preferred||retained===best.preferred&&error<best.error)best={z:model.z.slice(),error,step,preferred:retained};onProgress({step,error,loss:value.loss});}
   }
   model.z=best.z;return{model,phase,floor,error:best.error,steps:completed};
 }

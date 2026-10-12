@@ -92,7 +92,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null}={}){
   // Compile the weighted force field once, not on every optimization step.
   const objective=boundaryObjective(prob,weights),force=objective.target;
   const imageValue=createBoundaryEvaluator(graph,force,n),transposedImageValue=createBoundaryEvaluator(graph,force,n,{transpose:true,rows:193});
@@ -108,7 +108,10 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
   const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);return projected;};
   clampPoints();let safe=null,best=null,bestUncertain=null,bestInvalid=null,completed=0;
-  const better=(value,previous)=>!previous||(selection==='mask'?value.error<previous.error||value.error===previous.error&&value.score<previous.score:value.score<previous.score);
+  // A preferred image checkpoint competes only within the same physical
+  // validity class. Preference never certifies paper, changes rollback safety,
+  // or substitutes weighted errors for the caller's original-source checks.
+  const better=(value,previous)=>!previous||value.preferred&&!previous.preferred||value.preferred===previous.preferred&&(selection==='mask'?value.error<previous.error||value.error===previous.error&&value.score<previous.score:value.score<previous.score);
   const checkpoint=step=>{
     const straight=straightProposal(graph,points,n);
     const straightPassed=!straight||!ties||applyTies(ties,straight,straight,{fixed:graph.fixed,original:initial});
@@ -131,8 +134,8 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
         if(symmetry.honoured.length!==symmetry.requested.length){check.passed=false;check.issues.push('Requested cutting symmetries are not satisfied.');}
       }
       const paper=check.passed?materialAudit(solution,cfg):null;
-      value.validation=check;value.paper=paper?.summary;
-      const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec,solution);
+      value.validation=check;value.paper=paper?.summary;value.preferred=!preferCheckpoint||preferCheckpoint(value,solution);
+      const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,...(preferCheckpoint?{preferred:value.preferred}:{}),issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec,solution);
       if(!bestInvalid||value.error<bestInvalid.error)bestInvalid=value;
       // More optimization must not replace a geometry-valid uncertain paper
       // checkpoint with an illegal curve merely because its image error is
@@ -143,6 +146,9 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
         safe=value.points.slice();accepted=true;
         if(better(value,best))best=value;
         if(stopWhen&&step>=80&&stopWhen(best))stoppedEarly=true;
+        // A straight proposal can erase a feature while the unsimplified
+        // proposal at this same step retains it. Inspect that alternative too.
+        if(preferCheckpoint&&!value.preferred)continue;
         break;
       }
     }

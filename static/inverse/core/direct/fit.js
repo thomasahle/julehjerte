@@ -129,12 +129,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       topology.report.refinementRejected={geometry:candidate.geometryPassed,paper:candidate.paperPassed,imageError:error};
     }
   }
+  const retainsGridFeature=r=>auditImageFeatures(source,gridMask(r.model,source.resolution,r.phase,r.floor),cfg.width,sourceFeatures).passed;
   const fitSeed=r=>{
     // Unweighted fine-grid polishing can erase a small opening before the
     // geometry stage starts. Its extra routing goes straight to clearance,
     // retaining the same region emphasis through both refinement stages.
     if(r.protectFeatures)return r;
-    const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{optimizationTarget:gridTarget,weights:fitWeights,steps:150,initial:r.model.z,deadline:performance.now()+800});
+    const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{optimizationTarget:gridTarget,weights:fitWeights,steps:150,initial:r.model.z,deadline:performance.now()+800,preferCheckpoint:featureSeed(r)?retainsGridFeature:null});
     attempts.push({stage:'fine',counts:r.model.counts,phase:r.phase,error:next.error,steps:next.steps,seconds:(performance.now()-at)/1000});return next.error<r.error?{...next,...(r.seed?{seed:r.seed}:{})}:r;
   };
   const finalists=gridFinalists(coarse,weights?[]:evidence),remainingSeeds=coarse.filter(r=>!finalists.includes(r));
@@ -286,10 +287,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const objectiveProb=protectedObjective?.probability||prob,objectiveWeights=protectedObjective?.weights||fitWeights;
     const refinementCfg=protectedObjective?{...cfg,materialResolution:Math.max(cfg.materialResolution,700)}:cfg;
     const verification=protectedObjective?{requestedResolution:cfg.materialResolution,resolution:refinementCfg.materialResolution,source:'feature-preserving-refinement'}:null;
-    const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{optimizationTarget:protectedObjective?null:gridTarget,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15)}));
+    const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{optimizationTarget:protectedObjective?null:gridTarget,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridFeature:null}));
     attempts.push({stage:'clearance',counts:clear.model.counts,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob):clear.error,steps:clear.steps,...(protectedObjective?{weightedError:clear.error}:{})});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
-    const candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>{
+    const candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditImageFeatures(source,sampleWeave(solution,source.resolution),cfg.width,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>{
       if(protectedObjective){
         r.weightedError=r.error;r.error=maskDisagreement(source,sampleWeave(solution,source.resolution));
         solution.report={paperVerification:{...verification,status:r.paper}};

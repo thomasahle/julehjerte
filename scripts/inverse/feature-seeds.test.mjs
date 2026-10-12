@@ -8,18 +8,18 @@ import {settings} from '../../static/inverse/core/settings.js';
 import {imageFeatures,auditImageFeatures} from '../../static/inverse/core/image-features.js';
 import {initializeFeatureSeeds,featureRefinementObjective} from '../../static/inverse/core/direct/feature-seeds.js';
 import {borderEvidence} from '../../static/inverse/core/direct/counts.js';
-import {gridMask,mismatch} from '../../static/inverse/core/direct/grid.js';
+import {fitGrid,gridMask,mismatch} from '../../static/inverse/core/direct/grid.js';
 import {resize} from '../../static/inverse/core/direct/math.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {featureComponentMetrics} from './feature-component-metrics.mjs';
 
-async function puppy(){
+async function puppy(dy=0){
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
   const photo=await readHardPhoto(catalogue.cases.find(c=>c.id===fixture.sourceCase));
-  const prepared=prepare({...photo,quad:fixture.quad},AUTOMATIC_PRESET);
-  assert.equal(createHash('sha256').update(prepared.preview.mask).digest('hex'),fixture.maskSha256);
+  const prepared=prepare({...photo,quad:fixture.quad.map(([x,y])=>[x,y+dy])},AUTOMATIC_PRESET);
+  if(!dy)assert.equal(createHash('sha256').update(prepared.preview.mask).digest('hex'),fixture.maskSha256);
   return prepared;
 }
 
@@ -137,6 +137,30 @@ test('early feature routing recovers the frozen puppy opening within a ten-secon
   const replay=await renderExportedWeave(answer.files['cut_geometry.json'],400);
   assert.equal(auditImageFeatures(source,replay.mask).passed,true);
   assert.ok(mismatch(replay.mask,source.mask)<.018);
+  assert.deepEqual(source.mask,imported.preview.mask);
+});
+
+test('a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint',async()=>{
+  const imported=await puppy(1),cfg=settings({...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false});
+  assert.equal(createHash('sha256').update(imported.preview.mask).digest('hex'),'19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91');
+  const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage,features=imageFeatures(source);
+  const search=initializeFeatureSeeds({source,features,missed:[0],counts:[3,3],cfg,evidence:borderEvidence(source.probability,400),maximumCount:8}),seed=search.seeds[0];
+  assert.ok(seed);assert.equal(seed.featuresPassed,true);
+  const prob=resize(source.probability,400,256),optimizationTarget=resize(source.probability,400,96);
+  const retained=r=>auditImageFeatures(source,gridMask(r.model,400,r.phase,r.floor),100,features).passed;
+  const options={steps:150,initial:seed.model.z,optimizationTarget};
+  const erased=fitGrid(prob,256,seed.model.counts,seed.phase,options),kept=fitGrid(prob,256,seed.model.counts,seed.phase,{...options,preferCheckpoint:retained});
+  assert.equal(retained(erased),false,'The lower average error alone omits the opening');
+  assert.equal(retained(kept),true);assert.ok(kept.error>erased.error);
+  const unavailable=fitGrid(prob,256,seed.model.counts,seed.phase,{...options,preferCheckpoint:()=>false});
+  assert.deepEqual(unavailable.model.z,erased.model.z,'An unavailable preference must leave the ordinary fallback intact');
+  const answer=await design(prepared.target,cfg),rendered=await renderExportedWeave(answer.files['cut_geometry.json'],400);
+  assert.equal(answer.report.templateChecksPassed,true);
+  assert.equal(answer.report.manufacturing.status,'pass');assert.equal(answer.report.validation.passed,true);
+  assert.equal(auditImageFeatures(source,rendered.mask).passed,true);assert.ok(mismatch(rendered.mask,source.mask)<.018);
+  const opening=featureComponentMetrics(source,rendered.mask).find(f=>f.centerMm[1]<80);
+  assert.equal(opening.touchesBorder,false,'The opening must not become a channel to the background');
+  assert.ok(opening.componentIoU>.5,'Preserving the pixels must not create a much larger white blob');
   assert.deepEqual(source.mask,imported.preview.mask);
 });
 
