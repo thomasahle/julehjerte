@@ -1,7 +1,7 @@
 """Thin, one-to-one boundary evaluation; independent of neural model training."""
 import numpy as np
 from scipy.sparse import csr_matrix
-from scipy.sparse.csgraph import maximum_bipartite_matching
+from scipy.sparse.csgraph import maximum_flow
 
 
 def thin_boundary(mask):
@@ -68,13 +68,17 @@ def pixel_matching_counts(prediction, target, tolerance=3):
     connected = neighbors >= 0
     indptr = np.r_[0, np.cumsum(connected.sum(axis=1))]
     columns = neighbors[connected]
-    # Offer nearest neighbors first. CSR construction from (row, column)
-    # triples sorts by raster index, causing unnecessarily long augmenting
-    # paths on nearly coincident contours. This changes traversal, not the
-    # feasible edges or the maximum-cardinality matching objective.
-    graph = csr_matrix((np.ones(len(columns), np.uint8), columns, indptr), shape=(n_pred, n_target))
-    matching = maximum_bipartite_matching(graph, perm_type='column')
-    return [int(np.sum(matching >= 0)), n_pred, n_target]
+    # A unit-capacity source -> prediction -> target -> sink flow is exactly
+    # maximum-cardinality bipartite matching. The installed SciPy 1.13.1
+    # Hopcroft–Karp DFS was pathologically slow on an actual contour fixture;
+    # Dinic avoids that traversal without changing which pixels may match.
+    sink = n_pred+n_target+1
+    left = np.arange(n_pred)+1; right = np.arange(n_target)+1+n_pred
+    rows = np.r_[np.zeros(n_pred, dtype=np.int32), np.repeat(left, np.diff(indptr)), right]
+    cols = np.r_[left, columns+1+n_pred, np.full(n_target, sink)]
+    graph = csr_matrix((np.ones(len(rows), np.int32), (rows, cols)), shape=(sink+1, sink+1))
+    matched = maximum_flow(graph, 0, sink, method='dinic').flow_value
+    return [int(matched), n_pred, n_target]
 
 
 def thin_matching_counts(prediction, target, valid, tolerances=(1, 2, 3)):

@@ -1,4 +1,6 @@
 import unittest
+import json
+from pathlib import Path
 import numpy as np
 from scipy.ndimage import label, binary_dilation
 from data import point_counts, scores
@@ -6,6 +8,14 @@ from metrics import thin_boundary, pixel_matching_counts, thin_matching_counts
 
 
 class BoundaryMetricTests(unittest.TestCase):
+    def test_almost_coincident_photographic_contours(self):
+        fixture = json.loads(Path(__file__).with_name('matching-fixture.json').read_text())
+        prediction, target = [np.zeros(fixture['shape'], bool) for _ in range(2)]
+        prediction.flat[fixture['prediction']] = True
+        target.flat[fixture['target']] = True
+        for radius, expected in fixture['expectedCounts'].items():
+            self.assertEqual(pixel_matching_counts(prediction, target, int(radius)), expected)
+
     def test_sparse_matching_agrees_with_dense_assignment(self):
         rng = np.random.default_rng(132)
         for _ in range(40):
