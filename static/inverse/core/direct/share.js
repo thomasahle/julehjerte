@@ -117,6 +117,10 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
   const source=input.sourceImage,features=source&&imageFeatures(source,cfg.width);
   let sourceWoven=source&&sampleWeave(best.graph.solution(best.points,best.phase,input),source.resolution);
   let sourceError=source&&maskDisagreement(source,sourceWoven);
+  // Keep the batch's original error ceiling. Two complementary alignments
+  // can trade a few edge pixels while their combined edit still improves the
+  // incoming fit; requiring strict descent after each would block that pair.
+  const sourceErrorLimit=sourceError;
   for(let round=0;round<rounds&&performance.now()<deadline;round++){
     const paths=best.graph.nested(best.points),before=best.graph.solution(best.points,best.phase,input),ease=easeMetrics(before,cfg);let changed=false;
     const order=identicalSheets?templatePathOrder(paths).map(f=>f.map(p=>p.index)):null;
@@ -140,7 +144,7 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
         const solution=graph.solution(points,best.phase,input),paired=symmetryReport(solution,symmetry);
         if(paired.honoured.length!==paired.requested.length){rejected.push({reason:'symmetry',...c});continue;}
         const woven=source&&sampleWeave(solution,source.resolution),nextSourceError=source&&maskDisagreement(source,woven);
-        if(source&&nextSourceError>sourceError){rejected.push({reason:'source_image_error',errorBefore:sourceError,errorAfter:nextSourceError,...c});continue;}
+        if(source&&nextSourceError>sourceErrorLimit){rejected.push({reason:'source_image_error',errorLimit:sourceErrorLimit,errorBefore:sourceError,errorAfter:nextSourceError,...c});continue;}
         if(source){
           const change=auditFeatureFidelityChange(source,sourceWoven,woven,cfg,features);
           if(!change.passed){rejected.push({reason:'source_features',featureChange:change,...c});continue;}
