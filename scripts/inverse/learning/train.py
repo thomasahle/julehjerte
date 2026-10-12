@@ -1,6 +1,5 @@
 """Reproducible synthetic-only boundary/junction ablation; never changes the app."""
 import argparse
-import hashlib
 import json
 import platform
 import subprocess
@@ -49,7 +48,9 @@ def evaluate(items, predictions=None, thresholds=(.5, .25)):
 
 
 def tensors(items, device):
-    rgb = torch.from_numpy(np.stack([i['rgb'].transpose(2, 0, 1) for i in items])).to(device, dtype=torch.float32)/255
+    # NumPy can preserve an HWC-like stride pattern when stacking transposed
+    # views. MPS convolution backward requires a contiguous NCHW input here.
+    rgb = torch.from_numpy(np.ascontiguousarray(np.stack([i['rgb'].transpose(2, 0, 1) for i in items]))).to(device, dtype=torch.float32)/255
     mask = torch.from_numpy(np.stack([i['mask'][None] for i in items])).to(device)
     target = torch.from_numpy(np.stack([i['target'] for i in items])).to(device)
     valid = torch.from_numpy(np.stack([i['valid'][None] for i in items])).to(device, dtype=torch.float32)
