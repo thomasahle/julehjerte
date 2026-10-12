@@ -2,12 +2,12 @@
 import {buildGraph} from './graph.js';
 import {solveGraph} from './solver.js';
 
-export async function solveBoundary(target,cfg,{initialGraph=null,node=true,expandNeighbors=true,unconnectedNeighbors=false,...options}={}){
+export async function solveBoundary(target,cfg,{initialGraph=null,node=true,expandNeighbors=true,unconnectedNeighbors=false,announceGraph=true,...options}={}){
   const started=performance.now(),remaining=()=>cfg.timeLimit-(performance.now()-started)/1000;
   // buildGraph normalizes target.curves. Every proposal must start from the
   // same boundary, including its original noding and guide-portal policy.
   const seed={...target,curves:target.curves.slice()},fresh=()=>({...seed,curves:seed.curves.slice()});
-  options.onProgress?.({stage:'graph'});
+  if(announceGraph)options.onProgress?.({stage:'graph'});
   const graph=initialGraph||buildGraph(fresh(),cfg,{node,onProgress:options.onProgress,unconnectedNeighbors});
   try{
     return await solveGraph(graph,{...cfg,timeLimit:Math.max(.001,remaining())},options);

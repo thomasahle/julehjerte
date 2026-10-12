@@ -51,7 +51,8 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         // Let it use most of this phase before adding a much larger graph.
         const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=i||onlyChoice?left:left*.8,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{})};report.attempts.push(attempt);
         try{
-          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{expandNeighbors:false,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
+          // This recovery phase already announced graph work before tracing.
+          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{expandNeighbors:false,announceGraph:false,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
           attempt.solver=solution.report;break;
         }catch(error){
           attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;
@@ -101,7 +102,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         ...(original.borderSeed?{borderSeed:{...original.borderSeed}}:{}),neighborExpansion:true,initialAttempt:pending.initialAttempt,
         addedCandidates:graph.metadata.hiddenCandidates-original.solver.graph.hiddenCandidates,budgetSeconds:budget};report.attempts.push(attempt);
       try{
-        solution=await solveBoundary(pending.target,{...pending.graphCfg,timeLimit:budget},{initialGraph:graph,expandNeighbors:false,unconnectedNeighbors:true,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
+        solution=await solveBoundary(pending.target,{...pending.graphCfg,timeLimit:budget},{initialGraph:graph,expandNeighbors:false,unconnectedNeighbors:true,announceGraph:false,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
         attempt.solver=solution.report;
       }catch(error){attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;}
       finally{attempt.seconds=(performance.now()-at)/1000;}
