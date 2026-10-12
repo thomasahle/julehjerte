@@ -49,6 +49,10 @@ try{
       row.editableError=woven.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length;
       const features=auditImageFeatures({mask,resolution:image.width},woven);row.missingFeatures=features.missing.length;
       row.featureComponents=featureComponentMetrics({mask,resolution:image.width},woven);
+      const preview=ctx.createImageData(image.width,image.width);
+      for(let i=0;i<woven.length;i++)preview.data.set(woven[i]?[185,19,19,255]:[255,255,255,255],4*i);
+      ctx.putImageData(preview,0,0);
+      await fs.writeFile(path.join(output,`${entry.id}-${run.preset}-weave.png`),canvas.toBuffer('image/png'));
       row.physical=auditEditablePaper(design,inferOverlapRect(design.fingers,design.gridSize),run.report.settings,run.report.slits);
       if(run.report.validation.passed)assert.equal(row.physical.geometry.passed,true,'Editable cuts must retain the engine geometry constraints');
       if(run.report.templateChecksPassed)assert.equal(row.physical.paper?.status,'pass','Editable cuts must retain the verified paper support');
