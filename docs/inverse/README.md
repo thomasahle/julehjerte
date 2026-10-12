@@ -7,6 +7,8 @@ Run `npm run test:inverse:paint:browser` against the built app for the actual Pa
 [COUNT-STRATEGIES.md](COUNT-STRATEGIES.md) compares count initialization on the frozen photo dataset, separating the cost of finding initial grids from complete solve time and measured reconstruction quality.
 
 Current full-pipeline investigations are recorded in
+[FEATURE-BUDGET.md](FEATURE-BUDGET.md) (giving feature-preserving template layouts
+time to refine without cutting off useful traced routing),
 [SHARING-SOURCE-VALIDATION.json](SHARING-SOURCE-VALIDATION.json) (checking each
 shared-cut repair against the original mask, and separating crop, classification
 and template-fitting failures),
@@ -28,9 +30,10 @@ mask and its protected details before accepting each edit. Previously, one bad
 edit could make the final check discard a whole batch of useful seam repairs.
 The batch keeps the incoming template's image-error ceiling, so complementary
 alignments can trade a few boundary pixels without making that fit worse. The
-geometry, paper, symmetry and final whole-batch checks still apply. The 22 regular
-Hunodan designs retain or improve their independent errors and remain below
-nine seconds for preparation, solving, validation and export in this run.
+geometry, paper, symmetry and final whole-batch checks still apply. In that
+shared-cut validation run, the 22 regular Hunodan designs retained or improved
+their independent errors and remained below nine seconds for preparation,
+solving, validation and export.
 
 The diagnostic photo runs also expose limits upstream of fitting: the automatic
 jigsaw crop is distorted, and the bauble loses much of its frame during colour
