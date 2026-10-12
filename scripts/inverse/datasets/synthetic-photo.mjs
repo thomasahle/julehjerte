@@ -70,14 +70,41 @@ function grayPNG(values, n) {
   return canvasFrom(pixels, n).toBuffer('image/png');
 }
 
-export async function syntheticPhoto({ coverage, canonicalResolution, graph, seed, resolution = 256 }) {
+/** Copy and validate overrides before touching image buffers or consuming RNG.
+ * An empty object is the legacy default; presence of unsupported keys is an error.
+ */
+function checkedInterventions(value, resolution) {
+  if (value === undefined) return null;
+  if (value === null || typeof value !== 'object' || Array.isArray(value) || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) throw new Error('Photo interventions must be an object.');
+  const keys = Reflect.ownKeys(value), allowed = new Set(['palette', 'blurSigmaPixels', 'lowResolution', 'lowResolutionScale', 'jpegQuality', 'cropNoisePixels']);
+  if (keys.some(key => !allowed.has(key))) throw new Error('Unknown photo intervention.');
+  if (!keys.length) return null;
+  if (!Number.isInteger(resolution) || resolution < 16 || resolution > 4096) throw new Error('Intervened photos require an integer resolution from 16 to 4096.');
+  if (Object.hasOwn(value, 'lowResolution') && Object.hasOwn(value, 'lowResolutionScale')) throw new Error('Choose lowResolution or lowResolutionScale, not both.');
+  const requested = {};
+  for (const key of keys) {
+    const v = value[key];
+    if (key === 'palette') {
+      if (!Array.isArray(v) || v.length !== 2 || [0, 1].some(i => !Array.isArray(v[i]) || v[i].length !== 3 || [0, 1, 2].some(k => !Number.isFinite(v[i][k]) || v[i][k] < 0 || v[i][k] > 255))) throw new Error('palette must contain two RGB triples with finite channels from 0 to 255.');
+      requested.palette = v.map(color => color.slice()); continue;
+    }
+    const [lo, hi] = { blurSigmaPixels: [0, 8], lowResolution: [16, resolution], lowResolutionScale: [0, 1], jpegQuality: [0, 1], cropNoisePixels: [0, resolution / 4] }[key];
+    if (!Number.isFinite(v) || v < lo || v > hi || key === 'lowResolution' && !Number.isInteger(v) || key === 'lowResolutionScale' && v === 0) throw new Error(`Invalid ${key} photo intervention.`);
+    requested[key] = v;
+  }
+  return requested;
+}
+
+export async function syntheticPhoto({ coverage, canonicalResolution, graph, seed, resolution = 256, interventions }) {
+  const requested = checkedInterventions(interventions, resolution);
   const rng = random(seed), uniform = (a, b) => a + (b - a) * rng();
   const gaussian = () => Math.sqrt(-2 * Math.log(Math.max(1e-9, rng()))) * Math.cos(2 * Math.PI * rng());
   const angle = uniform(-Math.PI, Math.PI), scale = resolution / uniform(220, 270), c = Math.cos(angle), s = Math.sin(angle), center = [resolution * uniform(.42, .58), resolution * uniform(.42, .58)];
   const quad = SQUARE.map(([x, y]) => [center[0] + scale * (c * (x - 25) - s * (y - 25)) + uniform(-.025, .025) * resolution, center[1] + scale * (s * (x - 25) + c * (y - 25)) + uniform(-.025, .025) * resolution]);
   const h = homography(SQUARE, quad), inverse = invert(h);
   const palettes = [[[176, 18, 28], [241, 237, 218]], [[198, 168, 56], [240, 236, 217]], [[30, 86, 51], [207, 35, 39]], [[31, 65, 115], [233, 236, 235]], [[93, 75, 121], [213, 174, 189]], [[200, 192, 177], [241, 236, 223]]];
-  const palette = palettes[Math.floor(rng() * palettes.length)].map(color => color.map(v => clamp(v + uniform(-8, 8), 0, 255)));
+  const baselinePalette = palettes[Math.floor(rng() * palettes.length)].map(color => color.map(v => clamp(v + uniform(-8, 8), 0, 255)));
+  const palette = requested?.palette ?? baselinePalette;
   const light = [uniform(-.3, .3), uniform(-.3, .3)], exposure = uniform(.75, 1.15), vignette = uniform(0, .2), noiseSigma = uniform(.4, 2.5), texture = uniform(.4, 2);
   const background = [uniform(65, 165), uniform(65, 165), uniform(65, 165)], backgroundStyle = rng() < .5 ? 'wood-stripes' : 'soft-cloth';
   const pixels = new Uint8ClampedArray(4 * resolution ** 2), observedCoverage = new Float32Array(resolution ** 2), overlap = new Float32Array(resolution ** 2);
@@ -94,16 +121,20 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
     }
     pixels[4 * index + 3] = 255;
   }
-  const sigma = uniform(.35, 1.2), source = canvasFrom(blur(pixels, resolution, sigma), resolution);
-  const downsample = uniform(.5, 1), lowSize = Math.max(16, Math.round(resolution * downsample)), low = createCanvas(lowSize, lowSize);
+  // Always draw the baseline values, including overridden ones. This preserves
+  // downstream noise/crop draws and every legacy byte when no override is set.
+  const baselineSigma = uniform(.35, 1.2), sigma = requested?.blurSigmaPixels ?? baselineSigma;
+  const source = canvasFrom(sigma === 0 ? pixels : blur(pixels, resolution, sigma), resolution);
+  const downsample = uniform(.5, 1), baselineLowSize = Math.max(16, Math.round(resolution * downsample));
+  const lowSize = requested?.lowResolution ?? (requested?.lowResolutionScale === undefined ? baselineLowSize : Math.max(16, Math.round(resolution * requested.lowResolutionScale))), low = createCanvas(lowSize, lowSize);
   low.getContext('2d').drawImage(source, 0, 0, lowSize, lowSize);
   const final = createCanvas(resolution, resolution); final.getContext('2d').drawImage(low, 0, 0, resolution, resolution);
-  const jpegQuality = uniform(.58, .95), photo = final.toBuffer('image/jpeg', { quality: jpegQuality, chromaSubsampling: true });
+  const baselineJpegQuality = uniform(.58, .95), jpegQuality = requested?.jpegQuality ?? baselineJpegQuality, photo = final.toBuffer('image/jpeg', { quality: jpegQuality, chromaSubsampling: true });
   // Rectify the actually degraded JPEG with an imperfect crop proposal. This
   // makes the graph task include crop noise while retaining the correct label transform.
   const decoded = createCanvas(resolution, resolution), decodedContext = decoded.getContext('2d'); decodedContext.drawImage(await loadImage(photo), 0, 0);
   const photoPixels = decodedContext.getImageData(0, 0, resolution, resolution).data;
-  const cropNoisePixels = uniform(.004, .025) * resolution, roughQuad = quad.map(p => p.map(v => v + gaussian() * cropNoisePixels));
+  const baselineCropNoise = uniform(.004, .025) * resolution, cropNoisePixels = requested?.cropNoisePixels ?? baselineCropNoise, roughQuad = quad.map(p => p.map(v => v + gaussian() * cropNoisePixels));
   const cropToPhoto = homography(SQUARE.map(p => p.map(v => v * resolution / 100)), roughQuad), canonicalToCrop = multiply(invert(cropToPhoto), h);
   const cropPixels = new Uint8ClampedArray(pixels.length), cropCoverage = new Float32Array(resolution ** 2), cropValid = new Float32Array(resolution ** 2);
   const cropToCanonical = invert(canonicalToCrop);
@@ -114,7 +145,7 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
     for (let k = 0; k < 3; k++) cropPixels[4 * i + k] = visible ? sample(photoPixels, resolution, p[0] - .5, p[1] - .5, 4, k) : 127;
     cropPixels[4 * i + 3] = 255;
   }
-  return {
+  const result = {
     files: { 'photo.jpg': photo, 'crop.png': canvasFrom(cropPixels, resolution).toBuffer('image/png'), 'photo-paper-a.png': grayPNG(observedCoverage, resolution), 'photo-overlap-valid.png': grayPNG(overlap, resolution), 'crop-paper-a.png': grayPNG(cropCoverage, resolution), 'crop-overlap-valid.png': grayPNG(cropValid, resolution) },
     labels: {
       schema: 'woven-heart-synthetic-view-1', seed, resolution, canonicalToPhoto: h, canonicalToCrop, actualQuad: quad, proposedCropQuad: roughQuad,
@@ -125,4 +156,15 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
       limitations: ['Procedural 2D planar photographs, not measured camera physics.', 'No paper thickness, actual occlusion, folds, specular foil or calibrated lens distortion.', 'Colors are empirically mixed in sRGB; target material coverage is saved separately.', 'Photometric views do not create new routing topologies.']
     }
   };
+  if (requested) {
+    const actual = result.labels.perturbations;
+    result.labels.baselinePerturbations = { ...actual, palette: baselinePalette, blurSigmaPixels: baselineSigma, lowResolution: baselineLowSize, jpegQuality: baselineJpegQuality, cropNoisePixels: baselineCropNoise };
+    const applied = {};
+    for (const key of Object.keys(requested)) {
+      const actualKey = key === 'lowResolutionScale' ? 'lowResolution' : key;
+      applied[actualKey] = actual[actualKey];
+    }
+    result.labels.interventions = { requested, applied };
+  }
+  return result;
 }

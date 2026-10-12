@@ -98,3 +98,48 @@ The first supplement run is now complete: **64 admitted designs and 256 views**,
 Using the training junction definition—visible outgoing tangent angle below 160°, right angle within 90° ± 5°—the admitted canonical graphs contain **132 acute, 426 right, 986 obtuse corners and 270 branch nodes**. All 426 right corners are also exact to 0.000001°. Right corners occur in 36 designs and acute corners in 9; these are canonical counts before projection, visibility masking and photographic blur. The earlier seed-37 raw count includes shallow turns that this training definition excludes.
 
 All 64 first-view photographs and three detailed canonical/photo/crop/coverage panels were visually reviewed. Some small acute notches become hard to see after blur, as expected. The supplement fills the measured absence of training right corners; whether it helps learned localization is a separate, controlled model comparison.
+
+## Controlled photographic interventions
+
+`syntheticPhoto` also accepts an optional `interventions` object for paired diagnostics. Supply identical coverage, graph, seed and resolutions to compare one change while keeping the camera, lighting, texture/noise draws and all other sampled parameters fixed:
+
+```js
+const baseline = await syntheticPhoto(input);
+const recolored = await syntheticPhoto({
+  ...input,
+  interventions: { palette: [[180, 12, 18], [246, 242, 230]] }
+});
+const sharp = await syntheticPhoto({
+  ...input,
+  interventions: { blurSigmaPixels: 0 }
+});
+const exactCrop = await syntheticPhoto({
+  ...input,
+  interventions: { cropNoisePixels: 0 }
+});
+```
+
+Supported interventions:
+
+| Key | Accepted value |
+| --- | --- |
+| `palette` | Paper A and B RGB triples; each channel finite, from 0 to 255 |
+| `blurSigmaPixels` | 0–8 pixels; zero bypasses Gaussian blur |
+| `lowResolution` | Integer raster size from 16 to the output resolution |
+| `lowResolutionScale` | Greater than 0 and at most 1; rounded to pixels and clamped to at least 16 |
+| `jpegQuality` | 0–1 |
+| `cropNoisePixels` | 0 to one quarter of the output resolution; zero uses the actual physical quadrilateral |
+
+Choose either a low-resolution size or scale. Invalid, conflicting and unknown fields are rejected before touching image buffers. Nonempty intervention runs require an integer output resolution from 16 to 4096. This API changes only the offline renderer; dataset generation defaults and live fitting are unaffected.
+
+Every original random draw is still consumed, including overridden draws. Palette changes therefore recolor the **same synthetic scene**. They do not change camera pose, slit geometry, crop perturbation or latent target PNGs. Crop intervention changes the crop-coordinate labels and crop raster together, while leaving the full photograph unchanged. The renderer still applies its normal clipping, blur, resampling and JPEG stages afterward, so their visible consequences can interact with the changed palette.
+
+Only intervention runs receive `labels.baselinePerturbations` and `labels.interventions` (`requested` and effective `applied` values). Existing `labels.perturbations` always describes the actual run. Omitting interventions or passing `{}` preserves the previous files and labels byte for byte. Identity interventions also reproduce the same image bytes and add only the explicit intervention metadata.
+
+The focused regression checks all six default output hashes and label JSON against the pre-intervention implementation, paired palette/degradation changes, unchanged nonintervened parameters, invalid-input rejection before image access, and exact crop coordinates with zero crop noise:
+
+```sh
+node --test --test-concurrency=1 scripts/inverse/datasets/synthetic-interventions.test.mjs
+```
+
+Disabling blur, downsampling or crop noise does not remove illumination, texture, sensor noise or JPEG chroma subsampling. These controls enable a causal diagnostic; an intervention result is not itself evidence of better training or real-photo performance.
