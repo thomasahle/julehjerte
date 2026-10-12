@@ -1,0 +1,10 @@
+{
+  "sourceCase": "outline-star",
+  "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
+  "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+  "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+  "quad": [[430.32931226516513,171.9092353088924],[525.2431230765773,267.80938630026435],[403.3299806510149,349.9830567410715],[320.83807769917655,259.9176512630082]],
+  "maskSha256": "311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e",
+  "probabilitySha256": "76486249b9dd4c66b6d8840387934d88c1033f7533b1432ad0c764e62ce01179",
+  "provenance": "Frozen production automatic crop from the hard-photo collage. A border fragment triggers unsuccessful traced recovery; the independent grid must still receive refinement time. No template-derived or solver-adjusted coordinates."
+}

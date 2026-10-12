@@ -94,11 +94,11 @@ test('additional layouts can retain a remote opening without editing the image o
 });
 
 test('a crop-edge fragment still counts in fidelity but cannot drive an extra cut layout',async()=>{
-  const catalogue=JSON.parse(await fs.readFile('scripts/inverse/hard-photo-cases.json'));
+  const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-outline-star-fit.json'));
+  const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
   const photo=await readHardPhoto(catalogue.source),cfg=settings({...AUTOMATIC_PRESET,trials:0});
-  const quad=[[430.32931226516513,171.9092353088924],[525.2431230765773,267.80938630026435],[403.3299806510149,349.9830567410715],[320.83807769917655,259.9176512630082]];
-  const prepared=prepare({...photo,quad},cfg),source=prepared.target.sourceImage;
-  assert.equal(createHash('sha256').update(source.mask).digest('hex'),'311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e');
+  const prepared=prepare({...photo,quad:fixture.quad},cfg),source=prepared.target.sourceImage;
+  assert.equal(createHash('sha256').update(source.mask).digest('hex'),fixture.maskSha256);
   const features=imageFeatures(source,cfg.width),index=features.findIndex(f=>f.centerMm[1]>98);
   assert.ok(index>=0);assert.equal(features[index].areaMm2,4.25);
   const woven=source.mask.slice();for(const pixel of features[index].pixels)woven[pixel]=1-features[index].value;
