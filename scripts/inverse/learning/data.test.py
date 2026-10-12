@@ -1,7 +1,10 @@
 import unittest
+import json
+import tempfile
+from pathlib import Path
 import numpy as np
 from types import SimpleNamespace
-from data import observable_nodes, projected_polyline, project, bezier, point_counts, node_heatmap, detect_nodes, training_supplements
+from data import Corpus, digest, observable_nodes, projected_polyline, project, bezier, point_counts, node_heatmap, detect_nodes, training_supplements
 
 
 def line(a, b):
@@ -10,6 +13,23 @@ def line(a, b):
 
 
 class LabelTests(unittest.TestCase):
+    def test_duplicate_prepared_view_cannot_hide_an_omitted_view(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); dataset = root/'dataset'; prepared = root/'prepared'
+            dataset.mkdir(); prepared.mkdir()
+            manifest = {'baseDesigns': [{'id': str(i), 'split': 'train', 'geometrySha256': str(i)} for i in range(8)],
+                        'views': [{'id': str(i), 'designId': str(i)} for i in range(8)],
+                        'sourceProvenance': {'externalAssets': []},
+                        'splitPolicy': {k: False for k in ['existingPhotoQAIncluded', 'existingHunodanQAIncluded', 'existingGalleryIncluded']}}
+            source = json.dumps(manifest).encode(); (dataset/'manifest.json').write_bytes(source)
+            metadata = {'dataset': str(dataset), 'status': 'complete', 'datasetManifestSha256': digest(source),
+                        'resolution': 384, 'rows': [{'id': str(i)} for i in range(8)]}
+            (prepared/'manifest.json').write_text(json.dumps(metadata)); self.assertEqual(len(Corpus(prepared).rows), 8)
+            metadata['rows'][-1] = metadata['rows'][0]
+            (prepared/'manifest.json').write_text(json.dumps(metadata))
+            with self.assertRaisesRegex(ValueError, 'duplicated or omitted'):
+                Corpus(prepared)
+
     def test_straight_subdivisions_are_not_junctions(self):
         matrix = np.eye(3)
         unsplit = observable_nodes([line([10, 10], [90, 10])], matrix)
