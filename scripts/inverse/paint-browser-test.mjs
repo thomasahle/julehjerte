@@ -17,7 +17,7 @@ import {prepare} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {auditEditablePaper} from './editable-paper-audit.mjs';
 import {featureComponentMetrics} from './feature-component-metrics.mjs';
-import {auditImageFeatures,auditFeatureChange} from '../../static/inverse/core/image-features.js';
+import {auditFeatureFidelity,auditFeatureFidelityChange} from '../../static/inverse/core/feature-shapes.js';
 import {Cubic} from '../../static/inverse/core/bezier.js';
 import {installPaintObservation,collectPaintObservation} from './paint-observer.mjs';
 import {stopIntervention,installStopObservation,exerciseStop} from './stop-browser-hooks.mjs';
@@ -90,6 +90,7 @@ report.workspaceSourceHashes['static/inverse/core/feature-shapes.js']=createHash
 report.workspaceSourceHashes['static/inverse/core/self-returns.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/self-returns.js')).digest('hex');
 report.workspaceSourceHashes['static/inverse/core/direct/grid.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/direct/grid.js')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/photographic-gift-fit.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-gift-fit.json')).digest('hex');
+report.harnessSourceHashes['scripts/inverse/fixtures/browser-puppy-half-mask.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/browser-puppy-half-mask.json')).digest('hex');
 for(const name of ['junctions.js','border.js','material.js','validate.js','settings.js']){const file=`static/inverse/core/${name}`;report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');}
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -307,7 +308,13 @@ try{
     if(hardPhoto||photoMask){
      row.featureNoticeVisible=await page.getByText('Some details of the motif are missing. Compare the template with the mask.',{exact:true}).isVisible();
      assert.equal(row.featureNoticeVisible,row.missingFeatures.length>0,'The page must show the feature failure even below its ordinary percentage warning.');
-     if(name==='hard-flettede-puppy'&&!engineReference){
+     if(name==='hard-flettede-puppy-half'){
+      const frozen=JSON.parse(await fs.readFile('scripts/inverse/fixtures/browser-puppy-half-mask.json'));
+      row.classifiedMaskSha256=createHash('sha256').update(Uint8Array.from(observed.prepared.mask)).digest('hex');
+      assert.equal(row.classifiedMaskSha256,frozen.maskSha256,'Template improvements must use the same browser-classified pixels');
+      assert.deepEqual(row.detectedCrop.quad,frozen.detectedCrop.quad,'The automatic crop remains fixed in this fitting regression');
+     }
+     if(['hard-flettede-puppy','hard-flettede-puppy-half'].includes(name)&&!engineReference){
       assert.equal(row.templateChecksPassed,true,'The actual uploaded puppy must retain its opening and pass the template checks.');
       assert.equal(row.missingFeatures.length,0);
       assert.ok(row.engineError<.018);
@@ -430,7 +437,7 @@ try{
     const resolution=observed.prepared.resolution,sourceMask=Uint8Array.from(observed.prepared.mask),sourceRendered=rasterizeDesign(design,resolution).data;
     row.sourceResolution=resolution;
     if(hardPhoto||photoMask){
-     row.editableFeatures=auditImageFeatures({mask:sourceMask,resolution},sourceRendered);
+     row.editableFeatures=auditFeatureFidelity({mask:sourceMask,resolution},sourceRendered,observed.result.report.settings);
      row.featureComponents=featureComponentMetrics({mask:sourceMask,resolution},sourceRendered);
      if(name==='bird-mask'&&!stopMode){
       const eye=row.featureComponents.find(f=>f.centerMm[0]<30);
@@ -463,7 +470,7 @@ try{
     row.conversionFidelity=conversionFidelity(raw.design,{mask:{size:resolution,data:sourceMask},weights:observed.prepared.weights??undefined})(design);
     assert.equal(row.conversionFidelity.passed,true,`Editable SVG lost fitted weave fidelity: ${JSON.stringify(row.conversionFidelity)}`);
     if(hardPhoto||photoMask){
-     row.conversionFeatures=auditFeatureChange({mask:sourceMask,resolution},rasterizeDesign(raw.design,resolution).data,sourceRendered);
+     row.conversionFeatures=auditFeatureFidelityChange({mask:sourceMask,resolution},rasterizeDesign(raw.design,resolution).data,sourceRendered,observed.result.report.settings);
      assert.equal(row.conversionFeatures.passed,true,'Conversion must not erode a source feature, including one that was already imperfect.');
     }
     assert.ok(Math.abs(row.displayedError-row.sourceEditableError)<=.00051,`Displayed mismatch ${row.displayedError} disagrees with exported heart ${row.sourceEditableError}`);

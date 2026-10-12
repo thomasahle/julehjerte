@@ -7,7 +7,7 @@ import {createCanvas,loadImage} from 'canvas';
 import {prepare,design,finish} from '../../static/inverse/core/engine.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {AUTOMATIC_PRESET} from '../../src/lib/inverse/presets.js';
-import {auditImageFeatures} from '../../static/inverse/core/image-features.js';
+import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 
 const catalog=JSON.parse(await fs.readFile('scripts/inverse/fixtures/hunodan/speed-crops.json'));
@@ -44,7 +44,7 @@ for(const e of catalog.cases){
     r.exportAllowed=answer.report.templateChecksPassed;
     const replayStart=performance.now(),woven=await renderExportedWeave(answer.files['cut_geometry.json'],p.preview.resolution);
     r.error=woven.mask.reduce((s,v,i)=>s+Number(v!==p.preview.mask[i]),0)/woven.mask.length;
-    r.features=auditImageFeatures(p.target.sourceImage,woven.mask,cfg.width||100);r.externalReplaySeconds=(performance.now()-replayStart)/1000;
+    r.features=auditFeatureFidelity(p.target.sourceImage,woven.mask,answer.report.settings);r.externalReplaySeconds=(performance.now()-replayStart)/1000;
     r.baselineError=baseline.results.find(b=>b.id===e.id).independentImageError;
     r.matchingAllowance=answer.report.solver.matchingPreference?.identical?(cfg.matchingErrorAllowance??.01):0;
     r.qualityPassed=r.exportAllowed&&r.features.passed&&r.error<=Math.min(.03,r.baselineError+r.matchingAllowance)+1e-12;r.speedPassed=r.seconds<=10;r.passed=r.qualityPassed&&r.speedPassed;

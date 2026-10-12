@@ -5,7 +5,7 @@ import {createCanvas,loadImage} from 'canvas';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET,GENERAL_PRESET,SIMPLIFIED_PREPROCESSING} from '../../src/lib/inverse/presets.js';
 import {detectHeartCrops} from '../../static/inverse/core/crop.js';
-import {auditImageFeatures} from '../../static/inverse/core/image-features.js';
+import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {hardPhotoTarget} from './hard-photo-target.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
@@ -97,7 +97,7 @@ for(const e of cases){
         const replayStart=performance.now(),rendered=await renderExportedWeave(result.files['cut_geometry.json'],p.preview.resolution);r.independentReplaySeconds=(performance.now()-replayStart)/1000;
         r.report=result.report;r.independentImageError=rendered.mask.reduce((sum,v,i)=>sum+Number(v!==p.preview.mask[i]),0)/rendered.mask.length;
         const band=Math.round(p.preview.resolution*.05);let edgePixels=0,edgeErrors=0,interiorErrors=0;for(let i=0;i<rendered.mask.length;i++){const edge=Math.min(i%p.preview.resolution,Math.floor(i/p.preview.resolution),p.preview.resolution-1-i%p.preview.resolution,p.preview.resolution-1-Math.floor(i/p.preview.resolution))<band;edgePixels+=edge;const miss=rendered.mask[i]!==p.preview.mask[i];if(edge)edgeErrors+=miss;else interiorErrors+=miss;}r.spatialError={bandFraction:.05,edgePixels,edgeErrors,interiorErrors,edgeMismatch:edgeErrors/edgePixels,interiorMismatch:interiorErrors/(rendered.mask.length-edgePixels)};
-        r.independentFeatures=auditImageFeatures(p.target.sourceImage,rendered.mask,cfg.width);r.passed=result.report.templateChecksPassed&&r.independentFeatures.passed&&r.independentImageError<=.03;r.status=r.passed?'validated':'needs_review';
+        r.independentFeatures=auditFeatureFidelity(p.target.sourceImage,rendered.mask,result.report.settings);r.passed=result.report.templateChecksPassed&&r.independentFeatures.passed&&r.independentImageError<=.03;r.status=r.passed?'validated':'needs_review';
         for(const[f,data]of Object.entries(result.files))await fs.writeFile(`${folder}/${f}`,data);await fs.writeFile(`${folder}/independent-weave.png`,rendered.png);
       }catch(err){r.passed=false;r.message=err.message;r.report=err.report;r.status=err.report?.termination||(/transitions/.test(err.message)?'border_mismatch':/too (?:many|much)|too detailed|too large/i.test(err.message)?'too_detailed':'error');}
       r.seconds=(performance.now()-start)/1000;console.log(e.label,e.id,name,r.status,r.curves||'',r.seconds.toFixed(2),r.independentImageError?.toFixed(4)||r.message);await save();

@@ -8,7 +8,7 @@ import {createHash} from 'node:crypto';
 import {createServer} from 'vite';
 import {JSDOM} from 'jsdom';
 import {createCanvas,loadImage} from 'canvas';
-import {auditImageFeatures} from '../../static/inverse/core/image-features.js';
+import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {auditEditablePaper} from './editable-paper-audit.mjs';
 import {featureComponentMetrics} from './feature-component-metrics.mjs';
 
@@ -51,7 +51,7 @@ try{
       row.fidelity=conversionFidelity(original.design,reference)(design);assert.ok(row.fidelity.passed);
       const woven=rasterizeDesign(design,image.width).data;
       row.editableError=woven.reduce((s,v,i)=>s+Number(v!==mask[i]),0)/mask.length;
-      const features=auditImageFeatures({mask,resolution:image.width},woven);row.missingFeatures=features.missing.length;
+      const features=auditFeatureFidelity({mask,resolution:image.width},woven,run.report.settings);row.missingFeatures=features.missing.length;
       row.featureComponents=featureComponentMetrics({mask,resolution:image.width},woven);
       const preview=ctx.createImageData(image.width,image.width);
       for(let i=0;i<woven.length;i++)preview.data.set(woven[i]?[185,19,19,255]:[255,255,255,255],4*i);
