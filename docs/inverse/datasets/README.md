@@ -37,6 +37,13 @@ comparisons used the older `GENERAL_PRESET`; their frozen inputs and model
 results remain unchanged. Candidate-knot F1 alone does not establish whether
 the current application can reconstruct a template.
 
+Controlled photo interventions now distinguish crop errors from color, blur
+and compression sensitivity. Running the complete fitter on those 36 views
+also exposed a false seam that passed aggregate checks. The shared-cut repair
+now considers whole curve joins, and a separate fix stops straight cuts from
+being rejected as zero-radius bends. The [diagnosis](app-baseline-correction.md#full-fitting-exposed-a-separate-seam-defect)
+records the remaining border defects and the limited synthetic scope.
+
 Of the real-source files, 475 are reserved by existing QA or connected source
 groups. Remaining files still need instance, motif-family and usage review;
 they are not automatically a labeled training set. The
