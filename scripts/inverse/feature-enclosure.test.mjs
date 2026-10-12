@@ -46,7 +46,7 @@ test('fresh fitting reuses an alternate routing and refines the enclosed opening
   assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   const initialization=answer.report.solver.earlyFeatureInitialization;
-  assert.ok(initialization.enclosureRetry,'The first opened routing needs a different start');
+  assert.equal(initialization.featureRetry.reason,'opened','The first opened routing needs a different start');
   assert.ok(initialization.scheduled<=2,'Reuse at most one alternate from the same count search');
   assert.equal(initialization.hypotheses,10,'Do not repeat or broaden count initialization for this retry');
   const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],resolution);

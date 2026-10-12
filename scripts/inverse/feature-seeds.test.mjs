@@ -15,12 +15,12 @@ import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {featureComponentMetrics} from './feature-component-metrics.mjs';
 
-async function puppy(dy=0){
+async function puppy(dy=0,dx=0){
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
   const photo=await readHardPhoto(catalogue.cases.find(c=>c.id===fixture.sourceCase));
-  const prepared=prepare({...photo,quad:fixture.quad.map(([x,y])=>[x,y+dy])},AUTOMATIC_PRESET);
-  if(!dy)assert.equal(createHash('sha256').update(prepared.preview.mask).digest('hex'),fixture.maskSha256);
+  const prepared=prepare({...photo,quad:fixture.quad.map(([x,y])=>[x+dx,y+dy])},AUTOMATIC_PRESET);
+  if(!dy&&!dx)assert.equal(createHash('sha256').update(prepared.preview.mask).digest('hex'),fixture.maskSha256);
   return prepared;
 }
 
@@ -127,6 +127,33 @@ test('a finer spline recovers a half-resolution opening after all coarse feature
   const fitted=featureComponentMetrics(source,rendered.mask,100,[features[opening]])[0];
   assert.equal(fitted.touchesBorder,false);assert.ok(fitted.componentIoU>.5,'The opening must keep its shape, not just retain some source pixels');
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+});
+
+test('a horizontal crop shift recovers its opening by refining an uncertain alternate',async()=>{
+  const imported=await puppy(0,1),cfg={...AUTOMATIC_PRESET,timeLimit:25,trials:0,earlyStop:false};
+  assert.equal(createHash('sha256').update(imported.preview.mask).digest('hex'),'a96eea21b65604e2a7b9b93d6823cdd58937bebd66fceeb80e9a1f5c2812c1cc');
+  const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
+  const before=source.mask.slice(),probability=source.probability.slice();
+  // Only photograph pixels and the shifted quad enter the fresh search.
+  const answer=await design(prepared.target,cfg),solver=answer.report.solver;
+  assert.equal(solver.earlyFeatureInitialization.featureRetry.reason,'lost');
+  assert.equal(solver.earlyFeatureInitialization.scheduled,2);
+  assert.equal(solver.earlyFeatureInitialization.hypotheses,10,'Reuse a computed routing rather than repeating count search');
+  assert.ok(solver.candidates.some(c=>c.featuresPassed&&!c.imagePassed&&c.paperVerification?.status==='uncertain'));
+  assert.equal(solver.featureDetail.applied,true);
+  assert.equal(solver.featureDetail.paperStatus,'pass');
+  assert.equal(answer.report.templateChecksPassed,true);
+  assert.equal(answer.report.validation.passed,true);
+  assert.equal(answer.report.manufacturing.status,'pass');
+  assert.equal(answer.report.settings.materialResolution,700);
+  for(const resolution of [400,800]){
+    const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],resolution);
+    const mask=Uint8Array.from({length:resolution**2},(_,i)=>source.mask[Math.floor(Math.floor(i/resolution)*400/resolution)*400+Math.floor((i%resolution)*400/resolution)]);
+    const opening=featureComponentMetrics({mask,resolution},rendered.mask).find(f=>f.sourceAreaMm2<30);
+    assert.equal(opening.touchesBorder,false);assert.ok(opening.componentIoU>.6);
+    assert.ok(mismatch(rendered.mask,mask)<.015);
+  }
+  assert.deepEqual(source.mask,before);assert.deepEqual(source.probability,probability);
 });
 
 test('a crop-edge fragment still counts in fidelity but cannot drive an extra cut layout',async()=>{

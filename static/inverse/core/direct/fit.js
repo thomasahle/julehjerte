@@ -273,7 +273,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   };
   let featureDetail=null;
   const refineFeatureDetail=candidate=>{
-    if(!candidate.paperPassed||searchDeadline()-performance.now()<=4000)return candidate;
+    const canRefine=candidate.geometryPassed&&(candidate.paperPassed||candidate.paper?.status==='uncertain');
+    if(!canRefine||searchDeadline()-performance.now()<=4000)return candidate;
     const plan=featureDetailPlan(candidate.graph,candidate.points,source,sourceFeatures,cfg,n);
     if(plan){
       const detailCfg={...cfg,preferMatchingSheets:false,materialResolution:Math.max(cfg.materialResolution,700)};
@@ -284,8 +285,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       }}));
       refined.error=mismatch(renderCurves(plan.graph,refined.points,refined.phase,n,32),prob);
       refined.paperVerification={...verification,status:refined.paper?.status};
-      const accepted=assess(refined)&&refined.originalImageError<=candidate.originalImageError;
-      featureDetail={...plan.report,applied:accepted,errorBefore:candidate.originalImageError,errorAfter:refined.originalImageError,steps:refined.steps};
+      // An unverified proposal is not an incumbent. Recovering valid paper may
+      // cost a few source pixels; it must still pass the unchanged original
+      // image and feature limits. An accepted incumbent cannot lose accuracy.
+      const accepted=assess(refined)&&(!candidate.imagePassed||refined.originalImageError<=candidate.originalImageError);
+      featureDetail={...plan.report,applied:accepted,errorBefore:candidate.originalImageError,errorAfter:refined.originalImageError,geometryPassed:refined.geometryPassed,paperStatus:refined.paper?.status,featuresPassed:refined.originalFeatures?.passed,steps:refined.steps};
       if(accepted)return{...refined,counts:candidate.counts,seed:candidate.seed,matching:matchingSummary(plan.graph.solution(refined.points,refined.phase,input))};
     }
     return candidate;
@@ -330,10 +334,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // A joint protected routing needs its established local detail pass before
     // competing with other starts; that pass can close an initially open eye.
     // Ordinary extra routings get detail once they enclose the feature and
-    // pass the original image/paper checks. Never rank weighted detail scores.
+    // fit the original image. A paper-uncertain proposal may earn a valid
+    // refinement, but never certifies itself. Never rank weighted detail scores.
     const retainedColours=candidate.originalFeatures?.regions.every(r=>r.retainedFraction>=candidate.originalFeatures.minimumRetention);
     const protectedDetail=candidate.seed==='feature-preserving-grid'&&candidate.paperPassed&&retainedColours&&candidate.originalImageError<=cfg.maxImageError;
-    if(protectedDetail||candidate.seed==='feature-weighted-grid'&&candidate.imagePassed&&candidate.originalFeatures.enclosures?.components.some(f=>f.componentIoU<.8)){
+    if(protectedDetail||candidate.seed==='feature-weighted-grid'&&candidate.originalFeatures?.passed&&candidate.originalImageError<=cfg.maxImageError&&candidate.originalFeatures.enclosures?.components.some(f=>f.componentIoU<.8)){
       const detailed=refineFeatureDetail(candidate);
       if(detailed!==candidate){addCandidate(detailed);candidate=detailed;}
     }
@@ -355,14 +360,14 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         featureInitialization.deferredBorderOnly=true;break;
       }
     }
-    // A routing that keeps a feature's pixels can still open it to the
-    // background. Reuse one alternate from that same bounded initialization;
+    // A coarse routing may lose a feature or open it to the background during
+    // refinement. Reuse one alternate from that same bounded initialization;
     // do not repeat count search or displace the ordinary finalists.
-    if(featureSeed(candidate)&&candidate.originalFeatures?.enclosures?.opened&&featureAlternatives.length&&searchDeadline()-performance.now()>6500){
+    if(featureSeed(candidate)&&candidate.originalFeatures?.missing.length&&featureAlternatives.length&&searchDeadline()-performance.now()>6500){
       const alternate=featureAlternatives.shift();
       fine.splice(i+1,0,stage('directFitting',()=>fitSeed(alternate)));
       featureInitialization.scheduled++;
-      featureInitialization.enclosureRetry={counts:alternate.model.counts,controlPoints:alternate.model.k,phase:alternate.phase};
+      featureInitialization.featureRetry={counts:alternate.model.counts,controlPoints:alternate.model.k,phase:alternate.phase,reason:candidate.originalFeatures.enclosures?.opened?'opened':'lost'};
     }
     // Border disagreement must not stop a competitive simpler finalist from
     // receiving curve refinement. Its grid error can overestimate its eventual
