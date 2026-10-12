@@ -87,6 +87,7 @@ for(const file of ['static/inverse/core/feature-recovery.js','static/inverse/cor
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','static/inverse/core/direct/feature-seeds.js','static/inverse/core/direct/feature-details.js','static/inverse/core/direct/matching.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
 report.workspaceSourceHashes['static/inverse/core/feature-shapes.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/feature-shapes.js')).digest('hex');
+for(const file of ['source.json','native.png','downsample.png']){const name='scripts/inverse/fixtures/flower-resolution/'+file;report.harnessSourceHashes[name]=createHash('sha256').update(await fs.readFile(name)).digest('hex');}
 report.workspaceSourceHashes['static/inverse/core/self-returns.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/self-returns.js')).digest('hex');
 report.workspaceSourceHashes['static/inverse/core/direct/grid.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/direct/grid.js')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/photographic-gift-fit.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-gift-fit.json')).digest('hex');
@@ -101,7 +102,8 @@ try{
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=['leaf-mask','bird-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name);
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||['leaf-mask','bird-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -156,10 +158,17 @@ try{
      }else if(photoMask){
       // Hold crop/classification fixed to isolate the real worker and editor
       // path. Upload pixels, never saved cutting paths or a fitting seed.
-      const data=JSON.parse(await fs.readFile(name==='leaf-mask'?'scripts/inverse/fixtures/photographic-leaf-routing.json':name==='puppy-shift-mask'?'scripts/inverse/fixtures/photographic-puppy-fit.json':['bird-mask','gift-mask'].includes(name)?`scripts/inverse/fixtures/photographic-${name.slice(0,-5)}-fit.json`:'scripts/inverse/fixtures/photographic-checkerboard-fits.json'));
-      let fixture=data.cases?{sourceCatalogue:data.sourceCatalogue,...data.cases.find(c=>c.sourceCase===name.slice(0,-5))}:data;
-      if(name==='puppy-shift-mask')fixture={...fixture,quad:fixture.quad.map(([x,y])=>[x+1,y]),maskSha256:'a96eea21b65604e2a7b9b93d6823cdd58937bebd66fceeb80e9a1f5c2812c1cc'};
-      const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source||catalogue.cases.find(c=>c.id===fixture.sourceCase));
+      let fixture,photo;
+      if(flowerMask){
+       const data=JSON.parse(await fs.readFile('scripts/inverse/fixtures/flower-resolution/source.json')),entry=data.cases.find(c=>c.variant===name.slice(7,-5));
+       assert.ok(entry);fixture={...entry,quad:null,sourceCase:name.slice(0,-5)};
+       photo=await readHardPhoto({file:entry.rectifiedPhoto,sha256:entry.sha256,width:400,height:400});
+      }else{
+       const data=JSON.parse(await fs.readFile(name==='leaf-mask'?'scripts/inverse/fixtures/photographic-leaf-routing.json':name==='puppy-shift-mask'?'scripts/inverse/fixtures/photographic-puppy-fit.json':['bird-mask','gift-mask'].includes(name)?`scripts/inverse/fixtures/photographic-${name.slice(0,-5)}-fit.json`:'scripts/inverse/fixtures/photographic-checkerboard-fits.json'));
+       fixture=data.cases?{sourceCatalogue:data.sourceCatalogue,...data.cases.find(c=>c.sourceCase===name.slice(0,-5))}:data;
+       if(name==='puppy-shift-mask')fixture={...fixture,quad:fixture.quad.map(([x,y])=>[x+1,y]),maskSha256:'a96eea21b65604e2a7b9b93d6823cdd58937bebd66fceeb80e9a1f5c2812c1cc'};
+       const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));photo=await readHardPhoto(catalogue.source||catalogue.cases.find(c=>c.id===fixture.sourceCase));
+      }
       const mask=prepare({...photo,quad:fixture.quad},AUTOMATIC_PRESET).preview.mask;
       assert.equal(createHash('sha256').update(mask).digest('hex'),fixture.maskSha256);
       const c=createCanvas(400,400),ctx=c.getContext('2d'),pixels=ctx.createImageData(400,400);
@@ -300,6 +309,9 @@ try{
     row.featureRecovery=observed.result.report.solver.featureRecovery;
     row.templateChecksPassed=observed.result.report.templateChecksPassed;
     row.missingFeatures=observed.result.report.imageFidelity?.features.missing;
+    if(flowerMask&&!engineReference){
+     assert.deepEqual(row.selectedCounts,[3,3]);assert.ok(row.engineError<.01);
+    }
     if(photoMask){
      assert.equal(createHash('sha256').update(Uint8Array.from(observed.prepared.mask)).digest('hex'),row.sourcePhoto.fixedMaskSha256);
      if(!engineReference){
@@ -477,6 +489,7 @@ try{
     }
     assert.ok(Math.abs(row.displayedError-row.sourceEditableError)<=.00051,`Displayed mismatch ${row.displayedError} disagrees with exported heart ${row.sourceEditableError}`);
     assert.ok(row.sourceEditableError<=(small ? .005 : topHat ? .01 : free||photograph||photoMask ? .03 : .015),`Editable source mismatch ${row.sourceEditableError}`);
+    if(flowerMask&&!engineReference)assert.ok(row.sourceEditableError<.01,'The editable flower must preserve the improved fit.');
     if(name==='star'||photoMask){
      const pendingPDF=page.waitForEvent('download');await button('Download PDF').click();
      const pdfFile=path.join(dir,'template.pdf');await(await pendingPDF).saveAs(pdfFile);

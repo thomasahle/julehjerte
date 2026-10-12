@@ -6,6 +6,11 @@ Run `npm run test:inverse:paint:browser` against the built app for the actual Pa
 
 [COUNT-STRATEGIES.md](COUNT-STRATEGIES.md) compares count initialization on the frozen photo dataset, separating the cost of finding initial grids from complete solve time and measured reconstruction quality.
 
+[FINALIST-DIVERSITY.md](FINALIST-DIVERSITY.md) follows a small photographic
+perturbation through count selection: a competitive simpler grid now retains
+a refinement slot while the best seed and supported border counts remain.
+It also separates the unresolved crop and color-classification failures.
+
 Current full-pipeline investigations are recorded in
 [FEATURE-BUDGET.md](FEATURE-BUDGET.md) (giving feature-preserving template layouts
 time to refine without cutting off useful traced routing),
