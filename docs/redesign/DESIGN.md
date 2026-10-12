@@ -319,6 +319,9 @@ The four point-type icons follow the owner's point-types reference: a diamond at
 on a smooth curve, a square with equal handles for symmetry, and a circle for creating curve handles.
 These glyphs are 24px within the existing 44px buttons. Curves use the button text colour; points are
 red on white and gold on the selected green button, with gaps separating the shapes from the curves.
+Every toolbar tooltip has the full tool name and a short explanation in both languages. Point tools
+explain handle behaviour, and disabled editing tools say what to select first. Tooltips wrap within
+288px (or the available viewport width) and sit beside the desktop rail or below the mobile toolbar.
 
 Keep every existing tool (undo/redo, insert/delete node, corner/smooth/symmetric, straighten line/curve, …) as
 44px icon buttons with tooltips — nothing removed, no labels under icons. Apply the palette: page background,

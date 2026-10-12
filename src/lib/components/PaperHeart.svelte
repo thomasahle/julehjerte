@@ -2,7 +2,7 @@
 	import { onMount, tick, type Component, type Snippet } from 'svelte';
 	import type { IconProps } from '$lib/components/icons/types';
 	import { Separator } from '$lib/components/ui/separator';
-	import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '$lib/components/ui/tooltip';
+	import { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger } from '$lib/components/ui/tooltip';
 	import {
 		ChevronRightIcon,
 		CloseIcon,
@@ -3015,12 +3015,13 @@
 
 	<!--
 		One tool-rail button: a 44px icon button with a tooltip (DESIGN.md §7).
-		`pressed` turns it into a toggle (the three node types); the tooltip trigger
-		wraps the button in a span so disabled buttons still show their tooltip.
+		`pressed` turns it into a toggle (the three node types). Disabled buttons use
+		a focusable wrapper; enabled buttons are the trigger so keyboard focus opens it.
 	-->
 	{#snippet toolButton(o: {
 		label: string;
-		tip?: string;
+		tip: string;
+		disabledHint?: string;
 		icon: Component<IconProps>;
 		iconSize?: number;
 		onclick: () => void;
@@ -3029,28 +3030,50 @@
 	})}
 		{@const Icon = o.icon}
 		<Tooltip>
-			<TooltipTrigger>
+			<TooltipTrigger onclick={o.disabled ? undefined : o.onclick}>
 				{#snippet child({ props })}
-					<!-- The wrapper carries the tooltip so a *disabled* button still has one,
-					     and keeps the tabindex the trigger gives it. When the button itself can
-					     take focus, the wrapper steps out of the tab order (spread, so the
-					     attribute is simply absent otherwise) and the rail is one stop per tool. -->
-					<span class="tooltip-wrapper" {...props} {...(o.disabled ? {} : { tabindex: -1 })}>
+					{#if o.disabled}
+						<span class="tooltip-wrapper" {...props}>
+							<button
+								type="button"
+								class="tool-btn"
+								aria-label={o.label}
+								aria-describedby={typeof props['aria-describedby'] === 'string' ? props['aria-describedby'] : undefined}
+								aria-pressed={o.pressed === undefined ? undefined : o.pressed}
+								disabled
+							>
+								<Icon size={o.iconSize ?? 20} />
+							</button>
+						</span>
+					{:else}
 						<button
+							{...props}
 							type="button"
 							class="tool-btn"
 							class:active={o.pressed}
 							aria-label={o.label}
 							aria-pressed={o.pressed === undefined ? undefined : o.pressed}
-							disabled={o.disabled ?? false}
-							onclick={o.onclick}
 						>
 							<Icon size={o.iconSize ?? 20} />
 						</button>
-					</span>
+					{/if}
 				{/snippet}
 			</TooltipTrigger>
-			<TooltipContent>{o.tip ?? o.label}</TooltipContent>
+			<!-- Keep the explanation above canvas notices and out of the toolbar's clipping. -->
+			<TooltipPortal>
+				<TooltipContent
+					side={isMobileLayout ? 'bottom' : 'right'}
+					sideOffset={8}
+					collisionPadding={8}
+					class="max-w-[min(18rem,calc(100vw-1rem))] px-3 py-2 text-left leading-snug"
+				>
+					<strong class="block font-semibold">{o.label}</strong>
+					<span class="mt-1 block">{o.tip}</span>
+					{#if o.disabled && o.disabledHint}
+						<span class="mt-2 block font-medium">{o.disabledHint}</span>
+					{/if}
+				</TooltipContent>
+			</TooltipPortal>
 		</Tooltip>
 	{/snippet}
 
@@ -3405,8 +3428,8 @@
 				     removed and no labels are printed under the icons (DESIGN.md §7). -->
 				<div bind:this={segmentControlsEl} class="segment-controls" class:floating={fullPage} aria-label={tr('editorCurveTools')}>
 					<div class="history-controls" aria-label={tr('editorHistory')}>
-						{@render toolButton({ label: tr('editorUndo'), icon: UndoIcon, onclick: undo, disabled: !canUndo })}
-						{@render toolButton({ label: tr('editorRedo'), icon: RedoIcon, onclick: redo, disabled: !canRedo })}
+						{@render toolButton({ label: tr('editorUndo'), tip: tr('editorUndoHint'), icon: UndoIcon, onclick: undo, disabled: !canUndo })}
+						{@render toolButton({ label: tr('editorRedo'), tip: tr('editorRedoHint'), icon: RedoIcon, onclick: redo, disabled: !canRedo })}
 					</div>
 					<div class="toolbar-separator" aria-hidden="true">
 						<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
@@ -3414,12 +3437,16 @@
 					<div class="edit-controls" aria-label={tr('editorEdit')}>
 						{@render toolButton({
 							label: tr('editorInsertNode'),
+							tip: tr('editorInsertNodeHint'),
+							disabledHint: tr('editorSelectAdjacentPointsHint'),
 							icon: NodeAddIcon,
 							onclick: insertNodeBetweenSelectedAnchors,
 							disabled: !canInsertNode
 						})}
 						{@render toolButton({
 							label: tr('editorDeleteNode'),
+							tip: tr('editorDeleteNodeHint'),
+							disabledHint: tr('editorSelectInteriorPointHint'),
 							icon: TrashIcon,
 							onclick: deleteSelectedAnchors,
 							disabled: !canDeleteNode
@@ -3431,7 +3458,8 @@
 					<div class="node-type-controls" aria-label={tr('editorNodeType')}>
 						{@render toolButton({
 							label: tr('editorCornerNode'),
-							tip: tr('editorCorner'),
+							tip: tr('editorCornerNodeHint'),
+							disabledHint: tr('editorSelectPointHint'),
 							icon: NodeCornerIcon,
 							iconSize: 24,
 							onclick: () => setSelectedAnchorsNodeType('corner'),
@@ -3440,7 +3468,8 @@
 						})}
 						{@render toolButton({
 							label: tr('editorSmoothNode'),
-							tip: tr('editorSmooth'),
+							tip: tr('editorSmoothNodeHint'),
+							disabledHint: tr('editorSelectPointHint'),
 							icon: NodeSmoothIcon,
 							iconSize: 24,
 							onclick: () => setSelectedAnchorsNodeType('smooth'),
@@ -3449,7 +3478,8 @@
 						})}
 						{@render toolButton({
 							label: tr('editorSymmetricNode'),
-							tip: tr('editorSymmetric'),
+							tip: tr('editorSymmetricNodeHint'),
+							disabledHint: tr('editorSelectPointHint'),
 							icon: NodeSymmetricIcon,
 							iconSize: 24,
 							onclick: () => {
@@ -3461,6 +3491,8 @@
 						})}
 						{@render toolButton({
 							label: tr('editorCurveNode'),
+							tip: tr('editorCurveNodeHint'),
+							disabledHint: tr('editorSelectPointHint'),
 							icon: NodeCurveIcon,
 							iconSize: 24,
 							onclick: makeSelectedAnchorsCurved,
@@ -3473,12 +3505,16 @@
 					<div class="convert-controls" aria-label={tr('editorConvert')}>
 						{@render toolButton({
 							label: tr('editorStraightSegment'),
+							tip: tr('editorStraightSegmentHint'),
+							disabledHint: tr('editorSelectSegmentHint'),
 							icon: SegmentLineIcon,
 							onclick: makeSelectedSegmentsStraight,
 							disabled: !canMakeSegmentsStraight
 						})}
 						{@render toolButton({
 							label: tr('editorCurvedSegment'),
+							tip: tr('editorCurvedSegmentHint'),
+							disabledHint: tr('editorSelectSegmentHint'),
 							icon: SegmentCurveIcon,
 							onclick: makeSelectedSegmentsCurved,
 							disabled: !canMakeSegmentsCurved
@@ -3488,7 +3524,7 @@
 						<Separator orientation={isMobileLayout ? 'vertical' : 'horizontal'} class={isMobileLayout ? 'h-6' : undefined} decorative />
 					</div>
 					<div class="view-controls" aria-label={tr('editorFitView')}>
-						{@render toolButton({ label: tr('editorFitView'), icon: FitIcon, onclick: fitView })}
+						{@render toolButton({ label: tr('editorFitView'), tip: tr('editorFitViewHint'), icon: FitIcon, onclick: fitView })}
 					</div>
 				</div>
 
