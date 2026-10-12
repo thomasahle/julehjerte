@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
+import {createCanvas} from 'canvas';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {settings} from '../../static/inverse/core/settings.js';
@@ -81,6 +82,7 @@ test('additional layouts can retain a remote opening without editing the image o
   assert.equal(features.length,1);
   const args={source,features,missed:[0],counts:[3,3],cfg,evidence:borderEvidence(source.probability,source.resolution),maximumCount:8};
   const result=initializeFeatureSeeds(args);
+  assert.equal(result.report.finerHypotheses,0,'An existing coarse layout must not pay for speculative extra curve freedom');
   assert.ok(result.seeds.length,'A new starting layout must retain the opening which all ordinary initial grids missed');
   assert.ok(result.seeds.some(s=>s.model.counts[0]!==s.model.counts[1]));
   for(const seed of result.seeds){
@@ -90,6 +92,40 @@ test('additional layouts can retain a remote opening without editing the image o
   }
   const bounded=initializeFeatureSeeds({...args,maximumCount:3});
   assert.ok(bounded.report.attempts.every(a=>a.counts.every(c=>c<=3)));
+  assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+});
+
+test('a finer spline recovers a half-resolution opening after all coarse feature starts fail',async()=>{
+  const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json'));
+  const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
+  const photo=await readHardPhoto(catalogue.cases.find(c=>c.id===fixture.sourceCase));
+  assert.equal(photo.fileSha256,fixture.sourceFileSha256);assert.equal(photo.rgbaSha256,fixture.decodedPixelsSha256);
+  const canvas=createCanvas(Math.round(photo.imageWidth/2),Math.round(photo.imageHeight/2)),ctx=canvas.getContext('2d');
+  ctx.drawImage(photo.canvas,0,0,canvas.width,canvas.height);
+  const cfg=settings({...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false}),hash=b=>createHash('sha256').update(b).digest('hex');
+  const rgba=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+  assert.equal(hash(rgba),'c59764172b1293df526a5326bb54ba4085b73d6314f28b48e9cfc3be77006d71');
+  const imported=prepare({type:'pixels',rgba,imageWidth:canvas.width,imageHeight:canvas.height,quad:fixture.quad.map(p=>p.map(v=>v/2))},cfg);
+  assert.equal(hash(imported.preview.mask),'892ade9f2353db4be42a7c22ddec818734930e100a1ab6b63837e1d9b07076b5');
+  const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:imported.preview.resolution},cfg),source=prepared.target.sourceImage;
+  const mask=source.mask.slice(),probability=source.probability.slice(),features=imageFeatures(source);
+  const opening=features.findIndex(f=>f.areaMm2<30);assert.ok(opening>=0);
+  const search=initializeFeatureSeeds({source,features,missed:[opening],counts:[3,3],cfg,evidence:borderEvidence(probability,source.resolution),maximumCount:8});
+  assert.equal(search.report.finerHypotheses,10);assert.equal(search.report.hypotheses,22);
+  assert.ok(search.report.attempts.filter(a=>a.controlPoints===16).every(a=>!a.featuresPassed));
+  assert.ok(search.seeds.length);assert.equal(search.seeds[0].model.k,32);
+  const initial=featureComponentMetrics(source,gridMask(search.seeds[0].model,source.resolution,search.seeds[0].phase,search.seeds[0].floor),100,[features[opening]])[0];
+  assert.equal(initial.touchesBorder,false);
+  const answer=await design(prepared.target,cfg),solver=answer.report.solver;
+  assert.equal(solver.earlyFeatureInitialization.finerHypotheses,10);
+  assert.equal(solver.earlyFeatureInitialization.scheduled,1);assert.equal(solver.featureRecovery,null);
+  for(const stage of ['fine','clearance'])assert.ok(solver.attempts.some(a=>a.stage===stage&&a.controlPoints===32));
+  assert.equal(answer.report.templateChecksPassed,true);assert.equal(answer.report.validation.passed,true);
+  assert.equal(answer.report.manufacturing.status,'pass');
+  const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution);
+  assert.ok(mismatch(rendered.mask,mask)<.012);assert.equal(auditImageFeatures(source,rendered.mask).passed,true);
+  const fitted=featureComponentMetrics(source,rendered.mask,100,[features[opening]])[0];
+  assert.equal(fitted.touchesBorder,false);assert.ok(fitted.componentIoU>.5,'The opening must keep its shape, not just retain some source pixels');
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 

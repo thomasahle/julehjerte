@@ -138,8 +138,14 @@ try{
     else{
      const file=path.join(dir,'input.png');
      if(hardPhoto){
-      const data=JSON.parse(await fs.readFile('scripts/inverse/photo-cases.json')),entry=data.cases.find(c=>c.id===name.slice(5));assert.ok(entry,`Unknown hard photograph ${name}`);
-      const photo=await readHardPhoto(entry);await fs.copyFile(entry.file,file);
+      const half=name.endsWith('-half'),id=half?name.slice(5,-5):name.slice(5);
+      const data=JSON.parse(await fs.readFile('scripts/inverse/photo-cases.json')),entry=data.cases.find(c=>c.id===id);assert.ok(entry,`Unknown hard photograph ${name}`);
+      const photo=await readHardPhoto(entry);
+      if(half){
+       const c=createCanvas(Math.round(photo.imageWidth/2),Math.round(photo.imageHeight/2));c.getContext('2d').drawImage(photo.canvas,0,0,c.width,c.height);
+       await fs.writeFile(file,c.toBuffer('image/png'));
+       row.inputPerturbation={kind:'half-resolution',width:c.width,height:c.height,pixelsSha256:createHash('sha256').update(c.getContext('2d').getImageData(0,0,c.width,c.height).data).digest('hex')};
+      }else await fs.copyFile(entry.file,file);
       row.sourcePhoto={id:entry.id,sha256:photo.fileSha256,decodedPixelsSha256:photo.rgbaSha256};
      }else if(photoMask){
       // Hold crop/classification fixed to isolate the real worker and editor
@@ -290,7 +296,7 @@ try{
     if(photoMask){
      assert.equal(createHash('sha256').update(Uint8Array.from(observed.prepared.mask)).digest('hex'),row.sourcePhoto.fixedMaskSha256);
      if(!engineReference){
-      assert.equal(row.templateChecksPassed,true,'The bird eye must survive the actual worker and final checks.');
+      assert.equal(row.templateChecksPassed,true,'Source features must survive the actual worker and final checks.');
       assert.equal(row.missingFeatures.length,0);assert.ok(row.engineError<.03);
      }
     }

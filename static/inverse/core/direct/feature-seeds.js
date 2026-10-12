@@ -6,6 +6,8 @@ import {initializeCounts} from './counts.js';
 import {resizeObjective} from './image-objective.js';
 import {gridMask,mismatch} from './grid.js';
 import {auditImageFeatures} from '../image-features.js';
+import {featureComponentMetrics} from '../feature-shapes.js';
+import {smallInteriorFeatures} from './feature-details.js';
 
 export function initializeFeatureSeeds({source,features,missed,counts,cfg,evidence,maximumCount}){
   // Do not create new routings solely to reproduce isolated crop-edge flecks.
@@ -27,13 +29,14 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
   const boost=16,n=Math.min(256,resolution),fullProb=source.probability||Float32Array.from(source.mask),fullWeights=new Float64Array(resolution*resolution).fill(1/boost);
   for(const index of interior)for(const pixel of features[index].pixels)fullWeights[pixel]=1;
   const weighted=resizeObjective(fullProb,resolution,n,fullWeights),original=resizeObjective(fullProb,resolution,n);
-  const attempts=[];
-  const search=(options,protectFeatures=false)=>initializeCounts({options,fullProb,resolution,prob:weighted.probability,n,evidence,weights:weighted.weights,fullWeights}).seeds.map(seed=>{
+  const attempts=[],small=smallInteriorFeatures(source,interior.map(i=>features[i]),cfg);
+  const closedFeatures=seed=>featureComponentMetrics(source,gridMask(seed.model,resolution,seed.phase,seed.floor),cfg.width,small).every(part=>part.intersectionPixels>0&&part.touchesBorder===false);
+  const search=(options,protectFeatures=false,k=16)=>initializeCounts({options,fullProb,resolution,prob:weighted.probability,n,evidence,weights:weighted.weights,fullWeights},{k}).seeds.map(seed=>{
       const woven=gridMask(seed.model,resolution,seed.phase,seed.floor),audit=auditImageFeatures(source,woven,cfg.width,features);
       seed.error=mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability);
       seed.featuresPassed=audit.passed;seed.seed=protectFeatures?'feature-preserving-grid':'feature-weighted-grid';
       if(protectFeatures)seed.protectFeatures=true;
-      attempts.push({counts:seed.model.counts,phase:seed.phase,error:seed.error,featuresPassed:audit.passed,missing:audit.missing.length,protectFeatures});
+      attempts.push({counts:seed.model.counts,controlPoints:k,phase:seed.phase,error:seed.error,featuresPassed:audit.passed,missing:audit.missing.length,protectFeatures});
       return seed;
     }).filter(s=>s.featuresPassed&&s.error<=(protectFeatures?Math.min(.12,4*cfg.maxImageError):Math.min(.1,3*cfg.maxImageError))).sort((a,b)=>a.error-b.error);
   let seeds=search(options),jointHypotheses=0;
@@ -47,7 +50,18 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
       seeds=search(joint,true);
     }
   }
-  return{seeds,report:{...report,hypotheses:options.length+jointHypotheses,jointHypotheses,attempts,retained:seeds.length}};
+  let finerHypotheses=0;
+  // A small source opening can be visible to the row DP yet unrepresentable
+  // by its coarse spline projection. Retry the same count range with more
+  // curve freedom only after both existing searches fail to retain it.
+  // Replacing a usable coarse routing with a denser one can introduce tight
+  // returns, even when it reduces image error. Keep the established routing.
+  if(small.length&&!seeds.length){
+    finerHypotheses=options.length;
+    const finer=search(options,false,32).filter(closedFeatures);
+    seeds=[...finer,...seeds];
+  }
+  return{seeds,report:{...report,hypotheses:options.length+jointHypotheses+finerHypotheses,jointHypotheses,finerHypotheses,attempts,retained:seeds.length}};
 }
 
 /** Preserve every existing region during the extra routing's clearance and
