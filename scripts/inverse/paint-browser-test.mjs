@@ -91,6 +91,7 @@ report.workspaceSourceHashes['static/inverse/core/self-returns.js']=createHash('
 report.workspaceSourceHashes['static/inverse/core/direct/grid.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/direct/grid.js')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/photographic-gift-fit.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-gift-fit.json')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/browser-puppy-half-mask.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/browser-puppy-half-mask.json')).digest('hex');
+report.harnessSourceHashes['scripts/inverse/fixtures/photographic-puppy-fit.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json')).digest('hex');
 for(const name of ['junctions.js','border.js','material.js','validate.js','settings.js']){const file=`static/inverse/core/${name}`;report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');}
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -100,7 +101,7 @@ try{
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=['bird-mask','gift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=['bird-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -155,9 +156,10 @@ try{
      }else if(photoMask){
       // Hold crop/classification fixed to isolate the real worker and editor
       // path. Upload pixels, never saved cutting paths or a fitting seed.
-      const data=JSON.parse(await fs.readFile(['bird-mask','gift-mask'].includes(name)?`scripts/inverse/fixtures/photographic-${name.slice(0,-5)}-fit.json`:'scripts/inverse/fixtures/photographic-checkerboard-fits.json'));
-      const fixture=data.cases?{sourceCatalogue:data.sourceCatalogue,...data.cases.find(c=>c.sourceCase===name.slice(0,-5))}:data;
-      const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
+      const data=JSON.parse(await fs.readFile(name==='puppy-shift-mask'?'scripts/inverse/fixtures/photographic-puppy-fit.json':['bird-mask','gift-mask'].includes(name)?`scripts/inverse/fixtures/photographic-${name.slice(0,-5)}-fit.json`:'scripts/inverse/fixtures/photographic-checkerboard-fits.json'));
+      let fixture=data.cases?{sourceCatalogue:data.sourceCatalogue,...data.cases.find(c=>c.sourceCase===name.slice(0,-5))}:data;
+      if(name==='puppy-shift-mask')fixture={...fixture,quad:fixture.quad.map(([x,y])=>[x+1,y]),maskSha256:'a96eea21b65604e2a7b9b93d6823cdd58937bebd66fceeb80e9a1f5c2812c1cc'};
+      const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source||catalogue.cases.find(c=>c.id===fixture.sourceCase));
       const mask=prepare({...photo,quad:fixture.quad},AUTOMATIC_PRESET).preview.mask;
       assert.equal(createHash('sha256').update(mask).digest('hex'),fixture.maskSha256);
       const c=createCanvas(400,400),ctx=c.getContext('2d'),pixels=ctx.createImageData(400,400);
@@ -444,11 +446,11 @@ try{
       assert.equal(eye.touchesBorder,false,'The exported eye must remain separate from the background');
       assert.ok(eye.componentIoU>.8,'The editable eye must retain its shape after simplification');
      }
-     if(name==='hard-flettede-puppy-half'&&row.templateChecksPassed){
+     if(['hard-flettede-puppy-half','puppy-shift-mask'].includes(name)&&row.templateChecksPassed){
       const opening=row.featureComponents.find(f=>f.sourceAreaMm2<30);
       assert.ok(opening,'The classified smaller photograph must contain the opening');
       assert.equal(opening.touchesBorder,false,'A reported success must preserve a separate opening');
-      assert.ok(opening.componentIoU>.5,'Retaining pixels inside an inflated region is insufficient');
+      assert.ok(opening.componentIoU>(name==='puppy-shift-mask'?.6:.5),'Retaining pixels inside an inflated region is insufficient');
      }
      if(row.missingFeatures.length)assert.equal(row.templateChecksPassed,false,'Low mean error cannot certify a pair with lost source regions.');
      assert.equal(row.editableFeatures.passed,!row.missingFeatures.length,'SVG conversion must preserve the observed feature outcome.');
