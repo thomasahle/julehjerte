@@ -1,29 +1,74 @@
 [
   {
-    "id": "klassisk-julehjerte",
-    "title": "Klassisk julehjerte – skabelon til print på A4",
-    "description": "Flet et klassisk rødt og hvidt julehjerte i papir. Hent skabelonen på Juleflet, print på A4, og følg vejledningen til at klippe og flette. Gem idéen til årets juleklip.",
+    "id": "5star",
+    "headline": ["Julehjerte med", "femtakket stjerne"],
+    "title": "Flettet julehjerte med femtakket stjerne – skabelon",
+    "description": "Et julehjerte i lilla og guld med en femtakket stjerne flettet ind i midten. Find skabelonen til 5-Stjerne på Juleflet, print på A4, og vælg dine egne papirfarver. Et mønster for øvede af Thomas Ahle. Gem idéen til årets juleklip.",
     "board": "Julehjerter – skabeloner",
-    "path": "/hjerte/classic-3x3/",
-    "alt": "Illustration af et klassisk rødt og hvidt flettet julehjerte med tre strimler på hver side. Teksten siger Klassiske julehjerter og Skabelon til print.",
+    "alt": "Foto af et flettet julehjerte i lilla og guldfarvet papir på et træbord. Midten har en femtakket stjerne med en stjerneformet ramme. Teksten siger Julehjerte med femtakket stjerne.",
     "suggestedDay": 1
   },
   {
-    "id": "saadan-fletter-du",
-    "title": "Sådan fletter du julehjerter – guide trin for trin",
-    "description": "Hvordan fletter man julehjerter? Se forskellen på at føre en foldet strimmel ind igennem og uden om den anden. Juleflets illustrerede guide viser, hvordan du folder, klipper og fletter et klassisk julehjerte.",
-    "board": "Sådan fletter du julehjerter",
-    "path": "/saadan-goer-du/",
-    "alt": "To diagrammer viser en foldet papirstrimmel, der føres ind igennem eller uden om en anden strimmel. Overskriften er Sådan fletter du julehjerter.",
+    "id": "stjerne",
+    "headline": ["Julehjerte", "med stjerne"],
+    "title": "Julehjerte med stjerne – skabelon til print på A4",
+    "description": "En rød stjerne midt i et flettet julehjerte af rødt og hvidt papir. Fotoet viser det færdige Stjerne-hjerte med hank. Hent den tilhørende skabelon på Juleflet, print på A4, og flet din egen udgave. Mønster af Thomas.",
+    "board": "Julehjerter – skabeloner",
+    "alt": "Foto af et rødt og hvidt flettet julehjerte med rød hank på et træbord. En rød stjerne fylder midten af hjertet. Teksten siger Julehjerte med stjerne.",
     "suggestedDay": 4
   },
   {
-    "id": "uden-printer",
-    "title": "Julehjerter uden printer – tegn skabelonen af fra en skærm",
-    "description": "Du kan bruge en skabelon til julehjerter uden at printe den. Se, hvordan du tegner den af fra en skærm på tyndt papir og bruger den som klippeskabelon på foldet papir. Guiden har syv illustrerede trin og råd om papir, størrelse og fold.",
-    "board": "Sådan fletter du julehjerter",
-    "path": "/julehjerter-uden-printer/",
-    "alt": "Illustration af en julehjerteskabelon på en tablet med tyndt papir ovenpå og en blyant, der tegner mønstret af. Overskriften er Julehjerter uden printer.",
+    "id": "nihon",
+    "headline": ["Nihon", "Et enkelt julehjerte"],
+    "title": "Nihon – et enkelt flettet julehjerte med cirkel",
+    "description": "Nihon er et enkelt julehjerte med en cirkel i midten. Her er det flettet i lyst og sortmønstret papir. Find skabelonen på Juleflet og vælg to slags papir til din egen udgave. Et let mønster med tre strimler på hver side, designet af Bjørn.",
+    "board": "Julehjerter – skabeloner",
+    "alt": "Foto af en hånd, der holder et flettet julehjerte af lyst og sortstribet papir foran grønne blade. Hjertet har en cirkel i midten. Teksten siger Nihon – Et enkelt julehjerte.",
     "suggestedDay": 7
+  },
+  {
+    "id": "sun",
+    "headline": ["Julehjerte", "med solmønster"],
+    "title": "Flettet julehjerte med solmønster – skabelon til print",
+    "description": "Flet et julehjerte med et snoet solmønster i midten. Fotoet viser Sol i rødt og grønt papir. Find skabelonen på Juleflet, print på A4, og prøv det klassiske mønster i dine egne farver. Gem idéen til julepynt af papir.",
+    "board": "Julehjerter – skabeloner",
+    "alt": "Foto af et rødt og grønt flettet julehjerte holdt i en hånd. De buede papirstrimler danner et snoet solmønster i midten. Teksten siger Julehjerte med solmønster.",
+    "suggestedDay": 10
+  },
+  {
+    "id": "david4",
+    "headline": ["Julehjerte med", "sekstakket stjerne"],
+    "title": "Julehjerte med sekstakket stjerne – David 4-skabelon",
+    "description": "David 4 er et flettet julehjerte med en sekstakket stjerne. På fotoet er hjertet lavet i blåt og guldfarvet papir med en blå hank. Hent skabelonen på Juleflet og print på A4. Mønster med fire strimler på hver side af Thomas Ahle.",
+    "board": "Julehjerter – skabeloner",
+    "alt": "Foto af et blåt og guldfarvet flettet julehjerte med blå hank. En guldfarvet sekstakket stjerne er flettet ind i midten. Hjertet ligger på denim. Teksten siger Julehjerte med sekstakket stjerne.",
+    "suggestedDay": 13
+  },
+  {
+    "id": "circle",
+    "headline": ["Et julehjerte", "med cirkelmønster"],
+    "title": "Julehjerte med cirkelmønster – skabelonen Uret v2",
+    "description": "Et flettet julehjerte med cirkler og fine forbindelser i midten. Fotoet viser Uret v2 i gult og hvidt papir. Find skabelonen på Juleflet og print på A4. Et mønster for øvede af Thomas Ahle, når du har lyst til en ny udfordring til juleklip.",
+    "board": "Julehjerter – skabeloner",
+    "alt": "Foto af en hånd, der holder et gult og hvidt flettet julehjerte. Midten har en lys cirkel omgivet af en gul ring og små forbindelser. Teksten siger Et julehjerte med cirkelmønster.",
+    "suggestedDay": 16
+  },
+  {
+    "id": "venus",
+    "headline": ["Julehjerte", "med venussymbol"],
+    "title": "Julehjerte med venussymbol – skabelon til øvede",
+    "description": "Et venussymbol flettet ind i et julehjerte. Fotoet viser Venus i grønt og gult papir. Mønstret er for erfarne flettere og er designet af Torben Ægidius Mogensen. Find skabelonen og oplysninger om mønstret på Juleflet.",
+    "board": "Julehjerter – skabeloner",
+    "alt": "Foto af et grønt og gult flettet julehjerte med et gult venussymbol i midten og små tern langs kanten. Teksten siger Julehjerte med venussymbol.",
+    "suggestedDay": 19
+  },
+  {
+    "id": "alhambra",
+    "headline": ["Alhambra", "Flettet julehjerte"],
+    "title": "Alhambra – flettet julehjerte med geometrisk mønster",
+    "description": "Alhambra er et flettet julehjerte med et geometrisk mønster inspireret af fliseværk. Fotoet viser en rød og blå udgave med hank. Mønstret er for erfarne flettere og er designet af Torben Mogensen. Find skabelonen og linket til originalen på Juleflet.",
+    "board": "Julehjerter – skabeloner",
+    "alt": "Foto af et rødt og mørkeblåt flettet julehjerte med rød hank på et træbord. Papiret danner et tæt geometrisk mønster. Teksten siger Alhambra – Flettet julehjerte.",
+    "suggestedDay": 22
   }
 ]
