@@ -1,33 +1,63 @@
 /** Adapter for the supplied motif locator. Its coordinates refer to pixel
  * centres; the inverse engine's quadrilateral refers to pixel edges. */
-import { detectMotif } from '../locator/locator.js';
+import { createMotifDetector } from '../locator/locator.js';
 import { homography, project } from '../locator/math.js';
 
 export const pixelCentresToEdges = quad => quad.map(p => p.map(v => v + 0.5));
 export const pixelEdgesToCentres = quad => quad.map(p => p.map(v => v - 0.5));
+
+/** A rotated guess must explain both lobes. Merely returning a quadrilateral
+ * is insufficient when one paper colour is absent from the segmentation. */
+export function supportedCropOutline(proposal) {
+  const e = proposal?.evidence;
+  return !!proposal?.quad && !!e && [...e.lowerEdgeSupport, ...e.lobeOutlineSupport].every(v => v >= .65) && e.capColourLoss.every(v => v <= .30);
+}
 
 export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {} } = {}) {
   if (input.imageWidth * input.imageHeight > 24e6) throw new Error('Image exceeds 24 megapixels.');
   if (input.imageWidth < 24 || input.imageHeight < 24) return { status: 'not_found', reason: 'The image is too small for automatic outline fitting.', candidates: [] };
   onProgress({ stage: 'detecting' });
   const image = { width: input.imageWidth, height: input.imageHeight, data: input.rgba };
-  let proposal = detectMotif(image, { roi, maxSize: 650 });
-  if (!proposal.quad) {
-    const adaptive = detectMotif(image, { roi, maxSize: 650, palette: 'adaptive' });
+  const started = performance.now(), detectors = new Map(), attempts = [];
+  const detector = palette => {
+    if (!detectors.has(palette)) detectors.set(palette, createMotifDetector(image, { roi, maxSize: 650, palette }));
+    return detectors.get(palette);
+  };
+  let proposal = detector(undefined)();
+  if (!supportedCropOutline(proposal)) {
+    const original = proposal;
+    const adaptive = detector('adaptive')();
     if (adaptive.quad || adaptive.status === 'needs_selection') proposal = adaptive;
-    if (!proposal.quad) {
+    if (!supportedCropOutline(proposal)) {
       // Cream paper on white can be lost by the saturated-paper mask. Retry
       // with a lower chroma threshold, retaining the same outline checks.
-      const pale = detectMotif(image, { roi, maxSize: 650, palette: 'pale' });
+      const pale = detector('pale')();
       if (pale.quad || pale.status === 'needs_selection') proposal = pale;
     }
-    if (!proposal.quad) {
+    if (!supportedCropOutline(proposal)) {
       // A dim pale sheet can merge with a textured background. Anchor its
       // colour estimate inside the main saturated paper component instead.
-      const anchored = detectMotif(image, { roi, maxSize: 650, palette: 'anchored' });
+      const anchored = detector('anchored')();
       if (anchored.quad) proposal = anchored;
     }
+    if (!proposal.quad && original.quad) proposal = original;
   }
+  if (!supportedCropOutline(proposal)) {
+    // Keep an editable upright/occluded-photo guess unless a complete outline
+    // explains another pose. Shape fits finish synchronously, so check the
+    // shared deadline between hypotheses rather than starting new ones.
+    const deadline = performance.now() + 2000;
+    search: for (const palette of ['adaptive', 'pale', undefined, 'anchored']) {
+      const detect = detector(palette);
+      for (const degrees of detect.orientations()) {
+        if (performance.now() >= deadline) break search;
+        const rotated = detect(degrees), supported = supportedCropOutline(rotated);
+        attempts.push({ palette: palette || 'red-white', degrees, status: rotated.status, supported, score: rotated.score ?? null });
+        if (supported) { proposal = rotated; break search; }
+      }
+    }
+  }
+  proposal.elapsedMs = performance.now() - started;
   return {
     status: proposal.status,
     reason: proposal.reason,
@@ -45,6 +75,7 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
         proposedPixelCentreCorners: proposal.quad,
         proposedPixelEdgeCorners: pixelCentresToEdges(proposal.quad),
         coordinateConvention: 'Pixel-edge coordinates for the inverse engine; locator coordinates + 0.5 pixels',
+        ...(attempts.length ? { orientationSearch: { attempts, selectedDegrees: proposal.evidence?.workingRotation?.degrees ?? 0 } } : {}),
       },
     }] : [],
   };
