@@ -10,13 +10,15 @@ import {finalizeShared} from '../../static/inverse/core/direct/share.js';
 import {finalizePrimitives} from '../../static/inverse/core/direct/primitive-selection.js';
 import {finalizeSharedSimplification} from '../../static/inverse/core/direct/shared-simplification.js';
 import {maskDisagreement} from '../../static/inverse/core/direct/prefer-matching.js';
+import {matchingSummary} from '../../static/inverse/core/direct/matching.js';
 import {resize} from '../../static/inverse/core/direct/math.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 
 const fixture=JSON.parse(await fs.readFile(new URL('./fixtures/photographic-frame-seam.json',import.meta.url)));
+const earlyFixture=JSON.parse(await fs.readFile(new URL('./fixtures/photographic-frame-early-sharing.json',import.meta.url)));
 const cfg=settings(fixture.settings),hiddenLength=s=>s.graph.edges.filter(e=>!e.visible).reduce((sum,e)=>sum+e.curve.length(),0);
-function frame(){
-  const solution=loadSolutionJSON(fixture.geometry),{resolution,maskRuns}=fixture.source,mask=new Uint8Array(resolution**2);
+function frame(data=fixture){
+  const solution=loadSolutionJSON(data.geometry),{resolution,maskRuns}=data.source,mask=new Uint8Array(resolution**2);
   let offset=0;for(let i=0;i<maskRuns.length;i+=2){mask.fill(maskRuns[i],offset,offset+maskRuns[i+1]);offset+=maskRuns[i+1];}
   assert.equal(offset,mask.length);solution.graph.target.sourceImage={resolution,mask};return solution;
 }
@@ -29,7 +31,8 @@ test('common finalization aligns a photographed seam made repairable by straight
   const historical=finalizeSharedSimplification(finalizePrimitives(premature,cfg),cfg);
   const after=finalizeFittedSolution(before,cfg,{searchMatching:false});
   assert.equal(after.report.finalPrimitiveSelection.applied,true);
-  assert.equal(after.report.finalSharing.applied,true);
+  assert.equal(after.report.finalSharing.applied,false);
+  assert.equal(after.report.finalSharingAfterPrimitives.applied,true);
   assert.ok(hiddenLength(after)>hiddenLength(before)+20,'The fourth frame connector must become exactly shared.');
   assert.ok(maskDisagreement(source,sampleWeave(after,source.resolution))<maskDisagreement(source,sampleWeave(before,source.resolution)));
   assert.equal(validate(after,cfg,{checkImage:false}).passed,true);assert.equal(materialAudit(after,cfg).passed,true);
@@ -42,6 +45,20 @@ test('common finalization aligns a photographed seam made repairable by straight
   // Fractional coverage detects the seam even when binary sampling misses it.
   const seam=r=>{let total=0;for(let y=Math.ceil(.67*n);y<.78*n;y++)for(let x=Math.ceil(.67*n);x<.78*n;x++)total+=1-r.coverage[y*n+x];return total;};
   assert.ok(seam(a)>10);assert.equal(seam(b),0);
+});
+
+test('the retry retains alignments and straight spans earned by the original order',()=>{
+  const before=frame(earlyFixture),cfg=settings(earlyFixture.settings),source=before.graph.target.sourceImage;
+  const historical=finalizeSharedSimplification(finalizePrimitives(finalizeShared(frame(earlyFixture),cfg),cfg),cfg);
+  const reordered=finalizeSharedSimplification(finalizeShared(finalizePrimitives(frame(earlyFixture),cfg),cfg),cfg);
+  const error=s=>maskDisagreement(source,sampleWeave(s,source.resolution));
+  assert.ok(error(reordered)>error(historical),'Simply reversing the stages must expose the lost reductions.');
+  const after=finalizeFittedSolution(before,cfg,{searchMatching:false});
+  assert.ok(error(after)<=error(historical));
+  assert.equal(after.report.finalSharing.applied,true);
+  assert.equal(after.report.finalCurvePrimitiveSelection.applied,true);
+  assert.equal(matchingSummary(after).identical,true);
+  assert.equal(validate(after,cfg,{checkImage:false}).passed,true);assert.equal(materialAudit(after,cfg).passed,true);
 });
 
 test('finalization retains a narrow frame line when the source requests it',()=>{
@@ -57,5 +74,5 @@ test('finalization leaves no cleanup work running beyond an exhausted reserve',(
   const before=frame(),saved=solutionJSON(before);
   const after=finalizeFittedSolution(before,cfg,{searchMatching:false,startedAt:performance.now()-cfg.timeLimit*1000});
   assert.equal(after,before);assert.deepEqual(solutionJSON(after),saved);
-  assert.equal(after.report.finalSharing,undefined);assert.equal(after.report.finalPrimitiveSelection,undefined);
+  assert.equal(after.report.finalSharing,undefined);assert.equal(after.report.finalSharingAfterPrimitives,undefined);assert.equal(after.report.finalPrimitiveSelection,undefined);
 });

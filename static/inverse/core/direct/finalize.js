@@ -17,12 +17,15 @@ export function finalizeFittedSolution(solution,cfg,{startedAt=performance.now()
   // A replacement pair can introduce different returns and shared seams.
   // Repair that selected geometry too, within the same export reserve.
   const repaired=matching===independent?matching:finalizeShortReturns(matching,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,onProgress});
-  // Straight-span selection can remove the small bends that prevented a
-  // shared-cut proposal from passing its image checks. Align the selected
-  // visible curves, then simplify only the resulting invisible runs.
-  const primitives=finalizePrimitives(repaired,cfg,{deadline:Math.min(completionDeadline,performance.now()+500),onProgress});
-  const shared=finalizeShared(primitives,cfg,{deadline:Math.min(completionDeadline,performance.now()+2000),onProgress});
-  const result=finalizeSharedSimplification(shared,cfg,{deadline:Math.min(completionDeadline,performance.now()+500),onProgress});
+  const sharingStart=performance.now();
+  const shared=finalizeShared(repaired,cfg,{deadline:Math.min(completionDeadline,sharingStart+2000),onProgress});
+  const sharingRemaining=Math.max(0,2000-(performance.now()-sharingStart));
+  const primitives=finalizePrimitives(shared,cfg,{deadline:Math.min(completionDeadline,performance.now()+500),onProgress});
+  // Keep the useful first alignments. Straight-span selection can then remove
+  // small bends that blocked another alignment, so recheck only changed
+  // geometry, using what remains of the original two-second sharing budget.
+  const aligned=primitives===shared?primitives:finalizeShared(primitives,cfg,{deadline:Math.min(completionDeadline,performance.now()+sharingRemaining),onProgress,reportKey:'finalSharingAfterPrimitives'});
+  const result=finalizeSharedSimplification(aligned,cfg,{deadline:Math.min(completionDeadline,performance.now()+500),onProgress});
   result.report.seconds=(performance.now()-startedAt)/1000;
   return result;
 }

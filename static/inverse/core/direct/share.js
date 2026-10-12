@@ -192,7 +192,7 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
 
 /** Finish the actual selected solution, after polishing and matching-sheet
  * preference. Earlier sharing cannot certify geometry those stages replace. */
-export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{}}={}){
+export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{},reportKey='finalSharing'}={}){
   const input=solution.graph.target,source=input.sourceImage;
   if(!source||performance.now()>=deadline)return solution;
   if(needsOrbit(cfg.symmetry)){
@@ -217,7 +217,7 @@ export function finalizeShared(solution,cfg,{deadline=Infinity,onProgress=()=>{}
     }else report.rejectedFinalCheck={imageError:nextError,symmetry};
   }
   const seconds=(performance.now()-start)/1000,matching=solution.report.matchingPreference;
-  selected.report={...solution.report,finalSharing:{...report,seconds},stages:[...(solution.report.stages||[]),{stage:'directSharing',seconds}],
+  selected.report={...solution.report,[reportKey]:{...report,seconds},stages:[...(solution.report.stages||[]),{stage:'directSharing',seconds}],
     ...(report.applied?{estimatedMaskMismatch:error}:{}),
     ...(report.applied&&matching?{matchingPreference:{...matching,...matchingSummary(selected),selectedImageError:error,additionalImageError:error-matching.baselineImageError}}:{})};
   return selected;
