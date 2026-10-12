@@ -87,6 +87,9 @@ for(const file of ['static/inverse/core/feature-recovery.js','static/inverse/cor
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','static/inverse/core/direct/feature-seeds.js','static/inverse/core/direct/feature-details.js','static/inverse/core/direct/matching.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
 report.workspaceSourceHashes['static/inverse/core/feature-shapes.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/feature-shapes.js')).digest('hex');
+report.workspaceSourceHashes['static/inverse/core/self-returns.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/self-returns.js')).digest('hex');
+report.workspaceSourceHashes['static/inverse/core/direct/grid.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/direct/grid.js')).digest('hex');
+report.harnessSourceHashes['scripts/inverse/fixtures/photographic-gift-fit.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-gift-fit.json')).digest('hex');
 for(const name of ['junctions.js','border.js','material.js','validate.js','settings.js']){const file=`static/inverse/core/${name}`;report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');}
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -96,7 +99,7 @@ try{
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=['bird-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=['bird-mask','gift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -151,7 +154,7 @@ try{
      }else if(photoMask){
       // Hold crop/classification fixed to isolate the real worker and editor
       // path. Upload pixels, never saved cutting paths or a fitting seed.
-      const data=JSON.parse(await fs.readFile(name==='bird-mask'?'scripts/inverse/fixtures/photographic-bird-fit.json':'scripts/inverse/fixtures/photographic-checkerboard-fits.json'));
+      const data=JSON.parse(await fs.readFile(['bird-mask','gift-mask'].includes(name)?`scripts/inverse/fixtures/photographic-${name.slice(0,-5)}-fit.json`:'scripts/inverse/fixtures/photographic-checkerboard-fits.json'));
       const fixture=data.cases?{sourceCatalogue:data.sourceCatalogue,...data.cases.find(c=>c.sourceCase===name.slice(0,-5))}:data;
       const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
       const mask=prepare({...photo,quad:fixture.quad},AUTOMATIC_PRESET).preview.mask;
