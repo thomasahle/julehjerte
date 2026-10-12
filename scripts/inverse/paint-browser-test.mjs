@@ -179,7 +179,7 @@ try{
       const n=Math.sqrt(mask.length),c=createCanvas(n,n),ctx=c.getContext('2d'),pixels=ctx.createImageData(n,n);
       for(let i=0;i<mask.length;i++)pixels.data.set(mask[i]?[185,19,19,255]:[255,255,255,255],4*i);
       ctx.putImageData(pixels,0,0);await fs.writeFile(file,c.toBuffer('image/png'));
-      row.sourcePhoto={id:fixture.sourceCase,sha256:photo.fileSha256,quad:fixture.quad,fixedMaskSha256:fixture.maskSha256};
+      row.sourcePhoto={id:fixture.sourceCase,sha256:photo.fileSha256,quad:fixture.quad,fixedMaskSha256:fixture.maskSha256,...(fixture.paintImport?{paintImport:fixture.paintImport}:{})};
      }else if(webPhoto){
       const data=await catalogue(),entry=data.cases.find(c=>c.id===name.slice(4));assert.ok(entry,`Unknown photograph ${name}`);
       const photo=data.photos.find(p=>p.id===entry.photo),input=await readPhoto(photo),roi=entry.roi||[0,0,input.imageWidth,input.imageHeight],c=createCanvas(roi[2]-roi[0],roi[3]-roi[1]),ctx=c.getContext('2d'),pixels=ctx.createImageData(input.imageWidth,input.imageHeight);
@@ -321,7 +321,8 @@ try{
      assert.deepEqual(row.selectedCounts,[3,3]);assert.ok(row.engineError<.01);
     }
     if(photoMask){
-     assert.equal(createHash('sha256').update(Uint8Array.from(observed.prepared.mask)).digest('hex'),row.sourcePhoto.fixedMaskSha256);
+     assert.equal(createHash('sha256').update(Uint8Array.from(observed.prepared.mask)).digest('hex'),row.sourcePhoto.paintImport?.maskSha256??row.sourcePhoto.fixedMaskSha256);
+     if(row.sourcePhoto.paintImport)assert.equal(observed.prepared.resolution,row.sourcePhoto.paintImport.resolution);
      if(!engineReference){
       assert.equal(row.templateChecksPassed,true,'Source features must survive the actual worker and final checks.');
       assert.equal(row.missingFeatures.length,0);assert.ok(row.engineError<.03);

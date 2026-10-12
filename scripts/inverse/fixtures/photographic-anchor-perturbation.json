@@ -48,5 +48,10 @@
     },
     "maskError": 0.040812193468288,
     "originalMaskDisagreement": 0.04099710308270743
+  },
+  "paintImport": {
+    "resolution": 400,
+    "method": "Nearest-neighbor resampling at destination cell centers by maskFromPrepared; the 337-pixel upload itself remains unchanged.",
+    "maskSha256": "bea3d463bfda33cc8361cb8196bea7154a1464a154f906da48cfa25d34975c6f"
   }
 }
