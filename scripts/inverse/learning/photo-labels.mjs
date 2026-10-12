@@ -1,6 +1,18 @@
 /** Evaluate a chosen crop in the unchanged synthetic material coordinates. */
 import {homography,invert,multiply,project,SQUARE} from '../datasets/synthetic-photo.mjs';
 
+/** Locate saved predictions in the photograph, never in an unrelated proposed
+ * crop. The original intervention runner fits pre-rectified crops and therefore
+ * records their transform in labels rather than in a selectedCrop field.
+ */
+export function savedCropQuad(row,labels,schema){
+  const selected=row.selectedCrop?.quad,reported=row.report?.input?.sourceImage?.cropCorners;
+  if(selected&&reported&&JSON.stringify(selected)!==JSON.stringify(reported))throw new Error('Saved crop and fitted crop disagree.');
+  const quad=reported||selected||(schema==='heart-intervention-solves-1'?labels.proposedCropQuad:null);
+  if(!Array.isArray(quad)||quad.length!==4||quad.some(p=>!Array.isArray(p)||p.length!==2||p.some(v=>!Number.isFinite(v))))throw new Error('Missing saved prediction crop.');
+  return quad;
+}
+
 export function labelsForCrop(labels,quad,canonical,n,width,height){
   const toPhoto=homography(SQUARE,quad),toCanonical=multiply(invert(labels.canonicalToPhoto),toPhoto),target=new Uint8Array(n*n),valid=new Uint8Array(n*n),size=canonical.width;
   if(size!==canonical.height)throw new Error('Canonical label must be square.');

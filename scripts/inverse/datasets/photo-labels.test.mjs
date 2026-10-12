@@ -1,10 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {labelsForCrop} from '../learning/photo-labels.mjs';
+import {labelsForCrop,savedCropQuad} from '../learning/photo-labels.mjs';
 
 const n=20,data=new Uint8ClampedArray(n*n*4);
 for(let y=0;y<n;y++)for(let x=0;x<n;x++)data.set(x<7&&y<12?[0,0,0,255]:[255,255,255,255],4*(y*n+x));
 const canonical={width:n,height:n,data};
+
+test('cross-run scoring uses each fitted crop instead of the initial noisy proposal',()=>{
+  const proposed=[[1,1],[101,1],[101,101],[1,101]],actual=[[0,0],[100,0],[100,100],[0,100]],labels={proposedCropQuad:proposed};
+  assert.deepEqual(savedCropQuad({selectedCrop:{quad:actual}},labels,'heart-photo-pipeline-1'),actual);
+  assert.deepEqual(savedCropQuad({report:{input:{sourceImage:{cropCorners:actual}}}},labels,'heart-photo-pipeline-1'),actual);
+  assert.deepEqual(savedCropQuad({},labels,'heart-intervention-solves-1'),proposed);
+  assert.throws(()=>savedCropQuad({},labels,'heart-photo-pipeline-1'),/Missing/);
+  assert.throws(()=>savedCropQuad({selectedCrop:{quad:proposed},report:{input:{sourceImage:{cropCorners:actual}}}},labels,'heart-photo-pipeline-1'),/disagree/);
+});
 
 test('material scoring undoes a known camera transform without changing crop orientation',()=>{
   // A quarter turn, 2 pixels/mm scale and translation; coordinates are edges.

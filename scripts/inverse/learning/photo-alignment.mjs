@@ -5,7 +5,7 @@ import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
 import {renderExportedWeave} from '../export-renderer.mjs';
 import {homography,SQUARE} from '../datasets/synthetic-photo.mjs';
-import {labelsForCrop} from './photo-labels.mjs';
+import {labelsForCrop,savedCropQuad} from './photo-labels.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
 if(!args.pipeline||!args.baseline||!args.output||Object.keys(args).some(k=>!['pipeline','baseline','output'].includes(k)))throw new Error('Use --pipeline=directory --baseline=directory --output=new-directory.');
@@ -39,7 +39,9 @@ try{
     const input=probe.data.rows.find(r=>r.id===after.id),before=baseline.data.rows.find(r=>r.id===after.id),design=probe.data.designs.find(d=>d.id===input.designId);
     const labels=JSON.parse(await checked(pipeline.data.probe,input.assets['labels.json'])),canonical=await decode(await checked(probe.data.sourceDataset,design.sourceCanonical));
     const source=labelsForCrop(labels,labels.actualQuad,canonical,512,labels.resolution,labels.resolution),aligned=[];
-    for(const [root,result,quad]of [[args.baseline,before,labels.proposedCropQuad],[args.pipeline,after,after.selectedCrop.quad]]){
+    if(!before?.assets['cut_geometry.json']){row.baselineStatus=before?.status||'missing';continue;}
+    row.predictionQuads=[savedCropQuad(before,labels,baseline.data.schema),savedCropQuad(after,labels,pipeline.data.schema)];
+    for(const [root,result,quad]of [[args.baseline,before,row.predictionQuads[0]],[args.pipeline,after,row.predictionQuads[1]]]){
       const cuts=await checked(root,result.assets['cut_geometry.json']),rendered=await renderExportedWeave(cuts.toString(),1536),image=await decode(rendered.png);
       aligned.push(labelsForCrop({canonicalToPhoto:homography(SQUARE,quad)},labels.actualQuad,image,512,labels.resolution,labels.resolution));
     }
