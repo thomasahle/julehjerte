@@ -12,6 +12,7 @@ import torch
 
 from data import Corpus, digest, scores, detect_nodes, point_counts
 from metrics import thin_boundary, pixel_matching_counts
+from classical import corner_response
 from model import ProposalNet
 from train import infer
 
@@ -30,6 +31,10 @@ def aggregate(rows):
         return scores([sum(r[k] for r in values) for k in ['matched', 'predicted', 'target']])
     return {split: {'views': len(subset), 'boundary': {str(t): pooled([r['boundary'][str(t)] for r in subset]) for t in [1, 2, 3]},
                     'junctions': pooled([r['junctions'] for r in subset]),
+                    'viewsWithEveryJunctionRecovered': sum(r['junctions']['matched'] == r['junctions']['target'] for r in subset),
+                    'viewsWithReferenceJunctions': sum(r['junctions']['target'] > 0 for r in subset),
+                    'nonemptyViewsWithEveryJunctionRecovered': sum(r['junctions']['target'] > 0 and r['junctions']['matched'] == r['junctions']['target'] for r in subset),
+                    'maximumJunctionProposals': max(r['junctions']['predicted'] for r in subset),
                     'macroBoundaryF1': {str(t): float(np.mean([r['boundary'][str(t)]['f1'] for r in subset])) for t in [1, 2, 3]},
                     'rawBoundaryPixels': sum(r['rawBoundaryPixels'] for r in subset),
                     'thinBoundaryPixels': sum(r['thinBoundaryPixels'] for r in subset)}
@@ -84,6 +89,22 @@ def main():
             print('baseline', index, item['id'], flush=True)
             baseline.append(measure(item, item['baselineBoundary'], item['baselineNodes']))
         report['baseline'] = aggregate(baseline); report['baselineRows'] = baseline
+        # Scales and this threshold list are fixed before scoring recipe
+        # holdouts; only the lattice development views choose the threshold.
+        responses = [corner_response(i['mask'])*i['valid'] for i in items]
+        threshold_search = []
+        for threshold in [1e-6, 3e-6, 1e-5, 3e-5, 1e-4, 3e-4]:
+            counts = np.zeros(3, np.int64)
+            for item, response in zip(items, responses):
+                if item['split'] == 'development': counts += point_counts(detect_nodes(response, threshold), item['nodes'])
+            threshold_search.append({'threshold': threshold, **scores(counts)})
+        classical_threshold = max(threshold_search, key=lambda x: x['f1'])['threshold']
+        classical_rows = [{**row, 'junctions': scores(point_counts(detect_nodes(response, classical_threshold), item['nodes']))}
+                          for row, item, response in zip(baseline, items, responses)]
+        report['classical'] = {'name': 'Harris response of production mask', 'selectedThreshold': classical_threshold,
+                               'thresholdSearch': threshold_search, 'metrics': aggregate(classical_rows), 'rows': classical_rows,
+                               'note': 'Boundary scores reuse the original trace. Only junction proposals differ.'}
+        del responses
         save()
         for directory in args.run:
             started = time.perf_counter(); folder = Path(directory)
