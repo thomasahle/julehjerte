@@ -5,7 +5,7 @@ import {buildGraph,reindex,inspectBoundaryEndpoints} from './graph.js';
 import {solveGraph} from './solver.js';
 import {sampleWeave,validate} from './validate.js';
 import {materialAudit} from './material.js';
-import {auditImageFeatures} from './image-features.js';
+import {auditFeatureFidelity} from './feature-shapes.js';
 
 export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
   const start=performance.now(),report={method:'trace-milp',budgetSeconds:seconds,accepted:false,attempts:[]};
@@ -82,7 +82,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
     if(!solution)throw new Error('Feature recovery found no validated routing within its budget.');
     const woven=sampleWeave(solution,source.resolution);
     let mismatch=0,observed=0;for(let i=0;i<woven.length;i++){if(source.validMask&&!source.validMask[i])continue;observed++;mismatch+=woven[i]!==source.mask[i];}
-    report.imageError=mismatch/observed;report.features=auditImageFeatures(source,woven,cfg.width);
+    report.imageError=mismatch/observed;report.features=auditFeatureFidelity(source,woven,cfg);
     report.geometryPassed=validate(solution,cfg).passed;report.paperPassed=materialAudit(solution,cfg).passed;
     report.accepted=report.imageError<=cfg.maxImageError&&report.features.passed&&report.geometryPassed&&(!cfg.requireMaterialCore||report.paperPassed);
     report.solver=solution.report;

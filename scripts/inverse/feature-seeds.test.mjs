@@ -165,7 +165,9 @@ test('early feature routing recovers the frozen puppy opening within a ten-secon
   assert.equal(solver.featureRecovery,null,'A feature-retaining grid must not spend the fast budget on traced recovery');
   assert.ok(solver.attempts.some(a=>a.stage==='fine'&&a.counts.every(c=>c===3)),
     'The ordinary three-cut finalist is still initialized as a fallback');
-  assert.equal(solver.paperVerification.initialStatus,'uncertain');
+  assert.ok(solver.candidates.some(c=>c.paperVerification?.initialStatus==='uncertain'&&c.paperVerification.status==='pass'),
+    'The original feature routing must earn its finer paper verification before optional detail refinement');
+  assert.ok(solver.paperVerification.initialStatus==='uncertain'||solver.paperVerification.source==='feature-detail-refinement');
   assert.equal(answer.report.settings.materialResolution,solver.paperVerification.resolution);
   assert.equal(answer.report.manufacturing.status,'pass');
   assert.equal(answer.report.validation.passed,true);

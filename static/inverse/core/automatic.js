@@ -10,7 +10,7 @@ import {sampleWeave} from './validate.js';
 import {buildGraph} from './graph.js';
 import {solveGraph} from './solver.js';
 import {materialAudit} from './material.js';
-import {auditImageFeatures} from './image-features.js';
+import {auditFeatureFidelity} from './feature-shapes.js';
 import {prepareBoundary} from './direct/topology.js';
 import {boundarySVG} from './export.js';
 import {originalMaskBoundaries} from './mask-preview.js';
@@ -64,7 +64,7 @@ export async function solveAutomatic(target,cfg,onProgress){
       const woven=sampleWeave(solution,target.sourceImage.resolution),error=maskDisagreement(target.sourceImage,woven);
       // <=1% is already within the matching allowance of any possible better
       // image fit (whose error cannot be negative). Keep the original mask.
-      if(error<=Math.min(.01,cfg.maxImageError)&&auditImageFeatures(target.sourceImage,woven,cfg.width).passed){
+      if(error<=Math.min(.01,cfg.maxImageError)&&auditFeatureFidelity(target.sourceImage,woven,cfg).passed){
         const selected=finalizeFittedSolution(solution,traceCfg,{startedAt:start,timeLimit:cfg.timeLimit,onProgress});
         selected.automaticSettings=traceCfg;selected.report.automatic={selected:route,attempts};selected.report.seconds=(performance.now()-start)/1000;
         return selected;

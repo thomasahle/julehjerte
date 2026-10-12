@@ -2,12 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {finish} from '../../static/inverse/core/engine.js';
+import {finish,prepare,design} from '../../static/inverse/core/engine.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
 import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {auditImageFeatures} from '../../static/inverse/core/image-features.js';
+import {featureComponentMetrics} from '../../static/inverse/core/feature-shapes.js';
+import {renderExportedWeave} from './export-renderer.mjs';
 
 async function browserMask(){
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/browser-puppy-half-mask.json'));
@@ -34,4 +36,23 @@ test('a real uploaded photograph cannot certify an opening connected to the back
   assert.equal(result.report.templateExportAllowed,true,'An imperfect result remains downloadable with its warning');
   assert.ok(result.report.warnings.some(s=>s.includes('enclosure')));
   assert.ok(result.files['template_left.svg']);assert.ok(result.files['template_right.svg']);
+});
+
+test('fresh fitting reuses an alternate routing and refines the enclosed opening',async()=>{
+  const {mask,resolution}=await browserMask(),before=mask.slice();
+  const cfg={...AUTOMATIC_PRESET,timeLimit:25,trials:0,earlyStop:false};
+  // The stored bad cuts above never enter this search: only classified pixels.
+  const prepared=prepare({type:'mask',mask,resolution},cfg),answer=await design(prepared.target,cfg);
+  assert.equal(answer.report.templateChecksPassed,true);
+  assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
+  const initialization=answer.report.solver.earlyFeatureInitialization;
+  assert.ok(initialization.enclosureRetry,'The first opened routing needs a different start');
+  assert.ok(initialization.scheduled<=2,'Reuse at most one alternate from the same count search');
+  assert.equal(initialization.hypotheses,10,'Do not repeat or broaden count initialization for this retry');
+  const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],resolution);
+  const opening=featureComponentMetrics(prepared.target.sourceImage,rendered.mask)[0];
+  assert.equal(opening.touchesBorder,false);assert.ok(opening.componentIoU>.65);
+  const error=rendered.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
+  assert.ok(error<.015,'The image and the whole opening must both improve');
+  assert.deepEqual(mask,before);assert.deepEqual(prepared.target.sourceImage.mask,before);
 });

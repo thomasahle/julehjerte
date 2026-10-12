@@ -14,7 +14,8 @@ import {requestedSymmetry} from '../settings.js';
 import {materialAudit,paperKernelChoices} from '../material.js';
 import {resize} from './math.js';
 import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,countHypotheses,initializeCounts} from './counts.js';
-import {auditImageFeatures,imageFeatures} from '../image-features.js';
+import {imageFeatures,auditImageFeatures} from '../image-features.js';
+import {auditFeatureFidelity} from '../feature-shapes.js';
 import {recoverImageFeatures} from '../feature-recovery.js';
 import {loadBoundaryKernel} from './native.js';
 import {boundaryKernelChoices} from './boundary.js';
@@ -92,7 +93,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:base});
         const solution=graph.solution(points,seed.phase,input),woven=sampleWeave(solution,source.resolution);
         const error=maskDisagreement(source,woven);
-        if(projected&&error<=(cfg.earlyStop?Math.min(.005,cfg.maxImageError):0)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed&&validate(solution,cfg).passed&&(!cfg.requireMaterialCore||materialAudit(solution,cfg).passed)){initialWinner={solution,counts:seed.model.counts,error};if(cfg.requireMaterialCore)emitCandidate(onProgress,{stage:"directInitializing",error,geometry:true,paper:"pass"},solution);}
+        if(projected&&error<=(cfg.earlyStop?Math.min(.005,cfg.maxImageError):0)&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed&&validate(solution,cfg).passed&&(!cfg.requireMaterialCore||materialAudit(solution,cfg).passed)){initialWinner={solution,counts:seed.model.counts,error};if(cfg.requireMaterialCore)emitCandidate(onProgress,{stage:"directInitializing",error,geometry:true,paper:"pass"},solution);}
       }
     }
     // Use the fixed-size seed search for every count and phase. Only the
@@ -121,7 +122,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       const candidate=stage('directRefining',()=>refineCurves(topology.graph,fullProb,source.resolution,topology.phase,cfg,{input,weights:fullWeights,steps:80,rate:.008,deadline:Math.min(topologyDeadline,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:topology.graph.families.map(f=>f.length),...r},solution):undefined}));
       const solution=candidate.graph.solution(candidate.points,candidate.phase,input),woven=sampleWeave(solution,source.resolution);
       const error=maskDisagreement(source,woven);
-      if(candidate.geometryPassed&&candidate.paperPassed&&error<=Math.min(.01,cfg.maxImageError)&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed){
+      if(candidate.geometryPassed&&candidate.paperPassed&&error<=Math.min(.01,cfg.maxImageError)&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Image-derived topology seed followed by joint cubic and straight-span refinement';
         solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:'validated_topology_seed',seconds:(performance.now()-start)/1000,traceUsed:true,borderCountsAreHardConstraints:false,selectedCounts:solution.paths.map(p=>p.length),attempts,stages:timings,checkpoints:candidate.history,primitives:candidate.primitives,estimatedMaskMismatch:error,topologyInitialization:topology.report};
         return solution;
@@ -129,7 +130,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       topology.report.refinementRejected={geometry:candidate.geometryPassed,paper:candidate.paperPassed,imageError:error};
     }
   }
-  const retainsGridFeature=r=>auditImageFeatures(source,gridMask(r.model,source.resolution,r.phase,r.floor),cfg.width,sourceFeatures).passed;
+  const retainsGridColours=r=>auditImageFeatures(source,gridMask(r.model,source.resolution,r.phase,r.floor),cfg.width,sourceFeatures).passed;
+  const retainsGridFeature=r=>auditFeatureFidelity(source,gridMask(r.model,source.resolution,r.phase,r.floor),cfg,sourceFeatures).passed;
   const fitSeed=r=>{
     // Unweighted fine-grid polishing can erase a small opening before the
     // geometry stage starts. Its extra routing goes straight to clearance,
@@ -155,7 +157,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   }
   // A local boundary gradient cannot create a remote missing region. Try an
   // alternate traced routing while there is still time within this search.
-  let features=auditImageFeatures(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg.width,sourceFeatures);
+  let features=auditFeatureFidelity(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg,sourceFeatures);
   let recovery=null;const recoveredCandidates=[];
   // Traced feature recovery routes through the MILP, which cannot hold a
   // mirrored pairing, and a symmetric fit is expected to drop features of an
@@ -164,20 +166,21 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // Try the detailed routing when poor grids also defeated coarse topology;
   // it must not depend on a spurious missing component near the crop edge.
   const competitiveGrid=fine.some(r=>r.error<=cfg.maxImageError);
-  let featureInitialization=null,earlyFeatureInitialization=null;
+  let featureInitialization=null,earlyFeatureInitialization=null,featureAlternatives=[];
   // A close grid can omit a remote opening which no local boundary gradient
   // can see. Try the cheap image-derived layout before spending the remaining
   // fast budget on traced routing. Keep every ordinary finalist as a fallback.
   if(competitiveGrid&&!features.passed&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
-    const missed=features.regions.flatMap((r,j)=>r.retainedFraction<features.minimumRetention?[j]:[]);
+    const missed=features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]);
     const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
     earlyFeatureInitialization={...extra.report,stage:'before-recovery',scheduled:0};
     if(extra.seeds.length){
       const seed=stage('directFitting',()=>fitSeed(extra.seeds[0]));
-      const audit=auditImageFeatures(source,gridMask(seed.model,source.resolution,seed.phase,seed.floor),cfg.width,sourceFeatures);
+      const audit=auditFeatureFidelity(source,gridMask(seed.model,source.resolution,seed.phase,seed.floor),cfg,sourceFeatures);
       if(audit.passed){
         fine.unshift(seed);features=audit;
         earlyFeatureInitialization.scheduled=1;featureInitialization=earlyFeatureInitialization;
+        featureAlternatives=extra.seeds.slice(1,2);
       }
     }
   }
@@ -204,8 +207,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:Math.min(deadline,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
       candidate.counts=counts;candidate.seed='feature-recovery';recoveredCandidates.push(candidate);
       const solution=graph.solution(candidate.points,phase,input),woven=sampleWeave(solution,source.resolution);
-      recovery.report.refinement={imageError:maskDisagreement(source,woven),featuresPassed:auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed,geometryPassed:candidate.geometryPassed,paperPassed:candidate.paperPassed,steps:candidate.steps};
-      if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditImageFeatures(source,woven,cfg.width,sourceFeatures).passed){
+      recovery.report.refinement={imageError:maskDisagreement(source,woven),featuresPassed:auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed,geometryPassed:candidate.geometryPassed,paperPassed:candidate.paperPassed,steps:candidate.steps};
+      if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
         solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
         return solution;
@@ -222,7 +225,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const assess=c=>{
     if(!c.geometryPassed)return false;
     const s=c.graph.solution(c.points,c.phase,input),woven=sampleWeave(s,source.resolution);
-    c.originalImageError=maskDisagreement(source,woven);c.originalFeatures=auditImageFeatures(source,woven,cfg.width,sourceFeatures);
+    c.originalImageError=maskDisagreement(source,woven);c.originalFeatures=auditFeatureFidelity(source,woven,cfg,sourceFeatures);
     if(c.originalImageError>cfg.maxImageError||!c.originalFeatures.passed)return false;
     // An uncertain coarse lattice is not a failed geometric construction.
     // Spend one finer audit only on an otherwise acceptable candidate. Keep
@@ -268,6 +271,25 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       }
     }
   };
+  let featureDetail=null;
+  const refineFeatureDetail=candidate=>{
+    if(!candidate.paperPassed||searchDeadline()-performance.now()<=4000)return candidate;
+    const plan=featureDetailPlan(candidate.graph,candidate.points,source,sourceFeatures,cfg,n);
+    if(plan){
+      const detailCfg={...cfg,preferMatchingSheets:false,materialResolution:Math.max(cfg.materialResolution,700)};
+      const verification={requestedResolution:cfg.materialResolution,resolution:detailCfg.materialResolution,source:'feature-detail-refinement'};
+      const refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:.035,deadline:Math.min(searchDeadline()-3000,performance.now()+1800),onProgress:(r,solution)=>{
+        solution.report={paperVerification:{...verification,status:r.paper}};
+        onProgress({stage:'directPolishing',detail:'small-feature-shape',counts:candidate.counts,...r,weightedError:r.error,error:maskDisagreement(source,sampleWeave(solution,source.resolution))},solution);
+      }}));
+      refined.error=mismatch(renderCurves(plan.graph,refined.points,refined.phase,n,32),prob);
+      refined.paperVerification={...verification,status:refined.paper?.status};
+      const accepted=assess(refined)&&refined.originalImageError<=candidate.originalImageError;
+      featureDetail={...plan.report,applied:accepted,errorBefore:candidate.originalImageError,errorAfter:refined.originalImageError,steps:refined.steps};
+      if(accepted)return{...refined,counts:candidate.counts,seed:candidate.seed,matching:matchingSummary(plan.graph.solution(refined.points,refined.phase,input))};
+    }
+    return candidate;
+  };
   if(boundaryCandidate)addCandidate(boundaryCandidate);
   for(const candidate of recoveredCandidates)addCandidate(candidate);
   let stoppedEarly=false;
@@ -287,10 +309,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const objectiveProb=protectedObjective?.probability||prob,objectiveWeights=protectedObjective?.weights||fitWeights;
     const refinementCfg=protectedObjective?{...cfg,materialResolution:Math.max(cfg.materialResolution,700)}:cfg;
     const verification=protectedObjective?{requestedResolution:cfg.materialResolution,resolution:refinementCfg.materialResolution,source:'feature-preserving-refinement'}:null;
-    const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridFeature:null}));
+    // Clearance grids are intermediate routing proposals. Preserve source
+    // colours here; requiring enclosure before free-curve fitting can select
+    // a different grid whose paper support never becomes valid.
+    const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridColours:null}));
     attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob):clear.error,steps:clear.steps,...(protectedObjective?{weightedError:clear.error}:{})});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
-    const candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditImageFeatures(source,sampleWeave(solution,source.resolution),cfg.width,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>{
+    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:goodEnough,onProgress:(r,solution)=>{
       if(protectedObjective){
         r.weightedError=r.error;r.error=maskDisagreement(source,sampleWeave(solution,source.resolution));
         solution.report={paperVerification:{...verification,status:r.paper}};
@@ -301,15 +326,27 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       candidate.error=mismatch(renderCurves(graph,candidate.points,candidate.phase,n,32),prob);
       candidate.paperVerification={...verification,status:candidate.paper?.status};
     }
-    candidate.counts=clear.model.counts;candidate.seed=selected.seed;addCandidate(candidate);stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop&&(!candidate.paperVerification||featureSeed(candidate)));
+    candidate.counts=clear.model.counts;candidate.seed=selected.seed;addCandidate(candidate);
+    // A joint protected routing needs its established local detail pass before
+    // competing with other starts; that pass can close an initially open eye.
+    // Ordinary extra routings get detail once they enclose the feature and
+    // pass the original image/paper checks. Never rank weighted detail scores.
+    const retainedColours=candidate.originalFeatures?.regions.every(r=>r.retainedFraction>=candidate.originalFeatures.minimumRetention);
+    const protectedDetail=candidate.seed==='feature-preserving-grid'&&candidate.paperPassed&&retainedColours&&candidate.originalImageError<=cfg.maxImageError;
+    if(protectedDetail||candidate.seed==='feature-weighted-grid'&&candidate.imagePassed&&candidate.originalFeatures.enclosures?.components.some(f=>f.componentIoU<.8)){
+      const detailed=refineFeatureDetail(candidate);
+      if(detailed!==candidate){addCandidate(detailed);candidate=detailed;}
+    }
+    stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop&&(!candidate.paperVerification||featureSeed(candidate)));
     // Preserve the first refined checkpoint and all existing finalists. Only
     // unsuccessful feature retention earns this additional initialization;
     // regular successful designs and exhausted short budgets keep their path.
     if(!candidate.imagePassed&&candidate.originalFeatures?.missing.length&&!featureInitialization&&!weights&&!symmetryRequested&&searchDeadline()-performance.now()>6500){
-      const missed=candidate.originalFeatures.regions.flatMap((r,j)=>r.retainedFraction<candidate.originalFeatures.minimumRetention?[j]:[]);
+      const missed=candidate.originalFeatures.regions.flatMap((r,j)=>(r.retainedFraction<candidate.originalFeatures.minimumRetention||r.enclosureLost)?[j]:[]);
       const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:candidate.counts,cfg,evidence,maximumCount}));
       featureInitialization={...extra.report,scheduled:Math.min(1,extra.seeds.length)};
       fine.splice(i+1,0,...extra.seeds.slice(0,1).map(r=>stage('directFitting',()=>fitSeed(r))));
+      featureAlternatives=extra.seeds.slice(1,2);
       // A sound close fit with only crop-edge flecks missing is already the
       // useful fallback. Continuing ordinary layouts can also overfit those
       // flecks, adding visible seams elsewhere just to clear the feature gate.
@@ -317,6 +354,15 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       if(!extra.report.emphasizedRegions&&candidate.paperPassed&&candidate.originalImageError<=cfg.maxImageError){
         featureInitialization.deferredBorderOnly=true;break;
       }
+    }
+    // A routing that keeps a feature's pixels can still open it to the
+    // background. Reuse one alternate from that same bounded initialization;
+    // do not repeat count search or displace the ordinary finalists.
+    if(featureSeed(candidate)&&candidate.originalFeatures?.enclosures?.opened&&featureAlternatives.length&&searchDeadline()-performance.now()>6500){
+      const alternate=featureAlternatives.shift();
+      fine.splice(i+1,0,stage('directFitting',()=>fitSeed(alternate)));
+      featureInitialization.scheduled++;
+      featureInitialization.enclosureRetry={counts:alternate.model.counts,controlPoints:alternate.model.k,phase:alternate.phase};
     }
     // Border disagreement must not stop a competitive simpler finalist from
     // receiving curve refinement. Its grid error can overestimate its eventual
@@ -353,27 +399,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     }
   }
   let candidate=candidates[0];
-  // Once the extra routing retains the small region, give its shape a bounded
-  // local refinement. It uses the existing fitter and physical checks. The
-  // original whole-image score must improve before this proposal can replace
-  // the checkpoint; weighted scores are never used as acceptance evidence.
-  let featureDetail=null;
-  if(candidate.seed==='feature-preserving-grid'&&candidate.paperPassed&&searchDeadline()-performance.now()>4000){
-    const plan=featureDetailPlan(candidate.graph,candidate.points,source,sourceFeatures,cfg,n);
-    if(plan){
-      const detailCfg={...cfg,preferMatchingSheets:false,materialResolution:Math.max(cfg.materialResolution,700)};
-      const verification={requestedResolution:cfg.materialResolution,resolution:detailCfg.materialResolution,source:'feature-detail-refinement'};
-      const refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:.035,deadline:Math.min(searchDeadline()-3000,performance.now()+1800),onProgress:(r,solution)=>{
-        solution.report={paperVerification:{...verification,status:r.paper}};
-        onProgress({stage:'directPolishing',detail:'small-feature-shape',counts:candidate.counts,...r,weightedError:r.error,error:maskDisagreement(source,sampleWeave(solution,source.resolution))},solution);
-      }}));
-      refined.error=mismatch(renderCurves(plan.graph,refined.points,refined.phase,n,32),prob);
-      refined.paperVerification={...verification,status:refined.paper?.status};
-      const accepted=assess(refined)&&refined.originalImageError<=candidate.originalImageError;
-      featureDetail={...plan.report,applied:accepted,errorBefore:candidate.originalImageError,errorAfter:refined.originalImageError,steps:refined.steps};
-      if(accepted)candidate={...refined,counts:candidate.counts,seed:candidate.seed,matching:matchingSummary(plan.graph.solution(refined.points,refined.phase,input))};
-    }
-  }
+  // Keep the established detail pass for jointly rerouted feature seeds.
+  if(candidate.seed==='feature-preserving-grid'&&candidate.paperVerification?.source!=='feature-detail-refinement')candidate=refineFeatureDetail(candidate);
   // This optional early pass precedes polishing. The final selected pair also
   // receives sharing recovery after any matching-sheet replacement.
   if(!featureDetail?.applied&&!candidate.matching?.identical&&!symmetryRequested&&candidate.paperPassed&&performance.now()<deadline-1300){
@@ -389,7 +416,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    stoppedEarly,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,featureDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
+    stoppedEarly,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,featureDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }
