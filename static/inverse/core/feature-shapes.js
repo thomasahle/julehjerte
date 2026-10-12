@@ -2,7 +2,7 @@
  * Matching source pixels alone cannot distinguish a small opening from an
  * enlarged region or a channel to the background. Measure its whole component.
  */
-import {components} from './input.js';
+import {connectedComponent} from './input.js';
 import {imageFeatures,auditImageFeatures,auditFeatureChange} from './image-features.js';
 import {sourceWeights} from './image-reference.js';
 
@@ -48,14 +48,18 @@ export function auditFeatureFidelityChange(source,before,after,cfg){
 
 export function featureComponentMetrics(source,woven,width=100,features=imageFeatures(source,width)){
   if(!features.length)return [];
-  const n=source.resolution;
-  const byColour=[0,1].map(value=>{
-    const parts=components(woven,n,value),labels=new Int32Array(woven.length).fill(-1);
-    parts.forEach((part,i)=>{for(const pixel of part.pixels)labels[pixel]=i;});return{parts,labels};
-  });
+  const n=source.resolution,parts=[null],labels=new Int32Array(woven.length);
   return features.map(feature=>{
-    const {parts,labels}=byColour[feature.value],intersections=new Map();
-    for(const pixel of feature.pixels){const id=labels[pixel];if(id>=0)intersections.set(id,(intersections.get(id)||0)+1);}
+    const intersections=new Map();
+    // Usually the protected opening occupies a few hundred cells. Flood only
+    // components touched by its source pixels; the large surrounding regions
+    // cannot affect its measurements unless the opening actually joins them.
+    for(const pixel of feature.pixels){
+      if(woven[pixel]!==feature.value)continue;
+      let id=labels[pixel];
+      if(!id){id=parts.length;parts.push(connectedComponent(woven,n,pixel,labels,id));}
+      intersections.set(id,(intersections.get(id)||0)+1);
+    }
     const best=[...intersections].sort((a,b)=>b[1]-a[1])[0],part=best&&parts[best[0]],intersection=best?.[1]||0;
     return{centerMm:feature.centerMm,sourceAreaMm2:feature.areaMm2,intersectionPixels:intersection,retention:intersection/feature.pixels.length,predictedComponentAreaMm2:(part?.pixels.length||0)*(width/n)**2,touchesBorder:part?.border??null,componentIoU:intersection/(feature.pixels.length+(part?.pixels.length||0)-intersection)};
   });

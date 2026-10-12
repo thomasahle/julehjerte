@@ -79,7 +79,10 @@ export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ff
   }else throw new Error('Unknown two-colour conversion mode.');
   if(invert)for(let i=0;i<n;i++){mask[i]^=1;if(probability)probability[i]=1-probability[i];}return{mask,probability,metadata:{method:mode,threshold:cutoff,labCenters:centers,...(mixture?{mixture}:{}),inverted:invert,dither:false}};
 }
-export function components(mask,n,value){const seen=new Uint8Array(mask.length),out=[];for(let i=0;i<mask.length;i++){if(seen[i]||mask[i]!==value)continue;const pixels=[i];seen[i]=1;let border=false;for(let h=0;h<pixels.length;h++){const p=pixels[h],x=p%n,y=Math.floor(p/n);if(x===0||y===0||x===n-1||y===n-1)border=true;for(const q of[x>0?p-1:-1,x<n-1?p+1:-1,y>0?p-n:-1,y<n-1?p+n:-1])if(q>=0&&!seen[q]&&mask[q]===value){seen[q]=1;pixels.push(q);}}out.push({pixels,border});}return out;}
+/** Label one four-connected region. Optional integer labels let sparse callers
+ * reuse the traversal without scanning unrelated regions of the image. */
+export function connectedComponent(mask,n,seed,seen,label=1){const value=mask[seed],pixels=[seed];seen[seed]=label;let border=false;for(let h=0;h<pixels.length;h++){const p=pixels[h],x=p%n,y=Math.floor(p/n);if(x===0||y===0||x===n-1||y===n-1)border=true;for(const q of[x>0?p-1:-1,x<n-1?p+1:-1,y>0?p-n:-1,y<n-1?p+n:-1])if(q>=0&&!seen[q]&&mask[q]===value){seen[q]=label;pixels.push(q);}}return{pixels,border};}
+export function components(mask,n,value){const seen=new Uint8Array(mask.length),out=[];for(let i=0;i<mask.length;i++)if(!seen[i]&&mask[i]===value)out.push(connectedComponent(mask,n,i,seen));return out;}
 export function cleanupMask(mask,n,width,{removeSpecks=0,fillHoles=0,smoothRadius=0}={}){
   for(const x of[removeSpecks,fillHoles,smoothRadius])if(!Number.isFinite(x)||x<0)throw new Error('Cleanup dimensions must be nonnegative.');const out=mask.slice(),area=(width/n)**2;
   for(const [value,limit]of [[1,removeSpecks],[0,fillHoles]])if(limit>0)for(const c of components(out,n,value))if(!c.border&&c.pixels.length*area<limit)for(const p of c.pixels)out[p]^=1;
