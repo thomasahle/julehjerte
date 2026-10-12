@@ -13,6 +13,8 @@ import {treeMask} from './tree-fixture.mjs';
 import {heartPhoto} from './crop-fixture.mjs';
 import {catalogue,readPhoto} from './web-photo-data.mjs';
 import {readHardPhoto} from './hard-photo-data.mjs';
+import {prepare} from '../../static/inverse/core/engine.js';
+import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {auditEditablePaper} from './editable-paper-audit.mjs';
 import {auditImageFeatures,auditFeatureChange} from '../../static/inverse/core/image-features.js';
 import {Cubic} from '../../static/inverse/core/bezier.js';
@@ -92,7 +94,7 @@ try{
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=name==='bird-mask',photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -138,6 +140,17 @@ try{
       const data=JSON.parse(await fs.readFile('scripts/inverse/photo-cases.json')),entry=data.cases.find(c=>c.id===name.slice(5));assert.ok(entry,`Unknown hard photograph ${name}`);
       const photo=await readHardPhoto(entry);await fs.copyFile(entry.file,file);
       row.sourcePhoto={id:entry.id,sha256:photo.fileSha256,decodedPixelsSha256:photo.rgbaSha256};
+     }else if(photoMask){
+      // Hold crop/classification fixed to isolate the real worker and editor
+      // path. Upload pixels, never saved cutting paths or a fitting seed.
+      const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-bird-fit.json'));
+      const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
+      const mask=prepare({...photo,quad:fixture.quad},AUTOMATIC_PRESET).preview.mask;
+      assert.equal(createHash('sha256').update(mask).digest('hex'),fixture.maskSha256);
+      const c=createCanvas(400,400),ctx=c.getContext('2d'),pixels=ctx.createImageData(400,400);
+      for(let i=0;i<mask.length;i++)pixels.data.set(mask[i]?[185,19,19,255]:[255,255,255,255],4*i);
+      ctx.putImageData(pixels,0,0);await fs.writeFile(file,c.toBuffer('image/png'));
+      row.sourcePhoto={id:fixture.sourceCase,sha256:photo.fileSha256,quad:fixture.quad,fixedMaskSha256:fixture.maskSha256};
      }else if(webPhoto){
       const data=await catalogue(),entry=data.cases.find(c=>c.id===name.slice(4));assert.ok(entry,`Unknown photograph ${name}`);
       const photo=data.photos.find(p=>p.id===entry.photo),input=await readPhoto(photo),roi=entry.roi||[0,0,input.imageWidth,input.imageHeight],c=createCanvas(roi[2]-roi[0],roi[3]-roi[1]),ctx=c.getContext('2d'),pixels=ctx.createImageData(input.imageWidth,input.imageHeight);
@@ -269,7 +282,14 @@ try{
     row.selectedCounts=observed.result.report.solver.selectedCounts;
     row.templateChecksPassed=observed.result.report.templateChecksPassed;
     row.missingFeatures=observed.result.report.imageFidelity?.features.missing;
-    if(hardPhoto){
+    if(photoMask){
+     assert.equal(createHash('sha256').update(Uint8Array.from(observed.prepared.mask)).digest('hex'),row.sourcePhoto.fixedMaskSha256);
+     if(!engineReference){
+      assert.equal(row.templateChecksPassed,true,'The bird eye must survive the actual worker and final checks.');
+      assert.equal(row.missingFeatures.length,0);assert.ok(row.engineError<.03);
+     }
+    }
+    if(hardPhoto||photoMask){
      row.featureNoticeVisible=await page.getByText('Some details of the motif are missing. Compare the template with the mask.',{exact:true}).isVisible();
      assert.equal(row.featureNoticeVisible,row.missingFeatures.length>0,'The page must show the feature failure even below its ordinary percentage warning.');
      if(name==='hard-flettede-puppy'&&!engineReference){
@@ -394,7 +414,7 @@ try{
     // and can turn a 0.3% source error into 0.6% at a different sampling phase.
     const resolution=observed.prepared.resolution,sourceMask=Uint8Array.from(observed.prepared.mask),sourceRendered=rasterizeDesign(design,resolution).data;
     row.sourceResolution=resolution;
-    if(hardPhoto){
+    if(hardPhoto||photoMask){
      row.editableFeatures=auditImageFeatures({mask:sourceMask,resolution},sourceRendered);
      if(row.missingFeatures.length)assert.equal(row.templateChecksPassed,false,'Low mean error cannot certify a pair with lost source regions.');
      assert.equal(row.editableFeatures.passed,!row.missingFeatures.length,'SVG conversion must preserve the observed feature outcome.');
@@ -415,13 +435,13 @@ try{
     assert.deepEqual(raw.honoured,row.honouredSymmetry);
     row.conversionFidelity=conversionFidelity(raw.design,{mask:{size:resolution,data:sourceMask},weights:observed.prepared.weights??undefined})(design);
     assert.equal(row.conversionFidelity.passed,true,`Editable SVG lost fitted weave fidelity: ${JSON.stringify(row.conversionFidelity)}`);
-    if(hardPhoto){
+    if(hardPhoto||photoMask){
      row.conversionFeatures=auditFeatureChange({mask:sourceMask,resolution},rasterizeDesign(raw.design,resolution).data,sourceRendered);
      assert.equal(row.conversionFeatures.passed,true,'Conversion must not erode a source feature, including one that was already imperfect.');
     }
     assert.ok(Math.abs(row.displayedError-row.sourceEditableError)<=.00051,`Displayed mismatch ${row.displayedError} disagrees with exported heart ${row.sourceEditableError}`);
-    assert.ok(row.sourceEditableError<=(small?.005:topHat?.01:free||photograph?.03:.015),`Editable source mismatch ${row.sourceEditableError}`);
-    if(name==='star'){
+    assert.ok(row.sourceEditableError<=(small ? .005 : topHat ? .01 : free||photograph||photoMask ? .03 : .015),`Editable source mismatch ${row.sourceEditableError}`);
+    if(name==='star'||photoMask){
      const pendingPDF=page.waitForEvent('download');await button('Download PDF').click();
      const pdfFile=path.join(dir,'template.pdf');await(await pendingPDF).saveAs(pdfFile);
      assert.equal((await fs.readFile(pdfFile)).subarray(0,5).toString(),'%PDF-');

@@ -21,7 +21,7 @@ export async function stopIntervention(mode,origin){
     hashes[file]={original:createHash('sha256').update(source).digest('hex'),served:createHash('sha256').update(modified).digest('hex')};
   };
   const blocked=`self.postMessage({id,type:'progress',event:{stage:'qaComputeBlocked'}});const until=performance.now()+30000;while(performance.now()<until){/* deliberately busy private worker */}`;
-  const condition=mode==='keep-finer'?'candidate.materialResolution===700':'candidate.error!==null&&candidate.error<=.006';
+  const condition=mode==='keep-finer'?'candidate.materialResolution===700&&candidate.error!==null&&candidate.error<=.03':'candidate.error!==null&&candidate.error<=.006';
   if(mode==='empty')await replace('/inverse/compute-worker.js','    const result=await design',`    ${blocked}\n    const result=await design`);
   else await replace('/inverse/compute-worker.js',
     "{onCandidate:candidate=>self.postMessage({id,type:'candidate',candidate})}",
@@ -29,7 +29,7 @@ export async function stopIntervention(mode,origin){
   if(mode==='cancel-finishing')await replace('/inverse/core/stopped.js',
     '  alive();if(!packets.length)',
     "  onProgress({stage:'qaFinishingCheckpoint'});await new Promise(resolve=>setTimeout(resolve,2000));\n  alive();if(!packets.length)");
-  return{files,hashes,method:'HTTP source override: block the actual compute worker for 30 s before fitting (empty), or immediately after a real validated checkpoint with error <= 0.6% (keep) or finer paper resolution 700 (keep-finer). Cancel-finishing additionally yields for 2 s in finalization. No geometry, counts or seed is supplied.'};
+  return{files,hashes,method:'HTTP source override: block the actual compute worker for 30 s before fitting (empty), or immediately after a real validated checkpoint with error <= 0.6% (keep), or finer paper resolution 700 and original-image error <= 3% (keep-finer). Cancel-finishing additionally yields for 2 s in finalization. No geometry, counts or seed is supplied.'};
 }
 
 /** Serialized by Playwright; no module dependencies in the body. */
