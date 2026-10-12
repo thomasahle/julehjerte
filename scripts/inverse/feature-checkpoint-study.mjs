@@ -72,11 +72,11 @@ for(const entry of report.results.filter(r=>!args.ids||args.ids.split(',').inclu
   for(const variant of ['fine-unweighted','clear-protected','clear-and-refine-protected','small-only-protected']){
     const start=performance.now(),checkpoints=[];let initial=seed;
     if(variant==='fine-unweighted'){
-      const next=fitGrid(plain.probability,n,seed.model.counts,seed.phase,{steps:150,initial:seed.model.z});if(next.error<seed.error)initial=next;
+      const next=fitGrid(plain.probability,n,seed.model.counts,seed.phase,{k:seed.model.k,steps:150,initial:seed.model.z});if(next.error<seed.error)initial=next;
     }
     const clearObjective=variant==='fine-unweighted'?plain:variant==='small-only-protected'?smallWeighted:weighted;
     const objective=variant==='clear-and-refine-protected'?weighted:variant==='small-only-protected'?smallWeighted:plain;
-    const clear=fitGrid(clearObjective.probability,n,seed.model.counts,seed.phase,{weights:clearObjective.weights,steps:150,initial:refloor(initial,floor),floor,clearance:floor+.0015});
+    const clear=fitGrid(clearObjective.probability,n,seed.model.counts,seed.phase,{k:initial.model.k,weights:clearObjective.weights,steps:150,initial:refloor(initial,floor),floor,clearance:floor+.0015});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
     const fit=refineCurves(graph,objective.probability,n,clear.phase,cfg,{input,weights:objective.weights,steps,rate:.05,onProgress:(checkpoint,solution)=>{
       if(checkpoint.geometry)checkpoints.push({checkpoint,geometry:solutionJSON(solution)});
@@ -86,7 +86,7 @@ for(const entry of report.results.filter(r=>!args.ids||args.ids.split(',').inclu
     for(const {checkpoint,geometry}of checkpoints){const image=await renderExportedWeave(geometry,source.resolution);snapshots.push({...checkpoint,...metrics(image.mask)});}
     const passed=snapshots.filter(s=>s.paper==='pass'),best=list=>list.toSorted((a,b)=>a.error-b.error)[0]||null;
     const shapePassed=s=>s.features.passed&&s.components.filter(c=>small.some(f=>Math.hypot(...c.centerMm.map((v,i)=>v-f.centerMm[i]))<.001)).every(c=>!c.touchesBorder&&c.componentIoU>=.5);
-    const row={id:entry.id,variant,maskSha256:hash(source.mask),boost,counts:seed.model.counts,phase:seed.phase,seconds:(performance.now()-start)/1000,featureAreas:features.map(f=>f.areaMm2),seed:metrics(gridMask(seed.model,source.resolution,seed.phase,seed.floor)),afterFine:metrics(gridMask(initial.model,source.resolution,initial.phase,initial.floor)),afterClearance:metrics(gridMask(clear.model,source.resolution,clear.phase,clear.floor)),returned:{...actual,paper:fit.paper?.status},bestError:best(passed),bestRetainedFeature:best(passed.filter(s=>s.features.passed)),bestClosedFeature:best(passed.filter(shapePassed)),checkpoints:snapshots};rows.push(row);
+    const row={id:entry.id,variant,maskSha256:hash(source.mask),boost,counts:seed.model.counts,controlPoints:seed.model.k,phase:seed.phase,seconds:(performance.now()-start)/1000,featureAreas:features.map(f=>f.areaMm2),seed:metrics(gridMask(seed.model,source.resolution,seed.phase,seed.floor)),afterFine:metrics(gridMask(initial.model,source.resolution,initial.phase,initial.floor)),afterClearance:metrics(gridMask(clear.model,source.resolution,clear.phase,clear.floor)),returned:{...actual,paper:fit.paper?.status},bestError:best(passed),bestRetainedFeature:best(passed.filter(s=>s.features.passed)),bestClosedFeature:best(passed.filter(shapePassed)),checkpoints:snapshots};rows.push(row);
     const name=entry.id+'-'+variant;await fs.writeFile(args.output+'/'+name+'.png',rendered.png);await fs.writeFile(args.output+'/'+name+'.json',JSON.stringify(retained));
     await fs.writeFile(args.output+'/results.json',JSON.stringify(ledger,null,2));
     console.log(JSON.stringify({id:entry.id,variant,error:actual.error,components:actual.components,closed:row.bestClosedFeature&&{step:row.bestClosedFeature.step,error:row.bestClosedFeature.error},seconds:row.seconds}));

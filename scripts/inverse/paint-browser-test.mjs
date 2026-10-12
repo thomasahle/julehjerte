@@ -67,7 +67,7 @@ if(engineReference||intervention){
  origin=`http://127.0.0.1:${referenceServer.address().port}`;
 }
 await fs.mkdir(output,{recursive:true});
-const loader=await createServer({configFile:false,cacheDir:path.resolve(output,'vite-cache'),server:{middlewareMode:true,hmr:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
+const loader=await createServer({configFile:false,optimizeDeps:{noDiscovery:true},cacheDir:path.resolve(output,'vite-cache'),server:{middlewareMode:true,hmr:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
 const dom=new JSDOM('');globalThis.DOMParser=dom.window.DOMParser;
 const {parseHeartFromSVG}=await loader.ssrLoadModule('/src/lib/utils/heartDesign.ts');
 const {findFingersWithIssues,intersectionMarginPx}=await loader.ssrLoadModule('/src/lib/editor/curveIssues.ts');
@@ -86,6 +86,7 @@ for(const file of['static/inverse/worker.js','static/inverse/worker-bootstrap.js
 for(const file of ['static/inverse/core/feature-recovery.js','static/inverse/core/solver.js','static/inverse/core/crop.js','static/inverse/locator/locator.js','static/inverse/locator/fields.js','static/inverse/locator/math.js','static/inverse/locator/palette.js','static/inverse/locator/anchored.js','static/inverse/locator/grid-refine.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/automatic.js','static/inverse/core/input.js','static/inverse/core/image-reference.js','static/inverse/core/image-features.js','static/inverse/core/direct/image-objective.js','static/inverse/core/direct/prefer-matching.js','static/inverse/core/direct/symmetry.js','src/lib/inverse/engine.ts','static/inverse/core/direct/finalize.js','static/inverse/core/direct/topology.js','static/inverse/core/direct/fit.js','static/inverse/core/direct/share.js','static/inverse/core/direct/initialize.js','static/inverse/core/direct/counts.js','static/inverse/core/direct/feature-seeds.js','static/inverse/core/direct/feature-details.js','static/inverse/core/direct/matching.js','src/lib/inverse/toHeartDesign.ts','src/lib/inverse/simplifyCurves.ts','src/lib/editor/curveIssues.ts','src/lib/components/paint/PaintPage.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash('sha256').update(await fs.readFile('src/lib/inverse/conversionFidelity.ts')).digest('hex');
+report.workspaceSourceHashes['static/inverse/core/feature-shapes.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/feature-shapes.js')).digest('hex');
 for(const name of ['junctions.js','border.js','material.js','validate.js','settings.js']){const file=`static/inverse/core/${name}`;report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');}
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -432,6 +433,12 @@ try{
       const eye=row.featureComponents.find(f=>f.centerMm[0]<30);
       assert.equal(eye.touchesBorder,false,'The exported eye must remain separate from the background');
       assert.ok(eye.componentIoU>.8,'The editable eye must retain its shape after simplification');
+     }
+     if(name==='hard-flettede-puppy-half'&&row.templateChecksPassed){
+      const opening=row.featureComponents.find(f=>f.sourceAreaMm2<30);
+      assert.ok(opening,'The classified smaller photograph must contain the opening');
+      assert.equal(opening.touchesBorder,false,'A reported success must preserve a separate opening');
+      assert.ok(opening.componentIoU>.5,'Retaining pixels inside an inflated region is insufficient');
      }
      if(row.missingFeatures.length)assert.equal(row.templateChecksPassed,false,'Low mean error cannot certify a pair with lost source regions.');
      assert.equal(row.editableFeatures.passed,!row.missingFeatures.length,'SVG conversion must preserve the observed feature outcome.');
