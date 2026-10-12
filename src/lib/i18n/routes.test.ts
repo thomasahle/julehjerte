@@ -80,6 +80,8 @@ describe('language mirroring', () => {
 	it('maps the differently slugged pages to each other', () => {
 		expect(pathInLanguage('/saadan-goer-du/', 'en')).toBe('/en/how-to/');
 		expect(pathInLanguage('/en/how-to/', 'da')).toBe('/saadan-goer-du/');
+		expect(pathInLanguage('/julehjerter-uden-printer/', 'en')).toBe('/en/christmas-hearts-without-a-printer/');
+		expect(pathInLanguage('/en/christmas-hearts-without-a-printer/', 'da')).toBe('/julehjerter-uden-printer/');
 		expect(pathInLanguage('/om/', 'en')).toBe('/en/about/');
 		expect(pathInLanguage('/en/about/', 'da')).toBe('/om/');
 		// The paint mode is the third: /editor/mal/ is not /en/editor/mal/.

@@ -280,6 +280,15 @@ about mistakes, the final strip, paper choice, printing, enlargement and other p
 Four preparation cards and three weaving cards become single-column cards on phones. Text remains
 in the initial HTML. All interface copy is translated in `src/lib/i18n/translations.ts`.
 
+The companion guide at `/julehjerter-uden-printer/` (English
+`/en/christmas-hearts-without-a-printer/`) explains tracing a PDF from a screen onto thin paper.
+Seven `GuideTrace` SVGs show choosing the scale, securing and tracing paper, cutting out the loose
+template on a table, aligning it with folded coloured paper, and cutting the two halves. It distinguishes
+cutting the loose template's bottom edge from preserving the fold in the coloured paper. Paper advice
+starts with a small test; the optional iPad touch-lock tip links to Apple's instructions. Links from the
+main guide and heart detail panels make it discoverable, and its final link jumps to the weaving steps.
+The route table, metadata and sitemap include both language versions.
+
 ### Titles and social previews
 
 `src/lib/seo.ts` keeps route titles and social titles consistent. Titles end in `| Juleflet`, not the

@@ -17,7 +17,7 @@ import type { Language } from './translations';
  * 'always'). They do NOT include SvelteKit's `base`; use href()/heartHref() for
  * link targets, and the raw paths for absolute URLs built from SITE_URL.
  */
-export type RouteKey = 'home' | 'editor' | 'paint' | 'howTo' | 'about';
+export type RouteKey = 'home' | 'editor' | 'paint' | 'howTo' | 'noPrinter' | 'about';
 
 export const ROUTES: Record<RouteKey, Record<Language, string>> = {
 	home: { da: '/', en: '/en/' },
@@ -26,6 +26,7 @@ export const ROUTES: Record<RouteKey, Record<Language, string>> = {
 	// so it lives outside [[lang=lang]] and every language link goes through here.
 	paint: { da: '/editor/mal/', en: '/en/editor/paint/' },
 	howTo: { da: '/saadan-goer-du/', en: '/en/how-to/' },
+	noPrinter: { da: '/julehjerter-uden-printer/', en: '/en/christmas-hearts-without-a-printer/' },
 	about: { da: '/om/', en: '/en/about/' }
 };
 

@@ -23,6 +23,7 @@
 	<header class="intro">
 		<h1>{t('howToTitle', lang)}</h1>
 		<p>{t('howToIntro', lang)}</p>
+		<a href={href('noPrinter', lang)}>{t('noPrinterLink', lang)} <span aria-hidden="true">→</span></a>
 	</header>
 
 	<div class="before-you-start">
