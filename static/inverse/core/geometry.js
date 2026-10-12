@@ -11,7 +11,9 @@ export function segmentHits(a,b,c,d,eps=1e-9){
   if(Math.abs(den)>eps*Math.max(1,Math.sqrt(rr*ss))){const t=cross(q,s)/den,u=cross(q,r)/den;if(t>=-eps&&t<=1+eps&&u>=-eps&&u<=1+eps)return[{point:add(a,mul(r,clamp(t))),t:clamp(t),u:clamp(u),overlap:false}];return[];}
   if(Math.abs(cross(q,r))>eps*Math.max(1,Math.sqrt(rr)))return[];
   const t0=dot(q,r)/rr,t1=t0+dot(s,r)/rr,lo=Math.max(0,Math.min(t0,t1)),hi=Math.min(1,Math.max(t0,t1));if(hi<lo-eps)return[];
-  return (hi-lo>eps?[lo,hi]:[(lo+hi)/2]).map(t=>{const p=add(a,mul(r,t));return{point:p,t,u:clamp(dot(sub(p,c),s)/ss),overlap:hi-lo>eps};});
+  // A gap smaller than eps is an endpoint contact, not an extrapolated hit.
+  // Its midpoint can lie just outside [0,1]; keep both curve parameters valid.
+  return (hi-lo>eps?[lo,hi]:[(lo+hi)/2]).map(raw=>{const t=clamp(raw),p=add(a,mul(r,t));return{point:p,t,u:clamp(dot(sub(p,c),s)/ss),overlap:hi-lo>eps};});
 }
 export function segmentPairDistance(a,b,c,d){if(segmentHits(a,b,c,d).length)return 0;return Math.min(segmentDistance(a,c,d),segmentDistance(b,c,d),segmentDistance(c,a,b),segmentDistance(d,a,b));}
 export function lineDistance(a,b,stopBelow=-1){let best=Infinity;const sa=segments(a),sb=segments(b);for(const s of sa)for(const t of sb){if(boxDistance(s.box,t.box)>=best)continue;best=Math.min(best,segmentPairDistance(s.a,s.b,t.a,t.b));if(best<=stopBelow)return best;}return best;}
@@ -25,7 +27,7 @@ export function nodeCurves(curves,tol=.01){
   const flattened=curves.map(c=>c.flatten(tol,Infinity,true)),cuts=curves.map(()=>[0,1]);
   for(const [i,j]of nearbyPairs(flattened.map(x=>x.points),tol))for(const hit of lineHits(flattened[i].points,flattened[j].points)){
     if(hit.overlap&&(curves[i].flatness()>1e-8||curves[j].flatness()>1e-8)){const same=curves[i].p.every((p,k)=>distance(p,curves[j].p[k])<1e-7),reverse=curves[i].p.every((p,k)=>distance(p,curves[j].p[3-k])<1e-7);if(!same&&!reverse)throw new Error('Partly overlapping nonlinear curves must be normalized before import.');}
-    let t=flattened[i].ts[hit.i]+hit.t*(flattened[i].ts[hit.i+1]-flattened[i].ts[hit.i]),s=flattened[j].ts[hit.j]+hit.u*(flattened[j].ts[hit.j+1]-flattened[j].ts[hit.j]);
+    let t=clamp(flattened[i].ts[hit.i]+hit.t*(flattened[i].ts[hit.i+1]-flattened[i].ts[hit.i])),s=clamp(flattened[j].ts[hit.j]+hit.u*(flattened[j].ts[hit.j+1]-flattened[j].ts[hit.j]));
     for(let it=0;it<20;it++){const diff=sub(curves[i].point(t),curves[j].point(s)),a=curves[i].derivative(t),b=curves[j].derivative(s),det=cross(a,b);if(distance(diff,[0,0])<1e-10||Math.abs(det)<1e-14)break;const dt=-cross(diff,b)/det,ds=-cross(diff,a)/det;t=clamp(t+dt);s=clamp(s+ds);}
     if(distance(curves[i].point(t),curves[j].point(s))<1e-6){cuts[i].push(t);cuts[j].push(s);}
   }
