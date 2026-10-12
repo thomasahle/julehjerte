@@ -5,6 +5,11 @@ does not add a production cropper or change the fitter. It makes a misleading
 benchmark outcome explicit: a checked template pair can closely reproduce a
 bad crop or a mask that has already lost photographed detail.
 
+A later [short-search feature refinement study](datasets/short-budget-feature-handoff.md)
+raises complete-case acceptance from 23/31 to 24/31 by retaining the bird's eye.
+It uses unchanged crop and mask hashes and still rejects these jigsaw and bauble
+cases. The measurements below remain the earlier crop experiment's results.
+
 ## Current production replay
 
 Source bytes and rough selections are frozen in `hard-photo-cases.json`.
