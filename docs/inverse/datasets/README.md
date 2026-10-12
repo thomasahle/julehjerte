@@ -44,13 +44,18 @@ now considers whole curve joins, and a separate fix stops straight cuts from
 being rejected as zero-radius bends. The [diagnosis](app-baseline-correction.md#full-fitting-exposed-a-separate-seam-defect)
 records the remaining border defects and the limited synthetic scope.
 
-The [full photograph-to-template follow-up](oriented-photo-recovery.md) traces
-one remaining frame defect to crop geometry. Reusing a fixed paper segmentation
-while testing supported orientations recovers two of six selected difficult
-photographs automatically; four remain unresolved. Both recovered frames yield
-checked template pairs in under six seconds. Comparison at the same physical
-material locations improves one reconstruction's error and worsens the other's
-while allowing identical sheets within the user's one-percentage-point limit.
+The [rotation study](oriented-photo-recovery.md) linked a remaining frame defect
+to crop geometry and introduced pose search using a fixed paper segmentation.
+The [background-model follow-up](background-photo-recovery.md) now recovers
+all six diagnostic photographs and all 24 photographs in an additional
+family-balanced synthetic sample. It separates background brightness variation
+from color changes and refines the orientation of promising rejected outlines.
+All 30 complete replays produce checked templates; three of the additional
+sample's dense lattices exceed ten seconds overall. A faint seam in the pale
+diagnostic frame and an unnecessary extra cut in another frame remain visible
+quality/complexity issues despite passing aggregate checks.
+Common-coordinate comparisons document accuracy tradeoffs, including the
+preference for matching sheets within the user's one-percentage-point limit.
 
 Of the real-source files, 475 are reserved by existing QA or connected source
 groups. Remaining files still need instance, motif-family and usage review;
@@ -158,12 +163,13 @@ The Node dataset tests are included in `npm run test:inverse`. The Python
 collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
-The latest regression run passed 855 application tests (one skipped), 662
+The latest regression run passed 855 application tests (one skipped), 670
 inverse tests, 33 offline learning tests and
 13 collector tests, along with type checking, lint and build. Type checking
 retains seven existing warnings and no errors.
-[Command records and browser regression evidence](orientation-validation.json)
-retain these checks; the [previous intervention validation](intervention-validation.json),
+[Command records and browser regression evidence](background-validation.json)
+retain these checks; the [previous orientation validation](orientation-validation.json),
+[intervention validation](intervention-validation.json),
 [localization validation](localization-validation.json)
 and [earlier snapshot validation](learning-validation.json) remain
 available. The synthetic verifiers checked all 5,952 referenced assets across
@@ -173,7 +179,7 @@ Gallery browser checks are recorded in the real-photo collection report.
 The earlier application/solver release checks are recorded in
 [the solver validation report](../CONNECTOR-RETRY-VALIDATION.json). Neural
 inference remains offline; the shared-cut fixes change geometric fitting and
-the orientation search changes photographic crop proposals.
+the orientation and background models change photographic crop proposals.
 
 The corrected component comparison uses the current app initializer; the
 initial experiment also tests the same small network initialized randomly.
