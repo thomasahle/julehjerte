@@ -1,6 +1,7 @@
 import unittest
 import numpy as np
-from data import observable_nodes, projected_polyline, project, bezier, point_counts, node_heatmap, detect_nodes
+from types import SimpleNamespace
+from data import observable_nodes, projected_polyline, project, bezier, point_counts, node_heatmap, detect_nodes, training_supplements
 
 
 def line(a, b):
@@ -50,6 +51,29 @@ class LabelTests(unittest.TestCase):
         for dtype in [np.float32, np.float16]:
             recovered = detect_nodes(node_heatmap(points, 80).astype(dtype), .5)
             self.assertEqual(point_counts(recovered, points), [2, 2, 2])
+
+    def test_supplement_cannot_move_original_holdouts_into_training(self):
+        def corpus(prefix):
+            ids = [prefix+'-train', prefix+'-dev', prefix+'-test']
+            return SimpleNamespace(resolution=384, designs={x: {'geometrySha256': x} for x in ids},
+                                   split=dict(zip(ids, ['train', 'development', 'recipe-test'])),
+                                   rows=[{'id': x+'-view'} for x in ids],
+                                   views={x+'-view': {'designId': x} for x in ids})
+        base, extra = corpus('base'), corpus('extra')
+        original = dict(base.split)
+        result = training_supplements(base, [extra])
+        self.assertEqual(result[0]['rows'], [{'id': 'extra-train-view'}])
+        self.assertEqual(base.split, original)
+        extra.designs['extra-train']['geometrySha256'] = 'base-test'
+        with self.assertRaisesRegex(ValueError, 'duplicates'):
+            training_supplements(base, [extra])
+
+    def test_supplement_cannot_duplicate_another_supplement(self):
+        base = SimpleNamespace(resolution=384, designs={}, views={})
+        extra = SimpleNamespace(resolution=384, designs={'x': {'geometrySha256': 'geometry'}},
+                                split={'x': 'train'}, rows=[{'id': 'v'}], views={'v': {'designId': 'x'}})
+        with self.assertRaisesRegex(ValueError, 'duplicates'):
+            training_supplements(base, [extra, extra])
 
 
 if __name__ == '__main__':

@@ -149,8 +149,9 @@ class Corpus:
         self.manifest = json.loads(source)
         self.designs = {d['id']: d for d in self.manifest['baseDesigns']}
         self.views = {v['id']: v for v in self.manifest['views']}
-        if len(self.views) != len(self.prepared['rows']):
-            raise ValueError('Preprocessing omitted views')
+        prepared_ids = [row['id'] for row in self.prepared['rows']]
+        if len(prepared_ids) != len(set(prepared_ids)) or set(prepared_ids) != set(self.views):
+            raise ValueError('Preprocessing duplicated or omitted views')
         if self.manifest['sourceProvenance']['externalAssets'] or any(self.manifest['splitPolicy'][k] for k in ['existingPhotoQAIncluded', 'existingHunodanQAIncluded', 'existingGalleryIncluded']):
             raise ValueError('This experiment only accepts procedural data')
         # All views of a design stay together. This is an in-recipe development
@@ -198,3 +199,34 @@ class Corpus:
         return {'id': row['id'], 'designId': view['designId'], 'split': self.split[view['designId']],
                 'rgb': rgb, 'mask': mask.astype(np.float32), 'target': np.stack([heat, node_heatmap(nodes, n)]),
                 'valid': valid, 'boundary': boundary, 'nodes': nodes, 'baselineNodes': baseline_nodes, 'baselineBoundary': baseline_boundary}
+
+
+def training_supplements(base, extras):
+    """Select only supplementary training rows; preserve every base split.
+
+    Development/recipe rows from an extra corpus are excluded. Exact geometry
+    matches to any original split are rejected, rather than reweighting an old
+    example or admitting a holdout through another source. Recipe/topology
+    equivalence remains a separate limitation of these procedural datasets.
+    """
+    geometries = {d['geometrySha256'] for d in base.designs.values()}
+    design_ids = set(base.designs)
+    view_ids = set(base.views)
+    result = []
+    for corpus in extras:
+        if corpus.resolution != base.resolution:
+            raise ValueError('Supplement input resolution differs')
+        included = {key for key, split in corpus.split.items() if split == 'train'}
+        if not included:
+            raise ValueError('Supplement has no training designs')
+        for key in sorted(included):
+            design = corpus.designs[key]
+            if key in design_ids or design['geometrySha256'] in geometries:
+                raise ValueError('Supplement duplicates existing design or geometry: '+key)
+            design_ids.add(key); geometries.add(design['geometrySha256'])
+        rows = [row for row in corpus.rows if corpus.views[row['id']]['designId'] in included]
+        for row in rows:
+            if row['id'] in view_ids: raise ValueError('Supplement duplicates existing view: '+row['id'])
+            view_ids.add(row['id'])
+        result.append({'corpus': corpus, 'rows': rows, 'designs': sorted(included)})
+    return result

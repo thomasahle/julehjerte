@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw
 from scipy.ndimage import distance_transform_edt
 import torch
 
-from data import Corpus, digest, detect_nodes, point_counts, scores
+from data import Corpus, digest, detect_nodes, point_counts, scores, training_supplements
 from model import ProposalNet, heatmap_loss
 from losses import LOSSES
 
@@ -106,9 +106,11 @@ def main():
     parser.add_argument('--seed', type=int, default=1729)
     parser.add_argument('--device', choices=['cpu', 'mps', 'cuda'], default='mps')
     parser.add_argument('--loss', choices=sorted(LOSSES), default='weighted-mse')
+    parser.add_argument('--extra-prepared', action='append', default=[], help='Additional procedural training source; its development and recipe holdouts are excluded')
+    parser.add_argument('--views-per-epoch', type=int, default=0, help='Sample this many training views without replacement per epoch; 0 uses all views')
     parser.add_argument('--evaluate-run', help='Evaluate an existing selected checkpoint in a new output directory; never retrain or overwrite its evidence')
     args = parser.parse_args()
-    if args.epochs < 1 or args.batch_size < 1:
+    if args.epochs < 1 or args.batch_size < 1 or args.views_per_epoch < 0:
         raise ValueError('Epochs and batch size must be positive')
     output = Path(args.output); output.mkdir(parents=True, exist_ok=False)
     torch.set_num_threads(2); torch.set_num_interop_threads(1)
@@ -135,11 +137,29 @@ def main():
         for row in corpus.rows:
             items.append(corpus.load(row))
             if len(items) % 32 == 0: print('loaded', len(items), '/', len(corpus.rows), flush=True)
+        report['extraTraining'] = []
+        supplements = training_supplements(corpus, [Corpus(p) for p in args.extra_prepared])
+        for supplement in supplements:
+            extra = supplement['corpus']
+            for row in supplement['rows']:
+                item = extra.load(row)
+                if item['split'] != 'train': raise ValueError('Supplement attempted to import a non-training row')
+                items.append(item)
+            report['extraTraining'].append({'prepared': str(extra.root),
+                                           'preparedManifestSha256': digest((extra.root/'manifest.json').read_bytes()),
+                                           'datasetManifestSha256': extra.prepared['datasetManifestSha256'],
+                                           'designs': supplement['designs'], 'views': len(supplement['rows']),
+                                           'excludedNonTrainingViews': len(extra.rows)-len(supplement['rows'])})
+            print('loaded supplement', extra.root, len(supplement['rows']), flush=True)
         report['dataPreparationSeconds'] = time.perf_counter()-started
         report['preparedManifestSha256'] = digest((corpus.root/'manifest.json').read_bytes())
         report['datasetManifestSha256'] = corpus.prepared['datasetManifestSha256']
         report['splits'] = {s: {'views': sum(i['split'] == s for i in items), 'designs': sorted({i['designId'] for i in items if i['split'] == s})} for s in sorted({i['split'] for i in items})}
         splits = {s: [i for i in items if i['split'] == s] for s in report['splits']}
+        views_per_epoch = args.views_per_epoch or len(splits['train'])
+        if views_per_epoch > len(splits['train']): raise ValueError('Requested more training views per epoch than available')
+        report['trainingPolicy'] = {'availableViews': len(splits['train']), 'sampledViewsPerEpoch': views_per_epoch,
+                                    'optimizerUpdatesPerEpoch': (views_per_epoch+args.batch_size-1)//args.batch_size}
         report['baseline'] = {s: evaluate(v) for s, v in splits.items()}
         # Both initializations construct the same random decoder before training;
         # loading encoder weights does not advance the random generator.
@@ -158,6 +178,8 @@ def main():
                 if prior['arguments'][field] != vars(args)[field]: raise ValueError('Evaluation recovery differs in '+field)
             if prior['arguments'].get('loss', 'weighted-mse') != args.loss:
                 raise ValueError('Evaluation recovery differs in loss')
+            if prior.get('extraTraining', []) != report['extraTraining'] or prior['arguments'].get('views_per_epoch', 0) != args.views_per_epoch:
+                raise ValueError('Evaluation recovery differs in supplementary training policy')
             if prior['sourceHashes']['model.py'] != report['sourceHashes']['model.py']:
                 raise ValueError('Evaluation recovery model implementation differs')
             if len(prior['history']) != args.epochs or not prior.get('selectedEpoch'):
@@ -172,7 +194,7 @@ def main():
             shutil.copyfile(previous/'model.pt', output/'model.pt')
         for epoch in range(0 if args.evaluate_run else args.epochs):
             epoch_start = time.perf_counter(); model.train(); total = 0
-            order = rng.permutation(len(splits['train']))
+            order = rng.permutation(len(splits['train']))[:views_per_epoch]
             for start in range(0, len(order), args.batch_size):
                 batch = [splits['train'][i] for i in order[start:start+args.batch_size]]
                 rgb, mask, target, valid = tensors(batch, device)
@@ -186,7 +208,9 @@ def main():
                 loss.backward(); torch.nn.utils.clip_grad_norm_(model.parameters(), 5); optimizer.step()
                 total += float(loss.detach().cpu())*len(batch)
             development_loss, _ = infer(model, splits['development'], device, args.batch_size, False, loss_function)
-            entry = {'epoch': epoch+1, 'trainLoss': total/len(order), 'developmentLoss': development_loss, 'seconds': time.perf_counter()-epoch_start}
+            entry = {'epoch': epoch+1, 'trainLoss': total/len(order), 'developmentLoss': development_loss,
+                     'trainingViews': len(order), 'optimizerUpdates': (len(order)+args.batch_size-1)//args.batch_size,
+                     'seconds': time.perf_counter()-epoch_start}
             report['history'].append(entry)
             if development_loss < best:
                 best = development_loss; report['selectedEpoch'] = epoch+1
