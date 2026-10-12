@@ -44,7 +44,8 @@ When the incumbent fails source-image acceptance, the main fitter checks the
 alternative against the original pixels and every tracked source feature. Only
 an otherwise acceptable alternative earns the existing finer paper audit,
 within the original time budget. A successful fresh audit adds a candidate; it
-does not overwrite the incumbent or remove the previous routing-search allowance.
+does not overwrite the incumbent and preserves the 25-second routing comparison
+allowance used in the diagnostic dataset.
 This matters because later routings can be better still, as the maple-leaf
 diagnostic demonstrates.
 
@@ -153,3 +154,51 @@ needs separate evidence; this change does not relabel or erase them.
 These scores measure agreement with classified photographs, not unavailable
 original artwork or cutting templates. Paper checks are nominal geometric tests;
 the resulting hearts have not been physically cut and assembled.
+
+## Release checks
+
+All ten normal browser cases pass: the three checkerboard masks, the bird mask
+and the original puppy photograph, each in Chromium and WebKit. The mask uploads
+use frozen image-derived crops; no fitted templates are supplied. The puppy
+also exercises automatic cropping through the actual upload UI. Every case
+checks the displayed error against the editable result, the editor's curve
+rules, retained source features, downloaded SVG geometry and PDF download.
+
+| Checkerboard | Previous Chromium | Capped Chromium | Capped WebKit |
+| --- | ---: | ---: | ---: |
+| Floral | 37.75 s | 28.23 s | 28.44 s |
+| Warped | 53.53 s | 28.64 s | 29.01 s |
+| Fine | 41.22 s | 29.72 s | 29.37 s |
+
+These are click-to-ready times from the page clock, including preparation, worker
+communication and rendering. The capped exported images disagree with their
+masks by 1.78–2.24%. Shorter continuation does not promise the same optimum as an
+unlimited search; the fixed 25-second comparisons above establish the retained
+quality target. The bird and puppy also retain their smaller source features.
+
+`npm test` passes **854 application tests** (one existing skip) and **571 inverse
+tests**. `npm run check` has zero errors and seven existing warnings; lint and
+production build pass. The served fitter and refiner bytes match the tested
+workspace. The new regression supplies a fresh image with the application's
+180-second allowance and asserts the 25-second continuation cap, a valid finer
+paper audit, source fidelity and a verified Stop checkpoint.
+
+The independent, path-only SVG renderer now disables system-font discovery.
+A paired test in both invocation orders produced byte-identical PNGs, reducing
+its measured render call from 0.10–0.12 seconds to 0.002–0.003 seconds. This is a
+benchmark/replay efficiency change, not a browser solver speed claim. Benchmark
+provenance now includes that renderer's source hash.
+
+The finer-checkpoint Stop replay also passes in both browsers. A test proxy pauses
+the real worker only after it has emitted an acceptable finer-verified candidate;
+it supplies no geometry. Clicking Stop then produces a validated editable pair
+in **5.32 seconds in Chromium** and **5.02 seconds in WebKit**, with 2.36% editable
+mask disagreement and the required 700-cell paper recheck. SVG and PDF export
+continue to work for this stopped result.
+
+The committed [validation ledger](UNCERTAIN-CHECKPOINT-VALIDATION.json) records
+per-case errors, input and artifact hashes, timing definitions, browser versions,
+Stop evidence, controlled experiments and the interrupted pre-cap timing run.
+Dataset runs used the checkpoint fix before the continuation cap; their 10- and
+25-second deadlines are unchanged by that cap. The full checks and browser/Stop
+runs exercise the final production code.
