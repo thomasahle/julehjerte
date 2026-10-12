@@ -137,13 +137,15 @@ The Node dataset tests are included in `npm run test:inverse`. The Python
 collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
-Snapshot verification passed five Node dataset tests, thirteen offline collector
-tests and nine learning-label/model tests. The complete application and inverse
-suites passed 855 and 632 tests respectively (one application test skipped),
-along with type checking, lint and build. Type checking retains seven existing
-warnings. [Command records and source hashes](learning-validation.json) retain
-the checks. The synthetic verifier checked all 3,968 referenced assets, and the
-real-image audit checked all 1,034 source files and decoded image identities.
+The latest regression run passed 855 application tests (one skipped), 635
+inverse tests (including eight dataset tests), 31 offline learning tests and
+13 collector tests, along with type checking, lint and build. Type checking
+retains seven existing warnings and no errors.
+[Command records and source hashes](localization-validation.json) retain these
+checks; the [earlier snapshot validation](learning-validation.json) remains
+available. The synthetic verifiers checked all 5,952 referenced assets across
+the original batch and corner supplement, and the real-image audit checked
+all 1,034 source files and decoded image identities.
 Gallery browser checks are recorded in the real-photo collection report.
 The earlier application/solver release checks are recorded in
 [the solver validation report](../CONNECTOR-RETRY-VALIDATION.json); data tooling

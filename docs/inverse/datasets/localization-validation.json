@@ -1,0 +1,134 @@
+{
+  "schema": "heart-localization-validation-1",
+  "date": "2026-10-12",
+  "sourceCommitAtRecording": "a88d3ab7e21dd413764ed295df6ff5fe380a3c0e",
+  "scope": "Offline metrics, learning, synthetic generation and experiment reports; no production inference change.",
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 7.141419041,
+      "log": "tmp/heart-learning/localization-qa/0.log",
+      "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.286899666000001,
+      "log": "tmp/heart-learning/localization-qa/1.log",
+      "logSha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    {
+      "command": [
+        "npm",
+        "exec",
+        "vitest",
+        "run",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 33.5723345,
+      "log": "tmp/heart-learning/localization-qa/2.log",
+      "logSha256": "961de1bb33b83923907a5840592196b601c028b41148b52bca3f8ea3464d9173"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 430.593133458,
+      "log": "tmp/heart-learning/localization-qa/3.log",
+      "logSha256": "d3d86f21e92f07a2900179eb422e09ca4755f28b2563f41edffed962b1eaf480"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 9.49983120799999,
+      "log": "tmp/heart-learning/localization-qa/4.log",
+      "logSha256": "0af038363c7e1ff45225457dc24ea5c9ee6a005a7cc046b44d248b0d86e4f587"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:learning"
+      ],
+      "exitCode": 0,
+      "seconds": 7.199483041000008,
+      "log": "tmp/heart-learning/localization-qa/5.log",
+      "logSha256": "2de2cc5a5c235af9fc97872992d0646a13f245346ea3a27c184891fe0ddd887f"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/inverse/datasets/real-collect.test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.10503670800000009,
+      "log": "tmp/heart-learning/localization-qa/6.log",
+      "logSha256": "f1f13abad0113a87f764e7a23cb3bd05ed2b3921bcfde1d822ab688df8c43004"
+    }
+  ],
+  "totals": {
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "inversePassed": 635,
+    "learningPassed": 31,
+    "collectorPassed": 13,
+    "typeCheckErrors": 0,
+    "existingTypeCheckWarnings": 7
+  },
+  "sourceHashes": {
+    "package.json": "6ff3c2faedf90ee3c99de9ceed1b5b0bc593fb43347da2b46e368ba0c4d22b63",
+    "scripts/inverse/datasets/synthetic-correct-metadata.mjs": "c23d2794fb3c181aa06f6744a4e281395247228e4f54ef4cfa8c752bd4304a64",
+    "scripts/inverse/datasets/synthetic-generate.mjs": "94c9dccce81f514c230d998d500f2096302118bf2b84edd930a3b5aca2bdebd4",
+    "scripts/inverse/datasets/synthetic-geometry.mjs": "b00f12055e06130e09b564f59a10cec85dde1dce1fce020dd4d2e04a0560bf41",
+    "scripts/inverse/datasets/synthetic-photo.mjs": "fdbeff0ed4f51387bc5c843b49ddbb091d92d258bcab2e3717c23293bdcd9a61",
+    "scripts/inverse/datasets/synthetic-training.test.mjs": "76aa46c138864088cc322cc893ac8f20d513cd431364abc486734487fa26a641",
+    "scripts/inverse/datasets/synthetic-verify.mjs": "3726c8c6b0354d0f32b6b425f12788bc9323e7023b3000a384fbead72c5baf99",
+    "scripts/inverse/learning/classical.py": "4aa37fab61594f5e33fbcb292ed622661264f12c3caf0b6cd717441252603a6a",
+    "scripts/inverse/learning/classical.test.py": "385312c4b1753281d6c69e0d655696d14fdb812edc0693e2c918f1519ebbcc7c",
+    "scripts/inverse/learning/coverage.py": "bd39679bd01ddd800e68d7966fa1d5bda49096ede0cacbc0de41b30aecb6193c",
+    "scripts/inverse/learning/coverage.test.py": "cd0643062d188fc17f114e1749437a31e4e5fd5d81d9334ea24bec54faae3c89",
+    "scripts/inverse/learning/data.py": "c4c1c890daff9fa5ccc618d55150b2da7f92e359c50cd0d9d1e689b5283fc54b",
+    "scripts/inverse/learning/data.test.py": "52a631b7ad49f31641674e1728d4f4f6dacaafd0736a0738a0ddce937acd82f4",
+    "scripts/inverse/learning/localization.py": "df5b2f6ba0c1347f5b34e64570c296fe20d00f6ac4c01ebf4df8e8b5edfc941f",
+    "scripts/inverse/learning/losses.py": "6b0a54a2ee7c0770671847cd4d198ff7e6efc62947b1a703394125ce03880cec",
+    "scripts/inverse/learning/losses.test.py": "7bb818061b6c7ffb20a9a562f50c20321e790852d6fbf7359e0cdcaf8b453587",
+    "scripts/inverse/learning/metrics.py": "96b099fa0ad61afd75d16becfc07264b4c60c329b1de596f5ee90049ef07d49e",
+    "scripts/inverse/learning/metrics.test.py": "98583d9e8b6edb0f405b38e2ef12b327295c673335a996225c66086a3aac4a4e",
+    "scripts/inverse/learning/model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b",
+    "scripts/inverse/learning/model.test.py": "92590682b56a328eb7e1a9ea1e733068adb78dfce05ed29563c778e35f92be7f",
+    "scripts/inverse/learning/prepare.mjs": "6f29378ddb1b2151885c8691c31c21a56365068cf49f9aa1002c13f7feede480",
+    "scripts/inverse/learning/test.py": "1b4717925fca025c7f07a34382b7b401ed322fa00f7840f85beb6ae3aaa0c7fa",
+    "scripts/inverse/learning/train.py": "ea74131a7ffe96703770c24b63cf571b0488c90b7dfc9952eabf062b46f89fed"
+  },
+  "evidenceHashes": {
+    "boundary-localization-results.json": "6d35374a43cf5024ce5b11ce7341a980b12f939ae3a98b09935f4ec01ad39ecd",
+    "junction-loss-results.json": "89b647700ad5b885bce122fba61796b2f2914316b03223d64649ac233af080a7",
+    "corner-training-results.json": "cdc169f97bb55d0e2b019463fccbedc218c6e1baddaa1c949f87e5cf6ffb46c0",
+    "corner-training-coverage.json": "aff4a42bbf66612129ca90272ba31e7b98316be463d7c60ca6198a7d16d527c3",
+    "synthetic-corner-supplement.json": "86d27b50ad3ac30d4305b93fdfe8507e2d671d1ab70f1a42e288ace8fd680693"
+  },
+  "previewSmoke": {
+    "url": "http://127.0.0.1:5232/",
+    "httpStatus": 200,
+    "scope": "HTTP availability only; no new browser functional claim."
+  },
+  "publication": "Local commits only; no push or deploy."
+}

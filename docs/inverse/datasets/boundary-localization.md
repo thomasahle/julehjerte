@@ -231,3 +231,9 @@ python3 scripts/inverse/learning/localization.py \
 The original objective remains the default `weighted-mse`. The experimental
 criterion and classical detector are offline tools; neither is exposed as a
 new user-facing mode.
+
+The final [validation record](localization-validation.json) includes all 31
+learning tests, 635 inverse tests, 855 application tests, 13 collector tests,
+type checking, lint and build. All passed; one application test is skipped
+and seven existing type-check warnings remain. All work is committed locally;
+no push or deployment was performed.
