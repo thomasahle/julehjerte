@@ -310,7 +310,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       }
     }
   };
-  let featureDetail=null;
+  let featureDetail=null;const featureDetailAttempts=[];
   const refineFeatureDetail=candidate=>{
     const canRefine=candidate.geometryPassed&&(candidate.paperPassed||candidate.paper?.status==='uncertain');
     // A promising short-budget fit must still get its local shape pass.
@@ -322,6 +322,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     if(plan){
       const detailCfg={...cfg,preferMatchingSheets:false,materialResolution:Math.max(cfg.materialResolution,700)};
       const verification={requestedResolution:cfg.materialResolution,resolution:detailCfg.materialResolution,source:'feature-detail-refinement'};
+      const detailStarted=performance.now();
       const refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:shortBudget?.07:.035,deadline:Math.min(searchDeadline()-detailReserve,performance.now()+1800),onProgress:(r,solution)=>{
         solution.report={paperVerification:{...verification,status:r.paper}};
         onProgress({stage:'directPolishing',detail:'small-feature-shape',counts:candidate.counts,...r,weightedError:r.error,error:maskDisagreement(source,sampleWeave(solution,source.resolution))},solution);
@@ -333,6 +334,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // image and feature limits. An accepted incumbent cannot lose accuracy.
       const accepted=assess(refined)&&(!candidate.imagePassed||refined.originalImageError<=candidate.originalImageError);
       featureDetail={...plan.report,refinementRate:shortBudget?.07:.035,finalizationReserveSeconds:detailReserve/1000,applied:accepted,errorBefore:candidate.originalImageError,errorAfter:refined.originalImageError,geometryPassed:refined.geometryPassed,paperStatus:refined.paper?.status,featuresPassed:refined.originalFeatures?.passed,steps:refined.steps};
+      // A later retry can be shorter than the first attempt. Keep both, along
+      // with rejected geometry checkpoints: the returned safe fallback alone
+      // cannot explain why local refinement failed to retain an opening.
+      featureDetailAttempts.push({...featureDetail,counts:candidate.counts.slice(),phase:candidate.phase,seed:candidate.seed,materialResolution:detailCfg.materialResolution,seconds:(performance.now()-detailStarted)/1000,
+        checkpoints:refined.history.map(({step,geometry,paper,issues})=>({step,geometry,paper,issues}))});
       if(accepted)return{...refined,counts:candidate.counts,seed:candidate.seed,matching:matchingSummary(plan.graph.solution(refined.points,refined.phase,input))};
     }
     return candidate;
@@ -484,7 +490,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    stoppedEarly,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,featureDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
+    stoppedEarly,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,featureDetail,featureDetailAttempts,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }
