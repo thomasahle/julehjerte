@@ -9,7 +9,7 @@ import {referenceEnvironment} from '../reference.mjs';
 import {renderExportedWeave} from '../export-renderer.mjs';
 import {Cubic,sub,add,dot,distance,segmentDistance} from '../../../static/inverse/core/bezier.js';
 import {keyPoint,improperIntersection,lineDistance,bbox,boxDistance} from '../../../static/inverse/core/geometry.js';
-import {buildGraph,reindex,curvesOf,solutionJSON,loadSolutionJSON,inspectBoundaryEndpoints} from '../../../static/inverse/core/graph.js';
+import {buildGraph,reindex,curvesOf,solutionJSON,loadSolutionJSON,inspectBoundaryEndpoints,visibleEndpointNeighborhoods} from '../../../static/inverse/core/graph.js';
 import {CurveGraph} from '../../../static/inverse/core/direct/curves.js';
 import {curveKey} from '../../../static/inverse/core/symmetry.js';
 import {preprocessMask} from '../../../static/inverse/core/input.js';
@@ -67,6 +67,7 @@ export function referenceWitness(reference,graph){
 export function explainMissingConnectors(reference,graph,cfg){
   if(cfg.connectorVariants!==1||cfg.gridPortals)throw new Error('This diagnostic requires the sparse straight-connector pool.');
   const visible=graph.edges.map((e,i)=>e.visible?i:-1).filter(i=>i>=0),keys=new Set(graph.edges.map(e=>curveKey(e.curve.p)));
+  const endpointEdges=visibleEndpointNeighborhoods(graph,2*cfg.geometryTolerance);
   const degree=v=>graph.incident[v].filter(e=>graph.edges[e].visible).length;
   const eligible=graph.points.flatMap((p,v)=>degree(v)===2&&Math.min(...p)>1e-6&&Math.max(...p)<graph.target.width-1e-6?[v]:[]);
   return reference.graph.edges.flatMap((edge,index)=>{
@@ -86,7 +87,7 @@ export function explainMissingConnectors(reference,graph,cfg){
       const e=graph.edges[i],other=e.curve.flatten(cfg.geometryTolerance);
       if(boxDistance(box,bbox(other))>radius)return[];
       const crossing=improperIntersection(line,other,[a,b],radius);
-      const nonincidentClearance=!graph.incident[u].includes(i)&&!graph.incident[v].includes(i)&&lineDistance(line,other,radius)<=radius;
+      const nonincidentClearance=!endpointEdges[u].has(i)&&!endpointEdges[v].has(i)&&lineDistance(line,other,radius)<=radius;
       return crossing||nonincidentClearance?[{visibleEdge:i,crossing,nonincidentClearance,nearestEndpointMm:Math.min(...[a,b].flatMap(p=>[e.curve.p[0],e.curve.p[3]].map(q=>distance(p,q))))}]:[];
     });
     row.reason=row.blockers.length?'clearance_rejection':'unexplained';return[row];

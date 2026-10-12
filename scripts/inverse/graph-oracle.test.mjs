@@ -72,16 +72,14 @@ test('HiGHS still assigns unknown sheet ownership in the compact oracle and expo
   assert.deepEqual(b.mask,a.mask);
 });
 
-test('the oracle distinguishes a local-fragment clearance rejection from an insufficient neighbour budget',()=>{
+test('a tiny visible fragment no longer needs an oracle to restore its valid connector',()=>{
   const a=[[20,0],[20,20],[40,40],[40,60]],b=[[0,20],[20,20],[40,40],[60,40]];
   const paths=[a,b].map(p=>[p.slice(1).map((q,i)=>Cubic.line(p[i],q).p)]);
   paths[0][0].splice(0,1,...new Cubic(paths[0][0][0]).split(.99995).map(c=>c.p));
   const curves=new CurveGraph(paths,60),reference=curves.solution(curves.points,1);
   assert.equal(validate(reference,cfg).passed,true);
   const [heuristic,augmented]=oracleGraphVariants(reference,cfg),diagnosis=explainMissingConnectors(augmented.witness,heuristic.graph,cfg);
-  assert.equal(diagnosis.length,1);
-  assert.equal(diagnosis[0].reason,'clearance_rejection');
-  assert.ok(diagnosis[0].nearestRanks.some(r=>r>0&&r<=cfg.neighbors));
-  assert.ok(diagnosis[0].blockers.some(b=>b.nonincidentClearance&&b.nearestEndpointMm<.002));
+  assert.deepEqual(diagnosis,[]);
+  assert.equal(augmented.addedConnectors,0);
   assert.equal(validate(augmented.witness,cfg).passed,true);
 });

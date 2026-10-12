@@ -3,6 +3,30 @@ import {nodeCurves,keyPoint,bbox,boxDistance,lineSimple,improperIntersection,lin
 import {curveKey,transposedKey} from './symmetry.js';
 import {guidePortals,guidePairs} from './portals.js';
 export function reindex(graph){const points=[],lookup=new Map();function vertex(p){const key=keyPoint(p,5);if(!lookup.has(key)){lookup.set(key,points.length);points.push([...p]);}return lookup.get(key);}for(const e of graph.edges){e.u=vertex(e.curve.p[0]);e.v=vertex(e.curve.p[3]);}graph.points=points;graph.incident=points.map(()=>[]);graph.edges.forEach((e,i)=>{graph.incident[e.u].push(i);graph.incident[e.v].push(i);});return graph;}
+/** Visible edges locally incident to each vertex, independent of tiny boundary
+ * subdivisions. Reach a neighbouring vertex only through a short visible arc;
+ * spatial proximity or an optional hidden connector is not adjacency.
+ * Control-polygon lengths bound arc length from above, so a curved detour cannot
+ * turn into a shortcut. Full intersection and final paper checks still apply.
+ */
+export function visibleEndpointNeighborhoods(graph,radius){
+  const lengths=graph.edges.map(e=>e.visible?e.curve.p.slice(1).reduce((sum,p,i)=>sum+distance(e.curve.p[i],p),0):Infinity);
+  return graph.points.map((_,start)=>{
+    const near=new Set(),costs=new Map([[start,0]]),queue=[start];
+    for(let head=0;head<queue.length;head++){
+      const v=queue[head],cost=costs.get(v);
+      for(const index of graph.incident[v]){
+        const edge=graph.edges[index];if(!edge.visible)continue;
+        near.add(index);
+        const next=edge.u===v?edge.v:edge.u,proposed=cost+lengths[index];
+        if(proposed<=radius&&proposed<(costs.get(next)??Infinity)){
+          costs.set(next,proposed);queue.push(next);
+        }
+      }
+    }
+    return near;
+  });
+}
 export function buildGraph(target,cfg,{onProgress=()=>{},node=true}={}){
   const start=performance.now(),noded=node?nodeCurves(target.curves,cfg.geometryTolerance):target.curves,portals=cfg.gridPortals?guidePortals(noded,target.width,cfg.geometryTolerance):{curves:noded,guides:[],added:0},curves=portals.curves,edges=[];
   for(const c of curves){if(distance(c.p[0],c.p[3])<1e-5)for(const half of c.split())edges.push({curve:half,visible:true});else edges.push({curve:c,visible:true});}
@@ -13,7 +37,8 @@ export function buildGraph(target,cfg,{onProgress=()=>{},node=true}={}){
   for(const u of eligible){const near=eligible.filter(v=>v!==u).map(v=>({v,d:distance(points[u],points[v])})).sort((a,b)=>a.d-b.d).slice(0,cfg.neighbors);for(const {v}of near)pairs.add([Math.min(u,v),Math.max(u,v)].join(','));}
   if(cfg.gridPortals){const corners=eligible.map(v=>{const outs=incident[v].slice(0,2).map(e=>edges[e].u===v?edges[e].curve.tangent(0):mul(edges[e].curve.tangent(1),-1));return{v,bisector:add(outs[0],outs[1])};}).filter(c=>norm(c.bisector)>.3);for(const a of corners){const candidates=corners.filter(b=>b.v!==a.v).map(b=>{const d=unit(sub(points[b.v],points[a.v])),alignment=Math.min(Math.abs(dot(d,unit(a.bisector))),Math.abs(dot(d,unit(b.bisector))));return{v:b.v,alignment,distance:distance(points[a.v],points[b.v])};}).filter(b=>b.alignment>=Math.cos(20*Math.PI/180)).sort((a,b)=>b.alignment-a.alignment||a.distance-b.distance).slice(0,2);for(const b of candidates)pairs.add([Math.min(a.v,b.v),Math.max(a.v,b.v)].join(','));}}
   const preferred=(v,toward)=>{const outs=incident[v].slice(0,2).map(i=>{const e=edges[i];return e.u===v?e.curve.tangent(0):mul(e.curve.tangent(1),-1);});let b=mul(add(outs[0],outs[1]),-1);if(norm(b)<.1)b=[-outs[0][1],outs[0][0]];b=unit(b);return dot(b,toward)<0?mul(b,-1):b;};
-  const clear=(c,u,v)=>{const g=c.flatten(tol),box=bbox(g);if(g.some(p=>Math.min(...p)<-1e-8||Math.max(...p)>w+1e-8)||!lineSimple(g))return false;for(let i=0;i<visibleCount;i++){if(boxDistance(box,boxes[i])>2*tol)continue;if(improperIntersection(g,lines[i],[points[u],points[v]],2*tol))return false;if(!incident[u].includes(i)&&!incident[v].includes(i)&&lineDistance(g,lines[i],2*tol)<=2*tol)return false;}return true;};
+  const endpointEdges=visibleEndpointNeighborhoods(graph,2*tol);
+  const clear=(c,u,v)=>{const g=c.flatten(tol),box=bbox(g);if(g.some(p=>Math.min(...p)<-1e-8||Math.max(...p)>w+1e-8)||!lineSimple(g))return false;for(let i=0;i<visibleCount;i++){if(boxDistance(box,boxes[i])>2*tol)continue;if(improperIntersection(g,lines[i],[points[u],points[v]],2*tol))return false;if(!endpointEdges[u].has(i)&&!endpointEdges[v].has(i)&&lineDistance(g,lines[i],2*tol)<=2*tol)return false;}return true;};
   let checked=0;for(const pair of [...pairs].sort()){if(visiblePairs.has(pair))continue;const[u,v]=pair.split(',').map(Number),a=points[u],b=points[v],d=distance(a,b);if(d<5*tol)continue;const variants=[Cubic.line(a,b)];if(cfg.connectorVariants>1){const ta=preferred(u,unit(sub(b,a))),tb=preferred(v,unit(sub(a,b)));for(const f of cfg.connectorVariants===2?[.24]:[.15,.32])variants.push(new Cubic([a,add(a,mul(ta,f*d)),add(b,mul(tb,f*d)),b]));}for(const c of variants)if(clear(c,u,v)){const i=edges.length;edges.push({u,v,curve:c,visible:false});incident[u].push(i);incident[v].push(i);}if(++checked%100===0)onProgress({stage:'connectors',checked,total:pairs.size});if(edges.length>2200)throw new Error('Candidate graph too large. Reduce connection neighbours or image detail.');}
   if(target.metadata.identicalSheets){const keys=new Set(edges.map(e=>curveKey(e.curve.p)));for(const e of [...edges]){const p=transposedKey(e.curve),key=curveKey(p);if(!keys.has(key)){if(e.visible)throw new Error('Identical-sheet boundary subdivision is inconsistent.');edges.push({curve:new Cubic(p),visible:false});keys.add(key);}}reindex(graph);const lookup=new Map(edges.map((e,i)=>[curveKey(e.curve.p),i]));graph.transpose=edges.map(e=>lookup.get(curveKey(transposedKey(e.curve))));}
   graph.guides=portals.guides;
