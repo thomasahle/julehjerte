@@ -117,8 +117,10 @@ This excludes photograph decoding and the independent external renderer.
 
 The hard-photo 10-second allowance is a search budget, not a click-to-ready
 promise. The four new successes take 9.40–9.59 seconds for solve and validation;
-including crop detection, preparation and independent replay, their recorded
-benchmark totals are 10.56–11.37 seconds. The 25-second continuation cap described
+including preparation, independent replay and artifact writes, their recorded
+post-detection totals are 10.56–11.37 seconds. Crop detection adds another
+0.36–0.43 seconds. An earlier version incorrectly described those post-detection
+totals as including crop detection; the raw timing fields are unchanged. The 25-second continuation cap described
 below does not change the search deadlines for either dataset run.
 
 Editable conversion and SVG serialization/parsing pass for all **28 produced

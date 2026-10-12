@@ -282,6 +282,9 @@ try{
     if(name==='top-hat-preferred')assert.equal(row.matchingPreference.identical,true,'A reusable hat template must be found without forcing mask symmetry.');
     row.engineError=observed.result.report.imageError.mismatchFraction;
     row.selectedCounts=observed.result.report.solver.selectedCounts;
+    row.earlyFeatureInitialization=observed.result.report.solver.earlyFeatureInitialization;
+    row.featureInitialization=observed.result.report.solver.featureInitialization;
+    row.featureRecovery=observed.result.report.solver.featureRecovery;
     row.templateChecksPassed=observed.result.report.templateChecksPassed;
     row.missingFeatures=observed.result.report.imageFidelity?.features.missing;
     if(photoMask){
