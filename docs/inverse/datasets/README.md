@@ -30,8 +30,8 @@ or independent motif-family counts.
 
 The [real annotation pilot](real-annotation-pilot.md) adds ten reviewed visible
 basket masks with explicit uncertain regions, without using solver output as
-ground truth. A frozen-model comparison improves known-region IoU from 55.72%
-to 75.04% with clutter training, while known-paper loss rises from 0.62% to 4.95%.
+ground truth. A frozen-model comparison improves known-region IoU from 57.56%
+to 76.95% with clutter training, while known-paper loss rises from 0.47% to 6.14%.
 Hands, pale textured backgrounds, borders and tips remain problematic. The
 examples retain their source/duplicate grouping and have not entered training;
 cross-corpus motif review remains pending. This is a development diagnostic,
