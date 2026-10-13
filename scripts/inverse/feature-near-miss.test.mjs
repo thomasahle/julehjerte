@@ -59,15 +59,22 @@ test('alternate sampling retains a vertical-shift opening without changing the c
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 
-for(const translation of [null,'horizontal','vertical'])test(`the ${translation||'original'} near-miss layout produces checked exports within the original short search`,async()=>{
+for(const translation of [null,'horizontal','vertical','negative-diagonal'])test(`the ${translation||'original'} near-miss layout produces checked exports within the original short search`,async()=>{
   const {prepared,cfg}=await nearMiss(translation),source=prepared.target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
   const answer=await design(prepared.target,cfg);
   const initialization=answer.report.solver.earlyFeatureInitialization;
-  assert.equal((translation==='horizontal'?initialization.alternativeRefinement:initialization.coarseRefinement).accepted,true);
-  if(translation==='vertical'){
+  if(translation!=='negative-diagonal')assert.equal((translation==='horizontal'?initialization.alternativeRefinement:initialization.coarseRefinement).accepted,true);
+  if(['vertical','negative-diagonal'].includes(translation)){
     assert.equal(answer.report.solver.samplingRecovery.scheduled,1);
     assert.equal(answer.report.solver.selectedInitialization,'feature-sampling-grid');
-    assert.ok(answer.report.solver.candidates.some(c=>!c.imagePassed),'The unsuccessful original fit remains available.');
+    if(translation==='negative-diagonal'){
+      const preflight=answer.report.solver.samplingRecovery.preflight;
+      assert.equal(preflight.initialGeometry.passed,false);
+      assert.deepEqual(preflight.initialCounts,[5,3]);
+      assert.deepEqual(preflight.alternativeCounts,[3,3]);
+      assert.equal(preflight.alternativeGeometry.passed,true);assert.equal(preflight.alternativePaper,'pass');
+      assert.equal(preflight.preferred,true,'Prefer a physically valid start before exhausting the short budget.');
+    }else assert.ok(answer.report.solver.candidates.some(c=>!c.imagePassed),'The unsuccessful original fit remains available.');
   }else assert.equal(answer.report.solver.samplingRecovery,null,'An accepted fit must not pay for the fallback.');
   assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');

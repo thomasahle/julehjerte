@@ -24,6 +24,11 @@
   "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
   "probabilitySha256": "d609c5f7fd0b218a53b44872a94f6794a666d163d55904d544f183b9ae726b23",
   "translations": {
+    "negative-diagonal": {
+      "offset": [-1, -1],
+      "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "probabilitySha256": "e02873ac8ffeba37b4ba01394e20ac4cd801d6aeb77ab5b410fd6acb5ad0b20b"
+    },
     "vertical": {
       "offset": [0, 1],
       "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",

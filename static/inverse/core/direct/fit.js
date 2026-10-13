@@ -398,6 +398,32 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   };
   if(boundaryCandidate)addCandidate(boundaryCandidate);
   for(const candidate of recoveredCandidates)addCandidate(candidate);
+  const samplingSeed=reason=>{
+    const remainingSeconds=(searchDeadline()-performance.now())/1000;
+    if(remainingSeconds<=3){samplingRecovery={scheduled:0,reason:'insufficient-time',remainingSeconds};return null;}
+    const supported=supportedCounts?.every(count=>count<=maximumCount&&(count+1)*(cfg.nominalWidth+.35)<cfg.width);
+    const counts=supported?supportedCounts:featureSamplingContext.counts;
+    const extra=stage('directInitializing',()=>initializeFeatureSampling({source,features:sourceFeatures,missed:featureSamplingContext.missed,counts,cfg,evidence}));
+    samplingRecovery={...extra.report,reason,scheduled:Math.min(1,extra.seeds.length),remainingSeconds,elapsedSeconds:(performance.now()-start)/1000};
+    return extra.seeds.length?stage('directFitting',()=>fitSeed(extra.seeds[0])):null;
+  };
+  // Reordering a fresh alternative must not repeat clearance fitting or lose
+  // the original layout. Cache both preparations while they remain queued.
+  const preparations=new Map();
+  const prepareRefinement=(selected,allocation)=>{
+    if(preparations.has(selected))return preparations.get(selected);
+    const protectedObjective=selected.protectFeatures?featureRefinementObjective(source,sourceFeatures,n):null;
+    const objectiveProb=protectedObjective?.probability||prob,objectiveWeights=protectedObjective?.weights||fitWeights;
+    const refinementCfg=protectedObjective?{...cfg,materialResolution:Math.max(cfg.materialResolution,700)}:cfg;
+    const verification=protectedObjective?{requestedResolution:cfg.materialResolution,resolution:refinementCfg.materialResolution,source:'feature-preserving-refinement'}:null;
+    // Clearance grids need to retain colours; free refinement may still close
+    // an opening. Enclosure is mandatory only for the accepted template.
+    const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridColours:null}));
+    attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob):clear.error,steps:clear.steps,...(protectedObjective?{weightedError:clear.error}:{})});
+    const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
+    const prepared={clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification};
+    preparations.set(selected,prepared);return prepared;
+  };
   let stoppedEarly=false;
   for(let i=0;i<fine.length&&!stoppedEarly;i++){
     // Initialization (including a speculative topology solve) can exhaust the
@@ -412,22 +438,30 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     }
     // An expired refinement window cannot improve another clearance grid.
     // Leave this time for polishing the candidates we have already fitted.
-    if(i&&deadline-performance.now()<=1700)break;
-    // The sampling retry follows a completed unsuccessful fit. Spend the
-    // ordinary polishing window on this fresh shape instead; the overall
-    // deadline and final cleanup/export reserve remain unchanged.
+    const samplingRetry=fine[i].seed==='feature-sampling-grid';
+    if(i&&deadline-performance.now()<=(samplingRetry?700:1700))break;
+    // Spend the unsuccessful layout's ordinary polishing window on the fresh
+    // shape; the overall deadline and final cleanup/export reserve stay fixed.
     const selected=fine[i],remaining=deadline-performance.now(),allocation=remaining;
-    const polishingReserve=selected.seed==='feature-sampling-grid'?450:1700,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
-    const protectedObjective=selected.protectFeatures?featureRefinementObjective(source,sourceFeatures,n):null;
-    const objectiveProb=protectedObjective?.probability||prob,objectiveWeights=protectedObjective?.weights||fitWeights;
-    const refinementCfg=protectedObjective?{...cfg,materialResolution:Math.max(cfg.materialResolution,700)}:cfg;
-    const verification=protectedObjective?{requestedResolution:cfg.materialResolution,resolution:refinementCfg.materialResolution,source:'feature-preserving-refinement'}:null;
-    // Clearance grids are intermediate routing proposals. Preserve source
-    // colours here; requiring enclosure before free-curve fitting can select
-    // a different grid whose paper support never becomes valid.
-    const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridColours:null}));
-    attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob):clear.error,steps:clear.steps,...(protectedObjective?{weightedError:clear.error}:{})});
-    const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
+    const polishingReserve=samplingRetry?0:1700,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
+    const {clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification}=prepareRefinement(selected,allocation);
+    if(featureSeed(selected)&&selected.model.k===16&&!selected.protectFeatures&&!samplingRecovery&&featureSamplingContext&&!weights&&!symmetryRequested&&!candidates.some(c=>c.imagePassed)){
+      const initialGeometry=validate(graph.solution(graph.points,clear.phase,input),refinementCfg,{checkImage:false});
+      if(!initialGeometry.passed){
+        // A colour-retaining coarse layout can already violate slit spacing.
+        // Prefer an independently checked fresh start before spending the
+        // whole refinement window repairing it. Keep this layout as fallback.
+        const retry=samplingSeed('invalid-initial-geometry');
+        if(retry){
+          const alternate=prepareRefinement(retry,deadline-performance.now()),solution=alternate.graph.solution(alternate.graph.points,alternate.clear.phase,input);
+          const geometry=validate(solution,alternate.refinementCfg,{checkImage:false}),paper=geometry.passed?materialAudit(solution,alternate.refinementCfg):null;
+          const preferred=geometry.passed&&(!cfg.requireMaterialCore||paper?.passed);
+          samplingRecovery.preflight={initialCounts:clear.model.counts,initialGeometry,alternativeCounts:alternate.clear.model.counts,alternativeGeometry:geometry,alternativePaper:paper?.status,preferred};
+          if(preferred){fine.splice(i,0,retry);i--;continue;}
+          fine.splice(i+1,0,retry);
+        }
+      }
+    }
     let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
       if(goodEnough(value))return true;
       if(!selected.protectFeatures||!earlyFeatureInitialization?.enclosurePending)return false;
@@ -499,12 +533,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       featureInitialization.scheduled++;
       featureInitialization.featureRetry={counts:alternate.model.counts,controlPoints:alternate.model.k,phase:alternate.phase,reason:candidate.originalFeatures.enclosures?.opened?'opened':'lost'};
     }
-    if(featureSeed(candidate)&&!candidates.some(c=>c.imagePassed)&&featureSamplingContext&&!samplingRecovery&&!weights&&!symmetryRequested&&searchDeadline()-performance.now()>3500){
-      const supported=supportedCounts?.every(count=>count<=maximumCount&&(count+1)*(cfg.nominalWidth+.35)<cfg.width);
-      const counts=supported?supportedCounts:featureSamplingContext.counts;
-      const extra=stage('directInitializing',()=>initializeFeatureSampling({source,features:sourceFeatures,missed:featureSamplingContext.missed,counts,cfg,evidence}));
-      samplingRecovery={...extra.report,scheduled:Math.min(1,extra.seeds.length),elapsedSeconds:(performance.now()-start)/1000};
-      if(extra.seeds.length)fine.splice(i+1,0,stage('directFitting',()=>fitSeed(extra.seeds[0])));
+    if(featureSeed(candidate)&&!candidates.some(c=>c.imagePassed)&&featureSamplingContext&&!samplingRecovery&&!weights&&!symmetryRequested){
+      const retry=samplingSeed('unsuccessful-refinement');
+      if(retry)fine.splice(i+1,0,retry);
     }
     // Border disagreement must not stop a competitive simpler finalist from
     // receiving curve refinement. Its grid error can overestimate its eventual
