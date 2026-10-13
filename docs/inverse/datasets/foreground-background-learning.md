@@ -111,3 +111,9 @@ python3 scripts/inverse/learning/foreground-background-report.py \
 ```
 
 The final command audits the preserved study, checks identical training budgets and replay input windows, verifies referenced artifacts and regenerates its committed evidence. It does not train or rewrite any inputs. Original model, failed refinements, augmented model, rejected outputs and complete logs remain available.
+
+## Validation
+
+The [validation record](foreground-background-validation.json) records successful serial runs of 726 inverse tests, 855 application tests (one existing skip), 41 offline Python tests, lint and the build. Type checking has zero errors and seven existing warnings. The background tests preserve legacy generator hashes and exact geometry labels; training-import tests reject held-out data and changed camera or non-background parameters. Foreground-refinement tests cover bounded updates, insufficient seeds and preservation of exterior-connected gaps.
+
+Chromium loads all 43 gallery cases and 177 images without broken images or page errors. All 16 display-only inverted masks were independently checked pixel-by-pixel; source masks and scores are unchanged. After restarting the owned preview following the build, the paint page renders successfully and three served core/locator modules match their source hashes. The local preview is at `http://127.0.0.1:5232/editor/mal/`.

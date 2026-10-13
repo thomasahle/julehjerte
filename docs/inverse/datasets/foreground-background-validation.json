@@ -1,0 +1,118 @@
+{
+  "schema": "woven-heart-foreground-background-validation-1",
+  "checks": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:learning"
+      ],
+      "exitCode": 0,
+      "seconds": 11.437309916,
+      "log": "0.log",
+      "logSha256": "faa79099ca28c719eeb0b644e6236ce6773832f80281a6b31729c785e196d39d"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 7.645000957999999,
+      "log": "1.log",
+      "logSha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.632198916,
+      "log": "2.log",
+      "logSha256": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7"
+    },
+    {
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 34.062608792,
+      "log": "3.log",
+      "logSha256": "eab9fc66c11046b582db1a0bb1266c259fa2dc4250c3f5c4a01dc33e09f9d8dc"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 578.616766041,
+      "log": "4.log",
+      "logSha256": "93a759b3b8bed633482931c58d402cc9fcc2178447f7665c61cc13a3b0fdeedc"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 10.841866041999992,
+      "log": "5.log",
+      "logSha256": "04dd86975f9c91d8e5ce27e9808ac5619f0d1bfd328f4f64e580cb1d15721a07"
+    }
+  ],
+  "totals": {
+    "inverseTests": 726,
+    "applicationTests": 855,
+    "applicationSkipped": 1,
+    "pythonTests": 41,
+    "typeErrors": 0,
+    "existingTypeWarnings": 7
+  },
+  "browser": {
+    "counts": {
+      "cases": 43,
+      "images": 177,
+      "broken": []
+    },
+    "errors": [],
+    "served": [
+      {
+        "file": "inverse/core/engine.js",
+        "status": 200,
+        "sha256": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390"
+      },
+      {
+        "file": "inverse/core/crop.js",
+        "status": 200,
+        "sha256": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6"
+      },
+      {
+        "file": "inverse/locator/locator.js",
+        "status": 200,
+        "sha256": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd"
+      }
+    ],
+    "app": {
+      "url": "http://127.0.0.1:5232/editor/mal/",
+      "title": "Mal et hjerte - Juleflet: Flettede Julehjerter Skabeloner og Designer",
+      "bodyLength": 587
+    },
+    "gallerySha256": "e1dd285e741a1f555b1ee494dc35ab587cce2e7a407dfba446af07302b1be7af"
+  },
+  "displayMasksVerified": 16,
+  "evidenceSha256": "52eace19f6a8c1d7fc42abc743dbe744795f2588850d67fb5231dfffafb7aade",
+  "auditLogSha256": "bb4a78d732730acff926b078077f649b492cbb1ad96f80a5542c785da07f3e38",
+  "galleryManifestSha256": "024dbb291b738bb06bc206c5a2483c248a04f98158bd5ccde0613d2011d8c773",
+  "browserScriptSha256": "e1a6a1d32c1b3916131d0d9e8ed39861567977ca96aa53ec8ee44aba2944a540",
+  "browserLogSha256": "96b69beb04a5a1f154919cb93ca86e6d2864e50ae0ae6688c5604ca6c605c23d",
+  "scope": "Offline generator, training, postprocessing and evaluation changes only. No application source or production model deployment."
+}
