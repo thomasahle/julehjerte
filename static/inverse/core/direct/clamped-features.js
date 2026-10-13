@@ -63,6 +63,8 @@ export function recoverClampedFeatures(solution,cfg,{deadline=Infinity,onProgres
     if(performance.now()>=deadline||fidelity.passed)break;
     const current=fidelity.regions[group.feature];
     if(current.retainedFraction>=fidelity.minimumRetention&&!current.enclosureLost)continue;
+    const rows=[...new Set(features[group.feature].pixels.map(i=>Math.floor(i/source.resolution)))];
+    const fineRows=rows.flatMap(j=>[2*j,2*j+1]);
     const previews=new Map();
     const preview=displacement=>{
       if(previews.has(displacement))return previews.get(displacement);
@@ -85,13 +87,13 @@ export function recoverClampedFeatures(solution,cfg,{deadline=Infinity,onProgres
         // Source pixel centres can overstate the area of a narrow region.
         // Also sample all four quarters of its original pixels, retaining
         // their original colours and weights rather than reclassifying them.
-        rec.minimumAreaRetention=fineRetention(sampleRings(rings,cfg.width,rasterPhase,fineN),features[group.feature]);
+        rec.minimumAreaRetention=fineRetention(sampleRings(rings,cfg.width,rasterPhase,fineN,fineRows),features[group.feature]);
         for(const delta of [-cfg.geometryTolerance,cfg.geometryTolerance]){
           const shiftedRings=rings.map(r=>r.map(p=>p.map((v,i)=>v+(i===group.axis?delta:0))));
-          const shifted=sampleRings(shiftedRings,cfg.width,rasterPhase,source.resolution);
+          const shifted=sampleRings(shiftedRings,cfg.width,rasterPhase,source.resolution,rows);
           const retention=auditImageFeatures(source,shifted,cfg.width,[features[group.feature]]).regions[0].retainedFraction;
           rec.minimumSampledRetention=Math.min(rec.minimumSampledRetention,retention);
-          rec.minimumAreaRetention=Math.min(rec.minimumAreaRetention,fineRetention(sampleRings(shiftedRings,cfg.width,rasterPhase,fineN),features[group.feature]));
+          rec.minimumAreaRetention=Math.min(rec.minimumAreaRetention,fineRetention(sampleRings(shiftedRings,cfg.width,rasterPhase,fineN,fineRows),features[group.feature]));
         }
       }
       rec.recovered=rec.minimumSampledRetention>=fidelity.minimumRetention&&rec.minimumAreaRetention>=fidelity.minimumRetention;

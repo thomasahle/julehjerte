@@ -20,6 +20,18 @@ test('a sample exactly on a segment uses the same tie rule in either direction',
   assert.deepEqual(sampleRings([ring],100,0,n),sampleRings([ring.toReversed()],100,0,n));
 });
 
+test('regional sampling is identical to a full render on its requested rows',()=>{
+  const rows=[n-1,44,0,56,45];
+  for(const phase of [0,1])for(const rings of [[ring],[ring.toReversed()],[ring,ring.toReversed()]]){
+    const full=sampleRings(rings,100,phase,n),partial=sampleRings(rings,100,phase,n,rows);
+    for(let j=0;j<n;j++){
+      const actual=partial.subarray(j*n,(j+1)*n);
+      assert.deepEqual(actual,rows.includes(j)?full.subarray(j*n,(j+1)*n):new Uint8Array(n));
+    }
+    assert.ok(sampleRings(rings,100,phase,n,[]).every(v=>v===0));
+  }
+});
+
 test('normalizing traversal does not erase a genuinely distinct narrow region',()=>{
   const x=(44+.5)*100/n,epsilon=1e-8;
   const rect=right=>[[10,40],[right,40],[right,70],[10,70],[10,40]];
