@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 import {reviewMaterialSamples,validateMaterialSamples} from './photo-material-samples.mjs';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {rectify,quantize} from '../../static/inverse/core/input.js';
@@ -54,7 +55,20 @@ test('reviewed photographic samples retain pinned bytes, dimensions and separate
   if(!sources.has(entry.source.sha256))sources.set(entry.source.sha256,await readHardPhoto(entry.source));
   const image=sources.get(entry.source.sha256);assert.equal(image.imageWidth,entry.source.width);assert.equal(image.imageHeight,entry.source.height);
  }
- assert.deepEqual([...ids],['bauble','dense-checker']);
+ assert.deepEqual([...ids],['bauble','dense-checker','bibel-star-outline']);
+});
+
+test('the blue-star observations retain the frozen original-photo review and expose a clipped border',async()=>{
+ const catalog=JSON.parse(await fs.readFile(new URL('./fixtures/photo-material-samples.json',import.meta.url))),a=catalog.cases.find(r=>r.id==='bibel-star-outline');
+ const bytes=await fs.readFile(new URL('../../docs/inverse/datasets/blue-star-material-observations.json',import.meta.url));
+ assert.equal(createHash('sha256').update(bytes).digest('hex'),a.review.frozenSha256);
+ const {review,...observations}=a;assert.deepEqual(observations,JSON.parse(bytes).cases[0]);
+ // Frozen predictions from two offline models, not asserted physical corners.
+ const full=[[509.0754771093246,139.90881205644737],[734.0535093713297,382.1892973114441],[501.0947867786813,612.3317319644113],[269.0034779973999,366.68254794957005]];
+ const clipped=[[513.3545428148515,146.27395317629365],[727.2435237755178,382.2806819789985],[485.55361224150624,596.6805118169444],[273.4449956033525,371.1741352002313]];
+ assert.equal(reviewMaterialSamples(a,{quad:full}).covered,28);
+ const r=reviewMaterialSamples(a,{quad:clipped});assert.equal(r.total,28);assert.equal(r.covered,27);assert.equal(r.outsideCrop,1);
+ assert.deepEqual(r.rows.filter(p=>!p.covered).map(p=>p.point),[[512,573]]);
 });
 
 test('the bauble review separates cropped-out frame from classification loss',async()=>{

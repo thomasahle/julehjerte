@@ -15,9 +15,10 @@ import {labelsForCrop} from './photo-labels.mjs';
 import {detectForegroundCrop} from './foreground-crop.mjs';
 import {refineForegroundRGB,fillForegroundHoles} from './foreground-refine.mjs';
 import {hardPhotoTarget} from '../hard-photo-target.mjs';
+import {reviewMaterialSamples,validateMaterialSamples} from '../photo-material-samples.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds','solve-ids','methods','refinement','target'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10 --solve-ids=id1,id2 --methods=production,learned,oracle --refinement=none|seeded-rgb|fill-holes --target=photo|mask].');
+if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds','ids','solve-ids','methods','refinement','target'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10 --ids=id1,id2 --solve-ids=id1,id2 --methods=production,learned,oracle --refinement=none|seeded-rgb|fill-holes --target=photo|mask].');
 const methods=(args.methods||'production,learned,oracle').split(','),refinement=args.refinement||'none';
 const targetMode=args.target||'photo';
 if(!['photo','mask'].includes(targetMode))throw new Error('Use --target=photo|mask.');
@@ -27,11 +28,17 @@ const probe=path.resolve(args.probe),output=path.resolve(args.output),seconds=Nu
 if(!Number.isFinite(seconds)||seconds<1||seconds>180)throw new Error('Invalid solver budget.');
 const hash=b=>createHash('sha256').update(b).digest('hex'),bytes=await fs.readFile(path.join(probe,'manifest.json')),manifest=JSON.parse(bytes);
 if(manifest.status!=='complete'||manifest.schema!=='woven-heart-foreground-probe-1')throw new Error('Require a completed foreground probe.');
+const ids=args.ids?.split(','),inputs=ids?manifest.rows.filter(row=>ids.includes(row.id)||ids.includes(row.caseId)):manifest.rows;
+if(ids&&ids.some(id=>!id||!inputs.some(row=>row.id===id||row.caseId===id)))throw new Error('Every --ids entry must identify an input in the probe.');
+const materialSampleFile='scripts/inverse/fixtures/photo-material-samples.json',materialSampleBytes=await fs.readFile(materialSampleFile),materialSamples=JSON.parse(materialSampleBytes);
+if(materialSamples.schema!=='woven-heart-photo-material-samples-1')throw new Error('Unexpected material review schema.');
+materialSamples.cases.forEach(validateMaterialSamples);
 await fs.mkdir(path.dirname(output),{recursive:true});await fs.mkdir(output);
 const report={schema:'woven-heart-foreground-replay-1',status:'running',probe,probeManifestSha256:hash(bytes),configuration:{...AUTOMATIC_PRESET,timeLimit:seconds,trials:0},
-  solveIds:[...solveIds].filter(Boolean),methods,foregroundRefinement:refinement,targetMode,sourceHashes:{},rows:[],limitations:['Synthetic oracle isolates the foreground task; it is not a deployable input.',
+  inputIds:inputs.map(row=>row.id),probeInputCount:manifest.rows.length,solveIds:[...solveIds].filter(Boolean),methods,foregroundRefinement:refinement,targetMode,sourceHashes:{},rows:[],limitations:['Synthetic oracle isolates the foreground task; it is not a deployable input.',
+  'checkedPair measures the derived mask and geometry. materialReview checks sparse original-photo observations separately; these observations never enter reconstruction and do not certify unsampled details.',
   'Real-photo corner annotations are approximate and are not used as ground truth.', 'Successful outline checks against a predicted silhouette are not independent physical evidence. Review against RGB and latent synthetic geometry is still required.']};
-for(const file of ['scripts/inverse/learning/foreground-replay.mjs','scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/foreground-refine.mjs','scripts/inverse/learning/photo-labels.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator)\/.+\.js$/.test(p)).map(p=>`static/inverse/${p}`)])report.sourceHashes[file]=hash(await fs.readFile(file));
+for(const file of [materialSampleFile,'scripts/inverse/photo-material-samples.mjs','scripts/inverse/learning/foreground-replay.mjs','scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/foreground-refine.mjs','scripts/inverse/learning/photo-labels.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator)\/.+\.js$/.test(p)).map(p=>`static/inverse/${p}`)])report.sourceHashes[file]=hash(await fs.readFile(file));
 const save=()=>fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
 async function checked(asset,root=null){
   const file=root?path.resolve(root,asset.path):path.resolve(asset.path);
@@ -55,11 +62,14 @@ function score(mask,target,valid){
 function prediction(buffer,n){if(buffer.length!==n*n*4)throw new Error('Invalid float prediction dimensions.');const values=new Float32Array(n*n);for(let i=0;i<values.length;i++)values[i]=buffer.readFloatLE(4*i);return values;}
 
 await save();
-for(const input of manifest.rows){
+for(const input of inputs){
   const source=await decode(await checked({path:input.file,sha256:input.photoSha256}));
   if(source.imageWidth!==input.dimensions[0]||source.imageHeight!==input.dimensions[1])throw new Error('Changed source dimensions.');
+  const observation=input.group==='real'?materialSamples.cases.find(row=>row.id===input.caseId):null;
+  if(observation&&(observation.source.sha256!==input.photoSha256||observation.source.width!==source.imageWidth||observation.source.height!==source.imageHeight||observation.source.decodedPixelsSha256&&observation.source.decodedPixelsSha256!==hash(source.rgba)))throw new Error('Material observations do not match the source photograph.');
   for(const method of methods.filter(m=>m!=='oracle'||input.group!=='real')){
     const row={id:input.id,caseId:input.caseId,group:input.group,method,assets:{}},folder=path.join(output,`${row.id}-${method}`);report.rows.push(row);await fs.mkdir(folder);
+    if(observation)row.materialReview={crop:reviewMaterialSamples(observation)};
     const store=async(name,bytes)=>{await fs.writeFile(path.join(folder,name),bytes);row.assets[name]={path:`${row.id}-${method}/${name}`,sha256:hash(bytes)};};
     try{
       const started=performance.now(),detected=method==='production'?detectHeartCrops(source,{roi:input.roi||undefined}):await detectForegroundCrop(source,{roi:input.roi||undefined,
@@ -75,6 +85,7 @@ for(const input of manifest.rows){
       await store('source.png',canvas.toBuffer('image/png'));
       if(!selected){row.status='crop-unresolved';continue;}
       row.selectedCrop=selected;row.status='crop-proposed';
+      if(observation)row.materialReview.crop=reviewMaterialSamples(observation,{quad:selected.quad});
       let labels;
       if(input.labels){
         labels=JSON.parse(await checked(input.labels));
@@ -87,6 +98,7 @@ for(const input of manifest.rows){
       row.preparedMaskSha256=hash(Buffer.from(prepared.preview.mask));
       row.targetMaskSha256=hash(Buffer.from(target.sourceImage.mask));
       row.prepareSeconds=(performance.now()-ready)/1000;await store('crop.png',png(prepared.preview.rgb,n,3));await store('mask.png',png(prepared.preview.mask,n));
+      if(observation)row.materialReview.classified=reviewMaterialSamples(observation,{mask:prepared.preview.mask,resolution:n,quad:selected.quad});
       let reference;
       if(input.labels){
         const canonical=await decode(await checked(input.canonical));
@@ -101,6 +113,7 @@ for(const input of manifest.rows){
         row.independentFeatures=auditFeatureFidelity(target.sourceImage,render.mask,result.report.settings);
         row.checkedPair=result.report.templateChecksPassed&&row.independentFeatures.passed&&row.independentImageError<=.03;
         row.status=row.checkedPair?'checked-pair':'review-required';
+        if(observation)row.materialReview.exported=reviewMaterialSamples(observation,{mask:render.mask,resolution:n,quad:selected.quad,phase:row.materialReview.classified.phase});
         if(reference)row.exportedReference=score(render.mask,reference.target,reference.valid);
       }
     }catch(error){row.status='failed';row.error=error.message;row.report=error.report;}
