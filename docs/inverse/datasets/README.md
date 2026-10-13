@@ -19,6 +19,7 @@ The 2026-10-13 snapshot contains:
 | Trained foreground models | 5 | RGB-only, 880,449 parameters; random/ImageNet, background augmentation, and paired clutter/control runs, all offline. |
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
+| Source-photo material QA samples | 50 | Two hearts in one reserved photograph; sparse assistant-reviewed development observations, not dense labels or training data. |
 
 The latest [Pinterest expansion](real-pinterest-expansion.md) downloaded 428 of
 442 visited pins, including all four user-supplied examples. After merging, it
@@ -32,6 +33,15 @@ background draws and update budget. Both models still produce only five numerica
 passes on the real inputs. The new bauble pass loses much of its pale frame before
 fitting, and the eight-point star loses its crop. This is evidence of a synthetic
 segmentation improvement, not a recovered real design or a production gain.
+
+The [source-photo review](source-photo-material-review.md) adds observations that
+do not change with the classifier's mask. It separates the bauble's four frame
+samples excluded by the neural crop from two further classification losses.
+Bounded restoration and local contrast produce a candidate mask retaining all
+26 samples. Fresh fitting fails at ten seconds, but a thirty-second run finds
+a checked 5+4-cut pair at 1.733% mask disagreement and retains all samples.
+The preprocessing remains experimental, visible artifacts remain, and this is
+not a new production success. The derived mask is preserved for search diagnosis.
 
 The [background-training follow-up](foreground-background-learning.md) isolates
 a concrete domain gap: plain white backgrounds reduce the original model's
