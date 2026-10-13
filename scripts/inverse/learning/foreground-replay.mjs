@@ -13,18 +13,21 @@ import {renderExportedWeave} from '../export-renderer.mjs';
 import {cropEvidence} from '../crop-evidence.mjs';
 import {labelsForCrop} from './photo-labels.mjs';
 import {detectForegroundCrop} from './foreground-crop.mjs';
+import {refineForegroundRGB} from './foreground-refine.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds','solve-ids'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10 --solve-ids=id1,id2].');
+if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds','solve-ids','methods','refinement'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10 --solve-ids=id1,id2 --methods=production,learned,oracle --refinement=none|seeded-rgb].');
+const methods=(args.methods||'production,learned,oracle').split(','),refinement=args.refinement||'none';
+if(methods.some(m=>!['production','learned','oracle'].includes(m))||new Set(methods).size!==methods.length||!['none','seeded-rgb'].includes(refinement))throw new Error('Invalid replay methods or foreground refinement.');
 const probe=path.resolve(args.probe),output=path.resolve(args.output),seconds=Number(args.seconds||10),solveIds=new Set((args['solve-ids']||'').split(','));
 if(!Number.isFinite(seconds)||seconds<1||seconds>180)throw new Error('Invalid solver budget.');
 const hash=b=>createHash('sha256').update(b).digest('hex'),bytes=await fs.readFile(path.join(probe,'manifest.json')),manifest=JSON.parse(bytes);
 if(manifest.status!=='complete'||manifest.schema!=='woven-heart-foreground-probe-1')throw new Error('Require a completed foreground probe.');
 await fs.mkdir(path.dirname(output),{recursive:true});await fs.mkdir(output);
 const report={schema:'woven-heart-foreground-replay-1',status:'running',probe,probeManifestSha256:hash(bytes),configuration:{...AUTOMATIC_PRESET,timeLimit:seconds,trials:0},
-  solveIds:[...solveIds].filter(Boolean),sourceHashes:{},rows:[],limitations:['Synthetic oracle isolates the foreground task; it is not a deployable input.',
+  solveIds:[...solveIds].filter(Boolean),methods,foregroundRefinement:refinement,sourceHashes:{},rows:[],limitations:['Synthetic oracle isolates the foreground task; it is not a deployable input.',
   'Real-photo corner annotations are approximate and are not used as ground truth.', 'Successful outline checks against a predicted silhouette are not independent physical evidence. Review against RGB and latent synthetic geometry is still required.']};
-for(const file of ['scripts/inverse/learning/foreground-replay.mjs','scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/photo-labels.mjs','scripts/inverse/export-renderer.mjs',...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator)\/.+\.js$/.test(p)).map(p=>`static/inverse/${p}`)])report.sourceHashes[file]=hash(await fs.readFile(file));
+for(const file of ['scripts/inverse/learning/foreground-replay.mjs','scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/foreground-refine.mjs','scripts/inverse/learning/photo-labels.mjs','scripts/inverse/export-renderer.mjs',...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator)\/.+\.js$/.test(p)).map(p=>`static/inverse/${p}`)])report.sourceHashes[file]=hash(await fs.readFile(file));
 const save=()=>fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
 async function checked(asset,root=null){
   const file=root?path.resolve(root,asset.path):path.resolve(asset.path);
@@ -51,12 +54,13 @@ await save();
 for(const input of manifest.rows){
   const source=await decode(await checked({path:input.file,sha256:input.photoSha256}));
   if(source.imageWidth!==input.dimensions[0]||source.imageHeight!==input.dimensions[1])throw new Error('Changed source dimensions.');
-  for(const method of ['production','learned',...(input.group==='real'?[]:['oracle'])]){
+  for(const method of methods.filter(m=>m!=='oracle'||input.group!=='real')){
     const row={id:input.id,caseId:input.caseId,group:input.group,method,assets:{}},folder=path.join(output,`${row.id}-${method}`);report.rows.push(row);await fs.mkdir(folder);
     const store=async(name,bytes)=>{await fs.writeFile(path.join(folder,name),bytes);row.assets[name]={path:`${row.id}-${method}/${name}`,sha256:hash(bytes)};};
     try{
       const started=performance.now(),detected=method==='production'?detectHeartCrops(source,{roi:input.roi||undefined}):await detectForegroundCrop(source,{roi:input.roi||undefined,
-        probability:prediction(await checked(input.assets[method==='oracle'?'oracle.f32':'probability.f32'],probe),manifest.resolution),resolution:manifest.resolution,window:input.window});
+        probability:prediction(await checked(input.assets[method==='oracle'?'oracle.f32':'probability.f32'],probe),manifest.resolution),resolution:manifest.resolution,window:input.window,
+        refineFields:method==='learned'&&refinement==='seeded-rgb'?refineForegroundRGB:undefined});
       row.cropSeconds=(performance.now()-started)/1000;row.inferenceSeconds=method==='learned'?input.inferenceSeconds:0;
       row.cropStatus=detected.status;await store('detection.json',JSON.stringify(detected,null,2));
       const selected=detected.candidates[0];row.cropEvidence=cropEvidence(selected,{width:source.imageWidth,height:source.imageHeight});

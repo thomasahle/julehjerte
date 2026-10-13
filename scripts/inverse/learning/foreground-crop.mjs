@@ -50,9 +50,13 @@ async function injectedLocator(){
   return locator;
 }
 
-export async function detectForegroundCrop(input,{roi,probability,resolution=256,window}={}){
+export async function detectForegroundCrop(input,{roi,probability,resolution=256,window,refineFields}={}){
   const create=await injectedLocator(),started=performance.now();
-  const detect=create({width:input.imageWidth,height:input.imageHeight,data:input.rgba},{roi,maxSize:650,foregroundFields:work=>foregroundFields(work,probability,resolution,window)});
+  let refinement=null;
+  const detect=create({width:input.imageWidth,height:input.imageHeight,data:input.rgba},{roi,maxSize:650,foregroundFields:work=>{
+    const fields=foregroundFields(work,probability,resolution,window),refined=fields&&refineFields?refineFields(fields):fields;
+    refinement=refined?.refinement??null;return refined;
+  }});
   let proposal=detect();const attempts=[];
   if(!supportedCropOutline(proposal)){
     const deadline=performance.now()+2000,pending=detect.orientations().map(degrees=>({degrees}));
@@ -67,7 +71,7 @@ export async function detectForegroundCrop(input,{roi,probability,resolution=256
       }
     }
   }
-  return{status:proposal.status,reason:proposal.reason,proposal,attempts,elapsedMs:performance.now()-started,
+  return{status:proposal.status,reason:proposal.reason,proposal,attempts,...(refinement?{refinement}:{}),elapsedMs:performance.now()-started,
     candidates:proposal.quad?[{quad:pixelCentresToEdges(proposal.quad),outline:proposal.outline.map(pixelCentresToEdges),locator:proposal,
       provenance:{method:'Offline foreground prediction plus unchanged locator geometry and support gates',humanReviewed:false}}]:[]};
 }
