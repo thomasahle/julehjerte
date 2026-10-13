@@ -87,6 +87,14 @@ for(const translation of [null,'horizontal','vertical','negative-diagonal'])test
     const error=replay.mask.reduce((sum,v,i)=>sum+Number(v!==reference.mask[i]),0)/reference.mask.length;
     assert.ok(error<.03,`Independent ${n}-pixel disagreement is ${error}.`);
     assert.equal(auditFeatureFidelity(reference,replay.mask,answer.report.settings).passed,true);
+    if(translation==='vertical'&&scale===1){
+      // Whole-image error previously hid the sun's missing rays. This fixed
+      // review window never enters initialization, fitting or acceptance.
+      let wrong=0;
+      for(let y=50;y<225;y++)for(let x=60;x<230;x++)wrong+=replay.mask[y*n+x]!==mask[y*n+x];
+      assert.ok(wrong/(175*170)<.04,'The sun outline must improve on the former 7.66% local disagreement');
+      assert.ok(answer.report.solver.outlineDetail?.applied);
+    }
   }
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
