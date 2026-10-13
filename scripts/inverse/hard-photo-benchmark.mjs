@@ -11,6 +11,7 @@ import {hardPhotoTarget} from './hard-photo-target.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {writeHardPhotoReport} from './hard-photo-report.mjs';
 import {cropEvidence} from './crop-evidence.mjs';
+import {reviewMaterialSamples,validateMaterialSamples} from './photo-material-samples.mjs';
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
 const seconds=Number(args.seconds||10),runId=new Date().toISOString().replace(/[:.]/g,'-')+(args.shard?`-shard-${args.shard.replace('/','-of-')}`:''),output=args.output||`tmp/inverse-hard-photos/${runId}`,cropMode=args.crop||'automatic',targetMode=args.target||'photo';
 if(!Number.isFinite(seconds)||seconds<1||seconds>180)throw new Error('Use --seconds=1..180');
@@ -23,8 +24,12 @@ if(presets.some(p=>!['automatic','general','simplify','mixture','direct','direct
 if(targetMode==='mask'&&presets.some(p=>!['automatic','direct','direct-mixture'].includes(p)))throw new Error('The mask track requires automatic or direct fitting.');
 await fs.mkdir(output,{recursive:true});
 const hash=b=>createHash('sha256').update(b).digest('hex'),collage=JSON.parse(await fs.readFile('scripts/inverse/hard-photo-cases.json')),photos=JSON.parse(await fs.readFile('scripts/inverse/photo-cases.json'));
+const materialSampleFile='scripts/inverse/fixtures/photo-material-samples.json',materialSampleBytes=await fs.readFile(materialSampleFile),materialSamples=JSON.parse(materialSampleBytes);
+if(materialSamples.schema!=='woven-heart-photo-material-samples-1')throw new Error('Unexpected material review schema.');
+materialSamples.cases.forEach(validateMaterialSamples);
 const sourceHashes={};async function hashTree(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=`${dir}/${e.name}`;if(e.isDirectory())await hashTree(f);else sourceHashes[f]=hash(await fs.readFile(f));}}await hashTree('static/inverse/core');await hashTree('static/inverse/locator');for(const f of ['scripts/inverse/hard-photo-cases.json','scripts/inverse/photo-cases.json','scripts/inverse/hard-photo-data.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/hard-photo-benchmark.mjs','scripts/inverse/hard-photo-report.mjs','scripts/inverse/crop-evidence.mjs','scripts/inverse/export-renderer.mjs','src/lib/inverse/presets.js'])sourceHashes[f]=hash(await fs.readFile(f));
 let cases=[...collage.cases.map(e=>({...e,group:'collage',...collage.source})),...photos.cases.map(e=>({...e,group:'individual',label:e.id,cropStatus:'visually_reviewed'}))];
+sourceHashes[materialSampleFile]=hash(materialSampleBytes);sourceHashes['scripts/inverse/photo-material-samples.mjs']=hash(await fs.readFile('scripts/inverse/photo-material-samples.mjs'));
 if(args.catalog){const bytes=await fs.readFile(args.catalog);sourceHashes[args.catalog]=hash(bytes);cases=hardPhotoCatalogCases(JSON.parse(bytes));}
 cases=cases.filter(e=>!args.ids||args.ids.split(',').includes(e.id));
 if(!cases.length&&!args.recrops)throw new Error('No cases selected');
@@ -68,6 +73,9 @@ for(const e of cases){
   const dir=`${output}/${e.id}`;await fs.mkdir(dir);
   try{
     let s=await source(e),baseQuad=e.quad;
+    // Apply source-pixel observations only to their exact, unmodified photo.
+    // JPEG/resolution variants need separately transformed/reviewed labels.
+    const materialReview=!e.variant&&materialSamples.cases.find(a=>a.id===(e.originalId||e.id)&&a.source.sha256===s.fileSha256&&a.source.width===s.imageWidth&&a.source.height===s.imageHeight);
     if(e.variant){
       const v=e.variant,scale=v.scale||1;const canvas=createCanvas(Math.round(s.imageWidth*scale),Math.round(s.imageHeight*scale)),ctx=canvas.getContext('2d');ctx.drawImage(s.canvas,0,0,canvas.width,canvas.height);
       if(v.jpeg){const encoded=canvas.toBuffer('image/jpeg',{quality:v.jpeg});ctx.drawImage(await loadImage(encoded),0,0);}
@@ -78,7 +86,7 @@ for(const e of cases){
     if(cropMode==='automatic'){
       const scale=e.variant?.scale||1,roi=e.roi?.map(v=>v*scale),started=performance.now(),detected=detectHeartCrops(s,{roi}),candidate=detected.candidates[0];
       row.detectionSeconds=(performance.now()-started)/1000;row.detection={status:detected.status,reason:detected.reason,roi,count:detected.candidates.length,candidate,assessment:cropEvidence(candidate,{width:s.imageWidth,height:s.imageHeight})};
-      if(!candidate){row.status='no_crop';row.input={fileSha256:s.fileSha256,rgbaSha256:s.rgbaSha256,width:s.imageWidth,height:s.imageHeight};await sourcePreview(s,roi||[0,0,s.imageWidth,s.imageHeight],null,`${dir}/source.png`);row.hasSourcePreview=true;await save();continue;}
+      if(!candidate){row.status='no_crop';if(materialReview)row.materialReview=reviewMaterialSamples(materialReview);row.input={fileSha256:s.fileSha256,rgbaSha256:s.rgbaSha256,width:s.imageWidth,height:s.imageHeight};await sourcePreview(s,roi||[0,0,s.imageWidth,s.imageHeight],null,`${dir}/source.png`);row.hasSourcePreview=true;await save();continue;}
       quad=candidate.quad;row.locatorStatus=detected.status;
     }else{
       if(!Array.isArray(baseQuad)||baseQuad.length!==4)throw new Error('Fixed cropping requires four recorded corners');
@@ -93,6 +101,7 @@ for(const e of cases){
       try{
         const p=prepare({type:'pixels',rgba:s.rgba,imageWidth:s.imageWidth,imageHeight:s.imageHeight,quad,cropProvenance:{method:cropMode==='automatic'?'First production automatic crop from source pixels and optional rough ROI':e.provenance||e.cropNote||'Fixed visual annotation, not solver-derived',catalog:args['crop-overrides']||args.catalog||(args.recrops?`${args.recrops}/cases.json`:e.group==='individual'?'scripts/inverse/photo-cases.json':'scripts/inverse/hard-photo-cases.json'),status:row.locatorStatus||e.cropStatus,case:e.id}},cfg);
         r.direct=!!p.target.metadata.direct;r.curves=p.target.curves.length;r.preprocessing=p.preview.metadata;r.preprocessSeconds=(performance.now()-start)/1000;
+        if(materialReview)r.materialReview={classified:reviewMaterialSamples(materialReview,{mask:p.preview.mask,resolution:p.preview.resolution,quad})};
         r.maskSha256=hash(p.preview.mask);const probability=p.target.sourceImage?.probability;if(probability)r.probabilitySha256=hash(new Uint8Array(probability.buffer,probability.byteOffset,probability.byteLength));
         await fs.writeFile(`${dir}/crop.png`,pixelPNG(p.preview.rgb,p.preview.resolution,3));await fs.writeFile(`${folder}/mask.png`,pixelPNG(p.preview.mask,p.preview.resolution));await fs.writeFile(`${folder}/target.svg`,p.preview.vector);
         const prepareStart=performance.now(),target=hardPhotoTarget(p,targetMode,cfg);r.maskPreparationSeconds=(performance.now()-prepareStart)/1000;
@@ -103,6 +112,7 @@ for(const e of cases){
         r.report=result.report;r.independentImageError=rendered.mask.reduce((sum,v,i)=>sum+Number(v!==p.preview.mask[i]),0)/rendered.mask.length;
         const band=Math.round(p.preview.resolution*.05);let edgePixels=0,edgeErrors=0,interiorErrors=0;for(let i=0;i<rendered.mask.length;i++){const edge=Math.min(i%p.preview.resolution,Math.floor(i/p.preview.resolution),p.preview.resolution-1-i%p.preview.resolution,p.preview.resolution-1-Math.floor(i/p.preview.resolution))<band;edgePixels+=edge;const miss=rendered.mask[i]!==p.preview.mask[i];if(edge)edgeErrors+=miss;else interiorErrors+=miss;}r.spatialError={bandFraction:.05,edgePixels,edgeErrors,interiorErrors,edgeMismatch:edgeErrors/edgePixels,interiorMismatch:interiorErrors/(rendered.mask.length-edgePixels)};
         r.independentFeatures=auditFeatureFidelity(p.target.sourceImage,rendered.mask,result.report.settings);r.passed=result.report.templateChecksPassed&&r.independentFeatures.passed&&r.independentImageError<=.03;r.status=r.passed?'validated':'needs_review';
+        if(materialReview)r.materialReview.exported=reviewMaterialSamples(materialReview,{mask:rendered.mask,resolution:p.preview.resolution,quad,phase:r.materialReview.classified.phase});
         for(const[f,data]of Object.entries(result.files))await fs.writeFile(`${folder}/${f}`,data);await fs.writeFile(`${folder}/independent-weave.png`,rendered.png);
       }catch(err){r.passed=false;r.message=err.message;r.report=err.report;r.status=err.report?.termination||(/transitions/.test(err.message)?'border_mismatch':/too (?:many|much)|too detailed|too large/i.test(err.message)?'too_detailed':'error');}
       r.seconds=(performance.now()-start)/1000;console.log(e.label,e.id,name,r.status,r.curves||'',r.seconds.toFixed(2),r.independentImageError?.toFixed(4)||r.message);await save();

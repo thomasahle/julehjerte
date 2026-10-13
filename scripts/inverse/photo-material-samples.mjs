@@ -4,6 +4,7 @@
 import {homography,project} from '../../static/inverse/locator/math.js';
 
 export function validateMaterialSamples(annotation){
+ if(typeof annotation?.id!=='string'||!/^[a-z0-9][a-z0-9-]*$/.test(annotation.id))throw new Error('Material review requires a safe case ID.');
  const source=annotation?.source;
  if(!source||!Number.isInteger(source.width)||!Number.isInteger(source.height)||source.width<1||source.height<1||!source.file||!/^[a-f0-9]{64}$/.test(source.sha256))throw new Error('Material samples require a pinned source photograph and dimensions.');
  if(!Array.isArray(source.paperNames)||source.paperNames.length!==2||source.paperNames.some(n=>typeof n!=='string'||!n)||source.paperNames[0]===source.paperNames[1])throw new Error('Name both observed papers.');

@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {reviewMaterialSamples,validateMaterialSamples} from './photo-material-samples.mjs';
 import {readHardPhoto} from './hard-photo-data.mjs';
+import {rectify,quantize} from '../../static/inverse/core/input.js';
 
 const source={file:'analytical.png',sha256:'0'.repeat(64),width:8,height:8,paperNames:['dark','light']};
-const annotation={source,groups:[{id:'dark',paper:0,points:[[0,1],[2,3]]},{id:'light',paper:1,points:[[5,2],[7,6]]}]};
+const annotation={id:'analytical',source,groups:[{id:'dark',paper:0,points:[[0,1],[2,3]]},{id:'light',paper:1,points:[[5,2],[7,6]]}]};
 const quad=[[0,0],[8,0],[8,8],[0,8]],mask=Uint8Array.from({length:64},(_,i)=>Number(i%8<4));
 
 test('photo samples use source pixel centres and one global paper phase',()=>{
@@ -17,6 +18,8 @@ test('photo samples use source pixel centres and one global paper phase',()=>{
  // Freeze the classification phase: export cannot conceal a global inversion.
  const wrongExport=reviewMaterialSamples(annotation,{quad,mask:mask.map(v=>v^1),resolution:8,phase:r.phase});
  assert.equal(wrongExport.correct,0);assert.equal(wrongExport.mismatched,4);
+ const constant=reviewMaterialSamples(annotation,{quad,mask:new Uint8Array(64),resolution:8});
+ assert.equal(constant.correct,2);assert.equal(constant.phaseAmbiguous,true);assert.equal(constant.allReviewedSamplesMatch,false);
 });
 
 test('cropping away an incorrect feature cannot improve all-sample agreement',()=>{
@@ -52,4 +55,17 @@ test('reviewed photographic samples retain pinned bytes, dimensions and separate
   const image=sources.get(entry.source.sha256);assert.equal(image.imageWidth,entry.source.width);assert.equal(image.imageHeight,entry.source.height);
  }
  assert.deepEqual([...ids],['bauble','dense-checker']);
+});
+
+test('the bauble review separates cropped-out frame from classification loss',async()=>{
+ const catalog=JSON.parse(await fs.readFile(new URL('./fixtures/photo-material-samples.json',import.meta.url))),a=catalog.cases.find(r=>r.id==='bauble'),source=await readHardPhoto(a.source);
+ // Frozen scene-model proposal from the completed foreground-scene-v1 replay.
+ // These are the erroneous proposal's coordinates, not asserted true corners.
+ const crop=[[585.6941380955465,911.9828978081465],[671.9584046404291,996.4468244680473],[580.9993657081336,1107.9107396291047],[478.75396023995785,1003.2210601668503]];
+ const q=quantize(rectify(source.rgba,source.imageWidth,source.imageHeight,400,crop));
+ const review=reviewMaterialSamples(a,{mask:q.mask,resolution:400,quad:crop});
+ assert.equal(review.total,26);assert.equal(review.outsideCrop,4);assert.equal(review.mismatched,2);assert.equal(review.correct,20);
+ const lower=review.groups.find(g=>g.id==='lower-frame'),upper=review.groups.find(g=>g.id==='upper-frame');
+ assert.equal(lower.outsideCrop,4);assert.equal(upper.mismatched,2);
+ assert.equal(review.groups.find(g=>g.id==='white-gaps').correct,10);
 });
