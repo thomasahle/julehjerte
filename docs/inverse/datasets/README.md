@@ -48,7 +48,15 @@ one source pixel changes trace routing and raises final disagreement from 1.37%
 to 5.43%. Neither the segmentation average nor those crop coordinates establish
 a reconstruction improvement. All learned models remain offline.
 
-The latest [clearance-routing follow-up](clearance-routing-repair.md) also
+The new [search-scheduling study](search-scheduling.md) reaches 8/8 checked
+editable pairs on the same fixed sloth crop variants, compared with 5/8 in a
+fresh baseline run. It preserves useful grid reservations, shares the short
+topology-initialization allowance and distinguishes near-repairable traces
+from larger raster returns. The committed implementation reproduces the result
+below ten seconds per case. Full release and browser QA for this change are
+still in progress; the wider completed benchmark below remains the prior run.
+
+The preceding [clearance-routing follow-up](clearance-routing-repair.md) also
 repairs near-valid nonlocal narrow sections and retains finer paper verification
 through refinement and export. The same eight fixed crop variants improve from
 3/8 to 5/8 checked editable pairs, with unchanged source masks and acceptance
