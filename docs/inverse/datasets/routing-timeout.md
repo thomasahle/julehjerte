@@ -29,6 +29,10 @@ application and recording the actual engine requests. The unchanged baseline
 is `0ff2baf`. Exact bytes, browser reports, prepared masks, SVG/PDF downloads and
 screenshots are retained under `tmp/heart-learning/routing-timeout-v1/`.
 The earlier discovery remains under `routing-scheduling-v1/browser/`.
+The [controlled-probe evidence](routing-timeout-probe.json) records all twelve
+browser flows, verifies identical prepared inputs and requested settings,
+checks that only the allocation expression differs between the two snapshots,
+and pins 117 completed artifacts by hash.
 
 ## Cause and change
 
@@ -68,5 +72,9 @@ the existing source mask at the same destination-cell centres, checks its exact
 browser hash, fits from pixels with a ten-second allowance and independently
 checks exported image/feature fidelity at 400 and 800 pixels.
 
-The committed implementation's broader native, corpus, full-suite and rebuilt
-browser verification are still in progress. Nothing has been pushed or deployed.
+Commit `0bb8ace` applies the allocation and regression checks. All 14 targeted
+tests pass, including native routing, delayed deferred recovery and retention of
+later graphs after proven exhaustion. Eight fresh native crop-variant runs also
+pass with less than 2% disagreement and under ten seconds each. The corpus,
+full-suite and rebuilt production-browser verification are still in progress.
+Nothing has been pushed or deployed.
