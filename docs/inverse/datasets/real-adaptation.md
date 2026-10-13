@@ -86,6 +86,21 @@ approximate corner references never enter crop selection or fitting. The
 `photo` objective remains the harness default for earlier experiments, whose
 counts must not be pooled with this study.
 
+The audited model outputs can be exported and replayed as follows (use new
+output directories; the two remaining probes need only `--methods=learned`):
+
+```sh
+python3 scripts/inverse/learning/real-adaptation-report.py \
+  --study=tmp/heart-learning/real-adaptation-v1 \
+  --labels=tmp/heart-learning/real-annotation-v1/labels-filtered \
+  --initial-run=tmp/heart-learning/foreground-scene-v1/scene-trained \
+  --output=tmp/heart-learning/real-adaptation-review
+node scripts/inverse/learning/foreground-replay.mjs \
+  --probe=tmp/heart-learning/real-adaptation-review/probe-frozen \
+  --output=tmp/heart-learning/real-adaptation-frozen-replay \
+  --methods=production,learned --target=mask --solve-ids=all --seconds=10
+```
+
 | Method | Checked pair | No crop | Rejected reconstruction |
 | --- | ---: | ---: | ---: |
 | Current production cropper | 4/10 | 5 | 1 |
@@ -167,3 +182,31 @@ continuous repair of a nearly valid routing, then recheck the original mask
 and all geometry constraints. It must show fresh-solve gains within the same
 budget and retain failures such as the radius-0.3 control. This study establishes
 the opportunity, not that production fallback policy.
+
+## Evidence and QA
+
+The [evidence record](real-adaptation-results.json) pins the protocol, models,
+source hashes, per-case segmentation and reconstruction measurements, both
+smoothing failures, and the positive/negative continuous-refinement controls.
+It verifies all 144 saved pipeline assets and records earlier diagnostic-harness
+errors separately from application failures. The successful refined silhouette
+still has some uneven edges and small protrusions; passing a geometric test is
+not a physical assembly test or proof of the original cutting design.
+
+All **56 offline Python tests**, **855 application tests** (one existing skip),
+type checking, lint and the production build pass. The full inverse run passes
+**757 of 758 tests**: the photographed-tree test expected the coarse-topology
+initializer, but that field was absent. Two fresh isolated runs pass unchanged,
+including exported mask and central-branch checks. The failed run did not save
+its geometry, so those later passes do not establish the first result's quality.
+This remains a timing-sensitive QA issue; the full suite is not reported green.
+No test assertion or production solver code was changed in response.
+
+Owned Chromium checks load **162 images across three galleries** without page
+errors or broken assets. All thirty neural comparisons and sixteen reconstructed
+pairs were inspected, as were the repaired sloth and its browser report. The
+editable SVG replay checks production conversion and parsing, not a browser
+upload interaction. The rebuilt preview is running at
+`http://127.0.0.1:5232/editor/mal/`; served geometry, count-search and fitter files
+match the worktree. Models and routing repair remain offline. Nothing was pushed
+or deployed.

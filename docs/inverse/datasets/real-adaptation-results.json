@@ -1,0 +1,4792 @@
+{
+  "schema": "woven-heart-real-adaptation-results-1",
+  "scope": "Grouped development pilot and offline routing diagnosis. No deployed model or production success-count gain.",
+  "trainingSourceCommit": "b5ff4f01b6c76b5586fea9df40e2077c1a87d0e4",
+  "plan": {
+    "schema": "woven-heart-real-pilot-folds-1",
+    "labelsManifestSha256": "45077772be82a9d46054a82f3e873b94a6dfa700dbe1d0a68bfb0910a3f58f06",
+    "annotationsSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+    "scope": "Temporary grouped cross-validation for this inspected ten-photo pilot. Global source allocations remain unassigned; cross-corpus motif review is incomplete. Not topology-disjoint or an unseen test. Existing QA photographs remain excluded.",
+    "groups": [
+      {
+        "id": "publisher-motif-hearts",
+        "members": [
+          "real-5330aa8b62176216-body-1",
+          "real-abf590088db891f9-body-1",
+          "real-340f5e5b0f447889-body-1"
+        ],
+        "reason": "These three different motifs share the same inherited publisher/source group."
+      },
+      {
+        "id": "straight-checker",
+        "members": [
+          "real-995899fe049540ed-body-1",
+          "real-b87b0b19f12724f3-body-1",
+          "real-12ce3c9180f7f317-body-1",
+          "real-f4b397c381357dfa-body-1",
+          "real-68d8f25d8891df62-body-1",
+          "real-d5b0aa8d4d2465ee-body-1"
+        ],
+        "reason": "Conservatively group straight checker weaving across counts, printed decoration, paper textures and photographs."
+      },
+      {
+        "id": "curved-checker",
+        "members": [
+          "real-39f3a1ba97852876-body-1"
+        ],
+        "reason": "Curved visible checker motif; separate visual family, not a claim of distinct cut topology."
+      }
+    ],
+    "protocol": {
+      "updates": 120,
+      "seed": 20261013,
+      "learningRate": 0.0001,
+      "weightDecay": 0.0001,
+      "batchSize": 4,
+      "realPerMixedBatch": 2,
+      "syntheticReplayGeometries": 32,
+      "initialization": "frozen scene-trained checkpoint from foreground-scene-v1",
+      "adaptation": "Freeze encoder parameters AND running statistics; train lateral/detail/head only. Fixed final update; no holdout checkpoint selection.",
+      "comparison": "One synthetic-only adaptation control and three real+synthetic runs with the same initialization, common replay pairs, augmentation draws and update budget."
+    }
+  },
+  "folds": [
+    {
+      "id": "fold-9628e5e5e2a2",
+      "heldOut": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-68d8f25d8891df62-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-f4b397c381357dfa-body-1"
+      ],
+      "train": [
+        "real-340f5e5b0f447889-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-abf590088db891f9-body-1"
+      ],
+      "groups": [
+        "straight-checker"
+      ]
+    },
+    {
+      "id": "fold-6fd50470fcff",
+      "heldOut": [
+        "real-340f5e5b0f447889-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-abf590088db891f9-body-1"
+      ],
+      "train": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-68d8f25d8891df62-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-f4b397c381357dfa-body-1"
+      ],
+      "groups": [
+        "publisher-motif-hearts"
+      ]
+    },
+    {
+      "id": "fold-f07dd1486ac9",
+      "heldOut": [
+        "real-39f3a1ba97852876-body-1"
+      ],
+      "train": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-340f5e5b0f447889-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-68d8f25d8891df62-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-f4b397c381357dfa-body-1"
+      ],
+      "groups": [
+        "curved-checker"
+      ]
+    }
+  ],
+  "runtime": {
+    "python": "3.9.6",
+    "torch": "2.8.0",
+    "device": "cpu",
+    "threads": 2
+  },
+  "initialCheckpointSha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6",
+  "checkpointArtifacts": {
+    "fold-6fd50470fcff/model.pt": "740c931edabca6f81d5a4163b5a4a5d585c61c6a1e1d3f3aa533bc4b4531f7d7",
+    "fold-6fd50470fcff/predictions.npz": "36b4e5e1d07c37e9882294d8d99d5dae041fc1027cd47c967805a66f4c71ed36",
+    "fold-9628e5e5e2a2/model.pt": "45c14ab08188ef23d388e8e9876b5d53293270f647ecafca1f3fb972ce3e1278",
+    "fold-9628e5e5e2a2/predictions.npz": "a1c44e03339b24826114b44e5181b265a6b290331da023bea4bdcdca2c5da3f9",
+    "fold-f07dd1486ac9/model.pt": "2669377357425377dae0643d544fc42164792aeafb1cfc52c29f9fb16c933528",
+    "fold-f07dd1486ac9/predictions.npz": "6e8f334b63f19893041f4fdc3e192a965f053709973fcc0e4236722e992c5669",
+    "frozen-predictions.npz": "2c55e173fff1d67a26aa47baeb183ef7cee0def1dea424672816d86a0bcb0d1f",
+    "mixed-out-of-fold.npz": "455410033a42fc0cbe8fc020b8be1d5fd100f97a640b9dc8058ab63960433a26",
+    "synthetic-control/model.pt": "723e6b3a39aa5ebb07456fdb054b0a55bb304f0c0c7777ee7708ce403be4cf68",
+    "synthetic-control/predictions.npz": "dc14f64ea9c481c60e0dd1b591dcd8d0215a5190a3fa8de22d49d5f9081f3411"
+  },
+  "audit": {
+    "schema": "woven-heart-real-adaptation-audit-1",
+    "passed": true,
+    "reportSha256": "d1a66ccfbf032a8768420edac79175a3b080f8277832482c45fc50620ceb3ca0",
+    "labelsAudit": {
+      "passed": true,
+      "instances": 10,
+      "sourceGroups": 8,
+      "approximateOverlapReferences": 5,
+      "manifestSha256": "45077772be82a9d46054a82f3e873b94a6dfa700dbe1d0a68bfb0910a3f58f06",
+      "annotationsSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+      "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+    },
+    "encoderSha256": "b1cf55565050946ed39b0ade833321736a6c34fc053fa6a3ed5c4a9090675481",
+    "runs": 4,
+    "updatesPerRun": 120,
+    "archivedArtifactsChecked": 10,
+    "sourcePhotographsUsedOnlyInTheirTrainingFolds": true,
+    "metrics": {
+      "frozen": {
+        "instances": 10,
+        "threshold": 0.5,
+        "scope": "Known pixels only; excludes uncertain outline bands, occlusions and letterbox padding. No boundary-localization or complete-crop accuracy claim.",
+        "macroMean": {
+          "knownRegionIoU": 0.7695463114849285,
+          "knownRegionPixelError": 0.08018436845417648,
+          "knownPaperFalseNegative": 0.061411602522872547,
+          "knownBackgroundFalsePositive": 0.06703538790022281
+        },
+        "rows": [
+          {
+            "id": "real-5330aa8b62176216-body-1",
+            "knownPixels": 61149,
+            "unknownPixels": 4387,
+            "knownPaperPixels": 32502,
+            "knownBackgroundPixels": 28647,
+            "knownRegionIoU": 0.9285494870062051,
+            "knownRegionPixelError": 0.038038234476442785,
+            "knownPaperFalseNegative": 0.06996492523537014,
+            "knownBackgroundFalsePositive": 0.001815198799176179
+          },
+          {
+            "id": "real-abf590088db891f9-body-1",
+            "knownPixels": 61162,
+            "unknownPixels": 4374,
+            "knownPaperPixels": 32091,
+            "knownBackgroundPixels": 29071,
+            "knownRegionIoU": 0.9778754167835219,
+            "knownRegionPixelError": 0.011608515091069619,
+            "knownPaperFalseNegative": 0.02212458321647814,
+            "knownBackgroundFalsePositive": 0.0
+          },
+          {
+            "id": "real-995899fe049540ed-body-1",
+            "knownPixels": 53791,
+            "unknownPixels": 11745,
+            "knownPaperPixels": 25207,
+            "knownBackgroundPixels": 28584,
+            "knownRegionIoU": 0.9008410627259865,
+            "knownRegionPixelError": 0.04690375713409307,
+            "knownPaperFalseNegative": 0.0906890942992026,
+            "knownBackgroundFalsePositive": 0.00829135180520571
+          },
+          {
+            "id": "real-39f3a1ba97852876-body-1",
+            "knownPixels": 41367,
+            "unknownPixels": 24169,
+            "knownPaperPixels": 9342,
+            "knownBackgroundPixels": 32025,
+            "knownRegionIoU": 0.9212770176482252,
+            "knownRegionPixelError": 0.01919404356129282,
+            "knownPaperFalseNegative": 0.005352172982230786,
+            "knownBackgroundFalsePositive": 0.02323185011709602
+          },
+          {
+            "id": "real-b87b0b19f12724f3-body-1",
+            "knownPixels": 42635,
+            "unknownPixels": 22901,
+            "knownPaperPixels": 7330,
+            "knownBackgroundPixels": 35305,
+            "knownRegionIoU": 0.5334788937409025,
+            "knownRegionPixelError": 0.15034595989210742,
+            "knownPaperFalseNegative": 0.0,
+            "knownBackgroundFalsePositive": 0.18156068545531795
+          },
+          {
+            "id": "real-12ce3c9180f7f317-body-1",
+            "knownPixels": 62394,
+            "unknownPixels": 3142,
+            "knownPaperPixels": 28661,
+            "knownBackgroundPixels": 33733,
+            "knownRegionIoU": 0.9795301552411045,
+            "knownRegionPixelError": 0.009552200532102446,
+            "knownPaperFalseNegative": 0.004919577125710896,
+            "knownBackgroundFalsePositive": 0.013488275575845612
+          },
+          {
+            "id": "real-f4b397c381357dfa-body-1",
+            "knownPixels": 35775,
+            "unknownPixels": 29761,
+            "knownPaperPixels": 1640,
+            "knownBackgroundPixels": 34135,
+            "knownRegionIoU": 0.15628660679422102,
+            "knownRegionPixelError": 0.24159329140461216,
+            "knownPaperFalseNegative": 0.02378048780487805,
+            "knownBackgroundFalsePositive": 0.25205800498022557
+          },
+          {
+            "id": "real-68d8f25d8891df62-body-1",
+            "knownPixels": 46548,
+            "unknownPixels": 18988,
+            "knownPaperPixels": 22211,
+            "knownBackgroundPixels": 24337,
+            "knownRegionIoU": 0.8032250839865621,
+            "knownRegionPixelError": 0.09437569820400447,
+            "knownPaperFalseNegative": 0.19265228940615012,
+            "knownBackgroundFalsePositive": 0.004684225664625878
+          },
+          {
+            "id": "real-340f5e5b0f447889-body-1",
+            "knownPixels": 44003,
+            "unknownPixels": 21533,
+            "knownPaperPixels": 12476,
+            "knownBackgroundPixels": 31527,
+            "knownRegionIoU": 0.582404038032633,
+            "knownRegionPixelError": 0.1616935208963025,
+            "knownPaperFalseNegative": 0.20463289515870473,
+            "knownBackgroundFalsePositive": 0.14470136708218354
+          },
+          {
+            "id": "real-d5b0aa8d4d2465ee-body-1",
+            "knownPixels": 42469,
+            "unknownPixels": 23067,
+            "knownPaperPixels": 12560,
+            "knownBackgroundPixels": 29909,
+            "knownRegionIoU": 0.9119953528899216,
+            "knownRegionPixelError": 0.028538463349737454,
+            "knownPaperFalseNegative": 0.0,
+            "knownBackgroundFalsePositive": 0.04052291952255174
+          }
+        ]
+      },
+      "synthetic-control": {
+        "instances": 10,
+        "threshold": 0.5,
+        "scope": "Known pixels only; excludes uncertain outline bands, occlusions and letterbox padding. No boundary-localization or complete-crop accuracy claim.",
+        "macroMean": {
+          "knownRegionIoU": 0.7710137088833781,
+          "knownRegionPixelError": 0.07916458913295507,
+          "knownPaperFalseNegative": 0.07359392958944358,
+          "knownBackgroundFalsePositive": 0.06047185490875782
+        },
+        "rows": [
+          {
+            "id": "real-5330aa8b62176216-body-1",
+            "knownPixels": 61149,
+            "unknownPixels": 4387,
+            "knownPaperPixels": 32502,
+            "knownBackgroundPixels": 28647,
+            "knownRegionIoU": 0.9125849398886942,
+            "knownRegionPixelError": 0.04649299252645178,
+            "knownPaperFalseNegative": 0.08682542612762291,
+            "knownBackgroundFalsePositive": 0.0007330610535134569
+          },
+          {
+            "id": "real-abf590088db891f9-body-1",
+            "knownPixels": 61162,
+            "unknownPixels": 4374,
+            "knownPaperPixels": 32091,
+            "knownBackgroundPixels": 29071,
+            "knownRegionIoU": 0.9680284191829485,
+            "knownRegionPixelError": 0.01677512180765835,
+            "knownPaperFalseNegative": 0.03197158081705151,
+            "knownBackgroundFalsePositive": 0.0
+          },
+          {
+            "id": "real-995899fe049540ed-body-1",
+            "knownPixels": 53791,
+            "unknownPixels": 11745,
+            "knownPaperPixels": 25207,
+            "knownBackgroundPixels": 28584,
+            "knownRegionIoU": 0.8868511157463891,
+            "knownRegionPixelError": 0.053447602758825825,
+            "knownPaperFalseNegative": 0.10604197246796525,
+            "knownBackgroundFalsePositive": 0.007066890568150014
+          },
+          {
+            "id": "real-39f3a1ba97852876-body-1",
+            "knownPixels": 41367,
+            "unknownPixels": 24169,
+            "knownPaperPixels": 9342,
+            "knownBackgroundPixels": 32025,
+            "knownRegionIoU": 0.9376515763945028,
+            "knownRegionPixelError": 0.01491527062634467,
+            "knownPaperFalseNegative": 0.00674373795761079,
+            "knownBackgroundFalsePositive": 0.01729898516783763
+          },
+          {
+            "id": "real-b87b0b19f12724f3-body-1",
+            "knownPixels": 42635,
+            "unknownPixels": 22901,
+            "knownPaperPixels": 7330,
+            "knownBackgroundPixels": 35305,
+            "knownRegionIoU": 0.5563567362428843,
+            "knownRegionPixelError": 0.13709393690629765,
+            "knownPaperFalseNegative": 0.0,
+            "knownBackgroundFalsePositive": 0.16555728650332813
+          },
+          {
+            "id": "real-12ce3c9180f7f317-body-1",
+            "knownPixels": 62394,
+            "unknownPixels": 3142,
+            "knownPaperPixels": 28661,
+            "knownBackgroundPixels": 33733,
+            "knownRegionIoU": 0.9801214798453893,
+            "knownRegionPixelError": 0.009231656890085585,
+            "knownPaperFalseNegative": 0.009106451275252085,
+            "knownBackgroundFalsePositive": 0.009338036937123885
+          },
+          {
+            "id": "real-f4b397c381357dfa-body-1",
+            "knownPixels": 35775,
+            "unknownPixels": 29761,
+            "knownPaperPixels": 1640,
+            "knownBackgroundPixels": 34135,
+            "knownRegionIoU": 0.15188623345842386,
+            "knownRegionPixelError": 0.24005590496156534,
+            "knownPaperFalseNegative": 0.06219512195121951,
+            "knownBackgroundFalsePositive": 0.24860114252233778
+          },
+          {
+            "id": "real-68d8f25d8891df62-body-1",
+            "knownPixels": 46548,
+            "unknownPixels": 18988,
+            "knownPaperPixels": 22211,
+            "knownBackgroundPixels": 24337,
+            "knownRegionIoU": 0.7915264126385709,
+            "knownRegionPixelError": 0.09978946463865257,
+            "knownPaperFalseNegative": 0.20597901940479943,
+            "knownBackgroundFalsePositive": 0.0028762789168755394
+          },
+          {
+            "id": "real-340f5e5b0f447889-body-1",
+            "knownPixels": 44003,
+            "unknownPixels": 21533,
+            "knownPaperPixels": 12476,
+            "knownBackgroundPixels": 31527,
+            "knownRegionIoU": 0.5864858289745774,
+            "knownRegionPixelError": 0.15451219235052155,
+            "knownPaperFalseNegative": 0.2270759858929144,
+            "knownBackgroundFalsePositive": 0.12579693595965363
+          },
+          {
+            "id": "real-d5b0aa8d4d2465ee-body-1",
+            "knownPixels": 42469,
+            "unknownPixels": 23067,
+            "knownPaperPixels": 12560,
+            "knownBackgroundPixels": 29909,
+            "knownRegionIoU": 0.9386443464614005,
+            "knownRegionPixelError": 0.019331747863147238,
+            "knownPaperFalseNegative": 0.0,
+            "knownBackgroundFalsePositive": 0.027449931458758233
+          }
+        ]
+      },
+      "real-out-of-fold": {
+        "instances": 10,
+        "threshold": 0.5,
+        "scope": "Known pixels only; excludes uncertain outline bands, occlusions and letterbox padding. No boundary-localization or complete-crop accuracy claim.",
+        "macroMean": {
+          "knownRegionIoU": 0.7862989213579901,
+          "knownRegionPixelError": 0.07048000790983727,
+          "knownPaperFalseNegative": 0.05937160056013715,
+          "knownBackgroundFalsePositive": 0.05510447151636133
+        },
+        "rows": [
+          {
+            "id": "real-5330aa8b62176216-body-1",
+            "knownPixels": 61149,
+            "unknownPixels": 4387,
+            "knownPaperPixels": 32502,
+            "knownBackgroundPixels": 28647,
+            "knownRegionIoU": 0.9191742046643283,
+            "knownRegionPixelError": 0.042960637132250734,
+            "knownPaperFalseNegative": 0.08082579533567165,
+            "knownBackgroundFalsePositive": 0.0
+          },
+          {
+            "id": "real-abf590088db891f9-body-1",
+            "knownPixels": 61162,
+            "unknownPixels": 4374,
+            "knownPaperPixels": 32091,
+            "knownBackgroundPixels": 29071,
+            "knownRegionIoU": 0.9665015113271633,
+            "knownRegionPixelError": 0.017576272849154705,
+            "knownPaperFalseNegative": 0.03349848867283662,
+            "knownBackgroundFalsePositive": 0.0
+          },
+          {
+            "id": "real-995899fe049540ed-body-1",
+            "knownPixels": 53791,
+            "unknownPixels": 11745,
+            "knownPaperPixels": 25207,
+            "knownBackgroundPixels": 28584,
+            "knownRegionIoU": 0.9102407982087442,
+            "knownRegionPixelError": 0.042479225149188525,
+            "knownPaperFalseNegative": 0.08073154282540564,
+            "knownBackgroundFalsePositive": 0.008746151693254968
+          },
+          {
+            "id": "real-39f3a1ba97852876-body-1",
+            "knownPixels": 41367,
+            "unknownPixels": 24169,
+            "knownPaperPixels": 9342,
+            "knownBackgroundPixels": 32025,
+            "knownRegionIoU": 0.964963503649635,
+            "knownRegionPixelError": 0.008122416418884618,
+            "knownPaperFalseNegative": 0.009419824448726183,
+            "knownBackgroundFalsePositive": 0.007743950039032006
+          },
+          {
+            "id": "real-b87b0b19f12724f3-body-1",
+            "knownPixels": 42635,
+            "unknownPixels": 22901,
+            "knownPaperPixels": 7330,
+            "knownBackgroundPixels": 35305,
+            "knownRegionIoU": 0.5285168361093086,
+            "knownRegionPixelError": 0.15337164301630116,
+            "knownPaperFalseNegative": 0.0,
+            "knownBackgroundFalsePositive": 0.18521455884435634
+          },
+          {
+            "id": "real-12ce3c9180f7f317-body-1",
+            "knownPixels": 62394,
+            "unknownPixels": 3142,
+            "knownPaperPixels": 28661,
+            "knownBackgroundPixels": 33733,
+            "knownRegionIoU": 0.9788096301129924,
+            "knownRegionPixelError": 0.00988877135622015,
+            "knownPaperFalseNegative": 0.005617389483967761,
+            "knownBackgroundFalsePositive": 0.013517920137550767
+          },
+          {
+            "id": "real-f4b397c381357dfa-body-1",
+            "knownPixels": 35775,
+            "unknownPixels": 29761,
+            "knownPaperPixels": 1640,
+            "knownBackgroundPixels": 34135,
+            "knownRegionIoU": 0.1852528250199749,
+            "knownRegionPixelError": 0.19952480782669463,
+            "knownPaperFalseNegative": 0.010365853658536586,
+            "knownBackgroundFalsePositive": 0.20861286070016113
+          },
+          {
+            "id": "real-68d8f25d8891df62-body-1",
+            "knownPixels": 46548,
+            "unknownPixels": 18988,
+            "knownPaperPixels": 22211,
+            "knownBackgroundPixels": 24337,
+            "knownRegionIoU": 0.813924334004925,
+            "knownRegionPixelError": 0.08928417977141875,
+            "knownPaperFalseNegative": 0.18153167349511504,
+            "knownBackgroundFalsePositive": 0.005095122652750955
+          },
+          {
+            "id": "real-340f5e5b0f447889-body-1",
+            "knownPixels": 44003,
+            "unknownPixels": 21533,
+            "knownPaperPixels": 12476,
+            "knownBackgroundPixels": 31527,
+            "knownRegionIoU": 0.6448293493544676,
+            "knownRegionPixelError": 0.1262868440788128,
+            "knownPaperFalseNegative": 0.19132734850913755,
+            "knownBackgroundFalsePositive": 0.10054873600406002
+          },
+          {
+            "id": "real-d5b0aa8d4d2465ee-body-1",
+            "knownPixels": 42469,
+            "unknownPixels": 23067,
+            "knownPaperPixels": 12560,
+            "knownBackgroundPixels": 29909,
+            "knownRegionIoU": 0.9507762211283605,
+            "knownRegionPixelError": 0.015305281499446655,
+            "knownPaperFalseNegative": 0.0003980891719745223,
+            "knownBackgroundFalsePositive": 0.02156541509244709
+          }
+        ]
+      }
+    },
+    "boundaryBandDiagnostic": {
+      "frozen": {
+        "widthPixels": 5,
+        "scope": "Known paper within five 256-canvas pixels of unknown/background; includes occlusion boundaries.",
+        "macroMeanMissedFraction": 0.21617139374654512,
+        "rows": [
+          {
+            "id": "real-5330aa8b62176216-body-1",
+            "knownPaperPixels": 3314,
+            "missedFraction": 0.43270971635485816
+          },
+          {
+            "id": "real-abf590088db891f9-body-1",
+            "knownPaperPixels": 3306,
+            "missedFraction": 0.13127646702964307
+          },
+          {
+            "id": "real-995899fe049540ed-body-1",
+            "knownPaperPixels": 2961,
+            "missedFraction": 0.5099628503883823
+          },
+          {
+            "id": "real-39f3a1ba97852876-body-1",
+            "knownPaperPixels": 2281,
+            "missedFraction": 0.021920210434020166
+          },
+          {
+            "id": "real-b87b0b19f12724f3-body-1",
+            "knownPaperPixels": 1582,
+            "missedFraction": 0.0
+          },
+          {
+            "id": "real-12ce3c9180f7f317-body-1",
+            "knownPaperPixels": 3158,
+            "missedFraction": 0.044648511716276124
+          },
+          {
+            "id": "real-f4b397c381357dfa-body-1",
+            "knownPaperPixels": 771,
+            "missedFraction": 0.04928664072632944
+          },
+          {
+            "id": "real-68d8f25d8891df62-body-1",
+            "knownPaperPixels": 2893,
+            "missedFraction": 0.49775319737296925
+          },
+          {
+            "id": "real-340f5e5b0f447889-body-1",
+            "knownPaperPixels": 2341,
+            "missedFraction": 0.4741563434429731
+          },
+          {
+            "id": "real-d5b0aa8d4d2465ee-body-1",
+            "knownPaperPixels": 2058,
+            "missedFraction": 0.0
+          }
+        ]
+      },
+      "synthetic-control": {
+        "widthPixels": 5,
+        "scope": "Known paper within five 256-canvas pixels of unknown/background; includes occlusion boundaries.",
+        "macroMeanMissedFraction": 0.2501689662852521,
+        "rows": [
+          {
+            "id": "real-5330aa8b62176216-body-1",
+            "knownPaperPixels": 3314,
+            "missedFraction": 0.46710923355461675
+          },
+          {
+            "id": "real-abf590088db891f9-body-1",
+            "knownPaperPixels": 3306,
+            "missedFraction": 0.21718088324258925
+          },
+          {
+            "id": "real-995899fe049540ed-body-1",
+            "knownPaperPixels": 2961,
+            "missedFraction": 0.5717662951705504
+          },
+          {
+            "id": "real-39f3a1ba97852876-body-1",
+            "knownPaperPixels": 2281,
+            "missedFraction": 0.02761946514686541
+          },
+          {
+            "id": "real-b87b0b19f12724f3-body-1",
+            "knownPaperPixels": 1582,
+            "missedFraction": 0.0
+          },
+          {
+            "id": "real-12ce3c9180f7f317-body-1",
+            "knownPaperPixels": 3158,
+            "missedFraction": 0.08264724509183027
+          },
+          {
+            "id": "real-f4b397c381357dfa-body-1",
+            "knownPaperPixels": 771,
+            "missedFraction": 0.11543450064850844
+          },
+          {
+            "id": "real-68d8f25d8891df62-body-1",
+            "knownPaperPixels": 2893,
+            "missedFraction": 0.506049083995852
+          },
+          {
+            "id": "real-340f5e5b0f447889-body-1",
+            "knownPaperPixels": 2341,
+            "missedFraction": 0.5138829560017086
+          },
+          {
+            "id": "real-d5b0aa8d4d2465ee-body-1",
+            "knownPaperPixels": 2058,
+            "missedFraction": 0.0
+          }
+        ]
+      },
+      "real-out-of-fold": {
+        "widthPixels": 5,
+        "scope": "Known paper within five 256-canvas pixels of unknown/background; includes occlusion boundaries.",
+        "macroMeanMissedFraction": 0.21435465532983072,
+        "rows": [
+          {
+            "id": "real-5330aa8b62176216-body-1",
+            "knownPaperPixels": 3314,
+            "missedFraction": 0.46529873264936633
+          },
+          {
+            "id": "real-abf590088db891f9-body-1",
+            "knownPaperPixels": 3306,
+            "missedFraction": 0.20054446460980035
+          },
+          {
+            "id": "real-995899fe049540ed-body-1",
+            "knownPaperPixels": 2961,
+            "missedFraction": 0.4795677136102668
+          },
+          {
+            "id": "real-39f3a1ba97852876-body-1",
+            "knownPaperPixels": 2281,
+            "missedFraction": 0.03857957036387549
+          },
+          {
+            "id": "real-b87b0b19f12724f3-body-1",
+            "knownPaperPixels": 1582,
+            "missedFraction": 0.0
+          },
+          {
+            "id": "real-12ce3c9180f7f317-body-1",
+            "knownPaperPixels": 3158,
+            "missedFraction": 0.05098163394553515
+          },
+          {
+            "id": "real-f4b397c381357dfa-body-1",
+            "knownPaperPixels": 771,
+            "missedFraction": 0.02204928664072633
+          },
+          {
+            "id": "real-68d8f25d8891df62-body-1",
+            "knownPaperPixels": 2893,
+            "missedFraction": 0.4987901832008296
+          },
+          {
+            "id": "real-340f5e5b0f447889-body-1",
+            "knownPaperPixels": 2341,
+            "missedFraction": 0.3853054250320376
+          },
+          {
+            "id": "real-d5b0aa8d4d2465ee-body-1",
+            "knownPaperPixels": 2058,
+            "missedFraction": 0.0024295432458697765
+          }
+        ]
+      }
+    },
+    "scope": "Grouped pilot development comparison. No deployment, exact-outline, unseen-test or complete-template claim."
+  },
+  "pipeline": {
+    "runs": [
+      {
+        "directory": "pipeline-frozen",
+        "reportSha256": "115ce268263676f12e79ad69035bc430ae4b5781a6b342dd9b59eaedb19eff71",
+        "configuration": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "timeLimit": 10,
+          "trials": 0
+        },
+        "methods": [
+          "production",
+          "learned"
+        ],
+        "targetMode": "mask",
+        "sourceHashes": {
+          "scripts/inverse/learning/foreground-replay.mjs": "09cd45f76416135142be8b8bde4afb0f1fd7d6f8fe3deff84e397352e333bcff",
+          "scripts/inverse/learning/foreground-crop.mjs": "5a9fe4c3c5a24bcd7ef206bfc11cdff9810e1ac29c5b0fe4335bac178f52f48d",
+          "scripts/inverse/learning/foreground-refine.mjs": "11ae48367b704a927fff9245f196ab01b057d3816f880dbe2ce0fb519dbb1c54",
+          "scripts/inverse/learning/photo-labels.mjs": "7bfde5fd031e15a05573bb4a32e676c704614d70593bade9e015b515a943fd34",
+          "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+          "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+          "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+          "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+          "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+          "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+          "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+          "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+          "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+          "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+          "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+          "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+          "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+          "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+          "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+          "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+          "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+          "static/inverse/core/feature-recovery.js": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+          "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+          "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+          "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+          "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+          "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+          "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+          "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+          "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+          "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+          "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+          "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+          "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+          "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+          "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+          "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+          "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+          "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+          "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+          "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+          "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+          "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+          "static/inverse/core/solver.js": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+          "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+          "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+          "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+          "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+          "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+          "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+          "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+          "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+          "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+          "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+          "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+          "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+          "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+          "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+          "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+          "static/inverse/core/direct/fit.js": "4d96e0131b1a79d117569d1fb1ddcad4cb1dd02871266fc6164b1eb57ecdce8a",
+          "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+          "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+          "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+          "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+          "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+          "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+          "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+          "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+          "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+          "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+          "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+          "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+          "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+          "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+          "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+          "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+          "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+          "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+          "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+          "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+          "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+          "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097"
+        }
+      },
+      {
+        "directory": "pipeline-synthetic-control",
+        "reportSha256": "123565788c9c2f764b5139412b0185d3fcae96c0b36f71cd7c9a23a3c2b57994",
+        "configuration": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "timeLimit": 10,
+          "trials": 0
+        },
+        "methods": [
+          "learned"
+        ],
+        "targetMode": "mask",
+        "sourceHashes": {
+          "scripts/inverse/learning/foreground-replay.mjs": "09cd45f76416135142be8b8bde4afb0f1fd7d6f8fe3deff84e397352e333bcff",
+          "scripts/inverse/learning/foreground-crop.mjs": "5a9fe4c3c5a24bcd7ef206bfc11cdff9810e1ac29c5b0fe4335bac178f52f48d",
+          "scripts/inverse/learning/foreground-refine.mjs": "11ae48367b704a927fff9245f196ab01b057d3816f880dbe2ce0fb519dbb1c54",
+          "scripts/inverse/learning/photo-labels.mjs": "7bfde5fd031e15a05573bb4a32e676c704614d70593bade9e015b515a943fd34",
+          "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+          "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+          "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+          "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+          "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+          "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+          "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+          "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+          "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+          "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+          "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+          "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+          "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+          "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+          "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+          "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+          "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+          "static/inverse/core/feature-recovery.js": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+          "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+          "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+          "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+          "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+          "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+          "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+          "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+          "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+          "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+          "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+          "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+          "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+          "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+          "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+          "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+          "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+          "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+          "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+          "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+          "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+          "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+          "static/inverse/core/solver.js": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+          "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+          "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+          "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+          "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+          "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+          "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+          "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+          "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+          "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+          "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+          "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+          "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+          "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+          "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+          "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+          "static/inverse/core/direct/fit.js": "4d96e0131b1a79d117569d1fb1ddcad4cb1dd02871266fc6164b1eb57ecdce8a",
+          "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+          "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+          "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+          "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+          "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+          "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+          "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+          "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+          "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+          "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+          "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+          "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+          "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+          "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+          "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+          "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+          "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+          "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+          "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+          "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+          "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+          "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097"
+        }
+      },
+      {
+        "directory": "pipeline-real-out-of-fold",
+        "reportSha256": "e89b1378a646d2452feed080f3a82e94b7cd0f3cf95a1ba152bb6756ef519e05",
+        "configuration": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "timeLimit": 10,
+          "trials": 0
+        },
+        "methods": [
+          "learned"
+        ],
+        "targetMode": "mask",
+        "sourceHashes": {
+          "scripts/inverse/learning/foreground-replay.mjs": "09cd45f76416135142be8b8bde4afb0f1fd7d6f8fe3deff84e397352e333bcff",
+          "scripts/inverse/learning/foreground-crop.mjs": "5a9fe4c3c5a24bcd7ef206bfc11cdff9810e1ac29c5b0fe4335bac178f52f48d",
+          "scripts/inverse/learning/foreground-refine.mjs": "11ae48367b704a927fff9245f196ab01b057d3816f880dbe2ce0fb519dbb1c54",
+          "scripts/inverse/learning/photo-labels.mjs": "7bfde5fd031e15a05573bb4a32e676c704614d70593bade9e015b515a943fd34",
+          "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+          "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+          "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+          "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+          "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+          "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+          "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+          "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+          "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+          "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+          "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+          "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+          "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+          "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+          "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+          "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+          "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+          "static/inverse/core/feature-recovery.js": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+          "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+          "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+          "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+          "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+          "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+          "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+          "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+          "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+          "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+          "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+          "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+          "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+          "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+          "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+          "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+          "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+          "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+          "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+          "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+          "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+          "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+          "static/inverse/core/solver.js": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+          "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+          "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+          "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+          "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+          "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+          "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+          "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+          "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+          "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+          "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+          "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+          "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+          "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+          "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+          "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+          "static/inverse/core/direct/fit.js": "4d96e0131b1a79d117569d1fb1ddcad4cb1dd02871266fc6164b1eb57ecdce8a",
+          "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+          "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+          "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+          "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+          "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+          "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+          "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+          "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+          "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+          "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+          "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+          "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+          "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+          "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+          "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+          "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+          "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+          "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+          "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+          "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+          "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+          "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097"
+        }
+      }
+    ],
+    "sourceAndOutputAssetsVerified": 144,
+    "replays": 40,
+    "counts": {
+      "production": {
+        "review-required": 1,
+        "checked-pair": 4,
+        "crop-unresolved": 5
+      },
+      "frozen": {
+        "crop-unresolved": 7,
+        "review-required": 1,
+        "checked-pair": 2
+      },
+      "synthetic-control": {
+        "crop-unresolved": 6,
+        "review-required": 1,
+        "checked-pair": 3
+      },
+      "real-out-of-fold": {
+        "crop-unresolved": 6,
+        "review-required": 1,
+        "checked-pair": 3
+      }
+    },
+    "rows": [
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "motif": "bicycle-medallion",
+        "method": "production",
+        "status": "review-required",
+        "error": 0.07688,
+        "crop": [
+          [
+            122.85579696132206,
+            46.10765998193559
+          ],
+          [
+            220.67567611993528,
+            141.2125664282521
+          ],
+          [
+            126.16487777892095,
+            240.3998813202532
+          ],
+          [
+            28.82138251936412,
+            141.69303913177407
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          7.222927430196005,
+          2.8062380326849463,
+          1.4095575166610799,
+          3.4074417716366834
+        ],
+        "referenceRadiusPixels": 6.0,
+        "maskSha256": "1361a7d28851c8cd28e8f86a7b8b33d96520f16c077a0e5f3c7677028cf2b629",
+        "targetMaskSha256": "1361a7d28851c8cd28e8f86a7b8b33d96520f16c077a0e5f3c7677028cf2b629",
+        "traceUsed": false,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "recovery": {
+          "budgetSeconds": 4.8740731128000006,
+          "accepted": false,
+          "attempts": [
+            {
+              "neighbors": 8,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 3.8712896574400006,
+              "termination": "time_limit",
+              "history": [
+                {
+                  "round": 1,
+                  "status": 13
+                }
+              ],
+              "connectorIndependentIssue": null
+            },
+            {
+              "neighbors": 16,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 0.9468125718000011,
+              "termination": "time_limit",
+              "history": [
+                {
+                  "round": 1,
+                  "status": 13
+                }
+              ],
+              "connectorIndependentIssue": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "motif": "bicycle-medallion",
+        "method": "frozen",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": 6.0,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "motif": "sloth-silhouette",
+        "method": "production",
+        "status": "checked-pair",
+        "error": 0.013728,
+        "crop": [
+          [
+            129.76747370233852,
+            48.416218763402895
+          ],
+          [
+            223.3330856204667,
+            143.24308790133017
+          ],
+          [
+            125.66989036557463,
+            241.33063045166665
+          ],
+          [
+            31.72441582928019,
+            142.85900945450135
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          3.8463637279753256,
+          3.646398591000304,
+          1.489741756410253,
+          5.522140888177457
+        ],
+        "referenceRadiusPixels": 6.0,
+        "maskSha256": "f47bb73d7a6160b172fe52fc900f440b6eff0bd5926be035932184b19fc02911",
+        "targetMaskSha256": "f47bb73d7a6160b172fe52fc900f440b6eff0bd5926be035932184b19fc02911",
+        "traceUsed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "recovery": {
+          "budgetSeconds": 4.4266082247000025,
+          "accepted": true,
+          "attempts": [
+            {
+              "neighbors": 8,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 3.5198218461599993,
+              "termination": "candidate_graph_exhausted",
+              "history": [],
+              "connectorIndependentIssue": {
+                "type": "visible_edge_self_intersection",
+                "edge": 43,
+                "geometryTolerance": 0.01,
+                "message": "A required boundary curve crosses itself in both travel directions. Hidden connectors cannot repair this segmentation."
+              }
+            },
+            {
+              "neighbors": 8,
+              "smoothRadius": 0.5,
+              "budgetSeconds": 3.499725179760002,
+              "termination": null,
+              "history": [
+                {
+                  "round": 1,
+                  "status": 16,
+                  "selfNeckChains": 0,
+                  "shortReturnChains": 0
+                }
+              ],
+              "connectorIndependentIssue": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "motif": "sloth-silhouette",
+        "method": "frozen",
+        "status": "review-required",
+        "error": 0.043808,
+        "crop": [
+          [
+            129.6484268435514,
+            49.06185703836004
+          ],
+          [
+            223.54304687486774,
+            144.10121901619266
+          ],
+          [
+            124.80942445630347,
+            240.71114704075163
+          ],
+          [
+            32.03818085701104,
+            142.37520298456622
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          4.383605098388287,
+          4.352322348771162,
+          0.7362398735636516,
+          5.56999601129523
+        ],
+        "referenceRadiusPixels": 6.0,
+        "maskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+        "targetMaskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+        "traceUsed": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "recovery": {
+          "budgetSeconds": 0.4958272322000025,
+          "accepted": false,
+          "attempts": [
+            {
+              "neighbors": 8,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 0.3771430193600023,
+              "termination": "time_limit",
+              "history": [
+                {
+                  "round": 1,
+                  "status": 13
+                }
+              ],
+              "connectorIndependentIssue": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "motif": "patterned-three-by-three",
+        "method": "production",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": 15.0,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "motif": "patterned-three-by-three",
+        "method": "frozen",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": 15.0,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "motif": "curved-checker",
+        "method": "production",
+        "status": "checked-pair",
+        "error": 0.005055555555555555,
+        "crop": [
+          [
+            263.2317333125022,
+            82.40899361020158
+          ],
+          [
+            356.0846515305569,
+            192.7350877033472
+          ],
+          [
+            266.8492071100115,
+            281.2594747596661
+          ],
+          [
+            181.6008253817439,
+            177.92720313212607
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": "9cef83d4f73da09396ddbba584e85e4f5092629246d910941ccf0778b3183c79",
+        "targetMaskSha256": "9cef83d4f73da09396ddbba584e85e4f5092629246d910941ccf0778b3183c79",
+        "traceUsed": false,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "motif": "curved-checker",
+        "method": "frozen",
+        "status": "checked-pair",
+        "error": 0.006188888888888889,
+        "crop": [
+          [
+            260.1090326915976,
+            85.179713184414
+          ],
+          [
+            358.37918614538364,
+            190.90563240456748
+          ],
+          [
+            265.4401788988431,
+            281.60808751155184
+          ],
+          [
+            182.42669523335184,
+            178.52313316869902
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": "67317711132560c1c718f619ca05d221da734a3e6378f10c2b6d471d0971782f",
+        "targetMaskSha256": "67317711132560c1c718f619ca05d221da734a3e6378f10c2b6d471d0971782f",
+        "traceUsed": false,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "motif": "three-by-three-open-pink",
+        "method": "production",
+        "status": "checked-pair",
+        "error": 0.00525,
+        "crop": [
+          [
+            259.5347172811974,
+            132.1654881930686
+          ],
+          [
+            392.3723299168315,
+            204.61306586222383
+          ],
+          [
+            295.3334686327696,
+            366.36309155299807
+          ],
+          [
+            176.62154371657877,
+            270.74989478409066
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": "7927f64f7fe34bf8a032a74033ac0d8c461d342a291ed084a7b1006da3482327",
+        "targetMaskSha256": "7927f64f7fe34bf8a032a74033ac0d8c461d342a291ed084a7b1006da3482327",
+        "traceUsed": false,
+        "slits": {
+          "left": 3,
+          "right": 2
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "motif": "three-by-three-open-pink",
+        "method": "frozen",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "motif": "five-by-five-checker",
+        "method": "production",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": 29.0273,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "motif": "five-by-five-checker",
+        "method": "frozen",
+        "status": "checked-pair",
+        "error": 0.0061875,
+        "crop": [
+          [
+            1514.3664794048755,
+            555.241214350859
+          ],
+          [
+            2651.979885980089,
+            1618.110007196793
+          ],
+          [
+            1526.237706156667,
+            2801.0760238879834
+          ],
+          [
+            374.9466212464962,
+            1549.0195826354143
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          16.39351981405121,
+          15.235764578815369,
+          12.144040707901908,
+          12.68108987071195
+        ],
+        "referenceRadiusPixels": 29.0273,
+        "maskSha256": "be454dd59e26e473bb5aed698b4c6e6f5d22a3d292161ed4a7adba951b10c553",
+        "targetMaskSha256": "be454dd59e26e473bb5aed698b4c6e6f5d22a3d292161ed4a7adba951b10c553",
+        "traceUsed": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-f4b397c381357dfa-body-1",
+        "motif": "printed-black-grid",
+        "method": "production",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-f4b397c381357dfa-body-1",
+        "motif": "printed-black-grid",
+        "method": "frozen",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "motif": "floral-blue-gold",
+        "method": "production",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "motif": "floral-blue-gold",
+        "method": "frozen",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "motif": "dragonfly-protrusions",
+        "method": "production",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "motif": "dragonfly-protrusions",
+        "method": "frozen",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "motif": "four-by-four-tree",
+        "method": "production",
+        "status": "checked-pair",
+        "error": 0.006425,
+        "crop": [
+          [
+            424.7541740668146,
+            115.90888531579895
+          ],
+          [
+            548.6016928485965,
+            319.30358060039185
+          ],
+          [
+            348.17035722215616,
+            454.10556953764524
+          ],
+          [
+            217.9040322129936,
+            242.69983471692734
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          4.6543067193831655,
+          9.675953168234248,
+          7.523486590623204,
+          5.7517737968414
+        ],
+        "referenceRadiusPixels": 6.75,
+        "maskSha256": "deae24613f4041c7ad484d533576d9e73c1c0c03fefd3808b9becb7d90ee5827",
+        "targetMaskSha256": "deae24613f4041c7ad484d533576d9e73c1c0c03fefd3808b9becb7d90ee5827",
+        "traceUsed": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "motif": "four-by-four-tree",
+        "method": "frozen",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": 6.75,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "motif": "bicycle-medallion",
+        "method": "synthetic-control",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": 6.0,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "motif": "sloth-silhouette",
+        "method": "synthetic-control",
+        "status": "review-required",
+        "error": 0.053472,
+        "crop": [
+          [
+            128.31145579838466,
+            49.85468381032112
+          ],
+          [
+            223.35220478282469,
+            144.16895318202938
+          ],
+          [
+            124.46442983319685,
+            240.4879360356093
+          ],
+          [
+            32.163677149847246,
+            142.45185786722374
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          4.864664388479581,
+          4.482789278083319,
+          0.7245115447083458,
+          5.716219791866082
+        ],
+        "referenceRadiusPixels": 6.0,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "targetMaskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "traceUsed": false,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "recovery": {
+          "budgetSeconds": 2.2466967741000006,
+          "accepted": false,
+          "attempts": [
+            {
+              "neighbors": 8,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 1.7547450528800006,
+              "termination": "time_limit",
+              "history": [
+                {
+                  "round": 1,
+                  "status": 13
+                }
+              ],
+              "connectorIndependentIssue": null
+            },
+            {
+              "neighbors": 16,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 0.4156869831000001,
+              "termination": "time_limit",
+              "history": [
+                {
+                  "round": 1,
+                  "status": 13
+                }
+              ],
+              "connectorIndependentIssue": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "motif": "patterned-three-by-three",
+        "method": "synthetic-control",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": 15.0,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "motif": "curved-checker",
+        "method": "synthetic-control",
+        "status": "checked-pair",
+        "error": 0.005688888888888889,
+        "crop": [
+          [
+            262.0939187529924,
+            83.20005308243489
+          ],
+          [
+            356.90561119453236,
+            192.30530352631945
+          ],
+          [
+            265.741759172195,
+            281.37942194785575
+          ],
+          [
+            182.31813099482582,
+            178.5047930805909
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": "cf1634229ff5c7e70f197cdd3954e24effe39c2f859ca21fd303ce238ea3b5d1",
+        "targetMaskSha256": "cf1634229ff5c7e70f197cdd3954e24effe39c2f859ca21fd303ce238ea3b5d1",
+        "traceUsed": false,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "motif": "three-by-three-open-pink",
+        "method": "synthetic-control",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "motif": "five-by-five-checker",
+        "method": "synthetic-control",
+        "status": "checked-pair",
+        "error": 0.0044625,
+        "crop": [
+          [
+            1497.9681855617255,
+            555.0993788188158
+          ],
+          [
+            2686.3888644409017,
+            1585.401207234814
+          ],
+          [
+            1521.4048550652692,
+            2802.265037795085
+          ],
+          [
+            397.50682499301274,
+            1567.3271855502858
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          29.045965676658845,
+          33.07489036021151,
+          8.882763409954995,
+          17.79922092444627
+        ],
+        "referenceRadiusPixels": 29.0273,
+        "maskSha256": "c9324a2392d9fc739605babeb9ccb5e0e106400050518d4e58c68829b626c548",
+        "targetMaskSha256": "c9324a2392d9fc739605babeb9ccb5e0e106400050518d4e58c68829b626c548",
+        "traceUsed": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-f4b397c381357dfa-body-1",
+        "motif": "printed-black-grid",
+        "method": "synthetic-control",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "motif": "floral-blue-gold",
+        "method": "synthetic-control",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "motif": "dragonfly-protrusions",
+        "method": "synthetic-control",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "motif": "four-by-four-tree",
+        "method": "synthetic-control",
+        "status": "checked-pair",
+        "error": 0.0152625,
+        "crop": [
+          [
+            404.88930226914647,
+            102.78160634309928
+          ],
+          [
+            556.8088649221221,
+            312.5461496576161
+          ],
+          [
+            351.55323501731766,
+            461.0673545782961
+          ],
+          [
+            218.89997612382274,
+            243.6099328303445
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          19.163120000753604,
+          4.612599987824549,
+          15.11144724764993,
+          5.956070691520462
+        ],
+        "referenceRadiusPixels": 6.75,
+        "maskSha256": "7865b477449aea3a3960a928e4cc174c0b2b2587227092c421111e2d40043bd8",
+        "targetMaskSha256": "7865b477449aea3a3960a928e4cc174c0b2b2587227092c421111e2d40043bd8",
+        "traceUsed": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "motif": "bicycle-medallion",
+        "method": "real-out-of-fold",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": 6.0,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "motif": "sloth-silhouette",
+        "method": "real-out-of-fold",
+        "status": "review-required",
+        "error": 0.054304,
+        "crop": [
+          [
+            129.56690216788957,
+            49.02080348506114
+          ],
+          [
+            223.26162553049457,
+            143.917732278196
+          ],
+          [
+            125.07967723642194,
+            240.74163618898643
+          ],
+          [
+            31.759033800572706,
+            142.12128752243527
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          4.315326531007451,
+          4.286090526324334,
+          0.7459039474477656,
+          5.210399549730619
+        ],
+        "referenceRadiusPixels": 6.0,
+        "maskSha256": "4c840fd54ea596d429ad480503ec7ecf1a9a8ddcc4ddec6679c04a53eac7ac70",
+        "targetMaskSha256": "4c840fd54ea596d429ad480503ec7ecf1a9a8ddcc4ddec6679c04a53eac7ac70",
+        "traceUsed": false,
+        "slits": {
+          "left": 3,
+          "right": 3
+        },
+        "recovery": {
+          "budgetSeconds": 4.273316024400001,
+          "accepted": false,
+          "attempts": [
+            {
+              "neighbors": 8,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 3.389756352320001,
+              "termination": "time_limit",
+              "history": [
+                {
+                  "round": 1,
+                  "status": 16,
+                  "selfNeckChains": 1,
+                  "shortReturnChains": 1
+                },
+                {
+                  "round": 2,
+                  "status": 13
+                }
+              ],
+              "connectorIndependentIssue": null
+            },
+            {
+              "neighbors": 16,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 0.8441541074000001,
+              "termination": "time_limit",
+              "history": [
+                {
+                  "round": 1,
+                  "status": 13
+                }
+              ],
+              "connectorIndependentIssue": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "motif": "patterned-three-by-three",
+        "method": "real-out-of-fold",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": 15.0,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "motif": "curved-checker",
+        "method": "real-out-of-fold",
+        "status": "checked-pair",
+        "error": 0.015955555555555556,
+        "crop": [
+          [
+            262.1592508403858,
+            83.13812199263265
+          ],
+          [
+            357.09877746598545,
+            192.1550114296471
+          ],
+          [
+            263.2234447788176,
+            283.7532614422277
+          ],
+          [
+            182.31795933865988,
+            178.3565468790115
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": "89da8e8289f733bec10770157ac64f3d05163a6b2331cb88c20b0d66a414a7fa",
+        "targetMaskSha256": "89da8e8289f733bec10770157ac64f3d05163a6b2331cb88c20b0d66a414a7fa",
+        "traceUsed": false,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "motif": "three-by-three-open-pink",
+        "method": "real-out-of-fold",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "motif": "five-by-five-checker",
+        "method": "real-out-of-fold",
+        "status": "checked-pair",
+        "error": 0.0071375,
+        "crop": [
+          [
+            1517.2751659930577,
+            541.9929330047871
+          ],
+          [
+            2645.1236379962847,
+            1624.6491873931152
+          ],
+          [
+            1526.375604278718,
+            2803.053959103851
+          ],
+          [
+            369.7239198329009,
+            1541.6928005007937
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          6.539060014562589,
+          24.486256040106017,
+          10.719589683897711,
+          20.62548125656831
+        ],
+        "referenceRadiusPixels": 29.0273,
+        "maskSha256": "0f4a7bbf1d34b0aa2a89f585d3f91337031c7a8a4c84601438799b8716956cba",
+        "targetMaskSha256": "0f4a7bbf1d34b0aa2a89f585d3f91337031c7a8a4c84601438799b8716956cba",
+        "traceUsed": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-f4b397c381357dfa-body-1",
+        "motif": "printed-black-grid",
+        "method": "real-out-of-fold",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "motif": "floral-blue-gold",
+        "method": "real-out-of-fold",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "motif": "dragonfly-protrusions",
+        "method": "real-out-of-fold",
+        "status": "crop-unresolved",
+        "error": null,
+        "crop": null,
+        "cornerDistancesFromApproximateReference": null,
+        "referenceRadiusPixels": null,
+        "maskSha256": null,
+        "targetMaskSha256": null,
+        "traceUsed": null,
+        "slits": null,
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "motif": "four-by-four-tree",
+        "method": "real-out-of-fold",
+        "status": "checked-pair",
+        "error": 0.00961875,
+        "crop": [
+          [
+            423.38761935289375,
+            112.9962039164875
+          ],
+          [
+            553.5906176223946,
+            316.8037559879495
+          ],
+          [
+            348.7297205303237,
+            456.2529290999152
+          ],
+          [
+            218.939007024104,
+            243.90433021974457
+          ]
+        ],
+        "cornerDistancesFromApproximateReference": [
+          2.6923483485955493,
+          4.41385009675888,
+          9.546725244796122,
+          6.202304926754248
+        ],
+        "referenceRadiusPixels": 6.75,
+        "maskSha256": "3bf81d61068f36e880d2d5b917756806d3d96b2671c334bed8c58b7cb6ea5243",
+        "targetMaskSha256": "3bf81d61068f36e880d2d5b917756806d3d96b2671c334bed8c58b7cb6ea5243",
+        "traceUsed": false,
+        "slits": {
+          "left": 4,
+          "right": 4
+        },
+        "recovery": {
+          "budgetSeconds": null,
+          "accepted": null,
+          "attempts": []
+        }
+      }
+    ],
+    "visualReview": {
+      "segmentationComparisons": 30,
+      "reconstructedPairs": 16,
+      "notes": [
+        "Sloth and bicycle failures lose major features.",
+        "Checked checkerboards retain border fringes and some protrusions.",
+        "The open pink basket is bowed, not a flat photographed square.",
+        "All model comparisons, six reconstruction contact sheets and the refined sloth were inspected."
+      ]
+    }
+  },
+  "routingDiagnosis": {
+    "fixedRecoveryBudgetSeconds": 4.2733160244,
+    "smoothingOnly": {
+      "control": {
+        "radius": 0.3,
+        "seconds": 4.273316024400001,
+        "elapsedSeconds": 4.391319875,
+        "sourceHash": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+        "modifiedSourceHash": "59f447a25f079a7c3701752105b97cc9bf172711ae166a27efaabe9018a527cf",
+        "maskSha256": "4c840fd54ea596d429ad480503ec7ecf1a9a8ddcc4ddec6679c04a53eac7ac70",
+        "report": {
+          "method": "trace-milp",
+          "budgetSeconds": 4.273316024400001,
+          "accepted": false,
+          "attempts": [
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 3.3577559195200006,
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 1470,
+                "continuousVariables": 1272,
+                "linearConstraints": 7809,
+                "turnAuxiliaries": 138,
+                "crossingConflicts": 227,
+                "widthPairs": 296,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 76,
+                  "hiddenCandidates": 169,
+                  "vertices": 77,
+                  "buildSeconds": 0.01080762500000003,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 16,
+                    "objective": 2207.4267014,
+                    "selfNeckChains": 1,
+                    "shortReturnChains": 1
+                  },
+                  {
+                    "round": 2,
+                    "status": 13
+                  }
+                ],
+                "elapsedSeconds": 3.353961084,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "time_limit"
+              },
+              "seconds": 3.3664951249999997
+            },
+            {
+              "neighbors": 16,
+              "connectorVariants": 2,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 0.8306979824000007,
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 3636,
+                "continuousVariables": 2716,
+                "linearConstraints": 48576,
+                "turnAuxiliaries": 138,
+                "crossingConflicts": 4544,
+                "widthPairs": 2942,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 76,
+                  "hiddenCandidates": 530,
+                  "vertices": 77,
+                  "buildSeconds": 0.07241579200000024,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 13
+                  }
+                ],
+                "elapsedSeconds": 0.8755802499999995,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "time_limit"
+              },
+              "seconds": 0.948472542
+            }
+          ],
+          "deferredNeighborExpansions": 0,
+          "error": "Feature recovery found no validated routing within its budget.",
+          "seconds": 4.391100417
+        },
+        "scope": "Offline initial smoothing substitution, fixed failed source mask and existing recovery budget. No production change."
+      },
+      "smoother": {
+        "radius": 0.5,
+        "seconds": 4.273316024400001,
+        "elapsedSeconds": 4.4111107910000005,
+        "sourceHash": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+        "modifiedSourceHash": "74c9db346dff4054a8b7bbedd4fa29b6765522db0feeea0aea9deea9296507d3",
+        "maskSha256": "4c840fd54ea596d429ad480503ec7ecf1a9a8ddcc4ddec6679c04a53eac7ac70",
+        "report": {
+          "method": "trace-milp",
+          "budgetSeconds": 4.273316024400001,
+          "accepted": false,
+          "attempts": [
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.5,
+              "budgetSeconds": 3.3802235531200004,
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 1476,
+                "continuousVariables": 1268,
+                "linearConstraints": 7710,
+                "turnAuxiliaries": 134,
+                "crossingConflicts": 184,
+                "widthPairs": 263,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 74,
+                  "hiddenCandidates": 172,
+                  "vertices": 75,
+                  "buildSeconds": 0.009491667000000007,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 16,
+                    "objective": 2179.8976535,
+                    "selfNeckChains": 1,
+                    "shortReturnChains": 1
+                  },
+                  {
+                    "round": 2,
+                    "status": 13
+                  }
+                ],
+                "elapsedSeconds": 3.383199292,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "time_limit"
+              },
+              "seconds": 3.394342834
+            },
+            {
+              "neighbors": 16,
+              "connectorVariants": 2,
+              "smoothRadius": 0.5,
+              "budgetSeconds": 0.8309320244000005,
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 3690,
+                "continuousVariables": 2744,
+                "linearConstraints": 52121,
+                "turnAuxiliaries": 134,
+                "crossingConflicts": 5150,
+                "widthPairs": 3222,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 74,
+                  "hiddenCandidates": 541,
+                  "vertices": 75,
+                  "buildSeconds": 0.07626524999999992,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 13
+                  }
+                ],
+                "elapsedSeconds": 0.8912366249999996,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "time_limit"
+              },
+              "seconds": 0.9684896250000001
+            }
+          ],
+          "deferredNeighborExpansions": 0,
+          "error": "Feature recovery found no validated routing within its budget.",
+          "seconds": 4.410878917
+        },
+        "scope": "Offline initial smoothing substitution, fixed failed source mask and existing recovery budget. No production change."
+      }
+    },
+    "continuousRefinement": {
+      "schema": "woven-heart-rejected-routing-replay-1",
+      "status": "complete",
+      "fixture": "scripts/inverse/fixtures/sloth-rejected-routing.json",
+      "fixtureSha256": "fe7b757695d9c395c4ab4cdb0c887c3a731e8cc97fe385c5dce81f8bafaf6ec8",
+      "maskSha256": "4c840fd54ea596d429ad480503ec7ecf1a9a8ddcc4ddec6679c04a53eac7ac70",
+      "configuration": {
+        "algorithm": "auto",
+        "progressGeometry": false,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 360,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "symmetry": null,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      },
+      "refinement": {
+        "steps": 160,
+        "rate": 0.008,
+        "selection": "mask"
+      },
+      "scope": "Captured invalid routing seeds through unchanged continuous refinement and actual editable SVG conversion. Not a fresh solve, deployment, or claim about total solver time.",
+      "sourceHashes": {
+        "scripts/inverse/learning/rejected-routing-replay.mjs": "3373e08c211aae5ed7180c8a3d009eff1e022778f0bf20d5e99cd91b499420a7",
+        "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+        "scripts/inverse/editable-paper-audit.mjs": "f34d170dfb9830c4ba51c5fa2565a0740977a994130313afd2dcd79f065c2429",
+        "src/lib/inverse/toHeartDesign.ts": "eb405a8bb15abebd46f07ed17457ebc44735221e92b9bc866a4ad5dc3c05c66f",
+        "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+        "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+        "src/lib/utils/heartDesign.ts": "c4d79388b56ca2332e6b42fd08716b3e9bfcd79b07ce9f7992ce46f1db998637",
+        "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+        "src/lib/paint/rasterize.ts": "c8e227d34063a9e87d45c223910f821255daf4527f7dd6dc38684eb774fda96e",
+        "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+        "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+        "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+        "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "static/inverse/core/feature-recovery.js": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+        "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+        "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+        "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+        "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+        "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+        "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+        "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "static/inverse/core/solver.js": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+        "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+        "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+        "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+        "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+        "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+        "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+        "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+        "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+        "static/inverse/core/direct/fit.js": "4d96e0131b1a79d117569d1fb1ddcad4cb1dd02871266fc6164b1eb57ecdce8a",
+        "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+        "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+        "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+        "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+        "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+        "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+        "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+        "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+        "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+        "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+        "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097"
+      },
+      "rows": [
+        {
+          "smoothRadius": 0.3,
+          "counts": [
+            2,
+            2
+          ],
+          "before": {
+            "geometry": {
+              "passed": false,
+              "issues": [
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    0,
+                    2
+                  ],
+                  "parameters": [
+                    1,
+                    0.1599163973598502
+                  ],
+                  "points": [
+                    [
+                      82.80000000000001,
+                      2.8000000000000003
+                    ],
+                    [
+                      83.45517227754901,
+                      3.8832265369844547
+                    ]
+                  ],
+                  "distanceUpper": 1.2659504112310547,
+                  "required": 1.5,
+                  "arcSeparation": 3.742077291956933,
+                  "edgeChain": [
+                    15,
+                    16,
+                    17
+                  ]
+                }
+              ],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 4.45611870975776,
+              "minimumOuterSideClearance": 10.8,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": null,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ]
+            },
+            "paper": {
+              "passed": true,
+              "status": "pass",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        10.8
+                      ],
+                      "certainCoreLength": 8.055555555555554,
+                      "possibleCoreLength": 8.61111111111111
+                    },
+                    {
+                      "interval": [
+                        10.8,
+                        86
+                      ],
+                      "certainCoreLength": 72.22222222222219,
+                      "possibleCoreLength": 73.0555555555555
+                    },
+                    {
+                      "interval": [
+                        86,
+                        100
+                      ],
+                      "certainCoreLength": 11.111111111111118,
+                      "possibleCoreLength": 11.944444444444454
+                    }
+                  ],
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "resolution": [
+                    360,
+                    1080
+                  ],
+                  "originY": -50,
+                  "map": null,
+                  "minimumDiameter": 2.50501002004008
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        12.4
+                      ],
+                      "certainCoreLength": 9.444444444444446,
+                      "possibleCoreLength": 10.277777777777782
+                    },
+                    {
+                      "interval": [
+                        12.4,
+                        86.80000000000001
+                      ],
+                      "certainCoreLength": 71.38888888888887,
+                      "possibleCoreLength": 72.49999999999996
+                    },
+                    {
+                      "interval": [
+                        86.80000000000001,
+                        100
+                      ],
+                      "certainCoreLength": 10.277777777777782,
+                      "possibleCoreLength": 11.111111111111118
+                    }
+                  ],
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "resolution": [
+                    360,
+                    1080
+                  ],
+                  "originY": -50,
+                  "map": null,
+                  "minimumDiameter": 2.50501002004008
+                }
+              ],
+              "summary": {
+                "status": "pass",
+                "requiredRemainingWidth": 2,
+                "nominalDiameter": 2.50501002004008,
+                "gridSpacing": 0.2777777777777778,
+                "clearanceGuard": 0.20641855032959658,
+                "families": [
+                  {
+                    "family": 0,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          10.8
+                        ],
+                        "certainCoreLength": 8.055555555555554,
+                        "possibleCoreLength": 8.61111111111111
+                      },
+                      {
+                        "interval": [
+                          10.8,
+                          86
+                        ],
+                        "certainCoreLength": 72.22222222222219,
+                        "possibleCoreLength": 73.0555555555555
+                      },
+                      {
+                        "interval": [
+                          86,
+                          100
+                        ],
+                        "certainCoreLength": 11.111111111111118,
+                        "possibleCoreLength": 11.944444444444454
+                      }
+                    ]
+                  },
+                  {
+                    "family": 1,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          12.4
+                        ],
+                        "certainCoreLength": 9.444444444444446,
+                        "possibleCoreLength": 10.277777777777782
+                      },
+                      {
+                        "interval": [
+                          12.4,
+                          86.80000000000001
+                        ],
+                        "certainCoreLength": 71.38888888888887,
+                        "possibleCoreLength": 72.49999999999996
+                      },
+                      {
+                        "interval": [
+                          86.80000000000001,
+                          100
+                        ],
+                        "certainCoreLength": 10.277777777777782,
+                        "possibleCoreLength": 11.111111111111118
+                      }
+                    ]
+                  }
+                ],
+                "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                "seconds": 0.18771920799999997,
+                "limitations": [
+                  "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                  "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                  "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                  "Small tips and features below the explicitly stated area threshold are not certified."
+                ]
+              }
+            },
+            "independentImageError": 0.0196
+          },
+          "refinementSeconds": 0.5427268749999998,
+          "steps": 160,
+          "history": [
+            {
+              "step": -1,
+              "error": 0.019408,
+              "score": 0.02295251604806653,
+              "primitives": {
+                "curved": 53,
+                "straight": 28
+              },
+              "straightened": true,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    0,
+                    2
+                  ],
+                  "parameters": [
+                    1,
+                    0.1599163973598502
+                  ],
+                  "points": [
+                    [
+                      82.80000000000001,
+                      2.8000000000000003
+                    ],
+                    [
+                      83.45517227754901,
+                      3.8832265369844547
+                    ]
+                  ],
+                  "distanceUpper": 1.2659504112310547,
+                  "required": 1.5,
+                  "arcSeparation": 3.742077291956933,
+                  "edgeChain": [
+                    15,
+                    16,
+                    17
+                  ]
+                }
+              ]
+            },
+            {
+              "step": -1,
+              "error": 0.019584,
+              "score": 0.02325601344667333,
+              "primitives": {
+                "curved": 60,
+                "straight": 21
+              },
+              "straightened": false,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    0,
+                    2
+                  ],
+                  "parameters": [
+                    1,
+                    0.1599163973598502
+                  ],
+                  "points": [
+                    [
+                      82.80000000000001,
+                      2.8000000000000003
+                    ],
+                    [
+                      83.45517227754901,
+                      3.8832265369844547
+                    ]
+                  ],
+                  "distanceUpper": 1.2659504112310547,
+                  "required": 1.5,
+                  "arcSeparation": 3.742077291956933,
+                  "edgeChain": [
+                    15,
+                    16,
+                    17
+                  ]
+                }
+              ]
+            },
+            {
+              "step": 0,
+              "error": 0.019328,
+              "score": 0.02296191370637471,
+              "primitives": {
+                "curved": 53,
+                "straight": 28
+              },
+              "straightened": true,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    0,
+                    2
+                  ],
+                  "parameters": [
+                    1,
+                    0.15991682561324053
+                  ],
+                  "points": [
+                    [
+                      82.80002876020683,
+                      2.7999791229835314
+                    ],
+                    [
+                      83.45515128700193,
+                      3.88314475816844
+                    ]
+                  ],
+                  "distanceUpper": 1.265872552178899,
+                  "required": 1.5,
+                  "arcSeparation": 3.7421340212758194,
+                  "edgeChain": [
+                    15,
+                    16,
+                    17
+                  ]
+                }
+              ]
+            },
+            {
+              "step": 0,
+              "error": 0.019648,
+              "score": 0.023899208508678355,
+              "primitives": {
+                "curved": 81,
+                "straight": 0
+              },
+              "straightened": false,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 179.99902033650045
+                },
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    0,
+                    2
+                  ],
+                  "parameters": [
+                    1,
+                    0.15991682561324053
+                  ],
+                  "points": [
+                    [
+                      82.80002876020683,
+                      2.7999791229835314
+                    ],
+                    [
+                      83.45515128700193,
+                      3.88314475816844
+                    ]
+                  ],
+                  "distanceUpper": 1.265872552178899,
+                  "required": 1.5,
+                  "arcSeparation": 3.7421340220934742,
+                  "edgeChain": [
+                    15,
+                    16,
+                    17
+                  ]
+                }
+              ]
+            },
+            {
+              "step": 40,
+              "error": 0.012048,
+              "score": 0.01876815764285983,
+              "primitives": {
+                "curved": 81,
+                "straight": 0
+              },
+              "straightened": false,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "self_intersection",
+                  "family": 0,
+                  "slit": 1
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 178.65197310832605
+                },
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    5,
+                    7
+                  ],
+                  "parameters": [
+                    1,
+                    0.22459687855354432
+                  ],
+                  "points": [
+                    [
+                      81.6431979274381,
+                      42.85848332480694
+                    ],
+                    [
+                      81.07641921202634,
+                      44.24546434253333
+                    ]
+                  ],
+                  "distanceUpper": 1.49831720799607,
+                  "required": 1.5,
+                  "arcSeparation": 8.79403517963608,
+                  "edgeChain": [
+                    20,
+                    21,
+                    22
+                  ]
+                },
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    0,
+                    2
+                  ],
+                  "parameters": [
+                    1,
+                    0.1447408637768611
+                  ],
+                  "points": [
+                    [
+                      83.11025265868288,
+                      2.492673413481229
+                    ],
+                    [
+                      83.77221489692117,
+                      3.6329194418021595
+                    ]
+                  ],
+                  "distanceUpper": 1.3184669165189928,
+                  "required": 1.5,
+                  "arcSeparation": 3.6507768617844345,
+                  "edgeChain": [
+                    15,
+                    16,
+                    17
+                  ]
+                }
+              ]
+            },
+            {
+              "step": 80,
+              "error": 0.01,
+              "score": 0.017545604123982178,
+              "primitives": {
+                "curved": 81,
+                "straight": 0
+              },
+              "straightened": false,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "self_intersection",
+                  "family": 0,
+                  "slit": 1
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 177.2766208429505
+                },
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    5,
+                    7
+                  ],
+                  "parameters": [
+                    1,
+                    0.22578920251456336
+                  ],
+                  "points": [
+                    [
+                      81.64530194167232,
+                      42.86522388215899
+                    ],
+                    [
+                      81.09796307854266,
+                      44.18495301404065
+                    ]
+                  ],
+                  "distanceUpper": 1.4287283900830052,
+                  "required": 1.5,
+                  "arcSeparation": 8.852037579586398,
+                  "edgeChain": [
+                    20,
+                    21,
+                    22
+                  ]
+                }
+              ]
+            },
+            {
+              "step": 120,
+              "error": 0.00904,
+              "score": 0.016737910723057026,
+              "primitives": {
+                "curved": 81,
+                "straight": 0
+              },
+              "straightened": false,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "self_intersection",
+                  "family": 0,
+                  "slit": 1
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 176.08973015720605
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 179.39035484806996
+                },
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    5,
+                    7
+                  ],
+                  "parameters": [
+                    1,
+                    0.22612474120235607
+                  ],
+                  "points": [
+                    [
+                      81.64696764748777,
+                      42.870562426845744
+                    ],
+                    [
+                      81.11408152411668,
+                      44.15439319000892
+                    ]
+                  ],
+                  "distanceUpper": 1.3900320316185526,
+                  "required": 1.5,
+                  "arcSeparation": 8.885972257146225,
+                  "edgeChain": [
+                    20,
+                    21,
+                    22
+                  ]
+                }
+              ]
+            },
+            {
+              "step": 159,
+              "error": 0.008208,
+              "score": 0.01621985419187455,
+              "primitives": {
+                "curved": 81,
+                "straight": 0
+              },
+              "straightened": false,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "self_intersection",
+                  "family": 0,
+                  "slit": 1
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 175.072108293557
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 179.49550146811134
+                },
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    5,
+                    7
+                  ],
+                  "parameters": [
+                    1,
+                    0.2262148848035406
+                  ],
+                  "points": [
+                    [
+                      81.64892429976705,
+                      42.875055810294185
+                    ],
+                    [
+                      81.12686157957825,
+                      44.13801489861814
+                    ]
+                  ],
+                  "distanceUpper": 1.3666071646932776,
+                  "required": 1.5,
+                  "arcSeparation": 8.912824740454704,
+                  "edgeChain": [
+                    20,
+                    21,
+                    22
+                  ]
+                }
+              ]
+            }
+          ],
+          "after": {
+            "geometry": {
+              "passed": false,
+              "issues": [
+                {
+                  "type": "self_intersection",
+                  "family": 0,
+                  "slit": 1
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 175.072108293557
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 0,
+                  "angle": 179.49550146811134
+                },
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 1,
+                  "curves": [
+                    5,
+                    7
+                  ],
+                  "parameters": [
+                    1,
+                    0.2262148848035406
+                  ],
+                  "points": [
+                    [
+                      81.64892429976705,
+                      42.875055810294185
+                    ],
+                    [
+                      81.12686157957825,
+                      44.13801489861814
+                    ]
+                  ],
+                  "distanceUpper": 1.3666071646932776,
+                  "required": 1.5,
+                  "arcSeparation": 8.912824740454704,
+                  "edgeChain": [
+                    20,
+                    21,
+                    22
+                  ]
+                }
+              ],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 4.1829495859435895,
+              "minimumOuterSideClearance": 10.299921853746778,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": null,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ]
+            },
+            "paper": {
+              "passed": true,
+              "status": "pass",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        10.437660365179719
+                      ],
+                      "certainCoreLength": 7.499999999999998,
+                      "possibleCoreLength": 8.333333333333332
+                    },
+                    {
+                      "interval": [
+                        10.437660365179719,
+                        86.86118549874601
+                      ],
+                      "certainCoreLength": 73.33333333333327,
+                      "possibleCoreLength": 74.44444444444436
+                    },
+                    {
+                      "interval": [
+                        86.86118549874601,
+                        100
+                      ],
+                      "certainCoreLength": 10.277777777777782,
+                      "possibleCoreLength": 10.83333333333334
+                    }
+                  ],
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "resolution": [
+                    360,
+                    1080
+                  ],
+                  "originY": -50,
+                  "map": null,
+                  "minimumDiameter": 2.50501002004008
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        12.278749238264066
+                      ],
+                      "certainCoreLength": 9.444444444444446,
+                      "possibleCoreLength": 10.000000000000004
+                    },
+                    {
+                      "interval": [
+                        12.278749238264066,
+                        87.98293855175575
+                      ],
+                      "certainCoreLength": 73.0555555555555,
+                      "possibleCoreLength": 73.61111111111104
+                    },
+                    {
+                      "interval": [
+                        87.98293855175575,
+                        100
+                      ],
+                      "certainCoreLength": 8.88888888888889,
+                      "possibleCoreLength": 9.722222222222225
+                    }
+                  ],
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "resolution": [
+                    360,
+                    1080
+                  ],
+                  "originY": -50,
+                  "map": null,
+                  "minimumDiameter": 2.50501002004008
+                }
+              ],
+              "summary": {
+                "status": "pass",
+                "requiredRemainingWidth": 2,
+                "nominalDiameter": 2.50501002004008,
+                "gridSpacing": 0.2777777777777778,
+                "clearanceGuard": 0.20641855032959658,
+                "families": [
+                  {
+                    "family": 0,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          10.437660365179719
+                        ],
+                        "certainCoreLength": 7.499999999999998,
+                        "possibleCoreLength": 8.333333333333332
+                      },
+                      {
+                        "interval": [
+                          10.437660365179719,
+                          86.86118549874601
+                        ],
+                        "certainCoreLength": 73.33333333333327,
+                        "possibleCoreLength": 74.44444444444436
+                      },
+                      {
+                        "interval": [
+                          86.86118549874601,
+                          100
+                        ],
+                        "certainCoreLength": 10.277777777777782,
+                        "possibleCoreLength": 10.83333333333334
+                      }
+                    ]
+                  },
+                  {
+                    "family": 1,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          12.278749238264066
+                        ],
+                        "certainCoreLength": 9.444444444444446,
+                        "possibleCoreLength": 10.000000000000004
+                      },
+                      {
+                        "interval": [
+                          12.278749238264066,
+                          87.98293855175575
+                        ],
+                        "certainCoreLength": 73.0555555555555,
+                        "possibleCoreLength": 73.61111111111104
+                      },
+                      {
+                        "interval": [
+                          87.98293855175575,
+                          100
+                        ],
+                        "certainCoreLength": 8.88888888888889,
+                        "possibleCoreLength": 9.722222222222225
+                      }
+                    ]
+                  }
+                ],
+                "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                "seconds": 0.06093724999999995,
+                "limitations": [
+                  "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                  "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                  "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                  "Small tips and features below the explicitly stated area threshold are not certified."
+                ]
+              }
+            },
+            "features": {
+              "passed": true,
+              "referenceAvailable": true,
+              "minimumRetention": 0.6,
+              "minimumAreaFraction": 0.0003,
+              "minimumCoreRadiusFraction": 0.005,
+              "borderClearancePixels": 1,
+              "regions": [
+                {
+                  "value": 0,
+                  "areaMm2": 111.84000000000002,
+                  "centerMm": [
+                    58.935336194563654,
+                    30.188555078683834
+                  ],
+                  "retainedFraction": 0.9871244635193133
+                },
+                {
+                  "value": 0,
+                  "areaMm2": 189.60000000000002,
+                  "centerMm": [
+                    48.89130801687764,
+                    45.04354430379747
+                  ],
+                  "retainedFraction": 0.9957805907172996
+                },
+                {
+                  "value": 0,
+                  "areaMm2": 63.84000000000001,
+                  "centerMm": [
+                    36.57694235588973,
+                    54.92581453634085
+                  ],
+                  "retainedFraction": 0.9874686716791979
+                }
+              ],
+              "missing": [],
+              "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+            },
+            "independentImageError": 0.008272
+          },
+          "refinedGeometrySha256": "4ea8788ddae099a25686851ca300785705748bd34b3faf55db8aa2904d2411e6",
+          "enginePassed": false
+        },
+        {
+          "smoothRadius": 0.5,
+          "counts": [
+            2,
+            2
+          ],
+          "before": {
+            "geometry": {
+              "passed": false,
+              "issues": [
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 0,
+                  "curves": [
+                    10,
+                    12
+                  ],
+                  "parameters": [
+                    0.6637228083982211,
+                    0
+                  ],
+                  "points": [
+                    [
+                      46.201749417472186,
+                      57.03004982336874
+                    ],
+                    [
+                      45.6,
+                      58.400000000000006
+                    ]
+                  ],
+                  "distanceUpper": 1.4962840131071855,
+                  "required": 1.5,
+                  "arcSeparation": 9.523877360731689,
+                  "edgeChain": [
+                    10,
+                    11,
+                    12
+                  ]
+                }
+              ],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 6.636326557611692,
+              "minimumOuterSideClearance": 10.8,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": null,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ]
+            },
+            "paper": {
+              "passed": true,
+              "status": "pass",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        10.8
+                      ],
+                      "certainCoreLength": 8.055555555555554,
+                      "possibleCoreLength": 8.61111111111111
+                    },
+                    {
+                      "interval": [
+                        10.8,
+                        86
+                      ],
+                      "certainCoreLength": 72.22222222222219,
+                      "possibleCoreLength": 73.0555555555555
+                    },
+                    {
+                      "interval": [
+                        86,
+                        100
+                      ],
+                      "certainCoreLength": 11.111111111111118,
+                      "possibleCoreLength": 11.944444444444454
+                    }
+                  ],
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "resolution": [
+                    360,
+                    1080
+                  ],
+                  "originY": -50,
+                  "map": null,
+                  "minimumDiameter": 2.50501002004008
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        12.4
+                      ],
+                      "certainCoreLength": 9.444444444444446,
+                      "possibleCoreLength": 10.277777777777782
+                    },
+                    {
+                      "interval": [
+                        12.4,
+                        86.80000000000001
+                      ],
+                      "certainCoreLength": 71.38888888888887,
+                      "possibleCoreLength": 72.49999999999996
+                    },
+                    {
+                      "interval": [
+                        86.80000000000001,
+                        100
+                      ],
+                      "certainCoreLength": 10.277777777777782,
+                      "possibleCoreLength": 11.111111111111118
+                    }
+                  ],
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "resolution": [
+                    360,
+                    1080
+                  ],
+                  "originY": -50,
+                  "map": null,
+                  "minimumDiameter": 2.50501002004008
+                }
+              ],
+              "summary": {
+                "status": "pass",
+                "requiredRemainingWidth": 2,
+                "nominalDiameter": 2.50501002004008,
+                "gridSpacing": 0.2777777777777778,
+                "clearanceGuard": 0.20641855032959658,
+                "families": [
+                  {
+                    "family": 0,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          10.8
+                        ],
+                        "certainCoreLength": 8.055555555555554,
+                        "possibleCoreLength": 8.61111111111111
+                      },
+                      {
+                        "interval": [
+                          10.8,
+                          86
+                        ],
+                        "certainCoreLength": 72.22222222222219,
+                        "possibleCoreLength": 73.0555555555555
+                      },
+                      {
+                        "interval": [
+                          86,
+                          100
+                        ],
+                        "certainCoreLength": 11.111111111111118,
+                        "possibleCoreLength": 11.944444444444454
+                      }
+                    ]
+                  },
+                  {
+                    "family": 1,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          12.4
+                        ],
+                        "certainCoreLength": 9.444444444444446,
+                        "possibleCoreLength": 10.277777777777782
+                      },
+                      {
+                        "interval": [
+                          12.4,
+                          86.80000000000001
+                        ],
+                        "certainCoreLength": 71.38888888888887,
+                        "possibleCoreLength": 72.49999999999996
+                      },
+                      {
+                        "interval": [
+                          86.80000000000001,
+                          100
+                        ],
+                        "certainCoreLength": 10.277777777777782,
+                        "possibleCoreLength": 11.111111111111118
+                      }
+                    ]
+                  }
+                ],
+                "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                "seconds": 0.03827341699999988,
+                "limitations": [
+                  "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                  "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                  "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                  "Small tips and features below the explicitly stated area threshold are not certified."
+                ]
+              }
+            },
+            "independentImageError": 0.018752
+          },
+          "refinementSeconds": 0.4556751670000001,
+          "steps": 160,
+          "history": [
+            {
+              "step": -1,
+              "error": 0.018928,
+              "score": 0.022697068039035984,
+              "primitives": {
+                "curved": 52,
+                "straight": 28
+              },
+              "straightened": true,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 0,
+                  "curves": [
+                    10,
+                    12
+                  ],
+                  "parameters": [
+                    0.6637228083982211,
+                    0
+                  ],
+                  "points": [
+                    [
+                      46.201749417472186,
+                      57.03004982336874
+                    ],
+                    [
+                      45.6,
+                      58.400000000000006
+                    ]
+                  ],
+                  "distanceUpper": 1.4962840131071855,
+                  "required": 1.5,
+                  "arcSeparation": 9.523877360731689,
+                  "edgeChain": [
+                    10,
+                    11,
+                    12
+                  ]
+                }
+              ]
+            },
+            {
+              "step": -1,
+              "error": 0.019024,
+              "score": 0.022739022217162536,
+              "primitives": {
+                "curved": 60,
+                "straight": 20
+              },
+              "straightened": false,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 0,
+                  "curves": [
+                    10,
+                    12
+                  ],
+                  "parameters": [
+                    0.6637228083982211,
+                    0
+                  ],
+                  "points": [
+                    [
+                      46.201749417472186,
+                      57.03004982336874
+                    ],
+                    [
+                      45.6,
+                      58.400000000000006
+                    ]
+                  ],
+                  "distanceUpper": 1.4962840131071855,
+                  "required": 1.5,
+                  "arcSeparation": 9.523877360731689,
+                  "edgeChain": [
+                    10,
+                    11,
+                    12
+                  ]
+                }
+              ]
+            },
+            {
+              "step": 0,
+              "error": 0.018864,
+              "score": 0.022704148385835426,
+              "primitives": {
+                "curved": 52,
+                "straight": 28
+              },
+              "straightened": true,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 0,
+                  "curves": [
+                    10,
+                    12
+                  ],
+                  "parameters": [
+                    0.6637222464880673,
+                    0
+                  ],
+                  "points": [
+                    [
+                      46.20179700268888,
+                      57.029959230663096
+                    ],
+                    [
+                      45.60002439459849,
+                      58.39994589671012
+                    ]
+                  ],
+                  "distanceUpper": 1.4963267480716074,
+                  "required": 1.5,
+                  "arcSeparation": 9.523995825543475,
+                  "edgeChain": [
+                    10,
+                    11,
+                    12
+                  ]
+                }
+              ]
+            },
+            {
+              "step": 0,
+              "error": 0.019104,
+              "score": 0.02335652375579872,
+              "primitives": {
+                "curved": 80,
+                "straight": 0
+              },
+              "straightened": false,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "short_self_clearance",
+                  "family": 0,
+                  "slit": 0,
+                  "curves": [
+                    10,
+                    12
+                  ],
+                  "parameters": [
+                    0.6637222464880673,
+                    0
+                  ],
+                  "points": [
+                    [
+                      46.20179700268888,
+                      57.029959230663096
+                    ],
+                    [
+                      45.60002439459849,
+                      58.39994589671012
+                    ]
+                  ],
+                  "distanceUpper": 1.4963267480716074,
+                  "required": 1.5,
+                  "arcSeparation": 9.523995825543475,
+                  "edgeChain": [
+                    10,
+                    11,
+                    12
+                  ]
+                }
+              ]
+            },
+            {
+              "step": 40,
+              "error": 0.011232,
+              "score": 0.01826518631853069,
+              "primitives": {
+                "curved": 80,
+                "straight": 0
+              },
+              "straightened": false,
+              "geometry": true,
+              "paper": "pass",
+              "issues": []
+            },
+            {
+              "step": 80,
+              "error": 0.009696,
+              "score": 0.017281396034408092,
+              "primitives": {
+                "curved": 80,
+                "straight": 0
+              },
+              "straightened": false,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "maximum_turn",
+                  "family": 0,
+                  "slit": 1,
+                  "angle": 178.48211056403326
+                }
+              ]
+            },
+            {
+              "step": 120,
+              "error": 0.01024,
+              "score": 0.01753910342228865,
+              "primitives": {
+                "curved": 80,
+                "straight": 0
+              },
+              "straightened": false,
+              "geometry": false,
+              "issues": [
+                {
+                  "type": "maximum_turn",
+                  "family": 0,
+                  "slit": 1,
+                  "angle": 175.87999192124383
+                },
+                {
+                  "type": "self_intersection",
+                  "family": 0,
+                  "slit": 1
+                },
+                {
+                  "type": "maximum_turn",
+                  "family": 1,
+                  "slit": 1,
+                  "angle": 177.57353090228835
+                }
+              ]
+            },
+            {
+              "step": 159,
+              "error": 0.0104,
+              "score": 0.017700369481184308,
+              "primitives": {
+                "curved": 80,
+                "straight": 0
+              },
+              "straightened": false,
+              "geometry": true,
+              "paper": "pass",
+              "issues": []
+            }
+          ],
+          "after": {
+            "geometry": {
+              "passed": true,
+              "issues": [],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 6.371995162608303,
+              "minimumOuterSideClearance": 10.432418872729864,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": 0,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ]
+            },
+            "paper": {
+              "passed": true,
+              "status": "pass",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        10.432418872729864
+                      ],
+                      "certainCoreLength": 7.499999999999998,
+                      "possibleCoreLength": 8.333333333333332
+                    },
+                    {
+                      "interval": [
+                        10.432418872729864,
+                        86.46390770528477
+                      ],
+                      "certainCoreLength": 73.0555555555555,
+                      "possibleCoreLength": 74.16666666666659
+                    },
+                    {
+                      "interval": [
+                        86.46390770528477,
+                        100
+                      ],
+                      "certainCoreLength": 10.55555555555556,
+                      "possibleCoreLength": 11.388888888888896
+                    }
+                  ],
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "resolution": [
+                    360,
+                    1080
+                  ],
+                  "originY": -50,
+                  "map": null,
+                  "minimumDiameter": 2.50501002004008
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        12.295484605356867
+                      ],
+                      "certainCoreLength": 9.444444444444446,
+                      "possibleCoreLength": 10.277777777777782
+                    },
+                    {
+                      "interval": [
+                        12.295484605356867,
+                        87.26451907375078
+                      ],
+                      "certainCoreLength": 71.94444444444441,
+                      "possibleCoreLength": 72.77777777777773
+                    },
+                    {
+                      "interval": [
+                        87.26451907375078,
+                        100
+                      ],
+                      "certainCoreLength": 9.722222222222225,
+                      "possibleCoreLength": 10.55555555555556
+                    }
+                  ],
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "resolution": [
+                    360,
+                    1080
+                  ],
+                  "originY": -50,
+                  "map": null,
+                  "minimumDiameter": 2.50501002004008
+                }
+              ],
+              "summary": {
+                "status": "pass",
+                "requiredRemainingWidth": 2,
+                "nominalDiameter": 2.50501002004008,
+                "gridSpacing": 0.2777777777777778,
+                "clearanceGuard": 0.20641855032959658,
+                "families": [
+                  {
+                    "family": 0,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          10.432418872729864
+                        ],
+                        "certainCoreLength": 7.499999999999998,
+                        "possibleCoreLength": 8.333333333333332
+                      },
+                      {
+                        "interval": [
+                          10.432418872729864,
+                          86.46390770528477
+                        ],
+                        "certainCoreLength": 73.0555555555555,
+                        "possibleCoreLength": 74.16666666666659
+                      },
+                      {
+                        "interval": [
+                          86.46390770528477,
+                          100
+                        ],
+                        "certainCoreLength": 10.55555555555556,
+                        "possibleCoreLength": 11.388888888888896
+                      }
+                    ]
+                  },
+                  {
+                    "family": 1,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          12.295484605356867
+                        ],
+                        "certainCoreLength": 9.444444444444446,
+                        "possibleCoreLength": 10.277777777777782
+                      },
+                      {
+                        "interval": [
+                          12.295484605356867,
+                          87.26451907375078
+                        ],
+                        "certainCoreLength": 71.94444444444441,
+                        "possibleCoreLength": 72.77777777777773
+                      },
+                      {
+                        "interval": [
+                          87.26451907375078,
+                          100
+                        ],
+                        "certainCoreLength": 9.722222222222225,
+                        "possibleCoreLength": 10.55555555555556
+                      }
+                    ]
+                  }
+                ],
+                "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                "seconds": 0.027978665999999975,
+                "limitations": [
+                  "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                  "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                  "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                  "Small tips and features below the explicitly stated area threshold are not certified."
+                ]
+              }
+            },
+            "features": {
+              "passed": true,
+              "referenceAvailable": true,
+              "minimumRetention": 0.6,
+              "minimumAreaFraction": 0.0003,
+              "minimumCoreRadiusFraction": 0.005,
+              "borderClearancePixels": 1,
+              "regions": [
+                {
+                  "value": 0,
+                  "areaMm2": 111.84000000000002,
+                  "centerMm": [
+                    58.935336194563654,
+                    30.188555078683834
+                  ],
+                  "retainedFraction": 0.9885550786838341
+                },
+                {
+                  "value": 0,
+                  "areaMm2": 189.60000000000002,
+                  "centerMm": [
+                    48.89130801687764,
+                    45.04354430379747
+                  ],
+                  "retainedFraction": 0.9957805907172996
+                },
+                {
+                  "value": 0,
+                  "areaMm2": 63.84000000000001,
+                  "centerMm": [
+                    36.57694235588973,
+                    54.92581453634085
+                  ],
+                  "retainedFraction": 0.9724310776942355
+                }
+              ],
+              "missing": [],
+              "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+            },
+            "independentImageError": 0.010336
+          },
+          "refinedGeometrySha256": "988a8e1c418ddcc3a3c278ba3bfc45369e47703d0272393bc1edfb2ee39e8c18",
+          "enginePassed": true,
+          "editable": {
+            "issues": [],
+            "fidelity": {
+              "passed": true,
+              "maximumWeaveDrift": 0.001,
+              "weaveDrift": [
+                {
+                  "resolution": 250,
+                  "mismatch": 0.000128
+                },
+                {
+                  "resolution": 500,
+                  "mismatch": 0.000136
+                }
+              ],
+              "originalSourceError": 0.010416,
+              "sourceError": 0.010416
+            },
+            "physical": {
+              "geometry": {
+                "passed": true,
+                "issues": [],
+                "nominalWidthRequired": 2.50501002004008,
+                "minimumInterSlitDistanceLower": 6.371995162608316,
+                "minimumOuterSideClearance": 10.432418872729865,
+                "boundaryParityMatches": true,
+                "forwardSampleMismatchPixels": 0,
+                "forwardBoundaryAmbiguousPixels": 0,
+                "forwardSampleResolution": 101,
+                "geometryTolerance": 0.01,
+                "sharedCurvesStoredOnce": true,
+                "physicalAssemblyTested": false,
+                "limitations": [
+                  "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                  "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                  "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                  "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                ]
+              },
+              "paper": {
+                "status": "pass",
+                "requiredRemainingWidth": 2,
+                "nominalDiameter": 2.50501002004008,
+                "gridSpacing": 0.2777777777777778,
+                "clearanceGuard": 0.20641855032959658,
+                "families": [
+                  {
+                    "family": 0,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          10.432418872729865
+                        ],
+                        "certainCoreLength": 7.499999999999998,
+                        "possibleCoreLength": 8.333333333333332
+                      },
+                      {
+                        "interval": [
+                          10.432418872729865,
+                          86.46390770528478
+                        ],
+                        "certainCoreLength": 73.0555555555555,
+                        "possibleCoreLength": 74.16666666666659
+                      },
+                      {
+                        "interval": [
+                          86.46390770528478,
+                          100
+                        ],
+                        "certainCoreLength": 10.55555555555556,
+                        "possibleCoreLength": 11.388888888888896
+                      }
+                    ]
+                  },
+                  {
+                    "family": 1,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          12.295484605356869
+                        ],
+                        "certainCoreLength": 9.444444444444446,
+                        "possibleCoreLength": 10.277777777777782
+                      },
+                      {
+                        "interval": [
+                          12.295484605356869,
+                          87.26451907375076
+                        ],
+                        "certainCoreLength": 71.94444444444441,
+                        "possibleCoreLength": 72.77777777777773
+                      },
+                      {
+                        "interval": [
+                          87.26451907375076,
+                          100
+                        ],
+                        "certainCoreLength": 9.722222222222225,
+                        "possibleCoreLength": 10.55555555555556
+                      }
+                    ]
+                  }
+                ],
+                "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                "seconds": 0.03785779199999979,
+                "limitations": [
+                  "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                  "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                  "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                  "Small tips and features below the explicitly stated area threshold are not certified."
+                ]
+              },
+              "materialResolution": 360
+            },
+            "features": {
+              "passed": true,
+              "referenceAvailable": true,
+              "minimumRetention": 0.6,
+              "minimumAreaFraction": 0.0003,
+              "minimumCoreRadiusFraction": 0.005,
+              "borderClearancePixels": 1,
+              "regions": [
+                {
+                  "value": 0,
+                  "areaMm2": 111.84000000000002,
+                  "centerMm": [
+                    58.935336194563654,
+                    30.188555078683834
+                  ],
+                  "retainedFraction": 0.9828326180257511
+                },
+                {
+                  "value": 0,
+                  "areaMm2": 189.60000000000002,
+                  "centerMm": [
+                    48.89130801687764,
+                    45.04354430379747
+                  ],
+                  "retainedFraction": 0.9940928270042194
+                },
+                {
+                  "value": 0,
+                  "areaMm2": 63.84000000000001,
+                  "centerMm": [
+                    36.57694235588973,
+                    54.92581453634085
+                  ],
+                  "retainedFraction": 0.9699248120300752
+                }
+              ],
+              "missing": [],
+              "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+            },
+            "imageError": 0.010416,
+            "tolerance": 0.1
+          },
+          "editablePassed": true
+        }
+      ]
+    },
+    "limitations": [
+      "Captured first rejected proposals are initial conditions, not cutting ground truth or fresh solver outputs.",
+      "Refinement timings exclude graph search, setup and editable conversion.",
+      "The less-smoothed control remains geometrically illegal despite lower image disagreement.",
+      "A production repair scheduling policy has not been implemented or benchmarked."
+    ]
+  },
+  "validation": {
+    "initialChecks": [
+      {
+        "command": [
+          "python3",
+          "scripts/inverse/learning/test.py"
+        ],
+        "exitCode": 0,
+        "seconds": 23.819720542000002,
+        "log": "tmp/heart-learning/real-adaptation-v1/validation-0.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 9.410605833000002,
+        "log": "tmp/heart-learning/real-adaptation-v1/validation-1.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.619998625000001,
+        "log": "tmp/heart-learning/real-adaptation-v1/validation-2.log"
+      },
+      {
+        "command": [
+          "./node_modules/.bin/vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 36.868477416000005,
+        "log": "tmp/heart-learning/real-adaptation-v1/validation-3.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 1,
+        "seconds": 697.431957,
+        "log": "tmp/heart-learning/real-adaptation-v1/validation-4.log"
+      }
+    ],
+    "followupChecks": [
+      {
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "scripts/inverse/coarse-topology.test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 8.954368082999999,
+        "log": "tmp/heart-learning/real-adaptation-v1/followup-validation-0.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.0326154160000005,
+        "log": "tmp/heart-learning/real-adaptation-v1/followup-validation-1.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 13.108877875000001,
+        "log": "tmp/heart-learning/real-adaptation-v1/followup-validation-2.log"
+      }
+    ],
+    "browser": {
+      "passed": true,
+      "pages": [
+        {
+          "folder": "review/index.html",
+          "images": 70,
+          "errors": []
+        },
+        {
+          "folder": "pipeline-gallery.html",
+          "images": 88,
+          "errors": []
+        },
+        {
+          "folder": "rejected-routing-verified/index.html",
+          "images": 4,
+          "errors": []
+        }
+      ]
+    },
+    "inverseSuite": {
+      "passed": 757,
+      "failed": 1,
+      "total": 758,
+      "failure": "coarse routing and common refinement retain photographed tree branches in exported templates: expected coarseTopologyInitialization.accepted true, got undefined",
+      "isolatedInstrumentedRerun": "2/2 passed with exported image and branch checks; original failed output geometry was not captured",
+      "isolatedUnmodifiedRerun": "See followupChecks; no acceptance assertion or production code was changed",
+      "overallFullSuitePassed": false
+    },
+    "pythonTests": 56,
+    "appTests": {
+      "passed": 855,
+      "skipped": 1
+    }
+  },
+  "localArtifacts": {
+    "tmp/heart-learning/real-adaptation-v1/report.json": "d1a66ccfbf032a8768420edac79175a3b080f8277832482c45fc50620ceb3ca0",
+    "tmp/heart-learning/real-adaptation-v1/review/audit.json": "b16c83585c86143326ad47ebe8621562a90f3cd17976b0ae0d46251a4a603fd8",
+    "tmp/heart-learning/real-adaptation-v1/draws.json": "8bb44cceec98a7154150a5c79aa55ec541e79e012e0329e0d65a193bb3d6d6db",
+    "tmp/heart-learning/real-adaptation-v1/pipeline-summary.json": "a8ab8fbff277478e11727f83d4fbf74918fbf2a10c129512ea8620c251460d06",
+    "tmp/heart-learning/real-adaptation-v1/checks.json": "1b51a7eda7ac141d10a003ff8a60bb8ce400253f2a0c490a34cd854d690e4097",
+    "tmp/heart-learning/real-adaptation-v1/tree-recheck.log": "ee59790d68999c64e8554fa11c3a735b38c1386fef4b1fe447221b752a359e40",
+    "tmp/heart-learning/real-adaptation-v1/tree-recheck-report.json": "c670361fb5cfc8af251d2b782ecfb4416c83860d07267c74e7b97934ebd11b1e",
+    "tmp/heart-learning/real-adaptation-v1/tree-recheck-cuts.json": "befb3cc29648b65ed6f2893c6a98b0c8ff6bc8b4cba641565252a00b20fdf9d0",
+    "tmp/heart-learning/real-adaptation-v1/followup-checks.json": "bfb064dfc3264195b4b9c8ffeb28c77490e33003f9478fc4b4ac35599fba5cf5",
+    "tmp/heart-learning/real-adaptation-v1/gallery-check.json": "6c10e3779289eee71cdd2628755306ac8248fb737c2353589e08f4b324900449",
+    "tmp/heart-learning/real-adaptation-v1/sloth-trace-control/report.json": "b3ef90dd3b5095a8830ed817d259970121fe11adf7a102a935ceee807a2b363d",
+    "tmp/heart-learning/real-adaptation-v1/sloth-trace-smoother/report.json": "88e6a9d3c9f96bf71f2ecc335e7bc2264b747074614aa5dd5da2f85174d9bb39",
+    "tmp/heart-learning/real-adaptation-v1/rejected-routing-verified/report.json": "5ea226570bd6123e7e1fd49db52ef682a7677d503592fe3579e740f17bb6e583",
+    "tmp/heart-learning/real-adaptation-v1/rejected-routing-verified/0.3-diagnostic.json": "4ea8788ddae099a25686851ca300785705748bd34b3faf55db8aa2904d2411e6",
+    "tmp/heart-learning/real-adaptation-v1/rejected-routing-verified/0.5-diagnostic.json": "988a8e1c418ddcc3a3c278ba3bfc45369e47703d0272393bc1edfb2ee39e8c18",
+    "tmp/heart-learning/real-adaptation-v1/rejected-routing-verified/0.5-editable.svg": "cb1a758a062dd1d051218ccfd21bb51a047f77b269640571a780387de4f42dd0",
+    "tmp/heart-learning/real-adaptation-v1/preview-check.json": "f3b9979e6fdfeaf0aa971aab73e82640a60865b294a967c6af647a6a990f7ff5"
+  },
+  "diagnosticHarnessFailures": [
+    {
+      "stage": "initial adaptation audit helper",
+      "reason": "Import path order failed before producing replay inputs; corrected in b33cce6."
+    },
+    {
+      "stage": "initial pipeline attempt",
+      "reason": "Missing probe after failed helper; exited before loading any case."
+    },
+    {
+      "stage": "initial short-return instrumentation",
+      "reason": "Copied module used a data-URL import.meta.url for the WASM path; fixed original module base."
+    },
+    {
+      "stage": "initial provisional capture",
+      "reason": "JSON.parse was applied to an already structured solutionJSON object; corrected before refinement."
+    },
+    {
+      "stage": "first gallery-enabled standalone replay",
+      "reason": "SSR loader attempted default websocket port; completed but emitted a warning. Final runner explicitly disables websockets and was rerun."
+    }
+  ]
+}
