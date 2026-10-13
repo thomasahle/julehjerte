@@ -126,6 +126,12 @@ not evidence of a better complete solver or real-photo reconstruction.
 
 ## What the network should learn
 
+The [full-photo foreground labels](foreground-supervision.md) add physical
+paper/background supervision for all 768 existing synthetic views, including
+both lobes and both paper colours. They preserve the original images and recipe
+splits. This supports a separate full-photo localization task; no foreground
+network has been trained or added to the website yet.
+
 Start with rectified RGB plus the existing uncertain color mask. Predict paper
 membership, visible boundaries, junctions and border endpoints. Score a small
 set of proposed connections using those features. Keep the MILP, curve
