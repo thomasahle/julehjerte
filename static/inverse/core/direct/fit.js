@@ -623,6 +623,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const polishing=orbitObjective(Float64Array.from(source.mask),source.resolution,orbit,weights);
     let polished=stage('directPolishing',()=>polishCandidate(candidate,polishing.probability,source.resolution,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
     polished.imagePassed=assess(polished);
+    // The ordinary refiner return prioritizes a coarse paper pass. A better
+    // geometry-valid checkpoint can remain uncertain only because that paper
+    // lattice is too coarse. Recheck the retained coordinates before losing
+    // them, even when the ordinary polish is already an acceptable fit.
+    if((polished.paperVerification?.resolution??cfg.materialResolution)<700&&polished.paperAlternative&&(!polished.imagePassed||polished.paperAlternative.error<polished.error)){
+      const alternative={...polished,...polished.paperAlternative,paperAlternative:null,paperVerification:null};
+      alternative.imagePassed=assess(alternative);
+      if(alternative.imagePassed&&alternative.originalImageError<candidate.originalImageError&&(!polished.imagePassed||alternative.originalImageError<polished.originalImageError)){
+        alternative.paperVerification={...alternative.paperVerification,source:'polishing-alternative',incumbentImageError:polished.originalImageError};
+        polished=alternative;
+      }
+    }
     // A better polish may still stop at the extra clearance cushion. Try the
     // same checked correction before discarding it, keeping time for export.
     if(!polished.imagePassed&&polished.originalImageError<=candidate.originalImageError)polished=recoverClampedCandidate(polished,{reserve:500,phase:'polishing'})||polished;

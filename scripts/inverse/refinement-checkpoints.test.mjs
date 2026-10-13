@@ -85,3 +85,23 @@ test('fresh photographic fitting selects and exports the finer-verified alternat
   assert.ok(mismatch(rendered.mask,crop.preview.mask)<.03);
   assert.equal(auditImageFeatures(input.sourceImage,rendered.mask).passed,true);
 });
+
+test('an already acceptable polish retains its better finer-verified checkpoint',async()=>{
+  const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/blue-star-polishing.json'));
+  const photo=await readHardPhoto(fixture.source),cfg={...AUTOMATIC_PRESET,trials:0,timeLimit:10};
+  const crop=prepare({...photo,quad:fixture.quad},cfg),mask=crop.preview.mask.slice();
+  assert.equal(createHash('sha256').update(mask).digest('hex'),fixture.maskSha256);
+  const input=prepare({type:'mask',mask,resolution:crop.preview.resolution},{...cfg,invert:false,removeSpecks:0,fillHoles:0}).target;
+  const answer=await design(input,cfg),verification=answer.report.solver.paperVerification;
+  assert.equal(answer.report.templateChecksPassed,true);
+  assert.equal(verification?.source,'polishing-alternative');
+  assert.equal(verification.initialStatus,'uncertain');assert.equal(verification.status,'pass');
+  assert.equal(verification.requestedResolution,360);assert.equal(verification.resolution,700);
+  assert.equal(answer.report.settings.materialResolution,700,'Export rechecks the same finer paper lattice');
+  const requested=settings(cfg);
+  for(const key of ['width','minWidth','cutError','kerf','geometryTolerance','nominalWidth'])assert.equal(answer.report.settings[key],requested[key]);
+  const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],mask.length**.5);
+  assert.ok(mismatch(rendered.mask,mask)<.0056,'The discarded checkpoint improves the former 0.596% source disagreement');
+  assert.equal(auditImageFeatures(input.sourceImage,rendered.mask).passed,true);
+  assert.deepEqual(mask,crop.preview.mask);assert.deepEqual(input.sourceImage.mask,mask);
+});
