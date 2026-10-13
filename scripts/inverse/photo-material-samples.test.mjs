@@ -62,7 +62,7 @@ test('the blue-star observations retain the frozen original-photo review and exp
  const catalog=JSON.parse(await fs.readFile(new URL('./fixtures/photo-material-samples.json',import.meta.url))),a=catalog.cases.find(r=>r.id==='bibel-star-outline');
  const bytes=await fs.readFile(new URL('../../docs/inverse/datasets/blue-star-material-observations.json',import.meta.url));
  assert.equal(createHash('sha256').update(bytes).digest('hex'),a.review.frozenSha256);
- const {review,...observations}=a;assert.deepEqual(observations,JSON.parse(bytes).cases[0]);
+ const {review:_review,...observations}=a;assert.deepEqual(observations,JSON.parse(bytes).cases[0]);
  // Frozen predictions from two offline models, not asserted physical corners.
  const full=[[509.0754771093246,139.90881205644737],[734.0535093713297,382.1892973114441],[501.0947867786813,612.3317319644113],[269.0034779973999,366.68254794957005]];
  const clipped=[[513.3545428148515,146.27395317629365],[727.2435237755178,382.2806819789985],[485.55361224150624,596.6805118169444],[273.4449956033525,371.1741352002313]];

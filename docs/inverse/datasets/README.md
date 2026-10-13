@@ -72,6 +72,15 @@ The final production replay recovers the shifted mask in 8.75 seconds with
 1.48% editable disagreement. The [release record](routing-timeout.json) pins
 the full verification; no new corpus-wide improvement is claimed.
 
+A [fresh neural fallback replay](neural-fallback-current.md) now passes the two
+frozen foreground models through the current binary-mask fitter on the three
+production no-crop failures. Both recover a numerical blue-star pair; neither
+recovers nested squares or Santa. The background proposal retains all 28 frozen
+source observations, while the scene proposal crops away one border detail
+despite its lower mask error. Visible curve artifacts remain. Source-photo QA
+is now built into the offline replay; no model is enabled in the website and
+the production benchmark remains 24/31.
+
 A read-only [neural fallback source review](neural-fallback-source-review.md)
 checks 28 frozen original-photo observations on the blue outlined star against
 existing offline outputs. The background model retains 28/28; the scene model
