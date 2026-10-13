@@ -13,6 +13,7 @@ import torch
 from data import digest
 from foreground import ForegroundCorpus, ForegroundNet, foreground_loss, foreground_metrics, infer, tensors
 from foreground_augments import training_variants
+from foreground_scenes import training_scenes
 
 
 def comparison(items, predictions, output):
@@ -38,6 +39,7 @@ def main():
     parser.add_argument('--initialization', choices=['random', 'imagenet'], required=True)
     parser.add_argument('--checkpoint-directory', default='tmp/heart-training-models/torchvision')
     parser.add_argument('--training-probe', action='append', default=[], help='Controlled background variants; only original training views are allowed')
+    parser.add_argument('--scene-probe', action='append', default=[], help='Paired scene variants for every training background choice')
     parser.add_argument('--epochs', type=int, default=20)
     parser.add_argument('--batch-size', type=int, default=8)
     parser.add_argument('--seed', type=int, default=1729)
@@ -50,7 +52,7 @@ def main():
     device = torch.device(args.device)
     report = {'schema': 'woven-heart-foreground-learning-1', 'status': 'loading', 'arguments': vars(args),
               'sourceCommit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
-              'sourceHashes': {name: digest((Path(__file__).parent/name).read_bytes()) for name in ['foreground.py', 'foreground-train.py', 'foreground_augments.py', 'model.py', 'data.py']},
+              'sourceHashes': {name: digest((Path(__file__).parent/name).read_bytes()) for name in ['foreground.py', 'foreground-train.py', 'foreground_augments.py', 'foreground_scenes.py', 'model.py', 'data.py']},
               'runtime': {'python': platform.python_version(), 'torch': torch.__version__, 'device': str(device), 'threads': 2},
               'policy': {'input': 'RGB only, 256 square, bilinear resize; no target, ROI corners or paper classifier input',
                          'label': 'Full physical paper occupancy at pixel centres, reprojected to network resolution',
@@ -73,7 +75,14 @@ def main():
             if len(items) % 64 == 0: print('loaded', len(items), '/', len(corpus.rows), flush=True)
         report['sources'] = corpus.sources
         variants, report['trainingVariantSources'] = training_variants(corpus, items, args.training_probe)
+        scenes, report['sceneVariantSources'] = training_scenes(corpus, items, variants, args.scene_probe)
         variant_rng = np.random.default_rng(args.seed+1009)
+        scene_rng = np.random.default_rng(args.seed+2027)
+        report['sceneSampling'] = {'seed': args.seed+2027, 'pairedChoices': len(scenes), 'probability': .5 if scenes else 0,
+                                   'policy': 'Choose the original background using the unchanged RNG, then independently toggle its scene counterpart. Input order, backgrounds, reflection draws and update count remain unchanged.'}
+        if scenes:
+            report['limitations'][0] = 'Procedural selected basket bodies with copied neighbours and a straight handle behind them; no target occlusion or real photograph supervision.'
+            report['policy']['label'] = 'Selected basket body (overlap and lobes), excluding its handle and other hearts; exact physical footprint at pixel centres.'
         report['variantSampling'] = {'seed': args.seed+1009, 'augmentedSourceViews': len(variants),
                                      'additionalViews': sum(len(v) for v in variants.values()),
                                      'policy': 'Choose uniformly between the original photograph and its available variants once per source view per epoch. Training order, reflection draws and update count are unchanged.'}
@@ -88,6 +97,7 @@ def main():
         best = float('inf'); report['status'] = 'training'; save()
         for epoch in range(args.epochs):
             started = time.perf_counter(); model.train(); total = 0.
+            background_draws, scene_draws = [], []
             order = rng.permutation(len(splits['train']))
             # Avoid a singleton batch at the encoder's batch-normalization layers.
             batches = list(np.array_split(order, max(1, len(order)//args.batch_size)))
@@ -95,7 +105,10 @@ def main():
                 batch = []
                 for i in indices:
                     base = splits['train'][i]; choices = [base, *variants.get(base['id'], [])]
-                    batch.append(choices[variant_rng.integers(len(choices))] if len(choices) > 1 else base)
+                    chosen = choices[variant_rng.integers(len(choices))] if len(choices) > 1 else base
+                    use_scene = bool(scenes) and scene_rng.random() < .5
+                    background_draws.append(chosen['id']); scene_draws.append(use_scene)
+                    batch.append(scenes[chosen['id']] if use_scene else chosen)
                 rgb, target = tensors(batch, device)
                 if rng.random() < .5: rgb, target = rgb.flip(-1), target.flip(-1)
                 if rng.random() < .5: rgb, target = rgb.flip(-2), target.flip(-2)
@@ -106,7 +119,8 @@ def main():
                 total += float(loss.detach().cpu())*len(batch)
             development_loss, _ = infer(model, splits['development'], device, args.batch_size)
             entry = {'epoch': epoch+1, 'trainLoss': total/len(order), 'developmentLoss': development_loss,
-                     'trainingViews': len(order), 'optimizerUpdates': len(batches), 'seconds': time.perf_counter()-started}
+                     'trainingViews': len(order), 'optimizerUpdates': len(batches), 'seconds': time.perf_counter()-started,
+                     'backgroundDrawsSha256': digest(json.dumps(background_draws).encode()), 'sceneViews': sum(scene_draws), 'sceneDrawsSha256': digest(json.dumps(scene_draws).encode())}
             report['history'].append(entry)
             if development_loss < best:
                 best = development_loss; report['selectedEpoch'] = epoch+1

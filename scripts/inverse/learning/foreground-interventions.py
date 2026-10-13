@@ -42,7 +42,12 @@ def main():
         labels = json.loads(checked_asset(root, row['assets']['labels.json']).read_text())
         image = Image.open(checked_asset(root, row['assets']['photo.jpg'])).convert('RGB')
         if image.size != (labels['resolution'], labels['resolution']): raise ValueError('Photo dimensions disagree')
-        items.append({'id': row['id'], 'sourceViewId': row['sourceViewId'], 'variant': row['variant'],
+        distractors = None
+        if 'photo-distractors.png' in row['assets']:
+            mask = Image.open(checked_asset(root, row['assets']['photo-distractors.png'])).convert('L')
+            if mask.size != image.size: raise ValueError('Distractor dimensions disagree')
+            distractors = np.asarray(mask.resize((256, 256), Image.Resampling.NEAREST)) > 0
+        items.append({'id': row['id'], 'sourceViewId': row['sourceViewId'], 'variant': row['variant'], 'distractors': distractors,
                       'rgb': np.asarray(image.resize((256, 256), Image.Resampling.BILINEAR)).copy(),
                       'target': physical_foreground(labels, 256).astype(np.float32), 'labels': labels})
     baselines = {i['sourceViewId']: i for i in items if i['variant'] == 'baseline'}
@@ -57,11 +62,17 @@ def main():
     for variant in [v['name'] for v in manifest['variants']]:
         indices = [j for j, i in enumerate(items) if i['variant'] == variant]
         report['metrics'][variant] = foreground_metrics([predictions[j] for j in indices], [items[j] for j in indices])
+        scored = [j for j in indices if items[j]['distractors'] is not None and items[j]['distractors'].any()]
+        report['metrics'][variant]['viewsWithDistractors'] = len(scored)
+        report['metrics'][variant]['distractorFalsePositive'] = float(np.mean([(predictions[j][items[j]['distractors']] >= .5).mean() for j in scored])) if scored else None
     for item, probability in zip(items, predictions):
         baseline = baselines[item['sourceViewId']]; original = baseline_predictions[item['sourceViewId']]
         core = binary_erosion(item['target'] > .5, iterations=8)
         delta = np.abs(item['rgb'].astype(float)-baseline['rgb'].astype(float))/255
+        distractors = item['distractors']
         report['paired'].append({'id': item['id'], 'sourceViewId': item['sourceViewId'], 'variant': item['variant'],
+                                 'distractorPixels': int(distractors.sum()) if distractors is not None else 0,
+                                 'distractorFalsePositive': float((probability[distractors] >= .5).mean()) if distractors is not None and distractors.any() else None,
                                  'foregroundPixels': int(item['target'].sum()), 'corePixels': int(core.sum()),
                                  'paperCoreMeanAbsoluteRGBChange': float(delta[core].mean()),
                                  'paperCoreMeanAbsolutePredictionChange': float(np.abs(probability[core]-original[core]).mean()),
