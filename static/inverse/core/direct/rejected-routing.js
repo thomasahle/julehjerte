@@ -34,8 +34,13 @@ export function visibleReturnEvidence(target,cfg){
 
 export function rejectedRoutingQuality(solution,cfg){
   const geometry=validate(solution,cfg,{checkImage:false}),issues=geometry.issues;
-  const shortReturnsOnly=issues.length>0&&issues.length<=2&&issues.every(i=>i.type==='short_self_clearance'&&i.required>0&&Number.isFinite(i.distanceUpper));
-  return{geometry,shortReturnsOnly,relativeDeficit:shortReturnsOnly?Math.max(...issues.map(i=>(i.required-i.distanceUpper)/i.required)):null};
+  // A long return can miss the same clearance rule as a short one. Its
+  // conservative chord-distance bound has a different required width. This
+  // only selects proposals for a bounded repair; it certifies no geometry.
+  const gaps=issues.map(i=>i.type==='short_self_clearance'?{distance:i.distanceUpper,required:i.required}:i.type==='nonlocal_self_clearance'?{distance:i.distanceLower,required:cfg.nominalWidth}:null);
+  const clearanceOnly=issues.length>0&&issues.length<=4&&gaps.every(g=>g&&g.required>0&&Number.isFinite(g.distance));
+  const relativeDeficit=clearanceOnly?Math.max(...gaps.map(g=>(g.required-g.distance)/g.required)):null;
+  return{geometry,clearanceOnly,relativeDeficit,repairable:clearanceOnly&&relativeDeficit<=.15};
 }
 
 export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,quality=null}={}){
@@ -44,7 +49,7 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
   if(until-started<250)return finish('insufficient_time');
   if(!input.sourceImage||input.sourceImage.weights||requestedSymmetry(cfg.symmetry).length)return finish('unsupported_constraints');
   const initial=quality||rejectedRoutingQuality(proposal,cfg);report.initialGeometry=initial.geometry;report.relativeDeficit=initial.relativeDeficit;
-  if(!initial.shortReturnsOnly||initial.relativeDeficit>.05)return finish('geometry_not_near_valid');
+  if(!initial.repairable)return finish('geometry_not_near_valid');
   const source=input.sourceImage,initialMask=sampleWeave(proposal,source.resolution);
   report.initialImageError=maskDisagreement(source,initialMask);
   if(report.initialImageError>cfg.maxImageError||!auditFeatureFidelity(source,initialMask,cfg).passed)return finish('initial_image');
@@ -60,9 +65,17 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
   report.geometry=validate(solution,cfg);report.imageError=maskDisagreement(source,woven);report.features=auditFeatureFidelity(source,woven,cfg);
   if(!report.geometry.passed||report.imageError>cfg.maxImageError||!report.features.passed)return finish('refinement_rejected');
   report.paper=materialAudit(solution,cfg).summary;
+  // Resolve a conservative lattice ambiguity just as the main fitter does.
+  // Uncertainty itself never passes, and every later edit must retain the
+  // finer verified lattice rather than reverting to the coarser one.
+  if(report.paper.status==='uncertain'&&cfg.materialResolution<700&&deadline-performance.now()>300){
+    const paper=materialAudit(solution,{...cfg,materialResolution:700});
+    report.paperVerification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:700,status:paper.status};
+    report.paper=paper.summary;
+  }
   if(report.paper.status!=='pass')return finish('paper_rejected');
   if(performance.now()>deadline)return finish('deadline');
   report.accepted=true;report.seconds=(performance.now()-started)/1000;
-  solution.report={status:'continuously_repaired',algorithm:'direct-bezier',rejectedRoutingRepair:report,physicalAssemblyTested:false};
+  solution.report={status:'continuously_repaired',algorithm:'direct-bezier',rejectedRoutingRepair:report,...(report.paperVerification?{paperVerification:report.paperVerification}:{}),physicalAssemblyTested:false};
   return{solution,report};
 }

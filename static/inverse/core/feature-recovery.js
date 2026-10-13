@@ -4,7 +4,7 @@ import {oppositeBorderSeeds} from './border.js';
 import {buildGraph,reindex,inspectBoundaryEndpoints} from './graph.js';
 import {solveBoundary} from './routing.js';
 import {sampleWeave,validate} from './validate.js';
-import {materialAudit} from './material.js';
+import {materialAudit,verifiedPaperSettings} from './material.js';
 import {auditFeatureFidelity} from './feature-shapes.js';
 import {visibleReturnEvidence,rejectedRoutingQuality,repairRejectedRouting} from './direct/rejected-routing.js';
 import {visibleMarginIssue} from './solver.js';
@@ -60,7 +60,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
           try{
             if(rejectedRepairUsed||remaining()<.75)return false;
             const quality=rejectedRoutingQuality(proposal,cfg);
-            if(!quality.shortReturnsOnly||quality.relativeDeficit>.05)return false;
+            if(!quality.repairable)return false;
             rejectedRepairUsed=true;
             const repaired=repairRejectedRouting(proposal,input,cfg,{deadline:start+seconds*1000,quality});
             attempt.continuousRepair={...repaired.report,integerCandidateSeconds:timing.elapsedSeconds};
@@ -159,7 +159,8 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
     const woven=sampleWeave(solution,source.resolution);
     let mismatch=0,observed=0;for(let i=0;i<woven.length;i++){if(source.validMask&&!source.validMask[i])continue;observed++;mismatch+=woven[i]!==source.mask[i];}
     report.imageError=mismatch/observed;report.features=auditFeatureFidelity(source,woven,cfg);
-    report.geometryPassed=validate(solution,cfg).passed;report.paperPassed=materialAudit(solution,cfg).passed;
+    const verifiedCfg=verifiedPaperSettings(solution,cfg);
+    report.geometryPassed=validate(solution,verifiedCfg).passed;report.paperPassed=materialAudit(solution,verifiedCfg).passed;
     report.accepted=report.imageError<=cfg.maxImageError&&report.features.passed&&report.geometryPassed&&(!cfg.requireMaterialCore||report.paperPassed);
     report.solver=solution.report;
     if(report.accepted)return{solution,report};

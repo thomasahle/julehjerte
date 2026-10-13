@@ -240,11 +240,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const seed=recovery.solution||recovery.refinementSeed;
     if(seed){
       const paths=seed.paths.map((family,f)=>family.map((_,i)=>curvesOf(seed,f,i).map(c=>c.p))),graph=new CurveGraph(paths,cfg.width),phase=seed.graph.target.phase?-1:1,counts=graph.families.map(f=>f.length);
+      const verification=seed.report?.paperVerification,recoveryCfg=verifiedPaperSettings(seed,cfg);
       // Refinement can move an endpoint or lose an already useful routing.
       // Keep the unchanged seed too; neither is a successful result until it
       // passes the same original-source gates as the independent grids.
-      const raw=graph.solution(graph.points,phase,input),validation=validate(raw,cfg),paper=materialAudit(raw,cfg);
-      recoveredCandidates.push({graph,points:graph.points.slice(),phase,counts,seed:'feature-recovery',error:mismatch(renderCurves(graph,graph.points,phase,n,32),prob),geometryPassed:validation.passed,paperPassed:paper.passed,validation,history:[]});
+      const raw=graph.solution(graph.points,phase,input),validation=validate(raw,recoveryCfg),paper=materialAudit(raw,recoveryCfg);
+      recoveredCandidates.push({graph,points:graph.points.slice(),phase,counts,seed:'feature-recovery',error:mismatch(renderCurves(graph,graph.points,phase,n,32),prob),geometryPassed:validation.passed,paperPassed:paper.passed,validation,history:[],...(verification?{paperVerification:verification}:{})});
       // A recovered routing can still differ substantially from the image.
       // Give it the normal polishing step count within the same time reserve;
       // eighty steps could return while the image fit was still improving.
@@ -253,13 +254,17 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // even with seconds left in the requested budget. Provisional routings
       // retain their small allowance before the remaining grid candidates.
       const polishDeadline=recovery.solution?until:Math.min(until,performance.now()+700);
-      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:polishDeadline,onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:graph.families.map(f=>f.length),...r},solution):undefined}));
+      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,recoveryCfg,{input,steps:160,rate:.008,selection:'mask',deadline:polishDeadline,onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>{
+        if(verification)solution.report={...solution.report,paperVerification:{...verification,status:r.paper}};
+        onProgress({stage:'directRefining',counts,...r},solution);
+      }:undefined}));
+      if(verification)candidate.paperVerification={...verification,status:candidate.paper?.status};
       candidate.counts=counts;candidate.seed='feature-recovery';recoveredCandidates.push(candidate);
       const solution=graph.solution(candidate.points,phase,input),woven=sampleWeave(solution,source.resolution);
       recovery.report.refinement={imageError:maskDisagreement(source,woven),featuresPassed:auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed,geometryPassed:candidate.geometryPassed,paperPassed:candidate.paperPassed,steps:candidate.steps};
       if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
-        solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
+        solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),...(candidate.paperVerification?{paperVerification:candidate.paperVerification}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
         return solution;
       }
     }
