@@ -7,7 +7,7 @@ import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {imageFeatures} from '../../static/inverse/core/image-features.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
-import {initializeFeatureSeeds} from '../../static/inverse/core/direct/feature-seeds.js';
+import {initializeFeatureSeeds,initializeFeatureSampling} from '../../static/inverse/core/direct/feature-seeds.js';
 import {borderEvidence} from '../../static/inverse/core/direct/counts.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
@@ -48,11 +48,27 @@ test('a discarded same-count start preserves the opening after a one-pixel crop 
   assert.deepEqual(result.seeds[0].model.counts,[3,3]);
 });
 
-for(const translation of [null,'horizontal'])test(`the ${translation||'original'} near-miss layout produces checked exports within the original short search`,async()=>{
+test('alternate sampling retains a vertical-shift opening without changing the counts or target',async()=>{
+  const {prepared,cfg:options}=await nearMiss('vertical'),source=prepared.target.sourceImage,cfg=settings(options),features=imageFeatures(source,cfg.width);
+  const missed=features.findIndex(f=>f.areaMm2<40&&f.centerMm[0]>50&&f.centerMm[1]>50);assert.ok(missed>=0);
+  const mask=source.mask.slice(),probability=source.probability.slice();
+  const result=initializeFeatureSampling({source,features,missed:[missed],counts:[3,3],cfg,evidence:borderEvidence(probability,source.resolution)});
+  assert.equal(result.report.initializationResolution,98);assert.equal(result.report.attempts.length,2);
+  assert.equal(result.seeds.length,1);assert.deepEqual(result.seeds[0].model.counts,[3,3]);
+  assert.equal(result.seeds[0].featuresPassed,true);assert.ok(result.seeds[0].error<=3*cfg.maxImageError);
+  assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+});
+
+for(const translation of [null,'horizontal','vertical'])test(`the ${translation||'original'} near-miss layout produces checked exports within the original short search`,async()=>{
   const {prepared,cfg}=await nearMiss(translation),source=prepared.target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
   const answer=await design(prepared.target,cfg);
   const initialization=answer.report.solver.earlyFeatureInitialization;
-  assert.equal((translation?initialization.alternativeRefinement:initialization.coarseRefinement).accepted,true);
+  assert.equal((translation==='horizontal'?initialization.alternativeRefinement:initialization.coarseRefinement).accepted,true);
+  if(translation==='vertical'){
+    assert.equal(answer.report.solver.samplingRecovery.scheduled,1);
+    assert.equal(answer.report.solver.selectedInitialization,'feature-sampling-grid');
+    assert.ok(answer.report.solver.candidates.some(c=>!c.imagePassed),'The unsuccessful original fit remains available.');
+  }else assert.equal(answer.report.solver.samplingRecovery,null,'An accepted fit must not pay for the fallback.');
   assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   assert.ok(answer.report.solver.seconds<10);

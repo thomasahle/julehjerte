@@ -94,3 +94,16 @@ test('retaining computed starts leaves every ordinary count winner unchanged',()
     }
   });
 });
+
+test('explicit ordinary sampling preserves count initialization with and without guidance',()=>{
+  const n=128,prob=Float64Array.from(gridMask(gridModel([2,3],16,91),n,-1));
+  const options=[1,-1].map(phase=>({counts:[2,3],phase}));
+  for(const guideProb of [null,prob]){
+    const context={options,fullProb:prob,resolution:n,prob,n,evidence:borderEvidence(prob,n),guideProb};
+    assert.deepEqual(initializeCounts(context,{initializationResolution:96}),initializeCounts(context));
+    const changed=initializeCounts(context,{initializationResolution:98});
+    assert.equal(changed.seeds.length,options.length);
+    assert.ok(changed.seeds.every(seed=>Number.isFinite(seed.error)&&seed.model.z.every(Number.isFinite)));
+    assert.notDeepEqual(changed.seeds.map(seed=>seed.model.z),initializeCounts(context).seeds.map(seed=>seed.model.z));
+  }
+});

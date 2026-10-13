@@ -91,7 +91,7 @@ export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit
 
 // Reuse projection work without pruning any count or phase. The explicit false
 // option preserves the original initializer for paired benchmark comparisons.
-export function initializeCounts({options,fullProb,resolution,prob,n,evidence,weights=null,fullWeights=null,guideProb=null},{rounds=18,k=16,sharedWork=true,retainAlternatives=false}={}){
+export function initializeCounts({options,fullProb,resolution,prob,n,evidence,weights=null,fullWeights=null,guideProb=null},{rounds=18,k=16,sharedWork=true,retainAlternatives=false,initializationResolution=96}={}){
     const seeds=[],fitter=gridInitializer(fullProb,resolution,{weights:fullWeights,sharedWork}),guideFitter=guideProb?gridInitializer(guideProb,resolution,{sharedWork}):null;
     const score=sharedWork?initializationImage(prob,n,weights)(n).score:mask=>mismatch(mask,prob,weights);
     for(const o of options){
@@ -101,7 +101,7 @@ export function initializeCounts({options,fullProb,resolution,prob,n,evidence,we
       // Keep both uniform and border-informed proposals: photographed endpoints
       // are useful evidence, but must not eliminate a better interior layout.
       for(const initial of[null,borderGrid(o.counts,evidence,{k,sharedWork})?.z,fitter.separable(o.counts,o.phase,{k}).z].filter(v=>v!==undefined)){
-        const result=fitter.initialize(o.counts,o.phase,{k,initial,scoreResolution:96,rounds});
+        const result=fitter.initialize(o.counts,o.phase,{k,initial,resolution:initializationResolution,scoreResolution:96,rounds});
         result.error=score(gridMask(result.model,n,result.phase,result.floor));
         choices.push(result);
       }
@@ -109,8 +109,8 @@ export function initializeCounts({options,fullProb,resolution,prob,n,evidence,we
       // border. Both the guided layout and its weighted refinement compete
       // using only the actual observed-image objective.
       if(guideProb){
-        const guide=guideFitter.initialize(o.counts,o.phase,{k,scoreResolution:96,rounds});
-        const refined=fitter.initialize(o.counts,o.phase,{k,initial:guide.model.z,scoreResolution:96,rounds});
+        const guide=guideFitter.initialize(o.counts,o.phase,{k,resolution:initializationResolution,scoreResolution:96,rounds});
+        const refined=fitter.initialize(o.counts,o.phase,{k,initial:guide.model.z,resolution:initializationResolution,scoreResolution:96,rounds});
         for(const result of[guide,refined]){result.error=score(gridMask(result.model,n,result.phase,result.floor));choices.push(result);}
       }
       const initializationRounds=choices.filter(r=>r!==raw).map(r=>r.steps);
