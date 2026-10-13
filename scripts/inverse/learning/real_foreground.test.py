@@ -53,6 +53,14 @@ class RealForegroundTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             row, source, manifest, annotations, *_ = fixture(Path(tmp))
             self.assertEqual(len(list(checked_annotations(manifest, annotations))), 1)
+            for kind in ['photo-multiple', 'mixed-photo-template', 'photo-collage']:
+                source['kind'] = kind
+                self.assertEqual(len(list(checked_annotations(manifest, annotations))), 1)
+            for kind in ['template-render', 'photo-other-material', 'unknown']:
+                source['kind'] = kind
+                with self.assertRaisesRegex(ValueError, 'reviewed photograph'):
+                    list(checked_annotations(manifest, annotations))
+            source['kind'] = 'photo'
             source['splitStatus'] = 'qa-reserved'
             with self.assertRaisesRegex(ValueError, 'reserved'): list(checked_annotations(manifest, annotations))
             source['splitStatus'] = 'unassigned'; row['allocation'] = 'train'

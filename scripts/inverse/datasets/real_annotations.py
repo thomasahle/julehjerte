@@ -72,10 +72,10 @@ def checked_annotations(manifest, annotations):
             raise ValueError('Annotation source identity or dimensions changed')
         if source['splitStatus'] == 'qa-reserved':
             raise ValueError('Existing QA or connected source group is reserved')
-        if source['kind'] not in ['photo', 'photo-collage', 'photo-multi', 'photo-template']:
+        if source['kind'] not in ['photo', 'photo-collage', 'photo-multiple', 'mixed-photo-template']:
             raise ValueError('Annotation source is not a reviewed photograph')
         if row.get('allocation') != 'unassigned':
-            raise ValueError('Pilot annotations have no approved train/test allocation')
+            raise ValueError('Pilot annotations have no global train/test allocation')
         if row.get('review', {}).get('status') != 'initial-reviewed' or not row.get('review', {}).get('note'):
             raise ValueError('Annotation needs a recorded visual review')
         if not row.get('foregroundPolygons') or not isinstance(row.get('unknownPolygons'), list):
