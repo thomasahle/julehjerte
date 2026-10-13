@@ -1,0 +1,4915 @@
+{
+  "schema": "woven-heart-foreground-scene-study-1",
+  "decision": "Offline experiment; no model added to the application.",
+  "auditSourceSha256": "3556b739bd86650a238673d7bc64c5ab8078152999e4488d4ce1480317f7169c",
+  "rawReports": {
+    "tmp/heart-learning/foreground-scene-v1/control-trained/report.json": "67046150a27bad92a038fc2adfb915642eb35f29138032343457fb384803c20c",
+    "tmp/heart-learning/foreground-scene-v1/scene-trained/report.json": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c",
+    "tmp/heart-learning/foreground-scene-v1/training-batch/manifest.json": "789a8632724d10bd81d6cc787bac4938f9f0c1af334670fedf5fb29238bb22f8",
+    "tmp/heart-learning/foreground-scene-v1/training-corners/manifest.json": "fe36c655f626bdba58e3fd5770f047b3a5ac22d160f28dc4f0ff15619cf688c3",
+    "tmp/heart-learning/foreground-scene-v1/verified-diagnostic/manifest.json": "95163d7d1856348a3679f8c55c1e3f91394830ab89e0fc57fdc405a3a0f81a32",
+    "tmp/heart-learning/foreground-scene-v1/control-diagnostic/report.json": "a41723e44aa02bff89fc2d404efbd9d9ebacefea49c2b8d4066a7f432f85da08",
+    "tmp/heart-learning/foreground-scene-v1/control-probe/manifest.json": "147da8e724742158484eb78757a0cbcf081e5c28398d4574342840ecdaa827e6",
+    "tmp/heart-learning/foreground-scene-v1/control-replay/report.json": "170584b1f6b2b313989d56d3c0d8507eb34facf04443ba5a6456436a33364b24",
+    "tmp/heart-learning/foreground-scene-v1/scene-diagnostic/report.json": "96be5f16588f4b09f33aff00a828a9d724d86ccfbee0d3f81034587bf27c4993",
+    "tmp/heart-learning/foreground-scene-v1/scene-probe/manifest.json": "1cbaa30f7397427cada3a69c4bf8f6f727865c5c5f652a3eec7d49ff04ef6cd2",
+    "tmp/heart-learning/foreground-scene-v1/scene-replay/report.json": "d4703ce4a531477e9de126ead98eb8500058697d76ded5bbb304d3f172250825"
+  },
+  "verifiedReferencedArtifacts": 23446,
+  "matchedBackgroundDrawsAndUpdateBudgets": true,
+  "training": {
+    "control": {
+      "selectedEpoch": 20,
+      "checkpointSha256": "fe037f1f0ab8cbd93b359b6bf047b0e3a5f253b5f57df3a32427701f86eae39b",
+      "parameters": 880449,
+      "sceneSampling": {
+        "seed": 3756,
+        "pairedChoices": 0,
+        "probability": 0,
+        "policy": "Choose the original background using the unchanged RNG, then independently toggle its scene counterpart. Input order, backgrounds, reflection draws and update count remain unchanged."
+      },
+      "nativeInferenceSeconds": {
+        "median": 0.012761854000004291,
+        "samples": [
+          0.012196084000009932,
+          0.0131042920000084,
+          0.01298270800000978,
+          0.013880916999994497,
+          0.014135374999995065,
+          0.016036208000002716,
+          0.011068708999999899,
+          0.012540999999998803,
+          0.011453084000009994,
+          0.011419832999990831
+        ],
+        "scope": "Warm batch-one native forward plus CPU output transfer, excluding input preprocessing"
+      },
+      "optimizerUpdates": 1020,
+      "sceneViews": 0,
+      "metrics": {
+        "development": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 104,
+          "iou": 0.9824011825326842,
+          "pixelError": 0.0052785139817457935,
+          "boundaryF1": 0.9668148696740979,
+          "backgroundFalsePositive": 0.003946425949327047,
+          "paperFalseNegative": 0.008407907535922014,
+          "loss": 0.09368295222520828
+        },
+        "recipe-test": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 128,
+          "iou": 0.98396847262678,
+          "pixelError": 0.004868507385253906,
+          "boundaryF1": 0.9749886066820941,
+          "backgroundFalsePositive": 0.003447287865998996,
+          "paperFalseNegative": 0.008147292474793153,
+          "loss": 0.09164807992056012
+        },
+        "recipe-validation": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 128,
+          "iou": 0.983485973987976,
+          "pixelError": 0.00496220588684082,
+          "boundaryF1": 0.9730913710382705,
+          "backgroundFalsePositive": 0.0036081477250783475,
+          "paperFalseNegative": 0.008001080804913265,
+          "loss": 0.09252933505922556
+        },
+        "train": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 408,
+          "iou": 0.9834936747479252,
+          "pixelError": 0.005013933368757659,
+          "boundaryF1": 0.9730268905430309,
+          "backgroundFalsePositive": 0.0037077423987603394,
+          "paperFalseNegative": 0.00804349253645312,
+          "loss": 0.09216203525954601
+        }
+      }
+    },
+    "scene": {
+      "selectedEpoch": 20,
+      "checkpointSha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6",
+      "parameters": 880449,
+      "sceneSampling": {
+        "seed": 3756,
+        "pairedChoices": 2448,
+        "probability": 0.5,
+        "policy": "Choose the original background using the unchanged RNG, then independently toggle its scene counterpart. Input order, backgrounds, reflection draws and update count remain unchanged."
+      },
+      "nativeInferenceSeconds": {
+        "median": 0.013145979000000807,
+        "samples": [
+          0.011714917000006153,
+          0.012470833000008952,
+          0.012921583000007786,
+          0.013688750000000027,
+          0.01465291699997806,
+          0.016367459000008466,
+          0.014035167000002957,
+          0.013370374999993828,
+          0.010855375000005552,
+          0.010900957999979255
+        ],
+        "scope": "Warm batch-one native forward plus CPU output transfer, excluding input preprocessing"
+      },
+      "optimizerUpdates": 1020,
+      "sceneViews": 4083,
+      "metrics": {
+        "development": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 104,
+          "iou": 0.9774736403447458,
+          "pixelError": 0.0067976438082181494,
+          "boundaryF1": 0.9437423212096276,
+          "backgroundFalsePositive": 0.006348846976928105,
+          "paperFalseNegative": 0.0077016279957361315,
+          "loss": 0.09771475425133339
+        },
+        "recipe-test": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 128,
+          "iou": 0.978687974308419,
+          "pixelError": 0.0065114498138427734,
+          "boundaryF1": 0.949779472632896,
+          "backgroundFalsePositive": 0.004405939872103038,
+          "paperFalseNegative": 0.01109675085202198,
+          "loss": 0.09641282726079226
+        },
+        "recipe-validation": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 128,
+          "iou": 0.9776765354944416,
+          "pixelError": 0.006738185882568359,
+          "boundaryF1": 0.9445604078118237,
+          "backgroundFalsePositive": 0.004857248371824276,
+          "paperFalseNegative": 0.010828281316398918,
+          "loss": 0.09716118685901165
+        },
+        "train": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 408,
+          "iou": 0.9789390981030973,
+          "pixelError": 0.0064067840576171875,
+          "boundaryF1": 0.9551998667742356,
+          "backgroundFalsePositive": 0.006048405111879345,
+          "paperFalseNegative": 0.0071541248838061745,
+          "loss": 0.09598542077868592
+        }
+      }
+    }
+  },
+  "imports": [
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/training-batch",
+      "sourceViews": 204,
+      "rowsIncludingBaselines": 1428,
+      "summary": {
+        "selectedViews": 204,
+        "designs": 51,
+        "variantsPerView": 7,
+        "generatedRows": 1428,
+        "matchedOriginalImageHashes": 1224,
+        "seconds": 249.393466334
+      }
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/training-corners",
+      "sourceViews": 204,
+      "rowsIncludingBaselines": 1428,
+      "summary": {
+        "selectedViews": 204,
+        "designs": 51,
+        "variantsPerView": 7,
+        "generatedRows": 1428,
+        "matchedOriginalImageHashes": 1224,
+        "seconds": 243.052050625
+      }
+    },
+    {
+      "path": "tmp/heart-learning/foreground-scene-v1/verified-diagnostic",
+      "sourceViews": 16,
+      "rowsIncludingBaselines": 64,
+      "summary": {
+        "selectedViews": 16,
+        "designs": 16,
+        "variantsPerView": 4,
+        "generatedRows": 64,
+        "matchedOriginalImageHashes": 96,
+        "seconds": 9.607148458
+      }
+    }
+  ],
+  "diagnostics": {
+    "control": {
+      "metrics": {
+        "baseline": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9851430398413117,
+          "pixelError": 0.004643440246582031,
+          "boundaryF1": 0.9854044677689278,
+          "backgroundFalsePositive": 0.0032992760937498944,
+          "paperFalseNegative": 0.0075270292441061695,
+          "viewsWithDistractors": 0,
+          "distractorFalsePositive": null
+        },
+        "scene-neighbors": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.618551285667136,
+          "pixelError": 0.1899862289428711,
+          "boundaryF1": 0.48435504577678035,
+          "backgroundFalsePositive": 0.2711635662907399,
+          "paperFalseNegative": 0.00981445185188267,
+          "viewsWithDistractors": 16,
+          "distractorFalsePositive": 0.8938756111597974
+        },
+        "scene-handle": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9643734682716285,
+          "pixelError": 0.011130332946777344,
+          "boundaryF1": 0.8641842999072773,
+          "backgroundFalsePositive": 0.013168537520258074,
+          "paperFalseNegative": 0.006265887215664395,
+          "viewsWithDistractors": 16,
+          "distractorFalsePositive": 0.43153358293694977
+        },
+        "scene-combined": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.6038516200113873,
+          "pixelError": 0.20130443572998047,
+          "boundaryF1": 0.4318867256074569,
+          "backgroundFalsePositive": 0.28740096415449384,
+          "paperFalseNegative": 0.009908830282787516,
+          "viewsWithDistractors": 16,
+          "distractorFalsePositive": 0.8928790895924621
+        }
+      },
+      "paired": [
+        {
+          "id": "channel-775609-v0--baseline",
+          "sourceViewId": "channel-775609-v0",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 20347,
+          "corePixels": 16454,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "7d148164b2c2721736bb41f7dde152cdbf78f85b39f4834b828b404b5fb85ca3"
+        },
+        {
+          "id": "channel-775609-v0--scene-neighbors",
+          "sourceViewId": "channel-775609-v0",
+          "variant": "scene-neighbors",
+          "distractorPixels": 15981,
+          "distractorFalsePositive": 0.8974407108441274,
+          "foregroundPixels": 20347,
+          "corePixels": 16454,
+          "paperCoreMeanAbsoluteRGBChange": 1.9702382796642016e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.007937882095575333,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "7d148164b2c2721736bb41f7dde152cdbf78f85b39f4834b828b404b5fb85ca3"
+        },
+        {
+          "id": "channel-775609-v0--scene-handle",
+          "sourceViewId": "channel-775609-v0",
+          "variant": "scene-handle",
+          "distractorPixels": 399,
+          "distractorFalsePositive": 0.047619047619047616,
+          "foregroundPixels": 20347,
+          "corePixels": 16454,
+          "paperCoreMeanAbsoluteRGBChange": 3.018913493033857e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0013890739064663649,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "7d148164b2c2721736bb41f7dde152cdbf78f85b39f4834b828b404b5fb85ca3"
+        },
+        {
+          "id": "channel-775609-v0--scene-combined",
+          "sourceViewId": "channel-775609-v0",
+          "variant": "scene-combined",
+          "distractorPixels": 16160,
+          "distractorFalsePositive": 0.8913985148514851,
+          "foregroundPixels": 20347,
+          "corePixels": 16454,
+          "paperCoreMeanAbsoluteRGBChange": 2.2721296289675874e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.008392702788114548,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "7d148164b2c2721736bb41f7dde152cdbf78f85b39f4834b828b404b5fb85ca3"
+        },
+        {
+          "id": "channel-815969-v1--baseline",
+          "sourceViewId": "channel-815969-v1",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19665,
+          "corePixels": 16222,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "79cd9cbf5b53bd22ab880bb55056fa6cbd140b5da1543656789d440b765d9ec7"
+        },
+        {
+          "id": "channel-815969-v1--scene-neighbors",
+          "sourceViewId": "channel-815969-v1",
+          "variant": "scene-neighbors",
+          "distractorPixels": 15650,
+          "distractorFalsePositive": 0.9421725239616613,
+          "foregroundPixels": 19665,
+          "corePixels": 16222,
+          "paperCoreMeanAbsoluteRGBChange": 0.00011289437486250819,
+          "paperCoreMeanAbsolutePredictionChange": 0.0072588142938911915,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "79cd9cbf5b53bd22ab880bb55056fa6cbd140b5da1543656789d440b765d9ec7"
+        },
+        {
+          "id": "channel-815969-v1--scene-handle",
+          "sourceViewId": "channel-815969-v1",
+          "variant": "scene-handle",
+          "distractorPixels": 505,
+          "distractorFalsePositive": 0.0019801980198019802,
+          "foregroundPixels": 19665,
+          "corePixels": 16222,
+          "paperCoreMeanAbsoluteRGBChange": 8.058128112955616e-08,
+          "paperCoreMeanAbsolutePredictionChange": 0.0006417957483790815,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "79cd9cbf5b53bd22ab880bb55056fa6cbd140b5da1543656789d440b765d9ec7"
+        },
+        {
+          "id": "channel-815969-v1--scene-combined",
+          "sourceViewId": "channel-815969-v1",
+          "variant": "scene-combined",
+          "distractorPixels": 15729,
+          "distractorFalsePositive": 0.9238985313751669,
+          "foregroundPixels": 19665,
+          "corePixels": 16222,
+          "paperCoreMeanAbsoluteRGBChange": 0.00011297495614363774,
+          "paperCoreMeanAbsolutePredictionChange": 0.008456934243440628,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "79cd9cbf5b53bd22ab880bb55056fa6cbd140b5da1543656789d440b765d9ec7"
+        },
+        {
+          "id": "channel-807897-v2--baseline",
+          "sourceViewId": "channel-807897-v2",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19198,
+          "corePixels": 15645,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "53678985bfdc0d137be87bf9f44b4e76dba31ddc607e38557bd21fe1c41a6547"
+        },
+        {
+          "id": "channel-807897-v2--scene-neighbors",
+          "sourceViewId": "channel-807897-v2",
+          "variant": "scene-neighbors",
+          "distractorPixels": 13655,
+          "distractorFalsePositive": 0.9496155254485537,
+          "foregroundPixels": 19198,
+          "corePixels": 15645,
+          "paperCoreMeanAbsoluteRGBChange": 1.7629721538130537e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.008365004323422909,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "53678985bfdc0d137be87bf9f44b4e76dba31ddc607e38557bd21fe1c41a6547"
+        },
+        {
+          "id": "channel-807897-v2--scene-handle",
+          "sourceViewId": "channel-807897-v2",
+          "variant": "scene-handle",
+          "distractorPixels": 417,
+          "distractorFalsePositive": 0.045563549160671464,
+          "foregroundPixels": 19198,
+          "corePixels": 15645,
+          "paperCoreMeanAbsoluteRGBChange": 1.169744557032358e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0007978889625519514,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "53678985bfdc0d137be87bf9f44b4e76dba31ddc607e38557bd21fe1c41a6547"
+        },
+        {
+          "id": "channel-807897-v2--scene-combined",
+          "sourceViewId": "channel-807897-v2",
+          "variant": "scene-combined",
+          "distractorPixels": 13992,
+          "distractorFalsePositive": 0.9366066323613493,
+          "foregroundPixels": 19198,
+          "corePixels": 15645,
+          "paperCoreMeanAbsoluteRGBChange": 1.8799466095162897e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.010547702200710773,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "53678985bfdc0d137be87bf9f44b4e76dba31ddc607e38557bd21fe1c41a6547"
+        },
+        {
+          "id": "channel-811933-v3--baseline",
+          "sourceViewId": "channel-811933-v3",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19730,
+          "corePixels": 16092,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "e7493592fc486025ae30d06b3bc81f1f0cda05c2796ed910adf2226bc7f8dc29"
+        },
+        {
+          "id": "channel-811933-v3--scene-neighbors",
+          "sourceViewId": "channel-811933-v3",
+          "variant": "scene-neighbors",
+          "distractorPixels": 8764,
+          "distractorFalsePositive": 0.752852578731173,
+          "foregroundPixels": 19730,
+          "corePixels": 16092,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.003919631242752075,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "e7493592fc486025ae30d06b3bc81f1f0cda05c2796ed910adf2226bc7f8dc29"
+        },
+        {
+          "id": "channel-811933-v3--scene-handle",
+          "sourceViewId": "channel-811933-v3",
+          "variant": "scene-handle",
+          "distractorPixels": 414,
+          "distractorFalsePositive": 0.8333333333333334,
+          "foregroundPixels": 19730,
+          "corePixels": 16092,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.001205545268021524,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "e7493592fc486025ae30d06b3bc81f1f0cda05c2796ed910adf2226bc7f8dc29"
+        },
+        {
+          "id": "channel-811933-v3--scene-combined",
+          "sourceViewId": "channel-811933-v3",
+          "variant": "scene-combined",
+          "distractorPixels": 9178,
+          "distractorFalsePositive": 0.7303334059707998,
+          "foregroundPixels": 19730,
+          "corePixels": 16092,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.004731531720608473,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "e7493592fc486025ae30d06b3bc81f1f0cda05c2796ed910adf2226bc7f8dc29"
+        },
+        {
+          "id": "channel-795789-v0--baseline",
+          "sourceViewId": "channel-795789-v0",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 18347,
+          "corePixels": 14594,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "26427fbda766513e32a3305a89f62468a15211aac8b78c9eb9f12030d64be0b5"
+        },
+        {
+          "id": "channel-795789-v0--scene-neighbors",
+          "sourceViewId": "channel-795789-v0",
+          "variant": "scene-neighbors",
+          "distractorPixels": 10630,
+          "distractorFalsePositive": 0.8202257761053622,
+          "foregroundPixels": 18347,
+          "corePixels": 14594,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.003630325198173523,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "26427fbda766513e32a3305a89f62468a15211aac8b78c9eb9f12030d64be0b5"
+        },
+        {
+          "id": "channel-795789-v0--scene-handle",
+          "sourceViewId": "channel-795789-v0",
+          "variant": "scene-handle",
+          "distractorPixels": 595,
+          "distractorFalsePositive": 0.7327731092436974,
+          "foregroundPixels": 18347,
+          "corePixels": 14594,
+          "paperCoreMeanAbsoluteRGBChange": 6.180353462475849e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.001465870183892548,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "26427fbda766513e32a3305a89f62468a15211aac8b78c9eb9f12030d64be0b5"
+        },
+        {
+          "id": "channel-795789-v0--scene-combined",
+          "sourceViewId": "channel-795789-v0",
+          "variant": "scene-combined",
+          "distractorPixels": 11225,
+          "distractorFalsePositive": 0.7983073496659243,
+          "foregroundPixels": 18347,
+          "corePixels": 14594,
+          "paperCoreMeanAbsoluteRGBChange": 6.180353462475849e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.004040793981403112,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "26427fbda766513e32a3305a89f62468a15211aac8b78c9eb9f12030d64be0b5"
+        },
+        {
+          "id": "channel-751393-v1--baseline",
+          "sourceViewId": "channel-751393-v1",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19787,
+          "corePixels": 15942,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "fbf6f36e5fd3de666fd7733c04c03b59f3f6751b3b2ac7934bb87e0d6cdc1448"
+        },
+        {
+          "id": "channel-751393-v1--scene-neighbors",
+          "sourceViewId": "channel-751393-v1",
+          "variant": "scene-neighbors",
+          "distractorPixels": 13982,
+          "distractorFalsePositive": 0.6303819196109284,
+          "foregroundPixels": 19787,
+          "corePixels": 15942,
+          "paperCoreMeanAbsoluteRGBChange": 3.312661994501309e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.004790513776242733,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "fbf6f36e5fd3de666fd7733c04c03b59f3f6751b3b2ac7934bb87e0d6cdc1448"
+        },
+        {
+          "id": "channel-751393-v1--scene-handle",
+          "sourceViewId": "channel-751393-v1",
+          "variant": "scene-handle",
+          "distractorPixels": 477,
+          "distractorFalsePositive": 0.1090146750524109,
+          "foregroundPixels": 19787,
+          "corePixels": 15942,
+          "paperCoreMeanAbsoluteRGBChange": 5.1493854766010444e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0011499670799821615,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "fbf6f36e5fd3de666fd7733c04c03b59f3f6751b3b2ac7934bb87e0d6cdc1448"
+        },
+        {
+          "id": "channel-751393-v1--scene-combined",
+          "sourceViewId": "channel-751393-v1",
+          "variant": "scene-combined",
+          "distractorPixels": 14021,
+          "distractorFalsePositive": 0.8263319306754154,
+          "foregroundPixels": 19787,
+          "corePixels": 15942,
+          "paperCoreMeanAbsoluteRGBChange": 6.63352364740485e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0058619920164346695,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "fbf6f36e5fd3de666fd7733c04c03b59f3f6751b3b2ac7934bb87e0d6cdc1448"
+        },
+        {
+          "id": "channel-755429-v2--baseline",
+          "sourceViewId": "channel-755429-v2",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 24975,
+          "corePixels": 20572,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "09ec161975b02f19ca5c5b7d7c35e2c1b16f73bc935507f81f7b76fa570baa19"
+        },
+        {
+          "id": "channel-755429-v2--scene-neighbors",
+          "sourceViewId": "channel-755429-v2",
+          "variant": "scene-neighbors",
+          "distractorPixels": 16298,
+          "distractorFalsePositive": 0.7212541416124678,
+          "foregroundPixels": 24975,
+          "corePixels": 20572,
+          "paperCoreMeanAbsoluteRGBChange": 1.4741783679574622e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.01786915399134159,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "09ec161975b02f19ca5c5b7d7c35e2c1b16f73bc935507f81f7b76fa570baa19"
+        },
+        {
+          "id": "channel-755429-v2--scene-handle",
+          "sourceViewId": "channel-755429-v2",
+          "variant": "scene-handle",
+          "distractorPixels": 774,
+          "distractorFalsePositive": 0.21188630490956073,
+          "foregroundPixels": 24975,
+          "corePixels": 20572,
+          "paperCoreMeanAbsoluteRGBChange": 7.625060523917909e-07,
+          "paperCoreMeanAbsolutePredictionChange": 0.0018821561243385077,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "09ec161975b02f19ca5c5b7d7c35e2c1b16f73bc935507f81f7b76fa570baa19"
+        },
+        {
+          "id": "channel-755429-v2--scene-combined",
+          "sourceViewId": "channel-755429-v2",
+          "variant": "scene-combined",
+          "distractorPixels": 16346,
+          "distractorFalsePositive": 0.7529670867490518,
+          "foregroundPixels": 24975,
+          "corePixels": 20572,
+          "paperCoreMeanAbsoluteRGBChange": 1.569491624506436e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.01796681061387062,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "09ec161975b02f19ca5c5b7d7c35e2c1b16f73bc935507f81f7b76fa570baa19"
+        },
+        {
+          "id": "channel-820005-v3--baseline",
+          "sourceViewId": "channel-820005-v3",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 22071,
+          "corePixels": 18087,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87ad4b6fed6b47351ee7b9e483febe1504cd447585b5b2663a650962ec97d5dc"
+        },
+        {
+          "id": "channel-820005-v3--scene-neighbors",
+          "sourceViewId": "channel-820005-v3",
+          "variant": "scene-neighbors",
+          "distractorPixels": 9148,
+          "distractorFalsePositive": 0.9158285964145169,
+          "foregroundPixels": 22071,
+          "corePixels": 18087,
+          "paperCoreMeanAbsoluteRGBChange": 1.1563572001845834e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0036335443146526814,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87ad4b6fed6b47351ee7b9e483febe1504cd447585b5b2663a650962ec97d5dc"
+        },
+        {
+          "id": "channel-820005-v3--scene-handle",
+          "sourceViewId": "channel-820005-v3",
+          "variant": "scene-handle",
+          "distractorPixels": 492,
+          "distractorFalsePositive": 0.2682926829268293,
+          "foregroundPixels": 22071,
+          "corePixels": 18087,
+          "paperCoreMeanAbsoluteRGBChange": 1.734535800276875e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0010656367521733046,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87ad4b6fed6b47351ee7b9e483febe1504cd447585b5b2663a650962ec97d5dc"
+        },
+        {
+          "id": "channel-820005-v3--scene-combined",
+          "sourceViewId": "channel-820005-v3",
+          "variant": "scene-combined",
+          "distractorPixels": 9640,
+          "distractorFalsePositive": 0.874896265560166,
+          "foregroundPixels": 22071,
+          "corePixels": 18087,
+          "paperCoreMeanAbsoluteRGBChange": 2.8908930004614584e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.003824180457741022,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87ad4b6fed6b47351ee7b9e483febe1504cd447585b5b2663a650962ec97d5dc"
+        },
+        {
+          "id": "frame-764510-v0--baseline",
+          "sourceViewId": "frame-764510-v0",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 17516,
+          "corePixels": 13845,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "c3992511905a86322506475a7a76f982776e1c475314fd03712aece5e852a1a7"
+        },
+        {
+          "id": "frame-764510-v0--scene-neighbors",
+          "sourceViewId": "frame-764510-v0",
+          "variant": "scene-neighbors",
+          "distractorPixels": 8913,
+          "distractorFalsePositive": 0.9771120834735779,
+          "foregroundPixels": 17516,
+          "corePixels": 13845,
+          "paperCoreMeanAbsoluteRGBChange": 1.6522800284192165e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.004079453181475401,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "c3992511905a86322506475a7a76f982776e1c475314fd03712aece5e852a1a7"
+        },
+        {
+          "id": "frame-764510-v0--scene-handle",
+          "sourceViewId": "frame-764510-v0",
+          "variant": "scene-handle",
+          "distractorPixels": 420,
+          "distractorFalsePositive": 0.8119047619047619,
+          "foregroundPixels": 17516,
+          "corePixels": 13845,
+          "paperCoreMeanAbsoluteRGBChange": 7.742112133164328e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0017121838172897696,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "c3992511905a86322506475a7a76f982776e1c475314fd03712aece5e852a1a7"
+        },
+        {
+          "id": "frame-764510-v0--scene-combined",
+          "sourceViewId": "frame-764510-v0",
+          "variant": "scene-combined",
+          "distractorPixels": 9333,
+          "distractorFalsePositive": 0.9586413800492875,
+          "foregroundPixels": 17516,
+          "corePixels": 13845,
+          "paperCoreMeanAbsoluteRGBChange": 2.4264912417356492e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0025986679829657078,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "c3992511905a86322506475a7a76f982776e1c475314fd03712aece5e852a1a7"
+        },
+        {
+          "id": "frame-756438-v1--baseline",
+          "sourceViewId": "frame-756438-v1",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 22438,
+          "corePixels": 18291,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "9df10e3156a147e4a930dbb71712b411cbf23183070e22ed4e6f661956ffc4a6"
+        },
+        {
+          "id": "frame-756438-v1--scene-neighbors",
+          "sourceViewId": "frame-756438-v1",
+          "variant": "scene-neighbors",
+          "distractorPixels": 10636,
+          "distractorFalsePositive": 0.9521436630312148,
+          "foregroundPixels": 22438,
+          "corePixels": 18291,
+          "paperCoreMeanAbsoluteRGBChange": 3.5232871053766575e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.004556037485599518,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "9df10e3156a147e4a930dbb71712b411cbf23183070e22ed4e6f661956ffc4a6"
+        },
+        {
+          "id": "frame-756438-v1--scene-handle",
+          "sourceViewId": "frame-756438-v1",
+          "variant": "scene-handle",
+          "distractorPixels": 358,
+          "distractorFalsePositive": 0.09776536312849161,
+          "foregroundPixels": 22438,
+          "corePixels": 18291,
+          "paperCoreMeanAbsoluteRGBChange": 1.14346031817498e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0017153212102130055,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "9df10e3156a147e4a930dbb71712b411cbf23183070e22ed4e6f661956ffc4a6"
+        },
+        {
+          "id": "frame-756438-v1--scene-combined",
+          "sourceViewId": "frame-756438-v1",
+          "variant": "scene-combined",
+          "distractorPixels": 10859,
+          "distractorFalsePositive": 0.938392117137858,
+          "foregroundPixels": 22438,
+          "corePixels": 18291,
+          "paperCoreMeanAbsoluteRGBChange": 3.637633137194155e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.005105253774672747,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "9df10e3156a147e4a930dbb71712b411cbf23183070e22ed4e6f661956ffc4a6"
+        },
+        {
+          "id": "frame-776618-v2--baseline",
+          "sourceViewId": "frame-776618-v2",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19183,
+          "corePixels": 15422,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87f650665ebc44c1ca81030ce11e46f1d2e8b43889091f9ffb0e5a1e6262dec4"
+        },
+        {
+          "id": "frame-776618-v2--scene-neighbors",
+          "sourceViewId": "frame-776618-v2",
+          "variant": "scene-neighbors",
+          "distractorPixels": 11876,
+          "distractorFalsePositive": 0.9796227686089592,
+          "foregroundPixels": 19183,
+          "corePixels": 15422,
+          "paperCoreMeanAbsoluteRGBChange": 6.374053533573547e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.00672979885712266,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87f650665ebc44c1ca81030ce11e46f1d2e8b43889091f9ffb0e5a1e6262dec4"
+        },
+        {
+          "id": "frame-776618-v2--scene-handle",
+          "sourceViewId": "frame-776618-v2",
+          "variant": "scene-handle",
+          "distractorPixels": 693,
+          "distractorFalsePositive": 0.4675324675324675,
+          "foregroundPixels": 19183,
+          "corePixels": 15422,
+          "paperCoreMeanAbsoluteRGBChange": 1.3138009277977392e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0012966456124559045,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87f650665ebc44c1ca81030ce11e46f1d2e8b43889091f9ffb0e5a1e6262dec4"
+        },
+        {
+          "id": "frame-776618-v2--scene-combined",
+          "sourceViewId": "frame-776618-v2",
+          "variant": "scene-combined",
+          "distractorPixels": 12569,
+          "distractorFalsePositive": 0.9489219508314106,
+          "foregroundPixels": 19183,
+          "corePixels": 15422,
+          "paperCoreMeanAbsoluteRGBChange": 7.687854461371286e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.006771136540919542,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87f650665ebc44c1ca81030ce11e46f1d2e8b43889091f9ffb0e5a1e6262dec4"
+        },
+        {
+          "id": "frame-780654-v3--baseline",
+          "sourceViewId": "frame-780654-v3",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 23599,
+          "corePixels": 19618,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "33ec32f5ff576e763155f12e30cc72bfcd7f61c75abfa6302fda8e99bbdc7efc"
+        },
+        {
+          "id": "frame-780654-v3--scene-neighbors",
+          "sourceViewId": "frame-780654-v3",
+          "variant": "scene-neighbors",
+          "distractorPixels": 17414,
+          "distractorFalsePositive": 0.8768806707247042,
+          "foregroundPixels": 23599,
+          "corePixels": 19618,
+          "paperCoreMeanAbsoluteRGBChange": 8.229070674723826e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.012731731869280338,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "33ec32f5ff576e763155f12e30cc72bfcd7f61c75abfa6302fda8e99bbdc7efc"
+        },
+        {
+          "id": "frame-780654-v3--scene-handle",
+          "sourceViewId": "frame-780654-v3",
+          "variant": "scene-handle",
+          "distractorPixels": 582,
+          "distractorFalsePositive": 0.32989690721649484,
+          "foregroundPixels": 23599,
+          "corePixels": 19618,
+          "paperCoreMeanAbsoluteRGBChange": 7.196272330932577e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0018757341895252466,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "33ec32f5ff576e763155f12e30cc72bfcd7f61c75abfa6302fda8e99bbdc7efc"
+        },
+        {
+          "id": "frame-780654-v3--scene-combined",
+          "sourceViewId": "frame-780654-v3",
+          "variant": "scene-combined",
+          "distractorPixels": 17550,
+          "distractorFalsePositive": 0.8693447293447294,
+          "foregroundPixels": 23599,
+          "corePixels": 19618,
+          "paperCoreMeanAbsoluteRGBChange": 8.948697907817082e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.01238429918885231,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "33ec32f5ff576e763155f12e30cc72bfcd7f61c75abfa6302fda8e99bbdc7efc"
+        },
+        {
+          "id": "frame-760474-v0--baseline",
+          "sourceViewId": "frame-760474-v0",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19663,
+          "corePixels": 15906,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "2bdd60dc250d7538a6a4e025e1af0d3e63d23c72499b21ebb3b5925ccf3ee396"
+        },
+        {
+          "id": "frame-760474-v0--scene-neighbors",
+          "sourceViewId": "frame-760474-v0",
+          "variant": "scene-neighbors",
+          "distractorPixels": 9222,
+          "distractorFalsePositive": 0.9647581869442637,
+          "foregroundPixels": 19663,
+          "corePixels": 15906,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0034057768061757088,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "2bdd60dc250d7538a6a4e025e1af0d3e63d23c72499b21ebb3b5925ccf3ee396"
+        },
+        {
+          "id": "frame-760474-v0--scene-handle",
+          "sourceViewId": "frame-760474-v0",
+          "variant": "scene-handle",
+          "distractorPixels": 698,
+          "distractorFalsePositive": 0.8753581661891118,
+          "foregroundPixels": 19663,
+          "corePixels": 15906,
+          "paperCoreMeanAbsoluteRGBChange": 1.4792789994156847e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0019277356332167983,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "2bdd60dc250d7538a6a4e025e1af0d3e63d23c72499b21ebb3b5925ccf3ee396"
+        },
+        {
+          "id": "frame-760474-v0--scene-combined",
+          "sourceViewId": "frame-760474-v0",
+          "variant": "scene-combined",
+          "distractorPixels": 9920,
+          "distractorFalsePositive": 0.9537298387096774,
+          "foregroundPixels": 19663,
+          "corePixels": 15906,
+          "paperCoreMeanAbsoluteRGBChange": 1.4792789994156847e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.004114593844860792,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "2bdd60dc250d7538a6a4e025e1af0d3e63d23c72499b21ebb3b5925ccf3ee396"
+        },
+        {
+          "id": "frame-748366-v1--baseline",
+          "sourceViewId": "frame-748366-v1",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 15322,
+          "corePixels": 12206,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "0039e6c24096281dfd0a29c785cd3b19fd8b4701d52e500b09b5fef26d54871f"
+        },
+        {
+          "id": "frame-748366-v1--scene-neighbors",
+          "sourceViewId": "frame-748366-v1",
+          "variant": "scene-neighbors",
+          "distractorPixels": 11356,
+          "distractorFalsePositive": 0.9772807326523424,
+          "foregroundPixels": 15322,
+          "corePixels": 12206,
+          "paperCoreMeanAbsoluteRGBChange": 3.9517691395745575e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0053039779886603355,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "0039e6c24096281dfd0a29c785cd3b19fd8b4701d52e500b09b5fef26d54871f"
+        },
+        {
+          "id": "frame-748366-v1--scene-handle",
+          "sourceViewId": "frame-748366-v1",
+          "variant": "scene-handle",
+          "distractorPixels": 507,
+          "distractorFalsePositive": 0.8481262327416174,
+          "foregroundPixels": 15322,
+          "corePixels": 12206,
+          "paperCoreMeanAbsoluteRGBChange": 5.44037594282893e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0013202294940128922,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "0039e6c24096281dfd0a29c785cd3b19fd8b4701d52e500b09b5fef26d54871f"
+        },
+        {
+          "id": "frame-748366-v1--scene-combined",
+          "sourceViewId": "frame-748366-v1",
+          "variant": "scene-combined",
+          "distractorPixels": 11863,
+          "distractorFalsePositive": 0.9633313664334485,
+          "foregroundPixels": 15322,
+          "corePixels": 12206,
+          "paperCoreMeanAbsoluteRGBChange": 9.392145082403488e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0052536120638251305,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "0039e6c24096281dfd0a29c785cd3b19fd8b4701d52e500b09b5fef26d54871f"
+        },
+        {
+          "id": "frame-829086-v2--baseline",
+          "sourceViewId": "frame-829086-v2",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19160,
+          "corePixels": 15629,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "75fb60504b4cac2d4d3e82ba6629738a505910725326bff99c2e4237f413bd82"
+        },
+        {
+          "id": "frame-829086-v2--scene-neighbors",
+          "sourceViewId": "frame-829086-v2",
+          "variant": "scene-neighbors",
+          "distractorPixels": 13756,
+          "distractorFalsePositive": 0.9697586507705729,
+          "foregroundPixels": 19160,
+          "corePixels": 15629,
+          "paperCoreMeanAbsoluteRGBChange": 4.2655746795487025e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.005478390492498875,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "75fb60504b4cac2d4d3e82ba6629738a505910725326bff99c2e4237f413bd82"
+        },
+        {
+          "id": "frame-829086-v2--scene-handle",
+          "sourceViewId": "frame-829086-v2",
+          "variant": "scene-handle",
+          "distractorPixels": 675,
+          "distractorFalsePositive": 0.41333333333333333,
+          "foregroundPixels": 19160,
+          "corePixels": 15629,
+          "paperCoreMeanAbsoluteRGBChange": 2.1913344432191375e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0017450008308514953,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "75fb60504b4cac2d4d3e82ba6629738a505910725326bff99c2e4237f413bd82"
+        },
+        {
+          "id": "frame-829086-v2--scene-combined",
+          "sourceViewId": "frame-829086-v2",
+          "variant": "scene-combined",
+          "distractorPixels": 14431,
+          "distractorFalsePositive": 0.9530871041507865,
+          "foregroundPixels": 19160,
+          "corePixels": 15629,
+          "paperCoreMeanAbsoluteRGBChange": 2.6178919111740074e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.006586003582924604,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "75fb60504b4cac2d4d3e82ba6629738a505910725326bff99c2e4237f413bd82"
+        },
+        {
+          "id": "frame-833122-v3--baseline",
+          "sourceViewId": "frame-833122-v3",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 20611,
+          "corePixels": 16683,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "6acb456ff1602e0ddab3f92cb8952c4e107c18de775513e5fa353b7c02a03d7e"
+        },
+        {
+          "id": "frame-833122-v3--scene-neighbors",
+          "sourceViewId": "frame-833122-v3",
+          "variant": "scene-neighbors",
+          "distractorPixels": 16549,
+          "distractorFalsePositive": 0.9746812496223337,
+          "foregroundPixels": 20611,
+          "corePixels": 16683,
+          "paperCoreMeanAbsoluteRGBChange": 0.00010045057804136258,
+          "paperCoreMeanAbsolutePredictionChange": 0.009497673250734806,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "6acb456ff1602e0ddab3f92cb8952c4e107c18de775513e5fa353b7c02a03d7e"
+        },
+        {
+          "id": "frame-833122-v3--scene-handle",
+          "sourceViewId": "frame-833122-v3",
+          "variant": "scene-handle",
+          "distractorPixels": 827,
+          "distractorFalsePositive": 0.8101571946795647,
+          "foregroundPixels": 20611,
+          "corePixels": 16683,
+          "paperCoreMeanAbsoluteRGBChange": 1.645446286168966e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.001545615610666573,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "6acb456ff1602e0ddab3f92cb8952c4e107c18de775513e5fa353b7c02a03d7e"
+        },
+        {
+          "id": "frame-833122-v3--scene-combined",
+          "sourceViewId": "frame-833122-v3",
+          "variant": "scene-combined",
+          "distractorPixels": 16763,
+          "distractorFalsePositive": 0.9658772296128378,
+          "foregroundPixels": 20611,
+          "corePixels": 16683,
+          "paperCoreMeanAbsoluteRGBChange": 0.00010162589681719757,
+          "paperCoreMeanAbsolutePredictionChange": 0.009045582264661789,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "6acb456ff1602e0ddab3f92cb8952c4e107c18de775513e5fa353b7c02a03d7e"
+        }
+      ]
+    },
+    "scene": {
+      "metrics": {
+        "baseline": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.979715213001533,
+          "pixelError": 0.006321907043457031,
+          "boundaryF1": 0.9563669316078393,
+          "backgroundFalsePositive": 0.0044163905420187815,
+          "paperFalseNegative": 0.010324869096225747,
+          "viewsWithDistractors": 0,
+          "distractorFalsePositive": null
+        },
+        "scene-neighbors": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9500849648715426,
+          "pixelError": 0.015832901000976562,
+          "boundaryF1": 0.7824291984191247,
+          "backgroundFalsePositive": 0.010778368589976696,
+          "paperFalseNegative": 0.026393849043624233,
+          "viewsWithDistractors": 16,
+          "distractorFalsePositive": 0.018729537176248114
+        },
+        "scene-handle": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9781556372508774,
+          "pixelError": 0.006798744201660156,
+          "boundaryF1": 0.9417085272554091,
+          "backgroundFalsePositive": 0.0048477806582488195,
+          "paperFalseNegative": 0.010969465367609392,
+          "viewsWithDistractors": 16,
+          "distractorFalsePositive": 0.03260676112755438
+        },
+        "scene-combined": {
+          "threshold": 0.5,
+          "boundaryTolerancePixels": 2,
+          "views": 16,
+          "iou": 0.9499641518625331,
+          "pixelError": 0.01587677001953125,
+          "boundaryF1": 0.7828322511377999,
+          "backgroundFalsePositive": 0.010906978959706883,
+          "paperFalseNegative": 0.026330467606975695,
+          "viewsWithDistractors": 16,
+          "distractorFalsePositive": 0.01887990118403283
+        }
+      },
+      "paired": [
+        {
+          "id": "channel-775609-v0--baseline",
+          "sourceViewId": "channel-775609-v0",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 20347,
+          "corePixels": 16454,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "7d148164b2c2721736bb41f7dde152cdbf78f85b39f4834b828b404b5fb85ca3"
+        },
+        {
+          "id": "channel-775609-v0--scene-neighbors",
+          "sourceViewId": "channel-775609-v0",
+          "variant": "scene-neighbors",
+          "distractorPixels": 15981,
+          "distractorFalsePositive": 0.003629309805393905,
+          "foregroundPixels": 20347,
+          "corePixels": 16454,
+          "paperCoreMeanAbsoluteRGBChange": 1.9702382796642016e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.013120975345373154,
+          "paperCoreFalseNegativeFraction": 0.0037680807098577854,
+          "foregroundSha256": "7d148164b2c2721736bb41f7dde152cdbf78f85b39f4834b828b404b5fb85ca3"
+        },
+        {
+          "id": "channel-775609-v0--scene-handle",
+          "sourceViewId": "channel-775609-v0",
+          "variant": "scene-handle",
+          "distractorPixels": 399,
+          "distractorFalsePositive": 0.045112781954887216,
+          "foregroundPixels": 20347,
+          "corePixels": 16454,
+          "paperCoreMeanAbsoluteRGBChange": 3.018913493033857e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0012947856448590755,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "7d148164b2c2721736bb41f7dde152cdbf78f85b39f4834b828b404b5fb85ca3"
+        },
+        {
+          "id": "channel-775609-v0--scene-combined",
+          "sourceViewId": "channel-775609-v0",
+          "variant": "scene-combined",
+          "distractorPixels": 16160,
+          "distractorFalsePositive": 0.004702970297029703,
+          "foregroundPixels": 20347,
+          "corePixels": 16454,
+          "paperCoreMeanAbsoluteRGBChange": 2.2721296289675874e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.012864869087934494,
+          "paperCoreFalseNegativeFraction": 0.003464203233256351,
+          "foregroundSha256": "7d148164b2c2721736bb41f7dde152cdbf78f85b39f4834b828b404b5fb85ca3"
+        },
+        {
+          "id": "channel-815969-v1--baseline",
+          "sourceViewId": "channel-815969-v1",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19665,
+          "corePixels": 16222,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "79cd9cbf5b53bd22ab880bb55056fa6cbd140b5da1543656789d440b765d9ec7"
+        },
+        {
+          "id": "channel-815969-v1--scene-neighbors",
+          "sourceViewId": "channel-815969-v1",
+          "variant": "scene-neighbors",
+          "distractorPixels": 15650,
+          "distractorFalsePositive": 0.010223642172523962,
+          "foregroundPixels": 19665,
+          "corePixels": 16222,
+          "paperCoreMeanAbsoluteRGBChange": 0.00011289437486250819,
+          "paperCoreMeanAbsolutePredictionChange": 0.011567036621272564,
+          "paperCoreFalseNegativeFraction": 0.005671310565898163,
+          "foregroundSha256": "79cd9cbf5b53bd22ab880bb55056fa6cbd140b5da1543656789d440b765d9ec7"
+        },
+        {
+          "id": "channel-815969-v1--scene-handle",
+          "sourceViewId": "channel-815969-v1",
+          "variant": "scene-handle",
+          "distractorPixels": 505,
+          "distractorFalsePositive": 0.0,
+          "foregroundPixels": 19665,
+          "corePixels": 16222,
+          "paperCoreMeanAbsoluteRGBChange": 8.058128112955616e-08,
+          "paperCoreMeanAbsolutePredictionChange": 0.0016687136376276612,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "79cd9cbf5b53bd22ab880bb55056fa6cbd140b5da1543656789d440b765d9ec7"
+        },
+        {
+          "id": "channel-815969-v1--scene-combined",
+          "sourceViewId": "channel-815969-v1",
+          "variant": "scene-combined",
+          "distractorPixels": 15729,
+          "distractorFalsePositive": 0.007120605251446373,
+          "foregroundPixels": 19665,
+          "corePixels": 16222,
+          "paperCoreMeanAbsoluteRGBChange": 0.00011297495614363774,
+          "paperCoreMeanAbsolutePredictionChange": 0.01195327565073967,
+          "paperCoreFalseNegativeFraction": 0.005917889286154605,
+          "foregroundSha256": "79cd9cbf5b53bd22ab880bb55056fa6cbd140b5da1543656789d440b765d9ec7"
+        },
+        {
+          "id": "channel-807897-v2--baseline",
+          "sourceViewId": "channel-807897-v2",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19198,
+          "corePixels": 15645,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "53678985bfdc0d137be87bf9f44b4e76dba31ddc607e38557bd21fe1c41a6547"
+        },
+        {
+          "id": "channel-807897-v2--scene-neighbors",
+          "sourceViewId": "channel-807897-v2",
+          "variant": "scene-neighbors",
+          "distractorPixels": 13655,
+          "distractorFalsePositive": 0.0066642255584035155,
+          "foregroundPixels": 19198,
+          "corePixels": 15645,
+          "paperCoreMeanAbsoluteRGBChange": 1.7629721538130537e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.027099529281258583,
+          "paperCoreFalseNegativeFraction": 0.021284755512943433,
+          "foregroundSha256": "53678985bfdc0d137be87bf9f44b4e76dba31ddc607e38557bd21fe1c41a6547"
+        },
+        {
+          "id": "channel-807897-v2--scene-handle",
+          "sourceViewId": "channel-807897-v2",
+          "variant": "scene-handle",
+          "distractorPixels": 417,
+          "distractorFalsePositive": 0.02877697841726619,
+          "foregroundPixels": 19198,
+          "corePixels": 15645,
+          "paperCoreMeanAbsoluteRGBChange": 1.169744557032358e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0011872199829667807,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "53678985bfdc0d137be87bf9f44b4e76dba31ddc607e38557bd21fe1c41a6547"
+        },
+        {
+          "id": "channel-807897-v2--scene-combined",
+          "sourceViewId": "channel-807897-v2",
+          "variant": "scene-combined",
+          "distractorPixels": 13992,
+          "distractorFalsePositive": 0.006217838765008576,
+          "foregroundPixels": 19198,
+          "corePixels": 15645,
+          "paperCoreMeanAbsoluteRGBChange": 1.8799466095162897e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.029756231233477592,
+          "paperCoreFalseNegativeFraction": 0.023777564717162032,
+          "foregroundSha256": "53678985bfdc0d137be87bf9f44b4e76dba31ddc607e38557bd21fe1c41a6547"
+        },
+        {
+          "id": "channel-811933-v3--baseline",
+          "sourceViewId": "channel-811933-v3",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19730,
+          "corePixels": 16092,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "e7493592fc486025ae30d06b3bc81f1f0cda05c2796ed910adf2226bc7f8dc29"
+        },
+        {
+          "id": "channel-811933-v3--scene-neighbors",
+          "sourceViewId": "channel-811933-v3",
+          "variant": "scene-neighbors",
+          "distractorPixels": 8764,
+          "distractorFalsePositive": 0.0,
+          "foregroundPixels": 19730,
+          "corePixels": 16092,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0057921139523386955,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "e7493592fc486025ae30d06b3bc81f1f0cda05c2796ed910adf2226bc7f8dc29"
+        },
+        {
+          "id": "channel-811933-v3--scene-handle",
+          "sourceViewId": "channel-811933-v3",
+          "variant": "scene-handle",
+          "distractorPixels": 414,
+          "distractorFalsePositive": 0.06280193236714976,
+          "foregroundPixels": 19730,
+          "corePixels": 16092,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0013319882564246655,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "e7493592fc486025ae30d06b3bc81f1f0cda05c2796ed910adf2226bc7f8dc29"
+        },
+        {
+          "id": "channel-811933-v3--scene-combined",
+          "sourceViewId": "channel-811933-v3",
+          "variant": "scene-combined",
+          "distractorPixels": 9178,
+          "distractorFalsePositive": 0.002397036391370669,
+          "foregroundPixels": 19730,
+          "corePixels": 16092,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.005846885964274406,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "e7493592fc486025ae30d06b3bc81f1f0cda05c2796ed910adf2226bc7f8dc29"
+        },
+        {
+          "id": "channel-795789-v0--baseline",
+          "sourceViewId": "channel-795789-v0",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 18347,
+          "corePixels": 14594,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "26427fbda766513e32a3305a89f62468a15211aac8b78c9eb9f12030d64be0b5"
+        },
+        {
+          "id": "channel-795789-v0--scene-neighbors",
+          "sourceViewId": "channel-795789-v0",
+          "variant": "scene-neighbors",
+          "distractorPixels": 10630,
+          "distractorFalsePositive": 0.000658513640639699,
+          "foregroundPixels": 18347,
+          "corePixels": 14594,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0035447832196950912,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "26427fbda766513e32a3305a89f62468a15211aac8b78c9eb9f12030d64be0b5"
+        },
+        {
+          "id": "channel-795789-v0--scene-handle",
+          "sourceViewId": "channel-795789-v0",
+          "variant": "scene-handle",
+          "distractorPixels": 595,
+          "distractorFalsePositive": 0.05378151260504202,
+          "foregroundPixels": 18347,
+          "corePixels": 14594,
+          "paperCoreMeanAbsoluteRGBChange": 6.180353462475849e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.000758314214181155,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "26427fbda766513e32a3305a89f62468a15211aac8b78c9eb9f12030d64be0b5"
+        },
+        {
+          "id": "channel-795789-v0--scene-combined",
+          "sourceViewId": "channel-795789-v0",
+          "variant": "scene-combined",
+          "distractorPixels": 11225,
+          "distractorFalsePositive": 0.0028507795100222717,
+          "foregroundPixels": 18347,
+          "corePixels": 14594,
+          "paperCoreMeanAbsoluteRGBChange": 6.180353462475849e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.003790630027651787,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "26427fbda766513e32a3305a89f62468a15211aac8b78c9eb9f12030d64be0b5"
+        },
+        {
+          "id": "channel-751393-v1--baseline",
+          "sourceViewId": "channel-751393-v1",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19787,
+          "corePixels": 15942,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "fbf6f36e5fd3de666fd7733c04c03b59f3f6751b3b2ac7934bb87e0d6cdc1448"
+        },
+        {
+          "id": "channel-751393-v1--scene-neighbors",
+          "sourceViewId": "channel-751393-v1",
+          "variant": "scene-neighbors",
+          "distractorPixels": 13982,
+          "distractorFalsePositive": 0.02374481476183665,
+          "foregroundPixels": 19787,
+          "corePixels": 15942,
+          "paperCoreMeanAbsoluteRGBChange": 3.312661994501309e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.003857020055875182,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "fbf6f36e5fd3de666fd7733c04c03b59f3f6751b3b2ac7934bb87e0d6cdc1448"
+        },
+        {
+          "id": "channel-751393-v1--scene-handle",
+          "sourceViewId": "channel-751393-v1",
+          "variant": "scene-handle",
+          "distractorPixels": 477,
+          "distractorFalsePositive": 0.05870020964360587,
+          "foregroundPixels": 19787,
+          "corePixels": 15942,
+          "paperCoreMeanAbsoluteRGBChange": 5.1493854766010444e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0008881238754838705,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "fbf6f36e5fd3de666fd7733c04c03b59f3f6751b3b2ac7934bb87e0d6cdc1448"
+        },
+        {
+          "id": "channel-751393-v1--scene-combined",
+          "sourceViewId": "channel-751393-v1",
+          "variant": "scene-combined",
+          "distractorPixels": 14021,
+          "distractorFalsePositive": 0.0272448470151915,
+          "foregroundPixels": 19787,
+          "corePixels": 15942,
+          "paperCoreMeanAbsoluteRGBChange": 6.63352364740485e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0039267875254154205,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "fbf6f36e5fd3de666fd7733c04c03b59f3f6751b3b2ac7934bb87e0d6cdc1448"
+        },
+        {
+          "id": "channel-755429-v2--baseline",
+          "sourceViewId": "channel-755429-v2",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 24975,
+          "corePixels": 20572,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "09ec161975b02f19ca5c5b7d7c35e2c1b16f73bc935507f81f7b76fa570baa19"
+        },
+        {
+          "id": "channel-755429-v2--scene-neighbors",
+          "sourceViewId": "channel-755429-v2",
+          "variant": "scene-neighbors",
+          "distractorPixels": 16298,
+          "distractorFalsePositive": 0.0056448644005399435,
+          "foregroundPixels": 24975,
+          "corePixels": 20572,
+          "paperCoreMeanAbsoluteRGBChange": 1.4741783679574622e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.020002547651529312,
+          "paperCoreFalseNegativeFraction": 0.013221854948473654,
+          "foregroundSha256": "09ec161975b02f19ca5c5b7d7c35e2c1b16f73bc935507f81f7b76fa570baa19"
+        },
+        {
+          "id": "channel-755429-v2--scene-handle",
+          "sourceViewId": "channel-755429-v2",
+          "variant": "scene-handle",
+          "distractorPixels": 774,
+          "distractorFalsePositive": 0.01937984496124031,
+          "foregroundPixels": 24975,
+          "corePixels": 20572,
+          "paperCoreMeanAbsoluteRGBChange": 7.625060523917909e-07,
+          "paperCoreMeanAbsolutePredictionChange": 0.0012713810428977013,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "09ec161975b02f19ca5c5b7d7c35e2c1b16f73bc935507f81f7b76fa570baa19"
+        },
+        {
+          "id": "channel-755429-v2--scene-combined",
+          "sourceViewId": "channel-755429-v2",
+          "variant": "scene-combined",
+          "distractorPixels": 16346,
+          "distractorFalsePositive": 0.00960479628043558,
+          "foregroundPixels": 24975,
+          "corePixels": 20572,
+          "paperCoreMeanAbsoluteRGBChange": 1.569491624506436e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.019754722714424133,
+          "paperCoreFalseNegativeFraction": 0.012735757340073886,
+          "foregroundSha256": "09ec161975b02f19ca5c5b7d7c35e2c1b16f73bc935507f81f7b76fa570baa19"
+        },
+        {
+          "id": "channel-820005-v3--baseline",
+          "sourceViewId": "channel-820005-v3",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 22071,
+          "corePixels": 18087,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87ad4b6fed6b47351ee7b9e483febe1504cd447585b5b2663a650962ec97d5dc"
+        },
+        {
+          "id": "channel-820005-v3--scene-neighbors",
+          "sourceViewId": "channel-820005-v3",
+          "variant": "scene-neighbors",
+          "distractorPixels": 9148,
+          "distractorFalsePositive": 0.00032794053344993443,
+          "foregroundPixels": 22071,
+          "corePixels": 18087,
+          "paperCoreMeanAbsoluteRGBChange": 1.1563572001845834e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0037269804161041975,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87ad4b6fed6b47351ee7b9e483febe1504cd447585b5b2663a650962ec97d5dc"
+        },
+        {
+          "id": "channel-820005-v3--scene-handle",
+          "sourceViewId": "channel-820005-v3",
+          "variant": "scene-handle",
+          "distractorPixels": 492,
+          "distractorFalsePositive": 0.032520325203252036,
+          "foregroundPixels": 22071,
+          "corePixels": 18087,
+          "paperCoreMeanAbsoluteRGBChange": 1.734535800276875e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0010687035974115133,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87ad4b6fed6b47351ee7b9e483febe1504cd447585b5b2663a650962ec97d5dc"
+        },
+        {
+          "id": "channel-820005-v3--scene-combined",
+          "sourceViewId": "channel-820005-v3",
+          "variant": "scene-combined",
+          "distractorPixels": 9640,
+          "distractorFalsePositive": 0.0017634854771784233,
+          "foregroundPixels": 22071,
+          "corePixels": 18087,
+          "paperCoreMeanAbsoluteRGBChange": 2.8908930004614584e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.00440053828060627,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87ad4b6fed6b47351ee7b9e483febe1504cd447585b5b2663a650962ec97d5dc"
+        },
+        {
+          "id": "frame-764510-v0--baseline",
+          "sourceViewId": "frame-764510-v0",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 17516,
+          "corePixels": 13845,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "c3992511905a86322506475a7a76f982776e1c475314fd03712aece5e852a1a7"
+        },
+        {
+          "id": "frame-764510-v0--scene-neighbors",
+          "sourceViewId": "frame-764510-v0",
+          "variant": "scene-neighbors",
+          "distractorPixels": 8913,
+          "distractorFalsePositive": 0.0,
+          "foregroundPixels": 17516,
+          "corePixels": 13845,
+          "paperCoreMeanAbsoluteRGBChange": 1.6522800284192165e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.006085984408855438,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "c3992511905a86322506475a7a76f982776e1c475314fd03712aece5e852a1a7"
+        },
+        {
+          "id": "frame-764510-v0--scene-handle",
+          "sourceViewId": "frame-764510-v0",
+          "variant": "scene-handle",
+          "distractorPixels": 420,
+          "distractorFalsePositive": 0.04523809523809524,
+          "foregroundPixels": 17516,
+          "corePixels": 13845,
+          "paperCoreMeanAbsoluteRGBChange": 7.742112133164328e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0011347685940563679,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "c3992511905a86322506475a7a76f982776e1c475314fd03712aece5e852a1a7"
+        },
+        {
+          "id": "frame-764510-v0--scene-combined",
+          "sourceViewId": "frame-764510-v0",
+          "variant": "scene-combined",
+          "distractorPixels": 9333,
+          "distractorFalsePositive": 0.0017143469409621772,
+          "foregroundPixels": 17516,
+          "corePixels": 13845,
+          "paperCoreMeanAbsoluteRGBChange": 2.4264912417356492e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.006558949593454599,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "c3992511905a86322506475a7a76f982776e1c475314fd03712aece5e852a1a7"
+        },
+        {
+          "id": "frame-756438-v1--baseline",
+          "sourceViewId": "frame-756438-v1",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 22438,
+          "corePixels": 18291,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "9df10e3156a147e4a930dbb71712b411cbf23183070e22ed4e6f661956ffc4a6"
+        },
+        {
+          "id": "frame-756438-v1--scene-neighbors",
+          "sourceViewId": "frame-756438-v1",
+          "variant": "scene-neighbors",
+          "distractorPixels": 10636,
+          "distractorFalsePositive": 0.0,
+          "foregroundPixels": 22438,
+          "corePixels": 18291,
+          "paperCoreMeanAbsoluteRGBChange": 3.5232871053766575e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.008657383732497692,
+          "paperCoreFalseNegativeFraction": 0.003991033841780111,
+          "foregroundSha256": "9df10e3156a147e4a930dbb71712b411cbf23183070e22ed4e6f661956ffc4a6"
+        },
+        {
+          "id": "frame-756438-v1--scene-handle",
+          "sourceViewId": "frame-756438-v1",
+          "variant": "scene-handle",
+          "distractorPixels": 358,
+          "distractorFalsePositive": 0.04189944134078212,
+          "foregroundPixels": 22438,
+          "corePixels": 18291,
+          "paperCoreMeanAbsoluteRGBChange": 1.14346031817498e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.00111234444193542,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "9df10e3156a147e4a930dbb71712b411cbf23183070e22ed4e6f661956ffc4a6"
+        },
+        {
+          "id": "frame-756438-v1--scene-combined",
+          "sourceViewId": "frame-756438-v1",
+          "variant": "scene-combined",
+          "distractorPixels": 10859,
+          "distractorFalsePositive": 0.0011971636430610554,
+          "foregroundPixels": 22438,
+          "corePixels": 18291,
+          "paperCoreMeanAbsoluteRGBChange": 3.637633137194155e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.008833366446197033,
+          "paperCoreFalseNegativeFraction": 0.004100377234705593,
+          "foregroundSha256": "9df10e3156a147e4a930dbb71712b411cbf23183070e22ed4e6f661956ffc4a6"
+        },
+        {
+          "id": "frame-776618-v2--baseline",
+          "sourceViewId": "frame-776618-v2",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19183,
+          "corePixels": 15422,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87f650665ebc44c1ca81030ce11e46f1d2e8b43889091f9ffb0e5a1e6262dec4"
+        },
+        {
+          "id": "frame-776618-v2--scene-neighbors",
+          "sourceViewId": "frame-776618-v2",
+          "variant": "scene-neighbors",
+          "distractorPixels": 11876,
+          "distractorFalsePositive": 0.13320983496126643,
+          "foregroundPixels": 19183,
+          "corePixels": 15422,
+          "paperCoreMeanAbsoluteRGBChange": 6.374053533573547e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.005155602470040321,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87f650665ebc44c1ca81030ce11e46f1d2e8b43889091f9ffb0e5a1e6262dec4"
+        },
+        {
+          "id": "frame-776618-v2--scene-handle",
+          "sourceViewId": "frame-776618-v2",
+          "variant": "scene-handle",
+          "distractorPixels": 693,
+          "distractorFalsePositive": 0.05483405483405483,
+          "foregroundPixels": 19183,
+          "corePixels": 15422,
+          "paperCoreMeanAbsoluteRGBChange": 1.3138009277977392e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0010080899810418487,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87f650665ebc44c1ca81030ce11e46f1d2e8b43889091f9ffb0e5a1e6262dec4"
+        },
+        {
+          "id": "frame-776618-v2--scene-combined",
+          "sourceViewId": "frame-776618-v2",
+          "variant": "scene-combined",
+          "distractorPixels": 12569,
+          "distractorFalsePositive": 0.1307979950672289,
+          "foregroundPixels": 19183,
+          "corePixels": 15422,
+          "paperCoreMeanAbsoluteRGBChange": 7.687854461371286e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.005770823452621698,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "87f650665ebc44c1ca81030ce11e46f1d2e8b43889091f9ffb0e5a1e6262dec4"
+        },
+        {
+          "id": "frame-780654-v3--baseline",
+          "sourceViewId": "frame-780654-v3",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 23599,
+          "corePixels": 19618,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "33ec32f5ff576e763155f12e30cc72bfcd7f61c75abfa6302fda8e99bbdc7efc"
+        },
+        {
+          "id": "frame-780654-v3--scene-neighbors",
+          "sourceViewId": "frame-780654-v3",
+          "variant": "scene-neighbors",
+          "distractorPixels": 17414,
+          "distractorFalsePositive": 0.007809808200298611,
+          "foregroundPixels": 23599,
+          "corePixels": 19618,
+          "paperCoreMeanAbsoluteRGBChange": 8.229070674723826e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.013040888123214245,
+          "paperCoreFalseNegativeFraction": 0.0006626567438067081,
+          "foregroundSha256": "33ec32f5ff576e763155f12e30cc72bfcd7f61c75abfa6302fda8e99bbdc7efc"
+        },
+        {
+          "id": "frame-780654-v3--scene-handle",
+          "sourceViewId": "frame-780654-v3",
+          "variant": "scene-handle",
+          "distractorPixels": 582,
+          "distractorFalsePositive": 0.003436426116838488,
+          "foregroundPixels": 23599,
+          "corePixels": 19618,
+          "paperCoreMeanAbsoluteRGBChange": 7.196272330932577e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0017629471840336919,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "33ec32f5ff576e763155f12e30cc72bfcd7f61c75abfa6302fda8e99bbdc7efc"
+        },
+        {
+          "id": "frame-780654-v3--scene-combined",
+          "sourceViewId": "frame-780654-v3",
+          "variant": "scene-combined",
+          "distractorPixels": 17550,
+          "distractorFalsePositive": 0.009572649572649573,
+          "foregroundPixels": 23599,
+          "corePixels": 19618,
+          "paperCoreMeanAbsoluteRGBChange": 8.948697907817082e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.012118374928832054,
+          "paperCoreFalseNegativeFraction": 0.0004587623610969518,
+          "foregroundSha256": "33ec32f5ff576e763155f12e30cc72bfcd7f61c75abfa6302fda8e99bbdc7efc"
+        },
+        {
+          "id": "frame-760474-v0--baseline",
+          "sourceViewId": "frame-760474-v0",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19663,
+          "corePixels": 15906,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "2bdd60dc250d7538a6a4e025e1af0d3e63d23c72499b21ebb3b5925ccf3ee396"
+        },
+        {
+          "id": "frame-760474-v0--scene-neighbors",
+          "sourceViewId": "frame-760474-v0",
+          "variant": "scene-neighbors",
+          "distractorPixels": 9222,
+          "distractorFalsePositive": 0.0,
+          "foregroundPixels": 19663,
+          "corePixels": 15906,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0036008208990097046,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "2bdd60dc250d7538a6a4e025e1af0d3e63d23c72499b21ebb3b5925ccf3ee396"
+        },
+        {
+          "id": "frame-760474-v0--scene-handle",
+          "sourceViewId": "frame-760474-v0",
+          "variant": "scene-handle",
+          "distractorPixels": 698,
+          "distractorFalsePositive": 0.0,
+          "foregroundPixels": 19663,
+          "corePixels": 15906,
+          "paperCoreMeanAbsoluteRGBChange": 1.4792789994156847e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0016363149043172598,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "2bdd60dc250d7538a6a4e025e1af0d3e63d23c72499b21ebb3b5925ccf3ee396"
+        },
+        {
+          "id": "frame-760474-v0--scene-combined",
+          "sourceViewId": "frame-760474-v0",
+          "variant": "scene-combined",
+          "distractorPixels": 9920,
+          "distractorFalsePositive": 0.0,
+          "foregroundPixels": 19663,
+          "corePixels": 15906,
+          "paperCoreMeanAbsoluteRGBChange": 1.4792789994156847e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0041013373993337154,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "2bdd60dc250d7538a6a4e025e1af0d3e63d23c72499b21ebb3b5925ccf3ee396"
+        },
+        {
+          "id": "frame-748366-v1--baseline",
+          "sourceViewId": "frame-748366-v1",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 15322,
+          "corePixels": 12206,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "0039e6c24096281dfd0a29c785cd3b19fd8b4701d52e500b09b5fef26d54871f"
+        },
+        {
+          "id": "frame-748366-v1--scene-neighbors",
+          "sourceViewId": "frame-748366-v1",
+          "variant": "scene-neighbors",
+          "distractorPixels": 11356,
+          "distractorFalsePositive": 0.055301162381120116,
+          "foregroundPixels": 15322,
+          "corePixels": 12206,
+          "paperCoreMeanAbsoluteRGBChange": 3.9517691395745575e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.004351536277681589,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "0039e6c24096281dfd0a29c785cd3b19fd8b4701d52e500b09b5fef26d54871f"
+        },
+        {
+          "id": "frame-748366-v1--scene-handle",
+          "sourceViewId": "frame-748366-v1",
+          "variant": "scene-handle",
+          "distractorPixels": 507,
+          "distractorFalsePositive": 0.01972386587771203,
+          "foregroundPixels": 15322,
+          "corePixels": 12206,
+          "paperCoreMeanAbsoluteRGBChange": 5.44037594282893e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.001396243111230433,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "0039e6c24096281dfd0a29c785cd3b19fd8b4701d52e500b09b5fef26d54871f"
+        },
+        {
+          "id": "frame-748366-v1--scene-combined",
+          "sourceViewId": "frame-748366-v1",
+          "variant": "scene-combined",
+          "distractorPixels": 11863,
+          "distractorFalsePositive": 0.048048554328584674,
+          "foregroundPixels": 15322,
+          "corePixels": 12206,
+          "paperCoreMeanAbsoluteRGBChange": 9.392145082403488e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.005441049113869667,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "0039e6c24096281dfd0a29c785cd3b19fd8b4701d52e500b09b5fef26d54871f"
+        },
+        {
+          "id": "frame-829086-v2--baseline",
+          "sourceViewId": "frame-829086-v2",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 19160,
+          "corePixels": 15629,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "75fb60504b4cac2d4d3e82ba6629738a505910725326bff99c2e4237f413bd82"
+        },
+        {
+          "id": "frame-829086-v2--scene-neighbors",
+          "sourceViewId": "frame-829086-v2",
+          "variant": "scene-neighbors",
+          "distractorPixels": 13756,
+          "distractorFalsePositive": 0.017592323349810993,
+          "foregroundPixels": 19160,
+          "corePixels": 15629,
+          "paperCoreMeanAbsoluteRGBChange": 4.2655746795487025e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.004057580605149269,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "75fb60504b4cac2d4d3e82ba6629738a505910725326bff99c2e4237f413bd82"
+        },
+        {
+          "id": "frame-829086-v2--scene-handle",
+          "sourceViewId": "frame-829086-v2",
+          "variant": "scene-handle",
+          "distractorPixels": 675,
+          "distractorFalsePositive": 0.005925925925925926,
+          "foregroundPixels": 19160,
+          "corePixels": 15629,
+          "paperCoreMeanAbsoluteRGBChange": 2.1913344432191375e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.0011868568835780025,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "75fb60504b4cac2d4d3e82ba6629738a505910725326bff99c2e4237f413bd82"
+        },
+        {
+          "id": "frame-829086-v2--scene-combined",
+          "sourceViewId": "frame-829086-v2",
+          "variant": "scene-combined",
+          "distractorPixels": 14431,
+          "distractorFalsePositive": 0.011918785946919825,
+          "foregroundPixels": 19160,
+          "corePixels": 15629,
+          "paperCoreMeanAbsoluteRGBChange": 2.6178919111740074e-05,
+          "paperCoreMeanAbsolutePredictionChange": 0.004664601292461157,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "75fb60504b4cac2d4d3e82ba6629738a505910725326bff99c2e4237f413bd82"
+        },
+        {
+          "id": "frame-833122-v3--baseline",
+          "sourceViewId": "frame-833122-v3",
+          "variant": "baseline",
+          "distractorPixels": 0,
+          "distractorFalsePositive": null,
+          "foregroundPixels": 20611,
+          "corePixels": 16683,
+          "paperCoreMeanAbsoluteRGBChange": 0.0,
+          "paperCoreMeanAbsolutePredictionChange": 0.0,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "6acb456ff1602e0ddab3f92cb8952c4e107c18de775513e5fa353b7c02a03d7e"
+        },
+        {
+          "id": "frame-833122-v3--scene-neighbors",
+          "sourceViewId": "frame-833122-v3",
+          "variant": "scene-neighbors",
+          "distractorPixels": 16549,
+          "distractorFalsePositive": 0.034866155054686085,
+          "foregroundPixels": 20611,
+          "corePixels": 16683,
+          "paperCoreMeanAbsoluteRGBChange": 0.00010045057804136258,
+          "paperCoreMeanAbsolutePredictionChange": 0.011630918830633163,
+          "paperCoreFalseNegativeFraction": 0.0006593538332434214,
+          "foregroundSha256": "6acb456ff1602e0ddab3f92cb8952c4e107c18de775513e5fa353b7c02a03d7e"
+        },
+        {
+          "id": "frame-833122-v3--scene-handle",
+          "sourceViewId": "frame-833122-v3",
+          "variant": "scene-handle",
+          "distractorPixels": 827,
+          "distractorFalsePositive": 0.049576783555018135,
+          "foregroundPixels": 20611,
+          "corePixels": 16683,
+          "paperCoreMeanAbsoluteRGBChange": 1.645446286168966e-06,
+          "paperCoreMeanAbsolutePredictionChange": 0.0010191479232162237,
+          "paperCoreFalseNegativeFraction": 0.0,
+          "foregroundSha256": "6acb456ff1602e0ddab3f92cb8952c4e107c18de775513e5fa353b7c02a03d7e"
+        },
+        {
+          "id": "frame-833122-v3--scene-combined",
+          "sourceViewId": "frame-833122-v3",
+          "variant": "scene-combined",
+          "distractorPixels": 16763,
+          "distractorFalsePositive": 0.03692656445743602,
+          "foregroundPixels": 20611,
+          "corePixels": 16683,
+          "paperCoreMeanAbsoluteRGBChange": 0.00010162589681719757,
+          "paperCoreMeanAbsolutePredictionChange": 0.009994526393711567,
+          "paperCoreFalseNegativeFraction": 0.0006593538332434214,
+          "foregroundSha256": "6acb456ff1602e0ddab3f92cb8952c4e107c18de775513e5fa353b7c02a03d7e"
+        }
+      ]
+    }
+  },
+  "evaluation": {
+    "control": {
+      "real": {
+        "views": 31,
+        "statuses": {
+          "crop-unresolved": 25,
+          "checked-pair": 5,
+          "review-required": 1
+        },
+        "supportedOutlines": 6,
+        "checkedPairs": 5
+      },
+      "synthetic": {
+        "views": 12,
+        "statuses": {
+          "checked-pair": 11,
+          "crop-unresolved": 1
+        },
+        "supportedOutlines": 11,
+        "checkedPairs": 11
+      }
+    },
+    "scene": {
+      "real": {
+        "views": 31,
+        "statuses": {
+          "crop-unresolved": 26,
+          "checked-pair": 5
+        },
+        "supportedOutlines": 5,
+        "checkedPairs": 5
+      },
+      "synthetic": {
+        "views": 12,
+        "statuses": {
+          "checked-pair": 11,
+          "crop-unresolved": 1
+        },
+        "supportedOutlines": 11,
+        "checkedPairs": 11
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "real-nested-squares",
+      "caseId": "nested-squares",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.815014709
+    },
+    {
+      "id": "real-outline-star",
+      "caseId": "outline-star",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.5145412080000002
+    },
+    {
+      "id": "real-floral-checker",
+      "caseId": "floral-checker",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.409784209
+    },
+    {
+      "id": "real-dense-checker",
+      "caseId": "dense-checker",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.546140791999999
+    },
+    {
+      "id": "real-bird",
+      "caseId": "bird",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.4190463739999983
+    },
+    {
+      "id": "real-leaf",
+      "caseId": "leaf",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.506063790999999
+    },
+    {
+      "id": "real-gift",
+      "caseId": "gift",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.399656416
+    },
+    {
+      "id": "real-gingerbread",
+      "caseId": "gingerbread",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.914532708999998
+    },
+    {
+      "id": "real-white-birds",
+      "caseId": "white-birds",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.282434832999997
+    },
+    {
+      "id": "real-flower",
+      "caseId": "flower",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.5626965000000004
+    },
+    {
+      "id": "real-warped-checker",
+      "caseId": "warped-checker",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.5681678330000017
+    },
+    {
+      "id": "real-round-checker",
+      "caseId": "round-checker",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.432761667000001
+    },
+    {
+      "id": "real-santa",
+      "caseId": "santa",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.5321877910000037
+    },
+    {
+      "id": "real-fine-checker",
+      "caseId": "fine-checker",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.369666165999997
+    },
+    {
+      "id": "real-orb",
+      "caseId": "orb",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.4386397500000006
+    },
+    {
+      "id": "real-stacked-hearts",
+      "caseId": "stacked-hearts",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.450942833000006
+    },
+    {
+      "id": "real-jigsaw",
+      "caseId": "jigsaw",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.1713440830000037
+    },
+    {
+      "id": "real-candle",
+      "caseId": "candle",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.5909309590000005
+    },
+    {
+      "id": "real-maple-leaf",
+      "caseId": "maple-leaf",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.3476304160000065
+    },
+    {
+      "id": "real-crown",
+      "caseId": "crown",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.3853504589999974
+    },
+    {
+      "id": "real-crossed-ribbons",
+      "caseId": "crossed-ribbons",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.386670375000005
+    },
+    {
+      "id": "real-bauble",
+      "caseId": "bauble",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.0722906670000043
+    },
+    {
+      "id": "real-bottom-flower",
+      "caseId": "bottom-flower",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.5042174170000013
+    },
+    {
+      "id": "real-faceted-star",
+      "caseId": "faceted-star",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 1.8962319999999948
+    },
+    {
+      "id": "real-bibel-star-8",
+      "caseId": "bibel-star-8",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6788990825688074,
+          0.6605504587155964
+        ],
+        "lobeOutlineSupport": [
+          0.8333333333333334,
+          0.75
+        ],
+        "capColourLoss": [
+          0.0031711769652892907,
+          0.04124092492957468
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "independentImageError": 0.00530625,
+      "checkedPair": true,
+      "quad": [
+        [
+          536.7767014544443,
+          136.1127208116122
+        ],
+        [
+          789.4148503878722,
+          342.14263804511234
+        ],
+        [
+          538.6657088979035,
+          551.9763252297578
+        ],
+        [
+          315.7912265382031,
+          363.22213964265495
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 8.887650207999988,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-bibel-star-curved",
+      "caseId": "bibel-star-curved",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.8611111111111112,
+          0.8333333333333334
+        ],
+        "capColourLoss": [
+          0.01491782691653978,
+          0.012755847927668072
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "independentImageError": 0.01011875,
+      "checkedPair": true,
+      "quad": [
+        [
+          519.6211788255837,
+          139.5253106417477
+        ],
+        [
+          758.7405448195692,
+          365.2321725747523
+        ],
+        [
+          506.98882419837844,
+          616.5735282288554
+        ],
+        [
+          276.91275443807655,
+          360.8951468546823
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 7.900045915999996,
+      "slits": {
+        "left": 5,
+        "right": 5
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-bibel-star-outline",
+      "caseId": "bibel-star-outline",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8220338983050848,
+          0.7288135593220338
+        ],
+        "lobeOutlineSupport": [
+          0.6944444444444444,
+          0.6944444444444444
+        ],
+        "capColourLoss": [
+          0.007154415243940677,
+          0.011126831439203035
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "independentImageError": 0.01260625,
+      "checkedPair": true,
+      "quad": [
+        [
+          509.0754771093246,
+          139.90881205644737
+        ],
+        [
+          734.0535093713297,
+          382.1892973114441
+        ],
+        [
+          501.0947867786813,
+          612.3317319644113
+        ],
+        [
+          269.0034779973999,
+          366.68254794957005
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 10.520783582999979,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-bibel-cross",
+      "caseId": "bibel-cross",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9833333333333333,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.6666666666666666,
+          0.6666666666666666
+        ],
+        "capColourLoss": [
+          0.011496929169245397,
+          0.012094429730981947
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "independentImageError": 0.00939375,
+      "checkedPair": true,
+      "quad": [
+        [
+          521.3759272670344,
+          122.90655592457918
+        ],
+        [
+          769.8093245200831,
+          354.62889869213103
+        ],
+        [
+          524.3018976385947,
+          625.5582273857173
+        ],
+        [
+          271.2476234589975,
+          383.8762167979879
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 8.322340083999997,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-flettede-puppy",
+      "caseId": "flettede-puppy",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8461538461538461,
+          0.9440559440559441
+        ],
+        "lobeOutlineSupport": [
+          0.7777777777777778,
+          0.9166666666666666
+        ],
+        "capColourLoss": [
+          0.01050864940823402,
+          0.008818475659547976
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "independentImageError": 0.01491875,
+      "checkedPair": true,
+      "quad": [
+        [
+          397.3945926374587,
+          319.7792763410212
+        ],
+        [
+          657.0245974350418,
+          583.4001519957103
+        ],
+        [
+          386.68187329195086,
+          853.1683586404323
+        ],
+        [
+          125.32405766230461,
+          574.13226420995
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 10.362965792999983,
+      "slits": {
+        "left": 3,
+        "right": 5
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-flettede-stonehenge",
+      "caseId": "flettede-stonehenge",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.804241167000011
+    },
+    {
+      "id": "real-flettede-viking",
+      "caseId": "flettede-viking",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9664804469273743,
+          0.9385474860335196
+        ],
+        "lobeOutlineSupport": [
+          0.7222222222222222,
+          0.8611111111111112
+        ],
+        "capColourLoss": [
+          0.011012248395511157,
+          0.01702169215081863
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "review-required",
+      "independentImageError": 0.068275,
+      "checkedPair": false,
+      "quad": [
+        [
+          729.7040178760585,
+          315.09519193853515
+        ],
+        [
+          1278.4811826965547,
+          841.3067006270461
+        ],
+        [
+          740.1029575009566,
+          1407.5467142333748
+        ],
+        [
+          213.17018403945966,
+          874.8165410343789
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 10.38732762599999,
+      "slits": {
+        "left": 6,
+        "right": 6
+      },
+      "templateChecksPassed": false
+    },
+    {
+      "id": "synthetic-corner-lattice-3036370-v0",
+      "group": "development",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8255813953488372,
+          0.9418604651162791
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.009752044547988288,
+          0.012332712367990896
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.5203798336213,
+        1.129974191565707,
+        1.8873040033464479,
+        0.8156542093140525
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.006606409652053316,
+        "inverted": false,
+        "observedPixels": 146373,
+        "observedFraction": 0.9926554361979166
+      },
+      "independentImageError": 0.002081976996527778,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.006831861067273336,
+        "inverted": false,
+        "observedPixels": 146373,
+        "observedFraction": 0.9926554361979166
+      },
+      "quad": [
+        [
+          220.83458680801544,
+          269.9211240648391
+        ],
+        [
+          120.69469791201759,
+          147.19444505359377
+        ],
+        [
+          239.56689305581614,
+          31.731979276686644
+        ],
+        [
+          345.7713741288379,
+          162.68056039066965
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 6.661986709000014,
+      "slits": {
+        "left": 4,
+        "right": 3
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-corner-lattice-37-v0",
+      "group": "development",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9871794871794872,
+          0.9615384615384616
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.008118072289263046,
+          0.007744927950345075
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.515910532569736,
+        0.9025084590066037,
+        1.503955459888883,
+        1.159114157336728
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.017211281435819105,
+        "inverted": false,
+        "observedPixels": 146648,
+        "observedFraction": 0.9945203993055556
+      },
+      "independentImageError": 0.005126953125,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.01640663357154547,
+        "inverted": false,
+        "observedPixels": 146648,
+        "observedFraction": 0.9945203993055556
+      },
+      "quad": [
+        [
+          125.49549007605768,
+          170.8849012260269
+        ],
+        [
+          265.90837300287376,
+          190.35025014423857
+        ],
+        [
+          261.74759335062606,
+          324.8984566998176
+        ],
+        [
+          119.48843051390243,
+          314.2852365335653
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 9.112101165999995,
+      "slits": {
+        "left": 7,
+        "right": 4
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-corner-lattice-1031319-v0",
+      "group": "development",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.340275334000008
+    },
+    {
+      "id": "synthetic-corner-lattice-49478-v0",
+      "group": "development",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9578947368421052,
+          0.9368421052631579
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.012513344378785547,
+          0.011698959117713188
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        0.9300410047806706,
+        1.9885795622446538,
+        3.005010001996893,
+        2.65525875410359
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.009966501481132858,
+        "inverted": false,
+        "observedPixels": 144484,
+        "observedFraction": 0.9798448350694444
+      },
+      "independentImageError": 0.004733615451388889,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.01026411228925002,
+        "inverted": false,
+        "observedPixels": 144484,
+        "observedFraction": 0.9798448350694444
+      },
+      "quad": [
+        [
+          273.4189530874481,
+          112.41186178651634
+        ],
+        [
+          266.16026406445184,
+          292.62221398438174
+        ],
+        [
+          80.92056615622879,
+          293.8106054659374
+        ],
+        [
+          92.41622634441431,
+          108.93128915865626
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 7.829806332999986,
+      "slits": {
+        "left": 7,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-channel-775609-v0",
+      "group": "recipe-validation",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7142857142857143,
+          0.9285714285714286
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.009356526729570904,
+          0.007162797513583248
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        2.7534250928667836,
+        4.399464170787617,
+        2.7794380293242824,
+        1.0805280350932247
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.001829344346355863,
+        "inverted": false,
+        "observedPixels": 144314,
+        "observedFraction": 0.9786919487847222
+      },
+      "independentImageError": 0.004801432291666667,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.001635322976287817,
+        "inverted": false,
+        "observedPixels": 144314,
+        "observedFraction": 0.9786919487847222
+      },
+      "quad": [
+        [
+          134.07814875484553,
+          247.76686731517572
+        ],
+        [
+          168.12082609013,
+          80.67847399278354
+        ],
+        [
+          314.2780060336123,
+          131.0172477675108
+        ],
+        [
+          279.41768570024004,
+          273.31641480965015
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 4.811163002000004,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-channel-807897-v0",
+      "group": "recipe-validation",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.654320987654321,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.008904784553629728,
+          0.010096092009636392
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        2.9020959895118503,
+        2.603943631893104,
+        1.6383572511641766,
+        2.335752487059159
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0013630543431867935,
+        "inverted": false,
+        "observedPixels": 145262,
+        "observedFraction": 0.9851209852430556
+      },
+      "independentImageError": 0.002068413628472222,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.001535157164296237,
+        "inverted": false,
+        "observedPixels": 145262,
+        "observedFraction": 0.9851209852430556
+      },
+      "quad": [
+        [
+          262.22712514569804,
+          181.65804284169914
+        ],
+        [
+          176.52873795450816,
+          302.554091398004
+        ],
+        [
+          47.26525632630546,
+          236.42817608030919
+        ],
+        [
+          127.63241114120945,
+          92.94505146819844
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 2.387220248999962,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-channel-795789-v0",
+      "group": "recipe-validation",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9753086419753086,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.009223130209780581,
+          0.008196746519645482
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.0889147169389946,
+        1.0767651452344351,
+        0.642074009937452,
+        0.661134573710228
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.001483043640940168,
+        "inverted": false,
+        "observedPixels": 146995,
+        "observedFraction": 0.9968736436631944
+      },
+      "independentImageError": 0.0030381944444444445,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.0035171264328718666,
+        "inverted": false,
+        "observedPixels": 146995,
+        "observedFraction": 0.9968736436631944
+      },
+      "quad": [
+        [
+          231.34624878148117,
+          234.74194011397609
+        ],
+        [
+          79.09108595255134,
+          250.8100443346649
+        ],
+        [
+          69.71778405547686,
+          89.89701009753504
+        ],
+        [
+          216.32022744182626,
+          86.2429765119551
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 1.9762575829999927,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-channel-755429-v0",
+      "group": "recipe-validation",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.684931506849315,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.009588730696149992,
+          0.004108683095019488
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        0.6896160087935628,
+        0.7470733841594577,
+        2.812717332969925,
+        1.0445515663990415
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.002530465015806834,
+        "inverted": false,
+        "observedPixels": 145823,
+        "observedFraction": 0.9889255099826388
+      },
+      "independentImageError": 0.008185492621527778,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.007371950926808528,
+        "inverted": false,
+        "observedPixels": 145823,
+        "observedFraction": 0.9889255099826388
+      },
+      "quad": [
+        [
+          168.53219670531666,
+          235.31289733081246
+        ],
+        [
+          121.8624382576654,
+          84.86459310594475
+        ],
+        [
+          284.3383868009132,
+          65.25459543101856
+        ],
+        [
+          294.14640436452055,
+          194.13144170386437
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 3.05047487500001,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-frame-764510-v0",
+      "group": "recipe-test",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.9875
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.008191022201767515,
+          0.00833521704148521
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.598681433968994,
+        1.2370310626997065,
+        0.5800047982051587,
+        0.4092087748964489
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004175794085432639,
+        "inverted": false,
+        "observedPixels": 146080,
+        "observedFraction": 0.9906684027777778
+      },
+      "independentImageError": 0.0018853081597222222,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.004257940854326396,
+        "inverted": false,
+        "observedPixels": 146080,
+        "observedFraction": 0.9906684027777778
+      },
+      "quad": [
+        [
+          211.82085805822064,
+          178.5609233198314
+        ],
+        [
+          207.98424331691243,
+          323.5861098168684
+        ],
+        [
+          66.79993361539522,
+          331.55677157660284
+        ],
+        [
+          62.31080247583421,
+          165.77046573930275
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 8.047860875000033,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-frame-776618-v0",
+      "group": "recipe-test",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9642857142857143,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.008409350762016087,
+          0.016404397497933314
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.3887758364026412,
+        0.0693877361477962,
+        1.224912592435678,
+        1.0697256294192787
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.005596164961071635,
+        "inverted": false,
+        "observedPixels": 147065,
+        "observedFraction": 0.9973483615451388
+      },
+      "independentImageError": 0.007554796006944444,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.006357732975215041,
+        "inverted": false,
+        "observedPixels": 147065,
+        "observedFraction": 0.9973483615451388
+      },
+      "quad": [
+        [
+          207.47367930820243,
+          113.65218576099932
+        ],
+        [
+          336.38471036894833,
+          209.73148279611397
+        ],
+        [
+          226.92725612169934,
+          340.75725178521196
+        ],
+        [
+          98.65102965743733,
+          230.29570599366784
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 5.237297833000026,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-frame-760474-v0",
+      "group": "recipe-test",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.691358024691358
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.015168181284689731,
+          0.008421522404370848
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.0871835696246104,
+        0.9008843357525569,
+        2.0600724745076016,
+        0.9193858626213025
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004500770679910944,
+        "inverted": false,
+        "observedPixels": 145975,
+        "observedFraction": 0.9899563259548612
+      },
+      "independentImageError": 0.009175618489583334,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.005048809727693098,
+        "inverted": false,
+        "observedPixels": 145975,
+        "observedFraction": 0.9899563259548612
+      },
+      "quad": [
+        [
+          203.31123700919463,
+          157.36566144270205
+        ],
+        [
+          281.6897576211529,
+          301.9185821823821
+        ],
+        [
+          134.09099377703174,
+          369.5303660465605
+        ],
+        [
+          71.72229969763002,
+          226.60780095878434
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 5.671063833000026,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-frame-829086-v0",
+      "group": "recipe-test",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9787234042553191,
+          0.776595744680851
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.011603871102860054,
+          0.011789044831170825
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.906710061643104,
+        1.1292271437723422,
+        3.689062450845137,
+        1.1964898410556006
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004145327054617949,
+        "inverted": false,
+        "observedPixels": 145465,
+        "observedFraction": 0.9864976671006944
+      },
+      "independentImageError": 0.007853190104166666,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.009129343828412333,
+        "inverted": false,
+        "observedPixels": 145465,
+        "observedFraction": 0.9864976671006944
+      },
+      "quad": [
+        [
+          154.98298036162475,
+          248.8119862385655
+        ],
+        [
+          178.3342837115099,
+          82.42541457017347
+        ],
+        [
+          326.18100008317816,
+          77.10143807365944
+        ],
+        [
+          330.095234679659,
+          256.9112386860647
+        ]
+      ],
+      "experiment": "control",
+      "totalMeasuredSeconds": 3.423266249999994,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-nested-squares",
+      "caseId": "nested-squares",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 2.1198828339999998
+    },
+    {
+      "id": "real-outline-star",
+      "caseId": "outline-star",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 2.4232638750000004
+    },
+    {
+      "id": "real-floral-checker",
+      "caseId": "floral-checker",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.6076291669999998
+    },
+    {
+      "id": "real-dense-checker",
+      "caseId": "dense-checker",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 2.3186376259999997
+    },
+    {
+      "id": "real-bird",
+      "caseId": "bird",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.9398238749999994
+    },
+    {
+      "id": "real-leaf",
+      "caseId": "leaf",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.6397758340000006
+    },
+    {
+      "id": "real-gift",
+      "caseId": "gift",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.1810524999999992
+    },
+    {
+      "id": "real-gingerbread",
+      "caseId": "gingerbread",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.8015635419999994
+    },
+    {
+      "id": "real-white-birds",
+      "caseId": "white-birds",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.7243135829999983
+    },
+    {
+      "id": "real-flower",
+      "caseId": "flower",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.7661943749999975
+    },
+    {
+      "id": "real-warped-checker",
+      "caseId": "warped-checker",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.575666209000002
+    },
+    {
+      "id": "real-round-checker",
+      "caseId": "round-checker",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.5853335410000013
+    },
+    {
+      "id": "real-santa",
+      "caseId": "santa",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.352778292999998
+    },
+    {
+      "id": "real-fine-checker",
+      "caseId": "fine-checker",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.1351328319999974
+    },
+    {
+      "id": "real-orb",
+      "caseId": "orb",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 2.041207375000001
+    },
+    {
+      "id": "real-stacked-hearts",
+      "caseId": "stacked-hearts",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.4024036659999972
+    },
+    {
+      "id": "real-jigsaw",
+      "caseId": "jigsaw",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.8367741249999983
+    },
+    {
+      "id": "real-candle",
+      "caseId": "candle",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.051233333
+    },
+    {
+      "id": "real-maple-leaf",
+      "caseId": "maple-leaf",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 2.1857152500000026
+    },
+    {
+      "id": "real-crown",
+      "caseId": "crown",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.0874745840000037
+    },
+    {
+      "id": "real-crossed-ribbons",
+      "caseId": "crossed-ribbons",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 0.026921790999997405
+    },
+    {
+      "id": "real-bauble",
+      "caseId": "bauble",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.7471264367816092,
+          0.7126436781609196
+        ],
+        "lobeOutlineSupport": [
+          0.8888888888888888,
+          0.6666666666666666
+        ],
+        "capColourLoss": [
+          0.008151578495487902,
+          0.021634570219736207
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "independentImageError": 0.01489375,
+      "checkedPair": true,
+      "quad": [
+        [
+          585.6941380955465,
+          911.9828978081465
+        ],
+        [
+          671.9584046404291,
+          996.4468244680473
+        ],
+        [
+          580.9993657081336,
+          1107.9107396291047
+        ],
+        [
+          478.75396023995785,
+          1003.2210601668503
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 7.108038874000009,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-bottom-flower",
+      "caseId": "bottom-flower",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.4516772079999998
+    },
+    {
+      "id": "real-faceted-star",
+      "caseId": "faceted-star",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 2.1443057090000006
+    },
+    {
+      "id": "real-bibel-star-8",
+      "caseId": "bibel-star-8",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.805043375
+    },
+    {
+      "id": "real-bibel-star-curved",
+      "caseId": "bibel-star-curved",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9655172413793104,
+          1
+        ],
+        "lobeOutlineSupport": [
+          0.9444444444444444,
+          0.8333333333333334
+        ],
+        "capColourLoss": [
+          0.021174826279738705,
+          0.006495965596058288
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "independentImageError": 0.00674375,
+      "checkedPair": true,
+      "quad": [
+        [
+          516.347013042346,
+          143.36144727370242
+        ],
+        [
+          759.2419631584486,
+          364.93756735806727
+        ],
+        [
+          505.75773860224916,
+          617.0708839905072
+        ],
+        [
+          281.24668343584557,
+          365.55362284330795
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 8.518759583,
+      "slits": {
+        "left": 5,
+        "right": 5
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-bibel-star-outline",
+      "caseId": "bibel-star-outline",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8440366972477065,
+          0.7522935779816514
+        ],
+        "lobeOutlineSupport": [
+          0.8333333333333334,
+          0.7222222222222222
+        ],
+        "capColourLoss": [
+          0.008831550611815848,
+          0.01081893275273365
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "independentImageError": 0.0059625,
+      "checkedPair": true,
+      "quad": [
+        [
+          513.3545428148515,
+          146.27395317629365
+        ],
+        [
+          727.2435237755178,
+          382.2806819789985
+        ],
+        [
+          485.55361224150624,
+          596.6805118169444
+        ],
+        [
+          273.4449956033525,
+          371.1741352002313
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 7.27595450000001,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-bibel-cross",
+      "caseId": "bibel-cross",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.8392857142857143
+        ],
+        "lobeOutlineSupport": [
+          0.7222222222222222,
+          0.75
+        ],
+        "capColourLoss": [
+          0.010132029651887833,
+          0.011964730683011078
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "independentImageError": 0.00235625,
+      "checkedPair": true,
+      "quad": [
+        [
+          508.06512322083404,
+          132.46361386959168
+        ],
+        [
+          751.8672371074858,
+          374.6384897218564
+        ],
+        [
+          524.4534747666274,
+          625.1314163013449
+        ],
+        [
+          273.2305550729338,
+          386.07666585277804
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 4.388928833999995,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-flettede-puppy",
+      "caseId": "flettede-puppy",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9148936170212766,
+          0.851063829787234
+        ],
+        "lobeOutlineSupport": [
+          0.7222222222222222,
+          0.7777777777777778
+        ],
+        "capColourLoss": [
+          0.024177937685608844,
+          0.006483021508223243
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "independentImageError": 0.0128,
+      "checkedPair": true,
+      "quad": [
+        [
+          395.7287185494372,
+          334.48253720346185
+        ],
+        [
+          650.983329642392,
+          574.6418182028151
+        ],
+        [
+          382.4273695581742,
+          821.4158920053659
+        ],
+        [
+          129.44614883066106,
+          566.9100981091735
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 10.257368790999998,
+      "slits": {
+        "left": 3,
+        "right": 5
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "real-flettede-stonehenge",
+      "caseId": "flettede-stonehenge",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 2.7440664990000023
+    },
+    {
+      "id": "real-flettede-viking",
+      "caseId": "flettede-viking",
+      "group": "real",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 2.4989013750000013
+    },
+    {
+      "id": "synthetic-corner-lattice-3036370-v0",
+      "group": "development",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8850574712643678,
+          0.896551724137931
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.012763119488821775,
+          0.007167024667424261
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.902611870795785,
+        0.6784425865899689,
+        2.3958970859367055,
+        1.0140465636190392
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0070227314729255225,
+        "inverted": false,
+        "observedPixels": 146097,
+        "observedFraction": 0.99078369140625
+      },
+      "independentImageError": 0.002556694878472222,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.0070843343805827635,
+        "inverted": false,
+        "observedPixels": 146097,
+        "observedFraction": 0.99078369140625
+      },
+      "quad": [
+        [
+          221.18140655175372,
+          270.081803510261
+        ],
+        [
+          120.28298410294116,
+          147.4098478750709
+        ],
+        [
+          240.06702085875702,
+          31.54990285243045
+        ],
+        [
+          345.5612385849035,
+          162.6454134713776
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 6.596251958000016,
+      "slits": {
+        "left": 4,
+        "right": 3
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-corner-lattice-37-v0",
+      "group": "development",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.875
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.004895980818253567,
+          0.0063532697492362416
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.465147276143949,
+        1.338987927913474,
+        0.9690158743074518,
+        0.9513577517502789
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.017411578631616263,
+        "inverted": false,
+        "observedPixels": 146684,
+        "observedFraction": 0.9947645399305556
+      },
+      "independentImageError": 0.003980848524305556,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.017057075072945925,
+        "inverted": false,
+        "observedPixels": 146684,
+        "observedFraction": 0.9947645399305556
+      },
+      "quad": [
+        [
+          124.7546166623581,
+          170.71533985007565
+        ],
+        [
+          266.0173382745899,
+          189.78766674096056
+        ],
+        [
+          261.72941507582385,
+          324.03334938000023
+        ],
+        [
+          119.43447640964038,
+          314.6999741858266
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 10.303462916999987,
+      "slits": {
+        "left": 7,
+        "right": 4
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-corner-lattice-1031319-v0",
+      "group": "development",
+      "cropEvidence": {
+        "outlineSupported": null,
+        "withinPhotograph": null,
+        "outOfFrameCorners": null,
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "crop-unresolved",
+      "quad": null,
+      "experiment": "scene",
+      "totalMeasuredSeconds": 1.729278750000006
+    },
+    {
+      "id": "synthetic-corner-lattice-49478-v0",
+      "group": "development",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9375,
+          0.9479166666666666
+        ],
+        "lobeOutlineSupport": [
+          0.8888888888888888,
+          1
+        ],
+        "capColourLoss": [
+          0.016904652144819565,
+          0.00831504363263829
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.002383237712956,
+        2.2887397197285266,
+        3.3475987715938293,
+        2.7008502151870495
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.00949820912687141,
+        "inverted": false,
+        "observedPixels": 144343,
+        "observedFraction": 0.9788886176215278
+      },
+      "independentImageError": 0.005947536892361111,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.009803038595567502,
+        "inverted": false,
+        "observedPixels": 144343,
+        "observedFraction": 0.9788886176215278
+      },
+      "quad": [
+        [
+          273.3066912671191,
+          112.60053487270291
+        ],
+        [
+          266.3020749683172,
+          291.9464884629358
+        ],
+        [
+          81.81660140599817,
+          295.21871156904433
+        ],
+        [
+          91.93114572291071,
+          108.64784070818696
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 7.9337823740000015,
+      "slits": {
+        "left": 7,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-channel-775609-v0",
+      "group": "recipe-validation",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.7283950617283951
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.010422943197896242,
+          0.007689751496782798
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        2.9793386762770666,
+        5.627599427775896,
+        4.395275650737554,
+        1.317054959914357
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0013115669038649366,
+        "inverted": false,
+        "observedPixels": 143340,
+        "observedFraction": 0.9720865885416666
+      },
+      "independentImageError": 0.002841525607638889,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.0011859913492395702,
+        "inverted": false,
+        "observedPixels": 143340,
+        "observedFraction": 0.9720865885416666
+      },
+      "quad": [
+        [
+          133.86045307097794,
+          248.2166187823419
+        ],
+        [
+          166.84099772032712,
+          81.04318525075041
+        ],
+        [
+          313.19074057876355,
+          127.23128783826486
+        ],
+        [
+          279.8604741941965,
+          272.90288109147497
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 3.6184553750000195,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-channel-807897-v0",
+      "group": "recipe-validation",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9882352941176471,
+          0.9294117647058824
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.011161791938212663,
+          0.00909588243894984
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        2.790962174947256,
+        3.5401874377720506,
+        1.7939081579860618,
+        2.285886092204019
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0011817471890311745,
+        "inverted": false,
+        "observedPixels": 144701,
+        "observedFraction": 0.9813164605034722
+      },
+      "independentImageError": 0.009867350260416666,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.00975114201007595,
+        "inverted": false,
+        "observedPixels": 144701,
+        "observedFraction": 0.9813164605034722
+      },
+      "quad": [
+        [
+          262.21617406482324,
+          181.76879333922963
+        ],
+        [
+          177.56001397299136,
+          302.51551928125144
+        ],
+        [
+          47.08145226250997,
+          237.3575660645054
+        ],
+        [
+          127.65584548588642,
+          92.89926159462136
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 3.2230380830000045,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-channel-795789-v0",
+      "group": "recipe-validation",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.7125
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.007918207641206092,
+          0.007231983398705473
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        3.228568836866936,
+        4.8724262728255905,
+        0.9141046128889782,
+        1.08108407897308
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0017399589866810283,
+        "inverted": false,
+        "observedPixels": 144831,
+        "observedFraction": 0.9821980794270834
+      },
+      "independentImageError": 0.009792751736111112,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.009376445650447764,
+        "inverted": false,
+        "observedPixels": 144831,
+        "observedFraction": 0.9821980794270834
+      },
+      "quad": [
+        [
+          233.626474472676,
+          233.55952706735707
+        ],
+        [
+          79.32745464495048,
+          254.61956400893865
+        ],
+        [
+          69.15234323049751,
+          90.54221432736826
+        ],
+        [
+          215.8610391988517,
+          85.98190798891892
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 2.174915875,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-channel-755429-v0",
+      "group": "recipe-validation",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.684931506849315,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.008630509691982776,
+          0.003972182061075413
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.213878078679589,
+        1.4515692048195254,
+        2.098168952192932,
+        1.0862011945588714
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.00243723770598424,
+        "inverted": false,
+        "observedPixels": 146067,
+        "observedFraction": 0.9905802408854166
+      },
+      "independentImageError": 0.008511013454861112,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.0069625582780504834,
+        "inverted": false,
+        "observedPixels": 146067,
+        "observedFraction": 0.9905802408854166
+      },
+      "quad": [
+        [
+          169.35974511516187,
+          234.7668721025755
+        ],
+        [
+          121.16684798018693,
+          84.98351213208477
+        ],
+        [
+          283.6270407322248,
+          65.32335871593439
+        ],
+        [
+          294.21531153708,
+          194.40952636405996
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 2.3684684580000095,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-frame-764510-v0",
+      "group": "recipe-test",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.95
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.008404832448769075,
+          0.006661159031762034
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.681875426031986,
+        0.891692444127711,
+        0.3694341534606194,
+        1.566478594565717
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.00374051220444493,
+        "inverted": false,
+        "observedPixels": 146504,
+        "observedFraction": 0.9935438368055556
+      },
+      "independentImageError": 0.010030110677083334,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.008784743078687271,
+        "inverted": false,
+        "observedPixels": 146504,
+        "observedFraction": 0.9935438368055556
+      },
+      "quad": [
+        [
+          212.4742133314633,
+          178.25634916627442
+        ],
+        [
+          207.6872955887452,
+          323.8089764067207
+        ],
+        [
+          66.72204000381984,
+          331.1437340062908
+        ],
+        [
+          62.334624323755484,
+          167.70852147895178
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 4.19521833399998,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-frame-776618-v0",
+      "group": "recipe-test",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.9523809523809523,
+          1
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.007508287105943158,
+          0.008295238708711968
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.0963030632025914,
+        2.1790718394191955,
+        1.1418067234910205,
+        1.4088678054297241
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.005010313348809029,
+        "inverted": false,
+        "observedPixels": 146897,
+        "observedFraction": 0.9962090386284722
+      },
+      "independentImageError": 0.012322319878472222,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.010810295649332526,
+        "inverted": false,
+        "observedPixels": 146897,
+        "observedFraction": 0.9962090386284722
+      },
+      "quad": [
+        [
+          206.8089728076355,
+          113.74882505752805
+        ],
+        [
+          335.00124505488446,
+          211.33113352778258
+        ],
+        [
+          227.08612222682513,
+          340.76357624474093
+        ],
+        [
+          98.25020893262595,
+          230.01334821812765
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 4.30099720900001,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-frame-760474-v0",
+      "group": "recipe-test",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.6585365853658537
+        ],
+        "lobeOutlineSupport": [
+          1,
+          1
+        ],
+        "capColourLoss": [
+          0.011457821725243789,
+          0.012735852698611808
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.2292001743604655,
+        1.0975736692433997,
+        2.371201542845102,
+        1.4666986155312596
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.004375470021193683,
+        "inverted": false,
+        "observedPixels": 146270,
+        "observedFraction": 0.9919569227430556
+      },
+      "independentImageError": 0.009134928385416666,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.005776987762357285,
+        "inverted": false,
+        "observedPixels": 146270,
+        "observedFraction": 0.9919569227430556
+      },
+      "quad": [
+        [
+          203.98608255222388,
+          158.78073169646746
+        ],
+        [
+          281.29821086722035,
+          301.77985189019523
+        ],
+        [
+          134.3597388532629,
+          369.75672535340755
+        ],
+        [
+          71.45287265220813,
+          226.1241526046062
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 3.155121958999957,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    },
+    {
+      "id": "synthetic-frame-829086-v0",
+      "group": "recipe-test",
+      "cropEvidence": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.967741935483871,
+          0.7419354838709677
+        ],
+        "lobeOutlineSupport": [
+          0.9722222222222222,
+          0.9722222222222222
+        ],
+        "capColourLoss": [
+          0.007477712510202887,
+          0.0102294971339476
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "status": "checked-pair",
+      "cornerErrorsPixels": [
+        1.2614005771514436,
+        0.9609285727502114,
+        4.059317678354349,
+        1.95057005756648
+      ],
+      "classifiedReference": {
+        "mismatchFraction": 0.0051134946370666005,
+        "inverted": false,
+        "observedPixels": 144324,
+        "observedFraction": 0.978759765625
+      },
+      "independentImageError": 0.0021837022569444445,
+      "checkedPair": true,
+      "exportedReference": {
+        "mismatchFraction": 0.0046839056567168314,
+        "inverted": false,
+        "observedPixels": 144324,
+        "observedFraction": 0.978759765625
+      },
+      "quad": [
+        [
+          155.59672052617523,
+          251.88152878372222
+        ],
+        [
+          178.07530644460945,
+          82.45239797169707
+        ],
+        [
+          326.08938185527023,
+          76.57948946030496
+        ],
+        [
+          330.1121817054932,
+          259.5924928893605
+        ]
+      ],
+      "experiment": "scene",
+      "totalMeasuredSeconds": 6.686570750000044,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true
+    }
+  ],
+  "commonAcceptedSynthetic": {
+    "ids": [
+      "synthetic-channel-755429-v0",
+      "synthetic-channel-775609-v0",
+      "synthetic-channel-795789-v0",
+      "synthetic-channel-807897-v0",
+      "synthetic-corner-lattice-3036370-v0",
+      "synthetic-corner-lattice-37-v0",
+      "synthetic-corner-lattice-49478-v0",
+      "synthetic-frame-760474-v0",
+      "synthetic-frame-764510-v0",
+      "synthetic-frame-776618-v0",
+      "synthetic-frame-829086-v0"
+    ],
+    "scores": {
+      "control": {
+        "mismatchFraction": 0.0065778174376345585,
+        "observedFraction": 0.9891912286931818
+      },
+      "scene": {
+        "mismatchFraction": 0.008297865225818534,
+        "observedFraction": 0.9864625256470959
+      }
+    }
+  },
+  "qualifications": [
+    "Single training seed per condition; no real-photo training or checkpoint selection.",
+    "Repeated synthetic diagnostics and recipe holdouts are not unseen motif/topology evaluation.",
+    "Other hearts reuse the selected procedural design; the selected body is always in front.",
+    "Matching background draws does not make the scene photos pixel-identical after blur/JPEG.",
+    "Common synthetic case scores still depend on each crop's observed portion of the true overlap.",
+    "Numerical crop/template acceptance is not verified physical corner truth or physical assembly."
+  ]
+}

@@ -16,14 +16,22 @@ The 2026-10-13 snapshot contains:
 | Synthetic photographic views | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
 | Pretrained encoder checkpoints | 2 | MobileNetV3-Small: researched timm LAMB weights and the TorchVision weights used by the experiment. |
 | Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
-| Trained foreground models | 3 | RGB-only, 880,449 parameters; random/ImageNet comparison and a background-augmented follow-up, all offline. |
+| Trained foreground models | 5 | RGB-only, 880,449 parameters; random/ImageNet, background augmentation, and paired clutter/control runs, all offline. |
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
+| Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 
 The latest [Pinterest expansion](real-pinterest-expansion.md) downloaded 428 of
 442 visited pins, including all four user-supplied examples. After merging, it
 added 362 source files, 176 photo-containing files and 116 reviewed photo groups
 to the previous snapshot. These are source-image counts, not heart-instance
 or independent motif-family counts.
+
+The [clutter-training follow-up](foreground-scene-learning.md) raises selected-body
+IoU on controlled neighbouring-heart scenes from 61.86% to 95.01% with the same
+background draws and update budget. Both models still produce only five numerical
+passes on the real inputs. The new bauble pass loses much of its pale frame before
+fitting, and the eight-point star loses its crop. This is evidence of a synthetic
+segmentation improvement, not a recovered real design or a production gain.
 
 The [background-training follow-up](foreground-background-learning.md) isolates
 a concrete domain gap: plain white backgrounds reduce the original model's
