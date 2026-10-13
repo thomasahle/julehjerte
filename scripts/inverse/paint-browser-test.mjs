@@ -535,6 +535,7 @@ try{
     row.physical=auditEditablePaper(design,overlap,observed.result.report.settings,observed.result.report.slits);
     if(observed.result.report.validation.passed)assert.equal(row.physical.geometry.passed,true,'Downloaded SVG must retain the engine geometry constraints');
     if(observed.result.report.templateChecksPassed)assert.equal(row.physical.paper?.status,'pass','Downloaded SVG must retain the verified paper support');
+    if(name==='sloth-x-shift-mask'&&!stopMode)assert.ok(row.sourceEditableError<.02,'A timed-out routing must not replace this known close fit with a fragmented larger grid.');
     // Check the actual downloaded result, not just the converter's own success
     // flag. Compare the same honoured symmetry with simplification disabled.
     const raw=convertCutGeometry(geometry,{name:'unsimplified',tolerance:0,enforce:row.honouredSymmetry});

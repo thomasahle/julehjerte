@@ -121,6 +121,12 @@ the clock changes: all candidates come from the original pixels. The test checks
 both routing attempts, their remaining budget, source immutability, final
 geometry/paper checks and independent image/feature fidelity at two resolutions.
 
-The updated inverse tests, build and actual browser uploads are still being
-verified. The owned preview continues serving the prior validated build until
-the new build is ready. Nothing was pushed or deployed.
+All seven updated tests in `feature-refinement.test.mjs`, type checking, lint
+and the build pass. The owned preview now serves this build. All ten Chromium
+flows pass the existing export checks, but visual review and paired metrics
+expose a remaining quality/timing regression on the shifted sloth: a 53.74-second
+six-cut fallback replaces the earlier 8.71-second two-cut result. Thus the green
+browser aggregate does not establish preserved quality. The
+[routing-timeout follow-up](routing-timeout.md) records the controlled diagnosis,
+stronger regression gate and candidate fix. Final full-suite and browser
+verification continue with that follow-up. Nothing was pushed or deployed.

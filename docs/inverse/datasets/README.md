@@ -59,6 +59,14 @@ photographs. A stale longer-budget scheduling test is being updated with a
 replacement deferred-recovery case; full release and browser QA remain in
 progress.
 
+That browser QA exposed a remaining [routing timeout cliff](routing-timeout.md):
+the same shifted mask could finish in 8.7 seconds with two cuts per sheet, or
+take 54–56 seconds and return a poorer six-cut pair. A controlled prototype
+gives the sparse graph its full remaining recovery allowance, recovering the
+two-cut pair in 8.5–8.6 seconds with 1.48% editable disagreement. All ten
+prototype browser flows pass. The native and broad release replays are pending;
+no new corpus-wide improvement is claimed.
+
 The preceding [clearance-routing follow-up](clearance-routing-repair.md) also
 repairs near-valid nonlocal narrow sections and retains finer paper verification
 through refinement and export. The same eight fixed crop variants improve from

@@ -54,8 +54,11 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         const at=performance.now(),graphCfg={...cfg,...graphChoices[i]},left=remaining();
         if(left<=0)break;
         // A timeout is not evidence that the sparse graph lacks a routing.
-        // Let it use most of this phase before adding a much larger graph.
-        const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=i||onlyChoice?left:left*.8,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{})};report.attempts.push(attempt);
+        // Reserving a fraction for a larger graph can interrupt its second
+        // validation round just before it finds a sound, simpler pair. Use
+        // the remaining phase allowance here; proven exhaustion still returns
+        // early and leaves later graphs and boundary interpretations available.
+        const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=left,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{})};report.attempts.push(attempt);
         const observeRejected=async(proposal,timing)=>{
           try{
             if(rejectedRepairUsed||remaining()<.75)return false;
