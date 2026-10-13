@@ -25,6 +25,14 @@ export const GLARE_VARIANTS = [
   { name: 'glare-strong', interventions: { glare: { center: [.5, .5], sigma: [.22, .22], amount: .85 } } },
   { name: 'glare-offset', interventions: { glare: { center: [.65, .38], sigma: [.22, .22], amount: .85 } } }
 ];
+export const BACKGROUND_VARIANTS = [
+  { name: 'baseline' },
+  { name: 'background-white', interventions: { background: [255, 255, 255] } },
+  { name: 'background-black', interventions: { background: [0, 0, 0] } },
+  { name: 'background-gray', interventions: { background: [128, 128, 128] } },
+  { name: 'background-plain', interventions: { backgroundStyle: 'plain' } },
+  { name: 'background-white-plain', interventions: { background: [255, 255, 255], backgroundStyle: 'plain' } }
+];
 const IMAGE_FILES = ['photo.jpg', 'crop.png', 'photo-paper-a.png', 'photo-overlap-valid.png', 'crop-paper-a.png', 'crop-overlap-valid.png'];
 const TARGET_FILES = IMAGE_FILES.slice(2);
 const root = fileURLToPath(new URL('../../../', import.meta.url));
@@ -74,8 +82,8 @@ function assertControlledVariant(result, baseline, variant) {
 }
 
 export async function replayInterventions({ dataset = 'tmp/heart-training-synthetic/batch-v1', selection = 'tmp/heart-learning/localization-corners-v1/worst-distinct-designs.json', output, profile = 'standard' }) {
-  if (!['standard', 'glare'].includes(profile)) throw new Error('Unknown intervention profile. Use standard or glare.');
-  const variants = profile === 'glare' ? GLARE_VARIANTS : PROBE_VARIANTS;
+  if (!['standard', 'glare', 'background'].includes(profile)) throw new Error('Unknown intervention profile. Use standard, glare or background.');
+  const variants = { standard: PROBE_VARIANTS, glare: GLARE_VARIANTS, background: BACKGROUND_VARIANTS }[profile];
   if (!output) throw new Error('Provide a fresh --output directory.');
   const started = performance.now(), sourceDataset = path.resolve(dataset), sourceSelection = path.resolve(selection), out = path.resolve(output);
   const sourceBytes = await fs.readFile(path.join(sourceDataset, 'manifest.json')), original = JSON.parse(sourceBytes);

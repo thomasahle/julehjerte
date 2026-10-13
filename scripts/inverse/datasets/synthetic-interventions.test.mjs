@@ -54,6 +54,19 @@ test('palette intervention recolors the same camera/noise realization with uncha
   sameFiles(noop, baseline);
 });
 
+test('background interventions preserve camera, paper palette, noise draws and target identities', async () => {
+  const baseline = await baselinePromise;
+  for (const intervention of [{ background: [255, 255, 255] }, { background: [0, 0, 0] }, { backgroundStyle: 'plain' }, { background: [230, 220, 210], backgroundStyle: 'plain' }]) {
+    const original = structuredClone(intervention), result = await syntheticPhoto({ ...fixture(), interventions: intervention });
+    unchangedParameters(result, baseline, Object.keys(intervention)); sameGeometry(result, baseline); sameFiles(result, baseline, targetFiles);
+    assert.notEqual(sha256(result.files['photo.jpg']), sha256(baseline.files['photo.jpg']));
+    assert.deepEqual(result.labels.interventions.requested, original); assert.deepEqual(intervention, original);
+    if (intervention.background) { intervention.background[0] = 99; assert.deepEqual(result.labels.perturbations.background, original.background); }
+  }
+  const original = baseline.labels.perturbations;
+  sameFiles(await syntheticPhoto({ ...fixture(), interventions: { background: original.background, backgroundStyle: original.backgroundStyle } }), baseline);
+});
+
 test('zero blur and individual degradation interventions preserve other draws and targets', async () => {
   const baseline = await baselinePromise;
   for (const intervention of [{ blurSigmaPixels: 0 }, { lowResolution: 24 }, { lowResolutionScale: .5 }, { jpegQuality: 1 }]) {
@@ -119,6 +132,7 @@ test('invalid interventions fail before reading image buffers', async () => {
   const invalid = [null, [], new Date(0), { [Symbol('unknown')]: 1 }, { palette: new Array(2) }, { palette: [new Array(3), [255, 255, 255]] }, { bogus: 1 }, { palette: [[0, 0], [255, 255, 255]] }, { palette: [[0, 0, NaN], [255, 255, 255]] }, { palette: [[0, 0, 256], [255, 255, 255]] }, { blurSigmaPixels: -1 }, { blurSigmaPixels: Infinity }, { lowResolution: 8 }, { lowResolution: 64.5 }, { lowResolutionScale: 0 }, { lowResolutionScale: 1.1 }, { lowResolution: 32, lowResolutionScale: .5 }, { jpegQuality: 2 }, { cropNoisePixels: -1 }, { cropNoisePixels: 17 }];
   const coverage = new Proxy({}, { get() { throw new Error('IMAGE_BUFFER_TOUCHED'); } });
   const glare = { center: [.5, .5], sigma: [.2, .2], amount: .8 };
+  invalid.push(...[null, [], new Array(3), [0, 0, NaN], [0, 0, 256], [0, -1, 0]].map(background => ({ background })), { backgroundStyle: 'unknown' }, { backgroundStyle: null });
   invalid.push(...[null, [], {}, { ...glare, extra: 1 }, { ...glare, amount: NaN }, { ...glare, amount: 1.1 }, { ...glare, center: new Array(2) }, { ...glare, center: [-.1, .5] }, { ...glare, sigma: [0, .2] }].map(glare => ({ glare })));
   for (const interventions of invalid) await assert.rejects(syntheticPhoto({ ...fixture(), coverage, interventions }), error => error.message !== 'IMAGE_BUFFER_TOUCHED');
 });

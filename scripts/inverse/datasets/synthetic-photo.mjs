@@ -76,7 +76,7 @@ function grayPNG(values, n) {
 function checkedInterventions(value, resolution) {
   if (value === undefined) return null;
   if (value === null || typeof value !== 'object' || Array.isArray(value) || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) throw new Error('Photo interventions must be an object.');
-  const keys = Reflect.ownKeys(value), allowed = new Set(['palette', 'blurSigmaPixels', 'lowResolution', 'lowResolutionScale', 'jpegQuality', 'cropNoisePixels', 'glare']);
+  const keys = Reflect.ownKeys(value), allowed = new Set(['palette', 'background', 'backgroundStyle', 'blurSigmaPixels', 'lowResolution', 'lowResolutionScale', 'jpegQuality', 'cropNoisePixels', 'glare']);
   if (keys.some(key => !allowed.has(key))) throw new Error('Unknown photo intervention.');
   if (!keys.length) return null;
   if (!Number.isInteger(resolution) || resolution < 16 || resolution > 4096) throw new Error('Intervened photos require an integer resolution from 16 to 4096.');
@@ -84,6 +84,14 @@ function checkedInterventions(value, resolution) {
   const requested = {};
   for (const key of keys) {
     const v = value[key];
+    if (key === 'background') {
+      if (!Array.isArray(v) || v.length !== 3 || [0, 1, 2].some(i => !Number.isFinite(v[i]) || v[i] < 0 || v[i] > 255)) throw new Error('background must contain three finite RGB channels from 0 to 255.');
+      requested.background = v.slice(); continue;
+    }
+    if (key === 'backgroundStyle') {
+      if (!['wood-stripes', 'soft-cloth', 'plain'].includes(v)) throw new Error('Invalid backgroundStyle.');
+      requested.backgroundStyle = v; continue;
+    }
     if (key === 'glare') {
       if (!v || typeof v !== 'object' || Array.isArray(v) || ![Object.prototype, null].includes(Object.getPrototypeOf(v)) || Reflect.ownKeys(v).some(k => !['center', 'sigma', 'amount'].includes(k))) throw new Error('glare requires center, sigma and amount.');
       for (const field of ['center', 'sigma']) if (!Array.isArray(v[field]) || v[field].length !== 2 || [0, 1].some(i => !Number.isFinite(v[field][i]) || v[field][i] < (field === 'sigma' ? .01 : 0) || v[field][i] > 1)) throw new Error(`Invalid glare ${field}.`);
@@ -112,14 +120,15 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
   const baselinePalette = palettes[Math.floor(rng() * palettes.length)].map(color => color.map(v => clamp(v + uniform(-8, 8), 0, 255)));
   const palette = requested?.palette ?? baselinePalette;
   const light = [uniform(-.3, .3), uniform(-.3, .3)], exposure = uniform(.75, 1.15), vignette = uniform(0, .2), noiseSigma = uniform(.4, 2.5), texture = uniform(.4, 2);
-  const background = [uniform(65, 165), uniform(65, 165), uniform(65, 165)], backgroundStyle = rng() < .5 ? 'wood-stripes' : 'soft-cloth';
+  const baselineBackground = [uniform(65, 165), uniform(65, 165), uniform(65, 165)], baselineBackgroundStyle = rng() < .5 ? 'wood-stripes' : 'soft-cloth';
+  const background = requested?.background ?? baselineBackground, backgroundStyle = requested?.backgroundStyle ?? baselineBackgroundStyle;
   const pixels = new Uint8ClampedArray(4 * resolution ** 2), observedCoverage = new Float32Array(resolution ** 2), overlap = new Float32Array(resolution ** 2);
   for (let y = 0; y < resolution; y++) for (let x = 0; x < resolution; x++) {
     const index = y * resolution + x, canonical = project(inverse, [x + .5, y + .5]), m = material(canonical, coverage, canonicalResolution);
     // These supervision maps describe undegraded material coverage, not a color classifier's output.
     observedCoverage[index] = m.fractionA; overlap[index] = Number(m.overlap);
     const illumination = exposure * (1 + light[0] * (x / resolution - .5) + light[1] * (y / resolution - .5) - vignette * ((x / resolution - .5) ** 2 + (y / resolution - .5) ** 2));
-    const grain = backgroundStyle === 'wood-stripes' ? 9 * Math.sin(y * .14 + 1.4 * Math.sin(x * .02)) : 4 * Math.sin(x * .21) * Math.sin(y * .23);
+    const grain = backgroundStyle === 'wood-stripes' ? 9 * Math.sin(y * .14 + 1.4 * Math.sin(x * .02)) : backgroundStyle === 'soft-cloth' ? 4 * Math.sin(x * .21) * Math.sin(y * .23) : 0;
     const shadow = !m.foreground && material(project(inverse, [x - 3, y - 4]), coverage, canonicalResolution).foreground ? .78 : 1;
     // An empirical photographic stressor, not a calibrated foil BRDF. Keep
     // coverage/geometry labels and the legacy noise sequence independent of it.
@@ -169,7 +178,7 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
   };
   if (requested) {
     const actual = result.labels.perturbations;
-    result.labels.baselinePerturbations = { ...actual, palette: baselinePalette, blurSigmaPixels: baselineSigma, lowResolution: baselineLowSize, jpegQuality: baselineJpegQuality, cropNoisePixels: baselineCropNoise };
+    result.labels.baselinePerturbations = { ...actual, palette: baselinePalette, background: baselineBackground, backgroundStyle: baselineBackgroundStyle, blurSigmaPixels: baselineSigma, lowResolution: baselineLowSize, jpegQuality: baselineJpegQuality, cropNoisePixels: baselineCropNoise };
     delete result.labels.baselinePerturbations.glare;
     const applied = {};
     for (const key of Object.keys(requested)) {

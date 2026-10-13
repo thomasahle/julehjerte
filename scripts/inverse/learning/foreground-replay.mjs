@@ -13,12 +13,13 @@ import {renderExportedWeave} from '../export-renderer.mjs';
 import {cropEvidence} from '../crop-evidence.mjs';
 import {labelsForCrop} from './photo-labels.mjs';
 import {detectForegroundCrop} from './foreground-crop.mjs';
-import {refineForegroundRGB} from './foreground-refine.mjs';
+import {refineForegroundRGB,fillForegroundHoles} from './foreground-refine.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds','solve-ids','methods','refinement'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10 --solve-ids=id1,id2 --methods=production,learned,oracle --refinement=none|seeded-rgb].');
+if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds','solve-ids','methods','refinement'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10 --solve-ids=id1,id2 --methods=production,learned,oracle --refinement=none|seeded-rgb|fill-holes].');
 const methods=(args.methods||'production,learned,oracle').split(','),refinement=args.refinement||'none';
-if(methods.some(m=>!['production','learned','oracle'].includes(m))||new Set(methods).size!==methods.length||!['none','seeded-rgb'].includes(refinement))throw new Error('Invalid replay methods or foreground refinement.');
+const refinements={none:undefined,'seeded-rgb':refineForegroundRGB,'fill-holes':fillForegroundHoles};
+if(methods.some(m=>!['production','learned','oracle'].includes(m))||new Set(methods).size!==methods.length||!Object.hasOwn(refinements,refinement))throw new Error('Invalid replay methods or foreground refinement.');
 const probe=path.resolve(args.probe),output=path.resolve(args.output),seconds=Number(args.seconds||10),solveIds=new Set((args['solve-ids']||'').split(','));
 if(!Number.isFinite(seconds)||seconds<1||seconds>180)throw new Error('Invalid solver budget.');
 const hash=b=>createHash('sha256').update(b).digest('hex'),bytes=await fs.readFile(path.join(probe,'manifest.json')),manifest=JSON.parse(bytes);
@@ -60,7 +61,7 @@ for(const input of manifest.rows){
     try{
       const started=performance.now(),detected=method==='production'?detectHeartCrops(source,{roi:input.roi||undefined}):await detectForegroundCrop(source,{roi:input.roi||undefined,
         probability:prediction(await checked(input.assets[method==='oracle'?'oracle.f32':'probability.f32'],probe),manifest.resolution),resolution:manifest.resolution,window:input.window,
-        refineFields:method==='learned'&&refinement==='seeded-rgb'?refineForegroundRGB:undefined});
+        refineFields:method==='learned'?refinements[refinement]:undefined});
       row.cropSeconds=(performance.now()-started)/1000;row.inferenceSeconds=method==='learned'?input.inferenceSeconds:0;
       row.cropStatus=detected.status;await store('detection.json',JSON.stringify(detected,null,2));
       const selected=detected.candidates[0];row.cropEvidence=cropEvidence(selected,{width:source.imageWidth,height:source.imageHeight});

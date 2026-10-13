@@ -43,3 +43,30 @@ export function refineForegroundRGB(fields){
     refinement:{method:'neural-seeded-rgb',applied:true,changedPixels,counts:pools.map(p=>p.length),models:models.map(({center,covariance})=>({center,covariance})),maximumLogOddsCorrection:3},
     palette:{...f.palette,method:'offline-neural-seeded-rgb'}};
 }
+
+/** Diagnostic physical-paper prior: regular woven overlap contains paper even
+ * where the motif changes color. Only enclosed background components are
+ * filled; a notch or gap connected to the image exterior remains unchanged.
+ * Handles/neighboring objects can also enclose holes, so this is not a promise
+ * that every filled pixel belongs to the selected heart.
+ */
+export function fillForegroundHoles(f){
+  const {w,h}=f,n=w*h;
+  if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||f.paper?.length!==n||f.chroma?.length!==n||!f.paper.every(v=>Number.isFinite(v)&&v>=0&&v<=1))throw new Error('Expected finite foreground fields.');
+  const outside=new Uint8Array(n),queue=new Uint32Array(n);let head=0,tail=0;
+  const visit=i=>{if(!outside[i]&&f.paper[i]<=.5){outside[i]=1;queue[tail++]=i;}};
+  for(let x=0;x<w;x++){visit(x);visit((h-1)*w+x);}
+  for(let y=0;y<h;y++){visit(y*w);visit(y*w+w-1);}
+  while(head<tail){
+    const i=queue[head++],x=i%w,y=Math.floor(i/w);
+    // Eight-neighbor background preserves even a diagonal opening.
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)if((dx||dy)&&x+dx>=0&&x+dx<w&&y+dy>=0&&y+dy<h)visit(i+dy*w+dx);
+  }
+  const paper=f.paper.slice(),red=new Float32Array(n),white=new Float32Array(n);let filledPixels=0;
+  for(let i=0;i<n;i++){
+    if(!outside[i]&&paper[i]<=.5){paper[i]=1;filledPixels++;}
+    red[i]=paper[i]*f.chroma[i];white[i]=paper[i]*(1-f.chroma[i]);
+  }
+  return{...f,paper,red,white,mask:close(paper,w,h,2),pd:signedDistance(close(paper,w,h,1),w,h),rd:signedDistance(close(red,w,h,1),w,h),wd:signedDistance(close(white,w,h,1),w,h),
+    refinement:{method:'enclosed-foreground-holes',applied:filledPixels>0,filledPixels,backgroundConnectivity:8},palette:{...f.palette,method:'offline-enclosed-foreground-holes'}};
+}

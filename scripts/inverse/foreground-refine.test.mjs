@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {refineForegroundRGB} from './learning/foreground-refine.mjs';
+import {refineForegroundRGB,fillForegroundHoles} from './learning/foreground-refine.mjs';
 
 function fixture(){
   const w=96,h=96,n=w*h,f={w,h,paper:new Float32Array(n),chroma:new Float32Array(n),r:new Float32Array(n),g:new Float32Array(n),b:new Float32Array(n)},target=new Uint8Array(n);
@@ -41,4 +41,15 @@ test('insufficient seeds preserve the prior and invalid fields are rejected',()=
   const result=refineForegroundRGB(f);
   assert.equal(result.refinement.applied,false);assert.equal(result.paper,f.paper);
   f.r[0]=NaN;assert.throws(()=>refineForegroundRGB(f),/finite RGB/);
+});
+
+test('paper-hole prior fills enclosed omissions without closing an exterior-connected notch',()=>{
+  const {f}=fixture(),before=structuredClone(f);
+  for(let y=16;y<32;y++)f.paper[y*f.w+40]=.1;
+  const result=fillForegroundHoles(f);
+  assert.equal(result.paper[44*f.w+57],1,'an enclosed pale-paper omission is filled');
+  assert.equal(result.paper[20*f.w+40],f.paper[20*f.w+40],'the notch remains connected to the exterior');
+  assert.equal(result.paper[25*f.w+14],f.paper[25*f.w+14],'the outer boundary is not redrawn');
+  assert.equal(result.chroma,f.chroma);
+  assert.equal(f.paper[44*f.w+57],before.paper[44*f.w+57],'the supplied probability remains unchanged');
 });
