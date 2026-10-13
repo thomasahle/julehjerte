@@ -7,7 +7,7 @@ import { frameArtwork } from './motif-frames.mjs';
   const dialog = $('#dialog');
   const content = $('#dialog-content');
   const motifs=originalMotifs.slice();
-  const state = {view:'start', motif:'star', category:'all', text:'ANNA', type:'nunito', size:70, palette:0, border:'check', preview:'heart', offset:0, textMotif:null, textFrame:'woven', figureFrame:'circle', figureBorder:'rays', frameSize:64, rayCount:8};
+  const state = {view:'start', motif:'star', category:'all', text:'ANNA', type:'nunito', size:70, palette:0, border:'check', textMotif:null, textFrame:'woven', figureFrame:'circle', figureBorder:'rays', frameSize:64, rayCount:8};
   const palettes = [
     {name:'Rød og creme', a:'#fffdf5', b:'#b72f2b'},
     {name:'Grøn og creme', a:'#fffdf5', b:'#365943'},
@@ -22,7 +22,6 @@ import { frameArtwork } from './motif-frames.mjs';
     check:'<path d="m5 12 4 4L19 6"/>',
     help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/>',
     external:'<path d="M14 4h6v6M20 4 10 14M18 13v6H5V6h6"/>',
-    move:'<path d="M12 3v18M3 12h18m-12-6 3-3 3 3m-6 12 3 3 3-3M6 9l-3 3 3 3m12-6 3 3-3 3"/>',
     plus:'<path d="M12 5v14M5 12h14"/>',
     search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
     undo:'<path d="m9 14-5-5 5-5M4 9h10a6 6 0 0 1 0 12h-3"/>'
@@ -61,7 +60,7 @@ import { frameArtwork } from './motif-frames.mjs';
     return {width:left+right, height:top+bottom, top:y-top,
       svg:`<text x="${x}" y="${y}" font-family="${font.family}" font-weight="${font.weight}" font-size="${fontSize}">${esc(value)}</text>`};
   }
-  function sketch({text=null, id='star', border='check', size=70, type='nunito', offset=0, accent=null, textFrame='air', figureFrame=null, figureBorder='rays', frameSize=64, rayCount=8}={}) {
+  function sketch({text=null, id='star', border='check', size=70, type='nunito', accent=null, textFrame='air', figureFrame=null, figureBorder='rays', frameSize=64, rayCount=8}={}) {
     const checker = [];
     const woven=text!==null&&textFrame==='woven';
     for(let r=0;r<8;r++) for(let c=0;c<8;c++) if((woven||r===0||c===0||r===7||c===7)&&(r+c)%2===0) checker.push(`<rect x="${c*25}" y="${r*25}" width="25" height="25"/>`);
@@ -73,7 +72,7 @@ import { frameArtwork } from './motif-frames.mjs';
     const accentArt=accent?`<g transform="translate(-17 -43) scale(.34)">${woven?'<rect x="-2" y="-2" width="104" height="104" fill="var(--paper-right)"/>':''}${motifs.find(m=>m.id===accent).art}</g>`:'';
     return `<svg class="hero-heart" viewBox="0 0 400 350" role="img" aria-label="Motivskitse: ${esc(text!==null?text:motifs.find(m=>m.id===id)?.name)} i et julehjerte${woven?' med flet helt ind til teksten':''}"><defs><clipPath id="${unique}"><path d="M200 39 341 180 200 321 59 180Z"/></clipPath></defs>
     <g transform="translate(100 80) rotate(45 100 100)"><path d="M0 0A100 100 0 0 0 0 200L200 200V0Z" fill="var(--paper-left)"/><path d="M0 0A100 100 0 0 1 200 0V200H0Z" fill="var(--paper-right)"/>${figureFrame?frameArtwork({shape:figureFrame,style:figureBorder,size:frameSize/100,rayCount}):`<rect width="200" height="200" fill="var(--paper-left)"/>${woven||border==='check'?`<g fill="var(--paper-right)">${checker.join('')}</g>`:'<path d="M0 0V200H200V0" fill="none" stroke="var(--paper-right)" stroke-width="5"/>'}`}</g>
-    <g clip-path="url(#${unique})" fill="var(--paper-right)" color="var(--paper-right)"><g transform="translate(200 ${180+offset}) scale(${figureFrame?1:size/70})">${frame}<g fill="var(${woven?'--paper-left':'--paper-right'})" color="var(${woven?'--paper-left':'--paper-right'})">${accentArt}${shape}</g></g></g></svg>`;
+    <g clip-path="url(#${unique})" fill="var(--paper-right)" color="var(--paper-right)"><g transform="translate(200 180) scale(${figureFrame?1:size/70})">${frame}<g fill="var(${woven?'--paper-left':'--paper-right'})" color="var(${woven?'--paper-left':'--paper-right'})">${accentArt}${shape}</g></g></g></svg>`;
   }
   function brushArt(vector=false) {
     return `<svg class="tool-art" viewBox="0 0 180 125" aria-hidden="true"><rect x="9" y="6" width="162" height="113" rx="10" fill="#fffdf6"/><path d="M25 33H155M25 56H155M25 79H155M48 18V105M82 18V105M116 18V105M150 18V105" stroke="#ecede6" stroke-width="1"/>${vector?'<path d="M28 93C62 91 44 26 86 28S130 89 155 37" fill="none" stroke="#bd302d" stroke-width="3"/><path d="M48 47 109 9M111 92 162 73" stroke="#d39b91" stroke-width="1.5"/><g fill="#fff" stroke="#bd302d" stroke-width="2"><circle cx="48" cy="47" r="3"/><circle cx="109" cy="9" r="3"/><circle cx="111" cy="92" r="3"/><circle cx="162" cy="73" r="3"/><rect x="81" y="23" width="9" height="9"/><rect x="24" y="88" width="9" height="9"/><rect x="151" y="32" width="9" height="9"/></g>':'<path d="M40 79Q49 35 72 55Q91 8 111 53Q157 51 116 85Q94 113 67 84Q38 97 40 79Z" fill="#b72f2b"/><path d="m119 71 32-32 10 10-32 32-18 9Z" fill="#ddb868"/><path d="m111 90 4-12 9 8Z" fill="#334736"/>'}</svg>`;
@@ -101,15 +100,12 @@ import { frameArtwork } from './motif-frames.mjs';
     `<button class="motif-search-trigger" data-dialog="motifs">${icon('search')}<span>Søg efter fx kat, hund…</span></button><div class="library-count">${Object.keys(window.JULEFLET_MOTIF_LIBRARY.icons).length.toLocaleString('da-DK')} figurer at gå på opdagelse i</div><div class="category-row" aria-label="Figurkategori">${[['all','Alle'],['jul','Jul'],['form','Former']].map(([id,label])=>`<button data-category="${id}" aria-pressed="${state.category===id}">${label}</button>`).join('')}</div><div class="motif-grid">${motifs.filter(m=>!m.library).filter(m=>state.category==='all'||m.category===state.category).map(m=>`<button class="motif-choice" data-motif="${m.id}" aria-pressed="${state.motif===m.id}" aria-label="Vælg ${m.name.toLowerCase()}">${motif(m.id)}<span>${m.name}</span></button>`).join('')}</div><div id="selected-library-motif"></div><button class="panel-small-action" data-dialog="motifs">${icon('search')}Søg i hele figurbiblioteket</button><button class="panel-small-action" data-dialog="upload">${icon('upload')}Brug din egen figur</button>`}
     <button class="start-another" data-view="start">← Se alle måder at begynde på</button></section>`;
   }
-  function currentSketch() {return sketch({text:state.view==='text'?state.text:null,id:state.motif,border:state.border,size:state.size,type:state.type,offset:state.offset,accent:state.view==='text'?state.textMotif:null,textFrame:state.textFrame,figureFrame:state.view==='figure'?state.figureFrame:null,figureBorder:state.figureBorder,frameSize:state.frameSize,rayCount:state.rayCount});}
-  function plainMotif() {
-    return `<svg class="hero-heart" viewBox="0 0 400 350" role="img" aria-label="Dit motiv alene"><rect x="38" y="25" width="324" height="300" rx="4" fill="var(--paper-left)"/><g transform="translate(200 178) scale(${state.size/70})" fill="var(--paper-right)" color="var(--paper-right)">${state.view==='text'&&state.textMotif?`<g transform="translate(-17 -43) scale(.34)">${motifs.find(m=>m.id===state.textMotif).art}</g>`:''}${state.view==='text'?lettering(state.text,state.type,state.textMotif).svg:`<g transform="translate(-60 -60) scale(1.2)">${motifs.find(m=>m.id===state.motif).art}</g>`}</g></svg>`;
-  }
+  function currentSketch() {return sketch({text:state.view==='text'?state.text:null,id:state.motif,border:state.border,size:state.size,type:state.type,accent:state.view==='text'?state.textMotif:null,textFrame:state.textFrame,figureFrame:state.view==='figure'?state.figureFrame:null,figureBorder:state.figureBorder,frameSize:state.frameSize,rayCount:state.rayCount});}
   function textFrameControls() {
     return `<div class="field"><div class="field-heading">Flet omkring teksten</div><div class="text-frame-choices">${[['air','Luft omkring teksten','Et roligt felt omkring navnet.'],['woven','Helt ind til teksten','Flettet fortsætter ind til bogstaverne.']].map(([id,label,hint])=>`<button class="text-frame-choice" data-text-frame="${id}" aria-pressed="${state.textFrame===id}">${sketch({text:'JUL',textFrame:id,size:70,type:state.type})}<span><b>${label}</b><small>${hint}</small></span></button>`).join('')}</div></div>`;
   }
   function stage() {
-    return `<section class="heart-stage" aria-label="Forhåndsvisning"><div class="preview-label">Dit motiv · din farvekombination</div><div id="heart-preview" style="width:100%;display:flex;justify-content:center">${state.preview==='heart'?currentSketch():plainMotif()}</div><div class="stage-caption">${icon('pencil')}<span id="stage-caption">Motivskitse · ${state.view==='text'?esc(state.text||'Din tekst'):motifs.find(m=>m.id===state.motif).name}</span></div><div class="preview-switch" aria-label="Visning"><button data-preview="heart" aria-pressed="${state.preview==='heart'}">På hjertet</button><button data-preview="motif" aria-pressed="${state.preview==='motif'}">Kun motivet</button></div><div class="placement-tools" aria-label="Flyt motiv"><button data-shift="-5" aria-label="Flyt motivet op">↑</button><button data-shift="0" aria-label="Centrér motivet">${icon('move')}</button><button data-shift="5" aria-label="Flyt motivet ned">↓</button></div></section>`;
+    return `<section class="heart-stage" aria-label="Forhåndsvisning"><div class="preview-label">Dit motiv · din farvekombination</div><div id="heart-preview" style="width:100%;display:flex;justify-content:center">${currentSketch()}</div><div class="stage-caption">${icon('pencil')}<span id="stage-caption">Motivskitse · ${state.view==='text'?esc(state.text||'Din tekst'):motifs.find(m=>m.id===state.motif).name}</span></div></section>`;
   }
   function figureFrameControls(){
     return `<div class="field"><div class="field-heading">Ramme omkring figuren</div><div class="frame-shape-choices">${[['diamond','Rude','<path d="M25 3 47 25 25 47 3 25Z"/>'],['circle','Cirkel','<circle cx="25" cy="25" r="22"/>'],['hexagon','Sekskant','<path d="M3 25 14 6H36L47 25 36 44H14Z"/>']].map(([id,label,path])=>`<button data-figure-frame="${id}" aria-pressed="${state.figureFrame===id}"><svg viewBox="0 0 50 50" aria-hidden="true">${path}</svg>${label}</button>`).join('')}</div></div><div class="field"><label class="field-heading" for="frame-size">Rammens størrelse <output id="frame-size-value">${state.frameSize}%</output></label><input id="frame-size" type="range" min="45" max="80" value="${state.frameSize}"><div class="range-endpoints"><span>Mindre</span><span>Større</span></div></div><div class="field"><div class="field-heading">Mønster uden om rammen</div><div class="frame-pattern-choices">${[['rays','Stråler'],['check','Tern'],['plain','Enkel']].map(([id,label])=>`<button data-figure-border="${id}" aria-label="${label}" aria-pressed="${state.figureBorder===id}">${sketch({id:state.motif,figureFrame:state.figureFrame,figureBorder:id,frameSize:state.frameSize,rayCount:state.rayCount,size:state.size})}<span>${label}</span></button>`).join('')}</div></div>${state.figureBorder==='rays'?`<div class="field"><div class="field-heading">Strålernes bredde</div><div class="border-choices">${[[8,'4 brede'],[16,'8 smalle']].map(([count,label])=>`<button class="border-choice" data-ray-count="${count}" aria-pressed="${state.rayCount===count}">${label}</button>`).join('')}</div></div>`:''}`;
@@ -126,7 +122,7 @@ import { frameArtwork } from './motif-frames.mjs';
     dialog.style.setProperty('--paper-right',p.b);
   }
   function updatePreview() {
-    $('#heart-preview').innerHTML=state.preview==='heart'?currentSketch():plainMotif();
+    $('#heart-preview').innerHTML=currentSketch();
     $('#stage-caption').textContent=`Motivskitse · ${state.view==='text'?state.text||'Din tekst':motifs.find(m=>m.id===state.motif).name}`;
     if($('#size-value')) $('#size-value').textContent=state.size+'%';
     document.querySelectorAll('[data-figure-border]').forEach(b=>{b.querySelector('svg').outerHTML=sketch({id:state.motif,figureFrame:state.figureFrame,figureBorder:b.dataset.figureBorder,frameSize:state.frameSize,rayCount:state.rayCount,size:state.size});});
@@ -210,7 +206,7 @@ import { frameArtwork } from './motif-frames.mjs';
     if(!catalog.icons[id])return;
     const motifId='library-'+id;
     if(!motifs.some(m=>m.id===motifId))motifs.push({id:motifId,name:catalogLabel(id),category:'library',library:true,art:catalogArt(id)});
-    state.motif=motifId;state.view='figure';state.preview='heart';
+    state.motif=motifId;state.view='figure';
     history.replaceState(null,'','#figure');dialog.close();render();
   }
   function updateLibraryCredit(){
@@ -238,15 +234,13 @@ import { frameArtwork } from './motif-frames.mjs';
     else if(b.dataset.type){state.type=b.dataset.type;render();}
     else if(b.dataset.palette!==undefined){state.palette=Number(b.dataset.palette);document.querySelectorAll('[data-palette]').forEach(el=>el.setAttribute('aria-pressed',Number(el.dataset.palette)===state.palette));applyPalette();}
     else if(b.dataset.border){state.border=b.dataset.border;document.querySelectorAll('[data-border]').forEach(el=>el.setAttribute('aria-pressed',el.dataset.border===state.border));updatePreview();}
-    else if(b.dataset.preview){state.preview=b.dataset.preview;document.querySelectorAll('[data-preview]').forEach(el=>el.setAttribute('aria-pressed',el.dataset.preview===state.preview));updatePreview();}
-    else if(b.dataset.shift!==undefined){state.offset=b.dataset.shift==='0'?0:Math.max(-25,Math.min(25,state.offset+Number(b.dataset.shift)));updatePreview();}
     else if(b.dataset.template){
       const id=b.dataset.template;
       modal('Fra en skabelon', `<h2>Gør mønstret til dit eget</h2><p>Behold det eksisterende mønster som udgangspunkt, og tilpas farver eller snit.</p><div class="tool-preview">${heart(id)}</div><a class="btn dark" href="https://juleflet.dk/editor/?from=${encodeURIComponent(id)}" target="_blank" rel="noopener">Åbn i den nuværende designer${icon('external')}</a>`);
     }
     else if(b.hasAttribute('data-upload-example')) modal('Eksempel på billedimport', `<h2>Dit billede bliver et udgangspunkt</h2><p>Først vælger du motivet fra billedet. Derefter arbejder du videre med to papirfarver.</p><div class="tool-preview"><img class="photo-mini" style="width:170px;height:176px" src="assets/5star-photo.jpg" alt="Originalfoto af stjernehjertet">${icon('arrow')}${heart('5star')}</div><a class="btn dark" href="https://juleflet.dk/editor/mal/" target="_blank" rel="noopener">Prøv billedimport i det nuværende værktøj${icon('external')}</a>`);
     else if(b.id==='generate'){
-      modal('Designskitse · næste trin', `<h2>Fra dit motiv til et flettet hjerte</h2><p>Denne mockup stopper ved motivet. Næste trin skal beregne snittene og vise, hvordan et fletbart mønster kan se ud, før man henter en PDF.</p><div class="tool-preview">${currentSketch()}</div><p>Det er især vigtigt ved tekst: bogstaver og mellemrum kan kræve tilpasning. Vis derfor forskellen mellem idé og fletning, og lad brugeren vælge.</p><button class="btn dark" data-close-dialog>Tilbage til mit motiv</button>`);
+      modal('Designskitse · næste trin', `<h2>Fra dit motiv til et flettet hjerte</h2><p>Denne mockup stopper ved motivet. Næste trin skal konstruere snittene ud fra motivets konturer og den valgte ramme og vise det færdige mønster før print.</p><div class="tool-preview">${currentSketch()}</div><p>Huller og adskilte dele i motivet skal bevares. Hvis en kombination endnu ikke understøttes, skal værktøjet foreslå en anden ramme eller størrelse.</p><button class="btn dark" data-close-dialog>Tilbage til mit motiv</button>`);
     }
     else if(b.hasAttribute('data-close-dialog')||b.id==='close-dialog')dialog.close();
     else if(b.id==='notes-button')modal('Om designskitserne', `<h2>Flere veje ind. Én rolig start.</h2><p>Tre sammenhængende skitser til den nye indgang fra “Design dit eget hjerte”.</p><ul class="notes-list"><li><b>1. Et valg med eksempler</b><span>Figurer og tekst står først. Skabeloner, billeder, maling og den avancerede designer er stadig ét klik væk.</span></li><li><b>2. Vælg en figur</b><span>Udvalgte motiver og et søgbart bibliotek med 1.525 udfyldte figurer fra Phosphor (MIT), hentet gennem Iconify. Søgning foregår lokalt; danske søgeord er tilføjet til almindelige motiver. Hjertet vises hele tiden, og de første valg er størrelse, papirfarver og kant.</span></li><li><b>3. Skriv et navn</b><span>Seks skrifttyper og valget mellem luft omkring navnet og flet helt ind til teksten. Den tætte ramme er inspireret af Gerth Stølting Brodals julehjerter. Korte ord og initialer er lette at komme i gang med.</span></li><li><b>En idé er ikke en klippeskabelon</b><span>De nye motiv- og teksthjerter er illustrationsskitser. De er ikke valideret som fletbare. En færdig løsning skal beregne snit, vise eventuelle ændringer og først derefter tilbyde PDF.</span></li><li><b>Afprøv også på telefonen</b><span>Indgangen bliver én kolonne. I tilpasningen vises hjertet først, derefter motivvalg og farver. Eksempler fra samlingen bruger hjemmesidens eksisterende hjerter.</span></li></ul>`);
