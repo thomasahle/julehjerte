@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>En venligere start · Juleflet designskitser</title>
+<link rel="stylesheet" href="styles.css">
+<script src="assets/hearts.js" defer></script>
+<script src="mockup.js" defer></script>
+</head>
+<body>
+<div class="review-bar">
+  <div class="review-brand"><span class="review-dot"></span> Designskitser <span class="review-date">· Juleflet</span></div>
+  <nav aria-label="Vælg skitse" class="review-tabs">
+    <button data-view="start" aria-current="page">1. Vælg en start</button>
+    <button data-view="figure">2. Vælg en figur</button>
+    <button data-view="text">3. Skriv et navn</button>
+  </nav>
+  <button class="review-notes" id="notes-button">Om skitserne</button>
+</div>
+<div id="prototype">
+  <div id="app"></div>
+</div>
+<footer class="review-footer" aria-live="polite" id="review-status">Klikbar mockup · Prøv valg, navne, størrelser og farver. Skitserne beregner ikke snit eller PDF'er.</footer>
+<dialog id="dialog"><div class="dialog-top"><span id="dialog-label">Juleflet</span><button id="close-dialog" class="icon-button" aria-label="Luk dialog">×</button></div><div id="dialog-content"></div></dialog>
+</body>
+</html>
