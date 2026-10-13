@@ -188,11 +188,19 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // background may still close during refinement; do not displace that routing
   // just for enclosure. Keep every ordinary finalist as a fallback.
   const lostColour=features.regions.some(r=>r.retainedFraction<features.minimumRetention);
-  if((competitiveGrid||poorGrid&&lostColour)&&!features.passed&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
-    const missed=features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]);
+  // Passing the whole-region floor does not establish a useful routing. On
+  // poor grids, try emphasizing the weakest region if it is less faithfully
+  // reproduced than the image average. This bounded proposal earns priority
+  // only by lowering the ORIGINAL image error and retaining every feature;
+  // it does not raise the feature gate or discard any ordinary finalist.
+  const weakest=features.regions.reduce((best,r,j)=>best===null||r.retainedFraction<features.regions[best].retainedFraction?j:best,null);
+  const weakRegion=poorGrid&&features.passed&&weakest!==null&&1-features.regions[weakest].retainedFraction>fine[0].error?weakest:null;
+  const missingFeature=(competitiveGrid||poorGrid&&lostColour)&&!features.passed;
+  if((missingFeature||weakRegion!==null)&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
+    const missed=weakRegion!==null?[weakRegion]:features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]);
     featureSamplingContext={missed,counts:fine[0].model.counts};
     const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
-    earlyFeatureInitialization={...extra.report,stage:'before-recovery',scheduled:0};
+    earlyFeatureInitialization={...extra.report,stage:'before-recovery',scheduled:0,...(weakRegion!==null?{trigger:'weak-region',retention:features.regions[weakRegion].retainedFraction,previousError:fine[0].error}:{})};
     if(extra.seeds.length){
       const seed=stage('directFitting',()=>fitSeed(extra.seeds[0]));
       const audit=auditFeatureFidelity(source,gridMask(seed.model,source.resolution,seed.phase,seed.floor),cfg,sourceFeatures);
@@ -200,7 +208,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // Local detail can close an initially open eye in the detail pass;
       // enclosure remains mandatory when accepting the resulting template.
       const enclosurePending=!audit.passed&&audit.regions.every(r=>r.retainedFraction>=audit.minimumRetention);
-      if(audit.passed||enclosurePending){
+      const preferred=weakRegion===null?audit.passed||enclosurePending:audit.passed&&seed.error<fine[0].error;
+      if(weakRegion!==null)earlyFeatureInitialization.proposal={error:seed.error,featuresPassed:audit.passed,preferred};
+      if(preferred){
         fine.unshift(seed);features=audit;
         earlyFeatureInitialization.scheduled=1;
         earlyFeatureInitialization.enclosurePending=enclosurePending;
