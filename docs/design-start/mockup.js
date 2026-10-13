@@ -1,10 +1,13 @@
+import { motifs as originalMotifs } from './motifs.mjs';
+import { frameArtwork } from './motif-frames.mjs';
 /* Clickable design exploration only. Motif previews are illustrations, not solved cutting patterns. */
 (() => {
   const $ = s => document.querySelector(s);
   const app = $('#app');
   const dialog = $('#dialog');
   const content = $('#dialog-content');
-  const state = {view:'start', motif:'star', category:'all', text:'ANNA', type:'nunito', size:70, palette:0, border:'check', preview:'heart', offset:0, textMotif:null, textFrame:'woven'};
+  const motifs=originalMotifs.slice();
+  const state = {view:'start', motif:'star', category:'all', text:'ANNA', type:'nunito', size:70, palette:0, border:'check', preview:'heart', offset:0, textMotif:null, textFrame:'woven', figureFrame:'circle', figureBorder:'rays', frameSize:64, rayCount:8};
   const palettes = [
     {name:'Rød og creme', a:'#fffdf5', b:'#b72f2b'},
     {name:'Grøn og creme', a:'#fffdf5', b:'#365943'},
@@ -25,20 +28,7 @@
     undo:'<path d="m9 14-5-5 5-5M4 9h10a6 6 0 0 1 0 12h-3"/>'
   };
   const icon = (name, cls='') => `<svg class="${cls}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.arrow}</svg>`;
-  const motifs = [
-    {id:'star', name:'Stjerne', category:'jul', art:'<path d="M50 5 61 36 94 37 68 58 76 90 50 71 23 90 31 58 5 37 39 36Z"/>'},
-    {id:'tree', name:'Juletræ', category:'jul', art:'<path d="M50 4 72 31H61L83 56H68L94 83H57V97H43V83H6L32 56H17L39 31H28Z"/>'},
-    {id:'heart', name:'Hjerte', category:'form', art:'<path d="M50 88 13 51C-10 24 22-3 50 25 78-3 110 24 87 51Z"/>'},
-    {id:'snow', name:'Snefnug', category:'jul', art:'<g fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="square"><path d="M50 6V94M12 28 88 72M12 72 88 28M37 15l13 13 13-13M37 85l13-13 13 13M14 43l18-5-5-18M86 57l-18 5 5 18M14 57l18 5-5 18M86 43l-18-5 5-18"/></g>'},
-    {id:'angel', name:'Engel', category:'jul', art:'<circle cx="50" cy="18" r="13"/><path d="M41 38Q16 15 7 39T29 68L19 93H81L71 68Q103 61 93 39T59 38L50 30Z"/>'},
-    {id:'bell', name:'Klokke', category:'jul', art:'<path d="M42 12V6H58V12C76 17 78 33 77 50L91 77H9L23 50C22 33 24 17 42 12M36 84H64A14 14 0 0 1 36 84"/>'},
-    {id:'gift', name:'Gave', category:'jul', art:'<path d="M10 47H44V94H10ZM56 47H90V94H56ZM4 29H44V41H4ZM56 29H96V41H56Z"/><path d="M48 31C5 34 16-14 43 10L50 22 57 10C84-14 95 34 52 31" fill="none" stroke="currentColor" stroke-width="9"/>'},
-    {id:'circle', name:'Cirkel', category:'form', art:'<circle cx="50" cy="50" r="40"/>'},
-    {id:'flower', name:'Blomst', category:'form', art:'<circle cx="50" cy="25" r="21"/><circle cx="74" cy="43" r="21"/><circle cx="64" cy="73" r="21"/><circle cx="35" cy="73" r="21"/><circle cx="25" cy="43" r="21"/><circle cx="50" cy="49" r="11" fill="var(--paper-left,#fffdf5)"/>'},
-    {id:'house', name:'Hus', category:'jul', art:'<path d="M2 43 50 5 98 43H86V94H60V63H40V94H14V43Z"/>'},
-    {id:'moon', name:'Måne', category:'form', art:'<path d="M71 6A45 45 0 1 0 94 73 42 42 0 0 1 71 6Z"/>'},
-    {id:'diamond', name:'Rude', category:'form', art:'<path d="M50 3 89 50 50 97 11 50Z"/>'}
-  ];
+
   const esc = s => String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
   const motif = (id, cls='') => `<svg class="motif-svg ${cls}" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">${motifs.find(m=>m.id===id)?.art || motifs[0].art}</svg>`;
   let serial = 0;
@@ -71,18 +61,19 @@
     return {width:left+right, height:top+bottom, top:y-top,
       svg:`<text x="${x}" y="${y}" font-family="${font.family}" font-weight="${font.weight}" font-size="${fontSize}">${esc(value)}</text>`};
   }
-  function sketch({text=null, id='star', border='check', size=70, type='nunito', offset=0, accent=null, textFrame='air'}={}) {
+  function sketch({text=null, id='star', border='check', size=70, type='nunito', offset=0, accent=null, textFrame='air', figureFrame=null, figureBorder='rays', frameSize=64, rayCount=8}={}) {
     const checker = [];
     const woven=text!==null&&textFrame==='woven';
     for(let r=0;r<8;r++) for(let c=0;c<8;c++) if((woven||r===0||c===0||r===7||c===7)&&(r+c)%2===0) checker.push(`<rect x="${c*25}" y="${r*25}" width="25" height="25"/>`);
     const unique = `motif-clip-${serial++}`;
     const letters=text!==null?lettering(text,type,accent):null;
-    const shape=letters?letters.svg:`<g transform="translate(-60 -60) scale(1.2)">${motifs.find(m=>m.id===id)?.art||motifs[0].art}</g>`;
+    const motifScale=figureFrame?frameSize/100*2*(size/100):1.2;
+    const shape=letters?letters.svg:`<g transform="scale(${motifScale}) translate(-50 -50)">${motifs.find(m=>m.id===id)?.art||motifs[0].art}</g>`;
     const frame=letters&&woven?`<rect x="${-letters.width/2-1}" y="${letters.top-1}" width="${letters.width+2}" height="${letters.height+2}" fill="var(--paper-right)"/>`:'';
     const accentArt=accent?`<g transform="translate(-17 -43) scale(.34)">${woven?'<rect x="-2" y="-2" width="104" height="104" fill="var(--paper-right)"/>':''}${motifs.find(m=>m.id===accent).art}</g>`:'';
     return `<svg class="hero-heart" viewBox="0 0 400 350" role="img" aria-label="Motivskitse: ${esc(text!==null?text:motifs.find(m=>m.id===id)?.name)} i et julehjerte${woven?' med flet helt ind til teksten':''}"><defs><clipPath id="${unique}"><path d="M200 39 341 180 200 321 59 180Z"/></clipPath></defs>
-    <g transform="translate(100 80) rotate(45 100 100)"><path d="M0 0A100 100 0 0 0 0 200L200 200V0Z" fill="var(--paper-left)"/><path d="M0 0A100 100 0 0 1 200 0V200H0Z" fill="var(--paper-right)"/><rect width="200" height="200" fill="var(--paper-left)"/>${woven||border==='check'?`<g fill="var(--paper-right)">${checker.join('')}</g>`:'<path d="M0 0V200H200V0" fill="none" stroke="var(--paper-right)" stroke-width="5"/>'}</g>
-    <g clip-path="url(#${unique})" fill="var(--paper-right)" color="var(--paper-right)"><g transform="translate(200 ${180+offset}) scale(${size/70})">${frame}<g fill="var(${woven?'--paper-left':'--paper-right'})" color="var(${woven?'--paper-left':'--paper-right'})">${accentArt}${shape}</g></g></g></svg>`;
+    <g transform="translate(100 80) rotate(45 100 100)"><path d="M0 0A100 100 0 0 0 0 200L200 200V0Z" fill="var(--paper-left)"/><path d="M0 0A100 100 0 0 1 200 0V200H0Z" fill="var(--paper-right)"/>${figureFrame?frameArtwork({shape:figureFrame,style:figureBorder,size:frameSize/100,rayCount}):`<rect width="200" height="200" fill="var(--paper-left)"/>${woven||border==='check'?`<g fill="var(--paper-right)">${checker.join('')}</g>`:'<path d="M0 0V200H200V0" fill="none" stroke="var(--paper-right)" stroke-width="5"/>'}`}</g>
+    <g clip-path="url(#${unique})" fill="var(--paper-right)" color="var(--paper-right)"><g transform="translate(200 ${180+offset}) scale(${figureFrame?1:size/70})">${frame}<g fill="var(${woven?'--paper-left':'--paper-right'})" color="var(${woven?'--paper-left':'--paper-right'})">${accentArt}${shape}</g></g></g></svg>`;
   }
   function brushArt(vector=false) {
     return `<svg class="tool-art" viewBox="0 0 180 125" aria-hidden="true"><rect x="9" y="6" width="162" height="113" rx="10" fill="#fffdf6"/><path d="M25 33H155M25 56H155M25 79H155M48 18V105M82 18V105M116 18V105M150 18V105" stroke="#ecede6" stroke-width="1"/>${vector?'<path d="M28 93C62 91 44 26 86 28S130 89 155 37" fill="none" stroke="#bd302d" stroke-width="3"/><path d="M48 47 109 9M111 92 162 73" stroke="#d39b91" stroke-width="1.5"/><g fill="#fff" stroke="#bd302d" stroke-width="2"><circle cx="48" cy="47" r="3"/><circle cx="109" cy="9" r="3"/><circle cx="111" cy="92" r="3"/><circle cx="162" cy="73" r="3"/><rect x="81" y="23" width="9" height="9"/><rect x="24" y="88" width="9" height="9"/><rect x="151" y="32" width="9" height="9"/></g>':'<path d="M40 79Q49 35 72 55Q91 8 111 53Q157 51 116 85Q94 113 67 84Q38 97 40 79Z" fill="#b72f2b"/><path d="m119 71 32-32 10 10-32 32-18 9Z" fill="#ddb868"/><path d="m111 90 4-12 9 8Z" fill="#334736"/>'}</svg>`;
@@ -110,7 +101,7 @@
     `<button class="motif-search-trigger" data-dialog="motifs">${icon('search')}<span>Søg efter fx kat, hund…</span></button><div class="library-count">${Object.keys(window.JULEFLET_MOTIF_LIBRARY.icons).length.toLocaleString('da-DK')} figurer at gå på opdagelse i</div><div class="category-row" aria-label="Figurkategori">${[['all','Alle'],['jul','Jul'],['form','Former']].map(([id,label])=>`<button data-category="${id}" aria-pressed="${state.category===id}">${label}</button>`).join('')}</div><div class="motif-grid">${motifs.filter(m=>!m.library).filter(m=>state.category==='all'||m.category===state.category).map(m=>`<button class="motif-choice" data-motif="${m.id}" aria-pressed="${state.motif===m.id}" aria-label="Vælg ${m.name.toLowerCase()}">${motif(m.id)}<span>${m.name}</span></button>`).join('')}</div><div id="selected-library-motif"></div><button class="panel-small-action" data-dialog="motifs">${icon('search')}Søg i hele figurbiblioteket</button><button class="panel-small-action" data-dialog="upload">${icon('upload')}Brug din egen figur</button>`}
     <button class="start-another" data-view="start">← Se alle måder at begynde på</button></section>`;
   }
-  function currentSketch() {return sketch({text:state.view==='text'?state.text:null,id:state.motif,border:state.border,size:state.size,type:state.type,offset:state.offset,accent:state.view==='text'?state.textMotif:null,textFrame:state.textFrame});}
+  function currentSketch() {return sketch({text:state.view==='text'?state.text:null,id:state.motif,border:state.border,size:state.size,type:state.type,offset:state.offset,accent:state.view==='text'?state.textMotif:null,textFrame:state.textFrame,figureFrame:state.view==='figure'?state.figureFrame:null,figureBorder:state.figureBorder,frameSize:state.frameSize,rayCount:state.rayCount});}
   function plainMotif() {
     return `<svg class="hero-heart" viewBox="0 0 400 350" role="img" aria-label="Dit motiv alene"><rect x="38" y="25" width="324" height="300" rx="4" fill="var(--paper-left)"/><g transform="translate(200 178) scale(${state.size/70})" fill="var(--paper-right)" color="var(--paper-right)">${state.view==='text'&&state.textMotif?`<g transform="translate(-17 -43) scale(.34)">${motifs.find(m=>m.id===state.textMotif).art}</g>`:''}${state.view==='text'?lettering(state.text,state.type,state.textMotif).svg:`<g transform="translate(-60 -60) scale(1.2)">${motifs.find(m=>m.id===state.motif).art}</g>`}</g></svg>`;
   }
@@ -120,9 +111,12 @@
   function stage() {
     return `<section class="heart-stage" aria-label="Forhåndsvisning"><div class="preview-label">Dit motiv · din farvekombination</div><div id="heart-preview" style="width:100%;display:flex;justify-content:center">${state.preview==='heart'?currentSketch():plainMotif()}</div><div class="stage-caption">${icon('pencil')}<span id="stage-caption">Motivskitse · ${state.view==='text'?esc(state.text||'Din tekst'):motifs.find(m=>m.id===state.motif).name}</span></div><div class="preview-switch" aria-label="Visning"><button data-preview="heart" aria-pressed="${state.preview==='heart'}">På hjertet</button><button data-preview="motif" aria-pressed="${state.preview==='motif'}">Kun motivet</button></div><div class="placement-tools" aria-label="Flyt motiv"><button data-shift="-5" aria-label="Flyt motivet op">↑</button><button data-shift="0" aria-label="Centrér motivet">${icon('move')}</button><button data-shift="5" aria-label="Flyt motivet ned">↓</button></div></section>`;
   }
+  function figureFrameControls(){
+    return `<div class="field"><div class="field-heading">Ramme omkring figuren</div><div class="frame-shape-choices">${[['diamond','Rude','<path d="M25 3 47 25 25 47 3 25Z"/>'],['circle','Cirkel','<circle cx="25" cy="25" r="22"/>'],['hexagon','Sekskant','<path d="M3 25 14 6H36L47 25 36 44H14Z"/>']].map(([id,label,path])=>`<button data-figure-frame="${id}" aria-pressed="${state.figureFrame===id}"><svg viewBox="0 0 50 50" aria-hidden="true">${path}</svg>${label}</button>`).join('')}</div></div><div class="field"><label class="field-heading" for="frame-size">Rammens størrelse <output id="frame-size-value">${state.frameSize}%</output></label><input id="frame-size" type="range" min="45" max="80" value="${state.frameSize}"><div class="range-endpoints"><span>Mindre</span><span>Større</span></div></div><div class="field"><div class="field-heading">Mønster uden om rammen</div><div class="frame-pattern-choices">${[['rays','Stråler'],['check','Tern'],['plain','Enkel']].map(([id,label])=>`<button data-figure-border="${id}" aria-label="${label}" aria-pressed="${state.figureBorder===id}">${sketch({id:state.motif,figureFrame:state.figureFrame,figureBorder:id,frameSize:state.frameSize,rayCount:state.rayCount,size:state.size})}<span>${label}</span></button>`).join('')}</div></div>${state.figureBorder==='rays'?`<div class="field"><div class="field-heading">Strålernes bredde</div><div class="border-choices">${[[8,'4 brede'],[16,'8 smalle']].map(([count,label])=>`<button class="border-choice" data-ray-count="${count}" aria-pressed="${state.rayCount===count}">${label}</button>`).join('')}</div></div>`:''}`;
+  }
   function controls() {
     const textMode=state.view==='text';
-    return `<section class="panel adjust-panel"><h2>Gør det til dit</h2><div class="field"><div class="field-heading">Papirets farver</div><div class="swatches" aria-label="Farvekombination">${palettes.map((p,i)=>`<button class="swatch" style="--a:${p.a};--b:${p.b}" data-palette="${i}" aria-label="${p.name}" aria-pressed="${state.palette===i}"></button>`).join('')}</div></div><div class="field"><label class="field-heading" for="motif-size">Motivets størrelse <output id="size-value">${state.size}%</output></label><input id="motif-size" type="range" min="45" max="100" value="${state.size}"><div class="range-endpoints"><span>Mindre</span><span>Større</span></div></div>${textMode?textFrameControls():''}<div class="field" ${textMode&&state.textFrame==='woven'?'hidden':''}><div class="field-heading">Kant omkring motivet</div><div class="border-choices"><button class="border-choice" data-border="plain" aria-pressed="${state.border==='plain'}"><svg viewBox="0 0 50 30" aria-hidden="true"><path d="M3 8H47V24H3Z" fill="none" stroke="currentColor" stroke-width="2"/></svg>Enkel</button><button class="border-choice" data-border="check" aria-pressed="${state.border==='check'}"><svg viewBox="0 0 50 30" aria-hidden="true"><path d="M3 8H11V16H3ZM19 8H27V16H19ZM35 8H43V16H35ZM11 16H19V24H11ZM27 16H35V24H27ZM43 16H47V24H43Z" fill="currentColor"/></svg>Ternet</button></div></div><div class="divider"></div><button class="btn primary" id="generate">Lav skabelon${icon('arrow')}</button><p class="generation-hint">I næste trin tilpasses mønstret, så dit hjerte kan klippes og flettes.</p><button class="editor-secondary" data-dialog="paint">${icon('pencil')}Mal videre på motivet</button></section>`;
+    return `<section class="panel adjust-panel"><h2>Gør det til dit</h2><div class="field"><div class="field-heading">Papirets farver</div><div class="swatches" aria-label="Farvekombination">${palettes.map((p,i)=>`<button class="swatch" style="--a:${p.a};--b:${p.b}" data-palette="${i}" aria-label="${p.name}" aria-pressed="${state.palette===i}"></button>`).join('')}</div></div><div class="field"><label class="field-heading" for="motif-size">Motivets størrelse <output id="size-value">${state.size}%</output></label><input id="motif-size" type="range" min="45" max="100" value="${state.size}"><div class="range-endpoints"><span>Mindre</span><span>Større</span></div></div>${textMode?textFrameControls():figureFrameControls()}<div class="field" ${!textMode||state.textFrame==='woven'?'hidden':''}><div class="field-heading">Kant omkring motivet</div><div class="border-choices"><button class="border-choice" data-border="plain" aria-pressed="${state.border==='plain'}"><svg viewBox="0 0 50 30" aria-hidden="true"><path d="M3 8H47V24H3Z" fill="none" stroke="currentColor" stroke-width="2"/></svg>Enkel</button><button class="border-choice" data-border="check" aria-pressed="${state.border==='check'}"><svg viewBox="0 0 50 30" aria-hidden="true"><path d="M3 8H11V16H3ZM19 8H27V16H19ZM35 8H43V16H35ZM11 16H19V24H11ZM27 16H35V24H27ZM43 16H47V24H43Z" fill="currentColor"/></svg>Ternet</button></div></div><div class="divider"></div><button class="btn primary" id="generate">Lav skabelon${icon('arrow')}</button><p class="generation-hint">I næste trin tilpasses mønstret, så dit hjerte kan klippes og flettes.</p><button class="editor-secondary" data-dialog="paint">${icon('pencil')}Mal videre på motivet</button></section>`;
   }
   function applyPalette() {
     const p=palettes[state.palette];
@@ -135,6 +129,8 @@
     $('#heart-preview').innerHTML=state.preview==='heart'?currentSketch():plainMotif();
     $('#stage-caption').textContent=`Motivskitse · ${state.view==='text'?state.text||'Din tekst':motifs.find(m=>m.id===state.motif).name}`;
     if($('#size-value')) $('#size-value').textContent=state.size+'%';
+    document.querySelectorAll('[data-figure-border]').forEach(b=>{b.querySelector('svg').outerHTML=sketch({id:state.motif,figureFrame:state.figureFrame,figureBorder:b.dataset.figureBorder,frameSize:state.frameSize,rayCount:state.rayCount,size:state.size});});
+    if($('#frame-size-value')) $('#frame-size-value').textContent=state.frameSize+'%';
     if($('#name-count')) $('#name-count').textContent=state.text.length+' / 10';
   }
   function render(scroll=false) {
@@ -231,6 +227,9 @@
     else if(b.dataset.libraryCategory){catalogState.category=b.dataset.libraryCategory;catalogState.page=0;document.querySelectorAll('[data-library-category]').forEach(el=>el.setAttribute('aria-pressed',el.dataset.libraryCategory===catalogState.category));renderCatalog();}
     else if(b.dataset.libraryIcon){selectLibraryMotif(b.dataset.libraryIcon);}
     else if(b.dataset.libraryPage){catalogState.page+=Number(b.dataset.libraryPage);renderCatalog();}
+    else if(b.dataset.figureFrame){state.figureFrame=b.dataset.figureFrame;render();}
+    else if(b.dataset.rayCount){state.rayCount=Number(b.dataset.rayCount);render();}
+    else if(b.dataset.figureBorder){state.figureBorder=b.dataset.figureBorder;render();}
     else if(b.dataset.textFrame){state.textFrame=b.dataset.textFrame;render();}
     else if(b.dataset.category){state.category=b.dataset.category;render();}
     else if(b.dataset.motif){state.motif=b.dataset.motif;document.querySelectorAll('[data-motif]').forEach(el=>el.setAttribute('aria-pressed',el.dataset.motif===state.motif));updatePreview();updateLibraryCredit();}
@@ -255,6 +254,7 @@
   document.addEventListener('input', e=>{
     if(e.target.id==='catalog-search'){catalogState.query=e.target.value;catalogState.page=0;renderCatalog();}
     else if(e.target.id==='heart-name'){state.text=e.target.value;updatePreview();}
+    else if(e.target.id==='frame-size'){state.frameSize=Number(e.target.value);updatePreview();}
     else if(e.target.id==='motif-size'){state.size=Number(e.target.value);updatePreview();}
   });
   document.addEventListener('change', e=>{
