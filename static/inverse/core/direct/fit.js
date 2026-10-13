@@ -26,6 +26,7 @@ import {sourceWeights,initializationMask} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
 import {initializeFeatureSeeds,featureRefinementObjective} from './feature-seeds.js';
 import {featureDetailPlan} from './feature-details.js';
+import {rerouteFittedBoundary} from './reroute.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid'].includes(c.seed);
@@ -311,7 +312,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     }
   };
   let featureDetail=null;const featureDetailAttempts=[];
-  const refineFeatureDetail=candidate=>{
+  const refineFeatureDetail=async candidate=>{
     const canRefine=candidate.geometryPassed&&(candidate.paperPassed||candidate.paper?.status==='uncertain');
     // A promising short-budget fit must still get its local shape pass.
     // Keep the ordinary finalization reserve, rather than requiring the
@@ -322,10 +323,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     if(plan){
       const detailCfg={...cfg,preferMatchingSheets:false,materialResolution:Math.max(cfg.materialResolution,700)};
       const verification={requestedResolution:cfg.materialResolution,resolution:detailCfg.materialResolution,source:'feature-detail-refinement'};
-      const detailStarted=performance.now();
+      const detailStarted=performance.now();let rejected=null;
       const refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:shortBudget?.07:.035,deadline:Math.min(searchDeadline()-detailReserve,performance.now()+1800),onProgress:(r,solution)=>{
         solution.report={paperVerification:{...verification,status:r.paper}};
-        onProgress({stage:'directPolishing',detail:'small-feature-shape',counts:candidate.counts,...r,weightedError:r.error,error:maskDisagreement(source,sampleWeave(solution,source.resolution))},solution);
+        const woven=sampleWeave(solution,source.resolution),error=maskDisagreement(source,woven);
+        if(!candidate.imagePassed&&!symmetryRequested&&!r.geometry&&error<=cfg.maxImageError&&(!rejected||error<rejected.error)&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed)rejected={solution,error};
+        onProgress({stage:'directPolishing',detail:'small-feature-shape',counts:candidate.counts,...r,weightedError:r.error,error},solution);
       }}));
       refined.error=mismatch(renderCurves(plan.graph,refined.points,refined.phase,n,32),prob);
       refined.paperVerification={...verification,status:refined.paper?.status};
@@ -340,6 +343,21 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       featureDetailAttempts.push({...featureDetail,counts:candidate.counts.slice(),phase:candidate.phase,seed:candidate.seed,materialResolution:detailCfg.materialResolution,seconds:(performance.now()-detailStarted)/1000,
         checkpoints:refined.history.map(({step,geometry,paper,issues})=>({step,geometry,paper,issues}))});
       if(accepted)return{...refined,counts:candidate.counts,seed:candidate.seed,matching:matchingSummary(plan.graph.solution(refined.points,refined.phase,input))};
+      // The image can improve by crossing a slit with itself. Such a rejected
+      // checkpoint supplies only a visible boundary: a bounded routing search
+      // must find a different, independently valid assignment to both sheets.
+      // Successful detail fits keep their existing path and pay no MILP cost.
+      const rerouteSeconds=Math.min(1.5,(searchDeadline()-performance.now()-1700)/1000);
+      if(rejected&&rerouteSeconds>=.4){
+        const routed=await rerouteFittedBoundary(rejected.solution,input,detailCfg,{seconds:rerouteSeconds,onProgress});
+        featureDetailAttempts.at(-1).rerouting=routed.report;
+        if(routed.graph){
+          const raw=routed.graph.solution(routed.graph.points,routed.phase,input),validation=validate(raw,detailCfg),paper=materialAudit(raw,detailCfg);
+          const result={graph:routed.graph,points:routed.graph.points.slice(),phase:routed.phase,counts:routed.graph.families.map(f=>f.length),seed:'fitted-boundary-rerouting',geometryPassed:validation.passed,paperPassed:paper.passed,paper:paper.summary,validation,history:[],error:mismatch(renderCurves(routed.graph,routed.graph.points,routed.phase,n,32),prob),paperVerification:{...verification,source:'fitted-boundary-rerouting',status:paper.status},matching:matchingSummary(raw)};
+          routed.report.refinementAccepted=assess(result);
+          if(routed.report.refinementAccepted)return result;
+        }
+      }
     }
     return candidate;
   };
@@ -398,7 +416,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const retainedColours=candidate.originalFeatures?.regions.every(r=>r.retainedFraction>=candidate.originalFeatures.minimumRetention);
     const protectedDetail=candidate.seed==='feature-preserving-grid'&&candidate.paperPassed&&retainedColours&&candidate.originalImageError<=cfg.maxImageError;
     if(protectedDetail||candidate.seed==='feature-weighted-grid'&&candidate.originalFeatures?.passed&&candidate.originalImageError<=cfg.maxImageError&&candidate.originalFeatures.enclosures?.components.some(f=>f.componentIoU<.8)){
-      const detailed=refineFeatureDetail(candidate);
+      const detailed=await refineFeatureDetail(candidate);
       if(detailed!==candidate){addCandidate(detailed);candidate=detailed;}
     }
     stoppedEarly=!!(candidate.imagePassed&&candidate.originalImageError<=Math.min(.015,cfg.maxImageError*.5)&&cfg.earlyStop&&(!candidate.paperVerification||featureSeed(candidate)));
@@ -474,7 +492,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   }
   let candidate=candidates[0];
   // Keep the established detail pass for jointly rerouted feature seeds.
-  if(candidate.seed==='feature-preserving-grid'&&candidate.paperVerification?.source!=='feature-detail-refinement')candidate=refineFeatureDetail(candidate);
+  if(candidate.seed==='feature-preserving-grid'&&candidate.paperVerification?.source!=='feature-detail-refinement')candidate=await refineFeatureDetail(candidate);
   // This optional early pass precedes polishing. The final selected pair also
   // receives sharing recovery after any matching-sheet replacement.
   if(!featureDetail?.applied&&!candidate.matching?.identical&&!symmetryRequested&&candidate.paperPassed&&performance.now()<deadline-1300){

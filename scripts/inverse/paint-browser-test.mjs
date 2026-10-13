@@ -105,7 +105,7 @@ try{
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
    const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask';
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||['leaf-mask','bird-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||['leaf-mask','bird-mask','bird-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -169,8 +169,9 @@ try{
        assert.ok(entry);fixture={...entry,quad:null,sourceCase:name.slice(0,-5)};
        photo=await readHardPhoto({file:entry.rectifiedPhoto,sha256:entry.sha256,width:400,height:400});
       }else{
-       const data=JSON.parse(await fs.readFile(name==='leaf-mask'?'scripts/inverse/fixtures/photographic-leaf-routing.json':name==='puppy-shift-mask'?'scripts/inverse/fixtures/photographic-puppy-fit.json':['bird-mask','gift-mask'].includes(name)?`scripts/inverse/fixtures/photographic-${name.slice(0,-5)}-fit.json`:'scripts/inverse/fixtures/photographic-checkerboard-fits.json'));
+       const data=JSON.parse(await fs.readFile(name==='leaf-mask'?'scripts/inverse/fixtures/photographic-leaf-routing.json':name==='bird-shift-mask'?'scripts/inverse/fixtures/photographic-bird-fit.json':name==='puppy-shift-mask'?'scripts/inverse/fixtures/photographic-puppy-fit.json':['bird-mask','gift-mask'].includes(name)?`scripts/inverse/fixtures/photographic-${name.slice(0,-5)}-fit.json`:'scripts/inverse/fixtures/photographic-checkerboard-fits.json'));
        fixture=data.cases?{sourceCatalogue:data.sourceCatalogue,...data.cases.find(c=>c.sourceCase===name.slice(0,-5))}:data;
+       if(name==='bird-shift-mask')fixture={...fixture,quad:fixture.quad.map(([x,y])=>[x+1,y]),maskSha256:'bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91'};
        if(name==='puppy-shift-mask')fixture={...fixture,quad:fixture.quad.map(([x,y])=>[x+1,y]),maskSha256:'a96eea21b65604e2a7b9b93d6823cdd58937bebd66fceeb80e9a1f5c2812c1cc'};
        const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));photo=await readHardPhoto(catalogue.source||catalogue.cases.find(c=>c.id===fixture.sourceCase));
       }
@@ -462,10 +463,10 @@ try{
     if(hardPhoto||photoMask){
      row.editableFeatures=auditFeatureFidelity({mask:sourceMask,resolution},sourceRendered,observed.result.report.settings);
      row.featureComponents=featureComponentMetrics({mask:sourceMask,resolution},sourceRendered);
-     if(name==='bird-mask'&&!stopMode){
+     if(['bird-mask','bird-shift-mask'].includes(name)&&!stopMode){
       const eye=row.featureComponents.find(f=>f.centerMm[0]<30);
       assert.equal(eye.touchesBorder,false,'The exported eye must remain separate from the background');
-      assert.ok(eye.componentIoU>.8,'The editable eye must retain its shape after simplification');
+      assert.ok(eye.componentIoU>(name==='bird-mask'?.8:.45),'The editable eye must retain its measured shape after simplification');
      }
      if(['hard-flettede-puppy-half','puppy-shift-mask'].includes(name)&&row.templateChecksPassed){
       const opening=row.featureComponents.find(f=>f.sourceAreaMm2<30);
