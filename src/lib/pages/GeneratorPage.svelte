@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
+	import { GeometryCache, geometryKey } from '$lib/generator/cache';
 	import {
 		DEFAULT_COLORS,
 		DEFAULT_COLORS_HEX,
@@ -91,6 +92,21 @@
 		query = $state(''),
 		limit = $state(24),
 		retry = $state(0);
+	const cache = new GeometryCache();
+	type Failure = { error: string; character?: string };
+	const failures = new GeometryCache<Failure>();
+	const errorText = (failure: Failure) => {
+		const key: TranslationKey =
+			failure.error === 'topology'
+				? 'generatorTopologyError'
+				: failure.error === 'empty'
+					? 'generatorEmptyError'
+					: failure.error === 'character'
+						? 'generatorCharacterError'
+						: 'generatorClearanceError';
+		return t(key, lang, { char: failure.character ?? '' });
+	};
+	let displayed = $state<GeneratorResult | null>(null);
 	let result = $state<GeneratorResult | null>(null),
 		busy = $state(false),
 		error = $state(''),
@@ -99,16 +115,21 @@
 		loadError = $state(false);
 	let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
 	let preview = $derived(
-		result
-			? renderHeartSvgMarkup(result.design, colors, {
+		displayed
+			? renderHeartSvgMarkup(displayed.design, colors, {
 					idPrefix: 'generated-preview'
 				})
 			: ''
 	);
 	const currentDesign = () =>
 		result
-			? { ...result.design, colors: toHexColors(colors, DEFAULT_COLORS_HEX) }
+			? {
+					...result.design,
+					colors: toHexColors(colors, DEFAULT_COLORS_HEX),
+					templateWidthMm: config.paperWidth
+				}
 			: null;
+	let workerPending = false;
 	let worker: Worker | null = null,
 		revision = 0,
 		savedId: string | null = null;
@@ -179,26 +200,55 @@
 	$effect(() => {
 		if (!mounted) return;
 		const snapshot = { ...config };
+		const url = new URL(window.location.href);
+		url.searchParams.delete('mode');
+		url.hash =
+			snapshot.mode === 'start'
+				? ''
+				: 'make=' + encodeURIComponent(JSON.stringify(snapshot));
+		// The router finishes mounting after this first effect. Defer one task so
+		// direct links can initialise before synchronising their shareable state.
+		const timer = setTimeout(() => replaceState(url, {}), 0);
+		return () => clearTimeout(timer);
+	});
+	$effect(() => {
+		if (!mounted) return;
+		const key = geometryKey(config);
+		const snapshot = untrack(() => ({ ...config }));
 		void retry;
-		// Every change invalidates the old result immediately, including while its
-		// font or motif is loading. A stale worker response can never enable export.
+		// Keep the last preview while calculating, but disable export immediately.
+		// Only the newest request may become the downloadable result.
 		const token = ++revision;
-		worker?.terminate();
-		worker = null;
+		if (workerPending) {
+			worker?.terminate();
+			worker = null;
+			workerPending = false;
+		}
 		result = null;
 		notice = '';
 		error = '';
 		savedId = null;
 		if (snapshot.mode === 'start') {
+			displayed = null;
+			busy = false;
+			return;
+		}
+		const cached = cache.get(key);
+		if (cached) {
+			result = cached;
+			displayed = cached;
+			busy = false;
+			return;
+		}
+		const failed = failures.get(key);
+		if (failed) {
+			displayed = null;
+			error = errorText(failed);
 			busy = false;
 			return;
 		}
 		busy = true;
 		const timer = setTimeout(async () => {
-			const url = new URL(window.location.href);
-			url.searchParams.delete('mode');
-			url.hash = 'make=' + encodeURIComponent(JSON.stringify(snapshot));
-			replaceState(url, {});
 			try {
 				const request: GeneratorRequest = {
 					mode: snapshot.mode as 'figure' | 'text',
@@ -217,7 +267,7 @@
 					scale: snapshot.scale / 100,
 					style: snapshot.style,
 					textFrame: snapshot.textFrame,
-					paperWidth: snapshot.paperWidth
+					paperWidth: 100
 				};
 				if (snapshot.mode === 'text')
 					request.font = await asset<Font>(`fonts/${snapshot.font}.json`);
@@ -226,45 +276,44 @@
 						await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)
 					).contours;
 				if (token !== revision) return;
-				worker = new Worker(
+				worker ??= new Worker(
 					new URL('../generator/worker.ts', import.meta.url),
 					{ type: 'module' }
 				);
 				worker.onmessage = (e) => {
 					if (token !== revision) return;
 					busy = false;
+					workerPending = false;
 					if (e.data.result) {
 						result = e.data.result;
+						displayed = e.data.result;
+						cache.set(key, e.data.result);
 					} else {
-						const key: TranslationKey =
-							e.data.error === 'topology'
-								? 'generatorTopologyError'
-								: e.data.error === 'empty'
-									? 'generatorEmptyError'
-									: e.data.error === 'character'
-										? 'generatorCharacterError'
-										: 'generatorClearanceError';
-						error = t(key, lang, { char: e.data.character ?? '' });
+						displayed = null;
+						failures.set(key, e.data);
+						error = errorText(e.data);
 					}
-					worker?.terminate();
-					worker = null;
 				};
 				worker.onerror = () => {
 					if (token === revision) {
 						busy = false;
 						error = t('generatorLoadError', lang);
+						displayed = null;
 						worker?.terminate();
 						worker = null;
+						workerPending = false;
 					}
 				};
+				workerPending = true;
 				worker.postMessage(request);
 			} catch {
 				if (token === revision) {
 					busy = false;
 					error = t('generatorLoadError', lang);
+					displayed = null;
 				}
 			}
-		}, 180);
+		}, 60);
 		return () => {
 			clearTimeout(timer);
 		};
@@ -457,13 +506,13 @@
 			aria-busy={busy}
 		>
 			<span class="eyebrow">{t('generatorPreview', lang)}</span>
-			<div class="preview" class:pending={!result}>
+			<div class="preview" aria-busy={busy}>
 				{#if preview}<div
 						class="heart-art"
 						role="img"
 						aria-label={t('generatorPreview', lang) +
 							': ' +
-							(config.mode === 'text' ? config.text : config.motif)}
+							(displayed?.design.name ?? config.text)}
 					>
 						{@html preview}
 					</div>{:else}<div class="placeholder-heart" aria-hidden="true">
@@ -478,7 +527,7 @@
 						: ''}
 			</div>
 			{#if error}<div class="error" role="alert">{error}</div>{/if}
-			{#if result}<p class="cut-note">
+			{#if displayed}<p class="cut-note">
 					{t('generatorPureWeave', lang)}
 				</p>{/if}
 			<p class="fine-note">{t('generatorFine', lang)}</p>
@@ -537,7 +586,10 @@
 							aria-pressed={config.textFrame === frame[0]}
 							onclick={() => (config.textFrame = frame[0])}
 						>
-							<GeneratorFrameIcon frame={frame[0]} />{t(frame[1], lang)}
+							<GeneratorFrameIcon frame={frame[0]} lettering />{t(
+								frame[1],
+								lang
+							)}
 						</button>
 					{/each}
 				</div>
@@ -919,10 +971,6 @@
 		min-height: 340px;
 		display: grid;
 		place-items: center;
-		transition: opacity 0.15s;
-	}
-	.preview.pending {
-		opacity: 0.25;
 	}
 	.heart-art {
 		width: 100%;

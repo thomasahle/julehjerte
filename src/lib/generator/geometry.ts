@@ -4,7 +4,7 @@
  * edge-to-edge paths. The compiler checks that combinatorial invariant before
  * the geometric clearance check and conversion into the existing editor model.
  */
-import { findFingersWithIssues } from '$lib/editor/curveIssues';
+import { fingerHasIntersectionIssues } from '$lib/editor/curveIssues';
 import type { Finger } from '$lib/types/heart';
 import type { CutGeometry } from '$lib/inverse/toHeartDesign';
 export type Point = [number, number];
@@ -474,7 +474,12 @@ export type Font = {
  * share a cut; N/S ports continue as the ordinary A/B checkerboard. Counters
  * are connected to the outer contour by coincident cuts in both sheets.
  * Detached dots/accents are two-port islands on the nearest shared spoke. */
-export function generateCheckedText(text: string, font: Font, air = false) {
+export function generateCheckedText(
+	text: string,
+	font: Font,
+	air = false,
+	frame?: Frame
+) {
 	const chars = [...text.normalize('NFC')];
 	if (!chars.length || !text.trim())
 		throw new ConstructionError('empty', 'Empty text');
@@ -485,38 +490,71 @@ export function generateCheckedText(text: string, font: Font, air = false) {
 	});
 	const nonempty = letters.filter((l) => l.glyph.contours.length);
 	const all = nonempty.flatMap((l) => l.glyph.contours.flat());
+	if (!all.length) throw new ConstructionError('empty', 'No letter outlines');
 	const height =
 		Math.max(...all.map((p) => p[1])) - Math.min(...all.map((p) => p[1]));
-	const width = Math.max(
-		...nonempty.map((l) => {
-			const xs = l.glyph.contours.flat().map((p) => p[0]);
-			return Math.max(...xs) - Math.min(...xs);
+	// Keep the font's baseline, including accents and descenders. Narrow letters
+	// get narrower cells instead of wasting the space needed by fine strokes.
+	const cy =
+		(Math.min(...all.map((p) => p[1])) + Math.max(...all.map((p) => p[1]))) / 2;
+	const cellHeight = height * (air ? 1.5 : 1.16);
+	const widths = letters.map(({ glyph }) => {
+		if (!glyph.contours.length) return Math.max(glyph.advance, height * 0.35);
+		const xs = glyph.contours.flat().map((p) => p[0]);
+		return Math.max(...xs) - Math.min(...xs) + height * (air ? 0.5 : 0.16);
+	});
+	const span = widths.reduce((a, b) => a + b, 0);
+	const offset = Math.max(
+		...nonempty.map(({ glyph }) => {
+			const ys = glyph.contours.flat().map((p) => p[1]);
+			return Math.abs((Math.min(...ys) + Math.max(...ys)) / 2 - cy);
 		})
 	);
-	const unit = Math.max(height, width) * (air ? 1.5 : 1.16),
-		span = unit * letters.length;
-	const scale = Math.min(128 / (span + unit), 29 / unit),
-		cell = unit * scale;
+	const fullHeight = cellHeight + 2 * offset;
+	let scale = Math.min(128 / (span + fullHeight), 38 / cellHeight);
+	const boundary = frame ? frameRing(frame, 80) : null;
+	if (boundary) {
+		// Fit the complete cell envelope, including shifted accent/descender cells.
+		for (const x of [-span / 2, 0, span / 2])
+			for (const y of [-fullHeight / 2, fullHeight / 2]) {
+				const p = uprightToSheet([x, y]),
+					d = sub(p, [50, 50]);
+				const hit = ray(boundary, [50, 50], Math.atan2(d[1], d[0]));
+				scale = Math.min(
+					scale,
+					(0.9 * distance(hit.point, [50, 50])) / Math.hypot(x, y)
+				);
+			}
+	}
+
+	const cell = cellHeight * scale;
+	let cursor = -span / 2;
 	const edges: Edge[] = [],
 		artwork: Ring[] = [],
 		domain: Ring[] = [];
+	const cells: Point[][] = [];
+	const letterCuts = new Map<string, { x: number; edges: Edge[] }>();
 	let previous: Point | null = null;
 	for (let i = 0; i < letters.length; i++) {
 		const { glyph } = letters[i];
+		const x = (cursor + widths[i] / 2) * scale;
+		const cellWidth = widths[i] * scale;
+		cursor += widths[i];
 		if (!glyph.contours.length) continue;
 		const pts = glyph.contours.flat(),
 			xs = pts.map((p) => p[0]),
 			ys = pts.map((p) => p[1]);
-		const cx = (Math.min(...xs) + Math.max(...xs)) / 2,
-			cy = (Math.min(...ys) + Math.max(...ys)) / 2;
-		const x = (i - (letters.length - 1) / 2) * cell;
+		const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+		const y = ((Math.min(...ys) + Math.max(...ys)) / 2 - cy) * scale;
 		domain.push(
 			[
 				[-1, -1],
 				[1, -1],
 				[1, 1],
 				[-1, 1]
-			].map(([a, b]) => uprightToSheet([x + (a * cell) / 2, (b * cell) / 2]))
+			].map(([a, b]) =>
+				uprightToSheet([x + (a * cellWidth) / 2, y + (b * cell) / 2])
+			)
 		);
 		const contours = glyph.contours.map((r) =>
 			r.map((p) =>
@@ -525,34 +563,94 @@ export function generateCheckedText(text: string, font: Font, air = false) {
 		);
 		artwork.push(...contours);
 		const gates = [
-			uprightToSheet([x, -cell / 2]),
-			uprightToSheet([x + cell / 2, 0]),
-			uprightToSheet([x, cell / 2]),
-			uprightToSheet([x - cell / 2, 0])
+			uprightToSheet([x, y - cell / 2]),
+			uprightToSheet([x + cellWidth / 2, y]),
+			uprightToSheet([x, y + cell / 2]),
+			uprightToSheet([x - cellWidth / 2, y])
 		];
 		const angles = [Math.PI / 2, Math.PI, -Math.PI / 2, 0].map(
 			(a) => a - Math.PI / 4
 		);
-		fourPortMotif(edges, contours, gates, angles);
+		const cached = letterCuts.get(chars[i]);
+		if (cached) {
+			const dx = (x - cached.x) * Math.SQRT1_2;
+			const translate = (p: Point): Point => [p[0] + dx, p[1] - dx];
+			edges.push(
+				...cached.edges.map((e) => ({
+					...e,
+					from: translate(e.from),
+					to: translate(e.to)
+				}))
+			);
+		} else {
+			const local: Edge[] = [];
+			fourPortMotif(local, contours, gates, angles);
+			letterCuts.set(chars[i], { x, edges: local });
+			edges.push(...local);
+		}
+		cells.push(gates);
 		const [north, east, south, west] = gates;
-		add(edges, [[north[0], 0], north], 'A', 'frame');
-		add(edges, [[0, north[1]], north], 'B', 'frame');
-		add(edges, [south, [south[0], 100]], 'A', 'frame');
-		add(edges, [south, [100, south[1]]], 'B', 'frame');
+		if (!boundary) {
+			add(edges, [[north[0], 0], north], 'A', 'frame');
+			add(edges, [[0, north[1]], north], 'B', 'frame');
+			add(edges, [south, [south[0], 100]], 'A', 'frame');
+			add(edges, [south, [100, south[1]]], 'B', 'frame');
+		}
 		if (previous) add(edges, [previous, west], 'AB', 'shared');
-		else {
+		else if (!boundary) {
 			add(edges, [west, [west[0], 100]], 'A', 'frame');
 			add(edges, [[0, west[1]], west], 'B', 'frame');
 		}
 		previous = east;
 	}
 	if (!previous) throw new ConstructionError('empty', 'Empty text');
-	add(edges, [[previous[0], 0], previous], 'A', 'frame');
-	add(edges, [previous, [100, previous[1]]], 'B', 'frame');
-	return { geometry: compile(edges), edges, artwork, domain };
+	if (boundary) {
+		const step = Math.PI / (2 * cells.length),
+			half = step * 0.3;
+		for (const [i, gates] of cells.entries()) {
+			const north = framedGate(
+				edges,
+				boundary,
+				Math.PI + (i + 0.5) * step,
+				half
+			);
+			const south = framedGate(
+				edges,
+				boundary,
+				Math.PI / 2 - (i + 0.5) * step,
+				half
+			);
+			add(edges, [gates[0], north], 'AB', 'shared');
+			add(edges, [gates[2], south], 'AB', 'shared');
+		}
+		add(
+			edges,
+			[
+				cells[0][3],
+				framedGate(edges, boundary, (3 * Math.PI) / 4, Math.PI / 8)
+			],
+			'AB',
+			'shared'
+		);
+		add(
+			edges,
+			[previous, framedGate(edges, boundary, (7 * Math.PI) / 4, Math.PI / 8)],
+			'AB',
+			'shared'
+		);
+	} else {
+		add(edges, [[previous[0], 0], previous], 'A', 'frame');
+		add(edges, [previous, [100, previous[1]]], 'B', 'frame');
+	}
+	return {
+		geometry: compile(edges),
+		edges,
+		artwork,
+		domain: boundary ? [boundary] : domain
+	};
 }
 
-function fourPortMotif(
+export function fourPortMotif(
 	edges: Edge[],
 	contours: Ring[],
 	gates: Point[],
@@ -563,6 +661,19 @@ function fourPortMotif(
 	);
 	const base = nodes[0];
 	const candidates = gates.map((p, j) => {
+		// A neighbouring cell may place a gate exactly on a clipped boundary.
+		// Use that attachment directly rather than shooting through the shape.
+		for (let i = 0; i < base.ring.length; i++) {
+			const a = base.ring[i],
+				b = base.ring[(i + 1) % base.ring.length],
+				d = sub(b, a);
+			const t = dot(sub(p, a), d) / dot(d, d);
+			if (t >= 0 && t <= 1 && distance(p, mix(a, b, t)) < 1e-5) {
+				const port = { point: mix(a, b, t), index: i + t };
+				return [port, port, port, port];
+			}
+		}
+
 		const result: Array<Port | null> = [];
 		for (const offset of [0, -0.28, 0.28]) {
 			try {
@@ -589,10 +700,14 @@ function fourPortMotif(
 			a.filter((x) => x !== 0).length - b.filter((x) => x !== 0).length ||
 			a.reduce((x, y) => x + y, 0) - b.reduce((x, y) => x + y, 0)
 	);
+	const seenPorts = new Set<string>();
 	for (const indices of combinations) {
 		const ports = indices.map((index, j) => candidates[j][index]);
 		if (!ports.every((p): p is Port => p !== null) || !cyclic(base.ring, ports))
 			continue;
+		const portKey = ports.map((p) => p.index.toFixed(8)).join(',');
+		if (seenPorts.has(portKey)) continue;
+		seenPorts.add(portKey);
 		for (const interior of perforatedOutline(base, ports)) {
 			const local = interior.slice();
 			const extras = Array.from({ length: 4 }, () => [] as Contour[]);
@@ -685,7 +800,11 @@ function* perforatedOutline(node: Contour, ports: Port[]): Generator<Edge[]> {
 		nearest,
 		...[0, 1, 2, 3].map((j) => node.children.map(() => j))
 	];
+	const seenPartitions = new Set<string>();
 	for (const assignment of partitions) {
+		const key = assignment.join(',');
+		if (seenPartitions.has(key)) continue;
+		seenPartitions.add(key);
 		for (const [left, right] of [
 			[0.5, 0.5],
 			[0.3, 0.7],
@@ -872,45 +991,75 @@ function usableRoutes(routes: Ring[]): boolean {
 			};
 		})
 	}));
-	return findFingersWithIssues(fingers, 6).size === 0;
+	return !fingers.some((finger) =>
+		fingerHasIntersectionIssues(finger, fingers, 6)
+	);
 }
 
-/** A word is a forest of contours, just like a multi-part symbol. Framed text
- * chains its letters through two opposing frame gates. Counters recurse in the
- * transverse direction; no glyph contour is discarded or filled in. */
+/** Each letter keeps its own connections to the frame. Joining a whole word
+ * into one two-terminal chain gives fewer cuts, but a very difficult strip to
+ * weave. These gates spread the letters across a larger, more manageable grid. */
 export function generateFramedText(text: string, font: Font, frame: Frame) {
-	const rings: Ring[] = [];
-	let x = 0;
-	for (const char of text.normalize('NFC')) {
-		const glyph = font.glyphs[char];
-		if (!glyph) throw new ConstructionError('character', char);
-		rings.push(
-			...glyph.contours.map((r) => r.map((p) => [x + p[0], p[1]] as Point))
-		);
-		x += glyph.advance + 0.08;
-	}
-	if (!rings.length) throw new ConstructionError('empty', 'Empty text');
-	const points = rings.flat(),
-		centre = centroid(points);
-	const width =
-		Math.max(...points.map((p) => p[0])) - Math.min(...points.map((p) => p[0]));
-	const height =
-		Math.max(...points.map((p) => p[1])) - Math.min(...points.map((p) => p[1]));
-	const unit = Math.max(width, height);
-	const normalized = rings.map((r) =>
-		r.map(
-			(p) => [(p[0] - centre[0]) / unit, (p[1] - centre[1]) / unit] as Point
-		)
+	return generateCheckedText(text, font, false, frame);
+}
+
+export function framedGate(
+	edges: Edge[],
+	ring: Ring,
+	angle: number,
+	half: number,
+	fan = 1
+): Point {
+	const low = ray(ring, [50, 50], angle - half),
+		mid = ray(ring, [50, 50], angle),
+		high = ray(ring, [50, 50], angle + half);
+	const quadrant = Math.floor(angle / (Math.PI / 2));
+	const first: 'A' | 'B' = quadrant % 2 ? 'A' : 'B';
+	const edge = (p: Point, family: 'A' | 'B'): Point =>
+		family === 'A'
+			? [
+					Math.cos(angle) > 0 ? 100 - (100 - p[0]) * fan : p[0] * fan,
+					Math.sin(angle) > 0 ? 100 : 0
+				]
+			: [
+					Math.cos(angle) > 0 ? 100 : 0,
+					Math.sin(angle) > 0 ? 100 - (100 - p[1]) * fan : p[1] * fan
+				];
+	const route = (point: Point, family: 'A' | 'B'): Ring => {
+		if (ring.length !== 4 || quadrant % 2) return [point, edge(point, family)];
+		// A diamond has flat sheet-aligned sides. A direct projection would stack
+		// several cuts at the same endpoint. Stagger their routes around its corner.
+		const reflect = (p: Point): Point =>
+			quadrant === 0 ? [100 - p[0], 100 - p[1]] : p;
+		const p = reflect(point),
+			fraction = (angle - (quadrant * Math.PI) / 2) / (Math.PI / 2);
+		const topRoute = (p: Point, t: number): Ring => {
+			const margin = Math.min(...ring.map((p) => p[0]));
+			const lane = margin * (0.1 + 0.8 * (1 - t));
+			const endX = 50 * t,
+				out = margin - lane;
+			return p[0] < margin + EPS && p[1] > margin + EPS
+				? [p, [out, p[1]], [out, out], [endX, out], [endX, 0]]
+				: [p, [p[0], out], [endX, out], [endX, 0]];
+		};
+		const points =
+			family === 'A'
+				? topRoute(p, fraction)
+				: topRoute([p[1], p[0]], 1 - fraction).map(([x, y]) => [y, x] as Point);
+		return points.map(reflect);
+	};
+	add(
+		edges,
+		[...route(low.point, first).reverse(), ...arc(ring, low, mid).slice(1)],
+		first,
+		'frame'
 	);
-	return generateFigure(
-		normalized,
-		frame,
-		80,
-		frame === 'oval'
-			? 1.1
-			: frame === 'hexagon' || frame === 'scalloped'
-				? 0.8
-				: 0.9,
-		'plain'
+	const other = first === 'A' ? 'B' : 'A';
+	add(
+		edges,
+		[...arc(ring, mid, high), ...route(high.point, other).slice(1)],
+		other,
+		'frame'
 	);
+	return mid.point;
 }

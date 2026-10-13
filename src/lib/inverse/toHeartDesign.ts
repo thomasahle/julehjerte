@@ -93,7 +93,7 @@ import { FIT_TOLERANCE, isSharpJoin, simplifyCubicChain } from '$lib/inverse/sim
 import { NO_SYMMETRY, type SymmetryMode, type SymmetrySettings } from '$lib/paint/symmetry';
 import { maskMismatch } from '$lib/paint/mask';
 import { rasterizeDesign } from '$lib/paint/rasterize';
-import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
+import { fingerHasIntersectionIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 
 /** One cut's ordered reference into `curves`; `reverse` runs the cubic backwards. */
@@ -604,7 +604,8 @@ export function convertValidatedCutGeometry(json: string | CutGeometry, opts: Cu
   const tolerance = opts.tolerance ?? FIT_TOLERANCE;
   const legal = (value: ConvertedHeart): boolean => {
     const d = value.design;
-    return findFingersWithIssues(d.fingers, intersectionMarginPx(inferOverlapRect(d.fingers, d.gridSize))).size === 0;
+    const margin = intersectionMarginPx(inferOverlapRect(d.fingers, d.gridSize));
+    return !d.fingers.some(finger => fingerHasIntersectionIssues(finger, d.fingers, margin));
   };
   for (const precision of [...new Set([tolerance, tolerance * 0.4, 0])]) {
     const options = { ...opts, tolerance: precision, preserveShared: true };

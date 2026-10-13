@@ -403,6 +403,19 @@ geometric clearance and artwork fidelity are checked before a result can be save
 Both generators offer circle, diamond, hexagon, oval, soft diamond and scalloped frames. Text also
 has close and spacious letter-cell framing. Frame choices have visual thumbnails.
 
+Framed words keep independent four-port cells for each letter, with a common font baseline and
+widths fitted to the glyphs. North/south connections get separate frame gates rather than routing
+an entire word through two long cuts. Complicated figures first try neighbouring panels; paired
+clipped boundaries cancel or become shared cuts, preserving every visible detail. Prefer more
+manageable strips over fewer cuts, while retaining the full clearance and fidelity checks.
+
+The generator keeps its last valid preview visible while calculating a new choice. Export actions
+wait for the latest result. A bounded per-visit cache makes revisiting recent choices immediate;
+colours and print size are excluded from geometry dependencies. Reuse idle workers, cancel obsolete
+work, and share letter routing within repeated glyphs. Do not add a fading or blocking loading
+animation for routine edits. These digital checks do not replace testing actual paper assembly.
+
+
 ## 8. Constraints and process
 
 - SvelteKit static adapter, `trailingSlash: 'always'`, everything prerendered; keep it that way.

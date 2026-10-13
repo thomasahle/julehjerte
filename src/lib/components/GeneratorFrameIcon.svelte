@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { frameRing, type TextFrame } from '$lib/generator/geometry';
-	let { frame }: { frame: TextFrame } = $props();
+	let { frame, lettering = false }: { frame: TextFrame; lettering?: boolean } =
+		$props();
 	const id = $props.id();
 	let path = $derived(
 		frame === 'woven' || frame === 'air'
@@ -60,10 +61,21 @@
 				stroke="var(--paper-right, #b72f2b)"
 				stroke-width="1.5"
 			/>
-			<path
-				d="m50 45 3.6 8 8.7 1-6.5 6 1.8 8.5-7.6-4.5-7.6 4.5 1.8-8.5-6.5-6 8.7-1Z"
-				fill="var(--paper-right, #b72f2b)"
-			/>
+			{#if lettering}
+				<text
+					x="50"
+					y="64"
+					text-anchor="middle"
+					font-size="18"
+					font-weight="800"
+					fill="var(--paper-right, #b72f2b)">JUL</text
+				>
+			{:else}
+				<path
+					d="m50 45 3.6 8 8.7 1-6.5 6 1.8 8.5-7.6-4.5-7.6 4.5 1.8-8.5-6.5-6 8.7-1Z"
+					fill="var(--paper-right, #b72f2b)"
+				/>
+			{/if}
 		{/if}
 	</g>
 	<path

@@ -1,3 +1,4 @@
+import { generatePanelFigure } from './panels';
 import {
 	convertValidatedCutGeometry,
 	type CutGeometry
@@ -84,6 +85,75 @@ function audit(edges: Edge[]) {
 				throw new ConstructionError('topology', 'Cut paths intersect');
 		}
 }
+/** A conservative precheck for the straight contour construction. Final fitting
+ * moves outlines by at most 0.025 units, so a sub-0.5 gap cannot become a 1.5
+ * unit strip. Ignore nearby bends of the same path: only a remote return can
+ * pinch paper. Checking these lines directly avoids repeated cubic fits. */
+function hasSeverePinch(g: CutGeometry): boolean {
+	const project = (p: Point, a: Point, b: Point) => {
+		const d = sub(b, a);
+		return Math.max(
+			0,
+			Math.min(1, dot(sub(p, a), d) / Math.max(1e-20, dot(d, d)))
+		);
+	};
+	for (const family of [g.A_overlap_paths, g.B_overlap_paths]) {
+		const paths = family.map((path) => {
+			let length = 0;
+			return path.map((ref) => {
+				const p = g.curves[ref.curve].control_points as Ring;
+				const a = p[ref.reverse ? 3 : 0],
+					b = p[ref.reverse ? 0 : 3];
+				const segment = { a, b, start: length, length: distance(a, b) };
+				length += segment.length;
+				return segment;
+			});
+		});
+		for (let i = 0; i < paths.length; i++)
+			for (let j = i; j < paths.length; j++) {
+				const a = paths[i],
+					b = paths[j];
+				for (let m = 0; m < a.length; m++)
+					for (let n = i === j ? m + 2 : 0; n < b.length; n++) {
+						const u = a[m],
+							v = b[n];
+						if (
+							[0, 1].some(
+								(axis) =>
+									Math.max(u.a[axis], u.b[axis]) + 0.5 <=
+										Math.min(v.a[axis], v.b[axis]) ||
+									Math.max(v.a[axis], v.b[axis]) + 0.5 <=
+										Math.min(u.a[axis], u.b[axis])
+							)
+						)
+							continue;
+						const pairs = [
+							[0, project(u.a, v.a, v.b)],
+							[1, project(u.b, v.a, v.b)],
+							[project(v.a, u.a, u.b), 0],
+							[project(v.b, u.a, u.b), 1]
+						];
+						for (const [t, s] of pairs) {
+							const p = mix(u.a, u.b, t),
+								q = mix(v.a, v.b, s);
+							if (distance(p, q) >= 0.5) continue;
+							if (i === j) {
+								const along = v.start + s * v.length - u.start - t * u.length;
+								if (
+									along < 3 ||
+									[a[0].a, a.at(-1)!.b].some(
+										(end) => distance(p, end) < 1 || distance(q, end) < 1
+									)
+								)
+									continue;
+							}
+							return true;
+						}
+					}
+			}
+	}
+	return false;
+}
 function cutParity(g: CutGeometry, p: Point) {
 	let value = (g.A_overlap_paths.length % 2) ^ (g.B_overlap_paths.length % 2);
 	for (const [family, paths] of [
@@ -164,6 +234,12 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		recipe: GeneratorResult['recipe']
 	) => {
 		audit(r.edges);
+		// Avoid expensive curve fitting when cuts already leave a severe sliver.
+		if (hasSeverePinch(r.geometry))
+			throw new ConstructionError(
+				'clearance',
+				'The original cuts have a severe pinch'
+			);
 		orientForeground(r.geometry, r.artwork);
 		const { design } = convertValidatedCutGeometry(r.geometry, {
 			name: request.name,
@@ -180,40 +256,46 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	if (request.mode === 'text') {
 		if (!request.font) throw new ConstructionError('empty', 'No font');
 		const frame = request.textFrame ?? 'woven';
-		const r =
-			frame === 'woven' || frame === 'air'
-				? generateCheckedText(request.text ?? '', request.font, frame === 'air')
-				: {
-						...generateFramedText(request.text ?? '', request.font, frame),
-						domain: [frameRing(frame, 80)]
-					};
-		return finish(r, 'letters');
+		if (frame !== 'woven' && frame !== 'air')
+			return finish(
+				generateFramedText(request.text ?? '', request.font, frame),
+				'letters'
+			);
+		return finish(
+			generateCheckedText(request.text ?? '', request.font, frame === 'air'),
+			'letters'
+		);
 	}
 	const rings = request.contours ?? [],
 		shape = request.frame ?? 'circle',
 		size = request.frameSize ?? 70,
 		scale = request.scale ?? 0.7,
 		style = request.style ?? 'rays';
-	try {
-		return finish(
-			generateFigure(rings, shape, size, scale, style),
-			rings.length === 1 ? 'silhouette' : 'nested'
-		);
-	} catch (e) {
-		if (!(e instanceof Error)) throw e;
-		// Perforated/disconnected figures which do not admit the transverse chain
-		// have a separate four-port construction, with paired shared bridges.
-		// We never erase a hole or a detached component to make the checks pass.
+	// Spread complex artwork over a larger grid before considering a single cell.
+	// Each construction is attempted once; invalid recipes never become exports.
+	const recipes =
+		rings.length > 1
+			? [
+					() => generatePanelFigure(rings, shape, size, scale, 2, style),
+					() => generateFourPortFigure(rings, shape, size, scale, style),
+					() => generateFigure(rings, shape, size, scale, style)
+				]
+			: [
+					() => generateFigure(rings, shape, size, scale, style),
+					() => generateFourPortFigure(rings, shape, size, scale, style)
+				];
+	const errors: Error[] = [];
+	for (const construct of recipes) {
 		try {
-			return finish(
-				generateFourPortFigure(rings, shape, size, scale, style),
-				'nested'
-			);
-		} catch (other) {
-			throw new ConstructionError(
-				e instanceof ConstructionError ? e.code : 'clearance',
-				`Primary: ${e.message}; four-port: ${String(other)}`
-			);
+			return finish(construct(), rings.length === 1 ? 'silhouette' : 'nested');
+		} catch (e) {
+			if (!(e instanceof Error)) throw e;
+			errors.push(e);
 		}
 	}
+	const last = errors.at(-1)!;
+	throw new ConstructionError(
+		last instanceof ConstructionError ? last.code : 'clearance',
+		errors.map((e) => e.message).join('; ')
+	);
 }

@@ -243,9 +243,9 @@ describe('saved generator inputs', () => {
 describe('framed words', () => {
 	for (const frame of FRAMES)
 		it(frame, () => {
-			expect(
-				text('ANNA', fonts.nunito, frame).design.fingers.length
-			).toBeGreaterThan(4);
+			const { design } = text('ANNA', fonts.nunito, frame);
+			expect(design.gridSize.x).toBeGreaterThanOrEqual(6);
+			expect(design.gridSize.y).toBeGreaterThanOrEqual(6);
 		});
 	it('routes counters through exactly coincident edges in both sheets', () => {
 		const r = generateCheckedText('AOBØ', fonts.nunito);
@@ -261,4 +261,22 @@ describe('framed words', () => {
 				expect(paths.flat().filter((ref) => ref.curve === id)).toHaveLength(1);
 			}
 	});
+});
+
+it('preserves the font baseline across accents and lowercase letters', () => {
+	for (const word of ['ÅSE', 'Anna']) {
+		const r = generateCheckedText(word, fonts.nunito);
+		const source = [...word].flatMap((c) =>
+			fonts.nunito.glyphs[c].contours.flat()
+		);
+		const actual = r.artwork
+			.flat()
+			.map(([x, y]) => (x + y - 100) * Math.SQRT1_2);
+		const lo = Math.min(...source.map((p) => p[1])),
+			hi = Math.max(...source.map((p) => p[1]));
+		const scale = (Math.max(...actual) - Math.min(...actual)) / (hi - lo);
+		const offset = actual[0] - source[0][1] * scale;
+		for (let i = 0; i < source.length; i++)
+			expect(actual[i]).toBeCloseTo(source[i][1] * scale + offset, 5);
+	}
 });
