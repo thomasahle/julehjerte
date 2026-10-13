@@ -103,13 +103,42 @@
 <svelte:head>
 	<!-- Google tag (gtag.js). Only the queue is set up here; the script itself is
 	     the page's largest download and is fetched after first paint (see the
-	     effect above). Calls made before it arrives queue in dataLayer. -->
+	     effect above). Calls made before it arrives queue in dataLayer.
+	     The site shows no cookie banner, so Consent Mode denies all storage up
+	     front: GA4 then sets no cookies and sends cookieless pings with a
+	     per-page-load client id (the former client_storage option was ignored
+	     by GA4 and the tag set _ga cookies regardless). Besides the page view,
+	     the config records the full referrer, its host, the landing page with
+	     query string and any ?ref= tag; they are registered on the property as
+	     event-scoped custom dimensions (full_referrer, referrer_host,
+	     landing_page, ref_tag). -->
 	{#if GA_MEASUREMENT_ID && !dev}
 		{@html `<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}
+			gtag('consent', 'default', {
+				analytics_storage: 'denied',
+				ad_storage: 'denied',
+				ad_user_data: 'denied',
+				ad_personalization: 'denied'
+			});
 			gtag('js', new Date());
-			gtag('config', '${GA_MEASUREMENT_ID}', { client_storage: 'none' });
+			gtag('config', '${GA_MEASUREMENT_ID}', (function () {
+				var ref = document.referrer || '';
+				var host = '';
+				if (ref) {
+					// android-app:// and other odd schemes may not parse; keep the raw string.
+					try { host = new URL(ref).hostname || ref; } catch (_e) { host = ref; }
+				}
+				var params = {
+					full_referrer: ref || '(direct)',
+					referrer_host: host || '(direct)',
+					landing_page: location.pathname + location.search
+				};
+				var tag = new URLSearchParams(location.search).get('ref');
+				if (tag) { params.ref_tag = tag; }
+				return params;
+			})());
 		</script>`}
 	{/if}
 
