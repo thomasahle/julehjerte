@@ -54,6 +54,22 @@ Wall-clock-limited fitting still gives slightly different errors on some unchang
 
 All **22 regular Hunodan designs** retain exactly the previous validated errors and pass the speed/quality checks. The slowest preparation-plus-solve/validation/export time is **9.007 seconds**. The change therefore preserves this benchmark's ten-second requirement; it does not establish that all real-photo interactions finish within ten seconds.
 
+## Final application checks
+
+The rebuilt application passed three Chromium flows, including opening the result in Draw and downloading SVG/PDF templates. The harness independently parsed each downloaded SVG and checked its geometry, nominal paper support, shared cuts and agreement with the source mask. All three passed without browser errors.
+
+| Browser input | Exported SVG disagreement with source mask | Click to result ready |
+| --- | ---: | ---: |
+| New fixed-crop mask | 2.660% | 8.952 s |
+| Original Stonehenge photo upload | 2.480% | 8.978 s |
+| Hat example | 0.158% | 2.036 s |
+
+The new mask exercised the actual worker's accepted near-miss retry. Conversion to editable SVG added zero measured weave drift at both 400 and 800 pixels in all three cases. The browser uses the UI's 180-second solve allowance; these are observed click-to-ready times, not tests of a configured ten-second browser limit. The separate native regression and Hunodan benchmark enforce that budget.
+
+The browser report also retains a historical 200-pixel diagnostic named `editableError`. Its 3.315% value for the new mask compares different downsampling phases; the actual 400-pixel source comparison is `sourceEditableError`, 2.660%. The application displays the latter, rounded to 2.7%. This distinction matters when reviewing the raw report.
+
+`npm run check`, lint, build, **855 Vitest tests** and **728 inverse tests** passed. Check reports seven existing warnings; Vitest retains one existing skipped test. All 62 browser-recorded workspace hashes and 22 harness hashes match the final source, and all 50 served static modules/assets match their recorded checksums. Screenshots were inspected, including the remaining sun-ray and border defects.
+
 ## Regression and reproduction
 
 The new fixture records the source-photo checksums, crop coordinates and exact classified-mask/probability hashes. Its coordinates were generated before fitting and remain `needs_review`, not ground truth. One regression exercises rejection and recovery at the unchanged initialization cutoff. Another performs a fresh ten-second solve, independently renders the exports at 400 and 800 pixels, requires less than 3% original-mask disagreement at both scales, checks source features and paper/geometry validity, and confirms that the input arrays remain unchanged.

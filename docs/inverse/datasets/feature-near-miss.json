@@ -23,7 +23,11 @@
     "tmp/heart-learning/foreground-locator-v1/comparisons.json": "d5c8244039eaa3ff532ea0502cd08176cec697deadbceafdb096a40593112c1d",
     "tmp/heart-learning/foreground-locator-v1/retry-crop.json": "61fa9ba05a57b5d65f26bdc02ccce9624e72267a69020b96ae8d5adddf33fcae",
     "tmp/heart-learning/foreground-locator-v1/hunodan/results.json": "8b23382544fd0f4199e5c98ebf671e7385ceb319eb003b16c405e7203a0b0f7d",
-    "tmp/heart-learning/hard-photo-followup-v1/hunodan-final/results.json": "9d7d053643707072738ce1f1eb78920f5a259b3bbcf7745ddbdf27e486d9c65b"
+    "tmp/heart-learning/hard-photo-followup-v1/hunodan-final/results.json": "9d7d053643707072738ce1f1eb78920f5a259b3bbcf7745ddbdf27e486d9c65b",
+    "tmp/heart-learning/foreground-locator-v1/checks/report.json": "6115d5e32b255d65dc9d95363b8533bf2e284a09518fc788f8d07d76aea91f0c",
+    "tmp/heart-learning/foreground-locator-v1/browser/results.json": "82aa9beb427e1fce5aeec3fb9f2bc222d3a4f445a584a48c3803c35936ec2aec",
+    "tmp/heart-learning/foreground-locator-v1/served-source-check.json": "de499614fdb14d61bc6df233e1cbef2845149f04fc1f06dff65665b3c73bd464",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/foreground-locator-v1/summarize.py": "27ec00fcb17a1b0547f18517a900d69e4b5be5324b3c0acb825ad24b6d08a789"
   },
   "coreDiagnosis": {
     "before": {
@@ -5056,7 +5060,52 @@
     "tmp/heart-learning/foreground-locator-v1/hunodan/hjstr-01/print_templates.html": "3794d78932b319208dbb27fdf7afb55f04d7c58ff08414fa4d748698f83ef744",
     "tmp/heart-learning/foreground-locator-v1/hunodan/hjstr-01/template_right.svg": "46df9cee862c80e21547de7818cc3bc36482029d9c59b90114fa69784a41353e",
     "tmp/heart-learning/foreground-locator-v1/hunodan/hjstr-01/report.html": "a697a7574e2d53149854799120d825fa614e05dc2dbab522e288e91ff6d65fb5",
-    "tmp/heart-learning/foreground-locator-v1/hunodan/hjstr-01/manufacturability_right.svg": "7aec7372efa8b2e456f568d1a686b84908db609fc262520d4fbe0e1c38d87e6d"
+    "tmp/heart-learning/foreground-locator-v1/hunodan/hjstr-01/manufacturability_right.svg": "7aec7372efa8b2e456f568d1a686b84908db609fc262520d4fbe0e1c38d87e6d",
+    "tmp/heart-learning/foreground-locator-v1/checks/4.log": "5f004108cc259c802206bdf20c392acf5c90a2da22cdb093c234adfe02498e9f",
+    "tmp/heart-learning/foreground-locator-v1/checks/5.log": "79313c64081390fb4a6808d45057d941e43e755443315168583f57c2d5c26be5",
+    "tmp/heart-learning/foreground-locator-v1/checks/2.log": "a552732ebea6b64b49ac0a1299170db75e8c45dbbc66c284f28e99be5613e5c7",
+    "tmp/heart-learning/foreground-locator-v1/checks/report.json": "6115d5e32b255d65dc9d95363b8533bf2e284a09518fc788f8d07d76aea91f0c",
+    "tmp/heart-learning/foreground-locator-v1/checks/3.log": "0be1f78c3c3831946e7e74a50e977f6d21122e3f874723d608f4e25a0b84c379",
+    "tmp/heart-learning/foreground-locator-v1/checks/1.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/foreground-locator-v1/checks/0.log": "461f2f07711d6933d3267559b6d95eff44c8b64c8fdb510a233ab316a39c4bd9",
+    "tmp/heart-learning/foreground-locator-v1/browser/results.json": "82aa9beb427e1fce5aeec3fb9f2bc222d3a4f445a584a48c3803c35936ec2aec",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-near-miss-mask/import.png": "af0cdf8f7f76204bfac111fb5d49fd7dc6918c73ad0209fb2021444b37bb2ad2",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-near-miss-mask/prepared.json": "3765cd7ef1b836b67390ded00129304a467576846097832aac628746a7493f7e",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-near-miss-mask/cut_geometry.json": "987b8993ea48065bdc38b23b5da0e9bb726e91f3d9e590eac8d940d2e2395e5a",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-near-miss-mask/editable.svg": "336b515fb4ba22d08ba022568f9ed7fff76297d7e2d9f7c30fe48701578c53aa",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-near-miss-mask/engine-report.json": "4767fcfe308b22304f2cdfa3543d98ac7d8e7894c9f0d417b5f665087b3cf461",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-near-miss-mask/draw.png": "a48f05d1e07259771e9abeb3ecf7c8fa3a54eea1f4133de95a74e7b3c873be51",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-near-miss-mask/result.png": "f9983333bfea4c6127385d929fed41567284d06acf2a26ebaf85b8b6e81a9141",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-near-miss-mask/input.png": "a96bcb922da0d7c59436fd75e3ff48aa23ca3bcee13279c820a002dcf4ed83d6",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-near-miss-mask/template.pdf": "fcf21c5175e94f5562ea5edc48774db290dfb1ce4f465de0418cd2d44dd69ac5",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hat/import.png": "73e90f275f408f8b8ddf4fbb58425842976ce30a4d805c8a89a621438f34676f",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hat/prepared.json": "006218b59d642d06a75e8e1544cf39b66d0acf69399223594e39d678432499e5",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hat/cut_geometry.json": "9c8564d2e6586b81d125908884cb0cb2199bab09d8e385ceaabcea3c36a751ac",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hat/editable.svg": "feee1c2affa31e344c5100de22086d08310d31079351d88cfd2bc741cb7e1575",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hat/engine-report.json": "6078d509362963fa1598826e75beffc6806455a3f5a230dbe308114d7aab94f7",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hat/draw.png": "5f24910bf1cd8d41b075ba9e17c72100248b7a698e20c641540859c0e86bdb2b",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hat/result.png": "32bfa74d50fc6945c936510bb8a1a01d07d9098d5e2625665adb8fcf489dc069",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hat/input.png": "4529c255bfaab7d290a431649553834345742aa83b1d8d6937a9bea7602758dd",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hard-flettede-stonehenge/import.png": "d4730091b9ee3af94f43cc57a31475bed2259b39a9eded1d1bd7cff7806b46bd",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hard-flettede-stonehenge/prepared.json": "9cf471f77f9ad0727c028bfa9bc35a6675a1d9aaec7126752e687d1b02950fdd",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hard-flettede-stonehenge/cut_geometry.json": "401d630839ff3b39134c1e04b59e13a6448d31acdcd4318322237daf7fe262ca",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hard-flettede-stonehenge/editable.svg": "5cd0993a0dfa4081b1e50be90089ea00b1ec2ba70c034359d8d5c5bcd753e014",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hard-flettede-stonehenge/engine-report.json": "442df6348e44bc68d5ac7d51775f05826afd2a8b265349166862a8d277e200ea",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hard-flettede-stonehenge/draw.png": "15a338cc7fc42a8b2c12c7f6d2e3b406fa5d3cd3021200a83c20f3a2348833df",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hard-flettede-stonehenge/result.png": "05c01dbd697e4e7bd4ea4ddf4bcc9c9609f42a6742cdc245f274a05fb5b609b0",
+    "tmp/heart-learning/foreground-locator-v1/browser/chromium-hard-flettede-stonehenge/input.png": "b9a1c5a2059b3781aef01b48d21b90110791cd6befc232999113c732c0a6aa24",
+    "tmp/heart-learning/foreground-locator-v1/real-flettede-stonehenge-original.png": "e384a77dc51db6ac8300d0aa5a2a16bad5c5a8cfb56108c2ffcacfcca6523e8e",
+    "tmp/heart-learning/foreground-locator-v1/real-nested-squares-original.png": "73711812a661f880ccf646393850a21e5893042cef5fcc8a94f69a3792707e49",
+    "tmp/heart-learning/foreground-locator-v1/real-flettede-stonehenge-outlineOnly.png": "6dbad72daf17fa2526bd3ceb7aa3460c39c8449c62fdd5781894fdfacd1b9ad9",
+    "tmp/heart-learning/foreground-locator-v1/real-nested-squares-extraSeeds.png": "83476ba283f44f045f20ada3355f34b91fe3fda62723e13b95bb79f0c5ad4b45",
+    "tmp/heart-learning/foreground-locator-v1/real-flettede-stonehenge-extraSeeds.png": "089ac7f352a3fa6956980ce4264d220d7b9dcc440fe3465e3ec86449a45ccb5b",
+    "tmp/heart-learning/foreground-locator-v1/real-santa-original.png": "5da139418fc919876c9dba4f8e0e8b6e3776a247160e5ce1fdf3bfd229c2f0fe",
+    "tmp/heart-learning/foreground-locator-v1/real-nested-squares-outlineOnly.png": "552d462629398052f2394374a883c8f10d4699a829eb5958d7903c40d2ab37fa",
+    "tmp/heart-learning/foreground-locator-v1/real-nested-squares-gentleDiameter.png": "eb2147d418ebf52056309e80bdc1324320fba5f94bdf06d4d648e31dd11b3239",
+    "tmp/heart-learning/foreground-locator-v1/real-santa-outlineOnly.png": "56e40445b2225b671956cdd811195135f9e86c346806f95f0a126b5e6b5cade2",
+    "tmp/heart-learning/foreground-locator-v1/real-santa-gentleDiameter.png": "c0d871fc4c6f679ddccef857578ef1d63c21b20562b595a6dbb0454df6996c4b",
+    "tmp/heart-learning/foreground-locator-v1/real-santa-extraSeeds.png": "b6c1c35232fe94dbcf4ab621b45a6c7e77aa2504bacfb063ac2d9d975e14e3e0",
+    "tmp/heart-learning/foreground-locator-v1/real-flettede-stonehenge-gentleDiameter.png": "c7d0116a1bf29c3a28dba93bd841be555b03080e75e5531e8dcec88abc1bbb0a"
   },
   "qualifications": [
     "Original and perturbed crop coordinates are not ground truth. Scores measure agreement with classified photographic masks.",
@@ -5269,5 +5318,702 @@
         "passed": true
       }
     ]
+  },
+  "finalVerification": {
+    "gitCommit": "644ae5205fa195d8094c7d1ef841ec25ec105770",
+    "commands": [
+      {
+        "command": [
+          "env",
+          "INVERSE_SPEED_OUT=tmp/heart-learning/foreground-locator-v1/hunodan",
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 130.18374799999998,
+        "log": "0.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.041572542000011,
+        "log": "1.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 5.856813958000004,
+        "log": "2.log"
+      },
+      {
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 35.02117537500001,
+        "log": "3.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 595.1164202919999,
+        "log": "4.log"
+      },
+      {
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 10.531324749999953,
+        "log": "5.log"
+      }
+    ],
+    "results": {
+      "svelteErrors": 0,
+      "svelteExistingWarnings": 7,
+      "vitestPassed": 855,
+      "vitestExistingSkipped": 1,
+      "inversePassed": 728,
+      "browserPassed": 3
+    },
+    "browser": {
+      "origin": "http://127.0.0.1:5232",
+      "results": [
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "name": "near-miss-mask",
+          "passed": true,
+          "pageErrors": [],
+          "engineError": 0.02650625,
+          "sourceEditableError": 0.0266,
+          "sourceResolution": 400,
+          "editableError": 0.03315,
+          "displayedError": 0.027000000000000003,
+          "timings": {
+            "clickToPrepareRequestSeconds": 0.005399999976158142,
+            "prepareRoundTripSeconds": 0.18160000002384186,
+            "preparedToSolveRequestSeconds": 0.00030000007152557374,
+            "solveRoundTripSeconds": 8.417599999904633,
+            "resultToReadySeconds": 0.34710000002384184,
+            "clickToReadySeconds": 8.952
+          },
+          "solveSettings": {
+            "algorithm": "auto",
+            "polygonal": false,
+            "identicalSheets": false,
+            "resolution": 400,
+            "fitTolerance": 0.5,
+            "maxSpan": 15,
+            "smoothRadius": 0,
+            "snapRadius": 1.5,
+            "borderRadius": 3,
+            "gridPortals": false,
+            "neighbors": 16,
+            "connectorVariants": 2,
+            "junctionBalancePenalty": 0,
+            "gridPreference": 0,
+            "sharpPenalty": 50,
+            "acutePenalty": 30,
+            "turnPenalty": 3,
+            "maxTurn": 175,
+            "localNeighborhoodFactor": 8,
+            "roundHidden": false,
+            "width": 100,
+            "minWidth": 2,
+            "cutError": 0.25,
+            "timeLimit": 180,
+            "preferMatchingSheets": true,
+            "matchingErrorAllowance": 0.01,
+            "progressGeometry": true,
+            "earlyStop": false,
+            "removeSpecks": 0,
+            "fillHoles": 0,
+            "minRadius": 0.8,
+            "kerf": 0,
+            "printShrinkPercent": 0.2,
+            "materialResolution": 360,
+            "trials": 12,
+            "requireMaterialCore": true,
+            "paperColors": [
+              "#b91313",
+              "#ffffff"
+            ],
+            "symmetry": {}
+          },
+          "templateChecksPassed": true,
+          "sharedSpans": 2,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0266,
+            "sourceError": 0.0266
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "coarseRefinement": {
+            "counts": [
+              3,
+              3
+            ],
+            "phase": 1,
+            "initialError": 0.092742919921875,
+            "error": 0.08782958984375,
+            "featuresPassed": true,
+            "steps": 150,
+            "accepted": true
+          }
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "name": "hard-flettede-stonehenge",
+          "passed": true,
+          "pageErrors": [],
+          "engineError": 0.02474375,
+          "sourceEditableError": 0.0248,
+          "sourceResolution": 400,
+          "editableError": 0.028175,
+          "displayedError": 0.025,
+          "timings": {
+            "clickToPrepareRequestSeconds": 0.005400000095367431,
+            "prepareRoundTripSeconds": 0.19129999995231628,
+            "preparedToSolveRequestSeconds": 0.00029999995231628417,
+            "solveRoundTripSeconds": 8.105100000023842,
+            "resultToReadySeconds": 0.6755,
+            "clickToReadySeconds": 8.977600000023841
+          },
+          "solveSettings": {
+            "algorithm": "auto",
+            "polygonal": false,
+            "identicalSheets": false,
+            "resolution": 400,
+            "fitTolerance": 0.5,
+            "maxSpan": 15,
+            "smoothRadius": 0,
+            "snapRadius": 1.5,
+            "borderRadius": 3,
+            "gridPortals": false,
+            "neighbors": 16,
+            "connectorVariants": 2,
+            "junctionBalancePenalty": 0,
+            "gridPreference": 0,
+            "sharpPenalty": 50,
+            "acutePenalty": 30,
+            "turnPenalty": 3,
+            "maxTurn": 175,
+            "localNeighborhoodFactor": 8,
+            "roundHidden": false,
+            "width": 100,
+            "minWidth": 2,
+            "cutError": 0.25,
+            "timeLimit": 180,
+            "preferMatchingSheets": true,
+            "matchingErrorAllowance": 0.01,
+            "progressGeometry": true,
+            "earlyStop": false,
+            "removeSpecks": 0,
+            "fillHoles": 0,
+            "minRadius": 0.8,
+            "kerf": 0,
+            "printShrinkPercent": 0.2,
+            "materialResolution": 360,
+            "trials": 12,
+            "requireMaterialCore": true,
+            "paperColors": [
+              "#b91313",
+              "#ffffff"
+            ],
+            "symmetry": {}
+          },
+          "templateChecksPassed": true,
+          "sharedSpans": 2,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.0248,
+            "sourceError": 0.0248
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "coarseRefinement": null
+        },
+        {
+          "browser": "chromium",
+          "browserVersion": "145.0.7632.6",
+          "name": "hat",
+          "passed": true,
+          "pageErrors": [],
+          "engineError": 0.001575,
+          "sourceEditableError": 0.001575,
+          "sourceResolution": 400,
+          "editableError": 0.0055,
+          "displayedError": 0.002,
+          "timings": {
+            "clickToPrepareRequestSeconds": 0.005899999976158142,
+            "prepareRoundTripSeconds": 0.22260000002384187,
+            "preparedToSolveRequestSeconds": 0.00029999995231628417,
+            "solveRoundTripSeconds": 1.750899999976158,
+            "resultToReadySeconds": 0.056,
+            "clickToReadySeconds": 2.0356999999284744
+          },
+          "solveSettings": {
+            "algorithm": "auto",
+            "polygonal": false,
+            "identicalSheets": false,
+            "resolution": 400,
+            "fitTolerance": 0.5,
+            "maxSpan": 15,
+            "smoothRadius": 0,
+            "snapRadius": 1.5,
+            "borderRadius": 3,
+            "gridPortals": false,
+            "neighbors": 16,
+            "connectorVariants": 2,
+            "junctionBalancePenalty": 0,
+            "gridPreference": 0,
+            "sharpPenalty": 50,
+            "acutePenalty": 30,
+            "turnPenalty": 3,
+            "maxTurn": 175,
+            "localNeighborhoodFactor": 8,
+            "roundHidden": false,
+            "width": 100,
+            "minWidth": 2,
+            "cutError": 0.25,
+            "timeLimit": 180,
+            "preferMatchingSheets": true,
+            "matchingErrorAllowance": 0.01,
+            "progressGeometry": true,
+            "earlyStop": false,
+            "removeSpecks": 0,
+            "fillHoles": 0,
+            "minRadius": 0.8,
+            "kerf": 0,
+            "printShrinkPercent": 0.2,
+            "materialResolution": 360,
+            "trials": 12,
+            "requireMaterialCore": true,
+            "paperColors": [
+              "#b91313",
+              "#ffffff"
+            ],
+            "symmetry": {}
+          },
+          "templateChecksPassed": true,
+          "sharedSpans": 9,
+          "conversionFidelity": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 400,
+                "mismatch": 0
+              },
+              {
+                "resolution": 800,
+                "mismatch": 0
+              }
+            ],
+            "originalSourceError": 0.001575,
+            "sourceError": 0.001575
+          },
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "coarseRefinement": null
+        }
+      ],
+      "workspaceSourceHashes": {
+        "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+        "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+        "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+        "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+        "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+        "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "static/inverse/core/feature-recovery.js": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+        "static/inverse/core/solver.js": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+        "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+        "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+        "static/inverse/locator/locator.js": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd",
+        "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+        "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+        "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+        "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "src/lib/inverse/engine.ts": "8f6674a430cb5f89ff597eb1f290a730173a5d82afcb42263a14762ded568618",
+        "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+        "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+        "static/inverse/core/direct/fit.js": "94f79ea0c2f54b36fe05d604b9ad6a517898951bc76f0439fb4c82648198d12b",
+        "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+        "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+        "static/inverse/core/direct/counts.js": "70b052351c6a97f26921ec56f459007bc5992bb2a4f7c4874cbfa95eb7f6d654",
+        "static/inverse/core/direct/feature-seeds.js": "1e29bcee12e8d56e407108484bc8543f8f698997fcd24e18fc22bfeb39004acd",
+        "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+        "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "src/lib/inverse/toHeartDesign.ts": "eb405a8bb15abebd46f07ed17457ebc44735221e92b9bc866a4ad5dc3c05c66f",
+        "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+        "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+        "src/lib/components/paint/PaintPage.svelte": "266fe756e5876ffe4293518a87d48c6f0f1813f37e112e19712678101f8d47af",
+        "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+        "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+        "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+        "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+        "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "static/inverse/core/direct/refine.js": "a7ba339daf17fe38a83df1b7fe22bfc922b1f5e94d5cb762495ae1658ce852cc",
+        "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+        "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+        "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+        "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+        "src/lib/components/paint/FramePanel.svelte": "9d048e201f9c83b3343d487f716dc835cfe9e61067fa228c8b4c043f7624bc1f",
+        "src/lib/components/paint/MaskToolPanel.svelte": "b37ff23378e86b8411f911a2c2106d8d3f410ab395b0c08915d4329b4ec143cb",
+        "src/lib/i18n/translations.ts": "408c079b8f04fd6da92d8b463442b7cbfb64846b5005e0b7e875dd4b8efff758",
+        "src/lib/components/paint/FindCutsPanel.svelte": "f47863c444d17e05c6d3076595c00e5c8c0e1b29ce1c7a11878a49299d0a48e1"
+      },
+      "harnessSourceHashes": {
+        "scripts/inverse/paint-browser-test.mjs": "45968d2638fec5c2fd2a8f73f6fe6b56d8c79cf1209f89952530b9facd727a85",
+        "scripts/inverse/paint-observer.mjs": "ecd64762564fd41b3e872a330b5449ce9d8f7671906510b8f37b4a54c76ab67c",
+        "scripts/inverse/motif-fixture.mjs": "4c735dc7b27f39ce30362830ef911b79347a8b7f43d01b4eaeaf5750460355f1",
+        "scripts/inverse/tree-fixture.mjs": "771d6383cf90e840c911543258e26cd82c5d287336e65f53898045f429a1d84a",
+        "scripts/inverse/crop-fixture.mjs": "29d35f169e1c599ebdea6a20147d7cd8fddf22f0d53aaa3a8d690156161307bd",
+        "scripts/inverse/web-photo-data.mjs": "6fd029ea17d02efc1ca72cb2080f0dfc9b972d14ab1b5f7911002ae43608fee5",
+        "scripts/inverse/hard-photo-data.mjs": "84ba890531eab12a9a22e056a2e4a0043414eaca7db3f82b5956718869556d9f",
+        "scripts/inverse/editable-paper-audit.mjs": "f34d170dfb9830c4ba51c5fa2565a0740977a994130313afd2dcd79f065c2429",
+        "scripts/inverse/feature-component-metrics.mjs": "655cb4d75a7e5e09c4386204409eabb41fb8cf98bc5c9b5f32a143759d86fc8e",
+        "scripts/inverse/fixtures/photographic-bird-fit.json": "cbcbb713ddc5c3e55f57d892d1fcdf41408fa26fa8f97cf96c615e2fcc3a9dc8",
+        "scripts/inverse/fixtures/photographic-leaf-routing.json": "34879781b5946e8ec818c6d152a676cb91bb6ce1364c1ab05a01cc4f6228e360",
+        "scripts/inverse/fixtures/photographic-checkerboard-fits.json": "0ee81f7c7609d66f75879218ce3c174ad3d9891a3bbc96e08a11a59ecaedf7fd",
+        "scripts/inverse/stop-browser-hooks.mjs": "f16ce129c448832d997ca6dd7d216f8e818374cbcf0d3d42ed2df6e93190a09c",
+        "scripts/inverse/fixtures/flower-resolution/source.json": "ec0d6c2cc519c5b60ea73e945ce2ddc70c3c6b34d8e7fea83ff71b3f2549f471",
+        "scripts/inverse/fixtures/flower-resolution/native.png": "ff26866081f60d3f0636acffb408cde199c177aac7e97b907979b06ad5b6f35b",
+        "scripts/inverse/fixtures/flower-resolution/downsample.png": "401aa87e915c367ba1f55e3c3caa418d90c8d98537dbe9cd006d8576eeb039df",
+        "scripts/inverse/fixtures/photographic-anchor-perturbation.json": "e659013a84242e465c1910f8c72a6f2d7d558b22ee5b7476b68f69b1b4cfc0e9",
+        "scripts/inverse/fixtures/photographic-anchor-perturbation.png": "fbe7dec61239342c470a8d8d227fc47f0c55d52a5c07488f26485a07bf84a10d",
+        "scripts/inverse/fixtures/photographic-gift-fit.json": "3f628a763911f70f6da2b3a84524dd561bd3cfa5982b17a5d4a1ae39f5280e31",
+        "scripts/inverse/fixtures/browser-puppy-half-mask.json": "73da68cccbf9ad38996b4aa9d91914d1a546a0cfb347617f1daee261e26ad161",
+        "scripts/inverse/fixtures/photographic-puppy-fit.json": "e6b587e30dfbf6ca25e6b417a0ff8e1b871297a16f7c8b57ced6829f12352116",
+        "scripts/inverse/fixtures/photographic-near-miss-seed.json": "3147ec35c489f8c5bf40c8e8edd97438f227bf41e050a1ac753e00d73d5e8b58"
+      },
+      "servedSourceCheck": {
+        "origin": "http://127.0.0.1:5232",
+        "checkedAfterBrowserRun": true,
+        "allBrowserWorkspaceAndHarnessHashesMatch": true,
+        "staticFilesMatchPreview": [
+          {
+            "path": "static/inverse/worker.js",
+            "sha256": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+            "url": "http://127.0.0.1:5232/inverse/worker.js"
+          },
+          {
+            "path": "static/inverse/worker-bootstrap.js",
+            "sha256": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+            "url": "http://127.0.0.1:5232/inverse/worker-bootstrap.js"
+          },
+          {
+            "path": "static/inverse/worker-controller.js",
+            "sha256": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+            "url": "http://127.0.0.1:5232/inverse/worker-controller.js"
+          },
+          {
+            "path": "static/inverse/compute-worker.js",
+            "sha256": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+            "url": "http://127.0.0.1:5232/inverse/compute-worker.js"
+          },
+          {
+            "path": "static/inverse/core/engine.js",
+            "sha256": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+            "url": "http://127.0.0.1:5232/inverse/core/engine.js"
+          },
+          {
+            "path": "static/inverse/core/stopped.js",
+            "sha256": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+            "url": "http://127.0.0.1:5232/inverse/core/stopped.js"
+          },
+          {
+            "path": "static/inverse/core/progress.js",
+            "sha256": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+            "url": "http://127.0.0.1:5232/inverse/core/progress.js"
+          },
+          {
+            "path": "static/inverse/core/feature-recovery.js",
+            "sha256": "6be5ef1c55009da6cff646e460a6601b6fab87212d3b87da4f3bb09fb2c962f9",
+            "url": "http://127.0.0.1:5232/inverse/core/feature-recovery.js"
+          },
+          {
+            "path": "static/inverse/core/solver.js",
+            "sha256": "cfc48549b0673167d0eeae4537cfc1f0d00c4cb4e6c34a10ee9972e42c65bcd6",
+            "url": "http://127.0.0.1:5232/inverse/core/solver.js"
+          },
+          {
+            "path": "static/inverse/core/routing.js",
+            "sha256": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+            "url": "http://127.0.0.1:5232/inverse/core/routing.js"
+          },
+          {
+            "path": "static/inverse/core/crop.js",
+            "sha256": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+            "url": "http://127.0.0.1:5232/inverse/core/crop.js"
+          },
+          {
+            "path": "static/inverse/locator/locator.js",
+            "sha256": "971c5205bd738b280b98e32899a8095d00c6520cadee7c8ec0e7e65529d0fbdd",
+            "url": "http://127.0.0.1:5232/inverse/locator/locator.js"
+          },
+          {
+            "path": "static/inverse/locator/fields.js",
+            "sha256": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+            "url": "http://127.0.0.1:5232/inverse/locator/fields.js"
+          },
+          {
+            "path": "static/inverse/locator/math.js",
+            "sha256": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+            "url": "http://127.0.0.1:5232/inverse/locator/math.js"
+          },
+          {
+            "path": "static/inverse/locator/palette.js",
+            "sha256": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+            "url": "http://127.0.0.1:5232/inverse/locator/palette.js"
+          },
+          {
+            "path": "static/inverse/locator/anchored.js",
+            "sha256": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+            "url": "http://127.0.0.1:5232/inverse/locator/anchored.js"
+          },
+          {
+            "path": "static/inverse/locator/grid-refine.js",
+            "sha256": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+            "url": "http://127.0.0.1:5232/inverse/locator/grid-refine.js"
+          },
+          {
+            "path": "static/inverse/core/automatic.js",
+            "sha256": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+            "url": "http://127.0.0.1:5232/inverse/core/automatic.js"
+          },
+          {
+            "path": "static/inverse/core/input.js",
+            "sha256": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+            "url": "http://127.0.0.1:5232/inverse/core/input.js"
+          },
+          {
+            "path": "static/inverse/core/image-reference.js",
+            "sha256": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+            "url": "http://127.0.0.1:5232/inverse/core/image-reference.js"
+          },
+          {
+            "path": "static/inverse/core/image-features.js",
+            "sha256": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+            "url": "http://127.0.0.1:5232/inverse/core/image-features.js"
+          },
+          {
+            "path": "static/inverse/core/direct/image-objective.js",
+            "sha256": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/image-objective.js"
+          },
+          {
+            "path": "static/inverse/core/direct/prefer-matching.js",
+            "sha256": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/prefer-matching.js"
+          },
+          {
+            "path": "static/inverse/core/direct/symmetry.js",
+            "sha256": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/symmetry.js"
+          },
+          {
+            "path": "static/inverse/core/direct/finalize.js",
+            "sha256": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/finalize.js"
+          },
+          {
+            "path": "static/inverse/core/direct/topology.js",
+            "sha256": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/topology.js"
+          },
+          {
+            "path": "static/inverse/core/direct/fit.js",
+            "sha256": "94f79ea0c2f54b36fe05d604b9ad6a517898951bc76f0439fb4c82648198d12b",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/fit.js"
+          },
+          {
+            "path": "static/inverse/core/direct/share.js",
+            "sha256": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/share.js"
+          },
+          {
+            "path": "static/inverse/core/direct/initialize.js",
+            "sha256": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/initialize.js"
+          },
+          {
+            "path": "static/inverse/core/direct/counts.js",
+            "sha256": "70b052351c6a97f26921ec56f459007bc5992bb2a4f7c4874cbfa95eb7f6d654",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/counts.js"
+          },
+          {
+            "path": "static/inverse/core/direct/feature-seeds.js",
+            "sha256": "1e29bcee12e8d56e407108484bc8543f8f698997fcd24e18fc22bfeb39004acd",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/feature-seeds.js"
+          },
+          {
+            "path": "static/inverse/core/direct/feature-details.js",
+            "sha256": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/feature-details.js"
+          },
+          {
+            "path": "static/inverse/core/direct/matching.js",
+            "sha256": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/matching.js"
+          },
+          {
+            "path": "static/inverse/core/feature-shapes.js",
+            "sha256": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+            "url": "http://127.0.0.1:5232/inverse/core/feature-shapes.js"
+          },
+          {
+            "path": "static/inverse/core/self-returns.js",
+            "sha256": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+            "url": "http://127.0.0.1:5232/inverse/core/self-returns.js"
+          },
+          {
+            "path": "static/inverse/core/self-intersections.js",
+            "sha256": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+            "url": "http://127.0.0.1:5232/inverse/core/self-intersections.js"
+          },
+          {
+            "path": "static/inverse/core/direct/grid.js",
+            "sha256": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/grid.js"
+          },
+          {
+            "path": "static/inverse/core/junctions.js",
+            "sha256": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+            "url": "http://127.0.0.1:5232/inverse/core/junctions.js"
+          },
+          {
+            "path": "static/inverse/core/border.js",
+            "sha256": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+            "url": "http://127.0.0.1:5232/inverse/core/border.js"
+          },
+          {
+            "path": "static/inverse/core/material.js",
+            "sha256": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+            "url": "http://127.0.0.1:5232/inverse/core/material.js"
+          },
+          {
+            "path": "static/inverse/core/validate.js",
+            "sha256": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+            "url": "http://127.0.0.1:5232/inverse/core/validate.js"
+          },
+          {
+            "path": "static/inverse/core/settings.js",
+            "sha256": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+            "url": "http://127.0.0.1:5232/inverse/core/settings.js"
+          },
+          {
+            "path": "static/inverse/core/direct/refine.js",
+            "sha256": "a7ba339daf17fe38a83df1b7fe22bfc922b1f5e94d5cb762495ae1658ce852cc",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/refine.js"
+          },
+          {
+            "path": "static/inverse/core/direct/clamped-features.js",
+            "sha256": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/clamped-features.js"
+          },
+          {
+            "path": "static/inverse/core/direct/primitive-selection.js",
+            "sha256": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/primitive-selection.js"
+          },
+          {
+            "path": "static/inverse/core/direct/primitives.js",
+            "sha256": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/primitives.js"
+          },
+          {
+            "path": "static/inverse/core/direct/shared-simplification.js",
+            "sha256": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/shared-simplification.js"
+          },
+          {
+            "path": "static/inverse/core/direct/curves.js",
+            "sha256": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/curves.js"
+          },
+          {
+            "path": "static/inverse/core/direct/curve-topology.js",
+            "sha256": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/curve-topology.js"
+          },
+          {
+            "path": "static/inverse/core/direct/short-returns.js",
+            "sha256": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+            "url": "http://127.0.0.1:5232/inverse/core/direct/short-returns.js"
+          }
+        ],
+        "workspaceFileCount": 62,
+        "harnessFileCount": 22
+      },
+      "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+      "qualifications": [
+        "Browser solve settings use the UI 180-second allowance; observed click-to-ready times are not a configured ten-second browser budget.",
+        "sourceEditableError compares the actual 400-pixel source mask with the exported SVG; editableError retains the historical 200-pixel resampled diagnostic, whose sampling phase differs.",
+        "Conversion drift is the measured difference between unsimplified and exported editable geometry at 400 and 800 pixels; it is not a proof of exact continuous equivalence.",
+        "Screenshots were visually inspected. Rounded sun rays and border deviations remain despite numerical acceptance."
+      ]
+    }
   }
 }
