@@ -447,19 +447,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const {clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification}=prepareRefinement(selected,allocation);
     if(featureSeed(selected)&&selected.model.k===16&&!selected.protectFeatures&&!samplingRecovery&&featureSamplingContext&&!weights&&!symmetryRequested&&!candidates.some(c=>c.imagePassed)){
       const initialGeometry=validate(graph.solution(graph.points,clear.phase,input),refinementCfg,{checkImage:false});
-      if(!initialGeometry.passed){
-        // A colour-retaining coarse layout can already violate slit spacing.
-        // Prefer an independently checked fresh start before spending the
-        // whole refinement window repairing it. Keep this layout as fallback.
-        const retry=samplingSeed('invalid-initial-geometry');
-        if(retry){
-          const alternate=prepareRefinement(retry,deadline-performance.now()),solution=alternate.graph.solution(alternate.graph.points,alternate.clear.phase,input);
-          const geometry=validate(solution,alternate.refinementCfg,{checkImage:false}),paper=geometry.passed?materialAudit(solution,alternate.refinementCfg):null;
-          const preferred=geometry.passed&&(!cfg.requireMaterialCore||paper?.passed);
-          samplingRecovery.preflight={initialCounts:clear.model.counts,initialGeometry,alternativeCounts:alternate.clear.model.counts,alternativeGeometry:geometry,alternativePaper:paper?.status,preferred};
-          if(preferred){fine.splice(i,0,retry);i--;continue;}
-          fine.splice(i+1,0,retry);
-        }
+      // Compare this bounded alternate before committing the refinement
+      // budget. Waiting for a failed full fit starves it on a cold worker.
+      // It must keep source colours, satisfy geometry/paper checks, and beat
+      // a valid incumbent's unweighted clearance error to go first.
+      const retry=samplingSeed(initialGeometry.passed?'coarse-feature-alternative':'invalid-initial-geometry');
+      if(retry){
+        const alternate=prepareRefinement(retry,deadline-performance.now()),solution=alternate.graph.solution(alternate.graph.points,alternate.clear.phase,input);
+        const geometry=validate(solution,alternate.refinementCfg,{checkImage:false}),paper=geometry.passed?materialAudit(solution,alternate.refinementCfg):null;
+        const preferred=geometry.passed&&(!cfg.requireMaterialCore||paper?.passed)&&(!initialGeometry.passed||alternate.clear.error<clear.error);
+        samplingRecovery.preflight={initialCounts:clear.model.counts,initialError:clear.error,initialGeometry,alternativeCounts:alternate.clear.model.counts,alternativeError:alternate.clear.error,alternativeGeometry:geometry,alternativePaper:paper?.status,preferred};
+        if(preferred){fine.splice(i,0,retry);i--;continue;}
+        fine.splice(i+1,0,retry);
       }
     }
     let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,skipRepeatedRollbacks:featureSeed(selected),preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{

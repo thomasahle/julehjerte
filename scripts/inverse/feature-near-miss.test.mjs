@@ -67,15 +67,17 @@ for(const translation of [null,'horizontal','vertical','negative-diagonal'])test
   if(['vertical','negative-diagonal'].includes(translation)){
     assert.equal(answer.report.solver.samplingRecovery.scheduled,1);
     assert.equal(answer.report.solver.selectedInitialization,'feature-sampling-grid');
-    if(translation==='negative-diagonal'){
-      const preflight=answer.report.solver.samplingRecovery.preflight;
-      assert.equal(preflight.initialGeometry.passed,false);
-      assert.deepEqual(preflight.initialCounts,[5,3]);
-      assert.deepEqual(preflight.alternativeCounts,[3,3]);
-      assert.equal(preflight.alternativeGeometry.passed,true);assert.equal(preflight.alternativePaper,'pass');
-      assert.equal(preflight.preferred,true,'Prefer a physically valid start before exhausting the short budget.');
-    }else assert.ok(answer.report.solver.candidates.some(c=>!c.imagePassed),'The unsuccessful original fit remains available.');
-  }else assert.equal(answer.report.solver.samplingRecovery,null,'An accepted fit must not pay for the fallback.');
+    const preflight=answer.report.solver.samplingRecovery.preflight;
+    assert.equal(preflight.initialGeometry.passed,translation==='vertical');
+    assert.deepEqual(preflight.initialCounts,translation==='vertical'?[3,3]:[5,3]);
+    assert.deepEqual(preflight.alternativeCounts,[3,3]);
+    assert.equal(preflight.alternativeGeometry.passed,true);assert.equal(preflight.alternativePaper,'pass');
+    assert.equal(preflight.preferred,true,'Prefer a checked starting layout before exhausting the short budget.');
+    if(translation==='vertical')assert.ok(preflight.alternativeError<preflight.initialError,'A valid starting layout is displaced only by a closer source fit.');
+  }else{
+    assert.equal(answer.report.solver.samplingRecovery.scheduled,0,'An ineligible alternative cannot displace the established fit.');
+    assert.equal(answer.report.solver.selectedInitialization,'feature-weighted-grid');
+  }
   assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   assert.ok(answer.report.solver.seconds<10);
