@@ -186,10 +186,7 @@
     if (selected.length > 0) {
       generating = true;
       try {
-        trackMultiDownload(
-          selected.map((h) => h.id),
-          selected.length,
-        );
+        trackMultiDownload(selected.map((h) => ({ id: h.id, name: h.name })));
         // jsPDF is 140 KB gzipped and the gallery hearts' geometry another 61 KB
         // — and the page itself needs neither until this click, since the hearts
         // it shows come prerendered. Both are fetched here rather than in the

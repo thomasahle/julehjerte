@@ -24,22 +24,46 @@ export function trackHeartView(heartId: string, heartName: string) {
 }
 
 /**
- * Track when a heart's PDF is downloaded
+ * A short random id shared by every event of one download, so hearts fetched
+ * in the same PDF can be grouped again in the raw (BigQuery) rows. Nothing is
+ * stored in the browser; the id lives only for the click.
+ */
+function newDownloadId(): string {
+  const uuid = globalThis.crypto?.randomUUID?.();
+  return uuid ? uuid.slice(0, 8) : Math.random().toString(36).slice(2, 10);
+}
+
+/**
+ * Track when a heart's PDF is downloaded on its own page
  */
 export function trackHeartDownload(heartId: string, heartName: string) {
   trackEvent('download_heart', {
     heart_id: heartId,
     heart_name: heartName,
+    download_id: newDownloadId(),
+    download_count: 1,
   });
 }
 
 /**
- * Track when multiple hearts are downloaded as PDF
+ * Track when several hearts are downloaded as one PDF: one download_heart per
+ * heart, so counts per template come straight from GA4 (an event parameter is
+ * cut at 100 characters, which a joined id list exceeds after a few hearts),
+ * plus one download_multi_hearts for the basket itself.
  */
-export function trackMultiDownload(heartIds: string[], count: number) {
+export function trackMultiDownload(hearts: ReadonlyArray<{ id: string; name: string }>) {
+  const downloadId = newDownloadId();
+  for (const heart of hearts) {
+    trackEvent('download_heart', {
+      heart_id: heart.id,
+      heart_name: heart.name,
+      download_id: downloadId,
+      download_count: hearts.length,
+    });
+  }
   trackEvent('download_multi_hearts', {
-    heart_ids: heartIds.join(','),
-    count,
+    download_id: downloadId,
+    count: hearts.length,
   });
 }
 
