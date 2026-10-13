@@ -70,6 +70,15 @@ regresses other cases. A bounded alternative improves the nine-crop development
 set from 5/9 to 6/9 but slightly increases some errors. Both policies remain
 experimental; production behavior and the broader benchmark are unchanged.
 
+The [sampling-fallback follow-up](sampling-fallback.md) turns that finding into
+a bounded production comparison: a fresh feature grid can go first only after
+geometry and paper checks, and must improve initial image agreement when the
+original grid is valid. Exact repeated rollback cycles are skipped without
+changing their selected coordinates. The nine-crop development study improves
+from 5/9 to 8/9; the broader corpus remains 24/31, and all 22 Hunodan errors
+remain unchanged below ten seconds. Fine sun rays are still visibly smoothed,
+showing why global pixel error alone does not establish faithful reconstruction.
+
 The [localization follow-up](boundary-localization.md) found that the original
 synthetic training split contained no acute or right-angle degree-two corners.
 Adding a validated corner supplement at the same 520-update training budget
