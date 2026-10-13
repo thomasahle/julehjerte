@@ -119,9 +119,44 @@ node scripts/inverse/hard-photo-benchmark.mjs \
 INVERSE_SPEED_OUT=<new directory> node scripts/inverse/hunodan-speed-benchmark.mjs
 ```
 
+All **763 inverse tests**, **855 application tests** (one existing skip), type
+checking, lint and the production build pass. Type checking retains seven
+warnings in two unchanged UI files. The earlier intermittent tree assertion
+passes in this full run, including exported branch checks; diagnostic capture
+now preserves the actual report and cuts if it fails again. This does not
+establish the cause of the earlier failure.
+
+Five actual Chromium flows also pass: sloth-mask upload, star, matching
+free-border hat, leaf-mask upload, and the original green-tree photograph.
+They exercise the real worker, displayed error, editable SVG download/reparse,
+editor geometry, feature and paper checks. Star, sloth and leaf also exercise
+PDF downloads. All five have no page errors, and their rendered results were
+visually inspected. Passing results still have some uneven edges; the leaf's
+border and small framing details are visibly less faithful than the star.
+
+| Browser input | Click to ready | Editable disagreement |
+| --- | ---: | ---: |
+| Sloth mask | 7.70 s | 1.3181% |
+| Star | 1.98 s | 0.1600% |
+| Matching free-border hat | 7.66 s | 0.4119% within the protected motif |
+| Leaf mask | 8.69 s | 2.6300% |
+| Green-tree photograph | 8.13 s | 1.0575% |
+
+Mal resizes the unchanged 250-pixel sloth upload to 400 pixels. Its resulting
+mask hash is pinned separately from the native-resolution study, and the
+browser observes that exact mask reaching the worker. This resized target
+uses ordinary traced routing, without the new ordering or repair. The browser
+pass verifies compatibility and export, not an additional repair-specific gain.
+The hat keeps 43 exactly shared spans and a matching pair; the star also finds
+matching sheets. The preview was rebuilt and restarted at
+`http://127.0.0.1:5232/editor/mal/`, and its served solver, feature-recovery and
+repair modules match the worktree byte-for-byte. Nothing was pushed or deployed.
+
 Local experiment artifacts are under `tmp/heart-learning/routing-repair-v1/`.
 `matrix/results.json` records all sixteen independent audits; `matrix-editor/`
 contains actual exported SVGs and their complete checks. `cases.json` freezes
 the RGB source hash and crop coordinates; original failed experiments are
-retained. Broader speed, complete unit-suite and browser QA are still being
-completed; this report does not yet claim a green release gate.
+retained. The [committed evidence record](rejected-routing-repair.json) includes
+the full paired audit, both Hunodan runs, browser results, source hashes and an
+artifact ledger. The five remaining sloth perturbations and seven unresolved
+complete photographs remain open algorithmic work.

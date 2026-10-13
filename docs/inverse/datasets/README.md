@@ -54,7 +54,9 @@ sloth crop variants, independently checked editable pairs improve from 1/8 to
 3/8 without changing the source masks or acceptance limits. The full automatic
 photo benchmark remains 24/31. A repeated Hunodan run passes all 22 quality and
 ten-second gates with unchanged errors; the earlier 20/22 run and paired
-follow-ups remain recorded. Full unit and browser QA are still in progress.
+follow-ups remain recorded. All 763 inverse tests, 855 application tests and
+five actual Chromium upload/export flows pass; the sloth upload takes 7.70
+seconds on its separately recorded 400-pixel paint mask.
 
 The [clutter-training follow-up](foreground-scene-learning.md) raises selected-body
 IoU on controlled neighbouring-heart scenes from 61.86% to 95.01% with the same

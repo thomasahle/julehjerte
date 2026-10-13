@@ -8925,9 +8925,3984 @@
       "seconds": 32.422011333,
       "exitCode": 0,
       "log": "tmp/heart-learning/routing-repair-v1/vitest.log"
+    },
+    {
+      "name": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "seconds": 661.2019437910001,
+      "exitCode": 0,
+      "log": "tmp/heart-learning/routing-repair-v1/inverse.log"
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "seconds": 11.688834333000045,
+      "exitCode": 0,
+      "log": "tmp/heart-learning/routing-repair-v1/build.log"
     }
   ],
-  "browser": null,
+  "browser": {
+    "origin": "http://127.0.0.1:5232",
+    "upstreamOrigin": "http://127.0.0.1:5232",
+    "gitCommit": "ed1763be7dabe5888829ca5520905f79f9790541",
+    "runtime": "v25.6.1",
+    "disableNumericalKernel": false,
+    "repeats": 1,
+    "engineReference": null,
+    "referenceSourceHashes": {},
+    "referenceRequestCounts": {},
+    "stopMode": null,
+    "viewport": {
+      "width": 1440,
+      "height": 1100
+    },
+    "intervention": null,
+    "timingVersion": 2,
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "harnessSourceHashes": {
+      "scripts/inverse/paint-browser-test.mjs": "0b3d42436f17fb871f34d56078dab22634fbc3addd646507407127fa465e8a79",
+      "scripts/inverse/paint-observer.mjs": "ecd64762564fd41b3e872a330b5449ce9d8f7671906510b8f37b4a54c76ab67c",
+      "scripts/inverse/motif-fixture.mjs": "4c735dc7b27f39ce30362830ef911b79347a8b7f43d01b4eaeaf5750460355f1",
+      "scripts/inverse/tree-fixture.mjs": "771d6383cf90e840c911543258e26cd82c5d287336e65f53898045f429a1d84a",
+      "scripts/inverse/crop-fixture.mjs": "29d35f169e1c599ebdea6a20147d7cd8fddf22f0d53aaa3a8d690156161307bd",
+      "scripts/inverse/web-photo-data.mjs": "6fd029ea17d02efc1ca72cb2080f0dfc9b972d14ab1b5f7911002ae43608fee5",
+      "scripts/inverse/hard-photo-data.mjs": "84ba890531eab12a9a22e056a2e4a0043414eaca7db3f82b5956718869556d9f",
+      "scripts/inverse/editable-paper-audit.mjs": "f34d170dfb9830c4ba51c5fa2565a0740977a994130313afd2dcd79f065c2429",
+      "scripts/inverse/feature-component-metrics.mjs": "655cb4d75a7e5e09c4386204409eabb41fb8cf98bc5c9b5f32a143759d86fc8e",
+      "scripts/inverse/fixtures/photographic-bird-fit.json": "cbcbb713ddc5c3e55f57d892d1fcdf41408fa26fa8f97cf96c615e2fcc3a9dc8",
+      "scripts/inverse/fixtures/photographic-leaf-routing.json": "34879781b5946e8ec818c6d152a676cb91bb6ce1364c1ab05a01cc4f6228e360",
+      "scripts/inverse/fixtures/photographic-checkerboard-fits.json": "0ee81f7c7609d66f75879218ce3c174ad3d9891a3bbc96e08a11a59ecaedf7fd",
+      "scripts/inverse/stop-browser-hooks.mjs": "f16ce129c448832d997ca6dd7d216f8e818374cbcf0d3d42ed2df6e93190a09c",
+      "scripts/inverse/fixtures/flower-resolution/source.json": "ec0d6c2cc519c5b60ea73e945ce2ddc70c3c6b34d8e7fea83ff71b3f2549f471",
+      "scripts/inverse/fixtures/flower-resolution/native.png": "ff26866081f60d3f0636acffb408cde199c177aac7e97b907979b06ad5b6f35b",
+      "scripts/inverse/fixtures/flower-resolution/downsample.png": "401aa87e915c367ba1f55e3c3caa418d90c8d98537dbe9cd006d8576eeb039df",
+      "scripts/inverse/fixtures/photographic-anchor-perturbation.json": "e659013a84242e465c1910f8c72a6f2d7d558b22ee5b7476b68f69b1b4cfc0e9",
+      "scripts/inverse/fixtures/photographic-anchor-perturbation.png": "fbe7dec61239342c470a8d8d227fc47f0c55d52a5c07488f26485a07bf84a10d",
+      "scripts/inverse/fixtures/faded-frame-mask.json": "ccb3d80aa471feba772451e416c1dcd7fe466dd208a4e67e57491455c72c546b",
+      "scripts/inverse/fixtures/faded-frame-mask.png": "8d88be6bd3febd2c47ee79fc9e480deed6e6fb71b6790746d4330b10da1fa8c0",
+      "scripts/inverse/fixtures/photographic-gift-fit.json": "3f628a763911f70f6da2b3a84524dd561bd3cfa5982b17a5d4a1ae39f5280e31",
+      "scripts/inverse/fixtures/browser-puppy-half-mask.json": "73da68cccbf9ad38996b4aa9d91914d1a546a0cfb347617f1daee261e26ad161",
+      "scripts/inverse/fixtures/photographic-puppy-fit.json": "e6b587e30dfbf6ca25e6b417a0ff8e1b871297a16f7c8b57ced6829f12352116",
+      "scripts/inverse/fixtures/photographic-near-miss-seed.json": "96a90648f7204bd77a4552fda385e949549b70077cc17ef5cb0b344feb6a49ef",
+      "scripts/inverse/fixtures/maple-comparison.json": "1f02088e45c3d1dbdb13ddb0d17c6f25e82331de846d084419873040f33b5450",
+      "scripts/inverse/fixtures/sloth-rejected-routing.json": "fe7b757695d9c395c4ab4cdb0c887c3a731e8cc97fe385c5dce81f8bafaf6ec8"
+    },
+    "workspaceSourceHashes": {
+      "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+      "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+      "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+      "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+      "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+      "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+      "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+      "static/inverse/core/feature-recovery.js": "eaf398e16e15af2799c95bf5f2ac0ef0d1d0f549cf5359f9b247b0f2b481c179",
+      "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+      "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+      "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+      "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+      "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+      "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+      "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+      "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+      "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+      "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+      "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+      "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+      "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+      "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+      "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+      "src/lib/inverse/engine.ts": "8f6674a430cb5f89ff597eb1f290a730173a5d82afcb42263a14762ded568618",
+      "static/inverse/core/direct/finalize.js": "40c9d60e5bd327876da0465ab8d371a05430d43412520a32a0f3ab90f07284e4",
+      "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+      "static/inverse/core/direct/fit.js": "4d96e0131b1a79d117569d1fb1ddcad4cb1dd02871266fc6164b1eb57ecdce8a",
+      "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+      "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+      "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+      "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+      "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+      "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+      "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+      "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+      "src/lib/inverse/toHeartDesign.ts": "eb405a8bb15abebd46f07ed17457ebc44735221e92b9bc866a4ad5dc3c05c66f",
+      "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+      "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+      "src/lib/components/paint/PaintPage.svelte": "266fe756e5876ffe4293518a87d48c6f0f1813f37e112e19712678101f8d47af",
+      "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+      "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+      "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+      "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+      "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+      "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+      "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+      "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+      "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+      "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+      "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+      "static/inverse/core/direct/rejected-routing.js": "927c898ddc8979b1d0a55d2ebdb846342fc3be2c6dd714bc4b45852d3f08d939",
+      "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+      "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+      "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+      "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/direct/short-returns.js": "d89c3a75df735ca5d519b354b0e47327f58ce56e55f86693de44ded98e857269",
+      "src/lib/components/editor/SymmetryRows.svelte": "1bf99195778a11baf02bff2bf0ab9983a9ab6ae3d5d52b7f29f17eb0efb57884",
+      "src/lib/components/ui/toggle-group/toggle-group.svelte": "ef3ac7b6559268d4e5b8f34870b91939fc39a92718a5d90b650c383f0ca178d4",
+      "src/lib/components/paint/FramePanel.svelte": "9d048e201f9c83b3343d487f716dc835cfe9e61067fa228c8b4c043f7624bc1f",
+      "src/lib/components/paint/MaskToolPanel.svelte": "b37ff23378e86b8411f911a2c2106d8d3f410ab395b0c08915d4329b4ec143cb",
+      "src/lib/i18n/translations.ts": "408c079b8f04fd6da92d8b463442b7cbfb64846b5005e0b7e875dd4b8efff758",
+      "src/lib/components/paint/FindCutsPanel.svelte": "f47863c444d17e05c6d3076595c00e5c8c0e1b29ce1c7a11878a49299d0a48e1"
+    },
+    "results": [
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "sloth-routing-mask",
+        "pageErrors": [],
+        "sourceMaskFixture": {
+          "file": "scripts/inverse/fixtures/sloth-rejected-routing.json",
+          "sha256": "fe7b757695d9c395c4ab4cdb0c887c3a731e8cc97fe385c5dce81f8bafaf6ec8",
+          "scope": "Classified pixels only; saved rejected routing proposals are not supplied to the worker."
+        },
+        "sourcePhoto": {
+          "id": "real-abf590088db891f9-body-1",
+          "sha256": null,
+          "quad": null,
+          "fixedMaskSha256": "4c840fd54ea596d429ad480503ec7ecf1a9a8ddcc4ddec6679c04a53eac7ac70",
+          "paintImport": {
+            "resolution": 400,
+            "method": "The unchanged 250-pixel upload is resized to the paint canvas at destination-cell centers. This browser target differs from the native-resolution routing diagnostic.",
+            "maskSha256": "f76e4c8a4a16d227f13d36d1feeee4fb84681b35d128c6ab4b14bb3f775a47b7"
+          }
+        },
+        "matchingRequested": true,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "captureSeconds": 0.5018249579999993,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005899999976158142,
+          "prepareRoundTripSeconds": 0.16410000002384187,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 7.339399999976158,
+          "resultToReadySeconds": 0.18630000007152558,
+          "clickToReadySeconds": 7.696
+        },
+        "pageMarks": {
+          "click": 2771.9000000953674,
+          "prepareSent": 2777.8000000715256,
+          "prepared": 2941.9000000953674,
+          "solveSent": 2942.2000000476837,
+          "result": 10281.600000023842,
+          "ready": 10467.900000095367,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.0022645410000004633,
+        "reportedFitSeconds": 7.1105,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 11.49546431999476,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.07904375,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.013125,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.023125,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.011600000023841858,
+          "selectedImageError": 0.0131125,
+          "additionalImageError": -1.2500000000000358e-05
+        },
+        "curvePrimitiveSelection": {
+          "groups": 14,
+          "selectedGroups": 2,
+          "curvedBefore": 61,
+          "curvedAfter": 59,
+          "sampledErrorBefore": 0.013125,
+          "sampledErrorAfter": 0.0131125,
+          "applied": true,
+          "sourceErrorBefore": 0.013125,
+          "sourceErrorAfter": 0.0131125,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "rejection": null,
+          "seconds": 0.10860000002384186
+        },
+        "engineError": 0.0131125,
+        "selectedCounts": [
+          2,
+          2
+        ],
+        "featureRecovery": {
+          "trigger": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 111.6875,
+                "centerMm": [
+                  58.927742025741466,
+                  30.169068270844992
+                ],
+                "retainedFraction": 0.7493005036373811
+              },
+              {
+                "value": 0,
+                "areaMm2": 189.0625,
+                "centerMm": [
+                  48.88318181818182,
+                  45.03847107438016
+                ],
+                "retainedFraction": 0.6185123966942149
+              },
+              {
+                "value": 0,
+                "areaMm2": 64.375,
+                "centerMm": [
+                  36.571844660194174,
+                  54.9378640776699
+                ],
+                "retainedFraction": 0.37475728155339805
+              }
+            ],
+            "missing": [
+              {
+                "value": 0,
+                "areaMm2": 64.375,
+                "centerMm": [
+                  36.571844660194174,
+                  54.9378640776699
+                ],
+                "retainedFraction": 0.37475728155339805
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "method": "trace-milp",
+          "budgetSeconds": 4.136940000021458,
+          "accepted": true,
+          "attempts": [
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 3.264112000055313,
+              "solver": {
+                "validation": {
+                  "passed": true,
+                  "issues": [],
+                  "nominalWidthRequired": 2.50501002004008,
+                  "minimumInterSlitDistanceLower": 4.610869766552738,
+                  "minimumOuterSideClearance": 10.75,
+                  "boundaryParityMatches": true,
+                  "forwardSampleMismatchPixels": 0,
+                  "forwardBoundaryAmbiguousPixels": 0,
+                  "forwardSampleResolution": 101,
+                  "geometryTolerance": 0.01,
+                  "sharedCurvesStoredOnce": true,
+                  "physicalAssemblyTested": false,
+                  "limitations": [
+                    "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                    "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                    "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                    "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                  ],
+                  "materialCore": {
+                    "status": "pass",
+                    "requiredRemainingWidth": 2,
+                    "nominalDiameter": 2.50501002004008,
+                    "gridSpacing": 0.2777777777777778,
+                    "clearanceGuard": 0.20641855032959658,
+                    "families": [
+                      {
+                        "family": 0,
+                        "status": "pass",
+                        "detachedCertainCoreIslands": 0,
+                        "detachedPossibleCoreIslands": 0,
+                        "detachedPossibleArea": 0,
+                        "foldIntervals": [
+                          {
+                            "interval": [
+                              0,
+                              10.75
+                            ],
+                            "certainCoreLength": 7.777777777777776,
+                            "possibleCoreLength": 8.61111111111111
+                          },
+                          {
+                            "interval": [
+                              10.75,
+                              85.5
+                            ],
+                            "certainCoreLength": 71.94444444444441,
+                            "possibleCoreLength": 72.49999999999996
+                          },
+                          {
+                            "interval": [
+                              85.5,
+                              100
+                            ],
+                            "certainCoreLength": 11.666666666666675,
+                            "possibleCoreLength": 12.222222222222232
+                          }
+                        ]
+                      },
+                      {
+                        "family": 1,
+                        "status": "pass",
+                        "detachedCertainCoreIslands": 0,
+                        "detachedPossibleCoreIslands": 0,
+                        "detachedPossibleArea": 0,
+                        "foldIntervals": [
+                          {
+                            "interval": [
+                              0,
+                              12.5
+                            ],
+                            "certainCoreLength": 9.722222222222225,
+                            "possibleCoreLength": 10.277777777777782
+                          },
+                          {
+                            "interval": [
+                              12.5,
+                              86.5
+                            ],
+                            "certainCoreLength": 71.1111111111111,
+                            "possibleCoreLength": 71.94444444444441
+                          },
+                          {
+                            "interval": [
+                              86.5,
+                              100
+                            ],
+                            "certainCoreLength": 10.55555555555556,
+                            "possibleCoreLength": 11.388888888888896
+                          }
+                        ]
+                      }
+                    ],
+                    "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                    "seconds": 0.13980000007152557,
+                    "limitations": [
+                      "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                      "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                      "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                      "Small tips and features below the explicitly stated area threshold are not certified."
+                    ]
+                  }
+                },
+                "binaryVariables": 1152,
+                "continuousVariables": 1008,
+                "linearConstraints": 5392,
+                "turnAuxiliaries": 112,
+                "crossingConflicts": 114,
+                "widthPairs": 103,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 63,
+                  "hiddenCandidates": 129,
+                  "vertices": 64,
+                  "buildSeconds": 0.007399999976158142,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 16,
+                    "objective": 2335.937244,
+                    "selfNeckChains": 0,
+                    "shortReturnChains": 0,
+                    "materialCore": {
+                      "status": "pass",
+                      "requiredRemainingWidth": 2,
+                      "nominalDiameter": 2.50501002004008,
+                      "gridSpacing": 0.2777777777777778,
+                      "clearanceGuard": 0.20641855032959658,
+                      "families": [
+                        {
+                          "family": 0,
+                          "status": "pass",
+                          "detachedCertainCoreIslands": 0,
+                          "detachedPossibleCoreIslands": 0,
+                          "detachedPossibleArea": 0,
+                          "foldIntervals": [
+                            {
+                              "interval": [
+                                0,
+                                10.75
+                              ],
+                              "certainCoreLength": 7.777777777777776,
+                              "possibleCoreLength": 8.61111111111111
+                            },
+                            {
+                              "interval": [
+                                10.75,
+                                85.5
+                              ],
+                              "certainCoreLength": 71.94444444444441,
+                              "possibleCoreLength": 72.49999999999996
+                            },
+                            {
+                              "interval": [
+                                85.5,
+                                100
+                              ],
+                              "certainCoreLength": 11.666666666666675,
+                              "possibleCoreLength": 12.222222222222232
+                            }
+                          ]
+                        },
+                        {
+                          "family": 1,
+                          "status": "pass",
+                          "detachedCertainCoreIslands": 0,
+                          "detachedPossibleCoreIslands": 0,
+                          "detachedPossibleArea": 0,
+                          "foldIntervals": [
+                            {
+                              "interval": [
+                                0,
+                                12.5
+                              ],
+                              "certainCoreLength": 9.722222222222225,
+                              "possibleCoreLength": 10.277777777777782
+                            },
+                            {
+                              "interval": [
+                                12.5,
+                                86.5
+                              ],
+                              "certainCoreLength": 71.1111111111111,
+                              "possibleCoreLength": 71.94444444444441
+                            },
+                            {
+                              "interval": [
+                                86.5,
+                                100
+                              ],
+                              "certainCoreLength": 10.55555555555556,
+                              "possibleCoreLength": 11.388888888888896
+                            }
+                          ]
+                        }
+                      ],
+                      "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                      "seconds": 0.13980000007152557,
+                      "limitations": [
+                        "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                        "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                        "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                        "Small tips and features below the explicitly stated area threshold are not certified."
+                      ]
+                    },
+                    "validationPassed": true
+                  }
+                ],
+                "elapsedSeconds": 2.0567999999523163,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "solved",
+                "objective": 2335.937244,
+                "lowerBound": 1097.2963514871935,
+                "mipGap": 0.5302543532341601,
+                "optimality": "Only the finite candidate graph is optimized. Gap concerns cut complexity, not artwork fidelity."
+              },
+              "seconds": 2.064600000023842
+            }
+          ],
+          "deferredNeighborExpansions": 0,
+          "imageError": 0.02093125,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 111.6875,
+                "centerMm": [
+                  58.927742025741466,
+                  30.169068270844992
+                ],
+                "retainedFraction": 0.95747062115277
+              },
+              {
+                "value": 0,
+                "areaMm2": 189.0625,
+                "centerMm": [
+                  48.88318181818182,
+                  45.03847107438016
+                ],
+                "retainedFraction": 0.9712396694214877
+              },
+              {
+                "value": 0,
+                "areaMm2": 64.375,
+                "centerMm": [
+                  36.571844660194174,
+                  54.9378640776699
+                ],
+                "retainedFraction": 0.954368932038835
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "geometryPassed": true,
+          "paperPassed": true,
+          "solver": {
+            "validation": {
+              "passed": true,
+              "issues": [],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 4.610869766552738,
+              "minimumOuterSideClearance": 10.75,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": 0,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ],
+              "materialCore": {
+                "status": "pass",
+                "requiredRemainingWidth": 2,
+                "nominalDiameter": 2.50501002004008,
+                "gridSpacing": 0.2777777777777778,
+                "clearanceGuard": 0.20641855032959658,
+                "families": [
+                  {
+                    "family": 0,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          10.75
+                        ],
+                        "certainCoreLength": 7.777777777777776,
+                        "possibleCoreLength": 8.61111111111111
+                      },
+                      {
+                        "interval": [
+                          10.75,
+                          85.5
+                        ],
+                        "certainCoreLength": 71.94444444444441,
+                        "possibleCoreLength": 72.49999999999996
+                      },
+                      {
+                        "interval": [
+                          85.5,
+                          100
+                        ],
+                        "certainCoreLength": 11.666666666666675,
+                        "possibleCoreLength": 12.222222222222232
+                      }
+                    ]
+                  },
+                  {
+                    "family": 1,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          12.5
+                        ],
+                        "certainCoreLength": 9.722222222222225,
+                        "possibleCoreLength": 10.277777777777782
+                      },
+                      {
+                        "interval": [
+                          12.5,
+                          86.5
+                        ],
+                        "certainCoreLength": 71.1111111111111,
+                        "possibleCoreLength": 71.94444444444441
+                      },
+                      {
+                        "interval": [
+                          86.5,
+                          100
+                        ],
+                        "certainCoreLength": 10.55555555555556,
+                        "possibleCoreLength": 11.388888888888896
+                      }
+                    ]
+                  }
+                ],
+                "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                "seconds": 0.13980000007152557,
+                "limitations": [
+                  "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                  "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                  "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                  "Small tips and features below the explicitly stated area threshold are not certified."
+                ]
+              }
+            },
+            "binaryVariables": 1152,
+            "continuousVariables": 1008,
+            "linearConstraints": 5392,
+            "turnAuxiliaries": 112,
+            "crossingConflicts": 114,
+            "widthPairs": 103,
+            "coefficientQuantum": 1e-07,
+            "stopAfterValidated": true,
+            "graph": {
+              "visibleEdges": 63,
+              "hiddenCandidates": 129,
+              "vertices": 64,
+              "buildSeconds": 0.007399999976158142,
+              "guidePortals": 0,
+              "guideCount": 0,
+              "guideSkip": null,
+              "vertexNormalization": {
+                "collapsedSegments": 0,
+                "closedSplits": 0,
+                "maximumEndpointMoveMm": 0
+              },
+              "unconnectedNeighbors": false,
+              "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+              "delaunayCandidates": false
+            },
+            "history": [
+              {
+                "round": 1,
+                "status": 16,
+                "objective": 2335.937244,
+                "selfNeckChains": 0,
+                "shortReturnChains": 0,
+                "materialCore": {
+                  "status": "pass",
+                  "requiredRemainingWidth": 2,
+                  "nominalDiameter": 2.50501002004008,
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "families": [
+                    {
+                      "family": 0,
+                      "status": "pass",
+                      "detachedCertainCoreIslands": 0,
+                      "detachedPossibleCoreIslands": 0,
+                      "detachedPossibleArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            10.75
+                          ],
+                          "certainCoreLength": 7.777777777777776,
+                          "possibleCoreLength": 8.61111111111111
+                        },
+                        {
+                          "interval": [
+                            10.75,
+                            85.5
+                          ],
+                          "certainCoreLength": 71.94444444444441,
+                          "possibleCoreLength": 72.49999999999996
+                        },
+                        {
+                          "interval": [
+                            85.5,
+                            100
+                          ],
+                          "certainCoreLength": 11.666666666666675,
+                          "possibleCoreLength": 12.222222222222232
+                        }
+                      ]
+                    },
+                    {
+                      "family": 1,
+                      "status": "pass",
+                      "detachedCertainCoreIslands": 0,
+                      "detachedPossibleCoreIslands": 0,
+                      "detachedPossibleArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            12.5
+                          ],
+                          "certainCoreLength": 9.722222222222225,
+                          "possibleCoreLength": 10.277777777777782
+                        },
+                        {
+                          "interval": [
+                            12.5,
+                            86.5
+                          ],
+                          "certainCoreLength": 71.1111111111111,
+                          "possibleCoreLength": 71.94444444444441
+                        },
+                        {
+                          "interval": [
+                            86.5,
+                            100
+                          ],
+                          "certainCoreLength": 10.55555555555556,
+                          "possibleCoreLength": 11.388888888888896
+                        }
+                      ]
+                    }
+                  ],
+                  "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                  "seconds": 0.13980000007152557,
+                  "limitations": [
+                    "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                    "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                    "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                    "Small tips and features below the explicitly stated area threshold are not certified."
+                  ]
+                },
+                "validationPassed": true
+              }
+            ],
+            "elapsedSeconds": 2.0567999999523163,
+            "solverVersion": {
+              "major": 1,
+              "minor": 15,
+              "patch": 1,
+              "string": "1.15.1",
+              "gitHash": "04024d7"
+            },
+            "solverRuntime": "locally hosted HiGHS WebAssembly",
+            "physicalAssemblyTested": false,
+            "status": "solved",
+            "objective": 2335.937244,
+            "lowerBound": 1097.2963514871935,
+            "mipGap": 0.5302543532341601,
+            "optimality": "Only the finite candidate graph is optimized. Gap concerns cut complexity, not artwork fidelity."
+          },
+          "seconds": 2.218100000023842,
+          "budgetPolicy": "prioritize_routing",
+          "gridMismatchTrigger": true,
+          "refinement": {
+            "imageError": 0.013125,
+            "featuresPassed": true,
+            "geometryPassed": true,
+            "paperPassed": true,
+            "steps": 160
+          }
+        },
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "featureNoticeVisible": false,
+        "numericalBackend": "wasm",
+        "paperKernels": {
+          "distanceTransform": [
+            {
+              "cells": 160000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 8.200000047683716,
+                  "wasm": 1.899999976158142
+                },
+                {
+                  "wasm": 1.8000000715255737,
+                  "javascript": 5
+                }
+              ]
+            },
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 12.899999976158142,
+                  "wasm": 4.700000047683716
+                },
+                {
+                  "wasm": 4.200000047683716,
+                  "javascript": 13.799999952316284
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 5.200000047683716,
+                  "wasm": 1.7000000476837158
+                },
+                {
+                  "wasm": 1.600000023841858,
+                  "javascript": 3.399999976158142
+                }
+              ]
+            }
+          ]
+        },
+        "boundaryKernels": [
+          {
+            "quadraturePoints": 4032,
+            "probabilityCells": 160000,
+            "maximumTimingRepetitions": 16,
+            "minimumBatchMilliseconds": 4,
+            "backend": "wasm",
+            "reason": "measured_faster",
+            "timings": [
+              {
+                "javascript": 0.9200000047683716,
+                "wasm": 0.4299999952316284,
+                "repetitions": {
+                  "javascript": 5,
+                  "wasm": 10
+                }
+              },
+              {
+                "wasm": 0.39090908657420764,
+                "javascript": 0.5125000029802322,
+                "repetitions": {
+                  "wasm": 11,
+                  "javascript": 8
+                }
+              }
+            ]
+          }
+        ],
+        "displayedError": 0.013000000000000001,
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "engineSegments": 68,
+        "editableSegments": 77,
+        "sharedSpans": 5,
+        "wholeOriginalError": 0.01495,
+        "editableError": 0.01495,
+        "sourceResolution": 400,
+        "editableFeatures": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 0,
+              "areaMm2": 111.6875,
+              "centerMm": [
+                58.927742025741466,
+                30.169068270844992
+              ],
+              "retainedFraction": 0.9731393396754336
+            },
+            {
+              "value": 0,
+              "areaMm2": 189.0625,
+              "centerMm": [
+                48.88318181818182,
+                45.03847107438016
+              ],
+              "retainedFraction": 0.9847933884297521
+            },
+            {
+              "value": 0,
+              "areaMm2": 64.375,
+              "centerMm": [
+                36.571844660194174,
+                54.9378640776699
+              ],
+              "retainedFraction": 0.9563106796116505
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "featureComponents": [
+          {
+            "centerMm": [
+              58.927742025741466,
+              30.169068270844992
+            ],
+            "sourceAreaMm2": 111.6875,
+            "intersectionPixels": 1739,
+            "retention": 0.9731393396754336,
+            "predictedComponentAreaMm2": 111.3125,
+            "touchesBorder": false,
+            "componentIoU": 0.950792782941498
+          },
+          {
+            "centerMm": [
+              48.88318181818182,
+              45.03847107438016
+            ],
+            "sourceAreaMm2": 189.0625,
+            "intersectionPixels": 2979,
+            "retention": 0.9847933884297521,
+            "predictedComponentAreaMm2": 189.0625,
+            "touchesBorder": false,
+            "componentIoU": 0.9700423314881146
+          },
+          {
+            "centerMm": [
+              36.571844660194174,
+              54.9378640776699
+            ],
+            "sourceAreaMm2": 64.375,
+            "intersectionPixels": 985,
+            "retention": 0.9563106796116505,
+            "predictedComponentAreaMm2": 63.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.924015009380863
+          }
+        ],
+        "sourceEditableError": 0.01318125,
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 4.9196838786247294,
+            "minimumOuterSideClearance": 10.490516574785312,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.2777777777777778,
+            "clearanceGuard": 0.20641855032959658,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      10.490516574785312
+                    ],
+                    "certainCoreLength": 7.777777777777776,
+                    "possibleCoreLength": 8.333333333333332
+                  },
+                  {
+                    "interval": [
+                      10.490516574785312,
+                      85.46945681148695
+                    ],
+                    "certainCoreLength": 71.94444444444441,
+                    "possibleCoreLength": 72.77777777777773
+                  },
+                  {
+                    "interval": [
+                      85.46945681148695,
+                      100
+                    ],
+                    "certainCoreLength": 11.666666666666675,
+                    "possibleCoreLength": 12.50000000000001
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      12.347643432202315
+                    ],
+                    "certainCoreLength": 9.444444444444446,
+                    "possibleCoreLength": 10.277777777777782
+                  },
+                  {
+                    "interval": [
+                      12.347643432202315,
+                      87.46522695058724
+                    ],
+                    "certainCoreLength": 72.22222222222219,
+                    "possibleCoreLength": 73.0555555555555
+                  },
+                  {
+                    "interval": [
+                      87.46522695058724,
+                      100
+                    ],
+                    "certainCoreLength": 9.722222222222225,
+                    "possibleCoreLength": 10.277777777777782
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+            "seconds": 0.09785687500000131,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ]
+          },
+          "materialResolution": 360
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01318125,
+          "sourceError": 0.01318125
+        },
+        "conversionFeatures": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        },
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "star",
+        "pageErrors": [],
+        "matchingRequested": true,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "captureSeconds": 0.5033283330000013,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.008299999952316284,
+          "prepareRoundTripSeconds": 0.038399999976158145,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 1.8432999999523163,
+          "resultToReadySeconds": 0.09320000004768371,
+          "clickToReadySeconds": 1.9835
+        },
+        "pageMarks": {
+          "click": 264.5,
+          "prepareSent": 272.7999999523163,
+          "prepared": 311.1999999284744,
+          "solveSent": 311.5,
+          "result": 2154.7999999523163,
+          "ready": 2248,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.0045264580000002755,
+        "reportedFitSeconds": 1.6753999999761582,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {
+            "transpose": true
+          }
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.0016,
+          "baselineCounts": [
+            4,
+            4
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.011600000000000001,
+          "attempts": [],
+          "status": "already_identical",
+          "seconds": 0.0065,
+          "selectedImageError": 0.0016,
+          "additionalImageError": 0
+        },
+        "engineError": 0.0016,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "numericalBackend": "wasm",
+        "paperKernels": {
+          "distanceTransform": [
+            {
+              "cells": 160000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 8,
+                  "wasm": 1.600000023841858
+                },
+                {
+                  "wasm": 1.5,
+                  "javascript": 4.899999976158142
+                }
+              ]
+            },
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 12.299999952316284,
+                  "wasm": 4.299999952316284
+                },
+                {
+                  "wasm": 4.199999928474426,
+                  "javascript": 13.5
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 5.300000071525574,
+                  "wasm": 1.5
+                },
+                {
+                  "wasm": 1.600000023841858,
+                  "javascript": 3.200000047683716
+                }
+              ]
+            }
+          ]
+        },
+        "boundaryKernels": [
+          {
+            "quadraturePoints": 4608,
+            "probabilityCells": 160000,
+            "maximumTimingRepetitions": 16,
+            "minimumBatchMilliseconds": 4,
+            "backend": "wasm",
+            "reason": "measured_faster",
+            "timings": [
+              {
+                "javascript": 1.3666666746139526,
+                "wasm": 0.700000007947286,
+                "repetitions": {
+                  "javascript": 3,
+                  "wasm": 6
+                }
+              },
+              {
+                "wasm": 0.5714285714285714,
+                "javascript": 0.8399999856948852,
+                "repetitions": {
+                  "wasm": 7,
+                  "javascript": 5
+                }
+              }
+            ]
+          }
+        ],
+        "displayedError": 0.002,
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "sym"
+        },
+        "engineSegments": 84,
+        "editableSegments": 78,
+        "sharedSpans": 12,
+        "wholeOriginalError": 0.00465,
+        "editableError": 0.00465,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.0016,
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 3.899551791079895,
+            "minimumOuterSideClearance": 10,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.2777777777777778,
+            "clearanceGuard": 0.20641855032959658,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      10.25
+                    ],
+                    "certainCoreLength": 7.499999999999998,
+                    "possibleCoreLength": 8.055555555555554
+                  },
+                  {
+                    "interval": [
+                      10.25,
+                      40
+                    ],
+                    "certainCoreLength": 26.944444444444496,
+                    "possibleCoreLength": 27.500000000000053
+                  },
+                  {
+                    "interval": [
+                      40,
+                      60
+                    ],
+                    "certainCoreLength": 17.222222222222246,
+                    "possibleCoreLength": 17.777777777777803
+                  },
+                  {
+                    "interval": [
+                      60,
+                      90
+                    ],
+                    "certainCoreLength": 27.222222222222275,
+                    "possibleCoreLength": 27.777777777777832
+                  },
+                  {
+                    "interval": [
+                      90,
+                      100
+                    ],
+                    "certainCoreLength": 7.2222222222222205,
+                    "possibleCoreLength": 7.777777777777776
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      10.25
+                    ],
+                    "certainCoreLength": 7.499999999999998,
+                    "possibleCoreLength": 8.055555555555554
+                  },
+                  {
+                    "interval": [
+                      10.25,
+                      40
+                    ],
+                    "certainCoreLength": 26.944444444444496,
+                    "possibleCoreLength": 27.500000000000053
+                  },
+                  {
+                    "interval": [
+                      40,
+                      60
+                    ],
+                    "certainCoreLength": 17.222222222222246,
+                    "possibleCoreLength": 17.777777777777803
+                  },
+                  {
+                    "interval": [
+                      60,
+                      90
+                    ],
+                    "certainCoreLength": 27.222222222222275,
+                    "possibleCoreLength": 27.777777777777832
+                  },
+                  {
+                    "interval": [
+                      90,
+                      100
+                    ],
+                    "certainCoreLength": 7.2222222222222205,
+                    "possibleCoreLength": 7.777777777777776
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+            "seconds": 0.03363241600000037,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ]
+          },
+          "materialResolution": 360
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 6.25e-05
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        },
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "top-hat-preferred",
+        "pageErrors": [],
+        "matchingRequested": true,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "captureSeconds": 0.9464886250000017,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019800000071525575,
+          "prepareRoundTripSeconds": 0.24560000002384186,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 7.180399999976158,
+          "resultToReadySeconds": 0.21270000004768372,
+          "clickToReadySeconds": 7.658900000095367
+        },
+        "pageMarks": {
+          "click": 1433.2999999523163,
+          "prepareSent": 1453.1000000238419,
+          "prepared": 1698.7000000476837,
+          "solveSent": 1699.1000000238419,
+          "result": 8879.5,
+          "ready": 9092.200000047684,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.005624958000000333,
+        "reportedFitSeconds": 6.973300000071526,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": true,
+          "rmsTemplateDifferenceMm": 0,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0,
+          "method": "Each conflicting diagonal pair forces at least its smaller pixel weight in error, normalized by total observed weight.",
+          "baselineImageError": 0.0029584750566893424,
+          "baselineCounts": [
+            2,
+            2
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.012958475056689343,
+          "attempts": [
+            {
+              "proposal": "copy-first-sheet",
+              "refined": false,
+              "imageError": 0.6583404195011338,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "copy-second-sheet",
+              "refined": false,
+              "imageError": 0.6586947278911565,
+              "withinAllowance": false
+            },
+            {
+              "proposal": "matching-grid",
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1,
+              "refined": true,
+              "steps": 200,
+              "imageError": 0.005456349206349206,
+              "withinAllowance": true,
+              "featuresPassed": true,
+              "geometryPassed": true,
+              "paperPassed": true
+            }
+          ],
+          "status": "matched",
+          "seconds": 0.7255,
+          "selectedImageError": 0.003941680839002267,
+          "additionalImageError": 0.000983205782312925
+        },
+        "primitiveSelection": {
+          "groups": 52,
+          "selectedGroups": 51,
+          "curvedBefore": 141,
+          "curvedAfter": 40,
+          "sampledErrorBefore": 0.003994827097505669,
+          "sampledErrorAfter": 0.0039771116780045355,
+          "applied": false,
+          "sourceErrorBefore": 0.003941680839002267,
+          "sourceErrorAfter": 0.0039771116780045355,
+          "rejection": "original_image_error",
+          "seconds": 0.07530000007152557
+        },
+        "curvePrimitiveSelection": {
+          "groups": 55,
+          "selectedGroups": 51,
+          "curvedBefore": 141,
+          "curvedAfter": 40,
+          "sampledErrorBefore": 0.003941680839002267,
+          "sampledErrorAfter": 0.003941680839002267,
+          "applied": true,
+          "sourceErrorBefore": 0.003941680839002267,
+          "sourceErrorAfter": 0.003941680839002267,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "rejection": null,
+          "seconds": 0.108
+        },
+        "engineError": 0.003941680839002267,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "extraGridComparisons": [],
+        "earlyFeatureInitialization": null,
+        "featureInitialization": null,
+        "samplingRecovery": null,
+        "featureRecovery": null,
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "numericalBackend": "wasm",
+        "paperKernels": {
+          "distanceTransform": [
+            {
+              "cells": 160000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 7.700000047683716,
+                  "wasm": 1.7999999523162842
+                },
+                {
+                  "wasm": 1.399999976158142,
+                  "javascript": 4.5
+                }
+              ]
+            },
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 12.399999976158142,
+                  "wasm": 4.399999976158142
+                },
+                {
+                  "wasm": 4.099999904632568,
+                  "javascript": 13.800000071525574
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 5.099999904632568,
+                  "wasm": 1.7000000476837158
+                },
+                {
+                  "wasm": 1.7000000476837158,
+                  "javascript": 5.200000047683716
+                }
+              ]
+            }
+          ]
+        },
+        "boundaryKernels": [
+          {
+            "quadraturePoints": 3328,
+            "probabilityCells": 65536,
+            "maximumTimingRepetitions": 16,
+            "minimumBatchMilliseconds": 4,
+            "backend": "wasm",
+            "reason": "measured_faster",
+            "timings": [
+              {
+                "javascript": 0.9399999856948853,
+                "wasm": 0.41000000238418577,
+                "repetitions": {
+                  "javascript": 5,
+                  "wasm": 10
+                }
+              },
+              {
+                "wasm": 0.3333333333333333,
+                "javascript": 0.5374999940395355,
+                "repetitions": {
+                  "wasm": 12,
+                  "javascript": 8
+                }
+              }
+            ]
+          },
+          {
+            "quadraturePoints": 3008,
+            "probabilityCells": 160000,
+            "maximumTimingRepetitions": 16,
+            "minimumBatchMilliseconds": 4,
+            "backend": "wasm",
+            "reason": "measured_faster",
+            "timings": [
+              {
+                "javascript": 2.300000011920929,
+                "wasm": 0.4299999952316284,
+                "repetitions": {
+                  "javascript": 2,
+                  "wasm": 10
+                }
+              },
+              {
+                "wasm": 0.41000000238418577,
+                "javascript": 1,
+                "repetitions": {
+                  "wasm": 10,
+                  "javascript": 5
+                }
+              }
+            ]
+          },
+          {
+            "quadraturePoints": 4992,
+            "probabilityCells": 160000,
+            "maximumTimingRepetitions": 16,
+            "minimumBatchMilliseconds": 4,
+            "backend": "wasm",
+            "reason": "measured_faster",
+            "timings": [
+              {
+                "javascript": 1.0499999821186066,
+                "wasm": 0.4444444444444444,
+                "repetitions": {
+                  "javascript": 4,
+                  "wasm": 9
+                }
+              },
+              {
+                "wasm": 0.4299999952316284,
+                "javascript": 0.7666666706403097,
+                "repetitions": {
+                  "wasm": 10,
+                  "javascript": 6
+                }
+              }
+            ]
+          }
+        ],
+        "displayedError": 0.004,
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "engineSegments": 95,
+        "editableSegments": 142,
+        "sharedSimplification": {
+          "segmentsBefore": 160,
+          "segmentsAfter": 95,
+          "applied": true,
+          "maskResolutions": [
+            400,
+            800
+          ],
+          "sampledDeviationLimitMm": 0.02,
+          "rejection": null,
+          "seconds": 0.06730000007152558
+        },
+        "sharedSpans": 43,
+        "sharedLengthMm": 228.28581422182742,
+        "wholeOriginalError": 0.05625,
+        "editableError": 0.0021258503401360546,
+        "borderChange": 0.18597146739130435,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.004118835034013606,
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 6.7945678233843,
+            "minimumOuterSideClearance": 3.2678471206992725,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.2777777777777778,
+            "clearanceGuard": 0.20641855032959658,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      21.250591804900893
+                    ],
+                    "certainCoreLength": 14.44444444444446,
+                    "possibleCoreLength": 15.833333333333353
+                  },
+                  {
+                    "interval": [
+                      21.250591804900893,
+                      66.6750544568174
+                    ],
+                    "certainCoreLength": 38.333333333333414,
+                    "possibleCoreLength": 40.000000000000085
+                  },
+                  {
+                    "interval": [
+                      66.6750544568174,
+                      78.35774509061093
+                    ],
+                    "certainCoreLength": 6.11111111111111,
+                    "possibleCoreLength": 7.2222222222222205
+                  },
+                  {
+                    "interval": [
+                      78.35774509061093,
+                      100
+                    ],
+                    "certainCoreLength": 18.888888888888918,
+                    "possibleCoreLength": 19.444444444444475
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      21.250591804900893
+                    ],
+                    "certainCoreLength": 14.44444444444446,
+                    "possibleCoreLength": 15.833333333333353
+                  },
+                  {
+                    "interval": [
+                      21.250591804900893,
+                      66.6750544568174
+                    ],
+                    "certainCoreLength": 38.333333333333414,
+                    "possibleCoreLength": 40.000000000000085
+                  },
+                  {
+                    "interval": [
+                      66.6750544568174,
+                      78.35774509061093
+                    ],
+                    "certainCoreLength": 6.11111111111111,
+                    "possibleCoreLength": 7.2222222222222205
+                  },
+                  {
+                    "interval": [
+                      78.35774509061093,
+                      100
+                    ],
+                    "certainCoreLength": 18.888888888888918,
+                    "possibleCoreLength": 19.444444444444475
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+            "seconds": 0.03461870800000179,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ]
+          },
+          "materialResolution": 360
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.004118835034013606,
+          "sourceError": 0.004118835034013606
+        },
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "leaf-mask",
+        "pageErrors": [],
+        "sourcePhoto": {
+          "id": "leaf",
+          "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+          "quad": [
+            [
+              1235.5072438016873,
+              145.52072912190997
+            ],
+            [
+              1341.7257925238364,
+              234.1742107665826
+            ],
+            [
+              1244.5550489255436,
+              319.4221884532836
+            ],
+            [
+              1142.1879331018463,
+              219.8564731472379
+            ]
+          ],
+          "fixedMaskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4"
+        },
+        "matchingRequested": true,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "captureSeconds": 0.48515499999999884,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0052999999523162845,
+          "prepareRoundTripSeconds": 0.177,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 8.337899999976159,
+          "resultToReadySeconds": 0.16889999997615815,
+          "clickToReadySeconds": 8.689399999976159
+        },
+        "pageMarks": {
+          "click": 3137.399999976158,
+          "prepareSent": 3142.6999999284744,
+          "prepared": 3319.6999999284744,
+          "solveSent": 3320,
+          "result": 11657.899999976158,
+          "ready": 11826.799999952316,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.005015167000005022,
+        "reportedFitSeconds": 8.138299999952316,
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 6.797657437230908,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.1465375,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.02629375,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 1,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.03629375,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.006700000047683716,
+          "selectedImageError": 0.0262875,
+          "additionalImageError": -6.250000000002781e-06
+        },
+        "primitiveSelection": {
+          "groups": 6,
+          "selectedGroups": 3,
+          "curvedBefore": 63,
+          "curvedAfter": 60,
+          "sampledErrorBefore": 0.02630625,
+          "sampledErrorAfter": 0.0263,
+          "applied": true,
+          "sourceErrorBefore": 0.02629375,
+          "sourceErrorAfter": 0.0262875,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "rejection": null,
+          "seconds": 0.09510000002384186
+        },
+        "curvePrimitiveSelection": {
+          "groups": 11,
+          "selectedGroups": 1,
+          "curvedBefore": 60,
+          "curvedAfter": 59,
+          "sampledErrorBefore": 0.0262875,
+          "sampledErrorAfter": 0.0262875,
+          "applied": true,
+          "sourceErrorBefore": 0.0262875,
+          "sourceErrorAfter": 0.0262875,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "rejection": null,
+          "seconds": 0.08960000002384186
+        },
+        "engineError": 0.0262875,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "featureRecovery": {
+          "trigger": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 1232.125,
+                "centerMm": [
+                  47.192743735416464,
+                  42.4492619458253
+                ],
+                "retainedFraction": 0.9651009434919346
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "method": "trace-milp",
+          "budgetSeconds": 5.860080000042915,
+          "accepted": false,
+          "attempts": [
+            {
+              "stage": "boundary",
+              "smoothRadius": 0.3,
+              "boundaryIssue": {
+                "type": "endpoint_count",
+                "family": 0,
+                "startCount": 3,
+                "endCount": 5,
+                "message": "Sheet A has 3 start transitions but 5 end transitions. Opposite borders must agree."
+              },
+              "error": "Sheet A has 3 start transitions but 5 end transitions. Opposite borders must agree.",
+              "seconds": 0.00010000002384185791
+            },
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 5.676380000114441,
+              "borderSeed": {
+                "radiiMm": [
+                  4,
+                  3,
+                  3,
+                  3
+                ],
+                "changedSide": 0,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  5,
+                  3
+                ],
+                "transitionsAfter": [
+                  5,
+                  3,
+                  5,
+                  3
+                ],
+                "changedPixels": 3643,
+                "changeFraction": 0.02276875,
+                "initializationOnly": true,
+                "traceImageError": 0.03785
+              },
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 888,
+                "continuousVariables": 832,
+                "linearConstraints": 3698,
+                "turnAuxiliaries": 104,
+                "crossingConflicts": 26,
+                "widthPairs": 88,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 65,
+                  "hiddenCandidates": 83,
+                  "vertices": 68,
+                  "buildSeconds": 0.0055,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 8
+                  }
+                ],
+                "elapsedSeconds": 0.0705,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted"
+              },
+              "seconds": 0.07739999997615814
+            },
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.5,
+              "budgetSeconds": 5.558680000066757,
+              "borderSeed": {
+                "radiiMm": [
+                  4,
+                  3,
+                  3,
+                  3
+                ],
+                "changedSide": 0,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  5,
+                  3
+                ],
+                "transitionsAfter": [
+                  5,
+                  3,
+                  5,
+                  3
+                ],
+                "changedPixels": 3643,
+                "changeFraction": 0.02276875,
+                "initializationOnly": true,
+                "traceImageError": 0.0373375
+              },
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 948,
+                "continuousVariables": 864,
+                "linearConstraints": 4116,
+                "turnAuxiliaries": 100,
+                "crossingConflicts": 50,
+                "widthPairs": 89,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 61,
+                  "hiddenCandidates": 97,
+                  "vertices": 66,
+                  "buildSeconds": 0.0046999999284744265,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 8
+                  }
+                ],
+                "elapsedSeconds": 0.017,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted"
+              },
+              "seconds": 0.022199999928474427
+            },
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 5.507780000090599,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  4,
+                  3
+                ],
+                "changedSide": 2,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  5,
+                  3
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3384,
+                "changeFraction": 0.02115,
+                "initializationOnly": true,
+                "traceImageError": 0.0357625
+              },
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 828,
+                "continuousVariables": 772,
+                "linearConstraints": 3340,
+                "turnAuxiliaries": 98,
+                "crossingConflicts": 23,
+                "widthPairs": 53,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 60,
+                  "hiddenCandidates": 78,
+                  "vertices": 61,
+                  "buildSeconds": 0.004,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 8
+                  }
+                ],
+                "elapsedSeconds": 3.723600000023842,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted"
+              },
+              "seconds": 3.7282999999523163
+            },
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.5,
+              "budgetSeconds": 1.7393800001144406,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  4,
+                  3
+                ],
+                "changedSide": 2,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  5,
+                  3
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3384,
+                "changeFraction": 0.02115,
+                "initializationOnly": true,
+                "traceImageError": 0.03535625
+              },
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 918,
+                "continuousVariables": 824,
+                "linearConstraints": 4033,
+                "turnAuxiliaries": 94,
+                "crossingConflicts": 66,
+                "widthPairs": 68,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 56,
+                  "hiddenCandidates": 97,
+                  "vertices": 59,
+                  "buildSeconds": 0.005100000023841858,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 8
+                  }
+                ],
+                "elapsedSeconds": 0.17760000002384185,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted"
+              },
+              "seconds": 0.1835
+            },
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 1.5213800001144406,
+              "borderSeed": {
+                "radiiMm": [
+                  5,
+                  3,
+                  3,
+                  3
+                ],
+                "changedSide": 0,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  5,
+                  3
+                ],
+                "transitionsAfter": [
+                  5,
+                  3,
+                  5,
+                  3
+                ],
+                "changedPixels": 4889,
+                "changeFraction": 0.03055625,
+                "initializationOnly": true,
+                "traceImageError": 0.04558125
+              },
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 894,
+                "continuousVariables": 840,
+                "linearConstraints": 3663,
+                "turnAuxiliaries": 106,
+                "crossingConflicts": 25,
+                "widthPairs": 77,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 66,
+                  "hiddenCandidates": 83,
+                  "vertices": 69,
+                  "buildSeconds": 0.004,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 8
+                  }
+                ],
+                "elapsedSeconds": 0.0165,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted"
+              },
+              "seconds": 0.020800000071525573
+            },
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.5,
+              "budgetSeconds": 1.4709800001382822,
+              "borderSeed": {
+                "radiiMm": [
+                  5,
+                  3,
+                  3,
+                  3
+                ],
+                "changedSide": 0,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  5,
+                  3
+                ],
+                "transitionsAfter": [
+                  5,
+                  3,
+                  5,
+                  3
+                ],
+                "changedPixels": 4889,
+                "changeFraction": 0.03055625,
+                "initializationOnly": true,
+                "traceImageError": 0.04466875
+              },
+              "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+              "solver": {
+                "binaryVariables": 996,
+                "continuousVariables": 904,
+                "linearConstraints": 4288,
+                "turnAuxiliaries": 104,
+                "crossingConflicts": 52,
+                "widthPairs": 86,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 63,
+                  "hiddenCandidates": 103,
+                  "vertices": 68,
+                  "buildSeconds": 0.004,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 8
+                  }
+                ],
+                "elapsedSeconds": 0.0195,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "no_validated_solution",
+                "termination": "candidate_graph_exhausted"
+              },
+              "seconds": 0.023800000071525575
+            },
+            {
+              "neighbors": 8,
+              "connectorVariants": 1,
+              "smoothRadius": 0.3,
+              "budgetSeconds": 1.4201800000667566,
+              "borderSeed": {
+                "radiiMm": [
+                  3,
+                  3,
+                  5,
+                  3
+                ],
+                "changedSide": 2,
+                "transitionsBefore": [
+                  3,
+                  3,
+                  5,
+                  3
+                ],
+                "transitionsAfter": [
+                  3,
+                  3,
+                  3,
+                  3
+                ],
+                "changedPixels": 3596,
+                "changeFraction": 0.022475,
+                "initializationOnly": true,
+                "traceImageError": 0.0368
+              },
+              "solver": {
+                "validation": {
+                  "passed": true,
+                  "issues": [],
+                  "nominalWidthRequired": 2.50501002004008,
+                  "minimumInterSlitDistanceLower": 5.98,
+                  "minimumOuterSideClearance": 4.5225762457017,
+                  "boundaryParityMatches": true,
+                  "forwardSampleMismatchPixels": 0,
+                  "forwardBoundaryAmbiguousPixels": 0,
+                  "forwardSampleResolution": 101,
+                  "geometryTolerance": 0.01,
+                  "sharedCurvesStoredOnce": true,
+                  "physicalAssemblyTested": false,
+                  "limitations": [
+                    "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                    "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                    "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                    "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+                  ],
+                  "materialCore": {
+                    "status": "pass",
+                    "requiredRemainingWidth": 2,
+                    "nominalDiameter": 2.50501002004008,
+                    "gridSpacing": 0.2777777777777778,
+                    "clearanceGuard": 0.20641855032959658,
+                    "families": [
+                      {
+                        "family": 0,
+                        "status": "pass",
+                        "detachedCertainCoreIslands": 0,
+                        "detachedPossibleCoreIslands": 0,
+                        "detachedPossibleArea": 0,
+                        "foldIntervals": [
+                          {
+                            "interval": [
+                              0,
+                              22.25
+                            ],
+                            "certainCoreLength": 19.444444444444475,
+                            "possibleCoreLength": 20.000000000000032
+                          },
+                          {
+                            "interval": [
+                              22.25,
+                              81.25
+                            ],
+                            "certainCoreLength": 56.11111111111124,
+                            "possibleCoreLength": 56.94444444444458
+                          },
+                          {
+                            "interval": [
+                              81.25,
+                              88.75
+                            ],
+                            "certainCoreLength": 4.444444444444444,
+                            "possibleCoreLength": 5.5555555555555545
+                          },
+                          {
+                            "interval": [
+                              88.75,
+                              100
+                            ],
+                            "certainCoreLength": 8.333333333333332,
+                            "possibleCoreLength": 9.166666666666668
+                          }
+                        ]
+                      },
+                      {
+                        "family": 1,
+                        "status": "pass",
+                        "detachedCertainCoreIslands": 0,
+                        "detachedPossibleCoreIslands": 0,
+                        "detachedPossibleArea": 0,
+                        "foldIntervals": [
+                          {
+                            "interval": [
+                              0,
+                              17
+                            ],
+                            "certainCoreLength": 14.166666666666682,
+                            "possibleCoreLength": 14.72222222222224
+                          },
+                          {
+                            "interval": [
+                              17,
+                              72
+                            ],
+                            "certainCoreLength": 52.22222222222234,
+                            "possibleCoreLength": 52.7777777777779
+                          },
+                          {
+                            "interval": [
+                              72,
+                              80
+                            ],
+                            "certainCoreLength": 5.277777777777777,
+                            "possibleCoreLength": 5.833333333333332
+                          },
+                          {
+                            "interval": [
+                              80,
+                              100
+                            ],
+                            "certainCoreLength": 17.222222222222246,
+                            "possibleCoreLength": 17.777777777777803
+                          }
+                        ]
+                      }
+                    ],
+                    "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                    "seconds": 0.13429999995231628,
+                    "limitations": [
+                      "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                      "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                      "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                      "Small tips and features below the explicitly stated area threshold are not certified."
+                    ]
+                  }
+                },
+                "binaryVariables": 780,
+                "continuousVariables": 728,
+                "linearConstraints": 3114,
+                "turnAuxiliaries": 92,
+                "crossingConflicts": 21,
+                "widthPairs": 42,
+                "coefficientQuantum": 1e-07,
+                "stopAfterValidated": true,
+                "graph": {
+                  "visibleEdges": 57,
+                  "hiddenCandidates": 73,
+                  "vertices": 58,
+                  "buildSeconds": 0.003799999952316284,
+                  "guidePortals": 0,
+                  "guideCount": 0,
+                  "guideSkip": null,
+                  "vertexNormalization": {
+                    "collapsedSegments": 0,
+                    "closedSplits": 0,
+                    "maximumEndpointMoveMm": 0
+                  },
+                  "unconnectedNeighbors": false,
+                  "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+                  "delaunayCandidates": false
+                },
+                "history": [
+                  {
+                    "round": 1,
+                    "status": 16,
+                    "objective": 1810.7343596,
+                    "selfNeckChains": 0,
+                    "shortReturnChains": 0,
+                    "materialCore": {
+                      "status": "pass",
+                      "requiredRemainingWidth": 2,
+                      "nominalDiameter": 2.50501002004008,
+                      "gridSpacing": 0.2777777777777778,
+                      "clearanceGuard": 0.20641855032959658,
+                      "families": [
+                        {
+                          "family": 0,
+                          "status": "pass",
+                          "detachedCertainCoreIslands": 0,
+                          "detachedPossibleCoreIslands": 0,
+                          "detachedPossibleArea": 0,
+                          "foldIntervals": [
+                            {
+                              "interval": [
+                                0,
+                                22.25
+                              ],
+                              "certainCoreLength": 19.444444444444475,
+                              "possibleCoreLength": 20.000000000000032
+                            },
+                            {
+                              "interval": [
+                                22.25,
+                                81.25
+                              ],
+                              "certainCoreLength": 56.11111111111124,
+                              "possibleCoreLength": 56.94444444444458
+                            },
+                            {
+                              "interval": [
+                                81.25,
+                                88.75
+                              ],
+                              "certainCoreLength": 4.444444444444444,
+                              "possibleCoreLength": 5.5555555555555545
+                            },
+                            {
+                              "interval": [
+                                88.75,
+                                100
+                              ],
+                              "certainCoreLength": 8.333333333333332,
+                              "possibleCoreLength": 9.166666666666668
+                            }
+                          ]
+                        },
+                        {
+                          "family": 1,
+                          "status": "pass",
+                          "detachedCertainCoreIslands": 0,
+                          "detachedPossibleCoreIslands": 0,
+                          "detachedPossibleArea": 0,
+                          "foldIntervals": [
+                            {
+                              "interval": [
+                                0,
+                                17
+                              ],
+                              "certainCoreLength": 14.166666666666682,
+                              "possibleCoreLength": 14.72222222222224
+                            },
+                            {
+                              "interval": [
+                                17,
+                                72
+                              ],
+                              "certainCoreLength": 52.22222222222234,
+                              "possibleCoreLength": 52.7777777777779
+                            },
+                            {
+                              "interval": [
+                                72,
+                                80
+                              ],
+                              "certainCoreLength": 5.277777777777777,
+                              "possibleCoreLength": 5.833333333333332
+                            },
+                            {
+                              "interval": [
+                                80,
+                                100
+                              ],
+                              "certainCoreLength": 17.222222222222246,
+                              "possibleCoreLength": 17.777777777777803
+                            }
+                          ]
+                        }
+                      ],
+                      "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                      "seconds": 0.13429999995231628,
+                      "limitations": [
+                        "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                        "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                        "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                        "Small tips and features below the explicitly stated area threshold are not certified."
+                      ]
+                    },
+                    "validationPassed": true
+                  }
+                ],
+                "elapsedSeconds": 0.5622999999523163,
+                "solverVersion": {
+                  "major": 1,
+                  "minor": 15,
+                  "patch": 1,
+                  "string": "1.15.1",
+                  "gitHash": "04024d7"
+                },
+                "solverRuntime": "locally hosted HiGHS WebAssembly",
+                "physicalAssemblyTested": false,
+                "status": "solved",
+                "objective": 1810.7343596,
+                "lowerBound": 1324.0117029934927,
+                "mipGap": 0.2687984872137881,
+                "optimality": "Only the finite candidate graph is optimized. Gap concerns cut complexity, not artwork fidelity."
+              },
+              "seconds": 0.5667999999523163
+            }
+          ],
+          "borderSeedRetry": true,
+          "solver": {
+            "validation": {
+              "passed": true,
+              "issues": [],
+              "nominalWidthRequired": 2.50501002004008,
+              "minimumInterSlitDistanceLower": 5.98,
+              "minimumOuterSideClearance": 4.5225762457017,
+              "boundaryParityMatches": true,
+              "forwardSampleMismatchPixels": 0,
+              "forwardBoundaryAmbiguousPixels": 0,
+              "forwardSampleResolution": 101,
+              "geometryTolerance": 0.01,
+              "sharedCurvesStoredOnce": true,
+              "physicalAssemblyTested": false,
+              "limitations": [
+                "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+                "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+                "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+                "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+              ],
+              "materialCore": {
+                "status": "pass",
+                "requiredRemainingWidth": 2,
+                "nominalDiameter": 2.50501002004008,
+                "gridSpacing": 0.2777777777777778,
+                "clearanceGuard": 0.20641855032959658,
+                "families": [
+                  {
+                    "family": 0,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          22.25
+                        ],
+                        "certainCoreLength": 19.444444444444475,
+                        "possibleCoreLength": 20.000000000000032
+                      },
+                      {
+                        "interval": [
+                          22.25,
+                          81.25
+                        ],
+                        "certainCoreLength": 56.11111111111124,
+                        "possibleCoreLength": 56.94444444444458
+                      },
+                      {
+                        "interval": [
+                          81.25,
+                          88.75
+                        ],
+                        "certainCoreLength": 4.444444444444444,
+                        "possibleCoreLength": 5.5555555555555545
+                      },
+                      {
+                        "interval": [
+                          88.75,
+                          100
+                        ],
+                        "certainCoreLength": 8.333333333333332,
+                        "possibleCoreLength": 9.166666666666668
+                      }
+                    ]
+                  },
+                  {
+                    "family": 1,
+                    "status": "pass",
+                    "detachedCertainCoreIslands": 0,
+                    "detachedPossibleCoreIslands": 0,
+                    "detachedPossibleArea": 0,
+                    "foldIntervals": [
+                      {
+                        "interval": [
+                          0,
+                          17
+                        ],
+                        "certainCoreLength": 14.166666666666682,
+                        "possibleCoreLength": 14.72222222222224
+                      },
+                      {
+                        "interval": [
+                          17,
+                          72
+                        ],
+                        "certainCoreLength": 52.22222222222234,
+                        "possibleCoreLength": 52.7777777777779
+                      },
+                      {
+                        "interval": [
+                          72,
+                          80
+                        ],
+                        "certainCoreLength": 5.277777777777777,
+                        "possibleCoreLength": 5.833333333333332
+                      },
+                      {
+                        "interval": [
+                          80,
+                          100
+                        ],
+                        "certainCoreLength": 17.222222222222246,
+                        "possibleCoreLength": 17.777777777777803
+                      }
+                    ]
+                  }
+                ],
+                "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                "seconds": 0.13429999995231628,
+                "limitations": [
+                  "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                  "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                  "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                  "Small tips and features below the explicitly stated area threshold are not certified."
+                ]
+              }
+            },
+            "binaryVariables": 780,
+            "continuousVariables": 728,
+            "linearConstraints": 3114,
+            "turnAuxiliaries": 92,
+            "crossingConflicts": 21,
+            "widthPairs": 42,
+            "coefficientQuantum": 1e-07,
+            "stopAfterValidated": true,
+            "graph": {
+              "visibleEdges": 57,
+              "hiddenCandidates": 73,
+              "vertices": 58,
+              "buildSeconds": 0.003799999952316284,
+              "guidePortals": 0,
+              "guideCount": 0,
+              "guideSkip": null,
+              "vertexNormalization": {
+                "collapsedSegments": 0,
+                "closedSplits": 0,
+                "maximumEndpointMoveMm": 0
+              },
+              "unconnectedNeighbors": false,
+              "candidateMethod": "border-inferred guide portals, nearest portal neighbours and tangent-shaped cubic variants; adaptive noding",
+              "delaunayCandidates": false
+            },
+            "history": [
+              {
+                "round": 1,
+                "status": 16,
+                "objective": 1810.7343596,
+                "selfNeckChains": 0,
+                "shortReturnChains": 0,
+                "materialCore": {
+                  "status": "pass",
+                  "requiredRemainingWidth": 2,
+                  "nominalDiameter": 2.50501002004008,
+                  "gridSpacing": 0.2777777777777778,
+                  "clearanceGuard": 0.20641855032959658,
+                  "families": [
+                    {
+                      "family": 0,
+                      "status": "pass",
+                      "detachedCertainCoreIslands": 0,
+                      "detachedPossibleCoreIslands": 0,
+                      "detachedPossibleArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            22.25
+                          ],
+                          "certainCoreLength": 19.444444444444475,
+                          "possibleCoreLength": 20.000000000000032
+                        },
+                        {
+                          "interval": [
+                            22.25,
+                            81.25
+                          ],
+                          "certainCoreLength": 56.11111111111124,
+                          "possibleCoreLength": 56.94444444444458
+                        },
+                        {
+                          "interval": [
+                            81.25,
+                            88.75
+                          ],
+                          "certainCoreLength": 4.444444444444444,
+                          "possibleCoreLength": 5.5555555555555545
+                        },
+                        {
+                          "interval": [
+                            88.75,
+                            100
+                          ],
+                          "certainCoreLength": 8.333333333333332,
+                          "possibleCoreLength": 9.166666666666668
+                        }
+                      ]
+                    },
+                    {
+                      "family": 1,
+                      "status": "pass",
+                      "detachedCertainCoreIslands": 0,
+                      "detachedPossibleCoreIslands": 0,
+                      "detachedPossibleArea": 0,
+                      "foldIntervals": [
+                        {
+                          "interval": [
+                            0,
+                            17
+                          ],
+                          "certainCoreLength": 14.166666666666682,
+                          "possibleCoreLength": 14.72222222222224
+                        },
+                        {
+                          "interval": [
+                            17,
+                            72
+                          ],
+                          "certainCoreLength": 52.22222222222234,
+                          "possibleCoreLength": 52.7777777777779
+                        },
+                        {
+                          "interval": [
+                            72,
+                            80
+                          ],
+                          "certainCoreLength": 5.277777777777777,
+                          "possibleCoreLength": 5.833333333333332
+                        },
+                        {
+                          "interval": [
+                            80,
+                            100
+                          ],
+                          "certainCoreLength": 17.222222222222246,
+                          "possibleCoreLength": 17.777777777777803
+                        }
+                      ]
+                    }
+                  ],
+                  "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+                  "seconds": 0.13429999995231628,
+                  "limitations": [
+                    "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                    "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                    "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                    "Small tips and features below the explicitly stated area threshold are not certified."
+                  ]
+                },
+                "validationPassed": true
+              }
+            ],
+            "elapsedSeconds": 0.5622999999523163,
+            "solverVersion": {
+              "major": 1,
+              "minor": 15,
+              "patch": 1,
+              "string": "1.15.1",
+              "gitHash": "04024d7"
+            },
+            "solverRuntime": "locally hosted HiGHS WebAssembly",
+            "physicalAssemblyTested": false,
+            "status": "solved",
+            "objective": 1810.7343596,
+            "lowerBound": 1324.0117029934927,
+            "mipGap": 0.2687984872137881,
+            "optimality": "Only the finite candidate graph is optimized. Gap concerns cut complexity, not artwork fidelity."
+          },
+          "deferredNeighborExpansions": 6,
+          "imageError": 0.0368,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 1232.125,
+                "centerMm": [
+                  47.192743735416464,
+                  42.4492619458253
+                ],
+                "retainedFraction": 0.9717459673328599
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "geometryPassed": true,
+          "paperPassed": true,
+          "refinementSeedAvailable": true,
+          "seconds": 5.092299999952316,
+          "budgetPolicy": "prioritize_routing",
+          "gridMismatchTrigger": true,
+          "refinement": {
+            "imageError": 0.02629375,
+            "featuresPassed": true,
+            "geometryPassed": true,
+            "paperPassed": true,
+            "steps": 160
+          }
+        },
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "featureNoticeVisible": false,
+        "numericalBackend": "wasm",
+        "paperKernels": {
+          "distanceTransform": [
+            {
+              "cells": 160000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 8.100000023841858,
+                  "wasm": 2
+                },
+                {
+                  "wasm": 1.8000000715255737,
+                  "javascript": 5.099999904632568
+                }
+              ]
+            },
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 12.800000071525574,
+                  "wasm": 4.599999904632568
+                },
+                {
+                  "wasm": 4.200000047683716,
+                  "javascript": 14
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 5.200000047683716,
+                  "wasm": 1.5999999046325684
+                },
+                {
+                  "wasm": 1.600000023841858,
+                  "javascript": 5
+                }
+              ]
+            }
+          ]
+        },
+        "boundaryKernels": [
+          {
+            "quadraturePoints": 3648,
+            "probabilityCells": 160000,
+            "maximumTimingRepetitions": 16,
+            "minimumBatchMilliseconds": 4,
+            "backend": "wasm",
+            "reason": "measured_faster",
+            "timings": [
+              {
+                "javascript": 0.9,
+                "wasm": 0.47777777247958714,
+                "repetitions": {
+                  "javascript": 5,
+                  "wasm": 9
+                }
+              },
+              {
+                "wasm": 0.41000000238418577,
+                "javascript": 0.5250000059604645,
+                "repetitions": {
+                  "wasm": 10,
+                  "javascript": 8
+                }
+              }
+            ]
+          }
+        ],
+        "displayedError": 0.026000000000000002,
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "engineSegments": 63,
+        "editableSegments": 73,
+        "sharedSpans": 6,
+        "wholeOriginalError": 0.029425,
+        "editableError": 0.029425,
+        "sourceResolution": 400,
+        "editableFeatures": {
+          "passed": true,
+          "referenceAvailable": true,
+          "minimumRetention": 0.6,
+          "minimumAreaFraction": 0.0003,
+          "minimumCoreRadiusFraction": 0.005,
+          "borderClearancePixels": 1,
+          "regions": [
+            {
+              "value": 1,
+              "areaMm2": 1232.125,
+              "centerMm": [
+                47.192743735416464,
+                42.4492619458253
+              ],
+              "retainedFraction": 0.9913259612458152
+            }
+          ],
+          "missing": [],
+          "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+        },
+        "featureComponents": [
+          {
+            "centerMm": [
+              47.192743735416464,
+              42.4492619458253
+            ],
+            "sourceAreaMm2": 1232.125,
+            "intersectionPixels": 19543,
+            "retention": 0.9913259612458152,
+            "predictedComponentAreaMm2": 1232.125,
+            "touchesBorder": false,
+            "componentIoU": 0.982801106361579
+          }
+        ],
+        "sourceEditableError": 0.0263,
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 4.813194497390441,
+            "minimumOuterSideClearance": 4.960794999567582,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.2777777777777778,
+            "clearanceGuard": 0.20641855032959658,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      22.01530931389423
+                    ],
+                    "certainCoreLength": 19.166666666666696,
+                    "possibleCoreLength": 19.722222222222253
+                  },
+                  {
+                    "interval": [
+                      22.01530931389423,
+                      82.28830974032901
+                    ],
+                    "certainCoreLength": 57.500000000000135,
+                    "possibleCoreLength": 58.05555555555569
+                  },
+                  {
+                    "interval": [
+                      82.28830974032901,
+                      87.4577936746556
+                    ],
+                    "certainCoreLength": 2.4999999999999996,
+                    "possibleCoreLength": 3.055555555555555
+                  },
+                  {
+                    "interval": [
+                      87.4577936746556,
+                      100
+                    ],
+                    "certainCoreLength": 9.166666666666668,
+                    "possibleCoreLength": 10.000000000000004
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      16.237229051237893
+                    ],
+                    "certainCoreLength": 13.333333333333346,
+                    "possibleCoreLength": 14.166666666666682
+                  },
+                  {
+                    "interval": [
+                      16.237229051237893,
+                      71.9796329659473
+                    ],
+                    "certainCoreLength": 52.7777777777779,
+                    "possibleCoreLength": 53.611111111111235
+                  },
+                  {
+                    "interval": [
+                      71.9796329659473,
+                      80.39592878421801
+                    ],
+                    "certainCoreLength": 5.5555555555555545,
+                    "possibleCoreLength": 6.3888888888888875
+                  },
+                  {
+                    "interval": [
+                      80.39592878421801,
+                      100
+                    ],
+                    "certainCoreLength": 16.66666666666669,
+                    "possibleCoreLength": 17.500000000000025
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+            "seconds": 0.09708750000000145,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ]
+          },
+          "materialResolution": 360
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.0263,
+          "sourceError": 0.0263
+        },
+        "conversionFeatures": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        },
+        "passed": true
+      },
+      {
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "name": "web-danish-tree-green",
+        "pageErrors": [],
+        "sourcePhoto": {
+          "id": "danish-tree-green",
+          "sha256": "5a8c872aeae2452165ddc05753a2255effaba318a7eb4b5b57ad9fb4361c1439",
+          "roi": null
+        },
+        "matchingRequested": true,
+        "requestedSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "captureSeconds": 0.5028189580000034,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005399999976158142,
+          "prepareRoundTripSeconds": 0.16270000004768373,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 7.561100000023842,
+          "resultToReadySeconds": 0.39939999997615816,
+          "clickToReadySeconds": 8.129
+        },
+        "pageMarks": {
+          "click": 1755.2999999523163,
+          "prepareSent": 1760.6999999284744,
+          "prepared": 1923.3999999761581,
+          "solveSent": 1923.7999999523163,
+          "result": 9484.899999976158,
+          "ready": 9884.299999952316,
+          "failed": null
+        },
+        "artifactWriteSeconds": 0.0021354170000049636,
+        "reportedFitSeconds": 7.358600000023842,
+        "detectedCrop": {
+          "quad": [
+            [
+              613.4629495846865,
+              709.8754165460504
+            ],
+            [
+              991.3479406135674,
+              1101.880332092388
+            ],
+            [
+              589.7733778087984,
+              1526.3403443658829
+            ],
+            [
+              201.96444906745154,
+              1085.6004246480518
+            ]
+          ],
+          "status": "needs_review",
+          "locatorVersion": "0.2.0",
+          "lobeRefinement": null
+        },
+        "solveSettings": {
+          "algorithm": "auto",
+          "polygonal": false,
+          "identicalSheets": false,
+          "resolution": 400,
+          "fitTolerance": 0.5,
+          "maxSpan": 15,
+          "smoothRadius": 0,
+          "snapRadius": 1.5,
+          "borderRadius": 3,
+          "gridPortals": false,
+          "neighbors": 16,
+          "connectorVariants": 2,
+          "junctionBalancePenalty": 0,
+          "gridPreference": 0,
+          "sharpPenalty": 50,
+          "acutePenalty": 30,
+          "turnPenalty": 3,
+          "maxTurn": 175,
+          "localNeighborhoodFactor": 8,
+          "roundHidden": false,
+          "width": 100,
+          "minWidth": 2,
+          "cutError": 0.25,
+          "timeLimit": 180,
+          "preferMatchingSheets": true,
+          "matchingErrorAllowance": 0.01,
+          "progressGeometry": true,
+          "earlyStop": false,
+          "removeSpecks": 0,
+          "fillHoles": 0,
+          "minRadius": 0.8,
+          "kerf": 0,
+          "printShrinkPercent": 0.2,
+          "materialResolution": 360,
+          "trials": 12,
+          "requireMaterialCore": true,
+          "paperColors": [
+            "#b91313",
+            "#ffffff"
+          ],
+          "symmetry": {}
+        },
+        "matchingPreference": {
+          "enabled": true,
+          "identical": false,
+          "rmsTemplateDifferenceMm": 0.9925569657487081,
+          "comparison": "Corresponding cuts sampled at uniform arc length in local template coordinates.",
+          "minimumIdenticalImageError": 0.02635,
+          "method": "Each differently coloured observed pixel pair across the diagonal forces at least one error for identical templates.",
+          "baselineImageError": 0.01055625,
+          "baselineCounts": [
+            3,
+            3
+          ],
+          "baselinePhase": 0,
+          "maximumAdditionalImageError": 0.01,
+          "maximumMatchingImageError": 0.020556249999999998,
+          "attempts": [],
+          "status": "image_bound_exceeds_allowance",
+          "seconds": 0.012,
+          "selectedImageError": 0.01055,
+          "additionalImageError": -6.249999999999312e-06
+        },
+        "primitiveSelection": {
+          "groups": 43,
+          "selectedGroups": 24,
+          "curvedBefore": 97,
+          "curvedAfter": 73,
+          "sampledErrorBefore": 0.010525,
+          "sampledErrorAfter": 0.0105125,
+          "applied": true,
+          "sourceErrorBefore": 0.01055625,
+          "sourceErrorAfter": 0.01055,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "rejection": null,
+          "seconds": 0.09960000002384185
+        },
+        "curvePrimitiveSelection": {
+          "groups": 46,
+          "selectedGroups": 3,
+          "curvedBefore": 73,
+          "curvedAfter": 70,
+          "sampledErrorBefore": 0.01055,
+          "sampledErrorAfter": 0.01055,
+          "applied": true,
+          "sourceErrorBefore": 0.01055,
+          "sourceErrorAfter": 0.01055,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 0,
+            "missingAfter": 0,
+            "regressed": []
+          },
+          "rejection": null,
+          "seconds": 0.10189999997615815
+        },
+        "engineError": 0.01055,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "extraGridComparisons": [],
+        "earlyFeatureInitialization": null,
+        "featureInitialization": null,
+        "samplingRecovery": null,
+        "featureRecovery": null,
+        "templateChecksPassed": true,
+        "missingFeatures": [],
+        "numericalBackend": "wasm",
+        "paperKernels": {
+          "distanceTransform": [
+            {
+              "cells": 160000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 7.899999976158142,
+                  "wasm": 1.600000023841858
+                },
+                {
+                  "wasm": 1.5,
+                  "javascript": 4.600000023841858
+                }
+              ]
+            },
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 12.299999952316284,
+                  "wasm": 4.200000047683716
+                },
+                {
+                  "wasm": 3.899999976158142,
+                  "javascript": 13.200000047683716
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 5.399999976158142,
+                  "wasm": 1.5
+                },
+                {
+                  "wasm": 1.5,
+                  "javascript": 5.199999928474426
+                }
+              ]
+            }
+          ]
+        },
+        "boundaryKernels": [
+          {
+            "quadraturePoints": 6016,
+            "probabilityCells": 160000,
+            "maximumTimingRepetitions": 16,
+            "minimumBatchMilliseconds": 4,
+            "backend": "wasm",
+            "reason": "measured_faster",
+            "timings": [
+              {
+                "javascript": 2.25,
+                "wasm": 1.0250000059604645,
+                "repetitions": {
+                  "javascript": 2,
+                  "wasm": 4
+                }
+              },
+              {
+                "wasm": 0.8799999952316284,
+                "javascript": 1.3666666746139526,
+                "repetitions": {
+                  "wasm": 5,
+                  "javascript": 3
+                }
+              }
+            ]
+          },
+          {
+            "quadraturePoints": 4992,
+            "probabilityCells": 65536,
+            "maximumTimingRepetitions": 16,
+            "minimumBatchMilliseconds": 4,
+            "backend": "wasm",
+            "reason": "measured_faster",
+            "timings": [
+              {
+                "javascript": 2,
+                "wasm": 0.512499988079071,
+                "repetitions": {
+                  "javascript": 2,
+                  "wasm": 8
+                }
+              },
+              {
+                "wasm": 0.4300000071525574,
+                "javascript": 1.1749999821186066,
+                "repetitions": {
+                  "wasm": 10,
+                  "javascript": 4
+                }
+              }
+            ]
+          }
+        ],
+        "displayedError": 0.011000000000000001,
+        "honouredSymmetry": {
+          "curve": "off",
+          "lobe": "off",
+          "lobes": "off"
+        },
+        "engineSegments": 97,
+        "editableSegments": 104,
+        "sharedSpans": 3,
+        "wholeOriginalError": 0.017925,
+        "editableError": 0.017925,
+        "sourceResolution": 400,
+        "sourceEditableError": 0.010575,
+        "physical": {
+          "geometry": {
+            "passed": true,
+            "issues": [],
+            "nominalWidthRequired": 2.50501002004008,
+            "minimumInterSlitDistanceLower": 5.282685714581163,
+            "minimumOuterSideClearance": 7.891491433138555,
+            "boundaryParityMatches": true,
+            "forwardSampleMismatchPixels": 0,
+            "forwardBoundaryAmbiguousPixels": 0,
+            "forwardSampleResolution": 101,
+            "geometryTolerance": 0.01,
+            "sharedCurvesStoredOnce": true,
+            "physicalAssemblyTested": false,
+            "limitations": [
+              "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+              "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+              "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+              "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+            ]
+          },
+          "paper": {
+            "status": "pass",
+            "requiredRemainingWidth": 2,
+            "nominalDiameter": 2.50501002004008,
+            "gridSpacing": 0.2777777777777778,
+            "clearanceGuard": 0.20641855032959658,
+            "families": [
+              {
+                "family": 0,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      9.387136104346913
+                    ],
+                    "certainCoreLength": 6.3888888888888875,
+                    "possibleCoreLength": 7.2222222222222205
+                  },
+                  {
+                    "interval": [
+                      9.387136104346913,
+                      73.96986915609618
+                    ],
+                    "certainCoreLength": 61.66666666666681,
+                    "possibleCoreLength": 62.50000000000015
+                  },
+                  {
+                    "interval": [
+                      73.96986915609618,
+                      89.54837252918797
+                    ],
+                    "certainCoreLength": 11.666666666666675,
+                    "possibleCoreLength": 12.77777777777779
+                  },
+                  {
+                    "interval": [
+                      89.54837252918797,
+                      100
+                    ],
+                    "certainCoreLength": 7.499999999999998,
+                    "possibleCoreLength": 8.333333333333332
+                  }
+                ]
+              },
+              {
+                "family": 1,
+                "status": "pass",
+                "detachedCertainCoreIslands": 0,
+                "detachedPossibleCoreIslands": 0,
+                "detachedPossibleArea": 0,
+                "foldIntervals": [
+                  {
+                    "interval": [
+                      0,
+                      9.945366472950042
+                    ],
+                    "certainCoreLength": 6.944444444444443,
+                    "possibleCoreLength": 7.777777777777776
+                  },
+                  {
+                    "interval": [
+                      9.945366472950042,
+                      73.38453221917482
+                    ],
+                    "certainCoreLength": 60.5555555555557,
+                    "possibleCoreLength": 61.111111111111256
+                  },
+                  {
+                    "interval": [
+                      73.38453221917482,
+                      91.6719965308721
+                    ],
+                    "certainCoreLength": 14.44444444444446,
+                    "possibleCoreLength": 15.277777777777796
+                  },
+                  {
+                    "interval": [
+                      91.6719965308721,
+                      100
+                    ],
+                    "certainCoreLength": 5.5555555555555545,
+                    "possibleCoreLength": 6.11111111111111
+                  }
+                ]
+              }
+            ],
+            "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+            "seconds": 0.15466779099999986,
+            "limitations": [
+              "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+              "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+              "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+              "Small tips and features below the explicitly stated area threshold are not certified."
+            ]
+          },
+          "materialResolution": 360
+        },
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.010575,
+          "sourceError": 0.010575
+        },
+        "passed": true
+      }
+    ]
+  },
   "sourceHashes": {
     "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
     "static/inverse/core/feature-recovery.js": "eaf398e16e15af2799c95bf5f2ac0ef0d1d0f549cf5359f9b247b0f2b481c179",
@@ -8935,7 +12910,7 @@
     "scripts/inverse/rejected-routing.test.mjs": "b63ce68cc1aad920c50c297aeadc899f992dd769f6b451cb4ba83452b25a4bb8",
     "scripts/inverse/coarse-topology.test.mjs": "7cd5e583b11849a4e8468ddef00bc18bc31dd4c81c242640ed46ca552077bdba",
     "scripts/inverse/hard-photo-editor-replay.mjs": "543f762b1b67b5cafb20dbcb9c9ff1e5f2872630bb814e43f5a8e2a189d5599f",
-    "scripts/inverse/paint-browser-test.mjs": "16b4fc2b622d09f688fa54dbce72329f84c57d5f1ec5655f3ba88e629135a7c8",
+    "scripts/inverse/paint-browser-test.mjs": "0b3d42436f17fb871f34d56078dab22634fbc3addd646507407127fa465e8a79",
     "scripts/inverse/fixtures/sloth-rejected-routing.json": "fe7b757695d9c395c4ab4cdb0c887c3a731e8cc97fe385c5dce81f8bafaf6ec8"
   },
   "artifactLedger": [
@@ -8943,6 +12918,226 @@
       "path": "tmp/heart-learning/routing-repair-v1/audit-matrix.mjs",
       "bytes": 2489,
       "sha256": "3c600c42f3919b40b7f1391c96e29c66f0ea3004c2d13110bd72139a3573c32b"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-leaf-mask/cut_geometry.json",
+      "bytes": 29701,
+      "sha256": "f8aa31b9871b35cb4483eec22677b7833d9a25348ab8d919e315fe1c8757f899"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-leaf-mask/draw.png",
+      "bytes": 261902,
+      "sha256": "d1187ab8176662f59cb9bee1c42809ceafa39f8a0ca9bd1a31ad194f2f5dd146"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-leaf-mask/editable.svg",
+      "bytes": 8522,
+      "sha256": "8c2d3f6eac737d41a6f59c8f52094b37c1d810e253554f7f70d197a0daf48ba4"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-leaf-mask/engine-report.json",
+      "bytes": 75740,
+      "sha256": "4225c3134956f43c79e0e884aa089d02b46fa73bf091c86b47b505f505893026"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-leaf-mask/import.png",
+      "bytes": 198970,
+      "sha256": "2cf361631d2b012aaffcf18863bcc049872b16d58d1c399c1ea7e8cdb7866957"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-leaf-mask/input.png",
+      "bytes": 5012,
+      "sha256": "716048eeef8b3a1beee3778f2085b3eaaeff02e5c12acfbad4cb69d416327a31"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-leaf-mask/prepared.json",
+      "bytes": 320042,
+      "sha256": "a7e1647e84453c97918a04f29b39c97d15bcb24019b8b2edd7ee3744eaa1f430"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-leaf-mask/result.png",
+      "bytes": 173404,
+      "sha256": "0ae95419a599369d1380c589f7347e9809a89670c8a6da0f508624cf43c5bd92"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-leaf-mask/template.pdf",
+      "bytes": 390714,
+      "sha256": "7553a603665a9b537bbc3a35dd4d7462f71d9b905d7033577326c91f05b33542"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-sloth-routing-mask/cut_geometry.json",
+      "bytes": 32019,
+      "sha256": "05555203428766639ecabd8a72d7dd75bb36e0309e15268e56180f02bcb07c12"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-sloth-routing-mask/draw.png",
+      "bytes": 264269,
+      "sha256": "9c9f5b932c42f8d6b1fadee324555556cf2c9129540e4ef3d8800105fa5f385d"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-sloth-routing-mask/editable.svg",
+      "bytes": 8902,
+      "sha256": "082a16cae5c6fd98253d9b104d52ae76ed6b5b27a901596fadc1be7994ff31ac"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-sloth-routing-mask/engine-report.json",
+      "bytes": 56254,
+      "sha256": "86cf6ed1f81ec99f9cc176eab6ded47b16888fe3b8d2aca20ddb00469c9543e0"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-sloth-routing-mask/import.png",
+      "bytes": 188838,
+      "sha256": "9e8924f6a3133c873648aeabf306998a4433b228956698014f819ae7a3855b3e"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-sloth-routing-mask/input.png",
+      "bytes": 3100,
+      "sha256": "12847ce70b390db00b3034164c4ce9d1dfb90f3729de1c439105f8d447a70471"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-sloth-routing-mask/prepared.json",
+      "bytes": 320042,
+      "sha256": "63c3e86a6dd18d726dcb326ebb7d559e5c91e536a986449ee6fa120f3c31b9b0"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-sloth-routing-mask/result.png",
+      "bytes": 171405,
+      "sha256": "dfd682be7ad7222c745e60ea85d6ded86abc5aec7350bc71d33cc61b00584362"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-sloth-routing-mask/template.pdf",
+      "bytes": 397924,
+      "sha256": "83bce8381d0e1adde977728e2c96f5e99b3a772f2e436496394429cfd78029dd"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-star/cut_geometry.json",
+      "bytes": 36275,
+      "sha256": "7e040bc9715127cdbf3d111dd6acb85beebb267bcfab69c198a9b3966de87601"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-star/draw.png",
+      "bytes": 246387,
+      "sha256": "567c90719947fcb48984df5d76ff711fb201f33b87fc79bd526213b839fe9616"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-star/editable.svg",
+      "bytes": 7113,
+      "sha256": "9724587ad2a86e36eaa6dba585e87d8ae67f5b958269b4c20c76cc9dfafec698"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-star/engine-report.json",
+      "bytes": 44442,
+      "sha256": "f14a4a0f6c92d5c218fc50114166a065aac3eb30f8f0c658f0971856df29f41d"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-star/prepared.json",
+      "bytes": 320042,
+      "sha256": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-star/result.png",
+      "bytes": 165792,
+      "sha256": "958edcaedd6edee695a3a100dc1ba1602ee7d9909f79d7fa5b0f6c0a7d4521ac"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-star/template.pdf",
+      "bytes": 326180,
+      "sha256": "ff222a8cfda9952625364bcfaeead13609329fda65a9ba06b4f2afb1edface40"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-top-hat-preferred/cut_geometry.json",
+      "bytes": 46870,
+      "sha256": "39f1f4067a585a1848603766697b8e86c5bcc1d98b49b022fc4121cacfa29667"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-top-hat-preferred/draw.png",
+      "bytes": 247571,
+      "sha256": "855b877bc9aee15ae2df5e2823fdc6bb605e5a04ce6f7e42f8ee46bcf334e6c4"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-top-hat-preferred/editable.svg",
+      "bytes": 16194,
+      "sha256": "8c89882c2259134d470b4bfc8f6c9720095a4dd992986caaef69cd5cd56ae140"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-top-hat-preferred/engine-report.json",
+      "bytes": 66894,
+      "sha256": "e3cee4fbad1da16a15db8d3ee58c434de4805d15f5e452bda8ec92215d4fcaf5"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-top-hat-preferred/import.png",
+      "bytes": 187694,
+      "sha256": "a3afa944882f28e7f8e3299eaa1ecb189d262813243f3c077f4046f93ac7738c"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-top-hat-preferred/input.png",
+      "bytes": 1484,
+      "sha256": "0b9f120849b863c65f2f806828b20702be2dfd90bd70426b1d7eb0ee7ca10fba"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-top-hat-preferred/prepared.json",
+      "bytes": 640039,
+      "sha256": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-top-hat-preferred/result.png",
+      "bytes": 182807,
+      "sha256": "494327c688ff971ae61ca91b697335eb4b8e9b05082d223d34a17b7b880a5fbf"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-web-danish-tree-green/cut_geometry.json",
+      "bytes": 45226,
+      "sha256": "0588e9f68a218a2f5a42199a216a73c519b594845882be4495ffb576d3e0753b"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-web-danish-tree-green/draw.png",
+      "bytes": 265351,
+      "sha256": "843f9836d00c9deba50b8692ba3a3bcccf1c5a7ab8d573ab0b3e0791ff79fc44"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-web-danish-tree-green/editable.svg",
+      "bytes": 11943,
+      "sha256": "a9bc99d1e0dfcdcf3e2f69c64a2b5854892308f84fdeb6af354708735186172c"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-web-danish-tree-green/engine-report.json",
+      "bytes": 57336,
+      "sha256": "f2ac754781bddd74a92adabfc2affa276c4e5dea115d950d0fe34f1bf15cf591"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-web-danish-tree-green/import.png",
+      "bytes": 234482,
+      "sha256": "5536fd692da80e2a249e82f35f7c432c5e43d32dde61cbd93322f92767266a2e"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-web-danish-tree-green/input.png",
+      "bytes": 539034,
+      "sha256": "a5c107cef6f56971ac610e4a27f58e7ed604828741a9de476fd98fd260cfe947"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-web-danish-tree-green/prepared.json",
+      "bytes": 320042,
+      "sha256": "b48a35d497b13034879be91fd42d2657bd5cfb3591ef6b679fec1a43a25e1b8a"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/chromium-web-danish-tree-green/result.png",
+      "bytes": 173210,
+      "sha256": "d05d478e16fd4c050b8adddeff62962d4692b077ddc4079a2b81acf7eda88845"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser/results.json",
+      "bytes": 147338,
+      "sha256": "8ee8359790da8e1ca48e05a4af7e1069637d7901deab64e097edf715bdaacc51"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/browser.log",
+      "bytes": 76329,
+      "sha256": "a5814d56c2f95ab972a02393a93788ed49f9f92f76c1d7cac4d5d7f43b0cc83e"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/build.log",
+      "bytes": 25401,
+      "sha256": "34cb8571e62d993597750ab0bc9625ded8f9585eb9cefb5fa784787c5e309153"
     },
     {
       "path": "tmp/heart-learning/routing-repair-v1/cases.json",
@@ -8956,8 +13151,8 @@
     },
     {
       "path": "tmp/heart-learning/routing-repair-v1/checks.json",
-      "bytes": 656,
-      "sha256": "ed50c2b355626cce531cae4948974a50e30e1e8ef4169178bc5f5f27ac4ca414"
+      "bytes": 1082,
+      "sha256": "a342f358795482d65eee19a786e111060ea32c9b7e55cc82a6c8f34052025277"
     },
     {
       "path": "tmp/heart-learning/routing-repair-v1/collect-evidence.py",
@@ -14206,8 +18401,8 @@
     },
     {
       "path": "tmp/heart-learning/routing-repair-v1/inverse.log",
-      "bytes": 17449,
-      "sha256": "4c1e4c79a5822f51b9b4a68580fd402935a1fd6cd4e2956fdac11204634da7d1"
+      "bytes": 70986,
+      "sha256": "c6d9865f8a00f6a0311fe8db8d31501d3184bd7b57a316d1e03817d690d7ba09"
     },
     {
       "path": "tmp/heart-learning/routing-repair-v1/lint.log",
@@ -14728,6 +18923,11 @@
       "path": "tmp/heart-learning/routing-repair-v1/run-matrix.py",
       "bytes": 827,
       "sha256": "225890cccbc47e55059e35352577d8f71743aec412dc06c9d684df4b1c55b157"
+    },
+    {
+      "path": "tmp/heart-learning/routing-repair-v1/served-runtime.json",
+      "bytes": 702,
+      "sha256": "a44746d398d7c9d1267b635862bf4e62487440ba18bfa04d8a031c121da8e8dd"
     },
     {
       "path": "tmp/heart-learning/routing-repair-v1/smoothing-probe.mjs",

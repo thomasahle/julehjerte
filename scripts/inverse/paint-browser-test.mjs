@@ -67,7 +67,7 @@ if(engineReference||intervention){
  origin=`http://127.0.0.1:${referenceServer.address().port}`;
 }
 await fs.mkdir(output,{recursive:true});
-const loader=await createServer({configFile:false,optimizeDeps:{noDiscovery:true},cacheDir:path.resolve(output,'vite-cache'),server:{middlewareMode:true,hmr:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
+const loader=await createServer({configFile:false,optimizeDeps:{noDiscovery:true},cacheDir:path.resolve(output,'vite-cache'),server:{middlewareMode:true,hmr:false,ws:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
 const dom=new JSDOM('');globalThis.DOMParser=dom.window.DOMParser;
 const {parseHeartFromSVG}=await loader.ssrLoadModule('/src/lib/utils/heartDesign.ts');
 const {findFingersWithIssues,intersectionMarginPx}=await loader.ssrLoadModule('/src/lib/editor/curveIssues.ts');
@@ -98,6 +98,8 @@ report.harnessSourceHashes['scripts/inverse/fixtures/photographic-puppy-fit.json
 report.harnessSourceHashes['scripts/inverse/fixtures/photographic-near-miss-seed.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-near-miss-seed.json')).digest('hex');
 for(const name of ['junctions.js','border.js','geometry.js','material.js','validate.js','settings.js']){const file=`static/inverse/core/${name}`;report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');}
 report.harnessSourceHashes['scripts/inverse/fixtures/maple-comparison.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/maple-comparison.json')).digest('hex');
+report.harnessSourceHashes['scripts/inverse/fixtures/sloth-rejected-routing.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/sloth-rejected-routing.json')).digest('hex');
+report.workspaceSourceHashes['static/inverse/core/direct/rejected-routing.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/direct/rejected-routing.js')).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/clamped-features.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
@@ -106,8 +108,8 @@ try{
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
-   const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask';
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||['near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask',slothMask=name==='sloth-routing-mask';
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -162,8 +164,15 @@ try{
      }else if(photoMask){
       // Hold crop/classification fixed to isolate the real worker and editor
       // path. Upload pixels, never saved cutting paths or a fitting seed.
-      let fixture,photo;
-      if(fadedFrameMask){
+      let fixture,photo,fixedMask;
+      if(slothMask){
+       const file='scripts/inverse/fixtures/sloth-rejected-routing.json',bytes=await fs.readFile(file),data=JSON.parse(bytes);
+       fixture={sourceCase:data.caseId,quad:null,maskSha256:data.maskSha256,paintImport:{resolution:400,
+        method:'The unchanged 250-pixel upload is resized to the paint canvas at destination-cell centers. This browser target differs from the native-resolution routing diagnostic.',
+        maskSha256:'f76e4c8a4a16d227f13d36d1feeee4fb84681b35d128c6ab4b14bb3f775a47b7'}};
+       fixedMask=new Uint8Array(data.resolution**2);for(const[start,length]of data.maskRuns)fixedMask.fill(1,start,start+length);
+       row.sourceMaskFixture={file,sha256:createHash('sha256').update(bytes).digest('hex'),scope:'Classified pixels only; saved rejected routing proposals are not supplied to the worker.'};
+      }else if(fadedFrameMask){
        const data=JSON.parse(await fs.readFile('scripts/inverse/fixtures/faded-frame-mask.json')),entry=data.classification;
        photo=await readHardPhoto({file:entry.file,sha256:entry.sha256,width:entry.resolution,height:entry.resolution});
        const binary=Uint8Array.from({length:entry.resolution**2},(_,i)=>Number(photo.rgba[i*4]<128));
@@ -191,12 +200,12 @@ try{
        if(name==='puppy-shift-mask')fixture={...fixture,quad:fixture.quad.map(([x,y])=>[x+1,y]),maskSha256:'a96eea21b65604e2a7b9b93d6823cdd58937bebd66fceeb80e9a1f5c2812c1cc'};
        const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));photo=await readHardPhoto(catalogue.source||catalogue.cases.find(c=>c.id===fixture.sourceCase));
       }
-      const mask=prepare({...photo,quad:fixture.quad},AUTOMATIC_PRESET).preview.mask;
+      const mask=fixedMask||prepare({...photo,quad:fixture.quad},AUTOMATIC_PRESET).preview.mask;
       assert.equal(createHash('sha256').update(mask).digest('hex'),fixture.maskSha256);
       const n=Math.sqrt(mask.length),c=createCanvas(n,n),ctx=c.getContext('2d'),pixels=ctx.createImageData(n,n);
       for(let i=0;i<mask.length;i++)pixels.data.set(mask[i]?[185,19,19,255]:[255,255,255,255],4*i);
       ctx.putImageData(pixels,0,0);await fs.writeFile(file,c.toBuffer('image/png'));
-      row.sourcePhoto={id:fixture.sourceCase,sha256:photo.fileSha256,quad:fixture.quad,fixedMaskSha256:fixture.maskSha256,...(fixture.paintImport?{paintImport:fixture.paintImport}:{})};
+      row.sourcePhoto={id:fixture.sourceCase,sha256:photo?.fileSha256??null,quad:fixture.quad,fixedMaskSha256:fixture.maskSha256,...(fixture.paintImport?{paintImport:fixture.paintImport}:{})};
      }else if(webPhoto){
       const data=await catalogue(),entry=data.cases.find(c=>c.id===name.slice(4));assert.ok(entry,`Unknown photograph ${name}`);
       const photo=data.photos.find(p=>p.id===entry.photo),input=await readPhoto(photo),roi=entry.roi||[0,0,input.imageWidth,input.imageHeight],c=createCanvas(roi[2]-roi[0],roi[3]-roi[1]),ctx=c.getContext('2d'),pixels=ctx.createImageData(input.imageWidth,input.imageHeight);

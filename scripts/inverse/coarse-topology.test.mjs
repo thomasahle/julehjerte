@@ -25,9 +25,12 @@ test('coarse routing proposals cannot replace the original photo or evade its er
   assert.equal(input.boundarySeed,seed);assert.equal(JSON.stringify(seed?.curves.map(c=>c.p)),curves);
 });
 
-test('coarse routing and common refinement retain photographed tree branches in exported templates',async()=>{
+test('coarse routing and common refinement retain photographed tree branches in exported templates',async t=>{
   const prepared=prepare({...photograph,quad},cfg),source=prepared.target.sourceImage,before=source.mask.slice();
   const answer=await design(prepared.target,cfg),report=answer.report;
+  // Retain the actual alternative if wall-clock scheduling changes the route.
+  // An isolated rerun cannot establish the failed run's exported quality.
+  if(report.solver.coarseTopologyInitialization?.accepted!==true)t.diagnostic(JSON.stringify({report,cutGeometry:answer.files['cut_geometry.json']}));
   assert.equal(report.solver.coarseTopologyInitialization?.accepted,true);
   assert.equal(report.solver.selectedInitialization,'coarse-boundary-topology');
   assert.equal(report.templateChecksPassed,true);assert.equal(report.manufacturing.status,'pass');
