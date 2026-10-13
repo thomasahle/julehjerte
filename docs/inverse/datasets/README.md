@@ -57,7 +57,11 @@ The [retained-start follow-up](retained-grid-starts.md) finds that a weighted
 mean discarded a useful three-cut start which was already available. Reusing
 that start before adding cuts improves the horizontal crop-shift case from
 3.58% to 2.47% without changing its pixels or acceptance rules. The vertical
-shift remains unresolved; finer paper checks alone did not fix it.
+shift remains unresolved in fresh solving; finer paper checks alone did not
+fix it. A controlled continuation from another crop's saved fit does meet the
+same limits, pointing to further work on starting shapes and routing. The
+guarded production change passes 731 inverse tests and five browser/export
+flows; all 22 Hunodan cases retain their previous errors below ten seconds.
 
 The [localization follow-up](boundary-localization.md) found that the original
 synthetic training split contained no acute or right-angle degree-two corners.
