@@ -23,6 +23,8 @@ test('a poor grid can earn a better route before losing a whole source region',a
   const source=prepared.target.sourceImage,probability=source.probability.slice();
   const answer=await design(prepared.target,cfg),solver=answer.report.solver,initialization=solver.earlyFeatureInitialization;
   assert.equal(initialization.trigger,'weak-region');assert.equal(initialization.scheduled,1);
+  assert.equal(initialization.stage,'after-recovery');
+  assert.equal(solver.featureRecovery.budgetPolicy,'prioritize_routing');
   assert.ok(initialization.retention>.6,'The existing whole-region loss trigger did not detect this poor routing.');
   assert.ok(initialization.proposal.error<initialization.previousError);
   assert.equal(initialization.proposal.featuresPassed,true);

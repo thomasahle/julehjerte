@@ -196,11 +196,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const weakest=features.regions.reduce((best,r,j)=>best===null||r.retainedFraction<features.regions[best].retainedFraction?j:best,null);
   const weakRegion=poorGrid&&features.passed&&weakest!==null&&1-features.regions[weakest].retainedFraction>fine[0].error?weakest:null;
   const missingFeature=(competitiveGrid||poorGrid&&lostColour)&&!features.passed;
-  if((missingFeature||weakRegion!==null)&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
-    const missed=weakRegion!==null?[weakRegion]:features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]);
+  const initializeEarlyFeature=(missed,weakRegion=null,when='before-recovery')=>{
     featureSamplingContext={missed,counts:fine[0].model.counts};
     const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
-    earlyFeatureInitialization={...extra.report,stage:'before-recovery',scheduled:0,...(weakRegion!==null?{trigger:'weak-region',retention:features.regions[weakRegion].retainedFraction,previousError:fine[0].error}:{})};
+    earlyFeatureInitialization={...extra.report,stage:when,scheduled:0,...(weakRegion!==null?{trigger:'weak-region',retention:features.regions[weakRegion].retainedFraction,previousError:fine[0].error}:{})};
     if(extra.seeds.length){
       const seed=stage('directFitting',()=>fitSeed(extra.seeds[0]));
       const audit=auditFeatureFidelity(source,gridMask(seed.model,source.resolution,seed.phase,seed.floor),cfg,sourceFeatures);
@@ -218,7 +217,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         featureAlternatives=extra.seeds.slice(1,2);
       }
     }
-  }
+  };
+  const featureTimeAvailable=()=>!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500;
+  if(missingFeature&&featureTimeAvailable())initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
   // Retaining a large region does not mean a coarse grid keeps its branches.
   // Only shorten routing when colour protection actually selected a different
   // layout. Otherwise trees can lose useful smoothing/edge-profile retries.
@@ -233,6 +234,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const deferredFeatureRecovery=!shortBudget&&probeRouting&&needsRecovery?{maximumSeconds:fullRecoverySeconds,attempted:false}:null;
   const attemptRecovery=async(seconds,budgetPolicy,until=deadline)=>{
     recovery=await recoverImageFeatures(input,cfg,seconds,onProgress);
+    recovery.report.trigger=features;
     recovery.report.budgetPolicy=budgetPolicy;recoveryHistory.push(recovery.report);
     recovery.report.gridMismatchTrigger=poorGrid&&!boundaryCandidate;
     const seed=recovery.solution||recovery.refinementSeed;
@@ -268,6 +270,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     if(recovered)return recovered;
   }
   if(deferredFeatureRecovery)deferredFeatureRecovery.remainingSeconds=Math.max(0,fullRecoverySeconds-(recovery?.report.seconds||0));
+  // A still-retained region must not shorten a useful traced search. A tree
+  // with hidden border endpoints needs that search to recover its simpler
+  // three-cut pair. Try the speculative grid only after routing has failed,
+  // while fast border-model rejections still leave time for a fresh layout.
+  if(weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'after-recovery');
   const floor=fittingMargin(cfg,cfg.width)/cfg.width,candidates=[];
   let verifiedAlternative=false;
   // Keep the established 25-second photographic comparison allowance after
