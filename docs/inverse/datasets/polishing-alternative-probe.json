@@ -1,0 +1,1574 @@
+{
+  "schema": "woven-heart-polishing-alternative-probe-1",
+  "runtimeCommit": "98de0d5e6c75a1a50a2891685775db779bddc9e4",
+  "scope": "Completed fixed-geometry penalty experiments, a retained checkpoint re-audit, focused regressions and controlled browser comparison. Full release QA is still running and is not certified by this record.",
+  "subdivision": {
+    "scope": "Exact de Casteljau subdivision of a smooth curved slit and a straight slit; same geometry at every depth. Separation term disabled; no near-border or short-handle penalty at these sizes.",
+    "rows": [
+      {
+        "depth": 0,
+        "edges": 2,
+        "joins": 0,
+        "loss": 1.951793691212546e-06,
+        "minRadius": 32.46867454163702
+      },
+      {
+        "depth": 1,
+        "edges": 4,
+        "joins": 2,
+        "loss": 9.542738272734332e-07,
+        "minRadius": 32.46867454163702
+      },
+      {
+        "depth": 2,
+        "edges": 8,
+        "joins": 6,
+        "loss": 4.822238634645495e-07,
+        "minRadius": 32.43677063472092
+      },
+      {
+        "depth": 3,
+        "edges": 16,
+        "joins": 14,
+        "loss": 2.422850710496361e-07,
+        "minRadius": 32.43383490930321
+      },
+      {
+        "depth": 4,
+        "edges": 32,
+        "joins": 30,
+        "loss": 1.212328658768681e-07,
+        "minRadius": 32.43057495628508
+      }
+    ]
+  },
+  "penaltyExperiments": [
+    {
+      "case": "background",
+      "variant": "original",
+      "sourceSha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "prototypeSha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "geometrySha256": "3bfbb04eb643ef665b5720ec78a40be9ef400d21f740ab6ab518fc39d04ea4ee",
+      "maskSha256": "06d5ae81b09280b9cbe1d6f3b561c1c111a977249950ddcb0ab281b6666b4bf3",
+      "configuration": {
+        "algorithm": "auto",
+        "progressGeometry": false,
+        "preferMatchingSheets": false,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 700,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "symmetry": null,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      },
+      "edges": 161,
+      "paths": 8,
+      "joins": 153,
+      "seconds": 2.195709042,
+      "steps": 160,
+      "rate": 0.035,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "error": 0.01243125,
+      "features": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 1020.1875,
+            "centerMm": [
+              50.13578233167922,
+              51.447397843533665
+            ],
+            "retainedFraction": 0.9963242051093549
+          },
+          {
+            "value": 1,
+            "areaMm2": 1649.75,
+            "centerMm": [
+              50.86428814971966,
+              50.39046635853917
+            ],
+            "retainedFraction": 0.9878769510531898
+          },
+          {
+            "value": 1,
+            "areaMm2": 95.8125,
+            "centerMm": [
+              91.86863992172212,
+              86.7869373776908
+            ],
+            "retainedFraction": 0.9882583170254403
+          },
+          {
+            "value": 1,
+            "areaMm2": 94,
+            "centerMm": [
+              6.858876329787234,
+              89.03125
+            ],
+            "retainedFraction": 0.9827127659574468
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "initialPenalty": {
+        "loss": 0.0003551181135600118,
+        "minRadius": 0.569143057722361
+      },
+      "finalPenalty": {
+        "loss": 0.0002544587002802846,
+        "minRadius": 0.5422288375469374
+      }
+    },
+    {
+      "case": "background",
+      "variant": "curvature",
+      "sourceSha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "prototypeSha256": "f65b81737d5a89a93958572513dd3559ac3287f6d722c28487e4a186cd1a8e53",
+      "geometrySha256": "3bfbb04eb643ef665b5720ec78a40be9ef400d21f740ab6ab518fc39d04ea4ee",
+      "maskSha256": "06d5ae81b09280b9cbe1d6f3b561c1c111a977249950ddcb0ab281b6666b4bf3",
+      "configuration": {
+        "algorithm": "auto",
+        "progressGeometry": false,
+        "preferMatchingSheets": false,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 700,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "symmetry": null,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      },
+      "edges": 161,
+      "paths": 8,
+      "joins": 153,
+      "seconds": 2.234235,
+      "steps": 160,
+      "rate": 0.035,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "error": 0.01256875,
+      "features": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 1020.1875,
+            "centerMm": [
+              50.13578233167922,
+              51.447397843533665
+            ],
+            "retainedFraction": 0.9955890461312259
+          },
+          {
+            "value": 1,
+            "areaMm2": 1649.75,
+            "centerMm": [
+              50.86428814971966,
+              50.39046635853917
+            ],
+            "retainedFraction": 0.987346567661767
+          },
+          {
+            "value": 1,
+            "areaMm2": 95.8125,
+            "centerMm": [
+              91.86863992172212,
+              86.7869373776908
+            ],
+            "retainedFraction": 0.9882583170254403
+          },
+          {
+            "value": 1,
+            "areaMm2": 94,
+            "centerMm": [
+              6.858876329787234,
+              89.03125
+            ],
+            "retainedFraction": 0.9833776595744681
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "initialPenalty": {
+        "loss": 0.0008457575639273051,
+        "minRadius": 0.569143057722361
+      },
+      "finalPenalty": {
+        "loss": 0.0008674206976945854,
+        "minRadius": 0.7603789121329977
+      }
+    },
+    {
+      "case": "background",
+      "variant": "joins",
+      "sourceSha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "prototypeSha256": "82f8c061c26d5fec4fc5e47c0da7abee691b07c257b34b6df2390101a762f318",
+      "geometrySha256": "3bfbb04eb643ef665b5720ec78a40be9ef400d21f740ab6ab518fc39d04ea4ee",
+      "maskSha256": "06d5ae81b09280b9cbe1d6f3b561c1c111a977249950ddcb0ab281b6666b4bf3",
+      "configuration": {
+        "algorithm": "auto",
+        "progressGeometry": false,
+        "preferMatchingSheets": false,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 700,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "symmetry": null,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      },
+      "edges": 161,
+      "paths": 8,
+      "joins": 153,
+      "seconds": 2.258839917,
+      "steps": 160,
+      "rate": 0.035,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "error": 0.0133375,
+      "features": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 1020.1875,
+            "centerMm": [
+              50.13578233167922,
+              51.447397843533665
+            ],
+            "retainedFraction": 0.9947313606567421
+          },
+          {
+            "value": 1,
+            "areaMm2": 1649.75,
+            "centerMm": [
+              50.86428814971966,
+              50.39046635853917
+            ],
+            "retainedFraction": 0.9863615699348386
+          },
+          {
+            "value": 1,
+            "areaMm2": 95.8125,
+            "centerMm": [
+              91.86863992172212,
+              86.7869373776908
+            ],
+            "retainedFraction": 0.9882583170254403
+          },
+          {
+            "value": 1,
+            "areaMm2": 94,
+            "centerMm": [
+              6.858876329787234,
+              89.03125
+            ],
+            "retainedFraction": 0.9833776595744681
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "initialPenalty": {
+        "loss": 0.006326648821813935,
+        "minRadius": 0.569143057722361
+      },
+      "finalPenalty": {
+        "loss": 0.00017697476355220369,
+        "minRadius": 0.4918712425239276
+      }
+    },
+    {
+      "case": "background",
+      "variant": "both",
+      "sourceSha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "prototypeSha256": "4b6132c8df86622ccbe9d585a2baa128c33d658cc0a1e7f295bca503b0408226",
+      "geometrySha256": "3bfbb04eb643ef665b5720ec78a40be9ef400d21f740ab6ab518fc39d04ea4ee",
+      "maskSha256": "06d5ae81b09280b9cbe1d6f3b561c1c111a977249950ddcb0ab281b6666b4bf3",
+      "configuration": {
+        "algorithm": "auto",
+        "progressGeometry": false,
+        "preferMatchingSheets": false,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 700,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "symmetry": null,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      },
+      "edges": 161,
+      "paths": 8,
+      "joins": 153,
+      "seconds": 2.188338667,
+      "steps": 160,
+      "rate": 0.035,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "error": 0.01366875,
+      "features": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 1020.1875,
+            "centerMm": [
+              50.13578233167922,
+              51.447397843533665
+            ],
+            "retainedFraction": 0.9937511486859033
+          },
+          {
+            "value": 1,
+            "areaMm2": 1649.75,
+            "centerMm": [
+              50.86428814971966,
+              50.39046635853917
+            ],
+            "retainedFraction": 0.9851871495681164
+          },
+          {
+            "value": 1,
+            "areaMm2": 95.8125,
+            "centerMm": [
+              91.86863992172212,
+              86.7869373776908
+            ],
+            "retainedFraction": 0.9882583170254403
+          },
+          {
+            "value": 1,
+            "areaMm2": 94,
+            "centerMm": [
+              6.858876329787234,
+              89.03125
+            ],
+            "retainedFraction": 0.9833776595744681
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "initialPenalty": {
+        "loss": 0.006817288272181228,
+        "minRadius": 0.569143057722361
+      },
+      "finalPenalty": {
+        "loss": 0.0006860362179315218,
+        "minRadius": 0.7442643173866335
+      }
+    },
+    {
+      "case": "scene",
+      "variant": "original",
+      "sourceSha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "prototypeSha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "geometrySha256": "ef443c05f600d31fb5a8f1c1e64f7b445e580d49762aeda2afffffe8185fdcd3",
+      "maskSha256": "3ce29580911b533c11961dfd4ff58799c3d9463dd09fb7303ce4edbc649ea0e9",
+      "configuration": {
+        "algorithm": "auto",
+        "progressGeometry": false,
+        "preferMatchingSheets": false,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 360,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "symmetry": null,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      },
+      "edges": 117,
+      "paths": 8,
+      "joins": 123,
+      "seconds": 1.076648541,
+      "steps": 160,
+      "rate": 0.008,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "error": 0.00594375,
+      "features": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 1097.3125,
+            "centerMm": [
+              51.00301161929715,
+              49.890093694822575
+            ],
+            "retainedFraction": 0.989462892293672
+          },
+          {
+            "value": 1,
+            "areaMm2": 1773.375,
+            "centerMm": [
+              51.820425389441034,
+              49.32089236625079
+            ],
+            "retainedFraction": 0.990766194403327
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "initialPenalty": {
+        "loss": 0.00037900362534714146,
+        "minRadius": 0.5729623842394881
+      },
+      "finalPenalty": {
+        "loss": 0.023556650558417897,
+        "minRadius": 0.01018098589676686
+      }
+    },
+    {
+      "case": "scene",
+      "variant": "curvature",
+      "sourceSha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "prototypeSha256": "f65b81737d5a89a93958572513dd3559ac3287f6d722c28487e4a186cd1a8e53",
+      "geometrySha256": "ef443c05f600d31fb5a8f1c1e64f7b445e580d49762aeda2afffffe8185fdcd3",
+      "maskSha256": "3ce29580911b533c11961dfd4ff58799c3d9463dd09fb7303ce4edbc649ea0e9",
+      "configuration": {
+        "algorithm": "auto",
+        "progressGeometry": false,
+        "preferMatchingSheets": false,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 360,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "symmetry": null,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      },
+      "edges": 117,
+      "paths": 8,
+      "joins": 123,
+      "seconds": 1.1289385,
+      "steps": 160,
+      "rate": 0.008,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "error": 0.006,
+      "features": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 1097.3125,
+            "centerMm": [
+              51.00301161929715,
+              49.890093694822575
+            ],
+            "retainedFraction": 0.9892920202768126
+          },
+          {
+            "value": 1,
+            "areaMm2": 1773.375,
+            "centerMm": [
+              51.820425389441034,
+              49.32089236625079
+            ],
+            "retainedFraction": 0.9906604638048918
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "initialPenalty": {
+        "loss": 0.0008520987059766812,
+        "minRadius": 0.5729623842394881
+      },
+      "finalPenalty": {
+        "loss": 0.3359024169259417,
+        "minRadius": 0.010180905875754216
+      }
+    },
+    {
+      "case": "scene",
+      "variant": "joins",
+      "sourceSha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "prototypeSha256": "82f8c061c26d5fec4fc5e47c0da7abee691b07c257b34b6df2390101a762f318",
+      "geometrySha256": "ef443c05f600d31fb5a8f1c1e64f7b445e580d49762aeda2afffffe8185fdcd3",
+      "maskSha256": "3ce29580911b533c11961dfd4ff58799c3d9463dd09fb7303ce4edbc649ea0e9",
+      "configuration": {
+        "algorithm": "auto",
+        "progressGeometry": false,
+        "preferMatchingSheets": false,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 360,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "symmetry": null,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      },
+      "edges": 117,
+      "paths": 8,
+      "joins": 123,
+      "seconds": 1.169391791,
+      "steps": 160,
+      "rate": 0.008,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "error": 0.0060875,
+      "features": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 1097.3125,
+            "centerMm": [
+              51.00301161929715,
+              49.890093694822575
+            ],
+            "retainedFraction": 0.9892350629378596
+          },
+          {
+            "value": 1,
+            "areaMm2": 1773.375,
+            "centerMm": [
+              51.820425389441034,
+              49.32089236625079
+            ],
+            "retainedFraction": 0.9904490026080214
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "initialPenalty": {
+        "loss": 0.002086700252953778,
+        "minRadius": 0.5729623842394881
+      },
+      "finalPenalty": {
+        "loss": 0.002086700252953778,
+        "minRadius": 0.5729623842394881
+      }
+    },
+    {
+      "case": "scene",
+      "variant": "both",
+      "sourceSha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "prototypeSha256": "4b6132c8df86622ccbe9d585a2baa128c33d658cc0a1e7f295bca503b0408226",
+      "geometrySha256": "ef443c05f600d31fb5a8f1c1e64f7b445e580d49762aeda2afffffe8185fdcd3",
+      "maskSha256": "3ce29580911b533c11961dfd4ff58799c3d9463dd09fb7303ce4edbc649ea0e9",
+      "configuration": {
+        "algorithm": "auto",
+        "progressGeometry": false,
+        "preferMatchingSheets": false,
+        "matchingErrorAllowance": 0.01,
+        "earlyStop": false,
+        "width": 100,
+        "maxImageError": 0.03,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "geometryTolerance": 0.01,
+        "sharpTurn": 60,
+        "sharpPenalty": 50,
+        "turnPenalty": 3,
+        "bendingPenalty": 0.15,
+        "acutePenalty": 30,
+        "maxTurn": 175,
+        "connectorPenalty": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "minRadius": 0.8,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "timeLimit": 10,
+        "relativeGap": 0.02,
+        "maxRounds": 12,
+        "localNeighborhoodFactor": 8,
+        "requireMaterialCore": true,
+        "materialResolution": 360,
+        "minFeatureArea": 0.25,
+        "roundHidden": false,
+        "trials": 0,
+        "registration": 0.4,
+        "rotation": 0.3,
+        "relativeScalePercent": 0.2,
+        "seed": 1729,
+        "symmetry": null,
+        "paperColors": [
+          "#bd1111",
+          "#ffffff"
+        ],
+        "nominalWidth": 2.50501002004008
+      },
+      "edges": 117,
+      "paths": 8,
+      "joins": 123,
+      "seconds": 1.093608917,
+      "steps": 160,
+      "rate": 0.008,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "error": 0.0060875,
+      "features": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 0,
+            "areaMm2": 1097.3125,
+            "centerMm": [
+              51.00301161929715,
+              49.890093694822575
+            ],
+            "retainedFraction": 0.9892350629378596
+          },
+          {
+            "value": 1,
+            "areaMm2": 1773.375,
+            "centerMm": [
+              51.820425389441034,
+              49.32089236625079
+            ],
+            "retainedFraction": 0.9904490026080214
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "initialPenalty": {
+        "loss": 0.0025597953335833173,
+        "minRadius": 0.5729623842394881
+      },
+      "finalPenalty": {
+        "loss": 0.0025597953335833173,
+        "minRadius": 0.5729623842394881
+      }
+    }
+  ],
+  "finerCheckpoint": {
+    "error": 0.00538125,
+    "geometry": {
+      "passed": true,
+      "issues": [],
+      "nominalWidthRequired": 2.50501002004008,
+      "minimumInterSlitDistanceLower": 3.207846323909591,
+      "minimumOuterSideClearance": 3.2678471206992725,
+      "boundaryParityMatches": true,
+      "forwardSampleMismatchPixels": null,
+      "forwardBoundaryAmbiguousPixels": 0,
+      "forwardSampleResolution": 101,
+      "geometryTolerance": 0.01,
+      "sharedCurvesStoredOnce": true,
+      "physicalAssemblyTested": false,
+      "limitations": [
+        "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+        "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+        "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+        "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+      ]
+    },
+    "coarsePaper": "uncertain",
+    "finePaper": "pass",
+    "features": {
+      "passed": true,
+      "referenceAvailable": true,
+      "minimumRetention": 0.6,
+      "minimumAreaFraction": 0.0003,
+      "minimumCoreRadiusFraction": 0.005,
+      "borderClearancePixels": 1,
+      "regions": [
+        {
+          "value": 0,
+          "areaMm2": 1097.3125,
+          "centerMm": [
+            51.00301161929715,
+            49.890093694822575
+          ],
+          "retainedFraction": 0.9912285698012189
+        },
+        {
+          "value": 1,
+          "areaMm2": 1773.375,
+          "centerMm": [
+            51.820425389441034,
+            49.32089236625079
+          ],
+          "retainedFraction": 0.9916825262564319
+        }
+      ],
+      "missing": [],
+      "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+    }
+  },
+  "browserComparison": [
+    {
+      "run": "browser-baseline-retry",
+      "engineReference": "8a385c28fa694728a40b9faab997cb445380dc31",
+      "fitSha256": "d06384779456e59b9df1176d9b903d5bc22c7a15ed12d70004643776472548d3",
+      "inputMask": "3ce29580911b533c11961dfd4ff58799c3d9463dd09fb7303ce4edbc649ea0e9",
+      "error": 0.0059625,
+      "seconds": 7.6215,
+      "geometry": true,
+      "paper": "pass",
+      "paperResolution": 360
+    },
+    {
+      "run": "browser-candidate",
+      "engineReference": "98de0d5e6c75a1a50a2891685775db779bddc9e4",
+      "fitSha256": "c2a838f842a6a9c4ca6e13eac1526e0f819f14a5cae58ac8a5c44c7ce2067fd6",
+      "inputMask": "3ce29580911b533c11961dfd4ff58799c3d9463dd09fb7303ce4edbc649ea0e9",
+      "error": 0.00545,
+      "seconds": 8.361100000023843,
+      "geometry": true,
+      "paper": "pass",
+      "paperResolution": 700
+    }
+  ],
+  "artifacts": {
+    "tmp/heart-learning/outline-regularization-v1/background-original/report.json": {
+      "sha256": "8ff7f9c2826a8c26e9754f3d496ecf50c48c388d8c3b116bce61c71f1d75e189",
+      "bytes": 5083
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-original/cut_geometry.json": {
+      "sha256": "a068a4470c0141402a4686617d1457525555ada95a2693344c3189d9ffe80ac7",
+      "bytes": 37861
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-original/woven.png": {
+      "sha256": "2e23f5a8f118355c3f0800801b473ac87cd001fb92f12c925ec9b78591ce3c4a",
+      "bytes": 17192
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-original/woven-800.png": {
+      "sha256": "99a2585602ed94a692213bb919cf5047bd58eb18a5567a116a367844d2aaf59b",
+      "bytes": 38857
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-original/refine-source.js": {
+      "sha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "bytes": 15728
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-curvature/report.json": {
+      "sha256": "b82bc46ec07ce0b9fb2303adcb3706172a4defe0b806b058beae339f210c26ce",
+      "bytes": 5079
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-curvature/cut_geometry.json": {
+      "sha256": "714fc78ad6c6769bfefef73e9ea7d6f852c2e1c22b4ade120b320450d92f722c",
+      "bytes": 37872
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-curvature/woven.png": {
+      "sha256": "dc68dd01c4efbff52d8b2ac67c2a24e7826cbb03bddf78aedb214a1aed44face",
+      "bytes": 17072
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-curvature/woven-800.png": {
+      "sha256": "7ee955516ab584a45f8be360c8ed647fe2bf0e253af3459db471f1402bccd855",
+      "bytes": 38546
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-curvature/refine-source.js": {
+      "sha256": "f65b81737d5a89a93958572513dd3559ac3287f6d722c28487e4a186cd1a8e53",
+      "bytes": 15728
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-joins/report.json": {
+      "sha256": "89926958da5ba4e6ba13a1cf180c0d71d37a0023509571f4b81cb6198df7cec3",
+      "bytes": 5084
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-joins/cut_geometry.json": {
+      "sha256": "df6c15de0c4609c24b0060fb5c3e78e35c4ecdb17da72ebe328186a419856b4c",
+      "bytes": 37873
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-joins/woven.png": {
+      "sha256": "c9fb78312b4c871f0861db219a685bff733b9fd42067dc2be651f07bd0696fdb",
+      "bytes": 16934
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-joins/woven-800.png": {
+      "sha256": "f87f9d9e2732ea714285d1289754eb507192af5fe9e0dfce8222b2312e544c64",
+      "bytes": 38668
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-joins/refine-source.js": {
+      "sha256": "82f8c061c26d5fec4fc5e47c0da7abee691b07c257b34b6df2390101a762f318",
+      "bytes": 15728
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-both/report.json": {
+      "sha256": "aef876c3a4653ce066ac643a2417696c3b9bd16ff57222bd6670f3b48009a99e",
+      "bytes": 5077
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-both/cut_geometry.json": {
+      "sha256": "596b6e443d61541d983d71b332dd6ce8f7eedf2109f635ca17e389eee466e070",
+      "bytes": 37865
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-both/woven.png": {
+      "sha256": "d38f59143d2e880ce9c796b14b321f6aebbfdc81a2c211413863f82a75a29dd4",
+      "bytes": 16962
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-both/woven-800.png": {
+      "sha256": "91cdc51c594a65cb1975d98fc2a0e530b5362debc3b45553e28b7ead3e57a23e",
+      "bytes": 38388
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-both/refine-source.js": {
+      "sha256": "4b6132c8df86622ccbe9d585a2baa128c33d658cc0a1e7f295bca503b0408226",
+      "bytes": 15728
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-003.png": {
+      "sha256": "5e46495902da88c74fc0072906e5160974a99c859fea445ba0024191d6de4f14",
+      "bytes": 17734
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-002.png": {
+      "sha256": "d42e882b8562b583df3ad4e327f7e6c65b93120792571940cac0e9918b1bb562",
+      "bytes": 17770
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/weave_preview.svg": {
+      "sha256": "afa3e9580205b0d362270df12bf390e7c7284aa32cec317626de3e5894c2b70d",
+      "bytes": 14680
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/vector_target.svg": {
+      "sha256": "55e3ac6afe95d1410be827fd1641af997839a8ae9a36d5e14e03255ffbb34ea2",
+      "bytes": 17125
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-004.json": {
+      "sha256": "f4f197bdbfeb255d093b9b941675df98f43b51fe009afd5405c7573786090a4e",
+      "bytes": 37872
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-005.json": {
+      "sha256": "ca0cf5c58851b3b824ce63b807266d5692bea9b59e18a194c101fea817fc6527",
+      "bytes": 37892
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-005.png": {
+      "sha256": "bcd22601586ba9aa219b8ea150a96015cb788b21d2e72365ee4110fc2ee08c2e",
+      "bytes": 17296
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/template_left.svg": {
+      "sha256": "a1a3829c0a57e866530e33ef42790080be99a3b12eba554bebce508f5ed24fc9",
+      "bytes": 8999
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/report.json": {
+      "sha256": "31bcc8c45f8b884ada67ca512aebad422bbfb9b77f5a43f3c4d9f97054cb1644",
+      "bytes": 56797
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-004.png": {
+      "sha256": "1cce043a8ccc9abce75541dffd5aba4e0e7082ecb16a1320de5631a68f16c108",
+      "bytes": 17469
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/processed_design.svg": {
+      "sha256": "aebd1552bd0c67e8756720fc3aa5fa2d6c3239a252b72692af6ba4e3362104c3",
+      "bytes": 12165
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-006.png": {
+      "sha256": "0ea7cd418a9782054a6aff01310d965b126fb57af16b2d53fac64dddf7912194",
+      "bytes": 17130
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-007.png": {
+      "sha256": "93943377daf44bedf777f3af342e2c78d2e392237349262ffbfbd50e4ebd5b34",
+      "bytes": 17053
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-002.json": {
+      "sha256": "3bfbb04eb643ef665b5720ec78a40be9ef400d21f740ab6ab518fc39d04ea4ee",
+      "bytes": 37814
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/cut_geometry.json": {
+      "sha256": "6838e4512008f8f87069d2e0bf416bca4a461aefd584ef0a1fb9ca9470848d04",
+      "bytes": 80570
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/manufacturability_left.svg": {
+      "sha256": "7c76d4fd093949c59cf1a53fc6f95e19b6d114f039808e3140e0ca46e7e0a5b1",
+      "bytes": 1859111
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/woven.png": {
+      "sha256": "eaaa30959f969c33f5dcc860162e19b618db1e870a64ab8912910cdfb142d907",
+      "bytes": 16999
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-003.json": {
+      "sha256": "a511089b3ced3e5ae575324d70fece30c9d50c374658ddbabf8b4167ccefae8f",
+      "bytes": 37849
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/print_templates.html": {
+      "sha256": "1fef8b2ce642305bead53f715dc6ae433be86a86147843b25eaaea6d2d0671d6",
+      "bytes": 18657
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/template_right.svg": {
+      "sha256": "9367074038b15c58d82f7c18455243fba3a61ce282ab382bcc15e2f5fd836050",
+      "bytes": 8746
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-000.json": {
+      "sha256": "5d4f6456e988500154b3b3a3722eb9607b0b5e04f904460a21514c6dea3cdfc2",
+      "bytes": 24385
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-001.json": {
+      "sha256": "4d6b7c6848c52c052cb10e634093051af2c0496bd09b3de655f84462ff57f088",
+      "bytes": 24373
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-006.json": {
+      "sha256": "550615bb089138819075d5d5b6412897b16fb7d6c27ee3eb6e1191d7f8d1c77b",
+      "bytes": 37900
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/report.html": {
+      "sha256": "5bcef06895edf9b1769cc12d003ab55d258a3682f3f280e172c263011519decf",
+      "bytes": 3792664
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/manufacturability_right.svg": {
+      "sha256": "773529e532aebf601f8f76cffe2f6dedd061adf131b410efaae36d263ebc756a",
+      "bytes": 1857965
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-capture/candidate-007.json": {
+      "sha256": "5b68436099b4d806e6e9671aa5fea9bb9833acc22b2ff984fff3575538503d71",
+      "bytes": 37883
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-original/report.json": {
+      "sha256": "b5eeeb2159ba99b52db234d1abc466a898f99baffdf60c478414010639cbb751",
+      "bytes": 4712
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-original/cut_geometry.json": {
+      "sha256": "58fb3547fea69eaf65a239c6eae7b224c5f0016795f11816ed17d75fab55b963",
+      "bytes": 27954
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-original/woven.png": {
+      "sha256": "b846022d403de03cd0d0747d2d78bc708d9341686110337ffcfb5a748ea13451",
+      "bytes": 16431
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-original/woven-800.png": {
+      "sha256": "14793db78b8433a139ba42c56c3ff2d8e0f3d81dc7f2b904b58ea3525677e4e1",
+      "bytes": 36900
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-original/refine-source.js": {
+      "sha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "bytes": 15728
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-curvature/report.json": {
+      "sha256": "0c595186a703e98e2eb9c06779cfa988f73d42f28ce5be83fe7c86a11d60a623",
+      "bytes": 4702
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-curvature/cut_geometry.json": {
+      "sha256": "27b1c987c7aa20b5adfc26bf8e3cd7ebbae83d970313b398bd10a93addc9dc52",
+      "bytes": 27883
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-curvature/woven.png": {
+      "sha256": "484798b7b1993f959439408579565b9d6d1a86b44252d711bad26260b39f5d48",
+      "bytes": 16421
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-curvature/woven-800.png": {
+      "sha256": "19d7e97d53678fad0c063d3e5172ed60821dcde06c4bfdd2356dc6cf1311ff7a",
+      "bytes": 37071
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-curvature/refine-source.js": {
+      "sha256": "f65b81737d5a89a93958572513dd3559ac3287f6d722c28487e4a186cd1a8e53",
+      "bytes": 15728
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-joins/report.json": {
+      "sha256": "0189c8f2828487963f7b49a6e0ea5bcc6a18c6d7fe148bf57c260edf0b3f80d3",
+      "bytes": 4701
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-joins/cut_geometry.json": {
+      "sha256": "ef443c05f600d31fb5a8f1c1e64f7b445e580d49762aeda2afffffe8185fdcd3",
+      "bytes": 27916
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-joins/woven.png": {
+      "sha256": "1a3e9db1e0c13457dcc77d4b9dfc91c2336b8ff94d3da3a2e95daa52be20a092",
+      "bytes": 16448
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-joins/woven-800.png": {
+      "sha256": "a6a0108ac4b841a1ae7563dcc64f435b037971d92ec38d8a84bc06cd5b6c108e",
+      "bytes": 37062
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-joins/refine-source.js": {
+      "sha256": "82f8c061c26d5fec4fc5e47c0da7abee691b07c257b34b6df2390101a762f318",
+      "bytes": 15728
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-both/report.json": {
+      "sha256": "983a95bcb4c79cea09bf14190a7905a246d6e021fe2271fed95273769134f003",
+      "bytes": 4699
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-both/cut_geometry.json": {
+      "sha256": "ef443c05f600d31fb5a8f1c1e64f7b445e580d49762aeda2afffffe8185fdcd3",
+      "bytes": 27916
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-both/woven.png": {
+      "sha256": "1a3e9db1e0c13457dcc77d4b9dfc91c2336b8ff94d3da3a2e95daa52be20a092",
+      "bytes": 16448
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-both/woven-800.png": {
+      "sha256": "a6a0108ac4b841a1ae7563dcc64f435b037971d92ec38d8a84bc06cd5b6c108e",
+      "bytes": 37062
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-both/refine-source.js": {
+      "sha256": "4b6132c8df86622ccbe9d585a2baa128c33d658cc0a1e7f295bca503b0408226",
+      "bytes": 15728
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/weave_preview.svg": {
+      "sha256": "f18394a5ef1b867d5762809063a552c155811a9a9739730374939bc81bf9b7e7",
+      "bytes": 10089
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/vector_target.svg": {
+      "sha256": "99cb9519e1af690c84c5883b441bfcd1ed6d1c9fd435910b3c17b60525875d48",
+      "bytes": 11574
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/candidate-004.json": {
+      "sha256": "aadc508a5fb9fa99921859dfe38cdf14022d10b09ecf4e089d11ae8c07d62c2a",
+      "bytes": 24417
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/candidate-005.json": {
+      "sha256": "32ed86db6d811d4e8a1c152ec6f1c33b9edff36d72fe2a16d358d94c9c71c6d1",
+      "bytes": 24405
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/template_left.svg": {
+      "sha256": "1364126c7decf32fe2959d3a1447413fb145e2f0e25f0f9d957d9ba52bd73aa2",
+      "bytes": 6425
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/report.json": {
+      "sha256": "3eba2a4ad8404aa79a6ff7c9ccf1387acc9d80424bfb78c5e5ee471661955eac",
+      "bytes": 47882
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/processed_design.svg": {
+      "sha256": "b73ad7f04dd0d8b0ff2dd45edabd5d9bb9a56cdf38adf65d838742ca8df05118",
+      "bytes": 8440
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/candidate-006.png": {
+      "sha256": "1a3e9db1e0c13457dcc77d4b9dfc91c2336b8ff94d3da3a2e95daa52be20a092",
+      "bytes": 16448
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/candidate-007.png": {
+      "sha256": "b846022d403de03cd0d0747d2d78bc708d9341686110337ffcfb5a748ea13451",
+      "bytes": 16431
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/candidate-002.json": {
+      "sha256": "7a7b670357efc839a2be42a903e5e841b60efe27550b9239df53bee64c1bc707",
+      "bytes": 24379
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/cut_geometry.json": {
+      "sha256": "e4fba3ce771c2d99642fd8d0d8d7bdadfbac6594a115e21d3a75ada36f63083b",
+      "bytes": 54198
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/manufacturability_left.svg": {
+      "sha256": "bb2bf819a98e3890ca1ed0bc3a71013379564a3e5da31e060055e6d94571f61c",
+      "bytes": 958365
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/woven.png": {
+      "sha256": "c9bafd66c4b6564b6376f5af6edb1ee9df554501df1aac679a8b81eb6eb23788",
+      "bytes": 16367
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/candidate-003.json": {
+      "sha256": "9e44a2e5002897486e6965de19d2e873dc7389781bb56a0d767469321acb7f41",
+      "bytes": 24402
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/print_templates.html": {
+      "sha256": "1239a2b18008e0ef6f23c4e232a40c7e677589e528892a4f85552b54e8c4f000",
+      "bytes": 13845
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/template_right.svg": {
+      "sha256": "082d91cc84512f49360228c11de7a2cdfe6f69075697a4f7663fff03802c47d9",
+      "bytes": 6508
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/candidate-000.json": {
+      "sha256": "034be1e3f77f4771313f28ce9d230dc6a5185cca2403eecac3fa8ff20d760289",
+      "bytes": 24430
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/candidate-001.json": {
+      "sha256": "2d673873229d894dbe6287a824317b2df3974c455eb6d8003e00867e5ee6d575",
+      "bytes": 24391
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/candidate-006.json": {
+      "sha256": "ef443c05f600d31fb5a8f1c1e64f7b445e580d49762aeda2afffffe8185fdcd3",
+      "bytes": 27916
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/report.html": {
+      "sha256": "bcb130d3813e7f986e40cc006355df5631b0567a7f4b738995a5843f67f7b71f",
+      "bytes": 1979910
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/manufacturability_right.svg": {
+      "sha256": "113bb213eeec958d2e1e167b4282efbda3223dc563416b59836a17af32ec9887",
+      "bytes": 960007
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-capture/candidate-007.json": {
+      "sha256": "58fb3547fea69eaf65a239c6eae7b224c5f0016795f11816ed17d75fab55b963",
+      "bytes": 27954
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-alternative/report.json": {
+      "sha256": "c8b9db94cfa7656c8cc30c8612ec5ac5c200cbc729e671036827a0d3d1dd36d2",
+      "bytes": 6842
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-alternative/cut_geometry.json": {
+      "sha256": "58fb3547fea69eaf65a239c6eae7b224c5f0016795f11816ed17d75fab55b963",
+      "bytes": 27954
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-alternative/woven.png": {
+      "sha256": "b846022d403de03cd0d0747d2d78bc708d9341686110337ffcfb5a748ea13451",
+      "bytes": 16431
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-alternative/uncertain.png": {
+      "sha256": "264af0ef110ad4805f0cbcf5159bef871dffee644332733b6b97b05eb93e13fd",
+      "bytes": 16580
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-alternative/uncertain.json": {
+      "sha256": "acf5cfbcf6887ba9d88be39c57b7d7d7e15c283cbe1ab064d04ef8efccc79ece",
+      "bytes": 27908
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-alternative/woven-800.png": {
+      "sha256": "14793db78b8433a139ba42c56c3ff2d8e0f3d81dc7f2b904b58ea3525677e4e1",
+      "bytes": 36900
+    },
+    "tmp/heart-learning/outline-regularization-v1/scene-alternative/refine-source.js": {
+      "sha256": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+      "bytes": 15728
+    },
+    "tmp/heart-learning/outline-regularization-v1/capture.mjs": {
+      "sha256": "ca691b05f7844c0f1711edaad2bf2fa47ac15cfd3043018863f5f597861cbf33",
+      "bytes": 3058
+    },
+    "tmp/heart-learning/outline-regularization-v1/subdivision.mjs": {
+      "sha256": "1bc25f5cc3e05ec678e1bc15a50a4e243f20895ade6b35154702c6c5b2e28569",
+      "bytes": 1138
+    },
+    "tmp/heart-learning/outline-regularization-v1/subdivision.json": {
+      "sha256": "1286f146c3da9ad8a8b9e9997f69c208c2141e4a7aa52f1875080b68045ade4e",
+      "bytes": 927
+    },
+    "tmp/heart-learning/outline-regularization-v1/frozen-polish.mjs": {
+      "sha256": "c887aed91d6d46cc61d0cb20c97fca7d1d38db4f334ad7062581f1cb82ba983a",
+      "bytes": 6148
+    },
+    "tmp/heart-learning/outline-regularization-v1/matrix-jobs.json": {
+      "sha256": "17189e26372acbd3f07c75a05590a6afb78719a52a25a7682fc66a46a4b8b799",
+      "bytes": 1761
+    },
+    "tmp/heart-learning/outline-regularization-v1/checkpoint-tests.log": {
+      "sha256": "99fd5d010cd44f66442485329b6e3f0a5ac6ffd0c946c0dff6b5d31e2e3f1a7c",
+      "bytes": 731
+    },
+    "tmp/heart-learning/outline-regularization-v1/background-original-harness-failure.log": {
+      "sha256": "d5017cddf23f5de8e5d42131aa1526ca92586930bb95e6761952f3f08d4835dc",
+      "bytes": 568
+    },
+    "tmp/heart-learning/outline-regularization-v1/current-scene-replay.log": {
+      "sha256": "747f130ba51e829462ca6adff1042bc8dcb4141779d639fd1d627c0add7c89c5",
+      "bytes": 66
+    },
+    "tmp/heart-learning/outline-regularization-v1/current-scene-replay/report.json": {
+      "sha256": "75703f83d70947ef629f93b423a9201ef49dbc092c57f258c0d6203d11a78053",
+      "bytes": 194635
+    },
+    "tmp/heart-learning/outline-regularization-v1/current-scene-replay/real-bibel-star-outline-learned/cut_geometry.json": {
+      "sha256": "5e51d64200fffced894e71b137dcd61721849ecc2ae9fd59cad0cdce209bf41c",
+      "bytes": 54674
+    },
+    "tmp/heart-learning/outline-regularization-v1/current-scene-replay/real-bibel-star-outline-learned/crop.png": {
+      "sha256": "69ee7f0322b4bd60c4b229dd06e2378421c5ac02c7820e7ee7c22ac8f76ebfce",
+      "bytes": 205915
+    },
+    "tmp/heart-learning/outline-regularization-v1/current-scene-replay/real-bibel-star-outline-learned/woven.png": {
+      "sha256": "cffe0f9ad9295f444bcefcd519f2ae7d8b046a393f5fbe9fa4b259f768f0ac8f",
+      "bytes": 16537
+    },
+    "tmp/heart-learning/outline-regularization-v1/current-scene-replay/real-bibel-star-outline-learned/source.png": {
+      "sha256": "852b3481113b6f966a4310a9bc323966f5c167ea44fefa17b682079a0fc5a773",
+      "bytes": 65715
+    },
+    "tmp/heart-learning/outline-regularization-v1/current-scene-replay/real-bibel-star-outline-learned/mask.png": {
+      "sha256": "371da24131b5fd31e30ccd05e6845bed021cc86c0eeee8681495d408af75eeb3",
+      "bytes": 6381
+    },
+    "tmp/heart-learning/outline-regularization-v1/current-scene-replay/real-bibel-star-outline-learned/detection.json": {
+      "sha256": "a09255339ea320c154411796d3acb89dd14d0fc835068e3d934aae86d04379a3",
+      "bytes": 123798
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline/results.json": {
+      "sha256": "5362849e66ad595dae1a95190f3f85dc02c27342682a6a287b03b27c9153da59",
+      "bytes": 20938
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline/chromium-blue-star-polishing-mask/failure-observation.json": {
+      "sha256": "55cb0c5c78d0255e9d546846d4d1fc31f3c5104468f732bd3bafe1201eac9420",
+      "bytes": 358
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline/chromium-blue-star-polishing-mask/failure.png": {
+      "sha256": "2c94d72347ec345d157397a8f31d062cf81a7461f12f2cd072b1e2f71a486423",
+      "bytes": 152482
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline-retry/results.json": {
+      "sha256": "a20ec61cc6b991bf576383a1286f93cf5adc47229e8b918d2b89a4a252642dfc",
+      "bytes": 40080
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline-retry/chromium-blue-star-polishing-mask/import.png": {
+      "sha256": "2b82f5893e74da9b6390e1716345237fa8e2fd42e9a6f73654543d29b1e7fc13",
+      "bytes": 204522
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline-retry/chromium-blue-star-polishing-mask/prepared.json": {
+      "sha256": "e5d14c52da882a40f63286a04044920df764feabfe7846ca92b15b92022d4083",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline-retry/chromium-blue-star-polishing-mask/cut_geometry.json": {
+      "sha256": "1b8b91b5ac14bd0790038a3e913688e74b664910f7fcb66213aff9ddc9381a19",
+      "bytes": 54159
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline-retry/chromium-blue-star-polishing-mask/editable.svg": {
+      "sha256": "8f9ce6dd3e7830dbf281dd19771fe4700be3fd01afb02589010d13dca2b4b9b6",
+      "bytes": 15088
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline-retry/chromium-blue-star-polishing-mask/engine-report.json": {
+      "sha256": "1e558658e0571436b477151ae1750f6b4e97bda2aa5022f981b1256f5c6dae50",
+      "bytes": 44199
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline-retry/chromium-blue-star-polishing-mask/draw.png": {
+      "sha256": "945c8b4b7029f46b375994e999ac4273e2d72804b0433aee277c4b769a8787a6",
+      "bytes": 249999
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline-retry/chromium-blue-star-polishing-mask/result.png": {
+      "sha256": "3bf333fef2eaccd3ea9c7289dfdf08c49f841d8e525acfd13d782e26d6c1e13b",
+      "bytes": 161751
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline-retry/chromium-blue-star-polishing-mask/input.png": {
+      "sha256": "ffc6583e5c43a3787e9053ff60e3c7d84638448a96780178a0be43baaf7f7fc6",
+      "bytes": 6419
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-baseline-retry/chromium-blue-star-polishing-mask/template.pdf": {
+      "sha256": "ba38cd8e86f6672321b45e49aba18cf213008109bc928dc091b7a62223109bfc",
+      "bytes": 494020
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/results.json": {
+      "sha256": "15375bda19d9494df42f1f37805fd83d5dd2708f9774f1434fa1e491def2e26e",
+      "bytes": 40923
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/import.png": {
+      "sha256": "2b82f5893e74da9b6390e1716345237fa8e2fd42e9a6f73654543d29b1e7fc13",
+      "bytes": 204522
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/prepared.json": {
+      "sha256": "e5d14c52da882a40f63286a04044920df764feabfe7846ca92b15b92022d4083",
+      "bytes": 320042
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/cut_geometry.json": {
+      "sha256": "8103920f8dd37544ef0be05b952097781a5d8884e075648ffe78169a6fd97932",
+      "bytes": 54659
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/editable.svg": {
+      "sha256": "9f15573ea0905dace2e499e5255cc202051b46d66b6dad9e54bee23e2032349e",
+      "bytes": 15321
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/engine-report.json": {
+      "sha256": "92d6db2107742fc941fa1c031ad22d8d4e43a81ca630abe3f040d1bf4c27ca43",
+      "bytes": 45482
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/draw.png": {
+      "sha256": "16358084f5668782c041fe775bd2718bf97307f338392289fa7d470bf6f09c59",
+      "bytes": 250911
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/result.png": {
+      "sha256": "89e7d322710518ace65971ad33c007e2ddcae964f866c27e0b8be7d6dca40259",
+      "bytes": 161793
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/input.png": {
+      "sha256": "ffc6583e5c43a3787e9053ff60e3c7d84638448a96780178a0be43baaf7f7fc6",
+      "bytes": 6419
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/template.pdf": {
+      "sha256": "a7aca973da25e40f3ad1b0fc88521d3df5ad42e41656a68e90fe8a5b12626f1c",
+      "bytes": 497591
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-comparison.json": {
+      "sha256": "896626020cc95d3637a52bf71eb7838654b09483ddf60ac4eabd0635831394c3",
+      "bytes": 807
+    },
+    "tmp/heart-learning/polishing-alternative-v1/preview-baseline.json": {
+      "sha256": "5d170edf161cf01d00ef4f93a186a44824206cfd7a05094fc060b6b5c4386d54",
+      "bytes": 491
+    },
+    "tmp/heart-learning/polishing-alternative-v1/engines/production/snapshot.json": {
+      "sha256": "395e67e911aa47b19186059484f72b454e5a6d128caec46f5bcded98f179a57d",
+      "bytes": 10902
+    },
+    "scripts/inverse/fixtures/blue-star-polishing.json": {
+      "sha256": "8fab27fda1c2e36dff321b93459ea931edc27e27596e905970234d68bb730e2a",
+      "bytes": 990
+    },
+    "scripts/inverse/refinement-checkpoints.test.mjs": {
+      "sha256": "8b380aa45599e748140704cc51b24734580fc7a0c455f6eab4f0c4f706863520",
+      "bytes": 8004
+    },
+    "scripts/inverse/paint-browser-test.mjs": {
+      "sha256": "43ab004b51bd3b04bacfd48bee6a52f8985d4cc82c4bc35a8773d7023906455a",
+      "bytes": 54986
+    },
+    "static/inverse/core/direct/fit.js": {
+      "sha256": "c2a838f842a6a9c4ca6e13eac1526e0f819f14a5cae58ac8a5c44c7ce2067fd6",
+      "bytes": 58818
+    }
+  },
+  "limitations": [
+    "Changing penalty normalization did not resolve the visible artifacts and is not deployed.",
+    "The scene crop still loses one of 28 reviewed original-photo points; the fix improves its derived mask fit, not crop correctness.",
+    "The first browser attempt failed before fitting on stale preview asset references; restarting the owned preview fixed the harness environment.",
+    "The first frozen-polish harness attempt supplied a byte buffer where the export renderer expects JSON text; its error log is retained. The corrected harness verifies that graph reconstruction preserves the rendered mask."
+  ]
+}

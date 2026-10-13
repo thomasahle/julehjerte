@@ -72,6 +72,14 @@ The final production replay recovers the shifted mask in 8.75 seconds with
 1.48% editable disagreement. The [release record](routing-timeout.json) pins
 the full verification; no new corpus-wide improvement is claimed.
 
+The [polishing checkpoint follow-up](polishing-alternative.md) finds and fixes
+an omitted finer-paper check on retained final-polish alternatives. A controlled
+Chromium pair improves the same blue-star mask from 0.596% to 0.545% editable
+disagreement, taking 8.36 seconds instead of 7.62 seconds. Geometry and paper
+checks remain mandatory; the photographed border loss and visible notches remain.
+The focused tests pass; broader release QA is still running. This is a fitter
+change, not deployment of the neural cropper or a new full-corpus result.
+
 A [fresh neural fallback replay](neural-fallback-current.md) now passes the two
 frozen foreground models through the current binary-mask fitter on the three
 production no-crop failures. Both recover a numerical blue-star pair; neither
