@@ -1,0 +1,196 @@
+{
+  "schema": "woven-heart-photo-material-samples-1",
+  "coordinateConvention": "Integer source pixel indices; review code maps their centres.",
+  "purpose": "Sparse QA observations on an existing reserved source photograph, not training labels, crop coordinates or cutting ground truth.",
+  "review": "Assistant visual inspection of the original 995 by 661 photograph before examining candidate crops or templates in this study. No solver target was used to choose these samples. The samples cover the coloured outline and its border diamonds plus white interior gaps. Original-RGB review moved two initial gap coordinates into clear cream-paper interiors before any candidate was scored; the initial draft and pixel review remain archived. These frozen samples may not enter training, cropping or fitting.",
+  "cases": [
+    {
+      "id": "bibel-star-outline",
+      "source": {
+        "file": "scripts/inverse/fixtures/hard-photos/bibel-star-outline.png",
+        "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "decodedPixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+        "width": 995,
+        "height": 661,
+        "paperNames": [
+          "blue paper",
+          "cream paper"
+        ]
+      },
+      "groups": [
+        {
+          "id": "upper-star-arms",
+          "paper": 0,
+          "points": [
+            [
+              480,
+              298
+            ],
+            [
+              524,
+              296
+            ]
+          ]
+        },
+        {
+          "id": "left-star-arms",
+          "paper": 0,
+          "points": [
+            [
+              412,
+              350
+            ],
+            [
+              416,
+              397
+            ]
+          ]
+        },
+        {
+          "id": "right-star-arms",
+          "paper": 0,
+          "points": [
+            [
+              587,
+              359
+            ],
+            [
+              586,
+              397
+            ]
+          ]
+        },
+        {
+          "id": "lower-star-arms",
+          "paper": 0,
+          "points": [
+            [
+              481,
+              450
+            ],
+            [
+              520,
+              450
+            ]
+          ]
+        },
+        {
+          "id": "upper-border-diamonds",
+          "paper": 0,
+          "points": [
+            [
+              490,
+              183
+            ],
+            [
+              521,
+              199
+            ]
+          ]
+        },
+        {
+          "id": "left-border-diamonds",
+          "paper": 0,
+          "points": [
+            [
+              310,
+              359
+            ],
+            [
+              315,
+              390
+            ]
+          ]
+        },
+        {
+          "id": "right-border-diamonds",
+          "paper": 0,
+          "points": [
+            [
+              687,
+              367
+            ],
+            [
+              688,
+              397
+            ]
+          ]
+        },
+        {
+          "id": "lower-border-diamonds",
+          "paper": 0,
+          "points": [
+            [
+              481,
+              567
+            ],
+            [
+              512,
+              573
+            ]
+          ]
+        },
+        {
+          "id": "white-star-centre",
+          "paper": 1,
+          "points": [
+            [
+              500,
+              377
+            ],
+            [
+              504,
+              336
+            ],
+            [
+              503,
+              415
+            ],
+            [
+              464,
+              370
+            ],
+            [
+              546,
+              373
+            ]
+          ]
+        },
+        {
+          "id": "white-surround-and-gaps",
+          "paper": 1,
+          "points": [
+            [
+              455,
+              295
+            ],
+            [
+              552,
+              303
+            ],
+            [
+              451,
+              439
+            ],
+            [
+              552,
+              437
+            ],
+            [
+              428,
+              374
+            ],
+            [
+              581,
+              382
+            ],
+            [
+              501,
+              577
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

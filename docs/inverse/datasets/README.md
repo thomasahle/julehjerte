@@ -67,6 +67,13 @@ two-cut pair in 8.5–8.6 seconds with 1.48% editable disagreement. All ten
 prototype browser flows pass. The native and broad release replays are pending;
 no new corpus-wide improvement is claimed.
 
+A read-only [neural fallback source review](neural-fallback-source-review.md)
+checks 28 frozen original-photo observations on the blue outlined star against
+existing offline outputs. The background model retains 28/28; the scene model
+crops away a lower blue border point and retains 27/28. The missing point stays
+in the denominator. No new model or fit was run, and sparse agreement does not
+certify the previously observed tiny seams or physical corner locations.
+
 The preceding [clearance-routing follow-up](clearance-routing-repair.md) also
 repairs near-valid nonlocal narrow sections and retains finer paper verification
 through refinement and export. The same eight fixed crop variants improve from
