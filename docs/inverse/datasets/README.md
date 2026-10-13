@@ -63,6 +63,13 @@ same limits, pointing to further work on starting shapes and routing. The
 guarded production change passes 731 inverse tests and five browser/export
 flows; all 22 Hunodan cases retain their previous errors below ten seconds.
 
+The [initializer-resolution study](initializer-resolution.md) finds a fresh
+2.89% fit for the remaining vertical shift by changing row-DP sampling, while
+keeping the crop, source pixels and final checks fixed. A global replacement
+regresses other cases. A bounded alternative improves the nine-crop development
+set from 5/9 to 6/9 but slightly increases some errors. Both policies remain
+experimental; production behavior and the broader benchmark are unchanged.
+
 The [localization follow-up](boundary-localization.md) found that the original
 synthetic training split contained no acute or right-angle degree-two corners.
 Adding a validated corner supplement at the same 520-update training budget
