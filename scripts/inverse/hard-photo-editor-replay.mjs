@@ -23,7 +23,7 @@ sourceHashes['static/inverse/core/feature-shapes.js']=hash(await fs.readFile('st
 sourceHashes['static/inverse/core/self-returns.js']=hash(await fs.readFile('static/inverse/core/self-returns.js'));
 // This loader serves only explicit SSR imports. Client dependency discovery
 // would scan the accumulated HTML benchmark reports under tmp as app entries.
-const loader=await createServer({configFile:false,optimizeDeps:{noDiscovery:true},cacheDir:path.resolve(output,'vite-cache'),server:{middlewareMode:true,hmr:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
+const loader=await createServer({configFile:false,optimizeDeps:{noDiscovery:true},cacheDir:path.resolve(output,'vite-cache'),server:{middlewareMode:true,hmr:false,ws:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});
 const dom=new JSDOM('');globalThis.DOMParser=dom.window.DOMParser;
 try{
   const {convertValidatedCutGeometry,convertCutGeometry}=await loader.ssrLoadModule('/src/lib/inverse/toHeartDesign.ts');

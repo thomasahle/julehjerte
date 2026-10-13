@@ -48,6 +48,14 @@ one source pixel changes trace routing and raises final disagreement from 1.37%
 to 5.43%. Neither the segmentation average nor those crop coordinates establish
 a reconstruction improvement. All learned models remain offline.
 
+The subsequent [rejected-routing repair](rejected-routing-repair.md) connects
+nearly valid MILP proposals to bounded continuous refinement. On eight fixed
+sloth crop variants, independently checked editable pairs improve from 1/8 to
+3/8 without changing the source masks or acceptance limits. The full automatic
+photo benchmark remains 24/31. A repeated Hunodan run passes all 22 quality and
+ten-second gates with unchanged errors; the earlier 20/22 run and paired
+follow-ups remain recorded. Full unit and browser QA are still in progress.
+
 The [clutter-training follow-up](foreground-scene-learning.md) raises selected-body
 IoU on controlled neighbouring-heart scenes from 61.86% to 95.01% with the same
 background draws and update budget. Both models still produce only five numerical

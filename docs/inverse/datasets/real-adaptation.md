@@ -1,5 +1,10 @@
 # Grouped real-photo decoder adaptation
 
+This records the model comparison and initial offline repair diagnostic.
+The later [production routing follow-up](rejected-routing-repair.md) tests
+fresh solves with bounded repair; it does not deploy a neural model or replace
+the historical measurements below.
+
 This experiment tests whether the ten annotated real photographs can improve
 the small foreground network. The protocol is fixed before training, in
 `scripts/inverse/learning/real-pilot-folds.json`. It is an offline development
