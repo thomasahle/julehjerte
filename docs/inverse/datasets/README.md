@@ -45,6 +45,14 @@ view shows why a plausible predicted shape is not evidence for hidden corners.
 The application remains unchanged; the real-photo domain gap is retained in
 the report rather than hidden by the synthetic average.
 
+A [subsequent crop-to-fit diagnosis](feature-near-miss.md) identifies a separate
+initialization cutoff in the main fitter. A feature-retaining layout just above
+the coarse cutoff now gets one bounded refinement before a joint count change.
+A new Stonehenge crop improves from 4.70% to 2.67% disagreement. One-pixel crop
+shifts remain failures. The original real-photo corpus stays at 24/31, while
+all 22 regular Hunodan cases keep their previous errors and finish below ten
+seconds. The experimental neural cropper is still not enabled in the app.
+
 The [localization follow-up](boundary-localization.md) found that the original
 synthetic training split contained no acute or right-angle degree-two corners.
 Adding a validated corner supplement at the same 520-update training budget

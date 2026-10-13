@@ -46,6 +46,14 @@ It also changes the cross's selected crop: an earlier supported pose displaces t
 
 The retained fitter change works on fixed artwork regardless of how it was cropped. It does not enable the neural cropper or change the original real-photo benchmark's input geometry.
 
+## Broader comparison
+
+The [machine-readable evidence](feature-near-miss.json) records the paired corpus and perturbation runs, unchanged input hashes, crop experiments and exported artifacts. Fresh old/new runs both accept **24/31 complete photographs**, with no changed acceptance outcomes. Fifteen clipped and one obscured heart remain separately inventoried. Crops, masks and fitting probabilities match exactly. None of these existing cases needs the new retry; the new frozen-crop regression exercises it separately.
+
+Wall-clock-limited fitting still gives slightly different errors on some unchanged paths. The largest increase is 0.081875 percentage points for the gift, which remains accepted. Those per-case differences remain in the evidence rather than being presented as identical reconstructions.
+
+All **22 regular Hunodan designs** retain exactly the previous validated errors and pass the speed/quality checks. The slowest preparation-plus-solve/validation/export time is **9.007 seconds**. The change therefore preserves this benchmark's ten-second requirement; it does not establish that all real-photo interactions finish within ten seconds.
+
 ## Regression and reproduction
 
 The new fixture records the source-photo checksums, crop coordinates and exact classified-mask/probability hashes. Its coordinates were generated before fitting and remain `needs_review`, not ground truth. One regression exercises rejection and recovery at the unchanged initialization cutoff. Another performs a fresh ten-second solve, independently renders the exports at 400 and 800 pixels, requires less than 3% original-mask disagreement at both scales, checks source features and paper/geometry validity, and confirms that the input arrays remain unchanged.
