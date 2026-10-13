@@ -86,3 +86,7 @@ The raw profile pair and subsequent verification are retained under
 `tmp/heart-learning/browser-search-v1/`. Neither this optimization nor the
 local timing experiment resolves the remaining real-photo crop and fitting
 failures.
+
+The subsequent [verified-fit comparison](verified-fit-comparison.md) changes
+the continuation policy separately and measures actual browser time savings
+while retaining the maple leaf's byte-identical cutting geometry.

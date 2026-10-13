@@ -96,7 +96,8 @@ report.harnessSourceHashes['scripts/inverse/fixtures/photographic-gift-fit.json'
 report.harnessSourceHashes['scripts/inverse/fixtures/browser-puppy-half-mask.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/browser-puppy-half-mask.json')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/photographic-puppy-fit.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/photographic-near-miss-seed.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-near-miss-seed.json')).digest('hex');
-for(const name of ['junctions.js','border.js','material.js','validate.js','settings.js']){const file=`static/inverse/core/${name}`;report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');}
+for(const name of ['junctions.js','border.js','geometry.js','material.js','validate.js','settings.js']){const file=`static/inverse/core/${name}`;report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');}
+report.harnessSourceHashes['scripts/inverse/fixtures/maple-comparison.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/maple-comparison.json')).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/clamped-features.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
@@ -106,7 +107,7 @@ try{
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
    const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask';
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||['near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||['near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -167,6 +168,10 @@ try{
        photo=await readHardPhoto({file:entry.file,sha256:entry.sha256,width:entry.resolution,height:entry.resolution});
        const binary=Uint8Array.from({length:entry.resolution**2},(_,i)=>Number(photo.rgba[i*4]<128));
        fixture={sourceCase:data.id,quad:null,maskSha256:createHash('sha256').update(binary).digest('hex')};
+      }else if(name==='maple-leaf-mask'){
+       const data=JSON.parse(await fs.readFile('scripts/inverse/fixtures/maple-comparison.json'));
+       fixture={...data,sourceCase:data.case};
+       const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));photo=await readHardPhoto(catalogue.source);
       }else if(anchorMask){
        fixture={...JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-anchor-perturbation.json')),quad:null};
        photo=await readHardPhoto({file:fixture.maskFile,sha256:fixture.imageSha256,width:fixture.resolution,height:fixture.resolution});
@@ -321,6 +326,7 @@ try{
     if(name==='top-hat-preferred')assert.equal(row.matchingPreference.identical,true,'A reusable hat template must be found without forcing mask symmetry.');
     row.engineError=observed.result.report.imageError.mismatchFraction;
     row.selectedCounts=observed.result.report.solver.selectedCounts;
+    row.extraGridComparisons=observed.result.report.solver.extraGridComparisons;
     row.earlyFeatureInitialization=observed.result.report.solver.earlyFeatureInitialization;
     row.featureInitialization=observed.result.report.solver.featureInitialization;
     row.samplingRecovery=observed.result.report.solver.samplingRecovery;
@@ -371,6 +377,13 @@ try{
     assert.equal(Boolean(observed.prepared.weights),free,'Free-border importance weights must reach the real worker.');
     assert.equal(observed.result.report.validation.passed,true);
     assert.equal(observed.result.report.manufacturing.status,'pass');
+    if(name==='maple-leaf-mask'&&!engineReference){
+     assert.equal(row.templateChecksPassed,true);
+     assert.deepEqual(observed.result.report.slits,{left:3,right:3});
+     assert.ok(row.engineError<.012);
+     assert.ok(observed.result.report.solver.extraGridComparisons.some(r=>r.reason==='simpler-layout'&&r.selectedCounts?.every(n=>n===3)),
+      'The later simpler layout must reach the real worker and editable export.');
+    }
     if(name==='web-bibel-checker-3'&&!engineReference){
      assert.deepEqual(observed.result.report.slits,{left:2,right:2},'Conflicting photo borders must not hide the better simpler finalist.');
      assert.equal(observed.result.report.templateChecksPassed,true);

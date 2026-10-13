@@ -51,6 +51,17 @@ mask transformations pass within ten seconds; the full photograph pipeline
 remains 24/31. All 22 regular Hunodan designs retain their release quality gates
 under ten seconds. The crop and color prototypes remain offline.
 
+The [geometry optimization](geometry-pruning.md) speeds up clearance and
+intersection query batches by roughly 2–3× with identical query outputs.
+A separate [search-scheduling change](verified-fit-comparison.md) preserves the
+ordinary finalists, then directly tests competitive simpler layouts. In paired
+Chromium runs it reduces the maple leaf from 21.88 to 15.93 seconds with
+byte-identical cutting geometry, and the floral checker from 27.91 to 25.15
+seconds with lower editable-mask disagreement. The full photo score remains
+24/31; all 22 Hunodan errors are unchanged and their controlled timings remain
+below ten seconds. The slower dense cases and real-photo preprocessing still
+need further work.
+
 The [background-training follow-up](foreground-background-learning.md) isolates
 a concrete domain gap: plain white backgrounds reduce the original model's
 paper IoU from 98.96% to 52.78% on controlled photographs. Background variants
@@ -229,8 +240,8 @@ not evidence of a better complete solver or real-photo reconstruction.
 The [full-photo foreground labels](foreground-supervision.md) add physical
 paper/background supervision for all 768 existing synthetic views, including
 both lobes and both paper colours. They preserve the original images and recipe
-splits. This supports a separate full-photo localization task. Three foreground
-models have now been trained offline; none is added to the website.
+splits. This supports a separate full-photo localization task. Foreground
+models have been trained offline; none is added to the website.
 
 Start with rectified RGB plus the existing uncertain color mask. Predict paper
 membership, visible boundaries, junctions and border endpoints. Score a small
