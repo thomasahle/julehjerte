@@ -89,6 +89,14 @@ errors below ten seconds. Some rays, notches and faint seams remain imperfect;
 the horizontal crop is slightly worse. Verification passes 740 inverse tests,
 855 application tests and seven browser/export flows.
 
+The [crop-edge evidence correction](crop-edge-evidence.md) finds that colour
+refinement kept support counts from its earlier segmentation line. Final
+support now uses the refined samples, with original-mask agreement recorded
+separately. This preserves accurate blurred-paper crops while exposing
+disagreements hidden by the earlier evidence. The full photo replay retains
+24/31 accepted cases and every original crop and mask; alternative edge-search
+policies did not establish a recovery of the remaining failures.
+
 The [localization follow-up](boundary-localization.md) found that the original
 synthetic training split contained no acute or right-angle degree-two corners.
 Adding a validated corner supplement at the same 520-update training budget
