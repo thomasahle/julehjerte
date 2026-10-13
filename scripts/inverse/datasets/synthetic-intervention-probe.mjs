@@ -33,6 +33,17 @@ export const BACKGROUND_VARIANTS = [
   { name: 'background-plain', interventions: { backgroundStyle: 'plain' } },
   { name: 'background-white-plain', interventions: { background: [255, 255, 255], backgroundStyle: 'plain' } }
 ];
+export const SCENE_VARIANTS = [
+  { name: 'baseline' },
+  { name: 'scene-neighbors', interventions: { scene: 'neighbors' } },
+  { name: 'scene-handle', interventions: { scene: 'handle' } },
+  { name: 'scene-combined', interventions: { scene: 'neighbors-handle' } }
+];
+export const SCENE_TRAINING_VARIANTS = [
+  { name: 'baseline' },
+  ...BACKGROUND_VARIANTS.map(variant => ({ name: `scene-${variant.name}`, pairedBackgroundVariant: variant.name,
+    interventions: { ...variant.interventions, scene: 'neighbors-handle' } }))
+];
 const IMAGE_FILES = ['photo.jpg', 'crop.png', 'photo-paper-a.png', 'photo-overlap-valid.png', 'crop-paper-a.png', 'crop-overlap-valid.png'];
 const TARGET_FILES = IMAGE_FILES.slice(2);
 const root = fileURLToPath(new URL('../../../', import.meta.url));
@@ -82,8 +93,8 @@ function assertControlledVariant(result, baseline, variant) {
 }
 
 export async function replayInterventions({ dataset = 'tmp/heart-training-synthetic/batch-v1', selection = 'tmp/heart-learning/localization-corners-v1/worst-distinct-designs.json', output, profile = 'standard' }) {
-  if (!['standard', 'glare', 'background'].includes(profile)) throw new Error('Unknown intervention profile. Use standard, glare or background.');
-  const variants = { standard: PROBE_VARIANTS, glare: GLARE_VARIANTS, background: BACKGROUND_VARIANTS }[profile];
+  if (!['standard', 'glare', 'background', 'scene', 'scene-training'].includes(profile)) throw new Error('Unknown intervention profile. Use standard, glare, background, scene or scene-training.');
+  const variants = { standard: PROBE_VARIANTS, glare: GLARE_VARIANTS, background: BACKGROUND_VARIANTS, scene: SCENE_VARIANTS, 'scene-training': SCENE_TRAINING_VARIANTS }[profile];
   if (!output) throw new Error('Provide a fresh --output directory.');
   const started = performance.now(), sourceDataset = path.resolve(dataset), sourceSelection = path.resolve(selection), out = path.resolve(output);
   const sourceBytes = await fs.readFile(path.join(sourceDataset, 'manifest.json')), original = JSON.parse(sourceBytes);
@@ -144,7 +155,8 @@ export async function replayInterventions({ dataset = 'tmp/heart-training-synthe
     }
     manifest.status = 'complete'; manifest.summary = { selectedViews: selected.length, designs: manifest.designs.length, variantsPerView: variants.length, generatedRows: manifest.rows.length, matchedOriginalImageHashes: selected.length * IMAGE_FILES.length, seconds: (performance.now() - started) / 1000 };
     const escape = text => String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-    const sections = selected.map(source => `<section><h2>${escape(source.id)}</h2><div class="row">${manifest.rows.filter(row => row.sourceViewId === source.id).map(row => `<figure><img src="${row.assets['crop.png'].path}" alt="${escape(row.variant)} crop"><figcaption>${escape(row.variant)}</figcaption></figure>`).join('')}</div></section>`);
+    const displayed = profile.startsWith('scene') ? 'photo.jpg' : 'crop.png';
+    const sections = selected.map(source => `<section><h2>${escape(source.id)}</h2><div class="row">${manifest.rows.filter(row => row.sourceViewId === source.id).map(row => `<figure><img src="${row.assets[displayed].path}" alt="${escape(row.variant)}"><figcaption>${escape(row.variant)}</figcaption></figure>`).join('')}</div></section>`);
     await fs.writeFile(path.join(out, 'index.html'), `<!doctype html><html lang="en"><meta charset="utf-8"><title>Controlled synthetic-photo interventions</title><style>body{font:15px system-ui;margin:24px;background:#eee;color:#222}.row{display:flex;gap:8px}figure{margin:0;flex:1;min-width:0}img{width:100%}section{padding:16px;background:white;margin:16px 0}</style><h1>Controlled synthetic-photo interventions</h1><p>Same selected geometry, camera and random draws. This is a diagnostic sample, with no model fitting or scoring.</p>${sections.join('')}</html>`);
     await save(); return manifest;
   } catch (error) { manifest.status = 'failed'; manifest.error = error.message; await save(); throw error; }

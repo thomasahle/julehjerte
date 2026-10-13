@@ -47,6 +47,39 @@ function material(point, coverage, n) {
   if (x < 0 && x ** 2 + (y - 50) ** 2 <= 2500) return { foreground: true, overlap: false, fractionA: 0 };
   return { foreground: false, overlap: false, fractionA: 0 };
 }
+/** Distractors sit behind the selected basket body. A separate RNG preserves
+ * its camera, paper, noise and labels exactly before photographic degradation.
+ * Reusing its procedural design introduces no cross-split donor geometry.
+ */
+function photoScene(kind, h, seed, resolution, coverage, n) {
+  if (kind === 'none') return null;
+  const rng = random((seed ^ 0x6a09e667) >>> 0), uniform = (a, b) => a + (b - a) * rng();
+  const direction = uniform(-Math.PI, Math.PI), neighbours = [];
+  for (let k = 0; k < 2; k++) {
+    const angle = direction + k * Math.PI + uniform(-.25, .25), distance = resolution * uniform(.45, .65);
+    const scale = uniform(.7, 1.05), rotation = uniform(-.3, .3), c = scale * Math.cos(rotation), s = scale * Math.sin(rotation);
+    const transform = [c, -s, resolution / 2 * (1 - c + s) + distance * Math.cos(angle), s, c, resolution / 2 * (1 - s - c) + distance * Math.sin(angle), 0, 0, 1];
+    const canonicalToPhoto = multiply(transform, h);
+    neighbours.push({ canonicalToPhoto, inverse: invert(canonicalToPhoto), swapPapers: k === 1 });
+  }
+  const handleWidth = uniform(3, 7), inverse = invert(h);
+  const useNeighbours = kind === 'neighbors' || kind === 'neighbors-handle', useHandle = kind === 'handle' || kind === 'neighbors-handle';
+  return {
+    labels: { kind, neighbours: useNeighbours ? neighbours.map(({ inverse: _inverse, ...v }) => v) : [], handle: useHandle ? { canonicalWidth: handleWidth, alongRange: [-100, 20], orientation: 'negative x+y diagonal' } : null,
+      policy: 'Selected body is always in front. Neighbour copies and attached handle are excluded from its foreground label; no target occlusion.' },
+    sample(x, y) {
+      if (useHandle) {
+        const [u, v] = project(inverse, [x, y]), along = (u + v) / Math.SQRT2, across = (u - v) / Math.SQRT2;
+        if (along >= -100 && along <= 20 && Math.abs(across) < handleWidth / 2) return { foreground: true, fractionA: 1, kind: 'handle' };
+      }
+      if (useNeighbours) for (const neighbour of neighbours) {
+        const m = material(project(neighbour.inverse, [x, y]), coverage, n);
+        if (m.foreground) return { ...m, fractionA: neighbour.swapPapers ? 1 - m.fractionA : m.fractionA, kind: 'neighbor' };
+      }
+      return null;
+    }
+  };
+}
 function blur(pixels, n, sigma) {
   const radius = Math.ceil(3 * sigma), kernel = Array.from({ length: 2 * radius + 1 }, (_, i) => Math.exp(-((i - radius) ** 2) / (2 * sigma ** 2))), sum = kernel.reduce((a, b) => a + b);
   const horizontal = new Float32Array(pixels.length), output = new Uint8ClampedArray(pixels.length);
@@ -76,7 +109,7 @@ function grayPNG(values, n) {
 function checkedInterventions(value, resolution) {
   if (value === undefined) return null;
   if (value === null || typeof value !== 'object' || Array.isArray(value) || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) throw new Error('Photo interventions must be an object.');
-  const keys = Reflect.ownKeys(value), allowed = new Set(['palette', 'background', 'backgroundStyle', 'blurSigmaPixels', 'lowResolution', 'lowResolutionScale', 'jpegQuality', 'cropNoisePixels', 'glare']);
+  const keys = Reflect.ownKeys(value), allowed = new Set(['palette', 'background', 'backgroundStyle', 'blurSigmaPixels', 'lowResolution', 'lowResolutionScale', 'jpegQuality', 'cropNoisePixels', 'glare', 'scene']);
   if (keys.some(key => !allowed.has(key))) throw new Error('Unknown photo intervention.');
   if (!keys.length) return null;
   if (!Number.isInteger(resolution) || resolution < 16 || resolution > 4096) throw new Error('Intervened photos require an integer resolution from 16 to 4096.');
@@ -84,6 +117,10 @@ function checkedInterventions(value, resolution) {
   const requested = {};
   for (const key of keys) {
     const v = value[key];
+    if (key === 'scene') {
+      if (!['none', 'neighbors', 'handle', 'neighbors-handle'].includes(v)) throw new Error('Invalid scene intervention.');
+      requested.scene = v; continue;
+    }
     if (key === 'background') {
       if (!Array.isArray(v) || v.length !== 3 || [0, 1, 2].some(i => !Number.isFinite(v[i]) || v[i] < 0 || v[i] > 255)) throw new Error('background must contain three finite RGB channels from 0 to 255.');
       requested.background = v.slice(); continue;
@@ -123,8 +160,12 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
   const baselineBackground = [uniform(65, 165), uniform(65, 165), uniform(65, 165)], baselineBackgroundStyle = rng() < .5 ? 'wood-stripes' : 'soft-cloth';
   const background = requested?.background ?? baselineBackground, backgroundStyle = requested?.backgroundStyle ?? baselineBackgroundStyle;
   const pixels = new Uint8ClampedArray(4 * resolution ** 2), observedCoverage = new Float32Array(resolution ** 2), overlap = new Float32Array(resolution ** 2);
+  const scene = photoScene(requested?.scene ?? 'none', h, seed, resolution, coverage, canonicalResolution), distractors = scene ? new Float32Array(resolution ** 2) : null;
+  const visibleDistractors = { neighbor: 0, handle: 0 };
   for (let y = 0; y < resolution; y++) for (let x = 0; x < resolution; x++) {
     const index = y * resolution + x, canonical = project(inverse, [x + .5, y + .5]), m = material(canonical, coverage, canonicalResolution);
+    const other = !m.foreground && scene ? scene.sample(x + .5, y + .5) : null;
+    if (other) { distractors[index] = 1; visibleDistractors[other.kind]++; }
     // These supervision maps describe undegraded material coverage, not a color classifier's output.
     observedCoverage[index] = m.fractionA; overlap[index] = Number(m.overlap);
     const illumination = exposure * (1 + light[0] * (x / resolution - .5) + light[1] * (y / resolution - .5) - vignette * ((x / resolution - .5) ** 2 + (y / resolution - .5) ** 2));
@@ -135,7 +176,7 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
     const glare = requested?.glare;
     const highlight = glare && m.foreground ? glare.amount * Math.exp(-.5 * (((x + .5) / resolution - glare.center[0]) ** 2 / glare.sigma[0] ** 2 + ((y + .5) / resolution - glare.center[1]) ** 2 / glare.sigma[1] ** 2)) : 0;
     for (let k = 0; k < 3; k++) {
-      const base = m.foreground ? palette[0][k] * m.fractionA + palette[1][k] * (1 - m.fractionA) + gaussian() * texture : (background[k] + grain) * shadow;
+      const base = m.foreground ? palette[0][k] * m.fractionA + palette[1][k] * (1 - m.fractionA) + gaussian() * texture : other ? palette[0][k] * other.fractionA + palette[1][k] * (1 - other.fractionA) + texture * Math.sin(x * .71 + y * .93 + k) : (background[k] + grain) * shadow;
       const value = base * illumination + gaussian() * noiseSigma;
       pixels[4 * index + k] = highlight ? (1 - highlight) * value + highlight * 255 : value;
     }
@@ -176,10 +217,17 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
       limitations: ['Procedural 2D planar photographs, not measured camera physics.', 'No paper thickness, actual occlusion, folds, specular foil or calibrated lens distortion.', 'Colors are empirically mixed in sRGB; target material coverage is saved separately.', 'Photometric views do not create new routing topologies.']
     }
   };
+  if (requested?.scene !== undefined) result.labels.perturbations.scene = requested.scene;
+  if (scene) {
+    result.files['photo-distractors.png'] = grayPNG(distractors, resolution);
+    result.labels.scene = { ...scene.labels, visibleDistractorPixels: visibleDistractors };
+    result.labels.limitations[1] = 'Selected body is always unoccluded and in front of copied neighbours and a straight handle. No paper thickness, folds, specular foil or calibrated lens distortion.';
+  }
   if (requested) {
     const actual = result.labels.perturbations;
     result.labels.baselinePerturbations = { ...actual, palette: baselinePalette, background: baselineBackground, backgroundStyle: baselineBackgroundStyle, blurSigmaPixels: baselineSigma, lowResolution: baselineLowSize, jpegQuality: baselineJpegQuality, cropNoisePixels: baselineCropNoise };
     delete result.labels.baselinePerturbations.glare;
+    delete result.labels.baselinePerturbations.scene;
     const applied = {};
     for (const key of Object.keys(requested)) {
       const actualKey = key === 'lowResolutionScale' ? 'lowResolution' : key;

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { syntheticPhoto, project } from './synthetic-photo.mjs';
+import { syntheticPhoto, project, invert } from './synthetic-photo.mjs';
 import { sha256 } from './synthetic-geometry.mjs';
 import { createCanvas, loadImage } from 'canvas';
 
@@ -65,6 +65,31 @@ test('background interventions preserve camera, paper palette, noise draws and t
   }
   const original = baseline.labels.perturbations;
   sameFiles(await syntheticPhoto({ ...fixture(), interventions: { background: original.background, backgroundStyle: original.backgroundStyle } }), baseline);
+});
+
+test('scene distractors leave selected-body geometry and labels intact, with no cross-split donors', async () => {
+  const baseline = await baselinePromise;
+  sameFiles(await syntheticPhoto({ ...fixture(), interventions: { scene: 'none' } }), baseline);
+  for (const scene of ['neighbors', 'handle', 'neighbors-handle']) {
+    const input = fixture(), before = input.coverage.slice(), result = await syntheticPhoto({ ...input, interventions: { scene } });
+    sameGeometry(result, baseline); sameFiles(result, baseline, targetFiles); unchangedParameters(result, baseline, []);
+    assert.deepEqual(input.coverage, before); assert.notEqual(sha256(result.files['photo.jpg']), sha256(baseline.files['photo.jpg']));
+    const repeated = await syntheticPhoto({ ...fixture(), interventions: { scene } }); sameFiles(repeated, result);
+    const image = await loadImage(result.files['photo-distractors.png']), canvas = createCanvas(64, 64), ctx = canvas.getContext('2d'); ctx.drawImage(image, 0, 0);
+    const pixels = ctx.getImageData(0, 0, 64, 64).data, inverse = invert(result.labels.canonicalToPhoto); let count = 0;
+    for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) {
+      const i = (y * 64 + x) * 4, value = pixels[i];
+      assert.ok(value === 0 || value === 255); assert.deepEqual([...pixels.slice(i, i + 4)], [value, value, value, 255]);
+      if (!value) continue; count++;
+      const [u, v] = project(inverse, [x + .5, y + .5]);
+      const inBody = u >= 0 && u <= 100 && v >= 0 && v <= 100 || v < 0 && (u - 50) ** 2 + v ** 2 <= 2500 || u < 0 && u ** 2 + (v - 50) ** 2 <= 2500;
+      assert.equal(inBody, false, 'Visible distractors must never replace the target body.');
+    }
+    assert.ok(count > 0); assert.equal(count, Object.values(result.labels.scene.visibleDistractorPixels).reduce((a, b) => a + b));
+    assert.equal(result.labels.scene.neighbours.length, scene === 'handle' ? 0 : 2);
+    assert.equal(Boolean(result.labels.scene.handle), scene !== 'neighbors');
+  }
+  for (const scene of [true, {}, 'crowded', null]) await assert.rejects(syntheticPhoto({ ...fixture(), interventions: { scene } }), /scene/);
 });
 
 test('zero blur and individual degradation interventions preserve other draws and targets', async () => {
