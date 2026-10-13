@@ -4,6 +4,15 @@ import {Cubic,sub,add,mul,dot,cross,distance,segmentDistance,clamp,mix} from './
 export const keyPoint=(p,digits=5)=>p.map(x=>{const s=x.toFixed(digits);return Number(s)===0?(0).toFixed(digits):s;}).join(',');
 export function bbox(points){let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;for(const [x,y]of points){x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}return[x0,y0,x1,y1];}
 export function boxDistance(a,b){return Math.hypot(Math.max(0,a[0]-b[2],b[0]-a[2]),Math.max(0,a[1]-b[3],b[1]-a[3]));}
+// These callers compare with a cutoff; they do not need the actual distance
+// when one axis already exceeds it. Keep the exact calculation at equality
+// and near the cutoff, including the existing NaN/Infinity behaviour.
+function boxDistanceForComparison(a,b,limit){
+  const x=Math.max(0,a[0]-b[2],b[0]-a[2]),y=Math.max(0,a[1]-b[3],b[1]-a[3]);
+  if(x>limit&&y>=0)return x;
+  if(y>limit&&x>=0)return y;
+  return Math.hypot(x,y);
+}
 export function segments(poly){return poly.slice(1).map((b,i)=>({a:poly[i],b,box:bbox([poly[i],b]),index:i}));}
 export function segmentHits(a,b,c,d,eps=1e-9){
   const r=sub(b,a),s=sub(d,c),den=cross(r,s),q=sub(c,a),rr=dot(r,r),ss=dot(s,s);
@@ -16,11 +25,11 @@ export function segmentHits(a,b,c,d,eps=1e-9){
   return (hi-lo>eps?[lo,hi]:[(lo+hi)/2]).map(raw=>{const t=clamp(raw),p=add(a,mul(r,t));return{point:p,t,u:clamp(dot(sub(p,c),s)/ss),overlap:hi-lo>eps};});
 }
 export function segmentPairDistance(a,b,c,d){if(segmentHits(a,b,c,d).length)return 0;return Math.min(segmentDistance(a,c,d),segmentDistance(b,c,d),segmentDistance(c,a,b),segmentDistance(d,a,b));}
-export function lineDistance(a,b,stopBelow=-1){let best=Infinity;const sa=segments(a),sb=segments(b);for(const s of sa)for(const t of sb){if(boxDistance(s.box,t.box)>=best)continue;best=Math.min(best,segmentPairDistance(s.a,s.b,t.a,t.b));if(best<=stopBelow)return best;}return best;}
-export function lineHits(a,b){const hits=[],sa=segments(a),sb=segments(b);for(const s of sa)for(const t of sb){if(boxDistance(s.box,t.box)>1e-9)continue;for(const h of segmentHits(s.a,s.b,t.a,t.b))hits.push({...h,i:s.index,j:t.index});}return hits;}
-export function lineSimple(poly){const ss=segments(poly);for(let i=0;i<ss.length;i++)for(let j=i+1;j<ss.length;j++){if(boxDistance(ss[i].box,ss[j].box)>1e-9)continue;const hits=segmentHits(ss[i].a,ss[i].b,ss[j].a,ss[j].b);if(!hits.length)continue;if(j===i+1&&hits.every(h=>!h.overlap&&distance(h.point,ss[i].b)<1e-7))continue;return false;}return true;}
+export function lineDistance(a,b,stopBelow=-1){let best=Infinity;const sa=segments(a),sb=segments(b);for(const s of sa)for(const t of sb){if(boxDistanceForComparison(s.box,t.box,best)>=best)continue;best=Math.min(best,segmentPairDistance(s.a,s.b,t.a,t.b));if(best<=stopBelow)return best;}return best;}
+export function lineHits(a,b){const hits=[],sa=segments(a),sb=segments(b);for(const s of sa)for(const t of sb){if(boxDistanceForComparison(s.box,t.box,1e-9)>1e-9)continue;for(const h of segmentHits(s.a,s.b,t.a,t.b))hits.push({...h,i:s.index,j:t.index});}return hits;}
+export function lineSimple(poly){const ss=segments(poly);for(let i=0;i<ss.length;i++)for(let j=i+1;j<ss.length;j++){if(boxDistanceForComparison(ss[i].box,ss[j].box,1e-9)>1e-9)continue;const hits=segmentHits(ss[i].a,ss[i].b,ss[j].a,ss[j].b);if(!hits.length)continue;if(j===i+1&&hits.every(h=>!h.overlap&&distance(h.point,ss[i].b)<1e-7))continue;return false;}return true;}
 export function improperIntersection(a,b,allowed=[],radius=.03){return lineHits(a,b).some(h=>!allowed.some(p=>distance(h.point,p)<=radius));}
-export function* nearbyPairs(items,radius=0){const boxes=items.map((p,i)=>({box:bbox(p),i})).sort((a,b)=>a.box[0]-b.box[0]);for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length&&boxes[j].box[0]<=boxes[i].box[2]+radius;j++){if(boxDistance(boxes[i].box,boxes[j].box)<=radius)yield[boxes[i].i,boxes[j].i];}}
+export function* nearbyPairs(items,radius=0){const boxes=items.map((p,i)=>({box:bbox(p),i})).sort((a,b)=>a.box[0]-b.box[0]);for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length&&boxes[j].box[0]<=boxes[i].box[2]+radius;j++){if(boxDistanceForComparison(boxes[i].box,boxes[j].box,radius)<=radius)yield[boxes[i].i,boxes[j].i];}}
 export function pointInRing(p,ring){let parity=0;for(let i=0,j=ring.length-1;i<ring.length;j=i++){const a=ring[j],b=ring[i];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<a[0]+(p[1]-a[1])*(b[0]-a[0])/(b[1]-a[1]))parity^=1;}return parity;}
 export function polygonArea(p){let a=0;for(let i=0;i<p.length;i++)a+=cross(p[i],p[(i+1)%p.length]);return a/2;}
 export function nodeCurves(curves,tol=.01){
