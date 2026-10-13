@@ -96,9 +96,31 @@ with the corrected results.
 The eight additional committed-main runs pass independent image/feature checks
 and the complete editable replay. The two already-rejected baseline outputs
 that fail conversion remain failures; none of the new checked outputs loses its
-pass in the editor. The broader release tests and actual browser uploads are in
-progress. The last completed broad release remains
-22/22 regular Hunodan designs and 24/31 hard photographs; these are **not yet new
-results for this scheduling commit**. The owned preview still serves that prior
-build until the new build and browser QA are complete. Nothing was pushed or
-deployed.
+pass in the editor. Fresh broader replays of this scheduling commit retain
+**22/22 regular Hunodan designs**, with identical errors and a maximum of
+8.248 seconds, and **24/31 hard photographs**. The hard-photo input quads, masks
+and fitting probabilities are unchanged. Some already-passing photographic
+fits have slightly different errors; this is not a universal error reduction.
+All 855 application tests pass, with one pre-existing skipped test.
+
+The first full inverse run passes 769/770 tests. Its sole failure is an obsolete
+scheduling assertion, not an invalid reconstruction: `hjfig-05` no longer
+reserves refinement for its worse colour-retaining 6+6 grid. It routes directly
+to a valid 4+4 pair, so the old test dereferences a null deferred-probe report.
+A separate fresh replay with the same simulated one-second graph delay passes
+geometry and paper checks and measures 0.9043% independent exported disagreement,
+within the test's unchanged 0.95% limit. Its report and exports are retained in
+`recovery-diagnostic/hjfig-05-1000/`; the failed full-suite log is preserved.
+
+The updated test retains that source photograph and quality limit, and checks
+the corrected routing priority. A second test uses the existing pinned Viking
+photograph to retain deferred-recovery coverage. A one-second graph delay expires
+its initial probe, and a seven-second first-refinement delay forces that grid to
+stop. The remaining user allowance resumes routing before later fitting. Only
+the clock changes: all candidates come from the original pixels. The test checks
+both routing attempts, their remaining budget, source immutability, final
+geometry/paper checks and independent image/feature fidelity at two resolutions.
+
+The updated inverse tests, build and actual browser uploads are still being
+verified. The owned preview continues serving the prior validated build until
+the new build is ready. Nothing was pushed or deployed.

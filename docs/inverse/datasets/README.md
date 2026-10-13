@@ -53,8 +53,11 @@ editable pairs on the same fixed sloth crop variants, compared with 5/8 in a
 fresh baseline run. It preserves useful grid reservations, shares the short
 topology-initialization allowance and distinguishes near-repairable traces
 from larger raster returns. The committed implementation reproduces the result
-below ten seconds per case. Full release and browser QA for this change are
-still in progress; the wider completed benchmark below remains the prior run.
+below ten seconds per case. Fresh broader replays retain 22/22 regular Hunodan
+designs, with identical errors and a maximum of 8.25 seconds, and 24/31 hard
+photographs. A stale longer-budget scheduling test is being updated with a
+replacement deferred-recovery case; full release and browser QA remain in
+progress.
 
 The preceding [clearance-routing follow-up](clearance-routing-repair.md) also
 repairs near-valid nonlocal narrow sections and retains finer paper verification
