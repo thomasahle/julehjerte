@@ -58,6 +58,15 @@ class RealForegroundTests(unittest.TestCase):
             source['splitStatus'] = 'unassigned'; row['allocation'] = 'train'
             with self.assertRaisesRegex(ValueError, 'allocation'): list(checked_annotations(manifest, annotations))
 
+    def test_downsampling_filters_printed_texture_before_affine_sampling(self):
+        rgb = np.zeros((256, 256, 3), np.uint8); rgb[:, ::8] = 255
+        transform = {'scale': .125, 'offset': [0, 0], 'resolution': 32}
+        resized = np.asarray(photo_tensor(Image.fromarray(rgb), transform))
+        # One white stripe per eight source pixels: interior output pixels
+        # should integrate to ~1/8 white. A four-sample affine resize misses
+        # every stripe and falsely produces pure black on this exact fixture.
+        self.assertTrue(np.all(abs(resized[4:-4, 4:-4].astype(float)-255/8) < 1))
+
     def test_export_preserves_source_groups_and_detects_semantic_tampering(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); row, source, manifest, annotations, mp, ap = fixture(root)

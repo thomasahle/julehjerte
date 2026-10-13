@@ -141,9 +141,18 @@ def rasterize(row, resolution=256):
 def photo_tensor(photo, transform):
     """Sample the same continuous pixel-edge transform as the label renderer."""
     scale, (ox, oy), n = transform['scale'], transform['offset'], transform['resolution']
-    return photo.convert('RGB').transform((n, n), Image.Transform.AFFINE,
-                                         (1/scale, 0, -ox/scale, 0, 1/scale, -oy/scale),
-                                         Image.Resampling.BILINEAR, fillcolor=(127, 127, 127))
+    photo = photo.convert('RGB')
+    width, height = photo.size
+    # PIL's affine BILINEAR sampler only sees four source pixels, regardless
+    # of the shrinking factor. Prefilter the full footprint with resize first
+    # so fine printed patterns do not alias into arbitrary material evidence.
+    # Keep the original continuous transform, including fractional padding.
+    if scale < 1:
+        photo = photo.resize((math.ceil(width*scale), math.ceil(height*scale)), Image.Resampling.BILINEAR)
+    sx, sy = photo.width/width, photo.height/height
+    return photo.transform((n, n), Image.Transform.AFFINE,
+                           (sx/scale, 0, -ox*sx/scale, 0, sy/scale, -oy*sy/scale),
+                           Image.Resampling.BILINEAR, fillcolor=(127, 127, 127))
 
 
 def read_source(root, source):
