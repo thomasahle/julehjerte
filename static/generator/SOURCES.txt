@@ -1,0 +1,34 @@
+Juleflet generator geometry, generated 2026-10-13.
+
+Rebuild from the repository root:
+  python3 -m pip install -r scripts/generator/requirements.txt
+  python3 scripts/generator/build-outlines.py
+Use --fonts-only to rebuild only the fonts and their previews.
+The generated assets are checked in; deployment does not require Python.
+
+Motifs: 1,525 filled Phosphor icons, Phosphor core 2.1.1.
+Source: https://github.com/phosphor-icons/core
+Retrieved from @iconify-json/ph 1.2.2:
+https://cdn.jsdelivr.net/npm/@iconify-json/ph@1.2.2/icons.json
+License and author attribution: phosphor-LICENSE.txt.
+Only names ending in -fill are included, with the suffix removed.
+The catalogue retains the original SVG preview geometry. The individual JSON
+files contain flattened, normalised contours derived from those SVGs.
+Twelve simple motifs and Danish search aliases are authored for Juleflet.
+
+Fonts: Nunito (800), Bree Serif (400), Oswald (600), Kalam (700), Cinzel (900),
+and Righteous (400), from the corresponding ofl/<family>/ directories at:
+https://github.com/google/fonts
+Each family is covered by its own OFL license in fonts/<id>-OFL.txt.
+The original source TTF files are in docs/design-start/assets/fonts/.
+These are derived, flattened glyph outlines, not redistributed font binaries.
+Cinzel and Kalam have slightly thickened outlines where doing so preserves
+the number of contours, to leave more paper around fine details.
+The sample SVGs show the exact outlines used by the generator.
+
+Construction: independently implemented contour routing; no image solver.
+Dense text framing and cut-out letter counters are inspired by Gerth Stolting
+Brodal's explanation and slides:
+https://cs.au.dk/~gerth/julehjerter/
+https://cs.au.dk/~gerth/julehjerter/slides.pdf
+No code, glyphs or templates from that site are copied.

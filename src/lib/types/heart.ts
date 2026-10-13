@@ -57,6 +57,10 @@ export interface HeartDesign {
   // hearts and on everything saved before the editor could set them, and those
   // follow the site-wide colour store instead ($lib/stores/colors).
   colors?: HeartColors;
+  /** Counter shapes removed from the right paper, in normalised overlap coordinates. */
+  rightCutouts?: Array<Array<[number, number]>>;
+  /** Preferred physical paper width for fine generated templates. */
+  templateWidthMm?: number;
   fingers: Finger[];
 }
 

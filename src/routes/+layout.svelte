@@ -33,7 +33,9 @@
 	// <meta name="description"> — two of them would be an SEO smell.
 	let routeKey = $derived(routeKeyFromPathname(pathname));
 	let metaDescription = $derived(
-		routeKey === "noPrinter"
+		routeKey === "generator"
+			? t("generatorMetaDescription", lang)
+			: routeKey === "noPrinter"
 			? t("noPrinterMetaDescription", lang)
 			: routeKey === "howTo"
 			? t("howToMetaDescription", lang)
@@ -53,7 +55,7 @@
 	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);
 	// The editor is a full-screen tool: it carries its own colour controls in the
 	// right-hand panel and has no footer (docs/redesign/DESIGN.md §7).
-	let isEditorRoute = $derived($page.route.id?.includes("/editor") ?? false);
+	let isEditorRoute = $derived(($page.route.id?.includes("/editor") ?? false) || routeKey === "generator");
 
 	$effect(() => {
 		if (!browser) return;

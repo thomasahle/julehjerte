@@ -1,0 +1,3 @@
+fonttools==4.56.0
+shapely==2.0.7
+svgpathtools==1.7.2

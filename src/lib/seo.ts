@@ -7,6 +7,7 @@ export function pageTitle(route: RouteKey | null, lang: Language): string {
 	if (route === 'howTo') return `${t('howToBrowserTitle', lang)} | ${SITE_NAME}`;
 	if (route === 'noPrinter') return `${t('noPrinterTitle', lang)} | ${SITE_NAME}`;
 	if (route === 'about') return `${t('aboutTitle', lang)} | ${SITE_NAME}`;
+	if (route === 'generator') return `${t('generatorTitle', lang)} | ${SITE_NAME}`;
 	if (route === 'editor') return `${t('heroDesignHeart', lang)} | ${SITE_NAME}`;
 	if (route === 'paint') return `${t('paintPageTitle', lang)} | ${SITE_NAME}`;
 	return lang === 'en' ? SITE_TITLE_EN : SITE_TITLE;

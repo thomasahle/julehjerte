@@ -269,6 +269,14 @@ function drawLobeTemplate(
   const offsetX = centerX - scaledWidth / 2;
   const offsetY = centerY - scaledHeight / 2;
 
+  if (lobe === 'right') {
+    for (const ring of design.rightCutouts ?? []) {
+      const points = ring.map(([x,y])=>({x:offsetX+x*overlapWidth*scale/100,y:offsetY+(earRadius+y*overlapHeight/100)*scale}));
+      pdf.setFillColor(220,220,220); pdf.setDrawColor(0); pdf.setLineWidth(.2);
+      pdf.lines(points.slice(1).map((p,i)=>[p.x-points[i].x,p.y-points[i].y]),points[0].x,points[0].y,[1,1],'FD',true);
+    }
+  }
+
   // Transform coordinates: we want vertical template with ear at top
   // Original left lobe: ear on left, fold on bottom
   // Original right lobe: ear on top, fold on left
@@ -425,7 +433,7 @@ function collectTemplates(designs: HeartDesign[]): TemplateSlot[] {
   const templates: TemplateSlot[] = [];
 
   for (const design of designs) {
-    if (lobesShareTemplate(design.fingers, design.gridSize)) {
+    if (!design.rightCutouts?.length && lobesShareTemplate(design.fingers, design.gridSize)) {
       // Symmetric - only need one template
       templates.push({ design, lobe: 'both' });
     } else {
@@ -553,6 +561,7 @@ function addTemplatesPage(
 }
 
 async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promise<jsPDF> {
+  if (design.templateWidthMm && !options.layout) return generateSizedPDF(design, design.templateWidthMm, options.lang ?? 'da');
   const layout = options.layout ?? 'medium';
   const lang = options.lang ?? 'da';
 
@@ -611,4 +620,33 @@ export async function downloadMultiPDF(designs: HeartDesign[], options: PDFOptio
     ? singleFilename(designs[0])
     : `${t('pdfMultiFilename', options.lang, { n: designs.length })}.pdf`;
   pdf.save(filename);
+}
+
+/** A4, one folded half per page, at an explicit physical width. Used by the
+ * motif generators so fine lettering is never silently shrunk into a grid. */
+export async function generateSizedPDF(design: HeartDesign, widthMm = 100, lang: Language = 'da'): Promise<jsPDF> {
+  if (!Number.isFinite(widthMm) || widthMm < 80 || widthMm > 140) throw new Error('Paper width must be 80–140 mm');
+  const pdf = new jsPDF({unit:'mm',format:'a4',compress:true});
+  const preview = await renderHeartToDataURL(design,{size:500});
+  for (const [i,lobe] of (['left','right'] as const).entries()) {
+    if(i)pdf.addPage();
+    pdf.setFontSize(14);
+    const title = pdf.splitTextToSize(design.name, 100);
+    pdf.text(title, 105, title.length > 1 ? 13 : 17, {align:'center'});
+    pdf.setFontSize(10); pdf.text(`${t(lobe==='left'?'lobeLeft':'lobeRight',lang)} · ${widthMm} mm`,105,25,{align:'center'});
+    pdf.addImage(preview,'PNG',160,7,28,28);
+    // drawLobeTemplate normally reserves 5% padding: compensate so the printed
+    // width is exactly widthMm, rather than merely labelled with that size.
+    drawLobeTemplate(pdf,design,lobe,105,145,widthMm/.95,widthMm*1.5/.95);
+    pdf.setFontSize(9);
+    const lines=[t('generatorPdfPrint',lang),t('generatorPdfFold',lang),t('generatorPdfCut',lang)];
+    if(design.rightCutouts?.length)lines.push(t('generatorPdfCounters',lang));
+    pdf.text(lines,15,265);
+    pdf.setDrawColor(0);pdf.setLineWidth(.2);pdf.line(150,263,180,263);pdf.line(150,261,150,265);pdf.line(180,261,180,265);
+    pdf.text('30 mm',165,270,{align:'center'});pdf.text(SITE_DOMAIN,105,290,{align:'center'});
+  }
+  return pdf;
+}
+export async function downloadSizedPDF(design:HeartDesign,widthMm=100,lang:Language='da') {
+  (await generateSizedPDF(design,widthMm,lang)).save(singleFilename(design));
 }

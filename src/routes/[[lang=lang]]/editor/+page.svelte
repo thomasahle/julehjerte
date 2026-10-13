@@ -488,6 +488,8 @@
       date: initialDesign?.date,
       description: sanitizeHtml(description) || undefined,
       weaveParity: currentWeaveParity,
+      rightCutouts: initialDesign?.rightCutouts,
+      templateWidthMm: initialDesign?.templateWidthMm,
       // A heart keeps only the colours the visitor picked; one that was never
       // touched follows the site-wide pair, as the gallery hearts do.
       colors: designColors ?? undefined,
@@ -891,6 +893,7 @@
         initialGridSize={currentGridSize}
         initialFingers={currentFingers}
         initialWeaveParity={currentWeaveParity}
+        rightCutouts={initialDesign?.rightCutouts}
         initialColors={designColors ?? undefined}
         panelExtra={isNarrow ? undefined : heartPanels}
         notice={pendingDraft ? draftNotice : undefined}

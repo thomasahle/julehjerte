@@ -1,3 +1,4 @@
+import { parseRightCutouts } from '$lib/geometry/cutouts';
 import type { Finger, GridSize, HeartDesign, HeartDesignJson, LobeId, NodeType, Vec } from '$lib/types/heart';
 import { STRIP_WIDTH, BASE_CENTER, MIN_GRID_SIZE, MAX_GRID_SIZE } from '$lib/constants';
 import { clamp, clampInt } from '$lib/utils/math';
@@ -337,6 +338,8 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
     date,
     description,
     weaveParity,
+    rightCutouts: parseRightCutouts(r.rightCutouts),
+    templateWidthMm: typeof r.templateWidthMm === 'number' && Number.isFinite(r.templateWidthMm) && r.templateWidthMm >= 80 && r.templateWidthMm <= 140 ? r.templateWidthMm : undefined,
     colors,
     gridSize: inferredGrid,
     fingers
@@ -381,6 +384,8 @@ export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
     date: design.date,
     description: design.description,
     weaveParity: design.weaveParity ?? 0,
+    rightCutouts: design.rightCutouts,
+    templateWidthMm: design.templateWidthMm,
     colors: design.colors,
     gridSize: design.gridSize,
     fingers: interiorFingers.map((f) => {
@@ -438,6 +443,8 @@ export function serializeHeartToSVG(design: HeartDesign): string {
     'xmlns:dc="http://purl.org/dc/elements/1.1/"',
     `data-weave-parity="${design.weaveParity ?? 0}"`
   ];
+  if (design.templateWidthMm) attrs.push(`data-template-width-mm="${design.templateWidthMm}"`);
+  if (design.rightCutouts?.length) attrs.push(`data-right-cutouts="${escapeXml(JSON.stringify(design.rightCutouts))}"`);
   // The heart's own colours, when it has them. Gallery hearts carry none, so an
   // exported file only pins the colours if the visitor picked them in the editor.
   if (design.colors) {
@@ -1131,6 +1138,10 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   const publisherUrl = dcPublisherUrl || undefined;
   const source = svg.getAttribute('data-source') || dcSource || undefined;
   const date = svg.getAttribute('data-date') || dcDate || undefined;
+  const rawWidth = Number(svg.getAttribute('data-template-width-mm'));
+  const templateWidthMm = Number.isFinite(rawWidth) && rawWidth >= 80 && rawWidth <= 140 ? rawWidth : undefined;
+  let rightCutouts: HeartDesign['rightCutouts'];
+  try { rightCutouts = parseRightCutouts(JSON.parse(svg.getAttribute('data-right-cutouts') || 'null')); } catch { /* Optional malformed metadata is ignored. */ }
   const weaveParity = normalizeWeaveParity(parseInt(svg.getAttribute('data-weave-parity') || '0', 10));
   const colors = parseHeartColors({
     left: svg.getAttribute('data-color-left'),
@@ -1407,6 +1418,8 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     date,
     description,
     weaveParity,
+    rightCutouts,
+    templateWidthMm,
     colors,
     gridSize: inferredGrid,
     fingers: finalFingers

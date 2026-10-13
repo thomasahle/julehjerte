@@ -114,5 +114,16 @@ export function rasterizeDesign(design: HeartDesign, size: number = MASK_SIZE): 
 			for (let px = from; px < to; px++) mask.data[row + px] = 1;
 		}
 	}
+	// The right paper's counters reveal the intact left sheet beneath it.
+	for (const ring of design.rightCutouts ?? []) {
+		for (let y=0;y<size;y++) for(let x=0;x<size;x++) {
+			const px=(x+.5)*100/size,py=(y+.5)*100/size;let odd=false;
+			for(let i=0,j=ring.length-1;i<ring.length;j=i++) {
+				const a=ring[i],b=ring[j];
+				if((a[1]>py)!==(b[1]>py)&&px<(b[0]-a[0])*(py-a[1])/(b[1]-a[1])+a[0])odd=!odd;
+			}
+			if(odd)mask.data[y*size+x]=0;
+		}
+	}
 	return mask;
 }

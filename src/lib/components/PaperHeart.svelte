@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { rightCutoutPath, type RightCutouts } from '$lib/geometry/cutouts';
 	import { onMount, tick, type Component, type Snippet } from 'svelte';
 	import type { IconProps } from '$lib/components/icons/types';
 	import { Separator } from '$lib/components/ui/separator';
@@ -67,6 +68,7 @@
 			idPrefix?: string;
 			lang?: Language;
 			initialFingers?: Finger[];
+			rightCutouts?: RightCutouts;
 			initialGridSize?: GridSize | number;
 			initialWeaveParity?: 0 | 1 | number;
 			size?: number;
@@ -104,6 +106,7 @@
 		idPrefix = undefined,
 			lang = 'da',
 			initialFingers,
+			rightCutouts,
 			initialGridSize = 3,
 			initialWeaveParity = 0,
 			size = 800,
@@ -3158,6 +3161,7 @@
 											fill={heartColors.right}
 											fill-rule="evenodd"
 										/>
+										<path d={rightCutoutPath(rightCutouts, weaveData.overlap)} fill={heartColors.left} />
 									</g>
 								</g>
 

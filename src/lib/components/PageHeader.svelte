@@ -39,6 +39,8 @@
 		variant?: 'site' | 'editor';
 		backHref?: string;
 		onBack?: (event: MouseEvent) => void;
+		/** Override for tools whose current inputs live in a shallow URL hash. */
+		languageUrl?: string;
 		/**
 		 * Editor variant only: renders the Tegn / Mal switch in the middle of the
 		 * bar. Absent on every other page, which has no second mode to switch to.
@@ -59,6 +61,7 @@
 		variant = 'site',
 		backHref = undefined,
 		onBack = undefined,
+		languageUrl = undefined,
 		mode = undefined,
 		ref = $bindable(null),
 		children
@@ -78,7 +81,7 @@
 
 	// The same page in the other language. Query and hash only exist client-side.
 	let languageHref = $derived(
-		otherLanguageUrl(
+		languageUrl ?? otherLanguageUrl(
 			$page.url.pathname,
 			browser ? $page.url.search : '',
 			browser ? $page.url.hash : ''
