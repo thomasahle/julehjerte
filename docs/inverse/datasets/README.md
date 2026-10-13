@@ -5,7 +5,7 @@ It contains downloaded source images, synthetic images with exact cut labels,
 and verified pretrained encoder checkpoints. A first synthetic-only neural
 comparison is complete; no learned model has been added to the website.
 
-The 2026-10-12 snapshot contains:
+The 2026-10-13 snapshot contains:
 
 | Asset | Verified count | Meaning |
 | --- | ---: | --- |
@@ -16,12 +16,24 @@ The 2026-10-12 snapshot contains:
 | Synthetic photographic views | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
 | Pretrained encoder checkpoints | 2 | MobileNetV3-Small: researched timm LAMB weights and the TorchVision weights used by the experiment. |
 | Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
+| Trained foreground models | 2 | RGB-only, 880,449 parameters; random/ImageNet comparison, synthetic-only and rejected for application use. |
 
 The latest [Pinterest expansion](real-pinterest-expansion.md) downloaded 428 of
 442 visited pins, including all four user-supplied examples. After merging, it
 added 362 source files, 176 photo-containing files and 116 reviewed photo groups
 to the previous snapshot. These are source-image counts, not heart-instance
 or independent motif-family counts.
+
+The [foreground-model experiment](foreground-learning.md) compares random and
+pretrained initialization using 768 verified physical-paper labels. Pretraining
+raises synthetic holdout silhouette IoU to about 98.9%, but none of the 31 real
+photographs yields a strongly supported crop from the frozen network. A
+12-view synthetic replay compares production, learned and perfect foregrounds
+through classification, fitting and independent export: each returns 11 checked
+pairs, with no improvement in mean latent-artwork error. The clipped twelfth
+view shows why a plausible predicted shape is not evidence for hidden corners.
+The application remains unchanged; the real-photo domain gap is retained in
+the report rather than hidden by the synthetic average.
 
 The [localization follow-up](boundary-localization.md) found that the original
 synthetic training split contained no acute or right-angle degree-two corners.
