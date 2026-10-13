@@ -4,7 +4,7 @@
  * not an unsupported claim that a discretized mask proves tensile strength.
  */
 import {pathPolyline,distance,mix,Cubic,add,mul} from './bezier.js';
-import {prepareChord,chordDistance} from './chord-distance.js';
+import {prepareChord,chordClearance} from './chord-distance.js';
 import {curvesOf} from './graph.js';
 import {segments,lineSimple,lineDistance,keyPoint,pointInRing} from './geometry.js';
 import {closedRings,sampleRings} from './validate.js';
@@ -97,22 +97,25 @@ function materialFamily({lines,foldCuts},k,w,cfg,includeMap,native){
   const columns=Math.ceil(w/cell)+3,rows=Math.ceil(3*w/cell)+3,firstRow=Math.floor(originY/cell)-1;
   const tiles=new Array(columns*rows),reach=R+guard+tol;
   for(let si=0;si<ss.length;si++){const s=ss[si],steps=Math.max(1,Math.ceil(distance(s.a,s.b)/(h/3)));for(let t=0;t<=steps;t++){const p=mix(s.a,s.b,t/steps),ix=Math.round(p[0]/h-.5),iy=Math.round((p[1]-originY)/h-.5);if(ix>=0&&ix<nx&&iy>=0&&iy<ny)seeds[iy*nx+ix]=1;}const[ax,ay,bx,by]=s.box;for(let ty=Math.max(firstRow,Math.floor((ay-reach)/cell));ty<=Math.min(firstRow+rows-1,Math.floor((by+reach)/cell));ty++)for(let tx=Math.max(-1,Math.floor((ax-reach)/cell));tx<=Math.min(columns-2,Math.floor((bx+reach)/cell));tx++){const key=(ty-firstRow)*columns+tx+1;if(!tiles[key])tiles[key]=[];tiles[key].push(si);}}
-  const chords=ss.map(s=>prepareChord(s.a,s.b));
+  const chords=ss.map(s=>prepareChord(s.a,s.b)),lower=R-guard,upper=R+guard,lower2=lower*lower,upper2=upper*upper;
   // Each queried tile already contains all potentially relevant chords, once
   // each and in input order. No neighbouring lists or duplicate removal needed.
   const lattice=paperLattice(w,nx),tileX=lattice.x.map(x=>Math.floor(x/cell)+1),tileY=lattice.y.map(y=>(Math.floor(y/cell)-firstRow)*columns);
   const edt=distanceTransform(seeds,nx,ny,{native}),certain=new Uint8Array(nx*ny),possible=new Uint8Array(nx*ny),paper=includeMap?new Uint8Array(nx*ny):null;
-  for(let y=0;y<ny;y++)for(let x=0;x<nx;x++){const i=y*nx+x,xx=lattice.x[x],yy=lattice.y[y],distOutline=lattice.outline[i];if(paper&&distOutline>0)paper[i]=1;if(distOutline<R-guard)continue;let d=Math.sqrt(edt[i])*h;
+  for(let y=0;y<ny;y++)for(let x=0;x<nx;x++){const i=y*nx+x,xx=lattice.x[x],yy=lattice.y[y],distOutline=lattice.outline[i];if(paper&&distOutline>0)paper[i]=1;if(distOutline<R-guard)continue;const d=Math.sqrt(edt[i])*h;
     // EDT is only an accelerator. Recompute chord distance near either
     // threshold, so lattice seeding does not determine a narrow-neck decision.
     if(ss.length&&Math.abs(d-R)<4*h+2*tol){
-      d=Infinity;const near=tiles[tileX[x]+tileY[y]]||[];
+      let core=3;const near=tiles[tileX[x]+tileY[y]]||[];
       for(const si of near){
-        d=Math.min(d,chordDistance(xx,yy,chords[si]));
-        // This centre is already outside both cores. A closer chord cannot
-        // change either mask, and no minimum distance is reported here.
-        if(d<=R-guard)break;
+        core&=chordClearance(xx,yy,chords[si],lower,upper,lower2,upper2);
+        // Only membership matters. Once outside both cores, another chord
+        // cannot change either mask. Threshold ties still use hypot.
+        if(!core)break;
       }
+      if(distOutline>upper&&(core&2))certain[i]=1;
+      if(distOutline>lower&&(core&1))possible[i]=1;
+      continue;
     }
     const clearance=Math.min(distOutline,d);if(clearance>R+guard)certain[i]=1;if(clearance>R-guard)possible[i]=1;
   }

@@ -26,20 +26,26 @@ assert.ok(Number.isInteger(rounds)&&rounds>=1&&rounds<=20);
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const previousFile=file=>execFileSync('git',['show',`${reference}:${file}`]);
 const previousSource=previousFile('static/inverse/core/material.js').toString();
+// The distance helper is itself under test. Load the historical implementation
+// for the reference audit instead of silently sharing the modified helper.
+const previousChord=previousSource.includes("from './chord-distance.js'")?previousFile('static/inverse/core/chord-distance.js'):null;
+if(previousChord)assert.ok(!/\bimport\b/.test(previousChord.toString()),'Historical chord helper must be self-contained.');
 const dependencies=['bezier.js','graph.js','geometry.js','validate.js','settings.js',
-  ...['chord-distance.js','paper-backend.js'].filter(name=>previousSource.includes(`from './${name}'`)),
+  ...['paper-backend.js'].filter(name=>previousSource.includes(`from './${name}'`)),
   ...(previousSource.includes("from './numerical-kernel.js'")?['numerical-kernel.js','direct/native/boundary.c','direct/native/boundary.wasm']:[])];
 for(const name of dependencies){const file='static/inverse/core/'+name;assert.equal(hash(await fs.readFile(file)),hash(previousFile(file)),`Changed reference dependency: ${file}`);}
-const previous=(await import('data:text/javascript;base64,'+Buffer.from(previousSource.replace(/from '(\.[^']+)'/g,(_,p)=>`from '${pathToFileURL(path.resolve('static/inverse/core',p)).href}'`)).toString('base64'))).materialAudit;
+const previous=(await import('data:text/javascript;base64,'+Buffer.from(previousSource.replace(/from '(\.[^']+)'/g,(_,p)=>`from '${p==='./chord-distance.js'?'data:text/javascript;base64,'+previousChord.toString('base64'):pathToFileURL(path.resolve('static/inverse/core',p)).href}'`)).toString('base64'))).materialAudit;
 assert.equal((await loadNumericalKernel()).backend,'wasm');
 assert.equal(typeof numericalKernel().distance_transform,'function');assert.equal(typeof numericalKernel().label_core,'function');
 await fs.mkdir(output,{recursive:true});
 const cases=[];
-for(const name of['straight','neck','thin'])for(const resolution of[80,180,360])cases.push({id:`${name}-${resolution}`,group:'controlled',solution:fixture(name),cfg:settings({width:60,materialResolution:resolution,cutError:0,printShrinkPercent:0,minWidth:3})});
+for(const name of['straight','neck','thin'])for(const resolution of[80,180,360,700])cases.push({id:`${name}-${resolution}`,group:'controlled',solution:fixture(name),cfg:settings({width:60,materialResolution:resolution,cutError:0,printShrinkPercent:0,minWidth:3})});
 cases.push({id:'thin-uncertain',group:'controlled',solution:fixture('thin'),cfg:settings({width:60,materialResolution:80,cutError:0,printShrinkPercent:0,minWidth:.7})});
 for(const name of['neck','thin'])cases.push({id:`matching-${name}`,group:'controlled',solution:fixture(name,{matching:true}),cfg:settings({width:60,materialResolution:80,cutError:0,printShrinkPercent:0,minWidth:name==='thin'?.7:3})});
 const hatFile='scripts/inverse/fixtures/free-border-hat.json',hatBytes=await fs.readFile(hatFile);
 cases.push({id:'matching-hat',group:'matching-hat',source:hatFile,sourceSha256:hash(hatBytes),solution:loadSolutionJSON(JSON.parse(hatBytes).geometry),cfg:settings({...AUTOMATIC_PRESET,timeLimit:10,trials:0})});
+const birdFile='scripts/inverse/fixtures/bird-y-clamped-proposal.json',birdBytes=await fs.readFile(birdFile);
+for(const materialResolution of [360,700])cases.push({id:`bird-${materialResolution}`,group:'dense-photo',source:birdFile,sourceSha256:hash(birdBytes),solution:loadSolutionJSON(birdBytes.toString()),cfg:settings({...AUTOMATIC_PRESET,materialResolution,trials:0})});
 for(const[dir,group]of[[hunodan,'hunodan'],[weighted,'weighted']]){
   const saved=JSON.parse(await fs.readFile(`${dir}/results.json`));
   for(const row of saved.results){
@@ -54,7 +60,7 @@ for(const name of await fs.readdir('static/inverse/core',{recursive:true}))if(/\
 }
 const compact=result=>({...result,families:result.families.map(f=>({...f,map:undefined,mapSha256:hash(f.map)})),summary:{...result.summary,seconds:undefined}});
 const median=xs=>{const s=xs.toSorted((a,b)=>a-b);return(s[Math.floor((s.length-1)/2)]+s[Math.ceil((s.length-1)/2)])/2;};
-const report={reference,runtime:process.version,cpu:cpus()[0]?.model,rounds,backend,sourceHashes,previousMaterialSha256:hash(previousSource),method:'Serial alternating-order complete audits, including maps. Both policies are warmed once. Kernel load, input loading, comparison and hashing are outside each audit timer. Both receive the same requested backend. Only elapsed time is excluded from exact output equality.',results:[]};
+const report={reference,runtime:process.version,cpu:cpus()[0]?.model,rounds,backend,sourceHashes,previousMaterialSha256:hash(previousSource),previousChordSha256:previousChord?hash(previousChord):null,method:'Serial alternating-order complete audits, including maps. Both policies are warmed once. Kernel load, input loading, comparison and hashing are outside each audit timer. Both receive the same requested backend. The reference uses its historical chord helper. Only elapsed time is excluded from exact output equality.',results:[]};
 for(const audit of[previous,materialAudit])audit(cases[0].solution,cases[0].cfg,auditOptions);
 for(const[index,entry]of cases.entries()){
   const row={id:entry.id,group:entry.group,source:entry.source,sourceSha256:entry.sourceSha256,cfg:entry.cfg,runs:[]};report.results.push(row);
