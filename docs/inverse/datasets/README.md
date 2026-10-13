@@ -43,6 +43,14 @@ a checked 5+4-cut pair at 1.733% mask disagreement and retains all samples.
 The preprocessing remains experimental, visible artifacts remain, and this is
 not a new production success. The derived mask is preserved for search diagnosis.
 
+The [early routing follow-up](early-feature-routing.md) reduces that fixed-mask
+fit to 1.721% disagreement in 9.369 seconds, retaining all 26 reviewed samples.
+It tries a better layout for a poorly preserved region before the region
+disappears, after allowing ordinary traced recovery to finish. Four selected
+mask transformations pass within ten seconds; the full photograph pipeline
+remains 24/31. All 22 regular Hunodan designs retain their release quality gates
+under ten seconds. The crop and color prototypes remain offline.
+
 The [background-training follow-up](foreground-background-learning.md) isolates
 a concrete domain gap: plain white backgrounds reduce the original model's
 paper IoU from 98.96% to 52.78% on controlled photographs. Background variants

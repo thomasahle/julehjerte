@@ -89,7 +89,7 @@ report.workspaceSourceHashes['src/lib/inverse/conversionFidelity.ts']=createHash
 report.workspaceSourceHashes['static/inverse/core/feature-shapes.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/feature-shapes.js')).digest('hex');
 for(const file of ['source.json','native.png','downsample.png']){const name='scripts/inverse/fixtures/flower-resolution/'+file;report.harnessSourceHashes[name]=createHash('sha256').update(await fs.readFile(name)).digest('hex');}
 report.workspaceSourceHashes['static/inverse/core/self-returns.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/self-returns.js')).digest('hex');
-for(const file of ['scripts/inverse/fixtures/photographic-anchor-perturbation.json','scripts/inverse/fixtures/photographic-anchor-perturbation.png'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of ['scripts/inverse/fixtures/photographic-anchor-perturbation.json','scripts/inverse/fixtures/photographic-anchor-perturbation.png','scripts/inverse/fixtures/faded-frame-mask.json','scripts/inverse/fixtures/faded-frame-mask.png'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['static/inverse/core/self-intersections.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/self-intersections.js')).digest('hex');
 report.workspaceSourceHashes['static/inverse/core/direct/grid.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/direct/grid.js')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/photographic-gift-fit.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-gift-fit.json')).digest('hex');
@@ -105,8 +105,8 @@ try{
   try{for(let repeat=0;repeat<repeats;repeat++)for(const name of cases){
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
-   const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask';
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||['near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask';
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||['near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -162,7 +162,12 @@ try{
       // Hold crop/classification fixed to isolate the real worker and editor
       // path. Upload pixels, never saved cutting paths or a fitting seed.
       let fixture,photo;
-      if(anchorMask){
+      if(fadedFrameMask){
+       const data=JSON.parse(await fs.readFile('scripts/inverse/fixtures/faded-frame-mask.json')),entry=data.classification;
+       photo=await readHardPhoto({file:entry.file,sha256:entry.sha256,width:entry.resolution,height:entry.resolution});
+       const binary=Uint8Array.from({length:entry.resolution**2},(_,i)=>Number(photo.rgba[i*4]<128));
+       fixture={sourceCase:data.id,quad:null,maskSha256:createHash('sha256').update(binary).digest('hex')};
+      }else if(anchorMask){
        fixture={...JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-anchor-perturbation.json')),quad:null};
        photo=await readHardPhoto({file:fixture.maskFile,sha256:fixture.imageSha256,width:fixture.resolution,height:fixture.resolution});
       }else if(['near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask'].includes(name)){
@@ -327,6 +332,11 @@ try{
     }
     if(flowerMask&&!engineReference){
      assert.deepEqual(row.selectedCounts,[3,3]);assert.ok(row.engineError<.01);
+    }
+    if(fadedFrameMask&&!engineReference){
+     assert.equal(row.earlyFeatureInitialization?.trigger,'weak-region');
+     assert.equal(row.earlyFeatureInitialization.stage,'after-recovery');
+     assert.ok(row.engineError<.025);
     }
     if(photoMask){
      assert.equal(createHash('sha256').update(Uint8Array.from(observed.prepared.mask)).digest('hex'),row.sourcePhoto.paintImport?.maskSha256??row.sourcePhoto.fixedMaskSha256);

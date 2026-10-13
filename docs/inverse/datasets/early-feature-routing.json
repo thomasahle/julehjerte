@@ -1,0 +1,1236 @@
+{
+  "schema": "early-feature-routing-study-1",
+  "implementationCommit": "325f9a1",
+  "baselineCommit": "a580916",
+  "paired": [
+    {
+      "variant": "original",
+      "before": {
+        "seconds": 9.198542041,
+        "independentError": 0.06015,
+        "checksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "counts": [
+          5,
+          5
+        ],
+        "initialization": "grid",
+        "sourceSamples": 23
+      },
+      "after": {
+        "seconds": 9.369204125,
+        "independentError": 0.0172125,
+        "checksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "counts": [
+          4,
+          5
+        ],
+        "initialization": "feature-weighted-grid",
+        "sourceSamples": 26
+      }
+    },
+    {
+      "variant": "transpose",
+      "before": {
+        "seconds": 9.229293375,
+        "independentError": 0.05555,
+        "checksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "counts": [
+          5,
+          5
+        ],
+        "initialization": "grid",
+        "sourceSamples": null
+      },
+      "after": {
+        "seconds": 9.409273375000001,
+        "independentError": 0.02715,
+        "checksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "counts": [
+          4,
+          4
+        ],
+        "initialization": "feature-sampling-grid",
+        "sourceSamples": null
+      }
+    },
+    {
+      "variant": "mirror-x",
+      "before": {
+        "seconds": 9.214377999999998,
+        "independentError": 0.05946875,
+        "checksPassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "counts": [
+          5,
+          5
+        ],
+        "initialization": "grid",
+        "sourceSamples": null
+      },
+      "after": {
+        "seconds": 9.449544874999999,
+        "independentError": 0.01471875,
+        "checksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "counts": [
+          4,
+          5
+        ],
+        "initialization": "feature-weighted-grid",
+        "sourceSamples": null
+      }
+    },
+    {
+      "variant": "shift-x",
+      "before": {
+        "seconds": 9.406102167,
+        "independentError": 0.02364375,
+        "checksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "counts": [
+          4,
+          4
+        ],
+        "initialization": "grid",
+        "sourceSamples": null
+      },
+      "after": {
+        "seconds": 9.301265959,
+        "independentError": 0.0225125,
+        "checksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "counts": [
+          4,
+          4
+        ],
+        "initialization": "feature-sampling-grid",
+        "sourceSamples": null
+      }
+    }
+  ],
+  "hunodanPairedTiming": [
+    {
+      "repeat": 0,
+      "old": {
+        "seconds": 9.543636332999998,
+        "error": 0.0055399085981507066,
+        "passed": true
+      },
+      "new": {
+        "seconds": 9.277405292,
+        "error": 0.0055399085981507066,
+        "passed": true
+      }
+    },
+    {
+      "repeat": 1,
+      "old": {
+        "seconds": 9.459009292000001,
+        "error": 0.00557976405569136,
+        "passed": true
+      },
+      "new": {
+        "seconds": 9.350236625,
+        "error": 0.00557976405569136,
+        "passed": true
+      }
+    }
+  ],
+  "corpus": {
+    "counts": {
+      "incomplete": 15,
+      "no_crop": 3,
+      "failed": 4,
+      "validated": 24,
+      "obscured": 1
+    },
+    "completeDenominator": 31,
+    "rows": [
+      {
+        "id": "oval-figure",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "eight-point-star",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "small-figure",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "deer",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "top-checker",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "top-candle",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "top-tree",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "partial-top-right",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "partial-left-checker",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "nested-squares",
+        "before": "no_crop",
+        "after": "no_crop",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "outline-star",
+        "before": "failed",
+        "after": "failed",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.00815625,
+        "errorAfter": 0.00815625
+      },
+      {
+        "id": "floral-checker",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.02038125,
+        "errorAfter": 0.02038125,
+        "proposal": {
+          "stage": "after-recovery",
+          "retention": 0.9144215530903328,
+          "previousError": 0.0518798828125,
+          "proposal": {
+            "error": 0.0540008544921875,
+            "featuresPassed": true,
+            "preferred": false
+          },
+          "scheduled": 0,
+          "hypotheses": 6
+        }
+      },
+      {
+        "id": "dense-checker",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.00698125,
+        "errorAfter": 0.00698125
+      },
+      {
+        "id": "bird",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.0247125,
+        "errorAfter": 0.0247125
+      },
+      {
+        "id": "leaf",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.0265125,
+        "errorAfter": 0.0265125
+      },
+      {
+        "id": "partial-right-checker",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "partial-left-abstract",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "gift",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.02305,
+        "errorAfter": 0.02309375
+      },
+      {
+        "id": "gingerbread",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.01480625,
+        "errorAfter": 0.01506875,
+        "proposal": {
+          "stage": "after-recovery",
+          "retention": 0.9079365079365079,
+          "previousError": 0.050445556640625,
+          "proposal": {
+            "error": 0.050537109375,
+            "featuresPassed": true,
+            "preferred": false
+          },
+          "scheduled": 0,
+          "hypotheses": 10
+        }
+      },
+      {
+        "id": "white-birds",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.00379375,
+        "errorAfter": 0.00379375
+      },
+      {
+        "id": "flower",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.00600625,
+        "errorAfter": 0.00600625
+      },
+      {
+        "id": "warped-checker",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.018475,
+        "errorAfter": 0.018475
+      },
+      {
+        "id": "round-checker",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.01214375,
+        "errorAfter": 0.0121375
+      },
+      {
+        "id": "santa",
+        "before": "no_crop",
+        "after": "no_crop",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "partial-left-diamonds",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "fine-checker",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.02245,
+        "errorAfter": 0.02245
+      },
+      {
+        "id": "orb",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.01439375,
+        "errorAfter": 0.01439375
+      },
+      {
+        "id": "stacked-hearts",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.00753125,
+        "errorAfter": 0.00753125
+      },
+      {
+        "id": "jigsaw",
+        "before": "failed",
+        "after": "failed",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.0688875,
+        "errorAfter": 0.0564375,
+        "proposal": {
+          "stage": "after-recovery",
+          "retention": 0.9187738136473849,
+          "previousError": 0.062408447265625,
+          "proposal": {
+            "error": 0.052703857421875,
+            "featuresPassed": true,
+            "preferred": true
+          },
+          "scheduled": 1,
+          "hypotheses": 10
+        }
+      },
+      {
+        "id": "candle",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.0048375,
+        "errorAfter": 0.0048375
+      },
+      {
+        "id": "maple-leaf",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.013825,
+        "errorAfter": 0.013425
+      },
+      {
+        "id": "crown",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.0241375,
+        "errorAfter": 0.0241375
+      },
+      {
+        "id": "partial-bottom-left",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "bottom-diamonds",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "crossed-ribbons",
+        "before": "failed",
+        "after": "failed",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.02153125,
+        "errorAfter": 0.02153125
+      },
+      {
+        "id": "bauble",
+        "before": "failed",
+        "after": "failed",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.0929625,
+        "errorAfter": 0.0919125
+      },
+      {
+        "id": "glare-motif",
+        "before": "obscured",
+        "after": "obscured",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "bottom-flower",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.0093875,
+        "errorAfter": 0.0093875,
+        "proposal": {
+          "stage": "after-recovery",
+          "retention": 0.7647690655209453,
+          "previousError": 0.0352630615234375,
+          "proposal": {
+            "error": 0.0359954833984375,
+            "featuresPassed": true,
+            "preferred": false
+          },
+          "scheduled": 0,
+          "hypotheses": 10
+        }
+      },
+      {
+        "id": "faceted-star",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.0065,
+        "errorAfter": 0.0065
+      },
+      {
+        "id": "partial-bottom-right",
+        "before": "incomplete",
+        "after": "incomplete",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "bibel-star-8",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.003675,
+        "errorAfter": 0.003675
+      },
+      {
+        "id": "bibel-star-curved",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.00663125,
+        "errorAfter": 0.00663125
+      },
+      {
+        "id": "bibel-star-outline",
+        "before": "no_crop",
+        "after": "no_crop",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": null,
+        "errorAfter": null
+      },
+      {
+        "id": "bibel-cross",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.00243125,
+        "errorAfter": 0.00243125
+      },
+      {
+        "id": "flettede-puppy",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.01031875,
+        "errorAfter": 0.0103125
+      },
+      {
+        "id": "flettede-stonehenge",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.01905,
+        "errorAfter": 0.01905
+      },
+      {
+        "id": "flettede-viking",
+        "before": "validated",
+        "after": "validated",
+        "sourceUnchanged": true,
+        "cropUnchanged": true,
+        "maskUnchanged": true,
+        "probabilityUnchanged": true,
+        "errorBefore": 0.02023125,
+        "errorAfter": 0.02023125
+      }
+    ]
+  },
+  "hunodan": {
+    "passed": 22,
+    "maximumSeconds": 8.706103583000004,
+    "timingDefinition": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case\u2019s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.",
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "seconds": 4.508185958,
+        "errorBefore": 0.009799111111111111,
+        "errorAfter": 0.009799111111111111,
+        "releaseError": 0.009841777777777777,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 4.947949124999999,
+        "errorBefore": 0.013923555555555555,
+        "errorAfter": 0.013923555555555555,
+        "releaseError": 0.0072106666666666664,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 3.9984404589999993,
+        "errorBefore": 0.006634666666666666,
+        "errorAfter": 0.006634666666666666,
+        "releaseError": 0.007089777777777778,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 4.451971416999998,
+        "errorBefore": 0.013824,
+        "errorAfter": 0.013824,
+        "releaseError": 0.004771555555555556,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 3.3234208749999996,
+        "errorBefore": 0.009042960667083447,
+        "errorAfter": 0.009042960667083447,
+        "releaseError": 0.01776012820399933,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 6.260290457999999,
+        "errorBefore": 0.01336669921875,
+        "errorAfter": 0.01336669921875,
+        "releaseError": 0.013509114583333334,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 6.136387834000001,
+        "errorBefore": 0.005148444444444444,
+        "errorAfter": 0.005148444444444444,
+        "releaseError": 0.005831111111111111,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 5.694018166999995,
+        "errorBefore": 0.005397333333333333,
+        "errorAfter": 0.005397333333333333,
+        "releaseError": 0.005745777777777778,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 5.699624125000002,
+        "errorBefore": 0.004522666666666667,
+        "errorAfter": 0.004522666666666667,
+        "releaseError": 0.005688888888888889,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 7.470473375000001,
+        "errorBefore": 0.005639111111111111,
+        "errorAfter": 0.005639111111111111,
+        "releaseError": 0.006492444444444445,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.570142584000001,
+        "errorBefore": 0.009436444444444445,
+        "errorAfter": 0.009436444444444445,
+        "releaseError": 0.009820444444444444,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 7.323868667000003,
+        "errorBefore": 0.006040430615586996,
+        "errorAfter": 0.006040430615586996,
+        "releaseError": 0.007107573357674032,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 5.1933618749999955,
+        "errorBefore": 0.003899406226779104,
+        "errorAfter": 0.003899406226779104,
+        "releaseError": 0.004369789145743716,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 8.060558290999994,
+        "errorBefore": 0.007776029627903062,
+        "errorAfter": 0.007776029627903062,
+        "releaseError": 0.009679570602593737,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 4.544316500000001,
+        "errorBefore": 0.007550237322696868,
+        "errorAfter": 0.007550237322696868,
+        "releaseError": 0.008177127465366042,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 6.7282234580000075,
+        "errorBefore": 0.004365548980933596,
+        "errorAfter": 0.004365548980933596,
+        "releaseError": 0.004464168310322156,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 8.706103583000004,
+        "errorBefore": 0.0055399085981507066,
+        "errorAfter": 0.0056129769369752365,
+        "releaseError": 0.007439685407588479,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 5.152037874999994,
+        "errorBefore": 0.007929362880886427,
+        "errorAfter": 0.007929362880886427,
+        "releaseError": 0.008206371191135734,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.93232987500001,
+        "errorBefore": 0.0038045247395833335,
+        "errorAfter": 0.0038045247395833335,
+        "releaseError": 0.003851996527777778,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 6.963473750000005,
+        "errorBefore": 0.012332213049376572,
+        "errorAfter": 0.012332213049376572,
+        "releaseError": 0.0126798873807852,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 6.932197875000012,
+        "errorBefore": 0.0050250552896055544,
+        "errorAfter": 0.0050250552896055544,
+        "releaseError": 0.006172839506172839,
+        "passed": true,
+        "newProposal": false
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 6.737908334000007,
+        "errorBefore": 0.010624446293860237,
+        "errorAfter": 0.010624446293860237,
+        "releaseError": 0.012731885419742812,
+        "passed": true,
+        "newProposal": false
+      }
+    ]
+  },
+  "checks": [
+    {
+      "name": "hard-photos-final",
+      "command": [
+        "node",
+        "scripts/inverse/hard-photo-benchmark.mjs",
+        "--crop=automatic",
+        "--target=mask",
+        "--seconds=10",
+        "--output=tmp/heart-learning/early-feature-v2/hard-photos-final"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 306.282216334,
+      "log": "tmp/heart-learning/early-feature-v2/hard-photos-final.log"
+    },
+    {
+      "name": "hunodan",
+      "command": [
+        "node",
+        "scripts/inverse/hunodan-speed-benchmark.mjs"
+      ],
+      "environment": {
+        "INVERSE_SPEED_OUT": "tmp/heart-learning/early-feature-v2/hunodan"
+      },
+      "exitCode": 0,
+      "seconds": 128.626373333,
+      "log": "tmp/heart-learning/early-feature-v2/hunodan.log"
+    },
+    {
+      "name": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 8.346168291999959,
+      "log": "tmp/heart-learning/early-feature-v2/check.log"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 6.167243332999988,
+      "log": "tmp/heart-learning/early-feature-v2/lint.log"
+    },
+    {
+      "name": "vitest",
+      "command": [
+        "./node_modules/.bin/vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 32.73101020900003,
+      "log": "tmp/heart-learning/early-feature-v2/vitest.log"
+    },
+    {
+      "name": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 644.103507541,
+      "log": "tmp/heart-learning/early-feature-v2/inverse.log"
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 12.614105707999897,
+      "log": "tmp/heart-learning/early-feature-v2/build.log"
+    }
+  ],
+  "browser": {
+    "origin": "http://127.0.0.1:5232",
+    "runtime": "v25.6.1",
+    "rows": [
+      {
+        "name": "faded-frame-mask",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005899999976158142,
+          "prepareRoundTripSeconds": 0.17889999997615813,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 14.042299999952316,
+          "resultToReadySeconds": 0.6203999999761581,
+          "clickToReadySeconds": 14.847799999952317
+        },
+        "reportedFitSeconds": 13.39,
+        "engineError": 0.0151375,
+        "sourceEditableError": 0.01530625,
+        "selectedCounts": [
+          4,
+          5
+        ],
+        "templateChecksPassed": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01530625,
+          "sourceError": 0.01530625
+        }
+      },
+      {
+        "name": "web-danish-tree-group-right",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005900000095367432,
+          "prepareRoundTripSeconds": 0.15789999997615814,
+          "preparedToSolveRequestSeconds": 0.00019999992847442627,
+          "solveRoundTripSeconds": 5.892400000095368,
+          "resultToReadySeconds": 0.2968999999761581,
+          "clickToReadySeconds": 6.353300000071526
+        },
+        "reportedFitSeconds": 5.632799999952316,
+        "engineError": 0.0237625,
+        "sourceEditableError": 0.02385,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "templateChecksPassed": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.02385,
+          "sourceError": 0.02385
+        }
+      },
+      {
+        "name": "floral-checker-mask",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005399999976158142,
+          "prepareRoundTripSeconds": 0.17780000007152558,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 27.61810000002384,
+          "resultToReadySeconds": 0.6153999999761581,
+          "clickToReadySeconds": 28.417100000023844
+        },
+        "reportedFitSeconds": 26.71860000002384,
+        "engineError": 0.0191125,
+        "sourceEditableError": 0.01929375,
+        "selectedCounts": [
+          7,
+          7
+        ],
+        "templateChecksPassed": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 0
+            }
+          ],
+          "originalSourceError": 0.01929375,
+          "sourceError": 0.01929375
+        }
+      },
+      {
+        "name": "star",
+        "browser": "chromium",
+        "browserVersion": "145.0.7632.6",
+        "passed": true,
+        "pageErrors": [],
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.011,
+          "prepareRoundTripSeconds": 0.04,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 1.958600000023842,
+          "resultToReadySeconds": 0.09679999995231628,
+          "clickToReadySeconds": 2.106799999952316
+        },
+        "reportedFitSeconds": 1.7405,
+        "engineError": 0.0016,
+        "sourceEditableError": 0.0016,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "templateChecksPassed": true,
+        "conversionFidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 6.25e-05
+            }
+          ],
+          "originalSourceError": 0.0016,
+          "sourceError": 0.0016
+        }
+      }
+    ]
+  },
+  "evidence": {
+    "tmp/heart-learning/early-feature-v2/served.json": "0df918b6f86616c29b4e0eff976a0fc14ccd850ee12468c4bbb06b7785b6e35f",
+    "tmp/heart-learning/early-feature-v2/gallery-check.json": "37b6c0932875550b097066c907f3ac7a4afdb731c1fb72f4a57cd293d9c41b7d",
+    "tmp/heart-learning/early-feature-v2/index.html": "a3955643d9524b4937cce9f017b761144ae126a445151426e954cb477fb0d1d9",
+    "tmp/heart-learning/early-feature-v2/tree-final.json": "dd342e70779ee6533cb3e48297846556c03c0aa7b9d8ebeb27d93282291d89f5",
+    "tmp/heart-learning/early-feature-v2/hard-photos-final/results.json": "1d7a7105f43cb0f970265323647b896d1a39f66d65cb2354fe48431d90fceca8",
+    "tmp/heart-learning/early-feature-v2/hunodan/results.json": "ef6065727db7f37ff0c00ed7d764b7fbbd4015e909009b368337f3c45b6d6e90",
+    "tmp/heart-learning/early-feature-v2/checks.json": "e66a1c6b445d011e37f463d6236b163afaabc88e89a35ec61744e1bcb9cdf1b2",
+    "tmp/heart-learning/early-feature-v2/browser/results.json": "778809217026098de28fbd2bbda566e7bce05a41dbf1966e0c8efeeca35d19a8",
+    "tmp/heart-learning/early-feature-v2/paired-summary.json": "87064a411db40a75c2a2d1c43a6fad663c60bab2c1ef076b6ddd50b63d73e67a",
+    "tmp/heart-learning/early-feature-v1/baseline-sources.json": "9100faf186a13c2b1041c2876d688d8b87d8ceb486c5e8b56c68beef8c9bc5e9",
+    "scripts/inverse/fixtures/faded-frame-mask.png": "8d88be6bd3febd2c47ee79fc9e480deed6e6fb71b6790746d4330b10da1fa8c0",
+    "scripts/inverse/fixtures/faded-frame-mask.json": "ccb3d80aa471feba772451e416c1dcd7fe466dd208a4e67e57491455c72c546b",
+    "static/inverse/core/direct/fit.js": "0a53ee7d7153bffd0f11ad2fa1e295995496fecfb23be79dcf016c9118b5e6eb",
+    "scripts/inverse/weak-feature-routing.test.mjs": "3e755b81871673762c83127cbcfdca737ea0ea4e23585d6f0ff37a40ddde2c7f",
+    "scripts/inverse/paint-browser-test.mjs": "e9efb4d2b476380b1ea26570829970f2abd99c182981ffd4e713a6941448cb79",
+    "tmp/heart-learning/early-feature-v1/old-original-10/result.json": "7c184ef06e4889a9452509578da418d00f06fe982da398fabedf8febd8376064",
+    "tmp/heart-learning/early-feature-v1/old-original-10/cut_geometry.json": "e041bc0c451ea7ee27c871065f3a6a52a7f68627763c2b6d6f84e25d1a04453d",
+    "tmp/heart-learning/early-feature-v1/old-original-10/woven.png": "f6f72b4cdd00857925b46e324f1097129a56826ff86f9135350accdbda6dc5b3",
+    "tmp/heart-learning/early-feature-v2/final-original-10/result.json": "eeb01a27061ffbfe04d51eb926ceb4f9765f07f97a4e5fa78670377221a9d8d2",
+    "tmp/heart-learning/early-feature-v2/final-original-10/cut_geometry.json": "d69c848d41538dcbb356bc36f9f78a47063a04a7610b6ff5e44d5d91c01ccea3",
+    "tmp/heart-learning/early-feature-v2/final-original-10/woven.png": "b9157944987f2f5b20a1b1c9c2dde368d43c6d83eab7f59d6de02f0fea483221",
+    "tmp/heart-learning/early-feature-v1/old-transpose-10/result.json": "2fb8e9831bf3a2072acf69a4b4f14684760742743be94130c4d4e7dbc6234674",
+    "tmp/heart-learning/early-feature-v1/old-transpose-10/cut_geometry.json": "6a5c1bf242cb19fa96d448c3507a571505a7984cf68e60dc2d15fd585b8b2275",
+    "tmp/heart-learning/early-feature-v1/old-transpose-10/woven.png": "9c2360adecdabd516091a3b5415fcae289ca7716cfb6047d24663553c07dbccb",
+    "tmp/heart-learning/early-feature-v2/final-transpose-10/result.json": "2bcfd29455516524549131f3b6ef3d08a2e594cfd54ec5229c43101c631004e2",
+    "tmp/heart-learning/early-feature-v2/final-transpose-10/cut_geometry.json": "e48fa941bbc2f252da9f0501efa1a3e67e89ddab72774b114bb4738cb93eed92",
+    "tmp/heart-learning/early-feature-v2/final-transpose-10/woven.png": "3b9dd38ec6c6e76756e3379dc4f13da416ffc9c4f07fcc7a802fe6f825b1c98b",
+    "tmp/heart-learning/early-feature-v1/old-mirror-x-10/result.json": "1364a31fa59b1ead4534251c99795c01b63c03247e00bddd562eef8e52cd71fb",
+    "tmp/heart-learning/early-feature-v1/old-mirror-x-10/cut_geometry.json": "7f8495e482f20c04c0b474dac90038a8ca0e1982b377408b22c985f524b004a7",
+    "tmp/heart-learning/early-feature-v1/old-mirror-x-10/woven.png": "4ae4f49248bb0e460ddae7a5ba89f416c9cc6a29c789c10f09f03cc9b35d566f",
+    "tmp/heart-learning/early-feature-v2/final-mirror-x-10/result.json": "a158c8c2380e1215962319ed5fb9553241e7aa6c8846cb8582f7fa78d23dd526",
+    "tmp/heart-learning/early-feature-v2/final-mirror-x-10/cut_geometry.json": "d0322b5eac2b126d2a732f7d4488a0f7233ada947339ceda28aababc3fbac365",
+    "tmp/heart-learning/early-feature-v2/final-mirror-x-10/woven.png": "63f95c388d8d27dc8aa740fc3956c85e7dc618de3d971deebcd4f641add7bc3e",
+    "tmp/heart-learning/early-feature-v1/old-shift-x-10/result.json": "32ca4a5a29ad11e89e46a1e50dd63ece405d75cd5373168499fea3491eeb7581",
+    "tmp/heart-learning/early-feature-v1/old-shift-x-10/cut_geometry.json": "6289db992b5f5646ee9405f05ac11bdf45020309014daae951e63dc2c912ddc1",
+    "tmp/heart-learning/early-feature-v1/old-shift-x-10/woven.png": "904f3ab2f85bfd0ed7a7149aecf99eaa2d4f314af6979cb135d010d2b4b13e0d",
+    "tmp/heart-learning/early-feature-v2/final-shift-x-10/result.json": "09aafce6adb8d7f697e23809e0b4c7aa4aef13ace70eaf043849e06c576c696f",
+    "tmp/heart-learning/early-feature-v2/final-shift-x-10/cut_geometry.json": "fea2113f8a7f68ea9842b57d01c192aaf26fbd6006f37cca785295bcd85ebb30",
+    "tmp/heart-learning/early-feature-v2/final-shift-x-10/woven.png": "1b1496249541bd868c1a75b10f08fd01d461404f2749514e936dbbc1656b3dc9",
+    "tmp/heart-learning/early-feature-v2/hjstr-03-old-0/results.json": "1aee4a4b230bf46d8c9df3d1de29d977e9a4f4a309c8350be45e6cfa275e6346",
+    "tmp/heart-learning/early-feature-v2/hjstr-03-new-0/results.json": "caaba637819c091e862f02e0a888d22c3e65f1f381ccc495cef9f1501f34af3a",
+    "tmp/heart-learning/early-feature-v2/hjstr-03-old-1/results.json": "479b2ba06e6b63247117046810f6916369d785bf64d8ae13c1d87d2cd803ae7a",
+    "tmp/heart-learning/early-feature-v2/hjstr-03-new-1/results.json": "86bcd277f81b4f8a8fe33b6a7ab628f31e138c0e0ae7f58fd84cad9325adff24"
+  },
+  "qualifications": [
+    "Selected development mask and perturbations; no new unseen photographs.",
+    "Experimental crop/classification is unchanged and remains outside production.",
+    "Sparse photo observations are not ground truth and never enter fitting.",
+    "All preceding first-trial records and the stopped failing run remain under early-feature-v1."
+  ]
+}

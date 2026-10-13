@@ -6,6 +6,10 @@ This exposes bauble results that pass numerical checks while omitting visible
 parts of the photographed frame. No production classifier, model, fitting
 constraint or acceptance threshold changes in this work.
 
+The subsequent [routing follow-up](early-feature-routing.md) fits the same
+recovered-frame mask within ten seconds at 1.721% disagreement. This document
+retains the preceding preprocessing study and its historical fitting results.
+
 A later diagnostic does find a better bauble candidate: **1.733% disagreement
 with its candidate mask, all 26 reviewed photo samples retained, and geometry
 and paper checks passing**, after 29.40 seconds of fresh fitting. Its crop and
