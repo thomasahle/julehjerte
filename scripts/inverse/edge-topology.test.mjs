@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {prepareBoundary,prepareTopologyBoundary} from '../../static/inverse/core/direct/topology.js';
+import {prepareBoundary,prepareTopologyBoundary,initializeTopology} from '../../static/inverse/core/direct/topology.js';
 import {sampleTarget} from '../../static/inverse/core/input.js';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {settings} from '../../static/inverse/core/settings.js';
@@ -8,9 +8,34 @@ import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {referenceError} from '../../static/inverse/core/image-reference.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {treeMask} from './tree-fixture.mjs';
+import {Cubic} from '../../static/inverse/core/bezier.js';
+import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
+import {sampleWeave,validate} from '../../static/inverse/core/validate.js';
 
 const n=400,clean=treeMask(),cfg=settings({...AUTOMATIC_PRESET,trials:0,timeLimit:10});
 const edgeNoise=(side,invert=false)=>treeMask({noisyEdges:[side],invert});
+
+for(const counts of [[1,1],[13,12]])test(`reusing a ${counts.join('+')}-cut boundary cannot inherit a previous routing graph`,async()=>{
+  // Unequal layouts avoid the separate transposed-boundary copy. The dense
+  // case has only 25 original curves, but noding expands it beyond the 160
+  // input-curve guard; mutating the cache made its second attempt fail.
+  const graph=new CurveGraph(counts.map((count,f)=>Array.from({length:count},(_,i)=>{
+    const t=counts[0]===1?(f?60:40):(i+1)*100/(count+1);
+    return[Cubic.line(f?[0,t]:[t,0],f?[100,t]:[t,100]).p];
+  }))),proposal=graph.solution(graph.points,1),mask=sampleWeave(proposal,n);
+  const boundary=proposal.graph.target,input={...boundary,boundarySeed:boundary,sourceImage:{mask,probability:Float32Array.from(mask),resolution:n}};
+  const originalCurves=boundary.curves,controls=originalCurves.map(c=>structuredClone(c.p)),source=structuredClone(input.sourceImage);
+  for(let attempt=0;attempt<2;attempt++){
+    const result=await initializeTopology(input,cfg,{seconds:2});
+    assert.equal(result.report.accepted,true,`Routing attempt ${attempt+1}: ${JSON.stringify(result.report)}`);
+    assert.equal(result.report.boundarySegments,counts[0]+counts[1]);
+    assert.equal(input.boundarySeed,boundary);assert.equal(boundary.curves,originalCurves);
+    assert.deepEqual(boundary.curves.map(c=>c.p),controls);assert.deepEqual(input.sourceImage,source);
+    const solution=result.graph.solution(result.graph.points,result.phase,input);
+    assert.equal(validate(solution,cfg).passed,true);
+    assert.deepEqual(sampleWeave(solution,n),mask,'Repeated routing preserves the same input design.');
+  }
+});
 
 test('valid endpoints keep their original boundary without repair',()=>{
   const input=prepare({type:'mask',mask:clean,resolution:n},cfg).target;

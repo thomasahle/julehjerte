@@ -150,7 +150,11 @@ function prepareTopologyPhase(input,cfg,{maximumError,guidePhase,onProgress}){
     if(symmetryEvidence(guideSource).minimumIdenticalImageError<=.005){target=transposeTarget({...target,sourceImage:guideSource});target.sourceImage=source;report.matchingProposal=true;}
     const graphCfg=settings({...cfg,...MATCHING_GRID_PRESET,maxTurn:cfg.maxTurn,localNeighborhoodFactor:cfg.localNeighborhoodFactor});
     const seed={...target,curves:target.curves.slice()};
-    return{graph:buildGraph(target,graphCfg,{onProgress}),target:seed,cfg:graphCfg,report};
+    // Noding and guide portals expand target.curves in place. The cached
+    // boundary is reusable input: a second attempt must not inherit the first
+    // graph's subdivisions or fail the initializer's segment guard on them.
+    const graphTarget={...seed,curves:seed.curves.slice()};
+    return{graph:buildGraph(graphTarget,graphCfg,{onProgress}),target:seed,cfg:graphCfg,report};
   }catch(error){report.error=error.message;return{report};}
 }
 
