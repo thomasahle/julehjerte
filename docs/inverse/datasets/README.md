@@ -5,7 +5,7 @@ It contains downloaded source images, synthetic images with exact cut labels,
 and verified pretrained encoder checkpoints. A first synthetic-only neural
 comparison is complete; no learned model has been added to the website.
 
-The 2026-10-13 snapshot contains:
+The 2026-10-14 snapshot contains:
 
 | Asset | Verified count | Meaning |
 | --- | ---: | --- |
@@ -20,7 +20,7 @@ The 2026-10-13 snapshot contains:
 | Decoder-adaptation checkpoints | 4 | One synthetic control and three grouped real/synthetic folds; no all-data or deployed model. |
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
-| Source-photo material QA samples | 50 | Two hearts in one reserved photograph; sparse assistant-reviewed development observations, not dense labels or training data. |
+| Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
 | Real visible-body annotations | 10 | Eight source groups outside reserved QA; uncertain outline/occlusion pixels excluded, five approximate overlap references; temporary grouped adaptation only. |
 
 The latest [Pinterest expansion](real-pinterest-expansion.md) downloaded 428 of
@@ -64,8 +64,10 @@ the same shifted mask could finish in 8.7 seconds with two cuts per sheet, or
 take 54–56 seconds and return a poorer six-cut pair. A controlled prototype
 gives the sparse graph its full remaining recovery allowance, recovering the
 two-cut pair in 8.5–8.6 seconds with 1.48% editable disagreement. All ten
-prototype browser flows pass. The native and broad release replays are pending;
-no new corpus-wide improvement is claimed.
+prototype browser flows pass. Fresh committed-runtime replays retain all eight
+checked crop variants, 22/22 regular Hunodan designs with unchanged errors, and
+24/31 hard photographs. Full-suite and rebuilt production-browser QA remain
+pending; no new corpus-wide improvement is claimed.
 
 A read-only [neural fallback source review](neural-fallback-source-review.md)
 checks 28 frozen original-photo observations on the blue outlined star against

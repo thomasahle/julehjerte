@@ -75,6 +75,19 @@ checks exported image/feature fidelity at 400 and 800 pixels.
 Commit `0bb8ace` applies the allocation and regression checks. All 14 targeted
 tests pass, including native routing, delayed deferred recovery and retention of
 later graphs after proven exhaustion. Eight fresh native crop-variant runs also
-pass with less than 2% disagreement and under ten seconds each. The corpus,
-full-suite and rebuilt production-browser verification are still in progress.
-Nothing has been pushed or deployed.
+pass with less than 2% disagreement and under ten seconds each (maximum 9.61 s).
+All eight retain their pass through independent rendering and complete editable
+conversion; the eight preserved prior outputs also pass that replay.
+
+The fresh Hunodan benchmark retains **22/22**, with exactly the same measured
+errors and a maximum of **8.257 seconds**. The automatic-photo benchmark remains
+**24/31**: all 47 inventory entries retain their prior status and pass/fail
+outcome, including the 16 incomplete or obscured exclusions. Source quads,
+classified masks and fitting probabilities are unchanged. The four remaining
+fit failures pass geometry and paper checks but fail image or feature fidelity;
+the other three eligible failures have no crop proposal. All 855 application
+tests pass, with one existing skipped test.
+
+The full inverse suite and rebuilt production-browser verification are still
+in progress. The owned preview remains on the preceding build until those checks
+reach the rebuild. Nothing has been pushed or deployed.
