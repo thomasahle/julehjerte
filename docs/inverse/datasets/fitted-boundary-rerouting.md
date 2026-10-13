@@ -75,3 +75,5 @@ Final verification at `e24d236` passes: type checking reports zero errors and se
 The preview was restarted after the final build at `http://127.0.0.1:5232/`. Both advertised entry modules return HTTP 200, and the served fitter and rerouting module match the tested source bytes exactly. No code was pushed or deployed.
 
 Raw proposals, experiments, before/after perturbation renders and verification logs are retained under `tmp/heart-learning/local-routing-v1/`. The [machine-readable report](fitted-boundary-rerouting.json) records their hashes, the initial browser failure, final benchmark outcomes and both source/geometry and quality limitations.
+
+The [cache and clearance follow-up](cached-boundary-stability.md) fixes repeated initialization mutating its cached boundary and identifies the active clearance constraint in the still-unresolved vertical-shift case.
