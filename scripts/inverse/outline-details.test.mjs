@@ -54,3 +54,12 @@ test('outline detail leaves weighted observations and infeasible detail scales a
   assert.equal(outlineDetailPlan(graph,graph.points,1,source,{...cfg,minWidth:0}),null);
   assert.equal(outlineDetailPlan(graph,graph.points,1,source,{...cfg,minWidth:20}),null);
 });
+
+test('a crowded residual cannot spend an unbounded number of new curve pieces',()=>{
+  const graph=new CurveGraph([Array.from({length:12},(_,i)=>[line([10+7*i,0],[10+7*i,100])]),Array.from({length:12},(_,i)=>[line([0,10+7*i],[100,10+7*i])])]);
+  const mask=sampleWeave(graph.solution(graph.points,1),n),points=graph.points.slice();
+  for(let y=30;y<170;y++)for(let x=30;x<170;x++)mask[y*n+x]^=1;
+  const source={mask,resolution:n},before=mask.slice();
+  assert.equal(outlineDetailPlan(graph,graph.points,1,source,cfg),null);
+  assert.deepEqual(mask,before);assert.deepEqual(graph.points,points);
+});
