@@ -91,3 +91,5 @@ node --test --test-concurrency=1 scripts/inverse/feature-seeds.test.mjs
 ```
 
 The ten-second setting is a search allowance. Crop detection, preparation, independent replay and file writing are separately timed in the complete-pipeline report. Browser checks use the ordinary 180-second setting; their results are not evidence of a ten-second browser solve.
+
+The [follow-up routing investigation](feature-routing-perturbations.md) captures the horizontal-shift failure through all 160 local-detail steps. It identifies rejected self-crossing geometry and explains why the earlier last-attempt-only report could not establish time starvation. That investigation adds diagnostics; it does not fix the remaining shifted bird.
