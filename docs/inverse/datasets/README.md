@@ -48,7 +48,20 @@ one source pixel changes trace routing and raises final disagreement from 1.37%
 to 5.43%. Neither the segmentation average nor those crop coordinates establish
 a reconstruction improvement. All learned models remain offline.
 
-The subsequent [rejected-routing repair](rejected-routing-repair.md) connects
+The latest [clearance-routing follow-up](clearance-routing-repair.md) also
+repairs near-valid nonlocal narrow sections and retains finer paper verification
+through refinement and export. The same eight fixed crop variants improve from
+3/8 to 5/8 checked editable pairs, with unchanged source masks and acceptance
+limits. The complete automatic-photo benchmark remains 24/31, and all 22 regular
+Hunodan designs retain their previous errors below ten seconds. Three crop
+variants still fail because of search scheduling or the selected trace; this
+does not establish a neural-model advantage. All 767 inverse tests, 855
+application tests and seven Chromium upload/example/export flows pass. The
+vertical sloth upload exercises the finer paper lattice through the browser
+and editor, with 1.45% editable disagreement in 10.01 seconds on its separately
+recorded 400-pixel mask.
+
+The preceding [rejected-routing repair](rejected-routing-repair.md) connects
 nearly valid MILP proposals to bounded continuous refinement. On eight fixed
 sloth crop variants, independently checked editable pairs improve from 1/8 to
 3/8 without changing the source masks or acceptance limits. The full automatic

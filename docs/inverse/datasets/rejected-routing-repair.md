@@ -6,6 +6,11 @@ from **one to three checked pairs out of eight**, including editable SVG replay.
 The full automatic-photo benchmark remains **24/31**. This does not establish a
 neural-model advantage, recover original artwork, or resolve crop sensitivity.
 
+The later [clearance-routing follow-up](clearance-routing-repair.md) extends
+repair to nonlocal narrow sections and preserves finer paper verification.
+That separate run reaches five of these eight fixed crops; the historical
+measurements below still describe `f7056e3`.
+
 ## Why the previous search failed
 
 The [real adaptation study](real-adaptation.md) found that a subpixel change in
