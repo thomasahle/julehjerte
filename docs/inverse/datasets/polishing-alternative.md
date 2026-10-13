@@ -66,12 +66,13 @@ checkpoint-selection omission addressed by this change.
 
 ## Validation status
 
-The [completed probe record](polishing-alternative-probe.json) pins 140 artifacts
+The [completed probe record](polishing-alternative-probe.json) pins 152 artifacts
 from the controlled experiments and browser comparison.
 
 The browser comparison and focused tests above are complete. All eight fixed
 crop perturbations pass within ten seconds and survive editable conversion.
-All 22 regular Hunodan designs pass with no increase in measured image error.
+All 22 regular Hunodan designs pass within ten seconds (maximum 8.91 seconds).
+Four errors improve and the other eighteen are unchanged.
 The full hard-photo benchmark, application/inverse tests, production build and
 eleven rebuilt browser flows are still running serially under
 `tmp/heart-learning/polishing-alternative-v1/`. Their results must be inspected

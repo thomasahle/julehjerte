@@ -1563,6 +1563,54 @@
     "static/inverse/core/direct/fit.js": {
       "sha256": "c2a838f842a6a9c4ca6e13eac1526e0f819f14a5cae58ac8a5c44c7ce2067fd6",
       "bytes": 58818
+    },
+    "tmp/heart-learning/polishing-alternative-v1/hunodan/results.json": {
+      "sha256": "d8ec89102d0bd08e23a51b6ebb03cf68977140923301e7795fd6dcedde07336c",
+      "bytes": 810486
+    },
+    "tmp/heart-learning/routing-timeout-v1/hunodan/results.json": {
+      "sha256": "a1368b7044c67f9c46d031e6b7a71b99d981a8fc602e76fee21e9f8dd179e684",
+      "bytes": 791530
+    },
+    "tmp/heart-learning/polishing-alternative-v1/editor/results.json": {
+      "sha256": "5c2e2e42570cc891606ef4c38c4b2f41a2fe4e483e1bc2b0882192598728cc1d",
+      "bytes": 103341
+    },
+    "tmp/heart-learning/polishing-alternative-v1/matrix/results.json": {
+      "sha256": "ed30aca38a7d0bd626672bbe90b75d82e446210921a913777ba3ddef97fbd2ad",
+      "bytes": 1399373
+    },
+    "tmp/heart-learning/polishing-alternative-v1/matrix/frozen/production/report.json": {
+      "sha256": "2905f4190f85e51b88f0b5e02b580b6f01522e7df34295263b3a7d816492f859",
+      "bytes": 77899
+    },
+    "tmp/heart-learning/polishing-alternative-v1/matrix/production/production/report.json": {
+      "sha256": "5696861ba4ed9e31083213b5840c23139f698260c41dd1ebe13b46399b60a6b0",
+      "bytes": 59975
+    },
+    "tmp/heart-learning/polishing-alternative-v1/matrix/real-out-of-fold/production/report.json": {
+      "sha256": "5ad1173fd86d9da38de502610c7dee2f09a49e22dde278785ae05026c20cdab6",
+      "bytes": 75167
+    },
+    "tmp/heart-learning/polishing-alternative-v1/matrix/synthetic-control/production/report.json": {
+      "sha256": "03591730607e1ecab60166ab7f51885e4ef40892bcf2edb2bb95f624adbf523b",
+      "bytes": 67380
+    },
+    "tmp/heart-learning/polishing-alternative-v1/matrix/x-minus-1/production/report.json": {
+      "sha256": "2a6aea333a7b5e6911cb0c9e7e9b7e5a08de22cd62a5c2c928263998c9ef39a2",
+      "bytes": 58603
+    },
+    "tmp/heart-learning/polishing-alternative-v1/matrix/x-plus-1/production/report.json": {
+      "sha256": "931c7b77d8de76d8f1897d4652c26c5a31f51d8a4cb9a5b58f029e5ab8e7cd06",
+      "bytes": 78406
+    },
+    "tmp/heart-learning/polishing-alternative-v1/matrix/y-minus-1/production/report.json": {
+      "sha256": "40b3d7d529b9585961be53be79b34fd77a6bdd2f88480375db87e2b8745a4ad0",
+      "bytes": 84723
+    },
+    "tmp/heart-learning/polishing-alternative-v1/matrix/y-plus-1/production/report.json": {
+      "sha256": "7a56f6155a492e6f9d21a707a6c78c3614599d8cd439918376c4d3d17c30d2ca",
+      "bytes": 57753
     }
   },
   "limitations": [
@@ -1570,5 +1618,44 @@
     "The scene crop still loses one of 28 reviewed original-photo points; the fix improves its derived mask fit, not crop correctness.",
     "The first browser attempt failed before fitting on stale preview asset references; restarting the owned preview fixed the harness environment.",
     "The first frozen-polish harness attempt supplied a byte buffer where the export renderer expects JSON text; its error log is retained. The corrected harness verifies that graph reconstruction preserves the rendered mask."
-  ]
+  ],
+  "completedBenchmarks": {
+    "hunodan": {
+      "passed": 22,
+      "total": 22,
+      "maximumSeconds": 8.912531375000006,
+      "errorImprovements": [
+        {
+          "id": "hjfig-02",
+          "before": 0.013923555555555555,
+          "after": 0.013340444444444445
+        },
+        {
+          "id": "hjfla-01",
+          "before": 0.01336669921875,
+          "after": 0.012166341145833334
+        },
+        {
+          "id": "hjcur-02",
+          "before": 0.005397333333333333,
+          "after": 0.005219555555555555
+        },
+        {
+          "id": "hjstr-03",
+          "before": 0.0056129769369752365,
+          "after": 0.0055399085981507066
+        }
+      ]
+    },
+    "fixedCropVariants": {
+      "passed": 8,
+      "total": 8,
+      "maximumSeconds": 9.482522083
+    },
+    "editableReplay": {
+      "passed": 16,
+      "total": 16,
+      "scope": "Eight retained prior-release pairs and eight fresh pairs."
+    }
+  }
 }
