@@ -10,6 +10,12 @@ const SQUARE=[[0,0],[1,0],[1,1],[0,1]];
 function checkImage(image){if(!image||!Number.isInteger(image.width)||!Number.isInteger(image.height)||image.width<24||image.height<24||!image.data||image.data.length!==image.width*image.height*4)throw new TypeError('Expected RGBA ImageData-like input, at least 24 by 24 pixels');}
 function resizeROI(im,box,maxSize){const [x0,y0,x1,y1]=box,s=Math.min(1,maxSize/Math.max(x1-x0,y1-y0)),w=Math.max(24,Math.round((x1-x0)*s)),h=Math.max(24,Math.round((y1-y0)*s)),data=new Uint8ClampedArray(w*h*4);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const sx=clamp(Math.round(x0+(x+.5)/s-.5),0,im.width-1),sy=clamp(Math.round(y0+(y+.5)/s-.5),0,im.height-1);for(let c=0;c<4;c++)data[(y*w+x)*4+c]=im.data[(sy*im.width+sx)*4+c];}return{width:w,height:h,data,scale:s,offset:[x0,y0]};}
 function linearFit(points){let sy=0,sx=0,syy=0,sxy=0;for(const[x,y]of points){sy+=y;sx+=x;syy+=y*y;sxy+=x*y;}const n=points.length,a=(sxy-sx*sy/n)/(syy-sy*sy/n),b=(sx-a*sy)/n;return[a,b];}
+function lineEvidence(points,a,b,tolerancePx){
+ const inliers=points.filter(([x,y])=>Math.abs(x-a*y-b)/Math.hypot(1,a)<tolerancePx);
+ return{a,b,inliers:inliers.length,total:points.length,support:inliers.length/points.length,tolerancePx,
+  rms:inliers.length?Math.sqrt(mean(inliers.map(([x,y])=>(x-a*y-b)**2/(1+a*a)))):null,
+  span:inliers.length>1?Math.max(...inliers.map(p=>p[1]))-Math.min(...inliers.map(p=>p[1])):0};
+}
 export function lowerEdgeLines(f,box){const[x0,y0,x1,y1]=box,w=x1-x0,h=y1-y0,cx=(x0+x1)/2,sides=[[],[]];
  const backgroundCovariance=f.palette?.backgroundModel?.covariance,edgeMetric=backgroundCovariance?colorDifferenceMetric(backgroundCovariance):null;
  for(let y=Math.round(y0+(f.anchored ? .62 : .48)*h);y<Math.round(y0+(f.anchored ? .95 : .83)*h);y++){
@@ -20,16 +26,17 @@ export function lowerEdgeLines(f,box){const[x0,y0,x1,y1]=box,w=x1-x0,h=y1-y0,cx=
   let a=x,b=x;while(a>x0&&f.mask[y*f.w+a])a--;while(b<x1-1&&f.mask[y*f.w+b])b++;
   if(a>x0+1&&b<x1-2&&b-a>(f.anchored ? .08 : .18)*w){sides[0].push([a+.5,y]);sides[1].push([b-.5,y]);}
  }
- const result=[];
+ const result=[],points=[];
  for(let k=0;k<2;k++){const p=sides[k];if(p.length<10)return null;let best=null;
  for(let i=0;i<p.length;i+=2)for(let j=i+Math.max(6,Math.floor(h*.045));j<p.length;j+=2){const a=(p[j][0]-p[i][0])/(p[j][1]-p[i][1]),b=p[i][0]-a*p[i][1];if(k===0?!(a>.3&&a<2.5):!(a<-.3&&a>-2.5))continue;const tol=Math.max(1.5,.009*w),ds=p.map(([x,y])=>Math.abs(x-a*y-b)/Math.hypot(1,a)),score=ds.reduce((s,d)=>s+Math.max(1-d/tol,0),0);if(!best||score>best.score)best={a,b,ds,score,tol};}
  if(!best)return null;const inliers=p.filter((p,i)=>best.ds[i]<best.tol);if(inliers.length<8)return null;let[a,b]=linearFit(inliers);
+ const initial=lineEvidence(p,a,b,best.tol),fitPoints=p.map(point=>point.slice());
  // Refine the mask against colour steps, using the segmentation's background
  // metric when available so a stronger shadow edge cannot pull the paper line.
  for(let repeat=0;repeat<2;repeat++){
   const refined=[];
-  for(const p of inliers){
-   const y=p[1],x=a*y+b,norm=Math.hypot(1,a),nx=1/norm,ny=-a/norm;
+  for(const point of inliers){
+   const y=point[1],x=a*y+b,norm=Math.hypot(1,a),nx=1/norm,ny=-a/norm;
    let bestD=0,bestG=0;
    for(let d=-5;d<=5;d+=.5){
     const X=x+d*nx,Y=y+d*ny;
@@ -37,17 +44,25 @@ export function lowerEdgeLines(f,box){const[x0,y0,x1,y1]=box,w=x1-x0,h=y1-y0,cx=
     const grad=(edgeMetric?edgeMetric(delta):Math.sqrt(delta.reduce((sum,v)=>sum+v*v,0)))*Math.exp(-d*d/50);
     if(grad>bestG){bestG=grad;bestD=d;}
    }
-   if(bestG>(edgeMetric?3.5:.065))refined.push([x+bestD*nx,y+bestD*ny]);
+   if(bestG>(edgeMetric?3.5:.065))refined.push([x+bestD*nx,y+bestD*ny,p.indexOf(point)]);
   }
   if(refined.length>Math.max(8,inliers.length*.4)){
    const[aa,bb]=linearFit(refined),keep=refined.filter(([x,y])=>Math.abs(x-aa*y-bb)/Math.hypot(1,aa)<2);
-   if(keep.length>=8)[a,b]=linearFit(keep);
+   if(keep.length>=8){
+    [a,b]=linearFit(keep);
+    for(const[x,y,index]of refined)fitPoints[index]=[x,y];
+   }
   }
  }
- result.push({a,b,inliers:inliers.length,total:p.length,support:inliers.length/p.length,rms:Math.sqrt(mean(inliers.map(([x,y])=>(x-a*y-b)**2/(1+a*a)))),span:inliers.at(-1)[1]-inliers[0][1]});}
+ // Measure support against the samples actually used after colour refinement.
+ // A blurred mask can disagree with an accurate colour edge; expose that
+ // disagreement separately rather than retaining the seed's support or
+ // treating segmentation agreement as the only evidence for the final line.
+ result.push({...lineEvidence(fitPoints,a,b,best.tol),initial,segmentation:lineEvidence(p,a,b,best.tol)});
+ points.push(fitPoints);}
  const[L,R]=result,y=(R.b-L.b)/(L.a-R.a),x=L.a*y+L.b;
  if(!Number.isFinite(x)||y<y0+.65*h||y>y1+.20*h||x<x0+.20*w||x>x1-.20*w)return null;
- return {left:L,right:R,tip:[x,y],points:sides,refinementMetric:edgeMetric?'background-covariance':'rgb'};
+ return {left:L,right:R,tip:[x,y],points,segmentationPoints:sides,refinementMetric:edgeMetric?'background-covariance':'rgb'};
 }
 function model(z,lines,scale){const N=[z[0]*scale,z[1]*scale],hr=z[2]*scale,hl=z[3]*scale,B=lines.tip,R=[B[0]-lines.right.a*hr,B[1]-hr],L=[B[0]-lines.left.a*hl,B[1]-hl],q=[N,R,B,L];if(!convexQuad(q))return null;try{const H=homography(SQUARE,q);return {q,H};}catch{return null;}}
 function contour(n=36){const a=[],b=[],c=[],d=[];for(let k=0;k<n;k++){const t=(k+.5)/n; a.push([.5-.5*Math.cos(Math.PI*t),-.5*Math.sin(Math.PI*t)]);b.push([1,t]);c.push([1-t,1]);d.push([-.5*Math.sin(Math.PI*t),.5+.5*Math.cos(Math.PI*t)]);}return[a,b,c,d];}
