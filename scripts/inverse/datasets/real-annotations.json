@@ -1,0 +1,1754 @@
+{
+  "schema": "woven-heart-real-annotations-1",
+  "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+  "target": "Visible selected basket body including both papers and protruding motifs; exclude handles, objects, shadows and other hearts. Unknown occlusion/attachment regions and a band around manually traced boundaries receive zero supervision weight.",
+  "scope": "Assistant-reviewed annotation pilot, not exact artwork/cut ground truth. Family/source assignment remains pending; no training or held-out claims.",
+  "instances": [
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "assetId": "real-5330aa8b62176216",
+      "imageSha256": "5330aa8b621762167ded8a0c2662e38947ee3422d7b06f669b18e6db43f0779d",
+      "sourceSize": [
+        250,
+        250
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          250,
+          250
+        ],
+        "note": "Handle attachment is uncertain; both paper colours belong to the body."
+      },
+      "motif": {
+        "candidateFamily": "bicycle-medallion",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "flat",
+      "foregroundPolygons": [
+        [
+          [
+            119.0,
+            41.0
+          ],
+          [
+            104.0,
+            34.0
+          ],
+          [
+            89.0,
+            29.0
+          ],
+          [
+            74.0,
+            28.0
+          ],
+          [
+            57.0,
+            30.0
+          ],
+          [
+            41.0,
+            38.0
+          ],
+          [
+            29.0,
+            49.0
+          ],
+          [
+            20.0,
+            63.0
+          ],
+          [
+            13.0,
+            78.0
+          ],
+          [
+            9.0,
+            97.0
+          ],
+          [
+            10.0,
+            112.0
+          ],
+          [
+            16.0,
+            128.0
+          ],
+          [
+            28.0,
+            145.0
+          ],
+          [
+            126.0,
+            239.0
+          ],
+          [
+            221.0,
+            144.0
+          ],
+          [
+            231.0,
+            128.0
+          ],
+          [
+            237.0,
+            111.0
+          ],
+          [
+            240.0,
+            92.0
+          ],
+          [
+            238.0,
+            76.0
+          ],
+          [
+            232.0,
+            59.0
+          ],
+          [
+            224.0,
+            46.0
+          ],
+          [
+            211.0,
+            35.0
+          ],
+          [
+            196.0,
+            29.0
+          ],
+          [
+            179.0,
+            26.0
+          ],
+          [
+            161.0,
+            28.0
+          ],
+          [
+            143.0,
+            34.0
+          ],
+          [
+            132.0,
+            40.0
+          ]
+        ]
+      ],
+      "unknownPolygons": [],
+      "boundaryUncertaintyPixels": 3.0,
+      "overlapCorners": {
+        "points": [
+          [
+            119.0,
+            40.0
+          ],
+          [
+            221.0,
+            144.0
+          ],
+          [
+            126.0,
+            239.0
+          ],
+          [
+            28.0,
+            145.0
+          ]
+        ],
+        "uncertaintyRadiusPixels": 6.0,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "assetId": "real-abf590088db891f9",
+      "imageSha256": "abf590088db891f98c7e082a3fd9b60cf72dd969fb31ab0d18e963a5297a1971",
+      "sourceSize": [
+        250,
+        250
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          250,
+          250
+        ],
+        "note": "The top notch is partly hidden by the handle. Its corner is deliberately not treated as exact."
+      },
+      "motif": {
+        "candidateFamily": "sloth-silhouette",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "flat",
+      "foregroundPolygons": [
+        [
+          [
+            120.0,
+            42.0
+          ],
+          [
+            106.0,
+            34.0
+          ],
+          [
+            89.0,
+            29.0
+          ],
+          [
+            72.0,
+            28.0
+          ],
+          [
+            54.0,
+            32.0
+          ],
+          [
+            39.0,
+            41.0
+          ],
+          [
+            25.0,
+            57.0
+          ],
+          [
+            17.0,
+            72.0
+          ],
+          [
+            11.0,
+            90.0
+          ],
+          [
+            11.0,
+            108.0
+          ],
+          [
+            16.0,
+            124.0
+          ],
+          [
+            27.0,
+            140.0
+          ],
+          [
+            125.0,
+            240.0
+          ],
+          [
+            225.0,
+            140.0
+          ],
+          [
+            234.0,
+            124.0
+          ],
+          [
+            241.0,
+            104.0
+          ],
+          [
+            242.0,
+            87.0
+          ],
+          [
+            238.0,
+            69.0
+          ],
+          [
+            230.0,
+            53.0
+          ],
+          [
+            216.0,
+            40.0
+          ],
+          [
+            203.0,
+            33.0
+          ],
+          [
+            187.0,
+            30.0
+          ],
+          [
+            169.0,
+            31.0
+          ],
+          [
+            152.0,
+            34.0
+          ],
+          [
+            139.0,
+            39.0
+          ]
+        ]
+      ],
+      "unknownPolygons": [],
+      "boundaryUncertaintyPixels": 3.0,
+      "overlapCorners": {
+        "points": [
+          [
+            128.0,
+            45.0
+          ],
+          [
+            225.0,
+            140.0
+          ],
+          [
+            125.0,
+            240.0
+          ],
+          [
+            27.0,
+            140.0
+          ]
+        ],
+        "uncertaintyRadiusPixels": 6.0,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "assetId": "real-995899fe049540ed",
+      "imageSha256": "995899fe049540eddee6f7bdd90e0a65f839059ac404346642c904617875ca8e",
+      "sourceSize": [
+        1600,
+        1349
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          640,
+          540
+        ],
+        "note": "Striped and floral ink are interior paper texture, not background or cut labels."
+      },
+      "motif": {
+        "candidateFamily": "patterned-three-by-three",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "flat",
+      "foregroundPolygons": [
+        [
+          [
+            787.5,
+            212.3426
+          ],
+          [
+            725.0,
+            164.8778
+          ],
+          [
+            650.0,
+            127.4056
+          ],
+          [
+            562.5,
+            102.4241
+          ],
+          [
+            470.0,
+            92.4315
+          ],
+          [
+            380.0,
+            99.9259
+          ],
+          [
+            305.0,
+            127.4056
+          ],
+          [
+            255.0,
+            174.8704
+          ],
+          [
+            212.5,
+            237.3241
+          ],
+          [
+            182.5,
+            302.2759
+          ],
+          [
+            172.5,
+            377.2204
+          ],
+          [
+            170.0,
+            459.6593
+          ],
+          [
+            182.5,
+            539.6
+          ],
+          [
+            210.0,
+            622.0389
+          ],
+          [
+            247.5,
+            699.4815
+          ],
+          [
+            812.5,
+            1304.0333
+          ],
+          [
+            1362.5,
+            719.4667
+          ],
+          [
+            1400.0,
+            649.5185
+          ],
+          [
+            1430.0,
+            577.0722
+          ],
+          [
+            1445.0,
+            507.1241
+          ],
+          [
+            1437.5,
+            427.1833
+          ],
+          [
+            1417.5,
+            344.7444
+          ],
+          [
+            1382.5,
+            272.2981
+          ],
+          [
+            1335.0,
+            207.3463
+          ],
+          [
+            1275.0,
+            164.8778
+          ],
+          [
+            1197.5,
+            142.3944
+          ],
+          [
+            1115.0,
+            134.9
+          ],
+          [
+            1025.0,
+            134.9
+          ],
+          [
+            940.0,
+            152.387
+          ],
+          [
+            860.0,
+            182.3648
+          ]
+        ]
+      ],
+      "unknownPolygons": [],
+      "boundaryUncertaintyPixels": 7.5,
+      "overlapCorners": {
+        "points": [
+          [
+            787.5,
+            212.3426
+          ],
+          [
+            1370.0,
+            699.4815
+          ],
+          [
+            812.5,
+            1304.0333
+          ],
+          [
+            247.5,
+            699.4815
+          ]
+        ],
+        "uncertaintyRadiusPixels": 15.0,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "assetId": "real-39f3a1ba97852876",
+      "imageSha256": "39f3a1ba97852876b9c62d3fbff392a8f23b84d3bd0b53010cd6378ebc29a079",
+      "sourceSize": [
+        450,
+        300
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          450,
+          300
+        ],
+        "note": "Handle attachment and a pine needle crossing the paper are unknown. Curvature prevents reliable overlap-corner labels."
+      },
+      "motif": {
+        "candidateFamily": "curved-checker",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "hanging-curved",
+      "foregroundPolygons": [
+        [
+          [
+            240.0,
+            64.0
+          ],
+          [
+            218.0,
+            60.0
+          ],
+          [
+            201.0,
+            60.0
+          ],
+          [
+            188.0,
+            68.0
+          ],
+          [
+            177.0,
+            84.0
+          ],
+          [
+            168.0,
+            102.0
+          ],
+          [
+            164.0,
+            119.0
+          ],
+          [
+            164.0,
+            140.0
+          ],
+          [
+            171.0,
+            159.0
+          ],
+          [
+            183.0,
+            179.0
+          ],
+          [
+            264.0,
+            280.0
+          ],
+          [
+            363.0,
+            183.0
+          ],
+          [
+            377.0,
+            165.0
+          ],
+          [
+            384.0,
+            144.0
+          ],
+          [
+            389.0,
+            125.0
+          ],
+          [
+            387.0,
+            108.0
+          ],
+          [
+            380.0,
+            93.0
+          ],
+          [
+            369.0,
+            80.0
+          ],
+          [
+            354.0,
+            70.0
+          ],
+          [
+            337.0,
+            66.0
+          ],
+          [
+            317.0,
+            66.0
+          ],
+          [
+            298.0,
+            64.0
+          ],
+          [
+            279.0,
+            66.0
+          ],
+          [
+            260.0,
+            74.0
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            232.0,
+            48.0
+          ],
+          [
+            258.0,
+            50.0
+          ],
+          [
+            259.0,
+            96.0
+          ],
+          [
+            234.0,
+            91.0
+          ]
+        ],
+        [
+          [
+            318.0,
+            164.0
+          ],
+          [
+            389.0,
+            132.0
+          ],
+          [
+            394.0,
+            139.0
+          ],
+          [
+            322.0,
+            171.0
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 3.0,
+      "overlapCorners": null
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "assetId": "real-b87b0b19f12724f3",
+      "imageSha256": "b87b0b19f12724f37b816b22afe3dc5f59aa57531bdaf18d8c678f074d4eafd3",
+      "sourceSize": [
+        600,
+        400
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          600,
+          400
+        ],
+        "note": "Visible front basket body only; chocolates and cast shadows are background. The paper is bowed, so no planar overlap corners are supplied."
+      },
+      "motif": {
+        "candidateFamily": "three-by-three-open-pink",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "open-curved",
+      "foregroundPolygons": [
+        [
+          [
+            264.0,
+            128.0
+          ],
+          [
+            248.0,
+            122.0
+          ],
+          [
+            229.0,
+            117.0
+          ],
+          [
+            205.0,
+            116.0
+          ],
+          [
+            186.0,
+            119.0
+          ],
+          [
+            170.0,
+            128.0
+          ],
+          [
+            159.0,
+            142.0
+          ],
+          [
+            148.0,
+            159.0
+          ],
+          [
+            139.0,
+            179.0
+          ],
+          [
+            134.0,
+            194.0
+          ],
+          [
+            137.0,
+            209.0
+          ],
+          [
+            148.0,
+            226.0
+          ],
+          [
+            164.0,
+            241.0
+          ],
+          [
+            188.0,
+            260.0
+          ],
+          [
+            210.0,
+            275.0
+          ],
+          [
+            236.0,
+            291.0
+          ],
+          [
+            264.0,
+            307.0
+          ],
+          [
+            289.0,
+            322.0
+          ],
+          [
+            310.0,
+            335.0
+          ],
+          [
+            321.0,
+            324.0
+          ],
+          [
+            342.0,
+            287.0
+          ],
+          [
+            363.0,
+            252.0
+          ],
+          [
+            383.0,
+            219.0
+          ],
+          [
+            399.0,
+            188.0
+          ],
+          [
+            406.0,
+            169.0
+          ],
+          [
+            409.0,
+            151.0
+          ],
+          [
+            405.0,
+            134.0
+          ],
+          [
+            397.0,
+            119.0
+          ],
+          [
+            379.0,
+            108.0
+          ],
+          [
+            359.0,
+            98.0
+          ],
+          [
+            339.0,
+            90.0
+          ],
+          [
+            319.0,
+            87.0
+          ],
+          [
+            302.0,
+            91.0
+          ],
+          [
+            289.0,
+            102.0
+          ]
+        ]
+      ],
+      "unknownPolygons": [],
+      "boundaryUncertaintyPixels": 3.0,
+      "overlapCorners": null
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "assetId": "real-12ce3c9180f7f317",
+      "imageSha256": "12ce3c9180f7f31796ac378fc8cbdf3f2ebc7fee0eae9199d7266608df9e7966",
+      "sourceSize": [
+        3096,
+        3014
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          640,
+          623
+        ],
+        "note": "Photograph of an assembled checker; reflections on the red background are not paper."
+      },
+      "motif": {
+        "candidateFamily": "five-by-five-checker",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "flat",
+      "foregroundPolygons": [
+        [
+          [
+            1523.8125,
+            541.8427
+          ],
+          [
+            1417.3875,
+            469.2745
+          ],
+          [
+            1286.775,
+            396.7063
+          ],
+          [
+            1146.4875,
+            353.1653
+          ],
+          [
+            1001.3625,
+            319.3002
+          ],
+          [
+            875.5875,
+            324.138
+          ],
+          [
+            730.4625,
+            353.1653
+          ],
+          [
+            585.3375,
+            411.2199
+          ],
+          [
+            459.5625,
+            493.4639
+          ],
+          [
+            362.8125,
+            599.8973
+          ],
+          [
+            275.7375,
+            735.3579
+          ],
+          [
+            212.85,
+            880.4944
+          ],
+          [
+            183.825,
+            1020.7929
+          ],
+          [
+            188.6625,
+            1170.7673
+          ],
+          [
+            227.3625,
+            1315.9037
+          ],
+          [
+            295.0875,
+            1446.5265
+          ],
+          [
+            387.0,
+            1552.9599
+          ],
+          [
+            1518.975,
+            2810.809
+          ],
+          [
+            2665.4625,
+            1611.0144
+          ],
+          [
+            2757.375,
+            1465.878
+          ],
+          [
+            2820.2625,
+            1301.39
+          ],
+          [
+            2858.9625,
+            1136.9021
+          ],
+          [
+            2858.9625,
+            991.7657
+          ],
+          [
+            2825.1,
+            836.9535
+          ],
+          [
+            2757.375,
+            691.817
+          ],
+          [
+            2655.7875,
+            566.0321
+          ],
+          [
+            2530.0125,
+            474.1124
+          ],
+          [
+            2389.725,
+            416.0578
+          ],
+          [
+            2249.4375,
+            387.0305
+          ],
+          [
+            2099.475,
+            391.8684
+          ],
+          [
+            1954.35,
+            411.2199
+          ],
+          [
+            1804.3875,
+            454.7608
+          ],
+          [
+            1664.1,
+            503.1396
+          ]
+        ]
+      ],
+      "unknownPolygons": [],
+      "boundaryUncertaintyPixels": 14.5136,
+      "overlapCorners": {
+        "points": [
+          [
+            1523.8125,
+            541.8427
+          ],
+          [
+            2665.4625,
+            1611.0144
+          ],
+          [
+            1518.975,
+            2810.809
+          ],
+          [
+            387.0,
+            1552.9599
+          ]
+        ],
+        "uncertaintyRadiusPixels": 29.0273,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    },
+    {
+      "id": "real-f4b397c381357dfa-body-1",
+      "assetId": "real-f4b397c381357dfa",
+      "imageSha256": "f4b397c381357dfa7af00134ca0d33137a761bfa51ad4840545967d25a6cec97",
+      "sourceSize": [
+        405,
+        720
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          360,
+          640
+        ],
+        "note": "Hands obscure lateral edges and the handle hides the notch. These regions are unknown, not inferred paper. Printed decorations remain foreground."
+      },
+      "motif": {
+        "candidateFamily": "printed-black-grid",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "hand-held-occluded",
+      "foregroundPolygons": [
+        [
+          [
+            194.625,
+            276.75
+          ],
+          [
+            178.875,
+            271.125
+          ],
+          [
+            160.875,
+            273.375
+          ],
+          [
+            145.125,
+            279.0
+          ],
+          [
+            132.75,
+            290.25
+          ],
+          [
+            124.875,
+            307.125
+          ],
+          [
+            122.625,
+            324.0
+          ],
+          [
+            131.625,
+            346.5
+          ],
+          [
+            146.25,
+            371.25
+          ],
+          [
+            167.625,
+            394.875
+          ],
+          [
+            199.125,
+            419.625
+          ],
+          [
+            227.25,
+            396.0
+          ],
+          [
+            254.25,
+            372.375
+          ],
+          [
+            271.125,
+            352.125
+          ],
+          [
+            281.25,
+            331.875
+          ],
+          [
+            285.75,
+            313.875
+          ],
+          [
+            282.375,
+            298.125
+          ],
+          [
+            273.375,
+            285.75
+          ],
+          [
+            256.5,
+            275.625
+          ],
+          [
+            237.375,
+            272.25
+          ],
+          [
+            220.5,
+            275.625
+          ],
+          [
+            208.125,
+            280.125
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            114.75,
+            317.25
+          ],
+          [
+            131.625,
+            316.125
+          ],
+          [
+            144.0,
+            338.625
+          ],
+          [
+            148.5,
+            374.625
+          ],
+          [
+            167.625,
+            385.875
+          ],
+          [
+            150.75,
+            396.0
+          ],
+          [
+            122.625,
+            369.0
+          ]
+        ],
+        [
+          [
+            272.25,
+            312.75
+          ],
+          [
+            292.5,
+            311.625
+          ],
+          [
+            297.0,
+            345.375
+          ],
+          [
+            283.5,
+            375.75
+          ],
+          [
+            259.875,
+            385.875
+          ],
+          [
+            259.875,
+            347.625
+          ]
+        ],
+        [
+          [
+            190.125,
+            261.0
+          ],
+          [
+            223.875,
+            261.0
+          ],
+          [
+            222.75,
+            293.625
+          ],
+          [
+            190.125,
+            290.25
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 3.375,
+      "overlapCorners": null
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "assetId": "real-68d8f25d8891df62",
+      "imageSha256": "68d8f25d8891df62c4ac48949b0552e95ce0a73a07c0be99b9dfc0a1dcdcbfd4",
+      "sourceSize": [
+        360,
+        467
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          360,
+          467
+        ],
+        "note": "Right lobe is clipped; flowers hide part of the upper outline. Annotate observed paper only, with no invented off-image tip or hidden notch."
+      },
+      "motif": {
+        "candidateFamily": "floral-blue-gold",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "clipped-open",
+      "foregroundPolygons": [
+        [
+          [
+            162.0,
+            85.0
+          ],
+          [
+            134.0,
+            76.0
+          ],
+          [
+            104.0,
+            78.0
+          ],
+          [
+            76.0,
+            86.0
+          ],
+          [
+            52.0,
+            101.0
+          ],
+          [
+            33.0,
+            125.0
+          ],
+          [
+            21.0,
+            154.0
+          ],
+          [
+            12.0,
+            181.0
+          ],
+          [
+            11.0,
+            209.0
+          ],
+          [
+            17.0,
+            236.0
+          ],
+          [
+            28.0,
+            260.0
+          ],
+          [
+            45.0,
+            278.0
+          ],
+          [
+            96.0,
+            356.0
+          ],
+          [
+            144.0,
+            421.0
+          ],
+          [
+            321.0,
+            317.0
+          ],
+          [
+            350.0,
+            291.0
+          ],
+          [
+            360.0,
+            278.0
+          ],
+          [
+            360.0,
+            160.0
+          ],
+          [
+            343.0,
+            146.0
+          ],
+          [
+            318.0,
+            137.0
+          ],
+          [
+            289.0,
+            134.0
+          ],
+          [
+            262.0,
+            136.0
+          ],
+          [
+            236.0,
+            143.0
+          ],
+          [
+            219.0,
+            122.0
+          ],
+          [
+            201.0,
+            104.0
+          ],
+          [
+            180.0,
+            93.0
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            123.0,
+            60.0
+          ],
+          [
+            226.0,
+            66.0
+          ],
+          [
+            252.0,
+            145.0
+          ],
+          [
+            214.0,
+            161.0
+          ],
+          [
+            185.0,
+            128.0
+          ],
+          [
+            151.0,
+            112.0
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 3.0,
+      "overlapCorners": null
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "assetId": "real-340f5e5b0f447889",
+      "imageSha256": "340f5e5b0f447889be78bcba0be828f90452b19d1ba1370f8eeafc79ceda6f8e",
+      "sourceSize": [
+        736,
+        1053
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          447,
+          640
+        ],
+        "note": "Protruding motif pieces are physical paper and must not be shaved to a standard heart outline. Handle attachment is uncertain."
+      },
+      "motif": {
+        "candidateFamily": "dragonfly-protrusions",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "nonstandard-protrusions",
+      "foregroundPolygons": [
+        [
+          [
+            386.9351,
+            519.9187
+          ],
+          [
+            355.651,
+            496.8844
+          ],
+          [
+            319.4273,
+            478.7859
+          ],
+          [
+            284.8501,
+            470.5594
+          ],
+          [
+            246.9799,
+            468.9141
+          ],
+          [
+            207.4631,
+            475.4953
+          ],
+          [
+            169.5928,
+            488.6578
+          ],
+          [
+            135.0157,
+            511.6922
+          ],
+          [
+            110.3177,
+            541.3078
+          ],
+          [
+            92.2058,
+            572.5688
+          ],
+          [
+            85.6197,
+            602.1844
+          ],
+          [
+            46.1029,
+            612.0562
+          ],
+          [
+            62.5682,
+            641.6719
+          ],
+          [
+            77.387,
+            654.8344
+          ],
+          [
+            82.3266,
+            692.6766
+          ],
+          [
+            93.8523,
+            725.5828
+          ],
+          [
+            113.6107,
+            756.8438
+          ],
+          [
+            368.8233,
+            1015.1578
+          ],
+          [
+            536.7696,
+            857.2078
+          ],
+          [
+            574.6398,
+            888.4688
+          ],
+          [
+            612.5101,
+            908.2125
+          ],
+          [
+            647.0872,
+            923.0203
+          ],
+          [
+            619.0962,
+            893.4047
+          ],
+          [
+            568.0537,
+            845.6906
+          ],
+          [
+            536.7696,
+            812.7844
+          ],
+          [
+            602.6309,
+            844.0453
+          ],
+          [
+            643.7942,
+            860.4984
+          ],
+          [
+            625.6823,
+            839.1094
+          ],
+          [
+            591.1051,
+            807.8484
+          ],
+          [
+            650.3803,
+            748.6172
+          ],
+          [
+            668.4922,
+            712.4203
+          ],
+          [
+            680.0179,
+            676.2234
+          ],
+          [
+            681.6644,
+            638.3813
+          ],
+          [
+            675.0783,
+            600.5391
+          ],
+          [
+            660.2595,
+            565.9875
+          ],
+          [
+            640.5011,
+            536.3719
+          ],
+          [
+            612.5101,
+            511.6922
+          ],
+          [
+            579.5794,
+            493.5938
+          ],
+          [
+            541.7092,
+            480.4312
+          ],
+          [
+            502.1924,
+            475.4953
+          ],
+          [
+            467.6152,
+            478.7859
+          ],
+          [
+            429.745,
+            495.2391
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            354.0045,
+            480.4312
+          ],
+          [
+            416.5727,
+            480.4312
+          ],
+          [
+            413.2796,
+            546.2437
+          ],
+          [
+            354.0045,
+            551.1797
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 4.9396,
+      "overlapCorners": null
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "assetId": "real-d5b0aa8d4d2465ee",
+      "imageSha256": "d5b0aa8d4d2465eeee9b25ff43d919d584705256523c711f545d04bae4bde3a6",
+      "sourceSize": [
+        720,
+        480
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          640,
+          427
+        ],
+        "note": "The selected red/white basket is in front of a patterned green background; background printing must remain excluded."
+      },
+      "motif": {
+        "candidateFamily": "four-by-four-tree",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "hanging-curved",
+      "foregroundPolygons": [
+        [
+          [
+            420.75,
+            113.5363
+          ],
+          [
+            405.0,
+            92.178
+          ],
+          [
+            383.625,
+            76.4403
+          ],
+          [
+            360.0,
+            66.3232
+          ],
+          [
+            331.875,
+            60.7026
+          ],
+          [
+            302.625,
+            60.7026
+          ],
+          [
+            273.375,
+            69.6956
+          ],
+          [
+            247.5,
+            85.4333
+          ],
+          [
+            228.375,
+            105.6674
+          ],
+          [
+            216.0,
+            130.3981
+          ],
+          [
+            209.25,
+            157.377
+          ],
+          [
+            209.25,
+            189.9766
+          ],
+          [
+            214.875,
+            216.9555
+          ],
+          [
+            221.625,
+            238.3138
+          ],
+          [
+            343.125,
+            448.5246
+          ],
+          [
+            556.875,
+            317.0023
+          ],
+          [
+            579.375,
+            296.7681
+          ],
+          [
+            598.5,
+            272.0375
+          ],
+          [
+            608.625,
+            245.0585
+          ],
+          [
+            614.25,
+            215.8314
+          ],
+          [
+            609.75,
+            186.6042
+          ],
+          [
+            600.75,
+            160.7494
+          ],
+          [
+            585.0,
+            137.1429
+          ],
+          [
+            564.75,
+            118.0328
+          ],
+          [
+            540.0,
+            104.5433
+          ],
+          [
+            510.75,
+            96.6745
+          ],
+          [
+            483.75,
+            95.5504
+          ],
+          [
+            456.75,
+            100.0468
+          ],
+          [
+            437.625,
+            106.7916
+          ]
+        ]
+      ],
+      "unknownPolygons": [],
+      "boundaryUncertaintyPixels": 3.375,
+      "overlapCorners": {
+        "points": [
+          [
+            420.75,
+            113.5363
+          ],
+          [
+            558.0,
+            317.0023
+          ],
+          [
+            343.125,
+            448.5246
+          ],
+          [
+            221.625,
+            238.3138
+          ]
+        ],
+        "uncertaintyRadiusPixels": 6.75,
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left"
+      }
+    }
+  ]
+}
