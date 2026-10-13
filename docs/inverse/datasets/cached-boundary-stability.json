@@ -6188,5 +6188,13 @@
     "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
     "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
     "scripts/inverse/edge-topology.test.mjs": "63ea77c7cccaa77caf46a10c0779d11442edd2d63b58d4dedbaf707e6523c195"
+  },
+  "subsequentCorrection": {
+    "report": "clamped-feature-recovery.json",
+    "originalClaim": "The 0.200 mm two-control intervention establishes a fully valid local correction.",
+    "correction": "That independent raster passed feature retention, but the engine pixel-centre renderer retained only 52/95 pixels and failed the production feature gate. The diagnostic did not establish a fully checked solution.",
+    "engineRetention": 0.5473684210526316,
+    "independentRetention": 0.6421052631578947,
+    "sourceArtifactsPreserved": true
   }
 }

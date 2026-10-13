@@ -42,7 +42,9 @@ A separate diagnostic starts from the saved 30-second candidate, identifies two 
 | 0.250 mm | 2.376% | 72.63% | Pass | Uncertain |
 | 0.350 mm | 2.374% | 76.84% | Pass | Uncertain |
 
-The larger displacements pass the image and feature gates but lose paper certification, so those proposals are rejected. A follow-up samples the same displacement in 0.025 mm increments: **0.200 mm** retains **64.21%** of the fragment while still passing both geometry and the strict paper check. The next sample, 0.225 mm, is already paper-uncertain. This establishes a valid local correction for the saved candidate without changing any acceptance threshold. It does not justify removing the optimizer's cushion globally.
+The larger displacements pass the independently rasterized image and feature checks but lose paper certification, so those proposals are rejected. A follow-up samples the same displacement in 0.025 mm increments: **0.200 mm** retains **64.21%** of the fragment in that independent raster while still passing both geometry and the strict paper check. The next sample, 0.225 mm, is already paper-uncertain.
+
+**Subsequent correction:** the 0.200 mm two-control intervention is not a fully validated solution. The engine's pixel-centre sampler retains only **54.74%**, so it still fails the production feature gate. The original claim that this established a valid local correction was too strong. [The follow-up](clamped-feature-recovery.md) records this discrepancy and tests a whole-span correction against both the engine and independent higher-resolution exports; no acceptance threshold is relaxed.
 
 The intervention is diagnostic code outside the production fitter. It starts from a saved 30-second fit, not a fresh image-only ten-second search. Generalizing this correction while preserving valid paper and the search budget remains unfinished.
 
