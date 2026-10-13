@@ -11,6 +11,9 @@ import {refineCurves} from './refine.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {shortSelfReturns} from '../self-returns.js';
 
+// Eligibility for attempting refinement, never a physical acceptance limit.
+export const MAX_REPAIRABLE_CLEARANCE_DEFICIT=.15;
+
 /** Quality evidence, not an infeasibility proof: optional hidden connectors
  * can switch sheets along these unbranched visible chains.
  */
@@ -40,7 +43,7 @@ export function rejectedRoutingQuality(solution,cfg){
   const gaps=issues.map(i=>i.type==='short_self_clearance'?{distance:i.distanceUpper,required:i.required}:i.type==='nonlocal_self_clearance'?{distance:i.distanceLower,required:cfg.nominalWidth}:null);
   const clearanceOnly=issues.length>0&&issues.length<=4&&gaps.every(g=>g&&g.required>0&&Number.isFinite(g.distance));
   const relativeDeficit=clearanceOnly?Math.max(...gaps.map(g=>(g.required-g.distance)/g.required)):null;
-  return{geometry,clearanceOnly,relativeDeficit,repairable:clearanceOnly&&relativeDeficit<=.15};
+  return{geometry,clearanceOnly,relativeDeficit,repairable:clearanceOnly&&relativeDeficit<=MAX_REPAIRABLE_CLEARANCE_DEFICIT};
 }
 
 export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,quality=null}={}){

@@ -6,7 +6,7 @@ import {solveBoundary} from './routing.js';
 import {sampleWeave,validate} from './validate.js';
 import {materialAudit,verifiedPaperSettings} from './material.js';
 import {auditFeatureFidelity} from './feature-shapes.js';
-import {visibleReturnEvidence,rejectedRoutingQuality,repairRejectedRouting} from './direct/rejected-routing.js';
+import {visibleReturnEvidence,rejectedRoutingQuality,repairRejectedRouting,MAX_REPAIRABLE_CLEARANCE_DEFICIT} from './direct/rejected-routing.js';
 import {visibleMarginIssue} from './solver.js';
 import {visibleSelfIntersectionIssue} from './self-intersections.js';
 
@@ -86,11 +86,12 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
     };
     let initialRadius=.3;
     const original=trace(.3),boundary=reindex({target:original,edges:original.curves.map(curve=>({curve,visible:true}))});
-    // Do not spend a full MILP allowance preserving a raster return when the
-    // established smoother trace improves both that evidence and image fit.
-    // Hidden edges can change sheet assignment, so this is ordering evidence,
-    // not a proof that the original graph is infeasible. Cheap contradictions
-    // still follow their existing preflight/retry path.
+    // Keep near-repairable traces unless smoothing improves both their deficit
+    // and image fit. For larger raster returns, fewer troublesome chains can
+    // earn the first routing attempt even with slightly worse trace fidelity.
+    // Hidden edges can switch sheets along a chain, so neither its worst gap
+    // nor its return count proves that the final routing will be valid. Every
+    // proposal still faces the unchanged source-image and physical checks.
     if(remaining()>=1&&!inspectBoundaryEndpoints(boundary,cfg.nominalWidth).issue&&!visibleMarginIssue(boundary,cfg)&&!visibleSelfIntersectionIssue(boundary,cfg)){
       const before=visibleReturnEvidence(original,cfg);
       if(before.shortReturns){
@@ -98,8 +99,10 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         const mismatch=target=>{const mask=sampleTarget(target,source.resolution);return{mask,error:mask.reduce((s,v,i)=>s+Number(v!==source.mask[i]),0)/mask.length};};
         const a=mismatch(original),b=mismatch(smoother);
         const graph=reindex({target:smoother,edges:smoother.curves.map(curve=>({curve,visible:true}))}),endpoints=inspectBoundaryEndpoints(graph,cfg.nominalWidth).issue;
-        const preferred=!endpoints&&!visibleMarginIssue(graph,cfg)&&!visibleSelfIntersectionIssue(graph,cfg)&&after.shortReturns<before.shortReturns&&after.maximumRelativeDeficit<=before.maximumRelativeDeficit&&b.error<=a.error&&b.error<=cfg.maxImageError&&auditFeatureFidelity(source,b.mask,cfg).passed;
-        report.traceQualityPreference={preferred,before:{smoothRadius:.3,shortReturns:before.shortReturns,maximumRelativeDeficit:before.maximumRelativeDeficit,imageError:a.error},after:{smoothRadius:.5,shortReturns:after.shortReturns,maximumRelativeDeficit:after.maximumRelativeDeficit,imageError:b.error},reason:'visible-chain returns and unchanged-source image agreement'};
+        const severeReturns=before.maximumRelativeDeficit>MAX_REPAIRABLE_CLEARANCE_DEFICIT;
+        const betterTrace=after.maximumRelativeDeficit<=before.maximumRelativeDeficit&&b.error<=a.error;
+        const preferred=!endpoints&&!visibleMarginIssue(graph,cfg)&&!visibleSelfIntersectionIssue(graph,cfg)&&after.shortReturns<before.shortReturns&&(severeReturns||betterTrace)&&b.error<=cfg.maxImageError&&auditFeatureFidelity(source,b.mask,cfg).passed;
+        report.traceQualityPreference={preferred,severeReturns,before:{smoothRadius:.3,shortReturns:before.shortReturns,maximumRelativeDeficit:before.maximumRelativeDeficit,imageError:a.error},after:{smoothRadius:.5,shortReturns:after.shortReturns,maximumRelativeDeficit:after.maximumRelativeDeficit,imageError:b.error},reason:severeReturns?'fewer visible-chain returns beyond the local repair allowance':'fewer visible-chain returns with no worse deficit or source-image disagreement'};
         if(preferred)initialRadius=.5;
       }
     }

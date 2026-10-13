@@ -100,6 +100,7 @@ for(const name of ['junctions.js','border.js','geometry.js','material.js','valid
 report.harnessSourceHashes['scripts/inverse/fixtures/maple-comparison.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/maple-comparison.json')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/sloth-rejected-routing.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/sloth-rejected-routing.json')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/sloth-clearance-routing.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/sloth-clearance-routing.json')).digest('hex');
+report.harnessSourceHashes['scripts/inverse/fixtures/sloth-search-scheduling.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/sloth-search-scheduling.json')).digest('hex');
 report.workspaceSourceHashes['static/inverse/core/direct/rejected-routing.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/direct/rejected-routing.js')).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/clamped-features.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -110,7 +111,8 @@ try{
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
    const slothShift={'sloth-x-shift-mask':'x-plus-1','sloth-y-shift-mask':'y-minus-1'}[name];
-   const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask',slothMask=name==='sloth-routing-mask'||Boolean(slothShift);
+   const slothSearch={'sloth-frozen-mask':'frozen','sloth-synthetic-mask':'synthetic-control','sloth-y-plus-mask':'y-plus-1'}[name],slothVariant=slothShift||slothSearch;
+   const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask',slothMask=name==='sloth-routing-mask'||Boolean(slothVariant);
    const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
@@ -168,11 +170,12 @@ try{
       // path. Upload pixels, never saved cutting paths or a fitting seed.
       let fixture,photo,fixedMask;
       if(slothMask){
-       const file=slothShift?'scripts/inverse/fixtures/sloth-clearance-routing.json':'scripts/inverse/fixtures/sloth-rejected-routing.json',bytes=await fs.readFile(file),catalog=JSON.parse(bytes),data=slothShift?catalog.cases.find(c=>c.id===slothShift):catalog;
-       const resizedHashes={'x-plus-1':'3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4','y-minus-1':'2904b2fd0ca28a4ba23f0bf1cd24424f67965f059a22e0f48306615eb46df047'};
+       const file=slothSearch?'scripts/inverse/fixtures/sloth-search-scheduling.json':slothShift?'scripts/inverse/fixtures/sloth-clearance-routing.json':'scripts/inverse/fixtures/sloth-rejected-routing.json',bytes=await fs.readFile(file),catalog=JSON.parse(bytes),data=slothVariant?catalog.cases.find(c=>c.id===slothVariant):catalog;
+       const resizedHashes={'x-plus-1':'3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4','y-minus-1':'2904b2fd0ca28a4ba23f0bf1cd24424f67965f059a22e0f48306615eb46df047',
+        'frozen':'d6e5570fdb6c9de2c1c2e738ac0204bb963cab0acc694c3fba3a587dcdb10c09','synthetic-control':'381e0cb708afb03dc18532b4efabba93b58ba889168f0b51a6d6706dcc6df3f8','y-plus-1':'6e7557c0cf8b50ad6c9545a34210dfdbc4e2c184981b60ae7cdeb4f6cc64a5dc'};
        fixture={sourceCase:data.caseId||data.id,quad:null,maskSha256:data.maskSha256,paintImport:{resolution:400,
         method:'The unchanged 250-pixel upload is resized to the paint canvas at destination-cell centers. This browser target differs from the native-resolution routing diagnostic.',
-        maskSha256:resizedHashes[slothShift]||'f76e4c8a4a16d227f13d36d1feeee4fb84681b35d128c6ab4b14bb3f775a47b7'}};
+        maskSha256:resizedHashes[slothVariant]||'f76e4c8a4a16d227f13d36d1feeee4fb84681b35d128c6ab4b14bb3f775a47b7'}};
        fixedMask=new Uint8Array(data.resolution**2);for(const[start,length]of data.maskRuns)fixedMask.fill(1,start,start+length);
        row.sourceMaskFixture={file,sha256:createHash('sha256').update(bytes).digest('hex'),scope:'Classified pixels only; saved rejected routing proposals are not supplied to the worker.'};
       }else if(fadedFrameMask){

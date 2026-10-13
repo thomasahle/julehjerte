@@ -113,14 +113,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     return solution;
   }
   let topology=null;
+  // Short searches share one allowance between precise and coarse boundary
+  // initialization. Otherwise a difficult first MILP and its coarse retry can
+  // consume the time needed to route and refine the original image later.
+  const shortTopologyBudget=Math.min(2.5,cfg.timeLimit*.25);
   // The transposed boundary graph can hold identical sheets. Other requested
   // pairings require the compatible subdivisions of a fresh grid.
   if(requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&coarse[0].error>.0001&&deadline-performance.now()>1800){
     // Browser engines can take different times on the same MILP. A longer
     // requested budget may fund a 15-second initialization phase; requests
-    // of ten seconds or less retain the existing fast-path allocation.
+    // of ten seconds or less share their smaller initialization allowance.
     const topologyDeadline=Math.max(deadline,start+Math.min(cfg.timeLimit,15)*1000-1300);
-    topology=await initializeTopology(input,cfg,{maximumError:Math.min(.005,coarse[0].error),seconds:Math.min(10,cfg.timeLimit*.5,(topologyDeadline-performance.now()-800)/1000),onProgress});
+    topology=await initializeTopology(input,cfg,{maximumError:Math.min(.005,coarse[0].error),seconds:Math.min(shortBudget?shortTopologyBudget:10,cfg.timeLimit*.5,(topologyDeadline-performance.now()-800)/1000),onProgress});
     if(topology.graph){
       const candidate=stage('directRefining',()=>refineCurves(topology.graph,fullProb,source.resolution,topology.phase,cfg,{input,weights:fullWeights,steps:80,rate:.008,deadline:Math.min(topologyDeadline,performance.now()+700),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:topology.graph.families.map(f=>f.length),...r},solution):undefined}));
       const solution=candidate.graph.solution(candidate.points,candidate.phase,input),woven=sampleWeave(solution,source.resolution);
@@ -155,15 +159,20 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const describe=seed=>({counts:seed.model.counts,phase:seed.phase,error:seed.error,featuresRetained:retained.get(seed)});
     finalistPreference={before:fine.map(describe)};
     fine.sort((a,b)=>Number(retained.get(b))-Number(retained.get(a)));
-    colourPreferredGrid=!retained.get(originalFirst)&&retained.get(fine[0]);
+    // Retaining all colours earns an earlier grid, but should reserve its
+    // refinement time only when it also improves the previous first fit.
+    // A worse colour-retaining grid can still need a different traced route.
+    colourPreferredGrid=!retained.get(originalFirst)&&retained.get(fine[0])&&fine[0].error<=originalFirst.error;
+    finalistPreference.reservesRefinement=colourPreferredGrid;
     finalistPreference.after=fine.map(describe);
   }
   // Spend this extra routing budget only when even the best initial grid is
   // far outside the accepted image error and none of the fine grids has
   // reached it. Retain those grids too: a simplified seed must earn its place
   // against the original image.
-  if(!topology?.graph&&!weights&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&poorGrid&&deadline-performance.now()>3500){
-    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(2.5,(deadline-performance.now()-1700)/1000),onProgress});
+  const coarseTopologySeconds=shortBudget?Math.max(0,shortTopologyBudget-(topology?.report.seconds||0)):2.5;
+  if(!topology?.graph&&!weights&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&poorGrid&&coarseTopologySeconds>.25&&deadline-performance.now()>3500){
+    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(coarseTopologySeconds,(deadline-performance.now()-1700)/1000),onProgress});
     if(coarseTopology.graph){
       boundaryCandidate=stage('directRefining',()=>refineCurves(coarseTopology.graph,fullProb,source.resolution,coarseTopology.phase,cfg,{input,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline-1700,performance.now()+500),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:coarseTopology.graph.families.map(f=>f.length),...r},solution):undefined}));
       boundaryCandidate.counts=coarseTopology.graph.families.map(f=>f.length);boundaryCandidate.seed='coarse-boundary-topology';
@@ -221,8 +230,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const featureTimeAvailable=()=>!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500;
   if(missingFeature&&featureTimeAvailable())initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
   // Retaining a large region does not mean a coarse grid keeps its branches.
-  // Only shorten routing when colour protection actually selected a different
-  // layout. Otherwise trees can lose useful smoothing/edge-profile retries.
+  // Only shorten routing when colour protection selected a better-fitting
+  // ordinary layout or scheduled a dedicated feature start. Otherwise trees
+  // can lose useful smoothing/edge-profile retries.
   const featurePreferredGrid=colourPreferredGrid||earlyFeatureInitialization?.scheduled===1;
   const reserveRefinement=competitiveGrid||featurePreferredGrid,probeRouting=featurePreferredGrid&&(features.passed||earlyFeatureInitialization?.enclosurePending===true);
   const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
