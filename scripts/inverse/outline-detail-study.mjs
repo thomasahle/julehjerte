@@ -54,9 +54,13 @@ const quad=fixture.quad.map(([x,y])=>[x,y+1]),cfg=settings({...AUTOMATIC_PRESET,
 assert.equal(hash(source.mask),fixture.translations.vertical.maskSha256);assert.equal(hash(new Uint8Array(source.probability.buffer)),fixture.translations.vertical.probabilitySha256);
 const toolHashes={};
 for(const file of [fixtureFile,'scripts/inverse/outline-detail-study.mjs','scripts/inverse/hard-photo-data.mjs','scripts/inverse/export-renderer.mjs','static/inverse/core/direct/outline-details.js'])toolHashes[file]=hash(await fs.readFile(file));
+const helperSourceHashes={};
+for(const name of await fs.readdir('static/inverse',{recursive:true}))if(/\.(js|wasm|c)$/.test(name)){
+  const file='static/inverse/'+name;helperSourceHashes[file]=hash(await fs.readFile(file));
+}
 const start=performance.now(),answer=await design(input,cfg),baselineSeconds=(performance.now()-start)/1000;
 snapshots.push({name:'export',geometry:answer.files['cut_geometry.json']});
-const rows=[],report={sourceRef,sourceHashes,patches,toolHashes,cfg,quad,baselineSeconds,maskSha256:hash(source.mask),probabilitySha256:hash(new Uint8Array(source.probability.buffer)),baselineReport:answer.report,
+const rows=[],report={sourceRef,sourceHashes,patches,toolHashes,helperSourceHashes,cfg,quad,baselineSeconds,maskSha256:hash(source.mask),probabilitySha256:hash(new Uint8Array(source.probability.buffer)),baselineReport:answer.report,
   method:'Fresh fixed-photo baseline in an instrumented pinned source copy. Independent fixed-iteration continuations begin from its own exported pair. Exact subdivision changes sampling and regularizer normalization, measured separately. The manual sun window [60,50,230,225] is used only for reporting, never as an optimization input. This is one repeatedly inspected development image.',rows};
 async function record(name,encoded,extra={}){
   const bytes=typeof encoded==='string'?encoded:JSON.stringify(encoded),solution=loadSolutionJSON(bytes),checks=[];

@@ -29,22 +29,25 @@ The older detail pass targets small enclosed source regions. The sun is part
 of a larger boundary-connected white region, so it does not enter that pass.
 Only two other components of this crop qualify for the source-region audit.
 
-Controlled continuations start from the same previously exported vertical-shift
-fit and keep its photograph, crop, classification and cut counts fixed:
+The committed diagnostic starts from the photograph and reproduces the previous
+vertical-shift export's geometry exactly. Its independent continuations keep
+that photograph, crop, classification, cut counts, 160-step allowance and
+400-pixel binary objective fixed:
 
 | Continuation | Curve pieces | Whole-square error | Sun-window error | Result |
 | --- | ---: | ---: | ---: | --- |
 | Original exported fit | 82 | 2.893% | 7.664% | Valid baseline |
-| Another 400 iterations | 82 | 2.893% | 7.664% | No accepted improvement |
-| Split to at most 4 mm, 400 iterations | 313 | 2.889% | 7.664% | No accepted optimization step; raster-only difference |
-| Fix outer controls, 400 iterations | 82 | 2.601% | 6.911% | Valid improvement |
-| Split to at most 4 mm and fix outer controls, 400 iterations | 313 | 1.008% | 1.866% | Valid improvement |
-| Residual-selected subdivision and fixed outer controls, 160 iterations | 151 | 1.151% | 2.215% | Valid improvement; binary 400-pixel objective |
+| Another 160 iterations | 82 | 2.893% | 7.664% | No accepted improvement |
+| Split to at most 4 mm | 313 | 2.889% | 7.664% | No accepted optimization step; raster-only difference |
+| Fix outer controls | 82 | 2.696% | 7.207% | Valid improvement |
+| Split to at most 4 mm and fix outer controls | 313 | 0.978% | 1.758% | Valid improvement |
+| Residual-selected subdivision and fixed outer controls | 151 | 1.151% | 2.215% | Valid improvement |
 
-The first five rows use the photographic probability objective at 256 pixels;
-the last row is a subsequent bounded proposal using the same binary objective
-as production polishing. Its time was 1.12 seconds in this isolated run.
-These timings are diagnostic and do not establish a general speedup.
+The residual-selected continuation takes 0.91 seconds in this isolated run,
+excluding its preparation and independent export replay. Earlier 400-step
+probes using the photographic probability objective are also preserved; they
+support the same diagnosis but are separate experiments. These timings do not
+establish a general speedup.
 Subdivision changes regularizer sampling and normalization as well as degrees
 of freedom; those costs are recorded, so this is not a pure capacity ablation.
 
@@ -151,6 +154,22 @@ node --test --test-concurrency=1 \
   scripts/inverse/clamped-features.test.mjs
 ```
 
-The focused tests, Hunodan benchmark and nine-crop replay pass. Broader corpus,
-full-suite and browser/export QA are still in progress; this report will be
-completed with their recorded results. No physical assembly test is claimed.
+The [machine-readable audit](outline-detail.json) records the paired inputs,
+source and artifact hashes, rejected experiments and completed validation:
+
+- All 740 inverse tests and 855 application tests pass; one existing application
+  test is skipped. Type checking has zero errors and seven existing warnings.
+  ESLint has zero errors and one existing warning. The production build passes.
+- All four fixed-crop perturbations pass: x/y shifts, JPEG-75 and half resolution.
+  Their original source and crop hashes are unchanged.
+- Seven Chromium flows pass geometry/paper checks, SVG/PDF export and editable
+  conversion checks at 400 and 800 pixels, with no page errors. They cover four
+  near-miss masks, the bird, half-resolution puppy and free-border hat.
+- Browser click-to-ready times range from 2.07 to 21.89 seconds under the UI's
+  larger allowance. The four near-miss masks take 9.61–10.51 seconds. These
+  timings are separate from the native ten-second benchmark.
+- All browser workspace and harness hashes match the tested checkout, and all
+  52 recorded static modules match the rebuilt preview's served bytes.
+
+The preview remains at `http://127.0.0.1:5232/editor/mal/`. No physical assembly
+test is claimed.

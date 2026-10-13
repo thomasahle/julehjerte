@@ -79,6 +79,16 @@ from 5/9 to 8/9; the broader corpus remains 24/31, and all 22 Hunodan errors
 remain unchanged below ten seconds. Fine sun rays are still visibly smoothed,
 showing why global pixel error alone does not establish faithful reconstruction.
 
+The [outline-detail follow-up](outline-detail.md) locates a separate obstruction:
+global refinement damages a small paper core near the fold and rolls back useful
+changes around the sun. Residual-selected curve subdivision with fixed outer
+controls improves the vertical crop from 2.893% to 1.144% disagreement within
+the existing polishing allowance. The nine-crop study remains 8/9 and the full
+corpus remains 24/31. All 22 Hunodan cases retain or improve their previous
+errors below ten seconds. Some rays, notches and faint seams remain imperfect;
+the horizontal crop is slightly worse. Verification passes 740 inverse tests,
+855 application tests and seven browser/export flows.
+
 The [localization follow-up](boundary-localization.md) found that the original
 synthetic training split contained no acute or right-angle degree-two corners.
 Adding a validated corner supplement at the same 520-update training budget
