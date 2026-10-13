@@ -77,7 +77,8 @@ geometry and physical checks.
 | Mixed crop, y + 1 pixel | 5.1424% / no | 5.1424% / no | Rejected geometry |
 
 The two new successes take 7.30 and 9.58 seconds including preparation, fitting,
-validation, generated export and independent rendering. The vertical shift
+validation and generated export, but excluding the subsequent independent
+rendering. The vertical shift
 requires the finer paper lattice. Visual comparison of all sixteen outputs
 confirms recovery of the branch and toes in both; uneven boundaries and small
 protrusions remain. Error is measured against the classified mask, not original
