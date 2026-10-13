@@ -15,13 +15,13 @@ The weighted mean is not equivalent to the per-region gate. A slightly better me
 
 ## Change
 
-Count initialization can now return its already computed alternatives without changing any ordinary winner, order or searched hypothesis. Feature initialization uses these alternatives only after its existing ordinary seeds and near-miss retry fail. It filters them against the original image and source-region checks, then gives the best remaining start one bounded, 150-step grid refinement. The original 9% initialization cutoff and final 3% error cap remain unchanged.
+Count initialization can now return its already computed alternatives without changing any ordinary winner, order or searched hypothesis. Feature initialization uses alternative shapes at the **original cut counts** only after its existing ordinary seeds and near-miss retry fail. It filters them against the original image and source-region checks, then gives the best remaining start one bounded, 150-step grid refinement. The original 9% initialization cutoff and final 3% error cap remain unchanged.
 
 On this input, the former five-plus-three near-miss retry still fails. The retained three-plus-three alternative improves from 9.1156% to **8.5678%** and enters the ordinary curve stages. The fresh ten-second photo-engine replay exports a checked pair at **2.4663%** independent mask disagreement, down from **3.5819%**. Solve, validation and export take **7.913 seconds** in that run. The crop, classified pixels and probabilities match the baseline exactly; no cutting template enters this replay.
 
 The regression checks both the useful discarded start and a fresh solve from the original photograph. It independently renders the exported curves at 400 and 800 pixels, checks source features, geometry and nominal paper support, and confirms that the source arrays remain unchanged. Count-search coverage also verifies that retaining alternatives leaves ordinary winners unchanged. The first ten targeted tests passed.
 
-The implementation is committed in `dbe3654`. Broader dataset and browser results will be recorded after their runs finish.
+The first implementation, `dbe3654`, also tried discarded starts at other counts. The full inverse suite exposed a real regression: an unequal three-plus-four seed displaced the half-resolution puppy's working finer-spline route and then lost its opening during curve refinement. A separate probe continued past the first route assertion and confirmed failed final feature checks, despite low aggregate image error. The follow-up limits this fallback to the original count pair and retains the existing puppy regression unchanged, with an explicit check against that displacement. Broader dataset and browser results will be recorded after their runs finish.
 
 ## A separate paper-resolution experiment
 

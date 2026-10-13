@@ -32,7 +32,10 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
   const attempts=[],small=smallInteriorFeatures(source,interior.map(i=>features[i]),cfg),coarseNearMisses=[],alternativeChoices=[];
   const closedFeatures=seed=>featureComponentMetrics(source,gridMask(seed.model,resolution,seed.phase,seed.floor),cfg.width,small).every(part=>part.intersectionPixels>0&&part.touchesBorder===false);
   const search=(options,protectFeatures=false,k=16)=>initializeCounts({options,fullProb,resolution,prob:weighted.probability,n,evidence,weights:weighted.weights,fullWeights},{k,retainAlternatives:!protectFeatures&&k===16}).seeds.map(({alternatives=[],...seed})=>{
-      alternativeChoices.push(...alternatives);
+      // Retry shapes at the base counts only. A different-count runner-up
+      // can keep coarse colours yet lose the opening during free refinement,
+      // displacing an established joint/finer route (the small puppy case).
+      if(seed.model.counts.every((count,f)=>count===counts[f]))alternativeChoices.push(...alternatives);
       const woven=gridMask(seed.model,resolution,seed.phase,seed.floor),audit=auditImageFeatures(source,woven,cfg.width,features);
       seed.error=mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability);
       seed.featuresPassed=audit.passed;seed.seed=protectFeatures?'feature-preserving-grid':'feature-weighted-grid';
@@ -62,7 +65,7 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
   if(!seeds.length){
     // Each count/phase already tried uniform, border and separable starts.
     // Its lowest weighted error can lose a feature while a runner-up keeps
-    // it. Reuse one such layout only after the established winners fail.
+    // it. Reuse one base-count layout after the established winners fail.
     // Neither the original error cutoff nor the final feature gate changes.
     const alternatives=alternativeChoices.map(seed=>({...seed,error:mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability)}))
       .filter(seed=>seed.error<=Math.min(.12,4*cfg.maxImageError)&&auditImageFeatures(source,gridMask(seed.model,resolution,seed.phase,seed.floor),cfg.width,features).passed)

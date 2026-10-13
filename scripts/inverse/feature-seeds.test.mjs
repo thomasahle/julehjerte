@@ -133,6 +133,7 @@ test('a finer spline recovers a half-resolution opening after all coarse feature
   const mask=source.mask.slice(),probability=source.probability.slice(),features=imageFeatures(source);
   const opening=features.findIndex(f=>f.areaMm2<30);assert.ok(opening>=0);
   const search=initializeFeatureSeeds({source,features,missed:[opening],counts:[3,3],cfg,evidence:borderEvidence(probability,source.resolution),maximumCount:8});
+  assert.equal(search.report.alternativeRefinement,null,'A discarded unequal-count start must not displace the working finer-spline route.');
   assert.equal(search.report.finerHypotheses,10);assert.equal(search.report.hypotheses,22);
   assert.ok(search.report.attempts.filter(a=>a.controlPoints===16).every(a=>!a.featuresPassed));
   assert.ok(search.seeds.length);assert.equal(search.seeds[0].model.k,32);
