@@ -14,10 +14,13 @@ import {cropEvidence} from '../crop-evidence.mjs';
 import {labelsForCrop} from './photo-labels.mjs';
 import {detectForegroundCrop} from './foreground-crop.mjs';
 import {refineForegroundRGB,fillForegroundHoles} from './foreground-refine.mjs';
+import {hardPhotoTarget} from '../hard-photo-target.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds','solve-ids','methods','refinement'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10 --solve-ids=id1,id2 --methods=production,learned,oracle --refinement=none|seeded-rgb|fill-holes].');
+if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds','solve-ids','methods','refinement','target'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10 --solve-ids=id1,id2 --methods=production,learned,oracle --refinement=none|seeded-rgb|fill-holes --target=photo|mask].');
 const methods=(args.methods||'production,learned,oracle').split(','),refinement=args.refinement||'none';
+const targetMode=args.target||'photo';
+if(!['photo','mask'].includes(targetMode))throw new Error('Use --target=photo|mask.');
 const refinements={none:undefined,'seeded-rgb':refineForegroundRGB,'fill-holes':fillForegroundHoles};
 if(methods.some(m=>!['production','learned','oracle'].includes(m))||new Set(methods).size!==methods.length||!Object.hasOwn(refinements,refinement))throw new Error('Invalid replay methods or foreground refinement.');
 const probe=path.resolve(args.probe),output=path.resolve(args.output),seconds=Number(args.seconds||10),solveIds=new Set((args['solve-ids']||'').split(','));
@@ -26,9 +29,9 @@ const hash=b=>createHash('sha256').update(b).digest('hex'),bytes=await fs.readFi
 if(manifest.status!=='complete'||manifest.schema!=='woven-heart-foreground-probe-1')throw new Error('Require a completed foreground probe.');
 await fs.mkdir(path.dirname(output),{recursive:true});await fs.mkdir(output);
 const report={schema:'woven-heart-foreground-replay-1',status:'running',probe,probeManifestSha256:hash(bytes),configuration:{...AUTOMATIC_PRESET,timeLimit:seconds,trials:0},
-  solveIds:[...solveIds].filter(Boolean),methods,foregroundRefinement:refinement,sourceHashes:{},rows:[],limitations:['Synthetic oracle isolates the foreground task; it is not a deployable input.',
+  solveIds:[...solveIds].filter(Boolean),methods,foregroundRefinement:refinement,targetMode,sourceHashes:{},rows:[],limitations:['Synthetic oracle isolates the foreground task; it is not a deployable input.',
   'Real-photo corner annotations are approximate and are not used as ground truth.', 'Successful outline checks against a predicted silhouette are not independent physical evidence. Review against RGB and latent synthetic geometry is still required.']};
-for(const file of ['scripts/inverse/learning/foreground-replay.mjs','scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/foreground-refine.mjs','scripts/inverse/learning/photo-labels.mjs','scripts/inverse/export-renderer.mjs',...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator)\/.+\.js$/.test(p)).map(p=>`static/inverse/${p}`)])report.sourceHashes[file]=hash(await fs.readFile(file));
+for(const file of ['scripts/inverse/learning/foreground-replay.mjs','scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/foreground-refine.mjs','scripts/inverse/learning/photo-labels.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator)\/.+\.js$/.test(p)).map(p=>`static/inverse/${p}`)])report.sourceHashes[file]=hash(await fs.readFile(file));
 const save=()=>fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
 async function checked(asset,root=null){
   const file=root?path.resolve(root,asset.path):path.resolve(asset.path);
@@ -80,6 +83,9 @@ for(const input of manifest.rows){
         row.cornerErrorsPixels=errors.sort((a,b)=>Math.max(...a)-Math.max(...b))[0];
       }
       const ready=performance.now(),prepared=prepare({...source,quad:selected.quad,cropProvenance:selected.provenance},report.configuration),n=prepared.preview.resolution;
+      const target=hardPhotoTarget(prepared,targetMode,report.configuration);
+      row.preparedMaskSha256=hash(Buffer.from(prepared.preview.mask));
+      row.targetMaskSha256=hash(Buffer.from(target.sourceImage.mask));
       row.prepareSeconds=(performance.now()-ready)/1000;await store('crop.png',png(prepared.preview.rgb,n,3));await store('mask.png',png(prepared.preview.mask,n));
       let reference;
       if(input.labels){
@@ -88,11 +94,11 @@ for(const input of manifest.rows){
         row.classifiedReference=score(prepared.preview.mask,reference.target,reference.valid);await store('latent-mask.png',png(reference.target,n));await store('latent-valid.png',png(reference.valid,n));
       }
       if(solveIds.has(input.id)||solveIds.has(input.caseId)||solveIds.has('all')||solveIds.has('synthetic')&&input.group!=='real'){
-        const start=performance.now(),result=await design(prepared.target,report.configuration);row.solveSeconds=(performance.now()-start)/1000;row.report=result.report;
+        const start=performance.now(),result=await design(target,report.configuration);row.solveSeconds=(performance.now()-start)/1000;row.report=result.report;
         const cuts=result.files['cut_geometry.json'];if(!cuts)throw new Error('No exported cutting pair.');await store('cut_geometry.json',cuts);
         const render=await renderExportedWeave(cuts,n);await store('woven.png',render.png);
         row.independentImageError=render.mask.reduce((sum,v,i)=>sum+Number(v!==prepared.preview.mask[i]),0)/render.mask.length;
-        row.independentFeatures=auditFeatureFidelity(prepared.target.sourceImage,render.mask,result.report.settings);
+        row.independentFeatures=auditFeatureFidelity(target.sourceImage,render.mask,result.report.settings);
         row.checkedPair=result.report.templateChecksPassed&&row.independentFeatures.passed&&row.independentImageError<=.03;
         row.status=row.checkedPair?'checked-pair':'review-required';
         if(reference)row.exportedReference=score(render.mask,reference.target,reference.valid);
