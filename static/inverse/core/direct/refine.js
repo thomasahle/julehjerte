@@ -93,7 +93,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false}={}){
   // Compile the weighted force field once, not on every optimization step.
   const objective=boundaryObjective(prob,weights),force=objective.target;
   const imageValue=createBoundaryEvaluator(graph,force,n),transposedImageValue=createBoundaryEvaluator(graph,force,n,{transpose:true,rows:193});
@@ -108,7 +108,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
   const clampAxes=new Uint8Array(points.length);
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
   const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);return projected;};
-  clampPoints();let safe=null,best=null,bestUncertain=null,bestInvalid=null,completed=0;
+  clampPoints();let safe=null,best=null,bestUncertain=null,bestInvalid=null,completed=0,skippedSteps=0,lastRollback=null;
   // A preferred image checkpoint competes only within the same physical
   // validity class. Preference never certifies paper, changes rollback safety,
   // or substitutes weighted errors for the caller's original-source checks.
@@ -153,7 +153,16 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
         break;
       }
     }
-    if(!accepted&&safe){points.set(safe);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.65);}
+    let repeatedRollback=false;
+    if(!accepted&&safe){
+      points.set(safe);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.65);
+      // Equal reset coordinates and rate give the same next 40-step block.
+      // Require exact equality and consecutive full checkpoints; a smaller
+      // rate, a new safe point or a partial block cannot establish a cycle.
+      repeatedRollback=!!lastRollback&&step-lastRollback.step===40&&adam.rate===lastRollback.rate&&safe.every((v,i)=>Object.is(v,lastRollback.points[i]));
+      lastRollback={step,rate:adam.rate,points:safe};
+    }else lastRollback=null;
+    return repeatedRollback;
   };
   checkpoint(-1);
   for(let step=0;step<steps;step++){
@@ -174,7 +183,19 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
       if(!recovered){points.set(previous);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.5);}
     }
     completed++;
-    if(step%40===0||step===steps-1)checkpoint(step);
+    if(step%40===0||step===steps-1){
+      const repeated=checkpoint(step);
+      if(skipRepeatedRollbacks&&repeated){
+        // Preserve the final (possibly partial) block: its last checkpoint can
+        // be better than the repeated 40-step endpoint. Only skip full copies
+        // of a block already computed from exactly the same optimizer state.
+        const skip=Math.max(0,40*Math.floor((steps-2-step)/40));
+        if(skip){
+          step+=skip;completed+=skip;skippedSteps+=skip;lastRollback.step=step;
+          history.push({...history.at(-1),step,skippedSteps:skip});
+        }
+      }
+    }
   }
   if(completed&&history.at(-1).step!==completed-1)checkpoint(completed-1);
   const selected=best||bestUncertain||bestInvalid;
@@ -183,5 +204,5 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
   // audit by the caller, without treating it as accepted or using it for
   // rollback here. Ordinary callers still receive the verified incumbent.
   const paperAlternative=bestUncertain&&bestUncertain!==selected?{...bestUncertain,geometryPassed:true,paperPassed:false}:null;
-  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,stoppedEarly,paperAlternative};
+  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,computedSteps:completed-skippedSteps,skippedSteps,stoppedEarly,paperAlternative};
 }
