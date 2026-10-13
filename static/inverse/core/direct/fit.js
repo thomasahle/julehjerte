@@ -13,7 +13,7 @@ import {applyTies,orbitMean,orbitObjective,symmetryOrbit,symmetryTies} from './s
 import {requestedSymmetry} from '../settings.js';
 import {materialAudit,paperKernelChoices,verifiedPaperSettings} from '../material.js';
 import {resize} from './math.js';
-import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,countHypotheses,initializeCounts} from './counts.js';
+import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,simplerComparisonSeed,countHypotheses,initializeCounts} from './counts.js';
 import {imageFeatures,auditImageFeatures} from '../image-features.js';
 import {auditFeatureFidelity} from '../feature-shapes.js';
 import {recoverImageFeatures} from '../feature-recovery.js';
@@ -441,6 +441,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const prepared={clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification};
     preparations.set(selected,prepared);return prepared;
   };
+  const extraGridComparisons=[];
   let stoppedEarly=false;
   for(let i=0;i<fine.length&&!stoppedEarly;i++){
     // Initialization (including a speculative topology solve) can exhaust the
@@ -567,11 +568,16 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // Spend a longer requested budget on an untried layout only when none of
     // the refined candidates passed the original image, feature and paper
     // checks. Keep the successful fast path and the finalization reserve.
-    // The extra verified checkpoint is a final-choice fallback. Preserve the
-    // existing search allowance too: a later routing can still be much better
-    // than this newly acceptable alternative (e.g. the three-cut maple leaf).
+    // A finer-verified fallback also deserves a simpler-layout comparison:
+    // the maple leaf's useful three-cut seed lies outside the first shortlist.
+    // Once all ordinary finalists have run, compare competitive simpler seeds
+    // directly instead of exhausting the allowance on more elaborate grids.
+    // Unresolved and weighted fits keep their original continuation order.
     if(i===fine.length-1&&!candidates.some(c=>c.imagePassed&&c.paperVerification?.source!=='retained-refinement-alternative')&&remainingSeeds.length&&searchDeadline()-performance.now()>4500){
-      fine.push(stage('directFitting',()=>fitSeed(remainingSeeds.shift())));
+      const acceptedCounts=candidates.filter(c=>c.imagePassed).map(c=>c.counts.slice()),simplify=acceptedCounts.length>0&&!weights;
+      const next=simplify?simplerComparisonSeed(remainingSeeds,coarse,acceptedCounts):remainingSeeds[0];
+      extraGridComparisons.push({reason:simplify?'simpler-layout':'unresolved-fit',acceptedCounts,selectedCounts:next?.model.counts.slice()||null,phase:next?.phase??null});
+      if(next){remainingSeeds.splice(remainingSeeds.indexOf(next),1);fine.push(stage('directFitting',()=>fitSeed(next)));}
     }
   }
   candidates.sort((a,b)=>Number(b.paperPassed)-Number(a.paperPassed)||Number(b.geometryPassed)-Number(a.geometryPassed)||Number(b.imagePassed)-Number(a.imagePassed)||a.selectionScore-b.selectionScore);
@@ -614,7 +620,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    stoppedEarly,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
+    stoppedEarly,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

@@ -78,6 +78,8 @@ test('fresh photographic fitting selects and exports the finer-verified alternat
   assert.equal(budget.verifiedAlternative,true);
   assert.ok(answer.report.solver.seconds<32,'An accepted alternative must not wait for the full 180-second seed portfolio');
   assert.ok(answer.report.solver.candidates.some(c=>c.paperVerification?.source==='retained-refinement-alternative'));
+  assert.ok(answer.report.solver.extraGridComparisons.some(r=>r.reason==='simpler-layout'&&r.selectedCounts===null),
+    'After comparing the ordinary finalists, no competitive simpler grid remains.');
   assert.ok(packets.some(p=>p.materialResolution===700&&p.error<.03),'Stop must receive the now-verified alternative');
   const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],400);
   assert.ok(mismatch(rendered.mask,crop.preview.mask)<.03);

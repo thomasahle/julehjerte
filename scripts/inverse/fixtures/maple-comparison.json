@@ -1,0 +1,24 @@
+{
+  "description": "Frozen automatic photographic crop for the later three-cut routing regression; no saved curves enter fitting.",
+  "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
+  "case": "maple-leaf",
+  "quad": [
+    [
+      1193.0840385692645,
+      615.0513256909322
+    ],
+    [
+      1283.5040566855782,
+      728.2484758290141
+    ],
+    [
+      1177.3970069127552,
+      820.5413443138771
+    ],
+    [
+      1081.4568097234041,
+      701.77683760528
+    ]
+  ],
+  "maskSha256": "9b0908abdb6ceb0957b6344cfa5fbaeab4a46866c640ea8d1898b3dc31a8c101"
+}

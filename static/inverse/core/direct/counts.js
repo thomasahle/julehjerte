@@ -76,6 +76,17 @@ export function gridFinalists(coarse,evidence,limit=3){
   }
   return chosen;
 }
+// After a verified fit, reserve extra search for a competitive simplification.
+// Use the fine-grid ranking's existing 0.005-per-cut preference and the
+// finalist reservation's 0.015 window. This is a scheduling heuristic, not a
+// lower bound on final image error; ordinary finalists still run unchanged.
+export function simplerComparisonSeed(remaining,coarse,acceptedCounts){
+  const total=counts=>counts[0]+counts[1],score=r=>r.error+.005*total(r.model.counts);
+  const finite=coarse.filter(r=>Number.isFinite(r.error));
+  if(!finite.length||!acceptedCounts.length)return null;
+  const limit=Math.min(...finite.map(score))+.015,simplest=Math.min(...acceptedCounts.map(total));
+  return remaining.find(r=>Number.isFinite(r.error)&&total(r.model.counts)<simplest&&score(r)<=limit)||null;
+}
 export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit(evidence),weights=null}){
   const options=[],seen=new Set();
   const add=(counts,phase)=>{if(counts.some(c=>c<1||c>maximumCount||(c+1)*(cfg.nominalWidth+.35)>=cfg.width)||!symmetricCounts(cfg.symmetry,counts))return;const key=counts+':'+phase;if(!seen.has(key)){seen.add(key);options.push({counts,phase});}};
