@@ -56,8 +56,10 @@ PNG files remain outside Git; only coordinates, code and reports are committed.
 
 This is a small, deliberately varied **annotation development set**. The source
 inventory's existing QA exclusions remain intact, but cross-corpus motif-family
-review is pending. All ten allocations therefore remain unassigned. They have
-not entered training and are not claimed as an unseen benchmark. The loader
+review is pending. All ten global allocations therefore remain unassigned. They
+had not entered training in the initial frozen-model diagnostic below. A later
+[grouped adaptation experiment](real-adaptation.md) declares temporary training
+and evaluation folds separately; neither study is an unseen benchmark. The loader
 rejects an attempt to turn the current pilot into an assigned training/test set
 without updating its explicit allocation policy.
 
@@ -118,8 +120,9 @@ python3 scripts/inverse/learning/real-foreground-evaluate.py \
   --output=tmp/heart-learning/real-annotation-v1/filtered-models
 ```
 
-The next step is to expand/check real labels, resolve source/motif grouping and
-design a grouped real-photo training comparison. Particular targets are hands,
+The grouped real-photo training comparison is now recorded in the follow-up
+above. Further work must expand/check real labels and resolve cross-corpus
+source/motif grouping. Particular targets are hands,
 pale textured backgrounds, varied heart sizes, and complete pale borders. The
 present observations do not isolate how much each issue comes from image framing,
 texture, training coverage or the learned shape prior. No network is enabled in

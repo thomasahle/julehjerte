@@ -17,10 +17,11 @@ The 2026-10-13 snapshot contains:
 | Pretrained encoder checkpoints | 2 | MobileNetV3-Small: researched timm LAMB weights and the TorchVision weights used by the experiment. |
 | Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
 | Trained foreground models | 5 | RGB-only, 880,449 parameters; random/ImageNet, background augmentation, and paired clutter/control runs, all offline. |
+| Decoder-adaptation checkpoints | 4 | One synthetic control and three grouped real/synthetic folds; no all-data or deployed model. |
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 50 | Two hearts in one reserved photograph; sparse assistant-reviewed development observations, not dense labels or training data. |
-| Real visible-body annotations | 10 | Eight source groups outside reserved QA; uncertain outline/occlusion pixels excluded, five approximate overlap references, no train/test allocation yet. |
+| Real visible-body annotations | 10 | Eight source groups outside reserved QA; uncertain outline/occlusion pixels excluded, five approximate overlap references; temporary grouped adaptation only. |
 
 The latest [Pinterest expansion](real-pinterest-expansion.md) downloaded 428 of
 442 visited pins, including all four user-supplied examples. After merging, it
@@ -33,9 +34,19 @@ basket masks with explicit uncertain regions, without using solver output as
 ground truth. A frozen-model comparison improves known-region IoU from 57.56%
 to 76.95% with clutter training, while known-paper loss rises from 0.47% to 6.14%.
 Hands, pale textured backgrounds, borders and tips remain problematic. The
-examples retain their source/duplicate grouping and have not entered training;
-cross-corpus motif review remains pending. This is a development diagnostic,
-not a new production or unseen-test score.
+examples retain their source/duplicate grouping; cross-corpus motif review and
+global allocation remain pending. This is a development diagnostic, not a new
+production or unseen-test score.
+
+The [grouped real-photo adaptation](real-adaptation.md) subsequently trains only
+the 9,889 decoder parameters, keeping encoder weights and batch-normalization
+statistics frozen. Known-region IoU rises from 76.95% to 78.63% when each real
+photo is evaluated outside its training group. The complete Mal mask pipeline
+still yields only 3/10 checked pairs, the same as further synthetic training and
+below the current cropper's 4/10 on this pilot. A sloth crop shift smaller than
+one source pixel changes trace routing and raises final disagreement from 1.37%
+to 5.43%. Neither the segmentation average nor those crop coordinates establish
+a reconstruction improvement. All learned models remain offline.
 
 The [clutter-training follow-up](foreground-scene-learning.md) raises selected-body
 IoU on controlled neighbouring-heart scenes from 61.86% to 95.01% with the same
