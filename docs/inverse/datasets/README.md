@@ -16,7 +16,8 @@ The 2026-10-13 snapshot contains:
 | Synthetic photographic views | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
 | Pretrained encoder checkpoints | 2 | MobileNetV3-Small: researched timm LAMB weights and the TorchVision weights used by the experiment. |
 | Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
-| Trained foreground models | 2 | RGB-only, 880,449 parameters; random/ImageNet comparison, synthetic-only and rejected for application use. |
+| Trained foreground models | 3 | RGB-only, 880,449 parameters; random/ImageNet comparison and a background-augmented follow-up, all offline. |
+| Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 
 The latest [Pinterest expansion](real-pinterest-expansion.md) downloaded 428 of
 442 visited pins, including all four user-supplied examples. After merging, it
@@ -24,7 +25,16 @@ added 362 source files, 176 photo-containing files and 116 reviewed photo groups
 to the previous snapshot. These are source-image counts, not heart-instance
 or independent motif-family counts.
 
-The [foreground-model experiment](foreground-learning.md) compares random and
+The [background-training follow-up](foreground-background-learning.md) isolates
+a concrete domain gap: plain white backgrounds reduce the original model's
+paper IoU from 98.96% to 52.78% on controlled photographs. Background variants
+raise it to 97.87% at the same training-update budget. The full replay recovers
+five numerically accepted real-photo pairs, including the previously unresolved
+blue outlined star. All 24 collage crops still fail; one synthetic crop regresses
+and small visual defects remain. The network stays offline, with no new claim
+for the production benchmark.
+
+The original [foreground-model experiment](foreground-learning.md) compares random and
 pretrained initialization using 768 verified physical-paper labels. Pretraining
 raises synthetic holdout silhouette IoU to about 98.9%, but none of the 31 real
 photographs yields a strongly supported crop from the frozen network. A
@@ -141,8 +151,8 @@ not evidence of a better complete solver or real-photo reconstruction.
 The [full-photo foreground labels](foreground-supervision.md) add physical
 paper/background supervision for all 768 existing synthetic views, including
 both lobes and both paper colours. They preserve the original images and recipe
-splits. This supports a separate full-photo localization task; no foreground
-network has been trained or added to the website yet.
+splits. This supports a separate full-photo localization task. Three foreground
+models have now been trained offline; none is added to the website.
 
 Start with rectified RGB plus the existing uncertain color mask. Predict paper
 membership, visible boundaries, junctions and border endpoints. Score a small
