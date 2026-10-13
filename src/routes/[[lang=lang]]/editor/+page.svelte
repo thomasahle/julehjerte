@@ -5,7 +5,8 @@
   import PaperHeart from '$lib/components/PaperHeart.svelte';
   import { pageTitle } from '$lib/seo';
   import { t, tArray, type Language } from '$lib/i18n';
-  import { DEFAULT_COLORS, getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
+  import { toHexColors } from '$lib/utils/heartColors';
+  import { DEFAULT_COLORS, DEFAULT_COLORS_HEX, getColors, subscribeColors, type HeartColors } from '$lib/stores/colors';
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from '$lib/stores/collection';
   import {
     clearDraft,
@@ -197,11 +198,8 @@
   let authorName = $state(urlDesign?.author ?? '');
   let description = $state(urlDesign?.description ?? '');
   let lang = $derived(($page.params.lang === 'en' ? 'en' : 'da') as Language);
-  // The site-wide pair, the colours this heart carries once the visitor has picked
-  // any (docs/redesign/DESIGN.md §7), and what the heart is actually drawn in.
-  let siteColors = $state<HeartColors>({ ...DEFAULT_COLORS });
-  let designColors = $state<HeartColors | null>(urlDesign?.colors ?? null);
-  let colors = $derived(designColors ?? siteColors);
+  // Viewing colours come from the shared footer and never schedule an edit.
+  let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
   let editorEl: HTMLDivElement | null = $state(null);
   let headerEl: HTMLElement | null = $state(null);
   let importInput: HTMLInputElement | null = $state(null);
@@ -239,8 +237,8 @@
 
   onMount(() => {
     // Initialize colors
-    siteColors = getColors();
-    const unsubscribeColors = subscribeColors((c) => { siteColors = c; });
+    colors = getColors();
+    const unsubscribeColors = subscribeColors((c) => { colors = c; });
 
     // Set heart name (needs lang to be initialized)
     if (sessionDesign) {
@@ -326,13 +324,6 @@
     return () => mq.removeEventListener('change', sync);
   });
 
-  // Picking a colour is always a real edit, so it autosaves straight away — unlike
-  // the geometry, which PaperHeart also emits once on mount.
-  function handleColorsChange(next: HeartColors) {
-    designColors = next;
-    scheduleAutosave();
-  }
-
   function handleFingersChange(fingers: Finger[], gridSize: GridSize, weaveParity: 0 | 1) {
     currentFingers = fingers;
     currentGridSize = gridSize;
@@ -368,7 +359,6 @@
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-    designColors = design.colors ?? null;
     heartName = `${design.name} ${t('copy', lang)}`;
     authorName = design.author ?? '';
     description = design.description ?? '';
@@ -488,11 +478,9 @@
       date: initialDesign?.date,
       description: sanitizeHtml(description) || undefined,
       weaveParity: currentWeaveParity,
-      rightCutouts: initialDesign?.rightCutouts,
       templateWidthMm: initialDesign?.templateWidthMm,
-      // A heart keeps only the colours the visitor picked; one that was never
-      // touched follows the site-wide pair, as the gallery hearts do.
-      colors: designColors ?? undefined,
+      // Preserve the appearance in exported files; site previews use the footer.
+      colors: toHexColors(colors, DEFAULT_COLORS_HEX),
       gridSize: currentGridSize,
       fingers: currentFingers
     };
@@ -546,7 +534,6 @@
     currentFingers = design.fingers;
     currentGridSize = design.gridSize;
     currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-    designColors = design.colors ?? null;
     heartName = design.name;
     authorName = design.author ?? '';
     description = design.description ?? '';
@@ -676,7 +663,6 @@
         currentFingers = design.fingers;
         currentGridSize = design.gridSize;
         currentWeaveParity = (design.weaveParity ?? 0) as 0 | 1;
-        designColors = design.colors ?? null;
         heartName = design.name || t('importedHeart', lang);
         authorName = design.author || '';
         description = design.description || '';
@@ -889,12 +875,9 @@
         {lang}
         fullPage
         onFingersChange={handleFingersChange}
-        onColorsChange={handleColorsChange}
         initialGridSize={currentGridSize}
         initialFingers={currentFingers}
         initialWeaveParity={currentWeaveParity}
-        rightCutouts={initialDesign?.rightCutouts}
-        initialColors={designColors ?? undefined}
         panelExtra={isNarrow ? undefined : heartPanels}
         notice={pendingDraft ? draftNotice : undefined}
       />
@@ -1023,14 +1006,14 @@
     min-height: 0;
   }
 
-  /* Desktop: the tool fills the viewport, so the page itself never scrolls. */
+  /* Keep the shared colour footer visible below the desktop canvas. */
   @media (min-width: 900px) {
     .editor {
       padding-bottom: 0;
     }
 
     .editor-top {
-      height: calc(100dvh - var(--editor-header-height));
+      height: calc(100dvh - var(--editor-header-height) - var(--site-footer-height, 100px));
     }
   }
 

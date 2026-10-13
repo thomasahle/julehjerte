@@ -1,15 +1,14 @@
-import type { Frame } from './geometry';
+import { FRAMES, type Frame, type TextFrame } from './geometry';
 export type GeneratorState = {
 	mode: 'start' | 'figure' | 'text';
 	motif: string;
 	text: string;
 	font: string;
-	palette: number;
 	frame: Frame;
 	frameSize: number;
 	scale: number;
 	style: 'rays' | 'check' | 'plain';
-	textFrame: 'woven' | 'air';
+	textFrame: TextFrame;
 	paperWidth: number;
 };
 export const defaults: GeneratorState = {
@@ -17,7 +16,6 @@ export const defaults: GeneratorState = {
 	motif: 'star',
 	text: 'ANNA',
 	font: 'nunito',
-	palette: 0,
 	frame: 'circle',
 	frameSize: 70,
 	scale: 70,
@@ -34,9 +32,9 @@ export function readGeneratorState(hash: string): GeneratorState {
 		for (const [k, allowed] of Object.entries({
 			mode: ['start', 'figure', 'text'],
 			font: ['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous'],
-			frame: ['circle', 'diamond', 'hexagon'],
+			frame: [...FRAMES],
 			style: ['rays', 'check', 'plain'],
-			textFrame: ['woven', 'air']
+			textFrame: ['woven', 'air', ...FRAMES]
 		}))
 			if (allowed.includes(raw[k])) Object.assign(s, { [k]: raw[k] });
 		if (typeof raw.text === 'string')
@@ -44,7 +42,6 @@ export function readGeneratorState(hash: string): GeneratorState {
 		if (typeof raw.motif === 'string' && /^[a-z0-9-]{1,80}$/.test(raw.motif))
 			s.motif = raw.motif;
 		for (const [k, min, max] of [
-			['palette', 0, 3],
 			['frameSize', 50, 80],
 			['scale', 45, 85],
 			['paperWidth', 80, 140]

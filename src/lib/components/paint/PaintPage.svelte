@@ -663,14 +663,14 @@
 	// ------------------------------------------------------------- the top bar
 
 	function openInDraw(): void {
-		const design = session.result?.design;
+		const design = session.result ? { ...session.result.design, colors: toHexColors(colors, DEFAULT_COLORS_HEX) } : undefined;
 		if (!design) return;
 		handoffToDraw(design);
 		void goto(editorHref(lang, '?from=session'));
 	}
 
 	async function downloadPdf(): Promise<void> {
-		const design = session.result?.design;
+		const design = session.result ? { ...session.result.design, colors: toHexColors(colors, DEFAULT_COLORS_HEX) } : undefined;
 		if (!design) return;
 		try {
 			const { downloadPDF } = await import('$lib/pdf/template');
@@ -682,7 +682,7 @@
 	}
 
 	function save(): void {
-		const design = session.result?.design;
+		const design = session.result ? { ...session.result.design, colors: toHexColors(colors, DEFAULT_COLORS_HEX) } : undefined;
 		if (!design) return;
 		try {
 			saveUserDesign(design);
@@ -770,7 +770,6 @@
 								initialFingers={session.result.design.fingers}
 								initialGridSize={session.result.design.gridSize}
 								initialWeaveParity={session.result.design.weaveParity ?? 0}
-								colors={session.result.design.colors}
 								size={520}
 							/>
 							{#if showMotif && session.result.report.motifMismatch !== undefined}
@@ -1074,7 +1073,7 @@
 	/* position: relative so <CanvasBackdrop> fills exactly the canvas area. */
 	.paint-top {
 		position: relative;
-		height: calc(100dvh - var(--paint-header-height));
+		height: calc(100dvh - var(--paint-header-height) - var(--site-footer-height, 100px));
 		min-height: 420px;
 		overflow: hidden;
 	}

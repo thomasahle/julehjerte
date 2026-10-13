@@ -1,4 +1,3 @@
-import { rightCutoutPath } from '$lib/geometry/cutouts';
 import type { HeartDesign } from '$lib/types/heart';
 import type { HeartColors } from '$lib/stores/colors';
 import { computeWeaveData } from '$lib/rendering/svgWeave';
@@ -182,7 +181,6 @@ function buildHeartSvgContent(
 		`<g clip-path="url(#${clipId})">`,
 		`<rect x="${weaveData.overlap.left}" y="${weaveData.overlap.top}" width="${weaveData.overlap.width}" height="${weaveData.overlap.height}" fill="${colors.left}" />`,
 		`<path d="${stripPath}" fill="${colors.right}" fill-rule="evenodd" />`,
-		`<path d="${rightCutoutPath(design.rightCutouts, weaveData.overlap)}" fill="${colors.left}" />`,
 		`</g>`,
 		outlinePath
 			? `<path d="${outlinePath}" fill="none" stroke="${outlineColor}" stroke-width="${outlineWidth}" stroke-linejoin="round" stroke-linecap="round" />`

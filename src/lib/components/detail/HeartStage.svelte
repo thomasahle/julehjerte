@@ -105,7 +105,6 @@
 						initialFingers={design.fingers}
 						initialGridSize={design.gridSize}
 						initialWeaveParity={design.weaveParity ?? 0}
-						colors={design.colors}
 						size={200}
 					/>
 				{:else if v.id === 'photo' && photo}

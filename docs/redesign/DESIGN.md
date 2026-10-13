@@ -327,7 +327,7 @@ Keep every existing tool (undo/redo, insert/delete node, corner/smooth/symmetric
 44px icon buttons with tooltips — nothing removed, no labels under icons. Apply the palette: page background,
 panels white with 1px `--line` and radius 12, section titles 12px uppercase `--muted`, green accents, red
 primary. Top bar: back link + logo at the left; Help (icon), **Download PDF** (primary red) and **Gem** (dark
-green) at the right. Right panel 340px: Symmetri (segmented Fra / Sym / Anti), Tegning, Farver, Hjertedetaljer,
+green) at the right. Right panel 340px: Symmetri (segmented Fra / Sym / Anti), Tegning, Hjertedetaljer,
 Handlinger. A **"Skjul panel"** control collapses the panel so the canvas fills the width; a slim tab at the
 right edge ("Vis panel") brings it back; remember the choice in localStorage. Add a "Snap til modsat side"
 checkbox and a one-line hint above the canvas. The mobile editor keeps its existing stacked panels.
@@ -387,10 +387,21 @@ debounced path autosave uses. Open the editor as a new heart with a draft waitin
 canvas notice — "Du har en kladde fra sidst. Fortsæt hvor du slap?", *Fortsæt* / *Start forfra* — read after
 mount, never during render. Saving the heart, discarding the draft, or starting another one clears it.
 
-Colours belong to the heart, not to the browser: a design may carry `colors: { left, right }` (two hex values),
-and the Farver section edits them with two real colour inputs plus "Byt". Gallery hearts carry none and follow
-the site-wide colour store as before; a heart the visitor draws stores what was picked, and saving, sharing and
-the PDF carry it. Old saved hearts without colours keep rendering in the site-wide pair.
+Paper colours are a site-wide viewing preference, controlled by the shared footer on every page,
+including the generator, vector editor and paint editor. The footer offers two colour inputs, swap,
+and five presets. Changing colours repaints previews without regenerating cuts or scheduling an
+editor autosave. Saved/exported designs may retain a `colors` appearance snapshot; live previews
+always follow the footer. Desktop canvases account for the footer's measured height.
+
+The figure and text generators use contour topology, never the image solver. Visible outlines belong
+to one sheet; invisible connecting cuts use exactly the same path in both sheets. Enclosed regions
+and detached components must be woven using these shared cuts: no cut-out fields, preview overlays
+or grey areas to remove from a PDF. In a four-port cell, a pair of interior connections brackets one
+external port, preserving the open path pairings. Nested contours recurse, and sibling holes may
+share a chain. The compiler rejects branches, closed cycles and paths ending on the wrong edge;
+geometric clearance and artwork fidelity are checked before a result can be saved or downloaded.
+Both generators offer circle, diamond, hexagon, oval, soft diamond and scalloped frames. Text also
+has close and spacious letter-cell framing. Frame choices have visual thumbnails.
 
 ## 8. Constraints and process
 

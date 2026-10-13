@@ -105,7 +105,6 @@
 		<HangingHeart
 			{design}
 			{markup}
-			colors={heart.colors}
 			size={SIZE}
 			{ribbon}
 			delay={swayDelay}

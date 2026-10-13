@@ -15,7 +15,6 @@ interface TemplateData {
   templateHeight: number;
   earPath: string;
   cutPaths: string[];
-  cutoutPaths: string[];
 }
 
 interface TemplateSvgOptions {
@@ -159,8 +158,7 @@ export function getTemplateData(design: HeartDesign, lobe: TemplateLobe): Templa
     templateWidth: width,
     templateHeight: height,
     earPath,
-    cutPaths,
-    cutoutPaths: lobe === 'right' ? (design.rightCutouts ?? []).map(r=>'M'+r.map(([x,y])=>`${x*width/100},${earRadius+y*overlapHeight/100}`).join('L')+'Z') : []
+    cutPaths
   };
 }
 
@@ -185,7 +183,6 @@ function renderTemplateGroup(
   lines.push(
     `    <line x1="0" y1="${templateHeight}" x2="${templateWidth}" y2="${templateHeight}" stroke-dasharray="${dash}" />`
   );
-  for (const pathD of data.cutoutPaths) lines.push(`    <path d="${pathD}" fill="#ddd" />`);
   for (const pathD of cutPaths) {
     lines.push(`    <path d="${pathD}" />`);
   }

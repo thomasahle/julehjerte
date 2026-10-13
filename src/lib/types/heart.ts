@@ -53,12 +53,9 @@ export interface HeartDesign {
   weaveParity?: 0 | 1;
   // Number of strips in the overlap rectangle (x = columns, y = rows).
   gridSize: GridSize;
-  // The heart's own paper colours, as picked in the editor. Absent on gallery
-  // hearts and on everything saved before the editor could set them, and those
-  // follow the site-wide colour store instead ($lib/stores/colors).
+  // Appearance snapshot for saved/exported files. The site's live previews use
+  // the shared footer colours; changing that preference does not edit geometry.
   colors?: HeartColors;
-  /** Counter shapes removed from the right paper, in normalised overlap coordinates. */
-  rightCutouts?: Array<Array<[number, number]>>;
   /** Preferred physical paper width for fine generated templates. */
   templateWidthMm?: number;
   fingers: Finger[];

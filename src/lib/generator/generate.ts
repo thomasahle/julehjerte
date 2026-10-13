@@ -7,8 +7,9 @@ import { rasterizeDesign } from '$lib/paint/rasterize';
 import {
 	ConstructionError,
 	generateFigure,
-	generateCutoutFigure,
+	generateFourPortFigure,
 	generateCheckedText,
+	generateFramedText,
 	inside,
 	distance,
 	mix,
@@ -18,6 +19,7 @@ import {
 	frameRing,
 	type Ring,
 	type Frame,
+	type TextFrame,
 	type Font,
 	type Point,
 	type Edge
@@ -33,13 +35,12 @@ export type GeneratorRequest = {
 	frameSize?: number;
 	scale?: number;
 	style?: 'rays' | 'check' | 'plain';
-	textFrame?: 'woven' | 'air';
+	textFrame?: TextFrame;
 	paperWidth?: number;
 };
 export type GeneratorResult = {
 	design: HeartDesign;
-	cutouts: number;
-	recipe: 'silhouette' | 'nested' | 'counters' | 'letters';
+	recipe: 'silhouette' | 'nested' | 'letters';
 };
 function pointDistance(p: Point, a: Point, b: Point) {
 	const d = sub(b, a),
@@ -67,7 +68,7 @@ function linesCross(a: Point, b: Point, c: Point, d: Point) {
 	return t >= 0 && t <= 1 && s >= 0 && s <= 1;
 }
 /** Validate the actual polygon cuts, not just their graph endpoints. */
-function audit(edges: Edge[], cutouts: Ring[]) {
+function audit(edges: Edge[]) {
 	for (let i = 0; i < edges.length; i++)
 		for (let j = i + 1; j < edges.length; j++) {
 			const a = edges[i],
@@ -81,26 +82,6 @@ function audit(edges: Edge[], cutouts: Ring[]) {
 				continue;
 			if (linesCross(a.from, a.to, b.from, b.to))
 				throw new ConstructionError('topology', 'Cut paths intersect');
-		}
-	for (const ring of cutouts)
-		for (let i = 0; i < ring.length; i++) {
-			const a = ring[i],
-				b = ring[(i + 1) % ring.length];
-			for (const e of edges.filter((e) => e.family.includes('A'))) {
-				if (
-					linesCross(a, b, e.from, e.to) ||
-					Math.min(
-						pointDistance(a, e.from, e.to),
-						pointDistance(b, e.from, e.to),
-						pointDistance(e.from, a, b),
-						pointDistance(e.to, a, b)
-					) < 0.65
-				)
-					throw new ConstructionError(
-						'clearance',
-						'Letter counter leaves too little paper'
-					);
-			}
 		}
 }
 function cutParity(g: CutGeometry, p: Point) {
@@ -178,34 +159,34 @@ function fidelity(
 export function generate(request: GeneratorRequest): GeneratorResult {
 	const finish = (
 		r: ReturnType<typeof generateFigure> & {
-			rightCutouts?: Ring[];
 			domain?: Ring[];
 		},
 		recipe: GeneratorResult['recipe']
 	) => {
-		const rightCutouts = r.rightCutouts ?? [];
-		audit(r.edges, rightCutouts);
+		audit(r.edges);
 		orientForeground(r.geometry, r.artwork);
 		const { design } = convertValidatedCutGeometry(r.geometry, {
 			name: request.name,
 			colors: request.colors,
 			tolerance: 0.025
 		});
-		design.rightCutouts = rightCutouts.length ? rightCutouts : undefined;
 		design.templateWidthMm = request.paperWidth ?? 100;
 		const domain = r.domain ?? [
 			frameRing(request.frame ?? 'circle', request.frameSize ?? 70)
 		];
 		fidelity(design, r.artwork, domain, r.edges);
-		return { design, recipe, cutouts: rightCutouts.length };
+		return { design, recipe };
 	};
 	if (request.mode === 'text') {
 		if (!request.font) throw new ConstructionError('empty', 'No font');
-		const r = generateCheckedText(
-			request.text ?? '',
-			request.font,
-			request.textFrame === 'air'
-		);
+		const frame = request.textFrame ?? 'woven';
+		const r =
+			frame === 'woven' || frame === 'air'
+				? generateCheckedText(request.text ?? '', request.font, frame === 'air')
+				: {
+						...generateFramedText(request.text ?? '', request.font, frame),
+						domain: [frameRing(frame, 80)]
+					};
 		return finish(r, 'letters');
 	}
 	const rings = request.contours ?? [],
@@ -221,17 +202,17 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	} catch (e) {
 		if (!(e instanceof Error)) throw e;
 		// Perforated/disconnected figures which do not admit the transverse chain
-		// have a separate four-port construction, with explicit cut-out counters.
+		// have a separate four-port construction, with paired shared bridges.
 		// We never erase a hole or a detached component to make the checks pass.
 		try {
 			return finish(
-				generateCutoutFigure(rings, shape, size, scale, style),
-				'counters'
+				generateFourPortFigure(rings, shape, size, scale, style),
+				'nested'
 			);
 		} catch (other) {
 			throw new ConstructionError(
 				e instanceof ConstructionError ? e.code : 'clearance',
-				`Primary: ${e.message}; counters: ${String(other)}`
+				`Primary: ${e.message}; four-port: ${String(other)}`
 			);
 		}
 	}

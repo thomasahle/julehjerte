@@ -3,9 +3,7 @@
   (hero, gallery cards, detail stage, related hearts). docs/redesign/DESIGN.md §3.
 
   The ribbon is cut from the same paper as the heart: it takes the right-hand
-  lobe colour, so it follows the heart's own colours or, failing those, the
-  site-wide pair the footer's swatches edit. A hardcoded red left every
-  blue-and-white heart hanging from a colour used nowhere else on the page.
+  lobe colour, following the site-wide pair the footer's swatches edit.
 
   The block is `size` px wide but shrinks with its container (max-width: 100%);
   the ribbon runs on behind the heart into the cleft between the lobes, so its
@@ -47,11 +45,6 @@
 		 * see $lib/front/galleryHearts. Given, the heart is never drawn here.
 		 */
 		markup?: string;
-		/**
-		 * The heart's own paper colours, when it has any and there is no `design`
-		 * to read them off. They fix the ribbon's colour and the heart's.
-		 */
-		colors?: HeartColors;
 		/** Width of the block in px. The heart box is size x size. */
 		size?: number;
 		/** Visible ribbon length in px, above the heart. */
@@ -71,7 +64,6 @@
 	let {
 		design,
 		markup = undefined,
-		colors = undefined,
 		size = 168,
 		ribbon = 40,
 		delay = 0,
@@ -90,13 +82,8 @@
 		});
 	});
 
-	let ownColors = $derived(colors ?? design?.colors);
-	let ribbonColor = $derived(ownColors?.right ?? storeColors.right);
-
-	// A heart handed over as markup cannot repaint itself, so one that follows the
-	// site-wide pair does it in CSS instead (see the style block). A heart with
-	// its own colours is fixed anyway and is left alone.
-	let sitePaper = $derived(markup !== undefined && ownColors === undefined);
+	let ribbonColor = $derived(storeColors.right);
+	let sitePaper = $derived(markup !== undefined);
 
 	// The ribbon disappears into the cleft between the lobes; the overlap is a
 	// share of the width so it survives the max-width: 100% shrink.
@@ -120,7 +107,6 @@
 				initialFingers={design.fingers}
 				initialGridSize={design.gridSize}
 				initialWeaveParity={design.weaveParity ?? 0}
-				colors={design.colors}
 				size={400}
 			/>
 		{/if}
@@ -160,9 +146,8 @@
 	   pair, and no longer re-renders when the footer's swatches change. A CSS
 	   `fill` beats the `fill` presentation attribute in the markup, so the two
 	   default colours are the hooks the site-wide pair reaches it through
-	   (--paper-left / --paper-right, kept up to date in the root layout). Only
-	   hearts that follow the site's pair carry .site-paper, so a heart with its
-	   own colours is never repainted. */
+	   (--paper-left / --paper-right, kept up to date in the root layout). All
+	   prerendered gallery hearts follow the same viewing preference. */
 	.heart.site-paper :global(svg [fill='#ffffff']) {
 		fill: var(--paper-left);
 	}

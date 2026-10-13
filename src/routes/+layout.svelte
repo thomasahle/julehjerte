@@ -53,9 +53,6 @@
 
 	// Heart detail pages (/hjerte/[id]) emit their own description, canonical, hreflang, og and twitter tags.
 	let isDetailRoute = $derived($page.route.id?.includes("/hjerte/") ?? false);
-	// The editor is a full-screen tool: it carries its own colour controls in the
-	// right-hand panel and has no footer (docs/redesign/DESIGN.md §7).
-	let isEditorRoute = $derived(($page.route.id?.includes("/editor") ?? false) || routeKey === "generator");
 
 	$effect(() => {
 		if (!browser) return;
@@ -170,9 +167,7 @@
 		<div class="page-content">
 			{@render children()}
 		</div>
-		{#if !isEditorRoute}
-			<PageFooter />
-		{/if}
+		<PageFooter />
 	</div>
 </Tooltip.Provider>
 

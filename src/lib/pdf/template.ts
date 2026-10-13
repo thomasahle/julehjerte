@@ -269,14 +269,6 @@ function drawLobeTemplate(
   const offsetX = centerX - scaledWidth / 2;
   const offsetY = centerY - scaledHeight / 2;
 
-  if (lobe === 'right') {
-    for (const ring of design.rightCutouts ?? []) {
-      const points = ring.map(([x,y])=>({x:offsetX+x*overlapWidth*scale/100,y:offsetY+(earRadius+y*overlapHeight/100)*scale}));
-      pdf.setFillColor(220,220,220); pdf.setDrawColor(0); pdf.setLineWidth(.2);
-      pdf.lines(points.slice(1).map((p,i)=>[p.x-points[i].x,p.y-points[i].y]),points[0].x,points[0].y,[1,1],'FD',true);
-    }
-  }
-
   // Transform coordinates: we want vertical template with ear at top
   // Original left lobe: ear on left, fold on bottom
   // Original right lobe: ear on top, fold on left
@@ -433,7 +425,7 @@ function collectTemplates(designs: HeartDesign[]): TemplateSlot[] {
   const templates: TemplateSlot[] = [];
 
   for (const design of designs) {
-    if (!design.rightCutouts?.length && lobesShareTemplate(design.fingers, design.gridSize)) {
+    if (lobesShareTemplate(design.fingers, design.gridSize)) {
       // Symmetric - only need one template
       templates.push({ design, lobe: 'both' });
     } else {
@@ -640,7 +632,6 @@ export async function generateSizedPDF(design: HeartDesign, widthMm = 100, lang:
     drawLobeTemplate(pdf,design,lobe,105,145,widthMm/.95,widthMm*1.5/.95);
     pdf.setFontSize(9);
     const lines=[t('generatorPdfPrint',lang),t('generatorPdfFold',lang),t('generatorPdfCut',lang)];
-    if(design.rightCutouts?.length)lines.push(t('generatorPdfCounters',lang));
     pdf.text(lines,15,265);
     pdf.setDrawColor(0);pdf.setLineWidth(.2);pdf.line(150,263,180,263);pdf.line(150,261,150,265);pdf.line(180,261,180,265);
     pdf.text('30 mm',165,270,{align:'center'});pdf.text(SITE_DOMAIN,105,290,{align:'center'});

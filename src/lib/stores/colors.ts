@@ -1,9 +1,8 @@
 import { browser } from '$app/environment';
 import type { HeartColors } from '$lib/types/heart';
 
-// A heart's colours are a property of a design as much as of the site, so the
-// type lives with the other design types; it is re-exported here because most
-// callers reach for it next to getColors().
+// Paper colours are a site-wide viewing preference. A saved/exported design
+// may also carry an appearance snapshot, without changing its cutting pattern.
 export type { HeartColors };
 
 /**
@@ -26,6 +25,15 @@ export const DEFAULT_COLORS_HEX: HeartColors = {
   left: '#ffffff',
   right: '#b91313'
 };
+
+/** Shared footer suggestions; the colour pickers still allow any paper pair. */
+export const COLOR_PRESETS = [
+  { colors: DEFAULT_COLORS_HEX, key: 'footerPaletteClassic' },
+  { colors: { left: '#fffdf5', right: '#b72f2b' }, key: 'footerPaletteRed' },
+  { colors: { left: '#fffdf5', right: '#365943' }, key: 'footerPaletteGreen' },
+  { colors: { left: '#ddba6b', right: '#725483' }, key: 'footerPalettePurple' },
+  { colors: { left: '#efd6cc', right: '#344e66' }, key: 'footerPaletteBlue' }
+] as const;
 
 // Simple module-level state with subscribers
 let currentColors: HeartColors = { ...DEFAULT_COLORS };
@@ -75,7 +83,7 @@ export function setRightColor(color: string) {
   setColors({ ...currentColors, right: color });
 }
 
-/** Swap the two lobe colours. Used by the footer's swap button and the editor. */
+/** Swap the two paper colours using the shared footer. */
 export function flipColors() {
   const { left, right } = getColors();
   setColors({ left: right, right: left });

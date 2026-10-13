@@ -1,8 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import {
+		DEFAULT_COLORS,
+		DEFAULT_COLORS_HEX,
+		getColors,
+		subscribeColors,
+		type HeartColors
+	} from '$lib/stores/colors';
+	import { toHexColors } from '$lib/utils/heartColors';
 	import { base } from '$app/paths';
 	import { goto, replaceState } from '$app/navigation';
 	import PageHeader from '$lib/components/PageHeader.svelte';
+	import GeneratorFrameIcon from '$lib/components/GeneratorFrameIcon.svelte';
 	import { t, type Language, type TranslationKey } from '$lib/i18n';
 	import { href, editorHref, otherLanguage } from '$lib/i18n/routes';
 	import { pageTitle } from '$lib/seo';
@@ -36,11 +45,13 @@
 		['cinzel', 'generatorFontCinzel'],
 		['righteous', 'generatorFontRighteous']
 	] as const;
-	const palettes = [
-		{ left: '#fffdf5', right: '#b72f2b', key: 'generatorPaletteRed' },
-		{ left: '#fffdf5', right: '#365943', key: 'generatorPaletteGreen' },
-		{ left: '#ddba6b', right: '#725483', key: 'generatorPalettePurple' },
-		{ left: '#efd6cc', right: '#344e66', key: 'generatorPaletteBlue' }
+	const frames = [
+		['circle', 'generatorCircle'],
+		['diamond', 'generatorDiamond'],
+		['hexagon', 'generatorHexagon'],
+		['oval', 'generatorOval'],
+		['rounded', 'generatorRounded'],
+		['scalloped', 'generatorScalloped']
 	] as const;
 	const localNames: Record<string, [string, string]> = {
 		star: ['Stjerne', 'star jul'],
@@ -81,12 +92,23 @@
 		limit = $state(24),
 		retry = $state(0);
 	let result = $state<GeneratorResult | null>(null),
-		preview = $state(''),
 		busy = $state(false),
 		error = $state(''),
 		notice = $state(''),
 		downloadBusy = $state(false),
 		loadError = $state(false);
+	let colors = $state<HeartColors>({ ...DEFAULT_COLORS });
+	let preview = $derived(
+		result
+			? renderHeartSvgMarkup(result.design, colors, {
+					idPrefix: 'generated-preview'
+				})
+			: ''
+	);
+	const currentDesign = () =>
+		result
+			? { ...result.design, colors: toHexColors(colors, DEFAULT_COLORS_HEX) }
+			: null;
 	let worker: Worker | null = null,
 		revision = 0,
 		savedId: string | null = null;
@@ -124,11 +146,16 @@
 		)
 	);
 	onMount(() => {
+		colors = getColors();
+		const unsubscribe = subscribeColors((next) => {
+			colors = next;
+		});
 		config = readGeneratorState(window.location.hash);
 		const mode = new URLSearchParams(window.location.search).get('mode');
 		if (mode === 'figure' || mode === 'text') config.mode = mode;
 		mounted = true;
 		return () => {
+			unsubscribe();
 			revision++;
 			worker?.terminate();
 		};
@@ -159,7 +186,6 @@
 		worker?.terminate();
 		worker = null;
 		result = null;
-		preview = '';
 		notice = '';
 		error = '';
 		savedId = null;
@@ -174,7 +200,6 @@
 			url.hash = 'make=' + encodeURIComponent(JSON.stringify(snapshot));
 			replaceState(url, {});
 			try {
-				const color = palettes[snapshot.palette];
 				const request: GeneratorRequest = {
 					mode: snapshot.mode as 'figure' | 'text',
 					name:
@@ -184,7 +209,8 @@
 									?.split(' ')
 									.slice(0, lang === 'da' ? 99 : 1)
 									.join(' ') ?? snapshot.motif.replace(/^ph-/, '')),
-					colors: { left: color.left, right: color.right },
+					// Geometry is colour independent; only the preview reads the footer preference.
+					colors: DEFAULT_COLORS_HEX,
 					text: snapshot.text,
 					frame: snapshot.frame,
 					frameSize: snapshot.frameSize,
@@ -209,11 +235,7 @@
 					busy = false;
 					if (e.data.result) {
 						result = e.data.result;
-						preview = renderHeartSvgMarkup(result!.design, request.colors, {
-							idPrefix: 'generated-preview'
-						});
 					} else {
-						preview = '';
 						const key: TranslationKey =
 							e.data.error === 'topology'
 								? 'generatorTopologyError'
@@ -249,14 +271,13 @@
 	});
 	function chooseMode(mode: GeneratorState['mode']) {
 		config.mode = mode;
-		preview = '';
 		query = '';
 		limit = 24;
 		if (mode === 'start' && mounted) replaceState(href('generator', lang), {});
 	}
 	async function download() {
 		if (!result || downloadBusy) return;
-		const design = result.design;
+		const design = currentDesign()!;
 		downloadBusy = true;
 		notice = '';
 		try {
@@ -272,7 +293,7 @@
 		if (!result) return;
 		try {
 			savedId ??= `user-${crypto.randomUUID()}`;
-			saveUserDesign({ ...result.design, id: savedId });
+			saveUserDesign({ ...currentDesign()!, id: savedId });
 			notice = t('generatorSaved', lang);
 		} catch {
 			notice = t('generatorFailedSave', lang);
@@ -280,7 +301,7 @@
 	}
 	function edit() {
 		if (result) {
-			handoffToDraw(result.design);
+			handoffToDraw(currentDesign()!);
 			void goto(editorHref(lang, '?from=session'));
 		}
 	}
@@ -458,9 +479,7 @@
 			</div>
 			{#if error}<div class="error" role="alert">{error}</div>{/if}
 			{#if result}<p class="cut-note">
-					{result.cutouts
-						? t('generatorCounters', lang, { n: result.cutouts })
-						: t('generatorPureWeave', lang)}
+					{t('generatorPureWeave', lang)}
 				</p>{/if}
 			<p class="fine-note">{t('generatorFine', lang)}</p>
 		</section>
@@ -469,23 +488,17 @@
 			aria-label={t('generatorPersonalise', lang)}
 		>
 			<h2>{t('generatorPersonalise', lang)}</h2>
-			<h3>{t('generatorColours', lang)}</h3>
-			<div class="swatches">
-				{#each palettes as palette, i (palette.key)}<button
-						style={`--a:${palette.left};--b:${palette.right}`}
-						aria-label={t(palette.key, lang)}
-						aria-pressed={config.palette === i}
-						onclick={() => (config.palette = i)}
-					></button>{/each}
-			</div>
 			{#if config.mode === 'figure'}
 				<h3>{t('generatorFrame', lang)}</h3>
-				<div class="segmented">
-					{#each [['circle', 'generatorCircle', '○'], ['diamond', 'generatorDiamond', '◇'], ['hexagon', 'generatorHexagon', '⬡']] as const as frame (frame[0])}<button
+				<div class="frame-options">
+					{#each frames as frame (frame[0])}
+						<button
 							aria-pressed={config.frame === frame[0]}
 							onclick={() => (config.frame = frame[0])}
-							><b aria-hidden="true">{frame[2]}</b>{t(frame[1], lang)}</button
-						>{/each}
+						>
+							<GeneratorFrameIcon frame={frame[0]} />{t(frame[1], lang)}
+						</button>
+					{/each}
 				</div>
 				<label class="range-label" for="frame-size"
 					>{t('generatorFrameSize', lang)}<output>{config.frameSize}%</output
@@ -518,12 +531,15 @@
 				</div>
 			{:else}
 				<h3>{t('generatorTextFrame', lang)}</h3>
-				<div class="text-frames">
-					{#each [['woven', 'generatorDense'], ['air', 'generatorAir']] as const as frame (frame[0])}<button
+				<div class="frame-options">
+					{#each [['woven', 'generatorDense'], ['air', 'generatorAir'], ...frames] as const as frame (frame[0])}
+						<button
 							aria-pressed={config.textFrame === frame[0]}
 							onclick={() => (config.textFrame = frame[0])}
-							>{t(frame[1], lang)}</button
-						>{/each}
+						>
+							<GeneratorFrameIcon frame={frame[0]} />{t(frame[1], lang)}
+						</button>
+					{/each}
 				</div>
 			{/if}
 			<div class="actions">
@@ -559,7 +575,7 @@
 			</div>
 		</section>
 	</main>
-	<footer class="generator-credit">
+	<div class="generator-credit">
 		<a
 			href="https://cs.au.dk/~gerth/julehjerter/slides.pdf"
 			target="_blank"
@@ -568,7 +584,7 @@
 		<a href={`${base}/generator/SOURCES.txt`} target="_blank" rel="noopener"
 			>{t('generatorSources', lang)}</a
 		>
-	</footer>
+	</div>
 {/if}
 
 <style>
@@ -807,7 +823,7 @@
 	.motifs button[aria-pressed='true'],
 	.fonts button[aria-pressed='true'],
 	.segmented button[aria-pressed='true'],
-	.text-frames button[aria-pressed='true'] {
+	.frame-options button[aria-pressed='true'] {
 		border-color: #6d8b56;
 		background: #edf3e4;
 		color: #314a2c;
@@ -951,21 +967,6 @@
 		line-height: 1.6;
 		max-width: 420px;
 	}
-	.swatches {
-		display: flex;
-		gap: 12px;
-	}
-	.swatches button {
-		width: 36px;
-		height: 36px;
-		border: 3px solid #fffefa;
-		box-shadow: 0 0 0 1px #dce0d2;
-		border-radius: 50%;
-		background: linear-gradient(135deg, var(--a) 50%, var(--b) 50%);
-	}
-	.swatches button[aria-pressed='true'] {
-		box-shadow: 0 0 0 2px #60784c;
-	}
 	.segmented button {
 		flex: 1;
 		display: flex;
@@ -978,11 +979,7 @@
 		font-size: 11px;
 		color: #6c7c5e;
 	}
-	.segmented b {
-		font-size: 29px;
-		line-height: 1.3;
-		font-weight: 400;
-	}
+
 	.range-label {
 		display: flex;
 		align-items: center;
@@ -997,19 +994,29 @@
 		width: 100%;
 		accent-color: #7a8d4d;
 	}
-	.text-frames {
+	.frame-options {
 		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 8px;
 	}
-	.text-frames button {
-		border: 1px solid #dce2d1;
-		background: white;
+	.frame-options button {
+		border: 1px solid var(--line);
 		border-radius: 10px;
-		padding: 13px;
-		color: #5b724c;
-		text-align: left;
+		background: var(--cream);
+		padding: 9px 3px;
+		color: var(--ink);
+		font: inherit;
 		font-size: 12px;
+		cursor: pointer;
 	}
+	.frame-options button:hover {
+		border-color: var(--green);
+	}
+	.frame-options button:focus-visible {
+		outline: 2px solid var(--green);
+		outline-offset: 3px;
+	}
+
 	.actions {
 		border-top: 1px solid #e3e7d9;
 		margin-top: 24px;

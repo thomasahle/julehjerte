@@ -4,6 +4,10 @@ import {
 	compile,
 	ConstructionError,
 	generateFigure,
+	generateCheckedText,
+	FRAMES,
+	type Frame,
+	type TextFrame,
 	inside,
 	type Font,
 	type Ring,
@@ -16,12 +20,9 @@ import {
 	parseHeartFromSVG
 } from '$lib/utils/heartDesign';
 import { rasterizeDesign } from '$lib/paint/rasterize';
-import {
-	getTemplateData,
-	serializeTemplateToSVG
-} from '$lib/utils/templateSvg';
+import { serializeTemplateToSVG } from '$lib/utils/templateSvg';
 import { renderHeartSvgMarkup } from '$lib/rendering/heartSvg';
-import { parseRightCutouts } from '$lib/geometry/cutouts';
+
 import { defaults, readGeneratorState } from './state';
 import nunito from '../../../static/generator/fonts/nunito.json';
 import bree from '../../../static/generator/fonts/breeserif.json';
@@ -46,12 +47,12 @@ const fonts = {
 const text = (
 	value: string,
 	font = fonts.nunito,
-	textFrame: 'woven' | 'air' = 'woven'
+	textFrame: TextFrame = 'woven'
 ) =>
 	generate({ mode: 'text', name: value, text: value, font, colors, textFrame });
 const figure = (
 	contours: Ring[],
-	frame: 'circle' | 'diamond' | 'hexagon' = 'circle',
+	frame: Frame = 'circle',
 	style: 'rays' | 'check' | 'plain' = 'rays'
 ) =>
 	generate({ mode: 'figure', name: 'Figure', contours, colors, frame, style });
@@ -62,12 +63,12 @@ const circle = (radius: number, x = 0, y = 0): Ring =>
 	]);
 
 describe('constructive figure generator', () => {
-	for (const frame of ['circle', 'diamond', 'hexagon'] as const)
+	for (const frame of FRAMES)
 		for (const style of ['rays', 'check', 'plain'] as const)
 			it(`${frame} / ${style} preserves the star`, () => {
 				const { design } = figure(star.contours as Ring[], frame, style);
 				expect(design.fingers.length).toBeGreaterThan(4);
-				expect(design.rightCutouts).toBeUndefined();
+				expect(design).not.toHaveProperty('rightCutouts');
 				const mask = rasterizeDesign(design, 240);
 				// Independent source-art point classification inside the motif's disc.
 				for (let y = 85; y < 155; y++)
@@ -77,17 +78,24 @@ describe('constructive figure generator', () => {
 							((y + 0.5) * 100) / 240
 						];
 						const u: [number, number] = [
-							((p[0] - p[1]) * Math.SQRT1_2) / 49,
-							((p[0] + p[1] - 100) * Math.SQRT1_2) / 49
+							((p[0] - p[1]) * Math.SQRT1_2) / (frame === 'oval' ? 36.75 : 49),
+							((p[0] + p[1] - 100) * Math.SQRT1_2) /
+								(frame === 'oval' ? 36.75 : 49)
 						];
 						if (inside(u, star.contours[0] as Ring))
 							expect(mask.data[y * 240 + x]).toBe(1);
 					}
 			});
-	it('handles ordinary silhouettes and explicitly marked cut-out counters', () => {
-		expect(figure(tree.contours as Ring[]).cutouts).toBe(0);
-		expect(figure(heart.contours as Ring[]).cutouts).toBe(0);
-		expect(figure(cat.contours as Ring[]).cutouts).toBeGreaterThan(0);
+	it('constructs enclosed symbol details using ordinary open cuts', () => {
+		expect(figure(tree.contours as Ring[]).design).not.toHaveProperty(
+			'rightCutouts'
+		);
+		expect(figure(heart.contours as Ring[]).design).not.toHaveProperty(
+			'rightCutouts'
+		);
+		expect(figure(cat.contours as Ring[]).design).not.toHaveProperty(
+			'rightCutouts'
+		);
 	});
 	it('weaves a hole, nested islands and separate components without cut-outs', () => {
 		for (const rings of [
@@ -97,7 +105,7 @@ describe('constructive figure generator', () => {
 			[circle(0.13, -0.25), circle(0.13, 0.25)]
 		]) {
 			const result = figure(rings as Ring[]);
-			expect(result.cutouts).toBe(0);
+			expect(result.design).not.toHaveProperty('rightCutouts');
 			expect(result.recipe).toBe('nested');
 		}
 	});
@@ -147,7 +155,7 @@ describe('constructive figure generator', () => {
 });
 
 describe('letter construction and export', () => {
-	for (const value of ['ANNA', 'JUL', 'ÅSE', 'BØ', 'Anna', 'A+M'])
+	for (const value of ['ANNA', 'JUL', 'ÅSE', 'BØ', 'Anna', 'A+M', 'AOBØ'])
 		it(`constructs ${value}`, () => {
 			const result = text(value);
 			expect(result.design.name).toBe(value);
@@ -160,8 +168,8 @@ describe('letter construction and export', () => {
 	it('keeps both frames functional and visibly different', () => {
 		const dense = text('ANNA'),
 			air = text('ANNA', fonts.nunito, 'air');
-		expect(dense.cutouts).toBe(2);
-		expect(air.cutouts).toBe(2);
+		expect(dense.design).not.toHaveProperty('rightCutouts');
+		expect(air.design).not.toHaveProperty('rightCutouts');
 		expect(rasterizeDesign(dense.design, 100).data).not.toEqual(
 			rasterizeDesign(air.design, 100).data
 		);
@@ -174,7 +182,7 @@ describe('letter construction and export', () => {
 			parseHeartFromSVG(serializeHeartToSVG(design))
 		];
 		for (const restored of roundtrips) {
-			expect(restored?.rightCutouts).toEqual(design.rightCutouts);
+			expect(restored).not.toHaveProperty('rightCutouts');
 			expect(restored?.colors).toEqual(colors);
 			expect(restored?.templateWidthMm).toBe(120);
 			const a = rasterizeDesign(design, 200).data,
@@ -183,9 +191,7 @@ describe('letter construction and export', () => {
 				a.reduce((n, v, i) => n + Number(v !== b[i]), 0) / a.length
 			).toBeLessThan(0.002);
 		}
-		expect(getTemplateData(design, 'left').cutoutPaths).toHaveLength(0);
-		expect(getTemplateData(design, 'right').cutoutPaths).toHaveLength(2);
-		expect(serializeTemplateToSVG(design, ['left', 'right'])).toContain(
+		expect(serializeTemplateToSVG(design, ['left', 'right'])).not.toContain(
 			'fill="#ddd"'
 		);
 		const preview = new DOMParser().parseFromString(
@@ -193,14 +199,6 @@ describe('letter construction and export', () => {
 			'image/svg+xml'
 		);
 		expect(preview.querySelector('parsererror')).toBeNull();
-		// The counters reveal the left sheet, including after changing paper colours.
-		expect(
-			[...preview.querySelectorAll('path')].some(
-				(p) =>
-					p.getAttribute('fill') === colors.left &&
-					(p.getAttribute('d')?.match(/Z/g)?.length ?? 0) === 2
-			)
-		).toBe(true);
 	});
 	it('rejects empty text and unavailable glyphs without dropping characters', () => {
 		expect(() => text('   ')).toThrow(ConstructionError);
@@ -237,37 +235,30 @@ describe('saved generator inputs', () => {
 		expect(bad.font).toBe('nunito');
 		expect(bad.scale).toBe(85);
 		expect(bad.paperWidth).toBe(80);
-		expect(bad.palette).toBe(0);
 		expect(bad.text).toBe('ABCDEFGHIJ');
 		expect(readGeneratorState('#make=broken')).toEqual(defaults);
 	});
-	it('rejects malformed cut-out metadata', () => {
-		expect(
-			parseRightCutouts([
-				[
-					[0, 0],
-					[1, 0],
-					[NaN, 1]
-				]
-			])
-		).toBeUndefined();
-		expect(
-			parseRightCutouts([
-				[
-					[0, 0],
-					[1, 0],
-					[101, 1]
-				]
-			])
-		).toBeUndefined();
-		expect(
-			parseRightCutouts([
-				[
-					[0, 0],
-					[1, 0],
-					[1, 1]
-				]
-			])
-		).toHaveLength(1);
+});
+
+describe('framed words', () => {
+	for (const frame of FRAMES)
+		it(frame, () => {
+			expect(
+				text('ANNA', fonts.nunito, frame).design.fingers.length
+			).toBeGreaterThan(4);
+		});
+	it('routes counters through exactly coincident edges in both sheets', () => {
+		const r = generateCheckedText('AOBØ', fonts.nunito);
+		const shared = r.edges.flatMap((e, i) =>
+			e.family === 'AB' ? [String(i)] : []
+		);
+		expect(shared.length).toBeGreaterThan(12);
+		for (const id of shared)
+			for (const paths of [
+				r.geometry.A_overlap_paths,
+				r.geometry.B_overlap_paths
+			]) {
+				expect(paths.flat().filter((ref) => ref.curve === id)).toHaveLength(1);
+			}
 	});
 });

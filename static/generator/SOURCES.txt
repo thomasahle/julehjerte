@@ -27,8 +27,10 @@ the number of contours, to leave more paper around fine details.
 The sample SVGs show the exact outlines used by the generator.
 
 Construction: independently implemented contour routing; no image solver.
-Dense text framing and cut-out letter counters are inspired by Gerth Stolting
+Dense text framing is inspired by Gerth Stolting
 Brodal's explanation and slides:
 https://cs.au.dk/~gerth/julehjerter/
 https://cs.au.dk/~gerth/julehjerter/slides.pdf
 No code, glyphs or templates from that site are copied.
+
+Enclosed regions use paired coincident cuts in both sheets, never removed paper.
