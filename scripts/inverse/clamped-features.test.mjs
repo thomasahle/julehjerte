@@ -8,6 +8,8 @@ import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {loadSolutionJSON,solutionJSON,curvesOf} from '../../static/inverse/core/graph.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {recoverClampedFeatures} from '../../static/inverse/core/direct/clamped-features.js';
+import {polishCandidate} from '../../static/inverse/core/direct/polish.js';
+import {refineCurves,fittingMargin} from '../../static/inverse/core/direct/refine.js';
 import {sampleWeave,validate} from '../../static/inverse/core/validate.js';
 import {materialAudit} from '../../static/inverse/core/material.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
@@ -35,6 +37,29 @@ async function frozen(transpose=false){
 }
 
 const cfg=settings({...AUTOMATIC_PRESET,trials:0,materialResolution:700});
+test('polishing preserves a fine-verified boundary and carries its actual paper audit to snapshots',async()=>{
+  const proposal=await frozen(),input=proposal.graph.target,source=input.sourceImage;
+  const paths=proposal.paths.map((family,f)=>family.map((_,i)=>curvesOf(proposal,f,i).map(c=>c.p)));
+  const graph=new CurveGraph(paths,cfg.width),before=graph.points.slice(),phase=input.phase?-1:1;
+  const coarseCfg=settings({...cfg,materialResolution:360});
+  const candidate={graph,points:graph.points,phase,paperVerification:{resolution:700,status:'pass'},counts:graph.families.map(f=>f.length)};
+  const snapshots=[],options={steps:0,input,onProgress:(r,solution)=>snapshots.push({r,solution})};
+  // Stop before any gradient steps to isolate the initial clamp. The old
+  // coarse setup already moved this border despite its valid fine audit.
+  const coarse=refineCurves(graph,source.probability,400,phase,coarseCfg,options);
+  const polished=polishCandidate(candidate,source.probability,400,coarseCfg,{...options,onProgress:(r,solution)=>snapshots.push({r,solution})});
+  const boundary=result=>Math.max(...result.graph.nested(result.points)[1].flat(2).map(p=>p[1]));
+  assert.ok(Math.abs(boundary(coarse)-(100-fittingMargin(coarseCfg,100)))<1e-8);
+  assert.ok(Math.abs(boundary(polished)-(100-fittingMargin(cfg,100)))<1e-8);
+  assert.ok(boundary(polished)>boundary(coarse)+.19);
+  assert.equal(polished.geometryPassed,true);assert.equal(polished.paperPassed,true);
+  assert.equal(polished.paperVerification.resolution,700);assert.equal(polished.paperVerification.status,'pass');
+  const snapshot=snapshots.find(s=>s.solution.report?.paperVerification?.resolution===700);
+  assert.ok(snapshot);assert.equal(snapshot.solution.report.paperVerification.status,snapshot.r.paper);
+  assert.equal(materialAudit(snapshot.solution,cfg).status,snapshot.r.paper);
+  assert.deepEqual(graph.points,before);assert.deepEqual(candidate.paperVerification,{resolution:700,status:'pass'});
+});
+
 for(const transpose of [false,true])test(`a clamped feature repairs a whole span on the ${transpose?'right':'bottom'} side without changing its input`,async()=>{
   const proposal=await frozen(transpose),source=proposal.graph.target.sourceImage,serialized=solutionJSON(proposal),original=structuredClone(source);
   assert.equal(auditFeatureFidelity(source,sampleWeave(proposal,400),cfg).passed,false);

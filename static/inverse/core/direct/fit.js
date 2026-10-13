@@ -28,6 +28,7 @@ import {initializeFeatureSeeds,featureRefinementObjective} from './feature-seeds
 import {featureDetailPlan} from './feature-details.js';
 import {rerouteFittedBoundary} from './reroute.js';
 import {recoverClampedFeatures} from './clamped-features.js';
+import {polishCandidate} from './polish.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid','fitted-boundary-rerouting'].includes(c.seed);
@@ -284,14 +285,14 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     return assess(probe)&&probe.originalImageError<=Math.min(.015,cfg.maxImageError*.5);
   };
   const earlyClampedFeatureRecovery=[];
-  const recoverClampedCandidate=c=>{
-    if(c.imagePassed||!c.geometryPassed||c.originalImageError>cfg.maxImageError||!c.originalFeatures?.missing.length||searchDeadline()-performance.now()<2200)return null;
+  const recoverClampedCandidate=(c,{reserve=1700,phase='refinement'}={})=>{
+    if(c.imagePassed||!c.geometryPassed||c.originalImageError>cfg.maxImageError||!c.originalFeatures?.missing.length||searchDeadline()-performance.now()<reserve+500)return null;
     const solution=c.graph.solution(c.points,c.phase,input);
     solution.report={paperVerification:c.paperVerification};
     const recoveryCfg=verifiedPaperSettings(solution,cfg),at=performance.now();
-    const repaired=stage('directPolishing',()=>recoverClampedFeatures(solution,recoveryCfg,{deadline:Math.min(searchDeadline()-1700,at+500),onProgress}));
+    const repaired=stage('directPolishing',()=>recoverClampedFeatures(solution,recoveryCfg,{deadline:Math.min(searchDeadline()-reserve,at+500),onProgress}));
     const report=repaired.report.clampedFeatureRecovery;
-    earlyClampedFeatureRecovery.push({counts:c.counts,seed:c.seed,elapsedSeconds:(at-start)/1000,seconds:(performance.now()-at)/1000,report});
+    earlyClampedFeatureRecovery.push({phase,counts:c.counts,seed:c.seed,elapsedSeconds:(at-start)/1000,seconds:(performance.now()-at)/1000,report});
     if(!report?.applied)return null;
     const graph=new CurveGraph(repaired.paths.map((family,f)=>family.map((_,i)=>curvesOf(repaired,f,i).map(curve=>curve.p))),cfg.width);
     const validation=validate(repaired,recoveryCfg,{checkImage:false});
@@ -354,7 +355,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       const detailCfg={...cfg,preferMatchingSheets:false,materialResolution:Math.max(cfg.materialResolution,700)};
       const verification={requestedResolution:cfg.materialResolution,resolution:detailCfg.materialResolution,source:'feature-detail-refinement'};
       const detailStarted=performance.now(),detailRate=(shortBudget||earlyFeatureInitialization?.enclosurePending) ? .07 : .035;let rejected=null;
-      const refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:detailRate,deadline:Math.min(searchDeadline()-detailReserve,performance.now()+1800),onProgress:(r,solution)=>{
+      let refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:detailRate,deadline:Math.min(searchDeadline()-detailReserve,performance.now()+1800),onProgress:(r,solution)=>{
         solution.report={paperVerification:{...verification,status:r.paper}};
         const woven=sampleWeave(solution,source.resolution),error=maskDisagreement(source,woven);
         if(!candidate.imagePassed&&!symmetryRequested&&!r.geometry&&error<=cfg.maxImageError&&(!rejected||error<rejected.error)&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed)rejected={solution,error};
@@ -362,17 +363,20 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       }}));
       refined.error=mismatch(renderCurves(plan.graph,refined.points,refined.phase,n,32),prob);
       refined.paperVerification={...verification,status:refined.paper?.status};
+      Object.assign(refined,{counts:candidate.counts,seed:candidate.seed});
+      refined.imagePassed=assess(refined);
+      if(!refined.imagePassed&&(!candidate.imagePassed||refined.originalImageError<=candidate.originalImageError))refined=recoverClampedCandidate(refined,{reserve:500,phase:'feature-detail'})||refined;
       // An unverified proposal is not an incumbent. Recovering valid paper may
       // cost a few source pixels; it must still pass the unchanged original
       // image and feature limits. An accepted incumbent cannot lose accuracy.
-      const accepted=assess(refined)&&(!candidate.imagePassed||refined.originalImageError<=candidate.originalImageError);
+      const accepted=refined.imagePassed&&(!candidate.imagePassed||refined.originalImageError<=candidate.originalImageError);
       featureDetail={...plan.report,refinementRate:detailRate,finalizationReserveSeconds:detailReserve/1000,applied:accepted,errorBefore:candidate.originalImageError,errorAfter:refined.originalImageError,geometryPassed:refined.geometryPassed,paperStatus:refined.paper?.status,featuresPassed:refined.originalFeatures?.passed,steps:refined.steps};
       // A later retry can be shorter than the first attempt. Keep both, along
       // with rejected geometry checkpoints: the returned safe fallback alone
       // cannot explain why local refinement failed to retain an opening.
       featureDetailAttempts.push({...featureDetail,counts:candidate.counts.slice(),phase:candidate.phase,seed:candidate.seed,materialResolution:detailCfg.materialResolution,seconds:(performance.now()-detailStarted)/1000,
         checkpoints:refined.history.map(({step,geometry,paper,issues})=>({step,geometry,paper,issues}))});
-      if(accepted)return{...refined,counts:candidate.counts,seed:candidate.seed,matching:matchingSummary(plan.graph.solution(refined.points,refined.phase,input))};
+      if(accepted)return{...refined,matching:matchingSummary(refined.graph.solution(refined.points,refined.phase,input))};
       // The image can improve by crossing a slit with itself. Such a rejected
       // checkpoint supplies only a visible boundary: a bounded routing search
       // must find a different, independently valid assignment to both sheets.
@@ -405,6 +409,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       if(i&&performance.now()>searchDeadline()-1000)break;
       deadline=Math.min(searchDeadline()-1300,performance.now()+8700);
     }
+    // An expired refinement window cannot improve another clearance grid.
+    // Leave this time for polishing the candidates we have already fitted.
+    if(i&&deadline-performance.now()<=1700)break;
     const selected=fine[i],remaining=deadline-performance.now(),allocation=remaining,end=Math.min(deadline-1700,performance.now()+allocation);
     const protectedObjective=selected.protectFeatures?featureRefinementObjective(source,sourceFeatures,n):null;
     const objectiveProb=protectedObjective?.probability||prob,objectiveWeights=protectedObjective?.weights||fitWeights;
@@ -526,14 +533,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // This optional early pass precedes polishing. The final selected pair also
   // receives sharing recovery after any matching-sheet replacement.
   if(!featureDetail?.applied&&!candidate.matching?.identical&&!symmetryRequested&&candidate.paperPassed&&performance.now()<deadline-1300){
-    const shared=stage('directSharing',()=>recoverShared(candidate,prob,n,cfg,{deadline:deadline-1300,input,weights:fitWeights}));
+    const sharingCfg=verifiedPaperSettings({report:{paperVerification:candidate.paperVerification}},cfg);
+    const shared=stage('directSharing',()=>recoverShared(candidate,prob,n,sharingCfg,{deadline:deadline-1300,input,weights:fitWeights}));
     if(assess(shared)&&shared.originalImageError<=candidate.originalImageError)candidate={...shared,seed:candidate.seed};
   }
   if(!featureDetail?.applied&&candidate.paperPassed&&performance.now()<deadline-450){
-    const graph=new CurveGraph(candidate.graph.nested(candidate.points),cfg.width);
     const polishing=orbitObjective(Float64Array.from(source.mask),source.resolution,orbit,weights);
-    const polished=stage('directPolishing',()=>refineCurves(graph,polishing.probability,source.resolution,candidate.phase,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
-    if(assess(polished)&&polished.originalImageError<=candidate.originalImageError)candidate={...polished,counts:candidate.counts,sharing:candidate.sharing,seed:candidate.seed};
+    let polished=stage('directPolishing',()=>polishCandidate(candidate,polishing.probability,source.resolution,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
+    polished.imagePassed=assess(polished);
+    // A better polish may still stop at the extra clearance cushion. Try the
+    // same checked correction before discarding it, keeping time for export.
+    if(!polished.imagePassed&&polished.originalImageError<=candidate.originalImageError)polished=recoverClampedCandidate(polished,{reserve:500,phase:'polishing'})||polished;
+    if(polished.imagePassed&&polished.originalImageError<=candidate.originalImageError)candidate=polished;
   }
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
