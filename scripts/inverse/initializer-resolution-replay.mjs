@@ -7,8 +7,8 @@ import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import {createCanvas} from 'canvas';
-import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {mismatch} from '../../static/inverse/core/direct/grid.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
@@ -16,6 +16,7 @@ import {renderExportedWeave} from './export-renderer.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
 const output=args.output,policies=(args.policies||'baseline,nearby').split(',');
+const sourceRef=args['source-ref']?execFileSync('git',['rev-parse','--verify','--end-of-options',args['source-ref']+'^{commit}'],{encoding:'utf8'}).trim():null;
 const cases=(args.cases||'original,horizontal,vertical,puppy-half').split(';');
 // A semicolon separates cases because numeric crop offsets contain commas.
 if(!args.cases)cases.splice(0,cases.length,'original','horizontal','vertical','puppy-half');
@@ -29,6 +30,17 @@ for(const name of cases)if(name!=='puppy-half'&&!offsets[name]){
 await fs.mkdir(path.dirname(output),{recursive:true});
 await fs.mkdir(output); // Never silently overwrite a previous experiment.
 const sha=b=>createHash('sha256').update(b).digest('hex');
+const sourceFolder=output+'/source';
+if(sourceRef){
+  const files=execFileSync('git',['ls-tree','-r','--name-only',sourceRef,'--','static/inverse'],{encoding:'utf8'}).trim().split('\n');
+  for(const file of files){
+    assert.ok(file.startsWith('static/inverse/'));
+    const destination=sourceFolder+'/'+file.slice('static/inverse/'.length);
+    await fs.mkdir(path.dirname(destination),{recursive:true});
+    await fs.writeFile(destination,execFileSync('git',['show',`${sourceRef}:${file}`],{maxBuffer:16*1024*1024}));
+  }
+}else await fs.cp('static/inverse',sourceFolder,{recursive:true});
+const {AUTOMATIC_PRESET}=await import(pathToFileURL(path.resolve(sourceFolder+'/core/presets.js')).href);
 const fixtureFiles=['scripts/inverse/fixtures/photographic-near-miss-seed.json','scripts/inverse/fixtures/photographic-puppy-fit.json'];
 const fixtures=await Promise.all(fixtureFiles.map(async file=>JSON.parse(await fs.readFile(file))));
 const photos=[];
@@ -42,21 +54,23 @@ ctx.drawImage(photos[1].canvas,0,0,canvas.width,canvas.height);
 const puppy={type:'pixels',rgba:ctx.getImageData(0,0,canvas.width,canvas.height).data,imageWidth:canvas.width,imageHeight:canvas.height,quad:fixtures[1].quad.map(p=>p.map(v=>v/2))};
 assert.equal(sha(puppy.rgba),'c59764172b1293df526a5326bb54ba4085b73d6314f28b48e9cfc3be77006d71');
 const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false},sourceHashes={},rows=[],snapshots=[];
-for(const name of await fs.readdir('static/inverse',{recursive:true}))if(/\.(js|wasm|c)$/.test(name)){
-  const file='static/inverse/'+name;sourceHashes[file]=sha(await fs.readFile(file));
+for(const name of await fs.readdir(sourceFolder,{recursive:true}))if(/\.(js|wasm|c)$/.test(name)){
+  const file='static/inverse/'+name;sourceHashes[file]=sha(await fs.readFile(sourceFolder+'/'+name));
 }
 for(const file of [...fixtureFiles,'scripts/inverse/initializer-resolution-replay.mjs','scripts/inverse/export-renderer.mjs','scripts/inverse/hard-photo-data.mjs'])sourceHashes[file]=sha(await fs.readFile(file));
-const ledger={method:'Fresh end-to-end image solves in isolated module copies. Baseline is unchanged. replace-feature changes every feature-search DP grid to 98 samples. nearby adds 94/98-sample candidates only after a successful base-count near-miss rescue, preserving the original as an alternative. No acceptance threshold changes. Original-photo offsets are fixed before fitting. Four controls and six other translations are development evidence, not independent held-out motif families.',cfg,policies,cases,fixtures,sourceHashes,snapshots,rows};
+const ledger={method:'Fresh end-to-end image solves in isolated module copies. Baseline is the recorded source snapshot. replace-feature changes every feature-search DP grid to 98 samples. nearby adds 94/98-sample candidates only after a successful base-count near-miss rescue, preserving the original as an alternative. No acceptance threshold changes. Original-photo offsets are fixed before fitting. Four controls and six other translations are development evidence, not independent held-out motif families.',sourceRef,sourceFolder,cfg,policies,cases,fixtures,sourceHashes,snapshots,rows};
 const replace=(text,old,next)=>{assert.equal(text.split(old).length,2,`Expected exactly one patch site: ${old}`);return text.replace(old,next);};
 for(const policy of policies){
-  const folder=output+'/'+policy;await fs.cp('static/inverse',folder+'/inverse',{recursive:true});
+  const folder=output+'/'+policy;await fs.cp(sourceFolder,folder+'/inverse',{recursive:true});
   const changes={};
   if(policy!=='baseline'){
     const countsFile=folder+'/inverse/core/direct/counts.js',featuresFile=folder+'/inverse/core/direct/feature-seeds.js';
     let code=await fs.readFile(countsFile,'utf8');
-    code=replace(code,'rounds=18,k=16,sharedWork=true,retainAlternatives=false','rounds=18,k=16,sharedWork=true,retainAlternatives=false,initializationResolution=96');
-    code=replace(code,'fitter.initialize(o.counts,o.phase,{k,initial,scoreResolution:96,rounds})','fitter.initialize(o.counts,o.phase,{k,initial,resolution:initializationResolution,scoreResolution:96,rounds})');
-    await fs.writeFile(countsFile,code);changes['core/direct/counts.js']=sha(code);
+    if(!code.includes('retainAlternatives=false,initializationResolution=96')){
+      code=replace(code,'rounds=18,k=16,sharedWork=true,retainAlternatives=false','rounds=18,k=16,sharedWork=true,retainAlternatives=false,initializationResolution=96');
+      code=replace(code,'fitter.initialize(o.counts,o.phase,{k,initial,scoreResolution:96,rounds})','fitter.initialize(o.counts,o.phase,{k,initial,resolution:initializationResolution,scoreResolution:96,rounds})');
+      await fs.writeFile(countsFile,code);changes['core/direct/counts.js']=sha(code);
+    }
     code=await fs.readFile(featuresFile,'utf8');
     if(policy==='replace-feature')code=replace(code,'{k,retainAlternatives:!protectFeatures&&k===16}','{k,retainAlternatives:!protectFeatures&&k===16,initializationResolution:98}');
     else{

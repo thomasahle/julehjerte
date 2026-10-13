@@ -139,6 +139,7 @@ node scripts/inverse/initializer-resolution-study.mjs \
   --output=tmp/initializer-resolution-study
 node scripts/inverse/initializer-resolution-replay.mjs \
   --output=tmp/initializer-resolution-replay \
+  --source-ref=31ce66e \
   --policies=baseline,replace-feature,nearby \
   '--cases=original;horizontal;vertical;puppy-half;-1,0;0,-1;1,1;-1,1;1,-1;-1,-1'
 ```
