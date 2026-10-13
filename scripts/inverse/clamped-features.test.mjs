@@ -67,6 +67,7 @@ for(const transpose of [false,true])test(`a clamped feature repairs a whole span
   assert.equal(report.applied,true);assert.ok(report.sourceErrorAfter<=report.sourceErrorBefore);
   const accepted=report.attempts.find(a=>a.status==='accepted');
   assert.equal(accepted.axis,transpose?0:1);assert.equal(accepted.side,1);assert.equal(accepted.coordinates,4);
+  assert.equal(report.areaSamplingResolution,800);assert.ok(accepted.minimumAreaRetention>=.6);
   assert.equal(validate(result,cfg).passed,true);assert.equal(materialAudit(result,cfg).passed,true);
   assert.equal(auditFeatureFidelity(source,sampleWeave(result,400),cfg).passed,true);
   const replay=await renderExportedWeave(solutionJSON(result),400);

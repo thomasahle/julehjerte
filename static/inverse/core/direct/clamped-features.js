@@ -9,7 +9,7 @@ import {sampleWeave,sampleRings,closedRings,validate} from '../validate.js';
 import {materialAudit} from '../material.js';
 import {imageFeatures,auditImageFeatures} from '../image-features.js';
 import {auditFeatureFidelity,auditFeatureFidelityChange} from '../feature-shapes.js';
-import {referenceError} from '../image-reference.js';
+import {referenceError,sourceWeights} from '../image-reference.js';
 import {symmetryTies,applyTies,symmetryReport} from './symmetry.js';
 import {matchingGroups,projectMatching,matchingSummary} from './matching.js';
 import {emitCandidate} from '../progress.js';
@@ -51,6 +51,12 @@ export function recoverClampedFeatures(solution,cfg,{deadline=Infinity,onProgres
   if(!groups.length||performance.now()>=deadline)return solution;
   const beforeMatching=matchingSummary(solution),ties=symmetryTies(graph,cfg.symmetry),matching=beforeMatching.identical&&!ties?matchingGroups(graph):null;
   const phase=input.phase?-1:1,report={applied:false,maximumDisplacementMm:FITTING_CLEARANCE_CUSHION,samplingGuardMm:cfg.geometryTolerance,sourceErrorBefore:originalError,missingBefore:originalFidelity.missing.length,groups:groups.length,attempts:[]};
+  const fineN=2*source.resolution,weights=source.weights?sourceWeights(source):null;
+  const fineRetention=(woven,feature)=>feature.pixels.reduce((sum,i)=>{
+    const j=2*Math.floor(i/source.resolution)*fineN+2*(i%source.resolution);
+    return sum+(weights?weights[i]:1)*([j,j+1,j+fineN,j+fineN+1].reduce((s,k)=>s+Number(woven[k]===feature.value),0)/4);
+  },0)/(feature.weightMass??feature.pixels.length);
+  report.areaSamplingResolution=fineN;
   let points=initial,mask=originalMask,error=originalError,fidelity=originalFidelity,result=solution;
   onProgress({stage:'directPolishing',detail:'clamped-source-feature'});
   for(const group of groups){
@@ -76,13 +82,19 @@ export function recoverClampedFeatures(solution,cfg,{deadline=Infinity,onProgres
         // and curve flattening decide whether the feature survives. Require
         // its colours at both sides of the existing geometric tolerance too.
         const rings=closedRings(proposal).flat(),rasterPhase=input.phase^(proposal.paths[0].length%2)^(proposal.paths[1].length%2);
+        // Source pixel centres can overstate the area of a narrow region.
+        // Also sample all four quarters of its original pixels, retaining
+        // their original colours and weights rather than reclassifying them.
+        rec.minimumAreaRetention=fineRetention(sampleRings(rings,cfg.width,rasterPhase,fineN),features[group.feature]);
         for(const delta of [-cfg.geometryTolerance,cfg.geometryTolerance]){
-          const shifted=sampleRings(rings.map(r=>r.map(p=>p.map((v,i)=>v+(i===group.axis?delta:0)))),cfg.width,rasterPhase,source.resolution);
+          const shiftedRings=rings.map(r=>r.map(p=>p.map((v,i)=>v+(i===group.axis?delta:0))));
+          const shifted=sampleRings(shiftedRings,cfg.width,rasterPhase,source.resolution);
           const retention=auditImageFeatures(source,shifted,cfg.width,[features[group.feature]]).regions[0].retainedFraction;
           rec.minimumSampledRetention=Math.min(rec.minimumSampledRetention,retention);
+          rec.minimumAreaRetention=Math.min(rec.minimumAreaRetention,fineRetention(sampleRings(shiftedRings,cfg.width,rasterPhase,fineN),features[group.feature]));
         }
       }
-      rec.recovered=rec.minimumSampledRetention>=fidelity.minimumRetention;
+      rec.recovered=rec.minimumSampledRetention>=fidelity.minimumRetention&&rec.minimumAreaRetention>=fidelity.minimumRetention;
       rec.status=rec.recovered?'proposed':'feature';
       const value={proposalPoints,proposal,woven,rec,recovered:rec.recovered,status:rec.status};previews.set(displacement,value);return value;
     };
