@@ -50,10 +50,10 @@ test('a close-looking proposal cannot override the original image or a requested
   assert.equal(exhausted.graph,undefined);assert.equal(exhausted.report.solver,undefined);
 });
 
-test('a fresh shifted bird fit reroutes its rejected eye proposal into valid exported templates',async()=>{
+for(const timeLimit of [10,180])test(`a fresh shifted bird fit reroutes its rejected eye with a ${timeLimit}-second allowance`,async()=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-bird-fit.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
-  const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false};
+  const cfg={...AUTOMATIC_PRESET,timeLimit,trials:0,earlyStop:false};
   const crop=prepare({...photo,quad:fixture.quad.map(([x,y])=>[x+1,y])},cfg);
   assert.equal(createHash('sha256').update(crop.preview.mask).digest('hex'),'bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91');
   const prepared=prepare({type:'mask',mask:crop.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
@@ -63,7 +63,7 @@ test('a fresh shifted bird fit reroutes its rejected eye proposal into valid exp
   const detail=solver.featureDetailAttempts.find(a=>a.rerouting?.refinementAccepted);
   assert.ok(detail.checkpoints.some(c=>!c.geometry&&c.issues.some(i=>i.type==='self_intersection')));
   assert.equal(detail.rerouting.featuresPassed,true);
-  assert.ok(solver.seconds<10);assert.equal(answer.report.templateChecksPassed,true);
+  assert.ok(solver.seconds<(timeLimit===10?10:30),'A longer allowance must not omit the useful fast initialization.');assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   assert.ok(checkpoints.some(c=>c.materialResolution===700&&c.error<.03),'Stop must receive only the independently checked rerouting.');
   for(const resolution of [400,800]){

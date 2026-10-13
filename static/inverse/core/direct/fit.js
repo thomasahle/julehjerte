@@ -29,7 +29,7 @@ import {featureDetailPlan} from './feature-details.js';
 import {rerouteFittedBoundary} from './reroute.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
-const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid'].includes(c.seed);
+const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid','fitted-boundary-rerouting'].includes(c.seed);
 function refinementTimeLeft(deadline){
   const available=deadline-performance.now();
   return available-1700-Math.min(800,available*.15);
@@ -180,13 +180,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const competitiveGrid=fine.some(r=>r.error<=cfg.maxImageError);
   let featureInitialization=null,earlyFeatureInitialization=null,featureAlternatives=[];
   // A grid can omit a remote opening which no local boundary gradient can
-  // see. A short search cannot afford to discover that only after spending
-  // its time on routing and refinement. Try the existing image-derived layout
+  // see. Longer budgets must also try the useful short-search layout before
+  // spending their time on ordinary refinement. Try the image-derived layout
   // early for poor grids that lose colours too. A coarse opening joined to the
   // background may still close during refinement; do not displace that routing
   // just for enclosure. Keep every ordinary finalist as a fallback.
   const lostColour=features.regions.some(r=>r.retainedFraction<features.minimumRetention);
-  if((competitiveGrid||shortBudget&&poorGrid&&lostColour)&&!features.passed&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
+  if((competitiveGrid||poorGrid&&lostColour)&&!features.passed&&!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500){
     const missed=features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]);
     const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
     earlyFeatureInitialization={...extra.report,stage:'before-recovery',scheduled:0};
@@ -194,10 +194,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       const seed=stage('directFitting',()=>fitSeed(extra.seeds[0]));
       const audit=auditFeatureFidelity(source,gridMask(seed.model,source.resolution,seed.phase,seed.floor),cfg,sourceFeatures);
       // The coarse grid only needs to retain the colours to earn refinement.
-      // A short search can close an initially open eye in the detail pass;
+      // Local detail can close an initially open eye in the detail pass;
       // enclosure remains mandatory when accepting the resulting template.
       const enclosurePending=!audit.passed&&audit.regions.every(r=>r.retainedFraction>=audit.minimumRetention);
-      if(audit.passed||shortBudget&&enclosurePending){
+      if(audit.passed||enclosurePending){
         fine.unshift(seed);features=audit;
         earlyFeatureInitialization.scheduled=1;
         earlyFeatureInitialization.enclosurePending=enclosurePending;
@@ -210,7 +210,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // Only shorten routing when colour protection actually selected a different
   // layout. Otherwise trees can lose useful smoothing/edge-profile retries.
   const featurePreferredGrid=colourPreferredGrid||earlyFeatureInitialization?.scheduled===1;
-  const reserveRefinement=competitiveGrid||shortBudget&&featurePreferredGrid,probeRouting=featurePreferredGrid&&(features.passed||shortBudget&&earlyFeatureInitialization?.enclosurePending===true);
+  const reserveRefinement=competitiveGrid||featurePreferredGrid,probeRouting=featurePreferredGrid&&(features.passed||earlyFeatureInitialization?.enclosurePending===true);
   const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
   const needsRecovery=(!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights;
   const fullRecoverySeconds=Math.min(20,competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
@@ -323,8 +323,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     if(plan){
       const detailCfg={...cfg,preferMatchingSheets:false,materialResolution:Math.max(cfg.materialResolution,700)};
       const verification={requestedResolution:cfg.materialResolution,resolution:detailCfg.materialResolution,source:'feature-detail-refinement'};
-      const detailStarted=performance.now();let rejected=null;
-      const refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:shortBudget?.07:.035,deadline:Math.min(searchDeadline()-detailReserve,performance.now()+1800),onProgress:(r,solution)=>{
+      const detailStarted=performance.now(),detailRate=(shortBudget||earlyFeatureInitialization?.enclosurePending) ? .07 : .035;let rejected=null;
+      const refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:detailRate,deadline:Math.min(searchDeadline()-detailReserve,performance.now()+1800),onProgress:(r,solution)=>{
         solution.report={paperVerification:{...verification,status:r.paper}};
         const woven=sampleWeave(solution,source.resolution),error=maskDisagreement(source,woven);
         if(!candidate.imagePassed&&!symmetryRequested&&!r.geometry&&error<=cfg.maxImageError&&(!rejected||error<rejected.error)&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed)rejected={solution,error};
@@ -336,7 +336,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // cost a few source pixels; it must still pass the unchanged original
       // image and feature limits. An accepted incumbent cannot lose accuracy.
       const accepted=assess(refined)&&(!candidate.imagePassed||refined.originalImageError<=candidate.originalImageError);
-      featureDetail={...plan.report,refinementRate:shortBudget?.07:.035,finalizationReserveSeconds:detailReserve/1000,applied:accepted,errorBefore:candidate.originalImageError,errorAfter:refined.originalImageError,geometryPassed:refined.geometryPassed,paperStatus:refined.paper?.status,featuresPassed:refined.originalFeatures?.passed,steps:refined.steps};
+      featureDetail={...plan.report,refinementRate:detailRate,finalizationReserveSeconds:detailReserve/1000,applied:accepted,errorBefore:candidate.originalImageError,errorAfter:refined.originalImageError,geometryPassed:refined.geometryPassed,paperStatus:refined.paper?.status,featuresPassed:refined.originalFeatures?.passed,steps:refined.steps};
       // A later retry can be shorter than the first attempt. Keep both, along
       // with rejected geometry checkpoints: the returned safe fallback alone
       // cannot explain why local refinement failed to retain an opening.
@@ -388,7 +388,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
     let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
       if(goodEnough(value))return true;
-      if(!shortBudget||!selected.protectFeatures||!earlyFeatureInitialization?.enclosurePending)return false;
+      if(!selected.protectFeatures||!earlyFeatureInitialization?.enclosurePending)return false;
       // Hand a checked colour-retaining fit to local shape refinement as soon
       // as its global error is acceptable. Waiting for the broad stage's
       // deadline both starves detail and changes its initial geometry with
