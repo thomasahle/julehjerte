@@ -11,7 +11,8 @@ import {matchingGroups,matchingPenalty,projectMatching} from './matching.js';
 import {symmetryTies,applyTies,symmetryReport} from './symmetry.js';
 import {straightProposal,primitiveComplexity,primitiveCost} from './primitives.js';
 import {boundaryObjective} from './image-objective.js';
-export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+.35;}
+export const FITTING_CLEARANCE_CUSHION=.35;
+export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+FITTING_CLEARANCE_CUSHION;}
 
 const cornerCache=new WeakMap();
 function initialCorners(graph){
