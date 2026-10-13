@@ -76,3 +76,21 @@ test('count initialization and continuation preserve a finer spline dimension',(
       'A forgotten spline dimension must fail explicitly instead of silently reinterpreting the parameters');
   }
 });
+
+test('retaining computed starts leaves every ordinary count winner unchanged',()=>{
+  const n=96,prob=Float64Array.from(gridMask(gridModel([2,3],16,91),n,-1));
+  const options=[[2,2],[2,3]].flatMap(counts=>[1,-1].map(phase=>({counts,phase})));
+  const context={options,fullProb:prob,resolution:n,prob,n,evidence:borderEvidence(prob,n)};
+  const baseline=initializeCounts(context),retained=initializeCounts(context,{retainAlternatives:true});
+  assert.deepEqual(retained.report,baseline.report);
+  retained.seeds.forEach(({alternatives,...seed},i)=>{
+    assert.deepEqual(seed,baseline.seeds[i]);
+    assert.ok(alternatives.length>=2);
+    for(const alternative of alternatives){
+      assert.deepEqual(alternative.model.counts,seed.model.counts);
+      assert.equal(alternative.phase,seed.phase);
+      assert.ok(alternative.error>=seed.error);
+      assert.notEqual(alternative.model.z,seed.model.z);
+    }
+  });
+});

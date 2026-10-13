@@ -23,5 +23,12 @@
   ],
   "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
   "probabilitySha256": "d609c5f7fd0b218a53b44872a94f6794a666d163d55904d544f183b9ae726b23",
+  "translations": {
+    "horizontal": {
+      "offset": [1, 0],
+      "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "probabilitySha256": "250e43d02e140e51b9c03b5a0ca00885fea0f6f5bbfe13a1493968876750c3ac"
+    }
+  },
   "provenance": "Frozen offline foreground-model crop with a bounded rejected-lobe search. No cutting template or solver feedback was used to generate these corners; they remain needs_review, not ground truth. The old fitter discards the 3+3 color-retaining seed at 9.274% coarse error, changes the routing, and exports a rejected 4.698% mask fit."
 }

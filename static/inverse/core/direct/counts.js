@@ -91,7 +91,7 @@ export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit
 
 // Reuse projection work without pruning any count or phase. The explicit false
 // option preserves the original initializer for paired benchmark comparisons.
-export function initializeCounts({options,fullProb,resolution,prob,n,evidence,weights=null,fullWeights=null,guideProb=null},{rounds=18,k=16,sharedWork=true}={}){
+export function initializeCounts({options,fullProb,resolution,prob,n,evidence,weights=null,fullWeights=null,guideProb=null},{rounds=18,k=16,sharedWork=true,retainAlternatives=false}={}){
     const seeds=[],fitter=gridInitializer(fullProb,resolution,{weights:fullWeights,sharedWork}),guideFitter=guideProb?gridInitializer(guideProb,resolution,{sharedWork}):null;
     const score=sharedWork?initializationImage(prob,n,weights)(n).score:mask=>mismatch(mask,prob,weights);
     for(const o of options){
@@ -115,7 +115,11 @@ export function initializeCounts({options,fullProb,resolution,prob,n,evidence,we
       }
       const initializationRounds=choices.filter(r=>r!==raw).map(r=>r.steps);
       const initializationTerminations=choices.filter(r=>r!==raw).map(r=>r.termination);
-      choices.sort((a,b)=>a.error-b.error);seeds.push({...choices[0],initializationRounds,initializationTerminations,seedKind:choices[0]===raw?'uniform':'row-dynamic-programming'});
+      choices.sort((a,b)=>a.error-b.error);seeds.push({...choices[0],initializationRounds,initializationTerminations,seedKind:choices[0]===raw?'uniform':'row-dynamic-programming',
+        // A weighted mean can prefer erasing one small source region. Keep
+        // already computed alternatives for callers with a separate fidelity
+        // gate, without changing the ordinary winner or doing extra search.
+        ...(retainAlternatives?{alternatives:choices.slice(1)}:{})});
     }
     seeds.sort((a,b)=>a.error+.001*(a.model.counts[0]+a.model.counts[1])-b.error-.001*(b.model.counts[0]+b.model.counts[1]));
   return{seeds,report:{strategy:sharedWork?'shared-work':'all',hypotheses:options.length,fullyInitialized:options.length}};

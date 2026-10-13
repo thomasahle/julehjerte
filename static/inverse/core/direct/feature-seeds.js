@@ -29,9 +29,10 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
   const boost=16,n=Math.min(256,resolution),fullProb=source.probability||Float32Array.from(source.mask),fullWeights=new Float64Array(resolution*resolution).fill(1/boost);
   for(const index of interior)for(const pixel of features[index].pixels)fullWeights[pixel]=1;
   const weighted=resizeObjective(fullProb,resolution,n,fullWeights),original=resizeObjective(fullProb,resolution,n);
-  const attempts=[],small=smallInteriorFeatures(source,interior.map(i=>features[i]),cfg),coarseNearMisses=[];
+  const attempts=[],small=smallInteriorFeatures(source,interior.map(i=>features[i]),cfg),coarseNearMisses=[],alternativeChoices=[];
   const closedFeatures=seed=>featureComponentMetrics(source,gridMask(seed.model,resolution,seed.phase,seed.floor),cfg.width,small).every(part=>part.intersectionPixels>0&&part.touchesBorder===false);
-  const search=(options,protectFeatures=false,k=16)=>initializeCounts({options,fullProb,resolution,prob:weighted.probability,n,evidence,weights:weighted.weights,fullWeights},{k}).seeds.map(seed=>{
+  const search=(options,protectFeatures=false,k=16)=>initializeCounts({options,fullProb,resolution,prob:weighted.probability,n,evidence,weights:weighted.weights,fullWeights},{k,retainAlternatives:!protectFeatures&&k===16}).seeds.map(({alternatives=[],...seed})=>{
+      alternativeChoices.push(...alternatives);
       const woven=gridMask(seed.model,resolution,seed.phase,seed.floor),audit=auditImageFeatures(source,woven,cfg.width,features);
       seed.error=mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability);
       seed.featuresPassed=audit.passed;seed.seed=protectFeatures?'feature-preserving-grid':'feature-weighted-grid';
@@ -40,20 +41,37 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
       if(!protectFeatures&&k===16&&audit.passed&&seed.error>Math.min(.1,3*cfg.maxImageError)&&seed.error<=Math.min(.12,4*cfg.maxImageError))coarseNearMisses.push(seed);
       return seed;
     }).filter(s=>s.featuresPassed&&s.error<=(protectFeatures?Math.min(.12,4*cfg.maxImageError):Math.min(.1,3*cfg.maxImageError))).sort((a,b)=>a.error-b.error);
-  let seeds=search(options),jointHypotheses=0,coarseRefinement=null;
+  const refineNearMiss=seed=>{
+    const retainsColours=r=>auditImageFeatures(source,gridMask(r.model,resolution,r.phase,r.floor),cfg.width,features).passed;
+    const refined=fitGrid(original.probability,n,seed.model.counts,seed.phase,{k:seed.model.k,initial:seed.model.z,floor:seed.floor,
+      optimizationTarget:resizeObjective(fullProb,resolution,96).probability,steps:150,preferCheckpoint:retainsColours});
+    const error=mismatch(gridMask(refined.model,n,refined.phase,refined.floor),original.probability),featuresPassed=retainsColours(refined);
+    const accepted=featuresPassed&&error<=Math.min(.1,3*cfg.maxImageError);
+    return{seed:{...refined,error,featuresPassed,seed:'feature-weighted-grid'},report:{counts:seed.model.counts,phase:seed.phase,initialError:seed.error,error,featuresPassed,steps:refined.steps,accepted}};
+  };
+  let seeds=search(options),jointHypotheses=0,coarseRefinement=null,alternativeRefinement=null;
   if(!seeds.length&&coarseNearMisses.length){
     // A small crop change can put a useful colour-retaining layout just above
     // the coarse error cutoff. Give the closest near miss the ordinary fine
     // grid pass before changing both cut counts. It still has to meet the
     // ORIGINAL cutoff afterwards; this never accepts a cutting template.
     const seed=coarseNearMisses.sort((a,b)=>a.error-b.error)[0];
-    const retainsColours=r=>auditImageFeatures(source,gridMask(r.model,resolution,r.phase,r.floor),cfg.width,features).passed;
-    const refined=fitGrid(original.probability,n,seed.model.counts,seed.phase,{k:seed.model.k,initial:seed.model.z,floor:seed.floor,
-      optimizationTarget:resizeObjective(fullProb,resolution,96).probability,steps:150,preferCheckpoint:retainsColours});
-    const error=mismatch(gridMask(refined.model,n,refined.phase,refined.floor),original.probability),featuresPassed=retainsColours(refined);
-    const accepted=featuresPassed&&error<=Math.min(.1,3*cfg.maxImageError);
-    coarseRefinement={counts:seed.model.counts,phase:seed.phase,initialError:seed.error,error,featuresPassed,steps:refined.steps,accepted};
-    if(accepted)seeds=[{...refined,error,featuresPassed,seed:'feature-weighted-grid'}];
+    const refined=refineNearMiss(seed);coarseRefinement=refined.report;
+    if(coarseRefinement.accepted)seeds=[refined.seed];
+  }
+  if(!seeds.length){
+    // Each count/phase already tried uniform, border and separable starts.
+    // Its lowest weighted error can lose a feature while a runner-up keeps
+    // it. Reuse one such layout only after the established winners fail.
+    // Neither the original error cutoff nor the final feature gate changes.
+    const alternatives=alternativeChoices.map(seed=>({...seed,error:mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability)}))
+      .filter(seed=>seed.error<=Math.min(.12,4*cfg.maxImageError)&&auditImageFeatures(source,gridMask(seed.model,resolution,seed.phase,seed.floor),cfg.width,features).passed)
+      .sort((a,b)=>a.error-b.error);
+    if(alternatives.length){
+      const seed=alternatives[0],refined=refineNearMiss(seed);
+      alternativeRefinement={...refined.report,considered:alternativeChoices.length,retained:alternatives.length};
+      if(alternativeRefinement.accepted)seeds=[refined.seed];
+    }
   }
   if(!seeds.length){
     // An isolated opening can require an additional cut in both sheets.
@@ -76,7 +94,7 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
     const finer=search(options,false,32).filter(closedFeatures);
     seeds=[...finer,...seeds];
   }
-  return{seeds,report:{...report,hypotheses:options.length+jointHypotheses+finerHypotheses,jointHypotheses,finerHypotheses,coarseRefinement,attempts,retained:seeds.length}};
+  return{seeds,report:{...report,hypotheses:options.length+jointHypotheses+finerHypotheses,jointHypotheses,finerHypotheses,coarseRefinement,alternativeRefinement,attempts,retained:seeds.length}};
 }
 
 /** Preserve every existing region during the extra routing's clearance and

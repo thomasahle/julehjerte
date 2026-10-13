@@ -106,7 +106,7 @@ try{
    interventionArmed=Boolean(intervention);
    const chordMode=name==='chord-frame-sym'?'sym':name==='chord-frame-anti'?'anti':null;
    const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask';
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||['near-miss-mask','leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||['near-miss-mask','near-miss-shift-mask','leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -165,8 +165,9 @@ try{
       if(anchorMask){
        fixture={...JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-anchor-perturbation.json')),quad:null};
        photo=await readHardPhoto({file:fixture.maskFile,sha256:fixture.imageSha256,width:fixture.resolution,height:fixture.resolution});
-      }else if(name==='near-miss-mask'){
+      }else if(['near-miss-mask','near-miss-shift-mask'].includes(name)){
        fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-near-miss-seed.json'));
+       if(name==='near-miss-shift-mask'){const shift=fixture.translations.horizontal;fixture={...fixture,...shift,quad:fixture.quad.map(p=>p.map((v,axis)=>v+shift.offset[axis]))};}
        const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));photo=await readHardPhoto(catalogue.cases.find(c=>c.id===fixture.sourceCase));
       }else if(flowerMask){
        const data=JSON.parse(await fs.readFile('scripts/inverse/fixtures/flower-resolution/source.json')),entry=data.cases.find(c=>c.variant===name.slice(7,-5));
@@ -331,6 +332,7 @@ try{
      if(row.sourcePhoto.paintImport)assert.equal(observed.prepared.resolution,row.sourcePhoto.paintImport.resolution);
      if(!engineReference){
       if(name==='near-miss-mask')assert.equal(row.featureInitialization?.coarseRefinement?.accepted,true,'The real worker must exercise the near-miss initialization refinement.');
+      if(name==='near-miss-shift-mask')assert.equal(row.featureInitialization?.alternativeRefinement?.accepted,true,'The real worker must reuse the previously discarded three-cut start.');
       assert.equal(row.templateChecksPassed,true,'Source features must survive the actual worker and final checks.');
       assert.equal(row.missingFeatures.length,0);assert.ok(row.engineError<.03);
      }

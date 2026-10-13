@@ -12,14 +12,16 @@ import {borderEvidence} from '../../static/inverse/core/direct/counts.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 
-async function nearMiss(){
+async function nearMiss(translation=null){
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-near-miss-seed.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
   const photo=await readHardPhoto(catalogue.cases.find(c=>c.id===fixture.sourceCase));
   assert.equal(photo.fileSha256,fixture.sourceFileSha256);assert.equal(photo.rgbaSha256,fixture.decodedPixelsSha256);
-  const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false},prepared=prepare({...photo,quad:fixture.quad},cfg);
+  const expected=translation?fixture.translations[translation]:fixture;
+  const quad=fixture.quad.map(p=>p.map((v,axis)=>v+(expected.offset?.[axis]||0)));
+  const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false},prepared=prepare({...photo,quad},cfg);
   const source=prepared.target.sourceImage,hash=b=>createHash('sha256').update(b).digest('hex');
-  assert.equal(hash(source.mask),fixture.maskSha256);assert.equal(hash(new Uint8Array(source.probability.buffer)),fixture.probabilitySha256);
+  assert.equal(hash(source.mask),expected.maskSha256);assert.equal(hash(new Uint8Array(source.probability.buffer)),expected.probabilitySha256);
   return{prepared,cfg};
 }
 
@@ -34,10 +36,23 @@ test('a colour-retaining near miss earns refinement before changing both cut cou
   assert.equal(result.report.jointHypotheses,0);assert.deepEqual(result.seeds[0].model.counts,[3,3]);
 });
 
-test('the near-miss layout produces checked exports within the original short search',async()=>{
-  const {prepared,cfg}=await nearMiss(),source=prepared.target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
+test('a discarded same-count start preserves the opening after a one-pixel crop shift',async()=>{
+  const {prepared,cfg:options}=await nearMiss('horizontal'),source=prepared.target.sourceImage,cfg=settings(options),features=imageFeatures(source,cfg.width);
+  const missed=features.findIndex(f=>f.areaMm2<40&&f.centerMm[0]>50&&f.centerMm[1]>50);assert.ok(missed>=0);
+  const result=initializeFeatureSeeds({source,features,missed:[missed],counts:[3,3],cfg,evidence:borderEvidence(source.probability,source.resolution),maximumCount:8});
+  assert.equal(result.report.coarseRefinement.accepted,false,'The former winning layouts still fail the original cutoff.');
+  const retry=result.report.alternativeRefinement;assert.ok(retry);
+  assert.deepEqual(retry.counts,[3,3]);assert.equal(retry.featuresPassed,true);assert.equal(retry.accepted,true);
+  assert.ok(retry.initialError>3*cfg.maxImageError);assert.ok(retry.error<=3*cfg.maxImageError);
+  assert.equal(result.report.jointHypotheses,0,'An existing three-cut layout avoids another count hypothesis.');
+  assert.deepEqual(result.seeds[0].model.counts,[3,3]);
+});
+
+for(const translation of [null,'horizontal'])test(`the ${translation||'original'} near-miss layout produces checked exports within the original short search`,async()=>{
+  const {prepared,cfg}=await nearMiss(translation),source=prepared.target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
   const answer=await design(prepared.target,cfg);
-  assert.equal(answer.report.solver.earlyFeatureInitialization.coarseRefinement.accepted,true);
+  const initialization=answer.report.solver.earlyFeatureInitialization;
+  assert.equal((translation?initialization.alternativeRefinement:initialization.coarseRefinement).accepted,true);
   assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   assert.ok(answer.report.solver.seconds<10);
