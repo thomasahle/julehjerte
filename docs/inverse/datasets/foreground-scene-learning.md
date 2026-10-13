@@ -143,3 +143,18 @@ python3 scripts/inverse/learning/foreground-scene-report.py \
 The audit verifies source/baseline identity, exact target hashes, train-only
 augmentation, matched sampling and optimizer budgets, checkpoint identity,
 equal replay inputs and pipeline settings, and referenced artifact hashes.
+
+## Validation
+
+The [validation record](foreground-scene-validation.json) preserves passing
+serial runs of 744 inverse tests, 855 application tests (one existing skip),
+45 offline Python tests, type checks, lint and the production build. Type checking
+reports zero errors and seven existing warnings; lint retains one existing warning.
+
+Chromium passes the star, free-border hat and Hunodan `hjcur-02` flows, including
+template checks, editable SVG conversion and export checks. Browser replay records
+64 workspace source hashes. The 43-case gallery loads all 177 images without page
+errors or broken images; all 16 inverted display masks are independently checked
+pixel-by-pixel against their frozen originals. Neither masks nor scores are altered
+for display. The owned preview was restarted after the build and remains available
+at `http://127.0.0.1:5232/editor/mal/`.
