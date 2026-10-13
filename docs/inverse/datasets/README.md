@@ -55,9 +55,9 @@ topology-initialization allowance and distinguishes near-repairable traces
 from larger raster returns. The committed implementation reproduces the result
 below ten seconds per case. Fresh broader replays retain 22/22 regular Hunodan
 designs, with identical errors and a maximum of 8.25 seconds, and 24/31 hard
-photographs. A stale longer-budget scheduling test is being updated with a
-replacement deferred-recovery case; full release and browser QA remain in
-progress.
+photographs. The corrected scheduling tests preserve the original image-quality
+limit and add a real-photo deferred-recovery case. Full release QA is complete
+with the routing-timeout follow-up below.
 
 That browser QA exposed a remaining [routing timeout cliff](routing-timeout.md):
 the same shifted mask could finish in 8.7 seconds with two cuts per sheet, or
@@ -66,8 +66,11 @@ gives the sparse graph its full remaining recovery allowance, recovering the
 two-cut pair in 8.5–8.6 seconds with 1.48% editable disagreement. All ten
 prototype browser flows pass. Fresh committed-runtime replays retain all eight
 checked crop variants, 22/22 regular Hunodan designs with unchanged errors, and
-24/31 hard photographs. Full-suite and rebuilt production-browser QA remain
-pending; no new corpus-wide improvement is claimed.
+24/31 hard photographs. All 772 inverse tests, 855 application tests and ten
+rebuilt Chromium flows pass; eight flows also check PDF download signatures.
+The final production replay recovers the shifted mask in 8.75 seconds with
+1.48% editable disagreement. The [release record](routing-timeout.json) pins
+the full verification; no new corpus-wide improvement is claimed.
 
 A read-only [neural fallback source review](neural-fallback-source-review.md)
 checks 28 frozen original-photo observations on the blue outlined star against

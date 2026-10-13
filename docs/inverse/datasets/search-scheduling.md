@@ -127,6 +127,8 @@ flows pass the existing export checks, but visual review and paired metrics
 expose a remaining quality/timing regression on the shifted sloth: a 53.74-second
 six-cut fallback replaces the earlier 8.71-second two-cut result. Thus the green
 browser aggregate does not establish preserved quality. The
-[routing-timeout follow-up](routing-timeout.md) records the controlled diagnosis,
-stronger regression gate and candidate fix. Final full-suite and browser
-verification continue with that follow-up. Nothing was pushed or deployed.
+[routing-timeout follow-up](routing-timeout.md) records the controlled diagnosis
+and stronger regression gate. The combined runtime now passes all 772 inverse
+tests and ten rebuilt Chromium flows; the shifted upload returns the cleaner
+pair in 8.75 seconds. The initial failed test and poorer browser results remain
+recorded rather than being overwritten. Nothing was pushed or deployed.

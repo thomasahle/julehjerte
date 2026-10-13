@@ -88,6 +88,45 @@ fit failures pass geometry and paper checks but fail image or feature fidelity;
 the other three eligible failures have no crop proposal. All 855 application
 tests pass, with one existing skipped test.
 
-The full inverse suite and rebuilt production-browser verification are still
-in progress. The owned preview remains on the preceding build until those checks
-reach the rebuild. Nothing has been pushed or deployed.
+All **772 inverse tests** pass, including the corrected longer-budget recovery
+test and the added 400-pixel upload regression. Type checking and lint pass with
+their existing warnings, and the production build passes. All **ten Chromium
+flows** pass against that rebuilt application, with editable SVG reimport,
+geometry, paper and source-feature checks. Eight flows additionally download a
+PDF and verify its file signature; the hat and tree flows exercise SVG only.
+The evidence audit originally assumed a PDF for every flow and was corrected
+to the actual harness coverage before the release record was generated.
+
+| Production browser case | Click to ready | Editable disagreement |
+| --- | ---: | ---: |
+| Sloth, mixed-model crop | 7.804 s | 1.3181% |
+| Sloth, positive horizontal shift | 8.751 s | 1.4813% |
+| Sloth, negative vertical shift | 9.974 s | 1.3306% |
+| Sloth, frozen-model crop | 8.194 s | 2.1206% |
+| Sloth, synthetic-control crop | 8.679 s | 0.8681% |
+| Sloth, positive vertical shift | 9.205 s | 1.1119% |
+| Star example | 1.999 s | 0.1600% |
+| Free-border hat | 7.722 s | 0.4119% protected motif |
+| Leaf mask | 9.118 s | 2.6300% |
+| Photographed tree | 8.182 s | 1.0575% |
+
+These browser inputs are 400-pixel Paint masks, including resampled versions of
+the 250-pixel native sloth study. They are not identical optimization targets;
+the frozen-model crop's 2.12% browser error is retained rather than presented as
+its smaller native error. Browser timings end when Open in Draw becomes ready;
+downloads and independent export auditing follow afterward. No neural model is
+running in the browser: those crop labels identify the fixed test-mask origins.
+
+Visual inspection of all ten result screenshots confirms that the shifted
+sloth retains the cleaner two-cut silhouette. Some contour irregularities
+remain, and this is not physical assembly validation. The hat retains 43 exactly
+shared exported spans, and the vertical sloth retains its finer 700-cell paper
+audit through export. All source masks are identical to the preceding browser
+run. None of the acceptance rules or physical tolerances changed.
+
+The [complete release record](routing-timeout.json) pins 103 current source files
+and 1,048 release artifacts, plus the 117 controlled-probe artifacts. An
+independent audit verifies their hashes, paired inputs, all required checks and
+the recorded outcomes. The owned preview is running the verified build at
+`http://127.0.0.1:5232/editor/mal/`; the served changed modules and page match the
+build bytes. Nothing has been pushed or deployed.
