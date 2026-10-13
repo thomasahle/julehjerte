@@ -48,10 +48,16 @@ the report rather than hidden by the synthetic average.
 A [subsequent crop-to-fit diagnosis](feature-near-miss.md) identifies a separate
 initialization cutoff in the main fitter. A feature-retaining layout just above
 the coarse cutoff now gets one bounded refinement before a joint count change.
-A new Stonehenge crop improves from 4.70% to 2.67% disagreement. One-pixel crop
-shifts remain failures. The original real-photo corpus stays at 24/31, while
+A new Stonehenge crop improves from 4.70% to 2.67% disagreement. Its initial
+one-pixel crop shifts remained failures. The original real-photo corpus stays at 24/31, while
 all 22 regular Hunodan cases keep their previous errors and finish below ten
 seconds. The experimental neural cropper is still not enabled in the app.
+
+The [retained-start follow-up](retained-grid-starts.md) finds that a weighted
+mean discarded a useful three-cut start which was already available. Reusing
+that start before adding cuts improves the horizontal crop-shift case from
+3.58% to 2.47% without changing its pixels or acceptance rules. The vertical
+shift remains unresolved; finer paper checks alone did not fix it.
 
 The [localization follow-up](boundary-localization.md) found that the original
 synthetic training split contained no acute or right-angle degree-two corners.
