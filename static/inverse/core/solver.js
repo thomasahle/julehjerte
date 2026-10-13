@@ -65,9 +65,9 @@ export function formulate(graph,cfg,{onProgress=()=>{}}={}){
   if(m.cost.length>80000||m.rows.length>200000)throw new Error('MILP exceeds the browser memory guard. Reduce image detail or connector candidates.');onProgress({stage:'model',variables:m.cost.length,constraints:m.rows.length});return{m,x,z,endpoints,metadata:{binaryVariables:m.integer.reduce((a,b)=>a+b,0),continuousVariables:m.integer.filter(x=>!x).length,linearConstraints:m.rows.length,turnAuxiliaries:turns,crossingConflicts:crossings,widthPairs}};
 }
 function extract(graph,x,z,values,endpoints){return[0,1].map(k=>{const next=new Map(),chosen=new Set();graph.edges.forEach((edge,e)=>{if(values[x[k][e]]>.5){const fw=values[z[k][e][0]]>.5,a=fw?edge.u:edge.v,b=fw?edge.v:edge.u;if(next.has(a))throw new Error('MILP produced a branching path.');next.set(a,{b,e,fw});chosen.add(e);}});const seen=new Set(),paths=[];for(const source of endpoints[k].sources){const path=[],visited=new Set();let v=source;while(next.has(v)){if(visited.has(v))throw new Error('MILP produced a cycle.');visited.add(v);const{b,e,fw}=next.get(v);path.push([e,fw]);seen.add(e);v=b;}if(!endpoints[k].sinks.includes(v))throw new Error('A slit does not reach the opposite border.');paths.push(path);}if(seen.size!==chosen.size)throw new Error('Detached cut loop in the MILP solution.');return paths;});}
-export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coefficientQuantum=0,stopAfterValidated=false,relaxationOnly=false}={}){
+export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coefficientQuantum=0,stopAfterValidated=false,relaxationOnly=false,onRejectedCandidate=null}={}){
   onProgress=progressReporter(onProgress,cfg.progressGeometry);
-  const start=performance.now(),highs=await solverRuntime(),form=formulate(graph,cfg,{onProgress}),{m,x,z,endpoints}=form;let native=null,best=null,bestObj=Infinity,lower=-Infinity;const history=[],nogoods=new Set();
+  const start=performance.now(),highs=await solverRuntime(),form=formulate(graph,cfg,{onProgress}),{m,x,z,endpoints}=form;let native=null,best=null,bestObj=Infinity,lower=-Infinity,rejectionObserverStopped=false;const history=[],nogoods=new Set();
   if(!graph.edges.length){const sol={graph,paths:[[],[]],report:{status:'uniform',physicalAssemblyTested:false}};sol.report.validation=validate(sol,cfg);return sol;}
   // Sub-ulp curve arithmetic differs across JavaScript engines. For recovery,
   // normalize the linear model below its validation tolerance before search.
@@ -87,7 +87,14 @@ export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coef
       if(relaxationOnly){info.relaxationResidual=residual;if(residual>2e-5)break;}
       else if(residual>2e-5)throw new Error(`MILP result fails independent integrality/row checks (${residual}).`);
       const candidate={graph,paths:extract(graph,x,z,values,endpoints),report:{}},obj=native.getObjectiveValue(),shortReturns=shortSelfReturns(candidate,cfg),necks=[...selfNecks(candidate,cfg),...shortReturns];info.objective=obj;info.selfNeckChains=necks.length;info.shortReturnChains=shortReturns.length;onProgress({stage:'validating',round:round+1});
-      if(necks.length){for(const issue of necks){const chain=[...new Set(issue.edgeChain)],key=`${issue.family}:${chain.sort((a,b)=>a-b).join(',')}`;if(nogoods.has(key))continue;nogoods.add(key);append(chain.map(e=>[x[issue.family][e],1]),-Infinity,chain.length-1);}continue;}
+      // This private observer sees rejected geometry only. It cannot certify a
+      // MILP solution or publish an incumbent. Returning true stops with an
+      // explicit failure; a caller's separately repaired pair needs its own
+      // source-image and physical checks, without this model's objective bound.
+      if(necks.length){
+        if(!best&&onRejectedCandidate&&await onRejectedCandidate(candidate,{round:round+1,reason:'self_clearance',elapsedSeconds:(performance.now()-start)/1000,remainingSeconds:cfg.timeLimit-(performance.now()-start)/1000})===true){rejectionObserverStopped=true;break;}
+        for(const issue of necks){const chain=[...new Set(issue.edgeChain)],key=`${issue.family}:${chain.sort((a,b)=>a-b).join(',')}`;if(nogoods.has(key))continue;nogoods.add(key);append(chain.map(e=>[x[issue.family][e],1]),-Infinity,chain.length-1);}continue;
+      }
       const check=validate(candidate,cfg,{checkSelfNecks:false});if(check.passed&&coreGate){const core=coreGate(candidate);info.materialCore=core.summary;check.materialCore=core.summary;if(!core.passed){check.passed=false;check.issues.push({type:'material_core',summary:core.summary});}}
       info.validationPassed=check.passed;if(check.passed){if(obj<bestObj){best=candidate;bestObj=obj;best.report.validation=check;append(m.cost.map((c,j)=>[j,c]).filter(([,c])=>c),-Infinity,obj+1e-6);}// Adding the objective row invalidates native.info (including mip_gap). Use the captured bound.
       if(cfg.progressGeometry||hasCandidateObserver(onProgress))onProgress({stage:'solving',round:round+1,validatedIncumbent:true,gap:Number.isFinite(lower)?objectiveGap(bestObj,lower):null},best);
@@ -111,6 +118,6 @@ export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coef
     }
   }finally{native?.dispose();}
   const report={...form.metadata,coefficientQuantum,stopAfterValidated,...(relaxationOnly?{relaxationOnly:true,relaxationBound:Number.isFinite(lower)?lower:null}:{}),graph:graph.metadata,history,elapsedSeconds:(performance.now()-start)/1000,solverVersion:highs.version,solverRuntime:'locally hosted HiGHS WebAssembly',physicalAssemblyTested:false};
-  if(!best){const error=new Error('No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.');error.report={...report,status:'no_validated_solution',termination:history.some(h=>h.relaxationResidual>2e-5)?'relaxation_residual':history.some(h=>h.status===highs.constants.modelStatus.timeLimit)||report.elapsedSeconds>=cfg.timeLimit?'time_limit':history.at(-1)?.status===highs.constants.modelStatus.infeasible?'candidate_graph_exhausted':'round_limit'};throw error;}
+  if(!best){const error=new Error('No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.');error.report={...report,status:'no_validated_solution',termination:rejectionObserverStopped?'rejected_candidate_observer':history.some(h=>h.relaxationResidual>2e-5)?'relaxation_residual':history.some(h=>h.status===highs.constants.modelStatus.timeLimit)||report.elapsedSeconds>=cfg.timeLimit?'time_limit':history.at(-1)?.status===highs.constants.modelStatus.infeasible?'candidate_graph_exhausted':'round_limit'};throw error;}
   best.report={...best.report,...report,status:'solved',objective:bestObj,lowerBound:Number.isFinite(lower)?lower:null,mipGap:Number.isFinite(lower)?objectiveGap(bestObj,lower):null,optimality:'Only the finite candidate graph is optimized. Gap concerns cut complexity, not artwork fidelity.'};return best;
 }

@@ -6,25 +6,31 @@ import {solveBoundary} from './routing.js';
 import {sampleWeave,validate} from './validate.js';
 import {materialAudit} from './material.js';
 import {auditFeatureFidelity} from './feature-shapes.js';
+import {visibleReturnEvidence,rejectedRoutingQuality,repairRejectedRouting} from './direct/rejected-routing.js';
+import {visibleMarginIssue} from './solver.js';
+import {visibleSelfIntersectionIssue} from './self-intersections.js';
 
 export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
   const start=performance.now(),report={method:'trace-milp',budgetSeconds:seconds,accepted:false,attempts:[]};
   try{
     onProgress({stage:'graph'});
     const source=input.sourceImage,remaining=()=>seconds-(performance.now()-start)/1000;
-    // First preserve the established trace and vary optional hidden connectors;
-    // coarsening the contours themselves can remove necessary routing choices.
     const choices=[{neighbors:Math.min(8,cfg.neighbors),connectorVariants:1},{neighbors:cfg.neighbors,connectorVariants:cfg.connectorVariants}];
-    let solution=null;const deferred=[];
-    const runSeed=async(smoothRadius,borderSeed=null)=>{
-      const seedStarted=performance.now();
-      // Explore these provisional edge interpretations with the sparse graph;
-      // densifying an earlier seed can consume the whole remaining budget.
-      const graphChoices=borderSeed?choices.slice(0,1):choices;
+    let solution=null,rejectedRepairUsed=false;const deferred=[],ordinaryTargets=new Map();
+    const trace=(smoothRadius,borderSeed=null)=>{
+      if(!borderSeed&&ordinaryTargets.has(smoothRadius))return ordinaryTargets.get(smoothRadius);
       const target=preprocessMask(borderSeed?.mask||source.mask,source.resolution,{...cfg,algorithm:'trace',fitTolerance:.75,smoothRadius,snapRadius:1.5,maxSpan:30,borderRadius:borderSeed?0:3},input.metadata.preprocessing);
       target.sourceImage=source;
       target.metadata.preprocessing.traceUsed=true;
       target.metadata.sourceImage=input.metadata.sourceImage;
+      if(!borderSeed)ordinaryTargets.set(smoothRadius,target);
+      return target;
+    };
+    const runSeed=async(smoothRadius,borderSeed=null)=>{
+      const seedStarted=performance.now();
+      // Explore these provisional edge interpretations with the sparse graph;
+      // densifying an earlier seed can consume the whole remaining budget.
+      const graphChoices=borderSeed?choices.slice(0,1):choices,target=trace(smoothRadius,borderSeed);
       if(borderSeed){
         const sampled=sampleTarget(target,source.resolution),imageError=sampled.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/sampled.length;
         // A larger inset may reach the motif itself. Keep this provisional
@@ -50,12 +56,25 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         // A timeout is not evidence that the sparse graph lacks a routing.
         // Let it use most of this phase before adding a much larger graph.
         const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=i||onlyChoice?left:left*.8,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{})};report.attempts.push(attempt);
+        const observeRejected=async(proposal,timing)=>{
+          try{
+            if(rejectedRepairUsed||remaining()<.75)return false;
+            const quality=rejectedRoutingQuality(proposal,cfg);
+            if(!quality.shortReturnsOnly||quality.relativeDeficit>.05)return false;
+            rejectedRepairUsed=true;
+            const repaired=repairRejectedRouting(proposal,input,cfg,{deadline:start+seconds*1000,quality});
+            attempt.continuousRepair={...repaired.report,integerCandidateSeconds:timing.elapsedSeconds};
+            if(repaired.solution){solution=repaired.solution;return true;}
+            return false;
+          }catch(error){attempt.continuousProbeError=error.message;return false;}
+        };
         try{
           // This recovery phase already announced graph work before tracing.
-          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{expandNeighbors:false,announceGraph:false,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
+          solution=await solveBoundary(target,{...graphCfg,timeLimit:budget},{expandNeighbors:false,announceGraph:false,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,onRejectedCandidate:observeRejected,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
           attempt.solver=solution.report;break;
         }catch(error){
           attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;
+          if(solution)break;
           // This boundary needs a new trace, not more optional connections.
           if(error.report?.connectorIndependentIssue)break;
           // The later ordinary graph covers this sparse proposal. Defer only
@@ -65,8 +84,28 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         finally{attempt.seconds=(performance.now()-at)/1000;}
       }
     };
-    await runSeed(.3);
-    if(!solution&&remaining()>=.25&&report.attempts.length&&report.attempts.every(a=>a.solver?.termination==='candidate_graph_exhausted'||a.boundaryIssue?.type==='endpoint_spacing')){
+    let initialRadius=.3;
+    const original=trace(.3),boundary=reindex({target:original,edges:original.curves.map(curve=>({curve,visible:true}))});
+    // Do not spend a full MILP allowance preserving a raster return when the
+    // established smoother trace improves both that evidence and image fit.
+    // Hidden edges can change sheet assignment, so this is ordering evidence,
+    // not a proof that the original graph is infeasible. Cheap contradictions
+    // still follow their existing preflight/retry path.
+    if(remaining()>=1&&!inspectBoundaryEndpoints(boundary,cfg.nominalWidth).issue&&!visibleMarginIssue(boundary,cfg)&&!visibleSelfIntersectionIssue(boundary,cfg)){
+      const before=visibleReturnEvidence(original,cfg);
+      if(before.shortReturns){
+        const smoother=trace(.5),after=visibleReturnEvidence(smoother,cfg);
+        const mismatch=target=>{const mask=sampleTarget(target,source.resolution);return{mask,error:mask.reduce((s,v,i)=>s+Number(v!==source.mask[i]),0)/mask.length};};
+        const a=mismatch(original),b=mismatch(smoother);
+        const graph=reindex({target:smoother,edges:smoother.curves.map(curve=>({curve,visible:true}))}),endpoints=inspectBoundaryEndpoints(graph,cfg.nominalWidth).issue;
+        const preferred=!endpoints&&!visibleMarginIssue(graph,cfg)&&!visibleSelfIntersectionIssue(graph,cfg)&&after.shortReturns<before.shortReturns&&after.maximumRelativeDeficit<=before.maximumRelativeDeficit&&b.error<=a.error&&b.error<=cfg.maxImageError&&auditFeatureFidelity(source,b.mask,cfg).passed;
+        report.traceQualityPreference={preferred,before:{smoothRadius:.3,shortReturns:before.shortReturns,maximumRelativeDeficit:before.maximumRelativeDeficit,imageError:a.error},after:{smoothRadius:.5,shortReturns:after.shortReturns,maximumRelativeDeficit:after.maximumRelativeDeficit,imageError:b.error},reason:'visible-chain returns and unchanged-source image agreement'};
+        if(preferred)initialRadius=.5;
+      }
+    }
+    await runSeed(initialRadius);
+    if(initialRadius!==.3&&!solution&&remaining()>=.25)await runSeed(.3);
+    if(!solution&&initialRadius===.3&&remaining()>=.25&&report.attempts.length&&report.attempts.every(a=>a.solver?.termination==='candidate_graph_exhausted'||a.boundaryIssue?.type==='endpoint_spacing')){
       // Extra search cannot repair an infeasible traced boundary. Suppress
       // thin raster spurs in the seed; the original image stays unchanged.
       report.seedSmoothingRetry=true;
