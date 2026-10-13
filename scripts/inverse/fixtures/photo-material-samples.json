@@ -1,0 +1,310 @@
+{
+  "schema": "woven-heart-photo-material-samples-1",
+  "coordinateConvention": "Integer source pixel indices; sample the centre at (x + 0.5, y + 0.5) in pixel-edge coordinates.",
+  "purpose": "Sparse assistant-reviewed material observations for diagnostic QA, not full artwork/corner/cutting-path ground truth. Never use these reserved samples to initialize a fitter or train a model.",
+  "review": {
+    "reviewer": "assistant visual inspection",
+    "selection": "Development samples chosen after inspecting failures. Not blinded, random, independently held out, or exhaustive.",
+    "boundaryPolicy": "Sample visible color interiors; ambiguous joins, hidden paths and external background are not labeled. Sparse agreement does not establish shape accuracy or assembly."
+  },
+  "cases": [
+    {
+      "id": "bauble",
+      "source": {
+        "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+        "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+        "width": 1482,
+        "height": 1112,
+        "paperNames": [
+          "red paper",
+          "white paper"
+        ]
+      },
+      "roi": [
+        456,
+        860,
+        711,
+        1112
+      ],
+      "groups": [
+        {
+          "id": "bauble-body",
+          "paper": 0,
+          "points": [
+            [
+              570,
+              1015
+            ],
+            [
+              565,
+              993
+            ],
+            [
+              553,
+              1027
+            ],
+            [
+              593,
+              1038
+            ]
+          ]
+        },
+        {
+          "id": "upper-frame",
+          "paper": 0,
+          "points": [
+            [
+              609,
+              955
+            ],
+            [
+              620,
+              968
+            ],
+            [
+              632,
+              982
+            ],
+            [
+              640,
+              992
+            ]
+          ]
+        },
+        {
+          "id": "lower-frame",
+          "paper": 0,
+          "points": [
+            [
+              640,
+              1040
+            ],
+            [
+              632,
+              1053
+            ],
+            [
+              617,
+              1068
+            ],
+            [
+              604,
+              1080
+            ]
+          ]
+        },
+        {
+          "id": "corner-blocks",
+          "paper": 0,
+          "points": [
+            [
+              575,
+              945
+            ],
+            [
+              499,
+              1014
+            ],
+            [
+              580,
+              1088
+            ],
+            [
+              643,
+              1011
+            ]
+          ]
+        },
+        {
+          "id": "white-gaps",
+          "paper": 1,
+          "points": [
+            [
+              587,
+              967
+            ],
+            [
+              528,
+              983
+            ],
+            [
+              519,
+              999
+            ],
+            [
+              516,
+              1030
+            ],
+            [
+              540,
+              1055
+            ],
+            [
+              568,
+              1070
+            ],
+            [
+              600,
+              1064
+            ],
+            [
+              623,
+              1028
+            ],
+            [
+              629,
+              1000
+            ],
+            [
+              610,
+              984
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dense-checker",
+      "source": {
+        "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+        "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+        "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+        "width": 1482,
+        "height": 1112,
+        "paperNames": [
+          "red paper",
+          "white paper"
+        ]
+      },
+      "roi": [
+        696,
+        120,
+        965,
+        345
+      ],
+      "groups": [
+        {
+          "id": "upper-red-cells",
+          "paper": 0,
+          "points": [
+            [
+              803,
+              217
+            ],
+            [
+              829,
+              217
+            ],
+            [
+              855,
+              217
+            ],
+            [
+              881,
+              215
+            ],
+            [
+              805,
+              237
+            ],
+            [
+              858,
+              237
+            ]
+          ]
+        },
+        {
+          "id": "lower-red-cells",
+          "paper": 0,
+          "points": [
+            [
+              783,
+              258
+            ],
+            [
+              834,
+              258
+            ],
+            [
+              885,
+              257
+            ],
+            [
+              812,
+              281
+            ],
+            [
+              840,
+              302
+            ],
+            [
+              844,
+              325
+            ]
+          ]
+        },
+        {
+          "id": "upper-white-cells",
+          "paper": 1,
+          "points": [
+            [
+              793,
+              207
+            ],
+            [
+              817,
+              207
+            ],
+            [
+              843,
+              207
+            ],
+            [
+              793,
+              226
+            ],
+            [
+              844,
+              226
+            ],
+            [
+              870,
+              226
+            ]
+          ]
+        },
+        {
+          "id": "lower-white-cells",
+          "paper": 1,
+          "points": [
+            [
+              793,
+              247
+            ],
+            [
+              820,
+              248
+            ],
+            [
+              846,
+              248
+            ],
+            [
+              872,
+              248
+            ],
+            [
+              825,
+              291
+            ],
+            [
+              851,
+              291
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}
