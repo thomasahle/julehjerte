@@ -53,9 +53,12 @@ def known_region_metrics(predictions, items):
     rows = []
     for probability, item in zip(predictions, items):
         probability = np.asarray(probability)
-        if probability.shape != item['target'].shape or not np.isfinite(probability).all() or probability.min() < 0 or probability.max() > 1:
+        target_values, weights = np.asarray(item['target']), np.asarray(item['weight'])
+        if target_values.ndim != 2 or weights.shape != target_values.shape or not np.isin(target_values, [0, 1]).all() or not np.isin(weights, [0, 1]).all():
+            raise ValueError('Require binary targets and observation weights of equal shape')
+        if probability.shape != target_values.shape or not np.isfinite(probability).all() or probability.min() < 0 or probability.max() > 1:
             raise ValueError('Invalid real foreground probability')
-        known, target = item['weight'] == 1, item['target'] == 1
+        known, target = weights == 1, target_values == 1
         if not known.any():
             raise ValueError('No known annotated pixels')
         prediction = probability >= .5

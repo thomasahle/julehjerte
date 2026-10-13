@@ -60,7 +60,53 @@ not entered training and are not claimed as an unseen benchmark. The loader
 rejects an attempt to turn the current pilot into an assigned training/test set
 without updating its explicit allocation policy.
 
-The next step is to score the existing frozen models against these unchanged
-observations, then expand/check real labels before designing a grouped training
-comparison. The production cropper, fitter and its 24/31 photo benchmark are
-unchanged by this annotation work.
+The production cropper, fitter and its 24/31 photo benchmark are unchanged by
+this annotation work.
+
+## Frozen-model diagnosis
+
+Both checkpoints from the paired background/clutter experiment receive the same
+ten photographs, 256-square letterbox transform, labels and observation weights.
+No model is trained or selected in this replay. This full-photo, aspect-preserving
+input protocol differs from the existing crop-to-fit replay's stretched input
+windows, so these segmentation scores cannot be pooled with its 5/31 outcomes.
+
+| Mean across ten instances | Background-only control | Clutter-trained |
+| --- | ---: | ---: |
+| Known-region IoU | 55.72% | 75.04% |
+| Known-paper false negatives | 0.62% | 4.95% |
+| Known-background false positives | 44.66% | 8.67% |
+
+Clutter training clearly suppresses more background on these observations, but
+also erases more actual paper. The bicycle's known-paper loss rises from 1.0% to
+7.0%, the patterned heart's from 2.1% to 9.9%, and the clipped blue/gold basket's
+from 0.9% to 13.7%. This is visible along borders and tips in the error overlays.
+The approximate-corner annotations never enter the network or metric.
+
+The hand-held black heart remains particularly poor: the newer model's
+known-region IoU is only 15.7%, with hands and wood claimed as paper. The pink
+basket among chocolates is 48.4%, with a substantial part of the pale wooden
+background retained. The dragonfly's irregular protrusions are also imperfect.
+These observations distinguish excessive background inclusion from missing
+paper; an average IoU improvement does not establish accurate physical corners.
+
+All twenty source/probability/error comparisons were visually inspected. The
+[evidence record](real-annotation-results.json) pins the checkpoints, inputs,
+labels, implementation and 53 exported artifacts. Scores were recomputed from
+the archived float32 predictions with the same known/unknown denominators.
+A validation-only code change produces byte-identical prediction arrays on replay.
+
+```sh
+python3 scripts/inverse/learning/real-foreground-evaluate.py \
+  --labels=tmp/heart-learning/real-annotation-v1/labels \
+  --run=tmp/heart-learning/foreground-scene-v1/control-trained \
+  --run=tmp/heart-learning/foreground-scene-v1/scene-trained \
+  --output=tmp/heart-learning/real-annotation-v1/frozen-models-final
+```
+
+The next step is to expand/check real labels, resolve source/motif grouping and
+design a grouped real-photo training comparison. Particular targets are hands,
+pale textured backgrounds, varied heart sizes, and complete pale borders. The
+present observations do not isolate how much each issue comes from image framing,
+texture, training coverage or the learned shape prior. No network is enabled in
+the website on the strength of this small diagnostic.

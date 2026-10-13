@@ -100,6 +100,16 @@ class RealForegroundTests(unittest.TestCase):
         logits = torch.randn(2, 1, 8, 8); target = (torch.rand_like(logits) > .5).float()
         self.assertAlmostEqual(masked_foreground_loss(logits, target, torch.ones_like(logits)).item(), foreground_loss(logits, target).item(), places=6)
 
+    def test_scores_reject_malformed_weights_and_detect_known_pixel_errors(self):
+        target = np.zeros((8, 8), np.float32); target[:4] = 1
+        item = {'id': 'a', 'target': target, 'weight': np.ones_like(target)}
+        imperfect = target.copy(); imperfect[0] = 0
+        metric = known_region_metrics([imperfect], [item])['macroMean']
+        self.assertEqual(metric['knownRegionIoU'], .75)
+        self.assertEqual(metric['knownPaperFalseNegative'], .25)
+        for weight in [np.ones((2, 2)), target+.5, target*np.nan]:
+            with self.assertRaises(ValueError): known_region_metrics([target], [{**item, 'weight': weight}])
+
 
 if __name__ == '__main__':
     torch.set_num_threads(2)

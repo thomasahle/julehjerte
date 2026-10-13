@@ -20,12 +20,22 @@ The 2026-10-13 snapshot contains:
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 50 | Two hearts in one reserved photograph; sparse assistant-reviewed development observations, not dense labels or training data. |
+| Real visible-body annotations | 10 | Eight source groups outside reserved QA; uncertain outline/occlusion pixels excluded, five approximate overlap references, no train/test allocation yet. |
 
 The latest [Pinterest expansion](real-pinterest-expansion.md) downloaded 428 of
 442 visited pins, including all four user-supplied examples. After merging, it
 added 362 source files, 176 photo-containing files and 116 reviewed photo groups
 to the previous snapshot. These are source-image counts, not heart-instance
 or independent motif-family counts.
+
+The [real annotation pilot](real-annotation-pilot.md) adds ten reviewed visible
+basket masks with explicit uncertain regions, without using solver output as
+ground truth. A frozen-model comparison improves known-region IoU from 55.72%
+to 75.04% with clutter training, while known-paper loss rises from 0.62% to 4.95%.
+Hands, pale textured backgrounds, borders and tips remain problematic. The
+examples retain their source/duplicate grouping and have not entered training;
+cross-corpus motif review remains pending. This is a development diagnostic,
+not a new production or unseen-test score.
 
 The [clutter-training follow-up](foreground-scene-learning.md) raises selected-body
 IoU on controlled neighbouring-heart scenes from 61.86% to 95.01% with the same
