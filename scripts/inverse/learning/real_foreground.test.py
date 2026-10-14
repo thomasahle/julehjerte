@@ -11,6 +11,7 @@ import torch
 from foreground import foreground_loss
 from real_foreground import known_region_metrics, load_real_labels, masked_foreground_loss
 from real_annotations import build, checked_annotations, digest, photo_tensor, rasterize, validate_polygon, verify
+from real_probe import export_real_probe
 
 
 def fixture(root):
@@ -32,6 +33,33 @@ def fixture(root):
 
 
 class RealForegroundTests(unittest.TestCase):
+    def test_full_photo_probe_preserves_pixels_field_and_letterbox_without_geometry_hints(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); _, source, _, _, mp, ap = fixture(root)
+            labels = root/'labels'; build(mp, ap, labels, 80, root)
+            yy, xx = np.mgrid[:80, :80]
+            probability = ((xx+2*yy)/237).astype(np.float32)
+            probe = export_real_probe(root/'probe', {'body': probability}, labels, ap, 'checkpoint', mp, root)
+            row = probe['rows'][0]
+            self.assertEqual(row['window'], [0., -20., 80., 60.])
+            self.assertEqual(row['dimensions'], [80, 40])
+            self.assertIsNone(row['roi']); self.assertIsNone(row['inferenceSeconds'])
+            self.assertFalse({'quad', 'labels', 'canonical', 'target', 'foregroundPolygons'} & set(row))
+            self.assertEqual(row['originalPhotoSha256'], source['sha256'])
+            np.testing.assert_array_equal(np.asarray(Image.open(row['file'])), np.asarray(Image.open(root/'photo.png')))
+            asset = row['assets']['probability.f32']; raw = (root/'probe'/asset['path']).read_bytes()
+            self.assertEqual(digest(raw), asset['sha256'])
+            np.testing.assert_array_equal(np.frombuffer(raw, dtype='<f4').reshape(80, 80), probability)
+            self.assertEqual(probe['labelsAudit'], verify(mp, ap, labels, root))
+            with self.assertRaises(FileExistsError):
+                export_real_probe(root/'probe', {'body': probability}, labels, ap, 'checkpoint', mp, root)
+            with self.assertRaisesRegex(ValueError, 'identities'):
+                export_real_probe(root/'bad-id', {'another-body': probability}, labels, ap, 'checkpoint', mp, root)
+            probability[0, 0] = float('nan')
+            with self.assertRaisesRegex(ValueError, 'probability'):
+                export_real_probe(root/'bad-field', {'body': probability}, labels, ap, 'checkpoint', mp, root)
+            self.assertFalse((root/'bad-field').exists())
+
     def test_pixel_centres_letterbox_and_unknown_regions(self):
         with tempfile.TemporaryDirectory() as tmp:
             row, *_ = fixture(Path(tmp))
