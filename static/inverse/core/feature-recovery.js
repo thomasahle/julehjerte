@@ -26,8 +26,9 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
       if(!borderSeed)ordinaryTargets.set(smoothRadius,target);
       return target;
     };
-    const runSeed=async(smoothRadius,borderSeed=null)=>{
+    const runSeed=async(smoothRadius,borderSeed=null,maximumSeconds=Infinity)=>{
       const seedStarted=performance.now();
+      const seedRemaining=()=>Math.min(remaining(),maximumSeconds-(performance.now()-seedStarted)/1000);
       // Explore these provisional edge interpretations with the sparse graph;
       // densifying an earlier seed can consume the whole remaining budget.
       const graphChoices=borderSeed?choices.slice(0,1):choices,target=trace(smoothRadius,borderSeed);
@@ -50,8 +51,8 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
       }
       for(let i=0;i<graphChoices.length;i++){
         if(i&&graphChoices[i].neighbors===graphChoices[0].neighbors&&graphChoices[i].connectorVariants===graphChoices[0].connectorVariants)break;
-        if(remaining()<.1)break;
-        const at=performance.now(),graphCfg={...cfg,...graphChoices[i]},left=remaining();
+        if(seedRemaining()<.1)break;
+        const at=performance.now(),graphCfg={...cfg,...graphChoices[i]},left=seedRemaining();
         if(left<=0)break;
         // A timeout is not evidence that the sparse graph lacks a routing.
         // Reserving a fraction for a larger graph can interrupt its second
@@ -61,11 +62,11 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=left,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{})};report.attempts.push(attempt);
         const observeRejected=async(proposal,timing)=>{
           try{
-            if(rejectedRepairUsed||remaining()<.75)return false;
+            if(rejectedRepairUsed||seedRemaining()<.75)return false;
             const quality=rejectedRoutingQuality(proposal,cfg);
             if(!quality.repairable)return false;
             rejectedRepairUsed=true;
-            const repaired=repairRejectedRouting(proposal,input,cfg,{deadline:start+seconds*1000,quality});
+            const repaired=repairRejectedRouting(proposal,input,cfg,{deadline:Math.min(start+seconds*1000,seedStarted+maximumSeconds*1000),quality});
             attempt.continuousRepair={...repaired.report,integerCandidateSeconds:timing.elapsedSeconds};
             if(repaired.solution){solution=repaired.solution;return true;}
             return false;
@@ -137,6 +138,29 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
           if(solution||report.attempts.some(a=>a.solver&&a.solver.termination!=='candidate_graph_exhausted'))break;
         }
         if(solution||remaining()<.25||report.attempts.some(a=>a.solver&&a.solver.termination!=='candidate_graph_exhausted'))break;
+      }
+    }
+    if(!solution&&!report.seedIntersectionRetry&&remaining()>=.75&&report.attempts.length&&report.attempts.every(a=>a.solver?.termination==='candidate_graph_exhausted')){
+      // A tiny raster bridge can add a junction without producing an illegal
+      // visible chain. More hidden connectors cannot change that boundary
+      // interpretation. Try one simpler trace after the established border
+      // alternatives; the original image still judges its eventual fit.
+      const before=trace(.5),after=trace(.75),graphOf=target=>reindex({target,edges:target.curves.map(curve=>({curve,visible:true}))});
+      const a=graphOf(before),b=graphOf(after),junctions=g=>g.incident.filter(edges=>edges.length>2).length;
+      const proposal={smoothRadius:.75,junctionsBefore:junctions(a),junctionsAfter:junctions(b),attempted:false,recovered:false};
+      report.seedTopologyRetry=proposal;
+      if(proposal.junctionsAfter<proposal.junctionsBefore&&!inspectBoundaryEndpoints(b,cfg.nominalWidth).issue&&!visibleMarginIssue(b,cfg)&&!visibleSelfIntersectionIssue(b,cfg)){
+        const mask=sampleTarget(after,source.resolution);
+        proposal.traceImageError=mask.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/mask.length;
+        proposal.maximumImageError=Math.min(.05,2*cfg.maxImageError);
+        proposal.featuresPassed=auditFeatureFidelity(source,mask,cfg).passed;
+        if(proposal.traceImageError<=proposal.maximumImageError&&proposal.featuresPassed){
+          // This is an extra topology proposal, not permission to consume the
+          // remaining grid/refinement allowance with another large MILP.
+          proposal.budgetSeconds=Math.min(2,remaining()/2);proposal.attempted=true;
+          await runSeed(.75,null,proposal.budgetSeconds);
+          proposal.recovered=!!solution;
+        }
       }
     }
     // All established border/smoothing alternatives get their turn before
