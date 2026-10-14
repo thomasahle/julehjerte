@@ -22,7 +22,7 @@ The 2026-10-14 snapshot contains:
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
-| Real visible-body annotations | 12 | Ten source groups outside reserved QA; uncertain pixels excluded. The original ten-instance adaptation pilot is unchanged; two reviewed additions have not entered training. |
+| Real visible-body annotations | 14 | Twelve source groups outside reserved source QA; uncertain pixels excluded. The original ten-instance adaptation pilot is unchanged; four reviewed additions have not entered training. |
 
 ## Current results and limits
 
@@ -76,7 +76,9 @@ pipeline still checks only 3/10 pairs, compared with 4/10 for the current croppe
 on that diagnostic. The [annotation report](real-annotation-pilot.md) explains
 unknown pixels, grouping and scope. A [two-image supplement](real-annotation-supplement.md)
 adds blue/yellow paper and decorated baskets on pale backgrounds, with no model
-replay yet. More checked real labels, distinct motif
+replay yet. [Two more annotations](real-motif-annotations.md) add boar/rabbit
+motifs, a clipped lobe and textured fabric with strong shadows; they also remain
+outside training. More checked real labels, distinct motif
 families and complete photo-to-export measurements are the next data priorities.
 
 The [experiment history](experiment-history.md) retains the earlier studies,
