@@ -6,29 +6,19 @@
     },
     {
       "id": "stjerner",
-      "hearts": ["stjerne", "stjerne-ramme", "5star", "simple-5star", "sun", "explosion", "nihon", "davidsstjerne-circ", "david4", "khatam"]
+      "hearts": ["stjerne", "stjerne-ramme", "5star", "simple-5star", "sun", "explosion", "nihon", "davidsstjerne-circ", "david4", "khatam", "stjernegitter", "stjernerogkors"]
     },
     {
       "id": "moenstre",
-      "hearts": ["circle", "balls", "kogle", "plus", "plus3",
-        "amy-weave-1",
-        "amy-weave-2",
-        "amy-rosette",
-        "amy-pattern",
-        "amy-flowering",
-        "amy-pinecone",
-        "alhambra",
-        "squares"
-      ]
+      "hearts": ["circle", "balls", "kogle", "plus", "plus3", "amy-weave-1", "amy-weave-2", "amy-rosette", "amy-pattern", "amy-flowering", "amy-pinecone", "alhambra", "squares", "sildeben", "puslespil", "koelbuer", "roserude", "hanefod", "flyvendegaes", "origami", "drageskael", "hermanngitter", "tragt", "boelgebrud", "glaskuppel", "hvirvel"]
     },
     {
       "id": "figurer",
-      "hearts": ["juletrae", "flower", "venus", "angel", "snowflake", "santa"
-        ]
+      "hearts": ["juletrae", "flower", "venus", "angel", "snowflake", "santa", "dagognat"]
     },
     {
       "id": "hjerter",
-      "hearts": ["triple-heart", "h4h2", "nemt-hjerte", "lilje1", "lilje2"]
+      "hearts": ["triple-heart", "h4h2", "nemt-hjerte", "lilje1", "lilje2", "hjertekloever"]
     }
   ]
 }

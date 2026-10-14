@@ -87,6 +87,14 @@ export const HEART_DESCRIPTIONS: Record<string, HeartDescription> = {
 		da: 'Et khatam-motiv gentaget som små møller ud over hele fladen; khatam er den ottetakkede stjerne, der er udbredt i islamisk kunst og arkitektur. Seks striber i hver halvdel, alle klip lige, men med næsten to hundrede knæk fordelt på striberne. Halvdelene er ikke ens, så hjertet har to skabeloner. Det er en ekspertopgave; hold skabelonen fast, og klip de mange små hjørner ét ad gangen.',
 		en: 'A khatam motif repeated as small pinwheels across the whole field; khatam is the eight-pointed star prominent in Islamic art and architecture. Six strips in each half, every cut straight, but with close to two hundred turns spread over the strips. The halves are not alike, so the heart comes with two templates. This is an expert job; hold the template down firmly and cut the many small corners one at a time.'
 	},
+	stjernegitter: {
+		da: 'Røde firtakkede stjerner på hvidt, bygget af kvadratet og den 45-graders rombe fra den ottekantede Ammann–Beenker-fliselægning. Fem striber i hver halvdel, alle klip lige, men i zigzag. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem; klip zigzaggen med lineal, så stjernernes spidser mødes præcist.',
+		en: 'Red four-pointed stars on white, built from the square and the 45-degree rhomb of the octagonal Ammann–Beenker tiling. Five strips in each half, every cut straight but zigzagging. The halves mirror each other, and one template covers both. Medium difficulty; cut the zigzags with a ruler so the points of the stars meet exactly.'
+	},
+	stjernerogkors: {
+		da: 'Stjerner og kors: hvide ottetakkede stjerner med spidser på 60 grader og røde kors imellem, som på de persiske fliser fra Kashan, med en hel stjerne midt i hjertet. Fem striber i hver halvdel, alle klip lige, og hvert stykke klip mellem to krydsninger har en tand, en stjernespids, der stikker ind i korset ved siden af. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er svær; klip hver tand helt ud til spidsen.',
+		en: 'Star and cross: white eight-pointed stars with 60-degree points and red crosses between them, as on the Persian tiles of Kashan, with a whole star in the middle of the heart. Five strips in each half, every cut straight, and every stretch of cut between two crossings carries one tooth, a star\'s point poking into the cross beside it. The halves mirror each other, and one template covers both. It is rated hard; cut each tooth right out to its point.'
+	},
 
 	// Mønstre
 	circle: {
@@ -141,6 +149,58 @@ export const HEART_DESCRIPTIONS: Record<string, HeartDescription> = {
 		da: 'To store røde firkanter med et hvidt hul i midten, sat over for to små røde ruder. Kun to striber i hver halvdel, det laveste antal i galleriet, men hver stribe knækker mange gange for at tegne kvadraterne. Halvdelene er ikke ens, så der hører en skabelon til hver side. Klipningen går hurtigt; det er flettingen, der kræver koncentration, fordi de brede striber skal krydses i den rigtige rækkefølge.',
 		en: 'Two large red squares with a white hole in the middle, set against two small red diamonds. Only two strips in each half, the lowest count in the gallery, but each strip turns many times to draw the squares. The halves are not alike, so each side has its own template. The cutting goes quickly; it is the weaving that takes concentration, because the wide strips have to cross in the right order.'
 	},
+	sildeben: {
+		da: 'Sildeben: skrå felter, der skifter retning fra række til række som i et parketgulv. Den hvide halvdel har seks striber klippet i zigzag, den røde fem lige striber, og zigzaggen knækker netop dér, hvor de lige klip krydser. Halvdelene er forskellige, så hjertet har to skabeloner. Sværhedsgraden er mellem; klip zigzaggen med lineal, ét knæk ad gangen.',
+		en: 'Herringbone: slanted fields that change direction from row to row, as in a parquet floor. The white half has six strips cut in a zigzag and the red half five straight strips, and the zigzag turns exactly where the straight cuts cross it. The halves differ, so the heart comes with two templates. Medium difficulty; cut the zigzag with a ruler, one turn at a time.'
+	},
+	puslespil: {
+		da: 'Et puslespil med fire gange fire brikker: hvert stykke klip mellem to krydsninger har en knop med smal hals og rundt hoved, skubbet ind i brikken på den ene eller den anden side, og brikkerne langs kanten har den lige kant fra et rigtigt puslespil. Fire striber i hver halvdel. Knopperne sidder forskelligt i de to halvdele, så hjertet har to skabeloner. Det er et let hjerte; klip langsomt rundt om hver knop.',
+		en: 'A jigsaw puzzle of four by four pieces: every stretch of cut between two crossings has a knob with a narrow neck and a round head, pushed into the piece on one side or the other, and the pieces along the edge keep the straight side of a real puzzle. Four strips in each half. The knobs sit differently in the two halves, so the heart comes with two templates. It is an easy heart; cut slowly round each knob.'
+	},
+	koelbuer: {
+		da: 'Kølbuer som i osmanniske silkestoffer og marokkanske lanternefliser: løgformede felter med spids top og bund, skiftevis røde og hvide. Fem striber i hver halvdel, og hvert klip er den samme bølge gentaget fra krydsning til krydsning. Halvdelene er spejlvendte, så én skabelon dækker begge. Det er et let hjerte; klip bølgerne i jævne træk, så spidserne mødes i krydsningerne.',
+		en: 'An ogee lattice, as in Ottoman silks and Moroccan lantern tiles: onion-shaped fields with pointed tops and bottoms, alternately red and white. Five strips in each half, and every cut is the same wave repeated from crossing to crossing. The halves mirror each other, so one template covers both. It is an easy heart; cut the waves in even strokes so the points meet at the crossings.'
+	},
+	roserude: {
+		da: 'Et rosevindue: et rødt firpas midt i en hvid blomst med fire runde blade, røde kronblade, der peger ud mellem bladene, og et ternet felt omkring. Fem striber i hver halvdel, alle klip let buede, og de midterste tegner firpassets buer. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem; klip hver bue helt ind til de skarpe spidser mellem bladene.',
+		en: 'A rose window: a red quatrefoil in the middle of a white flower with four round lobes, red petals pointing out between the lobes, and a chequered border around it. Five strips in each half, every cut gently curved, and the middle ones draw the lobes of the quatrefoil. The halves mirror each other, and one template covers both. Medium difficulty; cut each lobe right into the sharp points between them.'
+	},
+	hanefod: {
+		da: 'Hanefod (pied-de-poule) i den rene form, hvor to røde og to hvide brikker mødes i hvert hjørne. Fem striber i hver halvdel: den hvide halvdels klip er lige, den rødes er trapper med skarpe tænder. Halvdelene er forskellige, så hjertet har to skabeloner. Sværhedsgraden er svær; klip hver tand helt ud til spidsen, så den bliver skarp som i stoffet.',
+		en: 'Houndstooth (pied-de-poule) in its pure form, where two red and two white pieces meet at every corner. Five strips in each half: the white half\'s cuts are straight, the red half\'s are staircases with sharp teeth. The halves differ, so the heart comes with two templates. It is rated hard; cut each tooth right out to its point so it stays sharp, as in the cloth.'
+	},
+	flyvendegaes: {
+		da: 'Quiltblokken Flyvende gæs: rækker af røde og hvide trekanter, der alle peger opad, hver med spidsen mod midten af grundlinjen over sig. Seks striber i hver halvdel, alle klip lige, men i trapper. Halvdelene er spejlvendte, og én skabelon dækker begge. Det er en ekspertopgave på grund af de mange hjørner; klip hver trappe med lineal, ét trin ad gangen.',
+		en: 'The Flying Geese quilt block: rows of red and white triangles all pointing up, each tip touching the middle of the base above it. Six strips in each half, every cut straight but stepped. The halves mirror each other, and one template covers both. It is an expert job because of the many corners; cut each staircase with a ruler, one step at a time.'
+	},
+	origami: {
+		da: 'Et origami-mønster af kvadrattwist: folder løber begge veje, og hvor to folder krydser, er et lille kvadrat drejet rundt. Syv striber i hver halvdel, alle klip lige med små knæk ved hvert twist. Den ene halvdel er den anden drejet en kvart omgang, så én skabelon dækker begge. Sværhedsgraden er svær; klip knækkene præcist, ellers lukker de små kvadrater ikke.',
+		en: 'An origami square-twist tessellation: pleats run both ways, and where two pleats cross, a small square is twisted round. Seven strips in each half, every cut straight with small bends at each twist. One half is the other turned a quarter, so one template covers both. It is rated hard; cut the bends precisely, or the small squares will not close.'
+	},
+	drageskael: {
+		da: 'Drageskæl: hvert felt har to svulmende og to hule sider, alle drejet samme vej, så røde og hvide skæl griber ind i hinanden. Fem striber i hver halvdel, og hvert klip er en række halve bølger. Halvdelene bøjer modsat, så hjertet har to skabeloner. Sværhedsgraden er mellem; følg buerne i jævne træk, så alle skæl får samme form.',
+		en: 'Dragon scales: every field has two swelling sides and two hollow ones, all turned the same way, so red and white scales interlock. Five strips in each half, and every cut is a row of half waves. The halves bend opposite ways, so the heart comes with two templates. Medium difficulty; follow the curves in even strokes so all the scales get the same shape.'
+	},
+	hermanngitter: {
+		da: 'Hermanns gitter fra 1870: røde firkanter i et net af hvide gader, hvor der ser ud til at flimre grå pletter i gadekrydsene. Seks striber i hver halvdel, og de yderste er halvt så brede, så gitteret går helt ud til kanten. Alle klip er lige med små knæk, og halvdelene er spejlvendte, så én skabelon dækker begge. Det er en ekspertopgave; klip knækkene præcist, så gaderne bliver lige brede.',
+		en: 'The Hermann grid of 1870: red squares in a net of white streets, where grey spots seem to flicker at the crossings. Six strips in each half, and the outermost are half as wide, so the grid runs right out to the edges. Every cut is straight with small bends, and the halves mirror each other, so one template covers both. It is an expert job; cut the bends precisely so the streets stay the same width.'
+	},
+	tragt: {
+		da: 'Efter Bridget Rileys Movement in Squares: skakbrættets striber bliver smallere ind mod midten begge veje, så midten synker som bunden af en tragt eller rejser sig som toppen af en pyramide. Ti striber i hver halvdel, alle klip helt lige. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem; flet de smalle striber i midten forsigtigt, så de ikke rives over.',
+		en: 'After Bridget Riley\'s Movement in Squares: the chequerboard\'s strips grow narrower towards the middle both ways, so the centre sinks like the bottom of a funnel or rises like the top of a pyramid. Ten strips in each half, every cut perfectly straight. The halves mirror each other, and one template covers both. Medium difficulty; weave the narrow middle strips gently so they do not tear.'
+	},
+	boelgebrud: {
+		da: 'Et hav set fra stranden: skakbrættet står i perspektiv, småt langt ude under kløften og stort helt tæt på ved spidsen, og hver anden række krydsninger er en bølge, der vokser til brændinger. Seks striber i hver halvdel, alle klip buede. Halvdelene er forskellige, så hjertet har to skabeloner. Sværhedsgraden er mellem; klip brændingernes krøller i ét træk hver.',
+		en: 'A sea seen from the shore: the chequerboard is in perspective, small far out under the notch and large close up at the tip, and every other row of crossings is a wave that builds up to breakers. Six strips in each half, every cut curved. The halves differ, so the heart comes with two templates. Medium difficulty; cut the curls of the breakers in one stroke each.'
+	},
+	glaskuppel: {
+		da: 'Skakbrættet set gennem en glaskuppel, der ligger på hjertet: midten er forstørret, og felterne trænges sammen mod glassets kant, regnet ud efter, hvordan lyset brydes. Syv striber i hver halvdel; alle klip er lige ude ved kanten og bøjer rundt om kuplen. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem; felterne langs glassets kant er smalle, så flet dem forsigtigt.',
+		en: 'The chequerboard seen through a glass dome lying on the heart: the middle is magnified, and the fields crowd together towards the rim of the glass, worked out from how the light bends. Seven strips in each half; every cut runs straight at the edges and bends round the dome. The halves mirror each other, and one template covers both. Medium difficulty; the fields along the rim are narrow, so weave them gently.'
+	},
+	hvirvel: {
+		da: 'En hvirvel: skakbrættet er drejet næsten en halv omgang i midten og mindre og mindre ud mod kanten, så felterne fejer rundt om midten i buede arme. Fem striber i hver halvdel, og hvert klip er en blød S-bue. Den ene halvdel er den anden drejet en kvart omgang, så én skabelon dækker begge. Det er et let hjerte; klip buerne i lange, jævne træk.',
+		en: 'A whirlpool: the chequerboard is turned almost half a turn at the centre and less and less towards the edge, so the fields sweep round the middle in curved arms. Five strips in each half, and every cut is a gentle S-curve. One half is the other turned a quarter, so one template covers both. It is an easy heart; cut the curves in long, even strokes.'
+	},
 
 	// Figurer
 	juletrae: {
@@ -167,6 +227,10 @@ export const HEART_DESCRIPTIONS: Record<string, HeartDescription> = {
 		da: 'En julemand i fuld figur med hue og skæg, tegnet i rødt inde i en rund ramme og omgivet af tern. Figuren er den mest detaljerede i galleriet: fem striber i hver halvdel, men over to hundrede kurvestykker at klippe efter, og to tredjedele af dem er buer. Halvdelene er forskellige, så hjertet har to skabeloner. Det kræver god præcision ved klip, og en saks med kort blad giver bedst kontrol over detaljerne.',
 		en: 'A full-length Father Christmas with hat and beard, drawn in red inside a round frame and surrounded by checks. The figure is the most detailed in the gallery: five strips in each half, but over two hundred curve sections to cut along, two thirds of them true curves. The halves differ, so the heart comes with two templates. It needs real precision in the cutting, and short-bladed scissors give the best control over the detail.'
 	},
+	dagognat: {
+		da: 'Hvide og røde fugle, der flyver hver sin vej, efter M.C. Eschers tegning af fugle fra 1938, som han brugte i træsnittet Dag og nat. Fire striber i hver halvdel, alle klip buede efter fuglenes omrids. Halvdelene er forskellige, så hjertet har to skabeloner. Sværhedsgraden er svær; næb og vingespidser er skarpe spidser, så klip hver af dem ud i ét træk.',
+		en: 'White and red birds flying opposite ways, after M.C. Escher\'s drawing of birds from 1938, which he used in the woodcut Day and Night. Four strips in each half, every cut curved along the birds\' outlines. The halves differ, so the heart comes with two templates. It is rated hard; beaks and wingtips are sharp points, so cut each one out in a single stroke.'
+	},
 
 	// Hjerter
 	'triple-heart': {
@@ -188,6 +252,10 @@ export const HEART_DESCRIPTIONS: Record<string, HeartDescription> = {
 	lilje2: {
 		da: 'En større udgave af spejderliljen med flere detaljer i bladene og et felt af tern omkring. Syv striber i hver halvdel, og to femtedele af klippene er buer. Halvdelene er spejlvendte, så der er kun én skabelon. Sværhedsgraden er ekspert: mange af felterne er smallere end en stribe, og de tåler ikke, at papiret trækkes skævt under klipningen.',
 		en: 'A larger version of the scout lily with more detail in the leaves and a field of checks around it. Seven strips in each half, and two fifths of the cuts are curves. The halves mirror each other, so there is only one template. It is rated expert: many of the fields are narrower than a strip, and they will not survive the paper being pulled out of shape while you cut.'
+	},
+	hjertekloever: {
+		da: 'Fire hjerter, to hvide og to røde, med spidserne samlet midt i et 4 × 4-felt. Fire striber i hver halvdel; de to yderste klip er buede med to halvcirkler hver, og det midterste er lige. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem; klip hver halvcirkel helt ind til midterklippet, så hjerternes kløfter bliver skarpe.',
+		en: 'Four hearts, two white and two red, with their tips meeting in the middle of a 4 × 4 field. Four strips in each half; the two outer cuts are curved, with two half circles each, and the middle one is straight. The halves mirror each other, and one template covers both. Medium difficulty; cut each half circle right in to the middle cut, so the clefts of the hearts come out sharp.'
 	}
 };
 

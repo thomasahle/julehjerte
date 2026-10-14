@@ -55,6 +55,14 @@
     "name": "Khatam",
     "difficulty": "expert"
   },
+  "stjernegitter": {
+    "name": "Stjernegitter",
+    "difficulty": "medium"
+  },
+  "stjernerogkors": {
+    "name": "Stjerner og kors",
+    "difficulty": "hard"
+  },
   "circle": {
     "name": "Uret v2",
     "difficulty": "hard"
@@ -107,6 +115,58 @@
     "name": "Squares",
     "difficulty": "medium"
   },
+  "sildeben": {
+    "name": "Sildeben",
+    "difficulty": "medium"
+  },
+  "puslespil": {
+    "name": "Puslespil",
+    "difficulty": "hard"
+  },
+  "koelbuer": {
+    "name": "Kølbuer",
+    "difficulty": "medium"
+  },
+  "roserude": {
+    "name": "Roserude",
+    "difficulty": "medium"
+  },
+  "hanefod": {
+    "name": "Hanefod",
+    "difficulty": "hard"
+  },
+  "flyvendegaes": {
+    "name": "Flyvende gæs",
+    "difficulty": "expert"
+  },
+  "origami": {
+    "name": "Origami",
+    "difficulty": "hard"
+  },
+  "drageskael": {
+    "name": "Drageskæl",
+    "difficulty": "medium"
+  },
+  "hermanngitter": {
+    "name": "Hermann-gitter",
+    "difficulty": "expert"
+  },
+  "tragt": {
+    "name": "Tragt",
+    "difficulty": "medium"
+  },
+  "boelgebrud": {
+    "name": "Bølgebrud",
+    "difficulty": "expert"
+  },
+  "glaskuppel": {
+    "name": "Glaskuppel",
+    "difficulty": "medium"
+  },
+  "hvirvel": {
+    "name": "Hvirvel",
+    "difficulty": "medium"
+  },
   "juletrae": {
     "name": "Juletræ",
     "difficulty": "medium"
@@ -131,6 +191,10 @@
     "name": "Santa",
     "difficulty": "hard"
   },
+  "dagognat": {
+    "name": "Dag og nat",
+    "difficulty": "hard"
+  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "difficulty": "medium"
@@ -150,5 +214,9 @@
   "lilje2": {
     "name": "Lilje 2",
     "difficulty": "expert"
+  },
+  "hjertekloever": {
+    "name": "Hjertekløver",
+    "difficulty": "medium"
   }
 }
