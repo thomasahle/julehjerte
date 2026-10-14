@@ -1,0 +1,770 @@
+{
+  "schema": "supported-smooth-border-completed-replay-1",
+  "scope": "Offline corrected initializer on unchanged photographic targets. Native validation only; no new browser or editable replay. Single serial timing sample.",
+  "sourceCommit": "f800e65",
+  "sourceHashes": {
+    "scripts/inverse/border-profile-proposals.mjs": "a996304bdf122785018dd85c69fe5976c7bb0b87baf17ef285712f4e07427476",
+    "scripts/inverse/border-profile-proposals.test.mjs": "db58813a67522dd3c7c210422eebc68b9042a89c663cc7e048a3bbaf1b3daa85"
+  },
+  "unchangedBaselineSourceFiles": 93,
+  "photoSummary": {
+    "eligible": 31,
+    "passed": 25,
+    "changedPassStatus": 0,
+    "proposals": 1,
+    "acceptedProposals": 0,
+    "medianBorderSeconds": 0.0013314169999794102,
+    "changedErrorsPercentagePoints": {
+      "floral-checker": 0.10875000000000017,
+      "dense-checker": 0.0012500000000000358,
+      "bird": 0.0006249999999999312,
+      "gift": -0.15562499999999985,
+      "gingerbread": 0.08374999999999996,
+      "warped-checker": 0.051250000000000254,
+      "fine-checker": 0.1106250000000003,
+      "maple-leaf": 0.02749999999999992,
+      "bauble": 0.14062500000000117,
+      "flettede-puppy": 0.0006249999999999312,
+      "flettede-viking": -0.0006249999999999312
+    }
+  },
+  "photoRows": [
+    {
+      "id": "nested-squares",
+      "status": "no_crop",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "beforeSeconds": null,
+      "seconds": null,
+      "borderCalls": 0,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0,
+      "sourceUnchanged": null
+    },
+    {
+      "id": "outline-star",
+      "status": "failed",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": 0.00815625,
+      "error": 0.00815625,
+      "beforeSeconds": 8.898245917,
+      "seconds": 8.995323542000001,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0014489999999996144,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "floral-checker",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01929375,
+      "error": 0.02038125,
+      "beforeSeconds": 9.489459458,
+      "seconds": 9.499233417,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0015087920000005396,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "dense-checker",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.00699375,
+      "error": 0.00700625,
+      "beforeSeconds": 8.650287082999995,
+      "seconds": 9.027488292000001,
+      "borderCalls": 1,
+      "borderCandidates": 1,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.09358758300000045,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "bird",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.02470625,
+      "error": 0.0247125,
+      "beforeSeconds": 9.270516791000002,
+      "seconds": 9.321752834,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0012692079999978886,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "leaf",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0265125,
+      "error": 0.0265125,
+      "beforeSeconds": 7.555522125000003,
+      "seconds": 8.145339125000007,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013040000000037254,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "gift",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.02309375,
+      "error": 0.0215375,
+      "beforeSeconds": 9.340202917000003,
+      "seconds": 9.434256042000008,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0012836669999960577,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "gingerbread",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.014775,
+      "error": 0.0156125,
+      "beforeSeconds": 9.297075916999995,
+      "seconds": 9.438833583,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013608749999984866,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "white-birds",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.00379375,
+      "error": 0.00379375,
+      "beforeSeconds": 5.014760084000009,
+      "seconds": 5.486598499999992,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0012707079999963752,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "flower",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0050625,
+      "error": 0.0050625,
+      "beforeSeconds": 6.345470375000004,
+      "seconds": 6.499361625000005,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.001369208999996772,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "warped-checker",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01761875,
+      "error": 0.01813125,
+      "beforeSeconds": 9.412072667,
+      "seconds": 9.483120542000004,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013930839999957243,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "round-checker",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0121375,
+      "error": 0.0121375,
+      "beforeSeconds": 9.248457958000014,
+      "seconds": 9.287930541000009,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0012927500000077998,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "santa",
+      "status": "no_crop",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "beforeSeconds": null,
+      "seconds": null,
+      "borderCalls": 0,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0,
+      "sourceUnchanged": null
+    },
+    {
+      "id": "fine-checker",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.02105625,
+      "error": 0.0221625,
+      "beforeSeconds": 9.412448999999993,
+      "seconds": 9.382370250000006,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013041249999951106,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "orb",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01438125,
+      "error": 0.01438125,
+      "beforeSeconds": 9.322604084000021,
+      "seconds": 9.392949625000009,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0014711670000106096,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "stacked-hearts",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.007425,
+      "error": 0.007425,
+      "beforeSeconds": 5.316995958000014,
+      "seconds": 5.73658604200001,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013328329999931156,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "jigsaw",
+      "status": "failed",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": 0.0564375,
+      "error": 0.0564375,
+      "beforeSeconds": 9.13011379100001,
+      "seconds": 9.143381458999997,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.001396792000014102,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "candle",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0048375,
+      "error": 0.0048375,
+      "beforeSeconds": 4.182559999999998,
+      "seconds": 4.396090375,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.001275458999996772,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "maple-leaf",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01305,
+      "error": 0.013325,
+      "beforeSeconds": 9.336942417000014,
+      "seconds": 9.383424999999988,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.001317416999983834,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "crown",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.02411875,
+      "error": 0.02411875,
+      "beforeSeconds": 9.407761834000004,
+      "seconds": 9.346552999999986,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013057079999998678,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "crossed-ribbons",
+      "status": "failed",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": 0.02153125,
+      "error": 0.02153125,
+      "beforeSeconds": 4.168297083000012,
+      "seconds": 4.374116208999999,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.001442332999984501,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "bauble",
+      "status": "failed",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": 0.0919125,
+      "error": 0.09331875,
+      "beforeSeconds": 8.929160999999993,
+      "seconds": 9.096927916999993,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013082500000018626,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "bottom-flower",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0093875,
+      "error": 0.0093875,
+      "beforeSeconds": 7.848587457999995,
+      "seconds": 8.46079241699999,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013489169999957086,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "faceted-star",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0065,
+      "error": 0.0065,
+      "beforeSeconds": 8.034330708000024,
+      "seconds": 8.46370666700002,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013174999999755529,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "bibel-star-8",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.003675,
+      "error": 0.003675,
+      "beforeSeconds": 3.507430166999984,
+      "seconds": 3.7547736659999935,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0014922089999890886,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "bibel-star-curved",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.00663125,
+      "error": 0.00663125,
+      "beforeSeconds": 6.411103042000002,
+      "seconds": 6.631868499999983,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0012929170000134035,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "bibel-star-outline",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01159375,
+      "error": 0.01159375,
+      "beforeSeconds": 6.72968841599999,
+      "seconds": 7.29900741599995,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.001362250000005588,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "bibel-cross",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.00243125,
+      "error": 0.00243125,
+      "beforeSeconds": 3.2014130000000005,
+      "seconds": 3.5375146669999813,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0012911670000175946,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "flettede-puppy",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0103125,
+      "error": 0.01031875,
+      "beforeSeconds": 9.366231124999992,
+      "seconds": 9.362656000000017,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013314169999794102,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "flettede-stonehenge",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01905,
+      "error": 0.01905,
+      "beforeSeconds": 7.745441167000041,
+      "seconds": 8.325255000000004,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0012677499999990687,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "flettede-viking",
+      "status": "validated",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0202375,
+      "error": 0.02023125,
+      "beforeSeconds": 9.392989166999993,
+      "seconds": 9.608231708000007,
+      "borderCalls": 1,
+      "borderCandidates": 0,
+      "acceptedBorderCandidates": 0,
+      "borderSeconds": 0.0013397090000216848,
+      "sourceUnchanged": true
+    }
+  ],
+  "hunodanSummary": {
+    "count": 22,
+    "passed": 22,
+    "errorsIdenticalToRelease": true,
+    "maximumSeconds": 8.357024332999995
+  },
+  "hunodanRows": [
+    {
+      "id": "hjfig-01",
+      "seconds": 4.8150446659999995,
+      "error": 0.009799111111111111,
+      "passed": true
+    },
+    {
+      "id": "hjfig-02",
+      "seconds": 5.626253457999999,
+      "error": 0.013340444444444445,
+      "passed": true
+    },
+    {
+      "id": "hjfig-03",
+      "seconds": 4.197555625000001,
+      "error": 0.006634666666666666,
+      "passed": true
+    },
+    {
+      "id": "hjfig-04",
+      "seconds": 4.372094166999999,
+      "error": 0.013824,
+      "passed": true
+    },
+    {
+      "id": "hjfig-05",
+      "seconds": 3.5019893330000014,
+      "error": 0.009042960667083447,
+      "passed": true
+    },
+    {
+      "id": "hjfla-01",
+      "seconds": 6.0619010420000015,
+      "error": 0.012166341145833334,
+      "passed": true
+    },
+    {
+      "id": "hjcur-01",
+      "seconds": 5.7044022089999995,
+      "error": 0.005148444444444444,
+      "passed": true
+    },
+    {
+      "id": "hjcur-02",
+      "seconds": 5.745225583,
+      "error": 0.005219555555555555,
+      "passed": true
+    },
+    {
+      "id": "hjcur-03",
+      "seconds": 5.2634562499999955,
+      "error": 0.004522666666666667,
+      "passed": true
+    },
+    {
+      "id": "hjcur-04",
+      "seconds": 7.501570749999999,
+      "error": 0.005639111111111111,
+      "passed": true
+    },
+    {
+      "id": "hjcur-05",
+      "seconds": 3.6650206249999973,
+      "error": 0.009436444444444445,
+      "passed": true
+    },
+    {
+      "id": "hjhih-01",
+      "seconds": 6.45351975,
+      "error": 0.006040430615586996,
+      "passed": true
+    },
+    {
+      "id": "hjhih-02",
+      "seconds": 4.740597083000008,
+      "error": 0.003899406226779104,
+      "passed": true
+    },
+    {
+      "id": "hjhih-04",
+      "seconds": 7.735163583000001,
+      "error": 0.007776029627903062,
+      "passed": true
+    },
+    {
+      "id": "hjstr-01",
+      "seconds": 4.319022834000003,
+      "error": 0.007550237322696868,
+      "passed": true
+    },
+    {
+      "id": "hjstr-02",
+      "seconds": 6.2576932500000115,
+      "error": 0.004365548980933596,
+      "passed": true
+    },
+    {
+      "id": "hjstr-03",
+      "seconds": 8.357024332999995,
+      "error": 0.0056129769369752365,
+      "passed": true
+    },
+    {
+      "id": "hjsta-01",
+      "seconds": 5.189690333999999,
+      "error": 0.007929362880886427,
+      "passed": true
+    },
+    {
+      "id": "hjsta-02",
+      "seconds": 4.707136957999988,
+      "error": 0.0038045247395833335,
+      "passed": true
+    },
+    {
+      "id": "hjsta-03",
+      "seconds": 6.484529084000009,
+      "error": 0.012332213049376572,
+      "passed": true
+    },
+    {
+      "id": "hjsta-04",
+      "seconds": 6.790810167000004,
+      "error": 0.0050250552896055544,
+      "passed": true
+    },
+    {
+      "id": "hjsta-05",
+      "seconds": 6.236245666999996,
+      "error": 0.010624446293860237,
+      "passed": true
+    }
+  ],
+  "checks": [
+    {
+      "stage": "photos",
+      "command": [
+        "node",
+        "tmp/heart-learning/smooth-border-supported-v1/benchmark.mjs",
+        "--seconds=10",
+        "--crop=automatic",
+        "--target=mask",
+        "--presets=automatic",
+        "--output=tmp/heart-learning/smooth-border-supported-v1/photos"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 320.96134391600003
+    },
+    {
+      "stage": "photo-comparison",
+      "command": [
+        "python3",
+        "tmp/heart-learning/smooth-border-supported-v1/compare.py"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "seconds": 0.09073587500000713
+    },
+    {
+      "stage": "hunodan",
+      "command": [
+        "node",
+        "tmp/heart-learning/smooth-border-supported-v1/hunodan.mjs"
+      ],
+      "environment": {
+        "INVERSE_SPEED_MODULE": "",
+        "INVERSE_SPEED_OUT": "tmp/heart-learning/smooth-border-supported-v1/hunodan",
+        "INVERSE_SPEED_SECONDS": "10",
+        "INVERSE_SPEED_SETTINGS": "{}",
+        "INVERSE_SPEED_RETAIN_CANDIDATES": "0",
+        "INVERSE_HUNODAN_IDS": ""
+      },
+      "exitCode": 0,
+      "seconds": 125.148868875
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/checks.json",
+      "sha256": "1901c201e2bbc19a85ca6a96724805916d7177688bba761005f5afc867bb2ced",
+      "bytes": 1097
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/candidate.json",
+      "sha256": "fc68bda2d4dfd1ae2bdefbd42a14619c54da9b28475a568765b79cf06e51c1ea",
+      "bytes": 1877
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/photo-comparison.json",
+      "sha256": "3721e8127861c71ff720a2d2d62a5bc231ae92ee76e5b81c7fc21b8d65cbf19b",
+      "bytes": 29655
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/photos/results.json",
+      "sha256": "75826fb9629c61c7d289469ea8a6c634ec751676f1c14bc45f836a332052ffac",
+      "bytes": 4672130
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/hunodan/results.json",
+      "sha256": "5e0c86f2758961dba1b678a898d2cca38c0e23986a7808fc0bac0a14502064bd",
+      "bytes": 826981
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/photos.log",
+      "sha256": "317c66dd0b52e6c6b2854184ee06a03729421663bf2dc7a8ab3bae1442767b63",
+      "bytes": 1615
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/hunodan.log",
+      "sha256": "53a1cc66f299621183bcac03592ef465e2ea7b64f91f293d2433877b6a4e63f6",
+      "bytes": 2875
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/prepare.mjs",
+      "sha256": "5c46b388395fce2fa516219d4044d273d3d68d1585557197948f10537044f420",
+      "bytes": 6172
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/engine.mjs",
+      "sha256": "55fd1ad06e6580005512d5170aa7d25c31af024544283d88bffbe926491ebcfb",
+      "bytes": 1627
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/benchmark.mjs",
+      "sha256": "b6617e263c1205b51f6c146c3f659fc201a12a73fba9eca069c004ff2389c96c",
+      "bytes": 18982
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/hunodan.mjs",
+      "sha256": "3a4038514d0ea3206ac23c69277a0be58fad44ccfa19f45011323f622f472711",
+      "bytes": 6875
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/automatic.mjs",
+      "sha256": "14cf73301df71e93f849759f28a9bc91dbf39d5e9b51978ede4ad558ed87cf35",
+      "bytes": 6166
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/fit.mjs",
+      "sha256": "fbd80e9b49f1aad46f6ae4b5da2f33e5fabecfa056b890a3c003e0de69814ab5",
+      "bytes": 61631
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/topology.mjs",
+      "sha256": "c73b65b151df79c23628d098cbda1f37f95d8718eb34a29670504f4067d49b26",
+      "bytes": 14673
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/compare.py",
+      "sha256": "249730b759485d594b8a97c961d058eed5688a71fb949515dbae3489aea08c40",
+      "bytes": 2792
+    },
+    {
+      "file": "tmp/heart-learning/smooth-border-supported-v1/run.py",
+      "sha256": "cfbf454d6a6cf9def9585344751349b4de9cf0551d9a018ebc08e7263355047f",
+      "bytes": 1079
+    }
+  ],
+  "limitations": [
+    "No new photographic success; helper remains outside the website.",
+    "Photo errors fluctuate; identical inputs and pass status do not imply identical exported cuts.",
+    "The support rule was developed using these cases; this is not held-out evaluation.",
+    "Hunodan timing excludes decoding, startup and browser-worker overhead."
+  ]
+}

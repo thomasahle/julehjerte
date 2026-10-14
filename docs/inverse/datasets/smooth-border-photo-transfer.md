@@ -66,9 +66,16 @@ resolutions, rotations, paper-color inversion, clean slanted cuts and unchanged
 interiors. The preceding full 807-test QA belongs to `f1c602b`; it is not a claim
 that the full suite was repeated after this correction.
 
-A fresh full photo/Hunodan replay of the corrected helper is running separately
-under `tmp/heart-learning/smooth-border-supported-v1/`. The helper and its proposed
-early integration remain offline. The [frozen record](smooth-border-photo-transfer.json)
+A fresh full photo/Hunodan replay of the corrected helper has completed separately
+under `tmp/heart-learning/smooth-border-supported-v1/`. Its [completed record](supported-border-replay.json)
+retains 25/31 native photo passes with no changed pass status and 22/22 Hunodan
+passes with exactly unchanged release errors, maximum 8.36 seconds. The photo
+run generates only one proposal, which is rejected; median border-stage overhead
+falls to 1.33 ms. Photo errors still fluctuate: eight passing cases increase,
+at most 0.110625 percentage points, and two improve. These are fresh native
+fits, not a claim of identical outputs or new editable/browser verification.
+
+The helper and its proposed early integration remain offline. The [frozen record](smooth-border-photo-transfer.json)
 retains the unsuccessful broad trial and the 61-mask evidence replay; later
 results must not overwrite those experiments. No acceptance limits were relaxed,
 no neural model was trained, and nothing was pushed or deployed.

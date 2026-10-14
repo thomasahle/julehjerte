@@ -73,8 +73,10 @@ The [photographic transfer check](smooth-border-photo-transfer.md) finds no
 accepted smooth-row proposals across the 31-photo and 22-Hunodan benchmarks.
 Pass counts hold, but the unsuccessful work costs about 0.2 seconds per input.
 A committed inner-evidence check now skips 49 of 51 photographic masks while
-preserving every selected synthetic proposal exactly. A fresh full replay of
-that correction is separate from the completed broad trial; it remains offline.
+preserving every selected synthetic proposal exactly. Its separate completed
+native replay retains 25/31 photo passes and all 22 Hunodan passes with unchanged
+release errors, maximum 8.36 seconds. No new proposal is accepted; photo errors
+still fluctuate. The correction remains offline.
 
 The [shared-return follow-up](visible-shared-returns.md) reduces two star notches
 and protects real corners against one-pixel source shifts. Its latest scheduling
