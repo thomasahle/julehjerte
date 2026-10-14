@@ -9,7 +9,6 @@ export type GeneratorState = {
 	scale: number;
 	style: 'rays' | 'check' | 'plain' | 'sunburst';
 	textFrame: TextFrame;
-	paperWidth: number;
 };
 export const defaults: GeneratorState = {
 	mode: 'start',
@@ -20,8 +19,7 @@ export const defaults: GeneratorState = {
 	frameSize: 70,
 	scale: 70,
 	style: 'rays',
-	textFrame: 'woven',
-	paperWidth: 100
+	textFrame: 'woven'
 };
 export function readGeneratorState(hash: string): GeneratorState {
 	const s = { ...defaults };
@@ -42,8 +40,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 			s.motif = raw.motif;
 		for (const [k, min, max] of [
 			['frameSize', 50, 80],
-			['scale', 45, 85],
-			['paperWidth', 80, 140]
+			['scale', 45, 85]
 		] as const)
 			if (typeof raw[k] === 'number' && Number.isFinite(raw[k]))
 				Object.assign(s, {

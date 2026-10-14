@@ -8,7 +8,7 @@ import {
 	templateVariants
 } from './templates';
 import { matchingMotifs } from './catalog';
-import { gridPaperWidth } from './printSize';
+import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import {
 	intersectionMarginPx,
 	findFingersWithIssues
@@ -52,7 +52,7 @@ describe('longer and multiline text', () => {
 			expect(design).not.toHaveProperty('rightCutouts');
 			const margin = intersectionMarginPx(
 				inferOverlapRect(design.fingers, design.gridSize),
-				design.templateWidthMm
+				gridClearanceScale(design.gridSize.x, design.gridSize.y)
 			);
 			expect(findFingersWithIssues(design.fingers, margin).size).toBe(0);
 		});
@@ -68,7 +68,7 @@ describe('longer and multiline text', () => {
 			});
 			expect(design.gridSize).toEqual({ x: 7, y: 7 });
 		});
-	it('keeps line breaks and larger print sizes through saved designs and SVG', () => {
+	it('keeps line breaks through saved designs and SVG without prescribing print size', () => {
 		const { design } = generate({
 			mode: 'text',
 			name: 'JULE\nMAND',
@@ -81,7 +81,7 @@ describe('longer and multiline text', () => {
 			parseHeartFromSVG(serializeHeartToSVG(design))
 		]) {
 			expect(restored?.name).toBe('JULE\nMAND');
-			expect(restored?.templateWidthMm).toBe(175);
+			expect(restored?.templateWidthMm).toBeUndefined();
 		}
 	});
 	it('preserves multiline links, accents and sensible input limits', () => {
@@ -95,12 +95,12 @@ describe('longer and multiline text', () => {
 	});
 });
 
-describe('physical spacing', () => {
-	it('keeps a 1.5 mm gap as the grid and print size increase', () => {
-		expect(gridPaperWidth(2)).toBe(100);
-		expect(gridPaperWidth(6)).toBe(150);
-		expect(intersectionMarginPx({ width: 100, height: 100 }, 100)).toBe(1.5);
-		expect(intersectionMarginPx({ width: 100, height: 100 }, 150)).toBe(1);
+describe('grid-aware spacing', () => {
+	it('allows denser grids to use finer cuts without selecting a print size', () => {
+		expect(gridClearance(2)).toBe(1.5);
+		expect(gridClearance(6)).toBe(1);
+		expect(intersectionMarginPx({ width: 100, height: 100 }, gridClearanceScale(2))).toBe(1.5);
+		expect(intersectionMarginPx({ width: 100, height: 100 }, gridClearanceScale(6))).toBe(1);
 	});
 });
 
@@ -130,7 +130,7 @@ describe('figures and complete templates', () => {
 			colors
 		});
 		expect(design.gridSize).toEqual({ x: 5, y: 5 });
-		expect(design.templateWidthMm).toBe(125);
+		expect(design.templateWidthMm).toBeUndefined();
 	});
 	it('offers unique complete pairs and keeps old shared selections', () => {
 		expect(FIGURE_TEMPLATES).toHaveLength(19);

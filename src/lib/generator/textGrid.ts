@@ -16,7 +16,7 @@ import {
 	compile,
 	connectCellGrid
 } from './geometry';
-import { gridPaperWidth, normalizedClearance } from './printSize';
+import { gridClearance } from '$lib/geometry/clearance';
 
 export function generateTextGrid(
 	text: string,
@@ -74,7 +74,7 @@ export function generateTextGrid(
 		cells: Point[][][] = [],
 		background: Ring[] = [];
 	const cached = new Map<string, { x: number; y: number; edges: Edge[] }>();
-	const margin = normalizedClearance(gridPaperWidth(cols + rows + 1));
+	const margin = gridClearance(cols + rows + 1);
 	for (let row = 0; row < rows; row++) {
 		cells.push([]);
 		let cursor = -span / 2;

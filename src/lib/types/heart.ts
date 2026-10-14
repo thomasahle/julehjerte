@@ -56,7 +56,7 @@ export interface HeartDesign {
   // Appearance snapshot for saved/exported files. The site's live previews use
   // the shared footer colours; changing that preference does not edit geometry.
   colors?: HeartColors;
-  /** Preferred physical paper width for fine generated templates. */
+  /** Legacy print preference retained for file compatibility; exports use the chosen layout. */
   templateWidthMm?: number;
   fingers: Finger[];
 }

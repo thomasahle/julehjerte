@@ -378,8 +378,8 @@
 		downloadBusy = true;
 		notice = '';
 		try {
-			const { downloadSizedPDF } = await import('$lib/pdf/template');
-			await downloadSizedPDF(design, design.templateWidthMm, lang);
+			const { downloadPDF } = await import('$lib/pdf/template');
+			await downloadPDF(design, { lang });
 		} catch {
 			notice = t('generatorFailedDownload', lang);
 		} finally {
@@ -690,11 +690,6 @@
 					><DownloadIcon size={18} />{t('generatorDownload', lang)}</button
 				>
 				<p class="hint">{t('generatorPaperHint', lang)}</p>
-				{#if result}<p class="hint">
-						{t('generatorPrintSize', lang, {
-							width: result.design.templateWidthMm ?? 100
-						})}
-					</p>{/if}
 				<button
 					class="btn btn-outline"
 					disabled={!result || busy}

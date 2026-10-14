@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { gridClearanceScale } from '$lib/geometry/clearance';
 	import { onMount, tick, type Component, type Snippet } from 'svelte';
 	import type { IconProps } from '$lib/components/icons/types';
 	import { Separator } from '$lib/components/ui/separator';
@@ -66,7 +67,6 @@
 			initialFingers?: Finger[];
 			initialGridSize?: GridSize | number;
 			initialWeaveParity?: 0 | 1 | number;
- paperWidthMm?: number;
 			size?: number;
 			fullPage?: boolean;
 			/**
@@ -96,7 +96,6 @@
 			initialFingers,
 			initialGridSize = 3,
 			initialWeaveParity = 0,
- paperWidthMm = 100,
 			size = 800,
 			fullPage = false,
 			panelExtra,
@@ -1108,7 +1107,7 @@
 	// (Uses inferOverlapRect directly: weaveData is declared further down, which matters for SSR.)
 	let issueFingerIds = $derived.by(() => {
 		if (readonly || !showCurves) return new Set<string>();
-		return findFingersWithIssues(fingers, intersectionMarginPx(inferOverlapRect(fingers, gridSize), paperWidthMm));
+		return findFingersWithIssues(fingers, intersectionMarginPx(inferOverlapRect(fingers, gridSize), gridClearanceScale(gridSize.x, gridSize.y)));
 	});
 
 		function candidateIsValid(fingerId: string, candidate: Finger, overrides?: Map<string, Finger>): boolean {

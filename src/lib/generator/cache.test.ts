@@ -2,16 +2,15 @@ import { it, expect } from 'vitest';
 import { GeometryCache, geometryKey } from './cache';
 import { defaults } from './state';
 import type { GeneratorResult } from './generate';
-it('does not regenerate for print width or choices in the other design mode', () => {
+it('does not regenerate for choices in the other design mode', () => {
 	const figure = { ...defaults, mode: 'figure' as const },
 		text = { ...defaults, mode: 'text' as const };
 	expect(
-		geometryKey({ ...figure, paperWidth: 140, text: 'BØ', font: 'cinzel' })
+		geometryKey({ ...figure, text: 'BØ', font: 'cinzel' })
 	).toBe(geometryKey(figure));
 	expect(
 		geometryKey({
 			...text,
-			paperWidth: 140,
 			motif: 'ph-cat',
 			scale: 45,
 			frame: 'diamond'

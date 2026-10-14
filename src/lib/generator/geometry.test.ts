@@ -212,8 +212,7 @@ describe('saved generator inputs', () => {
 			...defaults,
 			mode: 'text',
 			text: 'ÆØÅ',
-			font: 'kalam',
-			paperWidth: 140
+			font: 'kalam'
 		};
 		expect(
 			readGeneratorState('#make=' + encodeURIComponent(JSON.stringify(value)))
@@ -234,7 +233,7 @@ describe('saved generator inputs', () => {
 		expect(bad.motif).toBe('star');
 		expect(bad.font).toBe('nunito');
 		expect(bad.scale).toBe(85);
-		expect(bad.paperWidth).toBe(80);
+		expect(bad).not.toHaveProperty('paperWidth');
 		expect(bad.text).toBe('ABCDEFGHIJ');
 		expect(readGeneratorState('#make=broken')).toEqual(defaults);
 	});

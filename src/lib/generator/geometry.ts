@@ -1,4 +1,4 @@
-import { gridPaperWidth, normalizedClearance } from './printSize';
+import { gridClearance } from '$lib/geometry/clearance';
 /** Direct contour constructions. No image fitting, search solver, or raster mask.
  * A visible outline belongs to one sheet. A connecting cut belongs to both;
  * it cancels in the woven image. Every sheet must remain a set of disjoint open
@@ -592,7 +592,7 @@ export function generateCheckedText(
 				contours,
 				gates,
 				angles,
-				normalizedClearance(gridPaperWidth(nonempty.length + 2))
+				gridClearance(nonempty.length + 2)
 			);
 			letterCuts.set(chars[i], { x, edges: local });
 			edges.push(...local);

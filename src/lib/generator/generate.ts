@@ -1,6 +1,6 @@
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
-import { gridPaperWidth } from './printSize';
+import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import {
 	convertValidatedCutGeometry,
@@ -40,7 +40,6 @@ export type GeneratorRequest = {
 	scale?: number;
 	style?: 'rays' | 'check' | 'plain' | 'sunburst';
 	textFrame?: TextFrame;
-	paperWidth?: number;
 };
 export type GeneratorResult = {
 	design: HeartDesign;
@@ -244,14 +243,12 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		recipe: GeneratorResult['recipe']
 	) => {
 		audit(r.edges);
-		const widthMm =
-			request.paperWidth ??
-			gridPaperWidth(
-				r.geometry.A_overlap_paths.length + 1,
-				r.geometry.B_overlap_paths.length + 1
-			);
+		const clearanceScale = gridClearanceScale(
+			r.geometry.A_overlap_paths.length + 1,
+			r.geometry.B_overlap_paths.length + 1
+		);
 		// Avoid expensive curve fitting when cuts already leave a severe sliver.
-		if (request.mode !== 'text' && hasSeverePinch(r.geometry, 100 / widthMm))
+		if (request.mode !== 'text' && hasSeverePinch(r.geometry, clearanceScale))
 			throw new ConstructionError(
 				'clearance',
 				'The original cuts have a severe pinch'
@@ -261,9 +258,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			name: request.name,
 			colors: request.colors,
 			tolerance: 0.025,
-			paperWidthMm: widthMm
+			clearanceScale
 		});
-		design.templateWidthMm = widthMm;
 		const domain = r.domain ?? [
 			frameRing(request.frame ?? 'circle', request.frameSize ?? 70)
 		];

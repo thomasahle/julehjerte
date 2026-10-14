@@ -417,11 +417,11 @@ clipped boundaries cancel or become shared cuts, preserving every visible detail
 manageable strips over fewer cuts, while retaining the full clearance and fidelity checks. Two-dimensional
 panels separate the gift's bow and box pieces into a 5×5 grid.
 
-Spacing is physical: allow 25 mm of paper per strip, with a 100 mm minimum width. The generator,
-PDF and editor use the same resulting size and the same 1.5 mm minimum clearance. Larger designs
-retain this width through saved JSON, SVG and editor handoff. There is no paper-width slider in the
-generator. Oversized templates span portrait A4 sheets with 10 mm overlaps, alignment marks and
-row/column labels; never silently scale them down to one page.
+Spacing follows grid density: use 1.5 normalized units for grids up to 4×4, then scale the gap
+by 4 / max(columns, rows). This retains the construction assumption of about 25 mm per strip
+without selecting a paper size. The generator and editor use this same rule. Generated designs
+carry no print-size preference and use the site's normal PDF layouts. There is no paper-width
+slider, automatic enlargement or multi-page tiling in the generator.
 
 The searchable motif library contains the authored motifs, 1,525 filled Phosphor icons and 1,088
 filled Tabler icons. The initial list is a curated set of Christmas motifs that generate successfully

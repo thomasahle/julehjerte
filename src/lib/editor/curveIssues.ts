@@ -1,4 +1,5 @@
 import type { Finger, Vec } from '$lib/types/heart';
+import { BASE_CLEARANCE } from '$lib/geometry/clearance';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import { fingerToSegments } from '$lib/geometry/bezierSegments';
 import { bezierBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves } from '$lib/geometry/curves';
@@ -10,8 +11,8 @@ import { vecDist, vecLerp } from '$lib/geometry/vec';
  * internal pixels; the overlap square is 100 x 100 heart units (~100 mm when printed).
  */
 
-/** Minimum physical gap in millimetres; equivalent to heart units at 100 mm width. */
-export const INTERSECTION_MARGIN_UNITS = 1.5;
+/** Baseline gap in normalized heart units, before grid-density scaling. */
+export const INTERSECTION_MARGIN_UNITS = BASE_CLEARANCE;
 
 const INTERSECTION_EPS = 0.5;
 const MAX_INTERSECTION_DEPTH = 18;
@@ -21,10 +22,10 @@ const SELF_ENDPOINT_TOLERANCE = 2;
 
 type BBox = { x: number; y: number; width: number; height: number };
 
-/** Convert the physical margin to editor pixels at the intended print width. */
-export function intersectionMarginPx(overlap: { width: number; height: number }, paperWidthMm = 100): number {
+/** Convert the normalized gap to editor pixels, optionally scaled for grid density. */
+export function intersectionMarginPx(overlap: { width: number; height: number }, clearanceScale = 1): number {
 	const unit = (overlap.width + overlap.height) / 200;
-	return INTERSECTION_MARGIN_UNITS * unit * 100 / paperWidthMm;
+	return INTERSECTION_MARGIN_UNITS * unit * clearanceScale;
 }
 
 export function bboxesOverlap(a: BBox, b: BBox): boolean {

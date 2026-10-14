@@ -1,4 +1,4 @@
-import { gridPaperWidth, normalizedClearance } from './printSize';
+import { gridClearance } from '$lib/geometry/clearance';
 /** Divide a complicated motif into neighbouring woven cells. Clipped boundaries
  * are not visible seams: the two cells contribute opposite sheet families there,
  * producing exactly coincident cuts after the pieces are stitched together. */
@@ -192,7 +192,7 @@ export function generatePanelFigure(
 				parts.map((r) => r.map(uprightToSheet)),
 				gates,
 				[Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
-				normalizedClearance(gridPaperWidth(count + rows + 1))
+				gridClearance(count + rows + 1)
 			);
 			cells[row].push(gates);
 		}

@@ -1,4 +1,3 @@
-import { templateTiles } from './tiles';
 import { jsPDF } from 'jspdf';
 import type { HeartDesign, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
@@ -500,9 +499,10 @@ function addTemplatesPage(
     // Draw template name at top
     pdf.setFontSize(8);
     pdf.setTextColor(0);
+    const name = template.design.name.replace(/\r?\n/g, ' / ');
     const label = template.lobe === 'both'
-      ? template.design.name
-      : `${template.design.name} (${t(template.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
+      ? name
+      : `${name} (${t(template.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
     pdf.text(label, pos.x, slotTop + 4, { align: 'center' });
     // A sheet often ends up separated from the rest (a school, a workshop), so
     // each template carries the address that leads back to it.
@@ -554,7 +554,6 @@ function addTemplatesPage(
 }
 
 async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promise<jsPDF> {
-  if (design.templateWidthMm && !options.layout) return generateSizedPDF(design, design.templateWidthMm, options.lang ?? 'da');
   const layout = options.layout ?? 'medium';
   const lang = options.lang ?? 'da';
 
@@ -613,49 +612,4 @@ export async function downloadMultiPDF(designs: HeartDesign[], options: PDFOptio
     ? singleFilename(designs[0])
     : `${t('pdfMultiFilename', options.lang, { n: designs.length })}.pdf`;
   pdf.save(filename);
-}
-
-/** A4 sheets at an explicit physical width, tiled when necessary. Used by the
- * motif generators so fine lettering is never silently shrunk into a grid. */
-export async function generateSizedPDF(design: HeartDesign, widthMm = 100, lang: Language = 'da'): Promise<jsPDF> {
-  const plan=templateTiles(widthMm);
-  const pdf = new jsPDF({unit:'mm',format:'a4',compress:true});
-  const preview = await renderHeartToDataURL(design,{size:500});
-  let page=0;
-  for (const lobe of ['left','right'] as const) for (let row=0;row<plan.rows;row++) for (let column=0;column<plan.columns;column++) {
-    if(page++)pdf.addPage();
-    pdf.setTextColor(0);pdf.setFontSize(12);
-    const title = pdf.splitTextToSize(design.name.replace(/\n/g,' / '), 125);
-    pdf.text(title, 15, 12);
-    pdf.setFontSize(10); pdf.text(`${t(lobe==='left'?'lobeLeft':'lobeRight',lang)} · ${widthMm} mm`,15,27);
-    pdf.addImage(preview,'PNG',170,4,25,25);
-    const tiled=plan.rows*plan.columns>1;
-    pdf.saveGraphicsState();
-    pdf.rect(15,32,plan.width,plan.height,null);pdf.clip();pdf.discardPath();
-    const cx=tiled ? 16+widthMm/2-column*(plan.width-plan.overlap) : 105;
-    const cy=tiled ? 33+widthMm*.75-row*(plan.height-plan.overlap) : 146;
-    // Compensate drawLobeTemplate's 5% padding to preserve the exact print width.
-    drawLobeTemplate(pdf,design,lobe,cx,cy,widthMm/.95,widthMm*1.5/.95);
-    pdf.restoreGraphicsState();
-    if(tiled) {
-      pdf.setDrawColor(150);pdf.setLineWidth(.15);
-      pdf.rect(15,32,plan.width,plan.height);pdf.setLineDashPattern([],0);
-      const mark=(x:number,y:number)=>{pdf.line(x-2,y,x+2,y);pdf.line(x,y-2,x,y+2);};
-      // Marks occupy identical physical coordinates on both overlapping pages.
-      for(const x of [column ? 20 : null, column<plan.columns-1 ? 190 : null])
-        if(x!==null) for(const y of [52,240]) mark(x,y);
-      for(const y of [row ? 37 : null, row<plan.rows-1 ? 255 : null])
-        if(y!==null) for(const x of [35,175]) mark(x,y);
-      pdf.setFontSize(8);
-      pdf.text(t('generatorPdfTile',lang,{column:column+1,columns:plan.columns,row:row+1,rows:plan.rows}),15,265);
-    }
-    pdf.setTextColor(0);pdf.setFontSize(8);
-    pdf.text([t('generatorPdfPrint',lang),t('generatorPdfFold',lang),t('generatorPdfCut',lang)],15,273);
-    pdf.setDrawColor(0);pdf.setLineWidth(.2);pdf.line(155,274,185,274);pdf.line(155,272,155,276);pdf.line(185,272,185,276);
-    pdf.text('30 mm',170,280,{align:'center'});pdf.text(SITE_DOMAIN,105,290,{align:'center'});
-  }
-  return pdf;
-}
-export async function downloadSizedPDF(design:HeartDesign,widthMm=100,lang:Language='da') {
-  (await generateSizedPDF(design,widthMm,lang)).save(singleFilename(design));
 }
