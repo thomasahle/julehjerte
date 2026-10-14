@@ -46,6 +46,12 @@ across 480 representations, but flags two previously accepted outputs. Fresh
 fits recover checked alternatives with higher image error, so the proposal
 remains offline while quality recovery and independent editor checks are studied.
 
+An offline [checkpoint-projection follow-up](short-return-projection.md) now
+recovers both affected examples without reverting the proposed geometry check:
+the Hunodan bird reaches 0.8612% error and the gift 2.3038%, slightly below their
+previous runtime errors. Both survive editable conversion. Full-corpus testing
+and reconciliation with the independent editor remain required before promotion.
+
 The [Pinterest expansion](real-pinterest-expansion.md) includes all four supplied
 pins. Download success, photograph count, heart-instance count and motif-family
 count are different measures. Of the 1,034 source files, 476 are now reserved by
