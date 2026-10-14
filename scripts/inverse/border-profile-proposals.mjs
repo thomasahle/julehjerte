@@ -68,7 +68,8 @@ export function fitBoundaryProfile(profile, minimumPixels, maximumCount = 16) {
  * The original interior and the caller's mask are untouched.
  */
 export function proposeBoundaryProfiles(mask, n, width, minimumWidth, {
-  maximumCount = 16, editRadius = 3, profileStart = 1, profileEnd = 4, limit = 8,
+  maximumCount = 16, editRadius = Math.min(3, .08 * width),
+  profileStart = Math.min(1, .04 * width), profileEnd = Math.min(4, .16 * width), limit = 8,
 } = {}) {
   if (!Number.isInteger(n) || n < 4 || n > 2048 || mask.length !== n * n ||
       !mask.every(p => p === 0 || p === 1)) throw new Error('Expected a square binary mask, 4–2048 pixels per side.');

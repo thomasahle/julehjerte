@@ -84,6 +84,14 @@ test('uniform ambiguous profiles have complement-symmetric ties and physical bou
   assert.throws(()=>proposeBoundaryProfiles(mask,8,100,2.5,{limit:9}));
   assert.throws(()=>proposeBoundaryProfiles(mask.fill(2),8,100,2.5));
   assert.deepEqual(proposeBoundaryProfiles(new Uint8Array(64),8,100,2.5,{editRadius:.1}),[]);
+  // Defaults must obey their own relative limits for small physical hearts.
+  const n=128,checker=Uint8Array.from({length:n*n},(_,i)=>(Math.floor(i%n/32)+Math.floor(Math.floor(i/n)/32))%2);
+  for(const width of [20,40,100,300]){
+    const seed=proposeBoundaryProfiles(checker,n,width,.025*width)[0];
+    assert.deepEqual(seed.mask,checker);
+    assert.ok(seed.metadata.editedBandWidthMm<=Math.min(3,.08*width));
+    assert.ok(seed.metadata.profileEndMm<=.16*width);
+  }
 });
 
 test('Santa obtains balanced provisional endpoints while its independent trace checks still reject the geometry',async()=>{
