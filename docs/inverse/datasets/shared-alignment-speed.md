@@ -54,7 +54,11 @@ diagnostic checks input immutability, retains source/mask/output hashes and
 saves independently rendered outputs. It is not a fresh photo solve.
 
 All **110 focused sharing tests** and the diagnostic's ESLint check pass.
-Fresh full QA, photo/Hunodan fitting and browser replays are pending. Runtime
-`c000d30` remains the latest fully validated release until those checks finish:
+Fresh full QA on runtime `b8e20f2` also passes **853 inverse tests**, **857
+application tests** (one existing skip), type checking, lint and build. All 848
+pinned source files remain unchanged. The inverse suite takes 850.94 seconds;
+this is test-suite duration, not a solver timing. Photo/Hunodan fitting and
+browser replays are still running. Runtime `c000d30` remains the latest fully
+validated release until those checks finish:
 reordering rejection work can change which candidate a bounded search reaches,
 even though unlimited-pass outputs match exactly.

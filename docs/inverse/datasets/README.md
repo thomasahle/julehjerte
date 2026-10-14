@@ -74,8 +74,11 @@ A newer [shared-alignment optimization](shared-alignment-speed.md) checks an
 existing cutting-quality rejection before the full geometry audit. It produces
 identical final curves across 47 frozen accepted exports, reducing their total
 alignment time from 29.44 to 26.52 seconds; 110 focused tests pass. Fresh full
-QA and end-to-end replays are pending. This changes validation order, not the
-acceptance rules, and is not yet a whole-pipeline speed claim.
+QA on runtime `b8e20f2` passes 853 inverse tests, 857 application tests (one
+existing skip), type checking, lint and build; all 848 pinned source files
+remain unchanged. End-to-end photo/Hunodan and browser replays are running.
+This changes validation order, not the acceptance rules, and is not yet a
+whole-pipeline speed claim.
 
 The [long-budget leaf diagnosis](long-budget-selection.md) confirms identical
 prepared inputs and initial grid scores in the ordinary and ten-second browser

@@ -3208,7 +3208,7 @@
     "focusedTestsPassed": 110,
     "focusedTestsFailed": 0,
     "eslintPassed": true,
-    "freshFullQA": "pending",
+    "freshFullQA": "passed",
     "freshCorpusAndBrowser": "pending"
   },
   "artifactsSha256": {
@@ -3244,5 +3244,82 @@
     "Under a live deadline, doing less wasted work can change which valid candidate is reached. Identical unlimited-pass geometries do not establish identical fresh-solve outcomes.",
     "Pixel-centre versus independent antialiased rendering can differ slightly after an extra alignment. This experiment does not add an extra pass to production.",
     "No changes to cropping, material classification, annotation or neural training."
-  ]
+  ],
+  "fullQA": {
+    "runtimeCommit": "b8e20f2",
+    "sourceCommit": "b8e20f296891c025a017bfa6d6312eff689f151b",
+    "sourceFilesVerified": 848,
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 9.056948209
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 5.979848833
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 22.469012874999997
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 12.514913166999996
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 850.935555167,
+        "tests": 853,
+        "pass": 853,
+        "fail": 0,
+        "skipped": 0
+      }
+    ],
+    "applicationPassed": 857,
+    "applicationSkipped": 1,
+    "inversePassed": 853,
+    "inverseFailed": 0,
+    "scope": "Pinned application, inverse runtime and existing diagnostic/test sources. Later added boar/rabbit annotation data was separately compiled and reviewed; it was not an input to these tests.",
+    "artifactsSha256": {
+      "tmp/heart-learning/shared-alignment-speed-v1/production-qa/checks.json": "81536da8ad8f16cf99d5280605ab018b087a5bab2ef6d9f10d73b706306ff60c",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-qa/source.json": "fde7577a6ef9dee61f70b852cca20d1094623241268e64737037befcaa5df227",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-qa/running.json": "59f4a0a66a163096d81d328a26a0b38322f498cd8c33774b78e63ff822e811e6",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-qa/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-qa/app.log": "52df03647ec9eb2b694e07655c7e48884c8bb783b53c9a1190497ce39bf40bc5",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-qa/build.log": "3ae0d1291ad9621a4a9fdf66348603919e462c204a0fdee227d9b6589809fe20",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-qa/inverse.log": "171dd008806a56133d6e7af7bdf0cb2d2a08fbcd9937bca8580a313b71003858"
+    }
+  }
 }
