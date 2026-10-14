@@ -3518,5 +3518,316 @@
       "tmp/heart-learning/shared-alignment-speed-v1/production-release/source.json": "fde7577a6ef9dee61f70b852cca20d1094623241268e64737037befcaa5df227",
       "tmp/heart-learning/return-projection-speed-v1/production-release/source.json": "628069ded10264542980061feb7d7ea2d22cdbc2ff026c68c6a2e120a14052b3"
     }
+  },
+  "photoReplay": {
+    "runtimeCommit": "b8e20f2",
+    "status": "native-comparison-failed",
+    "sourceFilesVerified": 848,
+    "gate": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [],
+      "photoPassed": 25,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "floral-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01940625,
+          "error": 0.01986875,
+          "errorDelta": 0.0004625000000000011
+        },
+        {
+          "id": "warped-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01755,
+          "error": 0.01813125,
+          "errorDelta": 0.0005812500000000019
+        },
+        {
+          "id": "maple-leaf",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.013325,
+          "error": 0.01334375,
+          "errorDelta": 1.874999999999967e-05
+        }
+      ],
+      "editablePassed": 47,
+      "editableTotal": 47,
+      "passed": false
+    },
+    "diagnosis": [
+      {
+        "id": "floral-checker",
+        "previous": {
+          "file": "tmp/heart-learning/return-projection-speed-v1/production-release/photos/floral-checker/automatic/report.json",
+          "sha256": "a279d2c5ba1ef05097732420d6ff5d292e95dffb5603420abd0582ce26eff87d",
+          "checkpoints": [
+            {
+              "step": -1,
+              "error": 0.02348125
+            },
+            {
+              "step": 0,
+              "error": 0.02335
+            },
+            {
+              "step": 40,
+              "error": 0.0203
+            },
+            {
+              "step": 69,
+              "error": 0.0194
+            }
+          ],
+          "sharingBefore": 0.01941875,
+          "sharingAfter": 0.0193375,
+          "sharingSourceErrors": [
+            0.0193875,
+            0.0193375
+          ]
+        },
+        "candidate": {
+          "file": "tmp/heart-learning/shared-alignment-speed-v1/production-release/photos/floral-checker/automatic/report.json",
+          "sha256": "52e1a8f2c2f9b8e0336e1c7d2ec5e5860cb8574d2f01c23b2dbec5f72617dfdc",
+          "checkpoints": [
+            {
+              "step": -1,
+              "error": 0.02348125
+            },
+            {
+              "step": 0,
+              "error": 0.02335
+            },
+            {
+              "step": 40,
+              "error": 0.0203
+            },
+            {
+              "step": 54,
+              "error": 0.0198375
+            }
+          ],
+          "sharingBefore": 0.0198,
+          "sharingAfter": 0.01978125,
+          "sharingSourceErrors": [
+            0.01978125
+          ]
+        },
+        "commonCheckpointsEqual": true
+      },
+      {
+        "id": "warped-checker",
+        "previous": {
+          "file": "tmp/heart-learning/return-projection-speed-v1/production-release/photos/warped-checker/automatic/report.json",
+          "sha256": "9fdde4e3ecb79b68016c33e8d01748d392e7cff46c562cd210e3010baaa8667a",
+          "checkpoints": [
+            {
+              "step": -1,
+              "error": 0.02196875
+            },
+            {
+              "step": 0,
+              "error": 0.02170625
+            },
+            {
+              "step": 40,
+              "error": 0.018725
+            },
+            {
+              "step": 74,
+              "error": 0.017725
+            }
+          ],
+          "sharingBefore": 0.0177125,
+          "sharingAfter": 0.01769375,
+          "sharingSourceErrors": [
+            0.01769375
+          ]
+        },
+        "candidate": {
+          "file": "tmp/heart-learning/shared-alignment-speed-v1/production-release/photos/warped-checker/automatic/report.json",
+          "sha256": "d1e92f1d72d005cf04536202f36e024887288aea9d1f193cb32ee7a046f02ed0",
+          "checkpoints": [
+            {
+              "step": -1,
+              "error": 0.02196875
+            },
+            {
+              "step": 0,
+              "error": 0.02170625
+            },
+            {
+              "step": 40,
+              "error": 0.018725
+            },
+            {
+              "step": 59,
+              "error": 0.01815625
+            }
+          ],
+          "sharingBefore": 0.01809375,
+          "sharingAfter": 0.0180625,
+          "sharingSourceErrors": [
+            0.0180625
+          ]
+        },
+        "commonCheckpointsEqual": true
+      },
+      {
+        "id": "maple-leaf",
+        "previous": {
+          "file": "tmp/heart-learning/return-projection-speed-v1/production-release/photos/maple-leaf/automatic/report.json",
+          "sha256": "36908f4759b238c77495eb363132bd9b15fe2cf621723be89a2dde6004ad8ade",
+          "checkpoints": [
+            {
+              "step": -1,
+              "error": 0.01805
+            },
+            {
+              "step": 0,
+              "error": 0.0179125
+            },
+            {
+              "step": 40,
+              "error": 0.01565
+            },
+            {
+              "step": 80,
+              "error": 0.0147375
+            },
+            {
+              "step": 120,
+              "error": 0.01390625
+            },
+            {
+              "step": 159,
+              "error": 0.013325
+            }
+          ],
+          "sharingBefore": 0.01331875,
+          "sharingAfter": 0.0132375,
+          "sharingSourceErrors": [
+            0.01330625,
+            0.0133,
+            0.0132375
+          ]
+        },
+        "candidate": {
+          "file": "tmp/heart-learning/shared-alignment-speed-v1/production-release/photos/maple-leaf/automatic/report.json",
+          "sha256": "2352b664c5950d74f126e84e0451dd682d70fafb4318bd823eb01d763860d94c",
+          "checkpoints": [
+            {
+              "step": -1,
+              "error": 0.01805
+            },
+            {
+              "step": 0,
+              "error": 0.0179125
+            },
+            {
+              "step": 40,
+              "error": 0.01565
+            },
+            {
+              "step": 80,
+              "error": 0.0147375
+            },
+            {
+              "step": 120,
+              "error": 0.01390625
+            },
+            {
+              "step": 159,
+              "error": 0.013325
+            }
+          ],
+          "sharingBefore": 0.01331875,
+          "sharingAfter": 0.01325,
+          "sharingSourceErrors": [
+            0.01330625,
+            0.0133,
+            0.0132375,
+            0.01325
+          ]
+        },
+        "commonCheckpointsEqual": true
+      }
+    ],
+    "browserRun": false,
+    "previewRestarted": false,
+    "artifactsSha256": {
+      "tmp/heart-learning/shared-alignment-speed-v1/production-release/source.json": "fde7577a6ef9dee61f70b852cca20d1094623241268e64737037befcaa5df227",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-release/checks.json": "82f9e88bfd1fcad7bd08ba2104c1e3f0ae910978e6eec23eed0efa3932c3bc1a",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-release/running.json": "43249ee7b1668af1efb4a777fe1751dd70cfb1a40e85021e840c9794b36ad99e",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-release/photo-comparison.json": "a956ce5fe2675f6a1e92a2d1761982f9e4e1ca7f001db5e9a89c0ad898b33798",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-release/native-gates.json": "141fa0db42af5d47be3ad80eeaf2ef86ca7002698c19cc267688f05c3e8030ec",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-release/photos/results.json": "e2b6b98612d0ff5d6d83fd60206fec865a256d423b61cd61c896b32ef6930c1d",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-release/hunodan-editor/results.json": "e19fc782e7aa65b583a6f50765d079a5388ea4c5a347e1cdf2e947f0973d0f87",
+      "tmp/heart-learning/shared-alignment-speed-v1/production-release/photo-editor/results.json": "43a08500f14690f0dd39beb55d7142d9ba07c718f21e8b206d6209d835d94871"
+    },
+    "interpretation": "All 25 prior photo passes and 47 editable passes remain. The strict no-higher-photo-error gate fails. Common checkerboard refinement checkpoints match but terminal refinement stops 15 steps earlier in both cases. The leaf checkpoints match; additional alignment returns a higher-source-error prefix under the original batch ceiling. This establishes stage differences, not a causal attribution of wall-clock variation to gate ordering.",
+    "catalogRows": 47,
+    "changedRows": [
+      {
+        "id": "floral-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01940625,
+        "error": 0.01986875,
+        "errorDelta": 0.0004625000000000011
+      },
+      {
+        "id": "warped-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01755,
+        "error": 0.01813125,
+        "errorDelta": 0.0005812500000000019
+      },
+      {
+        "id": "jigsaw",
+        "previousStatus": "failed",
+        "status": "failed",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.0564375,
+        "error": 0.056175,
+        "errorDelta": -0.00026249999999999885
+      },
+      {
+        "id": "maple-leaf",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.013325,
+        "error": 0.01334375,
+        "errorDelta": 1.874999999999967e-05
+      },
+      {
+        "id": "flettede-viking",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02024375,
+        "error": 0.02020625,
+        "errorDelta": -3.750000000000281e-05
+      }
+    ]
   }
 }

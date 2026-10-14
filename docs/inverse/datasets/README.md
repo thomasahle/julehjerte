@@ -78,16 +78,19 @@ QA on runtime `b8e20f2` passes 853 inverse tests, 857 application tests (one
 existing skip), type checking, lint and build; all 848 pinned source files
 remain unchanged. Fresh Hunodan fitting passes 22/22 within ten seconds
 (maximum 8.149 seconds), with all 22 image errors unchanged from `c000d30`.
-End-to-end photo and browser replays are running.
-This changes validation order, not the acceptance rules, and is not yet a
-whole-pipeline speed claim.
+The photo replay retains 25/31 passes and all 47 editable pairs pass, but three
+image errors increase slightly, failing the strict comparison gate. Browser
+replays and preview refresh were skipped. The leaf exposes a best-intermediate
+alignment issue; the two checkerboards stop refinement fifteen steps earlier.
+The failed record is retained. This is not a validated whole-pipeline speedup.
 
 The [long-budget leaf diagnosis](long-budget-selection.md) confirms identical
 prepared inputs and initial grid scores in the ordinary and ten-second browser
 runs. The longer request returns a valid traced recovery before trying grids;
-the shorter one reaches a better grid refinement. Isolated scheduling
-comparisons are queued after the current release checks, with no experimental
-policy adopted or result claimed yet.
+the shorter one reaches a better grid refinement. The queued scheduling
+comparison did not run because the sharing release comparison failed. An
+isolated follow-up will use the previously validated runtime; no experimental
+policy is adopted or result claimed yet.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority

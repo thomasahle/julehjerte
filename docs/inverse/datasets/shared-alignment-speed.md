@@ -60,8 +60,28 @@ pinned source files remain unchanged. The inverse suite takes 850.94 seconds;
 this is test-suite duration, not a solver timing. The fresh Hunodan replay
 passes **22/22 within ten seconds**, maximum **8.149 seconds**, with all 22
 independent mask errors exactly unchanged from `c000d30`. Input crop catalog,
-settings and baseline criteria are unchanged. Photo and browser replays are
-still running. Runtime `c000d30` remains the latest fully
-validated release until those checks finish:
-reordering rejection work can change which candidate a bounded search reaches,
-even though unlimited-pass outputs match exactly.
+settings and baseline criteria are unchanged.
+
+The completed photographic replay retains **25/31 passes**, and all **47
+accepted editable pairs** pass independent checks. It nevertheless fails the
+strict no-higher-image-error gate:
+
+| Photograph | Previous disagreement | New disagreement |
+| --- | ---: | ---: |
+| Floral checker | 1.9406% | 1.9869% |
+| Warped checker | 1.7550% | 1.8131% |
+| Maple leaf | 1.3325% | 1.3344% |
+
+Both checkerboard runs have identical common refinement checkpoints, but the
+new runs stop fifteen steps earlier. The leaf has identical refinement
+checkpoints and accepts an additional final alignment: its source-sampled
+error rises from 1.32375% to 1.325%, still below the batch's original ceiling.
+This exposes a need to retain the best intermediate alignment while exploring
+later joins. It does not establish that changing audit order caused the earlier
+checkerboard stops; bounded searches also depend on execution speed.
+
+The failed comparison and all outputs remain recorded. Browser replays and
+the preview restart were skipped by the release gate. The dependent scheduling
+experiment therefore did not run. Runtime `c000d30` remains the latest fully
+validated release; the faster local pass has not established unchanged quality
+for fresh deadline-bounded fits.
