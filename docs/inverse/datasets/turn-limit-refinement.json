@@ -670,6 +670,72 @@
     "tmp/heart-learning/turn-limit-v1/runtime/inverse/core/direct/refine.js": "911900caa058579f81ad114eee191e154161283e16db6cbd99cb100ab6df999a",
     "static/inverse/core/direct/turn-limit.js": "1f64a27bd008775f01ccc1caec37b50e3b60afb1604b9b073aec42fcbec2fb11",
     "static/inverse/core/direct/refine.js": "c69369263ff5a9686d6ab6c49c6f7cedb7b6c9bc6fa9cd398f9521a980043e15",
-    "scripts/inverse/turn-limit-refinement.test.mjs": "48e45552dcbaec7ef47c1fc4b9929e95f03fc520951279a528093d00cda741bd"
+    "scripts/inverse/turn-limit-refinement.test.mjs": "48e45552dcbaec7ef47c1fc4b9929e95f03fc520951279a528093d00cda741bd",
+    "tmp/heart-learning/turn-limit-v1/qa/source.json": "cd7c5c453f80638098ea3955b9d220890b1b3f254658bf5f7707da19e22f21ba",
+    "tmp/heart-learning/turn-limit-v1/qa/checks.json": "3f0d138c6d9446bbd43fba37952864140a7514748aeec810a85dcdafa7b7fc78",
+    "tmp/heart-learning/turn-limit-v1/qa/inverse.log": "0b68808f0a5c8126c12b36010dcebcf97ff67f44d1c5e32ab11704e197bef673",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/source.json": "eed7880ee4980d9094cbf573fbabf521b20aee60af915d3f425ef2d8d97ecebc",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/focused.log": "97522d9a99c12618d2135801f435a6189a2a57b8b374b0d6801eaf9a2dd239be"
+  },
+  "repositoryQA": {
+    "firstRun": {
+      "sourceManifest": "tmp/heart-learning/turn-limit-v1/qa/source.json",
+      "checks": [
+        {
+          "stage": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "exitCode": 0,
+          "seconds": 8.826615167
+        },
+        {
+          "stage": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "exitCode": 0,
+          "seconds": 6.175653624999999
+        },
+        {
+          "stage": "app",
+          "command": [
+            "npx",
+            "vitest",
+            "run",
+            "--maxWorkers=2"
+          ],
+          "exitCode": 0,
+          "seconds": 30.694507750000003
+        },
+        {
+          "stage": "inverse",
+          "command": [
+            "npm",
+            "run",
+            "test:inverse"
+          ],
+          "exitCode": 1,
+          "seconds": 807.196190792
+        }
+      ],
+      "inversePassed": 828,
+      "inverseFailed": 1,
+      "failure": "The offline projection patch no longer matched the import block after adding turn-limit.js. No fitting or geometry regression failed in this run."
+    },
+    "diagnosticCorrectionCommit": "6874c18",
+    "correctedFocusedRun": {
+      "passed": 4,
+      "failed": 0,
+      "log": "tmp/heart-learning/turn-limit-v1/qa-v2/focused.log"
+    },
+    "fullRerun": {
+      "status": "in_progress",
+      "sourceManifest": "tmp/heart-learning/turn-limit-v1/qa-v2/source.json"
+    }
   }
 }

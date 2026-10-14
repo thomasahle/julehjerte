@@ -64,5 +64,11 @@ remains unresolved. Passing the current geometry checks here does not establish
 representation-independent validity. No physical cutting or assembly tests were
 performed.
 
-Full repository QA and refreshed-browser verification are in progress; the native
+The first full repository run passes type checking, lint, 855 application tests
+and **828/829 inverse tests**. Its only failure is the offline experiment
+builder: the projection patch still assumes the previous import block.
+Commit `6874c18` updates that context. The affected projection test and all three
+turning-limit tests then pass. The failed run is preserved in the evidence record.
+
+A complete rerun and refreshed-browser verification are in progress; the native
 and editable results above do not substitute for them.
