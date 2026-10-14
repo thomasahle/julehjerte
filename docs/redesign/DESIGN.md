@@ -401,13 +401,32 @@ external port, preserving the open path pairings. Nested contours recurse, and s
 share a chain. The compiler rejects branches, closed cycles and paths ending on the wrong edge;
 geometric clearance and artwork fidelity are checked before a result can be saved or downloaded.
 Both generators offer circle, diamond, hexagon, oval, soft diamond and scalloped frames. Text also
-has close and spacious letter-cell framing. Frame choices have visual thumbnails.
+has close and spacious letter-cell framing. Figure choices combine the frame and outside weave
+into complete templates. Their thumbnails render the actual generated heart in the current colours,
+with unique SVG IDs; a neutral outline appears while an uncached variant is being prepared. The
+main preview has priority over a cancellable sequential background worker. A circular sunburst
+adds four open outer strips around a smaller central field, creating eight rays without adding cuts
+through the figure. Templates that fail validation remain explicitly unavailable.
 
 Framed words keep independent four-port cells for each letter, with a common font baseline and
-widths fitted to the glyphs. North/south connections get separate frame gates rather than routing
+widths fitted to the glyphs. Text entry accepts three lines of ten characters. Multiline layouts
+connect a matrix of letter cells; shorter rows are centred on the grid and empty positions continue
+the ordinary weave. Counters use shared bridges in every row. North/south connections get separate frame gates rather than routing
 an entire word through two long cuts. Complicated figures first try neighbouring panels; paired
 clipped boundaries cancel or become shared cuts, preserving every visible detail. Prefer more
-manageable strips over fewer cuts, while retaining the full clearance and fidelity checks.
+manageable strips over fewer cuts, while retaining the full clearance and fidelity checks. Two-dimensional
+panels separate the gift's bow and box pieces into a 5×5 grid.
+
+Spacing is physical: allow 25 mm of paper per strip, with a 100 mm minimum width. The generator,
+PDF and editor use the same resulting size and the same 1.5 mm minimum clearance. Larger designs
+retain this width through saved JSON, SVG and editor handoff. There is no paper-width slider in the
+generator. Oversized templates span portrait A4 sheets with 10 mm overlaps, alignment marks and
+row/column labels; never silently scale them down to one page.
+
+The searchable motif library contains the authored motifs, 1,525 filled Phosphor icons and 1,088
+filled Tabler icons. The initial list is a curated set of Christmas motifs that generate successfully
+with default settings. Search still covers the full catalogue; browsing everything is explicit.
+Source SVGs, licenses and rebuild inputs are local, and asset URLs are versioned when they change.
 
 The generator keeps its last valid preview visible while calculating a new choice. Export actions
 wait for the latest result. A bounded per-visit cache makes revisiting recent choices immediate;

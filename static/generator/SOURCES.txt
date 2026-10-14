@@ -1,4 +1,4 @@
-Juleflet generator geometry, generated 2026-10-13.
+Juleflet generator geometry, generated 2026-10-14.
 
 Rebuild from the repository root:
   python3 -m pip install -r scripts/generator/requirements.txt
@@ -15,6 +15,15 @@ Only names ending in -fill are included, with the suffix removed.
 The catalogue retains the original SVG preview geometry. The individual JSON
 files contain flattened, normalised contours derived from those SVGs.
 Twelve simple motifs and Danish search aliases are authored for Juleflet.
+
+Additional motifs: 1,088 filled Tabler icons.
+Source: https://github.com/tabler/tabler-icons
+Retrieved from @iconify-json/tabler 1.2.42:
+https://cdn.jsdelivr.net/npm/@iconify-json/tabler@1.2.42/icons.json
+License and author attribution: tabler-LICENSE.txt (MIT).
+The filled source bodies are vendored in scripts/generator/vendor/tabler-filled.json.
+Use --icons-only to rebuild motifs without rebuilding fonts.
+
 
 Fonts: Nunito (800), Bree Serif (400), Oswald (600), Kalam (700), Cinzel (900),
 and Righteous (400), from the corresponding ofl/<family>/ directories at:

@@ -10,7 +10,7 @@ import { vecDist, vecLerp } from '$lib/geometry/vec';
  * internal pixels; the overlap square is 100 x 100 heart units (~100 mm when printed).
  */
 
-/** Two cuts closer than this many heart units leave a sliver of paper that falls apart. */
+/** Minimum physical gap in millimetres; equivalent to heart units at 100 mm width. */
 export const INTERSECTION_MARGIN_UNITS = 1.5;
 
 const INTERSECTION_EPS = 0.5;
@@ -21,10 +21,10 @@ const SELF_ENDPOINT_TOLERANCE = 2;
 
 type BBox = { x: number; y: number; width: number; height: number };
 
-/** The margin in internal pixels for an overlap rectangle of the given size. */
-export function intersectionMarginPx(overlap: { width: number; height: number }): number {
+/** Convert the physical margin to editor pixels at the intended print width. */
+export function intersectionMarginPx(overlap: { width: number; height: number }, paperWidthMm = 100): number {
 	const unit = (overlap.width + overlap.height) / 200;
-	return INTERSECTION_MARGIN_UNITS * unit;
+	return INTERSECTION_MARGIN_UNITS * unit * 100 / paperWidthMm;
 }
 
 export function bboxesOverlap(a: BBox, b: BBox): boolean {

@@ -878,6 +878,7 @@
         initialGridSize={currentGridSize}
         initialFingers={currentFingers}
         initialWeaveParity={currentWeaveParity}
+        paperWidthMm={initialDesign?.templateWidthMm ?? 100}
         panelExtra={isNarrow ? undefined : heartPanels}
         notice={pendingDraft ? draftNotice : undefined}
       />

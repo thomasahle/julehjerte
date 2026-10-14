@@ -1,3 +1,4 @@
+import { gridPaperWidth, normalizedClearance } from './printSize';
 /** Divide a complicated motif into neighbouring woven cells. Clipped boundaries
  * are not visible seams: the two cells contribute opposite sheet families there,
  * producing exactly coincident cuts after the pieces are stitched together. */
@@ -15,7 +16,7 @@ import {
 	frameRing,
 	uprightToSheet,
 	fourPortMotif,
-	framedGate
+	connectCellGrid
 } from './geometry';
 
 const key = (p: Point) => p.map((x) => x.toFixed(6)).join(',');
@@ -81,10 +82,12 @@ export function clipContours(rings: Ring[], x: number, left: boolean): Ring[] {
 
 /** Atomic divider segments cancel within a sheet, or combine into an AB cut.
  * Splitting at every endpoint handles the different port positions of two cells. */
-function stitch(edges: Edge[], dividers: number[]): Edge[] {
+function stitch(edges: Edge[], dividers: number[], axis: 0 | 1 = 0): Edge[] {
 	let result = edges;
-	const uprightX = (p: Point) => (p[0] - p[1]) * Math.SQRT1_2;
-	const uprightY = (p: Point) => (p[0] + p[1] - 100) * Math.SQRT1_2;
+	const uprightX = (p: Point) =>
+		(axis === 0 ? p[0] - p[1] : p[0] + p[1] - 100) * Math.SQRT1_2;
+	const uprightY = (p: Point) =>
+		(axis === 0 ? p[0] + p[1] - 100 : p[0] - p[1]) * Math.SQRT1_2;
 	for (const x of dividers) {
 		const on = (e: Edge) =>
 			Math.abs(uprightX(e.from) - x) < 1e-5 &&
@@ -134,7 +137,8 @@ export function generatePanelFigure(
 	size: number,
 	scale: number,
 	count = 2,
-	style: 'rays' | 'check' | 'plain' = 'rays'
+	style: 'rays' | 'check' | 'plain' = 'rays',
+	rows = 1
 ) {
 	const factor = size * scale * (frame === 'oval' ? 0.75 : 1);
 	const upright = rings.map((r) =>
@@ -149,103 +153,52 @@ export function generatePanelFigure(
 		top = Math.min(...ys) - 2,
 		bottom = Math.max(...ys) + 2;
 	const width = (right - left) / count,
-		dividers = Array.from(
-			{ length: count - 1 },
-			(_, i) => left + (i + 1) * width
-		);
+		height = (bottom - top) / rows;
+	const vertical = Array.from(
+		{ length: count - 1 },
+		(_, i) => left + (i + 1) * width
+	);
+	const horizontal = Array.from(
+		{ length: rows - 1 },
+		(_, i) => top + (i + 1) * height
+	);
 	let edges: Edge[] = [];
-	const cells: Point[][] = [];
-	for (let i = 0; i < count; i++) {
-		const lo = left + i * width,
-			hi = lo + width;
-		let parts = upright;
-		if (i) parts = clipContours(parts, lo, false);
-		if (i < count - 1) parts = clipContours(parts, hi, true);
-		if (!parts.length) throw new ConstructionError('topology', 'Empty panel');
-		const x = (lo + hi) / 2,
-			y = (top + bottom) / 2;
-		const gates = [
-			[x, top],
-			[hi, y],
-			[x, bottom],
-			[lo, y]
-		].map((p) => uprightToSheet(p as Point));
-		fourPortMotif(
-			edges,
-			parts.map((r) => r.map(uprightToSheet)),
-			gates,
-			[Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4]
-		);
-		cells.push(gates);
-	}
-	edges = stitch(edges, dividers);
-	const boundary = frameRing(frame, size),
-		step = Math.PI / (2 * count),
-		band = style === 'plain' ? 0.16 : 0.3,
-		fan = style === 'rays' ? 0.72 : 1;
-	for (const [i, gates] of cells.entries()) {
-		add(
-			edges,
-			[
-				gates[0],
-				framedGate(
-					edges,
-					boundary,
-					Math.PI + (i + 0.5) * step,
-					step * band,
-					fan
-				)
-			],
-			'AB',
-			'shared'
-		);
-		add(
-			edges,
-			[
-				gates[2],
-				framedGate(
-					edges,
-					boundary,
-					Math.PI / 2 - (i + 0.5) * step,
-					step * band,
-					fan
-				)
-			],
-			'AB',
-			'shared'
-		);
-		if (i) add(edges, [cells[i - 1][1], gates[3]], 'AB', 'shared');
-	}
-	add(
-		edges,
-		[
-			cells[0][3],
-			framedGate(
+	const cells: Point[][][] = [];
+	const swap = (r: Ring): Ring => r.map(([x, y]) => [y, x]);
+	for (let row = 0; row < rows; row++) {
+		cells.push([]);
+		for (let col = 0; col < count; col++) {
+			const lo = left + col * width,
+				hi = lo + width,
+				up = top + row * height,
+				down = up + height;
+			let parts = upright;
+			if (col) parts = clipContours(parts, lo, false);
+			if (col < count - 1) parts = clipContours(parts, hi, true);
+			if (row) parts = clipContours(parts.map(swap), up, false).map(swap);
+			if (row < rows - 1)
+				parts = clipContours(parts.map(swap), down, true).map(swap);
+			if (!parts.length) throw new ConstructionError('topology', 'Empty panel');
+			const x = (lo + hi) / 2,
+				y = (up + down) / 2;
+			const gates = [
+				[x, up],
+				[hi, y],
+				[x, down],
+				[lo, y]
+			].map((p) => uprightToSheet(p as Point));
+			fourPortMotif(
 				edges,
-				boundary,
-				(3 * Math.PI) / 4,
-				style === 'plain' ? Math.PI / 14 : Math.PI / 8,
-				fan
-			)
-		],
-		'AB',
-		'shared'
-	);
-	add(
-		edges,
-		[
-			cells.at(-1)![1],
-			framedGate(
-				edges,
-				boundary,
-				(7 * Math.PI) / 4,
-				style === 'plain' ? Math.PI / 14 : Math.PI / 8,
-				fan
-			)
-		],
-		'AB',
-		'shared'
-	);
+				parts.map((r) => r.map(uprightToSheet)),
+				gates,
+				[Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
+				normalizedClearance(gridPaperWidth(count + rows + 1))
+			);
+			cells[row].push(gates);
+		}
+	}
+	edges = stitch(stitch(edges, vertical), horizontal, 1);
+	connectCellGrid(edges, cells, frameRing(frame, size), style);
 	return {
 		geometry: compile(edges),
 		edges,

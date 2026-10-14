@@ -1,3 +1,6 @@
+import { sunburstBorder } from './sunburst';
+import { generateTextGrid } from './textGrid';
+import { gridPaperWidth } from './printSize';
 import { generatePanelFigure } from './panels';
 import {
 	convertValidatedCutGeometry,
@@ -35,7 +38,7 @@ export type GeneratorRequest = {
 	frame?: Frame;
 	frameSize?: number;
 	scale?: number;
-	style?: 'rays' | 'check' | 'plain';
+	style?: 'rays' | 'check' | 'plain' | 'sunburst';
 	textFrame?: TextFrame;
 	paperWidth?: number;
 };
@@ -89,7 +92,7 @@ function audit(edges: Edge[]) {
  * moves outlines by at most 0.025 units, so a sub-0.5 gap cannot become a 1.5
  * unit strip. Ignore nearby bends of the same path: only a remote return can
  * pinch paper. Checking these lines directly avoids repeated cubic fits. */
-function hasSeverePinch(g: CutGeometry): boolean {
+function hasSeverePinch(g: CutGeometry, factor = 1): boolean {
 	const project = (p: Point, a: Point, b: Point) => {
 		const d = sub(b, a);
 		return Math.max(
@@ -120,9 +123,9 @@ function hasSeverePinch(g: CutGeometry): boolean {
 						if (
 							[0, 1].some(
 								(axis) =>
-									Math.max(u.a[axis], u.b[axis]) + 0.5 <=
+									Math.max(u.a[axis], u.b[axis]) + 0.5 * factor <=
 										Math.min(v.a[axis], v.b[axis]) ||
-									Math.max(v.a[axis], v.b[axis]) + 0.5 <=
+									Math.max(v.a[axis], v.b[axis]) + 0.5 * factor <=
 										Math.min(u.a[axis], u.b[axis])
 							)
 						)
@@ -136,13 +139,14 @@ function hasSeverePinch(g: CutGeometry): boolean {
 						for (const [t, s] of pairs) {
 							const p = mix(u.a, u.b, t),
 								q = mix(v.a, v.b, s);
-							if (distance(p, q) >= 0.5) continue;
+							if (distance(p, q) >= 0.5 * factor) continue;
 							if (i === j) {
 								const along = v.start + s * v.length - u.start - t * u.length;
 								if (
-									along < 3 ||
+									along < 3 * factor ||
 									[a[0].a, a.at(-1)!.b].some(
-										(end) => distance(p, end) < 1 || distance(q, end) < 1
+										(end) =>
+											distance(p, end) < factor || distance(q, end) < factor
 									)
 								)
 									continue;
@@ -200,14 +204,19 @@ function fidelity(
 	design: HeartDesign,
 	artwork: Ring[],
 	domain: Ring[],
-	edges: Edge[]
+	edges: Edge[],
+	background: Ring[] = []
 ) {
 	const n = 160,
 		mask = rasterizeDesign(design, n).data;
 	for (let y = 0; y < n; y++)
 		for (let x = 0; x < n; x++) {
 			const p: Point = [((x + 0.5) * 100) / n, ((y + 0.5) * 100) / n];
-			if (!domain.some((r) => inside(p, r))) continue;
+			if (
+				!domain.some((r) => inside(p, r)) ||
+				background.some((r) => inside(p, r))
+			)
+				continue;
 			const desired = artwork.reduce((a, r) => a ^ Number(inside(p, r)), 0);
 			if (desired === mask[y * n + x]) continue;
 			// The converter fits smooth cubics to flattened font outlines. Differences
@@ -230,12 +239,19 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	const finish = (
 		r: ReturnType<typeof generateFigure> & {
 			domain?: Ring[];
+			background?: Ring[];
 		},
 		recipe: GeneratorResult['recipe']
 	) => {
 		audit(r.edges);
+		const widthMm =
+			request.paperWidth ??
+			gridPaperWidth(
+				r.geometry.A_overlap_paths.length + 1,
+				r.geometry.B_overlap_paths.length + 1
+			);
 		// Avoid expensive curve fitting when cuts already leave a severe sliver.
-		if (hasSeverePinch(r.geometry))
+		if (request.mode !== 'text' && hasSeverePinch(r.geometry, 100 / widthMm))
 			throw new ConstructionError(
 				'clearance',
 				'The original cuts have a severe pinch'
@@ -244,39 +260,73 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const { design } = convertValidatedCutGeometry(r.geometry, {
 			name: request.name,
 			colors: request.colors,
-			tolerance: 0.025
+			tolerance: 0.025,
+			paperWidthMm: widthMm
 		});
-		design.templateWidthMm = request.paperWidth ?? 100;
+		design.templateWidthMm = widthMm;
 		const domain = r.domain ?? [
 			frameRing(request.frame ?? 'circle', request.frameSize ?? 70)
 		];
-		fidelity(design, r.artwork, domain, r.edges);
+		fidelity(design, r.artwork, domain, r.edges, r.background);
 		return { design, recipe };
 	};
 	if (request.mode === 'text') {
 		if (!request.font) throw new ConstructionError('empty', 'No font');
 		const frame = request.textFrame ?? 'woven';
-		if (frame !== 'woven' && frame !== 'air')
+		if ((request.text ?? '').includes('\n'))
 			return finish(
-				generateFramedText(request.text ?? '', request.font, frame),
+				generateTextGrid(
+					request.text!,
+					request.font,
+					frame === 'air',
+					frame === 'woven' || frame === 'air' ? undefined : frame
+				),
 				'letters'
 			);
-		return finish(
-			generateCheckedText(request.text ?? '', request.font, frame === 'air'),
-			'letters'
-		);
+		try {
+			return finish(
+				frame !== 'woven' && frame !== 'air'
+					? generateFramedText(request.text ?? '', request.font, frame)
+					: generateCheckedText(
+							request.text ?? '',
+							request.font,
+							frame === 'air'
+						),
+				'letters'
+			);
+		} catch (error) {
+			if (
+				error instanceof ConstructionError &&
+				['empty', 'character'].includes(error.code)
+			)
+				throw error;
+			return finish(
+				generateTextGrid(
+					request.text ?? '',
+					request.font,
+					frame === 'air',
+					frame === 'woven' || frame === 'air' ? undefined : frame
+				),
+				'letters'
+			);
+		}
 	}
+	const sunburst = request.style === 'sunburst';
+	const outerSize = request.frameSize ?? 70;
 	const rings = request.contours ?? [],
-		shape = request.frame ?? 'circle',
-		size = request.frameSize ?? 70,
+		shape = sunburst ? 'circle' : (request.frame ?? 'circle'),
+		size = sunburst ? outerSize * 0.8 : outerSize,
 		scale = request.scale ?? 0.7,
-		style = request.style ?? 'rays';
+		style = sunburst
+			? 'rays'
+			: ((request.style as 'rays' | 'check' | 'plain') ?? 'rays');
 	// Spread complex artwork over a larger grid before considering a single cell.
 	// Each construction is attempted once; invalid recipes never become exports.
 	const recipes =
 		rings.length > 1
 			? [
 					() => generatePanelFigure(rings, shape, size, scale, 2, style),
+					() => generatePanelFigure(rings, shape, size, scale, 2, style, 2),
 					() => generateFourPortFigure(rings, shape, size, scale, style),
 					() => generateFigure(rings, shape, size, scale, style)
 				]
@@ -287,7 +337,11 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	const errors: Error[] = [];
 	for (const construct of recipes) {
 		try {
-			return finish(construct(), rings.length === 1 ? 'silhouette' : 'nested');
+			const construction = construct();
+			return finish(
+				sunburst ? sunburstBorder(construction, outerSize) : construction,
+				rings.length === 1 ? 'silhouette' : 'nested'
+			);
 		} catch (e) {
 			if (!(e instanceof Error)) throw e;
 			errors.push(e);

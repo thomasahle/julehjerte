@@ -70,39 +70,38 @@ class Pen(BasePen):
         if len(self.r)>2:self.rings.append(self.r)
     def _endPath(self):self._closePath()
 
-fonts={}
-for name,weight in [('nunito',800),('breeserif',400),('oswald',600),('kalam',700),('cinzel',900),('righteous',400)]:
-    f=TTFont(ROOT/f'docs/design-start/assets/fonts/{name}.ttf')
-    if 'fvar' in f:f=instantiateVariableFont(f,{'wght':weight})
-    gs=f.getGlyphSet();cmap=f.getBestCmap();em=f['head'].unitsPerEm;glyphs={}
-    for ch in 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÆØÅæøåÄÖÜäöüÉé0123456789+-&.! ':
-        if ord(ch) not in cmap:continue
-        g=gs[cmap[ord(ch)]];p=Pen(gs,em);g.draw(p)
-        shape=fill(p.rings)
-        # Cut-friendly variants for fonts whose original hairlines are thinner
-        # than practical paper strips. Retain their original component/hole count.
-        if name in ['cinzel','kalam'] and not shape.is_empty:
-            expanded=shape.buffer(.04 if name=='cinzel' else .025,join_style=1).simplify(.0005,preserve_topology=True)
-            if len(contours(expanded))==len(contours(shape)):shape=expanded
-        glyphs[ch]={'advance':round(g.width/em,5),'contours':contours(shape)}
-    fonts[name]={'glyphs':glyphs}
-(OUT/'fonts').mkdir(exist_ok=True)
-for name,data in fonts.items():
-    (OUT/'fonts'/f'{name}.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')))
-    sample=[];x=0
-    for ch in 'Aa':
-        g=data['glyphs'][ch]
-        sample += [[[a+x,b] for a,b in r] for r in g['contours']];x+=g['advance']+.05
-    pts=[p for r in sample for p in r];l=min(p[0] for p in pts);top=min(p[1] for p in pts);w=max(p[0] for p in pts)-l;h=max(p[1] for p in pts)-top
-    d=''.join('M'+'L'.join(f'{a},{b}' for a,b in r)+'Z' for r in sample)
-    (OUT/'fonts'/f'{name}-sample.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{l-.03} {top-.03} {w+.06} {h+.06}"><path fill="#40573c" fill-rule="evenodd" d="{d}"/></svg>')
-(OUT/'fonts.json').unlink(missing_ok=True)
-for name in fonts:
-    shutil.copyfile(ROOT/f'docs/design-start/assets/fonts/{name}-OFL.txt',OUT/f'fonts/{name}-OFL.txt')
-if '--fonts-only' in sys.argv:
-    print('Wrote font outlines');sys.exit(0)
+def build_fonts():
+    fonts={}
+    for name,weight in [('nunito',800),('breeserif',400),('oswald',600),('kalam',700),('cinzel',900),('righteous',400)]:
+        f=TTFont(ROOT/f'docs/design-start/assets/fonts/{name}.ttf')
+        if 'fvar' in f:f=instantiateVariableFont(f,{'wght':weight})
+        gs=f.getGlyphSet();cmap=f.getBestCmap();em=f['head'].unitsPerEm;glyphs={}
+        for ch in 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÆØÅæøåÄÖÜäöüÉé0123456789+-&.! ':
+            if ord(ch) not in cmap:continue
+            g=gs[cmap[ord(ch)]];p=Pen(gs,em);g.draw(p)
+            shape=fill(p.rings)
+            # Cut-friendly variants for fonts whose original hairlines are thinner
+            # than practical paper strips. Retain their original component/hole count.
+            if name in ['cinzel','kalam'] and not shape.is_empty:
+                expanded=shape.buffer(.04 if name=='cinzel' else .025,join_style=1).simplify(.0005,preserve_topology=True)
+                if len(contours(expanded))==len(contours(shape)):shape=expanded
+            glyphs[ch]={'advance':round(g.width/em,5),'contours':contours(shape)}
+        fonts[name]={'glyphs':glyphs}
+    (OUT/'fonts').mkdir(exist_ok=True)
+    for name,data in fonts.items():
+        (OUT/'fonts'/f'{name}.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')))
+        sample=[];x=0
+        for ch in 'Aa':
+            g=data['glyphs'][ch]
+            sample += [[[a+x,b] for a,b in r] for r in g['contours']];x+=g['advance']+.05
+        pts=[p for r in sample for p in r];l=min(p[0] for p in pts);top=min(p[1] for p in pts);w=max(p[0] for p in pts)-l;h=max(p[1] for p in pts)-top
+        d=''.join('M'+'L'.join(f'{a},{b}' for a,b in r)+'Z' for r in sample)
+        (OUT/'fonts'/f'{name}-sample.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{l-.03} {top-.03} {w+.06} {h+.06}"><path fill="#40573c" fill-rule="evenodd" d="{d}"/></svg>')
+    (OUT/'fonts.json').unlink(missing_ok=True)
+    for name in fonts:
+        shutil.copyfile(ROOT/f'docs/design-start/assets/fonts/{name}-OFL.txt',OUT/f'fonts/{name}-OFL.txt')
 
-def svg_geometry(art):
+def svg_geometry(art, tolerance=.05):
     root=ET.fromstring('<svg>'+art+'</svg>')
     def element(e,attrs):
         attrs={**attrs,**e.attrib}; tag=e.tag;paths=[]
@@ -112,7 +111,7 @@ def svg_geometry(art):
             for sub in parse_path(e.attrib['d']).continuous_subpaths():
                 pts=[]
                 for seg in sub:
-                    vals=flatten(lambda t:[seg.point(t).real,seg.point(t).imag],.05) if not isinstance(seg,Line) else [[seg.start.real,seg.start.imag],[seg.end.real,seg.end.imag]]
+                    vals=flatten(lambda t:[seg.point(t).real,seg.point(t).imag],tolerance) if not isinstance(seg,Line) else [[seg.start.real,seg.start.imag],[seg.end.real,seg.end.imag]]
                     pts+=vals if not pts else vals[1:]
                 if len(pts)>2 and pts[-1]==pts[0]:pts.pop()
                 if len(pts)>1:paths.append(pts)
@@ -137,17 +136,25 @@ def svg_geometry(art):
         result=result.difference(g) if 'var(' in e.attrib.get('fill','') else result.union(g)
     return result
 
-library=json.loads((ROOT/'docs/design-start/assets/motif-library.js').read_text().split(' = ',1)[1].rstrip(';\n'))
-simple=json.loads(subprocess.check_output(['node','--input-type=module','-e',"import {motifs} from './docs/design-start/motifs.mjs';console.log(JSON.stringify(motifs))"],cwd=ROOT))
-icons={}
-items=simple+[{'id':'ph-'+k,'art':v,'name':k.replace('-',' ').title()} for k,v in library['icons'].items()]
-for item in items:
-    geo=svg_geometry(item['art']); x,y,X,Y=geo.bounds;scale=1/max(X-x,Y-y)
-    rings=contours(geo)
-    icons[item['id']]={'name':item['name'],'contours':[[[round((a-(x+X)/2)*scale,5),round((b-(y+Y)/2)*scale,5)] for a,b in r] for r in rings]}
-(OUT/'motifs').mkdir(exist_ok=True)
-for name,data in icons.items(): (OUT/'motifs'/f'{name}.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')))
-(OUT/'motifs.json').unlink(missing_ok=True)
-(OUT/'catalog.json').write_text(json.dumps([{**item,'box':256 if item['id'].startswith('ph-') else 100} for item in items],ensure_ascii=False,separators=(',',':')))
-shutil.copyfile(ROOT/'docs/design-start/assets/phosphor-LICENSE.txt',OUT/'phosphor-LICENSE.txt')
-print(f'Wrote {len(fonts)} fonts and {len(icons)} motifs')
+def build_motifs():
+    library=json.loads((ROOT/'docs/design-start/assets/motif-library.js').read_text().split(' = ',1)[1].rstrip(';\n'))
+    simple=json.loads(subprocess.check_output(['node','--input-type=module','-e',"import {motifs} from './docs/design-start/motifs.mjs';console.log(JSON.stringify(motifs))"],cwd=ROOT))
+    icons={}
+    tabler=json.loads((ROOT/'scripts/generator/vendor/tabler-filled.json').read_text())
+    items=[{**item,'box':100,'package':'juleflet'} for item in simple]
+    items += [{'id':'ph-'+k,'art':v,'name':k.replace('-',' ').title(),'box':256,'package':'phosphor'} for k,v in library['icons'].items()]
+    items += [{'id':'tb-'+k,'art':v,'name':k.replace('-',' ').title(),'box':24,'package':'tabler'} for k,v in tabler['icons'].items()]
+    for item in items:
+        geo=svg_geometry(item['art'],.05 if item['box'] >= 100 else item['box']/5120); x,y,X,Y=geo.bounds;scale=1/max(X-x,Y-y)
+        rings=contours(geo)
+        icons[item['id']]={'name':item['name'],'contours':[[[round((a-(x+X)/2)*scale,5),round((b-(y+Y)/2)*scale,5)] for a,b in r] for r in rings]}
+    (OUT/'motifs').mkdir(exist_ok=True)
+    for name,data in icons.items(): (OUT/'motifs'/f'{name}.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')))
+    (OUT/'motifs.json').unlink(missing_ok=True)
+    (OUT/'catalog.json').write_text(json.dumps(items,ensure_ascii=False,separators=(',',':')))
+    shutil.copyfile(ROOT/'docs/design-start/assets/phosphor-LICENSE.txt',OUT/'phosphor-LICENSE.txt')
+    print(f'Wrote {len(icons)} motifs')
+
+if __name__ == '__main__':
+    if '--icons-only' not in sys.argv: build_fonts()
+    if '--fonts-only' not in sys.argv: build_motifs()

@@ -1,3 +1,4 @@
+import { templateTiles } from './tiles';
 import { jsPDF } from 'jspdf';
 import type { HeartDesign, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
@@ -614,27 +615,44 @@ export async function downloadMultiPDF(designs: HeartDesign[], options: PDFOptio
   pdf.save(filename);
 }
 
-/** A4, one folded half per page, at an explicit physical width. Used by the
+/** A4 sheets at an explicit physical width, tiled when necessary. Used by the
  * motif generators so fine lettering is never silently shrunk into a grid. */
 export async function generateSizedPDF(design: HeartDesign, widthMm = 100, lang: Language = 'da'): Promise<jsPDF> {
-  if (!Number.isFinite(widthMm) || widthMm < 80 || widthMm > 140) throw new Error('Paper width must be 80–140 mm');
+  const plan=templateTiles(widthMm);
   const pdf = new jsPDF({unit:'mm',format:'a4',compress:true});
   const preview = await renderHeartToDataURL(design,{size:500});
-  for (const [i,lobe] of (['left','right'] as const).entries()) {
-    if(i)pdf.addPage();
-    pdf.setFontSize(14);
-    const title = pdf.splitTextToSize(design.name, 100);
-    pdf.text(title, 105, title.length > 1 ? 13 : 17, {align:'center'});
-    pdf.setFontSize(10); pdf.text(`${t(lobe==='left'?'lobeLeft':'lobeRight',lang)} · ${widthMm} mm`,105,25,{align:'center'});
-    pdf.addImage(preview,'PNG',160,7,28,28);
-    // drawLobeTemplate normally reserves 5% padding: compensate so the printed
-    // width is exactly widthMm, rather than merely labelled with that size.
-    drawLobeTemplate(pdf,design,lobe,105,145,widthMm/.95,widthMm*1.5/.95);
-    pdf.setFontSize(9);
-    const lines=[t('generatorPdfPrint',lang),t('generatorPdfFold',lang),t('generatorPdfCut',lang)];
-    pdf.text(lines,15,265);
-    pdf.setDrawColor(0);pdf.setLineWidth(.2);pdf.line(150,263,180,263);pdf.line(150,261,150,265);pdf.line(180,261,180,265);
-    pdf.text('30 mm',165,270,{align:'center'});pdf.text(SITE_DOMAIN,105,290,{align:'center'});
+  let page=0;
+  for (const lobe of ['left','right'] as const) for (let row=0;row<plan.rows;row++) for (let column=0;column<plan.columns;column++) {
+    if(page++)pdf.addPage();
+    pdf.setTextColor(0);pdf.setFontSize(12);
+    const title = pdf.splitTextToSize(design.name.replace(/\n/g,' / '), 125);
+    pdf.text(title, 15, 12);
+    pdf.setFontSize(10); pdf.text(`${t(lobe==='left'?'lobeLeft':'lobeRight',lang)} · ${widthMm} mm`,15,27);
+    pdf.addImage(preview,'PNG',170,4,25,25);
+    const tiled=plan.rows*plan.columns>1;
+    pdf.saveGraphicsState();
+    pdf.rect(15,32,plan.width,plan.height,null);pdf.clip();pdf.discardPath();
+    const cx=tiled ? 16+widthMm/2-column*(plan.width-plan.overlap) : 105;
+    const cy=tiled ? 33+widthMm*.75-row*(plan.height-plan.overlap) : 146;
+    // Compensate drawLobeTemplate's 5% padding to preserve the exact print width.
+    drawLobeTemplate(pdf,design,lobe,cx,cy,widthMm/.95,widthMm*1.5/.95);
+    pdf.restoreGraphicsState();
+    if(tiled) {
+      pdf.setDrawColor(150);pdf.setLineWidth(.15);
+      pdf.rect(15,32,plan.width,plan.height);pdf.setLineDashPattern([],0);
+      const mark=(x:number,y:number)=>{pdf.line(x-2,y,x+2,y);pdf.line(x,y-2,x,y+2);};
+      // Marks occupy identical physical coordinates on both overlapping pages.
+      for(const x of [column ? 20 : null, column<plan.columns-1 ? 190 : null])
+        if(x!==null) for(const y of [52,240]) mark(x,y);
+      for(const y of [row ? 37 : null, row<plan.rows-1 ? 255 : null])
+        if(y!==null) for(const x of [35,175]) mark(x,y);
+      pdf.setFontSize(8);
+      pdf.text(t('generatorPdfTile',lang,{column:column+1,columns:plan.columns,row:row+1,rows:plan.rows}),15,265);
+    }
+    pdf.setTextColor(0);pdf.setFontSize(8);
+    pdf.text([t('generatorPdfPrint',lang),t('generatorPdfFold',lang),t('generatorPdfCut',lang)],15,273);
+    pdf.setDrawColor(0);pdf.setLineWidth(.2);pdf.line(155,274,185,274);pdf.line(155,272,155,276);pdf.line(185,272,185,276);
+    pdf.text('30 mm',170,280,{align:'center'});pdf.text(SITE_DOMAIN,105,290,{align:'center'});
   }
   return pdf;
 }

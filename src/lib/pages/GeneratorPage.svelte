@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
 	import { GeometryCache, geometryKey } from '$lib/generator/cache';
+	import { figureTemplates, templateVariants } from '$lib/generator/templates';
+	import {
+		motifLabel,
+		matchingMotifs,
+		type CatalogItem
+	} from '$lib/generator/catalog';
 	import {
 		DEFAULT_COLORS,
 		DEFAULT_COLORS_HEX,
@@ -22,6 +28,7 @@
 	import {
 		defaults,
 		readGeneratorState,
+		normalizeText,
 		type GeneratorState
 	} from '$lib/generator/state';
 	import type {
@@ -37,7 +44,6 @@
 	} from '$lib/components/icons';
 	import { Search as SearchIcon } from '@lucide/svelte';
 	let { lang }: { lang: Language } = $props();
-	type CatalogItem = { id: string; name: string; art: string; box: number };
 	const fonts = [
 		['nunito', 'generatorFontNunito'],
 		['breeserif', 'generatorFontBree'],
@@ -54,46 +60,33 @@
 		['rounded', 'generatorRounded'],
 		['scalloped', 'generatorScalloped']
 	] as const;
-	const localNames: Record<string, [string, string]> = {
-		star: ['Stjerne', 'star jul'],
-		tree: ['Juletræ', 'christmas tree gran jul'],
-		heart: ['Hjerte', 'heart kærlighed'],
-		circle: ['Cirkel', 'circle form'],
-		flower: ['Blomst', 'flower natur'],
-		snow: ['Snefnug', 'snowflake jul vinter'],
-		moon: ['Måne', 'moon nat'],
-		house: ['Hus', 'house hjem'],
-		angel: ['Engel', 'angel jul'],
-		bell: ['Klokke', 'bell jul'],
-		gift: ['Gave', 'gift jul'],
-		diamond: ['Rude', 'diamond form'],
-		'ph-cat': ['Kat', 'cat katte killing dyr'],
-		'ph-dog': ['Hund', 'dog hunde dyr'],
-		'ph-bird': ['Fugl', 'bird fugle dyr'],
-		'ph-butterfly': ['Sommerfugl', 'butterfly dyr natur'],
-		'ph-horse': ['Hest', 'horse pony dyr'],
-		'ph-rabbit': ['Kanin', 'rabbit hare dyr'],
-		'ph-fish': ['Fisk', 'fish hav dyr'],
-		'ph-paw-print': ['Pote', 'paw hund kat dyr'],
-		'ph-tree-evergreen': ['Grantræ', 'evergreen juletræ gran jul natur'],
-		'ph-coffee': ['Kaffe', 'coffee kop hverdag'],
-		'ph-bicycle': ['Cykel', 'bicycle cykler sport'],
-		'ph-sailboat': ['Sejlbåd', 'sailboat båd ferie'],
-		'ph-flower-tulip': ['Tulipan', 'tulip blomst natur'],
-		'ph-crown': ['Krone', 'crown konge dronning'],
-		'ph-snowflake': ['Snefnug', 'snowflake jul sne'],
-		'ph-music-notes': ['Noder', 'music musik node'],
-		'ph-sun': ['Sol', 'sun natur'],
-		'ph-leaf': ['Blad', 'leaf blade natur']
-	};
+
 	let config = $state<GeneratorState>({ ...defaults });
 	let mounted = $state(false),
 		catalog = $state<CatalogItem[]>([]),
 		query = $state(''),
 		limit = $state(24),
+		browseAll = $state(false),
 		retry = $state(0);
 	const cache = new GeometryCache();
 	type Failure = { error: string; character?: string };
+	type Thumbnail = { result?: GeneratorResult; failure?: Failure };
+	let thumbnails = $state<Record<string, Thumbnail>>({});
+	let expandedTemplates = $state(false);
+	let figureChoices = $derived(figureTemplates(config, expandedTemplates));
+	const frameLabel = (frame: string) =>
+		t(frames.find((f) => f[0] === frame)![1], lang);
+	const borderLabel = (style: GeneratorState['style']) =>
+		t(
+			style === 'sunburst'
+				? 'generatorSunburst'
+				: style === 'rays'
+					? 'generatorRays'
+					: style === 'check'
+						? 'generatorCheck'
+						: 'generatorPlain',
+			lang
+		);
 	const failures = new GeometryCache<Failure>();
 	const errorText = (failure: Failure) => {
 		const key: TranslationKey =
@@ -125,8 +118,7 @@
 		result
 			? {
 					...result.design,
-					colors: toHexColors(colors, DEFAULT_COLORS_HEX),
-					templateWidthMm: config.paperWidth
+					colors: toHexColors(colors, DEFAULT_COLORS_HEX)
 				}
 			: null;
 	let workerPending = false;
@@ -138,7 +130,7 @@
 		if (!requests.has(path))
 			requests.set(
 				path,
-				fetch(`${base}/generator/${path}`)
+				fetch(`${base}/generator/${path}?v=20261014`)
 					.then((r) => {
 						if (!r.ok) throw new Error('Asset request failed');
 						return r.json();
@@ -150,22 +142,38 @@
 			);
 		return requests.get(path)! as Promise<T>;
 	};
-	const label = (item: CatalogItem) =>
-		lang === 'da'
-			? (localNames[item.id]?.[0] ?? item.name)
-			: item.id.replace(/^ph-/, '').replaceAll('-', ' ');
-	const normal = (s: string) =>
-		s
-			.toLocaleLowerCase()
-			.normalize('NFD')
-			.replace(/[\u0300-\u036f]/g, '');
-	let matches = $derived(
-		catalog.filter((item) =>
-			normal(
-				`${item.id} ${item.name} ${localNames[item.id]?.join(' ') ?? ''}`
-			).includes(normal(query.trim()))
-		)
-	);
+	async function requestFor(
+		snapshot: GeneratorState
+	): Promise<GeneratorRequest> {
+		const request: GeneratorRequest = {
+			mode: snapshot.mode as 'figure' | 'text',
+			name:
+				snapshot.mode === 'text'
+					? snapshot.text
+					: motifLabel(
+							{ id: snapshot.motif, name: snapshot.motif, art: '', box: 24 },
+							lang
+						),
+			// Geometry is colour independent; only the preview reads the footer preference.
+			colors: DEFAULT_COLORS_HEX,
+			text: snapshot.text,
+			frame: snapshot.frame,
+			frameSize: snapshot.frameSize,
+			scale: snapshot.scale / 100,
+			style: snapshot.style,
+			textFrame: snapshot.textFrame
+		};
+		if (snapshot.mode === 'text')
+			request.font = await asset<Font>(`fonts/${snapshot.font}.json`);
+		else
+			request.contours = (
+				await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)
+			).contours;
+		return request;
+	}
+	const label = (item: CatalogItem) => motifLabel(item, lang);
+	let matches = $derived(matchingMotifs(catalog, query, browseAll));
+
 	onMount(() => {
 		colors = getColors();
 		const unsubscribe = subscribeColors((next) => {
@@ -250,31 +258,7 @@
 		busy = true;
 		const timer = setTimeout(async () => {
 			try {
-				const request: GeneratorRequest = {
-					mode: snapshot.mode as 'figure' | 'text',
-					name:
-						snapshot.mode === 'text'
-							? snapshot.text
-							: (localNames[snapshot.motif]?.[lang === 'da' ? 0 : 1]
-									?.split(' ')
-									.slice(0, lang === 'da' ? 99 : 1)
-									.join(' ') ?? snapshot.motif.replace(/^ph-/, '')),
-					// Geometry is colour independent; only the preview reads the footer preference.
-					colors: DEFAULT_COLORS_HEX,
-					text: snapshot.text,
-					frame: snapshot.frame,
-					frameSize: snapshot.frameSize,
-					scale: snapshot.scale / 100,
-					style: snapshot.style,
-					textFrame: snapshot.textFrame,
-					paperWidth: 100
-				};
-				if (snapshot.mode === 'text')
-					request.font = await asset<Font>(`fonts/${snapshot.font}.json`);
-				else
-					request.contours = (
-						await asset<{ contours: Ring[] }>(`motifs/${snapshot.motif}.json`)
-					).contours;
+				const request = await requestFor(snapshot);
 				if (token !== revision) return;
 				worker ??= new Worker(
 					new URL('../generator/worker.ts', import.meta.url),
@@ -318,9 +302,73 @@
 			clearTimeout(timer);
 		};
 	});
+	$effect(() => {
+		if (!mounted) return;
+		void geometryKey(config);
+		const snapshot = untrack(() => ({ ...config }));
+		const variants = templateVariants(snapshot, expandedTemplates);
+		const initial: Record<string, Thumbnail> = {};
+		const pending = variants.filter((variant) => {
+			const key = geometryKey(variant.state),
+				result = cache.get(key),
+				failure = failures.get(key);
+			initial[variant.id] = { result, failure };
+			return !result && !failure;
+		});
+		thumbnails = initial;
+		if (busy || snapshot.mode === 'start' || !pending.length) return;
+		let live = true;
+		let background: Worker | null = null;
+		const timer = setTimeout(async () => {
+			try {
+				const request = await requestFor(snapshot);
+				if (!live) return;
+				background = new Worker(
+					new URL('../generator/worker.ts', import.meta.url),
+					{ type: 'module' }
+				);
+				let index = 0;
+				const next = () => {
+					if (!live || index >= pending.length) {
+						background?.terminate();
+						return;
+					}
+					const { state } = pending[index];
+					background!.postMessage({
+						...request,
+						frame: state.frame,
+						style: state.style,
+						textFrame: state.textFrame
+					});
+				};
+				background.onmessage = (e) => {
+					if (!live) return;
+					const variant = pending[index++],
+						key = geometryKey(variant.state);
+					const thumb: Thumbnail = e.data.result
+						? { result: e.data.result }
+						: { failure: e.data };
+					if (thumb.result) cache.set(key, thumb.result);
+					else failures.set(key, thumb.failure!);
+					thumbnails = { ...thumbnails, [variant.id]: thumb };
+					next();
+				};
+				background.onerror = () => background?.terminate();
+				next();
+			} catch {
+				/* Foreground reports asset errors; thumbnails remain neutral. */
+			}
+		}, 180);
+		return () => {
+			live = false;
+			clearTimeout(timer);
+			background?.terminate();
+		};
+	});
 	function chooseMode(mode: GeneratorState['mode']) {
 		config.mode = mode;
 		query = '';
+		browseAll = false;
 		limit = 24;
 		if (mode === 'start' && mounted) replaceState(href('generator', lang), {});
 	}
@@ -331,7 +379,7 @@
 		notice = '';
 		try {
 			const { downloadSizedPDF } = await import('$lib/pdf/template');
-			await downloadSizedPDF(design, config.paperWidth, lang);
+			await downloadSizedPDF(design, design.templateWidthMm, lang);
 		} catch {
 			notice = t('generatorFailedDownload', lang);
 		} finally {
@@ -428,18 +476,22 @@
 				{t(config.mode === 'text' ? 'generatorText' : 'generatorFigure', lang)}
 			</h1>
 			{#if config.mode === 'text'}
-				<label for="heart-text">{t('generatorName', lang)}</label><input
+				<label for="heart-text">{t('generatorName', lang)}</label><textarea
 					id="heart-text"
 					class="name-input"
-					type="text"
-					maxlength="10"
-					bind:value={config.text}
+					rows="3"
+					value={config.text}
+					oninput={(event) => {
+						const value = normalizeText(event.currentTarget.value);
+						config.text = value;
+						if (event.currentTarget.value !== value)
+							event.currentTarget.value = value;
+					}}
 					autocomplete="off"
-					spellcheck="false"
-				/>
+					spellcheck="false"></textarea>
 				<p class="hint">{t('generatorNameHint', lang)}</p>
 				<div class="examples">
-					{#each ['ANNA', 'JUL', 'ÅSE'] as word (word)}<button
+					{#each ['ANNA', 'JUL', 'JULE\nMAND'] as word (word)}<button
 							onclick={() => (config.text = word)}>{word}</button
 						>{/each}
 				</div>
@@ -471,10 +523,14 @@
 					<button class="btn btn-outline" onclick={() => retry++}
 						>{t('generatorRetry', lang)}</button
 					>{/if}
+				{#if !query.trim() && !browseAll}<p class="motif-heading">
+						{t('generatorChristmasChoices', lang)}
+					</p>{/if}
 				<div class="motifs">
 					{#each matches.slice(0, limit) as item (item.id)}<button
 							aria-pressed={config.motif === item.id}
 							aria-label={label(item)}
+							title={`${label(item)} · ${item.package === 'tabler' ? 'Tabler' : item.package === 'phosphor' ? 'Phosphor' : 'Juleflet'}`}
 							onclick={() => (config.motif = item.id)}
 							><svg viewBox={`0 0 ${item.box} ${item.box}`} aria-hidden="true"
 								>{@html item.art}</svg
@@ -489,11 +545,22 @@
 						onclick={() => (limit += 24)}
 						>{t('generatorMore', lang)} ({matches.length})</button
 					>{/if}
+				{#if !query.trim()}<button
+						class="more"
+						onclick={() => {
+							browseAll = !browseAll;
+							limit = 24;
+						}}
+						>{t(
+							browseAll ? 'generatorShowChristmas' : 'generatorBrowseAll',
+							lang
+						)}</button
+					>{/if}
 				<a
 					class="credit"
-					href={`${base}/generator/phosphor-LICENSE.txt`}
+					href={`${base}/generator/SOURCES.txt`}
 					target="_blank"
-					rel="noopener">Phosphor · MIT</a
+					rel="noopener">{t('generatorLibraries', lang)}</a
 				>
 			{/if}
 			<button class="back-start" onclick={() => chooseMode('start')}
@@ -538,17 +605,44 @@
 		>
 			<h2>{t('generatorPersonalise', lang)}</h2>
 			{#if config.mode === 'figure'}
-				<h3>{t('generatorFrame', lang)}</h3>
+				<h3>{t('generatorChooseTemplate', lang)}</h3>
 				<div class="frame-options">
-					{#each frames as frame (frame[0])}
+					{#each figureChoices as choice (choice.id)}
 						<button
-							aria-pressed={config.frame === frame[0]}
-							onclick={() => (config.frame = frame[0])}
+							aria-label={`${frameLabel(choice.frame)} · ${borderLabel(choice.style)}`}
+							aria-pressed={config.frame === choice.frame &&
+								config.style === choice.style}
+							title={thumbnails[choice.id]?.failure
+								? t('generatorTemplateUnavailable', lang)
+								: undefined}
+							onclick={() => {
+								config.frame = choice.frame;
+								config.style = choice.style;
+							}}
 						>
-							<GeneratorFrameIcon frame={frame[0]} />{t(frame[1], lang)}
+							<GeneratorFrameIcon
+								frame={choice.frame}
+								design={thumbnails[choice.id]?.result?.design}
+								{colors}
+								unavailable={!!thumbnails[choice.id]?.failure}
+							/>
+							{frameLabel(choice.frame)}<small
+								>{borderLabel(choice.style)}</small
+							>
 						</button>
 					{/each}
 				</div>
+				<button
+					class="more template-more"
+					onclick={() => (expandedTemplates = !expandedTemplates)}
+				>
+					{t(
+						expandedTemplates
+							? 'generatorFewerTemplates'
+							: 'generatorMoreTemplates',
+						lang
+					)}
+				</button>
 				<label class="range-label" for="frame-size"
 					>{t('generatorFrameSize', lang)}<output>{config.frameSize}%</output
 					></label
@@ -570,14 +664,6 @@
 					step="1"
 					bind:value={config.scale}
 				/>
-				<h3>{t('generatorBorder', lang)}</h3>
-				<div class="segmented">
-					{#each [['rays', 'generatorRays'], ['check', 'generatorCheck'], ['plain', 'generatorPlain']] as const as border (border[0])}<button
-							aria-pressed={config.style === border[0]}
-							onclick={() => (config.style = border[0])}
-							>{t(border[1], lang)}</button
-						>{/each}
-				</div>
 			{:else}
 				<h3>{t('generatorTextFrame', lang)}</h3>
 				<div class="frame-options">
@@ -586,27 +672,17 @@
 							aria-pressed={config.textFrame === frame[0]}
 							onclick={() => (config.textFrame = frame[0])}
 						>
-							<GeneratorFrameIcon frame={frame[0]} lettering />{t(
-								frame[1],
-								lang
-							)}
+							<GeneratorFrameIcon
+								frame={frame[0]}
+								design={thumbnails[frame[0]]?.result?.design}
+								{colors}
+								unavailable={!!thumbnails[frame[0]]?.failure}
+							/>{t(frame[1], lang)}
 						</button>
 					{/each}
 				</div>
 			{/if}
 			<div class="actions">
-				<label class="range-label" for="paper-width"
-					>{t('generatorPaperWidth', lang)}<output
-						>{config.paperWidth} mm</output
-					></label
-				><input
-					id="paper-width"
-					type="range"
-					min="80"
-					max="140"
-					step="10"
-					bind:value={config.paperWidth}
-				/>
 				<button
 					class="btn btn-primary"
 					disabled={!result || busy || downloadBusy}
@@ -614,6 +690,11 @@
 					><DownloadIcon size={18} />{t('generatorDownload', lang)}</button
 				>
 				<p class="hint">{t('generatorPaperHint', lang)}</p>
+				{#if result}<p class="hint">
+						{t('generatorPrintSize', lang, {
+							width: result.design.templateWidthMm ?? 100
+						})}
+					</p>{/if}
 				<button
 					class="btn btn-outline"
 					disabled={!result || busy}
@@ -784,10 +865,6 @@
 		margin: 21px 0 11px;
 	}
 	.mode-tabs,
-	.segmented {
-		display: flex;
-		gap: 6px;
-	}
 	.mode-tabs {
 		background: #edf0e6;
 		padding: 4px;
@@ -874,7 +951,6 @@
 	}
 	.motifs button[aria-pressed='true'],
 	.fonts button[aria-pressed='true'],
-	.segmented button[aria-pressed='true'],
 	.frame-options button[aria-pressed='true'] {
 		border-color: #6d8b56;
 		background: #edf3e4;
@@ -904,6 +980,8 @@
 		padding-top: 19px;
 	}
 	.name-input {
+		resize: vertical;
+		line-height: 1.3;
 		font-size: 27px;
 		letter-spacing: 0.03em;
 		font-weight: 750;
@@ -1015,18 +1093,6 @@
 		line-height: 1.6;
 		max-width: 420px;
 	}
-	.segmented button {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		border: 1px solid #dde2d2;
-		border-radius: 9px;
-		background: white;
-		padding: 9px 3px;
-		font-size: 11px;
-		color: #6c7c5e;
-	}
 
 	.range-label {
 		display: flex;
@@ -1056,6 +1122,15 @@
 		font: inherit;
 		font-size: 12px;
 		cursor: pointer;
+	}
+	.frame-options small {
+		display: block;
+		font-size: 10px;
+		color: var(--ink-light);
+		margin-top: 2px;
+	}
+	.template-more {
+		margin: 8px 0 12px;
 	}
 	.frame-options button:hover {
 		border-color: var(--green);

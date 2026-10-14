@@ -337,7 +337,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
     date,
     description,
     weaveParity,
-    templateWidthMm: typeof r.templateWidthMm === 'number' && Number.isFinite(r.templateWidthMm) && r.templateWidthMm >= 80 && r.templateWidthMm <= 140 ? r.templateWidthMm : undefined,
+    templateWidthMm: typeof r.templateWidthMm === 'number' && Number.isFinite(r.templateWidthMm) && r.templateWidthMm >= 80 && r.templateWidthMm <= 1000 ? r.templateWidthMm : undefined,
     colors,
     gridSize: inferredGrid,
     fingers
@@ -1135,7 +1135,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   const source = svg.getAttribute('data-source') || dcSource || undefined;
   const date = svg.getAttribute('data-date') || dcDate || undefined;
   const rawWidth = Number(svg.getAttribute('data-template-width-mm'));
-  const templateWidthMm = Number.isFinite(rawWidth) && rawWidth >= 80 && rawWidth <= 140 ? rawWidth : undefined;
+  const templateWidthMm = Number.isFinite(rawWidth) && rawWidth >= 80 && rawWidth <= 1000 ? rawWidth : undefined;
   const weaveParity = normalizeWeaveParity(parseInt(svg.getAttribute('data-weave-parity') || '0', 10));
   const colors = parseHeartColors({
     left: svg.getAttribute('data-color-left'),

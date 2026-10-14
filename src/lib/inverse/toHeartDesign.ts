@@ -140,6 +140,8 @@ export class CutGeometryError extends Error {
 export type { SymmetryMode, SymmetrySettings };
 
 export type CutGeometryOptions = {
+  /** Physical width used for the 1.5 mm minimum strip check. */
+  paperWidthMm?: number;
   name: string;
   author?: string;
   colors?: HeartColors;
@@ -604,7 +606,7 @@ export function convertValidatedCutGeometry(json: string | CutGeometry, opts: Cu
   const tolerance = opts.tolerance ?? FIT_TOLERANCE;
   const legal = (value: ConvertedHeart): boolean => {
     const d = value.design;
-    const margin = intersectionMarginPx(inferOverlapRect(d.fingers, d.gridSize));
+    const margin = intersectionMarginPx(inferOverlapRect(d.fingers, d.gridSize), opts.paperWidthMm);
     return !d.fingers.some(finger => fingerHasIntersectionIssues(finger, d.fingers, margin));
   };
   for (const precision of [...new Set([tolerance, tolerance * 0.4, 0])]) {

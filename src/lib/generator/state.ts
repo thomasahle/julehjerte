@@ -7,7 +7,7 @@ export type GeneratorState = {
 	frame: Frame;
 	frameSize: number;
 	scale: number;
-	style: 'rays' | 'check' | 'plain';
+	style: 'rays' | 'check' | 'plain' | 'sunburst';
 	textFrame: TextFrame;
 	paperWidth: number;
 };
@@ -33,12 +33,11 @@ export function readGeneratorState(hash: string): GeneratorState {
 			mode: ['start', 'figure', 'text'],
 			font: ['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous'],
 			frame: [...FRAMES],
-			style: ['rays', 'check', 'plain'],
+			style: ['rays', 'check', 'plain', 'sunburst'],
 			textFrame: ['woven', 'air', ...FRAMES]
 		}))
 			if (allowed.includes(raw[k])) Object.assign(s, { [k]: raw[k] });
-		if (typeof raw.text === 'string')
-			s.text = [...raw.text.normalize('NFC')].slice(0, 10).join('');
+		if (typeof raw.text === 'string') s.text = normalizeText(raw.text);
 		if (typeof raw.motif === 'string' && /^[a-z0-9-]{1,80}$/.test(raw.motif))
 			s.motif = raw.motif;
 		for (const [k, min, max] of [
@@ -53,5 +52,16 @@ export function readGeneratorState(hash: string): GeneratorState {
 	} catch {
 		/* An absent or malformed link starts a fresh heart. */
 	}
+	if (s.style === 'sunburst') s.frame = 'circle';
 	return s;
+}
+
+export function normalizeText(text: string): string {
+	return text
+		.normalize('NFC')
+		.replace(/\r\n?/g, '\n')
+		.split('\n')
+		.slice(0, 3)
+		.map((line) => [...line].slice(0, 10).join(''))
+		.join('\n');
 }
