@@ -81,6 +81,15 @@ does **not** meet the goal of preserving current image quality and is not
 promoted. The next step is to recover quality under consistent geometry checks,
 then reconcile the independent editor predicates and broaden verification.
 
+The Hunodan checkpoint history locates the regression in curve refinement.
+Both runs begin at 1.7337% internal image error and reach 1.0734% at step forty.
+The original validator accepts that checkpoint; the experimental validator
+rejects close returns spanning adjacent cubics. Later improved checkpoints also
+fail the new predicate, leaving the earlier, less accurate valid shape selected.
+This is evidence of refinement creating short returns, rather than changed
+cropping or colour conversion. A useful follow-up must guide those local updates
+away from the constraint; simply rejecting more checkpoints loses useful progress.
+
 ## Reproduction and verification
 
 The [evidence record](self-return-subdivision.json) includes all sixty verdict
