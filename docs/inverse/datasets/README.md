@@ -33,11 +33,11 @@ existing QA or connected source groups; the rest still need family, instance
 and usage review before allocation. See the [real audit](real-validation.json)
 and [synthetic asset checks](synthetic-batch.json).
 
-The [latest completed fitter release](junction-recovery.md) passes all 22
-regular Hunodan designs below ten seconds (maximum 8.07 seconds, unchanged
+The [latest completed fitter release](trace-search-order.md) passes all 22
+regular Hunodan designs below ten seconds (maximum 8.22 seconds, unchanged
 errors) and retains hard-photo recovery at **25/31**. All 25 pairs
 also pass production editable conversion and independent geometry/paper checks.
-Verification includes 791 inverse tests, 855 application tests, ten Chromium
+Verification includes 794 inverse tests, 855 application tests, eleven Chromium
 flows, type checking, lint and build. These
 31 photographs are a fixed reconstruction benchmark, not the full collected
 573-file photographic corpus.
@@ -57,7 +57,7 @@ physical-paper registration mask resolves that failure, and the complete replay
 now passes original, JPEG and half-resolution uploads through the browser and
 editable export. Original and JPEG exports retain all 28 reviewed star points.
 The preview at `http://127.0.0.1:5232/editor/mal/` serves the checked build.
-Visible contour defects remain. The latest junction-recovery release takes
+Visible contour defects remain. The preceding junction-recovery release takes
 8.65 seconds for the original star and 28.14 seconds for the Viking; native
 ten-second benchmarks are not browser latency guarantees. Nothing is pushed or
 deployed.
@@ -120,9 +120,10 @@ The [trace-order follow-up](trace-search-order.md) queues dense graphs behind
 alternative traces after sparse exhaustion. Its gold fixed-mask regression and
 twelve existing routing tests pass; all 22 Hunodan errors remain unchanged,
 with a maximum 8.22 seconds. Native checks retain all 25 hard-photo passes,
-including editable export and the two star perturbations. Full-suite and
-browser checks are still running, so the completed-release results above
-remain the latest verified app benchmark.
+including editable export and the two star perturbations. Full-suite and all
+eleven browser checks pass. The gold fixed-mask browser upload takes 6.76
+seconds with 0.73625% editable disagreement; its annotation-assisted crop is
+not an automatic full-photo success. The preview serves this verified build.
 
 The [experiment history](experiment-history.md) retains the earlier studies,
 failed alternatives and verification records without mixing their historical
