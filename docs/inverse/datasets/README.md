@@ -28,29 +28,31 @@ The 2026-10-14 snapshot contains:
 
 ## Current results and limits
 
-The [final-export integration](final-return-integration.md) now connects the
-shared whole-cut checker and bounded repair to the engine and editor. Its
-frozen-output replay retains all 47 accepted outputs without increasing image
-error. Full inverse QA subsequently finds seven photographic regressions
-(837/844 passing), so this integration is not release-ready. Consistent geometry
-checks throughout fitting are now applied locally; their focused trial resolves
-five regressions but exposes insufficient eye retention in the shifted bird.
-Hidden-first checkpoint repair and additional bounded refinement improve the
-ordinary Hunodan bird to 0.842% in 5.68 seconds. Its full inverse run passes
-834/846 tests and exposes additional repair/scheduling and fixture failures;
-the integration remains incomplete. The subsequent bounded-repair follow-up
-restores all 16 focused routing tests, including the failed sloth crop shifts,
-and independently verifies both repaired sloth SVGs. Its corrected full QA
-passes **846/848 inverse tests**, all 857 application tests, checking, lint and
-build. Only the two shifted-bird eye-retention regressions fail that full run. The next
-[scoped polishing correction](small-feature-polishing.md) passes both fresh
-regressions and improves eye shape overlap at two resolutions; all seven focused
-tests pass. Type checking, lint, all 857 application tests, the build and the
-complete **849/849 inverse suite** also pass. Fresh corpus and browser validation
-are in progress. See the
-[repair findings](final-return-integration.md#repair-eligibility-and-time-reserved-for-validation).
-The benchmark figures below
-describe the earlier completed releases; fresh release and browser QA are pending.
+The [final-export integration](final-return-integration.md) connects the shared
+whole-cut checker and bounded repair to fitting, export and the editor. The
+[scoped polishing correction](small-feature-polishing.md) resolves its remaining
+shifted-bird eye regressions. Complete QA passes **849/849 inverse tests**, all
+**857 application tests** (one existing skip), type checking, lint and build.
+
+The [fresh release validation](small-feature-release.json) passes **22/22 regular
+Hunodan designs below ten seconds**, with a maximum of **7.915 seconds**.
+Twenty-one mask errors are unchanged from the previous validated release and
+the bird improves. Automatic cropping and fitting retain **25/31 hard-photo
+passes**; five passing errors increase by up to 0.0575 percentage points, four
+improve and sixteen are unchanged. Source pixels, crop corners and fitting
+targets are unchanged. All **47 accepted editable SVG pairs** pass independent
+checks, and all **16 Chromium workflows** pass. Three downloaded bird SVGs also
+pass separate 400/800-pixel feature measurements. Browser latency is not bounded
+by ten seconds; the Viking workflow takes 29.12 seconds with its 180-second
+allowance. The checked preview runs on port 5232, with no solver/WASM requests
+on initial Draw or Paint load. Visible contour defects and six unresolved
+photographs remain.
+
+An offline [short shared-span experiment](short-shared-span-study.json) improves
+two saved shifted-bird outputs but finds no eligible proposal in the 47 standard
+release outputs. It remains outside the application. The studies below preserve
+earlier experiments, failures and release measurements; the current results are
+the ones above.
 
 The [row-initialization and scheduling release](row-initialization.md) now
 passes all 22 regular Hunodan designs below ten seconds (maximum 7.827 seconds,

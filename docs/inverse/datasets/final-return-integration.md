@@ -3,8 +3,11 @@
 **Latest verification:** the subsequent [small-feature polishing correction](small-feature-polishing.md)
 resolves the two shifted-eye regressions. Repository QA now passes 849/849 inverse
 tests and all 857 application tests, with type checking, lint and build passing.
-Fresh full-corpus, editable-export and browser validation are in progress; the
-historical intermediate failures below remain part of the diagnostic record.
+Fresh full-corpus validation retains 22/22 Hunodan and 25/31 hard-photo passes;
+all 47 accepted editable pairs and 16 browser workflows pass. See the
+[release measurements](small-feature-release.json), including small photo-error
+increases and remaining visual defects. The historical intermediate failures
+below remain part of the diagnostic record.
 
 Final engine validation and the editor now use the same normalized return
 search. Before export, a bounded repair can move cutting controls to resolve a

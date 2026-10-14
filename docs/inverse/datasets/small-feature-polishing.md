@@ -2,8 +2,8 @@
 
 The shifted bird now passes both previously failing eye regressions, with
 unchanged source pixels and stricter shape-overlap assertions. This is a local
-fitting correction, not a new cropper or neural model. The complete release
-benchmark and browser QA still need to run.
+fitting correction, not a new cropper or neural model. Fresh corpus, editable-SVG
+and browser verification now pass; the measured limits are recorded below.
 
 ## What failed
 
@@ -87,8 +87,64 @@ the serial verification run.
 
 The [measurements and artifact hashes](small-feature-polishing.json) preserve
 the negative trials, captured boundary, runtime variants, fresh exports and
-focused test log. Fresh corpus, editable SVG and browser validation are now in
-progress. No changes have been pushed or deployed.
+focused test log. The [complete release record](small-feature-release.json)
+adds the fresh corpus, editable SVG and browser results. No changes have been
+pushed or deployed.
+
+## Complete pipeline verification
+
+The fresh native run passes all 22 regular Hunodan designs within ten seconds;
+the maximum is **7.915 seconds**. Relative to the preceding turning-limit release,
+21 independent mask errors are exactly unchanged. The bird improves from
+0.9043% to 0.8444%. These timings include preparation, fitting, validation and
+export, but exclude image decoding and the independent measurement renderer.
+
+Automatic cropping and fitting retain **25/31 complete hard-photo passes**.
+Source images, selected corners and all fitting-input hashes match the preceding
+run. Five passing errors increase slightly: floral checker +0.0125 percentage
+points, gingerbread +0.01125, fine checker +0.0575, orb +0.005 and maple leaf
++0.010. Four improve and sixteen are unchanged. Pass retention does not imply
+uniform error reduction. The same six failures remain in the denominator.
+
+All **47 accepted pairs** pass conversion to editable curves, SVG serialization
+and parsing, editor geometry rules, source-feature checks and nominal paper
+checks. All **16 Chromium workflows** pass, including three bird masks with
+one-pixel crop shifts. Actual downloaded bird SVGs are separately measured at
+400 and 800 pixels. The horizontal-shift SVG retains 93.40% of the eye at 800
+pixels, with 90.83% component IoU and 2.6063% whole-mask disagreement. This is
+an independent browser observation, not an exact reproduction of the native
+prototype coordinates.
+
+Browser click-to-ready timings are recorded separately, with a 180-second
+solver allowance. The Viking takes 29.12 seconds; these checks do not establish
+a ten-second browser bound. Fresh Draw and Paint contexts fetch no solver or
+WASM before a solver action. All 158 recorded preview assets and all 840 source
+hashes were verified. The tested preview is on port 5232.
+
+Visual inspection confirms the built-in star's straight bands and the hat's
+shared central seam. The photographed star still has uneven contours, and the
+bird's head and surrounding border retain artifacts. The stronger geometry
+checks and improved eye do not make the full motif an exact reconstruction.
+
+## Short shared-span follow-up
+
+An offline experiment proposes close, independent spans shorter than 3 mm
+when both ends already meet. Exact signed cubic ribbon area ranks the proposals;
+existing image, symmetry, feature, geometry, cut-quality and paper gates decide
+whether to accept them. Signed area is not an error bound for crossing ribbons.
+
+The experiment improves two saved shifted-bird outputs at both tested fitting
+resolutions and leaves a third unchanged. For the newer ten-second output,
+400-pixel error changes from 2.52375% to 2.52125%, with unchanged eye retention;
+800-pixel error also decreases. These are small seam corrections, not a solution
+to the head-outline defect. Trials with a one-second proposal deadline take up
+to 1.20 seconds including completion of the final audit.
+
+None of the 47 standard release outputs has an eligible short-span proposal.
+The proposal therefore remains outside the application: it has not established
+a broader reconstruction or fresh-solve benefit. The
+[six trials and 47-case inventory](short-shared-span-study.json) retain this
+negative result alongside the local improvements.
 
 ```sh
 node --test --test-concurrency=1 scripts/inverse/feature-details.test.mjs \
