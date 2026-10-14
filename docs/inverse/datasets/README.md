@@ -50,9 +50,12 @@ Viking browser flow takes 29.12 seconds with its ordinary 180-second allowance.
 
 Runtime revision `c000d30` passes **853/853 inverse tests**, **857 application
 tests** (one existing skip), type checking, lint and build. The pinned run
-verifies all 845 recorded source files. Fresh Hunodan, photographic, editable
-export and browser comparisons are running separately; `99399ff` remains the
-last fully validated release until those comparisons finish.
+verifies all 845 recorded source files. The fresh Hunodan comparison passes
+**22/22 within ten seconds**, maximum **8.100 seconds**, with 21 mask errors
+unchanged and the bird improving from 0.8444% to 0.8022%. Source photographs,
+crop coordinates and settings are unchanged. Photographic, editable-export and
+browser comparisons are running separately; `99399ff` remains the last fully
+validated release until those comparisons finish.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority

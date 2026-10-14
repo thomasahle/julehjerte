@@ -128,7 +128,7 @@
     "Timing observations came from serial processes on a shared machine. They do not establish browser or mobile latency.",
     "The anchor comparison contains two fresh processes per method; the baseline succeeds once and fails once.",
     "Independent SVG comparisons cover the repaired anchor at 400 and 800 pixels. The 104 projection probes use separate full geometry checks, not a photographic target.",
-    "Full QA passes. Fresh Hunodan/photo/editable/browser release comparisons are still pending; 99399ff remains the last fully validated release."
+    "Full QA and all 22 Hunodan comparisons pass. Fresh photo/editable/browser release comparisons are pending; 99399ff remains the last fully validated release."
   ],
   "fullQA": {
     "baseCommit": "c000d30f82e323190bb3370c4d9582a8243eed3d",
@@ -205,6 +205,224 @@
       "tmp/heart-learning/return-projection-speed-v1/production-qa/app.log": "c1b897711e1b2821e158bae877705bdfd63618c22006bab654c1d42c57eab9de",
       "tmp/heart-learning/return-projection-speed-v1/production-qa/build.log": "0c3a2b88dd75d8907e6a3a46fda31e62c0ce075ea017ed2537300cc680448753",
       "tmp/heart-learning/return-projection-speed-v1/production-qa/inverse.log": "b26669f8eaf71d50c8131618336301bfbaba6f4b0f6b084caf433fc8d3c12099"
+    }
+  },
+  "hunodanReplay": {
+    "status": "passed",
+    "runtimeCommit": "c000d30f82e323190bb3370c4d9582a8243eed3d",
+    "previousRuntimeCommit": "99399ff60485b9a049eb2b31142021da0439c9bc",
+    "passed": 22,
+    "total": 22,
+    "maximumSeconds": 8.099764666999995,
+    "unchangedErrors": 21,
+    "improvedErrors": 1,
+    "inputCatalogSha256": "b2a2f8908a54eec466c02dfbd8d0284509b6d482eed1cbdd9f016229e5ba9e1c",
+    "settingsAndBaselineUnchanged": true,
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 4.363523583,
+        "previousSeconds": 4.274513667,
+        "error": 0.009799111111111111,
+        "previousError": 0.009799111111111111,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 5.434474792,
+        "previousSeconds": 5.406189832999999,
+        "error": 0.013340444444444445,
+        "previousError": 0.013340444444444445,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.6660795,
+        "previousSeconds": 3.518050082999998,
+        "error": 0.006634666666666666,
+        "previousError": 0.006634666666666666,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 4.208836833000001,
+        "previousSeconds": 3.934302834,
+        "error": 0.013824,
+        "previousError": 0.013824,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 5.2420919580000005,
+        "previousSeconds": 5.661986999999997,
+        "error": 0.008021555177909465,
+        "previousError": 0.00844420572515387,
+        "errorDelta": -0.00042265054724440615
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 6.352111583000002,
+        "previousSeconds": 6.1437884579999995,
+        "error": 0.012166341145833334,
+        "previousError": 0.012166341145833334,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.634226791000001,
+        "previousSeconds": 5.4719339169999985,
+        "error": 0.005148444444444444,
+        "previousError": 0.005148444444444444,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 5.613092582999998,
+        "previousSeconds": 5.655587458999995,
+        "error": 0.005219555555555555,
+        "previousError": 0.005219555555555555,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 5.253994291999995,
+        "previousSeconds": 5.294253375,
+        "error": 0.004522666666666667,
+        "previousError": 0.004522666666666667,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 6.894460207999996,
+        "previousSeconds": 6.726357582999997,
+        "error": 0.005639111111111111,
+        "previousError": 0.005639111111111111,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.228655666999999,
+        "previousSeconds": 3.2053443750000006,
+        "error": 0.009436444444444445,
+        "previousError": 0.009436444444444445,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 7.052782375000002,
+        "previousSeconds": 6.660271457999996,
+        "error": 0.006040430615586996,
+        "previousError": 0.006040430615586996,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 5.010377124999992,
+        "previousSeconds": 4.900452833000003,
+        "error": 0.003899406226779104,
+        "previousError": 0.003899406226779104,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 7.393697708000007,
+        "previousSeconds": 7.267858500000002,
+        "error": 0.007776029627903062,
+        "previousError": 0.007776029627903062,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.288644916000004,
+        "previousSeconds": 4.177925749999995,
+        "error": 0.007550237322696868,
+        "previousError": 0.007550237322696868,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 6.013898541000002,
+        "previousSeconds": 5.928904250000007,
+        "error": 0.004365548980933596,
+        "previousError": 0.004365548980933596,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 8.099764666999995,
+        "previousSeconds": 7.915125583000001,
+        "error": 0.0056129769369752365,
+        "previousError": 0.0056129769369752365,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 4.889066791999998,
+        "previousSeconds": 4.755232000000004,
+        "error": 0.007929362880886427,
+        "previousError": 0.007929362880886427,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.574962916999997,
+        "previousSeconds": 4.671306750000003,
+        "error": 0.0038045247395833335,
+        "previousError": 0.0038045247395833335,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 6.728603791999994,
+        "previousSeconds": 6.4690706670000075,
+        "error": 0.012332213049376572,
+        "previousError": 0.012332213049376572,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 6.355950958000001,
+        "previousSeconds": 6.367919332999998,
+        "error": 0.0050250552896055544,
+        "previousError": 0.0050250552896055544,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 6.238812375000008,
+        "previousSeconds": 6.05630575,
+        "error": 0.010624446293860237,
+        "previousError": 0.010624446293860237,
+        "errorDelta": 0.0
+      }
+    ],
+    "scope": "Frozen photographs and crop coordinates, verified encoded and decoded input checksums. Timings include preparation, solving, validation and export; image decoding and independent replay are separate. This does not establish automatic cropping or browser latency.",
+    "artifactsSha256": {
+      "tmp/heart-learning/return-projection-speed-v1/production-release/hunodan/results.json": "f4ad14d979b7edaf82d34236ca3a9e4b8a86abcfa8efd2b9b21f3cc08612c932",
+      "tmp/heart-learning/eye-routing-v1/release/hunodan/results.json": "5f0db7875c33036696ffa7859c323cff20b8d2afed7b2b0dad9b5012aa73c56b",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/source.json": "628069ded10264542980061feb7d7ea2d22cdbc2ff026c68c6a2e120a14052b3"
     }
   }
 }

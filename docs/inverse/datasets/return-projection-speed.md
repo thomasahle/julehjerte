@@ -58,6 +58,14 @@ reasons, geometry identities and timing scope.
 The complete QA run on runtime revision `c000d30` passes **853 inverse tests**,
 **857 application tests** (one existing skip), type checking, lint and build.
 All 845 pinned source files remain unchanged. The inverse suite takes 876.88
-seconds; that is test-suite duration, not a solver benchmark. The Hunodan,
-photographic, editable-export and browser comparisons are still pending, so
-`99399ff` remains the last fully validated release.
+seconds; that is test-suite duration, not a solver benchmark.
+
+The fresh Hunodan comparison passes all **22 regular designs within ten
+seconds**, maximum **8.100 seconds**. Twenty-one independent mask errors are
+exactly unchanged from `99399ff`; the bird improves from 0.8444% to 0.8022%.
+The crop catalog, verified photograph bytes/pixels, settings and baseline
+criteria are unchanged. These results cover the complete newer runtime,
+including its scheduling and HiGHS fixes, not only the local projection change.
+They do not establish a whole-pipeline speedup: the previous maximum was
+7.915 seconds. Photographic, editable-export and browser comparisons are still
+pending, so `99399ff` remains the last fully validated release.
