@@ -1,0 +1,74 @@
+{
+  "scope": "Complete repository QA of the shared typed return-geometry module at 70b6fc5. The app has not activated this checker or final repair. Subsequent isolated export integration is not covered.",
+  "sourceCommit": "70b6fc56cdd18c130cdaf3be85ddf8d90a4e74a4",
+  "checks": [
+    {
+      "stage": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 8.773175167
+    },
+    {
+      "stage": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 6.137427208
+    },
+    {
+      "stage": "app",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 30.966573333
+    },
+    {
+      "stage": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 805.6786219170001
+    },
+    {
+      "stage": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 13.498310916000037
+    }
+  ],
+  "inversePassed": 838,
+  "inverseFailed": 0,
+  "applicationPassed": 857,
+  "applicationSkipped": 1,
+  "sourceFilesVerified": 837,
+  "artifacts": {
+    "tmp/heart-learning/editor-scale-v1/qa/app.log": "dc28c33deb24c38455617d25026f5e41c519a8d08455d1f509b2f80f6cc89dc0",
+    "tmp/heart-learning/editor-scale-v1/qa/build.log": "b29ffb5f1819a950d7cf2dd99b1d2c7407b0c255159777b0689abf389a6ea5ba",
+    "tmp/heart-learning/editor-scale-v1/qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/editor-scale-v1/qa/checks.json": "83394f44ebd68b0550abfea7f1b660b1b36a076b2533280d555c682f343e5c24",
+    "tmp/heart-learning/editor-scale-v1/qa/inverse.log": "340b3033d14262d9550679e94465ad655dddc6853a7f41be900ac89c797b55ad",
+    "tmp/heart-learning/editor-scale-v1/qa/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+    "tmp/heart-learning/editor-scale-v1/qa/run.py": "3886dec771de750bc7716a32b28bb16d8f532a4574371bece23405f94b93fcd6",
+    "tmp/heart-learning/editor-scale-v1/qa/runner.json": "669216089d076a9d04aaafa2e896f4475f90988758a0b1f65568a1f769efbaa6",
+    "tmp/heart-learning/editor-scale-v1/qa/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/editor-scale-v1/qa/source.json": "1989ab052186ec51ee07274d88270770e46869450644c521c7ee70fdf3f9495b"
+  }
+}

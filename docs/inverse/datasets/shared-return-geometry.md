@@ -96,3 +96,9 @@ these modules. Production activation still needs the final repair and editor
 check together, followed by fresh solving and browser checks. In particular,
 the experimental finite search is not a completeness proof or physical assembly
 test, and this work does not increase the automatic 25/31 photo result.
+
+The subsequent [full QA](shared-return-geometry-validation.json) passes all 838
+inverse tests and 857 application tests (one existing skip), type checking,
+lint and build. All 837 recorded source files remained unchanged through the run.
+This covers the shared modules and isolated builder, not their subsequent
+activation in final export.
