@@ -163,16 +163,24 @@ interiors. This annotation-assisted diagnostic excludes difficult seams and
 does not measure automatic cropping or complete reconstruction. Future joint
 training must also be evaluated on outlines, narrow features and exported cuts.
 
-The material study's latest QA passes 77 learning tests, 855 application tests,
+The material study's QA passes 77 learning tests, 855 application tests,
 type checking, lint, build and both annotation galleries. The inverse suite is
-**811/812**, with an unresolved [flower scheduling regression](flower-budget-diagnostic.json)
+**811/812**, exposing a [flower scheduling regression](flower-budget-diagnostic.json)
 reproduced using unchanged production code. Both classified-mask hashes remain
 fixed. Minimum-width clearance makes the initially preferred 2+4 grid worse
 than 3+3, but the first grid receives 3.13 seconds of curve refinement and the
 second only 0.11 seconds. The replay returns a checked 4+2 pair at 1.332% error,
-which fails the regression's 3+3 and below-1% requirements. No fix or all-green
-release is claimed; comparing competitive seeds after clearance is the next
-bounded experiment.
+which fails the regression's 3+3 and below-1% requirements.
+
+The subsequent [clearance-order correction](clearance-order.md) compares one
+existing candidate after minimum-width preparation, retaining the original
+deadline and acceptance checks. Fresh exports recover both flowers with 3+3
+cuts at 0.450% and 0.615% error. All 25 previous hard-photo successes survive
+editable conversion. All 22 regular Hunodan cases finish under ten seconds,
+but two full-run errors rise slightly; isolated controls do not replace that
+result. Full repository/browser validation is in progress. The first QA
+attempt also found unnecessary system-font scanning in a path-only clipping
+test; removing it preserves every checked pixel and geometry assertion.
 
 The [six-label frozen follow-up](real-supplement-diagnostic.md) now evaluates
 the additions without training. The scene-trained model has 87.20% mean
