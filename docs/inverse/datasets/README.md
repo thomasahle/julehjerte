@@ -78,6 +78,14 @@ native replay retains 25/31 photo passes and all 22 Hunodan passes with unchange
 release errors, maximum 8.36 seconds. No new proposal is accepted; photo errors
 still fluctuate. The correction remains offline.
 
+A [local-color evidence study](local-color-evidence.md) rejects two further
+classification hypotheses as global replacements. On 96 paired synthetic views,
+lower glare error comes with clean-image regressions. Nine fixed-crop fits and
+four editable replays isolate an additional bauble loss during fitting, after
+a corrected mask retains all sampled frame points. The new diagnostic helper
+checks overlay pixel counts against the measured error; no photographic gain
+or learned-model deployment is claimed.
+
 The [shared-return follow-up](visible-shared-returns.md) reduces two star notches
 and protects real corners against one-pixel source shifts. Its latest scheduling
 fix, `fa7774c`, reserves time for shared-cut alignment after speculative repairs.
