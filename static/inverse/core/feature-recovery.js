@@ -159,11 +159,14 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
         if(solution||remaining()<.25||report.attempts.some(a=>a.solver&&a.solver.termination!=='candidate_graph_exhausted'))break;
       }
     }
-    if(!solution&&!report.seedIntersectionRetry&&remaining()>=.75&&report.attempts.length&&report.attempts.every(a=>a.solver?.termination==='candidate_graph_exhausted')){
+    if(!solution&&!report.seedIntersectionRetry&&remaining()>=.25&&report.attempts.length&&report.attempts.every(a=>a.solver?.termination==='candidate_graph_exhausted')){
       // A tiny raster bridge can add a junction without producing an illegal
       // visible chain. More hidden connectors cannot change that boundary
       // interpretation. Try one simpler trace after the established border
       // alternatives; the original image still judges its eventual fit.
+      // Use the other retries' entry floor. A fixed 0.75-second cutoff skipped
+      // useful small graphs and spent that same tail on denser exhausted ones.
+      // The actual MILP below still gets at most half the remaining allowance.
       const before=trace(.5),after=trace(.75),graphOf=target=>reindex({target,edges:target.curves.map(curve=>({curve,visible:true}))});
       const a=graphOf(before),b=graphOf(after),junctions=g=>g.incident.filter(edges=>edges.length>2).length;
       const proposal={smoothRadius:.75,junctionsBefore:junctions(a),junctionsAfter:junctions(b),attempted:false,recovered:false};

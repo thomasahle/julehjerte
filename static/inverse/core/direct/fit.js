@@ -245,9 +245,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // A missing source region still needs routing: low aggregate error cannot
   // establish that local curve refinement can create the absent feature.
   // This changes short-search scheduling only, never final acceptance.
-  const gridRoutingWeight=shortBudget&&features.passed&&cfg.maxImageError>0?Math.max(0,Math.min(1,Math.min(...fine.map(r=>r.error))/cfg.maxImageError-1)):1;
+  // A lower-error grid that loses a region cannot justify shortening routing
+  // for the worse-fitting grid selected to preserve it. Those two different
+  // candidates do not establish one promising local-refinement start.
+  const featureTradeoff=finalistPreference?.before[0]?.featuresRetained===false&&!colourPreferredGrid;
+  const gridRoutingWeight=shortBudget&&features.passed&&!featureTradeoff&&cfg.maxImageError>0?Math.max(0,Math.min(1,Math.min(...fine.map(r=>r.error))/cfg.maxImageError-1)):1;
   const reservedRecoverySeconds=Math.max(0,(refinementTimeLeft(deadline)-2000)/1000),ordinaryRecoverySeconds=(deadline-performance.now())/1000*.9;
-  const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?reservedRecoverySeconds:reservedRecoverySeconds+(ordinaryRecoverySeconds-reservedRecoverySeconds)*gridRoutingWeight);
+  const interpolatedRecoverySeconds=reservedRecoverySeconds+(ordinaryRecoverySeconds-reservedRecoverySeconds)*gridRoutingWeight;
+  // Tracing/preflight must leave room for a small useful MILP. A shorter
+  // initialization tail must not turn interpolation into a token probe that
+  // can only exhaust the first graphs. This floor never exceeds the ordinary
+  // routing allowance or changes an already reserved feature-grid probe.
+  const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?reservedRecoverySeconds:Math.min(ordinaryRecoverySeconds,Math.max(1,interpolatedRecoverySeconds)));
   const needsRecovery=(!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights;
   const fullRecoverySeconds=Math.min(20,competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
   // A longer allowance need not delay a useful grid behind the entire routing
@@ -255,10 +264,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // retaining a source region never certifies the resulting cutting geometry.
   const deferredFeatureRecovery=!shortBudget&&probeRouting&&needsRecovery?{maximumSeconds:fullRecoverySeconds,attempted:false}:null;
   const attemptRecovery=async(seconds,budgetPolicy,until=deadline)=>{
-    // A grid missing a source region cannot replace a nearly verified route.
-    // Lend its remaining tail to bounded repair and independent checks, within
-    // this search deadline; the MILP allowance stays fixed.
-    recovery=await recoverImageFeatures(input,cfg,seconds,onProgress,{repairDeadline:!reserveRefinement&&!features.passed?until:null});
+    // A missing region, or a worse grid selected to preserve one, cannot
+    // replace a nearly verified route. Lend its remaining tail to bounded
+    // repair and checks within this deadline; the MILP allowance stays fixed.
+    recovery=await recoverImageFeatures(input,cfg,seconds,onProgress,{repairDeadline:!reserveRefinement&&(!features.passed||featureTradeoff)?until:null});
     recovery.report.trigger=features;
     recovery.report.budgetPolicy=budgetPolicy;
     recovery.report.gridRoutingWeight=reserveRefinement?0:gridRoutingWeight;

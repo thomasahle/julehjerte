@@ -160,6 +160,43 @@ the actual constrained worker request. This is not a new visitor setting, and
 normal-browser measurements remain separate. Uploaded pixels, actual downloaded
 SVGs, paper checks and feature checks remain the test inputs and outputs.
 
+## Short probes and feature tradeoffs
+
+The next complete suite passes 848/850 inverse tests. The two failures expose
+additional limits of the scheduling policy. Both are retained in the
+[follow-up record](routing-retry-budget.json); this is not a completed release.
+
+For the blue outlined star, a fixed 0.75-second eligibility cutoff skips a
+simpler junction interpretation even after the ordinary sparse graphs are
+exhausted. In paired 0.74-second recovery probes, the old policy finds no seed;
+the prototype obtains a geometry- and paper-valid provisional seed in 0.630
+seconds. Its image error still exceeds the final limit, so it requires the
+common curve refinement. The helper now uses the other retries' 0.25-second
+entry floor while retaining its half-remaining MILP limit. The caller also
+keeps at least one second for interpolated ordinary probes, capped by the old
+routing allowance, to avoid spending nearly everything on preparation.
+
+The frozen sloth selects a worse-fitting grid to retain regions erased by the
+lowest-error grid. Combining the first grid's error with the second grid's
+feature pass incorrectly treats them as one promising refinement start.
+The correction keeps routing priority in this case and permits the existing
+bounded repair/checking tail. Restoring routing alone is insufficient in the
+paired replay: both the old validated runtime and the first prototype fail.
+With the tail, the prototype yields a checked 2+2-cut pair in 9.269 seconds,
+with independent error 0.8048% at 250 pixels and 1.1188% at 500 pixels. Visual
+review retains the sloth's openings, with small contour irregularities still
+visible. This is one fixed photographic mask, not new full-corpus evidence.
+
+Verification is still open. The initial fourteen focused tests finish at 7/14
+while three other generator benchmarks and several compiler processes consume
+substantial CPU. After adding the probe floor, the star/junction subset passes
+4/5: the unchanged original-star bound rejects exactly 0.8500% disagreement.
+The simpler junction and shifted-star regressions pass. Concurrent load is an
+observed timing confound, not proof that every failure is environmental. All
+failures remain recorded; no time, image, feature or geometry limit is relaxed.
+Syntax checks and the changed test file's lint pass. Further focused and full
+validation must precede any updated corpus or browser claims.
+
 ## Reproduction and evidence
 
 ```sh

@@ -57,8 +57,10 @@ to 0.7569%, and the leaf from 2.5625% to 1.32875%; the original benchmark still
 has 25/31 successes. A first full run exposed a missing-region regression,
 which is corrected and retained in [the validation record](routing-budget-blend.json).
 The next full run passes 848/850 inverse tests, exposing a skipped junction
-retry and another weak-region routing regression. Both are under diagnosis;
-the corpus and browser jobs stopped at this failed prerequisite.
+retry and another weak-region routing regression. The [subsequent routing correction](routing-retry-budget.json) preserves
+feature-tradeoff routing and admits a useful smaller junction probe. Focused
+validation remains incomplete, including deadline-sensitive failures under
+concurrent system load. Corpus and browser jobs have not run on this correction.
 
 A separate [render-test correction](shape-render-validation.md) avoids system
 font discovery for text-free SVGs. All 152 paired renders are byte-identical;

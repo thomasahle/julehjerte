@@ -40,10 +40,30 @@ test('an exhausted junction graph can yield a provisional routing from a simpler
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 
-test('the common fitter refines the alternative junction routing against the unchanged photograph',async()=>{
+test('a short probe tries simpler junctions before densifying exhausted traces',async()=>{
+  const {input,raw,source,mask,probability}=await fixture();
+  // The full-budget test above warms the same runtime. This short probe must
+  // still consider the useful topology; success remains independently gated.
+  const result=await recoverImageFeatures(input,settings(raw),.74),retry=result.report.seedTopologyRetry;
+  assert.equal(retry?.attempted,true,'A sub-0.75-second probe must not skip the simpler boundary.');
+  assert.ok(retry.junctionsAfter<retry.junctionsBefore);
+  assert.ok(retry.budgetSeconds>0&&retry.budgetSeconds<=.37);
+  const index=result.report.attempts.findIndex(a=>a.smoothRadius===.75);
+  assert.ok(index>=0);
+  assert.ok(result.report.attempts.slice(0,index).every(a=>a.solver?.termination==='candidate_graph_exhausted'));
+  assert.equal(result.report.accepted,false,'The provisional trace still exceeds the original image limit.');
+  if(result.refinementSeed){
+    assert.equal(validate(result.refinementSeed,settings(raw)).passed,true);
+    assert.equal(materialAudit(result.refinementSeed,settings(raw)).passed,true);
+  }
+  assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+});
+
+test('the common fitter refines the alternative junction routing against the unchanged photograph',async t=>{
   const {record,input,raw,source,mask,probability}=await fixture();
   const answer=await design(input,raw),report=answer.report,recovery=report.solver.featureRecovery;
-  assert.equal(recovery.seedTopologyRetry.recovered,true);
+  if(!recovery.seedTopologyRetry?.recovered)t.diagnostic(JSON.stringify({report,cuts:answer.files['cut_geometry.json']}));
+  assert.equal(recovery.seedTopologyRetry?.recovered,true);
   assert.ok(recovery.refinement.steps>160,'The provisional trace needs more than the short seed polish.');
   assert.equal(report.templateChecksPassed,true);assert.equal(report.validation.passed,true);
   assert.equal(report.manufacturing.status,'pass');assert.equal(report.imageFidelity.features.missing.length,0);
