@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {Cubic} from '../../static/inverse/core/bezier.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {experimentalSelfReturns} from './diagnostics/self-return-candidate.mjs';
 import {returnDiagnosticCases,subdivideDiagnosticPaths,diagnosticSubdivisions} from './self-return-subdivision-study.mjs';
@@ -33,4 +34,20 @@ test('the captured photographic bend has the same experimental verdict before an
     const model=new CurveGraph(entry.paths);
     assert.deepEqual(experimentalSelfReturns(model.solution(model.points,1),entry.cfg),[]);
   }
+});
+
+test('exported returns remain detectable with independent random knots on each cubic',async()=>{
+ for(const entry of (await returnDiagnosticCases()).filter(c=>c.name.startsWith('editable-'))){
+  let state=1729;
+  const random=()=>((state=(Math.imul(state,1664525)+1013904223)>>>0)/2**32);
+  for(let trial=0;trial<100;trial++){
+    const paths=entry.paths.map(f=>f.map(p=>p.flatMap(points=>{
+      const curve=new Cubic(points),knots=[0,...Array.from({length:1+Math.floor(random()*4)},random).sort((a,b)=>a-b),1];
+      return knots.slice(1).map((hi,i)=>curve.subcurve(knots[i],hi).p);
+    })));
+    const model=new CurveGraph(paths),issues=experimentalSelfReturns(model.solution(model.points,1),entry.cfg);
+    assert.ok(issues.length,`${entry.name}, random subdivision ${trial} must not hide the exported return.`);
+    assert.ok(issues.every(issue=>issue.distanceUpper<issue.required));
+  }
+ }
 });

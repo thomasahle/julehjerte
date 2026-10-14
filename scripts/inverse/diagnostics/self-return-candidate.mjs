@@ -64,6 +64,41 @@ function polish(a,b,ta,tb,u,v){
  }
  return [u,v];
 }
+function* turningBoundaryCandidates(curves,a,b,margin,local){
+ // Turning increases as the later point moves forward and decreases as the
+ // earlier point moves forward. Search that feasible boundary, rather than
+ // hoping a flattening sample happens to land on its narrow valid interval.
+ const turning=(u,v)=>totalTurning(curves,a.order,b.order,[u,v]);
+ if(turning(a.ts[0],b.ts[1])<180)return;
+ const ta=a.ts[1]-a.ts[0],tb=b.ts[1]-b.ts[0];
+ const lo=a.ts[0]+ta*clamp((b.arc-local-a.arc)/a.length,0,1);
+ const hi=a.ts[0]+ta*clamp((b.arc+b.length-2*margin-a.arc)/a.length,0,1);
+ if(hi<lo)return;
+ const evaluate=u=>{
+  const arc=a.arc+(u-a.ts[0])/ta*a.length;
+  if(b.arc+b.length<arc+2*margin||b.arc>arc+local)return{cost:Infinity};
+  let lower=b.ts[0]+tb*clamp((arc+2*margin-b.arc)/b.length,0,1);
+  const upper=b.ts[0]+tb*clamp((arc+local-b.arc)/b.length,0,1);
+  if(turning(u,upper)<180)return{cost:Infinity};
+  if(turning(u,lower)<180){
+   let below=lower,above=upper;
+   for(let i=0;i<28;i++){const middle=(below+above)/2;if(turning(u,middle)<180)below=middle;else above=middle;}
+   lower=above;
+  }
+  const parameters=polish(curves[a.order],curves[b.order],[u,u],[lower,upper],u,lower);
+  return{parameters,cost:distance(curves[a.order].point(parameters[0]),curves[b.order].point(parameters[1]))};
+ };
+ for(const u of [lo,(lo+hi)/2,hi]){const result=evaluate(u);if(result.cost<margin)yield result.parameters;}
+ // The small, flattened intervals make a bounded one-dimensional search a
+ // useful supplement. It remains numerical, not a global clearance proof.
+ let left=lo,right=hi;const ratio=(Math.sqrt(5)-1)/2;
+ let u=right-ratio*(right-left),v=left+ratio*(right-left),aValue=evaluate(u),bValue=evaluate(v);
+ for(let i=0;i<18;i++){
+  for(const result of [aValue,bValue])if(result.cost<margin)yield result.parameters;
+  if(aValue.cost<bValue.cost){right=v;v=u;bValue=aValue;u=right-ratio*(right-left);aValue=evaluate(u);}
+  else{left=u;u=v;aValue=bValue;v=left+ratio*(right-left);bValue=evaluate(v);}
+ }
+}
 export function experimentalSelfReturns(solution,cfg){
  const width=solution.graph.target.width,margin=Math.min(cfg.nominalWidth,.015*width),local=cfg.localNeighborhoodFactor*cfg.nominalWidth,issues=[];
  if(!(margin>0)||local<2*margin)return issues;
@@ -76,12 +111,28 @@ export function experimentalSelfReturns(solution,cfg){
     segments.push({p:[points[i-1],points[i]],ts:[ts[i-1],ts[i]],arc,length,order});arc+=length;
    }
   });
-  const found=new Set();
+  const found=new Set();let reversedCurves=null;
   for(const [i,j]of nearbyPairs(segments.map(s=>s.p),margin)){
    const [a,b]=segments[i].arc<segments[j].arc?[segments[i],segments[j]]:[segments[j],segments[i]];
+   if(found.has(`${a.order}:${b.order}`))continue;
    if(b.arc+b.length-a.arc<2*margin||b.arc-a.arc-a.length>local)continue;
    const q=closest(...a.p,...b.p);if(q.gap>=margin)continue;
-   const parameters=polish(curves[a.order],curves[b.order],a.ts,b.ts,a.ts[0]+q.u*(a.ts[1]-a.ts[0]),b.ts[0]+q.v*(b.ts[1]-b.ts[0]));
+   const nearest=polish(curves[a.order],curves[b.order],a.ts,b.ts,a.ts[0]+q.u*(a.ts[1]-a.ts[0]),b.ts[0]+q.v*(b.ts[1]-b.ts[0]));
+   // The nearest pair need not satisfy the turning constraint. Other points
+   // in the same close interval can form a return even while that pair is an
+   // ordinary bend. Preserve those witnesses instead of discarding the pair.
+   function* candidates(){
+    yield nearest;
+    for(const u of [a.ts[0],(a.ts[0]+a.ts[1])/2,a.ts[1]])for(const v of [b.ts[0],(b.ts[0]+b.ts[1])/2,b.ts[1]])yield[u,v];
+    yield* turningBoundaryCandidates(curves,a,b,margin,local);
+    // Reversing a cut swaps which point is held fixed by the one-dimensional
+    // search. Probe both parameter axes so that a reflected/reversed path
+    // cannot hide a feasible boundary interval on the other branch.
+    reversedCurves??=curves.toReversed().map(c=>c.reversed());
+    const reverse=s=>({...s,order:curves.length-1-s.order,ts:[1-s.ts[1],1-s.ts[0]],arc:arc-s.arc-s.length});
+    for(const [u,v]of turningBoundaryCandidates(reversedCurves,reverse(b),reverse(a),margin,local))yield[1-v,1-u];
+   }
+   for(const parameters of candidates()){
    const u=(parameters[0]-a.ts[0])/(a.ts[1]-a.ts[0]),v=(parameters[1]-b.ts[0])/(b.ts[1]-b.ts[0]);
    const along=b.arc+v*b.length-a.arc-u*a.length;if(along<2*margin||along>local)continue;
    const points=[curves[a.order].point(parameters[0]),curves[b.order].point(parameters[1])],gap=distance(...points);
@@ -93,6 +144,8 @@ export function experimentalSelfReturns(solution,cfg){
    if(!stationary&&turning<180-1e-6)continue;
    const key=`${a.order}:${b.order}`;if(found.has(key))continue;found.add(key);
    issues.push({family,slit,curves:[a.order,b.order],parameters,points,distanceUpper:gap,required:margin,arcSeparation:along,stationary,totalTurning:turning,edgeChain:solution.paths[family][slit].slice(a.order,b.order+1).map(([edge])=>edge)});
+   break;
+   }
    if(found.size>=4)break;
   }
  }

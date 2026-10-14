@@ -7,6 +7,12 @@ projection now recovers **0.8612%**, while retaining the experimental geometry
 check. A second case, the collage gift, also recovers its previous image quality.
 Neither the validator nor projection has been enabled in the app.
 
+**Later qualification:** the [full-corpus SVG audit](short-return-export-audit.md)
+found narrow returns missed by this first experimental search, including in
+both selected outputs. The numbers below describe that earlier proposal; they
+do not establish validity under the stronger turning-boundary search. The later
+report retains the failed quality-recovery attempts and new counterexamples.
+
 ## Refinement, rather than cropping
 
 The existing separation gradient excludes nearby parts of the same slit over

@@ -22,6 +22,10 @@ export async function returnDiagnosticCases(){
     const file=`scripts/inverse/fixtures/editor-${name}-return.json`,bytes=await fs.readFile(file),geometry=JSON.parse(bytes);
     cases.push({name,paths:pathsOf(loadSolutionJSON({...geometry,schema:'heartcurves-2',units:'mm'})),cfg,expectedShortReturn:true,file,sha256:hash(bytes)});
   }
+  for(const [name,filename]of [['bird','editable-subdivision-return.json'],['gift','editable-gift-subdivision-return.json'],['turning-bird','editable-turning-bird-return.json']]){
+    const file='scripts/inverse/fixtures/'+filename,bytes=await fs.readFile(file),fixture=JSON.parse(bytes);
+    cases.push({name:`editable-${name}-return`,paths:[[],[fixture.path]],cfg:fixture.settings,expectedShortReturn:true,file,sha256:hash(bytes)});
+  }
   const file='scripts/inverse/fixtures/photographic-subdivision-bend.json',bytes=await fs.readFile(file),fixture=JSON.parse(bytes);
   const detail=fixture.original.flatMap((points,i)=>{
     const curve=new Cubic(points),knots=fixture.knots[i];

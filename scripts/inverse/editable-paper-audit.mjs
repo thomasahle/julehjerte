@@ -9,7 +9,7 @@ import {validate} from '../../static/inverse/core/validate.js';
 import {materialAudit} from '../../static/inverse/core/material.js';
 import {settings} from '../../static/inverse/core/settings.js';
 
-export function auditEditablePaper(design,overlap,raw,counts){
+export function editablePaperSolution(design,overlap,raw,counts){
   assert.ok([overlap.left,overlap.top,overlap.width,overlap.height].every(Number.isFinite)&&overlap.width>0&&overlap.height>0,'An editable template needs a finite overlap');
   assert.ok(Math.abs(overlap.width-overlap.height)<1e-5,'Do not stretch a rectangular SVG into a different physical template');
   const cfg=settings(raw),scale=p=>[(p.x-overlap.left)*cfg.width/overlap.width,(p.y-overlap.top)*cfg.width/overlap.height];
@@ -21,6 +21,11 @@ export function auditEditablePaper(design,overlap,raw,counts){
       .sort((a,b)=>a[0][0][i]-b[0][0][i]);
   });
   const graph=new CurveGraph(families,cfg.width),solution=graph.solution(graph.points,design.weaveParity?-1:1);
+  return{solution,cfg};
+}
+
+export function auditEditablePaper(design,overlap,raw,counts){
+  const {solution,cfg}=editablePaperSolution(design,overlap,raw,counts);
   const geometry=validate(solution,cfg),paper=geometry.passed?materialAudit(solution,cfg).summary:null;
   return{geometry,paper,materialResolution:cfg.materialResolution};
 }

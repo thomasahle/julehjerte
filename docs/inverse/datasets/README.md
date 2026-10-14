@@ -46,11 +46,15 @@ across 480 representations, but flags two previously accepted outputs. Fresh
 fits recover checked alternatives with higher image error, so the proposal
 remains offline while quality recovery and independent editor checks are studied.
 
-An offline [checkpoint-projection follow-up](short-return-projection.md) now
-recovers both affected examples without reverting the proposed geometry check:
-the Hunodan bird reaches 0.8612% error and the gift 2.3038%, slightly below their
-previous runtime errors. Both survive editable conversion. Full-corpus testing
-and reconciliation with the independent editor remain required before promotion.
+The first offline [checkpoint-projection follow-up](short-return-projection.md)
+reached 0.8612% bird error and 2.3038% gift error under its proposed geometry
+check. Its full corpus retained 22/22 Hunodan and 25/31 photo passes. However,
+the [subsequent SVG audit](short-return-export-audit.md) found returns that this
+validator missed. A stronger search is consistent across 944 saved/edited
+representations and 300 random subdivisions, but rejects both earlier outputs.
+Fresh fitting trials have not recovered their quality with consistent validity.
+The proposal remains offline; current editor reconciliation and optimization
+under the stronger constraints are still required.
 
 The [Pinterest expansion](real-pinterest-expansion.md) includes all four supplied
 pins. Download success, photograph count, heart-instance count and motif-family
