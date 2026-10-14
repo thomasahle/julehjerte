@@ -102,3 +102,9 @@ scales, a small UI module that respects the engine-loading boundary, and fresh
 browser/solver checks. The stricter editor must be integrated with final repair:
 enabling it alone would correctly reject the current bird and gift outputs.
 The current application and its 25/31 photographic benchmark are unchanged.
+
+The subsequent [complete QA](whole-cut-editor-validation.json) passes all 835
+inverse tests and 855 application tests (one existing skip), type checking,
+lint and the production build. All 831 recorded source files remained unchanged
+through the run. This covers the committed prototype and its replay tests;
+it does not establish app integration or browser interaction latency.
