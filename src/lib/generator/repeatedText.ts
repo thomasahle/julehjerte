@@ -1,14 +1,10 @@
 import { normalizeText } from './state';
 
-/** A six-row text field, with each successive copy shifted one letter.
- * Multiline messages cycle their lines; each line is shown in full at least once. */
+/** One square of cyclic shifts: ANNA → ANNA / NNAA / NAAN / AANN.
+ * Whitespace does not create blank cells in the letter pattern. */
 export function repeatedText(text: string): string {
-	const lines = normalizeText(text).split('\n').map((line) => [...line.trim()]).filter((line) => line.length);
-	if (!lines.length) return '';
-	const columns = Math.max(8, ...lines.map((line) => line.length));
-	return Array.from({ length: 6 }, (_, row) => {
-		const letters = lines[row % lines.length];
-		const shift = Math.floor(row / lines.length);
-		return Array.from({ length: columns }, (_, column) => letters[(column + shift) % letters.length]).join('');
-	}).join('\n');
+	const letters = [...normalizeText(text).replace(/\s+/g, '')];
+	return letters.map((_, row) =>
+		letters.map((_, column) => letters[(column + row) % letters.length]).join('')
+	).join('\n');
 }

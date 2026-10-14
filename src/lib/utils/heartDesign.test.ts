@@ -50,6 +50,18 @@ function expectClose(actual: number[], expected: number[]) {
 }
 
 describe('heartDesign round trips', () => {
+  it('keeps closely spaced cuts while removing duplicate SVG geometry', () => {
+    const parsed = parseHeartFromSVG(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <path d="M .75 100 L .75 0" stroke="green"/>
+      <path d="M 1.5 100 L 1.5 0" stroke="green"/>
+      <path d="M .75 100 L .75 0" stroke="green"/>
+      <path d="M 1.5 0 L 1.5 100" stroke="green"/>
+      <path d="M 100 50 L 0 50" stroke="orange"/>
+    </svg>`);
+    expect(parsed?.gridSize).toEqual({ x: 3, y: 2 });
+    expect(lobeFingers(parsed!.fingers, 'right')).toHaveLength(4);
+  });
+
   it('keeps a 10x10 design (10 strips, 11 boundary curves per lobe) through JSON serialize/parse', () => {
     const design = makeGridDesign(10);
     expect(lobeFingers(design.fingers, 'left')).toHaveLength(11);

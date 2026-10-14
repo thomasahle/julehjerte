@@ -417,12 +417,16 @@ clipped boundaries cancel or become shared cuts, preserving every visible detail
 manageable strips over fewer cuts, while retaining the full clearance and fidelity checks. Two-dimensional
 panels separate the gift's bow and box pieces into a 5×5 grid.
 
-“Gentag som mønster” is a text frame, not a separate mode or control. It repeats the entered text
-across six rows, shifting each successive row by one character. Multiline messages cycle their
-lines before advancing the shift. The frame uses at least eight columns and never truncates a
-line of the entered text. Matching glyph cells reuse their cut routing across columns as well as
-rows. The shared grid limit is 20 strips per lobe, so these 15–17 strip patterns survive saving,
-SVG import and editing intact. Enclosed letters still use coincident cuts in the two papers.
+“Gentag som mønster” is a text frame, not a separate mode or control. It makes one n×n square
+of cyclic letter shifts: ANNA / NNAA / NAAN / AANN, with no surrounding checkerboard cells.
+Rows follow the paper grid; individual letters stay upright in the heart. Spaces and line breaks
+do not create empty cells. Each diagonal has an independent pair of open cuts, joined between
+letters by coincident cuts; narrow edge strips connect them to the paper boundaries. Enclosed
+letters also use coincident cuts, never cut-outs. Matching glyphs reuse their contour routing.
+An n-letter word needs 2n strips per lobe, so the shared 20-strip limit permits up to ten letters.
+Longer messages are rejected before construction, not silently truncated. Fidelity covers the
+whole woven square, including its edge strips. SVG import deduplicates actual path geometry,
+not nearby starting positions, so these densely spaced cuts survive export and editing intact.
 
 Spacing follows grid density: use 1.5 normalized units for grids up to 4×4, then scale the gap
 by 4 / max(columns, rows). This retains the construction assumption of about 25 mm per strip

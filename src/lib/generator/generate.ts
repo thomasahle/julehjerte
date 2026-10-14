@@ -3,7 +3,7 @@ import { generateCornerChecks } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
-import { repeatedText } from './repeatedText';
+import { generateRepeatedGrid } from './repeatedGrid';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import {
@@ -287,7 +287,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (!request.font) throw new ConstructionError('empty', 'No font');
 		const frame = request.textFrame ?? 'woven';
 		if (frame === 'repeat')
-			return finish(generateTextGrid(repeatedText(request.text ?? ''), request.font), 'letters');
+			return finish(generateRepeatedGrid(request.text ?? '', request.font), 'letters');
 		if ((request.text ?? '').includes('\n'))
 			return finish(
 				generateTextGrid(

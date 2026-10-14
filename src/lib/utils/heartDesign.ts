@@ -1149,7 +1149,6 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   let leftPathData: string[] = [];
   let rightPathData: string[] = [];
   const ambiguousPathData: string[] = [];
-  const POSITION_TOLERANCE = 2; // Consider positions within 2 units as the same strip
 
   // Find all path elements regardless of grouping
   const allPaths = Array.from(svg.querySelectorAll('path'));
@@ -1323,22 +1322,27 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
   leftPathData = normalizePathsToFullSpan(leftPathData, 'left');
   rightPathData = normalizePathsToFullSpan(rightPathData, 'right');
 
-  // Deduplicate paths that are at the same position (within tolerance)
-  const deduplicatePaths = (paths: string[], lobe: LobeId): string[] => {
-    const seen: number[] = [];
+  // Deduplicate geometry, not strip positions. Dense generated patterns can
+  // have distinct cuts less than two normalized units apart at the paper edge.
+  const deduplicatePaths = (paths: string[]): string[] => {
+    const seen: BezierSegment[][] = [];
+    const matches = (a: BezierSegment[], b: BezierSegment[]) =>
+      a.length === b.length && a.every((segment, i) =>
+        (['p0', 'p1', 'p2', 'p3'] as const).every(key =>
+          Math.hypot(segment[key].x-b[i][key].x, segment[key].y-b[i][key].y) < 1e-6
+        )
+      );
     return paths.filter(pathData => {
       const segments = parsePathDataToSegments(pathData);
       if (!segments.length) return false;
-      // Position is the non-spanning coordinate (Y for left lobe, X for right lobe)
-      const position = lobe === 'left' ? segments[0].p0.y : segments[0].p0.x;
-      if (seen.some(p => Math.abs(p - position) < POSITION_TOLERANCE)) return false;
-      seen.push(position);
+      if (seen.some(prior => matches(prior, segments) || matches(reverseSegments(prior), segments))) return false;
+      seen.push(segments);
       return true;
     });
   };
 
-  leftPathData = deduplicatePaths(leftPathData, 'left');
-  rightPathData = deduplicatePaths(rightPathData, 'right');
+  leftPathData = deduplicatePaths(leftPathData);
+  rightPathData = deduplicatePaths(rightPathData);
 
   // Check if we found any valid paths
   if (leftPathData.length === 0 && rightPathData.length === 0) {
