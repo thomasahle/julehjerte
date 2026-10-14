@@ -158,15 +158,20 @@ try{
     }
     if(name==='star')await button('Try the star').click();
     else{
-     const file=path.join(dir,'input.png');
+     const file=path.join(dir,hardPhoto&&name.endsWith('-jpeg75')?'input.jpg':'input.png');
      if(hardPhoto){
-      const half=name.endsWith('-half'),id=half?name.slice(5,-5):name.slice(5);
+      const half=name.endsWith('-half'),jpeg=name.endsWith('-jpeg75'),id=half?name.slice(5,-5):jpeg?name.slice(5,-7):name.slice(5);
       const data=JSON.parse(await fs.readFile('scripts/inverse/photo-cases.json')),entry=data.cases.find(c=>c.id===id);assert.ok(entry,`Unknown hard photograph ${name}`);
       const photo=await readHardPhoto(entry);
       if(half){
        const c=createCanvas(Math.round(photo.imageWidth/2),Math.round(photo.imageHeight/2));c.getContext('2d').drawImage(photo.canvas,0,0,c.width,c.height);
        await fs.writeFile(file,c.toBuffer('image/png'));
        row.inputPerturbation={kind:'half-resolution',width:c.width,height:c.height,pixelsSha256:createHash('sha256').update(c.getContext('2d').getImageData(0,0,c.width,c.height).data).digest('hex')};
+      }else if(jpeg){
+       const encoded=photo.canvas.toBuffer('image/jpeg',{quality:.75});await fs.writeFile(file,encoded);
+       const c=createCanvas(photo.imageWidth,photo.imageHeight);c.getContext('2d').drawImage(await loadImage(encoded),0,0);
+       row.inputPerturbation={kind:'jpeg-recompression',quality:.75,width:c.width,height:c.height,
+        fileSha256:createHash('sha256').update(encoded).digest('hex'),pixelsSha256:createHash('sha256').update(c.getContext('2d').getImageData(0,0,c.width,c.height).data).digest('hex')};
       }else await fs.copyFile(entry.file,file);
       row.sourcePhoto={id:entry.id,sha256:photo.fileSha256,decodedPixelsSha256:photo.rgbaSha256,width:photo.imageWidth,height:photo.imageHeight};
      }else if(photoMask){
@@ -387,7 +392,7 @@ try{
       assert.equal(row.classifiedMaskSha256,frozen.maskSha256,'Template improvements must use the same browser-classified pixels');
       assert.deepEqual(row.detectedCrop.quad,frozen.detectedCrop.quad,'The automatic crop remains fixed in this fitting regression');
      }
-     if(['hard-flettede-puppy','hard-flettede-puppy-half','hard-flettede-stonehenge','hard-flettede-viking','hard-bibel-star-outline','hard-bibel-star-outline-half'].includes(name)&&!engineReference){
+     if(['hard-flettede-puppy','hard-flettede-puppy-half','hard-flettede-stonehenge','hard-flettede-viking','hard-bibel-star-outline','hard-bibel-star-outline-half','hard-bibel-star-outline-jpeg75'].includes(name)&&!engineReference){
       assert.equal(row.templateChecksPassed,true,'The actual uploaded photograph must retain its interior features and pass the template checks.');
       assert.equal(row.missingFeatures.length,0);
       assert.ok(row.engineError<(name.startsWith('hard-flettede-puppy')?.018:.03));
@@ -516,7 +521,7 @@ try{
     // and can turn a 0.3% source error into 0.6% at a different sampling phase.
     const resolution=observed.prepared.resolution,sourceMask=Uint8Array.from(observed.prepared.mask),sourceRendered=rasterizeDesign(design,resolution).data;
     row.sourceResolution=resolution;
-    if(name==='hard-bibel-star-outline'&&!engineReference){
+    if(['hard-bibel-star-outline','hard-bibel-star-outline-jpeg75'].includes(name)&&!engineReference){
      assert.equal(row.detectedCrop?.paperModel,'two-paper-colours-from-interior-chromaticity');
      const samples=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photo-material-samples.json')).cases.find(r=>r.id===row.sourcePhoto.id);
      assert.equal(samples.source.sha256,row.sourcePhoto.sha256);
@@ -572,7 +577,7 @@ try{
     assert.ok(row.sourceEditableError<=(small ? .005 : topHat ? .01 : free||photograph||photoMask ? .03 : .015),`Editable source mismatch ${row.sourceEditableError}`);
     if(anchorMask&&!engineReference)assert.ok(row.sourceEditableError<.025,'The editable anchor must retain the recovered fit.');
     if(flowerMask&&!engineReference)assert.ok(row.sourceEditableError<.01,'The editable flower must preserve the improved fit.');
-    if(name==='star'||photoMask||name==='hard-bibel-star-outline'||name==='hard-bibel-star-outline-half'){
+    if(name==='star'||photoMask||['hard-bibel-star-outline','hard-bibel-star-outline-half','hard-bibel-star-outline-jpeg75'].includes(name)){
      const pendingPDF=page.waitForEvent('download');await button('Download PDF').click();
      const pdfFile=path.join(dir,'template.pdf');await(await pendingPDF).saveAs(pdfFile);
      assert.equal((await fs.readFile(pdfFile)).subarray(0,5).toString(),'%PDF-');
