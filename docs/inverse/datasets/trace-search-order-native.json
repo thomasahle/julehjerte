@@ -1,0 +1,668 @@
+{
+  "schema": "trace-order-native-1",
+  "runtimeCommit": "66e91bd28c1e53a6b206e6cb09d09b40608da544",
+  "status": "native-photo-export-checks-complete; full tests and browser checks pending",
+  "eligiblePhotos": 31,
+  "photoPasses": 25,
+  "priorPassesRetained": 25,
+  "sourceQuadsMasksAndFittingProbabilitiesUnchanged": true,
+  "photos": [
+    {
+      "id": "oval-figure",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "eight-point-star",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "small-figure",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "deer",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "top-checker",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "top-candle",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "top-tree",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "partial-top-right",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "partial-left-checker",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "nested-squares",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "outline-star",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": 0.00815625,
+      "error": 0.00815625,
+      "changedCrop": false
+    },
+    {
+      "id": "floral-checker",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0197625,
+      "error": 0.01929375,
+      "changedCrop": false
+    },
+    {
+      "id": "dense-checker",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.00699375,
+      "error": 0.00699375,
+      "changedCrop": false
+    },
+    {
+      "id": "bird",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.02470625,
+      "error": 0.02470625,
+      "changedCrop": false
+    },
+    {
+      "id": "leaf",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0265125,
+      "error": 0.0265125,
+      "changedCrop": false
+    },
+    {
+      "id": "partial-right-checker",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "partial-left-abstract",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "gift",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.02309375,
+      "error": 0.02309375,
+      "changedCrop": false
+    },
+    {
+      "id": "gingerbread",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01505,
+      "error": 0.014775,
+      "changedCrop": false
+    },
+    {
+      "id": "white-birds",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.00379375,
+      "error": 0.00379375,
+      "changedCrop": false
+    },
+    {
+      "id": "flower",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0050625,
+      "error": 0.0050625,
+      "changedCrop": false
+    },
+    {
+      "id": "warped-checker",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01761875,
+      "error": 0.01761875,
+      "changedCrop": false
+    },
+    {
+      "id": "round-checker",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0121375,
+      "error": 0.0121375,
+      "changedCrop": false
+    },
+    {
+      "id": "santa",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "partial-left-diamonds",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "fine-checker",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.02141875,
+      "error": 0.02105625,
+      "changedCrop": false
+    },
+    {
+      "id": "orb",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01443125,
+      "error": 0.01438125,
+      "changedCrop": false
+    },
+    {
+      "id": "stacked-hearts",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.007425,
+      "error": 0.007425,
+      "changedCrop": false
+    },
+    {
+      "id": "jigsaw",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": 0.0564375,
+      "error": 0.0564375,
+      "changedCrop": false
+    },
+    {
+      "id": "candle",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0048375,
+      "error": 0.0048375,
+      "changedCrop": false
+    },
+    {
+      "id": "maple-leaf",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.013325,
+      "error": 0.01305,
+      "changedCrop": false
+    },
+    {
+      "id": "crown",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.02411875,
+      "error": 0.02411875,
+      "changedCrop": false
+    },
+    {
+      "id": "partial-bottom-left",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "bottom-diamonds",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "crossed-ribbons",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": 0.02153125,
+      "error": 0.02153125,
+      "changedCrop": false
+    },
+    {
+      "id": "bauble",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": 0.0929625,
+      "error": 0.0919125,
+      "changedCrop": false
+    },
+    {
+      "id": "glare-motif",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "bottom-flower",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0093875,
+      "error": 0.0093875,
+      "changedCrop": false
+    },
+    {
+      "id": "faceted-star",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0065,
+      "error": 0.0065,
+      "changedCrop": false
+    },
+    {
+      "id": "partial-bottom-right",
+      "beforePassed": false,
+      "passed": false,
+      "beforeError": null,
+      "error": null,
+      "changedCrop": false
+    },
+    {
+      "id": "bibel-star-8",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.003675,
+      "error": 0.003675,
+      "changedCrop": false
+    },
+    {
+      "id": "bibel-star-curved",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.00663125,
+      "error": 0.00663125,
+      "changedCrop": false
+    },
+    {
+      "id": "bibel-star-outline",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01159375,
+      "error": 0.01159375,
+      "changedCrop": false
+    },
+    {
+      "id": "bibel-cross",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.00243125,
+      "error": 0.00243125,
+      "changedCrop": false
+    },
+    {
+      "id": "flettede-puppy",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.0103125,
+      "error": 0.0103125,
+      "changedCrop": false
+    },
+    {
+      "id": "flettede-stonehenge",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.01905,
+      "error": 0.01905,
+      "changedCrop": false
+    },
+    {
+      "id": "flettede-viking",
+      "beforePassed": true,
+      "passed": true,
+      "beforeError": 0.02023125,
+      "error": 0.0202375,
+      "changedCrop": false
+    }
+  ],
+  "editable": [
+    {
+      "id": "floral-checker",
+      "completeCandidatePassed": true,
+      "editableError": 0.01965,
+      "independentEngineError": 0.01929375,
+      "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+      "geometrySha256": "a15356c8620c3b55d3668e391b6c7fb53d07ace2016243c4f791b58908e5096d"
+    },
+    {
+      "id": "dense-checker",
+      "completeCandidatePassed": true,
+      "editableError": 0.00676875,
+      "independentEngineError": 0.00699375,
+      "maskSha256": "ff1cc0d30dbc0e6c908d2a731a5b5f0012c20224fd64713648cea42f258db664",
+      "geometrySha256": "0ba6a61f0e66805d5d5db934f2ce9f574330700451e6a692794da8a14944c5af"
+    },
+    {
+      "id": "bird",
+      "completeCandidatePassed": true,
+      "editableError": 0.02518125,
+      "independentEngineError": 0.02470625,
+      "maskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+      "geometrySha256": "7d6c228aa09cdc997124a91f5512bed284aa6ba1268c68597f9cdf8187edbc7f"
+    },
+    {
+      "id": "leaf",
+      "completeCandidatePassed": true,
+      "editableError": 0.0263,
+      "independentEngineError": 0.0265125,
+      "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+      "geometrySha256": "edc2ede44816c17bbeb6c39367e1423b936ffb35be786733adb460a2bae0bc06"
+    },
+    {
+      "id": "gift",
+      "completeCandidatePassed": true,
+      "editableError": 0.023375,
+      "independentEngineError": 0.02309375,
+      "maskSha256": "27d7f1538cbba31b9e4b13270a70e7ffc36acc23f69a49d4646d5ee3f49b7738",
+      "geometrySha256": "09e359bda1756bae08a8d2e0ff65474c341e82e6cd9a4169ab56d624d4393945"
+    },
+    {
+      "id": "gingerbread",
+      "completeCandidatePassed": true,
+      "editableError": 0.0149625,
+      "independentEngineError": 0.014775,
+      "maskSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+      "geometrySha256": "1cb3fc427b2e782c20d358784eba3cfee03366e578634f90c5c022e7c1595b85"
+    },
+    {
+      "id": "white-birds",
+      "completeCandidatePassed": true,
+      "editableError": 0.00375,
+      "independentEngineError": 0.00379375,
+      "maskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90",
+      "geometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce"
+    },
+    {
+      "id": "flower",
+      "completeCandidatePassed": true,
+      "editableError": 0.0051875,
+      "independentEngineError": 0.0050625,
+      "maskSha256": "a6329990af013948c3ba32058af40424949d57280ca3b5ab18ecaaca0f1787a0",
+      "geometrySha256": "8166aedab48b2bb9b365f503f6ac46592840520e5f26c9681480c1a32ddd942f"
+    },
+    {
+      "id": "warped-checker",
+      "completeCandidatePassed": true,
+      "editableError": 0.01804375,
+      "independentEngineError": 0.01761875,
+      "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+      "geometrySha256": "137dd2f0261ef9049d059262bb7759b52af6f41be618e08f7cda62dca669d773"
+    },
+    {
+      "id": "round-checker",
+      "completeCandidatePassed": true,
+      "editableError": 0.012125,
+      "independentEngineError": 0.0121375,
+      "maskSha256": "215c0cab5c8f635f9fbfad239d09f3fb2bc6dd2469764906d062fdfbac0e5e68",
+      "geometrySha256": "9bb1e94e5022aa8a1161ebe310f417bafb9f89b1ef4b123d62a9d4d2c578bcf5"
+    },
+    {
+      "id": "fine-checker",
+      "completeCandidatePassed": true,
+      "editableError": 0.0213375,
+      "independentEngineError": 0.02105625,
+      "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+      "geometrySha256": "89578408f5612866fbc002f47022fbf3ebf18c16439a776f514ce6dd3063d541"
+    },
+    {
+      "id": "orb",
+      "completeCandidatePassed": true,
+      "editableError": 0.01438125,
+      "independentEngineError": 0.01438125,
+      "maskSha256": "4a9574d7d5bc6d22ff176926863814a6f9c298abd433f9e0fa432886a9929830",
+      "geometrySha256": "ad19ce6fe4628953c7714c5ea7b37ea0db5e2bbb4356accbe07c0f2fb7432889"
+    },
+    {
+      "id": "stacked-hearts",
+      "completeCandidatePassed": true,
+      "editableError": 0.0073625,
+      "independentEngineError": 0.007425,
+      "maskSha256": "9a7ed32b892c60e0889f4ef7df0a70073e15e1353225bf5736925f4a6f7f9c24",
+      "geometrySha256": "64ec24b836d5dd71dca23d35c5814a2e337c3445f79d9c649806d65c4a3104a2"
+    },
+    {
+      "id": "candle",
+      "completeCandidatePassed": true,
+      "editableError": 0.0048,
+      "independentEngineError": 0.0048375,
+      "maskSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+      "geometrySha256": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7"
+    },
+    {
+      "id": "maple-leaf",
+      "completeCandidatePassed": true,
+      "editableError": 0.01318125,
+      "independentEngineError": 0.01305,
+      "maskSha256": "9b0908abdb6ceb0957b6344cfa5fbaeab4a46866c640ea8d1898b3dc31a8c101",
+      "geometrySha256": "67af383af4ed26d20b033e9feac0748186ecb40a0e847b48ec23ac0ec4546afa"
+    },
+    {
+      "id": "crown",
+      "completeCandidatePassed": true,
+      "editableError": 0.0245125,
+      "independentEngineError": 0.02411875,
+      "maskSha256": "28f4380aaf5bb197acbaf7750b4560e317c442740098abaf4c91eb88ac7866aa",
+      "geometrySha256": "7c02af78469c84f4dad34d81e2c85c561f2c73d90acef981373f4681053561bd"
+    },
+    {
+      "id": "bottom-flower",
+      "completeCandidatePassed": true,
+      "editableError": 0.00935625,
+      "independentEngineError": 0.0093875,
+      "maskSha256": "c28a1d562809d85df72b62ed7c8da9eaa3eb5ae98c3af23e2630232ecc641a50",
+      "geometrySha256": "a580fc671d38d5315d1594fe7ee3993b2bd428d98b617a2ef9a7c34744b88dc6"
+    },
+    {
+      "id": "faceted-star",
+      "completeCandidatePassed": true,
+      "editableError": 0.0065125,
+      "independentEngineError": 0.0065,
+      "maskSha256": "bce82438deb37467102b2a1155902d668bcabb46cc8419aa561d68f4f69c9f86",
+      "geometrySha256": "229d2de8e9616388bc4ff178759a57fa3fbde8277a10d8ee6f06db8c97c5dcaa"
+    },
+    {
+      "id": "bibel-star-8",
+      "completeCandidatePassed": true,
+      "editableError": 0.00365,
+      "independentEngineError": 0.003675,
+      "maskSha256": "d679deeeed128c62414a104b457a76afd1f7a60ae90d7014579f5aa7fd8d0760",
+      "geometrySha256": "86835af75f4222c274fdd1757ba65e6494909876bac46bb31a18561628d53e97"
+    },
+    {
+      "id": "bibel-star-curved",
+      "completeCandidatePassed": true,
+      "editableError": 0.00635625,
+      "independentEngineError": 0.00663125,
+      "maskSha256": "1f6c8ac1fbb7a2d13b56154c9c0c9dfe257990a6a057bce0f1a80fb0a98e52d2",
+      "geometrySha256": "d4e520bac64dbd55e0f2ca8c1dbe9adbfc7d4f29d15714783362199a9abc1e30"
+    },
+    {
+      "id": "bibel-star-outline",
+      "completeCandidatePassed": true,
+      "editableError": 0.01153125,
+      "independentEngineError": 0.01159375,
+      "maskSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+      "geometrySha256": "dc92088ca228d5666d2b415335bde72c397e26ab88171f2e9609acc9db9dbd43"
+    },
+    {
+      "id": "bibel-cross",
+      "completeCandidatePassed": true,
+      "editableError": 0.002425,
+      "independentEngineError": 0.00243125,
+      "maskSha256": "d191cd84d681ff1fa498ab6155bcf1b56dbf558168037d921edff536e801fdb3",
+      "geometrySha256": "9668da65c3b88ef077b3054d27e022b021851263785e9868f692bb7cc9fa0a05"
+    },
+    {
+      "id": "flettede-puppy",
+      "completeCandidatePassed": true,
+      "editableError": 0.01029375,
+      "independentEngineError": 0.0103125,
+      "maskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+      "geometrySha256": "7cdda85aa95f3bb6bb8a05acd4f2dcf8de9168f8338972387c11fe7385929303"
+    },
+    {
+      "id": "flettede-stonehenge",
+      "completeCandidatePassed": true,
+      "editableError": 0.0188,
+      "independentEngineError": 0.01905,
+      "maskSha256": "ff0bfa945a6368140b08b2f1f9709b1363b2e6fd8e9d19da4d824ffc97ba55c2",
+      "geometrySha256": "d6fdb7b80050ee3070ac9a08e51d0d6c690480180df245daf5af0527bc6bffb5"
+    },
+    {
+      "id": "flettede-viking",
+      "completeCandidatePassed": true,
+      "editableError": 0.02031875,
+      "independentEngineError": 0.0202375,
+      "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "geometrySha256": "a520c47a16fb69bfa940907065655f3b8f3e33e3c671a313e62c90c05bb7a574"
+    }
+  ],
+  "perturbations": [
+    {
+      "id": "bibel-star-outline--jpeg-75",
+      "variant": "jpeg-75",
+      "passed": true,
+      "error": 0.01748125,
+      "maskSha256": "8a80f192fca54bd8205a22c335572b8acfd4a5a2f4c4042a804cbf85f08a196e"
+    },
+    {
+      "id": "bibel-star-outline--half-resolution",
+      "variant": "half-resolution",
+      "passed": true,
+      "error": 0.021440110988399156,
+      "maskSha256": "fcb4b3c6c49608d68cc4bdbdfc507efe36c6fe80ecef002d5c31d924b773a606"
+    }
+  ],
+  "visualReview": [
+    {
+      "case": "native score changes",
+      "images": [
+        "tmp/heart-learning/trace-order-release-v1/native-changes-0.png",
+        "tmp/heart-learning/trace-order-release-v1/native-changes-1.png"
+      ],
+      "observation": "Inspected fixed crops, prior/current independent renders and editable renders for floral checker, gingerbread, fine checker, orb, maple leaf and Viking. No large structural difference at this viewing scale. Rounded/uneven contour and border details remain; Viking bottom routing stays complex. Small error decreases are not claimed as a distinct visual or causal gain."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/trace-order-release-v1/source-snapshot.json",
+      "bytes": 53635,
+      "sha256": "7d19c731490d46e6887bfab5ee1ef4feb897d384867b69a2f94aded005da259d"
+    },
+    {
+      "path": "tmp/heart-learning/trace-order-release-v1/photo-comparison.json",
+      "bytes": 7401,
+      "sha256": "c0e9c51ec5490564a38b6fa54899bc97119c265571b5114c79640d14dfddcf91"
+    },
+    {
+      "path": "tmp/heart-learning/trace-order-release-v1/hard-photos/results.json",
+      "bytes": 4669484,
+      "sha256": "95d65a315c83f431df8832816fa1d1f74b8a1cb98e72a48e071fbbb2dc80ff2d"
+    },
+    {
+      "path": "tmp/heart-learning/trace-order-release-v1/editor/results.json",
+      "bytes": 197397,
+      "sha256": "e00babf7ce14e5f6dc2be73bec023535598ee69ab6fa2ef0eed3d14c34842f8f"
+    },
+    {
+      "path": "tmp/heart-learning/trace-order-release-v1/photo-perturbations/results.json",
+      "bytes": 343642,
+      "sha256": "b2a63c23b00556a73a8ce29d7c3bb9cc145684e40a6197e5577009daa86e78eb"
+    },
+    {
+      "path": "tmp/heart-learning/trace-order-release-v1/visual-review.json",
+      "bytes": 604,
+      "sha256": "d26eb9dbd32a9ebbd1a71319e54ad95adbcf934d94ac0dccf9581f2aa4c69d80"
+    },
+    {
+      "path": "tmp/heart-learning/trace-order-release-v1/native-changes-0.png",
+      "bytes": 549868,
+      "sha256": "809b004f4290673a33866b0c70ba4bcff5f05ed5bbb5b8d2fa557856b30307c1"
+    },
+    {
+      "path": "tmp/heart-learning/trace-order-release-v1/native-changes-1.png",
+      "bytes": 503373,
+      "sha256": "27d441ae36b641f444e5be32293c1eddb8b446a566a7f544c1e0352f6459f80b"
+    },
+    {
+      "path": "tmp/heart-learning/junction-retry-release-v1/hard-photos/results.json",
+      "bytes": 4663683,
+      "sha256": "59ff663faf9c52f88a3d5cff5a62ec5e779b36c2e58d44e1b52bf85232c794e5"
+    }
+  ],
+  "limitations": [
+    "Unchanged 31-photo benchmark, not all collected images.",
+    "Scores compare exported weave with classified photo masks, not original cutting paths.",
+    "Six previous failures remain.",
+    "Browser checks and full suite are still running; no neural deployment or physical assembly validation."
+  ]
+}

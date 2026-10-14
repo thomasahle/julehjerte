@@ -40,9 +40,17 @@ release and a maximum time of **8.22 seconds**. The
 [focused evidence record](trace-search-order-focused.json) pins the inputs,
 prototype measurements, final runtime hashes, test logs and all 22 timings.
 
+The [completed native-photo checks](trace-search-order-native.json) retain all
+**25/31** previous successes, and all 25 pairs pass editable export. Source
+photographs, crop coordinates, masks and fitting probabilities remain unchanged.
+Five accepted cases have lower measured errors; the Viking increases by one
+pixel (0.000625 percentage points). Visual review of those six cases finds no
+large structural change at the inspected scale. Rounded contours, border
+defects and complex Viking routing remain. JPEG and half-resolution star
+perturbations also retain their passes. The other six photo failures remain.
+
 The larger release run is still in progress under
-`tmp/heart-learning/trace-order-release-v1/`: difficult photos, editable exports,
-image perturbations, full inverse/application tests, check/lint/build and eleven
-Chromium flows. No broader regression or browser result is claimed yet. The
+`tmp/heart-learning/trace-order-release-v1/`: full inverse/application tests,
+check/lint/build and eleven Chromium flows. No new browser result is claimed. The
 preview remains on the preceding verified build until the release driver
 reaches its rebuilt-browser stage. Nothing has been pushed or deployed.
