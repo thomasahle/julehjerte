@@ -66,6 +66,8 @@ times to 1.03–2.15 seconds and makes four outputs identical to their clean-inp
 cuts. All twenty baseline/experimental pairs pass editable checks, but two
 reference errors increase slightly. This initializer remains offline pending
 broader noise and photograph comparisons.
+Its completed serial QA passes 807 inverse tests, 855 application tests, type
+checking, lint and build; the refreshed preview serves the verified assets.
 
 The [shared-return follow-up](visible-shared-returns.md) reduces two star notches
 and protects real corners against one-pixel source shifts. Its latest scheduling

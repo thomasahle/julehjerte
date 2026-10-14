@@ -84,8 +84,12 @@ The [frozen diagnostic record](controlled-border-perturbations.json) includes
 all fifty native attempts across baseline and four development variants, twenty
 editable replays, rejected source geometry and source/artifact hashes. Local
 scripts and outputs are under `tmp/heart-learning/border-perturbation-v1/`.
-The full suite started after commit `f1c602b`; its completion is tracked
-separately and is not implied by the focused checks above.
+The subsequent [completed full QA](controlled-border-qa.json) passes **807
+inverse tests**, **855 application tests** with one existing skip, type checking,
+lint and build. The preview was refreshed on port 5232 and all 153 served assets
+match the build. Application/static source hashes still match the prior three
+passing Chromium flows; those browser flows were not rerun for this offline
+change. The original diagnostic record preserves its earlier pending-QA status.
 
 Next steps are additional fringe positions and real-photograph comparisons,
 including checking whether the wider proposal band damages legitimate near-edge
