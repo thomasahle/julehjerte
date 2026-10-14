@@ -11,6 +11,7 @@ import {matchingGroups,matchingPenalty,projectMatching} from './matching.js';
 import {symmetryTies,applyTies,symmetryReport} from './symmetry.js';
 import {straightProposal,primitiveComplexity,primitiveCost} from './primitives.js';
 import {boundaryObjective} from './image-objective.js';
+import {turnLimitPenalty} from './turn-limit.js';
 export const FITTING_CLEARANCE_CUSHION=.35;
 export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+FITTING_CLEARANCE_CUSHION;}
 
@@ -77,8 +78,11 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
     const A=graph.edges[a],B=graph.edges[b],anchorA=A[ad===1?3:0],handleA=A[ad===1?2:1],anchorB=B[bd===1?0:3],handleB=B[bd===1?1:2];
     const ux=points[2*anchorA]-points[2*handleA],uy=points[2*anchorA+1]-points[2*handleA+1],vx=points[2*handleB]-points[2*anchorB],vy=points[2*handleB+1]-points[2*anchorB+1],u=Math.max(1e-5,Math.hypot(ux,uy)),v=Math.max(1e-5,Math.hypot(vx,vy)),dot=clamp((ux*vx+uy*vy)/(u*v),-1,1);
     // Smooth small accidental kinks, but do not continuously round an intended
-    // corner. Maximum-turn and paper constraints still validate sharp joins.
-    const corner=corners.has(join)&&dot<Math.SQRT1_2,dd=corner?0:(-.015+.06*Math.min(dot,0))/joins;
+    // corner. Near the configured turn limit, give even intentional corners a
+    // corrective force instead of relying only on rejected checkpoints. The
+    // maximum-turn and paper validation gates remain unchanged.
+    const corner=corners.has(join)&&dot<Math.SQRT1_2,limit=turnLimitPenalty(dot,cfg.maxTurn,joins),dd=(corner?0:(-.015+.06*Math.min(dot,0))/joins)+limit.derivative;
+    loss+=limit.loss;
     loss+=(corner?.015*(1-Math.SQRT1_2):.015*(1-dot)+.03*Math.min(dot,0)**2)/joins;
     const gux=dd*(vx/(u*v)-dot*ux/(u*u)),gvx=dd*(ux/(u*v)-dot*vx/(v*v));
     gradient[2*anchorA]+=gux;gradient[2*handleA]-=gux;gradient[2*handleB]+=gvx;gradient[2*anchorB]-=gvx;
