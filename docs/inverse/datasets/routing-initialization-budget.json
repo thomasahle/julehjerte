@@ -597,7 +597,11 @@
       "applicationFailed": 1,
       "applicationSkipped": 1,
       "failure": "src/lib/inverse/shortReturns.test.ts: anchor repair applied=false",
-      "buildAndInverse": "Remaining checks not yet complete."
+      "buildPassed": true,
+      "inversePassed": 852,
+      "inverseFailed": 0,
+      "inverseSeconds": 905.3102018330001,
+      "overallStatus": "Application failure retained; all remaining checks completed."
     }
   },
   "anchorRepairDiagnostic": {

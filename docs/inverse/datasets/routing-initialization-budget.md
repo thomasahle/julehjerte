@@ -34,8 +34,10 @@ two replays retain three short-clearance violations through 160 refinement
 steps. An instrumented third replay succeeds and shows the hidden-control and
 all-control projection attempts sharing a 400 ms cutoff. This is evidence of a
 separate deadline-sensitive local repair, not evidence that the clock correction
-caused it. The full application suite is not green; build and inverse checks
-are recorded separately as they complete.
+caused it. Build and all 852 inverse tests subsequently pass; the one application
+failure remains in this run's result. The separate
+[return-projection improvement](return-projection-speed.md) addresses that local
+repair cost and has its own validation record.
 
 ## Findings
 

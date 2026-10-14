@@ -1,0 +1,133 @@
+{
+  "scope": "Local return projection performance and final-geometry safety. No whole-corpus speed or real-photo success-rate claim.",
+  "baselineCommit": "382534c",
+  "change": "Intermediate iterations evaluate complete short-return constraints. A separate full geometry audit remains mandatory before accepting repaired coordinates. All budgets, tolerances, symmetry and displacement limits are unchanged.",
+  "projectionMatrix": {
+    "cases": 104,
+    "acceptedRepairs": 27,
+    "decisionChanges": 0,
+    "acceptedSerializedGeometryChanges": 0,
+    "baselineMilliseconds": 5743.878123999991,
+    "candidateMilliseconds": 4017.685629000002,
+    "baseline": "tmp/heart-learning/return-projection-speed-v1/baseline/projector-cases/results.json",
+    "baselineSha256": "e565ca69315d0eca4deb165518725c28a912b138051bbc44be859b2448e6abf7",
+    "candidate": "tmp/heart-learning/return-projection-speed-v1/return-only/projector-cases/results.json",
+    "candidateSha256": "81fc4f7ac2f18f2bfee30f97867ac6d9267d0561a52f3b609edce2f1ec5466b0",
+    "timingScope": "Projection only; excludes the initial audit and separate final verification. No repairs needed and unrepairable inputs also occur among these probes."
+  },
+  "anchors": [
+    {
+      "path": "tmp/heart-learning/return-projection-speed-v1/baseline/anchor-0/measured.json",
+      "sha256": "b8f3bd4f3004f551ccce03b1ffe55205d75af7b283b8872057aaa363da1d5b0b",
+      "variant": "baseline",
+      "applied": true,
+      "repairSeconds": 2.194930709,
+      "cpuSeconds": 3.168038,
+      "finishSeconds": 0.2379994999999999,
+      "templateChecksPassed": true,
+      "metrics": [
+        {
+          "resolution": 400,
+          "error": 0.00875
+        },
+        {
+          "resolution": 800,
+          "error": 0.009796875
+        }
+      ],
+      "sourceHashes": {
+        "scripts/inverse/fixtures/editor-anchor-return.json": "b5b2bfc62c35d28ce27dd33a8d29ac62915c5d0d86fab74b35b6a807c4c17d17",
+        "scripts/inverse/fixtures/anchor-upload-mask.json": "e540514ae180c4eb68cdbcb8290aed793cbe0cd2699efeffaaab06647f96ed03"
+      },
+      "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba"
+    },
+    {
+      "path": "tmp/heart-learning/return-projection-speed-v1/baseline/anchor-1/measured.json",
+      "sha256": "88f1cfc6a2506d896d5be40f0ed0c3a02b78bc7dbe0285c7040ece4467d0c3f1",
+      "variant": "baseline",
+      "applied": false,
+      "repairSeconds": 2.960579083,
+      "cpuSeconds": 4.100527,
+      "finishSeconds": null,
+      "templateChecksPassed": null,
+      "metrics": null,
+      "sourceHashes": {
+        "scripts/inverse/fixtures/editor-anchor-return.json": "b5b2bfc62c35d28ce27dd33a8d29ac62915c5d0d86fab74b35b6a807c4c17d17",
+        "scripts/inverse/fixtures/anchor-upload-mask.json": "e540514ae180c4eb68cdbcb8290aed793cbe0cd2699efeffaaab06647f96ed03"
+      },
+      "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba"
+    },
+    {
+      "path": "tmp/heart-learning/return-projection-speed-v1/return-only/anchor-0/measured.json",
+      "sha256": "e2310935b90a0ef1b9213588205dd3b6806108719e02f51d119d2a8a68c710cf",
+      "variant": "return-only",
+      "applied": true,
+      "repairSeconds": 1.649535792,
+      "cpuSeconds": 2.73812,
+      "finishSeconds": 0.24079420800000004,
+      "templateChecksPassed": true,
+      "metrics": [
+        {
+          "resolution": 400,
+          "error": 0.0087375
+        },
+        {
+          "resolution": 800,
+          "error": 0.0097703125
+        }
+      ],
+      "sourceHashes": {
+        "scripts/inverse/fixtures/editor-anchor-return.json": "b5b2bfc62c35d28ce27dd33a8d29ac62915c5d0d86fab74b35b6a807c4c17d17",
+        "scripts/inverse/fixtures/anchor-upload-mask.json": "e540514ae180c4eb68cdbcb8290aed793cbe0cd2699efeffaaab06647f96ed03"
+      },
+      "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba"
+    },
+    {
+      "path": "tmp/heart-learning/return-projection-speed-v1/return-only/anchor-1/measured.json",
+      "sha256": "af40ae87420d6691434b5d3f2ea733258eabeddcd3b63edff6cc58e52d0d9a50",
+      "variant": "return-only",
+      "applied": true,
+      "repairSeconds": 1.7174945,
+      "cpuSeconds": 2.914216,
+      "finishSeconds": 0.27261245800000006,
+      "templateChecksPassed": true,
+      "metrics": [
+        {
+          "resolution": 400,
+          "error": 0.0087375
+        },
+        {
+          "resolution": 800,
+          "error": 0.0097703125
+        }
+      ],
+      "sourceHashes": {
+        "scripts/inverse/fixtures/editor-anchor-return.json": "b5b2bfc62c35d28ce27dd33a8d29ac62915c5d0d86fab74b35b6a807c4c17d17",
+        "scripts/inverse/fixtures/anchor-upload-mask.json": "e540514ae180c4eb68cdbcb8290aed793cbe0cd2699efeffaaab06647f96ed03"
+      },
+      "maskSha256": "0445f9d1abf328342785e2aa278e7a7c4072613fee0e9db8db5f08f3791b2aba"
+    }
+  ],
+  "productionChecks": {
+    "targetedPassed": 12,
+    "targetedFailed": 0,
+    "anchorApplicationPassed": 1,
+    "anchorApplicationFailed": 0,
+    "replayCases": 104,
+    "replayAccepted": 27,
+    "replayMatchesAllBaselineDecisionsAndAcceptedGeometry": true,
+    "replay": "tmp/heart-learning/return-projection-speed-v1/production/replay/results.json",
+    "replaySha256": "716d1a47089a168f47a7d4a16b0966c231073499cf6207faac56e1a5c4c05f4a"
+  },
+  "changedSourceHashes": {
+    "static/inverse/core/direct/short-return-project.js": "0626bed05c4574f94947bea0ca74c43b2dae88e509aade233386c103b811df0d",
+    "scripts/inverse/short-return-audits.test.mjs": "1c14343643875f6824bf51b89ad63ff1b9d0ca454817cfde0aab8d55da9987cb",
+    "scripts/inverse/diagnostics/return-projection-study.mjs": "91a850dfdcdeb70b9a7f66b741b3484aa95eef0a88f631c93fa8f82a4f5132f0"
+  },
+  "limitations": [
+    "Timing observations came from serial processes on a shared machine. They do not establish browser or mobile latency.",
+    "The anchor comparison contains two fresh processes per method; the baseline succeeds once and fails once.",
+    "Independent SVG comparisons cover the repaired anchor at 400 and 800 pixels. The 104 projection probes use separate full geometry checks, not a photographic target.",
+    "Full application/inverse QA and Hunodan/photo/browser release replays are pending on the adopted change."
+  ]
+}

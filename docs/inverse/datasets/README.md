@@ -70,9 +70,16 @@ earlier native HiGHS time twice on later rounds; resetting its native clocks
 while retaining the outer deadline fixes the new regression test. Eighteen
 targeted tests, type checking and lint pass. Broad application QA has one anchor
 repair failure (856 pass, one skip), also reproduced on the frozen validated
-runtime; full QA is not green. Diagnostic reports now retain
+runtime. Build and all 852 inverse tests pass; full QA is not green. Diagnostic reports now retain
 per-round search timing, skipped-repair reasons and initialization costs even
 when recovery succeeds.
+
+The adopted [return-projection optimization](return-projection-speed.md)
+addresses the anchor repair's repeated validation cost. It preserves all 104
+probe decisions and all 27 accepted cut geometries while reducing their total
+projection time by about 30%. Twelve focused geometry tests and the anchor
+application test pass. Broad QA and release comparisons are pending on this
+change; the initialization and repair-budget experiments remain unadopted.
 
 A separate [render-test correction](shape-render-validation.md) avoids system
 font discovery for text-free SVGs. All 152 paired renders are byte-identical;
