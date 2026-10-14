@@ -78,12 +78,14 @@ export function gridFinalists(coarse,evidence,limit=3){
 }
 /** Minimum-width preparation can reverse the fine-grid ranking. Compare one
  * already initialized alternative before committing the curve-fit budget.
+ * An early comparison cannot add cuts: preparing a larger rejected grid can
+ * consume the later recovery's budget. Those grids keep their ordinary turn.
  * Use the existing cut-count preference; this proposes work, not acceptance.
  */
 export function clearanceComparisonSeed(remaining,incumbent,clear){
-  const score=r=>r.error+.005*(r.model.counts[0]+r.model.counts[1]);
+  const cuts=r=>r.model.counts[0]+r.model.counts[1],score=r=>r.error+.005*cuts(r);
   if(!Number.isFinite(clear.error)||clear.error<=incumbent.error)return null;
-  return remaining.filter(r=>Number.isFinite(r.error)&&score(r)<score(clear))
+  return remaining.filter(r=>Number.isFinite(r.error)&&cuts(r)<=cuts(incumbent)&&score(r)<score(clear))
     .sort((a,b)=>score(a)-score(b))[0]||null;
 }
 // After a verified fit, reserve extra search for a competitive simplification.

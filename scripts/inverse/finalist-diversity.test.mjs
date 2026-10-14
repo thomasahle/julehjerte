@@ -27,6 +27,7 @@ test('clearance can reverse a finalist ranking without creating or discarding a 
   assert.equal(clearanceComparisonSeed(remaining,incumbent,seed([2,4],.039)),null);
   assert.equal(clearanceComparisonSeed(remaining,incumbent,seed([2,4],.040)),null);
   assert.equal(clearanceComparisonSeed([],incumbent,cleared),null);
+  assert.equal(clearanceComparisonSeed([seed([3,5],.01)],incumbent,cleared),null,'A larger grid keeps its ordinary turn instead of consuming early refinement time.');
   assert.deepEqual(remaining,before);
 });
 
