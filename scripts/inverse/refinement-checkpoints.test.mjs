@@ -101,7 +101,9 @@ test('an already acceptable polish retains its better finer-verified checkpoint'
   const requested=settings(cfg);
   for(const key of ['width','minWidth','cutError','kerf','geometryTolerance','nominalWidth'])assert.equal(answer.report.settings[key],requested[key]);
   const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],mask.length**.5);
-  assert.ok(mismatch(rendered.mask,mask)<.0056,'The discarded checkpoint improves the former 0.596% source disagreement');
+  assert.equal(answer.report.solver.shortReturnRepair?.applied,true);
+  assert.equal(answer.report.solver.shortReturnRepair.visibleBoundaryContractions,2);
+  assert.ok(mismatch(rendered.mask,mask)<.0052,'The finer checkpoint and cross-sheet return cleanup must both survive the fresh solve');
   assert.equal(auditImageFeatures(input.sourceImage,rendered.mask).passed,true);
   assert.deepEqual(mask,crop.preview.mask);assert.deepEqual(input.sourceImage.mask,mask);
 });

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {Cubic} from '../../static/inverse/core/bezier.js';
-import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
+import {loadSolutionJSON,solutionJSON,curvesOf} from '../../static/inverse/core/graph.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {shortReturnProposal,finalizeShortReturns} from '../../static/inverse/core/direct/short-returns.js';
 import {matchingSummary} from '../../static/inverse/core/direct/matching.js';
@@ -10,12 +10,49 @@ import {symmetryReport} from '../../static/inverse/core/direct/symmetry.js';
 import {sampleWeave,validate} from '../../static/inverse/core/validate.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
+import {materialAudit} from '../../static/inverse/core/material.js';
+import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
+import {renderExportedWeave} from './export-renderer.mjs';
 
 const cfg=settings({...AUTOMATIC_PRESET,preferMatchingSheets:false,trials:0});
 const line=(a,b)=>Cubic.line(a,b).p;
 const chain=p=>p.slice(1).map((b,i)=>line(p[i],b));
 const A=chain([[50,0],[50,45],[52,47],[50,46],[50,100]]);
 const transpose=path=>path.map(c=>c.map(([x,y])=>[y,x]));
+
+const visibleFixture=JSON.parse(await fs.readFile(new URL('./fixtures/visible-shared-return.json',import.meta.url)));
+function visibleReturn(){
+  const solution=loadSolutionJSON(visibleFixture.geometry),{resolution,maskRuns}=visibleFixture.source,mask=new Uint8Array(resolution**2);
+  let offset=0;for(let i=0;i<maskRuns.length;i+=2){mask.fill(maskRuns[i],offset,offset+maskRuns[i+1]);offset+=maskRuns[i+1];}
+  assert.equal(offset,mask.length);solution.graph.target.sourceImage={resolution,mask};return solution;
+}
+
+test('a visible outline return across two sheets contracts its real shared junction',()=>{
+  const before=visibleReturn(),graph=new CurveGraph(before.paths.map((f,k)=>f.map((_,i)=>curvesOf(before,k,i).map(c=>c.p)))),points=graph.points.slice();
+  const proposal=shortReturnProposal(graph,points,settings(visibleFixture.settings));
+  assert.ok(proposal);assert.equal(proposal.visibleBoundaryContractions,2);
+  assert.equal(proposal.removedOccurrences,2);assert.equal(proposal.segmentsAfter,proposal.segmentsBefore-2);
+  assert.deepEqual(graph.points,points,'Proposing a contraction must not move the incumbent.');
+});
+
+test('visible shared-junction cleanup improves the independently rendered star without weakening paper checks',async()=>{
+  const before=visibleReturn(),cfg=settings(visibleFixture.settings),source=before.graph.target.sourceImage,mask=source.mask.slice(),saved=solutionJSON(before);
+  const after=finalizeShortReturns(before,cfg),report=after.report.shortReturnRepair;
+  assert.equal(report.applied,true);assert.equal(report.visibleBoundaryContractions,2);
+  const a=await renderExportedWeave(saved,source.resolution),b=await renderExportedWeave(solutionJSON(after),source.resolution);
+  const error=r=>r.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
+  assert.ok(error(b)<.0045&&error(b)<.85*error(a),'Removing both backtracks must improve the independent source comparison.');
+  assert.ok(validate(after,cfg,{checkImage:false}).passed);assert.equal(materialAudit(after,cfg).status,'pass');
+  assert.ok(auditFeatureFidelity(source,b.mask,cfg).passed);
+  assert.deepEqual(source.mask,mask);assert.deepEqual(solutionJSON(before),saved);
+});
+
+test('visible return cleanup retains a notch that the source actually requests',()=>{
+  const before=visibleReturn(),cfg=settings(visibleFixture.settings),resolution=400,mask=sampleWeave(before,resolution);
+  before.graph.target.sourceImage={resolution,mask};
+  const after=finalizeShortReturns(before,cfg);
+  assert.deepEqual(sampleWeave(after,resolution),mask,'A cross-sheet shortcut receives no allowance to erase the source drawing.');
+});
 
 test('a short return becomes a span while matching sheets stay identical',()=>{
   const graph=new CurveGraph([[A],[transpose(A)]]),original=graph.points.slice(),p=shortReturnProposal(graph,graph.points,cfg);

@@ -15,14 +15,31 @@ import {orbitObjective,symmetryOrbit,symmetryReport} from './symmetry.js';
 
 const pointKey=p=>p.map(v=>Math.round(v*1e7)).join(',');
 
+/** At a shared cut's endpoint the visible outline can switch sheets. These
+ * two boundary edges need not be consecutive in either cutting path. Only
+ * real shared vertices with an unambiguous visible continuation qualify.
+ */
+function visibleBoundaryJoins(graph){
+  const visible=new Map(),hidden=new Set();
+  graph.edges.forEach((ids,e)=>{for(const [id,d]of [[ids[0],-1],[ids[3],1]]){
+    if(!graph.visible[e]){hidden.add(id);continue;}
+    if(!visible.has(id))visible.set(id,[]);visible.get(id).push([e,d]);
+  }});
+  const joins=[];
+  for(const [id,entries]of visible)if(hidden.has(id)&&entries.length===2){
+    const [a,b]=entries;joins.push([a,[b[0],-b[1]],true]);
+  }
+  return joins;
+}
+
 export function shortReturnProposal(graph,points,cfg){
-  const controls=graph.controls(points),curves=controls.map(c=>new Cubic(c)),vertices=new Map(),plans=new Map(),cuts=new Map(),blocked=new Set(),removed=new Set();
+  const controls=graph.controls(points),curves=controls.map(c=>new Cubic(c)),vertices=new Map(),plans=new Map(),cuts=new Map(),blocked=new Set(),removed=new Set(),boundaryPlans=new Set();
   const endpoint=(entry,start)=>graph.edges[entry[0]][start?(entry[1]===1?0:3):(entry[1]===1?3:0)];
   for(const ids of graph.edges)for(const id of [ids[0],ids[3]]){
     const key=pointKey([points[2*id],points[2*id+1]]);
     if(!vertices.has(key))vertices.set(key,new Set());vertices.get(key).add(id);
   }
-  for(const [a,b]of graph.joins){
+  for(const [a,b,visibleBoundary]of [...graph.joins,...visibleBoundaryJoins(graph)]){
     const joint=endpoint(a,false);
     if(blocked.has(joint))continue;
     if(joint!==endpoint(b,true)||graph.fixed[2*joint]||graph.fixed[2*joint+1])continue;
@@ -37,15 +54,20 @@ export function shortReturnProposal(graph,points,cfg){
     // slightly longer than the nominal strip width even though their chord is
     // still a sub-width spur. Keep the extension bounded and require the
     // short chord so legitimate broad bends remain untouched.
-    if(la+lb>6*cfg.nominalWidth||la+lb<=2*chord||chord<=cfg.geometryTolerance||chord>cfg.nominalWidth)continue;
+    // Two separately fitted sheets can spread a visible return farther than
+    // one path's spur. This only broadens proposal generation: contraction
+    // moves every incident shared branch, and final acceptance still requires
+    // the original image, features, geometry and paper checks.
+    if(la+lb>6*cfg.nominalWidth||la+lb<=2*chord||chord<=cfg.geometryTolerance||chord>(visibleBoundary?1.5:1)*cfg.nominalWidth)continue;
     const cut=la<lb?a:b,target=la<lb?endpoint(a,true):endpoint(b,false);
-    if(Math.min(la,lb)>1.5*cfg.nominalWidth||distance([points[2*joint],points[2*joint+1]],[points[2*target],points[2*target+1]])<=cfg.geometryTolerance)continue;
+    if(Math.min(la,lb)>(visibleBoundary?2:1.5)*cfg.nominalWidth||distance([points[2*joint],points[2*joint+1]],[points[2*target],points[2*target+1]])<=cfg.geometryTolerance)continue;
     // Multiple incident branches can suggest different contractions at one
     // junction. That junction is ambiguous, but unrelated proposals remain
     // safe to apply. Drop only the competing plan instead of abandoning every
     // repair found in this graph.
     if(plans.has(joint)&&plans.get(joint)!==target){plans.delete(joint);cuts.delete(joint);blocked.add(joint);continue;}
     plans.set(joint,target);cuts.set(joint,cut[0]);
+    if(visibleBoundary)boundaryPlans.add(joint);
   }
   if(!plans.size)return null;
   for(const edge of cuts.values())removed.add(edge);
@@ -77,7 +99,7 @@ export function shortReturnProposal(graph,points,cfg){
   }));
   if(empty)return null;
   const proposal=new CurveGraph(paths,graph.width);
-  return {graph:proposal,removedOccurrences,segmentsBefore:graph.edges.length,segmentsAfter:proposal.edges.length,conflictingJunctions:blocked.size};
+  return {graph:proposal,removedOccurrences,segmentsBefore:graph.edges.length,segmentsAfter:proposal.edges.length,conflictingJunctions:blocked.size,visibleBoundaryContractions:[...plans.keys()].filter(id=>boundaryPlans.has(id)).length};
 }
 
 export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionDeadline=deadline,onProgress=()=>{}}={}){
@@ -87,7 +109,7 @@ export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionD
   const proposal=shortReturnProposal(graph,graph.points,cfg);if(!proposal||performance.now()>=deadline)return solution;
   const phase=input.phase?-1:1,n=source.resolution,weights=sourceWeights(source),beforeMatching=matchingSummary(solution);
   const before=sampleWeave(solution,n);
-  const report={segmentsBefore:proposal.segmentsBefore,segmentsAfter:proposal.segmentsAfter,removedOccurrences:proposal.removedOccurrences,conflictingJunctions:proposal.conflictingJunctions,sourceErrorBefore:referenceError(source,before).mismatchFraction,applied:false};
+  const report={segmentsBefore:proposal.segmentsBefore,segmentsAfter:proposal.segmentsAfter,removedOccurrences:proposal.removedOccurrences,conflictingJunctions:proposal.conflictingJunctions,visibleBoundaryContractions:proposal.visibleBoundaryContractions,sourceErrorBefore:referenceError(source,before).mismatchFraction,applied:false};
   const compatible=s=>{const sym=symmetryReport(s,cfg.symmetry);return sym.requested.length===sym.honoured.length&&(!beforeMatching.identical||matchingSummary(s).identical);};
   let result=solution;
   const accept=()=>{
