@@ -69,6 +69,13 @@ broader noise and photograph comparisons.
 Its completed serial QA passes 807 inverse tests, 855 application tests, type
 checking, lint and build; the refreshed preview serves the verified assets.
 
+The [photographic transfer check](smooth-border-photo-transfer.md) finds no
+accepted smooth-row proposals across the 31-photo and 22-Hunodan benchmarks.
+Pass counts hold, but the unsuccessful work costs about 0.2 seconds per input.
+A committed inner-evidence check now skips 49 of 51 photographic masks while
+preserving every selected synthetic proposal exactly. A fresh full replay of
+that correction is separate from the completed broad trial; it remains offline.
+
 The [shared-return follow-up](visible-shared-returns.md) reduces two star notches
 and protects real corners against one-pixel source shifts. Its latest scheduling
 fix, `fa7774c`, reserves time for shared-cut alignment after speculative repairs.
