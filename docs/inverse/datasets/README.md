@@ -23,7 +23,7 @@ The 2026-10-14 snapshot contains:
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
-| Real visible-body annotations | 16 | Fifteen instances in thirteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the six additions to the original ten-instance pilot have not entered training. |
+| Real visible-body annotations | 18 | Seventeen instances in fifteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the eight additions to the original ten-instance pilot have not entered training. |
 | Real partial paper-material annotations | 3 existing heart instances | Blue/yellow, printed purple/blue and floral blue/gold. Separate body and material uncertainty; no additional photographs and no material-trained checkpoint. |
 
 ## Current results and limits
@@ -144,6 +144,11 @@ count are different measures. Of the 1,034 source files, 476 are now reserved by
 existing QA or connected source groups; the rest still need family, instance
 and usage review before allocation. See the [real audit](real-validation.json)
 and [synthetic asset checks](synthetic-batch.json).
+
+The [two new Pinterest annotations](real-pinterest-annotations.md) add a complete
+heart on a blue background and a rotated, clipped star with pale paper. They
+include one approximate overlap reference; no hidden cutting paths are labeled.
+Both remain outside the original training pilot and globally unassigned.
 
 The [current training-reservation check](real-qa-reservations.md) excludes the
 gold-angel source now used by a committed solver regression, including when a

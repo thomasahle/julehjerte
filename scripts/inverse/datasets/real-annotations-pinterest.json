@@ -1,0 +1,470 @@
+{
+  "schema": "woven-heart-real-annotations-1",
+  "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+  "target": "Visible selected basket body including both papers. Exclude handles, shadows and background; uncertain attachments and clipped boundaries receive no supervision.",
+  "scope": "Two assistant-reviewed Pinterest body instances outside the currently reserved QA source groups and earlier annotated source groups. Source/motif-family review and global allocation remain pending; no neural model has used these observations. The source images and original ten-instance pilot are unchanged.",
+  "instances": [
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "assetId": "real-8c875dd0f298b5a4",
+      "imageSha256": "8c875dd0f298b5a406a9d6047b0ffc33746fe6f288bc8672b9a467a7c9df063f",
+      "sourceSize": [
+        440,
+        440
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          440,
+          440
+        ],
+        "note": "Red/white heart with four small heart details on a saturated blue background. Both papers are foreground; the handle and cast shadow are excluded. The attachment is uncertain. Source-size outline and label overlays reviewed. The four overlap points are approximate visible references with six-pixel uncertainty, not measured physical corners or cutting labels."
+      },
+      "motif": {
+        "candidateFamily": "small-hearts-in-checker-frame",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "flat",
+      "foregroundPolygons": [
+        [
+          [
+            225,
+            141
+          ],
+          [
+            242,
+            128
+          ],
+          [
+            259,
+            117
+          ],
+          [
+            277,
+            108
+          ],
+          [
+            295,
+            103
+          ],
+          [
+            313,
+            102
+          ],
+          [
+            330,
+            105
+          ],
+          [
+            347,
+            112
+          ],
+          [
+            362,
+            122
+          ],
+          [
+            376,
+            136
+          ],
+          [
+            388,
+            153
+          ],
+          [
+            398,
+            173
+          ],
+          [
+            404,
+            193
+          ],
+          [
+            407,
+            212
+          ],
+          [
+            405,
+            231
+          ],
+          [
+            400,
+            249
+          ],
+          [
+            391,
+            266
+          ],
+          [
+            380,
+            281
+          ],
+          [
+            223,
+            427
+          ],
+          [
+            74,
+            281
+          ],
+          [
+            62,
+            268
+          ],
+          [
+            50,
+            248
+          ],
+          [
+            42,
+            230
+          ],
+          [
+            38,
+            209
+          ],
+          [
+            38,
+            191
+          ],
+          [
+            42,
+            171
+          ],
+          [
+            49,
+            153
+          ],
+          [
+            59,
+            137
+          ],
+          [
+            72,
+            123
+          ],
+          [
+            88,
+            112
+          ],
+          [
+            107,
+            105
+          ],
+          [
+            128,
+            100
+          ],
+          [
+            147,
+            98
+          ],
+          [
+            167,
+            102
+          ],
+          [
+            186,
+            110
+          ],
+          [
+            205,
+            122
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            198,
+            116
+          ],
+          [
+            240,
+            117
+          ],
+          [
+            246,
+            141
+          ],
+          [
+            215,
+            154
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 3,
+      "overlapCorners": {
+        "points": [
+          [
+            225,
+            141
+          ],
+          [
+            380,
+            281
+          ],
+          [
+            223,
+            427
+          ],
+          [
+            74,
+            281
+          ]
+        ],
+        "status": "approximate-visible-reference",
+        "order": "notch,right,tip,left",
+        "uncertaintyRadiusPixels": 6
+      }
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "assetId": "real-3f7b76e1a98e808f",
+      "imageSha256": "3f7b76e1a98e808f75597010c4dc1f5b591527aec6265f77810c96df80a794df",
+      "sourceSize": [
+        1334,
+        1000
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          1334,
+          1000
+        ],
+        "note": "Rotated green/pale four-point star motif on a pale surface. Both papers are foreground; the long horizontal handle and cast shadow are excluded. The tip and lower lobe are clipped by the source frame, with no hidden continuation inferred. Attachment and frame-edge regions are uncertain. The lower outer arc was corrected after source-grid review and RGB edge sampling. Source-size outlines and label overlays reviewed. No four-corner reference is provided because a physical corner is outside the photograph."
+      },
+      "motif": {
+        "candidateFamily": "four-point-star-frame",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "flat",
+      "foregroundPolygons": [
+        [
+          [
+            0,
+            531
+          ],
+          [
+            421,
+            120
+          ],
+          [
+            455,
+            86
+          ],
+          [
+            500,
+            62
+          ],
+          [
+            550,
+            44
+          ],
+          [
+            604,
+            32
+          ],
+          [
+            657,
+            29
+          ],
+          [
+            712,
+            32
+          ],
+          [
+            763,
+            46
+          ],
+          [
+            810,
+            71
+          ],
+          [
+            851,
+            103
+          ],
+          [
+            888,
+            148
+          ],
+          [
+            916,
+            197
+          ],
+          [
+            934,
+            246
+          ],
+          [
+            941,
+            289
+          ],
+          [
+            938,
+            339
+          ],
+          [
+            927,
+            387
+          ],
+          [
+            909,
+            433
+          ],
+          [
+            887,
+            475
+          ],
+          [
+            863,
+            506
+          ],
+          [
+            837,
+            531
+          ],
+          [
+            861,
+            561
+          ],
+          [
+            886,
+            596
+          ],
+          [
+            911,
+            637
+          ],
+          [
+            931,
+            684
+          ],
+          [
+            944,
+            700
+          ],
+          [
+            951,
+            725
+          ],
+          [
+            955,
+            750
+          ],
+          [
+            957,
+            775
+          ],
+          [
+            956,
+            800
+          ],
+          [
+            950,
+            825
+          ],
+          [
+            941,
+            850
+          ],
+          [
+            928,
+            875
+          ],
+          [
+            909,
+            900
+          ],
+          [
+            890,
+            925
+          ],
+          [
+            868,
+            950
+          ],
+          [
+            843,
+            975
+          ],
+          [
+            813,
+            1000
+          ],
+          [
+            474,
+            1000
+          ],
+          [
+            0,
+            564
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            787,
+            482
+          ],
+          [
+            898,
+            465
+          ],
+          [
+            923,
+            606
+          ],
+          [
+            818,
+            601
+          ]
+        ],
+        [
+          [
+            0,
+            510
+          ],
+          [
+            28,
+            510
+          ],
+          [
+            28,
+            598
+          ],
+          [
+            0,
+            598
+          ]
+        ],
+        [
+          [
+            440,
+            976
+          ],
+          [
+            890,
+            976
+          ],
+          [
+            890,
+            1000
+          ],
+          [
+            440,
+            1000
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 12,
+      "overlapCorners": null
+    }
+  ]
+}
