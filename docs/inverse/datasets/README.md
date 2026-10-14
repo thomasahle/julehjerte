@@ -146,6 +146,15 @@ approaches and known cuts. Its first batch has 64 validated geometries and
 pairs were inspected. The group stays unassigned, and existing experiment inputs
 remain unchanged. [Generation evidence](synthetic-radial-motifs.json)
 
+The [completed radial diagnostic](synthetic-radial-pipeline.md) reconstructs six
+selected designs from clean masks, known photographic crops and automatic
+uploads: all eighteen pairs pass, including editable export. Automatic uploads
+have at most 0.607% disagreement with the latent design and take up to 6.19
+seconds to solve, excluding detection. This is a simple synthetic development
+set, separate from the real-photo benchmark. The study also fixes a reporting
+bug that compared different raster resolutions; corrected scores preserve the
+original masks and fitted cuts. No network training occurred.
+
 The [experiment history](experiment-history.md) retains the earlier studies,
 failed alternatives and verification records without mixing their historical
 scores into the current summary.

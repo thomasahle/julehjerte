@@ -143,8 +143,10 @@ pairs were visually inspected; other views were checked numerically.
 The 15 stored incidence signatures include changes in curve subdivision and
 must not be interpreted as 15 independent routing families. This batch remains
 separate from the 192 geometries and 768 views used in the existing experiments.
-Thirteen focused tests pass. The broader inverse suite and build are pending
-at this generation checkpoint; the live algorithm and preview are unchanged.
+Thirteen focused tests pass at the generation checkpoint. The subsequent
+[completed QA and six-design reconstruction study](synthetic-radial-pipeline.md)
+records the full inverse suite, build, refreshed browser checks and all eighteen
+three-track fits through editable export. The live fitting algorithm is unchanged.
 
 ## Controlled photographic interventions
 
