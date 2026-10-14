@@ -70,6 +70,26 @@ prototype sources remain under `tmp/heart-learning/row-kernel-v1/`.
 
 All 19 focused initializer, outline and photographic regression tests pass,
 including the four accelerated-clock cases. Full corpus/repository validation
-is in progress. The previous full inverse run was not green; focused passes do not
-replace that result. The preview remains on its previously checked build until
-the new corpus and repository checks complete. Nothing is pushed or deployed.
+of `5db8425` completed all **22 Hunodan cases below ten seconds**, with a maximum
+of **7.975 seconds**. All 22 independent errors exactly match the last fully
+validated release, recovering the two small increases in the preceding full run.
+
+The subsequent photo run exposed a dense-checker regression, from 2.245% to
+4.807% disagreement. Validation was stopped before repository/build/browser
+checks, and its partial results are retained. Faster initialization and the
+changed time cutoff allowed a speculative weak-region grid to run where the
+previous full run skipped it. Its fine-grid error improved from 5.498% to 5.251%,
+but enforcing strip width reversed the ranking: the original grid became 5.949%
+and the speculative one 6.123%. Refining the latter exhausted the useful budget.
+
+The existing clearance comparison now also covers speculative weak-region
+starts, which already retain every required source feature. It compares one
+retained ordinary finalist, requires its geometry/paper/colour checks, caches
+both preparations and keeps the original queue. Genuine missing-feature starts
+retain their previous policy. A fresh replay recovers the checker at 2.279%
+disagreement. Both the new checker regression and the existing faded-frame
+weak-region regression pass. The full suite and corpus still need a fresh run.
+
+The previous full inverse run was not green; focused passes do not replace that
+result. The preview remains on its previously checked build until the new corpus
+and repository checks complete. Nothing is pushed or deployed.

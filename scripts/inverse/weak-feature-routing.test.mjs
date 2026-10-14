@@ -8,6 +8,34 @@ import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {reviewMaterialSamples} from './photo-material-samples.mjs';
+import {readHardPhoto} from './hard-photo-data.mjs';
+import {hardPhotoTarget} from './hard-photo-target.mjs';
+
+test('a speculative weak-region grid cannot hide the dense checker layout after clearance changes its ranking',async()=>{
+  const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/fine-checker-clearance.json'));
+  const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
+  const photo=await readHardPhoto({...catalogue.cases.find(c=>c.id===fixture.sourceCase),...catalogue.source});
+  assert.equal(photo.fileSha256,fixture.sourceFileSha256);assert.equal(photo.rgbaSha256,fixture.decodedPixelsSha256);
+  const cfg=fixture.settings,imported=prepare({...photo,quad:fixture.quad},cfg),target=hardPhotoTarget(imported,'mask',cfg);
+  const source=target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice(),hash=b=>createHash('sha256').update(b).digest('hex');
+  assert.equal(hash(mask),fixture.maskSha256);assert.equal(hash(new Uint8Array(probability.buffer)),fixture.fittingProbabilitySha256);
+  const answer=await design(target,cfg),solver=answer.report.solver;
+  // A slower machine can skip the speculative proposal. It must still return
+  // a sound original layout; whenever the comparison runs, it must earn priority.
+  if(solver.clearanceComparison?.preferred){
+    const comparison=solver.clearanceComparison;
+    assert.ok(comparison.alternativeClearanceError<comparison.initialClearanceError);
+    assert.equal(comparison.alternativeGeometry,true);assert.equal(comparison.alternativePaper,'pass');
+    assert.equal(comparison.alternativeColours,true);
+  }
+  assert.equal(answer.report.templateChecksPassed,true);assert.equal(answer.report.validation.passed,true);
+  assert.equal(answer.report.manufacturing.status,'pass');assert.ok(solver.seconds<10);
+  const woven=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution);
+  const error=woven.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
+  assert.ok(error<.03,`Dense checker disagreement ${error} must recover the former accepted fit.`);
+  assert.equal(auditFeatureFidelity(source,woven.mask,answer.report.settings).passed,true);
+  assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+});
 
 test('a poor grid can earn a better route before losing a whole source region',async()=>{
   // This experimental photograph-derived mask isolates routing from cropping

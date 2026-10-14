@@ -1042,5 +1042,28 @@
     "artifact": "tmp/heart-learning/row-kernel-v1/near-miss-clock-handoff-probe-1/horizontal-probe.json",
     "sha256": "0c1931a7a8ad17aff8267a6fe80670763bc79269689661e4087e65aebd0494be",
     "finding": "Exact subdivision exposes short-return checks skipped on adjacent original cubics. No geometry gate was changed. Immediate-handoff and stall prototypes are not promoted."
+  },
+  "firstBroadValidation": {
+    "runtimeCommit": "5db8425",
+    "hunodanCount": 22,
+    "hunodanPassed": 22,
+    "maximumSeconds": 7.974779458999998,
+    "errorsEqualLastValidatedRelease": 22,
+    "photoRunStoppedOnLostPass": "fine-checker",
+    "oldError": 0.02245,
+    "regressedError": 0.04806875,
+    "scope": "Partial photo run retained; no repository, build or browser checks reached. A subsequent focused clearance-comparison prototype recovered the checker; fresh full validation still required.",
+    "artifacts": {
+      "tmp/heart-learning/row-kernel-v1/release/source.json": "1333d5e9c3ae9cd3d99effc0b7bb6310904ba23cd3a16fe0814bf01c002172d4",
+      "tmp/heart-learning/row-kernel-v1/release/checks.json": "a95e8320155ec0d87d43849858727b048223c4fddf33fc889c0d657b9775c8ef",
+      "tmp/heart-learning/row-kernel-v1/release/hunodan/results.json": "dc90fbb78852585e102a9ea175cd4fc3be817fdb2eb39c1b8e309e23459dd5ee",
+      "tmp/heart-learning/row-kernel-v1/release/hunodan-comparison.json": "9269811c910cfeb23406c4c392c159118e6d5c4d1bc45369f8c675e5b6c50dae",
+      "tmp/heart-learning/row-kernel-v1/release/photos/results.json": "310a1760cdf20a9c3ec4719eb5d0d2653d3f71546748e5ac63da7bfaf021439c",
+      "tmp/heart-learning/row-kernel-v1/release/interrupted.json": "9abde639e1a2cfb647d5f76a2c03807cdeeb1e7d615f58ccc759ebfa330381c4",
+      "tmp/heart-learning/row-kernel-v1/weak-source.json": "dc8d06dc68a7b99dcd137f9ac1a3d7a5aadeb6b815a9db91f4350afe89f577a6",
+      "tmp/heart-learning/row-kernel-v1/weak-checker/results.json": "405c9c932fa33ea0d1b0db187230e49245455d7648a48307918db177534de0fa",
+      "tmp/heart-learning/row-kernel-v1/weak-focused.log": "53b9dc6e05b78d7391e3b372b6f26190d46d5a883cb163b7eeecf71eede127e4",
+      "tmp/heart-learning/row-kernel-v1/scheduling-focused.log": "d81f39007dbf83028126caf60200d12f5df4b06d8efc2278a67d157ac4c428e7"
+    }
   }
 }

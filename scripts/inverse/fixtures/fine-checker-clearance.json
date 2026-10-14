@@ -1,0 +1,51 @@
+{
+  "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
+  "sourceCase": "fine-checker",
+  "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+  "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+  "quad": [
+    [
+      229.66038288348437,
+      621.0634317239716
+    ],
+    [
+      303.26962840988,
+      706.260228818081
+    ],
+    [
+      203.48424563134648,
+      800.9466783307623
+    ],
+    [
+      121.2368454904982,
+      720.6371610504564
+    ]
+  ],
+  "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+  "fittingProbabilitySha256": "2bb2d7cffd27b2a4a9eeb309df0dfb31868906dca393ff84bb11e4d4e1b8388a",
+  "settings": {
+    "algorithm": "auto",
+    "polygonal": false,
+    "identicalSheets": false,
+    "resolution": 400,
+    "fitTolerance": 0.5,
+    "maxSpan": 15,
+    "smoothRadius": 0,
+    "snapRadius": 1.5,
+    "borderRadius": 3,
+    "gridPortals": false,
+    "neighbors": 16,
+    "connectorVariants": 2,
+    "junctionBalancePenalty": 0,
+    "gridPreference": 0,
+    "sharpPenalty": 50,
+    "acutePenalty": 30,
+    "turnPenalty": 3,
+    "maxTurn": 175,
+    "localNeighborhoodFactor": 8,
+    "roundHidden": false,
+    "timeLimit": 10,
+    "trials": 0
+  },
+  "provenance": "Production automatic crop from the fixed collage ROI, captured before this solver regression was corrected. No reference cutting paths. The full photo benchmark still detects the crop afresh."
+}

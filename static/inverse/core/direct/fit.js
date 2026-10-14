@@ -493,7 +493,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // narrow. If preparation reverses that ranking, give one existing
     // finalist its clearance pass now. Reuse both preparations and keep the
     // former first layout queued; neither the deadline nor acceptance changes.
-    if(i===0&&!clearanceComparison&&!weights&&!symmetryRequested&&!featureSeed(selected)&&deadline-performance.now()>3500){
+    // Weak-region starts already retain every source feature. Like ordinary
+    // grids, their apparent improvement can disappear under the strip-width
+    // constraint; compare the retained ordinary finalist before committing.
+    if(i===0&&!clearanceComparison&&!weights&&!symmetryRequested&&(!featureSeed(selected)||earlyFeatureInitialization?.trigger==='weak-region')&&deadline-performance.now()>3500){
       const retry=clearanceComparisonSeed(fine.slice(i+1).filter(r=>!featureSeed(r)),selected,clear);
       if(retry){
         const at=performance.now(),alternate=prepareRefinement(retry,deadline-at);
