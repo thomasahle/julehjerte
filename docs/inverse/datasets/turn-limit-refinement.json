@@ -734,8 +734,15 @@
       "log": "tmp/heart-learning/turn-limit-v1/qa-v2/focused.log"
     },
     "fullRerun": {
-      "status": "in_progress",
-      "sourceManifest": "tmp/heart-learning/turn-limit-v1/qa-v2/source.json"
+      "status": "complete",
+      "sourceCommit": "6874c18c159bfa2f469560df56117000e1ff8e8c",
+      "applicationPassed": 855,
+      "applicationSkipped": 1,
+      "inversePassed": 829,
+      "inverseFailed": 0,
+      "browserPassed": 13,
+      "servedAssetsVerified": 154,
+      "validation": "docs/inverse/datasets/turn-limit-validation.json"
     }
   }
 }

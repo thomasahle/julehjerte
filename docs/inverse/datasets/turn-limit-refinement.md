@@ -56,8 +56,8 @@ checkpoint projection or cached return force is included.
   and paper checks after editable conversion: 22 Hunodan and 25 photographs.
 
 The [evidence record](turn-limit-refinement.json) preserves case-level results,
-failed-before/passing-after tests, the fixed-start gift comparison and 251
-artifact hashes. Native timings do not establish browser click-to-ready latency.
+failed-before/passing-after tests, the fixed-start gift comparison and artifact
+hashes. Native timings do not establish browser click-to-ready latency.
 
 The separate [short-return subdivision inconsistency](short-return-export-audit.md)
 remains unresolved. Passing the current geometry checks here does not establish
@@ -70,5 +70,15 @@ builder: the projection patch still assumes the previous import block.
 Commit `6874c18` updates that context. The affected projection test and all three
 turning-limit tests then pass. The failed run is preserved in the evidence record.
 
-A complete rerun and refreshed-browser verification are in progress; the native
-and editable results above do not substitute for them.
+The [complete rerun](turn-limit-validation.json) passes **829 inverse tests**,
+**855 application tests** (one existing skip), type checking, lint and build.
+All 824 recorded source-file hashes are verified. The refreshed preview at
+<http://127.0.0.1:5232/editor/mal/> serves **154 verified build assets**, including
+the new turning-limit helper.
+
+All **thirteen fresh Chromium workflows** pass their image, geometry, paper and
+editable-conversion checks. Four saved result screenshots were also inspected:
+the regular star and free-border hat use matching templates; the photographic
+star and flower retain visible contour imperfections. Browser click-to-ready
+timings range from 1.72 to 28.39 seconds, so the native Hunodan timing remains a
+separate measurement. Nothing was pushed or deployed.

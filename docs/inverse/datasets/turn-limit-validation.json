@@ -1,0 +1,426 @@
+{
+  "schema": 1,
+  "sourceCommit": "6874c18c159bfa2f469560df56117000e1ff8e8c",
+  "runtimeCommit": "932b1f8",
+  "diagnosticCorrectionCommit": "6874c18",
+  "qa": {
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.698467249999998
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.152957833
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 30.698755249999998
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 807.155021959
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 13.504865916999961
+      }
+    ],
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "inversePassed": 829,
+    "inverseFailed": 0,
+    "sourceFilesVerified": 824,
+    "sourceManifest": "tmp/heart-learning/turn-limit-v1/qa-v2/source.json"
+  },
+  "preview": {
+    "metadata": {
+      "pid": 63246,
+      "cwd": "/Users/ahle/repos/julehjerte-solver-initialization",
+      "origin": "http://127.0.0.1:5232",
+      "commit": "59e00e6236aa3c2227f2da952aa5758166ffb899"
+    },
+    "assetsVerified": 154,
+    "manifest": "tmp/heart-learning/turn-limit-v1/qa-v2/served-assets.json"
+  },
+  "browser": {
+    "gitCommit": "59e00e6236aa3c2227f2da952aa5758166ffb899",
+    "timingVersion": 2,
+    "timingMethod": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "results": [
+      {
+        "name": "flower-native-mask",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.00509375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005900000095367432,
+          "prepareRoundTripSeconds": 0.16739999985694884,
+          "preparedToSolveRequestSeconds": 0.00030000019073486326,
+          "solveRoundTripSeconds": 6.968899999856949,
+          "resultToReadySeconds": 0.5851000001430512,
+          "clickToReadySeconds": 7.727600000143051
+        }
+      },
+      {
+        "name": "flower-downsample-mask",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.0061375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005399999856948853,
+          "prepareRoundTripSeconds": 0.16560000014305115,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 8.356200000047684,
+          "resultToReadySeconds": 0.5038999998569489,
+          "clickToReadySeconds": 9.03139999985695
+        }
+      },
+      {
+        "name": "hard-bibel-star-outline",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.0115375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005399999856948853,
+          "prepareRoundTripSeconds": 0.17240000009536743,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 7.551799999952316,
+          "resultToReadySeconds": 0.1637000000476837,
+          "clickToReadySeconds": 7.893599999904633
+        }
+      },
+      {
+        "name": "hard-bibel-star-outline-half",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.01313125,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.17040000009536743,
+          "preparedToSolveRequestSeconds": 0.0005,
+          "solveRoundTripSeconds": 8.568900000095367,
+          "resultToReadySeconds": 0.366,
+          "clickToReadySeconds": 9.111300000190734
+        }
+      },
+      {
+        "name": "hard-bibel-star-outline-jpeg75",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.01651875,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.16289999985694886,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 3.6115,
+          "resultToReadySeconds": 0.3007000000476837,
+          "clickToReadySeconds": 4.080899999856949
+        }
+      },
+      {
+        "name": "hard-flettede-puppy",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          5,
+          3
+        ],
+        "sourceEditableError": 0.0106,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005400000095367431,
+          "prepareRoundTripSeconds": 0.14870000004768372,
+          "preparedToSolveRequestSeconds": 0.00020000004768371582,
+          "solveRoundTripSeconds": 16.500299999952315,
+          "resultToReadySeconds": 0.7105,
+          "clickToReadySeconds": 17.36510000014305
+        }
+      },
+      {
+        "name": "hard-flettede-viking",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          6,
+          6
+        ],
+        "sourceEditableError": 0.01934375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005199999809265137,
+          "prepareRoundTripSeconds": 0.18710000014305114,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 27.209900000095367,
+          "resultToReadySeconds": 0.9901999998092651,
+          "clickToReadySeconds": 28.392699999809267
+        }
+      },
+      {
+        "name": "hunodan",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          2,
+          2
+        ],
+        "sourceEditableError": 0.00944375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0052999999523162845,
+          "prepareRoundTripSeconds": 0.15380000019073486,
+          "preparedToSolveRequestSeconds": 0.00019999980926513672,
+          "solveRoundTripSeconds": 3.8941000001430512,
+          "resultToReadySeconds": 0.42,
+          "clickToReadySeconds": 4.473400000095367
+        }
+      },
+      {
+        "name": "star",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.0016,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.007799999952316284,
+          "prepareRoundTripSeconds": 0.03340000009536743,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 1.5844000000953675,
+          "resultToReadySeconds": 0.09529999995231628,
+          "clickToReadySeconds": 1.7212000000476837
+        }
+      },
+      {
+        "name": "top-hat-preferred",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.004118835034013606,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.019799999952316284,
+          "prepareRoundTripSeconds": 0.24910000014305114,
+          "preparedToSolveRequestSeconds": 0.00039999985694885254,
+          "solveRoundTripSeconds": 7.213100000143051,
+          "resultToReadySeconds": 0.20569999980926515,
+          "clickToReadySeconds": 7.688099999904632
+        }
+      },
+      {
+        "name": "blue-star-polishing-mask",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.0044625,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0052999999523162845,
+          "prepareRoundTripSeconds": 0.14979999995231627,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 8.143900000095368,
+          "resultToReadySeconds": 0.712,
+          "clickToReadySeconds": 9.011400000095367
+        }
+      },
+      {
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.010575,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0050999999046325685,
+          "prepareRoundTripSeconds": 0.15040000009536744,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 7.365900000095367,
+          "resultToReadySeconds": 0.39370000004768374,
+          "clickToReadySeconds": 7.915400000095367
+        }
+      },
+      {
+        "name": "gold-routing-mask",
+        "passed": true,
+        "pageErrors": [],
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.0073625,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0050999999046325685,
+          "prepareRoundTripSeconds": 0.18490000009536744,
+          "preparedToSolveRequestSeconds": 0.00029999995231628417,
+          "solveRoundTripSeconds": 6.1055,
+          "resultToReadySeconds": 0.21490000009536744,
+          "clickToReadySeconds": 6.510700000047684
+        }
+      }
+    ],
+    "scope": "Fresh Chromium upload/find/export/editable workflows on the rebuilt preview. All thirteen pass the checked image, geometry, paper and editable conversion criteria; selected screenshots were also reviewed as recorded separately."
+  },
+  "visualReview": {
+    "scope": "Assistant visual inspection of four saved browser result screenshots. This supplements the automated measurements; it is not physical assembly testing or a claim that every contour is defect-free.",
+    "cases": [
+      {
+        "name": "hard-bibel-star-outline",
+        "file": "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-bibel-star-outline/result.png",
+        "sha256": "86f242664f16c66a0acf2f3c397d54e64a89505955981113b4c491b01ff6b99f",
+        "observation": "Recognizable outlined star and complete result controls. Uneven contour thickness and a top protrusion remain; no claim of a clean ground-truth reconstruction."
+      },
+      {
+        "name": "flower-native-mask",
+        "file": "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-flower-native-mask/result.png",
+        "sha256": "b390fddeb166fff788dd6eb4a7c7eaccd09f7414ca2ec164eb3fcb4fc8aa6aa8",
+        "observation": "Six petals and white center remain recognizable. Uneven petal edges and faint short seam-like marks remain visible."
+      },
+      {
+        "name": "star",
+        "file": "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-star/result.png",
+        "sha256": "f02e16d3d5baeefa81fbdcf8cde1b84ae9f573175c7f9f4e17f66ff7a2d262fa",
+        "observation": "Clean straight-edged five-point star and border; the result reports matching templates."
+      },
+      {
+        "name": "top-hat-preferred",
+        "file": "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-top-hat-preferred/result.png",
+        "sha256": "494327c688ff971ae61ca91b697335eb4b8e9b05082d223d34a17b7b880a5fbf",
+        "observation": "Recognizable hat with matching templates, protected-motif comparison and free-border diagnostics visible. Small edge irregularities and curved generated border features remain."
+      }
+    ]
+  },
+  "priorAttempt": "The first full run passed 828/829 inverse tests and failed only because an offline experimental patch no longer matched the fitter import block. The failed run and targeted fix remain in turn-limit-refinement.json. This complete rerun includes that correction.",
+  "artifacts": {
+    "tmp/heart-learning/turn-limit-v1/qa-v2/after-checks.json": "e98d4e86c5b7e5e8d8ba562d6a1ea958fa70af8459fa98249a9cfb663933c909",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/after-running.json": "d12df96e8d922d035ca400abb39171428d8596f829f9bad5d707ef1c145e372c",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/after.py": "fa6a242259e752e630d9317fd3e1c8f5761ffc905f157f41fbcf5a18f59c08af",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/app.log": "5dcfd7e10e23b0cefe9e7f040b0d024c7f2a938206df0c4f9f15f9c06d2af755",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-blue-star-polishing-mask/cut_geometry.json": "0949ee08a362858fc5288cfc07d2f6b24b4033d7b6b12e68b31be9bad0869168",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-blue-star-polishing-mask/editable.svg": "760feb59e9ba71549ed67365910ada3f7aec15c97b7495649011f741c9a3585b",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-blue-star-polishing-mask/result.png": "7a191191a99a19b35a5c9b70a74cce27db86f78a65902034949b2cb05a50ad56",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-flower-downsample-mask/cut_geometry.json": "ac6e726719e849e47e58765752fca7df836637b12deddc391dacf7c9fbbf8f27",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-flower-downsample-mask/editable.svg": "af02e52c931f447494774a0432de5657823439201b14a13de5ce71ecad7079d0",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-flower-downsample-mask/result.png": "870362f682576732c33ec00b5250b1f552aa4866bab874ef3c86c9dffc3b5e8c",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-flower-native-mask/cut_geometry.json": "e275b03a59a8ca8df305dfc226339ff25bcd9138a2dbeba50c805980ab8878a7",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-flower-native-mask/editable.svg": "d6a63c2f58c54203b446b20176f5d3cf9e64e7515a3ff6954f60746d24ad50f8",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-flower-native-mask/result.png": "b390fddeb166fff788dd6eb4a7c7eaccd09f7414ca2ec164eb3fcb4fc8aa6aa8",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-gold-routing-mask/cut_geometry.json": "427fc6d21c1005db16984f025d71d57affadc24e4b8d84cb927dfb6c3d6070aa",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-gold-routing-mask/editable.svg": "e2a26b693d1dd53c396a8191253169a8fe9d892248304e1ab64857df22be4f60",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-gold-routing-mask/result.png": "60d0350c054bbf683e298aac094d287e5cecab4bcd6c8938772b97cd83f8026c",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-bibel-star-outline/cut_geometry.json": "288ec06ba84f88c7422d53a4448709e1afd9975ce24d19f2517cd51af4fc86cb",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-bibel-star-outline/editable.svg": "5e40a6a2587d25c6dccca3a3faea767aab70748cca1d6d96930afc9a2b3d5870",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-bibel-star-outline/result.png": "86f242664f16c66a0acf2f3c397d54e64a89505955981113b4c491b01ff6b99f",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-bibel-star-outline-half/cut_geometry.json": "50b4422f27905b1a54ca8b4477dc877c26883548640b987df4b28f9e42b8ad64",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-bibel-star-outline-half/editable.svg": "041a19a0b8815fb761d6188dd1444c94b8c28d89bf5ab3c871826de308602aff",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-bibel-star-outline-half/result.png": "b4906417c727d4f5dd7ad8b251ebb4f24867274ba68dc75261ad7bb7d5f865c3",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-bibel-star-outline-jpeg75/cut_geometry.json": "9ac0ef690564427b639801c284f0bf6c367eeee2214331687e567773769d0950",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-bibel-star-outline-jpeg75/editable.svg": "f9a6e6a24076111efde1b4e9155d10918764a00ce0bc25f667a91156e618fdad",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-bibel-star-outline-jpeg75/result.png": "9433e2ef47375c02d0dc9ec89d1d0ea11e6cb44f91b83f1b545df1d6f7a614e7",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-flettede-puppy/cut_geometry.json": "d38e6117e7fdca76a335455114b4202d61672b3b097b96e34c1fa8050fc0dafe",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-flettede-puppy/editable.svg": "ebc44f3454e495004c01c6748581d2566aac34e3d388c9cb116527aacb82c954",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-flettede-puppy/result.png": "5c55deaa0d9e8d8633e76952034c20fe8e53f6224a659497c4608265e74f365d",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-flettede-viking/cut_geometry.json": "680bc77955a58c87618ff61662dae842d1388db891ca26c01b0b8c9cf77b23b2",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-flettede-viking/editable.svg": "50d1b560936409dfa19cea96236a033f0001c8d2fc802510af8d60006bb9161c",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hard-flettede-viking/result.png": "c3d8977fa6b3d56e14dfd716eeb5bba59ead4018ed6c22d0e42e657f3ab7cc46",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hunodan/cut_geometry.json": "9a51ebaf947ad348ca12116e3510fe51585266cd9c428aa0ca516e829f8e5273",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hunodan/editable.svg": "084ed763473a176a18271565b76c6033e2ace0b63a4ecf914e0da757afd9c594",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-hunodan/result.png": "b718083b5a666c01b6fb8dbe78409509009cde16e82231391743f9db5afe022d",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-star/cut_geometry.json": "7e040bc9715127cdbf3d111dd6acb85beebb267bcfab69c198a9b3966de87601",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-star/editable.svg": "fb311ce80a88dd35e0f9a521e6f22dd9e185841ae1b9f9b6557817d9f7d1f83f",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-star/result.png": "f02e16d3d5baeefa81fbdcf8cde1b84ae9f573175c7f9f4e17f66ff7a2d262fa",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-top-hat-preferred/cut_geometry.json": "39f1f4067a585a1848603766697b8e86c5bcc1d98b49b022fc4121cacfa29667",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-top-hat-preferred/editable.svg": "0c9fc9985182e0cb501ff6caa07d151ccabe83cd4e4f3f2ef5444c9d152b4d20",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-top-hat-preferred/result.png": "494327c688ff971ae61ca91b697335eb4b8e9b05082d223d34a17b7b880a5fbf",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-web-danish-tree-green/cut_geometry.json": "0588e9f68a218a2f5a42199a216a73c519b594845882be4495ffb576d3e0753b",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-web-danish-tree-green/editable.svg": "c38c68dc13f34b8aa211b31ef6b45865d1d3c461e39a0bc45f0e68fa0c10ee85",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/chromium-web-danish-tree-green/result.png": "17b8dfbf0090cf71feeb72c46b121a2a4c7b7052d9af4b076618aebecc447969",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser/results.json": "236aac203b41d325d00a9e946e2d3d5f3f99eb7831fd8f5332481fc2d3770123",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/browser.log": "0aee9e365cebafc3ca9e541ced666e93ebafee7c69afb1b3c45e0b2a1bc38f50",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/build.log": "9f1456cf6f18ebfab4a4e9f65f750f32bdd99812b808864bf8106f0debc6928b",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/checks.json": "49eed21c961fa44a774f5bbab4430327f7391fbe61e1b2af1fa6ead29b1480b3",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/collect.py": "9f7c8428c70f56791c18cfc890bd877e5935b84e488279c0abc7647eb475627d",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/focused.log": "97522d9a99c12618d2135801f435a6189a2a57b8b374b0d6801eaf9a2dd239be",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/inverse.log": "372d2c383e56c5ee75262f28fbde7da79fa89b5c50d0b610a25fe22d983c205c",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/preview.json": "6c11fe4acdef250dd7f7059a0d3459151b4596e62ce7ab364d42bf80263144e4",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/preview.log": "871e85c321ccafc342ad01dcf3337f8e9ecdd5ac3163cc588adf0756f05cc1ac",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/restart-preview.py": "046787c13baca6fb78a8d5a947ac7e7242cdea2fa5626ba08b6fc3b5f96eb35a",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/restart.log": "14bd04794f5c86da7fba46c3327d65c0ea990a3a9a92c2aaed3c73dc00da43f9",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/run.py": "3886dec771de750bc7716a32b28bb16d8f532a4574371bece23405f94b93fcd6",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/runner.json": "7e293b27b591711948376a490fdae0254672fe692d6918b0b3e3c877e45c5a68",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/served-assets.json": "6d3f7d7cca2f776b627c06a1fcbc8117078e75b81955aad9fe73967d9d2dc857",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/source.json": "eed7880ee4980d9094cbf573fbabf521b20aee60af915d3f425ef2d8d97ecebc",
+    "tmp/heart-learning/turn-limit-v1/qa-v2/visual-review.json": "d2382c18397c113e1afbaee6ae46fde04c4d28c5f64823330dd95f81a86285d1"
+  }
+}
