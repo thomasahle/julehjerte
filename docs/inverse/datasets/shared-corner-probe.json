@@ -1,0 +1,365 @@
+{
+  "schema": "short-shared-span-probe-1",
+  "productionChange": false,
+  "scope": "Geometry-only candidate enumeration followed by a fixed saved-geometry continuation. No fresh fit, model training, changed target or new benchmark success. Source is the committed-runtime controlled browser replay before editable conversion.",
+  "candidates": {
+    "source": "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/cut_geometry.json",
+    "sourceSha256": "8103920f8dd37544ef0be05b952097781a5d8884e075648ffe78169a6fd97932",
+    "sharingSourceSha256": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "purpose": "Geometry-only candidate diagnostic; no fitting, replacement, acceptance or production change.",
+    "rows": [
+      {
+        "minimumIndependentLengthMm": 3,
+        "proposals": []
+      },
+      {
+        "minimumIndependentLengthMm": 1,
+        "proposals": [
+          {
+            "i": 0,
+            "j": 2,
+            "a0": 11.149452080189477,
+            "a1": 11.653142283368467,
+            "b0": 1.9763562110078088,
+            "b1": 1.7779513570994292,
+            "length": 1.8021468259834705
+          },
+          {
+            "i": 3,
+            "j": 0,
+            "a0": 1.0046485325403782,
+            "a1": 1.163867634915495,
+            "b0": 14.182436763465091,
+            "b1": 13.888649014106829,
+            "length": 1.401920482012759
+          },
+          {
+            "i": 3,
+            "j": 2,
+            "a0": 9.875262621788863,
+            "a1": 10.073776195297988,
+            "b0": 16.29213222491224,
+            "b1": 16.473021461156836,
+            "length": 1.00137177286625
+          },
+          {
+            "i": 2,
+            "j": 3,
+            "a0": 16.89092269153212,
+            "a1": 17.020134291751095,
+            "b0": 10.34938150268713,
+            "b1": 10.726909169186879,
+            "length": 1.0008389133716236
+          }
+        ]
+      },
+      {
+        "minimumIndependentLengthMm": 0.25,
+        "proposals": [
+          {
+            "i": 2,
+            "j": 2,
+            "a0": 6.983754531689436,
+            "a1": 13.164702436661758,
+            "b0": 13.03231997459032,
+            "b1": 6.965204938537597,
+            "length": 14.612248135225663
+          },
+          {
+            "i": 1,
+            "j": 1,
+            "a0": 6.941664680024909,
+            "a1": 11.202424481518479,
+            "b0": 10.130532875441025,
+            "b1": 5.91722556111616,
+            "length": 7.6091262383046825
+          },
+          {
+            "i": 0,
+            "j": 2,
+            "a0": 11.149452080189477,
+            "a1": 11.653142283368467,
+            "b0": 1.9763562110078088,
+            "b1": 1.7779513570994292,
+            "length": 1.8021468259834705
+          },
+          {
+            "i": 3,
+            "j": 0,
+            "a0": 1.0046485325403782,
+            "a1": 1.163867634915495,
+            "b0": 14.182436763465091,
+            "b1": 13.888649014106829,
+            "length": 1.401920482012759
+          },
+          {
+            "i": 3,
+            "j": 2,
+            "a0": 9.875262621788863,
+            "a1": 10.073776195297988,
+            "b0": 16.29213222491224,
+            "b1": 16.473021461156836,
+            "length": 1.00137177286625
+          },
+          {
+            "i": 2,
+            "j": 3,
+            "a0": 16.89092269153212,
+            "a1": 17.020134291751095,
+            "b0": 10.34938150268713,
+            "b1": 10.726909169186879,
+            "length": 1.0008389133716236
+          },
+          {
+            "i": 1,
+            "j": 0,
+            "a0": 2.00555409873109,
+            "a1": 2.0517895617877633,
+            "b0": 2.829069772818301,
+            "b1": 2.947650667601405,
+            "length": 0.6007204924977394
+          },
+          {
+            "i": 0,
+            "j": 1,
+            "a0": 2.8356001331402823,
+            "a1": 2.9511040173141714,
+            "b0": 2.0909019316477346,
+            "b1": 2.1945690991467846,
+            "length": 0.6007156086611651
+          }
+        ]
+      },
+      {
+        "minimumIndependentLengthMm": 0.05,
+        "proposals": [
+          {
+            "i": 2,
+            "j": 2,
+            "a0": 6.983754531689436,
+            "a1": 13.164702436661758,
+            "b0": 13.03231997459032,
+            "b1": 6.965204938537597,
+            "length": 14.612248135225663
+          },
+          {
+            "i": 1,
+            "j": 1,
+            "a0": 6.941664680024909,
+            "a1": 11.202424481518479,
+            "b0": 10.130532875441025,
+            "b1": 5.91722556111616,
+            "length": 7.6091262383046825
+          },
+          {
+            "i": 1,
+            "j": 0,
+            "a0": 3.988580734298765,
+            "a1": 5.956562493021867,
+            "b0": 7.953545725967274,
+            "b1": 6.028169322432398,
+            "length": 5.206244268313725
+          },
+          {
+            "i": 0,
+            "j": 2,
+            "a0": 11.149452080189477,
+            "a1": 11.653142283368467,
+            "b0": 1.9763562110078088,
+            "b1": 1.7779513570994292,
+            "length": 1.8021468259834705
+          },
+          {
+            "i": 3,
+            "j": 0,
+            "a0": 1.0046485325403782,
+            "a1": 1.163867634915495,
+            "b0": 14.182436763465091,
+            "b1": 13.888649014106829,
+            "length": 1.401920482012759
+          },
+          {
+            "i": 3,
+            "j": 2,
+            "a0": 9.875262621788863,
+            "a1": 10.073776195297988,
+            "b0": 16.29213222491224,
+            "b1": 16.473021461156836,
+            "length": 1.00137177286625
+          },
+          {
+            "i": 2,
+            "j": 3,
+            "a0": 16.89092269153212,
+            "a1": 17.020134291751095,
+            "b0": 10.34938150268713,
+            "b1": 10.726909169186879,
+            "length": 1.0008389133716236
+          },
+          {
+            "i": 1,
+            "j": 0,
+            "a0": 2.00555409873109,
+            "a1": 2.0517895617877633,
+            "b0": 2.829069772818301,
+            "b1": 2.947650667601405,
+            "length": 0.6007204924977394
+          },
+          {
+            "i": 0,
+            "j": 1,
+            "a0": 2.8356001331402823,
+            "a1": 2.9511040173141714,
+            "b0": 2.0909019316477346,
+            "b1": 2.1945690991467846,
+            "length": 0.6007156086611651
+          }
+        ]
+      }
+    ]
+  },
+  "runs": [
+    {
+      "variant": "baseline",
+      "seconds": 0.027246041999999988,
+      "beforeError": 0.00540625,
+      "afterError": 0.00540625,
+      "accepted": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true
+    },
+    {
+      "variant": "anchored",
+      "seconds": 0.5843501249999999,
+      "beforeError": 0.00540625,
+      "afterError": 0.0054,
+      "accepted": 1,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true
+    },
+    {
+      "variant": "short",
+      "seconds": 1.47925325,
+      "beforeError": 0.00540625,
+      "afterError": 0.0054375,
+      "accepted": 4,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true
+    }
+  ],
+  "visualReview": {
+    "artifacts": [
+      "tmp/heart-learning/shared-corner-probe-v1/baseline/woven-800.png",
+      "tmp/heart-learning/shared-corner-probe-v1/anchored/woven-800.png",
+      "tmp/heart-learning/shared-corner-probe-v1/short/woven-800.png"
+    ],
+    "finding": "The large notches at the upper and left inner star corners remain in all three outputs. The accepted short alignments do not establish a visual improvement."
+  },
+  "decision": "Do not adopt either lower-threshold prototype. Investigate coordinated movement at shared-cut endpoints and local routing; their role in the notches is not yet established.",
+  "sourceHashes": {
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe"
+  },
+  "artifacts": {
+    "tmp/heart-learning/shared-corner-probe-v1/anchored/cut_geometry.json": {
+      "bytes": 29756,
+      "sha256": "f8e90930b71fe9060327ec633d11cc0a3720b8b1080721e5d248abb579c37b62"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/anchored/report.json": {
+      "bytes": 5320,
+      "sha256": "f9dcc8e5bfb48df7e9075e800739e4c7379c610b4f95f10eaf12cfccb45b52b6"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/anchored/share-source.js": {
+      "bytes": 15915,
+      "sha256": "ace0ba75cb75d8ce037a2095589d68fc04d5d5e9ae7a46e0e7a3587637eaf005"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/anchored/woven-800.png": {
+      "bytes": 36856,
+      "sha256": "a56eb2b06541f3bf266080c21ff6204a9f03986eb59b0cc349cc8e7ac113e57b"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/anchored/woven.png": {
+      "bytes": 16526,
+      "sha256": "fb70c4dbd1972b1f58ddc5121be8234679f4da808409ab66ca3f1ee4aef2b676"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/anchored.log": {
+      "bytes": 4078,
+      "sha256": "08b5e6943f6d0fee3a531d26b4ca51da34fbd232ef7a7fffffec7b4914047fef"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/baseline/cut_geometry.json": {
+      "bytes": 27630,
+      "sha256": "3be6312a99417d940c5f80ef3ffa3f272a18a74fe08cb7f11d2892c6c59eec62"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/baseline/report.json": {
+      "bytes": 3034,
+      "sha256": "d399760ccea8a5ab8e67d953b6da7f4a24a225115c64f3e2d9526ab5a9739784"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/baseline/share-source.js": {
+      "bytes": 15858,
+      "sha256": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/baseline/woven-800.png": {
+      "bytes": 36904,
+      "sha256": "df44081b9bacd033b9425918b78e9a7c3c068033b6db91abc3cbb803b4ec37de"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/baseline/woven.png": {
+      "bytes": 16515,
+      "sha256": "2fefbb5d6a288d2a5893825fe89e5ddde8d9e935afb03e3991f34cd72c42bd14"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/baseline.log": {
+      "bytes": 2574,
+      "sha256": "23d6126d9d33b0df950a657997899eb6746d0a0000b61c3b2bcd171fc15ddba9"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/candidates.json": {
+      "bytes": 5748,
+      "sha256": "7deae13518529cc05a8018cf99a2806d4c0e9016920aa9dbc34c4a97a69fb52e"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/candidates.mjs": {
+      "bytes": 1478,
+      "sha256": "99296249afaf406d5ecb4d12878a9887688558d5ce276a25e62e656678d1c7fd"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/recover.mjs": {
+      "bytes": 3600,
+      "sha256": "9d42009f3a562fe1843423dece13e3e6f22d49447752a6980e288762aa84595d"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/short/cut_geometry.json": {
+      "bytes": 31803,
+      "sha256": "87c210e6124108c00bfb6347313c78451d2ac95d94fb46614f0456a9ca427efa"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/short/report.json": {
+      "bytes": 9151,
+      "sha256": "034184c407a0309b36c34b13a355b2c0fcb29b57e66a79951d9f8de97d1b883c"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/short/share-source.js": {
+      "bytes": 15860,
+      "sha256": "1192313776d18bb55ec10c5f01806b33bc24a9771af6c45062594815fadafa42"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/short/woven-800.png": {
+      "bytes": 36741,
+      "sha256": "59460c5ac9b54b5e29c03040c2c70c9f3182707d3fa4fcae0df1f84285536825"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/short/woven.png": {
+      "bytes": 16522,
+      "sha256": "8013aa00fd2eb0a4265139341c30d64b6e3358f3037266ce246019bcf44aaebe"
+    },
+    "tmp/heart-learning/shared-corner-probe-v1/short.log": {
+      "bytes": 6599,
+      "sha256": "d9863831588a883a4bc505de1dbe5b6622ec8fae168827e128374be10b9fb30f"
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/cut_geometry.json": {
+      "bytes": 54659,
+      "sha256": "8103920f8dd37544ef0be05b952097781a5d8884e075648ffe78169a6fd97932"
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/prepared.json": {
+      "bytes": 320042,
+      "sha256": "e5d14c52da882a40f63286a04044920df764feabfe7846ca92b15b92022d4083"
+    },
+    "tmp/heart-learning/polishing-alternative-v1/browser-candidate/chromium-blue-star-polishing-mask/engine-report.json": {
+      "bytes": 45482,
+      "sha256": "92d6db2107742fc941fa1c031ad22d8d4e43a81ca630abe3f040d1bf4c27ca43"
+    }
+  }
+}

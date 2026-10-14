@@ -129,3 +129,30 @@ Stage captures and rejected regularization experiments are preserved separately
 under `tmp/heart-learning/outline-regularization-v1/`. The implementation and
 regression coverage are committed as `3f89655` and `98de0d5`; nothing is pushed
 or deployed. The neural models remain offline.
+
+## Remaining notches: short shared spans
+
+A [saved-geometry probe](shared-corner-probe.json) checks another possible cause
+of the visible star notches. The current sharing proposal requires at least
+3 mm of still-independent geometry. It finds no remaining candidates in the
+controlled browser export, despite thirteen already shared segments. Lowering
+that minimum exposes shorter near-coincident sections, including extensions
+of existing shared cuts.
+
+The first prototype only allows a short extension beside at least 3 mm of
+already shared geometry. It accepts one edit in 0.58 seconds. A second allows
+all shorter spans and accepts four edits in 1.48 seconds. Both keep the existing
+image, feature, geometry, paper and cut-quality checks and a two-second budget.
+
+Independent exported-mask disagreement is 0.540625% before either continuation,
+0.540000% after the restricted extension, and 0.543750% after the unrestricted
+short-span edits. These native exported-curve measurements precede editable
+conversion and are not the browser's 0.545% score. The unrestricted result also
+illustrates a small disagreement between the internal and independent raster
+measurements.
+
+All three 800-pixel previews were inspected: the large upper and left inner
+notches remain. Neither prototype is adopted. This rules out simply lowering
+the span-length threshold as a sufficient correction; coordinated endpoint
+movement and local routing remain hypotheses to investigate. The probe retains
+the source mask and original geometry, and makes no new full-pipeline claim.
