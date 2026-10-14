@@ -59,16 +59,17 @@
      let repeatedRollback=false;
 --- /dev/null
 +++ b/direct/short-return-project.js
-@@ -0,0 +1,45 @@
+@@ -0,0 +1,49 @@
 +/** Experimental local constraint projection; never changes final validity rules. */
 +import {bernstein} from './math.js';
 +import {validate} from '../validate.js';
 +
-+export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Infinity,hiddenOnly=false,initialAudit=null}={}){
-+  const points=original.slice(),report={attempted:false,iterations:0,displacements:0,initialReturns:0,finalReturns:null,accepted:false,policy:hiddenOnly?'hidden-controls-only':'all-free-controls'};
++export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Infinity,hiddenOnly=false,initialAudit=null,maxIterations=8,maxMilliseconds=180}={}){
++  if(!Number.isInteger(maxIterations)||maxIterations<1||maxIterations>128||!Number.isFinite(maxMilliseconds)||maxMilliseconds<=0)throw new RangeError('Projection needs bounded positive iteration and time allowances.');
++  const points=original.slice(),report={attempted:false,iterations:0,displacements:0,initialReturns:0,finalReturns:null,accepted:false,policy:hiddenOnly?'hidden-controls-only':'all-free-controls',maxIterations,maxMilliseconds};
 +  const visibleControls=new Set(graph.edges.flatMap((ids,e)=>graph.visible[e]?ids:[]));
-+  const limit=Math.min(deadline,performance.now()+180),cushion=2*cfg.geometryTolerance;
-+  for(let iteration=0;iteration<8;iteration++){
++  const limit=Math.min(deadline,performance.now()+maxMilliseconds),cushion=2*cfg.geometryTolerance;
++  for(let iteration=0;iteration<maxIterations;iteration++){
 +    if(performance.now()>limit)break;
 +    const audit=iteration===0&&initialAudit?initialAudit:validate(graph.solution(points,phase,input),cfg,{checkImage:false});
 +    const issues=audit.issues.filter(i=>i.type==='short_self_clearance');
@@ -100,8 +101,11 @@
 +      report.displacements++;
 +    }
 +    if(report.displacements===beforeDisplacements)break;
-+    // A local repair must not accumulate a wholesale replacement of the cut.
-+    if(points.some((v,i)=>!Number.isFinite(v)||Math.abs(v-original[i])>Math.min(cfg.nominalWidth,.015*graph.width)))break;
++    // Fully hidden controls can use one nominal strip width: changing shared
++    // geometry preserves the weave, and the complete geometry/paper gates still
++    // apply. Visible controls retain the smaller local displacement allowance.
++    const displacementLimit=hiddenOnly?cfg.nominalWidth:Math.min(cfg.nominalWidth,.015*graph.width);
++    if(points.some((v,i)=>!Number.isFinite(v)||Math.abs(v-original[i])>displacementLimit))break;
 +  }
 +  return{points:null,report};
 +}

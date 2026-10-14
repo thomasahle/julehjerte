@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
 import {Cubic} from '../../static/inverse/core/bezier.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {experimentalSelfReturns} from './diagnostics/self-return-candidate.mjs';
@@ -25,6 +26,18 @@ test('the offline short-return proposal separates bends from saved and analytic 
     assert.ok(decisions.every(v=>v===decisions[0]),entry.name+' must have one decision across exact representations.');
     assert.equal(JSON.stringify(entry.paths),before);
   }
+});
+
+test('the complete return search accepts captured ordinary SVG bends that fooled the old editor',async()=>{
+ const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/editor-ordinary-bends.json'));
+ for(const entry of fixture.cases){
+  const {left,top,width,height}=entry.overlap,scale=p=>[(p.x-left)*100/width,(p.y-top)*100/height];
+  const paths=[[],[entry.segments.map(s=>[s.p0,s.p1,s.p2,s.p3].map(scale))]];
+  for(const knots of Object.values(diagnosticSubdivisions))for(const reflect of [false,true]){
+   const divided=subdivideDiagnosticPaths(paths,knots,reflect),graph=new CurveGraph(divided.paths);
+   assert.deepEqual(experimentalSelfReturns(graph.solution(graph.points,1),entry.settings),[],`${entry.name}: ${knots}, reflect=${reflect}`);
+  }
+ }
 });
 
 test('the captured photographic bend has the same experimental verdict before and after its original detail split',async()=>{

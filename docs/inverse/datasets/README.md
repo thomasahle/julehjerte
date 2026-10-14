@@ -84,6 +84,13 @@ and visible gift artifacts remain. Actual SVGs pass the stronger geometry
 predicate in all 32 representations; the existing editor still changes its
 verdict for three of the four outputs. The experiment remains outside the app.
 
+A [final shared-cut repair](final-return-repair.md) fixes the saved bird's
+experimental clearance defects with a pixel-identical weave, and slightly
+improves the gift's error. Both actual SVGs pass all eight stronger geometry
+representations; the current editor still gives a gift warning in thirds.
+A nearest-pair editor exemption was rejected because it hides other returns.
+The projector and regression fixtures remain offline pending full integration.
+
 The [Pinterest expansion](real-pinterest-expansion.md) includes all four supplied
 pins. Download success, photograph count, heart-instance count and motif-family
 count are different measures. Of the 1,034 source files, 476 are now reserved by
