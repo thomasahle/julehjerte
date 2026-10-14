@@ -38,7 +38,7 @@ for(const id of ids){
  for(const dy of [-1,0,1])for(const dx of [-1,0,1])variants.push({name:!dx&&!dy?'original':`translate-${dx}-${dy}`,dx,dy});
  variants.push({name:'jpeg-75',jpeg:.75},{name:'half-resolution',scale:.5},{name:'mixture-classification',mode:'red-white-mixture'});
  for(const variant of variants){
-  let input=photo,scale=variant.scale||1;
+  let input=photo;const scale=variant.scale||1;
   if(variant.jpeg||scale!==1){
    const canvas=createCanvas(Math.round(photo.imageWidth*scale),Math.round(photo.imageHeight*scale)),ctx=canvas.getContext('2d');ctx.drawImage(photo.canvas,0,0,canvas.width,canvas.height);
    if(variant.jpeg)ctx.drawImage(await loadImage(canvas.toBuffer('image/jpeg',{quality:variant.jpeg})),0,0);

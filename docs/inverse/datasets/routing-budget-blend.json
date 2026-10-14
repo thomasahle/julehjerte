@@ -1,0 +1,1064 @@
+{
+  "scope": "Short-search routing-budget interpolation. Full experimental corpus and editable replay; production integration and production QA are separate stages. Original photographic inputs and final acceptance thresholds are unchanged.",
+  "baseCommit": "15ad76b",
+  "experimental": {
+    "checks": [
+      {
+        "stage": "editor",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-editor-replay.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/editor-input",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/editor"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 3.026882375
+      },
+      {
+        "stage": "hunodan",
+        "command": [
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "environment": {
+          "INVERSE_SPEED_MODULE": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/inverse/core/direct/fit.js",
+          "INVERSE_SPEED_OUT": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/hunodan",
+          "INVERSE_SPEED_SECONDS": "10",
+          "INVERSE_SPEED_RETAIN_CANDIDATES": "0",
+          "INVERSE_SPEED_SETTINGS": "{}",
+          "INVERSE_HUNODAN_IDS": ""
+        },
+        "exitCode": 0,
+        "seconds": 118.74740270800001
+      },
+      {
+        "stage": "photos",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/photo-benchmark.mjs",
+          "--crop=automatic",
+          "--target=mask",
+          "--seconds=10",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/photos"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 311.239445875
+      }
+    ],
+    "targetedChecks": [
+      {
+        "stage": "diagnostic-lint",
+        "exitCode": 0,
+        "seconds": 1.775830166999981,
+        "command": [
+          "npx",
+          "eslint",
+          "scripts/inverse/diagnostics/photo-feature-stability.mjs"
+        ]
+      },
+      {
+        "stage": "targeted",
+        "exitCode": 0,
+        "seconds": 96.69484424999999,
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/tests/feature-refinement.test.mjs",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/tests/photographic-refinement-budget.test.mjs",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/tests/shifted-star.test.mjs",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/tests/weak-feature-routing.test.mjs"
+        ]
+      }
+    ],
+    "exportChecks": [
+      {
+        "stage": "hunodan-editor-input",
+        "exitCode": 0,
+        "seconds": 6.200899374999992,
+        "command": [
+          "node",
+          "scripts/inverse/diagnostics/hunodan-editor-input.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/hunodan",
+          "--runtime=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/hunodan-editor-input"
+        ]
+      },
+      {
+        "stage": "hunodan-editor",
+        "exitCode": 0,
+        "seconds": 15.96849341699999,
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-editor-replay.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/hunodan-editor-input",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/hunodan-editor"
+        ]
+      },
+      {
+        "stage": "photo-editor",
+        "exitCode": 0,
+        "seconds": 23.715115791000017,
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-editor-replay.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/photo-editor-input",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/routing-budget-blend-v1/photo-editor"
+        ]
+      }
+    ],
+    "hunodan": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 4.270096875,
+        "beforeError": 0.009799111111111111,
+        "error": 0.009799111111111111,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 5.3591465,
+        "beforeError": 0.013340444444444445,
+        "error": 0.013340444444444445,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.828505874999999,
+        "beforeError": 0.006634666666666666,
+        "error": 0.006634666666666666,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 4.272500166000001,
+        "beforeError": 0.013824,
+        "error": 0.013824,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 5.773807874999998,
+        "beforeError": 0.00844420572515387,
+        "error": 0.00844420572515387,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 5.692769166999999,
+        "beforeError": 0.012166341145833334,
+        "error": 0.012166341145833334,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.068817999999996,
+        "beforeError": 0.005148444444444444,
+        "error": 0.005148444444444444,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 5.170580917,
+        "beforeError": 0.005219555555555555,
+        "error": 0.005219555555555555,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 4.768864499999996,
+        "beforeError": 0.004522666666666667,
+        "error": 0.004522666666666667,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 6.932739582999995,
+        "beforeError": 0.005639111111111111,
+        "error": 0.005639111111111111,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.235440500000004,
+        "beforeError": 0.009436444444444445,
+        "error": 0.009436444444444445,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 5.985210249999996,
+        "beforeError": 0.006040430615586996,
+        "error": 0.006040430615586996,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 4.488308665999997,
+        "beforeError": 0.003899406226779104,
+        "error": 0.003899406226779104,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 7.107493040999994,
+        "beforeError": 0.007776029627903062,
+        "error": 0.007776029627903062,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.001470458999989,
+        "beforeError": 0.007550237322696868,
+        "error": 0.007550237322696868,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 5.935226290999999,
+        "beforeError": 0.004365548980933596,
+        "error": 0.004365548980933596,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 7.934782457999987,
+        "beforeError": 0.0056129769369752365,
+        "error": 0.0056129769369752365,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 4.865932415999996,
+        "beforeError": 0.007929362880886427,
+        "error": 0.007929362880886427,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.319338541000005,
+        "beforeError": 0.0038045247395833335,
+        "error": 0.0038045247395833335,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 6.224582458999998,
+        "beforeError": 0.012332213049376572,
+        "error": 0.012332213049376572,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 6.349602832999997,
+        "beforeError": 0.0050250552896055544,
+        "error": 0.0050250552896055544,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 5.807174291000003,
+        "beforeError": 0.010624446293860237,
+        "error": 0.010624446293860237,
+        "errorDelta": 0.0
+      }
+    ],
+    "photos": [
+      {
+        "id": "oval-figure",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "eight-point-star",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "small-figure",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "deer",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "top-checker",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "top-candle",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "top-tree",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "partial-top-right",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "partial-left-checker",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "nested-squares",
+        "beforeStatus": "no_crop",
+        "status": "no_crop",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "outline-star",
+        "beforeStatus": "failed",
+        "status": "failed",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": 0.00815625,
+        "error": 0.00815625
+      },
+      {
+        "id": "floral-checker",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.01941875,
+        "error": 0.019225
+      },
+      {
+        "id": "dense-checker",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.00699375,
+        "error": 0.00699375
+      },
+      {
+        "id": "bird",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.02470625,
+        "error": 0.02470625
+      },
+      {
+        "id": "leaf",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.025625,
+        "error": 0.0132875
+      },
+      {
+        "id": "partial-right-checker",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "partial-left-abstract",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "gift",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.02303125,
+        "error": 0.02303125
+      },
+      {
+        "id": "gingerbread",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0149375,
+        "error": 0.014825
+      },
+      {
+        "id": "white-birds",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.00379375,
+        "error": 0.00379375
+      },
+      {
+        "id": "flower",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0050625,
+        "error": 0.0050625
+      },
+      {
+        "id": "warped-checker",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0178875,
+        "error": 0.01755
+      },
+      {
+        "id": "round-checker",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0121375,
+        "error": 0.0121375
+      },
+      {
+        "id": "santa",
+        "beforeStatus": "no_crop",
+        "status": "no_crop",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "partial-left-diamonds",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "fine-checker",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0221625,
+        "error": 0.0221625
+      },
+      {
+        "id": "orb",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.01443125,
+        "error": 0.01443125
+      },
+      {
+        "id": "stacked-hearts",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.007425,
+        "error": 0.007425
+      },
+      {
+        "id": "jigsaw",
+        "beforeStatus": "failed",
+        "status": "failed",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": 0.0564375,
+        "error": 0.0564375
+      },
+      {
+        "id": "candle",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0048375,
+        "error": 0.0048375
+      },
+      {
+        "id": "maple-leaf",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.013425,
+        "error": 0.01305
+      },
+      {
+        "id": "crown",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.02411875,
+        "error": 0.02411875
+      },
+      {
+        "id": "partial-bottom-left",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "bottom-diamonds",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "crossed-ribbons",
+        "beforeStatus": "failed",
+        "status": "failed",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": 0.02153125,
+        "error": 0.02153125
+      },
+      {
+        "id": "bauble",
+        "beforeStatus": "failed",
+        "status": "failed",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": 0.0919125,
+        "error": 0.0919125
+      },
+      {
+        "id": "glare-motif",
+        "beforeStatus": "obscured",
+        "status": "obscured",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "bottom-flower",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0093875,
+        "error": 0.0093875
+      },
+      {
+        "id": "faceted-star",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0065,
+        "error": 0.0065
+      },
+      {
+        "id": "partial-bottom-right",
+        "beforeStatus": "incomplete",
+        "status": "incomplete",
+        "beforePassed": false,
+        "passed": false,
+        "beforeError": null,
+        "error": null
+      },
+      {
+        "id": "bibel-star-8",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.003675,
+        "error": 0.003675
+      },
+      {
+        "id": "bibel-star-curved",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.00663125,
+        "error": 0.00663125
+      },
+      {
+        "id": "bibel-star-outline",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0116,
+        "error": 0.0116
+      },
+      {
+        "id": "bibel-cross",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.00243125,
+        "error": 0.00243125
+      },
+      {
+        "id": "flettede-puppy",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0103125,
+        "error": 0.0103125
+      },
+      {
+        "id": "flettede-stonehenge",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.01905,
+        "error": 0.01905
+      },
+      {
+        "id": "flettede-viking",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.02055,
+        "error": 0.02056875
+      }
+    ],
+    "changedPhotoErrors": [
+      {
+        "id": "floral-checker",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.01941875,
+        "error": 0.019225,
+        "errorDelta": -0.00019374999999999948
+      },
+      {
+        "id": "leaf",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.025625,
+        "error": 0.0132875,
+        "errorDelta": -0.012337499999999998
+      },
+      {
+        "id": "gingerbread",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0149375,
+        "error": 0.014825,
+        "errorDelta": -0.00011249999999999975
+      },
+      {
+        "id": "warped-checker",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.0178875,
+        "error": 0.01755,
+        "errorDelta": -0.000337500000000001
+      },
+      {
+        "id": "maple-leaf",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.013425,
+        "error": 0.01305,
+        "errorDelta": -0.0003749999999999986
+      },
+      {
+        "id": "flettede-viking",
+        "beforeStatus": "validated",
+        "status": "validated",
+        "beforePassed": true,
+        "passed": true,
+        "beforeError": 0.02055,
+        "error": 0.02056875,
+        "errorDelta": 1.8750000000001404e-05
+      }
+    ],
+    "editable": {
+      "status": "complete",
+      "passed": 47,
+      "total": 47,
+      "sourceFilesVerified": 101
+    },
+    "targetedPassed": 11
+  },
+  "production": {
+    "status": "Integrated; all 11 focused production tests pass; full repository and rebuilt-browser QA pending",
+    "sourceHashes": {
+      "static/inverse/core/direct/fit.js": "9357e841f607951521bd306910941ee7f1457ca184c83e70f7f9ba41fa6c1548",
+      "scripts/inverse/photographic-refinement-budget.test.mjs": "cb139703363de04e3cd5ad39621e6a23cbcc88c5533ad51d9955b3fb2e3b7fa6"
+    },
+    "differenceFromPrototype": "Same allocation formula. The reported interpolation weight is zero when the pre-existing refinement reserve overrides it.",
+    "focused": {
+      "passed": 11,
+      "failed": 0,
+      "durationMilliseconds": 100409.616041,
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "scripts/inverse/photographic-refinement-budget.test.mjs",
+        "scripts/inverse/weak-feature-routing.test.mjs",
+        "scripts/inverse/feature-refinement.test.mjs"
+      ]
+    }
+  },
+  "visualReview": {
+    "shiftedStar": "Much closer central star and less pinched surrounding bands; small kinks remain.",
+    "leaf": "Recovers the lower frame more faithfully; its main leaf shape remains recognizable and local irregularities remain."
+  },
+  "artifacts": {
+    "tmp/heart-learning/routing-budget-blend-v1/source.json": {
+      "sha256": "73dee82d6380a58e452b3b597029d75c051f692d7d08e0591c5d5f09f109dbb6",
+      "bytes": 15172
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/comparison.json": {
+      "sha256": "d38f467f052c6fff15c5a31728f5d82aec8a914f6f481f0753f64f1f0bfae2f3",
+      "bytes": 14200
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/results.json": {
+      "sha256": "f2cdb077cf2ab94f7e4a556f45dcde17e0bf9a9793c36b4fb5976e23b3bb4f4d",
+      "bytes": 32669
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/checks.json": {
+      "sha256": "c28220dff0421457088e90c436555bcf97269d51a87bffb903b8e8cad9992e13",
+      "bytes": 1532
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/qa-checks.json": {
+      "sha256": "58ec041255f39d1aa1cb3d391eb2095b6eab2b4540d3cb813f6d7acf9655ec23",
+      "bytes": 938
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/targeted.log": {
+      "sha256": "c1843c4c353b74b4378ebc94fc2d6f5d01447a1e5edfd03285308a04d53a09c6",
+      "bytes": 1226
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/export-checks.json": {
+      "sha256": "3fc04e73482d416a3cb9536cd02a5330684631c186d31e3a2d46deb2da49b570",
+      "bytes": 1438
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan/results.json": {
+      "sha256": "3224737e7425e0c7d9c4c23324ceec46fc9abf0d30f2b80890b3d43447a6b239",
+      "bytes": 907441
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photos/results.json": {
+      "sha256": "7dd9ea77e43b003e8b63b82fc1d0857abbec977f5bba0d5b2d83bf07eb1e8f06",
+      "bytes": 4712074
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/results.json": {
+      "sha256": "629973c6e5cc3e946b19158fb53eb0b3a8976e78cc9e0183014e5271172c2830",
+      "bytes": 163845
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/results.json": {
+      "sha256": "571b8e4d7be441f871743dcb432b538f42272050162f01c553c49dfc692f4692",
+      "bytes": 199386
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/inverse/core/direct/fit.js": {
+      "sha256": "8f9a79df811067b56d32c0fb55d7faa907b9bb7135c02a3accead9b97b5cdd04",
+      "bytes": 62439
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/corpus.py": {
+      "sha256": "81f3566320e7476e93f9b1d7578a1baf42905b2859277995addbce535809b82a",
+      "bytes": 3291
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/after-corpus.py": {
+      "sha256": "aa54aa4f86251a77fd4f136b4f944295994ab8d2be13de65061a9176229506d5",
+      "bytes": 2035
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/after-targeted.py": {
+      "sha256": "cf5227655c1590d959e1b63700afbbedd208630ab4de690ba91a5631b9f184f8",
+      "bytes": 2889
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjhih-04-automatic.svg": {
+      "sha256": "5b2cac89a860d81d73cb880a5b3496f5d04b5c80af4586ea595b4d37d014f039",
+      "bytes": 16786
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjstr-01-automatic.svg": {
+      "sha256": "4742e9f710b910c99b82b1be9cbf07bb200da208276ff38f952e462fe45d9d91",
+      "bytes": 9337
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjsta-04-automatic.svg": {
+      "sha256": "88c5af9626d5009dc0179dea841e6549c5ecc8a20723d0ec330f85927a91a24b",
+      "bytes": 16016
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjfig-04-automatic.svg": {
+      "sha256": "302bd3b42da4e1cb4682aff6a17fba600b2868654f60faaf9a899556f70ae5cc",
+      "bytes": 6891
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjfig-03-automatic.svg": {
+      "sha256": "9a4c02bbb030e8ce0c9a8a07950ba6939460b3b6a1233c06f5ead9cfafd2f3e9",
+      "bytes": 6461
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjstr-02-automatic.svg": {
+      "sha256": "85db49783533580055d019813dbeca98fc6d2d900fdbf8d8628cf7f97bcaca2c",
+      "bytes": 15384
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjsta-03-automatic.svg": {
+      "sha256": "a61308d990e47d19a910f540c488b13023e3a7e99bbac9e59a310360f8845366",
+      "bytes": 14161
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjfla-01-automatic.svg": {
+      "sha256": "046391e41de74e0bd041d33b47b71c1472123422fd58b4d08278a638df28c452",
+      "bytes": 14978
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjcur-04-automatic.svg": {
+      "sha256": "d2191b18c9ebd7d472a27d76e5257a1d28942a460d498111f5f84376db8b44af",
+      "bytes": 18333
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjcur-03-automatic.svg": {
+      "sha256": "7db6ce7155a3519ba0ac78a86c255d73f133c13dae68be4e754e5c7034ad35bc",
+      "bytes": 12423
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjcur-02-automatic.svg": {
+      "sha256": "c680f0b80f6ae186cf443a4f304ae349d4e42d6a6e9a2bc3b282461c6cd8e579",
+      "bytes": 12382
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjcur-05-automatic.svg": {
+      "sha256": "93d051e82b3d860995c0330ad1fcad67e7045812a9181966ca58e2b9d8a2296b",
+      "bytes": 6445
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjcur-01-automatic.svg": {
+      "sha256": "40acd9a84c79838183adffb76382b5b92722090bd99ea4776a110986a102d81e",
+      "bytes": 12438
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjfig-02-automatic.svg": {
+      "sha256": "a855e76bf8583ddbae319d1eed5f6dedfed76a182e510dbae42d8e8bd1446f0f",
+      "bytes": 8257
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjhih-02-automatic.svg": {
+      "sha256": "d7b39d3a76232f9142aae786ee4224ff869f4c13a3f6b0912240b97057e72269",
+      "bytes": 9906
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjsta-02-automatic.svg": {
+      "sha256": "5ce279297864eb72576584ca08ab40206fd2422a7ec6637acd30fcfe0ce05f6b",
+      "bytes": 9418
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjstr-03-automatic.svg": {
+      "sha256": "30c262b7a9b80fc8295485080c37eab233b3222a5ed4dd29af4b94c2cbbfff9c",
+      "bytes": 21338
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjsta-05-automatic.svg": {
+      "sha256": "761bca2f88f51c233560054850d9ecd4c7f0b27f777070dab1eb2a7699d34d3c",
+      "bytes": 13909
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjhih-01-automatic.svg": {
+      "sha256": "a88dc8b487189c44ecb8dd2626514d37b2287627269c226eacd93025164c7f76",
+      "bytes": 14417
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjsta-01-automatic.svg": {
+      "sha256": "e22112caeeaec2d2f84c063d28a2f371ca387a5ba4e0ae7e512e39132603bcda",
+      "bytes": 7632
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjfig-01-automatic.svg": {
+      "sha256": "b43d4c9422ff66a2a4485f6ff3623d6397020e848e5e71410cbbdc14aa8430bd",
+      "bytes": 8198
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/hunodan-editor/hjfig-05-automatic.svg": {
+      "sha256": "ce5c1b74f798a6d30f14de9ed3ed282c81560851c10c5218b7071d1a191213a1",
+      "bytes": 8532
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/floral-checker-automatic.svg": {
+      "sha256": "d115091bf2999e16825dfd982ba58266ad0e0b4964776550ea3ea3578aaa266e",
+      "bytes": 22158
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/maple-leaf-automatic.svg": {
+      "sha256": "9d6348315cc7e3e46c9e9a48c2cd69d3be6de2371184d9be210c5a33e10cc1cc",
+      "bytes": 17726
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/white-birds-automatic.svg": {
+      "sha256": "f1db88e3fe259b4356b042508bbfd4dc5bf738d20719bbbe82679baa9f2b9082",
+      "bytes": 13235
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/bibel-cross-automatic.svg": {
+      "sha256": "67679ccbf964a7fb02206b9c88003028ff45d8bb18a0c5e7f1920df295941a71",
+      "bytes": 6480
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/bibel-star-8-automatic.svg": {
+      "sha256": "c7f275bad163cc35677d81527b14cd0f87b1f11b44be572658a0b41deb5dda01",
+      "bytes": 7668
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/leaf-automatic.svg": {
+      "sha256": "7acfbf0c5e6e34a4df9891f4ece77b0a56ef911320d0755fb788007110ff2a54",
+      "bytes": 14965
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/bottom-flower-automatic.svg": {
+      "sha256": "4048e108af23cdd2d31718dce6b6a3fc42b4beb552ddd49d10aa0035f622fb6f",
+      "bytes": 17101
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/stacked-hearts-automatic.svg": {
+      "sha256": "b3cd59a9bfc3b45fb6ce18cd77c78e783bc5e3642cd7f841a9e2f8a91f5cfca9",
+      "bytes": 13068
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/bibel-star-curved-automatic.svg": {
+      "sha256": "d6f2b6556888c5f7f216f2ec2871a41b1935c62b4f169092d2fb99ec9f4c3d1e",
+      "bytes": 15400
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/orb-automatic.svg": {
+      "sha256": "d7e6b38fa793f0591a91b3163936e5a10af1da428aba9401fa24ea6a847f1d0f",
+      "bytes": 16471
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/crown-automatic.svg": {
+      "sha256": "b2091f9071301fecf30c91d18299caf21e7d45bbc62f04af489aa1dee824e3c2",
+      "bytes": 20517
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/faceted-star-automatic.svg": {
+      "sha256": "76ddd045e7fdf8c19449315c891ea0eb43133b0521913bb055cc23190189885f",
+      "bytes": 20536
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/warped-checker-automatic.svg": {
+      "sha256": "8327da55213e05e73e5d2ac8fbff9d7370b04abae27b43071c1c38f490ab8820",
+      "bytes": 28841
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/gingerbread-automatic.svg": {
+      "sha256": "90a714ae10ef9dc8e6e113e4191e5a3b6289719aea22f19e1a60ebee5b42725d",
+      "bytes": 23913
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/flettede-puppy-automatic.svg": {
+      "sha256": "ccb74c5830e56be506e2315b5155bd831cb5a94cc38c4906061262530661bcd2",
+      "bytes": 30291
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/bird-automatic.svg": {
+      "sha256": "a005ae5d7fd50f854e780b5ba3c5906953c3a46c96c167ac1bea4129f130b0e5",
+      "bytes": 26841
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/candle-automatic.svg": {
+      "sha256": "5d4c6cc63010f2f7a64fe1f934daed5345e1e431f4abe04233bbe4e1eae804cb",
+      "bytes": 3553
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/round-checker-automatic.svg": {
+      "sha256": "dbd9b95dafc3d93069045d71fd6bdfd73e8d9738ed0dc27e1b901d119ab686dc",
+      "bytes": 15758
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/flettede-stonehenge-automatic.svg": {
+      "sha256": "5f2470fd85e280ff3c4758e9d1301136e65b1872e4ad5f724ff07d5480d58f45",
+      "bytes": 18866
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/flettede-viking-automatic.svg": {
+      "sha256": "be7d2994a2fa46073c2ce258b91074ea54f64eda210a7d461de6367d25b0aa38",
+      "bytes": 28524
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/gift-automatic.svg": {
+      "sha256": "6282399bbef8276fe68ce76603e92cb14a7730b7cbe5e912de627fae96a88aa8",
+      "bytes": 23084
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/fine-checker-automatic.svg": {
+      "sha256": "51f7169ae692f40d2c3194dbc9ef369d86796e8a46f7cba2b57868dca05ddc25",
+      "bytes": 29948
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/flower-automatic.svg": {
+      "sha256": "d02d47669ec71c7923da9ee45e6fd1ba656756ce6c1de70ff8b6c759936a702e",
+      "bytes": 18872
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/bibel-star-outline-automatic.svg": {
+      "sha256": "f06b657667cc6ea0c8611f9ac17a8e1d521b559040aed1cdca4981e8ac070337",
+      "bytes": 9731
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/photo-editor/dense-checker-automatic.svg": {
+      "sha256": "97ea13a0d9a3c397a5b3f64fb7933204f1d0f73b7993e071bb528d1068420236",
+      "bytes": 21856
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/production-focused.log": {
+      "sha256": "35eb7fc3ff921dfa2781fd824439a69ae687d73e81bf2514995f884e890beec2",
+      "bytes": 1228
+    }
+  }
+}

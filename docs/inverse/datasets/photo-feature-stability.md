@@ -6,8 +6,9 @@ under one-pixel crop translations. In the outlined star, that small input change
 also sends the fitter through a substantially different time allocation, leaving
 its main motif under-refined. A fixed-input budget prototype improves the shifted
 star's independently rendered mask error from **2.9869% to 0.7569%**. Its actual
-editable SVG passes at **0.7588%**. The prototype remains outside the application
-while full-corpus validation runs.
+editable SVG passes at **0.7588%**. The correction is now integrated into the main
+fitter after the experimental corpus and editable-export checks passed.
+Production verification is recorded separately below.
 
 ## Classification stability
 
@@ -83,8 +84,39 @@ not invoke the changed recovery-budget path; their smaller error is not credited
 to this change. The original hard-photo benchmark therefore remains **25/31**.
 The fresh experimental Hunodan run passes all **22/22 designs** within ten
 seconds (maximum **7.935 seconds**), with every independent mask error exactly
-unchanged from the current release. The automatic hard-photo replay and focused
-regressions are still pending before any production change is made.
+unchanged from the preceding release. The automatic hard-photo replay retains
+**25/31 passes**, with unchanged photographs, crop corners and fitting-input
+hashes. Five passing errors decrease and the Viking increases from 2.0550% to
+2.056875%. The other errors are unchanged.
+
+The leaf is the substantial second improvement: its error falls from 2.5625%
+to **1.32875%**. The unsuccessful routing search falls from 4.735 to 2.850 seconds,
+leaving 1.964 seconds of direct refinement instead of none. Visual inspection
+shows better recovery of the lower frame. Its complete native solve/export
+takes 9.062 seconds. Smaller changes on other photos need not be caused by
+the new policy: several finish routing before either budget expires, or use an
+unchanged feature-reserving path. All per-case differences remain in the
+[validation record](routing-budget-blend.json).
+
+All **11 experimental focused tests** pass, including long-budget routing
+fallbacks, the tree with hidden endpoints, and the new shifted-star regression.
+All **47 accepted editable SVG pairs** pass their independent replay.
+
+## Production integration
+
+The main fitter uses the same short-search allocation formula. Existing
+competitive and feature-preferred grids retain their reserves; longer searches
+and high-error grids retain routing priority. The report records a zero routing
+weight when the existing refinement reserve overrides interpolation. No
+classification, crop, source-feature, symmetry, geometry or paper acceptance
+rule changes.
+
+The production regression starts from the original photograph and translated
+corners, verifies its mask hash, requires useful validated refinement
+checkpoints, and independently renders the result at 400 and 800 pixels. It
+requires less than 1.1% disagreement, passing geometry/paper checks, unchanged
+source arrays and a complete solve/export below ten seconds. All **11 production
+focused tests pass**. Full repository and rebuilt-browser verification are pending.
 
 ## Reproduction and evidence
 
@@ -100,5 +132,5 @@ classification variants, three fresh prototype fits, both sets of editable
 checks, the frozen prototype and its runner. The initial diagnostic attempt
 stopped before writing results because report settings omit tracing resolution;
 the tool now takes the actual prepared source resolution. The corrected run
-completed all 36 variants. This is an offline diagnostic, not deployment of a
-new cropper, classifier or neural model.
+completed all 36 variants. The classification tool remains an offline diagnostic;
+no new cropper, classifier or neural model is deployed.

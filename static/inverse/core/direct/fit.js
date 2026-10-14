@@ -238,7 +238,14 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // can lose useful smoothing/edge-profile retries.
   const featurePreferredGrid=colourPreferredGrid||earlyFeatureInitialization?.scheduled===1;
   const reserveRefinement=competitiveGrid||featurePreferredGrid,probeRouting=featurePreferredGrid&&(features.passed||earlyFeatureInitialization?.enclosurePending===true);
-  const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
+  // A fine grid just above the image limit can still refine into a good fit.
+  // Giving it the full routing budget creates a cliff: a one-pixel crop shift
+  // can consume the remaining time in MILP before any curve update survives.
+  // Blend toward routing priority as its error grows to twice the limit.
+  // This changes short-search scheduling only, never final acceptance.
+  const gridRoutingWeight=shortBudget&&cfg.maxImageError>0?Math.max(0,Math.min(1,Math.min(...fine.map(r=>r.error))/cfg.maxImageError-1)):1;
+  const reservedRecoverySeconds=Math.max(0,(refinementTimeLeft(deadline)-2000)/1000),ordinaryRecoverySeconds=(deadline-performance.now())/1000*.9;
+  const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?reservedRecoverySeconds:reservedRecoverySeconds+(ordinaryRecoverySeconds-reservedRecoverySeconds)*gridRoutingWeight);
   const needsRecovery=(!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights;
   const fullRecoverySeconds=Math.min(20,competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
   // A longer allowance need not delay a useful grid behind the entire routing
@@ -248,7 +255,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const attemptRecovery=async(seconds,budgetPolicy,until=deadline)=>{
     recovery=await recoverImageFeatures(input,cfg,seconds,onProgress);
     recovery.report.trigger=features;
-    recovery.report.budgetPolicy=budgetPolicy;recoveryHistory.push(recovery.report);
+    recovery.report.budgetPolicy=budgetPolicy;
+    recovery.report.gridRoutingWeight=reserveRefinement?0:gridRoutingWeight;
+    recoveryHistory.push(recovery.report);
     recovery.report.gridMismatchTrigger=poorGrid&&!boundaryCandidate;
     const seed=recovery.solution||recovery.refinementSeed;
     if(seed){

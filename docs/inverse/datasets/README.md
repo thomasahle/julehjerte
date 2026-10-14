@@ -56,9 +56,12 @@ the ones above.
 
 The subsequent [photo-feature stability diagnostic](photo-feature-stability.md)
 separates crop-edge classification sensitivity from a short-search budget
-discontinuity. An offline budget interpolation improves a fixed shifted-star
-fit from 2.9869% to 0.7569%, and its editable SVG passes. Original benchmark
-failures remain unchanged; full experimental corpus validation is in progress.
+discontinuity. Budget interpolation improves a fixed shifted-star fit from
+2.9869% to 0.7569%, and the leaf from 2.5625% to 1.32875%. Experimental validation
+retains 22/22 Hunodan cases with identical errors, 25/31 photos and 47/47 accepted
+editable exports; all eleven focused tests pass. Original benchmark failures
+remain unchanged. The change is now in the main fitter; production verification
+is pending in [its separate record](routing-budget-blend.json).
 
 The [row-initialization and scheduling release](row-initialization.md) now
 passes all 22 regular Hunodan designs below ten seconds (maximum 7.827 seconds,
