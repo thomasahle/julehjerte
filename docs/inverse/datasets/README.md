@@ -87,10 +87,12 @@ The failed record is retained. This is not a validated whole-pipeline speedup.
 The [long-budget leaf diagnosis](long-budget-selection.md) confirms identical
 prepared inputs and initial grid scores in the ordinary and ten-second browser
 runs. The longer request returns a valid traced recovery before trying grids;
-the shorter one reaches a better grid refinement. The queued scheduling
-comparison did not run because the sharing release comparison failed. An
-isolated follow-up will use the previously validated runtime; no experimental
-policy is adopted or result claimed yet.
+the shorter one reaches a better grid refinement. The first queued comparison did not run after the sharing release failed.
+A new twenty-run isolated comparison uses the validated runtime: extending
+routing interpolation to long searches reduces the original leaf error from
+2.6050% to 1.3163%, with all sixteen long-budget arms passing. The short
+vertically shifted control fails at 4.9769%, exposing a skipped clearance-grid
+comparison. These are fixed-mask development results; no policy is adopted.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority

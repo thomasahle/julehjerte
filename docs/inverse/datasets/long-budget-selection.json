@@ -168,5 +168,935 @@
     "tmp/heart-learning/long-budget-selection-v1/setup.py": "f3d6c52da24c79de95637467953500e93a49df1d8d02bf340abe1b9d2a8ebf49",
     "tmp/heart-learning/long-budget-selection-v1/run-case.mjs": "af81d1e1e0583f32c9f49039e746181f045c5d8088fc10a3d9307742fb95a017",
     "tmp/heart-learning/long-budget-selection-v1/after-release.py": "7a98a7240b892fb7f286fd47b5bef8c03d6341ef47a33f2ce582286032eb87a5"
+  },
+  "offlineComparison": {
+    "status": "complete-not-adopted",
+    "runtimeCommit": "c000d30",
+    "unexecutedPredecessor": "tmp/heart-learning/long-budget-selection-v1",
+    "scope": "Isolated native fresh fitting from recorded browser-prepared masks. No saved cutting geometry or count supplied. One-pixel shifts use nearest-edge extension. This is not a fresh photographic crop or actual browser-latency test.",
+    "sourceFilesVerified": 411,
+    "cases": 4,
+    "repeats": 1,
+    "runs": 20,
+    "passed": 19,
+    "rows": [
+      {
+        "case": "leaf",
+        "variant": "baseline",
+        "secondsRequested": 10,
+        "solveSeconds": 9.111710792,
+        "totalSeconds": 9.247058042,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.0132875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.014721875,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 2.6709668339999997,
+        "gridRoutingWeight": 0.08388264973958348,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            3,
+            5
+          ],
+          "initialGridError": 0.038299560546875,
+          "initialClearanceError": 0.0512847900390625,
+          "alternativeCounts": [
+            3,
+            3
+          ],
+          "alternativeGridError": 0.0500335693359375,
+          "alternativeClearanceError": 0.050567626953125,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.3930082080000002,
+          "preferred": true
+        }
+      },
+      {
+        "case": "leaf",
+        "variant": "baseline",
+        "secondsRequested": 180,
+        "solveSeconds": 8.186584916,
+        "totalSeconds": 8.323416917000001,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.02605,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0271859375,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": true,
+        "recoverySeconds": 5.039893333,
+        "gridRoutingWeight": 1,
+        "retainedForGridComparison": null,
+        "clearanceComparison": null
+      },
+      {
+        "case": "leaf",
+        "variant": "blended-routing",
+        "secondsRequested": 180,
+        "solveSeconds": 9.344376750000002,
+        "totalSeconds": 9.4769945,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.0131625,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.01468125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 2.6323014160000002,
+        "gridRoutingWeight": 0.08388264973958348,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            3,
+            5
+          ],
+          "initialGridError": 0.038299560546875,
+          "initialClearanceError": 0.0512847900390625,
+          "alternativeCounts": [
+            3,
+            3
+          ],
+          "alternativeGridError": 0.0500335693359375,
+          "alternativeClearanceError": 0.050567626953125,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.4029637499999999,
+          "preferred": true
+        }
+      },
+      {
+        "case": "leaf",
+        "variant": "retained-recovery",
+        "secondsRequested": 180,
+        "solveSeconds": 12.707939207999999,
+        "totalSeconds": 12.845910958000001,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.0131625,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.01468125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 5.080858458000001,
+        "gridRoutingWeight": 1,
+        "retainedForGridComparison": {
+          "imageError": 0.02581875,
+          "earlyReturnCeiling": 0.01
+        },
+        "clearanceComparison": {
+          "initialCounts": [
+            3,
+            5
+          ],
+          "initialGridError": 0.038299560546875,
+          "initialClearanceError": 0.0512847900390625,
+          "alternativeCounts": [
+            3,
+            3
+          ],
+          "alternativeGridError": 0.0500335693359375,
+          "alternativeClearanceError": 0.050567626953125,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.27822279100000014,
+          "preferred": true
+        }
+      },
+      {
+        "case": "leaf",
+        "variant": "combined",
+        "secondsRequested": 180,
+        "solveSeconds": 9.435474833,
+        "totalSeconds": 9.564985959,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.0131625,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.01468125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 2.6011050410000003,
+        "gridRoutingWeight": 0.08388264973958348,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            3,
+            5
+          ],
+          "initialGridError": 0.038299560546875,
+          "initialClearanceError": 0.0512847900390625,
+          "alternativeCounts": [
+            3,
+            3
+          ],
+          "alternativeGridError": 0.0500335693359375,
+          "alternativeClearanceError": 0.050567626953125,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.43170145799999954,
+          "preferred": true
+        }
+      },
+      {
+        "case": "leaf-x-plus-1",
+        "variant": "baseline",
+        "secondsRequested": 10,
+        "solveSeconds": 9.353219541,
+        "totalSeconds": 9.485264458,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.0178875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0196265625,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          4,
+          5
+        ],
+        "traceUsed": false,
+        "recoverySeconds": null,
+        "gridRoutingWeight": null,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            4,
+            5
+          ],
+          "initialGridError": 0.030242919921875,
+          "initialClearanceError": 0.0460662841796875,
+          "alternativeCounts": [
+            3,
+            5
+          ],
+          "alternativeGridError": 0.0388031005859375,
+          "alternativeClearanceError": 0.05224609375,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.5283099170000001,
+          "preferred": false
+        }
+      },
+      {
+        "case": "leaf-x-plus-1",
+        "variant": "baseline",
+        "secondsRequested": 180,
+        "solveSeconds": 19.449962209000002,
+        "totalSeconds": 19.585981209,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.0158375,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0177703125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          5,
+          5
+        ],
+        "traceUsed": false,
+        "recoverySeconds": null,
+        "gridRoutingWeight": null,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            4,
+            5
+          ],
+          "initialGridError": 0.030242919921875,
+          "initialClearanceError": 0.0460662841796875,
+          "alternativeCounts": [
+            3,
+            5
+          ],
+          "alternativeGridError": 0.0388031005859375,
+          "alternativeClearanceError": 0.05224609375,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.4920218749999999,
+          "preferred": false
+        }
+      },
+      {
+        "case": "leaf-x-plus-1",
+        "variant": "blended-routing",
+        "secondsRequested": 180,
+        "solveSeconds": 20.577817209,
+        "totalSeconds": 20.707615334000003,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.0156375,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0175703125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          5,
+          5
+        ],
+        "traceUsed": false,
+        "recoverySeconds": null,
+        "gridRoutingWeight": null,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            4,
+            5
+          ],
+          "initialGridError": 0.030242919921875,
+          "initialClearanceError": 0.0460662841796875,
+          "alternativeCounts": [
+            3,
+            5
+          ],
+          "alternativeGridError": 0.0388031005859375,
+          "alternativeClearanceError": 0.05224609375,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.4724572909999997,
+          "preferred": false
+        }
+      },
+      {
+        "case": "leaf-x-plus-1",
+        "variant": "retained-recovery",
+        "secondsRequested": 180,
+        "solveSeconds": 20.525016458,
+        "totalSeconds": 20.651173833,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.01535,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0169359375,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          5,
+          5
+        ],
+        "traceUsed": false,
+        "recoverySeconds": null,
+        "gridRoutingWeight": null,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            4,
+            5
+          ],
+          "initialGridError": 0.030242919921875,
+          "initialClearanceError": 0.0460662841796875,
+          "alternativeCounts": [
+            3,
+            5
+          ],
+          "alternativeGridError": 0.0388031005859375,
+          "alternativeClearanceError": 0.05224609375,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.48220991700000015,
+          "preferred": false
+        }
+      },
+      {
+        "case": "leaf-x-plus-1",
+        "variant": "combined",
+        "secondsRequested": 180,
+        "solveSeconds": 20.378131625,
+        "totalSeconds": 20.507694709,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.0156375,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0175703125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          5,
+          5
+        ],
+        "traceUsed": false,
+        "recoverySeconds": null,
+        "gridRoutingWeight": null,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            4,
+            5
+          ],
+          "initialGridError": 0.030242919921875,
+          "initialClearanceError": 0.0460662841796875,
+          "alternativeCounts": [
+            3,
+            5
+          ],
+          "alternativeGridError": 0.0388031005859375,
+          "alternativeClearanceError": 0.05224609375,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.4778175000000001,
+          "preferred": false
+        }
+      },
+      {
+        "case": "leaf-y-plus-1",
+        "variant": "baseline",
+        "secondsRequested": 10,
+        "solveSeconds": 8.726397459,
+        "totalSeconds": 8.861427040999999,
+        "passed": false,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.04976875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.050278125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          5
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 3.302416625,
+        "gridRoutingWeight": 0.2746175130208335,
+        "retainedForGridComparison": null,
+        "clearanceComparison": null
+      },
+      {
+        "case": "leaf-y-plus-1",
+        "variant": "baseline",
+        "secondsRequested": 180,
+        "solveSeconds": 12.576641959,
+        "totalSeconds": 12.709658166,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.01256875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0140203125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 6.145159124999999,
+        "gridRoutingWeight": 1,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            3,
+            5
+          ],
+          "initialGridError": 0.038238525390625,
+          "initialClearanceError": 0.050994873046875,
+          "alternativeCounts": [
+            3,
+            3
+          ],
+          "alternativeGridError": 0.05029296875,
+          "alternativeClearanceError": 0.05059814453125,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.40226425000000016,
+          "preferred": true
+        }
+      },
+      {
+        "case": "leaf-y-plus-1",
+        "variant": "blended-routing",
+        "secondsRequested": 180,
+        "solveSeconds": 9.765846459,
+        "totalSeconds": 9.904972583,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.01256875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0140203125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 3.4498434159999998,
+        "gridRoutingWeight": 0.2746175130208335,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            3,
+            5
+          ],
+          "initialGridError": 0.038238525390625,
+          "initialClearanceError": 0.050994873046875,
+          "alternativeCounts": [
+            3,
+            3
+          ],
+          "alternativeGridError": 0.05029296875,
+          "alternativeClearanceError": 0.05059814453125,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.4231226660000002,
+          "preferred": true
+        }
+      },
+      {
+        "case": "leaf-y-plus-1",
+        "variant": "retained-recovery",
+        "secondsRequested": 180,
+        "solveSeconds": 12.576978833,
+        "totalSeconds": 12.704289708000001,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.01256875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0140203125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 6.184277583999999,
+        "gridRoutingWeight": 1,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            3,
+            5
+          ],
+          "initialGridError": 0.038238525390625,
+          "initialClearanceError": 0.050994873046875,
+          "alternativeCounts": [
+            3,
+            3
+          ],
+          "alternativeGridError": 0.05029296875,
+          "alternativeClearanceError": 0.05059814453125,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.41914900000000127,
+          "preferred": true
+        }
+      },
+      {
+        "case": "leaf-y-plus-1",
+        "variant": "combined",
+        "secondsRequested": 180,
+        "solveSeconds": 9.728981792,
+        "totalSeconds": 9.864624542,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.01256875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0140203125,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 3.4445655829999997,
+        "gridRoutingWeight": 0.2746175130208335,
+        "retainedForGridComparison": null,
+        "clearanceComparison": {
+          "initialCounts": [
+            3,
+            5
+          ],
+          "initialGridError": 0.038238525390625,
+          "initialClearanceError": 0.050994873046875,
+          "alternativeCounts": [
+            3,
+            3
+          ],
+          "alternativeGridError": 0.05029296875,
+          "alternativeClearanceError": 0.05059814453125,
+          "initialColours": true,
+          "alternativeColours": true,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.4189978340000007,
+          "preferred": true
+        }
+      },
+      {
+        "case": "outline-star-shift",
+        "variant": "baseline",
+        "secondsRequested": 10,
+        "solveSeconds": 8.72790575,
+        "totalSeconds": 8.843272083,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.00756875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0091421875,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 1.0072883339999998,
+        "gridRoutingWeight": 0.04777018229166674,
+        "retainedForGridComparison": null,
+        "clearanceComparison": null
+      },
+      {
+        "case": "outline-star-shift",
+        "variant": "baseline",
+        "secondsRequested": 180,
+        "solveSeconds": 12.393041583,
+        "totalSeconds": 12.510816458999999,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.00756875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0091421875,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 4.298833542000001,
+        "gridRoutingWeight": 1,
+        "retainedForGridComparison": null,
+        "clearanceComparison": null
+      },
+      {
+        "case": "outline-star-shift",
+        "variant": "blended-routing",
+        "secondsRequested": 180,
+        "solveSeconds": 9.120404082999999,
+        "totalSeconds": 9.235580833,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.00756875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0091421875,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 1.0118653750000004,
+        "gridRoutingWeight": 0.04777018229166674,
+        "retainedForGridComparison": null,
+        "clearanceComparison": null
+      },
+      {
+        "case": "outline-star-shift",
+        "variant": "retained-recovery",
+        "secondsRequested": 180,
+        "solveSeconds": 12.438134458,
+        "totalSeconds": 12.554090208,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.00756875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0091421875,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 4.286630583000001,
+        "gridRoutingWeight": 1,
+        "retainedForGridComparison": null,
+        "clearanceComparison": null
+      },
+      {
+        "case": "outline-star-shift",
+        "variant": "combined",
+        "secondsRequested": 180,
+        "solveSeconds": 9.143393416999999,
+        "totalSeconds": 9.257805834,
+        "passed": true,
+        "scores": [
+          {
+            "resolution": 400,
+            "error": 0.00756875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0091421875,
+            "featuresPassed": true
+          }
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "traceUsed": false,
+        "recoverySeconds": 1.0057379579999997,
+        "gridRoutingWeight": 0.04777018229166674,
+        "retainedForGridComparison": null,
+        "clearanceComparison": null
+      }
+    ],
+    "artifactsSha256": {
+      "tmp/heart-learning/long-budget-selection-v2/protocol.json": "aada7b271fd87b6e72156e170d25991213795095b0b8525d2e66144ac37ebd34",
+      "tmp/heart-learning/long-budget-selection-v2/checks.json": "15eedd1102c1064d899e350f776223c61df23ffaad7177713d248e73b979e5f3",
+      "tmp/heart-learning/long-budget-selection-v2/running.json": "744ca18e0f9715cc86f79b29f185157ef3fec1ecd7988f39cb5c25c4860dec60",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/baseline-10/measurement.json": "5de17c9ccc8fcfc7bcf38942db798dcfaf01fa28195b429a7dca10b43c811875",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/baseline-10/cut_geometry.json": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/baseline-10/weave-400.png": "095a43e289ad263aecd6024b4c15659d219feb53dd9c5fa390b1fbfd9c1e928f",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/baseline-10/weave-800.png": "958697153a84b2469c8eef4e89d176a1ecf44abc737d6c7f3342ee0808257254",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/baseline-180/measurement.json": "2ad8901b4abc3d7234b35adfc47b9270669d083b68394a8e759f4c8e68211f63",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/baseline-180/cut_geometry.json": "7cc43f4ada1184c9e6ff2fce2d77aa8daa7eaf7f6c5a6d1ab1ff8f9f17de1dd0",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/baseline-180/weave-400.png": "d7343b193529ca43efdfa84ced537b3a4cc812b03bc6e59d72a38e5cd640599d",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/baseline-180/weave-800.png": "e5d0cce3929e1ccf1b7fccf3ca3d0e3efe53aacefe781758546b6ef36f54e3b0",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/blended-routing-180/measurement.json": "c7048cde31ff180c0a47190f8e435ca48c6e9eeea453e9c9cdee23473ea61410",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/blended-routing-180/cut_geometry.json": "54afc4aa277c6dbbb0279416b01cf881d7aaad9a11ff0c6436f582c0fa996c88",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/blended-routing-180/weave-400.png": "710b87b566f4ce7d1fe4206b0ebddaae685be3350de73028d800afb29aea0f86",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/blended-routing-180/weave-800.png": "f9803c659f2c03dcfc9d2dd3551b173235738e14d2697ee8354e8ade02e4b627",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/retained-recovery-180/measurement.json": "55cb0fd24cd79af6cbc3da563e9012de15173ebde6982fd93b8bc1bb606014ba",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/retained-recovery-180/cut_geometry.json": "54afc4aa277c6dbbb0279416b01cf881d7aaad9a11ff0c6436f582c0fa996c88",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/retained-recovery-180/weave-400.png": "710b87b566f4ce7d1fe4206b0ebddaae685be3350de73028d800afb29aea0f86",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/retained-recovery-180/weave-800.png": "f9803c659f2c03dcfc9d2dd3551b173235738e14d2697ee8354e8ade02e4b627",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/combined-180/measurement.json": "730aaabd2aedbdd54f7770e41a238df60ac681ea505e3b1d57f0cea7290b74c3",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/combined-180/cut_geometry.json": "54afc4aa277c6dbbb0279416b01cf881d7aaad9a11ff0c6436f582c0fa996c88",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/combined-180/weave-400.png": "710b87b566f4ce7d1fe4206b0ebddaae685be3350de73028d800afb29aea0f86",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf/combined-180/weave-800.png": "f9803c659f2c03dcfc9d2dd3551b173235738e14d2697ee8354e8ade02e4b627",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/baseline-10/measurement.json": "9f7807c93fce37347d430b8b324e8784b99a6614fdda3b8fbb19567e9cb3d73d",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/baseline-10/cut_geometry.json": "1d2f2b89853ef9f572a3260c4ba843a22dfada0d949b0aa66d2544a616f845b2",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/baseline-10/weave-400.png": "fd70b5ae74852a9813f3e649eac852e5824f921ace626807dc27b66e5bbe9556",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/baseline-10/weave-800.png": "ba22a7760ecb1cd299c46b4b46dbbe3cbbfcdb382b2afdfb55c541d3bf37410e",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/baseline-180/measurement.json": "bdf4ca76b586707d3d76cb1872c8795b6111d33614fdfadc079cc6a150b08bd6",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/baseline-180/cut_geometry.json": "ceda1c7b11d772fcb4f89d4ac335cf31ea6662143cf33639c8c9fb1c6d7df296",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/baseline-180/weave-400.png": "870e5bfc8df552c29b08b22afcf5e534b5f87c61829269d9d1fcb40ee5efd301",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/baseline-180/weave-800.png": "1c22f99092c3c2bd73f5066e8a1b7e90ef75ff2c3e2a33e0cb383fe148f3aa86",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/blended-routing-180/measurement.json": "98028e317fff5b7515344cdc8cfa38b2f1349f2f555592b5f4a882309bca1426",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/blended-routing-180/cut_geometry.json": "f02a9591ab9eedcf591359bd419ecbe098c51a25b81b7f664acd0b69efe6136a",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/blended-routing-180/weave-400.png": "5db78ffed51d256f0723d0289f21aa5341c2395a13bf4eee52f1bc0589aefa97",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/blended-routing-180/weave-800.png": "3ce6465f04316c941b2e9b37ec5fd03cde8f30212632dbf423045c03d80a3c42",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/retained-recovery-180/measurement.json": "b6405a6bfbfb8bd3fde44790c4c223d45085710fb145f3043bac55b49f5066e1",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/retained-recovery-180/cut_geometry.json": "b0c5cadecc9f5cf2b47845ffaac629226faa621d401641ac85a826bee784dd43",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/retained-recovery-180/weave-400.png": "5d1290e40172fddd779c034eb6ba8044742b04fc8b9625b608509b489d8fa0bb",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/retained-recovery-180/weave-800.png": "7481cc459c22c93f97d2646865c09dd3c88e809c8c038b7d8d0e93c044ec3cc6",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/combined-180/measurement.json": "91407c50ea1cc03951a879a91a703deb3f37cf4aed6b65b946db1d4094b76f0b",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/combined-180/cut_geometry.json": "f02a9591ab9eedcf591359bd419ecbe098c51a25b81b7f664acd0b69efe6136a",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/combined-180/weave-400.png": "5db78ffed51d256f0723d0289f21aa5341c2395a13bf4eee52f1bc0589aefa97",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-x-plus-1/combined-180/weave-800.png": "3ce6465f04316c941b2e9b37ec5fd03cde8f30212632dbf423045c03d80a3c42",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/baseline-10/measurement.json": "e95a0d2eb32c3a824b5a579cdcd821c601118142cb109cd30ce16b156bdf3f34",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/baseline-10/cut_geometry.json": "c838abae7235913e5d8e64e80651663a5054aa7b511d3effaae28ae1e0fd7052",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/baseline-10/weave-400.png": "a73361d3782b484122386e0f8adc24ab11fb5c108c07e3c389b8d7eb8de81d98",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/baseline-10/weave-800.png": "6b27764913de84591161c1d2e53af82312a79e8d2ed83beb51836ef5d19f5ec1",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/baseline-180/measurement.json": "95fa212d956436e59d8bd3a29d0591cbde0232c3385226ddfe782bcefc697327",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/baseline-180/cut_geometry.json": "52bec001d5bee5d619fc23e32ee2271bdda29d241106b9b04472466b26845db4",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/baseline-180/weave-400.png": "a6783322bc8f9a497d2aa6aaad95baaf8290db9f9178b527791eb0b6db65d158",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/baseline-180/weave-800.png": "e3dd5bc4bf7b5979ffa37a4d05bdcabb1caa5d913f718de7db38537549ed6450",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/blended-routing-180/measurement.json": "9f1e2284960c124a0cdaed8b1fe0b273c7e0261ef91f0ed6a1ae1b3fa8e6ea80",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/blended-routing-180/cut_geometry.json": "52bec001d5bee5d619fc23e32ee2271bdda29d241106b9b04472466b26845db4",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/blended-routing-180/weave-400.png": "a6783322bc8f9a497d2aa6aaad95baaf8290db9f9178b527791eb0b6db65d158",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/blended-routing-180/weave-800.png": "e3dd5bc4bf7b5979ffa37a4d05bdcabb1caa5d913f718de7db38537549ed6450",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/retained-recovery-180/measurement.json": "cabe3e0b5b067bf625d112714a95cf904018afe4d34ebfb2cdbf69070d23d449",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/retained-recovery-180/cut_geometry.json": "52bec001d5bee5d619fc23e32ee2271bdda29d241106b9b04472466b26845db4",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/retained-recovery-180/weave-400.png": "a6783322bc8f9a497d2aa6aaad95baaf8290db9f9178b527791eb0b6db65d158",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/retained-recovery-180/weave-800.png": "e3dd5bc4bf7b5979ffa37a4d05bdcabb1caa5d913f718de7db38537549ed6450",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/combined-180/measurement.json": "660ec476f2ed03287d53c5c663b0a943e94b705f7253e1ea4d3f662c4ef14f5d",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/combined-180/cut_geometry.json": "52bec001d5bee5d619fc23e32ee2271bdda29d241106b9b04472466b26845db4",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/combined-180/weave-400.png": "a6783322bc8f9a497d2aa6aaad95baaf8290db9f9178b527791eb0b6db65d158",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/leaf-y-plus-1/combined-180/weave-800.png": "e3dd5bc4bf7b5979ffa37a4d05bdcabb1caa5d913f718de7db38537549ed6450",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/baseline-10/measurement.json": "a55fc7dcf30c5f36eb7c84ebe1c6b42c99ad8d57093a74d648c7005c5cb7f32c",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/baseline-10/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/baseline-10/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/baseline-10/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/baseline-180/measurement.json": "e2d827252a5906cf7942643469dcd799611ec1465c8eccca82cad1b1ef47c33f",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/baseline-180/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/baseline-180/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/baseline-180/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/blended-routing-180/measurement.json": "2533767f889ea8581b0780074d8382121c35fbcd479728c68759102a7a837c08",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/blended-routing-180/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/blended-routing-180/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/blended-routing-180/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/retained-recovery-180/measurement.json": "e126988c6d3904514826e3afe8130a985a2805cefc09d8408bb60580f1f41931",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/retained-recovery-180/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/retained-recovery-180/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/retained-recovery-180/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/combined-180/measurement.json": "957a9411629f8014b0bfd557db21ebea45f3ecd47a2bad2170393b433e189b66",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/combined-180/cut_geometry.json": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/combined-180/weave-400.png": "c0887fcfb5932bbc0c60b1e01d7ed815de528a72fb11deeb4723115b8ea85440",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/long-budget-selection-v2/runs/outline-star-shift/combined-180/weave-800.png": "b30b8cf8bc77df6299960a005fd8876a9eef845b564058fb595a8d62ac449b30"
+    },
+    "visualReview": "Compared original leaf target, baseline and combined leaf, vertically shifted leaf baseline failure and blended recovery, and combined star. Better leaf silhouettes retain the intended shape; ragged borders and corner wedges remain. This is native exported rendering, not browser editable-conversion QA.",
+    "conclusion": "Routing interpolation alone reproduces the original-leaf improvement with less work than retaining and comparing a recovered route. The other long-budget cases retain passing results. A vertical one-pixel shift still fails at ten seconds because the clearance comparison is skipped; a separate timing-window experiment is in progress. No production scheduling policy is changed."
   }
 }
