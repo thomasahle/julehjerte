@@ -84,7 +84,8 @@ lower glare error comes with clean-image regressions. Nine fixed-crop fits and
 four editable replays isolate an additional bauble loss during fitting, after
 a corrected mask retains all sampled frame points. The new diagnostic helper
 checks overlay pixel counts against the measured error; no photographic gain
-or learned-model deployment is claimed.
+or learned-model deployment is claimed. Completed QA passes 812 inverse tests,
+855 application tests, type checking, lint and build; the local preview is refreshed.
 
 The [shared-return follow-up](visible-shared-returns.md) reduces two star notches
 and protects real corners against one-pixel source shifts. Its latest scheduling

@@ -82,6 +82,8 @@ and retained for the alternatives and exports.
 All four native passes survive production editable conversion, SVG round trip,
 editor intersection rules and nominal geometry/paper checks. Editable errors
 are 1.913% for the restored bauble and 0.677%, 0.723%, 0.799% for the checker.
+Independent point sampling of the editable previews retains the native counts:
+25/26 for the bauble and 24/24 for each checker, using the original phase.
 These scores compare different targets and are not evidence that one classifier
 recovers the unknown artwork more accurately. They do not change the existing
 automatic 25/31 result, and they are not physical assembly tests.
@@ -124,12 +126,17 @@ An initial Python difference panel also misread the independent renderer's
 black pixels using a red-preview color test. Its displayed overlay was wrong;
 the binary numerical errors and sample measurements were unaffected. Those
 panels are retained under `rejected-reviews/`. The corrected panels use the
-renderer binary mask and the committed comparison helper. All thirteen displayed
-native/editable disagreement counts match their recorded scores exactly.
+renderer binary mask and the committed comparison helper. All thirteen
+native/editable comparisons match their recorded disagreement scores exactly.
 
 The [measurement record](local-color-evidence.json) pins the source and results.
 Raw proposals, rejected variants, plots, templates and logs are under
-`tmp/heart-learning/local-color-evidence-v1/`. Focused tests and lint pass.
-Full serial application/inverse QA is running separately in that directory;
-its completion must be recorded before claiming a new full-suite pass.
+`tmp/heart-learning/local-color-evidence-v1/`. The separate
+[completed QA record](local-color-qa.json) passes 812 inverse tests, 855 application
+tests (one existing skip), type checking, lint and build. An independent audit
+reloads 768 predicted masks and verifies all recorded synthetic disagreements
+against pinned material/validity images, checking 1,344 prediction/target files.
+The refreshed preview at `http://127.0.0.1:5232/editor/mal/` serves 153 verified
+assets. No new browser interaction run is claimed; all tracked app/static source
+files remain unchanged since the last production release.
 No neural weights or data allocations changed, and nothing was pushed or deployed.
