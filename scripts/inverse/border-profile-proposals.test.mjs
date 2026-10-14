@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {fitBoundaryProfile,proposeBoundaryProfiles} from './border-profile-proposals.mjs';
+import {fitBoundaryProfile,proposeBoundaryProfiles,proposeSmoothBoundaryProfiles} from './border-profile-proposals.mjs';
 import {borderTransitions,oppositeBorderSeeds} from '../../static/inverse/core/border.js';
 import {prepare} from '../../static/inverse/core/engine.js';
 import {preprocessMask} from '../../static/inverse/core/input.js';
@@ -116,4 +116,46 @@ test('Santa obtains balanced provisional endpoints while its independent trace c
     assert.equal(visibleMarginIssue(graph,cfg)?.type,'visible_edge_margin','Passing endpoint checks does not certify a cutting route.');
   }
   assert.deepEqual(mask,before);
+});
+
+test('inward row continuity removes paired narrow fringes instead of closing them into notches',()=>{
+  for(const n of [128,256,400]){
+    const clean=Uint8Array.from({length:n*n},(_,i)=>(Math.floor(i%n*4/n)+Math.floor(Math.floor(i/n)*4/n))%2);
+    const noisy=clean.slice();
+    for(const [side,a,b]of [[0,.13,.15],[3,.63,.65]])for(let t=Math.floor(a*n);t<Math.floor(b*n);t++)for(let k=0;k<Math.floor(.07*n);k++)noisy[side===0?k*n+t:t*n+k]^=1;
+    const before=noisy.slice();
+    const rotate=mask=>Uint8Array.from({length:n*n},(_,i)=>mask[(n-1-i%n)*n+Math.floor(i/n)]);
+    let input=noisy,reference=clean;
+    for(let turns=0;turns<4;turns++){
+      const seed=proposeSmoothBoundaryProfiles(input,n,100,2.5,{limit:1})[0];
+      assert.deepEqual(seed.mask,reference);
+      assert.deepEqual(seed.metadata.counts,[3,3]);
+      assert.deepEqual(seed.metadata.transitions,Array.from({length:4},()=>[n/4,n/2,3*n/4]));
+      assert.equal(seed.metadata.initializationOnly,true);
+      assert.ok(seed.metadata.editedBandWidthMm<=8);
+      const inverted=proposeSmoothBoundaryProfiles(input.map(v=>v^1),n,100,2.5,{limit:1})[0];
+      assert.deepEqual(inverted.mask,seed.mask.map(v=>v^1));
+      input=rotate(input);reference=rotate(reference);
+    }
+    assert.deepEqual(noisy,before);
+  }
+});
+
+test('smooth border proposals preserve clean slanted cuts and the interior at the declared band',()=>{
+  const n=400;
+  // Two independent straight cuts; their varying positions must not become
+  // a constant extrusion from one averaged profile.
+  const clean=Uint8Array.from({length:n*n},(_,i)=>{
+    const x=(i%n+.5)/n,y=(Math.floor(i/n)+.5)/n;
+    return Number(x>.25+.1*y)^Number(y>.65-.12*x);
+  });
+  const seed=proposeSmoothBoundaryProfiles(clean,n,100,2.5,{limit:1})[0];
+  assert.deepEqual(seed.mask,clean);
+  const noisy=clean.slice();
+  for(let y=155;y<164;y++)for(let x=196;x<203;x++)noisy[y*n+x]^=1;
+  const before=noisy.slice(),out=proposeSmoothBoundaryProfiles(noisy,n,100,2.5,{limit:1})[0];
+  const d=out.metadata.depthPixels;
+  for(let y=d;y<n-d;y++)for(let x=d;x<n-d;x++)assert.equal(out.mask[y*n+x],noisy[y*n+x]);
+  assert.deepEqual(noisy,before);
+  for(const options of [{depthMm:9},{depthMm:0},{rowPriorWeight:NaN},{rowPriorWeight:-1}])assert.throws(()=>proposeSmoothBoundaryProfiles(clean,n,100,2.5,options));
 });
