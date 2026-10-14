@@ -26,7 +26,11 @@
     "tmp/heart-learning/final-integration-v1/consistent-anchor.log": "c4a54b8eb3b5ebff712f4631645a901ecd1707796a7fc4b1003d4627376ab9ea",
     "tmp/heart-learning/final-integration-v1/qa-consistent-v2/source.json": "ab04cdf268f9209a5acd227f142021fe721bbc8cd5e84c74e976f16dc16e3189",
     "tmp/heart-learning/final-integration-v1/qa-consistent-v2/app.log": "c4944fe9746b63c2c6c24d7b0b4a2ec8c5ba404e3b003a509f3db6f69cd4bca9",
-    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/build.log": "f2ce02484de603ab696dd01590be33d5f4d75a07c388190db4699d9524d06405"
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/build.log": "f2ce02484de603ab696dd01590be33d5f4d75a07c388190db4699d9524d06405",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/checks.json": "a20915882834f3f0198f2762850a6ccad543f199de09941fab914c04d4b03350",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/running.json": "d15fbb282809c2e86068f054769cff635587515747843e9b4ed2b2538a8d5761",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/failure-summary.json": "0cad7357b3fe1c0923d6cee76fe65e2babe70a52c279b799f8e2af6ff2142af1",
+    "tmp/heart-learning/final-integration-v1/qa-consistent-v2/inverse.log": "114256955d3045e785e1bfefcb24c6f6d69eff868c178a609269b5fbd6743528"
   },
   "consistentCheckPrototype": {
     "photographicTests": {
@@ -263,7 +267,145 @@
       ],
       "exitCode": 0,
       "seconds": 12.486990208000002
+    },
+    {
+      "stage": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 1,
+      "seconds": 862.375612542
     }
   ],
-  "fullInverseStatus": "running"
+  "fullInverseStatus": {
+    "total": 846,
+    "passed": 834,
+    "failed": 12,
+    "sourceFilesVerified": 840,
+    "releaseReady": false
+  },
+  "failures": [
+    {
+      "location": "scripts/inverse/clearance-routing.test.mjs:20:3",
+      "test": "\u2716 bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork (134.91ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-routing.test.mjs:22:12)",
+        "at Test.runInAsyncScope (node:async_hooks:226:14)",
+        "at Test.run (node:internal/test_runner/test:1118:25)"
+      ]
+    },
+    {
+      "location": "scripts/inverse/clearance-routing.test.mjs:37:3",
+      "test": "\u2716 fresh x-plus-1 fitting carries repaired clearance through final export (9207.392708ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-routing.test.mjs:40:12)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/clearance-routing.test.mjs:20:3",
+      "test": "\u2716 bounded repair resolves a nonlocal slit neck without changing the y-minus-1 artwork (89.073125ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-routing.test.mjs:22:12)",
+        "at Test.runInAsyncScope (node:async_hooks:226:14)",
+        "at Test.run (node:internal/test_runner/test:1118:25)"
+      ]
+    },
+    {
+      "location": "scripts/inverse/clearance-routing.test.mjs:37:3",
+      "test": "\u2716 fresh y-minus-1 fitting carries repaired clearance through final export (9207.071125ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/clearance-routing.test.mjs:40:12)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/datasets/synthetic-motif.test.mjs:10:36",
+      "test": "\u2716 radial motif 0 has one closed motif and exact hidden approaches (32.89525ms)",
+      "error": "AssertionError [ERR_ASSERTION]: [{\"type\":\"short_self_clearance\",\"family\":0,\"slit\":0,\"curves\":[3,5],\"parameters\":[0.9977203432226514,0.0838887587059045],\"points\":[[31.83439569509806,66.33886261370058],[32.29981188860332,67.7505344274729]],\"distanceUpper\":1.4864149968888731,\"required\":1.5,\"arcSeparation\":3.0000000000000004,\"stationary\":false,\"totalTurning\":192.51341667577123,\"edgeChain\":[3,4,5]},{\"type\":\"short_self_clearance\",\"family\":0,\"slit\":1,\"curves\":[1,3],\"parameters\":[0.9140625,0.00018597934",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/datasets/synthetic-motif.test.mjs:46:10)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+      "test": "\u2716 a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance (10379.171959ms)",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:75:50)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+      "test": "\u2716 a fresh shifted bird fit reroutes its rejected eye with a 180-second allowance (15793.271833ms)",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:75:50)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/rejected-routing.test.mjs:36:1",
+      "test": "\u2716 continuous repair retains the original pixels and independently passes exported geometry (946.288833ms)",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/rejected-routing.test.mjs:46:10)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/rejected-routing.test.mjs:51:1",
+      "test": "\u2716 repair does not accept severe returns, expired work, different artwork or unsupported constraints (781.22125ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/rejected-routing.test.mjs:53:10)",
+        "at Test.runInAsyncScope (node:async_hooks:226:14)",
+        "at Test.run (node:internal/test_runner/test:1118:25)"
+      ]
+    },
+    {
+      "location": "scripts/inverse/search-scheduling.test.mjs:18:45",
+      "test": "\u2716 fresh frozen routing retains time for a valid template without changing the mask (9926.905667ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/search-scheduling.test.mjs:26:10)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/search-scheduling.test.mjs:18:45",
+      "test": "\u2716 fresh synthetic-control routing retains time for a valid template without changing the mask (8938.756333ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/search-scheduling.test.mjs:26:10)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+      ]
+    },
+    {
+      "location": "scripts/inverse/trace-order.test.mjs:10:1",
+      "test": "\u2716 alternative photographic traces get a turn before densifying an exhausted sparse graph (6640.772041ms)",
+      "error": "AssertionError [ERR_ASSERTION]: The ordinary dense graph must remain available as a fallback.",
+      "stack": [
+        "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/trace-order.test.mjs:21:10)",
+        "at async Test.run (node:internal/test_runner/test:1125:7)",
+        "at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {"
+      ]
+    }
+  ]
 }

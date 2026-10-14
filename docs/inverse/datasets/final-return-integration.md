@@ -147,18 +147,30 @@ checks passing in **5.681 seconds** including preparation and export.
 This is not a completed release. The simpler isolated version with consistent
 checks passed 23/25 focused photographic tests and 22/22 native Hunodan checks;
 21 Hunodan image errors were identical to the previous release, but the bird's
-error increased. Two focused tests then found that its shifted variant lost too
-much of the eye at 800-pixel export resolution despite passing geometry. The
+error increased. Two focused tests then found that the separate collage bird, with its crop
+shifted one pixel, lost too much of the eye at 800-pixel export resolution
+despite passing geometry. This is a different photograph from the Hunodan
+speed fixture; their errors and cut counts are not a paired crop comparison. The
 hidden-repair and longer-polishing correction improves the ordinary bird; it
-has not yet resolved the shifted-eye regression. Full QA for the latest source
-is running. The eight focused finalization/checkpoint regressions pass.
+has not yet resolved the shifted-eye regression. Full QA for commit `6c5bbc1` passes **834/846 inverse tests** and finds
+**12 failures**; this is not release-ready. The eight focused
+finalization/checkpoint regressions pass.
 The first application replay passes 856 tests and exposes one obsolete
 assertion: the anchor is now repaired during fitting, so final export correctly
 reports no further repair. The test now requires complete validation, unchanged
 or improved image error and successful Draw conversion, without prescribing
 the repair stage. Its focused replay and the full application rerun pass: 857 passed, one
 existing skip. Type checking, lint and production build also pass. The full
-inverse suite is still running.
+inverse suite is complete with the twelve failures described above.
+
+Beyond the shifted eye, the full run exposes four clearance-routing failures,
+two bounded-repair failures, two scheduling failures, one trace-selection
+assertion and one synthetic-admission fixture. The clearance proposals now
+contain six warning records on two or three cuts; an old four-record eligibility
+limit prevents repair from starting. Counting affected cuts and allowing more
+bounded local refinement are under isolated evaluation. The synthetic fixture
+has four actual sub-1.5 mm returns under the shared rule and must be rejected;
+its admission regression now expects rejection under the unchanged validator.
 
 Exploring invalid trajectories without rollback, ranking rejected boundaries
 by weighted error, and fitting the small-detail stage at original image

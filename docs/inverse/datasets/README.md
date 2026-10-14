@@ -36,7 +36,9 @@ error. Full inverse QA subsequently finds seven photographic regressions
 checks throughout fitting are now applied locally; their focused trial resolves
 five regressions but exposes insufficient eye retention in the shifted bird.
 Hidden-first checkpoint repair and additional bounded refinement improve the
-ordinary Hunodan bird to 0.842% in 5.68 seconds; full QA is running. The benchmark figures below
+ordinary Hunodan bird to 0.842% in 5.68 seconds. Its full inverse run passes
+834/846 tests and exposes additional repair/scheduling and fixture failures;
+the integration remains incomplete. The benchmark figures below
 describe the earlier completed releases; fresh release and browser QA are pending.
 
 The [row-initialization and scheduling release](row-initialization.md) now

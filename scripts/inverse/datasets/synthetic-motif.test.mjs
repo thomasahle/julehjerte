@@ -7,7 +7,7 @@ import { proceduralDesign, graphLabels, validateDesign } from './synthetic-geome
 import { generateSynthetic } from './synthetic-generate.mjs';
 import { verifySynthetic } from './synthetic-verify.mjs';
 
-for (const seed of [0, 5, 19, 30]) test(`radial motif ${seed} has one closed motif and exact hidden approaches`, async () => {
+for (const seed of [5, 19, 30]) test(`radial motif ${seed} has one closed motif and exact hidden approaches`, async () => {
   const design = proceduralDesign(seed, 'radial-motif'), labels = graphLabels(design);
   assert.equal(design.split, 'unassigned');
   assert.equal(design.groupId, 'procedural-radial-motif');
@@ -52,6 +52,18 @@ for (const seed of [0, 5, 19, 30]) test(`radial motif ${seed} has one closed mot
     const [x, y] = new Cubic(edge.cubic).point(t).map(v => Math.floor(v * 512 / 100));
     assert.equal(checked.rendered.coverage[y * 512 + x], background);
   }
+});
+
+test('radial motif admission rejects narrow returns at shared approaches', async () => {
+  // This deterministic proposal passed the old local-pair check. Its shared
+  // approaches turn back within the editor margin, so it cannot be a valid
+  // training witness under the complete-cut rule.
+  const design = proceduralDesign(0, 'radial-motif');
+  const checked = await validateDesign(design, 512);
+  assert.equal(checked.passed, false);
+  const returns = checked.geometry.issues.filter(issue => issue.type === 'short_self_clearance');
+  assert.equal(new Set(returns.map(issue => `${issue.family}:${issue.slit}`)).size, 4);
+  assert.ok(returns.every(issue => issue.distanceUpper < issue.required && issue.required === 1.5));
 });
 
 test('radial photographic generation remains explicitly unassigned and verifies every view', async () => {
