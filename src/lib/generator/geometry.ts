@@ -28,7 +28,7 @@ export const FRAMES = [
 	'scalloped'
 ] as const;
 export type Frame = (typeof FRAMES)[number];
-export type TextFrame = 'woven' | 'air' | Frame;
+export type TextFrame = 'woven' | 'air' | 'repeat' | Frame;
 export class ConstructionError extends Error {
 	constructor(
 		public code: 'topology' | 'clearance' | 'empty' | 'character',

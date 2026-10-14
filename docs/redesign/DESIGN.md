@@ -417,6 +417,13 @@ clipped boundaries cancel or become shared cuts, preserving every visible detail
 manageable strips over fewer cuts, while retaining the full clearance and fidelity checks. Two-dimensional
 panels separate the gift's bow and box pieces into a 5×5 grid.
 
+“Gentag som mønster” is a text frame, not a separate mode or control. It repeats the entered text
+across six rows, shifting each successive row by one character. Multiline messages cycle their
+lines before advancing the shift. The frame uses at least eight columns and never truncates a
+line of the entered text. Matching glyph cells reuse their cut routing across columns as well as
+rows. The shared grid limit is 20 strips per lobe, so these 15–17 strip patterns survive saving,
+SVG import and editing intact. Enclosed letters still use coincident cuts in the two papers.
+
 Spacing follows grid density: use 1.5 normalized units for grids up to 4×4, then scale the gap
 by 4 / max(columns, rows). This retains the construction assumption of about 25 mm per strip
 without selecting a paper size. The generator and editor use this same rule. Generated designs

@@ -32,7 +32,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 			font: ['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous'],
 			frame: [...FRAMES],
 			style: ['rays', 'check', 'plain', 'sunburst'],
-			textFrame: ['woven', 'air', ...FRAMES]
+			textFrame: ['woven', 'air', 'repeat', ...FRAMES]
 		}))
 			if (allowed.includes(raw[k])) Object.assign(s, { [k]: raw[k] });
 		if (typeof raw.text === 'string') s.text = normalizeText(raw.text);

@@ -31,7 +31,7 @@ export const FIGURE_TEMPLATES: FigureTemplate[] = pairs
 			all.findIndex((p) => p[0] === frame && p[1] === style) === i
 	)
 	.map(([frame, style]) => ({ id: `${frame}-${style}`, frame, style }));
-export const TEXT_TEMPLATES: TextFrame[] = ['woven', 'air', ...FRAMES];
+export const TEXT_TEMPLATES: TextFrame[] = ['woven', 'air', 'repeat', ...FRAMES];
 
 /** Keep old shared links selected even when they use a less common combination. */
 export function figureTemplates(state: GeneratorState, expanded = false) {

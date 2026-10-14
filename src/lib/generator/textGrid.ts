@@ -118,7 +118,8 @@ export function generateTextGrid(
 				)
 			);
 			artwork.push(...contours);
-			const key = char + ':' + col,
+			// Identical cells share routing across rows and columns.
+			const key = char + ':' + widths[col],
 				prior = cached.get(key);
 			if (prior) {
 				const dx = x - prior.x,

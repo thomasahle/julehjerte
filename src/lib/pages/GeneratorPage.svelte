@@ -491,7 +491,7 @@
 					spellcheck="false"></textarea>
 				<p class="hint">{t('generatorNameHint', lang)}</p>
 				<div class="examples">
-					{#each ['ANNA', 'JUL', 'JULE\nMAND'] as word (word)}<button
+					{#each (config.textFrame === 'repeat' ? ['LOVE', 'JUL', 'ANNA'] : ['ANNA', 'JUL', 'JULE\nMAND']) as word (word)}<button
 							onclick={() => (config.text = word)}>{word}</button
 						>{/each}
 				</div>
@@ -667,7 +667,7 @@
 			{:else}
 				<h3>{t('generatorTextFrame', lang)}</h3>
 				<div class="frame-options">
-					{#each [['woven', 'generatorDense'], ['air', 'generatorAir'], ...frames] as const as frame (frame[0])}
+					{#each [['woven', 'generatorDense'], ['air', 'generatorAir'], ['repeat', 'generatorRepeat'], ...frames] as const as frame (frame[0])}
 						<button
 							aria-pressed={config.textFrame === frame[0]}
 							onclick={() => (config.textFrame = frame[0])}
