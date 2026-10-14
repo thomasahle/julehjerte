@@ -98,9 +98,13 @@ The rejected prototype, isolated runtime and complete per-pair diagnostics remai
 under `tmp/heart-learning/self-return-subdivision-v1/`.
 
 Seven focused tests pass: the existing five short-return/routing regressions and
-two new experimental subdivision checks. The new diagnostic files also pass
-lint. Full repository QA is recorded separately when complete; the already
-validated app runtime and local preview remain unchanged.
+two new experimental subdivision checks. Completed repository QA passes all
+**824 inverse tests**, **855 application tests** (one existing skip), type
+checking, lint and build. The build assigned new bundle filenames; the owned
+preview was refreshed and all **thirteen Chromium flows** rerun successfully.
+The [validation record](self-return-subdivision-validation.json) verifies 814
+source files and 153 served assets. The app runtime remains unchanged; neither
+experimental geometry rule is enabled in the preview.
 
 ```sh
 node --test --test-concurrency=1 \

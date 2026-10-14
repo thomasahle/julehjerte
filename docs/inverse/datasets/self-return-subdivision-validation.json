@@ -1,0 +1,435 @@
+{
+  "schema": "woven-heart-self-return-subdivision-validation-1",
+  "sourceCommit": "d092a37711eecccff5577b39fdf7708cdff473d1",
+  "runtimeUnchanged": true,
+  "qa": {
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.759243583
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.07305725
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 30.625232375
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 798.75123525
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 12.91556700000001
+      }
+    ],
+    "inversePassed": 824,
+    "applicationPassed": 855,
+    "applicationSkipped": 1,
+    "verifiedSourceFiles": 814
+  },
+  "preview": {
+    "origin": "http://127.0.0.1:5232",
+    "verifiedAssets": 153,
+    "relationship": "Build assigned new bundle filenames; owned preview was refreshed and all thirteen browser flows rerun. Runtime source remained unchanged."
+  },
+  "browser": {
+    "commit": "be457a3c64c63e34bf0d9c9612101abb848ecbb3",
+    "timingDefinition": "Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.",
+    "results": [
+      {
+        "name": "flower-native-mask",
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.00509375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005800000071525574,
+          "prepareRoundTripSeconds": 0.17869999992847443,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 6.803799999952316,
+          "resultToReadySeconds": 0.5997000000476838,
+          "clickToReadySeconds": 7.588300000071525
+        }
+      },
+      {
+        "name": "flower-downsample-mask",
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.00616875,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.16010000002384187,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 8.5155,
+          "resultToReadySeconds": 0.485,
+          "clickToReadySeconds": 9.1665
+        }
+      },
+      {
+        "name": "hard-bibel-star-outline",
+        "passed": true,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.01153125,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005100000023841858,
+          "prepareRoundTripSeconds": 0.15619999992847441,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 7.536399999976158,
+          "resultToReadySeconds": 0.1645,
+          "clickToReadySeconds": 7.8625
+        }
+      },
+      {
+        "name": "hard-bibel-star-outline-half",
+        "passed": true,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.01343125,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.16830000007152557,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 8.3785,
+          "resultToReadySeconds": 0.35710000002384185,
+          "clickToReadySeconds": 8.909800000071526
+        }
+      },
+      {
+        "name": "hard-bibel-star-outline-jpeg75",
+        "passed": true,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.01764375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005399999976158142,
+          "prepareRoundTripSeconds": 0.1652000000476837,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 3.585,
+          "resultToReadySeconds": 0.3165,
+          "clickToReadySeconds": 4.0725
+        }
+      },
+      {
+        "name": "hard-flettede-puppy",
+        "passed": true,
+        "selectedCounts": [
+          5,
+          3
+        ],
+        "sourceEditableError": 0.0106,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.15710000002384186,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 16.313799999952316,
+          "resultToReadySeconds": 0.7111000000238419,
+          "clickToReadySeconds": 17.187899999976157
+        }
+      },
+      {
+        "name": "hard-flettede-viking",
+        "passed": true,
+        "selectedCounts": [
+          6,
+          6
+        ],
+        "sourceEditableError": 0.02001875,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.1762000000476837,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 27.1705,
+          "resultToReadySeconds": 0.9523999999761581,
+          "clickToReadySeconds": 28.305
+        }
+      },
+      {
+        "name": "hunodan",
+        "passed": true,
+        "selectedCounts": [
+          2,
+          2
+        ],
+        "sourceEditableError": 0.00944375,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005399999976158142,
+          "prepareRoundTripSeconds": 0.13610000002384187,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 3.9636999999284743,
+          "resultToReadySeconds": 0.42180000007152557,
+          "clickToReadySeconds": 4.527300000071525
+        }
+      },
+      {
+        "name": "star",
+        "passed": true,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.0016,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.008399999976158142,
+          "prepareRoundTripSeconds": 0.03320000004768372,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 1.5985,
+          "resultToReadySeconds": 0.09789999997615814,
+          "clickToReadySeconds": 1.7383999999761581
+        }
+      },
+      {
+        "name": "top-hat-preferred",
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.004118835034013606,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.02010000002384186,
+          "prepareRoundTripSeconds": 0.24930000007152558,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 7.152199999928475,
+          "resultToReadySeconds": 0.2095,
+          "clickToReadySeconds": 7.6315
+        }
+      },
+      {
+        "name": "blue-star-polishing-mask",
+        "passed": true,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "sourceEditableError": 0.0044625,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0055,
+          "prepareRoundTripSeconds": 0.15579999995231628,
+          "preparedToSolveRequestSeconds": 0.00030000007152557374,
+          "solveRoundTripSeconds": 8.117199999928474,
+          "resultToReadySeconds": 0.721,
+          "clickToReadySeconds": 8.999799999952316
+        }
+      },
+      {
+        "name": "web-danish-tree-green",
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.010575,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.0052999999523162845,
+          "prepareRoundTripSeconds": 0.149,
+          "preparedToSolveRequestSeconds": 0.0003999999761581421,
+          "solveRoundTripSeconds": 7.316300000071526,
+          "resultToReadySeconds": 0.389,
+          "clickToReadySeconds": 7.86
+        }
+      },
+      {
+        "name": "gold-routing-mask",
+        "passed": true,
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "sourceEditableError": 0.0073625,
+        "templateChecksPassed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.005899999976158142,
+          "prepareRoundTripSeconds": 0.181,
+          "preparedToSolveRequestSeconds": 0.00020000004768371582,
+          "solveRoundTripSeconds": 6.127100000023842,
+          "resultToReadySeconds": 0.2235,
+          "clickToReadySeconds": 6.537700000047684
+        }
+      }
+    ]
+  },
+  "artifacts": {
+    "tmp/heart-learning/self-return-subdivision-v1/qa/app.log": "4d6bdd5fc0f067aa6b44c44132c2891adfc1712860f4284ab18230aca948006d",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-blue-star-polishing-mask/cut_geometry.json": "0949ee08a362858fc5288cfc07d2f6b24b4033d7b6b12e68b31be9bad0869168",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-blue-star-polishing-mask/draw.png": "f756c5d174398ab3095cffdce38e44dbde22e7363125d497bbab339356e973c4",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-blue-star-polishing-mask/editable.svg": "760feb59e9ba71549ed67365910ada3f7aec15c97b7495649011f741c9a3585b",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-blue-star-polishing-mask/engine-report.json": "9ae9b61b14e6e17f4c3ad1623c7df6a8091d02d5b50861657b3f5ba754c2e0d6",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-blue-star-polishing-mask/import.png": "2b82f5893e74da9b6390e1716345237fa8e2fd42e9a6f73654543d29b1e7fc13",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-blue-star-polishing-mask/input.png": "ffc6583e5c43a3787e9053ff60e3c7d84638448a96780178a0be43baaf7f7fc6",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-blue-star-polishing-mask/prepared.json": "e5d14c52da882a40f63286a04044920df764feabfe7846ca92b15b92022d4083",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-blue-star-polishing-mask/result.png": "7a191191a99a19b35a5c9b70a74cce27db86f78a65902034949b2cb05a50ad56",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-blue-star-polishing-mask/template.pdf": "4194ae6af498bce9044a6b18977573840073fbe6797b4f6f7cdfa76df803bdcd",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-downsample-mask/cut_geometry.json": "4ddc21516b1093a4a6aceabc5c5523e8acd95f942608fc661cd7762dda92a281",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-downsample-mask/draw.png": "6b7418ca2738bbf5ff624f820d77cd4f12fb33296914b6246c7c90a32661a6dc",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-downsample-mask/editable.svg": "795491525b6e33ad52c4cb870f18c030ba1be47cc5b6a0a11bca81a13980d709",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-downsample-mask/engine-report.json": "682cb85a97657944d19ec2e5d30a3d08565a74b1714da9c35ee7858ea8ff0045",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-downsample-mask/import.png": "dde87ad9c86dc65fdd8442aa4552a1cb483b83c4839580515e91504e1aa9f569",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-downsample-mask/input.png": "7e380f1bfc061299d21c512737e8808428a11f9e0e5387e361744fc5554ae289",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-downsample-mask/prepared.json": "d11a95890cf3e40db220b41e6e116801b7f1a82b50a9a818a1b47f915a0f698a",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-downsample-mask/result.png": "40126ec95993690254259bb456a78916eda5cc6cbf38877d526ec6c5f6d51c2d",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-downsample-mask/template.pdf": "2dc089a53611a190a920d5a8e0d5ff228b87cd809f0c3a07fb1f2071de110a9e",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-native-mask/cut_geometry.json": "e275b03a59a8ca8df305dfc226339ff25bcd9138a2dbeba50c805980ab8878a7",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-native-mask/draw.png": "572a273827af8e10a83475b1d302c6c67a8aeca399f447952d63b026f7ec8654",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-native-mask/editable.svg": "d6a63c2f58c54203b446b20176f5d3cf9e64e7515a3ff6954f60746d24ad50f8",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-native-mask/engine-report.json": "c893fb2607caacbb5bd6157e45d54d178cb0f74c9bf1725cf2949468fbb6bb79",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-native-mask/import.png": "dbcc410a4cff48bd2652efe041ade967ff68a789ff5ee972c9daca9a78c7be76",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-native-mask/input.png": "f20a436a40599adec9a44e4766acdb9bc491e6327c6d2a4d212e57386871fc35",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-native-mask/prepared.json": "ba5968743bb82e82756eca4e606c6177ff85328cc9a508bb7ac05d7d150d1df7",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-native-mask/result.png": "269dc6539aaf4ff9d86a82016fb4ebdfc1f52a78871164e69ab7b5f61b1f3a1f",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-flower-native-mask/template.pdf": "cff2615492860ae3061ef9f002064198987a6f8d528c8d9400a9ce57d9d599c7",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-gold-routing-mask/cut_geometry.json": "427fc6d21c1005db16984f025d71d57affadc24e4b8d84cb927dfb6c3d6070aa",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-gold-routing-mask/draw.png": "5c1bffe4a335d7d84a69a8ef9e86bcc25420b248bed019a55f3caee96aa98c7f",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-gold-routing-mask/editable.svg": "e2a26b693d1dd53c396a8191253169a8fe9d892248304e1ab64857df22be4f60",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-gold-routing-mask/engine-report.json": "10b760d82df7577b1452ceab4177ee84c4ef368b9574b0500d0a86301c039e9f",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-gold-routing-mask/import.png": "4cbe40c5b768aac41975047072f16306f1bd3944ede10fbb7dc704fb37730a21",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-gold-routing-mask/input.png": "8ddd10a79196cb834f8e58a7e2860f94535ddfc6e35e570232a4387083231a98",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-gold-routing-mask/prepared.json": "6663e0adccc59375fc86b70620908be827b1d05fde0298e75b9b88263f16840d",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-gold-routing-mask/result.png": "60d0350c054bbf683e298aac094d287e5cecab4bcd6c8938772b97cd83f8026c",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-gold-routing-mask/template.pdf": "c98349151352e8a99fc0ac574d93e56e4b9a1f042774474939afe0d90be08d11",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline/cut_geometry.json": "68508a58a7de32149511e5221992215c1a3faf1af544f3e08e9e08ba1c5f2741",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline/draw.png": "8a5a9ca4d721276f7028ddf0d8eb69eda800f34a97543688c17cd1fead1a3f3e",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline/editable.svg": "a3656ab986b99ea99c424f86e36f86ad56c2279c5519217eb7e1580265090e05",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline/engine-report.json": "993ed89115b8f71de38ba82077ed4a2ad858d713bf8a4e691e216385a0ba81b6",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline/import.png": "4386192a343731ac65029819d0bfd11535f703536c5cfe4c81f413656380c918",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline/input.png": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline/prepared.json": "d6be241cc16a331619b131642e5209753534992831d700050a0318f65c99de6b",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline/result.png": "9b29fdcc51e2505dad927347f6939f883e3485443eb97207cb4f147b4bc14528",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline/template.pdf": "70958cce7802244df558cc44ad2929ee97d92da7be109e7e0e97a90edf8d5a0c",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-half/cut_geometry.json": "cc2b65cd927f5205f64bab2b12a79664150556f37e8762cbbde4027d3450380f",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-half/draw.png": "c96cc016fcf47c0128ebcdf4eec5799015d6c8628c7f7e138bd17abbe8fe50f3",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-half/editable.svg": "ca7e10d23dfebf0974818bd1d24ee61e277409257c7059656e30213e84a7817c",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-half/engine-report.json": "cb6c6631833715a97884d670ec0527a9bb8fefdb086713fbf3eff5d78c6eddae",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-half/import.png": "7ed4cde3d8bb6b18949c38ef80405aeee73dd6dc26aa602517533b059ef7f22d",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-half/input.png": "2f5cd985aa884c5fb3e2e2c0903ba705b9a5b1d04c44c07fe5341f80b5eecb78",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-half/prepared.json": "fcaba5045361973a2475c95d335a9a762904fcd16b4912d320e767e6ceddbd2a",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-half/result.png": "181b063cc44fecfbfd23fb1ccc4f32400dfbb2796c74f2ad7daddd8335839f99",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-half/template.pdf": "e814c1922bdaa7df9a6addc3251207d8fbe60a51a4a4b34ecfad59f19233240f",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-jpeg75/cut_geometry.json": "c7189df53c834325e26d78e234e09554cb4361cd54bb015d3bced45efcff9ef8",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-jpeg75/draw.png": "9e345161ecb54ba81185f7a49b00d2221018c24aa69d8c761fdd67912eab5870",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-jpeg75/editable.svg": "420fa76c69d1d87db7bf168bd54a449e1dd7d1eb3ebace0297664cc5351cfa54",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-jpeg75/engine-report.json": "dc0130ef7114f3c71f787266cc51aadcede48949a6c138fe35b68e49ba9a8d57",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-jpeg75/import.png": "1670c360a19bbb1943113f48409bf9c3a9d9e0bc26d7f8becc8ea58d3e65a89b",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-jpeg75/input.jpg": "20648c38a37120ad7948e968dc193dc1556244953db570dc56b810bb1bdc2182",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-jpeg75/prepared.json": "ce59118334a9bd2fd6992279c987aa331fb0693a9e3f3237678c170c4f898b0b",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-jpeg75/result.png": "15f3f365299c19d3c086da185ca40862ffc5d52228a48b9aa0c801eea70b3753",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-bibel-star-outline-jpeg75/template.pdf": "916e560624950a705130233a97aa9542df487a40011985dfadd8f2163bf76247",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-puppy/cut_geometry.json": "d38e6117e7fdca76a335455114b4202d61672b3b097b96e34c1fa8050fc0dafe",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-puppy/draw.png": "d12442a6286dfe8466ea0e2e05e9e8a07521a26cb3471d6a9a1ae6de8f95ec3c",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-puppy/editable.svg": "ebc44f3454e495004c01c6748581d2566aac34e3d388c9cb116527aacb82c954",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-puppy/engine-report.json": "fc1a95e93378a300478261524d7441aa5ad4415aaf4ff319d926ec420f4dc3f3",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-puppy/import.png": "2903a2e1ab878e46eca27790830a4a560cefb4ef203ec742e7808c98d81d6d47",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-puppy/input.png": "2a26b6c1531efa407da71dba64fe5db6a6f2e4a6c25226c84b6e62213784fad0",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-puppy/prepared.json": "1ce51267d1b050525c33c0f62e061db3429476dc6c89246170d5eee978a29255",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-puppy/result.png": "aa80387b0340a032651214682f0444ee36dbe4d4725f5dc815792f306438efd9",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-viking/cut_geometry.json": "0d0c5ba0c9636e551d8ab439bed7195359ca269c37ee36ccb420df3791fa23a4",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-viking/draw.png": "d81dee04d3c2da667521d370275b318f4d6b26163f716c42ae7f6310b6b2848a",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-viking/editable.svg": "997cae4f96e91c2c2bf2dee424ed88a0c492667c49b0bc977c52111efc480ab3",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-viking/engine-report.json": "4f3913e1b3f213a375947066fa1ba149149a896c890f13e5238d97113fa0949f",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-viking/import.png": "4ed9e8250b54b2f9fc016be126c882c54b949401458938d37c43c34005256b08",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-viking/input.png": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-viking/prepared.json": "f8ce4c23050885d089bce5cdbb36942aa9933756de231a270a7354350fa8d25d",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hard-flettede-viking/result.png": "9f5621bb0b60eed507b334ce194725f25164ea9da8854367136605cd52e9bc50",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hunodan/cut_geometry.json": "9a51ebaf947ad348ca12116e3510fe51585266cd9c428aa0ca516e829f8e5273",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hunodan/draw.png": "9a079e6b2b00c9fbea0f97efe9a10dc7d255eac1736a9b31fc5aa2344b58babb",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hunodan/editable.svg": "084ed763473a176a18271565b76c6033e2ace0b63a4ecf914e0da757afd9c594",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hunodan/engine-report.json": "9f62bff362b210710c349466cd8bed7ea06d462a04975c84a37fb02dc936d7c8",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hunodan/import.png": "81edcabd448ae84dadaef6b11bfc04464a2062c042a37338d07be0d04c940d69",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hunodan/input.png": "f1e0345ecf7a2a27f36b92be23133e09e69892cce284efc9c22bf2c6c530433a",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hunodan/prepared.json": "60b9df88990a65d4ffc89d0f19dfcb6e185e97726364371e7127704ea86680ac",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-hunodan/result.png": "4f4311acb7c7941833620cc5fe8876e2d104062481256a0da8990581237bacc9",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-star/cut_geometry.json": "7e040bc9715127cdbf3d111dd6acb85beebb267bcfab69c198a9b3966de87601",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-star/draw.png": "11cb7c3afb43f778118588fcd7a04c66db98082009284f2a964b0a8c772b1489",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-star/editable.svg": "fb311ce80a88dd35e0f9a521e6f22dd9e185841ae1b9f9b6557817d9f7d1f83f",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-star/engine-report.json": "c9bdcfecf58e35a877a163ca73e15d55d409032227c3e0916e5cc585c2f571ac",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-star/prepared.json": "16846094e460d9c934f80d1e922cde35c0528a8eaec7696399d23910dc89576b",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-star/result.png": "958edcaedd6edee695a3a100dc1ba1602ee7d9909f79d7fa5b0f6c0a7d4521ac",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-star/template.pdf": "e59d2c923938cba8bd3dc6fafb9d836ad74002d022f69706f00f2956141d2e6f",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-top-hat-preferred/cut_geometry.json": "39f1f4067a585a1848603766697b8e86c5bcc1d98b49b022fc4121cacfa29667",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-top-hat-preferred/draw.png": "855b877bc9aee15ae2df5e2823fdc6bb605e5a04ce6f7e42f8ee46bcf334e6c4",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-top-hat-preferred/editable.svg": "0c9fc9985182e0cb501ff6caa07d151ccabe83cd4e4f3f2ef5444c9d152b4d20",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-top-hat-preferred/engine-report.json": "b4daad41dd50ae26bcdb5d3341a24a78e8a709e98144b41afd0b195d97b607b3",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-top-hat-preferred/import.png": "a3afa944882f28e7f8e3299eaa1ecb189d262813243f3c077f4046f93ac7738c",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-top-hat-preferred/input.png": "0b9f120849b863c65f2f806828b20702be2dfd90bd70426b1d7eb0ee7ca10fba",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-top-hat-preferred/prepared.json": "e5c0a7c46136bec133f19ca5e67cf3260989136898a7cf0a80eda690593d4a4a",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-top-hat-preferred/result.png": "cd7dbc32e8336499bf2c66c5342ced8f48236b51e903a89e3e0278925fc9dd63",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-web-danish-tree-green/cut_geometry.json": "0588e9f68a218a2f5a42199a216a73c519b594845882be4495ffb576d3e0753b",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-web-danish-tree-green/draw.png": "b4ac61ca91bce809123af4e5f17c031755215a8c83438255ee8644b3ca742fd0",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-web-danish-tree-green/editable.svg": "c38c68dc13f34b8aa211b31ef6b45865d1d3c461e39a0bc45f0e68fa0c10ee85",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-web-danish-tree-green/engine-report.json": "48498ea0ed2a2decc108b75b4e916adcd17756d3335479c92473b2ac86caea3a",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-web-danish-tree-green/import.png": "5536fd692da80e2a249e82f35f7c432c5e43d32dde61cbd93322f92767266a2e",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-web-danish-tree-green/input.png": "a5c107cef6f56971ac610e4a27f58e7ed604828741a9de476fd98fd260cfe947",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-web-danish-tree-green/prepared.json": "b48a35d497b13034879be91fd42d2657bd5cfb3591ef6b679fec1a43a25e1b8a",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/chromium-web-danish-tree-green/result.png": "5f00c45614fa0c769f17920d951540ce8af58f34534c236ab52191243cf450d3",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser/results.json": "2e4f68843edd1efec00cf2d48761109a4e909c244ab6e38a80603314acb682a5",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/browser.log": "80a2a52521a75fa857ee7b2d09c41540b4ac370897943aa67050ae2031f25910",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/build.log": "89f7597e0f13c09c18f440b84653fe39e02fe8d6cd6e5dd3c0ba6d5696b552db",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/checks.json": "01dac3d34d525bd94233d750cde078ede27e50b9128948c7723271a65ed4077b",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/inverse.log": "5360511627cbd2679765c9e56c3f1ee921c3b90add5e33716fae2a82e449a520",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/preview.json": "13a0bf5e949f0a4105986d4c66b2d726f520498caa3fbbcc1ac88510e1c67245",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/restart-preview.py": "157018578fe5985bb9089ad379592850345812baf9ef30530b3cf5e0f8a5eada",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/run.py": "d2fbac86e9e8f2478625d5d7503d3f41c7ff41d3b37723385e283960adffb198",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/served-assets.json": "536c076fdeab3877a507b11f5da2b462d82e783949a99957863b2d4e39b3632d",
+    "tmp/heart-learning/self-return-subdivision-v1/qa/source.json": "d882900082474a3ec4741ef1bceff923e7013149acce82e61b65311532428f65"
+  }
+}
