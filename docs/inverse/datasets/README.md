@@ -33,20 +33,24 @@ existing QA or connected source groups; the rest still need family, instance
 and usage review before allocation. See the [real audit](real-validation.json)
 and [synthetic asset checks](synthetic-batch.json).
 
-The [last completed fitter release](polishing-alternative.md) passed all 22
-regular Hunodan designs below ten seconds and retained 24/31 hard photographs,
-with 774 inverse tests, 855 application tests and eleven Chromium flows. These
+The [latest completed fitter release](visible-shared-returns.md) passed all 22
+regular Hunodan designs below ten seconds (maximum 8.32 seconds) and retained
+24/31 hard photographs, with 781 inverse tests, 855 application tests and eleven
+Chromium flows. These
 31 photographs are a fixed reconstruction benchmark, not the full collected
 573-file photographic corpus.
 
 The [shared-return follow-up](visible-shared-returns.md) reduces two star notches
 and protects real corners against one-pixel source shifts. Its latest scheduling
 fix, `fa7774c`, reserves time for shared-cut alignment after speculative repairs.
-Fresh checks retain eight fixed crop variants, 22/22 Hunodan designs (maximum
-8.32 seconds) and 24/31 hard photographs; the Viking's 15.21 mm alignment is
-restored. Application tests pass. Full inverse, build and rebuilt-browser QA
-remain in progress, so this is not yet a completed release. Small score differences, including the investigated timing variation, remain
-visible in the reports.
+Fresh checks retain eight fixed crop variants through editable conversion;
+the Viking's 15.21 mm alignment is restored. Full inverse and application
+tests, type checking, lint, build and rebuilt-browser QA pass. The preview at
+`http://127.0.0.1:5232/editor/mal/` serves the checked build. Small score
+differences remain visible in the reports: six photograph errors increase by
+at most 0.041875 percentage points, one improves, and one Hunodan historical
+comparison has the documented paired-run exception. Pass retention does not
+mean every error decreased. Nothing is pushed or deployed.
 
 All neural models remain offline. [Balanced corner training and broader angle
 coverage](boundary-localization.md) improve synthetic junction proposals, but
@@ -164,9 +168,10 @@ The Node dataset tests are included in `npm run test:inverse`. The Python
 collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
-The [latest completed release record](polishing-alternative.json) pins its
-solver, application and browser checks. The [current follow-up](visible-shared-returns.md)
-records focused tests, interrupted attempts and outstanding QA separately.
+The [latest completed release record](visible-shared-returns-release.json) pins
+its solver, application and browser checks, including all 152 served build
+assets. The [release report](visible-shared-returns.md) records focused tests,
+interrupted attempts, visual limitations and the completed QA separately.
 Earlier validation records remain in the [experiment history](experiment-history.md).
 The synthetic verifiers checked all 5,952 referenced assets, and the real-image
 audit checked all 1,034 source files and decoded image identities. Gallery

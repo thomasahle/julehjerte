@@ -170,6 +170,49 @@ Separate fresh-photo Viking runs pass with both schedulers, taking 9.39–9.42
 seconds for fitting and export. Their errors are 2.097% for the reserved version
 and 2.035% for the prior version. Their candidates already differ before this
 cleanup, so this pair does not establish a fresh-solve quality gain. The fixed
-incumbent replay isolates the budget conflict; broader committed-runtime QA
-is running serially under `visible-return-budget-v1/`. The ordinary preview
-still serves the preceding fully validated build.
+incumbent replay isolates the budget conflict. Broader committed-runtime QA
+subsequently completed under `visible-return-budget-v1/`, as recorded below.
+
+### Completed release verification
+
+The [release record](visible-shared-returns-release.json) pins runtime `fa7774c`,
+all eighteen successful driver stages, source hashes and retained artifacts.
+All eight fixed crop variants pass their two-percent and ten-second gates;
+all sixteen old/new editable conversions retain geometry and paper checks.
+The 22 regular Hunodan designs pass, with a maximum of 8.319 seconds. Twenty-one
+errors exactly match the preceding polishing release; `hjstr-03` retains the
+explicit historical exception supported by the six identical paired runs above.
+
+The automatic photo pipeline retains all 24/31 previously accepted cases, with
+unchanged original sources, crop coordinates and prepared mask/probability
+hashes. The Viking again recovers 15.21 mm of shared alignment and exactly its
+previous 2.02375% independent error. Seven other final scores change: maple-leaf
+improves by 0.014375 percentage points; floral-checker, gingerbread,
+warped-checker, fine-checker, orb and crown increase by 0.005–0.041875 percentage
+points. These are recorded, not discarded because their pass status stayed the
+same. The release does not establish that every score is monotonic or that
+every small change has the same cause.
+
+All 781 inverse tests and 855 application tests pass (one application test
+skipped). Type checking reports zero errors and seven existing warnings;
+lint and the build pass. Eleven production Chromium flows pass without a
+reference-engine proxy or intervention, including nine PDF signature checks.
+All eleven result previews were visually inspected. Blue-star disagreement is
+0.44625%, with two visible-return contractions and a 9.48-second click-to-ready
+time. The hat retains matching templates and approximately 0.412% motif error.
+Small bumps remain on its straight edges; the blue-star crop still omits one
+photographed border detail. The leaf reports its approximately 2.63% difference
+and keeps the editable result available. Passing these checks does not certify
+perfect contours or physical assembly.
+
+The browser harness uses its recorded 180-second solver setting. Observed
+click-to-ready times are below ten seconds in this run, but those measurements
+are separate from the explicit ten-second native benchmark gates. Original
+settings and timing definitions remain in the release record.
+
+The preview at `http://127.0.0.1:5232/editor/mal/` was rebuilt and restarted with
+this runtime. HTTP bytes for 152 served assets match the build; all 83 inverse
+JavaScript/WASM files also match current source. The final audit rechecks
+source and artifact hashes, actual exported-pair checks, the historical Hunodan
+exception, pass retention and browser outcomes. No learned model is deployed,
+and nothing has been pushed.
