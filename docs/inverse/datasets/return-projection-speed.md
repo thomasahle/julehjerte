@@ -87,5 +87,34 @@ designs. These numerical passes do not establish the original artwork or
 physical assembly.
 
 The owned preview at `http://127.0.0.1:5232` has been refreshed, and all 158
-checked served assets match the build. Browser checks are still running, so
-`99399ff` remains the last fully validated release.
+checked served assets match the build. All **sixteen main Chromium workflows**
+pass. Four additional shifted-star/leaf flows pass with both ordinary and
+explicit ten-second worker allowances; their actual downloaded editable SVGs
+pass independent 400/800-pixel image and feature checks. The ordinary leaf flow
+has 2.5488% disagreement at 400 pixels, versus 1.3156% with the shorter request;
+more allowed search time does not yet guarantee a better selected result.
+The Viking's click-to-ready time is 29.71 seconds. These results establish
+`c000d30` as the latest validated runtime, not a universal browser speed target.
+
+Fresh Draw and Paint contexts load no solver or WASM before an action. Their
+initial JavaScript sizes remain 473,483 and 503,384 bytes. All 68 application
+asset sizes match the prior build, totaling 1,907,733 bytes; only 31 assets are
+byte-identical. SvelteKit's generated build version changes a chunk and its
+importers' content-hashed filenames. The original local harness failed because
+it required old filenames. The reusable replacement verifies current served
+bytes, deferred loading and size comparisons separately:
+
+```sh
+PLAYWRIGHT_MODULE=<owned-playwright-module> INVERSE_TEST_URL=http://127.0.0.1:5232 \
+  node scripts/inverse/entry-loading-browser-test.mjs --output=tmp/entry-loading \
+  --baseline-assets=<previous-served-assets.json> \
+  --baseline-loading=<previous-lazy-loading.json>
+```
+
+Both baseline arguments are optional together. The first two new-harness
+attempts exposed a recorded-URL type error and inclusion of blocked external
+analytics in the baseline; these failed records are preserved. The corrected
+third replay and ESLint pass. No solver source changed during these checks,
+and all 845 pinned source hashes still match. Browser screenshot review covers
+the hat, star, Viking and gold angel: their main motifs survive, while the hat
+retains small edge nicks and the Viking has frame seams and uneven details.

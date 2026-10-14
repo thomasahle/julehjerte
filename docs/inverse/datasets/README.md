@@ -28,14 +28,14 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
-The last fully validated solver revision is `99399ff`. Its
-[release record](small-feature-release.json) passes **22/22 regular Hunodan
-designs below ten seconds**, with a maximum of **7.915 seconds**. Twenty-one
-mask errors are unchanged from the preceding validated release and the bird
-improves. Automatic cropping and fitting pass **25/31 hard photographs**.
-All 47 accepted editable SVG pairs pass independent checks; all sixteen
-Chromium workflows pass. Full QA passes 849 inverse tests, 857 application
-tests (one existing skip), type checking, lint and build.
+The latest validated solver revision is `c000d30`. Its
+[release record](return-projection-speed.json) passes **22/22 regular Hunodan
+designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic
+cropping and fitting pass **25/31 hard photographs**. All 47 accepted editable
+SVG pairs pass independent checks; all sixteen main Chromium workflows and
+four additional budget comparisons pass. Full QA passes 853 inverse tests,
+857 application tests (one existing skip), type checking, lint and build.
+The preceding `99399ff` [release record](small-feature-release.json) is preserved.
 
 These are complete-pipeline results on fixed development benchmarks, not all
 573 collected photo files. The six photographic failures remain unresolved.
@@ -44,9 +44,9 @@ but do not establish a reliable automatic detector. Pale-material loss,
 inconsistent border transitions and small-feature loss also occur. Agreement
 with an estimated photographic mask is not agreement with unavailable original
 artwork. Native ten-second results are not browser latency guarantees; the
-Viking browser flow takes 29.12 seconds with its ordinary 180-second allowance.
+Viking browser flow takes 29.71 seconds with its ordinary 180-second allowance.
 
-### Latest code: native checks passed, browser checks pending
+### Latest solver and browser validation
 
 Runtime revision `c000d30` passes **853/853 inverse tests**, **857 application
 tests** (one existing skip), type checking, lint and build. The pinned run
@@ -57,9 +57,18 @@ crop coordinates and settings are unchanged. The photographic comparison
 retains **25/31**, with seven errors lower and none higher; the leaf improves
 from 2.5625% to 1.3163%. All photographed inputs, selected corners and classified
 masks are unchanged. The same six failures remain. All **47 accepted editable
-SVG pairs** pass independent source-feature, geometry and paper checks. Browser
-checks are running separately; `99399ff` remains the last fully validated release
-until they finish.
+SVG pairs** pass independent source-feature, geometry and paper checks. All
+sixteen main browser workflows pass, as do shifted-star and leaf uploads with
+both the ordinary allowance and an explicit ten-second worker request. The
+actual downloaded SVGs pass independent 400/800-pixel checks.
+
+Fresh Draw and Paint contexts make no initial solver/WASM requests. Their
+initial JavaScript sizes are unchanged at 473,483 and 503,384 bytes. The
+corrected browser harness checks current served bytes and compares bundle
+sizes; it no longer requires content-hashed filenames from an older build.
+All application JS/CSS size multisets match, but only 31 of 68 assets have
+identical content. Build-version changes propagate through hashed imports.
+The original harness failure and two correction attempts remain in the record.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority
