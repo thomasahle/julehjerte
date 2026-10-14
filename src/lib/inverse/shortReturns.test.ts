@@ -3,6 +3,7 @@ import { loadSolutionJSON, solutionJSON } from '$inverse/core/graph.js';
 import { sampleWeave } from '$inverse/core/validate.js';
 import { settings } from '$inverse/core/settings.js';
 import { finalizeShortReturns } from '$inverse/core/direct/short-returns.js';
+import { finish } from '$inverse/core/engine.js';
 import { convertValidatedCutGeometry, type CutGeometry } from './toHeartDesign';
 import geometry from '../../../scripts/inverse/fixtures/editor-anchor-return.json';
 import source from '../../../scripts/inverse/fixtures/anchor-upload-mask.json';
@@ -22,6 +23,12 @@ it('repairs the real anchor return without increasing source error, and opens in
   const exported = solutionJSON(result) as CutGeometry;
   const common = new Set(exported.A_overlap_paths[2]!.map(r => r.curve));
   expect(exported.B_overlap_paths[1]!.some(r => common.has(r.curve))).toBe(true);
-  const converted = convertValidatedCutGeometry(JSON.stringify(solutionJSON(result)), { name: 'Anchor', reference: { mask: { size: source.resolution, data: mask } } });
+  // Topology cleanup is only an intermediate fit. Final export applies the
+  // complete return rule and repairs defects the cheaper search guide missed.
+  const final = finish(result, cfg, () => {}, { refine: false });
+  expect(final.report.finalReturnRepair).toMatchObject({ accepted: true });
+  expect(final.report.templateChecksPassed).toBe(true);
+  expect(error(loadSolutionJSON(final.files['cut_geometry.json']!))).toBeLessThanOrEqual(error(result));
+  const converted = convertValidatedCutGeometry(final.files['cut_geometry.json']!, { name: 'Anchor', reference: { mask: { size: source.resolution, data: mask } } });
   expect(converted.editorValidation?.passed).toBe(true);
 }, 10_000);

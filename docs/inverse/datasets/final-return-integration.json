@@ -1,0 +1,835 @@
+{
+  "scope": "Integrated complete-cut return checks and bounded final repair with optional image recovery. Frozen 51-output replay against 70b6fc5; two anchor regressions resolved. Fresh speed/quality and full repository/browser QA pending.",
+  "baselineCommit": "70b6fc5",
+  "sourceHashes": {
+    "src/lib/editor/curveIssues.ts": "fa07e5071f6efb87a21630abc0cdc2dfa5a6fd537eea2e46999fe362fb695b38",
+    "src/lib/geometry/curveReturns.ts": "fac814a3f65d9421f1a0b2b5b4fb422eee38d72b705c915e0d1b6b9e1776ee08",
+    "src/lib/geometry/returnSearch.ts": "cac37b3b085ea98a572dd28309530e74074c127752ad754360cd46634e444189",
+    "static/inverse/core/return-search.js": "7fa3ca77219e51ae3e8cc3aa09f81e23d6f63a173e2a28586e6c4c917c8d807d",
+    "static/inverse/core/complete-self-returns.js": "c39492fd0b22e65ac28bdf11cde24c8a72ffe385d488820e0d05299914f1a110",
+    "static/inverse/core/validate.js": "c9cd2cc3b32b35d559a59441b7644d18b00dae29f9a959ecf3648b1deb23ddb7",
+    "static/inverse/core/engine.js": "df3c667254e3014ee5bcd7de4c8e1d02505b4701c8596a48cd204992b9f27e12",
+    "static/inverse/core/direct/short-return-project.js": "1c9b47fd0876ff5fd1e6d17fca9d185d86dd23998a7b72bda261510c4a0940b7",
+    "static/inverse/core/direct/final-return-repair.js": "591521ee1ae435e1bc8b231210de873af18042475c31265a0eca988971f654bb",
+    "scripts/inverse/final-return-repair.test.mjs": "c0929e2b479e4de5d6030daa7a818b582a99c79b2fa558c4aba4468d3166f1ee",
+    "scripts/inverse/diagnostics/build-short-return-runtime.mjs": "d429351a1871b0485a2246c55097a043ed779e3fcabfa923f90a5ae19a1646ae",
+    "scripts/inverse/diagnostics/build-whole-return-editor.mjs": "60f7811ed93c52572c2829f2d20644fc829c4fb974be78420da6e865c22b7931",
+    "scripts/inverse/diagnostics/short-return-projection.patch": "9bc6230b0ba96c18754ba13178d3969ca7ab49b259cd5352239b502e9dc8c7fa",
+    "static/inverse/core/direct/refine.js": "06d16441b48be9bc4230fcfa61167d9270b4de72bc5942ca211dbde311c97dbf",
+    "src/lib/inverse/editorConversion.test.ts": "b0e3f4b0772c9dca3f0e00b4ff2f4cc8a2ab6c34f8c19e3c6d576e0e89a5a0f9",
+    "src/lib/inverse/shortReturns.test.ts": "eb234353594eb19d980fdef3d9d02218b2120d2922d912bb43ffbd43f001b0b6",
+    "src/lib/inverse/engine-modules.d.ts": "e554424ce825ba1e68a02152027ed1b042ebbedffffb9ec452d2f9c6e84adb67"
+  },
+  "cases": 51,
+  "acceptedBefore": 47,
+  "acceptedAfter": 47,
+  "independentImageErrorIncreases": 0,
+  "changed": [
+    {
+      "id": "hunodan-hjfig-05",
+      "errorBefore": 0.009042960667083447,
+      "errorAfter": 0.009042960667083447,
+      "totalFinalizationMilliseconds": 435.99662499999977,
+      "repair": {
+        "attempted": true,
+        "accepted": true,
+        "attempts": [
+          {
+            "hiddenOnly": true,
+            "projection": {
+              "attempted": true,
+              "iterations": 12,
+              "displacements": 21,
+              "initialReturns": 4,
+              "finalReturns": 0,
+              "accepted": true,
+              "policy": "hidden-controls-only",
+              "maxIterations": 64,
+              "maxMilliseconds": 2000,
+              "preservedSymmetry": []
+            },
+            "accepted": true,
+            "error": {
+              "mismatchPixels": 990,
+              "observedPixels": 113569,
+              "observedFraction": 1,
+              "mismatchFraction": 0.008717167536915883
+            },
+            "errorBefore": {
+              "mismatchPixels": 990,
+              "observedPixels": 113569,
+              "observedFraction": 1,
+              "mismatchFraction": 0.008717167536915883
+            },
+            "paper": {
+              "status": "pass",
+              "requiredRemainingWidth": 2,
+              "nominalDiameter": 2.50501002004008,
+              "gridSpacing": 0.2777777777777778,
+              "clearanceGuard": 0.20641855032959658,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        14.514013038014884
+                      ],
+                      "certainCoreLength": 11.666666666666675,
+                      "possibleCoreLength": 12.222222222222232
+                    },
+                    {
+                      "interval": [
+                        14.514013038014884,
+                        35.39555739637809
+                      ],
+                      "certainCoreLength": 18.055555555555582,
+                      "possibleCoreLength": 18.888888888888918
+                    },
+                    {
+                      "interval": [
+                        35.39555739637809,
+                        60.33493197165286
+                      ],
+                      "certainCoreLength": 21.944444444444482,
+                      "possibleCoreLength": 22.777777777777818
+                    },
+                    {
+                      "interval": [
+                        60.33493197165286,
+                        84.15731598674563
+                      ],
+                      "certainCoreLength": 21.111111111111146,
+                      "possibleCoreLength": 21.666666666666703
+                    },
+                    {
+                      "interval": [
+                        84.15731598674563,
+                        100
+                      ],
+                      "certainCoreLength": 12.77777777777779,
+                      "possibleCoreLength": 13.611111111111125
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        14.098260003715513
+                      ],
+                      "certainCoreLength": 11.111111111111118,
+                      "possibleCoreLength": 11.944444444444454
+                    },
+                    {
+                      "interval": [
+                        14.098260003715513,
+                        34.909156101806445
+                      ],
+                      "certainCoreLength": 17.777777777777803,
+                      "possibleCoreLength": 18.888888888888918
+                    },
+                    {
+                      "interval": [
+                        34.909156101806445,
+                        60.28291988612532
+                      ],
+                      "certainCoreLength": 22.50000000000004,
+                      "possibleCoreLength": 23.055555555555596
+                    },
+                    {
+                      "interval": [
+                        60.28291988612532,
+                        84.60279461963214
+                      ],
+                      "certainCoreLength": 21.388888888888925,
+                      "possibleCoreLength": 22.22222222222226
+                    },
+                    {
+                      "interval": [
+                        84.60279461963214,
+                        100
+                      ],
+                      "certainCoreLength": 12.50000000000001,
+                      "possibleCoreLength": 13.333333333333346
+                    }
+                  ]
+                }
+              ],
+              "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+              "seconds": 0.04354033400000026,
+              "limitations": [
+                "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                "Small tips and features below the explicitly stated area threshold are not certified."
+              ]
+            },
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "gates": {
+              "geometry": true,
+              "fixedPreserved": true,
+              "displacementBounded": true,
+              "matchingPreserved": true,
+              "symmetryPreserved": true,
+              "paper": true,
+              "features": true,
+              "imageNotWorse": true
+            },
+            "milliseconds": 269.7437910000008
+          }
+        ]
+      }
+    },
+    {
+      "id": "photos-gift",
+      "errorBefore": 0.02309375,
+      "errorAfter": 0.0230625,
+      "totalFinalizationMilliseconds": 861.5050420000007,
+      "repair": {
+        "attempted": true,
+        "accepted": true,
+        "attempts": [
+          {
+            "hiddenOnly": true,
+            "projection": {
+              "attempted": true,
+              "iterations": 1,
+              "displacements": 0,
+              "initialReturns": 1,
+              "finalReturns": 1,
+              "accepted": false,
+              "policy": "hidden-controls-only",
+              "maxIterations": 64,
+              "maxMilliseconds": 2000,
+              "preservedSymmetry": []
+            },
+            "accepted": false,
+            "milliseconds": 34.42362499999945
+          },
+          {
+            "hiddenOnly": false,
+            "projection": {
+              "attempted": true,
+              "iterations": 6,
+              "displacements": 6,
+              "initialReturns": 1,
+              "finalReturns": 0,
+              "accepted": true,
+              "policy": "all-free-controls",
+              "maxIterations": 64,
+              "maxMilliseconds": 2000,
+              "preservedSymmetry": []
+            },
+            "accepted": true,
+            "error": {
+              "mismatchPixels": 3701,
+              "observedPixels": 160000,
+              "observedFraction": 1,
+              "mismatchFraction": 0.02313125
+            },
+            "errorBefore": {
+              "mismatchPixels": 3704,
+              "observedPixels": 160000,
+              "observedFraction": 1,
+              "mismatchFraction": 0.02315
+            },
+            "paper": {
+              "status": "pass",
+              "requiredRemainingWidth": 2,
+              "nominalDiameter": 2.50501002004008,
+              "gridSpacing": 0.14285714285714285,
+              "clearanceGuard": 0.11101525445522108,
+              "families": [
+                {
+                  "family": 0,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        9.562375818367654
+                      ],
+                      "certainCoreLength": 6.5714285714285765,
+                      "possibleCoreLength": 7.000000000000006
+                    },
+                    {
+                      "interval": [
+                        9.562375818367654,
+                        12.825525583140463
+                      ],
+                      "certainCoreLength": 0.5714285714285714,
+                      "possibleCoreLength": 0.9999999999999998
+                    },
+                    {
+                      "interval": [
+                        12.825525583140463,
+                        37.4632646791725
+                      ],
+                      "certainCoreLength": 21.85714285714282,
+                      "possibleCoreLength": 22.142857142857103
+                    },
+                    {
+                      "interval": [
+                        37.4632646791725,
+                        91.94944660329163
+                      ],
+                      "certainCoreLength": 51.714285714286056,
+                      "possibleCoreLength": 52.28571428571464
+                    },
+                    {
+                      "interval": [
+                        91.94944660329163,
+                        95.31066896374804
+                      ],
+                      "certainCoreLength": 0.5714285714285714,
+                      "possibleCoreLength": 0.9999999999999998
+                    },
+                    {
+                      "interval": [
+                        95.31066896374804,
+                        100
+                      ],
+                      "certainCoreLength": 1.8571428571428565,
+                      "possibleCoreLength": 2.428571428571428
+                    }
+                  ]
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0,
+                  "foldIntervals": [
+                    {
+                      "interval": [
+                        0,
+                        3.2678471206992734
+                      ],
+                      "certainCoreLength": 0.42857142857142855,
+                      "possibleCoreLength": 0.9999999999999998
+                    },
+                    {
+                      "interval": [
+                        3.2678471206992734,
+                        48.36825986293109
+                      ],
+                      "certainCoreLength": 42.42857142857157,
+                      "possibleCoreLength": 42.85714285714301
+                    },
+                    {
+                      "interval": [
+                        48.36825986293109,
+                        51.85268468774234
+                      ],
+                      "certainCoreLength": 0.5714285714285714,
+                      "possibleCoreLength": 1.1428571428571426
+                    },
+                    {
+                      "interval": [
+                        51.85268468774234,
+                        82.12159108801602
+                      ],
+                      "certainCoreLength": 27.42857142857137,
+                      "possibleCoreLength": 27.99999999999994
+                    },
+                    {
+                      "interval": [
+                        82.12159108801602,
+                        85.39447699542451
+                      ],
+                      "certainCoreLength": 0.42857142857142855,
+                      "possibleCoreLength": 0.9999999999999998
+                    },
+                    {
+                      "interval": [
+                        85.39447699542451,
+                        100
+                      ],
+                      "certainCoreLength": 11.857142857142852,
+                      "possibleCoreLength": 12.28571428571428
+                    }
+                  ]
+                }
+              ],
+              "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+              "seconds": 0.17604420899999967,
+              "limitations": [
+                "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+                "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+                "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+                "Small tips and features below the explicitly stated area threshold are not certified."
+              ]
+            },
+            "features": {
+              "passed": true,
+              "missingBefore": 0,
+              "missingAfter": 0,
+              "regressed": []
+            },
+            "gates": {
+              "geometry": true,
+              "fixedPreserved": true,
+              "displacementBounded": true,
+              "matchingPreserved": true,
+              "symmetryPreserved": true,
+              "paper": true,
+              "features": true,
+              "imageNotWorse": true
+            },
+            "milliseconds": 417.28091600000334
+          }
+        ]
+      }
+    }
+  ],
+  "rows": [
+    {
+      "id": "hunodan-hjcur-01",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.005148444444444444,
+      "afterError": 0.005148444444444444,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjcur-02",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.005219555555555555,
+      "afterError": 0.005219555555555555,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjcur-03",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.004522666666666667,
+      "afterError": 0.004522666666666667,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjcur-04",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.005639111111111111,
+      "afterError": 0.005639111111111111,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjcur-05",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.009436444444444445,
+      "afterError": 0.009436444444444445,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjfig-01",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.009799111111111111,
+      "afterError": 0.009799111111111111,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjfig-02",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.013340444444444445,
+      "afterError": 0.013340444444444445,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjfig-03",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.006634666666666666,
+      "afterError": 0.006634666666666666,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjfig-04",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.013824,
+      "afterError": 0.013824,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjfig-05",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.009042960667083447,
+      "afterError": 0.009042960667083447,
+      "repairAccepted": true
+    },
+    {
+      "id": "hunodan-hjfla-01",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.012166341145833334,
+      "afterError": 0.012166341145833334,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjhih-01",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.006040430615586996,
+      "afterError": 0.006040430615586996,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjhih-02",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.003899406226779104,
+      "afterError": 0.003899406226779104,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjhih-04",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.007776029627903062,
+      "afterError": 0.007776029627903062,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjsta-01",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.007929362880886427,
+      "afterError": 0.007929362880886427,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjsta-02",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0038045247395833335,
+      "afterError": 0.0038045247395833335,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjsta-03",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.012332213049376572,
+      "afterError": 0.012332213049376572,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjsta-04",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0050250552896055544,
+      "afterError": 0.0050250552896055544,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjsta-05",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.010624446293860237,
+      "afterError": 0.010624446293860237,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjstr-01",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.007550237322696868,
+      "afterError": 0.007550237322696868,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjstr-02",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.004365548980933596,
+      "afterError": 0.004365548980933596,
+      "repairAccepted": false
+    },
+    {
+      "id": "hunodan-hjstr-03",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0056129769369752365,
+      "afterError": 0.0056129769369752365,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-bauble",
+      "baselineAccepted": false,
+      "candidateAccepted": false,
+      "beforeError": 0.0919125,
+      "afterError": 0.0919125,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-bibel-cross",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.00243125,
+      "afterError": 0.00243125,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-bibel-star-8",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.003675,
+      "afterError": 0.003675,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-bibel-star-curved",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.00663125,
+      "afterError": 0.00663125,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-bibel-star-outline",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0116,
+      "afterError": 0.0116,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-bird",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.02470625,
+      "afterError": 0.02470625,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-bottom-flower",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0093875,
+      "afterError": 0.0093875,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-candle",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0048375,
+      "afterError": 0.0048375,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-crossed-ribbons",
+      "baselineAccepted": false,
+      "candidateAccepted": false,
+      "beforeError": 0.02153125,
+      "afterError": 0.02153125,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-crown",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.02411875,
+      "afterError": 0.02411875,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-dense-checker",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.00699375,
+      "afterError": 0.00699375,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-faceted-star",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0065,
+      "afterError": 0.0065,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-fine-checker",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0215875,
+      "afterError": 0.0215875,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-flettede-puppy",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0103125,
+      "afterError": 0.0103125,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-flettede-stonehenge",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.01905,
+      "afterError": 0.01905,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-flettede-viking",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.02056875,
+      "afterError": 0.02056875,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-floral-checker",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.01929375,
+      "afterError": 0.01929375,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-flower",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0050625,
+      "afterError": 0.0050625,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-gift",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.02309375,
+      "afterError": 0.0230625,
+      "repairAccepted": true
+    },
+    {
+      "id": "photos-gingerbread",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.014825,
+      "afterError": 0.014825,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-jigsaw",
+      "baselineAccepted": false,
+      "candidateAccepted": false,
+      "beforeError": 0.0564375,
+      "afterError": 0.0564375,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-leaf",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0265125,
+      "afterError": 0.0265125,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-maple-leaf",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.013325,
+      "afterError": 0.013325,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-orb",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.01438125,
+      "afterError": 0.01438125,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-outline-star",
+      "baselineAccepted": false,
+      "candidateAccepted": false,
+      "beforeError": 0.00815625,
+      "afterError": 0.00815625,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-round-checker",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.0121375,
+      "afterError": 0.0121375,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-stacked-hearts",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.007425,
+      "afterError": 0.007425,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-warped-checker",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.01813125,
+      "afterError": 0.01813125,
+      "repairAccepted": false
+    },
+    {
+      "id": "photos-white-birds",
+      "baselineAccepted": true,
+      "candidateAccepted": true,
+      "beforeError": 0.00379375,
+      "afterError": 0.00379375,
+      "repairAccepted": false
+    }
+  ],
+  "artifacts": {
+    "tmp/heart-learning/final-integration-v1/replay-integrated.mjs": "bce028f176a25881aef856ca852d50cf14f37a476c9b8a5beac0277c102f0b65",
+    "tmp/heart-learning/final-integration-v1/replay-integrated.log": "4681b47992824b128af7f80cdf562809779f715e951e572875f3f754ecf59ec9",
+    "tmp/heart-learning/final-integration-v1/replay-integrated/results.json": "9a1bba9befea07ad8935b79e33d6f5cf28e1d70f5528f5dd1913e6b14a0cfa8f",
+    "tmp/heart-learning/final-integration-v1/replay-integrated/comparison.json": "5a9ca45317b279c8ec8ec147fb7a42084588e2861a0d86d59b2858b66a9a9981",
+    "tmp/heart-learning/final-integration-v1/margin-probe.mjs": "c959a00203bc49673baa8b7f56095e68cf38e87dbf1063577bb02aebcb5e2646",
+    "tmp/heart-learning/final-integration-v1/margin-probe.json": "d1e53e05726be0f31979d67a5a1615a44cf222b093d508164a86d80a114ca416",
+    "tmp/heart-learning/final-integration-v1/margin-probe-current.mjs": "0db4d068a6123bdfdcb89c3816a73223aa2119c1bdc9782c62bfb2a5d0abaff6",
+    "tmp/heart-learning/final-integration-v1/margin-probe-current.json": "032c3310bec3cbe22aeb826ad844719d01fafd06dc0ef248805bea478f8a9756",
+    "tmp/heart-learning/final-integration-v1/final-regressions.log": "17020e833da5fa852e834b31e497f094c35c3cadab327f778275c8cd1cd2a2ea",
+    "tmp/heart-learning/final-integration-v1/final-finish-tests.log": "c100e7924ede98503b63f46f9a1e489dc2f212c31af2efa5a126313da0573158",
+    "tmp/heart-learning/final-integration-v1/production-editor-tests.log": "07742122c6339c47e47af6c59591323e58144f92c9bc5fc12626f5f990bfca34",
+    "tmp/heart-learning/final-integration-v1/final-lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tmp/heart-learning/final-integration-v1/baseline.tar": "f5b1970f781a0fd3aa48a2633e9649cbfe8e6aba8b2692bb21a6104563c9c877",
+    "tmp/heart-learning/final-integration-v1/anchor/probe.json": "bdb53f54a30b12bed709a71c7192a3e691ee6da530da7c4a79e2d84c688c2db1",
+    "tmp/heart-learning/final-integration-v1/anchor/returns.png": "63564737b53b9d803655699e481a323fe4d5157b38a191101de56fc609cc4ce7",
+    "tmp/heart-learning/final-integration-v1/anchor/regressions.log": "3dd4054cc180bebc80f958b321b7f5d74d3ace4066bd339ad5a1ce7c4b122302",
+    "tmp/heart-learning/final-integration-v1/anchor/focused-node.log": "c87c5246b71d0152955af0da77074d705160713359db8d80ffa9aaf8c194d513"
+  }
+}

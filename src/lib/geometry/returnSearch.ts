@@ -2,6 +2,8 @@
  * This module contains no solver, image-processing or UI dependencies.
  */
 export type ReturnPoint = [number, number];
+/** Editor policy, measured in the overlap square's 100 heart units. */
+export const HEART_CLEARANCE_UNITS = 1.5;
 type Point = ReturnPoint;
 type Pair = [number, number];
 type Box = [number, number, number, number];
@@ -449,3 +451,25 @@ export function pathReturns(curves: ReadonlyArray<ReturnCurveLike>, { margin, lo
 	return issues;
 }
 
+
+/** The same heart-relative rule for editor pixels and worker millimetres.
+ * `minimumDistance` represents 1.5 units of the 100-unit overlap square.
+ * Numerical tolerance and the endpoint exemption are normalized together;
+ * returned witnesses use the caller's original units and curve parameters.
+ */
+export function heartPathReturns(controls: readonly ReturnPoint[][], minimumDistance: number): ReturnWitness[] {
+	if (!controls.length || !(minimumDistance > 0) || !Number.isFinite(minimumDistance)) return [];
+	const scale = HEART_CLEARANCE_UNITS / minimumDistance;
+	const origin = controls[0][0];
+	const curves = controls.map(control => new ReturnCurve(control.map(point => [
+		(point[0] - origin[0]) * scale,
+		(point[1] - origin[1]) * scale
+	])));
+	return pathReturns(curves, { margin: HEART_CLEARANCE_UNITS, tolerance: 0.01, endpointTolerance: 1 }).map(issue => ({
+		...issue,
+		points: issue.points.map(point => [point[0] / scale + origin[0], point[1] / scale + origin[1]]) as [ReturnPoint, ReturnPoint],
+		distanceUpper: issue.distanceUpper / scale,
+		required: minimumDistance,
+		arcSeparation: issue.arcSeparation / scale
+	}));
+}

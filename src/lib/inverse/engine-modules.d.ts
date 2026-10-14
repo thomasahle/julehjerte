@@ -83,7 +83,9 @@ declare module '$inverse/locator/locator.js' {
 }
 
 declare module '$inverse/core/engine.js' {
+  import type { EngineSolution } from '$inverse/core/graph.js';
   import type { ArtworkInput } from '$lib/inverse/client';
+  export function finish(solution: EngineSolution, settings: Record<string, unknown>, onProgress?: (event: Record<string, unknown>) => void, options?: { refine?: boolean; deadline?: number }): { files: Record<string, string>; report: Record<string, unknown> };
   /**
    * Classify artwork into the engine's own two-colour reading of the woven
    * square — the very call the worker makes for a `prepare` request.

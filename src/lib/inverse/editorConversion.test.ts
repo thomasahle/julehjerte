@@ -61,10 +61,10 @@ describe('the final editable heart', () => {
   });
 
   it('blocks the photographed anchor’s narrow return even though engine validation accepted it', () => {
-    // Actual Chromium upload/crop/solve result. A short detour escaped the
-    // engine’s local-neighbourhood check; conversion must still reject it.
+    // Actual Chromium upload/crop/solve result. Complete-cut checks also catch
+    // the left return: 1.42 mm gap, 3.10 mm arc, and 197 degrees of turning.
     const narrow = anchor as unknown as CutGeometry;
-    expect(issues(convertCutGeometry(narrow, { name: 'anchor', tolerance: 0 }).design)).toEqual(new Set(['R-cut-2']));
+    expect(issues(convertCutGeometry(narrow, { name: 'anchor', tolerance: 0 }).design)).toEqual(new Set(['L-cut-1', 'R-cut-2']));
     expect(() => convertValidatedCutGeometry(narrow, { name: 'anchor' })).toThrow(CutGeometryError);
   });
 

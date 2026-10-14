@@ -28,6 +28,12 @@ The 2026-10-14 snapshot contains:
 
 ## Current results and limits
 
+The [final-export integration](final-return-integration.md) now connects the
+shared whole-cut checker and bounded repair to the engine and editor. Its
+frozen-output replay retains all 47 accepted outputs without increasing image
+error. Fresh solving, speed and browser QA remain pending; the benchmark figures
+below describe the earlier completed releases.
+
 The [row-initialization and scheduling release](row-initialization.md) now
 passes all 22 regular Hunodan designs below ten seconds (maximum 7.827 seconds,
 unchanged validated errors) and retains 25/31 hard-photo recoveries. All 25

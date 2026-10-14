@@ -12,6 +12,7 @@ import {symmetryTies,applyTies,symmetryReport} from './symmetry.js';
 import {straightProposal,primitiveComplexity,primitiveCost} from './primitives.js';
 import {boundaryObjective} from './image-objective.js';
 import {turnLimitPenalty} from './turn-limit.js';
+import {projectShortReturns} from './short-return-project.js';
 export const FITTING_CLEARANCE_CUSHION=.35;
 export function fittingMargin(cfg,width){return cfg.nominalWidth+Math.SQRT2*width/cfg.materialResolution+2*cfg.geometryTolerance+FITTING_CLEARANCE_CUSHION;}
 
@@ -97,7 +98,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=false}={}){
   // Compile the weighted force field once, not on every optimization step.
   const objective=boundaryObjective(prob,weights),force=objective.target;
   const imageValue=createBoundaryEvaluator(graph,force,n),transposedImageValue=createBoundaryEvaluator(graph,force,n,{transpose:true,rows:193});
@@ -132,15 +133,15 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     if(proposals[1]?.error>original.error)proposals.pop();
     proposals.sort((a,b)=>selection==='mask'?a.error-b.error||a.score-b.score:a.score-b.score);
     let accepted=false;
-    for(const value of proposals){
-      const solution=graph.solution(value.points,phase,input),check=validate(solution,cfg,{checkImage:false});
+    const consider=value=>{
+      const solution=graph.solution(value.points,phase,input),check=value.validation||validate(solution,cfg,{checkImage:false,finalGeometry});
       if(ties?.withinCurve){
         const symmetry=symmetryReport(solution,cfg.symmetry);
         if(symmetry.honoured.length!==symmetry.requested.length){check.passed=false;check.issues.push('Requested cutting symmetries are not satisfied.');}
       }
       const paper=check.passed?materialAudit(solution,cfg):null;
       value.validation=check;value.paper=paper?.summary;value.preferred=!preferCheckpoint||preferCheckpoint(value,solution);
-      const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,...(preferCheckpoint?{preferred:value.preferred}:{}),issues:check.issues.slice(0,8)};history.push(rec);onProgress(rec,solution);
+      const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,...(preferCheckpoint?{preferred:value.preferred}:{}),issues:check.issues.slice(0,8),...(value.returnProjection?{returnProjection:value.returnProjection}:{})};history.push(rec);onProgress(rec,solution);
       if(!bestInvalid||value.error<bestInvalid.error)bestInvalid=value;
       // More optimization must not replace a geometry-valid uncertain paper
       // checkpoint with an illegal curve merely because its image error is
@@ -151,10 +152,24 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
         safe=value.points.slice();accepted=true;
         if(better(value,best))best=value;
         if(stopWhen&&step>=80&&stopWhen(best))stoppedEarly=true;
-        // A straight proposal can erase a feature while the unsimplified
-        // proposal at this same step retains it. Inspect that alternative too.
-        if(preferCheckpoint&&!value.preferred)continue;
-        break;
+        return true;
+      }
+      return false;
+    };
+    for(const value of proposals){
+      if(consider(value)&&(!preferCheckpoint||value.preferred))break;
+    }
+    // Final repair can alternate image steps with constraint projection. The
+    // ordinary fitter retains its cheaper guidance; reuse each failed audit.
+    if(finalGeometry&&!accepted&&performance.now()<deadline-50){
+      const base=proposals.find(v=>!v.straightened&&v.validation?.issues.length&&v.validation.issues.every(i=>i.type==='short_self_clearance'));
+      if(base){
+        const repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline,initialAudit:base.validation});
+        if(repair.points){
+          const p=repair.points,error=mismatch(renderCurves(graph,p,phase,n,32),prob,weights),imageScore=(imageValue(p,phase)+transposedImageValue(p,phase))/2+objective.offset;
+          const value={graph,points:p,phase,error,score:imageScore+primitiveCost(graph,p,n)+(cfg.preferMatchingSheets?matchingPenalty(graph,p).loss:0),primitives:primitiveComplexity(graph,p),straightened:false,validation:repair.validation,returnProjection:repair.report};
+          if(consider(value)){points.set(p);adam.reset();}
+        }else history.push({step,error:base.error,score:base.score,returnProjection:repair.report,geometry:false,repairRejected:true,issues:base.validation.issues.slice(0,8)});
       }
     }
     let repeatedRollback=false;

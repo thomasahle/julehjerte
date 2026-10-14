@@ -24,7 +24,7 @@ export async function buildShortReturnRuntime(output){
     const file=path.join(directory,'inverse',name);if(!(await fs.stat(file)).isFile())continue;
     sourceHashes[path.relative(process.cwd(),file)]=hash(await fs.readFile(file));
   }
-  const inputs={};for(const file of [candidate,patch,'static/inverse/core/direct/refine.js'])inputs[file]=hash(await fs.readFile(file));
+  const inputs={};for(const file of [candidate,patch,'static/inverse/core/direct/refine.js','static/inverse/core/direct/short-return-project.js','static/inverse/core/complete-self-returns.js','static/inverse/core/return-search.js','static/inverse/core/validate.js'])inputs[file]=hash(await fs.readFile(file));
   const manifest={scope:'Offline experimental short-return predicate and projection of failed refinement checkpoints. The live static/inverse runtime is unchanged.',baseCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),inputs,sourceHashes};
   await fs.writeFile(path.join(directory,'source.json'),JSON.stringify(manifest,null,2)+'\n');
   return directory;

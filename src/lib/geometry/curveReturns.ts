@@ -1,5 +1,5 @@
 import type { BezierSegment } from './bezierSegments';
-import { ReturnCurve, pathReturns, type ReturnPoint } from './returnSearch';
+import { heartPathReturns, type ReturnPoint } from './returnSearch';
 
 /** Whole-cut return check in the editor's coordinate system. Crossing and
  * clearance between different cuts remain separate checks.
@@ -9,14 +9,11 @@ import { ReturnCurve, pathReturns, type ReturnPoint } from './returnSearch';
  * exemption stay fixed when the same template is resized or translated.
  */
 export function hasSelfReturn(segments: readonly BezierSegment[], minimumDistance: number): boolean {
-	if (!segments.length || !(minimumDistance > 0) || !Number.isFinite(minimumDistance)) return false;
-	const scale = 1.5 / minimumDistance;
-	const origin = segments[0].p0;
-	const curves = segments.map(segment => new ReturnCurve(
+	const curves = segments.map(segment =>
 		[segment.p0, segment.p1, segment.p2, segment.p3].map(point => [
-			(point.x - origin.x) * scale,
-			(point.y - origin.y) * scale
+			point.x,
+			point.y
 		] as ReturnPoint)
-	));
-	return pathReturns(curves, { margin: 1.5, tolerance: 0.01, endpointTolerance: 1 }).length > 0;
+	);
+	return heartPathReturns(curves, minimumDistance).length > 0;
 }

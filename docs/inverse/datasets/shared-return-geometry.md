@@ -1,5 +1,9 @@
 # Shared return geometry and scale-consistent endpoint handling
 
+This records the standalone port at `70b6fc5`. The subsequent
+[final-export integration](final-return-integration.md) connects it to the app
+and fixes the remaining caller-level units mismatch.
+
 The complete-cut return checker now has a standalone TypeScript implementation
 usable by the editor, with a generated plain-ESM copy for the worker. The editor
 adapter also fixes an endpoint exemption that depended on display coordinates.
