@@ -1,0 +1,27 @@
+{
+  "scope": "Offline expansion of a learned foreground decoder into body and conditional paper-identity outputs. No training run, exported ONNX model or live-site behavior change.",
+  "checks": {
+    "focusedTests": 4,
+    "offlineLearningModules": 14,
+    "offlineLearningTests": 81,
+    "exitCode": 0
+  },
+  "invariants": [
+    "First output retains learned body logits in float32 and float64.",
+    "Second output begins with zero logits and receives a nonzero material gradient.",
+    "Parent parameters and buffers are not aliased or mutated.",
+    "Encoder parameters and BatchNorm statistics stay unchanged through the tested decoder update.",
+    "Module training flags, feature gradient flags, dtype and initialization provenance are preserved.",
+    "Construction does not advance the CPU random stream."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/material-transfer-v1/learning-tests.log": "7fca344ece31152dd795765696e83c3beb82cad7ee019681415d8f1370e75501"
+  },
+  "sourceHashes": {
+    "scripts/inverse/learning/material_transfer.py": "68c8462b7d710a1f7ffa73fc33d433814fee125317324564d2530a23e5826971",
+    "scripts/inverse/learning/material_transfer.test.py": "ab3ca131661dbd4db725c4427fd290821f1b4693c59b33cb62ab6b555336402f",
+    "scripts/inverse/learning/real_materials_learning.py": "cc3fa5448f9804c5f4e2ae3c407dbb9281a1cfbf3c332ab7d7a9e3d753907a16",
+    "scripts/inverse/learning/foreground.py": "dfef778c09e376c9be851ba69e4e9831c4a921cc05aeaae7ef86b8e440ff1dc4",
+    "scripts/inverse/learning/model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b"
+  }
+}

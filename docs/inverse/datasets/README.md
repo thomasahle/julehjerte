@@ -138,7 +138,9 @@ A separate [six-label diagnostic](real-supplement-diagnostic.md) passes 2/6 with
 the frozen scene model versus 1/6 with the existing cropper. These small,
 repeatedly inspected sets are distinct from the 31-photo benchmark and do not
 justify a global replacement. The seven partial material labels and joint loss
-are implemented and checked, but no material model has been trained. The
+are implemented and checked. A [tested decoder transfer](material-transfer.md)
+preserves the learned foreground output when adding paper identities; no
+material model has been trained. The
 [earlier Pinterest annotations](pinterest-material-labels.md) include uneven
 lighting on the same pale paper. The [two silhouette annotations](motif-material-labels.md)
 add boar and rabbit interiors with contour shadows; all retain the existing
