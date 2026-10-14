@@ -23,7 +23,11 @@ preserve both input-mask hashes and the original ten-second settings. The
 [clearance-order correction](datasets/clearance-order.md) now compares one
 existing alternative before committing the refinement budget. A fresh replay
 recovers checked 3+3 pairs at 0.450% and 0.615%, and the complete photo replay
-retains all 25 previous successes. Full repository/browser QA is in progress.
+retains all 25 previous successes. Full inverse QA passes this flower test,
+but finishes at 809/813: one obsolete candle scheduling assertion has since
+been corrected, and three existing near-miss checks expose a separately
+reproduced [deadline cutoff](datasets/feature-deadline-diagnostic.json).
+Build/browser validation and the preview update remain pending.
 Two Hunodan errors rise slightly in the full run despite all 22 finishing
 under ten seconds; the stricter unchanged-error goal remains unproven.
 

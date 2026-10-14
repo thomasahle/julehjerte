@@ -178,9 +178,18 @@ deadline and acceptance checks. Fresh exports recover both flowers with 3+3
 cuts at 0.450% and 0.615% error. All 25 previous hard-photo successes survive
 editable conversion. All 22 regular Hunodan cases finish under ten seconds,
 but two full-run errors rise slightly; isolated controls do not replace that
-result. Full repository/browser validation is in progress. The first QA
-attempt also found unnecessary system-font scanning in a path-only clipping
-test; removing it preserves every checked pixel and geometry assertion.
+result. Type checking, lint and all 855 application tests pass after removing
+unnecessary system-font scanning from a path-only clipping test, preserving
+every checked pixel and geometry assertion. Full inverse QA passes the flower
+but finishes at 809/813. The obsolete candle scheduling assertion is corrected
+and passes with the same output limits. The other three failures expose an
+existing [feature-initialization deadline cutoff](feature-deadline-diagnostic.json):
+both unchanged/current engines lose the four near-miss variants when a scaled
+clock models slower computation, despite unchanged initial grids and masks.
+All seven focused near-miss tests pass without the slowdown; this does not
+replace the failed full run. Offline scheduling prototypes recover some cases
+but still fail stricter local-detail checks. They are not in production, and
+build/browser validation and the preview update remain pending.
 
 The [six-label frozen follow-up](real-supplement-diagnostic.md) now evaluates
 the additions without training. The scene-trained model has 87.20% mean

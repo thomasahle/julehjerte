@@ -90,11 +90,48 @@ The focused seven-test suite then passes in 0.259 seconds of test time.
 
 ## Validation status and artifacts
 
-Full repository and browser validation is in progress. The first QA attempt
-is retained alongside the corrected run; it is not an all-green release.
+Type checking, lint and all 855 application tests pass after the font-scan
+correction (one existing application test is skipped). Full inverse QA passes
+the flower but finishes at **809/813**. The candle test required the old route
+through an uncertain two-cut candidate; it now checks the same one-cut output
+and independent error bound, plus explicit final geometry and paper validity.
+That focused test passes. Dedicated uncertain-paper fixtures remain unchanged.
 
-The [native evidence record](clearance-order-native.json) verifies 466 current
-source hashes and pins 697 local artifacts, including the rejected prototype
+The three other failures concern the original, horizontal-shift and
+vertical-shift near-miss photographs. Two skip feature initialization; the
+third misses the sun-outline error bound. All seven focused near-miss tests
+pass separately with their original criteria, and fresh unchanged/current
+control replays pass the four photographic variants. Those repeats do not
+replace the failed full suite.
+
+The [deadline diagnostic](feature-deadline-diagnostic.json) reproduces a
+specific scheduling cliff without changing the inputs. With a monotonic
+clock advancing 1.5 times faster, both unchanged and current engines skip the
+feature initializer and reject all four images. The ordinary fine grids have
+exactly the same counts, phases, errors and 150 steps as the normal current
+run. The new clearance comparison executes in none of them.
+
+The initializer's 3.5-second availability threshold is evaluated **after**
+clearance and polishing reserves. On a ten-second request, the decision must
+therefore occur before roughly 2.7 seconds. When it misses that threshold,
+the solver instead spends roughly five virtual seconds on unsuccessful MILP
+recovery. Ordinary refinement then fails to recover the lost source region.
+This identifies a real cutoff; the clock experiment is not an actual browser
+latency measurement or a guarantee of identical results under every load.
+
+Three offline prototypes preserve the original deadline and acceptance limits.
+Reducing the initializer threshold recovers three of four under the 1.5x clock.
+Deferring speculative MILP or allowing a close, physically valid near miss to
+propose finer outline curves also yields three accepted pairs, but only two
+meet the stricter sun-outline fixture check. None is promoted. The original
+case and budget-sensitive local detail remain unresolved.
+
+Build and browser validation have not run after these failures. The owned
+preview remains on its previously checked build; this is not an all-green
+release.
+
+The [native evidence record](clearance-order-native.json) records 466 source
+hashes from that benchmark run and pins 697 local artifacts, including the rejected prototype
 and unchanged-code control. The local study is
 `tmp/heart-learning/clearance-order-v2/`. It contains the
 fresh flower exports and `comparison.png`, the complete photo and editable
