@@ -1,6 +1,16 @@
 /** Evaluate a chosen crop in the unchanged synthetic material coordinates. */
 import {homography,invert,multiply,project,SQUARE} from '../datasets/synthetic-photo.mjs';
 
+/** Compare equally sampled binary fields, allowing an exchange of paper names.
+ * A flattened array with a different stride must never become an image score. */
+export function scoreReferenceMask(mask,target,valid){
+  if(!mask?.length||mask.length!==target?.length||mask.length!==valid?.length)throw new Error('Mask, reference and validity dimensions differ.');
+  let count=0,wrong=0;
+  for(let i=0;i<mask.length;i++)if(valid[i]){count++;wrong+=mask[i]!==target[i];}
+  if(!count)return null;
+  return{mismatchFraction:Math.min(wrong,count-wrong)/count,inverted:wrong>count/2,observedPixels:count,observedFraction:count/mask.length};
+}
+
 /** Locate saved predictions in the photograph, never in an unrelated proposed
  * crop. The original intervention runner fits pre-rectified crops and therefore
  * records their transform in labels rather than in a selectedCrop field.

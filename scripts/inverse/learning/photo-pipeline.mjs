@@ -9,7 +9,7 @@ import {detectHeartCrops} from '../../../static/inverse/core/crop.js';
 import {prepare,design} from '../../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../../static/inverse/core/presets.js';
 import {renderExportedWeave} from '../export-renderer.mjs';
-import {labelsForCrop} from './photo-labels.mjs';
+import {labelsForCrop,scoreReferenceMask} from './photo-labels.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
 if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10].');
@@ -32,14 +32,10 @@ async function decode(bytes){
   return{width:image.width,height:image.height,data:ctx.getImageData(0,0,image.width,image.height).data};
 }
 function png(values,n,channels=1){
+  if(values.length!==n*n*channels)throw new Error('Image buffer dimensions differ from the prepared resolution.');
   const canvas=createCanvas(n,n),ctx=canvas.getContext('2d'),rgba=ctx.createImageData(n,n);
   for(let i=0;i<n*n;i++)rgba.data.set(channels===1?[255*values[i],255*values[i],255*values[i],255]:[...values.slice(3*i,3*i+3),255],4*i);
   ctx.putImageData(rgba,0,0);return canvas.toBuffer('image/png');
-}
-function score(mask,target,valid){
-  let count=0,wrong=0;for(let i=0;i<mask.length;i++)if(valid[i]){count++;wrong+=mask[i]!==target[i];}
-  if(!count)throw new Error('No observed overlap pixels.');
-  return{mismatchFraction:Math.min(wrong,count-wrong)/count,inverted:wrong>count/2,observedPixels:count};
 }
 
 await save();
@@ -54,20 +50,22 @@ try{
       await store('crop-proposals.json',JSON.stringify(crops,null,2));
       if(!crops.candidates.length){row.status='crop-unresolved';continue;}
       const selected=crops.candidates[0];row.selectedCrop=selected;
-      const ready=performance.now(),prepared=prepare({...source,quad:selected.quad,cropProvenance:{...selected.provenance,humanReviewed:false}},report.configuration);
-      row.prepareSeconds=(performance.now()-ready)/1000;await store('crop.png',png(prepared.preview.rgb,384,3));await store('mask.png',png(prepared.preview.mask,384));
+      const ready=performance.now(),prepared=prepare({...source,quad:selected.quad,cropProvenance:{...selected.provenance,humanReviewed:false}},report.configuration),n=prepared.preview.resolution;
+      row.resolution=n;
+      row.prepareSeconds=(performance.now()-ready)/1000;await store('crop.png',png(prepared.preview.rgb,n,3));await store('mask.png',png(prepared.preview.mask,n));
       const solveStart=performance.now(),result=await design(prepared.target,report.configuration);row.solveSeconds=(performance.now()-solveStart)/1000;
       row.report=result.report;row.status=result.report.templateChecksPassed?'checked-pair':'review-required';
       const cuts=result.files['cut_geometry.json'];if(!cuts)throw new Error('No exported cutting pair.');await store('cut_geometry.json',cuts);
-      const render=await renderExportedWeave(cuts,384);await store('woven.png',render.png);
+      const render=await renderExportedWeave(cuts,n);await store('woven.png',render.png);
       // Evaluation starts only after the fitted cuts have been selected/exported.
       const labels=JSON.parse(await checked(probe,input.assets['labels.json'])),designRecord=manifest.designs.find(d=>d.id===input.designId);
       const canonical=await decode(await checked(manifest.sourceDataset,designRecord.sourceCanonical));
-      const reference=labelsForCrop(labels,selected.quad,canonical,384,photo.width,photo.height);
+      const reference=labelsForCrop(labels,selected.quad,canonical,n,photo.width,photo.height);
       row.cornerErrorsPixels=selected.quad.map((p,i)=>Math.hypot(p[0]-labels.actualQuad[i][0],p[1]-labels.actualQuad[i][1]));
-      row.classifiedReference=score(prepared.preview.mask,reference.target,reference.valid);row.exportedReference=score(render.mask,reference.target,reference.valid);
+      row.classifiedReference=scoreReferenceMask(prepared.preview.mask,reference.target,reference.valid);row.exportedReference=scoreReferenceMask(render.mask,reference.target,reference.valid);
+      if(!row.classifiedReference||!row.exportedReference)throw new Error('No observed overlap pixels.');
       const sourceCuts=JSON.parse(await checked(manifest.sourceDataset,designRecord.sourceCuts));row.referenceSlits=[sourceCuts.A_overlap_paths.length,sourceCuts.B_overlap_paths.length];
-      await store('latent-mask.png',png(reference.target,384));await store('latent-valid.png',png(reference.valid,384));
+      await store('latent-mask.png',png(reference.target,n));await store('latent-valid.png',png(reference.valid,n));
     }catch(error){row.status='failed';row.error=error.message;}
     finally{row.totalSeconds=(performance.now()-start)/1000;await save();console.log(row.id,row.status,row.totalSeconds.toFixed(3),row.exportedReference?.mismatchFraction);}
   }

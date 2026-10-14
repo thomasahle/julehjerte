@@ -11,7 +11,7 @@ import {AUTOMATIC_PRESET} from '../../../static/inverse/core/presets.js';
 import {auditFeatureFidelity} from '../../../static/inverse/core/feature-shapes.js';
 import {renderExportedWeave} from '../export-renderer.mjs';
 import {cropEvidence} from '../crop-evidence.mjs';
-import {labelsForCrop} from './photo-labels.mjs';
+import {labelsForCrop,scoreReferenceMask} from './photo-labels.mjs';
 import {detectForegroundCrop} from './foreground-crop.mjs';
 import {refineForegroundRGB,fillForegroundHoles} from './foreground-refine.mjs';
 import {hardPhotoTarget} from '../hard-photo-target.mjs';
@@ -53,14 +53,10 @@ async function decode(bytes){
   return{type:'pixels',imageWidth:image.width,imageHeight:image.height,rgba:ctx.getImageData(0,0,image.width,image.height).data,canvas};
 }
 function png(values,n,channels=1){
+  if(values.length!==n*n*channels)throw new Error('Image buffer dimensions differ from the prepared resolution.');
   const canvas=createCanvas(n,n),ctx=canvas.getContext('2d'),rgba=ctx.createImageData(n,n);
   for(let i=0;i<n*n;i++)rgba.data.set(channels===1?[255*values[i],255*values[i],255*values[i],255]:[...values.slice(3*i,3*i+3),255],4*i);
   ctx.putImageData(rgba,0,0);return canvas.toBuffer('image/png');
-}
-function score(mask,target,valid){
-  let count=0,wrong=0;for(let i=0;i<mask.length;i++)if(valid[i]){count++;wrong+=mask[i]!==target[i];}
-  if(!count)return null;
-  return{mismatchFraction:Math.min(wrong,count-wrong)/count,inverted:wrong>count/2,observedPixels:count,observedFraction:count/mask.length};
 }
 function prediction(buffer,n){if(buffer.length!==n*n*4)throw new Error('Invalid float prediction dimensions.');const values=new Float32Array(n*n);for(let i=0;i<values.length;i++)values[i]=buffer.readFloatLE(4*i);return values;}
 
@@ -107,7 +103,7 @@ for(const input of inputs){
       if(input.labels){
         const canonical=await decode(await checked(input.canonical));
         reference=labelsForCrop(labels,selected.quad,{width:canonical.imageWidth,height:canonical.imageHeight,data:canonical.rgba},n,source.imageWidth,source.imageHeight);
-        row.classifiedReference=score(prepared.preview.mask,reference.target,reference.valid);await store('latent-mask.png',png(reference.target,n));await store('latent-valid.png',png(reference.valid,n));
+        row.classifiedReference=scoreReferenceMask(prepared.preview.mask,reference.target,reference.valid);await store('latent-mask.png',png(reference.target,n));await store('latent-valid.png',png(reference.valid,n));
       }
       if(solveIds.has(input.id)||solveIds.has(input.caseId)||solveIds.has('all')||solveIds.has('synthetic')&&input.group!=='real'){
         const start=performance.now(),result=await design(target,report.configuration);row.solveSeconds=(performance.now()-start)/1000;row.report=result.report;
@@ -118,7 +114,7 @@ for(const input of inputs){
         row.checkedPair=result.report.templateChecksPassed&&row.independentFeatures.passed&&row.independentImageError<=.03;
         row.status=row.checkedPair?'checked-pair':'review-required';
         if(observation)row.materialReview.exported=reviewMaterialSamples(observation,{mask:render.mask,resolution:n,quad:selected.quad,phase:row.materialReview.classified.phase});
-        if(reference)row.exportedReference=score(render.mask,reference.target,reference.valid);
+        if(reference)row.exportedReference=scoreReferenceMask(render.mask,reference.target,reference.valid);
       }
     }catch(error){row.status='failed';row.error=error.message;row.report=error.report;}
     finally{await save();console.log(row.id,method,row.status,row.cornerErrorsPixels?.map(v=>v.toFixed(1)),row.independentImageError);}
