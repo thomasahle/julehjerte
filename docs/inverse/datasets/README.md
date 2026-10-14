@@ -87,6 +87,10 @@ verdict for three of the four outputs. The experiment remains outside the app.
 The [whole-cut editor experiment](whole-cut-editor.md) removes subdivision-dependent
 warnings while retaining captured returns, with 424 actual SVG checks.
 
+The [shared typed geometry port](shared-return-geometry.md) also removes the
+prototype's scale-dependent endpoint exemption, with 1,152 scaled representations
+and a fresh 424-SVG replay. It is not yet activated in the app.
+
 A [symmetry-preserving final repair](final-return-symmetry.md) retains matching
 sheets and requested transforms, with a complete 51-output saved-corpus replay.
 

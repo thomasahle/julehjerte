@@ -1,0 +1,894 @@
+{
+  "scope": "Shared typed whole-cut return geometry, a generated worker copy, and a scale-normalized editor adapter. Not activated by the app or production fitter. Saved SVG replays do not change templates, crops, masks or acceptance thresholds.",
+  "sourceHashes": {
+    "scripts/inverse/build-return-search.mjs": "b597505be81177a37f6a40a55bbd1a9bfb27fd5768f7887e3878427a62b9eb7d",
+    "scripts/inverse/shared-return-search.test.mjs": "805ba7953aef4c62944653dad44986e714a6a4669fc51ad52506736662a8abd1",
+    "scripts/inverse/diagnostics/build-whole-return-editor.mjs": "5014a5be61328cc7901b82246b65adbe689d348aca77c0be38ccb0671003eba5",
+    "src/lib/geometry/returnSearch.ts": "18778c566e165d5544a4c732e6257153e6cf58e3ee986b9d23fde424da60312b",
+    "src/lib/geometry/curveReturns.ts": "eb989caaba4246fe160deb379de8c4fec5461666fad08e6b104968593aeff8db",
+    "src/lib/geometry/curveReturns.test.ts": "9b5063c23bd9c2e699431533db092ae29693b6389b55e2a7944ce67ccb7a8cef",
+    "static/inverse/core/return-search.js": "eb680be26847ec91ba6f1a7c7a4f3f61ae0e109e5b0871fe9de2f57449ff1513"
+  },
+  "scaleProbe": {
+    "representations": 1152,
+    "groups": [
+      {
+        "name": "endpoint-0.1-1",
+        "reference": 48,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 48
+        },
+        "pixel": {
+          "flagged": 16,
+          "disagreeWithReturnReference": 32
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-0.1-2",
+        "reference": 0,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-0.5-1",
+        "reference": 48,
+        "production": {
+          "flagged": 8,
+          "disagreeWithReturnReference": 40
+        },
+        "pixel": {
+          "flagged": 16,
+          "disagreeWithReturnReference": 32
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-0.5-2",
+        "reference": 0,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-1-1",
+        "reference": 48,
+        "production": {
+          "flagged": 16,
+          "disagreeWithReturnReference": 32
+        },
+        "pixel": {
+          "flagged": 16,
+          "disagreeWithReturnReference": 32
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-1-2",
+        "reference": 0,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-2-1",
+        "reference": 48,
+        "production": {
+          "flagged": 24,
+          "disagreeWithReturnReference": 24
+        },
+        "pixel": {
+          "flagged": 24,
+          "disagreeWithReturnReference": 24
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-2-2",
+        "reference": 0,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-4-1",
+        "reference": 48,
+        "production": {
+          "flagged": 32,
+          "disagreeWithReturnReference": 16
+        },
+        "pixel": {
+          "flagged": 32,
+          "disagreeWithReturnReference": 16
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-4-2",
+        "reference": 0,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-8-1",
+        "reference": 48,
+        "production": {
+          "flagged": 40,
+          "disagreeWithReturnReference": 8
+        },
+        "pixel": {
+          "flagged": 40,
+          "disagreeWithReturnReference": 8
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "endpoint-8-2",
+        "reference": 0,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "gift",
+        "reference": 48,
+        "production": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "anchor",
+        "reference": 48,
+        "production": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "editable-bird-return",
+        "reference": 48,
+        "production": {
+          "flagged": 36,
+          "disagreeWithReturnReference": 12
+        },
+        "pixel": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "editable-gift-return",
+        "reference": 48,
+        "production": {
+          "flagged": 24,
+          "disagreeWithReturnReference": 24
+        },
+        "pixel": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "editable-turning-bird-return",
+        "reference": 48,
+        "production": {
+          "flagged": 24,
+          "disagreeWithReturnReference": 24
+        },
+        "pixel": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "photographic-original",
+        "reference": 0,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "photographic-detailed",
+        "reference": 0,
+        "production": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 48
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "bend-90",
+        "reference": 0,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "bend-45",
+        "reference": 0,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "bend-30",
+        "reference": 0,
+        "production": {
+          "flagged": 12,
+          "disagreeWithReturnReference": 12
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "curved-return-1",
+        "reference": 48,
+        "production": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 48,
+          "disagreeWithReturnReference": 0
+        }
+      },
+      {
+        "name": "curved-return-2",
+        "reference": 0,
+        "production": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "pixel": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "physical": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        },
+        "typed": {
+          "flagged": 0,
+          "disagreeWithReturnReference": 0
+        }
+      }
+    ]
+  },
+  "typedParity": {
+    "cutChecks": 264,
+    "witnesses": "exactly equal, native and typed curves"
+  },
+  "savedSvgReplay": [
+    {
+      "corpus": "hunodan",
+      "representations": 176,
+      "disagreements": 0,
+      "editorMedianMs": 10.973937999999634,
+      "editorP95Ms": 19.109042000000045,
+      "editorMaximumMs": 39.395792000000256,
+      "cases": [
+        {
+          "id": "hjcur-01",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjcur-02",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjcur-03",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjcur-04",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjcur-05",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjfig-01",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjfig-02",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjfig-03",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjfig-04",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjfig-05",
+          "representations": 8,
+          "flagged": 8
+        },
+        {
+          "id": "hjfla-01",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjhih-01",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjhih-02",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjhih-04",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjsta-01",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjsta-02",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjsta-03",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjsta-04",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjsta-05",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjstr-01",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjstr-02",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjstr-03",
+          "representations": 8,
+          "flagged": 0
+        }
+      ]
+    },
+    {
+      "corpus": "photos",
+      "representations": 232,
+      "disagreements": 0,
+      "editorMedianMs": 14.250000000000512,
+      "editorP95Ms": 25.661667000000307,
+      "editorMaximumMs": 32.825417000000016,
+      "cases": [
+        {
+          "id": "bauble",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "bibel-cross",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "bibel-star-8",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "bibel-star-curved",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "bibel-star-outline",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "bird",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "bottom-flower",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "candle",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "crossed-ribbons",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "crown",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "dense-checker",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "faceted-star",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "fine-checker",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "flettede-puppy",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "flettede-stonehenge",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "flettede-viking",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "floral-checker",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "flower",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "gift",
+          "representations": 8,
+          "flagged": 8
+        },
+        {
+          "id": "gingerbread",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "jigsaw",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "leaf",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "maple-leaf",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "orb",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "outline-star",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "round-checker",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "stacked-hearts",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "warped-checker",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "white-birds",
+          "representations": 8,
+          "flagged": 0
+        }
+      ]
+    },
+    {
+      "corpus": "repaired",
+      "representations": 16,
+      "disagreements": 0,
+      "editorMedianMs": 23.96120850000011,
+      "editorP95Ms": 26.642458999999917,
+      "editorMaximumMs": 27.69916599999999,
+      "cases": [
+        {
+          "id": "gift",
+          "representations": 8,
+          "flagged": 0
+        },
+        {
+          "id": "hjfig-05",
+          "representations": 8,
+          "flagged": 0
+        }
+      ]
+    }
+  ],
+  "replayChecks": [
+    {
+      "stage": "hunodan",
+      "exitCode": 0,
+      "seconds": 6.525059208,
+      "command": [
+        "node",
+        "scripts/inverse/diagnostics/editable-return-study.mjs",
+        "--run=tmp/heart-learning/turn-limit-v1/hunodan-editor-input",
+        "--editable=tmp/heart-learning/turn-limit-v1/hunodan-editor",
+        "--runtime=tmp/heart-learning/final-return-corpus-v1/final-runtime",
+        "--editor-module=tmp/heart-learning/editor-scale-v1/shared-editor/editor.ts",
+        "--editor-manifest=tmp/heart-learning/editor-scale-v1/shared-editor/source.json",
+        "--baseline-editor-module=src/lib/editor/curveIssues.ts",
+        "--output=tmp/heart-learning/editor-scale-v1/shared-v2-hunodan"
+      ]
+    },
+    {
+      "stage": "photos",
+      "exitCode": 0,
+      "seconds": 11.042947458,
+      "command": [
+        "node",
+        "scripts/inverse/diagnostics/editable-return-study.mjs",
+        "--run=tmp/heart-learning/turn-limit-v1/photos",
+        "--editable=tmp/heart-learning/turn-limit-v1/photo-editor",
+        "--runtime=tmp/heart-learning/final-return-corpus-v1/final-runtime",
+        "--editor-module=tmp/heart-learning/editor-scale-v1/shared-editor/editor.ts",
+        "--editor-manifest=tmp/heart-learning/editor-scale-v1/shared-editor/source.json",
+        "--baseline-editor-module=src/lib/editor/curveIssues.ts",
+        "--output=tmp/heart-learning/editor-scale-v1/shared-v2-photos"
+      ]
+    },
+    {
+      "stage": "repaired",
+      "exitCode": 0,
+      "seconds": 1.841426166999998,
+      "command": [
+        "node",
+        "scripts/inverse/diagnostics/editable-return-study.mjs",
+        "--run=tmp/heart-learning/editor-bend-v1/repair-editor-input",
+        "--editable=tmp/heart-learning/editor-bend-v1/repaired-editor",
+        "--runtime=tmp/heart-learning/final-return-corpus-v1/final-runtime",
+        "--editor-module=tmp/heart-learning/editor-scale-v1/shared-editor/editor.ts",
+        "--editor-manifest=tmp/heart-learning/editor-scale-v1/shared-editor/source.json",
+        "--baseline-editor-module=src/lib/editor/curveIssues.ts",
+        "--output=tmp/heart-learning/editor-scale-v1/shared-v2-repaired"
+      ]
+    }
+  ],
+  "failedInvocation": {
+    "record": "tmp/heart-learning/editor-scale-v1/replay-checks.json",
+    "reason": "The first saved-SVG command used raw Hunodan results instead of the normalized hunodan-editor-input wrapper; it stopped before auditing any SVG. The corrected invocation is recorded separately."
+  },
+  "artifacts": {
+    "tmp/heart-learning/editor-scale-v1/build-script.mjs": "b597505be81177a37f6a40a55bbd1a9bfb27fd5768f7887e3878427a62b9eb7d",
+    "tmp/heart-learning/editor-scale-v1/build.log": "a994bfec763745777b1c863a415a6a546b0449f9f59ca6cd8a6006b32b0b4ab9",
+    "tmp/heart-learning/editor-scale-v1/checks.json": "14848c8ad4279a295fe4db240d68d7e2168c7d72f500da40a923a39bc088d6e3",
+    "tmp/heart-learning/editor-scale-v1/format.mjs": "3366cb8ab9b9976739544f0b941293112b94e4c05d1abb008efb3f0bb16a0afd",
+    "tmp/heart-learning/editor-scale-v1/parity.log": "c9c6e5101a5352144ff7fc35f6ead02cad48682c299451d932ef8b5c2c1fdaed",
+    "tmp/heart-learning/editor-scale-v1/prepare.mjs": "1bc00bd09b660f6962b055d73a1032b8989fad7769869ba779c16c93a380e22d",
+    "tmp/heart-learning/editor-scale-v1/probe.mjs": "c9aaa70754c4b6484f36d586d2a3d7cc1d3f01a4659c2fb2a206d5f51d34d1f5",
+    "tmp/heart-learning/editor-scale-v1/ready.ts": "dccab957053e88dc5b152ff8c1954a752535792947095b642b6e234d626095c4",
+    "tmp/heart-learning/editor-scale-v1/replay-checks.json": "9081b616ab31b950128f3915b5826a1dbd82701dc1eb70e0ec3556bae8c8e18e",
+    "tmp/heart-learning/editor-scale-v1/replay-running.json": "1ed3e40ac0e0a9a69bb9fd405e79e1dc43f7b2672a3a6a270f1e1fd1e144b458",
+    "tmp/heart-learning/editor-scale-v1/replay-v2-checks.json": "a26559e0b03dd7a6b18594a59f8604ded591707bb45e29884455b6e3eb6151a9",
+    "tmp/heart-learning/editor-scale-v1/replay-v2-running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/editor-scale-v1/replay-v2.py": "9ff7464b77a2b47417fcddf37c8ef22c6dd5174255dccb1801eac5f860985706",
+    "tmp/heart-learning/editor-scale-v1/replay.py": "289fa3dd6224b375c07e4cc23f1fd2982abff7dfa8231a0693173b5d03e3c134",
+    "tmp/heart-learning/editor-scale-v1/results.json": "0bfe8c7ed2000932c6f16a02caeb0746b5bdc78535fc02add3bedd04d5958502",
+    "tmp/heart-learning/editor-scale-v1/returnSearch.ts": "8177d380afd8fe135ae6fc342132989bdf7d57809f21a6bb3e315eac1c22025c",
+    "tmp/heart-learning/editor-scale-v1/run.py": "8f59532a2b49f5a9b2dff3004586477be0510f16518a943e54ad2e3a78ec8d4b",
+    "tmp/heart-learning/editor-scale-v1/runner.json": "171034a58c5fb93396a7763dac172f779c4be79a84389113c12a321b9cd3996b",
+    "tmp/heart-learning/editor-scale-v1/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/editor-scale-v1/scale.log": "66041400ff1d35201d6b3541eaa62782190397f2897423200e5190030e9a22be",
+    "tmp/heart-learning/editor-scale-v1/shared-app-tests.log": "b3ceec42156a7930ca92966dd8bf92d72953e389651f02754c1c4eb404c42780",
+    "tmp/heart-learning/editor-scale-v1/shared-editor/editor.ts": "949379d4dd98de485a58a4ef8057c236cb38b99f5e14e20c712f0646a876e6aa",
+    "tmp/heart-learning/editor-scale-v1/shared-editor/path-returns.mjs": "a1a6d2d78eb7e0dfeaaa56498d564cbea9e8bf93209eb7962e23fa342d6d19eb",
+    "tmp/heart-learning/editor-scale-v1/shared-editor/source.json": "49755e0b82fee89b036aa80aa5857febc93149a670d3109ecdbc2f0836718f7e",
+    "tmp/heart-learning/editor-scale-v1/shared-final-node-tests.log": "bee320b96cac5982aab27c9fcaf2c1d2035a99d36fd428d7a4492d974834df11",
+    "tmp/heart-learning/editor-scale-v1/shared-hunodan.log": "2db7d39cf6b3acea45b431fa9ae9e522a7e6a33771509686160887fcd8db04b9",
+    "tmp/heart-learning/editor-scale-v1/shared-lint.log": "64c7e37f2223dd5dda4f9017c085c6540fb7095db5e140d5ac61814048aeedb8",
+    "tmp/heart-learning/editor-scale-v1/shared-node-tests.log": "0f71df54b8a8c9113b73c8acfde25e36ab681df384afd77bcb073247dec1f6d1",
+    "tmp/heart-learning/editor-scale-v1/shared-return-search.test.mjs": "3fbae647aa9227fd71869a9d5019ae24ab9e9f48cf75124e5053316c1c2dc4fa",
+    "tmp/heart-learning/editor-scale-v1/shared-v2-hunodan/results.json": "7e50f098e903202e9a9b1492a80ac77cbf004e0fedbde24d997aaa0ab24904b4",
+    "tmp/heart-learning/editor-scale-v1/shared-v2-hunodan.log": "34764584e05ecce835814280b270d28f77da7e1a98902e2e777d3d0791f0dcfb",
+    "tmp/heart-learning/editor-scale-v1/shared-v2-photos/results.json": "5fdd9b3e65c515e3ff2f0954a634432810a971bf239bdcedfb4cdef6952a6da4",
+    "tmp/heart-learning/editor-scale-v1/shared-v2-photos.log": "f75aeca0950e2fbc363358a052c6811baae5ae4c7c0c175ca7c2ec0cc84ef406",
+    "tmp/heart-learning/editor-scale-v1/shared-v2-repaired/results.json": "397f0aed0b501e93bf03ca87931de5beaf2766b9c316ee8f1e748b1b3bcb7ed2",
+    "tmp/heart-learning/editor-scale-v1/shared-v2-repaired.log": "09eaf013b36345af52ece3dd3d0210d9e79faae8bc6dadd87499f30d3146e021",
+    "tmp/heart-learning/editor-scale-v1/summary.json": "c44ac2e50cfaf1e71a34ac6b5c3aa7b1d0773459a4078a8667c6c2f5ca87dfdc",
+    "tmp/heart-learning/editor-scale-v1/typed-header.ts": "d0e2bd454fdefd1a2e259db8e54ccf96bb7b157194125b570b430a30775bc312",
+    "tmp/heart-learning/editor-scale-v1/typed-parity.json": "e5f13b7cee51744aca4c56e15a58ead80db80d1e33c54bd86b700103d1381051",
+    "tmp/heart-learning/editor-scale-v1/typed-parity.mjs": "8f57968ee15a7577923c9ae50728c3f97651974b9698fe85f6cc1366d41f9020",
+    "tmp/heart-learning/editor-scale-v1/types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

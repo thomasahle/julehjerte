@@ -1,5 +1,9 @@
 # Whole-cut editor validation experiment
 
+This records the experiment at commit `3e87607`. The current builder uses the
+subsequent [shared typed geometry and physical endpoint rule](shared-return-geometry.md).
+The measurements below refer to the original experiment.
+
 A complete same-cut search fixes the saved editor inconsistencies without hiding
 known returns. Across **424 actual SVG representations**, the proposed editor
 and the stronger experimental geometry check agree on every binary verdict.
