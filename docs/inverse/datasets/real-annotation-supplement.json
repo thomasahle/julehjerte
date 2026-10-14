@@ -1,0 +1,123 @@
+{
+  "schema": "real-visible-body-supplement-1",
+  "instances": 2,
+  "sourceGroups": 2,
+  "combinedInstances": 12,
+  "combinedSourceGroups": 10,
+  "approximateOverlapReferences": 0,
+  "modelUse": "No training, inference comparison or global split assignment. Original ten-instance annotations and temporary folds unchanged.",
+  "visualReview": "Both native sources and 256px known/unknown overlays inspected. Attachment uncertainty withheld; shadows, decorations and watermark excluded.",
+  "validation": {
+    "passed": true,
+    "instances": 2,
+    "sourceGroups": 2,
+    "approximateOverlapReferences": 0,
+    "manifestSha256": "40bd82be133e336840b955faa3a54615e2952e4e003e5edcb26853b741e0eeba",
+    "annotationsSha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25",
+    "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+  },
+  "sources": {
+    "docs/inverse/datasets/real-manifest.json": "a900f3f3baaeba87e4d5bb3eedc595f0276ca1684110cdd4dc1f3ba1cc531dd8",
+    "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+    "scripts/inverse/datasets/real-annotations-supplement.json": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25",
+    "scripts/inverse/datasets/real_annotations.py": "c494ee86dd54020e0f8a6ad61e62d88ed20d05552469e798878fbbd3a402176a",
+    "scripts/inverse/learning/real-pilot-folds.json": "49f68cd61452dda0c178a101ae060d5cb24d94e2d1724ff9b576e6455a0b17c9"
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/draft.json",
+      "bytes": 6634,
+      "sha256": "4cb49aba92ba3d25f4032d9a1a33f80cbd76282384971a3dda7082b8a165c8c1"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/export.log",
+      "bytes": 419,
+      "sha256": "263f9bd2c2f784653f8dfc3b46ebcd3102c97d9ccbeb00a43de735b7e4220dfc"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels/index.html",
+      "bytes": 1398,
+      "sha256": "8e1291d04132a6135df26a7088c2b1538cfcbea8277d281e3b37697b48f0ff58"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels/manifest.json",
+      "bytes": 3284,
+      "sha256": "a1e28eb42f7274fc15301f2292a33a72e173e20d320827e11ba1e6c55e54133e"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels/real-990ac34431be87fe-body-1-labels.png",
+      "bytes": 1158,
+      "sha256": "594c50ab4dd05a002f6d426624b29490bbca9af823dce2c835ba7be025a795f1"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels/real-990ac34431be87fe-body-1-overlay.png",
+      "bytes": 54353,
+      "sha256": "69414e21bfb50098f81fc4ce176c8cd5b36c746ae801112eff34ff214173b4a1"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels/real-990ac34431be87fe-body-1-rgb.png",
+      "bytes": 56444,
+      "sha256": "62d51ef4dcad958b0a11daa3155b94b859b361f3a943e2a5333d4087266a8a5c"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels/real-cf2d0fcff65d7386-body-1-labels.png",
+      "bytes": 1566,
+      "sha256": "413c386c6f0e78844f8c2634c409b8dc9eedcdfee3de4ac4b34807fa34e6e8bc"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels/real-cf2d0fcff65d7386-body-1-overlay.png",
+      "bytes": 74130,
+      "sha256": "587f47982acca086b240a6727e5731e7e543dee62f74fd83339faa200ff55669"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels/real-cf2d0fcff65d7386-body-1-rgb.png",
+      "bytes": 79787,
+      "sha256": "46ca9f23ede4db5bfc16a9d53be33c4c18c1502ed0be518c4212be13a041cb0f"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/index.html",
+      "bytes": 1550,
+      "sha256": "6af27539f6fda19514847e58d7b6fb4be68b2fa20d1913770b81eeee71d4ff94"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/manifest.json",
+      "bytes": 3284,
+      "sha256": "40bd82be133e336840b955faa3a54615e2952e4e003e5edcb26853b741e0eeba"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/real-990ac34431be87fe-body-1-labels.png",
+      "bytes": 1158,
+      "sha256": "594c50ab4dd05a002f6d426624b29490bbca9af823dce2c835ba7be025a795f1"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/real-990ac34431be87fe-body-1-overlay.png",
+      "bytes": 54353,
+      "sha256": "69414e21bfb50098f81fc4ce176c8cd5b36c746ae801112eff34ff214173b4a1"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/real-990ac34431be87fe-body-1-rgb.png",
+      "bytes": 56444,
+      "sha256": "62d51ef4dcad958b0a11daa3155b94b859b361f3a943e2a5333d4087266a8a5c"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/real-cf2d0fcff65d7386-body-1-labels.png",
+      "bytes": 1566,
+      "sha256": "413c386c6f0e78844f8c2634c409b8dc9eedcdfee3de4ac4b34807fa34e6e8bc"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/real-cf2d0fcff65d7386-body-1-overlay.png",
+      "bytes": 74130,
+      "sha256": "587f47982acca086b240a6727e5731e7e543dee62f74fd83339faa200ff55669"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/real-cf2d0fcff65d7386-body-1-rgb.png",
+      "bytes": 79787,
+      "sha256": "46ca9f23ede4db5bfc16a9d53be33c4c18c1502ed0be518c4212be13a041cb0f"
+    },
+    {
+      "path": "tmp/heart-learning/real-annotation-supplement-v1/reviewed-export.log",
+      "bytes": 419,
+      "sha256": "7392acd238e7b639d43c7a60b14405bd87c8bdb699d6831cc7c83ed7857f89c4"
+    }
+  ]
+}

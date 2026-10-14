@@ -1,0 +1,345 @@
+{
+  "schema": "woven-heart-real-annotations-1",
+  "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+  "target": "Visible selected basket body including both papers and protruding motifs; exclude handles, objects, shadows and other hearts. Unknown occlusion/attachment regions and a band around manually traced boundaries receive zero supervision weight.",
+  "scope": "Two assistant-reviewed visible-body annotations extending color/background coverage outside existing QA. The original ten-instance pilot and temporary folds remain unchanged. No model has consumed these labels; motif-family and global split review remain pending.",
+  "instances": [
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "assetId": "real-cf2d0fcff65d7386",
+      "imageSha256": "cf2d0fcff65d7386a7295376e03a6b3f027645b74c361e0035bcc46220a6a6d9",
+      "sourceSize": [
+        600,
+        514
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          600,
+          514
+        ],
+        "note": "Flat blue/yellow checker on a pale surface. Both papers and the visible offset at the tip belong to the body; cast shadows and the lower-right watermark are background. The woven overlap corners are not labeled: the visible upper notch and square endpoint are distinct. Native-resolution source and exported known/unknown overlay both inspected."
+      },
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "flat",
+      "foregroundPolygons": [
+        [
+          [
+            273,
+            97
+          ],
+          [
+            303,
+            68
+          ],
+          [
+            336,
+            46
+          ],
+          [
+            370,
+            32
+          ],
+          [
+            400,
+            28
+          ],
+          [
+            430,
+            30
+          ],
+          [
+            459,
+            38
+          ],
+          [
+            482,
+            52
+          ],
+          [
+            503,
+            73
+          ],
+          [
+            520,
+            101
+          ],
+          [
+            531,
+            131
+          ],
+          [
+            537,
+            166
+          ],
+          [
+            536,
+            195
+          ],
+          [
+            532,
+            222
+          ],
+          [
+            523,
+            247
+          ],
+          [
+            509,
+            271
+          ],
+          [
+            341,
+            494
+          ],
+          [
+            330,
+            488
+          ],
+          [
+            325,
+            497
+          ],
+          [
+            87,
+            326
+          ],
+          [
+            89,
+            315
+          ],
+          [
+            71,
+            304
+          ],
+          [
+            55,
+            285
+          ],
+          [
+            43,
+            263
+          ],
+          [
+            34,
+            239
+          ],
+          [
+            28,
+            213
+          ],
+          [
+            28,
+            188
+          ],
+          [
+            32,
+            159
+          ],
+          [
+            43,
+            131
+          ],
+          [
+            61,
+            106
+          ],
+          [
+            86,
+            87
+          ],
+          [
+            114,
+            73
+          ],
+          [
+            145,
+            64
+          ],
+          [
+            173,
+            63
+          ],
+          [
+            201,
+            68
+          ],
+          [
+            227,
+            78
+          ],
+          [
+            249,
+            88
+          ]
+        ]
+      ],
+      "unknownPolygons": [],
+      "boundaryUncertaintyPixels": 4,
+      "overlapCorners": null
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "assetId": "real-990ac34431be87fe",
+      "imageSha256": "990ac34431be87fea4d2b41050c1f1ccc6b12ca7dcb4a54f50bde137d6dffbbc",
+      "sourceSize": [
+        570,
+        441
+      ],
+      "review": {
+        "method": "assistant-visual-polygon",
+        "status": "initial-reviewed",
+        "viewSize": [
+          570,
+          441
+        ],
+        "note": "Red/white checker with a handle, pinecone and evergreen sprigs on a pale textured background. The body excludes the handle and decorations. Its concealed notch/handle attachment is unknown; no overlap-corner claim. Native-resolution source and exported known/unknown overlay both inspected."
+      },
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "allocation": "unassigned",
+      "pose": "flat",
+      "foregroundPolygons": [
+        [
+          [
+            248,
+            142
+          ],
+          [
+            225,
+            137
+          ],
+          [
+            206,
+            138
+          ],
+          [
+            187,
+            143
+          ],
+          [
+            169,
+            153
+          ],
+          [
+            154,
+            168
+          ],
+          [
+            145,
+            186
+          ],
+          [
+            139,
+            206
+          ],
+          [
+            138,
+            224
+          ],
+          [
+            141,
+            245
+          ],
+          [
+            148,
+            264
+          ],
+          [
+            160,
+            283
+          ],
+          [
+            282,
+            414
+          ],
+          [
+            408,
+            279
+          ],
+          [
+            419,
+            258
+          ],
+          [
+            425,
+            238
+          ],
+          [
+            427,
+            218
+          ],
+          [
+            425,
+            200
+          ],
+          [
+            419,
+            182
+          ],
+          [
+            407,
+            165
+          ],
+          [
+            392,
+            152
+          ],
+          [
+            375,
+            143
+          ],
+          [
+            357,
+            138
+          ],
+          [
+            339,
+            137
+          ],
+          [
+            322,
+            139
+          ],
+          [
+            310,
+            143
+          ]
+        ]
+      ],
+      "unknownPolygons": [
+        [
+          [
+            241,
+            130
+          ],
+          [
+            313,
+            131
+          ],
+          [
+            320,
+            191
+          ],
+          [
+            284,
+            225
+          ],
+          [
+            240,
+            184
+          ]
+        ]
+      ],
+      "boundaryUncertaintyPixels": 3,
+      "overlapCorners": null
+    }
+  ]
+}

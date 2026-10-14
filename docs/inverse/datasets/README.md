@@ -2,8 +2,9 @@
 
 This collection prepares a small photo-to-graph model for the existing solver.
 It contains downloaded source images, synthetic images with exact cut labels,
-and verified pretrained encoder checkpoints. A first synthetic-only neural
-comparison is complete; no learned model has been added to the website.
+and verified pretrained encoder checkpoints. Offline studies cover synthetic
+proposal learning and a small real-photo adaptation pilot. No learned model
+has been added to the website.
 
 The 2026-10-14 snapshot contains:
 
@@ -21,7 +22,7 @@ The 2026-10-14 snapshot contains:
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
-| Real visible-body annotations | 10 | Eight source groups outside reserved QA; uncertain outline/occlusion pixels excluded, five approximate overlap references; temporary grouped adaptation only. |
+| Real visible-body annotations | 12 | Ten source groups outside reserved QA; uncertain pixels excluded. The original ten-instance adaptation pilot is unchanged; two reviewed additions have not entered training. |
 
 ## Current results and limits
 
@@ -57,7 +58,9 @@ an advantage in complete template recovery or solving time.
 foreground IoU from 76.95% to 78.63% on the ten-instance pilot. Its full mask-to-cut
 pipeline still checks only 3/10 pairs, compared with 4/10 for the current cropper
 on that diagnostic. The [annotation report](real-annotation-pilot.md) explains
-unknown pixels, grouping and scope. More checked real labels, distinct motif
+unknown pixels, grouping and scope. A [two-image supplement](real-annotation-supplement.md)
+adds blue/yellow paper and decorated baskets on pale backgrounds, with no model
+replay yet. More checked real labels, distinct motif
 families and complete photo-to-export measurements are the next data priorities.
 
 The [experiment history](experiment-history.md) retains the earlier studies,
