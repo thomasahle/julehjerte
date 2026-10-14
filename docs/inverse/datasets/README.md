@@ -56,6 +56,11 @@ Fresh fitting trials have not recovered their quality with consistent validity.
 The proposal remains offline; current editor reconciliation and optimization
 under the stronger constraints are still required.
 
+The [subsequent full QA](short-return-export-validation.json) passes 826 inverse
+tests, 855 application tests and thirteen fresh Chromium flows, plus type
+checking, lint and build. The refreshed preview serves 153 verified build
+assets. The experimental geometry and optimizer remain outside the app.
+
 The [Pinterest expansion](real-pinterest-expansion.md) includes all four supplied
 pins. Download success, photograph count, heart-instance count and motif-family
 count are different measures. Of the 1,034 source files, 476 are now reserved by

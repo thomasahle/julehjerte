@@ -114,8 +114,12 @@ arc neighbourhoods, leaving periodic projection to repair recurring defects.
 All ten focused tests and focused lint pass. Tests cover captured returns,
 ordinary bends, reflection, random subdivisions, projection immutability/fixed
 endpoints, and the existing MILP rejection regression. No app/runtime files were
-changed. The previous complete app/inverse/browser QA therefore describes the
-existing preview; it is not a full test run of these new diagnostic changes.
+changed. Subsequent [complete verification](short-return-export-validation.json)
+passes **826 inverse tests**, **855 application tests** (one skipped), type
+checking, lint and build. All 822 checked source files retain their hashes.
+The refreshed preview serves 153 verified build assets, and all thirteen new
+Chromium flows pass. Their screenshots have not all been visually re-reviewed.
+The app runtime remains unchanged; these checks do not deploy the proposal.
 
 The [evidence record](short-return-export-audit.json) preserves the full native
 comparison, actual SVG audits, intermediate counterexamples, unsuccessful
