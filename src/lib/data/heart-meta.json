@@ -351,10 +351,10 @@
     "date": null,
     "description": null,
     "gridSize": {
-      "x": 5,
-      "y": 5
+      "x": 7,
+      "y": 7
     },
-    "difficulty": "medium",
+    "difficulty": "expert",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": false,
