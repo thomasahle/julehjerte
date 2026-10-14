@@ -1,0 +1,2006 @@
+{
+  "schema": "repository-template-candidate-audit-1",
+  "scope": "Candidate synthetic sources only; no training allocation or change to existing data splits.",
+  "templates": 38,
+  "categories": {
+    "passes-at-256": 14,
+    "raster-agreement-at-256": 4,
+    "non-square-overlap": 5,
+    "synthetic-geometry-profile": 15
+  },
+  "numericalCandidates": 18,
+  "trainingAllocated": 0,
+  "validationProfile": {
+    "width": 100,
+    "minWidth": 2,
+    "cutError": 0.25,
+    "printShrinkPercent": 0.2,
+    "geometryTolerance": 0.01,
+    "maxTurn": 150,
+    "materialResolution": 360,
+    "trials": 0
+  },
+  "rows": [
+    {
+      "id": "classic-3x3",
+      "sourceFile": "static/hearts/classic-3x3.svg",
+      "sourceSha256": "976d7585ef1db2f5775e4c7b9fd8f7e2c4519db15819d57a44566dad0ed1e24f",
+      "geometrySha256": "92a572f78b5973305e0684cb0c778ba1952bf3bcecc968bc9328f24392a99d8a",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 187.5,
+        "right": 412.5,
+        "top": 187.5,
+        "bottom": 412.5,
+        "width": 225,
+        "height": 225
+      },
+      "counts": [
+        2,
+        2
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "ramme",
+      "sourceFile": "static/hearts/ramme.svg",
+      "sourceSha256": "0ac54d589888b4e2be3642992e2a1c74179de9507ed553634ac97aabc668e8ce",
+      "geometrySha256": "b6dfb3c3f18f0d6e5427c158e9604cb28ab7e4f141b3ac36073022166e8fee06",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 112.5,
+        "right": 487.5,
+        "top": 112.5,
+        "bottom": 487.5,
+        "width": 375,
+        "height": 375
+      },
+      "counts": [
+        4,
+        4
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "gaver",
+      "sourceFile": "static/hearts/gaver.svg",
+      "sourceSha256": "97bfd0f0463baf593f5db1e3ea2dff98c0dd2f1f32179a8ed7e19d1bb83717ca",
+      "geometrySha256": "fb9faf04d4d16f36fed2c7466d19d125806789fc514ea7feb725ab8374502555",
+      "category": "raster-agreement-at-256",
+      "overlap": {
+        "left": 75,
+        "right": 525,
+        "top": 75,
+        "bottom": 525,
+        "width": 450,
+        "height": 450
+      },
+      "counts": [
+        5,
+        5
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 512,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "jul",
+      "sourceFile": "static/hearts/jul.svg",
+      "sourceSha256": "273186ea791a5a66bb921fd1feadc197cc2f0240a02314f3013bef976db39013",
+      "geometrySha256": "cd3f3fbc8b32fa330872e7b66cecbdd212e115059435c014e47ac0661e3ff470",
+      "category": "raster-agreement-at-256",
+      "overlap": {
+        "left": 112.7093372625,
+        "right": 487.7093372625,
+        "top": 111.8380453875,
+        "bottom": 486.8380453875,
+        "width": 375,
+        "height": 375
+      },
+      "counts": [
+        4,
+        4
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 512,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "stjerne",
+      "sourceFile": "static/hearts/stjerne.svg",
+      "sourceSha256": "b0a39c86ff0accb5bb1054a538c030d334975aebe7762f722024ccb93978bce7",
+      "geometrySha256": "baf58d0eb9f8ae77f4ce81b6beeefea5ebb621217231da8350419c6ea54ccd36",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 187.5,
+        "right": 412.5,
+        "top": 187.5,
+        "bottom": 412.5,
+        "width": 225,
+        "height": 225
+      },
+      "counts": [
+        2,
+        2
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "hairline/seam review required",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "stjerne-ramme",
+      "sourceFile": "static/hearts/stjerne-ramme.svg",
+      "sourceSha256": "3a4eeadb53e1a22d4e949aef51a616e55a33f77b99939ac128176a53bcfdf94d",
+      "geometrySha256": null,
+      "category": "non-square-overlap",
+      "overlap": {
+        "left": -36.81679004249993,
+        "right": 638.1832099575,
+        "top": -36.816790042500024,
+        "bottom": 634.631007,
+        "width": 675,
+        "height": 671.4477970424999
+      },
+      "counts": null,
+      "geometryIssueTypes": [],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "5star",
+      "sourceFile": "static/hearts/5star.svg",
+      "sourceSha256": "52f44887c1396839dc76bb6b9ce952d2ab1d552f1e19f1c2363b7b9f5a84aa72",
+      "geometrySha256": "e6decdfab93b580868a03004696a18c57159180eba4a3dc20152301b210858c1",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 112.50088867824374,
+        "right": 487.50088867824377,
+        "top": 112.5,
+        "bottom": 487.5,
+        "width": 375,
+        "height": 375
+      },
+      "counts": [
+        4,
+        4
+      ],
+      "geometryIssueTypes": [
+        "maximum_turn",
+        "nonlocal_self_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "simple-5star",
+      "sourceFile": "static/hearts/simple-5star.svg",
+      "sourceSha256": "e249cd6cf70ad2107387f0c66495092cbdb61ade5392235a20775dccffddc278",
+      "geometrySha256": "e1ec6e8ea596d7c3a2ddd1f71a501f4800d78d617e96adcf876fcf0ebd5c642d",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 187.49360634971248,
+        "right": 412.4936063497125,
+        "top": 187.5,
+        "bottom": 412.5,
+        "width": 225,
+        "height": 225
+      },
+      "counts": [
+        2,
+        2
+      ],
+      "geometryIssueTypes": [
+        "nonlocal_self_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "sun",
+      "sourceFile": "static/hearts/sun.svg",
+      "sourceSha256": "55de590e77d08cc9761cdcdddf6bc81e777573a3ee367cc844589f97cbbbcf80",
+      "geometrySha256": "18f50f528f9956ddda65ae33c0304d6b7b02c69b7a623563c6ebdc1044af7e05",
+      "category": "raster-agreement-at-256",
+      "overlap": {
+        "left": 150,
+        "right": 450,
+        "top": 150,
+        "bottom": 450,
+        "width": 300,
+        "height": 300
+      },
+      "counts": [
+        3,
+        3
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 512,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "explosion",
+      "sourceFile": "static/hearts/explosion.svg",
+      "sourceSha256": "b9362f3afd563963bb5ef0b2d0e5f71dd9cbda0ed1b815c2cda3bb8332e19b75",
+      "geometrySha256": "e9d4dbbd84f7f65f60a86a4894e2a870de27c917db4ae889fcbe2ec570d63c17",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 112.5,
+        "right": 487.5,
+        "top": 112.5,
+        "bottom": 487.5,
+        "width": 375,
+        "height": 375
+      },
+      "counts": [
+        4,
+        4
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "nihon",
+      "sourceFile": "static/hearts/nihon.svg",
+      "sourceSha256": "b617b799dcc3dbf21099cde2d32683a0c658109811c8a3476cc880c95ad02e18",
+      "geometrySha256": "b3d98b6ddc7b804ae949ba40d0632cd1b434c82094398437031db2654177f704",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 188.09684663250002,
+        "right": 413.09684663250005,
+        "top": 188.096846655,
+        "bottom": 413.09684665500004,
+        "width": 225.00000000000003,
+        "height": 225.00000000000003
+      },
+      "counts": [
+        2,
+        2
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "davidsstjerne-circ",
+      "sourceFile": "static/hearts/davidsstjerne-circ.svg",
+      "sourceSha256": "a57eb54cbda639dbaa0494da979f1ba37ee896edf617648aea8d7a5179b4b605",
+      "geometrySha256": "8f28e9f75f6c13dd3ee993904401359f3b315ac0585af85156ec4918e83be291",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 0,
+        "right": 600,
+        "top": 0,
+        "bottom": 600,
+        "width": 600,
+        "height": 600
+      },
+      "counts": [
+        7,
+        7
+      ],
+      "geometryIssueTypes": [
+        "inter_slit_clearance",
+        "maximum_turn",
+        "nonlocal_self_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "david4",
+      "sourceFile": "static/hearts/david4.svg",
+      "sourceSha256": "6cca51d4d7c9a8d044b63538cd44137a1bde80efbce2bc2f86907bcfa044af8d",
+      "geometrySha256": "4065d2a83f63f15b79fc1c045440e0e228580e00894e07128244c8c07eb98991",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 150,
+        "right": 450,
+        "top": 150.000018,
+        "bottom": 450.000018,
+        "width": 300,
+        "height": 300
+      },
+      "counts": [
+        3,
+        3
+      ],
+      "geometryIssueTypes": [
+        "maximum_turn",
+        "nonlocal_self_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "khatam",
+      "sourceFile": "static/hearts/khatam.svg",
+      "sourceSha256": "7b8cc690474632521e0f73d73b13a36271971d291a205526849a4aece64980c4",
+      "geometrySha256": "ac4fda820e77b12dff3de27dfc89aa50c1a06bff7da0d074f472a65397dd62bf",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 75.67423867495191,
+        "right": 525.6742386749519,
+        "top": 75.6744243613195,
+        "bottom": 525.6744243613196,
+        "width": 450,
+        "height": 450.00000000000006
+      },
+      "counts": [
+        5,
+        5
+      ],
+      "geometryIssueTypes": [
+        "edge_parity",
+        "self_intersection"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "circle",
+      "sourceFile": "static/hearts/circle.svg",
+      "sourceSha256": "cefd9bfc430ce4b540bdab8e634f88568ef396eb7e15cad938fb5b4d66420fda",
+      "geometrySha256": "f57b0415e9ef9b02abe29860428676363a8df915a984f8138dd0762798ed70f9",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 112.46176935,
+        "right": 487.46176935,
+        "top": 112.58967486969377,
+        "bottom": 487.5896748696938,
+        "width": 375,
+        "height": 375
+      },
+      "counts": [
+        4,
+        4
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "hairline/seam review required",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "balls",
+      "sourceFile": "static/hearts/balls.svg",
+      "sourceSha256": "f709d025d97a8ef5b995de8691953e6c28b4ea333c69fa04d877b8bd2c583ac7",
+      "geometrySha256": "3042845418a39274b9c0601f440938e64244d32509bf6055711ee228adea641b",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 37.56374025,
+        "right": 562.56374025,
+        "top": 37.5,
+        "bottom": 562.5,
+        "width": 525,
+        "height": 525
+      },
+      "counts": [
+        6,
+        6
+      ],
+      "geometryIssueTypes": [
+        "outer_side_clearance",
+        "self_intersection"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "kogle",
+      "sourceFile": "static/hearts/kogle.svg",
+      "sourceSha256": "55590468408b937e164d045bf05695d8a329e7ba60d5cfdf4f62b6e6374e91a8",
+      "geometrySha256": "6169b42b162dab051b1d5fb0193ed8ed16136700053133591606dcd22be46fdd",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 75,
+        "right": 525,
+        "top": 75,
+        "bottom": 525,
+        "width": 450,
+        "height": 450
+      },
+      "counts": [
+        5,
+        5
+      ],
+      "geometryIssueTypes": [
+        "maximum_turn",
+        "nonlocal_self_clearance",
+        "outer_side_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "plus",
+      "sourceFile": "static/hearts/plus.svg",
+      "sourceSha256": "0e7840743e1e6640a309087c4172c652624dbda7fa26f71730e3255aacd64da7",
+      "geometrySha256": "bd612a7258093add9df60308f26bb3579a1525480df32c43d25aa34821bbe62e",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 188.94308024999998,
+        "right": 413.94308025,
+        "top": 187.90234027068527,
+        "bottom": 412.9023402706853,
+        "width": 225,
+        "height": 225
+      },
+      "counts": [
+        2,
+        2
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "plus3",
+      "sourceFile": "static/hearts/plus3.svg",
+      "sourceSha256": "801e6a53b82ebaa353bb8f754ceb2ca1d096c69f0b0c4866a93eb94a8f43bf92",
+      "geometrySha256": "33c77b004191957c0e643380258cdf4b7f2e1eed1b133d232dc011863da6e691",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 111.25504500000002,
+        "right": 486.255045,
+        "top": 111.6506028375,
+        "bottom": 486.6506028375,
+        "width": 375,
+        "height": 375
+      },
+      "counts": [
+        4,
+        4
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "amy-weave-1",
+      "sourceFile": "static/hearts/amy-weave-1.svg",
+      "sourceSha256": "320d6207ff13a0e8d5d720461845efb6870b4559fa90a03ff79fb44d62b783e1",
+      "geometrySha256": null,
+      "category": "non-square-overlap",
+      "overlap": {
+        "left": 0.22791089999998349,
+        "right": 600.2279109,
+        "top": 37.652865195000004,
+        "bottom": 562.652865195,
+        "width": 600,
+        "height": 525
+      },
+      "counts": null,
+      "geometryIssueTypes": [],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "amy-weave-2",
+      "sourceFile": "static/hearts/amy-weave-2.svg",
+      "sourceSha256": "9958ca062ea955f1b7be85c3eb92f6987a211614fdab80b81016030348093444",
+      "geometrySha256": "ad5720c257cffd26cd224e6370b9ac69101bf24c3c264097cb515344b3495fa2",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 0.19955705238317767,
+        "right": 600.1995570523832,
+        "top": 0.1995570279948096,
+        "bottom": 600.1995570279948,
+        "width": 600,
+        "height": 600
+      },
+      "counts": [
+        7,
+        7
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "amy-rosette",
+      "sourceFile": "static/hearts/amy-rosette.svg",
+      "sourceSha256": "2b3bcee1aab78492e4418fb900e0addd7ed04fb8b76f588c71057fe156c8fa9e",
+      "geometrySha256": "16eeb3f7edc876d88bfaa900946db8d9a5ed8b00f5b580f7763f86bbae7dcc57",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 113.1290175,
+        "right": 488.12901750000003,
+        "top": 113.1290175,
+        "bottom": 488.12901750000003,
+        "width": 375,
+        "height": 375
+      },
+      "counts": [
+        4,
+        4
+      ],
+      "geometryIssueTypes": [
+        "maximum_turn",
+        "nonlocal_self_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "amy-pattern",
+      "sourceFile": "static/hearts/amy-pattern.svg",
+      "sourceSha256": "22d6c88e7ff014d27c081cf0dd148593881413935b9939d0237f959fc27f3d9f",
+      "geometrySha256": null,
+      "category": "non-square-overlap",
+      "overlap": {
+        "left": 38.063535,
+        "right": 559.8468285,
+        "top": 39.502085505,
+        "bottom": 559.8518055,
+        "width": 521.7832935,
+        "height": 520.349719995
+      },
+      "counts": null,
+      "geometryIssueTypes": [],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "amy-flowering",
+      "sourceFile": "static/hearts/amy-flowering.svg",
+      "sourceSha256": "25f00711f5fc3cebaf27c3d00a1e04fd7bae2ae1d44e6ac2dbd610f037fcb1c6",
+      "geometrySha256": null,
+      "category": "non-square-overlap",
+      "overlap": {
+        "left": 40.19324244613508,
+        "right": 559.8067470538648,
+        "top": 40.19325219608811,
+        "bottom": 559.802054303912,
+        "width": 519.6135046077297,
+        "height": 519.6088021078239
+      },
+      "counts": null,
+      "geometryIssueTypes": [],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "amy-pinecone",
+      "sourceFile": "static/hearts/amy-pinecone.svg",
+      "sourceSha256": "775432a4c3c5ad61683daf20bf6b74a84b825a0955be70901832cd36f557d006",
+      "geometrySha256": null,
+      "category": "non-square-overlap",
+      "overlap": {
+        "left": 39.23621096250007,
+        "right": 560.76376725,
+        "top": 39.23621169750005,
+        "bottom": 560.75980875,
+        "width": 521.5275562874999,
+        "height": 521.5235970525
+      },
+      "counts": null,
+      "geometryIssueTypes": [],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "alhambra",
+      "sourceFile": "static/hearts/alhambra.svg",
+      "sourceSha256": "91bff62f31c5fe80c79ab5308c31ef2f7f5c491f6f2803d99357b6f2e4d725ae",
+      "geometrySha256": "87ba75189ce7edc2bc35e35d70b78e012c4853e51a46720d89cd3c02c870bf52",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 74.07005493,
+        "right": 524.07005493,
+        "top": 74.68103343,
+        "bottom": 524.68103343,
+        "width": 450,
+        "height": 449.99999999999994
+      },
+      "counts": [
+        5,
+        5
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "squares",
+      "sourceFile": "static/hearts/squares.svg",
+      "sourceSha256": "d3ec3b31eb1f748e63a2b0076d19d0fd45302a3e3563e6825fc695c2531d57bf",
+      "geometrySha256": "795443c68714f2c3802458307a87cb93a08594795e97979873b11eda357108ae",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 225,
+        "right": 375,
+        "top": 225,
+        "bottom": 375,
+        "width": 150,
+        "height": 150
+      },
+      "counts": [
+        1,
+        1
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "juletrae",
+      "sourceFile": "static/hearts/juletrae.svg",
+      "sourceSha256": "07c37334099b3fb3f8f7b3fd6171121102850de48de936bb8576a3d1ae3d7471",
+      "geometrySha256": "056f2660e84efaa2930f87576988bb3f59e62d0f186f7753edff292cc312a6f8",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 150,
+        "right": 450,
+        "top": 150,
+        "bottom": 450,
+        "width": 300,
+        "height": 300
+      },
+      "counts": [
+        3,
+        3
+      ],
+      "geometryIssueTypes": [
+        "maximum_turn",
+        "nonlocal_self_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "flower",
+      "sourceFile": "static/hearts/flower.svg",
+      "sourceSha256": "05b36d3bcad88492e889ab311fcd6b0f96911d0d0e1ea29d5cbaa190e643f415",
+      "geometrySha256": "ef4a1d505067eca39e9298743cd3d26364a5e833e43f244812596957ce1e006e",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 149.74347741,
+        "right": 449.74347740999997,
+        "top": 149.99040842999997,
+        "bottom": 449.99040843,
+        "width": 300,
+        "height": 300
+      },
+      "counts": [
+        3,
+        3
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "venus",
+      "sourceFile": "static/hearts/venus.svg",
+      "sourceSha256": "dfb6ff0d78251e48e0c129a161b0ca8939627c8b0698c4686fb9026a797affd6",
+      "geometrySha256": "52973161f92cf9d19c80ca07d69fc974fe625e2b077d98ae65d0361a0bfb82e3",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 38.01540087375001,
+        "right": 563.01540087375,
+        "top": 37.77134055375001,
+        "bottom": 562.77134055375,
+        "width": 525,
+        "height": 525
+      },
+      "counts": [
+        6,
+        6
+      ],
+      "geometryIssueTypes": [
+        "inter_slit_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "angel",
+      "sourceFile": "static/hearts/angel.svg",
+      "sourceSha256": "83f43485d25109466ded4c4189bd3b71f1eae488cd3b8c5920851166fd72610e",
+      "geometrySha256": "c94521cc0788d3fcd374ee720c5a425167d1318af2d2e000c7cf127d71fe6657",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 186.20589016875,
+        "right": 411.20589016875,
+        "top": 186.914117955,
+        "bottom": 411.914117955,
+        "width": 225,
+        "height": 225
+      },
+      "counts": [
+        2,
+        2
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "snowflake",
+      "sourceFile": "static/hearts/snowflake.svg",
+      "sourceSha256": "108231f4649ec752bca11d2f74bb400518f4c0786e2ca9d1c40c8ca57faa8bd0",
+      "geometrySha256": "71868526aa81e353ff435642e1b46bd2a13a06c6e985473d4da4f6cf95b51336",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 149.9946368403,
+        "right": 449.9946368403,
+        "top": 149.9946140253,
+        "bottom": 449.9946140253,
+        "width": 300,
+        "height": 300
+      },
+      "counts": [
+        3,
+        3
+      ],
+      "geometryIssueTypes": [
+        "outer_side_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "santa",
+      "sourceFile": "static/hearts/santa.svg",
+      "sourceSha256": "5021dba761b2d31c822e44c767edfc57c80f61184e8733d9a3a977310c61baaa",
+      "geometrySha256": "7fd629530fda341be08737c31032dcccc1856ede8d3067d6daaff4decba35530",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 112.50335097435,
+        "right": 487.50335097435,
+        "top": 112.50265130355,
+        "bottom": 487.50265130355,
+        "width": 375,
+        "height": 375
+      },
+      "counts": [
+        4,
+        4
+      ],
+      "geometryIssueTypes": [
+        "maximum_turn",
+        "nonlocal_self_clearance",
+        "self_intersection",
+        "short_self_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "triple-heart",
+      "sourceFile": "static/hearts/triple-heart.svg",
+      "sourceSha256": "73f34f6da07f8fdb29a406088ff0704528273476dfe5740377971c6096377669",
+      "geometrySha256": "fbd80104b147b11969aa5d560864d52d598f51343643036c1bd2fc94c0416528",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 73.244500185,
+        "right": 523.244500185,
+        "top": 71.48898795,
+        "bottom": 521.48898795,
+        "width": 450,
+        "height": 450
+      },
+      "counts": [
+        5,
+        5
+      ],
+      "geometryIssueTypes": [
+        "outside_square",
+        "self_intersection"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "h4h2",
+      "sourceFile": "static/hearts/h4h2.svg",
+      "sourceSha256": "9b0d5ef128b5df86dc0bbe4cbbc1c06c3bf927d47201e4b31245a890c1c3bd00",
+      "geometrySha256": "08ae8e1e27016dfb7afbe8e1e9e05c2e0fc53dec40137da279f29f803461f0a7",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 149.99235801000003,
+        "right": 449.99235801000003,
+        "top": 150.04001088,
+        "bottom": 450.04001088,
+        "width": 300,
+        "height": 300
+      },
+      "counts": [
+        3,
+        3
+      ],
+      "geometryIssueTypes": [
+        "maximum_turn",
+        "outer_side_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "nemt-hjerte",
+      "sourceFile": "static/hearts/nemt-hjerte.svg",
+      "sourceSha256": "2cc313abd466d4c8c53b67dd22811ccf89da0ce66ff330191b7e4b2eb819ac20",
+      "geometrySha256": "2b505be948ba3f10bc701a4065ce9dffedf27a5429db2d8e778072f64de73711",
+      "category": "passes-at-256",
+      "overlap": {
+        "left": 187.5,
+        "right": 412.5,
+        "top": 187.5,
+        "bottom": 412.5,
+        "width": 225,
+        "height": 225
+      },
+      "counts": [
+        2,
+        2
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 256,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "lilje1",
+      "sourceFile": "static/hearts/lilje1.svg",
+      "sourceSha256": "6045fba890d31f4cb380c4fbe35af08ad38e50e27f038709c8fffd70eff50186",
+      "geometrySha256": "972fba8d15a69790046e481fd2c19fe9a5e7ea0a3be712c86b2c5337e2b004c4",
+      "category": "synthetic-geometry-profile",
+      "overlap": {
+        "left": 112.96915426875,
+        "right": 487.96915426875,
+        "top": 112.96915426875,
+        "bottom": 487.96915426875,
+        "width": 375,
+        "height": 375
+      },
+      "counts": [
+        4,
+        4
+      ],
+      "geometryIssueTypes": [
+        "inter_slit_clearance",
+        "nonlocal_self_clearance"
+      ],
+      "qualifyingResolution": null,
+      "visualReview": "not reviewed",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    },
+    {
+      "id": "lilje2",
+      "sourceFile": "static/hearts/lilje2.svg",
+      "sourceSha256": "95bcc1e7e73bea3f00e72021aa1c1b275825d825140563ff6bfbf4fcd6e10888",
+      "geometrySha256": "1f5ea11d56209d4c095fdf396f58f7efa513514a291ac7193b87270bf018b4e0",
+      "category": "raster-agreement-at-256",
+      "overlap": {
+        "left": 37.40207807625001,
+        "right": 562.4020780762501,
+        "top": 37.723273076249995,
+        "bottom": 562.72327307625,
+        "width": 525,
+        "height": 525
+      },
+      "counts": [
+        6,
+        6
+      ],
+      "geometryIssueTypes": [],
+      "qualifyingResolution": 512,
+      "visualReview": "source and independent motif agree at contact-sheet scale",
+      "trainingAllocation": "unassigned-diagnostic-only"
+    }
+  ],
+  "resolutionComparisons": [
+    {
+      "id": "ramme",
+      "geometryUnchanged": true,
+      "samples": [
+        {
+          "resolution": 256,
+          "passed": true,
+          "nativeRendererDisagreement": 0.0013885498046875,
+          "sourceRendererDisagreement": 0.0032196044921875,
+          "mismatchPixels": 211,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        },
+        {
+          "resolution": 512,
+          "passed": true,
+          "nativeRendererDisagreement": 0.001190185546875,
+          "sourceRendererDisagreement": 0.00154876708984375,
+          "mismatchPixels": 406,
+          "awayFromSourceBoundaryPixels": 4,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        },
+        {
+          "resolution": 1024,
+          "passed": true,
+          "nativeRendererDisagreement": 0.00045013427734375,
+          "sourceRendererDisagreement": 0.0008068084716796875,
+          "mismatchPixels": 846,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        }
+      ]
+    },
+    {
+      "id": "gaver",
+      "geometryUnchanged": true,
+      "samples": [
+        {
+          "resolution": 256,
+          "passed": false,
+          "nativeRendererDisagreement": 0.007781982421875,
+          "sourceRendererDisagreement": 0.007781982421875,
+          "mismatchPixels": 510,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        },
+        {
+          "resolution": 512,
+          "passed": true,
+          "nativeRendererDisagreement": 0.00389862060546875,
+          "sourceRendererDisagreement": 0.00389862060546875,
+          "mismatchPixels": 1022,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        },
+        {
+          "resolution": 1024,
+          "passed": true,
+          "nativeRendererDisagreement": 0.0019512176513671875,
+          "sourceRendererDisagreement": 0.0019512176513671875,
+          "mismatchPixels": 2046,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        }
+      ]
+    },
+    {
+      "id": "jul",
+      "geometryUnchanged": true,
+      "samples": [
+        {
+          "resolution": 256,
+          "passed": false,
+          "nativeRendererDisagreement": 0.007110595703125,
+          "sourceRendererDisagreement": 0.0072479248046875,
+          "mismatchPixels": 475,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        },
+        {
+          "resolution": 512,
+          "passed": true,
+          "nativeRendererDisagreement": 0.000423431396484375,
+          "sourceRendererDisagreement": 0.0004730224609375,
+          "mismatchPixels": 124,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        },
+        {
+          "resolution": 1024,
+          "passed": true,
+          "nativeRendererDisagreement": 0.0007076263427734375,
+          "sourceRendererDisagreement": 0.000743865966796875,
+          "mismatchPixels": 780,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        }
+      ]
+    },
+    {
+      "id": "sun",
+      "geometryUnchanged": true,
+      "samples": [
+        {
+          "resolution": 256,
+          "passed": false,
+          "nativeRendererDisagreement": 0.0041656494140625,
+          "sourceRendererDisagreement": 0.0056304931640625,
+          "mismatchPixels": 369,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        },
+        {
+          "resolution": 512,
+          "passed": true,
+          "nativeRendererDisagreement": 0.00046539306640625,
+          "sourceRendererDisagreement": 0.001102447509765625,
+          "mismatchPixels": 289,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        },
+        {
+          "resolution": 1024,
+          "passed": true,
+          "nativeRendererDisagreement": 0.0002689361572265625,
+          "sourceRendererDisagreement": 0.0006008148193359375,
+          "mismatchPixels": 630,
+          "awayFromSourceBoundaryPixels": 0,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        }
+      ]
+    },
+    {
+      "id": "lilje2",
+      "geometryUnchanged": true,
+      "samples": [
+        {
+          "resolution": 256,
+          "passed": false,
+          "nativeRendererDisagreement": 0.0077056884765625,
+          "sourceRendererDisagreement": 0.0078582763671875,
+          "mismatchPixels": 515,
+          "awayFromSourceBoundaryPixels": 4,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        },
+        {
+          "resolution": 512,
+          "passed": true,
+          "nativeRendererDisagreement": 0.001773834228515625,
+          "sourceRendererDisagreement": 0.001811981201171875,
+          "mismatchPixels": 475,
+          "awayFromSourceBoundaryPixels": 1,
+          "beyondOnePixelFromSourceBoundaryPixels": 0
+        },
+        {
+          "resolution": 1024,
+          "passed": true,
+          "nativeRendererDisagreement": 0.0014057159423828125,
+          "sourceRendererDisagreement": 0.001499176025390625,
+          "mismatchPixels": 1572,
+          "awayFromSourceBoundaryPixels": 5,
+          "beyondOnePixelFromSourceBoundaryPixels": 3
+        }
+      ]
+    }
+  ],
+  "visualReview": {
+    "contactSheets": [
+      "tmp/heart-learning/library-geometry-v1/candidate-review-0.png",
+      "tmp/heart-learning/library-geometry-v1/candidate-review-1.png",
+      "tmp/heart-learning/library-geometry-v1/candidate-review-2.png"
+    ],
+    "reviewedCandidates": 18,
+    "notes": "Motif structure agrees in all 18 source/independent pairs at the inspected scale. Circle has specks and faint internal seams; stjerne has faint diagonal traces. Their causes and suitability for clean supervision remain unresolved."
+  },
+  "sourceHashes": {
+    "tmp/heart-learning/library-geometry-v1/probe.mjs": "0ca6bef275055957630a3d9545176a3cab91fc25777441e25736bd26dfc51141",
+    "src/lib/data/hearts.json": "3db7c7e5f9cccd23bf48f7460e6c492f950dfe7d5d549caa75a06c6ebab5bc1f",
+    "src/lib/utils/heartDesign.ts": "c4d79388b56ca2332e6b42fd08716b3e9bfcd79b07ce9f7992ce46f1db998637",
+    "src/lib/utils/overlapRect.ts": "8c11b5bcf496e2176001a711039ac6573d06c4848f5290005df5216e49be327b",
+    "src/lib/paint/rasterize.ts": "c8e227d34063a9e87d45c223910f821255daf4527f7dd6dc38684eb774fda96e",
+    "scripts/inverse/datasets/synthetic-geometry.mjs": "b00f12055e06130e09b564f59a10cec85dde1dce1fce020dd4d2e04a0560bf41",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "2db84f0963f188ae820dff82610f3d63dc7f51c61207b775a65973c12b390288",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+    "static/inverse/core/direct/fit.js": "ce926fbf75afdbe4a8b062c30da551832c5bff0305514f905ec87cfdb6687e7e",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/hearts/classic-3x3.svg": "976d7585ef1db2f5775e4c7b9fd8f7e2c4519db15819d57a44566dad0ed1e24f",
+    "static/hearts/ramme.svg": "0ac54d589888b4e2be3642992e2a1c74179de9507ed553634ac97aabc668e8ce",
+    "static/hearts/gaver.svg": "97bfd0f0463baf593f5db1e3ea2dff98c0dd2f1f32179a8ed7e19d1bb83717ca",
+    "static/hearts/jul.svg": "273186ea791a5a66bb921fd1feadc197cc2f0240a02314f3013bef976db39013",
+    "static/hearts/stjerne.svg": "b0a39c86ff0accb5bb1054a538c030d334975aebe7762f722024ccb93978bce7",
+    "static/hearts/stjerne-ramme.svg": "3a4eeadb53e1a22d4e949aef51a616e55a33f77b99939ac128176a53bcfdf94d",
+    "static/hearts/5star.svg": "52f44887c1396839dc76bb6b9ce952d2ab1d552f1e19f1c2363b7b9f5a84aa72",
+    "static/hearts/simple-5star.svg": "e249cd6cf70ad2107387f0c66495092cbdb61ade5392235a20775dccffddc278",
+    "static/hearts/sun.svg": "55de590e77d08cc9761cdcdddf6bc81e777573a3ee367cc844589f97cbbbcf80",
+    "static/hearts/explosion.svg": "b9362f3afd563963bb5ef0b2d0e5f71dd9cbda0ed1b815c2cda3bb8332e19b75",
+    "static/hearts/nihon.svg": "b617b799dcc3dbf21099cde2d32683a0c658109811c8a3476cc880c95ad02e18",
+    "static/hearts/davidsstjerne-circ.svg": "a57eb54cbda639dbaa0494da979f1ba37ee896edf617648aea8d7a5179b4b605",
+    "static/hearts/david4.svg": "6cca51d4d7c9a8d044b63538cd44137a1bde80efbce2bc2f86907bcfa044af8d",
+    "static/hearts/khatam.svg": "7b8cc690474632521e0f73d73b13a36271971d291a205526849a4aece64980c4",
+    "static/hearts/circle.svg": "cefd9bfc430ce4b540bdab8e634f88568ef396eb7e15cad938fb5b4d66420fda",
+    "static/hearts/balls.svg": "f709d025d97a8ef5b995de8691953e6c28b4ea333c69fa04d877b8bd2c583ac7",
+    "static/hearts/kogle.svg": "55590468408b937e164d045bf05695d8a329e7ba60d5cfdf4f62b6e6374e91a8",
+    "static/hearts/plus.svg": "0e7840743e1e6640a309087c4172c652624dbda7fa26f71730e3255aacd64da7",
+    "static/hearts/plus3.svg": "801e6a53b82ebaa353bb8f754ceb2ca1d096c69f0b0c4866a93eb94a8f43bf92",
+    "static/hearts/amy-weave-1.svg": "320d6207ff13a0e8d5d720461845efb6870b4559fa90a03ff79fb44d62b783e1",
+    "static/hearts/amy-weave-2.svg": "9958ca062ea955f1b7be85c3eb92f6987a211614fdab80b81016030348093444",
+    "static/hearts/amy-rosette.svg": "2b3bcee1aab78492e4418fb900e0addd7ed04fb8b76f588c71057fe156c8fa9e",
+    "static/hearts/amy-pattern.svg": "22d6c88e7ff014d27c081cf0dd148593881413935b9939d0237f959fc27f3d9f",
+    "static/hearts/amy-flowering.svg": "25f00711f5fc3cebaf27c3d00a1e04fd7bae2ae1d44e6ac2dbd610f037fcb1c6",
+    "static/hearts/amy-pinecone.svg": "775432a4c3c5ad61683daf20bf6b74a84b825a0955be70901832cd36f557d006",
+    "static/hearts/alhambra.svg": "91bff62f31c5fe80c79ab5308c31ef2f7f5c491f6f2803d99357b6f2e4d725ae",
+    "static/hearts/squares.svg": "d3ec3b31eb1f748e63a2b0076d19d0fd45302a3e3563e6825fc695c2531d57bf",
+    "static/hearts/juletrae.svg": "07c37334099b3fb3f8f7b3fd6171121102850de48de936bb8576a3d1ae3d7471",
+    "static/hearts/flower.svg": "05b36d3bcad88492e889ab311fcd6b0f96911d0d0e1ea29d5cbaa190e643f415",
+    "static/hearts/venus.svg": "dfb6ff0d78251e48e0c129a161b0ca8939627c8b0698c4686fb9026a797affd6",
+    "static/hearts/angel.svg": "83f43485d25109466ded4c4189bd3b71f1eae488cd3b8c5920851166fd72610e",
+    "static/hearts/snowflake.svg": "108231f4649ec752bca11d2f74bb400518f4c0786e2ca9d1c40c8ca57faa8bd0",
+    "static/hearts/santa.svg": "5021dba761b2d31c822e44c767edfc57c80f61184e8733d9a3a977310c61baaa",
+    "static/hearts/triple-heart.svg": "73f34f6da07f8fdb29a406088ff0704528273476dfe5740377971c6096377669",
+    "static/hearts/h4h2.svg": "9b0d5ef128b5df86dc0bbe4cbbc1c06c3bf927d47201e4b31245a890c1c3bd00",
+    "static/hearts/nemt-hjerte.svg": "2cc313abd466d4c8c53b67dd22811ccf89da0ce66ff330191b7e4b2eb819ac20",
+    "static/hearts/lilje1.svg": "6045fba890d31f4cb380c4fbe35af08ad38e50e27f038709c8fffd70eff50186",
+    "static/hearts/lilje2.svg": "95bcc1e7e73bea3f00e72021aa1c1b275825d825140563ff6bfbf4fcd6e10888",
+    "tmp/heart-learning/library-geometry-v1/resolution-probe.mjs": "a1a45fd0d57de1ae5e92bb0fec0e31ffe015a78436d5d202da14bf740023f365",
+    "tmp/heart-learning/library-geometry-v1/collect.py": "b23549aca3dab11c23fdc0947e62897141952a3d6b8403d1ca1def8654d0e489"
+  },
+  "artifactLedger": [
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/candidate-review-0.png",
+      "bytes": 72945,
+      "sha256": "45420a400ad8a19eca850180ce85e1e007c8a390d20d73071e295dafb0da7d83"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/candidate-review-1.png",
+      "bytes": 110753,
+      "sha256": "5b5e0bc478a361b9d4a561559b292bdc0909c1cca412b0ff83d94e8ead3735af"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/candidate-review-2.png",
+      "bytes": 114331,
+      "sha256": "e574d5b84ef39163d405b26ff0ea5717eed499cc5a9e88e72f303bb2a70e40cd"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/collect.py",
+      "bytes": 7006,
+      "sha256": "b23549aca3dab11c23fdc0947e62897141952a3d6b8403d1ca1def8654d0e489"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/probe.log",
+      "bytes": 31102,
+      "sha256": "645a92d320e03b76d63ed8198ab3f119fef0caa1db050b9cf6b497b5c2ce3039"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/probe.mjs",
+      "bytes": 5685,
+      "sha256": "0ca6bef275055957630a3d9545176a3cab91fc25777441e25736bd26dfc51141"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/resolution-1024.log",
+      "bytes": 385,
+      "sha256": "d7d48c683db4f1a28060a65c1fff9ac3c176246dd48086f503229ecea51fe6c2"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/resolution-512.log",
+      "bytes": 378,
+      "sha256": "567f637070161bee6556783946668de86f3c429bc2a7fd9c19b308ab5e4fb51d"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/resolution-probe.mjs",
+      "bytes": 5792,
+      "sha256": "a1a45fd0d57de1ae5e92bb0fec0e31ffe015a78436d5d202da14bf740023f365"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/5star/cuts.json",
+      "bytes": 28934,
+      "sha256": "ab7e94d6e4d8c0279d80fb4598d16009e9a16a82d9acfcdc732dea4250c6299b"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/5star/source.png",
+      "bytes": 2278,
+      "sha256": "027a4dff48d696d3b8aeeebc909a0ddeb9796810e447536ad16710b25b7398a6"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/alhambra/canonical.png",
+      "bytes": 12239,
+      "sha256": "d8afb24ed2e6bd8f9ceebc4488e68a05a75ace803f6b0f0738077278c5c0814f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/alhambra/cuts.json",
+      "bytes": 26400,
+      "sha256": "53300cfc3c76befa3d5a0718788d72aea50b4f801fededb16a39ce5bcbee4705"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/alhambra/graph.json",
+      "bytes": 40791,
+      "sha256": "a7d9dce0a756ad667190a6458f2ebbda03a152887bb764dac9952603805f597b"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/alhambra/source.png",
+      "bytes": 4493,
+      "sha256": "1bc53d5e0ac96a949ddcfdc24a0067ca1eac024864a13ed11bd01d88cc9de827"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/amy-rosette/cuts.json",
+      "bytes": 9293,
+      "sha256": "34d005a3f4127b1856539ca271af9b3c03eed734d029fb8bb52779b7df81d556"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/amy-rosette/source.png",
+      "bytes": 2929,
+      "sha256": "3a96b386e840550da1ec502b910a6bfc66095df382ceff73fec9db5b0fb84847"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/amy-weave-2/canonical.png",
+      "bytes": 5693,
+      "sha256": "7ddca460d93f13d7f8032c4cf46d9b78f4120900155ea66e06dbad19124c9566"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/amy-weave-2/cuts.json",
+      "bytes": 6276,
+      "sha256": "8f350fd61880dea7b2410ad68df7f6d2c453be66cf5dbcf38c7e29cb614bfa49"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/amy-weave-2/graph.json",
+      "bytes": 10513,
+      "sha256": "15a6e9fc54aa862510f98ecff19fedddc95ed874a2dabca94dcc33ed97a99cac"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/amy-weave-2/source.png",
+      "bytes": 1222,
+      "sha256": "7fce68cbe28538896e0d93bad020d4dad2ddc305624b9a0c807156f174b0ccd0"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/angel/canonical.png",
+      "bytes": 6150,
+      "sha256": "b831e719c32ff2d4a710d1b35ffaeb6e53a8518143dfde9a6ec6af8696c33eca"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/angel/cuts.json",
+      "bytes": 23800,
+      "sha256": "6f36395dbb48d0262f9763542dfc4669503a50b12bb9525256cb37930573691f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/angel/graph.json",
+      "bytes": 36669,
+      "sha256": "c27f6378a442b34d877ae7985afbb7bccfb634599907b3b914349cbdacd027a3"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/angel/source.png",
+      "bytes": 2581,
+      "sha256": "900fa12685befc5b03d3f90f5f285c05347bf23c439a243187a77741650a3e3c"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/balls/cuts.json",
+      "bytes": 134617,
+      "sha256": "88f246724c259cb31ce969ade3a5ea2155b0e779b8fe010c6b01664f8dca5107"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/balls/source.png",
+      "bytes": 3494,
+      "sha256": "5baebaca4482978df257c75e8c66c3931e05023c8843b1de7a2d5ffe46f04389"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/circle/canonical.png",
+      "bytes": 7910,
+      "sha256": "39b0e91b2b4eaafae24011344fc6e4b5dfabba3a8d31f4eb174a02b7b27aa4e0"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/circle/cuts.json",
+      "bytes": 40165,
+      "sha256": "a309ce99e38531505683aac48265317f5c6a2ffe3216a37723a27055aba34e73"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/circle/graph.json",
+      "bytes": 61717,
+      "sha256": "5b9ceb14b0d0b67af7e2cb2452e8baa0d3fe78f961e59f32de74c6a8610687f8"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/circle/source.png",
+      "bytes": 2622,
+      "sha256": "54bea4016846c2465d4fd483f377056d19ae734d56d2c1bd23585111f8dd41c1"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/classic-3x3/canonical.png",
+      "bytes": 2348,
+      "sha256": "9df9044763bccbe0ecdd579b71537f315f3eec878c376ab2d1e55b3aab81addd"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/classic-3x3/cuts.json",
+      "bytes": 1969,
+      "sha256": "ac37733688a942db2972ca01c3ffffeadb1a969d8a5d4aa2942afc9c19324dc3"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/classic-3x3/graph.json",
+      "bytes": 3454,
+      "sha256": "fc86fa7fcdbc643c571f68228da752d921151d98e592fbdef8828487c4be998b"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/classic-3x3/source.png",
+      "bytes": 911,
+      "sha256": "11d887fc39c1ba567527ff5402055e7ab68d5cb4b47e6faf2fefcacbe5e98141"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/david4/cuts.json",
+      "bytes": 38339,
+      "sha256": "7b59d9a5a2835c21a3d153ea8544656228ae55b354bdc894a424c1febd16b5ea"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/david4/source.png",
+      "bytes": 3106,
+      "sha256": "d8a73846fac1cf2e3649de73ece1df0ef5f61af7d6c943465ff3ef6e7c081517"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/davidsstjerne-circ/cuts.json",
+      "bytes": 82221,
+      "sha256": "54aaee3a36d7a83aff675497d8f86d114064b80d6caf2c1f345805deede98018"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/davidsstjerne-circ/source.png",
+      "bytes": 3767,
+      "sha256": "2e27df27790fdf1471974ef4a6f6df03b97667199a71986d22667c28ea1f9588"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/explosion/canonical.png",
+      "bytes": 7496,
+      "sha256": "8a62cd97346dcdbd827d3d3ff65fc810fb031d87626106de38d3b2b4d32bdb8b"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/explosion/cuts.json",
+      "bytes": 9321,
+      "sha256": "8c9edf3ee2b7f2eb951f6a23a9797ad513f8927175dd990dc689b1139396844c"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/explosion/graph.json",
+      "bytes": 15203,
+      "sha256": "0a3b4b4f640eff06b9ea7a1f17e1fa59a261e9adf11383dabbe781088c92b83e"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/explosion/source.png",
+      "bytes": 2328,
+      "sha256": "b18d8e58150fe5b014421c4d48ec0680b1bcae8cf16b0c870812abef9e475571"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/flower/canonical.png",
+      "bytes": 7829,
+      "sha256": "20fb8ce3727951e6107bfc786ff4c8893fd9aa71a37733e2764648c16d56648b"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/flower/cuts.json",
+      "bytes": 21884,
+      "sha256": "47fd08e94640465679c77af71de7e0b64c39c19d2aa99244c69fef8fdaba1470"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/flower/graph.json",
+      "bytes": 33810,
+      "sha256": "6ba5526641e73346a0c4661d7470118922a8acd19e85335e1953d424ca89ab9c"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/flower/source.png",
+      "bytes": 3056,
+      "sha256": "9b6ff65ab9ac283939aa18a42dbb8755fc877d75ea4645259e42f9023c0054eb"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/gaver/canonical.png",
+      "bytes": 3030,
+      "sha256": "76b2a65401a8044794e443e1a701a1c65abeaaf07aead49a2d3b275a185b4ded"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/gaver/cuts.json",
+      "bytes": 4517,
+      "sha256": "6a36f1fd83b9574aaf150b8bba1d03bc53ee778f2d792c7559391566eaf13e24"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/gaver/graph.json",
+      "bytes": 7598,
+      "sha256": "f83c73844c971e1358529be61078cdd6111facf7f48b9e622b55570a625f40ee"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/gaver/source.png",
+      "bytes": 996,
+      "sha256": "6dff7e0263eb0a5b993c4ed25c7eab34a104d9fcc34ac641861994ae1182fa12"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/h4h2/cuts.json",
+      "bytes": 17572,
+      "sha256": "7003a61529e4ce2013506535d00967f1b5de9a21b4e500555ece11ec45098e88"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/h4h2/source.png",
+      "bytes": 1351,
+      "sha256": "553c2a8e122d980cfd7adcba4bb15b651db9e53cd2ece3561d712e7aab594347"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/jul/canonical.png",
+      "bytes": 5285,
+      "sha256": "65408334f51cfaad50aea45b9af33bf6371091b6ba3da7dc98d3549db25bb8cc"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/jul/cuts.json",
+      "bytes": 33998,
+      "sha256": "544ee7ec9abb48eecfd63b2dbcdf6daf42f63e7ddfabc32f0b896366c464743d"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/jul/graph.json",
+      "bytes": 52336,
+      "sha256": "328d9e34240745285249c9989000288ea8730d71fccf66aadaefd334f566445f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/jul/source.png",
+      "bytes": 2141,
+      "sha256": "dd2991015ffe9b108dfed09eb65ad8826e7d2dd143cab2f9c2e857645f59f24a"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/juletrae/cuts.json",
+      "bytes": 11655,
+      "sha256": "950e1ca75e1a43ae6d2a32d886c4bb5d13e6427d4735e253325843d1e04b7aa1"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/juletrae/source.png",
+      "bytes": 1945,
+      "sha256": "bdf89379ac7c2683c3e95b6c6e2ea59ad5f5070bd23f99e4da54e066b069c069"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/khatam/cuts.json",
+      "bytes": 99122,
+      "sha256": "faaf9ef79c05a4e376fffcf1e0f8430ba4c17b23275d6221c5ce4878a11afdc4"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/khatam/source.png",
+      "bytes": 3526,
+      "sha256": "b4662b515bf04833a14612191110977e1927f00d9c8f116d51d7d89bf5fcdd4c"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/kogle/cuts.json",
+      "bytes": 31625,
+      "sha256": "3eaae8d9b6b273c2b4d62adadfecfad4c2f520eb08cd3fee5d13015824b089a6"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/kogle/source.png",
+      "bytes": 3020,
+      "sha256": "f79365a53c7fcd0334bf82ddc1cfa876f526c1e51facadcd6ee187c12079b33f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/lilje1/cuts.json",
+      "bytes": 27805,
+      "sha256": "550ada58441c58651cd83417f43ee413fbd5c0f48e5c9e35b5f688a005b6dbf2"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/lilje1/source.png",
+      "bytes": 3060,
+      "sha256": "77ae08a3789f346d4f46b65ed9419bd51b0db81f0a4898b69e6268be70ed88aa"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/lilje2/canonical.png",
+      "bytes": 8955,
+      "sha256": "8e06d857dd8f8157d0d1d955919210e9d3cf185e4ad091363e038bde82d090b1"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/lilje2/cuts.json",
+      "bytes": 37100,
+      "sha256": "be6d5bf264236167c23403f43b40c8b0816d588e094725815695d070d3c86f8f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/lilje2/graph.json",
+      "bytes": 57233,
+      "sha256": "50a1198ab6cf556f41dc2e31ab2d6f48200a4011d26c22e1716f22054a7ff312"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/lilje2/source.png",
+      "bytes": 2891,
+      "sha256": "1e20a00808ab3d84358072c3c30aaaf1398d07e945db6a736bc44a0cd1d006db"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/nemt-hjerte/canonical.png",
+      "bytes": 3664,
+      "sha256": "f687e98d8f6bf4120d5ae81f7113ed6a792c5b4ac756953cd9c93a868c788f65"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/nemt-hjerte/cuts.json",
+      "bytes": 3809,
+      "sha256": "58f292eb1ce7e2550a1cbb758cdc030cc9dadc348cbe6e20d4ad84b73d1bb1d1"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/nemt-hjerte/graph.json",
+      "bytes": 6244,
+      "sha256": "21b04465367d07ef7dfd98c69842aa394047d281e1672debcf4c0877f6233dc2"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/nemt-hjerte/source.png",
+      "bytes": 1342,
+      "sha256": "412a9f670a2339208200d59ce6dd9f36860a79da2ed0bb5b1f45ab2425b78b67"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/nihon/canonical.png",
+      "bytes": 6230,
+      "sha256": "9fc2c790d1f5045b4d3935607529119851c785590d0d626ae785d72dcae40373"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/nihon/cuts.json",
+      "bytes": 5595,
+      "sha256": "feb884d1fa7877c74af6cbfe17b7c2e3241ba8d06e7c7588b7b895fd19bdacd4"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/nihon/graph.json",
+      "bytes": 8981,
+      "sha256": "bb29e1e13e4c8cd035ef985b9e387b937992ecc77e27fb27daf08bb898a4f3cc"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/nihon/source.png",
+      "bytes": 2629,
+      "sha256": "849e688d9d159ce2c2f5d410b220b3a4d8d135992ddcea37ec43d0dbcf2e3514"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/plus/canonical.png",
+      "bytes": 2755,
+      "sha256": "8903a7cf96839145d151bcf2f493fdfd356994eeff2aae5b5e9823fbb3ffda76"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/plus/cuts.json",
+      "bytes": 18580,
+      "sha256": "16ae18749b6acf3a72bdd18d67d60a245edabab8703e840ce32c8d458b89e517"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/plus/graph.json",
+      "bytes": 28633,
+      "sha256": "86c31a76bb541354d6e5c5566cb4b463c18a0085c8d9e73ec8217ae92bdf7431"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/plus/source.png",
+      "bytes": 1038,
+      "sha256": "46ec4353a4f2c95be09662908b86705688fe47a2adbdc2abfe471f8d217e36db"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/plus3/canonical.png",
+      "bytes": 9434,
+      "sha256": "7ab829721b36615bbd7948deb591f42b24889bed6ec66f14421a19af8474c391"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/plus3/cuts.json",
+      "bytes": 25469,
+      "sha256": "e813c5a658ca75fee2ac8fac25969c127fe10c67bd0da16f7b07fa65275e9c87"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/plus3/graph.json",
+      "bytes": 39271,
+      "sha256": "6e5bcb5ca03cb8db290756e21768b7d8f7ea52f0c55a6e341efc6d6eff832714"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/plus3/source.png",
+      "bytes": 4175,
+      "sha256": "1ddbb2a9c4a429e0fa0f7fb3233e6c518d74ab41d595ff312cabcd5b7f555065"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/ramme/canonical.png",
+      "bytes": 7820,
+      "sha256": "a6ab5a786ab85100ce3a8297fb2be5201e8282fd02e9a73372d3fb33a91c9e5a"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/ramme/cuts.json",
+      "bytes": 3561,
+      "sha256": "18a5d59c9d52446c8d564906cd5939542ebd713e226292308ece8f3a82a8f039"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/ramme/graph.json",
+      "bytes": 6016,
+      "sha256": "d82a613d53a07cff859fd15507e44acf0b6e29d24981331447e013f48b3d89c6"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/ramme/source.png",
+      "bytes": 2491,
+      "sha256": "8438a56f5b105250d10bf753b60569edb9bce6a16f2ce1baa143ef82575fbcab"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/report.json",
+      "bytes": 253057,
+      "sha256": "b3561507f1b748dd60b33ab779a1c8b99754713aa2167d05f9dcb6768500363e"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/santa/cuts.json",
+      "bytes": 90083,
+      "sha256": "3913c100d3f894032bf50b0d6f37ffca36ea199bba2bf3efd06381c258acce07"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/santa/source.png",
+      "bytes": 2631,
+      "sha256": "60533a478712a04917954561faf64629f71f6e381e57792ce0389ba58b25360b"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/simple-5star/cuts.json",
+      "bytes": 11956,
+      "sha256": "167fcf735ec475b8c1d6a6a26e0d23641d2cd3d01776b5eac5b15a3fee81e55c"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/simple-5star/source.png",
+      "bytes": 1730,
+      "sha256": "e0aaff80c9e4f08c15dbfcbed959446c9640c208f9202dfe57bf90aa18956e02"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/snowflake/cuts.json",
+      "bytes": 26443,
+      "sha256": "990dff51c8e7f53f9f3d188b83e17882411fcce93a39eaa862aaced174c3f2e6"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/snowflake/source.png",
+      "bytes": 3593,
+      "sha256": "b3c54c15f6c8df2e01b4b25249970534457b621a253bf0aa3147341030c2abd7"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/squares/canonical.png",
+      "bytes": 1852,
+      "sha256": "bc847b7bb195aa227f76748ea309a37d528d30573f5ee395121903a4cdfbc1aa"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/squares/cuts.json",
+      "bytes": 17998,
+      "sha256": "48cbb7deda78d8384bf4bfe5c680c8289368e45ce747c14576e8def1535638b9"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/squares/graph.json",
+      "bytes": 27943,
+      "sha256": "1d436a6a2fa99c60743aea2184e42a26700cc709fdf228c737ddcaed07836bdb"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/squares/source.png",
+      "bytes": 951,
+      "sha256": "5264959935a11b4598e39a765b2ad59de2c7492b5ad71250bf58ae8084671394"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/stjerne/canonical.png",
+      "bytes": 6156,
+      "sha256": "95f1ebd5cf520e4aa8445ce9b9e433c7cf592432e76b15cff1814fd6f8c12805"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/stjerne/cuts.json",
+      "bytes": 14161,
+      "sha256": "771180881153b79569254ce32811daccf6a0033785227b6e177faf449c085223"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/stjerne/graph.json",
+      "bytes": 22155,
+      "sha256": "c1ebd785800c65fce987773d8ac25991d5fe10679c40f5ddf86ad0a44d7355c3"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/stjerne/source.png",
+      "bytes": 2340,
+      "sha256": "f8f0a303511280f27339069473a5caea95ec4c176e14c356c281b24177bbdaed"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/sun/canonical.png",
+      "bytes": 6738,
+      "sha256": "ec865a6a60efebcca2cf41e21acb2000edcfac2f4fcc5f8a44d6873f945856a0"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/sun/cuts.json",
+      "bytes": 11694,
+      "sha256": "fd97603fd080f01a68e43469cd520efad36823335b53cf6bf12408e28cd8ed5a"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/sun/graph.json",
+      "bytes": 18409,
+      "sha256": "7e412fefcee712ec87c5980c95cd2b8a008b5dc7d9b345af3ca59e4fb8d7f824"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/sun/source.png",
+      "bytes": 2493,
+      "sha256": "35bf7e7f2029a4c0ce277b9b3c8088ae456416e501a7a0fb33658e84219c9476"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/triple-heart/cuts.json",
+      "bytes": 12582,
+      "sha256": "2098f63cf575229dbda1f0b7c9b4873a00f6e798c5a2212e12b3e232a048b7e1"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/triple-heart/source.png",
+      "bytes": 2142,
+      "sha256": "99959dffe93469ed8510b314bbf708bc2b8ebb227957d311cbc0332c27d95e47"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/venus/cuts.json",
+      "bytes": 43408,
+      "sha256": "584984eecb1fefc5dae93a90105a75a21e67b80ed52c54e3cc7c08581d741cab"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results/venus/source.png",
+      "bytes": 2969,
+      "sha256": "3f93b59cafb1c1277bc49c5537e2991b940c4340813776c2166ef6162f2c398f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/gaver/canonical.png",
+      "bytes": 20176,
+      "sha256": "e77bf237134acef1bbf4c6ff18637ae83f9c12a88bdb480fffd8a336be434b79"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/gaver/cuts.json",
+      "bytes": 4517,
+      "sha256": "6a36f1fd83b9574aaf150b8bba1d03bc53ee778f2d792c7559391566eaf13e24"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/gaver/graph.json",
+      "bytes": 7598,
+      "sha256": "f83c73844c971e1358529be61078cdd6111facf7f48b9e622b55570a625f40ee"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/gaver/source.png",
+      "bytes": 6647,
+      "sha256": "1450209136f05f8cb3b95ebf33c35d8948e2ec832dcbb0a909dda7ae5c4fa18f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/jul/canonical.png",
+      "bytes": 31766,
+      "sha256": "6c0f434940c04a9fb4d033a0923e1bdbb9260124875304b1791936a3c9e1e51c"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/jul/cuts.json",
+      "bytes": 33998,
+      "sha256": "544ee7ec9abb48eecfd63b2dbcdf6daf42f63e7ddfabc32f0b896366c464743d"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/jul/graph.json",
+      "bytes": 52336,
+      "sha256": "328d9e34240745285249c9989000288ea8730d71fccf66aadaefd334f566445f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/jul/source.png",
+      "bytes": 13285,
+      "sha256": "c0cc6714d3bb5dbdbf4191fff00725e9603809c6c93982112dd9135367f0e659"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/lilje2/canonical.png",
+      "bytes": 47221,
+      "sha256": "c6d45af41db31ede7d11e677e0e233f923c39aafbd6f99d63c59a860d79055cf"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/lilje2/cuts.json",
+      "bytes": 37100,
+      "sha256": "be6d5bf264236167c23403f43b40c8b0816d588e094725815695d070d3c86f8f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/lilje2/graph.json",
+      "bytes": 57233,
+      "sha256": "50a1198ab6cf556f41dc2e31ab2d6f48200a4011d26c22e1716f22054a7ff312"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/lilje2/source.png",
+      "bytes": 14545,
+      "sha256": "5357cf4835f31dc21abc4165143de00d42213107d9f726449a8912f1b2bc3b19"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/ramme/canonical.png",
+      "bytes": 40344,
+      "sha256": "643ed6aa03f05c87a70e9022d89ccb3c20cbb9c79bec8cd74ac306e4583c424f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/ramme/cuts.json",
+      "bytes": 3561,
+      "sha256": "18a5d59c9d52446c8d564906cd5939542ebd713e226292308ece8f3a82a8f039"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/ramme/graph.json",
+      "bytes": 6016,
+      "sha256": "d82a613d53a07cff859fd15507e44acf0b6e29d24981331447e013f48b3d89c6"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/ramme/source.png",
+      "bytes": 13077,
+      "sha256": "b05f8198605ce8219c78a451375fa418f490e09c9cf822228a9c6a1c878d193d"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/report.json",
+      "bytes": 48729,
+      "sha256": "893849995a0a075a805960ea3b91cb4a024e322075f699b355c1ec224200c1aa"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/sun/canonical.png",
+      "bytes": 33548,
+      "sha256": "b31fe8a20022e408fb6464daa8cad8f3359b47c7c9adcb9b179603f5a4de4fb9"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/sun/cuts.json",
+      "bytes": 11694,
+      "sha256": "fd97603fd080f01a68e43469cd520efad36823335b53cf6bf12408e28cd8ed5a"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/sun/graph.json",
+      "bytes": 18409,
+      "sha256": "7e412fefcee712ec87c5980c95cd2b8a008b5dc7d9b345af3ca59e4fb8d7f824"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-1024/sun/source.png",
+      "bytes": 12730,
+      "sha256": "f9bbeb4846e71270f756a1d7f3c617119f66a0584fb1b7c71eeca0a3df02c3be"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/gaver/canonical.png",
+      "bytes": 8269,
+      "sha256": "1e5bddd1f808a44b93dadaaadb7cd76fb587801f6c048e8b6d09c4d58a77e813"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/gaver/cuts.json",
+      "bytes": 4517,
+      "sha256": "6a36f1fd83b9574aaf150b8bba1d03bc53ee778f2d792c7559391566eaf13e24"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/gaver/graph.json",
+      "bytes": 7598,
+      "sha256": "f83c73844c971e1358529be61078cdd6111facf7f48b9e622b55570a625f40ee"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/gaver/source.png",
+      "bytes": 2346,
+      "sha256": "d64fd0af2404ce36a51caa1c61feb0e06aa6659a84f0c23cbad29ff21f94b02b"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/jul/canonical.png",
+      "bytes": 13201,
+      "sha256": "ce85dfaad0d5187aeec6d31b124fbbe93fdcfff65d2f8b0af93eca91c345032d"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/jul/cuts.json",
+      "bytes": 33998,
+      "sha256": "544ee7ec9abb48eecfd63b2dbcdf6daf42f63e7ddfabc32f0b896366c464743d"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/jul/graph.json",
+      "bytes": 52336,
+      "sha256": "328d9e34240745285249c9989000288ea8730d71fccf66aadaefd334f566445f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/jul/source.png",
+      "bytes": 5208,
+      "sha256": "09e7e2240770528397dea67b947e70501c456357b8ec39d16229a1e2fbddd02b"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/lilje2/canonical.png",
+      "bytes": 20733,
+      "sha256": "0a336a11549cfde29798b187c337de94fa75a8ae987ef2645afdc27ae07ce2e0"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/lilje2/cuts.json",
+      "bytes": 37100,
+      "sha256": "be6d5bf264236167c23403f43b40c8b0816d588e094725815695d070d3c86f8f"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/lilje2/graph.json",
+      "bytes": 57233,
+      "sha256": "50a1198ab6cf556f41dc2e31ab2d6f48200a4011d26c22e1716f22054a7ff312"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/lilje2/source.png",
+      "bytes": 6286,
+      "sha256": "aa2aa906da3645a073eb173c0d886980b93fb14ebbd4fd6fe6d6a07b8f709b05"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/ramme/canonical.png",
+      "bytes": 17082,
+      "sha256": "b5f658a64222485e3d2de0b5c03dff63d4b7e63d4fc82d06a05b3ac607a07cf0"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/ramme/cuts.json",
+      "bytes": 3561,
+      "sha256": "18a5d59c9d52446c8d564906cd5939542ebd713e226292308ece8f3a82a8f039"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/ramme/graph.json",
+      "bytes": 6016,
+      "sha256": "d82a613d53a07cff859fd15507e44acf0b6e29d24981331447e013f48b3d89c6"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/ramme/source.png",
+      "bytes": 5451,
+      "sha256": "cb2b68da351bfd68195335d74e118a1fa2c13f87feaf0e039408980cd4937722"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/report.json",
+      "bytes": 48721,
+      "sha256": "e11e08db14ea3a92f8c1babdedca704eb918a2d184520ac0fe55c5fe21b31788"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/sun/canonical.png",
+      "bytes": 14669,
+      "sha256": "aab3612258228d58a828b8f3912a3dbd336ee957c4aa8fb50f403352e116c8aa"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/sun/cuts.json",
+      "bytes": 11694,
+      "sha256": "fd97603fd080f01a68e43469cd520efad36823335b53cf6bf12408e28cd8ed5a"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/sun/graph.json",
+      "bytes": 18409,
+      "sha256": "7e412fefcee712ec87c5980c95cd2b8a008b5dc7d9b345af3ca59e4fb8d7f824"
+    },
+    {
+      "path": "tmp/heart-learning/library-geometry-v1/results-512/sun/source.png",
+      "bytes": 5383,
+      "sha256": "028fadc33dda6af07b395fdcebcf3df6db7f387eb1a9a164e4d30e587feb0f6e"
+    }
+  ],
+  "limitations": [
+    "The 150-degree synthetic turn limit is stricter than the automatic fitter profile; rejections do not establish that published templates are illegal.",
+    "Nominal checks assume a 100 mm overlap and do not establish physical assembly performance.",
+    "Only five designs were replayed at 512 and 1024; the other initial passes remain 256-resolution evidence.",
+    "Raster discrepancies concentrate on boundaries; no exact renderer quantization root cause has been proved.",
+    "Distinct stored geometry is not proof of distinct motif or topology families.",
+    "Repository templates can overlap evaluation cases. Family grouping and evaluation reservations must precede training allocation.",
+    "No source SVG, fitted geometry, production renderer, training manifest or checkpoint was changed."
+  ]
+}

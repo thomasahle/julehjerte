@@ -131,6 +131,13 @@ selection and final validation. Using one tolerance changes neither the selected
 fit nor acceptance across 120 paired poses of the six frozen foreground fields.
 It does not explain their four missed crops, so the cropper is unchanged.
 
+A [gallery-template audit](repository-template-candidates.md) checks 38 existing
+SVGs as possible additional synthetic sources. Eighteen pass the nominal
+geometry/paper and rendering comparisons, including four whose initial raster
+disagreement falls below the limit at finer resolution with unchanged curves.
+Visual review flags faint seams in two candidates. None has entered training:
+source-family and QA overlap must be reviewed before allocation.
+
 The [experiment history](experiment-history.md) retains the earlier studies,
 failed alternatives and verification records without mixing their historical
 scores into the current summary.
