@@ -39,6 +39,13 @@ contour defects and six unresolved photographs remain; these native timings
 do not establish a universal ten-second browser latency. See the
 [full validation record](row-initialization-validation.json).
 
+An offline [cut-subdivision audit](self-return-subdivision.md) exposes a limit
+of those geometry checks: five saved exports change their short-return verdict
+when the same curves are split. A candidate check gives consistent decisions
+across 480 representations, but flags two previously accepted outputs. Fresh
+fits recover checked alternatives with higher image error, so the proposal
+remains offline while quality recovery and independent editor checks are studied.
+
 The [Pinterest expansion](real-pinterest-expansion.md) includes all four supplied
 pins. Download success, photograph count, heart-instance count and motif-family
 count are different measures. Of the 1,034 source files, 476 are now reserved by
