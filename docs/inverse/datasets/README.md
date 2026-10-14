@@ -84,6 +84,9 @@ and visible gift artifacts remain. Actual SVGs pass the stronger geometry
 predicate in all 32 representations; the existing editor still changes its
 verdict for three of the four outputs. The experiment remains outside the app.
 
+The [whole-cut editor experiment](whole-cut-editor.md) removes subdivision-dependent
+warnings while retaining captured returns, with 424 actual SVG checks.
+
 A [symmetry-preserving final repair](final-return-symmetry.md) retains matching
 sheets and requested transforms, with a complete 51-output saved-corpus replay.
 

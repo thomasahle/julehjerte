@@ -1,0 +1,650 @@
+{
+  "scope": "Offline whole-cut editor proposal on unchanged actual SVGs. No app runtime change, fitting, crop modification, browser latency or physical assembly claim.",
+  "summary": {
+    "svgRepresentations": 424,
+    "svgDesignOutputs": 53,
+    "originalSavedOutputs": 51,
+    "repairedVersions": 2,
+    "sameBinaryVerdictAcrossAllRepresentations": true,
+    "allVerdictsAgreeWithExperimentalGeometry": true,
+    "analyticAndCapturedRepresentations": 96,
+    "prototypeEditorTestsPassed": 17,
+    "portableNodeTestsPassed": 2,
+    "generatedFilesAfterLintCleanup": "byte-identical"
+  },
+  "groups": [
+    {
+      "group": "hunodan",
+      "representations": 176,
+      "baselineWarnings": 6,
+      "candidateWarnings": 8,
+      "baselineMedianMilliseconds": 1.8429374999999482,
+      "candidateMedianMilliseconds": 10.901791499999945,
+      "candidateP95Milliseconds": 18.93091699999968,
+      "candidateMaximumMilliseconds": 26.927082999999584
+    },
+    {
+      "group": "photos",
+      "representations": 232,
+      "baselineWarnings": 14,
+      "candidateWarnings": 8,
+      "baselineMedianMilliseconds": 3.3883545000003323,
+      "candidateMedianMilliseconds": 14.38004200000023,
+      "candidateP95Milliseconds": 25.63416700000016,
+      "candidateMaximumMilliseconds": 46.710000000000036
+    },
+    {
+      "group": "repaired",
+      "representations": 16,
+      "baselineWarnings": 2,
+      "candidateWarnings": 0,
+      "baselineMedianMilliseconds": 3.9569999999999936,
+      "candidateMedianMilliseconds": 25.532479500000022,
+      "candidateP95Milliseconds": 28.564624999999978,
+      "candidateMaximumMilliseconds": 28.674750000000017
+    }
+  ],
+  "cases": [
+    {
+      "group": "hunodan",
+      "id": "hjfig-01",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "b43d4c9422ff66a2a4485f6ff3623d6397020e848e5e71410cbbdc14aa8430bd"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjfig-02",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "a855e76bf8583ddbae319d1eed5f6dedfed76a182e510dbae42d8e8bd1446f0f"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjfig-03",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "9a4c02bbb030e8ce0c9a8a07950ba6939460b3b6a1233c06f5ead9cfafd2f3e9"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjfig-04",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "302bd3b42da4e1cb4682aff6a17fba600b2868654f60faaf9a899556f70ae5cc"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjfig-05",
+      "representations": 8,
+      "baselineWarnings": 6,
+      "candidateWarnings": 8,
+      "geometryRejected": 8,
+      "svgSha256": "380a0aa9a07ad27f53319566155b442fa57db0af098a660bcb99a5207a37e77b"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjfla-01",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "046391e41de74e0bd041d33b47b71c1472123422fd58b4d08278a638df28c452"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjcur-01",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "40acd9a84c79838183adffb76382b5b92722090bd99ea4776a110986a102d81e"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjcur-02",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "c680f0b80f6ae186cf443a4f304ae349d4e42d6a6e9a2bc3b282461c6cd8e579"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjcur-03",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "7db6ce7155a3519ba0ac78a86c255d73f133c13dae68be4e754e5c7034ad35bc"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjcur-04",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "d2191b18c9ebd7d472a27d76e5257a1d28942a460d498111f5f84376db8b44af"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjcur-05",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "93d051e82b3d860995c0330ad1fcad67e7045812a9181966ca58e2b9d8a2296b"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjhih-01",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "a88dc8b487189c44ecb8dd2626514d37b2287627269c226eacd93025164c7f76"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjhih-02",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "d7b39d3a76232f9142aae786ee4224ff869f4c13a3f6b0912240b97057e72269"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjhih-04",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "5b2cac89a860d81d73cb880a5b3496f5d04b5c80af4586ea595b4d37d014f039"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjstr-01",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "4742e9f710b910c99b82b1be9cbf07bb200da208276ff38f952e462fe45d9d91"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjstr-02",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "85db49783533580055d019813dbeca98fc6d2d900fdbf8d8628cf7f97bcaca2c"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjstr-03",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "30c262b7a9b80fc8295485080c37eab233b3222a5ed4dd29af4b94c2cbbfff9c"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjsta-01",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "e22112caeeaec2d2f84c063d28a2f371ca387a5ba4e0ae7e512e39132603bcda"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjsta-02",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "5ce279297864eb72576584ca08ab40206fd2422a7ec6637acd30fcfe0ce05f6b"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjsta-03",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "a61308d990e47d19a910f540c488b13023e3a7e99bbac9e59a310360f8845366"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjsta-04",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "88c5af9626d5009dc0179dea841e6549c5ecc8a20723d0ec330f85927a91a24b"
+    },
+    {
+      "group": "hunodan",
+      "id": "hjsta-05",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "761bca2f88f51c233560054850d9ecd4c7f0b27f777070dab1eb2a7699d34d3c"
+    },
+    {
+      "group": "photos",
+      "id": "outline-star",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "c5c7fb52ab579e221fa56e2d09a74a71b006e3dcc77263fafd51d2689dc247af"
+    },
+    {
+      "group": "photos",
+      "id": "floral-checker",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "4a47abe835446cee53f9a5bbb361b6c0e6db3d3623e0f4d9173eeff5d4d4c70d"
+    },
+    {
+      "group": "photos",
+      "id": "dense-checker",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "97ea13a0d9a3c397a5b3f64fb7933204f1d0f73b7993e071bb528d1068420236"
+    },
+    {
+      "group": "photos",
+      "id": "bird",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "a005ae5d7fd50f854e780b5ba3c5906953c3a46c96c167ac1bea4129f130b0e5"
+    },
+    {
+      "group": "photos",
+      "id": "leaf",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "2dd240ddef3cc97cf068578cb9583ee7ca1201fde4a992c7f89694b5bac6960b"
+    },
+    {
+      "group": "photos",
+      "id": "gift",
+      "representations": 8,
+      "baselineWarnings": 6,
+      "candidateWarnings": 8,
+      "geometryRejected": 8,
+      "svgSha256": "a9445435a929b583422539ebb5bb9fe6d1222a0a5c424f69b58976a67869453d"
+    },
+    {
+      "group": "photos",
+      "id": "gingerbread",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "90a714ae10ef9dc8e6e113e4191e5a3b6289719aea22f19e1a60ebee5b42725d"
+    },
+    {
+      "group": "photos",
+      "id": "white-birds",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "f1db88e3fe259b4356b042508bbfd4dc5bf738d20719bbbe82679baa9f2b9082"
+    },
+    {
+      "group": "photos",
+      "id": "flower",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "d02d47669ec71c7923da9ee45e6fd1ba656756ce6c1de70ff8b6c759936a702e"
+    },
+    {
+      "group": "photos",
+      "id": "warped-checker",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "aa2a68b854f30c1ead039aa1523b2025288d9ac7335ac0e3c822cf11067ba01d"
+    },
+    {
+      "group": "photos",
+      "id": "round-checker",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "da0c317849bb553e34080515acd5c891452aa91f01f08cef314327f584309d8e"
+    },
+    {
+      "group": "photos",
+      "id": "fine-checker",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "7652c00226c015693e6a1f5839138ba1c2d78c79441a6621da97990bbd573b87"
+    },
+    {
+      "group": "photos",
+      "id": "orb",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "c814e512fda6c212f92d99130ddd2df2e57dde06cdb4379d3e2d00d886275564"
+    },
+    {
+      "group": "photos",
+      "id": "stacked-hearts",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "b3cd59a9bfc3b45fb6ce18cd77c78e783bc5e3642cd7f841a9e2f8a91f5cfca9"
+    },
+    {
+      "group": "photos",
+      "id": "jigsaw",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "37f59648c1ce7bb2b974315671152aa07401006147c2bb84e98836cd503c86cd"
+    },
+    {
+      "group": "photos",
+      "id": "candle",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "5d4c6cc63010f2f7a64fe1f934daed5345e1e431f4abe04233bbe4e1eae804cb"
+    },
+    {
+      "group": "photos",
+      "id": "maple-leaf",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "88d7bad1ef38d9f0dfe0e3b08cef12b86ffdf218560ab0a0a8180c66c53464a6"
+    },
+    {
+      "group": "photos",
+      "id": "crown",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "b2091f9071301fecf30c91d18299caf21e7d45bbc62f04af489aa1dee824e3c2"
+    },
+    {
+      "group": "photos",
+      "id": "crossed-ribbons",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "987c44b39202a7caa840c5e2b85b0d14d64c1cadbccc25395ad32fc81022ce52"
+    },
+    {
+      "group": "photos",
+      "id": "bauble",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "00b92c3a1231eacd9f8d38154df6c71f108cbe4afc0d8bc5af308881cfd09fa6"
+    },
+    {
+      "group": "photos",
+      "id": "bottom-flower",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "4048e108af23cdd2d31718dce6b6a3fc42b4beb552ddd49d10aa0035f622fb6f"
+    },
+    {
+      "group": "photos",
+      "id": "faceted-star",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "76ddd045e7fdf8c19449315c891ea0eb43133b0521913bb055cc23190189885f"
+    },
+    {
+      "group": "photos",
+      "id": "bibel-star-8",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "c7f275bad163cc35677d81527b14cd0f87b1f11b44be572658a0b41deb5dda01"
+    },
+    {
+      "group": "photos",
+      "id": "bibel-star-curved",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "d6f2b6556888c5f7f216f2ec2871a41b1935c62b4f169092d2fb99ec9f4c3d1e"
+    },
+    {
+      "group": "photos",
+      "id": "bibel-star-outline",
+      "representations": 8,
+      "baselineWarnings": 2,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "f06b657667cc6ea0c8611f9ac17a8e1d521b559040aed1cdca4981e8ac070337"
+    },
+    {
+      "group": "photos",
+      "id": "bibel-cross",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "67679ccbf964a7fb02206b9c88003028ff45d8bb18a0c5e7f1920df295941a71"
+    },
+    {
+      "group": "photos",
+      "id": "flettede-puppy",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "ccb74c5830e56be506e2315b5155bd831cb5a94cc38c4906061262530661bcd2"
+    },
+    {
+      "group": "photos",
+      "id": "flettede-stonehenge",
+      "representations": 8,
+      "baselineWarnings": 4,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "5f2470fd85e280ff3c4758e9d1301136e65b1872e4ad5f724ff07d5480d58f45"
+    },
+    {
+      "group": "photos",
+      "id": "flettede-viking",
+      "representations": 8,
+      "baselineWarnings": 2,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "be7d2994a2fa46073c2ce258b91074ea54f64eda210a7d461de6367d25b0aa38"
+    },
+    {
+      "group": "repaired",
+      "id": "hjfig-05",
+      "representations": 8,
+      "baselineWarnings": 0,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "3c7fed1eb32aef01b1e24a05ac8f2e0cce5181068acb5a6c5dc99751b3c6d20d"
+    },
+    {
+      "group": "repaired",
+      "id": "gift",
+      "representations": 8,
+      "baselineWarnings": 2,
+      "candidateWarnings": 0,
+      "geometryRejected": 0,
+      "svgSha256": "15bce9768e43bec37b014358430dae583d43e2ad64ca4c18ef1655404033aa20"
+    }
+  ],
+  "kernelOptimization": {
+    "acceptedCone": {
+      "paths": 5128,
+      "excludedByCone": 950,
+      "pathsWithReturns": 16,
+      "baselineMilliseconds": 5202.017345000071,
+      "candidateMilliseconds": 4482.660967999996
+    },
+    "relativeTimeReduction": 0.138284117351413,
+    "rejectedGrid": {
+      "paths": 5128,
+      "excludedByCone": 950,
+      "pathsWithReturns": 16,
+      "baselineMilliseconds": 5279.887651000002,
+      "candidateMilliseconds": 9326.37397899999
+    },
+    "rejectedReason": "The spatial grid retained identical witnesses but used more time than the original scan."
+  },
+  "verificationNotes": [
+    "The first portable Node comparison supplied pre-canonicalized subdivision coordinates to one checker and graph-canonicalized coordinates to the other. Turning sums differed by approximately 3e-13 degrees. Both now receive the same canonical curves and complete witness objects match exactly; no numeric tolerance was added.",
+    "The lint-only builder binding cleanup generated four files byte-identical to the full replay. Its corrected source has rerun Node tests and its own pinned manifest.",
+    "The existing editor endpoint exemptions remain in this prototype; consistency across physical scale and endpoint cases still needs evaluation before production integration."
+  ],
+  "sourceHashes": {
+    "scripts/inverse/diagnostics/build-whole-return-editor.mjs": "1712686cb15b51ee62be9eeda5a3f8fc3d31ab7ba0f9c70c10a9a3e766ceed46",
+    "scripts/inverse/diagnostics/return-cone.mjs": "5bb66d76b387725b38f001573e8eb288dc50cf0f28a0357b5495bee43a5097d9",
+    "scripts/inverse/diagnostics/editable-return-study.mjs": "4fc81697a5dd20c7058438113b6333e2da4c2ab7bb2888c67138ebab884d9392",
+    "scripts/inverse/whole-return-editor.test.mjs": "f8d939b95dae2dfb1d0713cef555b16d3e02ef9bd2868a0bec97072d593170e7",
+    "scripts/inverse/diagnostics/self-return-candidate.mjs": "51820f6daff38df7966879eead097fa004cb776b75fc7729c83103e41ffa0866",
+    "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e"
+  },
+  "artifacts": {
+    "tmp/heart-learning/editor-whole-return-v1/adapter-graph.mjs": "7d958b2356d4a10beba592ae2c55717e049766e8f952dc31f89a9e6a2175e11d",
+    "tmp/heart-learning/editor-whole-return-v1/adapter.mjs": "c3dac86b5df79d7cf1663d13f013601e62777062675f85a45759676019e44378",
+    "tmp/heart-learning/editor-whole-return-v1/analytic-replay.mjs": "451a2879e6d533ef04664843c896fb8eaa90c697504be2e94a4ae22df20f5eaa",
+    "tmp/heart-learning/editor-whole-return-v1/analytic-results.json": "ac58edd81fa3358cefc47f649b20460e2a845918a7567806992fe089b1ccaa83",
+    "tmp/heart-learning/editor-whole-return-v1/analytic.log": "71b71c2fb2e40ca7a5fa035034ca0097fda445e9ad218898ac4cbe1bf1419e33",
+    "tmp/heart-learning/editor-whole-return-v1/candidate.mjs": "f8b627654c9cbcd718e75738afe8227bf6f18fe765391b1538312cf1ffe79ba3",
+    "tmp/heart-learning/editor-whole-return-v1/checks.json": "a9dd2b0d004c8e09ba729a5d5e7aeeea9fde6eff8810df8d34b94755a27ad3f8",
+    "tmp/heart-learning/editor-whole-return-v1/curveIssues.test.ts": "b183df63f5749dc9ef5ffa2514dce31003fe337e8d0b3cfc49731409e88f6bcc",
+    "tmp/heart-learning/editor-whole-return-v1/editor-before.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+    "tmp/heart-learning/editor-whole-return-v1/editor-whole.ts": "e76d03f246a0412281d43e345b9c8e086a2ec1943fcd2592e564791a470e2947",
+    "tmp/heart-learning/editor-whole-return-v1/hunodan/results.json": "9899b992d024ea2824b338c214a95279972a64304d32d79becf7a55a692f3ee1",
+    "tmp/heart-learning/editor-whole-return-v1/hunodan.log": "34764584e05ecce835814280b270d28f77da7e1a98902e2e777d3d0791f0dcfb",
+    "tmp/heart-learning/editor-whole-return-v1/path-returns.mjs": "60bfed4fb0ac9edafe56f66becd35fb3b4b826e081d4658cf6d60a5cfdc964a8",
+    "tmp/heart-learning/editor-whole-return-v1/photos/results.json": "69103f3caf29f0a9eced2cc1b1f73c08f6fa6cc5d03159ea0f5ae99178fa779b",
+    "tmp/heart-learning/editor-whole-return-v1/photos.log": "f75aeca0950e2fbc363358a052c6811baae5ae4c7c0c175ca7c2ec0cc84ef406",
+    "tmp/heart-learning/editor-whole-return-v1/record-qa.py": "248247179cbb5de23f83bd92efc5611a3e0aeda736ee04e9eb658f0c8f438422",
+    "tmp/heart-learning/editor-whole-return-v1/repaired/results.json": "69cc8d478cc1afb6588286b40b62e9d69003f063e7a610c28d3ab447ad6e712f",
+    "tmp/heart-learning/editor-whole-return-v1/repaired.log": "09eaf013b36345af52ece3dd3d0210d9e79faae8bc6dadd87499f30d3146e021",
+    "tmp/heart-learning/editor-whole-return-v1/run.py": "505196d62f1372fff63945165d6b2375093c82b1adb012c7ac152a13180dcd55",
+    "tmp/heart-learning/editor-whole-return-v1/runner.json": "b659d4fd32c9ddd0cac699ac1e17a3f64ae47e40fa38be7886f9a2321c496a24",
+    "tmp/heart-learning/editor-whole-return-v1/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/editor-whole-return-v1/source.json": "139b8249c6208f53c06d5f6bba867bd7fff352d8267bf138ca34f7530863c6d7",
+    "tmp/heart-learning/editor-whole-return-v1/svg-replay.mjs": "2841b60918768a4e9ce61d1f8ac7d0d7d2403cd5a9eb252d67d515ced96f38af",
+    "tmp/heart-learning/editor-whole-return-v1/unit.log": "caba27518cc16684315337e08025787086d5f46e42fa621dd8ff813bdaaf5000",
+    "tmp/heart-learning/editor-whole-return-v1/vitest.config.ts": "a08433b9dd777082d5bb0b7e699da88d9fb554fa90007b14e7df71950a7076ab",
+    "tmp/heart-learning/editor-whole-return-fast-v1/adapter-before.mjs": "4ae14d1a63aef6802aedc5f4ab9825ea6d55b0e20bdffedba185ef10f9082eaf",
+    "tmp/heart-learning/editor-whole-return-fast-v1/adapter-graph.mjs": "7d958b2356d4a10beba592ae2c55717e049766e8f952dc31f89a9e6a2175e11d",
+    "tmp/heart-learning/editor-whole-return-fast-v1/adapter.mjs": "c3dac86b5df79d7cf1663d13f013601e62777062675f85a45759676019e44378",
+    "tmp/heart-learning/editor-whole-return-fast-v1/analytic-replay.mjs": "dc507288d2be5dbbe12a55a90e515e0297d42144b0aa4b686fd14ae74956e6ff",
+    "tmp/heart-learning/editor-whole-return-fast-v1/candidate.mjs": "f8b627654c9cbcd718e75738afe8227bf6f18fe765391b1538312cf1ffe79ba3",
+    "tmp/heart-learning/editor-whole-return-fast-v1/curveIssues.test.ts": "b183df63f5749dc9ef5ffa2514dce31003fe337e8d0b3cfc49731409e88f6bcc",
+    "tmp/heart-learning/editor-whole-return-fast-v1/editor-before.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+    "tmp/heart-learning/editor-whole-return-fast-v1/editor-whole.ts": "e76d03f246a0412281d43e345b9c8e086a2ec1943fcd2592e564791a470e2947",
+    "tmp/heart-learning/editor-whole-return-fast-v1/paired-results.json": "ec83b45c9dff8c60a8351bfbbab7452262260d3a2685ec5296edc37796372f8d",
+    "tmp/heart-learning/editor-whole-return-fast-v1/paired.log": "29eb1da85de7bbf26d71ac9fdc0da7e3e56d379bc9c1ba1becb9fe55d8a348ab",
+    "tmp/heart-learning/editor-whole-return-fast-v1/paired.mjs": "e72df1d36b74c75bb53ef10b50c487c9e3c86cf45b981353d0cb4339795d3fe4",
+    "tmp/heart-learning/editor-whole-return-fast-v1/path-returns-before.mjs": "60bfed4fb0ac9edafe56f66becd35fb3b4b826e081d4658cf6d60a5cfdc964a8",
+    "tmp/heart-learning/editor-whole-return-fast-v1/path-returns.mjs": "a173eef14a2580eb086cf56b4960bd4ac8ec0e5c3d458b456c4d26b690b94650",
+    "tmp/heart-learning/editor-whole-return-fast-v1/portable-unit-fixed.log": "b2d8f3b71ebc93cdfcc5e40e6fd7ffbc0fe606fb0e6fb0f108aba2b00f3c97e6",
+    "tmp/heart-learning/editor-whole-return-fast-v1/portable-unit.log": "8c903ccd2a416ab6f5ea3e3fb0daf4b00d73ff6b7053bba8cc353ae82659d081",
+    "tmp/heart-learning/editor-whole-return-fast-v1/svg-replay.mjs": "3c4f40644e1588a36e572f41fd2e4ed7e95632a66f75cb47e93e8ee764459a7b",
+    "tmp/heart-learning/editor-whole-return-fast-v1/unit.log": "f60455667b2994158d2497afe9f10300d6f3aeaca04c36fcb842fab22ef55785",
+    "tmp/heart-learning/editor-whole-return-fast-v1/vitest.config.ts": "4aefd094536e6780155aee0914bbafcac34626ea7876d38861c60253cee23b1e",
+    "tmp/heart-learning/editor-whole-return-grid-v1/adapter-before.mjs": "4ae14d1a63aef6802aedc5f4ab9825ea6d55b0e20bdffedba185ef10f9082eaf",
+    "tmp/heart-learning/editor-whole-return-grid-v1/adapter-graph.mjs": "7d958b2356d4a10beba592ae2c55717e049766e8f952dc31f89a9e6a2175e11d",
+    "tmp/heart-learning/editor-whole-return-grid-v1/adapter.mjs": "c3dac86b5df79d7cf1663d13f013601e62777062675f85a45759676019e44378",
+    "tmp/heart-learning/editor-whole-return-grid-v1/analytic-replay.mjs": "690d300ef3f860f9a047328dbf091613fcba7bb01b8dcc3c87c7c359e1d4575d",
+    "tmp/heart-learning/editor-whole-return-grid-v1/candidate.mjs": "f8b627654c9cbcd718e75738afe8227bf6f18fe765391b1538312cf1ffe79ba3",
+    "tmp/heart-learning/editor-whole-return-grid-v1/curveIssues.test.ts": "b183df63f5749dc9ef5ffa2514dce31003fe337e8d0b3cfc49731409e88f6bcc",
+    "tmp/heart-learning/editor-whole-return-grid-v1/editor-before.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+    "tmp/heart-learning/editor-whole-return-grid-v1/editor-whole.ts": "e76d03f246a0412281d43e345b9c8e086a2ec1943fcd2592e564791a470e2947",
+    "tmp/heart-learning/editor-whole-return-grid-v1/nearby-grid.mjs": "7c5cb0782202b5cc6fbb5641c43ffc2574dbc87edae9363e36d27a35b93e3f23",
+    "tmp/heart-learning/editor-whole-return-grid-v1/paired-results.json": "2ae8465509c1635808b6e50ef23c0a81ef337cc9484d89eaf3134c13a8355583",
+    "tmp/heart-learning/editor-whole-return-grid-v1/paired.log": "4a2755299e37cb0202b62826af58ed35e3bd64dc872dde19a89c737377920c97",
+    "tmp/heart-learning/editor-whole-return-grid-v1/paired.mjs": "6e2327c8df2c1f76ca1eded57f64f40394e8f6f28f4452b4c6be82f9c13b9848",
+    "tmp/heart-learning/editor-whole-return-grid-v1/path-returns-before.mjs": "60bfed4fb0ac9edafe56f66becd35fb3b4b826e081d4658cf6d60a5cfdc964a8",
+    "tmp/heart-learning/editor-whole-return-grid-v1/path-returns.mjs": "955b782507fbf777959f19f45c2561bf4608d08e693db9d3370774977c61e9c9",
+    "tmp/heart-learning/editor-whole-return-grid-v1/svg-replay.mjs": "71c5e4264b5b484a03dd7efdc4946d9daa4c26c825f651c185c7eeb3d382cadb",
+    "tmp/heart-learning/editor-whole-return-grid-v1/vitest.config.ts": "aa9c06d61bb24fffe2f066448c6e4059bd14aaa1d0914e1647302b03f7c5b9c5",
+    "tmp/heart-learning/editor-whole-return-portable-v1/analytic-replay.mjs": "0da40e64f8ac2d8eafafbfed19a94f5789ed0fb9debe2ffb32760d192ae02651",
+    "tmp/heart-learning/editor-whole-return-portable-v1/analytic-results.json": "ac58edd81fa3358cefc47f649b20460e2a845918a7567806992fe089b1ccaa83",
+    "tmp/heart-learning/editor-whole-return-portable-v1/analytic.log": "71b71c2fb2e40ca7a5fa035034ca0097fda445e9ad218898ac4cbe1bf1419e33",
+    "tmp/heart-learning/editor-whole-return-portable-v1/build.log": "e67c0ecceee31c8cf4c04ce5b8d00b3063635497636b89c68e751e70edb8a088",
+    "tmp/heart-learning/editor-whole-return-portable-v1/builder-before-const.mjs": "b1d3a7ac7e7f3f5ad56835b452b9f3f27d408b6a4b13d1ef729177f4b79945ce",
+    "tmp/heart-learning/editor-whole-return-portable-v1/checked-build.log": "74a11bdcfd1a2a875e2a100c3fd9560ee3c95f1e1a86b5b22878b62f40b74484",
+    "tmp/heart-learning/editor-whole-return-portable-v1/checks.json": "9ef99afbeeda468bcefa2f503087ac8102828b01664e89ef6a46faed3541304b",
+    "tmp/heart-learning/editor-whole-return-portable-v1/curveIssues.test.ts": "b254072b9c82f82f2c85c64ddc22d7c270210f3f4e5f6ba9e7fe7287e1acff8d",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor/adapter.mjs": "44885b0dc23fe81b6eaad30e8fbc6a44a4b16fd55da7e7bbe2211d8e8f5b2597",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor/editor.ts": "e76d03f246a0412281d43e345b9c8e086a2ec1943fcd2592e564791a470e2947",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor/path-returns.mjs": "9b739211fabec53515f02309700cd25843742161bae2512b2fffc0e3fc24dbc8",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor/return-cone.mjs": "5bb66d76b387725b38f001573e8eb288dc50cf0f28a0357b5495bee43a5097d9",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor/source.json": "df9170fa26f4899088a68a7ef9ed9296ab9c34cde7139082f44fd0911aa546fb",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor-before.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor-checked/adapter.mjs": "44885b0dc23fe81b6eaad30e8fbc6a44a4b16fd55da7e7bbe2211d8e8f5b2597",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor-checked/editor.ts": "e76d03f246a0412281d43e345b9c8e086a2ec1943fcd2592e564791a470e2947",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor-checked/path-returns.mjs": "9b739211fabec53515f02309700cd25843742161bae2512b2fffc0e3fc24dbc8",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor-checked/return-cone.mjs": "5bb66d76b387725b38f001573e8eb288dc50cf0f28a0357b5495bee43a5097d9",
+    "tmp/heart-learning/editor-whole-return-portable-v1/editor-checked/source.json": "a73011e77247e2f7169af4fd8bb03c9c828f6bcaedaf5678e40b850e994c2583",
+    "tmp/heart-learning/editor-whole-return-portable-v1/final-node-tests.log": "62f05c00fa68a5f4a341ec490dc96dfd70a4dd777ba1f7eaaa59b97bee1a71a0",
+    "tmp/heart-learning/editor-whole-return-portable-v1/hunodan/results.json": "b8164705cd0d2752990d569cecb544875c7ef4fd8ed3da015f49913df0297cda",
+    "tmp/heart-learning/editor-whole-return-portable-v1/hunodan.log": "34764584e05ecce835814280b270d28f77da7e1a98902e2e777d3d0791f0dcfb",
+    "tmp/heart-learning/editor-whole-return-portable-v1/photos/results.json": "3062e5afb1f3d6765fafe7876ab265ad39870c2259ce2ad87888bfb7c2b0efb4",
+    "tmp/heart-learning/editor-whole-return-portable-v1/photos.log": "f75aeca0950e2fbc363358a052c6811baae5ae4c7c0c175ca7c2ec0cc84ef406",
+    "tmp/heart-learning/editor-whole-return-portable-v1/repaired/results.json": "86e93507cddc6bad3fbab82ddb44a8596b43b24022ad285a55f6de585bf58610",
+    "tmp/heart-learning/editor-whole-return-portable-v1/repaired.log": "09eaf013b36345af52ece3dd3d0210d9e79faae8bc6dadd87499f30d3146e021",
+    "tmp/heart-learning/editor-whole-return-portable-v1/run.py": "c5402c037e9906352ef850445ab492f6de275c06750c23dfe4112136fb6e0dc2",
+    "tmp/heart-learning/editor-whole-return-portable-v1/runner.json": "bc6edf9edb9baf70eb669dc0af0f66186b11881821a8e8a6f2da6a2cd465effd",
+    "tmp/heart-learning/editor-whole-return-portable-v1/running.json": "593624a2b660e002c925bcf9d633624fa4d9f819b01e57c7776646c8b1e6fee8",
+    "tmp/heart-learning/editor-whole-return-portable-v1/source.json": "5f6aa90a5237efca26f25894cfce257ad437a1cbfa49eca7d3735e823be1277b",
+    "tmp/heart-learning/editor-whole-return-portable-v1/unit.log": "1997dcf82bfb6c3a627cc01aed5c1eca004531a7c47000e342f5be08888f412f",
+    "tmp/heart-learning/editor-whole-return-portable-v1/vitest.config.ts": "f2e154238ec7cba3f29088395f179ccfe7161bb64e0f52eadb09249c0f97dda8"
+  }
+}
