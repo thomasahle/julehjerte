@@ -108,6 +108,14 @@ remain failures, and the blue/yellow checker still uses an extra slit. These
 six inspected observations are separate from both the original ten-photo pilot
 and the fixed 31-photo benchmark; the model is not deployed.
 
+The [reviewed-foreground diagnostic](real-foreground-bounds.md) separates the
+remaining crop and fitting problems. Including uncertain outline pixels gives
+all six photos crop proposals, but only three checked fits. Printed-paper
+texture, rabbit routing and reflective-gold classification remain problems.
+An alternative trace on the fixed gold-angel mask reduces error from 7.07% to
+0.76%, retaining editable geometry/paper checks. This is an annotation-assisted
+search diagnostic, not a learned or automatic-upload improvement.
+
 The [experiment history](experiment-history.md) retains the earlier studies,
 failed alternatives and verification records without mixing their historical
 scores into the current summary.
