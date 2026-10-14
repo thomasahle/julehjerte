@@ -195,7 +195,7 @@ def build(manifest_path, annotations_path, output, resolution=256, root=ROOT):
         overlay[labels == 255] = .5*overlay[labels == 255]+.5*np.array([255, 180, 0])
         overlay = Image.fromarray(overlay.astype(np.uint8))
         pen = ImageDraw.Draw(overlay)
-        if row['overlapCorners']:
+        if row.get('overlapCorners'):
             xy = [(x*transform['scale']+transform['offset'][0], y*transform['scale']+transform['offset'][1]) for x, y in row['overlapCorners']['points']]
             pen.line(xy+[xy[0]], fill='#ff00ff', width=1)
         overlay.save(output/(prefix+'-overlay.png'))
@@ -245,7 +245,7 @@ def verify(manifest_path, annotations_path, output, root=ROOT):
         if not np.array_equal(rgb, np.asarray(photo_tensor(read_source(root, source), transform))):
             raise ValueError('RGB pixels disagree with the source photograph')
     return {'passed': True, 'instances': len(rows), 'sourceGroups': len({s['splitGroupId'] for _, s in rows.values()}),
-            'approximateOverlapReferences': sum(r['overlapCorners'] is not None for r, _ in rows.values()),
+            'approximateOverlapReferences': sum(r.get('overlapCorners') is not None for r, _ in rows.values()),
             'manifestSha256': digest(raw), 'annotationsSha256': digest(annotation_bytes),
             'scope': 'All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit.'}
 

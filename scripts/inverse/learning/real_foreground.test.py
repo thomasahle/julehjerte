@@ -34,6 +34,27 @@ def fixture(root):
 
 
 class RealForegroundTests(unittest.TestCase):
+    def test_body_annotations_without_optional_overlap_corners_build_and_verify(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); row, _, _, annotations, mp, ap = fixture(root)
+            explicit = root/'explicit'; build(mp, ap, explicit, 80, root)
+            row.pop('overlapCorners')
+            ap.write_text(json.dumps(annotations))
+            before = ap.read_bytes()
+            omitted = root/'omitted'; audit = build(mp, ap, omitted, 80, root)
+            self.assertTrue(audit['passed'])
+            self.assertEqual(audit['approximateOverlapReferences'], 0)
+            self.assertEqual(audit, verify(mp, ap, omitted, root))
+            self.assertEqual(ap.read_bytes(), before)
+            # Missing optional corners must not change paper/background labels,
+            # uncertainty, source sampling, grouping or the illustrative overlay.
+            a = json.loads((explicit/'manifest.json').read_text())['instances']
+            b = json.loads((omitted/'manifest.json').read_text())['instances']
+            self.assertEqual(a, b)
+            for kind in ['rgb', 'labels', 'overlay']:
+                self.assertEqual((explicit/f'body-{kind}.png').read_bytes(),
+                                 (omitted/f'body-{kind}.png').read_bytes())
+
     def test_annotation_bounds_preserve_known_pixels_and_never_fill_letterbox_padding(self):
         target = np.zeros((8, 8), np.float32); target[3:5, 2:6] = 1
         weight = np.ones_like(target); weight[:2] = 0; weight[6:] = 0; weight[2:6, 1:3] = 0
