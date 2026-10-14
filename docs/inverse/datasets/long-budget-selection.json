@@ -1,0 +1,172 @@
+{
+  "scope": "Read-only diagnosis of the completed c000d30 browser runs. Fixed uploaded leaf mask; ordinary versus explicit ten-second worker request. No new reconstruction success or adopted scheduling change.",
+  "preparedInputsIdentical": true,
+  "settingsDifferences": {
+    "timeLimit": [
+      180,
+      10
+    ]
+  },
+  "identicalCoarseSeeds": 20,
+  "identicalFineScores": [
+    {
+      "stage": "fine",
+      "counts": [
+        3,
+        5
+      ],
+      "controlPoints": 16,
+      "phase": 1,
+      "error": 0.038299560546875,
+      "steps": 150
+    },
+    {
+      "stage": "fine",
+      "counts": [
+        5,
+        5
+      ],
+      "controlPoints": 16,
+      "phase": 1,
+      "error": 0.0325164794921875,
+      "steps": 150
+    },
+    {
+      "stage": "fine",
+      "counts": [
+        3,
+        3
+      ],
+      "controlPoints": 16,
+      "phase": -1,
+      "error": 0.0500335693359375,
+      "steps": 150
+    }
+  ],
+  "rows": [
+    {
+      "mode": "normal-browser",
+      "settingsTimeLimit": 180,
+      "clickToReadySeconds": 8.7455,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "traceUsed": true,
+      "templateChecksPassed": true,
+      "engineMismatch": 0.02549375,
+      "independentEditableScores": {
+        "400": {
+          "error": 0.0254875,
+          "featuresPassed": true
+        },
+        "800": {
+          "error": 0.026840625,
+          "featuresPassed": true
+        }
+      },
+      "clearanceAttempts": 0,
+      "gridRoutingWeight": 1,
+      "routingBudgetSeconds": 6.155460000085831,
+      "routingSeconds": 5.222900000095367,
+      "refinement": {
+        "imageError": 0.02549375,
+        "featuresPassed": true,
+        "geometryPassed": true,
+        "paperPassed": true,
+        "steps": 245
+      },
+      "matchingStatus": "image_bound_exceeds_allowance",
+      "matchingLowerBound": 0.1465375
+    },
+    {
+      "mode": "short-browser",
+      "settingsTimeLimit": 10,
+      "clickToReadySeconds": 10.215300000190735,
+      "selectedCounts": [
+        3,
+        3
+      ],
+      "traceUsed": false,
+      "templateChecksPassed": true,
+      "engineMismatch": 0.01303125,
+      "independentEditableScores": {
+        "400": {
+          "error": 0.01315625,
+          "featuresPassed": true
+        },
+        "800": {
+          "error": 0.014828125,
+          "featuresPassed": true
+        }
+      },
+      "clearanceAttempts": 2,
+      "gridRoutingWeight": 0.08388264973958348,
+      "routingBudgetSeconds": 2.558356827487146,
+      "routingSeconds": 2.56,
+      "refinement": null,
+      "matchingStatus": "image_bound_exceeds_allowance",
+      "matchingLowerBound": 0.1465375
+    }
+  ],
+  "observedMechanism": [
+    "Only short-budget searches blend routing time down for a nearly fitting grid whose retained features pass. The longer run assigns full routing priority instead.",
+    "The longer recovery obtains a geometry/paper-valid route, refines it below the 3% image gate and immediately returns before either ordinary clearance/refinement attempt.",
+    "The shorter recovery does not obtain a valid route within its smaller allowance. Clearance comparison then switches to a three-by-three grid and refines it to a lower-error accepted result.",
+    "Both runs skip matching-sheet replacement using the same 14.65375% lower bound, so sheet matching does not explain this difference."
+  ],
+  "nextExperiment": {
+    "status": "queued-after-current-release",
+    "protocol": "tmp/heart-learning/long-budget-selection-v1/protocol.json",
+    "arms": [
+      {
+        "runtime": "baseline",
+        "seconds": 10
+      },
+      {
+        "runtime": "baseline",
+        "seconds": 180
+      },
+      {
+        "runtime": "blended-routing",
+        "seconds": 180
+      },
+      {
+        "runtime": "retained-recovery",
+        "seconds": 180
+      },
+      {
+        "runtime": "combined",
+        "seconds": 180
+      }
+    ],
+    "cases": [
+      "leaf",
+      "leaf-x-plus-1",
+      "leaf-y-plus-1",
+      "outline-star-shift"
+    ],
+    "scope": "Fresh native solves in four isolated runtime copies; no saved geometry or cut counts supplied. One repeat per arm initially. This will separate routing allocation from preemptive selection; no outcome is yet claimed."
+  },
+  "limitations": [
+    "Two saved browser executions establish different control paths, not the independent quantitative contribution of each scheduling decision.",
+    "Both outputs pass current validity and image thresholds; the shorter allowance takes longer wall time in this pair while attaining lower disagreement.",
+    "The mask is an estimated photographic target, not original cutting-path ground truth."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/return-projection-speed-v1/browser-study/normal-browser/results.json": "a3aab95dbc2da4e7b3b1b52dab055882092f40e2fe03132cf5780c1c3c2fa346",
+    "tmp/heart-learning/return-projection-speed-v1/browser-study/normal-browser/chromium-leaf-mask/engine-report.json": "263a4aa70301006002684e60d95838a0c7b2418360925ba73c35a9c604f5c137",
+    "tmp/heart-learning/return-projection-speed-v1/browser-study/normal-browser/chromium-leaf-mask/prepared.json": "a7e1647e84453c97918a04f29b39c97d15bcb24019b8b2edd7ee3744eaa1f430",
+    "tmp/heart-learning/return-projection-speed-v1/browser-study/normal-browser/chromium-leaf-mask/editable.svg": "0477b30e228c29c0434244781a5f3ffcb550714ea9f89d923aa56f22298d1b97",
+    "tmp/heart-learning/return-projection-speed-v1/browser-study/short-browser/results.json": "be0a7a762eac1cb381dfdbbf1cea2e0fa7b724b8a0a6bbea427a1d128327fdcd",
+    "tmp/heart-learning/return-projection-speed-v1/browser-study/short-browser/chromium-leaf-mask/engine-report.json": "2d654e08fc80fffe1bc5d1ead1811ced9fdd68f8012e5d610cd9b2c937f63591",
+    "tmp/heart-learning/return-projection-speed-v1/browser-study/short-browser/chromium-leaf-mask/prepared.json": "a7e1647e84453c97918a04f29b39c97d15bcb24019b8b2edd7ee3744eaa1f430",
+    "tmp/heart-learning/return-projection-speed-v1/browser-study/short-browser/chromium-leaf-mask/editable.svg": "97c757b6e9f70f77f9448a3d1462e1764a5d62fbb33cba82fc94570d49e7cace",
+    "tmp/heart-learning/return-projection-speed-v1/browser-study/measurements.json": "aba340460824d37cf5bdbe8656b1fefc79603988a4fd980674883632f4784fb7",
+    "static/inverse/core/direct/fit.js": "7db001945cc90cf86cabd55a639dbfbc7e69bb1959feacdab7186e93656d8f2e",
+    "tmp/heart-learning/long-budget-selection-v1/protocol.json": "9c2673b66c74c9b11002b66439db8efd6b4233997ef2c1695c53f6b200a6c037",
+    "tmp/heart-learning/long-budget-selection-v1/setup.py": "f3d6c52da24c79de95637467953500e93a49df1d8d02bf340abe1b9d2a8ebf49",
+    "tmp/heart-learning/long-budget-selection-v1/run-case.mjs": "af81d1e1e0583f32c9f49039e746181f045c5d8088fc10a3d9307742fb95a017",
+    "tmp/heart-learning/long-budget-selection-v1/after-release.py": "7a98a7240b892fb7f286fd47b5bef8c03d6341ef47a33f2ce582286032eb87a5"
+  }
+}

@@ -77,6 +77,13 @@ alignment time from 29.44 to 26.52 seconds; 110 focused tests pass. Fresh full
 QA and end-to-end replays are pending. This changes validation order, not the
 acceptance rules, and is not yet a whole-pipeline speed claim.
 
+The [long-budget leaf diagnosis](long-budget-selection.md) confirms identical
+prepared inputs and initial grid scores in the ordinary and ten-second browser
+runs. The longer request returns a valid traced recovery before trying grids;
+the shorter one reaches a better grid refinement. Isolated scheduling
+comparisons are queued after the current release checks, with no experimental
+policy adopted or result claimed yet.
+
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority
 when a grid loses a protected feature. Its fixed shifted-star prototype improves
