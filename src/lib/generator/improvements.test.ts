@@ -7,7 +7,7 @@ import {
 	figureTemplates,
 	templateVariants
 } from './templates';
-import { matchingMotifs } from './catalog';
+import { matchingMotifs, motifLabel } from './catalog';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import {
 	intersectionMarginPx,
@@ -151,6 +151,9 @@ describe('figures and complete templates', () => {
 	it('starts with seasonal choices from both libraries and searches the full set', () => {
 		const initial = matchingMotifs(catalog, '');
 		expect(initial.some((i) => i.id === 'tb-candle')).toBe(true);
+		expect(initial.some((i) => i.id === 'tb-gift')).toBe(true);
+		expect(initial.some((i) => i.id === 'tb-bow')).toBe(false);
+		expect(motifLabel(catalog.find(i => i.id === 'tb-bow')!, 'da')).toBe('Bue og pil');
 		expect(initial.some((i) => i.id === 'ph-snowflake')).toBe(true);
 		expect(initial.some((i) => /airplay|alarm/.test(i.id))).toBe(false);
 		expect(matchingMotifs(catalog, 'airplay').length).toBeGreaterThan(0);

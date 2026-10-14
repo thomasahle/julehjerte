@@ -717,6 +717,7 @@ export function fourPortMotif(
 		return result;
 	});
 	let fallback: Edge[] | null = null;
+	const alternatives = new Map<string, { edges: Edge[]; ports: Port[] }>();
 	let attempts = 0;
 	// Choose visible attachments in cyclic order. The finite fan of rays is a
 	// contour-routing rule, not an inverse image solve: no outline moves, and
@@ -739,27 +740,37 @@ export function fourPortMotif(
 		const portKey = ports.map((p) => p.index.toFixed(8)).join(',');
 		if (seenPorts.has(portKey)) continue;
 		seenPorts.add(portKey);
-		for (const interior of perforatedOutline(base, ports, bridgePorts)) {
-			const local = interior.slice();
-			const extras = Array.from({ length: 4 }, () => [] as Contour[]);
-			for (const node of nodes.slice(1)) {
-				const c = centroid(node.ring);
-				const j = bridgePorts.reduce(
-					(best, i) =>
-						distance(c, gates[i]) < distance(c, gates[best]) ? i : best,
-					bridgePorts[0]
-				);
-				extras[j].push(node);
+		// Spokes are independent of the internal bridges. Check them once rather
+		// than retrying the same blocked attachment for every counter route.
+		const exterior: Edge[] = [];
+		const extras = Array.from({ length: 4 }, () => [] as Contour[]);
+		for (const node of nodes.slice(1)) {
+			const c = centroid(node.ring);
+			const j = bridgePorts.reduce(
+				(best, i) => distance(c, gates[i]) < distance(c, gates[best]) ? i : best,
+				bridgePorts[0]
+			);
+			extras[j].push(node);
+		}
+		try {
+			for (let j = 0; j < 4; j++) {
+				if (extras[j].length)
+					contourChain(exterior, extras[j], angles[j], gates[j], ports[j].point);
+				else add(exterior, [gates[j], ports[j].point], 'AB', 'shared');
 			}
+		} catch (error) {
+			if (!(error instanceof ConstructionError)) throw error;
+			continue;
+		}
+		if (!clearSharedCuts(exterior, contours)) continue;
+		for (const interior of perforatedOutline(base, ports, bridgePorts)) {
+			const local = [...interior, ...exterior];
 			try {
-				for (let j = 0; j < 4; j++) {
-					if (extras[j].length)
-						contourChain(local, extras[j], angles[j], gates[j], ports[j].point);
-					else add(local, [gates[j], ports[j].point], 'AB', 'shared');
-				}
 				const routes = localRoutes(local, gates);
 				if (!routes || !clearSharedCuts(local, contours)) continue;
 				fallback ??= local;
+				if (!alternatives.has(portKey) && alternatives.size < 8)
+					alternatives.set(portKey, { edges: local, ports });
 				if (acceptRoutes ? acceptRoutes(routes) : usableRoutes(routes, margin)) {
 					edges.push(...local);
 					return;
@@ -767,12 +778,27 @@ export function fourPortMotif(
 				// Bound routing work on fine artwork. This is not an acceptance:
 				// the final fitted cuts must still pass the full-sheet validator.
 				if (++attempts >= 128) {
-					if (acceptRoutes) break routing;
-					edges.push(...fallback);
-					return;
+					break routing;
 				}
 			} catch (e) {
 				if (!(e instanceof ConstructionError)) throw e;
+			}
+		}
+	}
+	// A sharp concave shoulder cannot be repaired by approaching it from the
+	// narrow exterior wedge. A coincident chord through the filled stroke can
+	// transfer that corner to the other sheet without changing the artwork.
+	// Serif outlines can contain many tiny corners. Bound the extra chord work
+	// across all attachment choices for this cell.
+	let reliefAttempts = 0;
+	relief: for (const local of alternatives.values()) {
+		for (const relieved of relieveNotches(local.edges, base.ring, local.ports, bridgePorts)) {
+			if (++reliefAttempts > 256) break relief;
+			const routes = localRoutes(relieved, gates);
+			if (!routes || !clearSharedCuts(relieved, contours)) continue;
+			if (acceptRoutes ? acceptRoutes(routes) : usableRoutes(routes, margin)) {
+				edges.push(...relieved);
+				return;
 			}
 		}
 	}
@@ -782,6 +808,74 @@ export function fourPortMotif(
 		return;
 	}
 	throw new ConstructionError('topology', 'No open four-port construction');
+}
+
+/** Locate a point on the original outline, including fractional edge positions. */
+function ringPort(ring: Ring, point: Point): Port | null {
+	for (let i = 0; i < ring.length; i++) {
+		const a = ring[i], b = ring[(i + 1) % ring.length], d = sub(b, a);
+		const t = dot(sub(point, a), d) / dot(d, d);
+		if (t >= -EPS && t <= 1 + EPS && distance(point, mix(a, b, t)) < EPS)
+			return { point, index: (i + Math.max(0, Math.min(1, t))) % ring.length };
+	}
+	return null;
+}
+/** A chord brackets one active external port. Flipping that interval preserves
+ * the four path pairings; both sheets share the new internal cut. Boundary
+ * ports are excluded so an opened letter cap cannot swallow this bridge. */
+function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: readonly number[]): Generator<Edge[]> {
+	const chords: [Port, Port][] = [];
+	for (let i = 0; i < ring.length; i++) {
+		const p = ring[i], u = sub(p, ring[(i + ring.length - 1) % ring.length]), v = sub(ring[(i + 1) % ring.length], p);
+		if (Math.atan2(cross(u, v), dot(u, v)) > -.8)
+			continue;
+		if (edges.some(e => e.family === 'AB' && (near(e.from, p) || near(e.to, p))))
+			continue;
+		for (let j = 0; j < 32; j++) {
+			try {
+				const b = ray(ring, p, j * Math.PI / 16);
+				if (!inside(mix(p, b.point, .5), ring))
+					continue;
+				if (edges.some(e => e.family === 'AB' && (near(e.from, b.point) || near(e.to, b.point))))
+					continue;
+				const a = { point: p, index: i };
+				for (const [from, to] of [[a, b], [b, a]]) {
+					const enclosed = ports.flatMap((port, j) => (port.index - from.index + ring.length) % ring.length < (to.index - from.index + ring.length) % ring.length ? [j] : []);
+					if (enclosed.length === 1 && allowed.includes(enclosed[0]))
+						chords.push([from, to]);
+				}
+			}
+			catch (error) {
+				if (!(error instanceof ConstructionError))
+					throw error;
+			}
+		}
+	}
+	chords.sort(([a, b], [c, d]) => distance(a.point, b.point) - distance(c.point, d.point));
+	for (const [a, b] of chords) {
+		const result: Edge[] = [];
+		for (const edge of edges) {
+			if (edge.family === 'AB' || edge.kind !== 'outline') {
+				result.push(edge);
+				continue;
+			}
+			const middle = ringPort(ring, mix(edge.from, edge.to, .5));
+			if (!middle) {
+				result.push(edge);
+				continue;
+			}
+			const d = sub(edge.to, edge.from);
+			const splits = [a.point, b.point].map(p => ({ p, t: dot(sub(p, edge.from), d) / dot(d, d) })).filter(({ p, t }) => t > EPS && t < 1 - EPS && distance(p, mix(edge.from, edge.to, t)) < EPS).sort((a, b) => a.t - b.t);
+			const points = [edge.from, ...splits.map(s => s.p), edge.to];
+			for (let i = 1; i < points.length; i++) {
+				const port = ringPort(ring, mix(points[i - 1], points[i], .5))!;
+				const flip = (port.index - a.index + ring.length) % ring.length < (b.index - a.index + ring.length) % ring.length;
+				add(result, [points[i - 1], points[i]], flip ? (edge.family === 'A' ? 'B' : 'A') : edge.family, 'outline');
+			}
+		}
+		add(result, [a.point, b.point], 'AB', 'shared');
+		yield result;
+	}
 }
 
 /** Add two shared bridges around one external port. Flipping the intervening
@@ -1090,7 +1184,8 @@ export function framedGate(
 	ring: Ring,
 	angle: number,
 	half: number,
-	fan = 1
+	fan = 1,
+	spread = false
 ): Point {
 	const low = ray(ring, [50, 50], angle - half),
 		mid = ray(ring, [50, 50], angle),
@@ -1108,7 +1203,7 @@ export function framedGate(
 					Math.sin(angle) > 0 ? 100 - (100 - p[1]) * fan : p[1] * fan
 				];
 	const route = (point: Point, family: 'A' | 'B'): Ring => {
-		if (ring.length !== 4 || quadrant % 2) return [point, edge(point, family)];
+		if ((!spread && ring.length !== 4) || quadrant % 2) return [point, edge(point, family)];
 		// A diamond has flat sheet-aligned sides. A direct projection would stack
 		// several cuts at the same endpoint. Stagger their routes around its corner.
 		const reflect = (p: Point): Point =>
@@ -1120,7 +1215,7 @@ export function framedGate(
 			const lane = margin * (0.1 + 0.8 * (1 - t));
 			const endX = 50 * t,
 				out = margin - lane;
-			return p[0] < margin + EPS && p[1] > margin + EPS
+			return (spread ? p[0] < p[1] - EPS : p[0] < margin + EPS && p[1] > margin + EPS)
 				? [p, [out, p[1]], [out, out], [endX, out], [endX, 0]]
 				: [p, [p[0], out], [endX, out], [endX, 0]];
 		};
@@ -1152,7 +1247,8 @@ export function connectCellGrid(
 	edges: Edge[],
 	cells: Point[][][],
 	boundary?: Ring,
-	style: 'rays' | 'check' | 'plain' = 'check'
+	style: 'rays' | 'check' | 'plain' = 'check',
+	spread = false
 ) {
 	const rows = cells.length,
 		cols = cells[0].length;
@@ -1177,7 +1273,7 @@ export function connectCellGrid(
 					: step * band;
 			add(
 				edges,
-				[gate, framedGate(edges, boundary, angle, half, fan)],
+				[gate, framedGate(edges, boundary, angle, half, fan, spread)],
 				'AB',
 				'shared'
 			);

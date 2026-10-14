@@ -8,6 +8,7 @@ import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import {
 	convertValidatedCutGeometry,
+	CutGeometryError,
 	type CutGeometry
 } from '$lib/inverse/toHeartDesign';
 import type { HeartColors, HeartDesign } from '$lib/types/heart';
@@ -17,7 +18,6 @@ import {
 	generateFigure,
 	generateFourPortFigure,
 	generateCheckedText,
-	generateFramedText,
 	inside,
 	distance,
 	mix,
@@ -290,43 +290,31 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const frame = request.textFrame ?? 'woven';
 		if (frame === 'repeat')
 			return finish(generateRepeatedGrid(request.text ?? '', request.font), 'letters');
-		if ((request.text ?? '').includes('\n'))
-			return finish(
-				generateTextGrid(
-					request.text!,
-					request.font,
-					frame === 'air',
-					frame === 'woven' || frame === 'air' ? undefined : frame
-				),
-				'letters'
-			);
-		try {
-			return finish(
-				frame !== 'woven' && frame !== 'air'
-					? generateFramedText(request.text ?? '', request.font, frame)
-					: generateCheckedText(
-							request.text ?? '',
-							request.font,
-							frame === 'air'
-						),
-				'letters'
-			);
-		} catch (error) {
-			if (
-				error instanceof ConstructionError &&
-				['empty', 'character'].includes(error.code)
-			)
-				throw error;
-			return finish(
-				generateTextGrid(
-					request.text ?? '',
-					request.font,
-					frame === 'air',
-					frame === 'woven' || frame === 'air' ? undefined : frame
-				),
-				'letters'
-			);
+		const text = request.text ?? '';
+		const font = request.font;
+		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+		const recipes = text.includes('\n') ? [] : [
+			() => generateCheckedText(text, font, frame === 'air', shape)
+		];
+		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape));
+		// Give difficult counters/shoulders more room, and separate projections
+		// along flat frame sides. The requested font, frame and text are retained.
+		// The air layout already has this spacing and no decorative frame.
+		if (frame !== 'air')
+			recipes.push(() => generateTextGrid(text, font, false, shape, {
+				padding: .5,
+				spread: true
+			}));
+		let last: unknown;
+		for (const construct of recipes) {
+			try { return finish(construct(), 'letters'); }
+			catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
+				last = error;
+			}
 		}
+		throw last;
 	}
 	if (request.style === 'layers')
 		return finish(
@@ -366,6 +354,15 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 					() => generateFigure(rings, shape, size, scale, style),
 					() => generateFourPortFigure(rings, shape, size, scale, style)
 				];
+	// Concave silhouettes also benefit from several cells: a snowflake or an
+	// animal can have no holes and still need more than four attachment points.
+	// Keep the chosen frame and the exact artwork when distributing its cuts.
+	recipes.push(
+		() => generatePanelFigure(rings, shape, size, scale, 3, style),
+		() => generatePanelFigure(rings, shape, size, scale, 3, style, 2),
+		() => generatePanelFigure(rings, shape, size, scale, 3, style, 3),
+		() => generatePanelFigure(rings, shape, size, scale, 2, style, 2, true)
+	);
 	const errors: Error[] = [];
 	for (const construct of recipes) {
 		try {
@@ -375,7 +372,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				rings.length === 1 ? 'silhouette' : 'nested'
 			);
 		} catch (e) {
-			if (!(e instanceof Error)) throw e;
+			if (!(e instanceof ConstructionError) && !(e instanceof CutGeometryError)) throw e;
 			errors.push(e);
 		}
 	}

@@ -138,7 +138,8 @@ export function generatePanelFigure(
 	scale: number,
 	count = 2,
 	style: 'rays' | 'check' | 'plain' = 'rays',
-	rows = 1
+	rows = 1,
+	spread = false
 ) {
 	const factor = size * scale * (frame === 'oval' ? 0.75 : 1);
 	const upright = rings.map((r) =>
@@ -198,7 +199,7 @@ export function generatePanelFigure(
 		}
 	}
 	edges = stitch(stitch(edges, vertical), horizontal, 1);
-	connectCellGrid(edges, cells, frameRing(frame, size), style);
+	connectCellGrid(edges, cells, frameRing(frame, size), style, spread);
 	return {
 		geometry: compile(edges),
 		edges,

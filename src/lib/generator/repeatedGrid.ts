@@ -158,7 +158,12 @@ export function generateRepeatedGrid(text: string, font: Font) {
 			const active = [0, 1, 2, 3].filter(i => !boundary[i] && !boundary[(i + 3) % 4]);
 			const angles = gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0]));
 			if (active.length === 4) {
-				fourPortMotif(edges, contours, gates, angles, margin, active, routes => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100));
+				try {
+					fourPortMotif(edges, contours, gates, angles, margin, active, routes => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100));
+				} catch (error) {
+					if (!(error instanceof ConstructionError)) throw error;
+					throw new ConstructionError(error.code, `${char} at ${row},${col}: ${error.message}`);
+				}
 				artwork.push(...contours);
 				remember();
 				continue;

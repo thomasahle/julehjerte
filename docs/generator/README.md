@@ -1,0 +1,39 @@
+# Generator robustness checks
+
+Run `npm run test:generator:robustness` from the worktree. The offline corpus uses
+34 texts, six bundled fonts, and 51 authored, Phosphor and Tabler motifs.
+Nunito is tested in all nine text frames; the other five fonts are tested in
+woven, air and repeat. Every motif is tested in all 22 figure templates. Together
+this is 810 text configurations and 1,122 figure configurations. Repeat cases
+longer than the supported ten letters are excluded, not reported as successes.
+
+The command writes `tmp/generator/report.json` and a visual review in
+`tmp/generator/report.html`. It records generation time, accepted/refused status,
+errors and strip counts. An unsupported construction is a **refusal**, not a
+successful generation. The process fails on an unexpected runtime error, an
+invalid accepted result, or the loss of a previously accepted configuration in
+`expected.json`. Expand that acceptance list only after reviewing new successes;
+never remove entries merely to make a regression disappear.
+
+Each accepted result passes the generator's contour fidelity, open-path topology,
+intersection and grid-scaled spacing checks. The harness then independently saves
+and reloads both JSON and SVG, compares the woven raster, checks the cut count, and
+runs the editor's intersection/spacing checks again. The smaller regression suite
+in `src/lib/generator/robustness.test.ts` runs with `npm test`.
+
+These are digital checks, not a physical weaving trial. Figure scale and frame
+size use the product defaults. This is a deliberately varied sample of the icon
+catalog, not a test of every available icon or every historical slider value.
+
+Useful focused runs:
+
+```sh
+node scripts/generator/robustness.mjs --mode=text --font=nunito --frame=repeat
+node scripts/generator/robustness.mjs --mode=text --input=anna
+node scripts/generator/robustness.mjs --mode=figure --input=gift
+node scripts/generator/robustness.mjs --mode=figure --frame=circle-layers
+```
+
+Keep each run's output path distinct with `--out=tmp/generator/name.json` when
+running batches concurrently. Run the full unit suite separately from large
+corpus batches to avoid CPU contention triggering its short per-test timeouts.

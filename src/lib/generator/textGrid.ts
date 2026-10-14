@@ -22,7 +22,8 @@ export function generateTextGrid(
 	text: string,
 	font: Font,
 	air = false,
-	frame?: Frame
+	frame?: Frame,
+	layout: { padding?: number; spread?: boolean } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -43,7 +44,7 @@ export function generateTextGrid(
 		maxY = Math.max(...points.map((p) => p[1]));
 	const height = maxY - minY,
 		cy = (minY + maxY) / 2;
-	const padding = height * (air ? 0.5 : 0.22),
+	const padding = height * (layout.padding ?? (air ? 0.5 : 0.22)),
 		cellHeight = height + padding;
 	const widths = Array.from({ length: cols }, (_, col) =>
 		Math.max(
@@ -149,7 +150,7 @@ export function generateTextGrid(
 			}
 		}
 	}
-	connectCellGrid(edges, cells, boundary);
+	connectCellGrid(edges, cells, boundary, 'check', layout.spread);
 	const domain =
 		boundary ??
 		[

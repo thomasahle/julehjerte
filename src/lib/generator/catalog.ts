@@ -28,7 +28,8 @@ export const localNames: Record<string, [string, string]> = {
 	'ph-snowflake': ['Snefnug', 'snowflake jul sne'],
 	'ph-music-notes': ['Noder', 'music musik node'],
 	'ph-sun': ['Sol', 'sun natur'],
-	'ph-leaf': ['Blad', 'leaf blade natur']
+	'ph-leaf': ['Blad', 'leaf blade natur'],
+	'tb-bow': ['Bue og pil', 'archery bue pil sport']
 };
 
 export type CatalogItem = {
@@ -47,7 +48,7 @@ const seasonal = [
 	'gift',
 	'tb-candle',
 	'tb-christmas-tree',
-	'tb-bow',
+	'tb-gift',
 	'tb-star',
 	'tb-stars',
 	'tb-bell',
@@ -63,7 +64,6 @@ const aliases: Record<string, [string, string]> = {
 	candle: ['Stearinlys', 'lys jul christmas candle'],
 	'christmas-tree': ['Juletræ', 'gran træ jul christmas tree'],
 	gift: ['Gave', 'gave pakke jul christmas present gift'],
-	bow: ['Sløjfe', 'bånd jul bow ribbon'],
 	cookie: ['Småkage', 'peberkage jul cookie biscuit'],
 	stars: ['Stjerner', 'stjerne jul stars'],
 	'star-four': ['Julestjerne', 'stjerne jul christmas star'],
