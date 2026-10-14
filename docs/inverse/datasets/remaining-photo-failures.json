@@ -1,0 +1,1824 @@
+{
+  "schema": "remaining-photo-failure-diagnostic-1",
+  "sourceCommit": "3342267d8f2a905d877ec299e63f11d8afe3e85c",
+  "sourceHashes": {
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+    "static/inverse/core/direct/fit.js": "ce926fbf75afdbe4a8b062c30da551832c5bff0305514f905ec87cfdb6687e7e",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "2db84f0963f188ae820dff82610f3d63dc7f51c61207b775a65973c12b390288",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+    "static/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+    "static/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+    "scripts/inverse/hard-photo-cases.json": "a104debdefa7629136a238106304a877daa57fee31abef9ebf09d48c69f87917",
+    "scripts/inverse/photo-cases.json": "a366d97e5a81384eb8745bcfa0fb3201b76cf3f92710ae65bedf88a95fc42385",
+    "scripts/inverse/hard-photo-data.mjs": "84ba890531eab12a9a22e056a2e4a0043414eaca7db3f82b5956718869556d9f",
+    "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+    "scripts/inverse/hard-photo-benchmark.mjs": "7b5448b56181d7e5d6c52dd70065fe826b1a101579f5ef18d63d5157ebf21217",
+    "scripts/inverse/hard-photo-report.mjs": "156d754048477f45b84a9d97ea9f041391b9249da8a13a88d129921ee1f39db4",
+    "scripts/inverse/crop-evidence.mjs": "52872ad6028a15b5746f51a004d0d5f8a216850559f4dbbbce4235213373b260",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "src/lib/inverse/presets.js": "17d4f9be7dded0eb6619be3449eb962b67ee04ca96fd61db2777cbf3efb8d954",
+    "scripts/inverse/fixtures/photo-material-samples.json": "30b1d24b9a380cb8cfda5fda26d32b20750d64335f99a71b7ebb37b6a8985eb6",
+    "scripts/inverse/photo-material-samples.mjs": "8a28ea92b7206bb517d2561c8e14211cdb0a6fcfaea9de587f13a920b0f43c3d"
+  },
+  "automaticBaseline": {
+    "file": "tmp/heart-learning/trace-order-release-v1/hard-photos/results.json",
+    "sha256": "95d65a315c83f431df8832816fa1d1f74b8a1cb98e72a48e071fbbb2dc80ff2d",
+    "acceptedCompleteCases": 25,
+    "completeCases": 31
+  },
+  "scope": "Offline crop and fitting interventions on the six remaining failed collage cases plus two crop controls. Historical approximate corners are not ground truth. No runtime changes or newly counted automatic successes.",
+  "selectionRule": {
+    "method": "Joint chromaticity/brightness clustering, paper-color-specific lobes, multiple lower-line pairs",
+    "candidateSelection": "Among candidates with both lobe supports >= 0.65 and both cap color losses <= 0.30, choose minimum outline-fitting loss. No template scores, historical corners, or source artwork are used. Cases without a candidate satisfying this rule receive no proposal.",
+    "scope": "Exploratory crop hypothesis, not a production acceptance rule. The beam's raw line inlier denominator counts multiple transitions per row and is not comparable with production line support. Selected quadrilaterals must be independently inspected; geometric and image-template gates remain unchanged.",
+    "sourceCoordinateConvention": "Prototype quads are source pixel centers; add 0.5 before engine preparation. No historical crop inset.",
+    "fitting": {
+      "timeLimit": 10,
+      "preset": "automatic",
+      "target": "mask"
+    }
+  },
+  "variants": {
+    "line": {
+      "file": "tmp/heart-learning/remaining-photo-failures-v1/line-candidates.json",
+      "sha256": "1fd3faed57c25e9391c7fcebd68107520f684fc89f1c2ade3e94cf1e463fb03d",
+      "rows": [
+        {
+          "id": "nested-squares",
+          "seconds": 0.769677333,
+          "candidatePairs": 13,
+          "lobeQualified": 0
+        },
+        {
+          "id": "outline-star",
+          "seconds": 3.46313475,
+          "candidatePairs": 73,
+          "lobeQualified": 0
+        },
+        {
+          "id": "dense-checker",
+          "seconds": 2.114490834,
+          "candidatePairs": 47,
+          "lobeQualified": 0
+        },
+        {
+          "id": "flower",
+          "seconds": 0.45578629199999976,
+          "candidatePairs": 8,
+          "lobeQualified": 0
+        },
+        {
+          "id": "santa",
+          "seconds": 0.027682542000000466,
+          "candidatePairs": 0,
+          "lobeQualified": 0
+        },
+        {
+          "id": "jigsaw",
+          "seconds": 1.758034584,
+          "candidatePairs": 43,
+          "lobeQualified": 0
+        },
+        {
+          "id": "crossed-ribbons",
+          "seconds": 0.0488420419999984,
+          "candidatePairs": 0,
+          "lobeQualified": 0
+        },
+        {
+          "id": "bauble",
+          "seconds": 0.0356692920000005,
+          "candidatePairs": 0,
+          "lobeQualified": 0
+        }
+      ]
+    },
+    "cluster": {
+      "file": "tmp/heart-learning/remaining-photo-failures-v1/cluster-candidates.json",
+      "sha256": "21b0503ad0899f6a4c31742a1474bf77528a3fb53c4ba089d5556d22edadc35a",
+      "rows": [
+        {
+          "id": "nested-squares",
+          "seconds": 10.059454665999999,
+          "candidatePairs": 114,
+          "lobeQualified": 0
+        },
+        {
+          "id": "outline-star",
+          "seconds": 6.306547416999998,
+          "candidatePairs": 72,
+          "lobeQualified": 0
+        },
+        {
+          "id": "dense-checker",
+          "seconds": 8.564960125,
+          "candidatePairs": 95,
+          "lobeQualified": 0
+        },
+        {
+          "id": "flower",
+          "seconds": 10.593926708,
+          "candidatePairs": 118,
+          "lobeQualified": 0
+        },
+        {
+          "id": "santa",
+          "seconds": 8.091126959,
+          "candidatePairs": 93,
+          "lobeQualified": 0
+        },
+        {
+          "id": "jigsaw",
+          "seconds": 7.751788749999999,
+          "candidatePairs": 90,
+          "lobeQualified": 0
+        },
+        {
+          "id": "crossed-ribbons",
+          "seconds": 4.100580709000002,
+          "candidatePairs": 53,
+          "lobeQualified": 0
+        },
+        {
+          "id": "bauble",
+          "seconds": 10.573237083000008,
+          "candidatePairs": 126,
+          "lobeQualified": 0
+        }
+      ]
+    },
+    "rgb": {
+      "file": "tmp/heart-learning/remaining-photo-failures-v1/rgb-candidates.json",
+      "sha256": "c2fe5732720e087f8e23aeb49212dc5fb21a841f14ad4a95a62c20635a2f4800",
+      "rows": [
+        {
+          "id": "nested-squares",
+          "seconds": 0.20209879199999997,
+          "candidatePairs": 0,
+          "lobeQualified": 0
+        },
+        {
+          "id": "outline-star",
+          "seconds": 0.17401712499999997,
+          "candidatePairs": 0,
+          "lobeQualified": 0
+        },
+        {
+          "id": "dense-checker",
+          "seconds": 4.188471208,
+          "candidatePairs": 43,
+          "lobeQualified": 0
+        },
+        {
+          "id": "flower",
+          "seconds": 2.8206679999999995,
+          "candidatePairs": 29,
+          "lobeQualified": 0
+        },
+        {
+          "id": "santa",
+          "seconds": 0.11970799999999963,
+          "candidatePairs": 0,
+          "lobeQualified": 0
+        },
+        {
+          "id": "jigsaw",
+          "seconds": 1.992011875000001,
+          "candidatePairs": 20,
+          "lobeQualified": 0
+        },
+        {
+          "id": "crossed-ribbons",
+          "seconds": 0.1515701250000002,
+          "candidatePairs": 0,
+          "lobeQualified": 0
+        },
+        {
+          "id": "bauble",
+          "seconds": 0.11919391700000051,
+          "candidatePairs": 0,
+          "lobeQualified": 0
+        }
+      ]
+    },
+    "joint": {
+      "file": "tmp/heart-learning/remaining-photo-failures-v1/joint-candidates.json",
+      "sha256": "7c28baf62a2a34de955e8b8a3627efe72487531911583c298be5032cde31ed6a",
+      "rows": [
+        {
+          "id": "nested-squares",
+          "seconds": 5.153871417,
+          "candidatePairs": 56,
+          "lobeQualified": 0
+        },
+        {
+          "id": "outline-star",
+          "seconds": 8.595578750000001,
+          "candidatePairs": 96,
+          "lobeQualified": 0
+        },
+        {
+          "id": "dense-checker",
+          "seconds": 11.458727458,
+          "candidatePairs": 127,
+          "lobeQualified": 0
+        },
+        {
+          "id": "flower",
+          "seconds": 2.9074368750000033,
+          "candidatePairs": 30,
+          "lobeQualified": 0
+        },
+        {
+          "id": "santa",
+          "seconds": 5.538068333000003,
+          "candidatePairs": 62,
+          "lobeQualified": 0
+        },
+        {
+          "id": "jigsaw",
+          "seconds": 1.2200275419999962,
+          "candidatePairs": 11,
+          "lobeQualified": 0
+        },
+        {
+          "id": "crossed-ribbons",
+          "seconds": 0.7631598330000051,
+          "candidatePairs": 6,
+          "lobeQualified": 0
+        },
+        {
+          "id": "bauble",
+          "seconds": 1.067758167,
+          "candidatePairs": 10,
+          "lobeQualified": 0
+        }
+      ]
+    },
+    "joint-colored": {
+      "file": "tmp/heart-learning/remaining-photo-failures-v1/joint-colored-candidates.json",
+      "sha256": "b8f76b4c4cacc7b0bd0bd78dd6bda78cc558945337edb8ef21ae259c2a902ea1",
+      "rows": [
+        {
+          "id": "nested-squares",
+          "seconds": 5.122638707999999,
+          "candidatePairs": 56,
+          "lobeQualified": 1
+        },
+        {
+          "id": "outline-star",
+          "seconds": 8.277019541000001,
+          "candidatePairs": 96,
+          "lobeQualified": 5
+        },
+        {
+          "id": "dense-checker",
+          "seconds": 11.21963375,
+          "candidatePairs": 127,
+          "lobeQualified": 0
+        },
+        {
+          "id": "flower",
+          "seconds": 2.8662938749999993,
+          "candidatePairs": 30,
+          "lobeQualified": 5
+        },
+        {
+          "id": "santa",
+          "seconds": 5.394426458000002,
+          "candidatePairs": 62,
+          "lobeQualified": 0
+        },
+        {
+          "id": "jigsaw",
+          "seconds": 1.1365040829999997,
+          "candidatePairs": 11,
+          "lobeQualified": 0
+        },
+        {
+          "id": "crossed-ribbons",
+          "seconds": 0.7383638330000031,
+          "candidatePairs": 6,
+          "lobeQualified": 0
+        },
+        {
+          "id": "bauble",
+          "seconds": 1.0692873749999998,
+          "candidatePairs": 10,
+          "lobeQualified": 0
+        }
+      ]
+    }
+  },
+  "tracks": {
+    "historical": {
+      "file": "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/results.json",
+      "sha256": "db7a46d3505ca5577c21bfd89484924897c7aded61a586ecb74e97f8e6ab3860",
+      "editorFile": "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/results.json",
+      "editorSha256": "cf18f8419628edacfe27a429cbde40ed7bb09b276e77419419853d895fd459e4",
+      "rows": [
+        {
+          "id": "nested-squares",
+          "quad": [
+            [
+              234.7,
+              189.095
+            ],
+            [
+              318.425,
+              261
+            ],
+            [
+              195.3,
+              332.905
+            ],
+            [
+              111.575,
+              261
+            ]
+          ],
+          "maskSha256": "e9b797be02604da20fbfb0ec168ca57b884299834d14237e54f4954ffdc1bf40",
+          "sourceInput": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "nativePass": true,
+          "independentError": 0.018425,
+          "solveAndValidationSeconds": 9.428175541,
+          "missingFeatures": [],
+          "editablePass": true,
+          "editableError": 0.01855,
+          "conversionPassed": true,
+          "slits": {
+            "left": 7,
+            "right": 7
+          },
+          "automaticBaselineStatus": "no_crop",
+          "automaticBaselineError": null
+        },
+        {
+          "id": "outline-star",
+          "quad": [
+            [
+              429.8125,
+              181.2525
+            ],
+            [
+              518.4625,
+              265.9625
+            ],
+            [
+              402.2325,
+              341.8075
+            ],
+            [
+              319.4925,
+              264.9775
+            ]
+          ],
+          "maskSha256": "e133bf54d9115fe862723891806eb1671254e1a0179708afdf0f8992de719a70",
+          "sourceInput": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "nativePass": false,
+          "independentError": 0.00686875,
+          "solveAndValidationSeconds": 8.969777082999999,
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 4.5625,
+              "centerMm": [
+                4.720890410958904,
+                95.64897260273975
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "editablePass": false,
+          "editableError": 0.00688125,
+          "conversionPassed": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "automaticBaselineStatus": "failed",
+          "automaticBaselineError": 0.00815625
+        },
+        {
+          "id": "santa",
+          "quad": [
+            [
+              1344.1875,
+              380.21500000000003
+            ],
+            [
+              1442.6875,
+              464.925
+            ],
+            [
+              1363.8875,
+              542.74
+            ],
+            [
+              1275.2375,
+              452.12
+            ]
+          ],
+          "maskSha256": "e45aca01a4c94c9caa7d4ddde017518cb09c0eba73d539f7fcc53508599d48d6",
+          "sourceInput": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "nativePass": false,
+          "independentError": 0.08433125,
+          "solveAndValidationSeconds": 9.083564583,
+          "missingFeatures": [],
+          "editablePass": false,
+          "editableError": 0.0844375,
+          "conversionPassed": true,
+          "slits": {
+            "left": 5,
+            "right": 5
+          },
+          "automaticBaselineStatus": "no_crop",
+          "automaticBaselineError": null
+        },
+        {
+          "id": "jigsaw",
+          "quad": [
+            [
+              786.16125,
+              637.36125
+            ],
+            [
+              888.6012499999999,
+              716.16125
+            ],
+            [
+              803.89125,
+              821.55625
+            ],
+            [
+              708.34625,
+              731.92125
+            ]
+          ],
+          "maskSha256": "a56f9553ead05a3acd63b51cee44c4766faf1af5abb87a851dc805e840be144f",
+          "sourceInput": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "nativePass": true,
+          "independentError": 0.0097125,
+          "solveAndValidationSeconds": 6.527835958,
+          "missingFeatures": [],
+          "editablePass": true,
+          "editableError": 0.009975,
+          "conversionPassed": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "automaticBaselineStatus": "failed",
+          "automaticBaselineError": 0.0564375
+        },
+        {
+          "id": "crossed-ribbons",
+          "quad": [
+            [
+              404.80875,
+              936.335
+            ],
+            [
+              500.35375,
+              1030.895
+            ],
+            [
+              380.18375,
+              1107.725
+            ],
+            [
+              283.65375,
+              1021.045
+            ]
+          ],
+          "maskSha256": "5dac6cbc6147167e0879bfdaca66f0aac962122645da24a9f38ec1dfd9f55e3e",
+          "sourceInput": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "nativePass": true,
+          "independentError": 0.015375,
+          "solveAndValidationSeconds": 7.969938083000001,
+          "missingFeatures": [],
+          "editablePass": true,
+          "editableError": 0.01539375,
+          "conversionPassed": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "automaticBaselineStatus": "failed",
+          "automaticBaselineError": 0.02153125
+        },
+        {
+          "id": "bauble",
+          "quad": [
+            [
+              570.09,
+              941.20375
+            ],
+            [
+              681.395,
+              1019.01875
+            ],
+            [
+              579.94,
+              1102.74375
+            ],
+            [
+              472.575,
+              1018.03375
+            ]
+          ],
+          "maskSha256": "6ae7825a20f0988e542ac2fb667eab971392c47a516dc17589b863949cc20b56",
+          "sourceInput": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "nativePass": false,
+          "independentError": 0.0350875,
+          "solveAndValidationSeconds": 8.875976374999999,
+          "missingFeatures": [
+            {
+              "value": 1,
+              "areaMm2": 4.8125,
+              "centerMm": [
+                97.69642857142857,
+                68.0211038961039
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "editablePass": false,
+          "editableError": 0.03513125,
+          "conversionPassed": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "automaticBaselineStatus": "failed",
+          "automaticBaselineError": 0.0919125
+        }
+      ]
+    },
+    "proposed": {
+      "file": "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/results.json",
+      "sha256": "f8290c3b0ed4b6169dfa6a5def56d4efa70a8532645e705b14bb0d5abcd723cd",
+      "editorFile": "tmp/heart-learning/remaining-photo-failures-v1/proposed-editor/results.json",
+      "editorSha256": "27554712b2c24e9aba4a7b48a2bb99601e9960e49cebf73430224ee79cdc9d03",
+      "rows": [
+        {
+          "id": "nested-squares",
+          "quad": [
+            [
+              220.75953809230748,
+              190.0889411899547
+            ],
+            [
+              244.03925880255144,
+              268.1052029949403
+            ],
+            [
+              202.20214580340135,
+              343.460891933184
+            ],
+            [
+              127.11437012953226,
+              252.4393226390204
+            ]
+          ],
+          "maskSha256": "b698f0e9c7ade04922a880b47ba459793f8632b7ef2e6c8e48c483e5de65af46",
+          "sourceInput": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "nativePass": false,
+          "independentError": 0.06118125,
+          "solveAndValidationSeconds": 9.194267625,
+          "missingFeatures": [],
+          "editablePass": false,
+          "editableError": 0.06119375,
+          "conversionPassed": true,
+          "slits": {
+            "left": 6,
+            "right": 6
+          },
+          "automaticBaselineStatus": "no_crop",
+          "automaticBaselineError": null
+        },
+        {
+          "id": "outline-star",
+          "quad": [
+            [
+              429.009092708418,
+              171.137994704354
+            ],
+            [
+              520.6414401472769,
+              263.15648572205424
+            ],
+            [
+              409.4094626228274,
+              355.1307374149929
+            ],
+            [
+              327.5398744638289,
+              266.60047382242726
+            ]
+          ],
+          "maskSha256": "5807b2fa636cbf342c1f4414ab0580da45415698217a1e47147295dd7a0e0564",
+          "sourceInput": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "nativePass": true,
+          "independentError": 0.00748125,
+          "solveAndValidationSeconds": 5.318272832999999,
+          "missingFeatures": [],
+          "editablePass": true,
+          "editableError": 0.00740625,
+          "conversionPassed": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "automaticBaselineStatus": "failed",
+          "automaticBaselineError": 0.00815625
+        },
+        {
+          "id": "flower",
+          "quad": [
+            [
+              795.6798592806581,
+              383.12721480991536
+            ],
+            [
+              907.6816389333628,
+              472.5892304362362
+            ],
+            [
+              804.0411931551416,
+              567.7628039184784
+            ],
+            [
+              696.1470558012644,
+              483.8493718926873
+            ]
+          ],
+          "maskSha256": "9d7aed8ea081406fae05dd5e2ee912a2ec0009cb12d928abe9274c9fb140d8c6",
+          "sourceInput": {
+            "fileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+            "rgbaSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+            "width": 1482,
+            "height": 1112
+          },
+          "nativePass": true,
+          "independentError": 0.0103625,
+          "solveAndValidationSeconds": 7.7277685420000015,
+          "missingFeatures": [],
+          "editablePass": true,
+          "editableError": 0.01045,
+          "conversionPassed": true,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "automaticBaselineStatus": "validated",
+          "automaticBaselineError": 0.0050625
+        }
+      ]
+    }
+  },
+  "visualReview": {
+    "reviewer": "assistant",
+    "viewed": [
+      "review-0.png",
+      "review-1.png",
+      "historical-review-0.png",
+      "historical-review-1.png",
+      "proposed-review.png",
+      "nested-squares-candidates.png",
+      "santa-candidates.png",
+      "jigsaw-candidates.png",
+      "nested-squares-cluster-candidates.png",
+      "jigsaw-rgb-candidates.png",
+      "santa-joint-candidates.png",
+      "nested-squares-joint-candidates.png"
+    ],
+    "findings": [
+      "Original jigsaw and bauble proposals visibly distort/cut the photographed motif.",
+      "Historical jigsaw and crossed-ribbons crops give substantially cleaner reconstructions; nested-squares grid remains uneven.",
+      "Historical Santa still reroutes much of the pictured silhouette. Bauble pale frame is absent in classified target before fitting.",
+      "Lobe-qualified nested-squares proposal cuts off much of the heart; rejected as a crop improvement regardless of fit.",
+      "Proposed outline-star and flower resemble their classified masks, but their physical crop corners are not independently certified. No automatic success claim."
+    ]
+  },
+  "validation": {
+    "unchangedReleaseSourceFiles": 93,
+    "historicalEditablePasses": 3,
+    "historicalCases": 6,
+    "proposedEditablePasses": 2,
+    "proposedCases": 3,
+    "allNineEditableConversionsPass": true,
+    "newTestsRun": false,
+    "reason": "Only frozen diagnostic records and documentation added; production implementation and benchmark/replay code match previously checked sources. Existing suite results are not represented as fresh tests."
+  },
+  "artifacts": {
+    "tmp/heart-learning/remaining-photo-failures-v1/bauble-candidates.png": {
+      "sha256": "8ae375662bcca6de44f9f6bb4acdfbb8ed92e21cea5a4cb877d51b939c493bcb",
+      "bytes": 172566
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/bauble-cluster-candidates.png": {
+      "sha256": "b9588850e041f6d9c3811f899c868446efaf063c812b2f9eedf9eba09338104c",
+      "bytes": 223847
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/bauble-joint-candidates.png": {
+      "sha256": "025f24abe66de0cc97a0a70f385628d03adb11e11d1ff1e0c3449a1c4b72b70f",
+      "bytes": 217283
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/bauble-joint-colored-candidates.png": {
+      "sha256": "eb8b1be159028c7687376a21d245825d13abe73488ca93a45e303887a741f79c",
+      "bytes": 217675
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/bauble-rgb-candidates.png": {
+      "sha256": "8ae375662bcca6de44f9f6bb4acdfbb8ed92e21cea5a4cb877d51b939c493bcb",
+      "bytes": 172566
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/cluster-candidates.json": {
+      "sha256": "21b0503ad0899f6a4c31742a1474bf77528a3fb53c4ba089d5556d22edadc35a",
+      "bytes": 925925
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/cluster-fields.mjs": {
+      "sha256": "7f134a04ba5852a9d3472d49381f02a10db5b147faba2f869c197271a2b6fbba",
+      "bytes": 2534
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/cluster-probe.log": {
+      "sha256": "3f1856a9adaa6351bee14f295d24a173cb5c8fc14c60a18299476ac1b7704ad6",
+      "bytes": 4776
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/cluster-probe.mjs": {
+      "sha256": "72294c426e3dab6ef4cd3b71fb11c66813cb3be8761a6ec2a33d8bd4348ba2f3",
+      "bytes": 5370
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/collect.py": {
+      "sha256": "49774b15614042b14807a1bd810ad673dbb9b8e4975a042845599b86695308c7",
+      "bytes": 4892
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/crossed-ribbons-candidates.png": {
+      "sha256": "2017bfacfbc0cb5f8a079b03889d2c10fe4bdc7971aef232218b3823c8666b26",
+      "bytes": 159403
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/crossed-ribbons-cluster-candidates.png": {
+      "sha256": "62ff2a6b140c82473468ae6426c93e5338a4d6581ce9cee8a7f148fed36d087d",
+      "bytes": 218997
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/crossed-ribbons-joint-candidates.png": {
+      "sha256": "8ec3fbf50037e5f2aecbaa8c6db384aa9fa5da53fd6e510de9c6a04a9e5fe072",
+      "bytes": 209941
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/crossed-ribbons-joint-colored-candidates.png": {
+      "sha256": "cc5829b030ec2ab460c0b926116c190001ef81ce16aa0d4fd472008e6ab13972",
+      "bytes": 210975
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/crossed-ribbons-rgb-candidates.png": {
+      "sha256": "2017bfacfbc0cb5f8a079b03889d2c10fe4bdc7971aef232218b3823c8666b26",
+      "bytes": 159403
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/dense-checker-candidates.png": {
+      "sha256": "2ffb1d937a08ca7c3913b857e4d4178e257f3b20207f7d5020f85f7fa38e2c72",
+      "bytes": 259803
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/dense-checker-cluster-candidates.png": {
+      "sha256": "6dd515941c680234bc1f7cda9d1064bd27b56316b32d96ba6d4bbf1275621f09",
+      "bytes": 299448
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/dense-checker-joint-candidates.png": {
+      "sha256": "b0722a869dbe4340296f62f654a9c8c1e7743e6192d6d7b7da4b91f3e4dfd9c6",
+      "bytes": 263827
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/dense-checker-joint-colored-candidates.png": {
+      "sha256": "5654b72082be47557e192a527192836231b88258fdfa489c79f16bd0863da606",
+      "bytes": 263933
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/dense-checker-rgb-candidates.png": {
+      "sha256": "aff6b704c0c54ac90954968126f594c86bad066afed8a9ac526de96103eb54ba",
+      "bytes": 262156
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/flower-candidates.png": {
+      "sha256": "c3bbd680308dd58aebc81a8006cbe5ffc51c0ee704b54a09b5ca2e96535c6a40",
+      "bytes": 234952
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/flower-cluster-candidates.png": {
+      "sha256": "d9cd0458b64b2e0ba0fed7eb9ad8f07387ac98da7ce4fd487fee8ff53ad6737e",
+      "bytes": 258588
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/flower-joint-candidates.png": {
+      "sha256": "bc110ec6919dcf9686b665703cf6b5354c682e28d3a1531048ccfcaff2bfcf6a",
+      "bytes": 233652
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/flower-joint-colored-candidates.png": {
+      "sha256": "5019b756c74ec8e8b6042d50e33e37bc2580ad7cb35106fb48aab30d464c6813",
+      "bytes": 237201
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/flower-rgb-candidates.png": {
+      "sha256": "3fffad6bd40efa1e5d468181c80f073e2441c35606f0005712a2fff20680112d",
+      "bytes": 234611
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/cut_geometry.json": {
+      "sha256": "900b0762a63fa93d13d2c905d8c1d2d7cb23162c5e86152eef75f3a6639746c0",
+      "bytes": 47944
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/independent-weave.png": {
+      "sha256": "e2227c5a7d30ae9504390d8241ff888e4e793e814c3064d9a56c36a4ef33466d",
+      "bytes": 11711
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/manufacturability_left.svg": {
+      "sha256": "1de12ecb9e96acc4291841e3b3c4972c6423eefa8d5bcdb88568eb4c1598275e",
+      "bytes": 803159
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/manufacturability_right.svg": {
+      "sha256": "a2daab391c901dfb6c554bec6c8084ac118960b224506bc49e514c542f9bb9c1",
+      "bytes": 803067
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/mask.png": {
+      "sha256": "68b7e9cababd0de56f3f0f56b452e39c2f12ac9ab8fd2b7d4c607b69819a17a1",
+      "bytes": 4244
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/print_templates.html": {
+      "sha256": "4f5411d4fa1bdc7c8dcc4fae5e1c92a49a4725334e8daa133c6156a226980284",
+      "bytes": 13793
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/processed_design.svg": {
+      "sha256": "b9388e55770f81c317daaae32ef9a7fcf01966427b086970d305974e746e9bfc",
+      "bytes": 6489
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/report.html": {
+      "sha256": "ebd09c111fb37034e7ce80e5f8d507e3afbe241be36aa8323730d351e70001e1",
+      "bytes": 1689879
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/report.json": {
+      "sha256": "773a1e13a0a1f393c4f8d224449c7a18a288892113428c5f4913e8df76eedafa",
+      "bytes": 57081
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/target.svg": {
+      "sha256": "008d428c013c688ef687ad626d703dcbee08018c5bf8de2ddeca49e8c4cacca2",
+      "bytes": 18604
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/template_left.svg": {
+      "sha256": "bf1237f502433f67520a3a0b8eb9ee1fb9eed733d37201f7efa1361b6da201a9",
+      "bytes": 6513
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/template_right.svg": {
+      "sha256": "74b0e1d0465078d71a857d309967adca517d5a57d985369567cceeeb09ffa247",
+      "bytes": 6368
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/vector_target.svg": {
+      "sha256": "a64c2b871d40dfa39e1c82f823c9606d870854502c127c33d57153b6cc499681",
+      "bytes": 8623
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/automatic/weave_preview.svg": {
+      "sha256": "cbfb95c3a5f9d05e9c4366004518bfeb0830ebf61858cdd836f921c787b1548a",
+      "bytes": 9831
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/crop.png": {
+      "sha256": "ab56065a5eb05b3a5b9e6a1ed775f38df00fa9f4e0a67449424a413eebc39930",
+      "bytes": 151184
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/bauble/source.png": {
+      "sha256": "0079c4380a8028527b99f86b45511a492f16ab2797fd242266f4e0276eb0326a",
+      "bytes": 123120
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/cut_geometry.json": {
+      "sha256": "84a5f54e23b483785abbe20c2becc6f94dfc18cd097fadfc44c57e0272994648",
+      "bytes": 105538
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/independent-weave.png": {
+      "sha256": "0f04936fb0d64e7a21217d7b83807167e1683e9bdba815a06e6da17d00cd9e6c",
+      "bytes": 11200
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/manufacturability_left.svg": {
+      "sha256": "dc2e86116d1355649dc059293d4b08d64860622be19f25f22be2a98de6eefe0c",
+      "bytes": 1544791
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/manufacturability_right.svg": {
+      "sha256": "f9a79cf859a76667137a6783bfb0bff12e71324fdf54d887ebfa71e19057e2c0",
+      "bytes": 1543177
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/mask.png": {
+      "sha256": "e8d4a6557befd5edc027e490b083fddee7cc0df3c913eb80628c9cc5159e1d9e",
+      "bytes": 4535
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/print_templates.html": {
+      "sha256": "5ac0165ae14befabb3879ae3d42bca1e81ef272a25b450259f8bff265f8f65b7",
+      "bytes": 28628
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/processed_design.svg": {
+      "sha256": "e482f72d79df218d7d82d03c26e116ea8ce0a4e5fcacfa702fd483517536cb4f",
+      "bytes": 9090
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/report.html": {
+      "sha256": "cac595b937b520a771a23a332e427b6f601a7fe9813418aba231f48602cea53f",
+      "bytes": 3182712
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/report.json": {
+      "sha256": "6b1b4ade1463ccc1014f963563a832cef21816dc98411949f3914ce2e19f6007",
+      "bytes": 55192
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/target.svg": {
+      "sha256": "2ca56ea55655587a20c3974246482567ad2aa7dd78a394520c8b5d7310161a27",
+      "bytes": 16291
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/template_left.svg": {
+      "sha256": "9c2ab3c45774eaf023dff37cffecf77db74bafc726baeb827d2ac4d6c313ef54",
+      "bytes": 13607
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/template_right.svg": {
+      "sha256": "2a73b4a76d2db14ba9fb2a501870f5c6476ae949fd2ad017c0bd5c515dd8b2ca",
+      "bytes": 14109
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/vector_target.svg": {
+      "sha256": "64ccb62cd97eb6227c02ed41e29a970a674bceab710640cf55f7143fcca35436",
+      "bytes": 12490
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/automatic/weave_preview.svg": {
+      "sha256": "0e9b99ba6d06e44d57e4a1976d92a517807620daaf18ed699edb1adc65fcb419",
+      "bytes": 23961
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/crop.png": {
+      "sha256": "d233f511644256778b54c226f7a768ddbe26937b3b10024df183a74d3afada5b",
+      "bytes": 130245
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/crossed-ribbons/source.png": {
+      "sha256": "21f482fdcb237e38641435bf5dcbdb1b7a15b38e7f71c8b0c2a6a3306f016a61",
+      "bytes": 109273
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/index.html": {
+      "sha256": "0e0bed8cddf8da3a7467e89e31660f72237b5a48475c9ece431693fc339028f9",
+      "bytes": 21334
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/cut_geometry.json": {
+      "sha256": "6047cc9ae933b9d71ac7e895e6c411cafc589e1247a09906b9950f0f0ff00f02",
+      "bytes": 36273
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/independent-weave.png": {
+      "sha256": "de37ce3fa8975ec002ddfe8bf4aa9c7a06199f7550852fc68528a9f7f404f8be",
+      "bytes": 14221
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/manufacturability_left.svg": {
+      "sha256": "38ff3c47b6a2f732d4bf52e2ad4d901a985d5724b576fd067cdd74071dd0b3c8",
+      "bytes": 1548155
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/manufacturability_right.svg": {
+      "sha256": "b0439fd605e5df0784a14e60701f7fa8c33c94d8795ac88ee8c97ecb1641a9ce",
+      "bytes": 1544287
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/mask.png": {
+      "sha256": "125805c11d50cb68810e20d189be918d8a2e6c470a458da03ad7218565c36caa",
+      "bytes": 5349
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/print_templates.html": {
+      "sha256": "c9358f95f611fd52686b370b0950fc93ec7d5a2f14bf737ad761007cc1e609d2",
+      "bytes": 9914
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/processed_design.svg": {
+      "sha256": "19c07ccebf5b2e0881aebd8ae7d1fb8e42fb802c5d3345c4fd4323665a7c1ab5",
+      "bytes": 6603
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/report.html": {
+      "sha256": "1cb5843b243515f5d1359b3d7165b28fade38be9526b1db358234ee561ecdb7f",
+      "bytes": 3160280
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/report.json": {
+      "sha256": "85e92b0bab22be57b9a9ee7240553015369f73766da4f5ce4777737349db5ed6",
+      "bytes": 47562
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/target.svg": {
+      "sha256": "1c204803994c7e29b76ca16657f0a178bd25923c6398a84751a9f645b85b4b8e",
+      "bytes": 20669
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/template_left.svg": {
+      "sha256": "8105f6626032611610f3acf07c0fc602651d152b9877c1a5f2ea238f3f78b612",
+      "bytes": 4514
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/template_right.svg": {
+      "sha256": "175230232aeb848f07e287945035e75fc26102dc9b643600e346feaf252c5d2c",
+      "bytes": 4488
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/vector_target.svg": {
+      "sha256": "21694860bc4d6287c086d080be283e3f36a03737086bece7e2c811d4ba3b12e7",
+      "bytes": 8831
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/automatic/weave_preview.svg": {
+      "sha256": "657272c48edb460feb829044bc06dc4adf1511dc2f488a57795e33f6371b2b79",
+      "bytes": 6425
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/crop.png": {
+      "sha256": "8712be461b899ed49a27551a47e9598ebcbb909e25213c660179a78a8ae2e000",
+      "bytes": 165010
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/jigsaw/source.png": {
+      "sha256": "e3f2f220f098c8dbc486ce660ac5dd6b78a36b21df6800994252037975a299a2",
+      "bytes": 125701
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/cut_geometry.json": {
+      "sha256": "b9811d613e59aae29015b2de9e148a6abfd4cf5cafe6b4dac26cdf0b76f07c43",
+      "bytes": 93417
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/independent-weave.png": {
+      "sha256": "d95e36b812f65d709707524c5d9e077ec95715ac531e83df3b482952d770b6ba",
+      "bytes": 20105
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/manufacturability_left.svg": {
+      "sha256": "5609678e17f290a6094db2b5d6fa720bade6d4facb22fdadb3fb290e7d76ef99",
+      "bytes": 2830557
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/manufacturability_right.svg": {
+      "sha256": "c782a3038e699ea0799387a54f840dcd347d1791d9e6dde2dbc3be679085f5df",
+      "bytes": 2819759
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/mask.png": {
+      "sha256": "6eccee8b69e3f062912800a36c81be3c70964cf501e07f686b38ad5597a47336",
+      "bytes": 6024
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/print_templates.html": {
+      "sha256": "2b7c5f413a12e67394122bd8a9db08641cff9a6ed94e3785b958f47ecfbe4075",
+      "bytes": 20166
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/processed_design.svg": {
+      "sha256": "19759859d4fd73ad70fd56537316ef623c7a3d68cba28998bf52fc0afdc8a9c2",
+      "bytes": 15923
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/report.html": {
+      "sha256": "c3c530b54709dc7763d6f1bb95b312ad467e905b0dd5639dad2d022ca8e666f1",
+      "bytes": 5731585
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/report.json": {
+      "sha256": "0324548d0047b83ae30bef2720613161673f5afd68c79ff0b667c9b8f8502240",
+      "bytes": 51455
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/target.svg": {
+      "sha256": "6ed413bc6552472911bd4e06fd24a652ee91f1da6689039d88d96b53915b109f",
+      "bytes": 30278
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/template_left.svg": {
+      "sha256": "ec48a050fe88d2f087dbde0b65e7f3485b106ffb006fcce5d7a48afd9d756c51",
+      "bytes": 9131
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/template_right.svg": {
+      "sha256": "55c525c8a60d7f429d1bd85b74130ce3a21f1fd709712ea692acc9e9c3c22a4c",
+      "bytes": 10123
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/vector_target.svg": {
+      "sha256": "ef0d39936a2d12004e02881d55fbe9dcbbff6c298c83ec23099ccaa020ef9ca7",
+      "bytes": 21847
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/automatic/weave_preview.svg": {
+      "sha256": "8a5eda0b8ee5ade05aae54a2604cf5cd0f472de98018e8e3744a8877344414f2",
+      "bytes": 16013
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/crop.png": {
+      "sha256": "c89581966c7ba287ef1ce335cbda53317f02a20e4f58ea44a713a5101a2460a7",
+      "bytes": 161807
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/nested-squares/source.png": {
+      "sha256": "a38a245f6c33fce7b14ea4833a3e29cf905f8c39640e4eb4a6bef697c02125fa",
+      "bytes": 113918
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/cut_geometry.json": {
+      "sha256": "465c09d49872bb1101745183a226abf53d9f4c34d0a6602121d16ef8028a5e90",
+      "bytes": 54710
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/independent-weave.png": {
+      "sha256": "6c7d709770079841e3bec734967a061185fb7990a50e77c18011d46ab4a12450",
+      "bytes": 11568
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/manufacturability_left.svg": {
+      "sha256": "2da3edda95bc2f45fd19efa9164572a754fdd0bd6eb4676703d053f8c4a1feb1",
+      "bytes": 811357
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/manufacturability_right.svg": {
+      "sha256": "180fcb519f00cfcdc0754b6b949ec3ad22b204c8298613e983a74f79c740800e",
+      "bytes": 806055
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/mask.png": {
+      "sha256": "49049b0923be7c6cbdc1bf6ff8b95be1546a9d7b0d21a90600c48772c3606393",
+      "bytes": 4732
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/print_templates.html": {
+      "sha256": "01637128ef2f79feb721d4da934263e0206055bf361baca77e18eb8f59e0892f",
+      "bytes": 15979
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/processed_design.svg": {
+      "sha256": "22c9e9ed9a98bd831b35f200e05eb5273e50f91ef6c5c8df84f1d043263cd084",
+      "bytes": 6219
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/report.html": {
+      "sha256": "f874a28d2950c63ee599d7b4a6dea18a1a6267ce2cb1f33f8f7c4dfee68ab40e",
+      "bytes": 1712460
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/report.json": {
+      "sha256": "2743ef812bf1cad439cc493141bd72254d0fedd28130db0c79e1d6c4ef5a9809",
+      "bytes": 64541
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/target.svg": {
+      "sha256": "9a3607dcd47d56fa461de9fb37fcd3abc3288c37a595ca3cec0b288f5523f9da",
+      "bytes": 19902
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/template_left.svg": {
+      "sha256": "9178a48cf8380efe8bff280f8f363f7cc5061022cab65bb56558947327ece174",
+      "bytes": 7584
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/template_right.svg": {
+      "sha256": "fa5723a6071d8ef24f322fbd629473b7190d8268fdc1da4ba23f4e3f74ce910e",
+      "bytes": 7483
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/vector_target.svg": {
+      "sha256": "e8232bebde074f2e82b7e331df1f89531a86535c0f5837e074075ebd60232ac5",
+      "bytes": 8054
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/automatic/weave_preview.svg": {
+      "sha256": "4ed2a5d77cc5a7aa90853097ae540fb3bc2d4d0f368b6c939025425f34eec075",
+      "bytes": 11936
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/crop.png": {
+      "sha256": "b1803599aee2d6a719f54cff4015451c4ed93c9d2d5faffe408841171e4887c5",
+      "bytes": 164276
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/outline-star/source.png": {
+      "sha256": "0baab67d3d630ca022402a13f27b7ca84b3a7e753617b27c1fec8e4c1270cad7",
+      "bytes": 119726
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/results.json": {
+      "sha256": "db7a46d3505ca5577c21bfd89484924897c7aded61a586ecb74e97f8e6ab3860",
+      "bytes": 556382
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/cut_geometry.json": {
+      "sha256": "ebce8ca5ed84d61fedbca07aa41d26880c05599cab79b3c87c25f48d8e0cab90",
+      "bytes": 64439
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/independent-weave.png": {
+      "sha256": "744fa974eb8003f3fed294d46b999bdcaee2e063e74cdb12dca71f079f16a868",
+      "bytes": 20906
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/manufacturability_left.svg": {
+      "sha256": "6877e26c4e14018d578a999840d3b1062423457700fe662397f4b4d233a9ced7",
+      "bytes": 1137067
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/manufacturability_right.svg": {
+      "sha256": "80e91eae3158522f57c848ccfbd1d6cf55778a0f7fff6b3fd15cbee8013330d6",
+      "bytes": 1133765
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/mask.png": {
+      "sha256": "238ca6e8e27c7a2fd8ae13cf9a0eab1f0196ba86d16a2c784157daef8decb1ec",
+      "bytes": 6871
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/print_templates.html": {
+      "sha256": "c1e8819ad3057c27b646c0f02eed53c735e761f8c93800344e20f74a49465af1",
+      "bytes": 15604
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/processed_design.svg": {
+      "sha256": "4de03c5c69a96e868151724f76688dcfc678067ce7c0a9e41575205714acaf68",
+      "bytes": 10799
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/report.html": {
+      "sha256": "40f39c5341c2b3f430195dbb99d65dc88a77de84390f9f7d9ee3bd8842a0085b",
+      "bytes": 2357384
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/report.json": {
+      "sha256": "9fe9aace726af1752ab7e943f59772505cc67e0b9be2cca24b462414f6501149",
+      "bytes": 58211
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/target.svg": {
+      "sha256": "4383bdee58bc7020cf61cf5a9475e46715c976a8ff53edd5ccf27712578979d9",
+      "bytes": 26589
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/template_left.svg": {
+      "sha256": "e21da10268953fb3acdb83d031404643f4e1346b3f2a67323ab44eec179e24bc",
+      "bytes": 7303
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/template_right.svg": {
+      "sha256": "871372c02beb8ecf6e745ac8161b3a2278f455fdb24df65bb34d2f889bef15a5",
+      "bytes": 7389
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/vector_target.svg": {
+      "sha256": "a612ec5eb5f19d05c2e103b1d57ee4aa349702c2000295b300c9c3861f084f26",
+      "bytes": 14636
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/automatic/weave_preview.svg": {
+      "sha256": "81d3d6f07173824cc04ca159b7ac98cc8571a910a2022b6e99c43c020e76b38a",
+      "bytes": 11470
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/crop.png": {
+      "sha256": "8ff0cfab6f1e7c0ebc5b0954a850b3ec2d81ef92b4c4abdda80705587cfc6374",
+      "bytes": 164580
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops/santa/source.png": {
+      "sha256": "0e0a19c4dfcdc4d7f207eeeb8d972c27f581d9fac62d7b88f5925930e2d3f902",
+      "bytes": 117618
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-crops.log": {
+      "sha256": "4ca5bc25ad7aa10b8f3ee2a54cabfe4edc841e0cc5895aa47cb003041a73c610",
+      "bytes": 387
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/bauble-automatic-weave.png": {
+      "sha256": "587de8a53d6a458ef8756de3d868894df4f2c1921fd6498743cb86bad100a5a4",
+      "bytes": 3830
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/bauble-automatic.svg": {
+      "sha256": "f35a616dd92677d1178b266aede5f635fc06d0f6d6ae74d0b215e66c250fb96d",
+      "bytes": 14560
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/crossed-ribbons-automatic-weave.png": {
+      "sha256": "5d475a06657c32936cb306d9c887b0ead4551f1020ffaf65630bde1aa0812777",
+      "bytes": 4517
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/crossed-ribbons-automatic.svg": {
+      "sha256": "d8deb5e42257eaa2b46e4b32dcc2944b9f869767b70fcaec8dc26a74d04afcdf",
+      "bytes": 35774
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/jigsaw-automatic-weave.png": {
+      "sha256": "699ca325a4ba53319169f0effd11c3ab5ab2e9842521e394cb890a37ca04b2e3",
+      "bytes": 5221
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/jigsaw-automatic.svg": {
+      "sha256": "b59799093cd3910ea6f691406717d9959e7ffbce3c8c4dcb13aded4aad9ea7fc",
+      "bytes": 9525
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/nested-squares-automatic-weave.png": {
+      "sha256": "d3fd5da3f9f8e76f62a7418c5cb99d85f4d7057878b142e9c9485b85339c6034",
+      "bytes": 5877
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/nested-squares-automatic.svg": {
+      "sha256": "a4b44b3a4ee5808d7a4df96ae1291b68a66a6565dcd6b783a738b3ab0f852ab4",
+      "bytes": 23897
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/outline-star-automatic-weave.png": {
+      "sha256": "5784314330c658f56fa850418dd5493cf8b4a690ac319991ece74ed0945c78f7",
+      "bytes": 4617
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/outline-star-automatic.svg": {
+      "sha256": "dafa29c47f64445e88cf9c8aafcc1889769a15763df0336e30fe280e08e84dbf",
+      "bytes": 17909
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/results.json": {
+      "sha256": "cf18f8419628edacfe27a429cbde40ed7bb09b276e77419419853d895fd459e4",
+      "bytes": 48950
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/santa-automatic-weave.png": {
+      "sha256": "6fcabfd18d98419fe597ead0fa1357bf7752afa5f3c40d1aa48ee55bead6c3ab",
+      "bytes": 7734
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor/santa-automatic.svg": {
+      "sha256": "24959abe703aaeb6de5b490773c405ef42beb3413bdd400c8351855789c7d6f6",
+      "bytes": 17125
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-editor.log": {
+      "sha256": "edf794266e5747e01592689ef119e1a6240fcf8aa1e801c25cb0fce7cb05c635",
+      "bytes": 421
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-review-0.png": {
+      "sha256": "5d61459effc529962690fb6af27c807643f422c8ce23c2043aaca4ff6005d099",
+      "bytes": 696593
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/historical-review-1.png": {
+      "sha256": "56922c64d10bd335c65ac3f140e53a0b7de7b8b40a495d29899453cb89674cda",
+      "bytes": 621617
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/jigsaw-candidates.png": {
+      "sha256": "6331282f51be5e893dfbc2976427c3d3f62a5014373c1d45c4aea18227c0c38a",
+      "bytes": 212131
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/jigsaw-cluster-candidates.png": {
+      "sha256": "d489e76b8e636700ab2cdc94deb7bbe77d00140587785a0d5b5f7e1ad5ac74cc",
+      "bytes": 219445
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/jigsaw-joint-candidates.png": {
+      "sha256": "4885af449a1e321c4c57de6d43f369ce4bd2ae97642d0a54d15cf714aa99daa2",
+      "bytes": 210285
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/jigsaw-joint-colored-candidates.png": {
+      "sha256": "73e5ca24820c097fea6274100ddf6eed8a4ee7a9235cb23843078cf88482ccca",
+      "bytes": 208970
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/jigsaw-rgb-candidates.png": {
+      "sha256": "da574af613fe15e5307214302613bc7d65ef5e76a8bd7647ea340d32fb970b2d",
+      "bytes": 209561
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/joint-candidates.json": {
+      "sha256": "7c28baf62a2a34de955e8b8a3627efe72487531911583c298be5032cde31ed6a",
+      "bytes": 488304
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/joint-colored-candidates.json": {
+      "sha256": "b8f76b4c4cacc7b0bd0bd78dd6bda78cc558945337edb8ef21ae259c2a902ea1",
+      "bytes": 487737
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/joint-colored-probe.log": {
+      "sha256": "5e7869ed6440c896fb21f4ec0fc857eda8753a612840f5e08d08ba84d0841b80",
+      "bytes": 4695
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/joint-colored-probe.mjs": {
+      "sha256": "6895bd98bc5a4c9501c0ad4e10c4a7185200448ab78167e1bb69a0e5c38be444",
+      "bytes": 5416
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/joint-fields.mjs": {
+      "sha256": "93575eefe4344527b0e058a958e79dd5820f6119e939d4d124759a23a9843a21",
+      "bytes": 2530
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/joint-probe.log": {
+      "sha256": "32afc70e476e0b809cb7474accc1fdabc36829a2454a5d701bc6d259e83f8553",
+      "bytes": 4715
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/joint-probe.mjs": {
+      "sha256": "9448c64d65503b72d92939887e612ef7096bffab106c5b28f81453ab1adad58c",
+      "bytes": 5364
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/line-candidates.json": {
+      "sha256": "1fd3faed57c25e9391c7fcebd68107520f684fc89f1c2ade3e94cf1e463fb03d",
+      "bytes": 225488
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/locator/NOTICE.md": {
+      "sha256": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+      "bytes": 1068
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/locator/anchored.js": {
+      "sha256": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+      "bytes": 3078
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/locator/background.js": {
+      "sha256": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+      "bytes": 2075
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/locator/fields.js": {
+      "sha256": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+      "bytes": 6086
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/locator/grid-refine.js": {
+      "sha256": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+      "bytes": 4091
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/locator/interior-palette.js": {
+      "sha256": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+      "bytes": 4019
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/locator/locator.js": {
+      "sha256": "4cae7b3665427a1e37bea80f6bc294e41f0e24ad761493b540afbcad61777b0e",
+      "bytes": 21238
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/locator/math.js": {
+      "sha256": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+      "bytes": 2970
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/locator/orientation.js": {
+      "sha256": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+      "bytes": 2128
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/locator/palette.js": {
+      "sha256": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+      "bytes": 4617
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/nested-squares-candidates.png": {
+      "sha256": "aa0ac8b143307f38b2b946d5bc0675c39d801aba91c983133d7339c601c1ac69",
+      "bytes": 244618
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/nested-squares-cluster-candidates.png": {
+      "sha256": "b03db28cdef76aefa6196a44932539e59eadd4f4f6bf9c1ba7826c62b2ec40eb",
+      "bytes": 267386
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/nested-squares-joint-candidates.png": {
+      "sha256": "024b6b36599983d9d12d8181a31d9281a633bffb4d9b7548ab59bb016e477eef",
+      "bytes": 248364
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/nested-squares-joint-colored-candidates.png": {
+      "sha256": "fc7919275c6e8258a3f7de630d08b84f6691124b39fe00fb6d9d1f239c250068",
+      "bytes": 248227
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/nested-squares-rgb-candidates.png": {
+      "sha256": "3bdbb39e5b165d088ab6382dbf96e1efd7d087f9658902c7fc4024652ee16e03",
+      "bytes": 192874
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/outline-star-candidates.png": {
+      "sha256": "4aed0c4f2c9cc74982b7e9686f81514ab33a69042bc23b98ce13c9694bf8d1a2",
+      "bytes": 226492
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/outline-star-cluster-candidates.png": {
+      "sha256": "73d516ca056c7a11cc169cd0153bd611e69a1f94b70b378ed68f292277a1fc15",
+      "bytes": 240115
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/outline-star-joint-candidates.png": {
+      "sha256": "9e5cd863fccaeaf40398259ed3f84b1de6657023a9dcc333aa369a8a91640122",
+      "bytes": 227902
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/outline-star-joint-colored-candidates.png": {
+      "sha256": "91b5235091122cb379256655382ab3e41abfb076804507bb0a462827ae0ab00e",
+      "bytes": 227356
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/outline-star-rgb-candidates.png": {
+      "sha256": "9cc218acbb5c20cff56b228b2764c4d7347354f11554d4720e72e1e47e317400",
+      "bytes": 177474
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/overrides.json": {
+      "sha256": "6c1d2f5cee4bfb220dc1710a7bb3e9d7eeeabc6083dfd897eadf950be6d3d99e",
+      "bytes": 1691
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/probe.log": {
+      "sha256": "fc3109458145bdc0e49025410cba60f34c291d1e6e529cca6ed0ef4b006eaf22",
+      "bytes": 3155
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/probe.mjs": {
+      "sha256": "8ad4a44862d8f8c03688a97d956f45c895b01bf78a06071e77be81af25920302",
+      "bytes": 5330
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/cut_geometry.json": {
+      "sha256": "2f4f4ebb5d85d4a32962fd7684b7386f0a7e0043316c7ad90679254520063ad2",
+      "bytes": 65489
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/independent-weave.png": {
+      "sha256": "d6f7c7e705d59f8afa69e889c950149205e09903e3e73dc62f0678854acd14e3",
+      "bytes": 11080
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/manufacturability_left.svg": {
+      "sha256": "ea448c41561d0f2ce46b22f977f5ed13e49bc67f81f82e2ead4ff3c9d64f8b26",
+      "bytes": 1540805
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/manufacturability_right.svg": {
+      "sha256": "f8ebf30131deacd759c6306ba448ebebd71dd18d8c440b116136e4825f55dc14",
+      "bytes": 1542699
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/mask.png": {
+      "sha256": "d148c2d1a845a6e6775a44ce36bc25dea29d7d332842bdd5b1d25ecfda604450",
+      "bytes": 4379
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/print_templates.html": {
+      "sha256": "9ce5757aaf0110fef79d2dc0dbaa001d144dcfc829690083e2d7903936305f42",
+      "bytes": 17341
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/processed_design.svg": {
+      "sha256": "840ab55252c8fe0fd6af012b89b5322132a0cb07d90b40f79c72feae90387254",
+      "bytes": 8340
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/report.html": {
+      "sha256": "e19c63575fdc3e362ac7f7c17772c87bb7097ac79ed277c8b90113645efa62a1",
+      "bytes": 3164466
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/report.json": {
+      "sha256": "de8f10cec5e08ce8a272a28cbaae03716cc45b32dd5a32871fce825852fb5c42",
+      "bytes": 51694
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/target.svg": {
+      "sha256": "f66b7efc987833de6fad0d976a6b63949155b62603077fcc69648e5708a22939",
+      "bytes": 19312
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/template_left.svg": {
+      "sha256": "a724ecae610d76aad000fc725be2199decfe51c0d6130c285a2a995cf5ee8f0d",
+      "bytes": 8469
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/template_right.svg": {
+      "sha256": "b73b7c0ab704bc3f7679493617fef2ebce165484a1b051360492548ca7822072",
+      "bytes": 7960
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/vector_target.svg": {
+      "sha256": "6e5ff89fb40608513d2e953beccb6b92c31ddaecd15365ab4e9f5c517cc21d5c",
+      "bytes": 11284
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/automatic/weave_preview.svg": {
+      "sha256": "dd40baa7153d22e89ec0c3718cc2a63b860f7f70646393fa8628f6545982736a",
+      "bytes": 13377
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/crop.png": {
+      "sha256": "ae556147e758a1fb8b5f2c6a036187d4ec6424c423af1bf69bb380b00cda8c91",
+      "bytes": 170007
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/flower/source.png": {
+      "sha256": "9c005fa110c7d219d558d8b4d0dfe9fcfde0da0aea46b03b48cfeb3919a0fa6e",
+      "bytes": 128043
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/index.html": {
+      "sha256": "5715651cd372becd66cce9bd336f4b2470479017e9daa068bddc372cc0d44557",
+      "bytes": 12082
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/cut_geometry.json": {
+      "sha256": "6ad0801a6a35e2935a54f45bdb8464ee875a19be5f4757c381d3db2f97972097",
+      "bytes": 82131
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/independent-weave.png": {
+      "sha256": "2566956a21ef9038625a89dd9ffa45359b6667b4bcc118e1e8965e8d67ce85f5",
+      "bytes": 18582
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/manufacturability_left.svg": {
+      "sha256": "4530bca22a15b707a3567c7102beb961069f8ee308869be2d4d66e4519992718",
+      "bytes": 1304075
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/manufacturability_right.svg": {
+      "sha256": "4dc5dd7492552da0f1651c2dfeec9c4debfb3dd4f3c6aabe67d62c590013bd2a",
+      "bytes": 1299989
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/mask.png": {
+      "sha256": "cc70796a4fe2b216e8ba8238a32bb334a204f109dd2bedf85db0f223e6550404",
+      "bytes": 5321
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/print_templates.html": {
+      "sha256": "885024be9588b24dd087c139e7ddfe6ec53e0bc04c5cd47ffb288239cda9e7ff",
+      "bytes": 19292
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/processed_design.svg": {
+      "sha256": "ed6a4a28a92b889b74b782a1baa6320eee4998f8668d2bb3b481fa6c9c1e4612",
+      "bytes": 12890
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/report.html": {
+      "sha256": "c2c0e219a4578c5ce1de198e7a5f24f488cae64c036983e6e496b6fc6801de63",
+      "bytes": 2694179
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/report.json": {
+      "sha256": "821ec9e3c09fa503e87c559759dd08f46b9a683793736ef1ac1cd9745f0090e7",
+      "bytes": 58896
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/target.svg": {
+      "sha256": "8bb1d72ca121e5c7943a59da43c92326e16d57abedf6f2c2e92449a7971eb7ad",
+      "bytes": 30507
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/template_left.svg": {
+      "sha256": "4cc14fd04832eb0190b4aedcea93937394df0b7e51ca68544c502584acc201e5",
+      "bytes": 9138
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/template_right.svg": {
+      "sha256": "47c0841b5f7ccb55e0167e4a10c4178f091209f80feb551662bf3cd027abe9e4",
+      "bytes": 9242
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/vector_target.svg": {
+      "sha256": "6f08f24036031d011cae6ccede49575b249e3be7ae8bba4c88f0711a1e81b80d",
+      "bytes": 17694
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/automatic/weave_preview.svg": {
+      "sha256": "aaac9b8c6ef4862c26cd532fe49c8528a5aa1a8e1135a44a6c374d904329df88",
+      "bytes": 14928
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/crop.png": {
+      "sha256": "35d2667541fbe2c23cd3d0bc791c0ef328f437fc9c483415a2633d21cc0fc809",
+      "bytes": 136062
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/nested-squares/source.png": {
+      "sha256": "d7c4dde2d3f78ecc9c20804ae86d5e62944be65bdd2e4374ea026fcfa949de90",
+      "bytes": 112385
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/cut_geometry.json": {
+      "sha256": "d5ea4b03c8d3e7742ed0b8a2e12b664340ef0ef5c13a5a3f1545bc7cde720585",
+      "bytes": 51986
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/independent-weave.png": {
+      "sha256": "876838710adbb0826069cd62c42a2fa75ac9b313726cdf93769fe7fbd979ef86",
+      "bytes": 11212
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/manufacturability_left.svg": {
+      "sha256": "7903d19f03a8256198073cc059a5e726ff9594eac077f98c25773777beedfa86",
+      "bytes": 806289
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/manufacturability_right.svg": {
+      "sha256": "5f95b94ae2dc0dc67b0a35a0c12e1c7eafef53f1db04ba3956103c96b5ec354f",
+      "bytes": 811563
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/mask.png": {
+      "sha256": "78279c24e7b5ca2a26e3edafe7bdd9b318834c35ff6be469daa4407f8b53a4df",
+      "bytes": 4565
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/print_templates.html": {
+      "sha256": "a91045f4b5ed97b43bd7fa5d0095b8a2f27d1438f0d4db74fa4bc8732c7355ec",
+      "bytes": 14930
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/processed_design.svg": {
+      "sha256": "6327962442cc54afcfb663317f0bce1af4b04341bc52cbe26fe256384e284054",
+      "bytes": 6239
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/report.html": {
+      "sha256": "9855a7222f2850885ad02d072881410b7f192bd5a15220d13e6a93356439ded2",
+      "bytes": 1682082
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/report.json": {
+      "sha256": "7c16feec69781e7f198f92fa8cecb3c703a25f96bee3190e5ed4045b13485be3",
+      "bytes": 40861
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/target.svg": {
+      "sha256": "293a6b5b2252cc15f20eeb7f4121bb5c5629088a7cfc3071cc04ea1212b0e41c",
+      "bytes": 20993
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/template_left.svg": {
+      "sha256": "d8b834d208719dae647ed43785b2cf2cd5f642a4b3fcbdbb5592fe596954f0d8",
+      "bytes": 6937
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/template_right.svg": {
+      "sha256": "e9be5d12f5f44d5369fb4a14cda3a608516ddeca8b94e762c35b33418a24db3b",
+      "bytes": 7081
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/vector_target.svg": {
+      "sha256": "009cf7a2e6a7394d61a2edeb1c336491a4fb4e3416ba9848ef129d384a8841e4",
+      "bytes": 8172
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/automatic/weave_preview.svg": {
+      "sha256": "9a5915e057db1b65e017e708fde86f9aeda69fb985e0ce96b32c197599fa20af",
+      "bytes": 11138
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/crop.png": {
+      "sha256": "650085c269475e5c7f423fdf6bb56b02c128dd3dc9373b1b2e44233db1ffb4d0",
+      "bytes": 164479
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/outline-star/source.png": {
+      "sha256": "12cd63e998fa03db5978d65cb1f03ed87f524014c36e86614c8c50e0c1e5d530",
+      "bytes": 119123
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops/results.json": {
+      "sha256": "f8290c3b0ed4b6169dfa6a5def56d4efa70a8532645e705b14bb0d5abcd723cd",
+      "bytes": 247060
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-crops.log": {
+      "sha256": "ddcc949e9b73608c5300bcb363054f6dff3accb15a7e0bdc9409bdca50ceb6f7",
+      "bytes": 235
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-editor/flower-automatic-weave.png": {
+      "sha256": "4aa9bec7cf259450ced556ccdd327091ba0a6e36739ee3595b6b7b2a6e787f36",
+      "bytes": 4429
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-editor/flower-automatic.svg": {
+      "sha256": "30b5cdce603c8bce97e429c74d47791d24f1b4591922c8243da0f64665229d0d",
+      "bytes": 19954
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-editor/nested-squares-automatic-weave.png": {
+      "sha256": "a9f64d82f3c3db9560ebf66819c9710475da3848ad16bbef172cae689c136a97",
+      "bytes": 5948
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-editor/nested-squares-automatic.svg": {
+      "sha256": "13b162d03ec2a1c30b58df78f85ad37537e87fa8307b5a59e24d4ef515814619",
+      "bytes": 22137
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-editor/outline-star-automatic-weave.png": {
+      "sha256": "7c94fd6b4bfac1a312cdd69b6bee2b5280f22f9ec33084c299a91c1bf54355be",
+      "bytes": 4386
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-editor/outline-star-automatic.svg": {
+      "sha256": "a4dcce8c0ec5cb11b3d70574b2f3e549c737287ea8faa6d875241dcfef71588c",
+      "bytes": 16652
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-editor/results.json": {
+      "sha256": "27554712b2c24e9aba4a7b48a2bb99601e9960e49cebf73430224ee79cdc9d03",
+      "bytes": 23607
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-editor.log": {
+      "sha256": "7b018d4e581c414b3174fc31390fe14b765b2261fb20af0ef72365e656248d22",
+      "bytes": 213
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/proposed-review.png": {
+      "sha256": "eb777679b4ff2643bdaa5f51a7729072e88480c034580319f52dbbf0420bc4ac",
+      "bytes": 645377
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/review-0.png": {
+      "sha256": "165cc8e87d7de7cc5a3253ca35ee1acfe9fe4f50dffaba43aab92ac92587f959",
+      "bytes": 410558
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/review-1.png": {
+      "sha256": "5dfe9a6d3954c7d197386b4ce478ddac82d21e079696e5a4f06f267800ce3803",
+      "bytes": 624715
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/rgb-candidates.json": {
+      "sha256": "c2fe5732720e087f8e23aeb49212dc5fb21a841f14ad4a95a62c20635a2f4800",
+      "bytes": 119100
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/rgb-fields.mjs": {
+      "sha256": "231ac7a95bf51a55c8d7bc03d416218d0969ecbdc883deb068a98ee4ca110a38",
+      "bytes": 2511
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/rgb-probe.log": {
+      "sha256": "5aee93847f49483c9ef8ff2637f055eca5f025414096c4b7b481df564ad11379",
+      "bytes": 1946
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/rgb-probe.mjs": {
+      "sha256": "136c506a73b33fe979877239d7a2aedb3561c4d9eadf29b1dbe9cf6c093b0aec",
+      "bytes": 5358
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/santa-candidates.png": {
+      "sha256": "d3faa36c63fbc6eb39c00efc78d6c279fd5c7c5b85e24039805b0afc118b597b",
+      "bytes": 161373
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/santa-cluster-candidates.png": {
+      "sha256": "9586b1c40bcc6efa7b940c4d3a1ff25d293febaf786abf662c54b15c2744248b",
+      "bytes": 226750
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/santa-joint-candidates.png": {
+      "sha256": "34df181c8a72fc1102b91c69f86426e76177d59ce1ba6c3986f370d37e1080e2",
+      "bytes": 207678
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/santa-joint-colored-candidates.png": {
+      "sha256": "032871f695ce0cb6e351f1a098586416f3224875e7f66e53b89b565049b90f22",
+      "bytes": 207162
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/santa-rgb-candidates.png": {
+      "sha256": "d3faa36c63fbc6eb39c00efc78d6c279fd5c7c5b85e24039805b0afc118b597b",
+      "bytes": 161373
+    },
+    "tmp/heart-learning/remaining-photo-failures-v1/selection-rule.json": {
+      "sha256": "fd2a764ec2c2f75f7aae9f0dca3e95fa3e4518c25457d3708f365d3915903cd3",
+      "bytes": 923
+    }
+  }
+}

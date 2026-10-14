@@ -43,6 +43,14 @@ flows, type checking, lint and build. These
 31 photographs are a fixed reconstruction benchmark, not the full collected
 573-file photographic corpus.
 
+A [remaining-failure diagnostic](remaining-photo-failures.md) isolates the six
+unresolved collage cases. Historical approximate crops give checked editable
+templates for nested squares, jigsaw and crossed ribbons; Santa, the outlined
+star and bauble still fail. Five broader crop-search variants do not establish
+a reliable replacement. Santa's tracing path stops on inconsistent border
+endpoint counts before MILP search, while the bauble loses pale frame detail
+before fitting. These interventions do not increase the automatic 25/31 result.
+
 The [shared-return follow-up](visible-shared-returns.md) reduces two star notches
 and protects real corners against one-pixel source shifts. Its latest scheduling
 fix, `fa7774c`, reserves time for shared-cut alignment after speculative repairs.
