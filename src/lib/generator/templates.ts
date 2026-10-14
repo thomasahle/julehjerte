@@ -9,6 +9,9 @@ export type FigureTemplate = {
 const preferred: [Frame, GeneratorState['style']][] = [
 	['circle', 'rays'],
 	['circle', 'sunburst'],
+	['circle', 'fitted'],
+	['circle', 'corners'],
+	['circle', 'layers'],
 	['circle', 'check'],
 	['circle', 'plain'],
 	['diamond', 'check'],

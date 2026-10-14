@@ -133,8 +133,8 @@ describe('figures and complete templates', () => {
 		expect(design.templateWidthMm).toBeUndefined();
 	});
 	it('offers unique complete pairs and keeps old shared selections', () => {
-		expect(FIGURE_TEMPLATES).toHaveLength(19);
-		expect(new Set(FIGURE_TEMPLATES.map((t) => t.id)).size).toBe(19);
+		expect(FIGURE_TEMPLATES).toHaveLength(22);
+		expect(new Set(FIGURE_TEMPLATES.map((t) => t.id)).size).toBe(22);
 		const state = {
 			...defaults,
 			mode: 'figure' as const,

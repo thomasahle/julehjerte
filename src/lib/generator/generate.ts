@@ -1,3 +1,6 @@
+import { generateLayeredFigure } from './layers';
+import { generateCornerChecks } from './cornerChecks';
+import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
 import { repeatedText } from './repeatedText';
@@ -39,7 +42,7 @@ export type GeneratorRequest = {
 	frame?: Frame;
 	frameSize?: number;
 	scale?: number;
-	style?: 'rays' | 'check' | 'plain' | 'sunburst';
+	style?: 'rays' | 'check' | 'plain' | 'sunburst' | 'fitted' | 'corners' | 'layers';
 	textFrame?: TextFrame;
 };
 export type GeneratorResult = {
@@ -209,6 +212,14 @@ function fidelity(
 ) {
 	const n = 160,
 		mask = rasterizeDesign(design, n).data;
+	// Repeated text has many contours; only nearby letters can contain a sample.
+	const bounds = artwork.map((ring) => ({
+		ring,
+		minX: Math.min(...ring.map((p) => p[0])),
+		maxX: Math.max(...ring.map((p) => p[0])),
+		minY: Math.min(...ring.map((p) => p[1])),
+		maxY: Math.max(...ring.map((p) => p[1]))
+	}));
 	for (let y = 0; y < n; y++)
 		for (let x = 0; x < n; x++) {
 			const p: Point = [((x + 0.5) * 100) / n, ((y + 0.5) * 100) / n];
@@ -217,7 +228,12 @@ function fidelity(
 				background.some((r) => inside(p, r))
 			)
 				continue;
-			const desired = artwork.reduce((a, r) => a ^ Number(inside(p, r)), 0);
+			const desired = bounds.reduce(
+				(a, b) => a ^ Number(
+					p[0] >= b.minX && p[0] <= b.maxX &&
+					p[1] >= b.minY && p[1] <= b.maxY && inside(p, b.ring)
+				), 0
+			);
 			if (desired === mask[y * n + x]) continue;
 			// The converter fits smooth cubics to flattened font outlines. Differences
 			// are allowed only within 0.2 mm of that boundary, never within a letter,
@@ -310,6 +326,21 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			);
 		}
 	}
+	if (request.style === 'layers')
+		return finish(
+			generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale),
+			'nested'
+		);
+	if (request.style === 'corners')
+		return finish(
+			generateCornerChecks(request.contours ?? [], request.frameSize, request.scale),
+			'silhouette'
+		);
+	if (request.style === 'fitted')
+		return finish(
+			generateFittedFigure(request.contours ?? [], request.frameSize, request.scale),
+			'silhouette'
+		);
 	const sunburst = request.style === 'sunburst';
 	const outerSize = request.frameSize ?? 70;
 	const rings = request.contours ?? [],

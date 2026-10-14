@@ -76,17 +76,17 @@
 	let figureChoices = $derived(figureTemplates(config, expandedTemplates));
 	const frameLabel = (frame: string) =>
 		t(frames.find((f) => f[0] === frame)![1], lang);
-	const borderLabel = (style: GeneratorState['style']) =>
-		t(
-			style === 'sunburst'
-				? 'generatorSunburst'
-				: style === 'rays'
-					? 'generatorRays'
-					: style === 'check'
-						? 'generatorCheck'
-						: 'generatorPlain',
-			lang
-		);
+	const borderNames: Record<GeneratorState['style'], TranslationKey> = {
+		rays: 'generatorRays',
+		check: 'generatorCheck',
+		plain: 'generatorPlain',
+		sunburst: 'generatorSunburst',
+		fitted: 'generatorFitted',
+		corners: 'generatorCorners',
+		layers: 'generatorLayers'
+	};
+	const borderLabel = (style: GeneratorState['style']) => t(borderNames[style], lang);
+
 	const failures = new GeometryCache<Failure>();
 	const errorText = (failure: Failure) => {
 		const key: TranslationKey =
@@ -609,7 +609,7 @@
 				<div class="frame-options">
 					{#each figureChoices as choice (choice.id)}
 						<button
-							aria-label={`${frameLabel(choice.frame)} · ${borderLabel(choice.style)}`}
+							aria-label={['fitted', 'corners', 'layers'].includes(choice.style) ? borderLabel(choice.style) : `${frameLabel(choice.frame)} · ${borderLabel(choice.style)}`}
 							aria-pressed={config.frame === choice.frame &&
 								config.style === choice.style}
 							title={thumbnails[choice.id]?.failure
@@ -626,9 +626,11 @@
 								{colors}
 								unavailable={!!thumbnails[choice.id]?.failure}
 							/>
-							{frameLabel(choice.frame)}<small
-								>{borderLabel(choice.style)}</small
-							>
+							{#if ['fitted', 'corners', 'layers'].includes(choice.style)}
+								{borderLabel(choice.style)}
+							{:else}
+								{frameLabel(choice.frame)}<small>{borderLabel(choice.style)}</small>
+							{/if}
 						</button>
 					{/each}
 				</div>

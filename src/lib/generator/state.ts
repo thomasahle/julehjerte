@@ -7,7 +7,7 @@ export type GeneratorState = {
 	frame: Frame;
 	frameSize: number;
 	scale: number;
-	style: 'rays' | 'check' | 'plain' | 'sunburst';
+	style: 'rays' | 'check' | 'plain' | 'sunburst' | 'fitted' | 'corners' | 'layers';
 	textFrame: TextFrame;
 };
 export const defaults: GeneratorState = {
@@ -31,7 +31,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 			mode: ['start', 'figure', 'text'],
 			font: ['nunito', 'breeserif', 'oswald', 'kalam', 'cinzel', 'righteous'],
 			frame: [...FRAMES],
-			style: ['rays', 'check', 'plain', 'sunburst'],
+			style: ['rays', 'check', 'plain', 'sunburst', 'fitted', 'corners', 'layers'],
 			textFrame: ['woven', 'air', 'repeat', ...FRAMES]
 		}))
 			if (allowed.includes(raw[k])) Object.assign(s, { [k]: raw[k] });
@@ -49,7 +49,7 @@ export function readGeneratorState(hash: string): GeneratorState {
 	} catch {
 		/* An absent or malformed link starts a fresh heart. */
 	}
-	if (s.style === 'sunburst') s.frame = 'circle';
+	if (s.style === 'sunburst' || s.style === 'fitted' || s.style === 'corners' || s.style === 'layers') s.frame = 'circle';
 	return s;
 }
 
