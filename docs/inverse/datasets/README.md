@@ -93,6 +93,10 @@ routing interpolation to long searches reduces the original leaf error from
 2.6050% to 1.3163%, with all sixteen long-budget arms passing. The short
 vertically shifted control fails at 4.9769%, exposing a skipped clearance-grid
 comparison. These are fixed-mask development results; no policy is adopted.
+A [repeated clearance-window study](clearance-window.md) recovers the downward
+leaf shift in both repeats; the upward shift exposes a separate shortlist
+cutoff. A [best-source-prefix sharing experiment](shared-prefix.md) gives
+mixed independent-render results and is rejected for adoption.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority

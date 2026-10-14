@@ -1,0 +1,51 @@
+{
+  "status": "rejected-for-adoption",
+  "scope": "Additional shared-span alignment on the same 47 frozen accepted exports used for the audit-order experiment. No fresh fitting or application behavior change.",
+  "question": "Does retaining the best source-pixel-error prefix improve independent rendered coverage, or sacrifice useful shared geometry to pixel quantization?",
+  "selection": "Return the lowest original-source-error accepted prefix; ties retain later sharing. Continue exploring from the latest accepted state, preserving the original batch ceiling and all acceptance gates.",
+  "cases": 47,
+  "geometryPassed": 47,
+  "paperPassed": 47,
+  "featureChangesPassed": 47,
+  "changes": [
+    {
+      "name": "photos/floral-checker",
+      "before": {
+        "errorAfter": 0.0193875,
+        "coverageErrorAfter": 0.022244852889841422,
+        "serializedGeometrySha256": "db2f036b3f610f072f8a192428ea0236a1962d5c2aa52250050c4ce9896dda55"
+      },
+      "after": {
+        "errorAfter": 0.01939375,
+        "coverageErrorAfter": 0.022240490145538933,
+        "serializedGeometrySha256": "3ccc18f1bcb27b8e6d50be26f98f7a56d9bd953d6e97f5de1a41429c305a36c3"
+      },
+      "sourceErrorBefore": 0.0192125,
+      "sourceErrorAfter": 0.01920625,
+      "acceptedBefore": 9,
+      "acceptedAfter": 8
+    }
+  ],
+  "sharedLength": [
+    {
+      "variant": "latest-alignment",
+      "file": "tmp/heart-learning/seam-diagnosis-v1/matrix-candidate/photos/floral-checker/cut_geometry.json",
+      "hiddenLength": 55.287833261118756
+    },
+    {
+      "variant": "best-source-prefix",
+      "file": "tmp/heart-learning/shared-prefix-v1/matrix/photos/floral-checker/cut_geometry.json",
+      "hiddenLength": 52.11207726579186
+    }
+  ],
+  "sourceFilesVerified": 103,
+  "artifactsSha256": {
+    "tmp/heart-learning/shared-prefix-v1/protocol.json": "8291512c36b74918627a145ded934d19dbdfe29f7f514d5a1a6ab37682e3291f",
+    "tmp/heart-learning/shared-prefix-v1/running.json": "b982f9ae3e053dc8abeecdca097ad229d3312a60306b0ff28953e03447a49460",
+    "tmp/heart-learning/shared-prefix-v1/matrix/results.json": "6085df59dc596c3a1c6a006c48723987488eb88a777168d561ef9516ea7bbfc2",
+    "tmp/heart-learning/shared-prefix-v1/shared-length.json": "e3ec3090733b98e45aae019e845405a3e47663397c81da2914788a5939df081b",
+    "tmp/heart-learning/seam-diagnosis-v1/matrix-candidate/results.json": "6a936f086e2ffbbd85f19b884e400763bf9a3ad8c2a9d0e1db99df0116990fdd"
+  },
+  "visualReview": "Reviewed both 400-pixel floral-checker outputs; no clear visible improvement. Uneven cells and corner artifacts remain.",
+  "conclusion": "All but one output are identical. The changed prefix improves source sampling by one pixel, worsens independent binary rendering by one pixel, and very slightly improves fractional coverage while retaining less exactly shared length. These mixed quantized metrics do not justify replacing the current selection policy."
+}
