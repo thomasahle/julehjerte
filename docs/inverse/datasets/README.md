@@ -70,6 +70,13 @@ All application JS/CSS size multisets match, but only 31 of 68 assets have
 identical content. Build-version changes propagate through hashed imports.
 The original harness failure and two correction attempts remain in the record.
 
+A newer [shared-alignment optimization](shared-alignment-speed.md) checks an
+existing cutting-quality rejection before the full geometry audit. It produces
+identical final curves across 47 frozen accepted exports, reducing their total
+alignment time from 29.44 to 26.52 seconds; 110 focused tests pass. Fresh full
+QA and end-to-end replays are pending. This changes validation order, not the
+acceptance rules, and is not yet a whole-pipeline speed claim.
+
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority
 when a grid loses a protected feature. Its fixed shifted-star prototype improves
