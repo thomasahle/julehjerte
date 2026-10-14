@@ -61,6 +61,15 @@ tests, 855 application tests and thirteen fresh Chromium flows, plus type
 checking, lint and build. The refreshed preview serves 153 verified build
 assets. The experimental geometry and optimizer remain outside the app.
 
+A separate [turning-limit correction](turn-limit-refinement.md) now gives sharp
+corners optimizer feedback near the unchanged maximum-turn constraint. Its
+controlled regression retains a better valid approximation. The full native
+replay retains 22/22 Hunodan results below ten seconds with identical errors and
+25/31 photographic passes; all 47 accepted editable pairs pass current checks.
+Four photo errors improve and four worsen slightly. Repository and browser QA
+of this correction are still in progress. It does not resolve the subdivision
+inconsistency or include the experimental return rules.
+
 The [Pinterest expansion](real-pinterest-expansion.md) includes all four supplied
 pins. Download success, photograph count, heart-instance count and motif-family
 count are different measures. Of the 1,034 source files, 476 are now reserved by
