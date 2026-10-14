@@ -27,20 +27,25 @@ function localMinimum(curves,index,t,delta){
  if(t<1-1e-5)add(curves[index],t,1);else if(index+1<curves.length)add(curves[index+1],0,1);
  return directions.every(({tangent,sign})=>sign*dot(delta,tangent)>=-1e-3*Math.hypot(...delta)*Math.hypot(...tangent));
 }
-function totalTurning(curves,first,last,parameters){
+function totalTurning(curves,first,last,parameters,cache=null){
  const directions=[];
  for(let index=first;index<=last;index++){
   const curve=curves[index],p=curve.p;
   const lo=index===first?parameters[0]:0,hi=index===last?parameters[1]:1;
-  const d=[0,1].map(k=>[3*(p[1][k]-p[0][k]),6*(p[2][k]-2*p[1][k]+p[0][k]),3*(p[3][k]-3*p[2][k]+3*p[1][k]-p[0][k])]);
-  const v=[0,1,2].map(i=>d.map(axis=>axis[i]));
-  const turns=[cross(v[0],v[1]),2*cross(v[0],v[2]),cross(v[1],v[2])];
+  let data=cache?.get(curve);
+  if(!data){
+   const d=[0,1].map(k=>[3*(p[1][k]-p[0][k]),6*(p[2][k]-2*p[1][k]+p[0][k]),3*(p[3][k]-3*p[2][k]+3*p[1][k]-p[0][k])]);
+   const v=[0,1,2].map(i=>d.map(axis=>axis[i]));
+   const turns=[cross(v[0],v[1]),2*cross(v[0],v[2]),cross(v[1],v[2])];
+   data={roots:[...realRoots01(d[0]),...realRoots01(d[1]),...realRoots01(turns)],fallback:v[2]};
+   cache?.set(curve,data);
+  }
   // Axis roots prevent angle wrapping; curvature roots separate changes in
   // turn direction. These are floating-point polynomial roots, not a proof.
-  const knots=[lo,...[...realRoots01(d[0]),...realRoots01(d[1]),...realRoots01(turns)].filter(t=>t>lo&&t<hi).sort((a,b)=>a-b),hi];
+  const knots=[lo,...data.roots.filter(t=>t>lo&&t<hi).sort((a,b)=>a-b),hi];
   const tangent=(t,side)=>{
    let value=curve.derivative(t);
-   if(Math.hypot(...value)<1e-9){value=curve.second(t).map(x=>x*side);if(Math.hypot(...value)<1e-9)value=v[2];}
+   if(Math.hypot(...value)<1e-9){value=curve.second(t).map(x=>x*side);if(Math.hypot(...value)<1e-9)value=data.fallback;}
    return value;
   };
   if(lo===hi)directions.push(tangent(lo,lo===1?-1:1));
@@ -64,11 +69,11 @@ function polish(a,b,ta,tb,u,v){
  }
  return [u,v];
 }
-function* turningBoundaryCandidates(curves,a,b,margin,local){
+function* turningBoundaryCandidates(curves,a,b,margin,local,cache){
  // Turning increases as the later point moves forward and decreases as the
  // earlier point moves forward. Search that feasible boundary, rather than
  // hoping a flattening sample happens to land on its narrow valid interval.
- const turning=(u,v)=>totalTurning(curves,a.order,b.order,[u,v]);
+ const turning=(u,v)=>totalTurning(curves,a.order,b.order,[u,v],cache);
  if(turning(a.ts[0],b.ts[1])<180)return;
  const ta=a.ts[1]-a.ts[0],tb=b.ts[1]-b.ts[0];
  const lo=a.ts[0]+ta*clamp((b.arc-local-a.arc)/a.length,0,1);
@@ -100,6 +105,9 @@ function* turningBoundaryCandidates(curves,a,b,margin,local){
  }
 }
 export function experimentalSelfReturns(solution,cfg){
+ // Controls stay fixed during one audit. Never retain roots across calls:
+ // optimizers can reuse a cubic object after changing its control points.
+ const cache=new WeakMap();
  const width=solution.graph.target.width,margin=Math.min(cfg.nominalWidth,.015*width),local=cfg.localNeighborhoodFactor*cfg.nominalWidth,issues=[];
  if(!(margin>0)||local<2*margin)return issues;
  for(let family=0;family<2;family++)for(let slit=0;slit<solution.paths[family].length;slit++){
@@ -124,13 +132,13 @@ export function experimentalSelfReturns(solution,cfg){
    function* candidates(){
     yield nearest;
     for(const u of [a.ts[0],(a.ts[0]+a.ts[1])/2,a.ts[1]])for(const v of [b.ts[0],(b.ts[0]+b.ts[1])/2,b.ts[1]])yield[u,v];
-    yield* turningBoundaryCandidates(curves,a,b,margin,local);
+    yield* turningBoundaryCandidates(curves,a,b,margin,local,cache);
     // Reversing a cut swaps which point is held fixed by the one-dimensional
     // search. Probe both parameter axes so that a reflected/reversed path
     // cannot hide a feasible boundary interval on the other branch.
     reversedCurves??=curves.toReversed().map(c=>c.reversed());
     const reverse=s=>({...s,order:curves.length-1-s.order,ts:[1-s.ts[1],1-s.ts[0]],arc:arc-s.arc-s.length});
-    for(const [u,v]of turningBoundaryCandidates(reversedCurves,reverse(b),reverse(a),margin,local))yield[1-v,1-u];
+    for(const [u,v]of turningBoundaryCandidates(reversedCurves,reverse(b),reverse(a),margin,local,cache))yield[1-v,1-u];
    }
    for(const parameters of candidates()){
    const u=(parameters[0]-a.ts[0])/(a.ts[1]-a.ts[0]),v=(parameters[1]-b.ts[0])/(b.ts[1]-b.ts[0]);
@@ -140,7 +148,7 @@ export function experimentalSelfReturns(solution,cfg){
    if(points.some(p=>[curves[0].p[0],curves.at(-1).p[3]].some(end=>distance(p,end)<.01*width)))continue;
    const delta=sub(...points);
    const stationary=localMinimum(curves,a.order,parameters[0],delta)&&localMinimum(curves,b.order,parameters[1],delta.map(v=>-v));
-   const turning=stationary?null:totalTurning(curves,a.order,b.order,parameters);
+   const turning=stationary?null:totalTurning(curves,a.order,b.order,parameters,cache);
    if(!stationary&&turning<180-1e-6)continue;
    const key=`${a.order}:${b.order}`;if(found.has(key))continue;found.add(key);
    issues.push({family,slit,curves:[a.order,b.order],parameters,points,distanceUpper:gap,required:margin,arcSeparation:along,stationary,totalTurning:turning,edgeChain:solution.paths[family][slit].slice(a.order,b.order+1).map(([edge])=>edge)});

@@ -51,3 +51,30 @@ test('exported returns remain detectable with independent random knots on each c
   }
  }
 });
+
+test('turning roots are refreshed when reused cubics move between audits',async()=>{
+ const entry=(await returnDiagnosticCases()).find(c=>c.name==='gift');
+ // Store each occurrence in its path direction so audits revisit the same
+ // objects rather than creating temporary reversed cubics. This check only
+ // concerns the per-path return predicate, not shared-control fitting.
+ const graph={target:{width:entry.cfg.width},edges:[]};
+ const paths=entry.paths.map(f=>f.map(p=>p.map(points=>{
+  graph.edges.push({curve:new Cubic(points)});return[graph.edges.length-1,true];
+ })));
+ const solution={graph,paths};
+ const original=solution.graph.edges.map(e=>e.curve.p.map(p=>p.slice()));
+ const warm=experimentalSelfReturns(solution,entry.cfg),saved=structuredClone(warm);
+ assert.ok(warm.length,'The initial captured return must exercise the turning search.');
+ let seed=1729;
+ const random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/2**32);
+ for(const amplitude of [.1,-.2,.5,0]){
+  solution.graph.edges.forEach((edge,e)=>{
+   // Move handles while retaining connected anchors and the same Cubic objects.
+   edge.curve.p=original[e].map((p,k)=>p.map(v=>v+(k===1||k===2?amplitude*(2*random()-1):0)));
+   edge.curve.cache.clear();
+  });
+  const fresh={...solution,graph:{...solution.graph,edges:solution.graph.edges.map(e=>({...e,curve:new Cubic(e.curve.p)}))}};
+  assert.deepEqual(experimentalSelfReturns(solution,entry.cfg),experimentalSelfReturns(fresh,entry.cfg));
+ }
+ assert.deepEqual(warm,saved,'A later audit must not rewrite a previously reported witness.');
+});

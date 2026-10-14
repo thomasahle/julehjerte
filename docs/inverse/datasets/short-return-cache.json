@@ -1,0 +1,34 @@
+{
+  "scope": "Offline predicate acceleration only. Exact issue-object equality across saved representations, not browser latency, physical strength or new reconstruction success.",
+  "summary": {
+    "representations": 504,
+    "checks": 3024,
+    "baselineMilliseconds": 11007.041099999999,
+    "candidateMilliseconds": 8026.057585000019,
+    "speedup": 1.371413173084027
+  },
+  "benchmarkSourceHashes": {
+    "tmp/heart-learning/angular-return-v1/predicate.mjs": "5e14b6e5026320b62f1e5dfce1200371180b20d30ba1ef287fb5631506ede561",
+    "scripts/inverse/diagnostics/short-return-cache-study.mjs": "afb1f3b3b27b73b7e4f50d5fbdf914a27be5e54616e72a2e57c2c83483403447",
+    "scripts/inverse/diagnostics/self-return-candidate.mjs": "51820f6daff38df7966879eead097fa004cb776b75fc7729c83103e41ffa0866",
+    "scripts/inverse/self-return-subdivision-study.mjs": "ae4d7e0214cfb7f0b87c49fb86ab63d1d9c2e83db195bc698412d499c9b893f2",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c"
+  },
+  "focusedTests": {
+    "passed": 10,
+    "cacheLifetimeNegativeControl": "Deliberately global cache fails the handle-movement regression."
+  },
+  "artifacts": {
+    "tmp/heart-learning/angular-return-v1/committed-cache/results.json": "8c6b1f0289eb8ca92c33be620e6bbd4dfd15b0acd548ef7ab42c67656152d751",
+    "tmp/heart-learning/angular-return-v1/committed-cache.log": "b3d17fdeb6315013183c3dd81c03130fb76b95b7abca5ac351d80d5fae2f9141",
+    "tmp/heart-learning/angular-return-v1/committed-cache-tests-v2.log": "1f817ea6a32cf623667e9d729d490648850cd277c43ed696f9203a1c3037dc56",
+    "tmp/heart-learning/angular-return-v1/global-cache-regression-v2.log": "64a62af856fc8b24a08401ec1bd259856e397a8b881941a868fb2b53dc553639",
+    "tmp/heart-learning/angular-return-v1/global-cache-regression-v2.test.mjs": "d9781de420133932babd59870973d2c0161afeba51be0f1f7fcd85152f426b88",
+    "scripts/inverse/diagnostics/self-return-candidate.mjs": "51820f6daff38df7966879eead097fa004cb776b75fc7729c83103e41ffa0866",
+    "scripts/inverse/diagnostics/short-return-cache-study.mjs": "afb1f3b3b27b73b7e4f50d5fbdf914a27be5e54616e72a2e57c2c83483403447",
+    "scripts/inverse/self-return-subdivision.test.mjs": "843b414f17ab875eb8f7c39ec6b773be6d2a621e5fb9c01e86f28cf463b75fa7"
+  }
+}
