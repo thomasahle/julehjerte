@@ -20,6 +20,23 @@ pinterest=module('pinterest','real-pinterest.py')
 
 
 class CollectionTests(unittest.TestCase):
+    def test_collected_sources_used_by_photographic_regressions_are_reserved(self):
+        root = Path(__file__).resolve().parents[3]
+        assets = json.loads((root/'docs/inverse/datasets/real-manifest.json').read_text())['assets']
+        by_hash = {row['sha256']: row for row in assets}
+        checked = 0
+        for path in (root/'scripts/inverse/fixtures').glob('photographic-*.json'):
+            source = json.loads(path.read_text()).get('source')
+            if not isinstance(source, dict):
+                continue
+            row = by_hash.get(source.get('photoSha256'))
+            if row is None:
+                continue  # Synthetic photos and sources outside this corpus cannot leak from it.
+            checked += 1
+            group = [r for r in assets if r['splitGroupId'] == row['splitGroupId']]
+            self.assertTrue(all(r['splitStatus'] == 'qa-reserved' for r in group), str(path))
+        self.assertGreater(checked, 0, 'The collected gold-angel regression must remain covered')
+
     def test_resume_merges_new_pages_groups_and_rights_for_cached_image(self):
         original={'imageUrl':'https://x/image.jpg','source':'publisher','sourcePages':['https://x/old'], 'sourceGroup':'family-one','rights':{'status':'unknown'}}
         asset={'origins':[original]}

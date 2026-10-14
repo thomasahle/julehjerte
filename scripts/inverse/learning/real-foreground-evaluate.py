@@ -19,12 +19,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--labels', type=Path, required=True)
     parser.add_argument('--annotations', type=Path, default=ROOT/'scripts/inverse/datasets/real-annotations.json')
+    parser.add_argument('--manifest', type=Path, default=ROOT/'docs/inverse/datasets/real-manifest.json')
     parser.add_argument('--run', type=Path, action='append', required=True)
     parser.add_argument('--export-probes', action='store_true', help='Export cached full-photo fields for foreground-replay.mjs; annotation geometry is excluded.')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     torch.set_num_threads(2); torch.set_num_interop_threads(1)
-    items, audit = load_real_labels(args.labels, annotations=args.annotations)
+    items, audit = load_real_labels(args.labels, manifest=args.manifest, annotations=args.annotations, purpose='diagnostic')
     names = [p.name for p in args.run]
     if len(set(names)) != len(names):
         raise ValueError('Checkpoint run names must be distinct')
@@ -62,7 +63,7 @@ def main():
         if args.export_probes:
             folder = args.output/('probe-'+run.name)
             export_real_probe(folder, {item['id']: p for item, p in zip(items, predictions)},
-                              args.labels, args.annotations, source['checkpointSha256'])
+                              args.labels, args.annotations, source['checkpointSha256'], source_manifest=args.manifest)
             report['runs'][run.name]['probe'] = {'path': str(folder.relative_to(args.output)),
                                                 'manifestSha256': digest((folder/'manifest.json').read_bytes())}
         for item, probability in zip(items, predictions):

@@ -27,12 +27,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--labels', type=Path, required=True)
     parser.add_argument('--annotations', type=Path, required=True)
+    parser.add_argument('--manifest', type=Path, default=ROOT/'docs/inverse/datasets/real-manifest.json')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    items, audit = load_real_labels(args.labels, annotations=args.annotations)
+    items, audit = load_real_labels(args.labels, manifest=args.manifest, annotations=args.annotations, purpose='diagnostic')
     labels = json.loads((args.labels/'manifest.json').read_text())
     label_rows = {row['id']: row for row in labels['instances']}
-    sources = {row['id']: row for row in json.loads((ROOT/'docs/inverse/datasets/real-manifest.json').read_text())['assets']}
+    sources = {row['id']: row for row in json.loads(args.manifest.read_text())['assets']}
     resolutions = {row['transform']['resolution'] for row in labels['instances']}
     if len(resolutions) != 1:
         raise ValueError('A probe requires one label resolution')

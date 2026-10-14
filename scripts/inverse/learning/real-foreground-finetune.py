@@ -13,7 +13,7 @@ import torch
 from data import digest
 from foreground import load_foreground_run, tensors
 from real_finetune import adaptation_loss, encoder_hash, freeze_encoder, grouped_folds, replay_corpus, schedule, step_batch
-from real_foreground import known_region_metrics, load_real_labels
+from real_foreground import ROOT, known_region_metrics, load_real_labels
 
 
 def predictions(model, items):
@@ -28,6 +28,8 @@ def predictions(model, items):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--labels', type=Path, required=True)
+    parser.add_argument('--manifest', type=Path, default=ROOT/'docs/inverse/datasets/real-manifest.json')
+    parser.add_argument('--annotations', type=Path, default=ROOT/'scripts/inverse/datasets/real-annotations.json')
     parser.add_argument('--plan', type=Path, default=Path(__file__).with_name('real-pilot-folds.json'))
     parser.add_argument('--initial-run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
@@ -37,7 +39,7 @@ def main():
     if protocol['batchSize'] != 4 or protocol['realPerMixedBatch'] != 2 or protocol['updates'] < 1:
         raise ValueError('Unsupported paired-update protocol')
     torch.manual_seed(protocol['seed'])
-    items, audit = load_real_labels(args.labels)
+    items, audit = load_real_labels(args.labels, manifest=args.manifest, annotations=args.annotations)
     folds = grouped_folds(items, audit, plan)
     initial, training = load_foreground_run(args.initial_run)
     args.output.mkdir(parents=True, exist_ok=False)

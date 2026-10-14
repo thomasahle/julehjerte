@@ -1,5 +1,5 @@
 {
-  "manifestSha256": "a900f3f3baaeba87e4d5bb3eedc595f0276ca1684110cdd4dc1f3ba1cc531dd8",
+  "manifestSha256": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
   "verifiedAssetFiles": 1034,
   "verifiedBytes": 199381046,
   "verifiedDecodedPixelGroups": 1033,
@@ -16,7 +16,7 @@
   },
   "reviewedAssembledHeartPhotoFiles": 573,
   "reviewedPhotoNearDuplicateGroups": 461,
-  "qaReservedFiles": 475,
+  "qaReservedFiles": 476,
   "pinterestSelectedPins": 487,
   "pinterestDownloadedPins": 470,
   "pinterestPhotoFiles": 198

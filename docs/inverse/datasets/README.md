@@ -23,16 +23,22 @@ The 2026-10-14 snapshot contains:
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
-| Real visible-body annotations | 16 | Fourteen source groups outside reserved source QA; uncertain pixels excluded. The original ten-instance adaptation pilot is unchanged; six reviewed additions have not entered training. |
+| Real visible-body annotations | 16 | Fifteen instances in thirteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the six additions to the original ten-instance pilot have not entered training. |
 
 ## Current results and limits
 
 The [Pinterest expansion](real-pinterest-expansion.md) includes all four supplied
 pins. Download success, photograph count, heart-instance count and motif-family
-count are different measures. Of the 1,034 source files, 475 remain reserved by
+count are different measures. Of the 1,034 source files, 476 are now reserved by
 existing QA or connected source groups; the rest still need family, instance
 and usage review before allocation. See the [real audit](real-validation.json)
 and [synthetic asset checks](synthetic-batch.json).
+
+The [current training-reservation check](real-qa-reservations.md) excludes the
+gold-angel source now used by a committed solver regression, including when a
+caller supplies an older label/catalog snapshot. Explicit diagnostic replays
+remain available. All sixteen rebuilt annotation instances preserve their
+previous RGB, label and overlay bytes; no model was retrained.
 
 The [latest completed fitter release](trace-search-order.md) passes all 22
 regular Hunodan designs below ten seconds (maximum 8.22 seconds, unchanged

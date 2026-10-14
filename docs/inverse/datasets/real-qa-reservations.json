@@ -1,0 +1,381 @@
+{
+  "schema": "current-real-source-qa-reservation-1",
+  "decision": "Reserve the gold regression source and reject stale-snapshot training admission; retain explicit diagnostic replay. No training, inference-model or production reconstruction change.",
+  "sourceCatalog": {
+    "manifestSha256": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
+    "verifiedAssetFiles": 1034,
+    "verifiedBytes": 199381046,
+    "verifiedDecodedPixelGroups": 1033,
+    "kinds": {
+      "photo": 408,
+      "photo-multiple": 104,
+      "mixed-photo-template": 41,
+      "photo-collage": 20,
+      "template-render": 202,
+      "unrelated": 119,
+      "photo-process": 91,
+      "photo-other-material": 47,
+      "unknown": 2
+    },
+    "reviewedAssembledHeartPhotoFiles": 573,
+    "reviewedPhotoNearDuplicateGroups": 461,
+    "qaReservedFiles": 476,
+    "pinterestSelectedPins": 487,
+    "pinterestDownloadedPins": 470,
+    "pinterestPhotoFiles": 198
+  },
+  "replay": {
+    "changedAssets": [
+      "real-4066fe9f9aafb3e4"
+    ],
+    "sourceFilesAndGroupsUnchanged": 1034,
+    "beforeCatalogSha256": "a900f3f3baaeba87e4d5bb3eedc595f0276ca1684110cdd4dc1f3ba1cc531dd8",
+    "currentCatalogSha256": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
+    "historicalReplays": [
+      {
+        "name": "pilot",
+        "historicalLabels": "tmp/heart-learning/real-annotation-v1/labels-filtered",
+        "currentLabels": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/pilot-labels",
+        "historicalAudit": {
+          "passed": true,
+          "instances": 10,
+          "sourceGroups": 8,
+          "approximateOverlapReferences": 5,
+          "manifestSha256": "45077772be82a9d46054a82f3e873b94a6dfa700dbe1d0a68bfb0910a3f58f06",
+          "annotationsSha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+          "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+        },
+        "historicalManifestSha256": "45077772be82a9d46054a82f3e873b94a6dfa700dbe1d0a68bfb0910a3f58f06",
+        "currentManifestSha256": "3ea0ad210be19dfd046988186b838d8947f899e5e3f2535b42003c57736048d6",
+        "instances": 10
+      },
+      {
+        "name": "supplement",
+        "historicalLabels": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed",
+        "currentLabels": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/supplement-labels",
+        "historicalAudit": {
+          "passed": true,
+          "instances": 2,
+          "sourceGroups": 2,
+          "approximateOverlapReferences": 0,
+          "manifestSha256": "40bd82be133e336840b955faa3a54615e2952e4e003e5edcb26853b741e0eeba",
+          "annotationsSha256": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25",
+          "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+        },
+        "historicalManifestSha256": "40bd82be133e336840b955faa3a54615e2952e4e003e5edcb26853b741e0eeba",
+        "currentManifestSha256": "1fc4a18d4a5bb7b56ad8455fe9c8059118bbf1f04440171d58efff7ff8d1062b",
+        "instances": 2
+      },
+      {
+        "name": "motifs",
+        "historicalLabels": "tmp/heart-learning/real-motif-annotation-v1/reviewed-labels",
+        "currentLabels": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/motifs-labels",
+        "historicalAudit": {
+          "passed": true,
+          "instances": 2,
+          "sourceGroups": 2,
+          "approximateOverlapReferences": 0,
+          "manifestSha256": "413f4948bc4735fd2ae8559ad30c67dd528dfbf57b8a730925a797a459a83aec",
+          "annotationsSha256": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e",
+          "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+        },
+        "historicalManifestSha256": "413f4948bc4735fd2ae8559ad30c67dd528dfbf57b8a730925a797a459a83aec",
+        "currentManifestSha256": "f316c614033650ed13ea90c056be474988d247b3084d79f0bea5310720b9ef37",
+        "instances": 2
+      },
+      {
+        "name": "scenes",
+        "historicalLabels": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels",
+        "currentLabels": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/scenes-labels",
+        "historicalAudit": {
+          "passed": true,
+          "instances": 2,
+          "sourceGroups": 2,
+          "approximateOverlapReferences": 0,
+          "manifestSha256": "9c56cb19aa21fe5bd9e68dd4a39bdb1540dc612b5774a458fd1f2cbb6fc556b8",
+          "annotationsSha256": "7d185809520a82ea2eb2a7fd2da569140baacf9f2642f256b0573eecc95ec43a",
+          "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+        },
+        "historicalManifestSha256": "9c56cb19aa21fe5bd9e68dd4a39bdb1540dc612b5774a458fd1f2cbb6fc556b8",
+        "currentManifestSha256": "a660cd793b957adc4ac977c72769572eee84db61b4d7292335c507c438cfa037",
+        "instances": 2
+      }
+    ],
+    "identicalRGBLabelOverlayFiles": 48,
+    "oldPilotTrainingAdmission": 10,
+    "oldSceneDiagnosticAdmission": 2,
+    "staleSceneTrainingRejection": "Current QA or allocated source group cannot enter training: real-4066fe9f9aafb3e4",
+    "trainingCLI": {
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/learning/real-foreground-finetune.py",
+        "--labels=tmp/heart-learning/real-scene-annotation-v1/reviewed-labels",
+        "--manifest=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/before/docs/inverse/datasets/real-manifest.json",
+        "--annotations=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/before/scripts/inverse/datasets/real-annotations-scenes.json",
+        "--initial-run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/no-checkpoint-should-load",
+        "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/must-not-start-training"
+      ],
+      "exitCode": 1,
+      "outputDirectoryCreated": false,
+      "errorLogSha256": "cb6b4d57e93279422b4990ea9af763db6fa65c44d8fcca29bb0c8aa722f38659"
+    },
+    "priorTraining": {
+      "report": "tmp/heart-learning/real-adaptation-v1/report.json",
+      "sha256": "d1a66ccfbf032a8768420edac79175a3b080f8277832482c45fc50620ceb3ca0",
+      "inputInstances": 10,
+      "sampledIdentifiersChecked": 1920,
+      "goldSourcePresent": false
+    },
+    "scriptSha256": "255eb7106c760d3783934563c3548b06ae063f022024d3b580fe1b1a867ca287"
+  },
+  "historicalProbeFieldsUnchanged": [
+    {
+      "id": "real-4066fe9f9aafb3e4-body-1",
+      "variant": "known-paper-only",
+      "sha256": "1afa28d4f3e19c0d061d2a8d6c3b91b1069a119c956bca9a51bf77a145d5e267"
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "variant": "known-paper-only",
+      "sha256": "2f5e846894bdfe3b21b94be3bc64dd63812dd7a10a213983df5f6e85e24df9ad"
+    },
+    {
+      "id": "real-4066fe9f9aafb3e4-body-1",
+      "variant": "include-unknown",
+      "sha256": "899d8655a94fe9be8a03099810f00970f00a6dd2b4b05e1d21e16b4b9946e610"
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "variant": "include-unknown",
+      "sha256": "50f0b1c80938077e509b9504fd593732e24f9f81c98e498f37ba3b944f5a44a3"
+    }
+  ],
+  "currentSources": {
+    "scripts/inverse/datasets/real-collect.test.py": "cf95b56cb631779a50229a6b319bf76cc267780b5012f0355144bf7645ce01bc",
+    "scripts/inverse/datasets/real_annotations.py": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c",
+    "scripts/inverse/learning/real-adaptation-report.py": "502ba96bd7406ef658b16dea20f72a8122d9e34064c4101e4917ec64f7316524",
+    "scripts/inverse/learning/real-foreground-evaluate.py": "eac56c101898a5f004b856ee7852ae3d9c39ae59ccead46da955fce7da295058",
+    "scripts/inverse/learning/real-foreground-finetune.py": "4ab46c5e5b8942d775a1be6e5d6dce7c9f760e000690ee86c5c09406508364fe",
+    "scripts/inverse/learning/real_annotation_probe.py": "199ace6a946238411a29058d2b7d0a973998b036aa0919b0771086503b6d34d0",
+    "scripts/inverse/learning/real_foreground.py": "aaf28c48c7728725bc681a8950c8b5f5a4e2dc9f1ad49f227fb5f02b3bc5d416",
+    "scripts/inverse/learning/real_foreground.test.py": "9e17f3c2bc4c9434fb688323a9ac2af4a7723b7d6745d38fc31ccfa5263b0c25",
+    "scripts/inverse/learning/real_probe.py": "b559dd36735502a941baabb4ffdde13590381d15ea41e751bb3a4ea596485cf7",
+    "scripts/inverse/datasets/real-annotations-scenes.json": "7a6a64262ab878f25c928c1ad4d07620e4ede8b6cd0d2ea79c3bd100c9c8e536",
+    "scripts/inverse/datasets/real-review.json": "bac1e78aa1920b36eacd751fe82d52e23d86eb6cc06429cb06911287564de4fc",
+    "docs/inverse/datasets/real-manifest.json": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3"
+  },
+  "historicalSources": [
+    {
+      "source": "docs/inverse/datasets/real-manifest.json",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/docs/inverse/datasets/real-manifest.json",
+      "sha256": "a900f3f3baaeba87e4d5bb3eedc595f0276ca1684110cdd4dc1f3ba1cc531dd8"
+    },
+    {
+      "source": "docs/inverse/datasets/real-validation.json",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/docs/inverse/datasets/real-validation.json",
+      "sha256": "5f27b0916bc669e7c83d420737f629dcd95b02d70154ef048d86f1054f37a847"
+    },
+    {
+      "source": "scripts/inverse/datasets/real-review.json",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/scripts/inverse/datasets/real-review.json",
+      "sha256": "e40b705a4af054cd666149dd8a0218409b081ec6a81450e9fb730832b8691dc4"
+    },
+    {
+      "source": "scripts/inverse/datasets/real-annotations-scenes.json",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/scripts/inverse/datasets/real-annotations-scenes.json",
+      "sha256": "7d185809520a82ea2eb2a7fd2da569140baacf9f2642f256b0573eecc95ec43a"
+    },
+    {
+      "source": "scripts/inverse/datasets/real_annotations.py",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/scripts/inverse/datasets/real_annotations.py",
+      "sha256": "9f3d4ea18457751f04d312aa6c210b8e1bec9dc98231ce2274c88e06a1c5557e"
+    },
+    {
+      "source": "scripts/inverse/learning/real_foreground.py",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/scripts/inverse/learning/real_foreground.py",
+      "sha256": "025708879503a153bdb46c1d3226d1eb30d44d2e65aa7477f30a15b9e64112a8"
+    },
+    {
+      "source": "scripts/inverse/learning/real-foreground-finetune.py",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/scripts/inverse/learning/real-foreground-finetune.py",
+      "sha256": "c75f4670e48beb9396dd8f471f9091867610d69392cf0a866e4b7a1f8c062a25"
+    },
+    {
+      "source": "scripts/inverse/learning/real-foreground-evaluate.py",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/scripts/inverse/learning/real-foreground-evaluate.py",
+      "sha256": "5b32138ca370550931cc92d13a706c831edeb41b6457f8a486a612a86767be33"
+    },
+    {
+      "source": "scripts/inverse/learning/real_annotation_probe.py",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/scripts/inverse/learning/real_annotation_probe.py",
+      "sha256": "ee9bb618c2b65e9833b205dc41baad9015920fe77b2f1d5fe00b570f82097cc5"
+    },
+    {
+      "source": "scripts/inverse/learning/real_probe.py",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/scripts/inverse/learning/real_probe.py",
+      "sha256": "93e4a11c285c97a72e9f386574ef5e6e6b7e4cc58880913cdfd3294ab6dbd9d3"
+    },
+    {
+      "source": "scripts/inverse/learning/real-adaptation-report.py",
+      "snapshot": "tmp/heart-learning/qa-source-reservation-v1/before/scripts/inverse/learning/real-adaptation-report.py",
+      "sha256": "e67cd3741353919d910453f22d08ac71f53240cc88443edd7e2814caf6b78dae"
+    }
+  ],
+  "checks": [
+    {
+      "stage": "source-audit",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/datasets/real-audit.py"
+      ],
+      "exitCode": 0,
+      "seconds": 8.130331416999999
+    },
+    {
+      "stage": "collection-tests",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/datasets/real-collect.test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.1395117920000004
+    },
+    {
+      "stage": "learning-tests",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/learning/test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 18.257258208
+    },
+    {
+      "stage": "labels-pilot",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/datasets/real_annotations.py",
+        "--annotations=scripts/inverse/datasets/real-annotations.json",
+        "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/pilot-labels",
+        "--purpose=training-candidate"
+      ],
+      "exitCode": 0,
+      "seconds": 0.8478084170000031
+    },
+    {
+      "stage": "labels-supplement",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/datasets/real_annotations.py",
+        "--annotations=scripts/inverse/datasets/real-annotations-supplement.json",
+        "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/supplement-labels",
+        "--purpose=training-candidate"
+      ],
+      "exitCode": 0,
+      "seconds": 0.34959037499999823
+    },
+    {
+      "stage": "labels-motifs",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/datasets/real_annotations.py",
+        "--annotations=scripts/inverse/datasets/real-annotations-motifs.json",
+        "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/motifs-labels",
+        "--purpose=training-candidate"
+      ],
+      "exitCode": 0,
+      "seconds": 0.5038978749999998
+    },
+    {
+      "stage": "labels-scenes",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "scripts/inverse/datasets/real_annotations.py",
+        "--annotations=scripts/inverse/datasets/real-annotations-scenes.json",
+        "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/scenes-labels",
+        "--purpose=diagnostic"
+      ],
+      "exitCode": 0,
+      "seconds": 0.4095373329999994
+    }
+  ],
+  "focusedLearningTestsPassed": 14,
+  "allLearningTestsPassed": 63,
+  "learningTestModules": 12,
+  "collectionTestsPassed": 14,
+  "priorTrainingSourceAssociationVerified": true,
+  "productionSourceUnchangedSince": "be1eea5",
+  "applicationQAScope": "No new application, inverse-engine or browser execution claimed. All modified implementation files are offline Python/data paths. The preceding release passed 855 app and 812 inverse tests.",
+  "artifacts": [
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/before.json",
+      "sha256": "c1d926275b0ebbf2ee6654ea4d0be22cb97128a9eb85eecb35e6e562e3ea9ed0",
+      "bytes": 2980
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/checks.json",
+      "sha256": "cd75ed53d808a8ec3d03985c40364bc11453f9346e33b4597f7aac1015185d24",
+      "bytes": 2556
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/focused.log",
+      "sha256": "57e07d785b239ac65066c227c5d44199ea949ccaa612cbead35c7782d72597df",
+      "bytes": 113
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/collection-tests-final.log",
+      "sha256": "be4089726286c7ca36d1d1279bff50f768fe1c6fcf19e003bf98e5f7017414d8",
+      "bytes": 113
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/learning-tests.log",
+      "sha256": "c0287d5f17d5b5348757756d09746d366ef575ea7a949f8d8852f9fd5449e775",
+      "bytes": 1518
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/source-audit.log",
+      "sha256": "6439987944d4ff4c896cacb164c65d656d9a731aa1f42400c33480836634a58c",
+      "bytes": 833
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/replay.py",
+      "sha256": "255eb7106c760d3783934563c3548b06ae063f022024d3b580fe1b1a867ca287",
+      "bytes": 4772
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/replay.json",
+      "sha256": "9f2b4fd00c0bd677f5fb517e38304b46a2c5974e574d445b6b41c2b35a34e53a",
+      "bytes": 5826
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/replay.log",
+      "sha256": "dacc064a905aa543af07c967c08509353f3106e9278944cfe47c34c7a3c5b140",
+      "bytes": 816
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/blocked-training.log",
+      "sha256": "cb6b4d57e93279422b4990ea9af763db6fa65c44d8fcca29bb0c8aa722f38659",
+      "bytes": 985
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/historical-probe.log",
+      "sha256": "83a07e1ba6ed913a02eee268060aa6c82cea74c480064b495dad48dc6253a571",
+      "bytes": 73
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/run.py",
+      "sha256": "1a09c55da98129f58131bd10437160f4a4b158e8bbd12efe23b4c995890503ed",
+      "bytes": 1188
+    },
+    {
+      "file": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/qa-source-reservation-v1/collect.py",
+      "sha256": "10967c807d2b61fc504bca9e30b2a2078a50907720b4adb4eb94223b6e9522cf",
+      "bytes": 4280
+    }
+  ],
+  "limitations": [
+    "QA exclusion does not make an already inspected photograph an unseen holdout.",
+    "Labels remain assistant-reviewed visible-body annotations with unknown boundaries, not original cutting-path ground truth.",
+    "Current training admission enforces existing catalog groups; incomplete cross-corpus motif grouping remains a separate limitation.",
+    "No previously trained gold contamination was found in the recorded ten-input/four-run real-adaptation experiment; no new training or model quality claim."
+  ]
+}

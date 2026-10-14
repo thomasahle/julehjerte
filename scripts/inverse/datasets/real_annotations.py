@@ -55,7 +55,9 @@ def validate_polygon(polygon, size):
         raise ValueError('Degenerate polygon')
 
 
-def checked_annotations(manifest, annotations):
+def checked_annotations(manifest, annotations, *, purpose='training-candidate'):
+    if purpose not in ['training-candidate', 'diagnostic']:
+        raise ValueError('Unknown annotation purpose')
     if annotations.get('schema') != 'woven-heart-real-annotations-1' or not isinstance(annotations.get('instances'), list):
         raise ValueError('Unsupported real-photo annotations')
     assets = {a['id']: a for a in manifest['assets']}
@@ -70,12 +72,13 @@ def checked_annotations(manifest, annotations):
         source = assets.get(row['assetId'])
         if not source or source['sha256'] != row['imageSha256'] or [source['width'], source['height']] != row['sourceSize']:
             raise ValueError('Annotation source identity or dimensions changed')
-        if source['splitStatus'] == 'qa-reserved':
+        reserved = source['splitStatus'] == 'qa-reserved'
+        if reserved and purpose != 'diagnostic':
             raise ValueError('Existing QA or connected source group is reserved')
         if source['kind'] not in ['photo', 'photo-collage', 'photo-multiple', 'mixed-photo-template']:
             raise ValueError('Annotation source is not a reviewed photograph')
-        if row.get('allocation') != 'unassigned':
-            raise ValueError('Pilot annotations have no global train/test allocation')
+        if row.get('allocation') != ('qa-reserved' if reserved else 'unassigned'):
+            raise ValueError('Annotation allocation must match its source QA reservation or remain unassigned')
         if row.get('review', {}).get('status') != 'initial-reviewed' or not row.get('review', {}).get('note'):
             raise ValueError('Annotation needs a recorded visual review')
         if not row.get('foregroundPolygons') or not isinstance(row.get('unknownPolygons'), list):
@@ -168,12 +171,12 @@ def read_source(root, source):
     return photo
 
 
-def build(manifest_path, annotations_path, output, resolution=256, root=ROOT):
+def build(manifest_path, annotations_path, output, resolution=256, root=ROOT, *, purpose='training-candidate'):
     manifest_bytes, annotations_bytes = manifest_path.read_bytes(), annotations_path.read_bytes()
     manifest, annotations = json.loads(manifest_bytes), json.loads(annotations_bytes)
-    rows = list(checked_annotations(manifest, annotations))
+    rows = list(checked_annotations(manifest, annotations, purpose=purpose))
     output.mkdir(parents=True, exist_ok=False)
-    result = {'schema': 'woven-heart-real-labels-1', 'status': 'building',
+    result = {'schema': 'woven-heart-real-labels-1', 'status': 'building', 'purpose': purpose,
               'sourceManifestSha256': digest(manifest_bytes), 'annotationsSha256': digest(annotations_bytes),
               'implementationSha256': digest(Path(__file__).read_bytes()),
               'labelValues': {'background': 0, 'selectedPaper': 1, 'unknown': 255},
@@ -209,13 +212,18 @@ def build(manifest_path, annotations_path, output, resolution=256, root=ROOT):
         panels.append('<article><h2>'+html.escape(row['motif']['candidateFamily'])+'</h2><p>'+html.escape(row['review']['note'])+'</p>'+''.join('<img width="'+str(resolution)+'" src="'+assets[k]['path']+'" alt="'+k+'">' for k in ['rgb', 'overlay'])+'</article>')
     result['status'] = 'complete'; save()
     (output/'index.html').write_text('<!doctype html><meta charset="utf-8"><title>Real photo annotation pilot</title><style>body{font:16px system-ui;margin:24px;background:#eee}article{display:inline-block;vertical-align:top;width:540px;padding:12px;margin:8px;background:white}h2{font-size:18px}img{max-width:49%;height:auto}</style><h1>Visible basket annotations</h1><p>Green: known selected paper. Gold: uncertain or unobserved. Magenta: approximate overlap reference, never a cut label. Sources and coordinates are pinned in the manifests.</p>'+''.join(panels))
-    return verify(manifest_path, annotations_path, output, root)
+    return verify(manifest_path, annotations_path, output, root, purpose=purpose)
 
 
-def verify(manifest_path, annotations_path, output, root=ROOT):
+def verify(manifest_path, annotations_path, output, root=ROOT, *, purpose='training-candidate'):
     source_bytes, annotation_bytes = manifest_path.read_bytes(), annotations_path.read_bytes()
-    rows = {r['id']: (r, s) for r, s in checked_annotations(json.loads(source_bytes), json.loads(annotation_bytes))}
+    rows = {r['id']: (r, s) for r, s in checked_annotations(json.loads(source_bytes), json.loads(annotation_bytes), purpose=purpose)}
     raw = (output/'manifest.json').read_bytes(); result = json.loads(raw)
+    artifact_purpose = result.get('purpose', 'training-candidate')
+    if artifact_purpose not in ['training-candidate', 'diagnostic']:
+        raise ValueError('Unknown label artifact purpose')
+    if purpose != 'diagnostic' and artifact_purpose == 'diagnostic':
+        raise ValueError('Diagnostic labels cannot be used for training')
     if result.get('schema') != 'woven-heart-real-labels-1' or result.get('status') != 'complete' or result['sourceManifestSha256'] != digest(source_bytes) or result['annotationsSha256'] != digest(annotation_bytes):
         raise ValueError('Incomplete labels or changed parent annotation/source inventory')
     if result['labelValues'] != {'background': 0, 'selectedPaper': 1, 'unknown': 255}:
@@ -257,9 +265,10 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--resolution', type=int, default=256)
     parser.add_argument('--verify', action='store_true')
+    parser.add_argument('--purpose', choices=['training-candidate', 'diagnostic'], default='training-candidate')
     args = parser.parse_args()
     if args.verify:
-        audit = verify(args.manifest, args.annotations, args.output)
+        audit = verify(args.manifest, args.annotations, args.output, purpose=args.purpose)
     else:
-        audit = build(args.manifest, args.annotations, args.output, args.resolution)
+        audit = build(args.manifest, args.annotations, args.output, args.resolution, purpose=args.purpose)
     print(json.dumps(audit, indent=2))

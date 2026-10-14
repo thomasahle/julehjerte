@@ -32,8 +32,15 @@ They still have not entered training.
 Source images and generated labels remain local under
 `tmp/heart-learning/real-scene-annotation-v1/` and `tmp/heart-training-real/`.
 
+Since this study, the gold source has become a committed solver regression.
+It is now [reserved for QA](real-qa-reservations.md), while the hand source
+remains unassigned. Current exports of this two-image bundle therefore require
+diagnostic purpose. Historical labels still verify against their recorded
+catalog and annotation snapshots; their pixels have not been changed.
+
 ```sh
 python3 scripts/inverse/datasets/real_annotations.py \
   --annotations=scripts/inverse/datasets/real-annotations-scenes.json \
+  --purpose=diagnostic \
   --output=tmp/heart-learning/real-scene-annotation-replay
 ```

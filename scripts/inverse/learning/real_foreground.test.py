@@ -30,10 +30,71 @@ def fixture(root):
     annotations = {'schema': 'woven-heart-real-annotations-1', 'instances': [row]}
     mp, ap = root/'sources.json', root/'annotations.json'
     mp.write_text(json.dumps(manifest)); ap.write_text(json.dumps(annotations))
+    current = root/'docs/inverse/datasets/real-manifest.json'
+    current.parent.mkdir(parents=True, exist_ok=True); current.write_text(json.dumps(manifest))
     return row, source, manifest, annotations, mp, ap
 
 
 class RealForegroundTests(unittest.TestCase):
+    def test_new_qa_reservation_blocks_training_from_an_unchanged_old_snapshot(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); row, source, manifest, annotations, mp, ap = fixture(root)
+            labels = root/'labels'; build(mp, ap, labels, 80, root)
+            original = (labels/(row['id']+'-labels.png')).read_bytes()
+            source['splitStatus'] = 'qa-reserved'
+            (root/'docs/inverse/datasets/real-manifest.json').write_text(json.dumps(manifest))
+            # Historical integrity is still verifiable; it is not training permission.
+            self.assertTrue(verify(mp, ap, labels, root)['passed'])
+            items, _ = load_real_labels(labels, mp, ap, root, purpose='diagnostic')
+            self.assertEqual(len(items), 1)
+            self.assertEqual((labels/(row['id']+'-labels.png')).read_bytes(), original)
+            with self.assertRaisesRegex(ValueError, 'Current QA'):
+                load_real_labels(labels, mp, ap, root)
+
+    def test_current_group_reservations_and_changed_links_cannot_use_stale_labels(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); row, source, manifest, annotations, mp, ap = fixture(root)
+            labels = root/'labels'; build(mp, ap, labels, 80, root)
+            current = root/'docs/inverse/datasets/real-manifest.json'
+            # An unrelated new QA asset must not invalidate this photograph's labels.
+            sibling = {**source, 'id': 'new-photo', 'sha256': 'a'*64, 'splitStatus': 'qa-reserved', 'splitGroupId': 'unrelated'}
+            manifest['assets'].append(sibling); current.write_text(json.dumps(manifest))
+            self.assertEqual(len(load_real_labels(labels, mp, ap, root)[0]), 1)
+            sibling['splitGroupId'] = source['splitGroupId']; current.write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(ValueError, 'Current QA'):
+                load_real_labels(labels, mp, ap, root)
+            manifest['assets'].pop(); source['sourceGroups'] = ['new-publisher-link']; current.write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(ValueError, 'grouping changed'):
+                load_real_labels(labels, mp, ap, root)
+            current.unlink()
+            with self.assertRaises(FileNotFoundError):
+                load_real_labels(labels, mp, ap, root)
+
+    def test_reserved_annotations_can_only_build_diagnostic_labels(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); row, source, manifest, annotations, mp, ap = fixture(root)
+            source['splitStatus'] = 'qa-reserved'; row['allocation'] = 'qa-reserved'
+            mp.write_text(json.dumps(manifest)); ap.write_text(json.dumps(annotations))
+            output = root/'diagnostic'
+            with self.assertRaisesRegex(ValueError, 'reserved'):
+                build(mp, ap, output, 80, root)
+            self.assertFalse(output.exists())
+            audit = build(mp, ap, output, 80, root, purpose='diagnostic')
+            self.assertTrue(audit['passed'])
+            self.assertEqual(json.loads((output/'manifest.json').read_text())['purpose'], 'diagnostic')
+            self.assertEqual(len(load_real_labels(output, mp, ap, root, purpose='diagnostic')[0]), 1)
+            with self.assertRaisesRegex(ValueError, 'reserved'):
+                load_real_labels(output, mp, ap, root)
+
+    def test_diagnostic_export_is_not_promoted_to_training_by_a_nonreserved_catalog(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); *_, mp, ap = fixture(root)
+            labels = root/'labels'; build(mp, ap, labels, 80, root, purpose='diagnostic')
+            with self.assertRaisesRegex(ValueError, 'Diagnostic labels'):
+                load_real_labels(labels, mp, ap, root)
+            with self.assertRaisesRegex(ValueError, 'purpose'):
+                load_real_labels(labels, mp, ap, root, purpose='ignore-reservations')
+
     def test_body_annotations_without_optional_overlap_corners_build_and_verify(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); row, _, _, annotations, mp, ap = fixture(root)

@@ -19,7 +19,7 @@ def export_real_probe(output, predictions, labels_directory, annotations,
     """
     output, labels_directory = Path(output), Path(labels_directory)
     source_manifest = Path(source_manifest or root/'docs/inverse/datasets/real-manifest.json')
-    items, audit = load_real_labels(labels_directory, source_manifest, annotations, root)
+    items, audit = load_real_labels(labels_directory, source_manifest, annotations, root, purpose='diagnostic')
     if set(predictions) != {item['id'] for item in items}:
         raise ValueError('Prediction identities differ from reviewed labels')
     labels = json.loads((labels_directory/'manifest.json').read_text())

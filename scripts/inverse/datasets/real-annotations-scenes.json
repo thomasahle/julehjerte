@@ -2,7 +2,7 @@
   "schema": "woven-heart-real-annotations-1",
   "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
   "target": "Visible selected basket body including both papers. Handles, hands, cast shadows and background are excluded. Uncertain handle attachment, occlusion contact regions and manual contour bands receive zero supervision weight.",
-  "scope": "Two assistant-reviewed visible-body annotations for reflective paper and hand occlusion. No cutting-path or overlap-corner labels. These additions have not entered training; group allocation and motif-family review remain pending.",
+  "scope": "Two assistant-reviewed visible-body annotations for reflective paper and hand occlusion. No cutting-path or overlap-corner labels. Neither entered training. The gold source is now reserved for solver QA; its labels are diagnostic only. The hand-occlusion source remains unassigned.",
   "instances": [
     {
       "id": "real-4066fe9f9aafb3e4-body-1",
@@ -25,7 +25,7 @@
         "candidateFamily": "angel-in-circular-frame",
         "crossCorpusReview": "pending"
       },
-      "allocation": "unassigned",
+      "allocation": "qa-reserved",
       "pose": "flat",
       "foregroundPolygons": [
         [

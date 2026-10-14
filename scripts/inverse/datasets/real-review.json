@@ -5796,7 +5796,9 @@
   "real-4066fe9f9aafb3e4": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "The source photo now supplies photographic-gold-routing.json and the committed gold-angel fitting regression. Exclude this photo, its crops, reposts and connected source group from future training."
   },
   "real-3f7b76e1a98e808f": {
     "kind": "photo",

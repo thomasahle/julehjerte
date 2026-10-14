@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-12T16:10:04.331180+00:00",
+  "generatedAt": "2026-10-14T08:20:11.652841+00:00",
   "assetRoot": "tmp/heart-training-real",
   "description": "Original public-source files and existing fixtures; photographs are individually visually reviewed. Not a count of independent designs or labeled heart instances.",
   "counts": {
@@ -20,7 +20,7 @@
     "visuallyReviewedFiles": 1034,
     "reviewedPhotoFileHashes": 573,
     "photoNearDuplicateGroups": 461,
-    "qaReservedFiles": 475
+    "qaReservedFiles": 476
   },
   "splitPolicy": "Keep all files/crops from a source photo, near-duplicate group and motif family together. SourceGroups conservatively include publishers and UNVERIFIED source links observed in pin JSON; these possible connections can over-reserve QA and do not establish motif families, authorship or image origin. No random image-level split; family annotation remains pending.",
   "rightsPolicy": "Public accessibility and craft-template download permission do not establish training or redistribution rights. Rights facts are retained per origin; all assets remain not-cleared unless separately reviewed.",
@@ -63333,6 +63333,8 @@
       ],
       "reviewIndex": 943,
       "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+      "qaReserved": true,
+      "qaReservationReason": "The source photo now supplies photographic-gold-routing.json and the committed gold-angel fitting regression. Exclude this photo, its crops, reposts and connected source group from future training.",
       "localPath": "tmp/heart-training-real/assets/4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d.jpg",
       "exactDuplicateGroup": "4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d",
       "nearDuplicateGroup": "real-4066fe9f9aafb3e4",
@@ -63340,8 +63342,8 @@
         "pinterest-pin-4151824650327465",
         "publisher:charlotteboeg.dk"
       ],
-      "splitStatus": "unassigned",
-      "trainingEligibility": "pending-rights-family-and-instance-review",
+      "splitStatus": "qa-reserved",
+      "trainingEligibility": "excluded-existing-qa-or-connected-source-group",
       "familyId": null,
       "familyReviewStatus": "pending",
       "imageSha256": "4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d",

@@ -14,14 +14,39 @@ import torch
 from torch.nn import functional as F
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'datasets'))
-from real_annotations import ROOT, verify  # noqa: E402
+from real_annotations import ROOT, digest, verify  # noqa: E402
+
+
+def check_current_training_sources(label_rows, snapshot_path, root=ROOT):
+    """An immutable label snapshot must not override newer QA reservations."""
+    current_path = root/'docs/inverse/datasets/real-manifest.json'
+    current_bytes = current_path.read_bytes()
+    current_rows = json.loads(current_bytes)['assets']
+    current = {row['id']: row for row in current_rows}
+    if len(current) != len(current_rows):
+        raise ValueError('Duplicate current source asset')
+    snapshot = {row['id']: row for row in json.loads(Path(snapshot_path).read_bytes())['assets']}
+    reserved_groups = {row['splitGroupId'] for row in current_rows if row['splitStatus'] == 'qa-reserved'}
+    for item in label_rows:
+        identity = item['assetId']; now, before = current.get(identity), snapshot.get(identity)
+        if not now or not before or now['sha256'] != item['imageSha256'] or before['sha256'] != item['imageSha256']:
+            raise ValueError('Training source is missing or changed in the current catalog: '+identity)
+        if now['splitStatus'] != 'unassigned' or now['splitGroupId'] in reserved_groups:
+            raise ValueError('Current QA or allocated source group cannot enter training: '+identity)
+        for key in ['nearDuplicateGroup', 'splitGroupId', 'sourceGroups']:
+            if now.get(key) != before.get(key):
+                raise ValueError('Training source grouping changed; rebuild labels and review the folds: '+identity)
+    return {'currentManifestSha256': digest(current_bytes), 'checkedSources': len(label_rows)}
 
 
 def load_real_labels(directory, manifest=ROOT/'docs/inverse/datasets/real-manifest.json',
-                     annotations=ROOT/'scripts/inverse/datasets/real-annotations.json', root=ROOT):
+                     annotations=ROOT/'scripts/inverse/datasets/real-annotations.json', root=ROOT,
+                     *, purpose='training-candidate'):
     directory = Path(directory)
-    audit = verify(Path(manifest), Path(annotations), directory, root)
+    audit = verify(Path(manifest), Path(annotations), directory, root, purpose=purpose)
     report = json.loads((directory/'manifest.json').read_text())
+    if purpose == 'training-candidate':
+        check_current_training_sources(report['instances'], manifest, root)
     items = []
     for row in report['instances']:
         labels = np.asarray(Image.open(directory/row['assets']['labels']['path']))

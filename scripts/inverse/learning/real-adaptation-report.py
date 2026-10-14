@@ -27,6 +27,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--study', type=Path, required=True)
     parser.add_argument('--labels', type=Path, required=True)
+    parser.add_argument('--manifest', type=Path, default=ROOT/'docs/inverse/datasets/real-manifest.json')
     parser.add_argument('--initial-run', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
@@ -34,7 +35,7 @@ def main():
     report_raw = (args.study/'report.json').read_bytes(); report = json.loads(report_raw)
     if report.get('status') != 'complete' or report.get('schema') != 'woven-heart-real-adaptation-1':
         raise ValueError('Require completed grouped adaptation')
-    items, audit = load_real_labels(args.labels)
+    items, audit = load_real_labels(args.labels, manifest=args.manifest, purpose='diagnostic')
     if audit != report['labelsAudit'] or grouped_folds(items, audit, report['plan']) != report['folds']:
         raise ValueError('Labels or grouped assignments changed')
     for name, sha in report['sourceHashes'].items():
