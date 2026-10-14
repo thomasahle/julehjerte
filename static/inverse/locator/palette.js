@@ -7,7 +7,8 @@ import {quantile,sigmoid} from './math.js';
 import {correlatedBackground} from './background.js';
 
 const distance=(a,b)=>Math.hypot(...a.map((v,i)=>v-b[i]));
-function paletteFields(image,{pale=false,correlated=false}={}){
+/** Background evidence before requiring two distinct paper-colour clusters. */
+export function makePaperForeground(image,{pale=false,correlated=false}={}){
   const{width:w,height:h,data}=image,n=w*h,border=[];
   const rgb=i=>[0,1,2].map(c=>data[4*i+c]/255);
   for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(x<2||y<2||x>=w-2||y>=h-2)border.push(y*w+x);
@@ -30,6 +31,13 @@ function paletteFields(image,{pale=false,correlated=false}={}){
     if(p>.95&&i%3===0)pool.push(color);
   }
   if(pool.length<100)return null;
+  return{w,h,paper,r,g,b,pool,background,transparent,noise,backgroundModel,pale,correlated};
+}
+function paletteFields(image,options={}){
+  const foreground=makePaperForeground(image,options);
+  if(!foreground)return null;
+  const{w,h,paper,r,g,b,pool,background,transparent,noise,backgroundModel,pale,correlated}=foreground,n=w*h;
+  const rgb=i=>[0,1,2].map(c=>image.data[4*i+c]/255);
   // Quantile seeds ignore the thin blurred fringe between paper and background.
   // Farthest-point seeds can spend a colour on that fringe instead of a sheet.
   const spreads=[0,1,2].map(c=>quantile(pool.map(p=>p[c]),.9)-quantile(pool.map(p=>p[c]),.1));

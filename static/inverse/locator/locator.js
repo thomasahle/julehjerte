@@ -2,6 +2,7 @@ import {refinePeriodicGrid} from './grid-refine.js';
 import {makeFields,foregroundBox} from './fields.js';
 import {makePaletteFields} from './palette.js';
 import {makeAnchoredFields} from './anchored.js';
+import {makeInteriorPaletteFields} from './interior-palette.js';
 import {orientFields,orientationHypotheses} from './orientation.js';
 import {colorDifferenceMetric} from './background.js';
 import {mean,quantile,trimMean,clamp,bilinear,nelderMead,project,homography,convexQuad} from './math.js';
@@ -126,7 +127,7 @@ function fitModel(f,box,lines,{iterations=550,flexibleCaps=false}={}){const[x0,y
  */
 export function createMotifDetector(image,options={}){checkImage(image);const preparationStart=performance.now();if(options.maxSize!==undefined&&(!Number.isFinite(options.maxSize)||options.maxSize<100||options.maxSize>800))throw new RangeError('maxSize must be from 100 to 800');const maxSize=options.maxSize??400;let inputROI=options.roi??[0,0,image.width,image.height];
  if(inputROI.length!==4||inputROI.some(x=>!Number.isFinite(x))||inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new TypeError('Invalid ROI');
- inputROI=[clamp(inputROI[0],0,image.width-1),clamp(inputROI[1],0,image.height-1),clamp(inputROI[2],1,image.width),clamp(inputROI[3],1,image.height)];if(inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new RangeError('ROI is outside the image or too small after clipping');const pad=options.roi?.length?Math.max(inputROI[2]-inputROI[0],inputROI[3]-inputROI[1])*.18:0;const workROI=[Math.max(0,inputROI[0]-pad),Math.max(0,inputROI[1]-pad),Math.min(image.width,inputROI[2]+pad),Math.min(image.height,inputROI[3]+pad)];const work=resizeROI(image,workROI,maxSize),baseFields=options.palette==='anchored'?makeAnchoredFields(work):['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'}):makeFields(work);
+ inputROI=[clamp(inputROI[0],0,image.width-1),clamp(inputROI[1],0,image.height-1),clamp(inputROI[2],1,image.width),clamp(inputROI[3],1,image.height)];if(inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new RangeError('ROI is outside the image or too small after clipping');const pad=options.roi?.length?Math.max(inputROI[2]-inputROI[0],inputROI[3]-inputROI[1])*.18:0;const workROI=[Math.max(0,inputROI[0]-pad),Math.max(0,inputROI[1]-pad),Math.min(image.width,inputROI[2]+pad),Math.min(image.height,inputROI[3]+pad)];const work=resizeROI(image,workROI,maxSize),baseFields=options.palette==='interior'?makeInteriorPaletteFields(work):options.palette==='anchored'?makeAnchoredFields(work):['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'}):makeFields(work);
  const detector=(degrees=0)=>{
  const started=performance.now();if(!Number.isFinite(degrees))throw new TypeError('Expected a finite orientation angle.');
  const rotation=baseFields&&degrees%360!==0?orientFields(baseFields,degrees):null,f=rotation?.fields||baseFields;

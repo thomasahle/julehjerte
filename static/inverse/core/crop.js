@@ -55,12 +55,19 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
     if (!proposal.quad && original.quad) proposal = original;
   }
   if (!supportedCropOutline(proposal)) {
+    // Weak pale-paper tint can leave holes in the foreground and make those
+    // holes look like external edges. Learn that tint inside the coloured
+    // motif; retain the same complete-outline checks before using its crop.
+    const interior = detector('interior')();
+    if (supportedCropOutline(interior)) proposal = interior;
+  }
+  if (!supportedCropOutline(proposal)) {
     // Keep an editable upright/occluded-photo guess unless a complete outline
     // explains another pose. Shape fits finish synchronously, so check the
     // shared deadline between hypotheses rather than starting new ones.
     const deadline = performance.now() + 2000;
     orientationSearch = { timeLimitMs: 2000, timeLimitReached: false, models: [], attempts };
-    search: for (const palette of ['adaptive', 'pale', undefined, 'anchored']) {
+    search: for (const palette of ['adaptive', 'pale', undefined, 'anchored', 'interior']) {
       if (performance.now() >= deadline) { orientationSearch.timeLimitReached = true; break; }
       const detect = detector(palette), angles = detect.orientations(), pending = angles.map(degrees => ({ degrees }));
       orientationSearch.models.push({ palette: palette || 'red-white', hypotheses: angles.length });

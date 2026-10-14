@@ -5,7 +5,7 @@
 import {makeFields,close,signedDistance} from './fields.js';
 import {quantile,sigmoid} from './math.js';
 
-function mainComponent(mask,w,h){
+export function mainComponent(mask,w,h){
   const seen=new Uint8Array(mask.length),components=[];
   for(let i=0;i<mask.length;i++)if(mask[i]&&!seen[i]){
     const queue=[i];seen[i]=1;
@@ -19,7 +19,7 @@ function mainComponent(mask,w,h){
   if(!components.length||components[0].length<mask.length*.04||components[1]?.length>components[0].length*.35)return null;
   return components[0];
 }
-function hullMask(component,w,h){
+export function hullMask(component,w,h){
   const left=new Int32Array(h).fill(w),right=new Int32Array(h).fill(-1),points=[];
   for(const i of component){const x=i%w,y=Math.floor(i/w);left[y]=Math.min(left[y],x);right[y]=Math.max(right[y],x);}
   for(let y=0;y<h;y++)if(right[y]>=left[y])points.push([left[y],y],[right[y],y]);
