@@ -1,0 +1,231 @@
+{
+  "schema": "woven-heart-flower-budget-diagnostic-1",
+  "status": "reproduced-unresolved",
+  "productionChanged": false,
+  "trigger": "Full inverse QA: 811 of 812 tests passed; the downsampled flower retained 4+2 cuts rather than the required 3+3.",
+  "scope": "Fresh fits of the two hash-pinned rectified photos with their original ten-second settings. No saved templates, modified mask, longer allowance or relaxed acceptance checks.",
+  "findings": [
+    "Both original classified-mask hashes are preserved.",
+    "Downsampled 2+4 has the better fine-grid error but loses that advantage after minimum-width clearance.",
+    "The 3+3 alternative is still present, but receives about 0.114 seconds of free refinement after about 3.131 seconds for 2+4.",
+    "The native photo starts with 3+3 and passes at 0.450% independent disagreement.",
+    "This identifies observed scheduling/ranking sensitivity; it does not establish a tested general fix."
+  ],
+  "nextExperiment": "Compare competitive finalists after clearance before letting one consume free-refinement time; retain the original target, overall deadline, fallbacks and geometry/paper gates. Measure all 22 Hunodan and 31 photo cases before promoting a change.",
+  "sourceHashes": {
+    "static/inverse/core/direct/fit.js": "ce926fbf75afdbe4a8b062c30da551832c5bff0305514f905ec87cfdb6687e7e",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "tmp/heart-learning/flower-budget-v1/replay.mjs": "514cfcef42b36ccdf60b5b086d1be944e56639dc95897489332680ce5780c142"
+  },
+  "results": [
+    {
+      "variant": "native",
+      "seconds": 7.579277584000001,
+      "independentMaskError": 0.0045,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "templateChecksPassed": true,
+      "fineGrids": [
+        {
+          "stage": "fine",
+          "counts": [
+            4,
+            4
+          ],
+          "controlPoints": 16,
+          "phase": -1,
+          "error": 0.0334320068359375,
+          "steps": 150,
+          "seconds": 0.31659537500000035
+        },
+        {
+          "stage": "fine",
+          "counts": [
+            5,
+            5
+          ],
+          "controlPoints": 16,
+          "phase": 1,
+          "error": 0.0337677001953125,
+          "steps": 150,
+          "seconds": 0.2849779579999999
+        },
+        {
+          "stage": "fine",
+          "counts": [
+            3,
+            3
+          ],
+          "controlPoints": 16,
+          "phase": -1,
+          "error": 0.0414276123046875,
+          "steps": 150,
+          "seconds": 0.18588045800000008
+        }
+      ],
+      "clearanceGrids": [
+        {
+          "stage": "clearance",
+          "counts": [
+            3,
+            3
+          ],
+          "controlPoints": 16,
+          "phase": -1,
+          "error": 0.037109375,
+          "steps": 150
+        }
+      ],
+      "refinementStages": [
+        {
+          "stage": "directRefining",
+          "seconds": 2.3087645
+        }
+      ],
+      "candidates": [
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "error": 0.006072998046875,
+          "sourceImageError": 0.00555625,
+          "imagePassed": true,
+          "featuresPassed": true,
+          "score": 0.011358395983607217,
+          "geometry": true,
+          "paper": true
+        }
+      ]
+    },
+    {
+      "variant": "downsample",
+      "seconds": 9.277827458,
+      "independentMaskError": 0.01331875,
+      "slits": {
+        "left": 4,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "fineGrids": [
+        {
+          "stage": "fine",
+          "counts": [
+            2,
+            4
+          ],
+          "controlPoints": 16,
+          "phase": 1,
+          "error": 0.039306640625,
+          "steps": 150,
+          "seconds": 0.18949541700000008
+        },
+        {
+          "stage": "fine",
+          "counts": [
+            4,
+            4
+          ],
+          "controlPoints": 16,
+          "phase": -1,
+          "error": 0.0342254638671875,
+          "steps": 150,
+          "seconds": 0.2188342499999999
+        },
+        {
+          "stage": "fine",
+          "counts": [
+            3,
+            3
+          ],
+          "controlPoints": 16,
+          "phase": -1,
+          "error": 0.04278564453125,
+          "steps": 150,
+          "seconds": 0.18536691699999938
+        }
+      ],
+      "clearanceGrids": [
+        {
+          "stage": "clearance",
+          "counts": [
+            2,
+            4
+          ],
+          "controlPoints": 16,
+          "phase": 1,
+          "error": 0.0500335693359375,
+          "steps": 150
+        },
+        {
+          "stage": "clearance",
+          "counts": [
+            3,
+            3
+          ],
+          "controlPoints": 16,
+          "phase": -1,
+          "error": 0.03668212890625,
+          "steps": 150
+        }
+      ],
+      "refinementStages": [
+        {
+          "stage": "directRefining",
+          "seconds": 3.131283458
+        },
+        {
+          "stage": "directRefining",
+          "seconds": 0.11386416699999972
+        }
+      ],
+      "candidates": [
+        {
+          "counts": [
+            2,
+            4
+          ],
+          "error": 0.015228271484375,
+          "sourceImageError": 0.01485625,
+          "imagePassed": true,
+          "featuresPassed": true,
+          "score": 0.020041658209647706,
+          "geometry": true,
+          "paper": true,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "error": 0.036651611328125,
+          "sourceImageError": 0.03605625,
+          "imagePassed": false,
+          "featuresPassed": true,
+          "score": 0.03708009714290822,
+          "geometry": true,
+          "paper": true
+        }
+      ]
+    }
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/flower-budget-v1/collect.py": "6bef23aca11d358d3dfb9c620e7cb0802a1d1846fb1470b79fb57e64aee7f4ab",
+    "tmp/heart-learning/flower-budget-v1/replay.mjs": "514cfcef42b36ccdf60b5b086d1be944e56639dc95897489332680ce5780c142",
+    "tmp/heart-learning/flower-budget-v1/baseline.json": "7ec172e04de5e51e4202a1245a3618d4c4d36561953feca970f24486d0714af4",
+    "tmp/heart-learning/flower-budget-v1/baseline.log": "f7e74a107805d067f616ae2a1016f70e8d7293b9c0d42aa12122bc539d3bba12",
+    "tmp/heart-learning/flower-budget-v1/native-geometry.json": "92722ffa86c4aa62db04c21ff8c586aca8fee7ae7164a1cd12d9f417181d4126",
+    "tmp/heart-learning/flower-budget-v1/downsample-geometry.json": "1eb5f585d36e6fc572253d545d104a6b009499bef58c0ed18e8e097679c139bc",
+    "tmp/heart-learning/flower-budget-v1/native-woven.png": "fcf0e137641f6064c1856efa80759e4b893c7e9f3be78ca8d0d87d0a6eba3e07",
+    "tmp/heart-learning/flower-budget-v1/downsample-woven.png": "ffc8aa9ebc723f074aa76c044ae92becb10cb5d23a196756725f10a057f6e40b",
+    "tmp/heart-learning/material-labels-v1/inverse.log": "93bb45cb8f3fb13fcd693e738b6fda182d6de82362c368079471ffb61f45f3ef"
+  }
+}

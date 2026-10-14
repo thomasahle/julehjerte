@@ -24,6 +24,7 @@ The 2026-10-14 snapshot contains:
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
 | Real visible-body annotations | 16 | Fifteen instances in thirteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the six additions to the original ten-instance pilot have not entered training. |
+| Real partial paper-material annotations | 3 existing heart instances | Blue/yellow, printed purple/blue and floral blue/gold. Separate body and material uncertainty; no additional photographs and no material-trained checkpoint. |
 
 ## Current results and limits
 
@@ -149,6 +150,30 @@ gold paper and hands occluding a heart, with uncertain contact regions withheld.
 More checked real labels, distinct motif
 families and complete photo-to-export measurements are the next data priorities.
 
+The [partial material-label study](real-material-labels.json) adds independent
+paper identities to three existing reviewed bodies. Printed marks retain their
+containing sheet's identity. The 256-square labels cover 56.85–68.90% of known
+body pixels; seams, uncertain contacts and unpainted interiors remain unknown.
+All six existing body/RGB files reproduce byte-for-byte. An RGB model with
+separate body and conditional-material outputs and an image-wide exchangeable
+sheet loss is implemented and tested; it has not been trained or deployed.
+The existing automatic colour classifier, supplied with reviewed known-body
+pixels, already misclassifies only 0%, 0.529% and 0.420% of these labelled
+interiors. This annotation-assisted diagnostic excludes difficult seams and
+does not measure automatic cropping or complete reconstruction. Future joint
+training must also be evaluated on outlines, narrow features and exported cuts.
+
+The material study's latest QA passes 77 learning tests, 855 application tests,
+type checking, lint, build and both annotation galleries. The inverse suite is
+**811/812**, with an unresolved [flower scheduling regression](flower-budget-diagnostic.json)
+reproduced using unchanged production code. Both classified-mask hashes remain
+fixed. Minimum-width clearance makes the initially preferred 2+4 grid worse
+than 3+3, but the first grid receives 3.13 seconds of curve refinement and the
+second only 0.11 seconds. The replay returns a checked 4+2 pair at 1.332% error,
+which fails the regression's 3+3 and below-1% requirements. No fix or all-green
+release is claimed; comparing competitive seeds after clearance is the next
+bounded experiment.
+
 The [six-label frozen follow-up](real-supplement-diagnostic.md) now evaluates
 the additions without training. The scene-trained model has 87.20% mean
 known-region foreground IoU, versus 50.28% for its background-only control.
@@ -267,6 +292,18 @@ have several valid routings. Do not label every unused connection as a negative.
 Keep shared curves as one geometric object, handle interchangeable sheet labels,
 and measure whether the proposed graph admits a valid solution within the
 overall time budget.
+
+`scripts/inverse/datasets/real_materials.py --output=<new-directory>` compiles
+the reviewed material sidecar at 256 pixels (`--resolution=768` for inspection);
+`--verify` rechecks the source photographs, pinned body annotations and every
+RGB/body/material/overlay pixel. Its training loader checks current source QA
+reservations even with historical catalogs. Unlabelled material remains 255,
+including known body that still contributes to the independent foreground
+loss. `joint_material_loss` permits one global A/B exchange per image, never a
+separate exchange at every pixel. It also retains fractional synthetic material
+coverage, so antialiased boundary targets need not be thresholded. This is
+material supervision, not cut-path ground truth, and no real train/test
+allocation has been added.
 
 ## Keep evaluation separate
 

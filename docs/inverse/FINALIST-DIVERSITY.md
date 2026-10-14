@@ -12,6 +12,17 @@ changed only 0.395% of its classified mask. The old outputs changed from 4+4
 cuts to 4+2; their independent mask disagreements were 1.075% and 1.431%.
 The three-cut seed ranked fifth in both initialization lists.
 
+An October 14 follow-up has reproduced a remaining failure with unchanged
+production code; the latest inverse QA is 811/812. The finalist reservation
+still retains 3+3, but on the downsampled photo it receives only 0.114 seconds
+of free refinement after 3.131 seconds for 2+4. Minimum-width clearance has
+already reversed their fine-grid error ordering. The final 4+2 export passes
+geometry/paper checks at 1.332% mask disagreement, but fails this regression.
+The [fresh replay and timing record](datasets/flower-budget-diagnostic.json)
+preserve both input-mask hashes and the original ten-second settings. The
+scheduling issue remains unresolved; the successful historical runs below do
+not imply stable recovery on every run.
+
 ## Change
 
 `gridFinalists` still refines at most three ordinary candidates. It keeps the
