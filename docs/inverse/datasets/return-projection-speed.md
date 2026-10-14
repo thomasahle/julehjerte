@@ -67,5 +67,25 @@ The crop catalog, verified photograph bytes/pixels, settings and baseline
 criteria are unchanged. These results cover the complete newer runtime,
 including its scheduling and HiGHS fixes, not only the local projection change.
 They do not establish a whole-pipeline speedup: the previous maximum was
-7.915 seconds. Photographic, editable-export and browser comparisons are still
-pending, so `99399ff` remains the last fully validated release.
+7.915 seconds.
+
+The automatic-photo comparison retains **25/31** with no pass or error
+regressions. Seven errors decrease, most substantially the leaf from 2.5625%
+to 1.3163%. The remaining changes are below 0.05 percentage points and should
+not all be attributed to the projector: this is one timed replay of the complete
+new runtime. The original photographs, selected crops and fitting mask/probability
+hashes are unchanged. The denominator contains all 31 complete cases, including
+two without a crop; fifteen incomplete images and one obscured motif stay
+excluded as before. The same six failures remain.
+
+All **47 accepted editable pairs** pass actual SVG conversion, serialization,
+reparsing, feature retention and nominal geometry/paper checks. The leaf's
+editable disagreement is 1.3106%. Visual comparison covers all seven changed
+photograph fits, the Hunodan bird and the leaf's editable render. The leaf's
+lower frame improves; uneven contours and faint seams remain in some other
+designs. These numerical passes do not establish the original artwork or
+physical assembly.
+
+The owned preview at `http://127.0.0.1:5232` has been refreshed, and all 158
+checked served assets match the build. Browser checks are still running, so
+`99399ff` remains the last fully validated release.

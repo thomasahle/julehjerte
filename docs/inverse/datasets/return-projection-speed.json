@@ -128,7 +128,7 @@
     "Timing observations came from serial processes on a shared machine. They do not establish browser or mobile latency.",
     "The anchor comparison contains two fresh processes per method; the baseline succeeds once and fails once.",
     "Independent SVG comparisons cover the repaired anchor at 400 and 800 pixels. The 104 projection probes use separate full geometry checks, not a photographic target.",
-    "Full QA and all 22 Hunodan comparisons pass. Fresh photo/editable/browser release comparisons are pending; 99399ff remains the last fully validated release."
+    "Full QA, all 22 Hunodan comparisons, the 31-photo comparison and all 47 accepted editable pairs pass their gates. Browser release checks are still running; 99399ff remains the last fully validated release."
   ],
   "fullQA": {
     "baseCommit": "c000d30f82e323190bb3370c4d9582a8243eed3d",
@@ -423,6 +423,532 @@
       "tmp/heart-learning/return-projection-speed-v1/production-release/hunodan/results.json": "f4ad14d979b7edaf82d34236ca3a9e4b8a86abcfa8efd2b9b21f3cc08612c932",
       "tmp/heart-learning/eye-routing-v1/release/hunodan/results.json": "5f0db7875c33036696ffa7859c323cff20b8d2afed7b2b0dad9b5012aa73c56b",
       "tmp/heart-learning/return-projection-speed-v1/production-release/source.json": "628069ded10264542980061feb7d7ea2d22cdbc2ff026c68c6a2e120a14052b3"
+    }
+  },
+  "nativeReleaseComparison": {
+    "status": "passed",
+    "catalogEntries": 47,
+    "photoEvaluated": 31,
+    "excludedIncomplete": 15,
+    "excludedObscured": 1,
+    "photoPassed": 25,
+    "photoImprovedErrors": 7,
+    "photoErrorRegressions": [],
+    "photoPassRegressions": [],
+    "remainingFailures": [
+      "nested-squares",
+      "outline-star",
+      "santa",
+      "jigsaw",
+      "crossed-ribbons",
+      "bauble"
+    ],
+    "photoInputAndMaskHashesUnchanged": true,
+    "photoComparison": [
+      {
+        "id": "oval-figure",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "eight-point-star",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "small-figure",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "deer",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "top-checker",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "top-candle",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "top-tree",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "partial-top-right",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "partial-left-checker",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "nested-squares",
+        "previousStatus": "no_crop",
+        "status": "no_crop",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "outline-star",
+        "previousStatus": "failed",
+        "status": "failed",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.00815625,
+        "error": 0.00815625,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "floral-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01941875,
+        "error": 0.01940625,
+        "errorDelta": -1.2499999999998623e-05
+      },
+      {
+        "id": "dense-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00699375,
+        "error": 0.00699375,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "bird",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02470625,
+        "error": 0.02470625,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "leaf",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.025625,
+        "error": 0.0131625,
+        "errorDelta": -0.012462499999999998
+      },
+      {
+        "id": "partial-right-checker",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "partial-left-abstract",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "gift",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02303125,
+        "error": 0.02303125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "gingerbread",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0149375,
+        "error": 0.014825,
+        "errorDelta": -0.00011249999999999975
+      },
+      {
+        "id": "white-birds",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00379375,
+        "error": 0.00379375,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "flower",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0050625,
+        "error": 0.0050625,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "warped-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0178875,
+        "error": 0.01755,
+        "errorDelta": -0.000337500000000001
+      },
+      {
+        "id": "round-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0121375,
+        "error": 0.0121375,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "santa",
+        "previousStatus": "no_crop",
+        "status": "no_crop",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "partial-left-diamonds",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "fine-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0221625,
+        "error": 0.0216875,
+        "errorDelta": -0.0004750000000000032
+      },
+      {
+        "id": "orb",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01443125,
+        "error": 0.01443125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "stacked-hearts",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.007425,
+        "error": 0.007425,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "jigsaw",
+        "previousStatus": "failed",
+        "status": "failed",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.0564375,
+        "error": 0.0564375,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "candle",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0048375,
+        "error": 0.0048375,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "maple-leaf",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.013425,
+        "error": 0.013325,
+        "errorDelta": -9.99999999999994e-05
+      },
+      {
+        "id": "crown",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02411875,
+        "error": 0.02411875,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "partial-bottom-left",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "bottom-diamonds",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "crossed-ribbons",
+        "previousStatus": "failed",
+        "status": "failed",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.02153125,
+        "error": 0.02153125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "bauble",
+        "previousStatus": "failed",
+        "status": "failed",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": 0.0919125,
+        "error": 0.0919125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "glare-motif",
+        "previousStatus": "obscured",
+        "status": "obscured",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "bottom-flower",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0093875,
+        "error": 0.0093875,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "faceted-star",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0065,
+        "error": 0.0065,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "partial-bottom-right",
+        "previousStatus": "incomplete",
+        "status": "incomplete",
+        "previousPassed": false,
+        "passed": false,
+        "previousError": null,
+        "error": null,
+        "errorDelta": null
+      },
+      {
+        "id": "bibel-star-8",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.003675,
+        "error": 0.003675,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "bibel-star-curved",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00663125,
+        "error": 0.00663125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "bibel-star-outline",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0116,
+        "error": 0.0116,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "bibel-cross",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.00243125,
+        "error": 0.00243125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "flettede-puppy",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0103125,
+        "error": 0.0103125,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "flettede-stonehenge",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01905,
+        "error": 0.01905,
+        "errorDelta": 0.0
+      },
+      {
+        "id": "flettede-viking",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02055,
+        "error": 0.02024375,
+        "errorDelta": -0.0003062499999999975
+      }
+    ],
+    "editablePassed": 47,
+    "editableTotal": 47,
+    "editableScope": "Actual conversion, SVG serialization/reparse, source-feature and nominal geometry/paper checks on all 22 Hunodan and 25 accepted photograph pairs.",
+    "leafEditableError": 0.01310625,
+    "previewOrigin": "http://127.0.0.1:5232",
+    "servedAssetsVerified": 158,
+    "artifactsSha256": {
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photos/results.json": "8936c8af6a1a1fd4fac39a9b2d12be7f7976c86319842c88290c59bf10e8bcfc",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-comparison.json": "de6a67c3fb1b8a9d65d6c792f65707bb9d0984f1d46b8ad31d6ccdd86819dd09",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/hunodan-comparison.json": "a744323250b994863996a3a1a36226d366ba7f20b290c77be17b256b6c9740e5",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/native-gates.json": "eb0f0a9c45905d1bd52673448498b12d18f602f3ed748787ed41ecdf3517aeb9",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-editor/results.json": "57f3585b4d72a76ea5fa28c6526d83132f8e27282d36f0d488507e000ae8ef24",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/hunodan-editor/results.json": "5e4eb6feba19e8c38d3c6fdfd2e7214a7b357d3dee19085d803a2bf7802375fc",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/served-assets.json": "007137c0793012b06a3a014db58499129c6cb1939e363858671473f21eb32e70"
+    }
+  },
+  "nativeVisualReview": {
+    "reviewedAt": "2026-10-14T22:59:21.285941+00:00",
+    "reviewer": "assistant",
+    "scope": "Native exported-mask comparison for all seven changed photograph fits plus the Hunodan bird. Leaf editable SVG render also inspected; not all browser screenshots or original artwork.",
+    "observations": [
+      "Leaf lower frame follows the source mask more closely; small kinks and a thin bottom opening remain.",
+      "Other changes are visually small. Checker boundaries remain uneven and gingerbread/Viking retain faint seams. No perfect-artwork reconstruction claim.",
+      "Hunodan bird eye and silhouette remain intact.",
+      "Leaf editable render preserves the inspected native silhouette."
+    ],
+    "artifactsSha256": {
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-changes-review-1.png": "6d7a5d4d976c3cef224facb14d07a2e0295401140efdb5f983a05db130b76b05",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-changes-review-2.png": "72643073599dd8b5fed20fa2399b4bdf1b1080a1b8d8830d4e5275304d1f95ac",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-changes-review-3.png": "023f1e3371d5787ce975da6381c5f1d7e7e1047e8a2275d822e8f14cabf1ed2f",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/photo-editor/leaf-automatic-weave.png": "148506b7416c437e91e99293b23a00d1838ca1cb5779e1636b36ce66b10bc51e",
+      "tmp/heart-learning/return-projection-speed-v1/production-release/hunodan/hjfig-05/independent.png": "47f381e0df8a40894af97349d5d402b1d5204c728ddba22022ae465e06b92ff7",
+      "tmp/heart-learning/eye-routing-v1/release/hunodan/hjfig-05/independent.png": "c259521d1910e968f261346051c0353ab4166a164091a16e9a23c477b896abad"
     }
   }
 }

@@ -46,16 +46,20 @@ with an estimated photographic mask is not agreement with unavailable original
 artwork. Native ten-second results are not browser latency guarantees; the
 Viking browser flow takes 29.12 seconds with its ordinary 180-second allowance.
 
-### Latest code: full QA passed, release comparisons pending
+### Latest code: native checks passed, browser checks pending
 
 Runtime revision `c000d30` passes **853/853 inverse tests**, **857 application
 tests** (one existing skip), type checking, lint and build. The pinned run
 verifies all 845 recorded source files. The fresh Hunodan comparison passes
 **22/22 within ten seconds**, maximum **8.100 seconds**, with 21 mask errors
 unchanged and the bird improving from 0.8444% to 0.8022%. Source photographs,
-crop coordinates and settings are unchanged. Photographic, editable-export and
-browser comparisons are running separately; `99399ff` remains the last fully
-validated release until those comparisons finish.
+crop coordinates and settings are unchanged. The photographic comparison
+retains **25/31**, with seven errors lower and none higher; the leaf improves
+from 2.5625% to 1.3163%. All photographed inputs, selected corners and classified
+masks are unchanged. The same six failures remain. All **47 accepted editable
+SVG pairs** pass independent source-feature, geometry and paper checks. Browser
+checks are running separately; `99399ff` remains the last fully validated release
+until they finish.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority
@@ -226,8 +230,8 @@ the collection environment. No new project dependencies were installed.
 
 The [latest completed release record](small-feature-release.json) pins
 its solver, application and browser checks. The newer runtime passes full QA
-in [its separate record](return-projection-speed.json); release replays remain
-pending.
+in [its separate record](return-projection-speed.json), with passing native
+corpus and editable-export comparisons; browser checks remain pending.
 Earlier and interrupted validation runs remain in the
 [experiment history](experiment-history.md).
 The synthetic verifiers checked all 5,952 referenced assets, and the real-image
