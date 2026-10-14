@@ -7,6 +7,7 @@ import { validate } from '../../../static/inverse/core/validate.js';
 import { materialAudit } from '../../../static/inverse/core/material.js';
 import { settings } from '../../../static/inverse/core/settings.js';
 import { renderExportedWeave } from '../export-renderer.mjs';
+import { radialMotif } from './synthetic-motif.mjs';
 
 export const sha256 = value => createHash('sha256').update(value).digest('hex');
 export function geometryHash(cuts) {
@@ -22,9 +23,9 @@ export function random(seed) {
 }
 // Keep the default recipes/order stable: existing dataset replays depend on it.
 export const RECIPES = ['lattice', 'shared-lattice', 'channel', 'frame'];
-export const OPTIONAL_RECIPES = ['corner-lattice'];
+export const OPTIONAL_RECIPES = ['corner-lattice', 'radial-motif'];
 export const ALL_RECIPES = [...RECIPES, ...OPTIONAL_RECIPES];
-export const FAMILY_SPLITS = Object.freeze({ 'procedural-lattice': 'train', 'procedural-channel': 'validation', 'procedural-frame': 'test' });
+export const FAMILY_SPLITS = Object.freeze({ 'procedural-lattice': 'train', 'procedural-channel': 'validation', 'procedural-frame': 'test', 'procedural-radial-motif': 'unassigned' });
 const lines = points => points.slice(1).map((p, i) => Cubic.line(points[i], p).p);
 const transpose = path => path.map(c => c.map(([x, y]) => [y, x]));
 const mirror = path => path.map(c => c.map(([x, y]) => [100 - x, y]));
@@ -76,6 +77,8 @@ export function proceduralDesign(seed, recipe = RECIPES[seed % RECIPES.length]) 
       [[Cubic.line([0, a], [a, a]).p, shared, Cubic.line([b, b], [100, b]).p]]
     ];
     parameters = { a, b, bend, counts: [1, 1], style: 'shared-cubic-channel' };
+  } else if (recipe === 'radial-motif') {
+    ({ paths, parameters } = radialMotif(rng));
   } else {
     const a = between(15, 23), b = between(30, 39);
     const side = lines([[a, 0], [a, a], [b, b], [b, 100 - b], [a, 100 - a], [a, 100]]);

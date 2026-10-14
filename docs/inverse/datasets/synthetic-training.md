@@ -99,6 +99,37 @@ Using the training junction definition—visible outgoing tangent angle below 16
 
 All 64 first-view photographs and three detailed canonical/photo/crop/coverage panels were visually reviewed. Some small acute notches become hard to see after blur, as expected. The supplement fills the measured absence of training right corners; whether it helps learned localization is a separate, controlled model comparison.
 
+## Optional radial motifs
+
+Use `--recipes=radial-motif` to generate a closed central motif with a simple
+surrounding grid. The two sheets each have two slits. Four approach cuts are
+stored as exactly shared cubics; the remaining curves form one closed visible
+contour. Smooth flower-like and polygonal variants vary 3–8 lobes, radial depth,
+rotation, aspect ratio, position and border spacing. Smooth labels are the
+constructed Hermite cubics, not a claim of exact analytic polar curves.
+
+This optional recipe does not change the default recipe list, random draws or
+existing geometry/label hashes. It passes the same geometry, paper-core and
+independent-render admission checks; there is no exception for a simple motif.
+Regression coverage includes a single connected visible contour, shared-cut
+identities, connected paths, flat fractional coverage along hidden approaches,
+photographic label verification and rejection of an unreviewed training relabel.
+
+The new `procedural-radial-motif` group is **unassigned**, including every view.
+It is a candidate development corpus until its use and motif-family overlap
+with existing evaluations have been reviewed. It adds geometric shape variety,
+not evidence of independent routing topologies or improved neural performance.
+Do not include it in a training run by editing the manifest split fields.
+
+```sh
+node scripts/inverse/datasets/synthetic-generate.mjs \
+  --recipes=radial-motif --designs=64 --views=4 --seed=920413 \
+  --resolution=384 --canonicalResolution=512 \
+  --output=tmp/heart-training-synthetic/radial-motif-v1
+node scripts/inverse/datasets/synthetic-verify.mjs \
+  tmp/heart-training-synthetic/radial-motif-v1
+```
+
 ## Controlled photographic interventions
 
 `syntheticPhoto` also accepts an optional `interventions` object for paired diagnostics. Supply identical coverage, graph, seed and resolutions to compare one change while keeping the camera, lighting, texture/noise draws and all other sampled parameters fixed:
