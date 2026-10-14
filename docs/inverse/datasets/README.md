@@ -54,6 +54,12 @@ release outputs. It remains outside the application. The studies below preserve
 earlier experiments, failures and release measurements; the current results are
 the ones above.
 
+The subsequent [photo-feature stability diagnostic](photo-feature-stability.md)
+separates crop-edge classification sensitivity from a short-search budget
+discontinuity. An offline budget interpolation improves a fixed shifted-star
+fit from 2.9869% to 0.7569%, and its editable SVG passes. Original benchmark
+failures remain unchanged; full experimental corpus validation is in progress.
+
 The [row-initialization and scheduling release](row-initialization.md) now
 passes all 22 regular Hunodan designs below ten seconds (maximum 7.827 seconds,
 unchanged validated errors) and retains 25/31 hard-photo recoveries. All 25
