@@ -13,6 +13,7 @@ import {treeMask} from './tree-fixture.mjs';
 import {heartPhoto} from './crop-fixture.mjs';
 import {catalogue,readPhoto} from './web-photo-data.mjs';
 import {readHardPhoto} from './hard-photo-data.mjs';
+import {reviewMaterialSamples} from './photo-material-samples.mjs';
 import {prepare} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {auditEditablePaper} from './editable-paper-audit.mjs';
@@ -105,6 +106,8 @@ report.workspaceSourceHashes['static/inverse/core/direct/rejected-routing.js']=c
 report.harnessSourceHashes['scripts/inverse/fixtures/blue-star-polishing.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/blue-star-polishing.json')).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/clamped-features.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+report.workspaceSourceHashes['static/inverse/locator/interior-palette.js']=createHash('sha256').update(await fs.readFile('static/inverse/locator/interior-palette.js')).digest('hex');
+for(const file of ['scripts/inverse/photo-material-samples.mjs','scripts/inverse/fixtures/photo-material-samples.json'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
  for(const browserName of names){
   const browser=await browsers[browserName].launch({headless:true});
@@ -165,7 +168,7 @@ try{
        await fs.writeFile(file,c.toBuffer('image/png'));
        row.inputPerturbation={kind:'half-resolution',width:c.width,height:c.height,pixelsSha256:createHash('sha256').update(c.getContext('2d').getImageData(0,0,c.width,c.height).data).digest('hex')};
       }else await fs.copyFile(entry.file,file);
-      row.sourcePhoto={id:entry.id,sha256:photo.fileSha256,decodedPixelsSha256:photo.rgbaSha256};
+      row.sourcePhoto={id:entry.id,sha256:photo.fileSha256,decodedPixelsSha256:photo.rgbaSha256,width:photo.imageWidth,height:photo.imageHeight};
      }else if(photoMask){
       // Hold crop/classification fixed to isolate the real worker and editor
       // path. Upload pixels, never saved cutting paths or a fitting seed.
@@ -327,7 +330,7 @@ try{
     }
     if(observed.crop?.candidates?.[0]){
      const crop=observed.crop.candidates[0];
-     row.detectedCrop={quad:crop.quad,status:crop.status,locatorVersion:crop.locator.version,lobeRefinement:crop.locator.lobeRefinement};
+     row.detectedCrop={quad:crop.quad,status:crop.status,locatorVersion:crop.locator.version,lobeRefinement:crop.locator.lobeRefinement,paperModel:crop.locator.evidence?.palette?.method};
     }
     if(unequalLobes){
      assert.equal(row.detectedCrop?.lobeRefinement?.accepted,true,'The actual upload must refine the unequal caps.');
@@ -384,7 +387,7 @@ try{
       assert.equal(row.classifiedMaskSha256,frozen.maskSha256,'Template improvements must use the same browser-classified pixels');
       assert.deepEqual(row.detectedCrop.quad,frozen.detectedCrop.quad,'The automatic crop remains fixed in this fitting regression');
      }
-     if(['hard-flettede-puppy','hard-flettede-puppy-half','hard-flettede-stonehenge','hard-flettede-viking'].includes(name)&&!engineReference){
+     if(['hard-flettede-puppy','hard-flettede-puppy-half','hard-flettede-stonehenge','hard-flettede-viking','hard-bibel-star-outline','hard-bibel-star-outline-half'].includes(name)&&!engineReference){
       assert.equal(row.templateChecksPassed,true,'The actual uploaded photograph must retain its interior features and pass the template checks.');
       assert.equal(row.missingFeatures.length,0);
       assert.ok(row.engineError<(name.startsWith('hard-flettede-puppy')?.018:.03));
@@ -513,6 +516,16 @@ try{
     // and can turn a 0.3% source error into 0.6% at a different sampling phase.
     const resolution=observed.prepared.resolution,sourceMask=Uint8Array.from(observed.prepared.mask),sourceRendered=rasterizeDesign(design,resolution).data;
     row.sourceResolution=resolution;
+    if(name==='hard-bibel-star-outline'&&!engineReference){
+     assert.equal(row.detectedCrop?.paperModel,'two-paper-colours-from-interior-chromaticity');
+     const samples=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photo-material-samples.json')).cases.find(r=>r.id===row.sourcePhoto.id);
+     assert.equal(samples.source.sha256,row.sourcePhoto.sha256);
+     assert.equal(samples.source.width,row.sourcePhoto.width);assert.equal(samples.source.height,row.sourcePhoto.height);
+     const classified=reviewMaterialSamples(samples,{mask:sourceMask,resolution,quad:row.detectedCrop.quad});
+     const exported=reviewMaterialSamples(samples,{mask:sourceRendered,resolution,quad:row.detectedCrop.quad,phase:classified.phase});
+     row.materialReview={classified,exported};
+     assert.equal(classified.correct,28);assert.equal(exported.correct,28,'Downloaded templates must preserve all reviewed original-photo points.');
+    }
     if(hardPhoto||photoMask){
      row.editableFeatures=auditFeatureFidelity({mask:sourceMask,resolution},sourceRendered,observed.result.report.settings);
      row.featureComponents=featureComponentMetrics({mask:sourceMask,resolution},sourceRendered);
@@ -559,7 +572,7 @@ try{
     assert.ok(row.sourceEditableError<=(small ? .005 : topHat ? .01 : free||photograph||photoMask ? .03 : .015),`Editable source mismatch ${row.sourceEditableError}`);
     if(anchorMask&&!engineReference)assert.ok(row.sourceEditableError<.025,'The editable anchor must retain the recovered fit.');
     if(flowerMask&&!engineReference)assert.ok(row.sourceEditableError<.01,'The editable flower must preserve the improved fit.');
-    if(name==='star'||photoMask){
+    if(name==='star'||photoMask||name==='hard-bibel-star-outline'||name==='hard-bibel-star-outline-half'){
      const pendingPDF=page.waitForEvent('download');await button('Download PDF').click();
      const pdfFile=path.join(dir,'template.pdf');await(await pendingPDF).saveAs(pdfFile);
      assert.equal((await fs.readFile(pdfFile)).subarray(0,5).toString(),'%PDF-');
