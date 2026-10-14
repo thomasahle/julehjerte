@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {createCanvas,loadImage} from 'canvas';
-import {gridFinalists} from '../../static/inverse/core/direct/counts.js';
+import {clearanceComparisonSeed,gridFinalists} from '../../static/inverse/core/direct/counts.js';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {hardPhotoTarget} from './hard-photo-target.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
@@ -18,6 +18,18 @@ test('a competitive simpler routing gets one slot without losing the best or sup
   assert.deepEqual(coarse.map(s=>s.model.counts),[[2,4],[4,4],[6,6],[3,3],[1,1]],'The complete count search remains intact.');
 });
 
+test('clearance can reverse a finalist ranking without creating or discarding a count seed',()=>{
+  const seed=(counts,error)=>({model:{counts},error});
+  const incumbent=seed([2,4],.0393),cleared=seed([2,4],.0500);
+  const remaining=[seed([4,4],.0342),seed([3,3],.0428),seed([8,8],.01)];
+  const before=structuredClone(remaining);
+  assert.equal(clearanceComparisonSeed(remaining,incumbent,cleared),remaining[1]);
+  assert.equal(clearanceComparisonSeed(remaining,incumbent,seed([2,4],.039)),null);
+  assert.equal(clearanceComparisonSeed(remaining,incumbent,seed([2,4],.040)),null);
+  assert.equal(clearanceComparisonSeed([],incumbent,cleared),null);
+  assert.deepEqual(remaining,before);
+});
+
 test('small resolution changes retain a checked three-cut flower instead of crowding it out',{timeout:40000},async()=>{
   const record=JSON.parse(await fs.readFile(new URL('./fixtures/flower-resolution/source.json',import.meta.url)));
   const hash=b=>createHash('sha256').update(b).digest('hex'),masks=[];
@@ -27,7 +39,13 @@ test('small resolution changes retain a checked three-cut flower instead of crow
     const input={type:'pixels',imageWidth:image.width,imageHeight:image.height,rgba:ctx.getImageData(0,0,image.width,image.height).data};
     const cfg=entry.settings,imported=prepare(input,cfg);assert.equal(hash(imported.preview.mask),entry.maskSha256,'Classification must retain every original target pixel.');
     const target=hardPhotoTarget(imported,'mask',cfg),answer=await design(target,cfg),woven=await renderExportedWeave(answer.files['cut_geometry.json'],target.sourceImage.resolution);
-    assert.deepEqual(answer.report.slits,{left:3,right:3});assert.equal(answer.report.templateChecksPassed,true);
+    assert.deepEqual(answer.report.slits,{left:3,right:3},entry.variant);assert.equal(answer.report.templateChecksPassed,true);
+    if(entry.variant==='downsample'){
+      const comparison=answer.report.solver.clearanceComparison;
+      assert.equal(comparison.preferred,true,'Minimum-width preparation must be compared before one layout consumes refinement.');
+      assert.ok(comparison.alternativeClearanceError<comparison.initialClearanceError);
+      assert.equal(comparison.alternativeGeometry,true);assert.equal(comparison.alternativePaper,'pass');
+    }
     const error=woven.mask.reduce((sum,v,i)=>sum+Number(v!==target.sourceImage.mask[i]),0)/woven.mask.length;
     assert.ok(error<.01,`${entry.variant}: ${error}`);
     assert.ok(error<entry.previousIndependentMaskError);

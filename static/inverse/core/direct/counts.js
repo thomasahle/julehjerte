@@ -76,6 +76,16 @@ export function gridFinalists(coarse,evidence,limit=3){
   }
   return chosen;
 }
+/** Minimum-width preparation can reverse the fine-grid ranking. Compare one
+ * already initialized alternative before committing the curve-fit budget.
+ * Use the existing cut-count preference; this proposes work, not acceptance.
+ */
+export function clearanceComparisonSeed(remaining,incumbent,clear){
+  const score=r=>r.error+.005*(r.model.counts[0]+r.model.counts[1]);
+  if(!Number.isFinite(clear.error)||clear.error<=incumbent.error)return null;
+  return remaining.filter(r=>Number.isFinite(r.error)&&score(r)<score(clear))
+    .sort((a,b)=>score(a)-score(b))[0]||null;
+}
 // After a verified fit, reserve extra search for a competitive simplification.
 // Use the fine-grid ranking's existing 0.005-per-cut preference and the
 // finalist reservation's 0.015 window. This is a scheduling heuristic, not a

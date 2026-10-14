@@ -13,7 +13,7 @@ import {applyTies,orbitMean,orbitObjective,symmetryOrbit,symmetryTies} from './s
 import {requestedSymmetry} from '../settings.js';
 import {materialAudit,paperKernelChoices,verifiedPaperSettings} from '../material.js';
 import {resize} from './math.js';
-import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,simplerComparisonSeed,countHypotheses,initializeCounts} from './counts.js';
+import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,clearanceComparisonSeed,simplerComparisonSeed,countHypotheses,initializeCounts} from './counts.js';
 import {imageFeatures,auditImageFeatures} from '../image-features.js';
 import {auditFeatureFidelity} from '../feature-shapes.js';
 import {recoverImageFeatures} from '../feature-recovery.js';
@@ -462,6 +462,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     preparations.set(selected,prepared);return prepared;
   };
   const extraGridComparisons=[];
+  let clearanceComparison=null;
   let stoppedEarly=false;
   for(let i=0;i<fine.length&&!stoppedEarly;i++){
     // Initialization (including a speculative topology solve) can exhaust the
@@ -483,6 +484,24 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const selected=fine[i],remaining=deadline-performance.now(),allocation=remaining;
     const polishingReserve=samplingRetry?0:1700,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
     const {clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification}=prepareRefinement(selected,allocation);
+    // The unconstrained grid can look best only because its strips are too
+    // narrow. If preparation reverses that ranking, give one existing
+    // finalist its clearance pass now. Reuse both preparations and keep the
+    // former first layout queued; neither the deadline nor acceptance changes.
+    if(i===0&&!clearanceComparison&&!weights&&!symmetryRequested&&!featureSeed(selected)&&deadline-performance.now()>3500){
+      const retry=clearanceComparisonSeed(fine.slice(i+1).filter(r=>!featureSeed(r)),selected,clear);
+      if(retry){
+        const at=performance.now(),alternate=prepareRefinement(retry,deadline-at);
+        const solution=alternate.graph.solution(alternate.graph.points,alternate.clear.phase,input);
+        const geometry=validate(solution,alternate.refinementCfg,{checkImage:false});
+        const paper=geometry.passed?materialAudit(solution,alternate.refinementCfg):null;
+        const originalColours=retainsGridColours(clear),alternativeColours=retainsGridColours(alternate.clear);
+        const score=r=>r.error+.005*(r.model.counts[0]+r.model.counts[1]);
+        const preferred=score(alternate.clear)<score(clear)&&geometry.passed&&(!cfg.requireMaterialCore||paper?.passed)&&(!originalColours||alternativeColours);
+        clearanceComparison={initialCounts:clear.model.counts,initialGridError:selected.error,initialClearanceError:clear.error,alternativeCounts:alternate.clear.model.counts,alternativeGridError:retry.error,alternativeClearanceError:alternate.clear.error,initialColours:originalColours,alternativeColours,alternativeGeometry:geometry.passed,alternativePaper:paper?.status,seconds:(performance.now()-at)/1000,preferred};
+        if(preferred){fine.splice(fine.indexOf(retry),1);fine.splice(i,0,retry);i--;continue;}
+      }
+    }
     if(featureSeed(selected)&&selected.model.k===16&&!selected.protectFeatures&&!samplingRecovery&&featureSamplingContext&&!weights&&!symmetryRequested&&!candidates.some(c=>c.imagePassed)){
       const initialGeometry=validate(graph.solution(graph.points,clear.phase,input),refinementCfg,{checkImage:false});
       // Compare this bounded alternate before committing the refinement
@@ -652,7 +671,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    stoppedEarly,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
+    stoppedEarly,clearanceComparison,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }
