@@ -69,6 +69,12 @@ common Bézier refinement reduces the original fixed-mask error from 1.3063% to
 This is one controlled case, not a deployed strategy or a whole-pipeline speed
 result. It exposes sensitivity in routing topology and refinement scheduling.
 
+The [bounded junction-recovery follow-up](junction-recovery.md) implements that
+alternative in the main fitter. Focused tests, all 22 Hunodan cases and all 25
+previous hard-photo passes hold, including editable conversion. Full inverse,
+application and rebuilt-browser release checks are still running; the preview
+continues to serve the preceding checked release until those stages advance.
+
 All neural models remain offline. [Balanced corner training and broader angle
 coverage](boundary-localization.md) improve synthetic junction proposals, but
 [the current app initializer](app-baseline-correction.md) still has better
