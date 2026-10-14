@@ -10,7 +10,9 @@ const polygon = (points: number[][]) => points.map(([x, y], i) => {
 	const [xx, yy] = points[(i + 1) % points.length]!;
 	return straightBezier({ x: x!, y: y! }, { x: xx!, y: yy! });
 });
-const pixels = (loops: BezierSegment[][]) => new Resvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="white"/><path d="${loops.filter(p => p.length).map(p => segmentsToPathData(p) + ' Z').join(' ')}" fill="black" fill-rule="evenodd"/></svg>`, { fitTo: { mode: 'width', value: 400 } }).render().pixels;
+// These fixtures contain only paths; repeated system-font discovery can exceed
+// the test timeout without contributing to the independent raster check.
+const pixels = (loops: BezierSegment[][]) => new Resvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="white"/><path d="${loops.filter(p => p.length).map(p => segmentsToPathData(p) + ' Z').join(' ')}" fill="black" fill-rule="evenodd"/></svg>`, { fitTo: { mode: 'width', value: 400 }, font: { loadSystemFonts: false } }).render().pixels;
 
 // An independent scanline oracle samples the original cubics uniformly; it
 // neither calls the clipper's roots nor uses the SVG rasterizer's tessellation.
