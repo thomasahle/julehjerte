@@ -56,9 +56,13 @@ The subsequent [interior-tint crop fallback](interior-palette.md) recovers the
 previously undetected blue outlined star. All 73 focused crop tests pass,
 including a fresh photo-to-template regression and source-detail checks. Across
 31 complete photos, the 28 existing crops and classified masks remain identical;
-the other two missing crops remain unresolved. Full reconstruction and rebuilt
-browser QA for this follow-up are still running; it is not yet the previewed
-release or a new published full-corpus pass rate.
+the other two missing crops remain unresolved. The first full reconstruction run
+improved to 25/31, and all 25 pairs passed editable conversion, but its release
+driver stopped when JPEG recompression caused a missing crop. A bounded repair
+to the physical-paper registration mask now passes eight focused tests,
+including fresh original/JPEG fitting and all 28 reviewed star points. Full
+release QA for that repair is pending; the preview still serves the preceding
+checked release.
 
 All neural models remain offline. [Balanced corner training and broader angle
 coverage](boundary-localization.md) improve synthetic junction proposals, but

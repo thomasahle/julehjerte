@@ -5,7 +5,7 @@
  */
 import {makePaperForeground} from './palette.js';
 import {mainComponent,hullMask} from './anchored.js';
-import {close,signedDistance} from './fields.js';
+import {close,signedDistance,fillSmallMaskHoles} from './fields.js';
 import {quantile,sigmoid} from './math.js';
 
 const distance=(a,b)=>Math.hypot(...a.map((v,i)=>v-b[i]));
@@ -54,12 +54,18 @@ export function makeInteriorPaletteFields(image){
     const z=sigmoid((distance(p,pale)-distance(p,color))/Math.max(.02,separation*.08));
     chroma[i]=z;red[i]=z*paper[i];white[i]=(1-z)*paper[i];
   }
+  // JPEG colour noise can put isolated holes on the centre scanline. Fill
+  // only small, fully observed enclosed holes in the registration mask;
+  // retain the original probabilities and distances for outline validation.
+  const maxArea=Math.max(4,Math.floor(.0005*w*h));
+  const registration=fillSmallMaskHoles(close(paper,w,h,2),w,h,{maxArea,canFill:i=>image.data[4*i+3]>200});
   return {w,h,r:f.r,g:f.g,b:f.b,paper,chroma,red,white,
-    mask:close(paper,w,h,2),pd:signedDistance(close(paper,w,h,1),w,h),
+    mask:registration.mask,pd:signedDistance(close(paper,w,h,1),w,h),
     rd:signedDistance(close(red,w,h,1),w,h),wd:signedDistance(close(white,w,h,1),w,h),
     palette:{method:'two-paper-colours-from-interior-chromaticity',pale:true,
       background,transparent:false,backgroundNoise:f.noise,
       colors:[color,pale],separation,paleHue,backgroundHue,hueSeparation,
-      paleHueSpread:hueSpread,hueRadius,interiorSamples:pool.length,colouredArea:component.length}
+      paleHueSpread:hueSpread,hueRadius,interiorSamples:pool.length,colouredArea:component.length,
+      registrationHoles:{maxArea,filledPixels:registration.filledPixels,filledComponents:registration.filledComponents,backgroundConnectivity:8}}
   };
 }

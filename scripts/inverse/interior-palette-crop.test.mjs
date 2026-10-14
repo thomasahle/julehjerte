@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import {createCanvas} from 'canvas';
+import {createCanvas,loadImage} from 'canvas';
 import {heartPhoto} from './crop-fixture.mjs';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {hardPhotoTarget} from './hard-photo-target.mjs';
@@ -9,6 +9,7 @@ import {reviewMaterialSamples} from './photo-material-samples.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {detectMotif} from '../../static/inverse/locator/locator.js';
 import {makeInteriorPaletteFields} from '../../static/inverse/locator/interior-palette.js';
+import {fillSmallMaskHoles} from '../../static/inverse/locator/fields.js';
 import {detectHeartCrops,supportedCropOutline,pixelCentresToEdges} from '../../static/inverse/core/crop.js';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
@@ -57,9 +58,32 @@ test('the interior-tint fallback does not turn checker rectangles or diamonds in
   }
 });
 
-test('fresh automatic blue-star crop preserves photographed details through template export',async()=>{
+test('registration fills only small observed holes and preserves diagonal exterior openings',()=>{
+  const w=40,h=30,mask=new Uint8Array(w*h);
+  for(let y=3;y<27;y++)for(let x=3;x<37;x++)mask[y*w+x]=1;
+  for(let y=8;y<11;y++)for(let x=8;x<11;x++)mask[y*w+x]=0;
+  for(let y=6;y<12;y++)for(let x=20;x<26;x++)mask[y*w+x]=0;
+  for(let y=20;y<22;y++)for(let x=10;x<12;x++)mask[y*w+x]=0;
+  for(let i=0;i<=5;i++)mask[i*w+i]=0;
+  const before=mask.slice(),result=fillSmallMaskHoles(mask,w,h,{maxArea:12,canFill:i=>i!==20*w+10});
+  assert.equal(result.filledPixels,9);assert.equal(result.filledComponents,1);
+  assert.equal(result.mask[9*w+9],1);
+  assert.equal(result.mask[8*w+22],0,'large omissions are not inferred');
+  assert.equal(result.mask[21*w+11],0,'one unknown pixel prevents filling the entire hole');
+  assert.equal(result.mask[5*w+5],0,'a diagonal opening remains connected to the exterior');
+  assert.deepEqual(mask,before);
+});
+
+async function checkStar(jpeg=false){
   const catalog=JSON.parse(await fs.readFile(new URL('./photo-cases.json',import.meta.url)));
-  const spec=catalog.cases.find(r=>r.id==='bibel-star-outline'),source=await readHardPhoto(spec),before=source.rgba.slice();
+  const spec=catalog.cases.find(r=>r.id==='bibel-star-outline');let source=await readHardPhoto(spec);
+  if(jpeg){
+    const canvas=createCanvas(source.imageWidth,source.imageHeight),ctx=canvas.getContext('2d');
+    ctx.drawImage(source.canvas,0,0);
+    ctx.drawImage(await loadImage(canvas.toBuffer('image/jpeg',{quality:.75})),0,0);
+    source={...source,canvas,rgba:ctx.getImageData(0,0,canvas.width,canvas.height).data};
+  }
+  const before=source.rgba.slice();
   const crop=detectHeartCrops(source).candidates[0];
   assert.ok(crop&&supportedCropOutline(crop.locator));
   assert.equal(crop.locator.evidence.palette.method,'two-paper-colours-from-interior-chromaticity');
@@ -72,8 +96,10 @@ test('fresh automatic blue-star crop preserves photographed details through temp
   assert.equal(answer.report.templateChecksPassed,true);
   const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],prepared.preview.resolution);
   const error=rendered.mask.reduce((sum,v,i)=>sum+Number(v!==prepared.preview.mask[i]),0)/rendered.mask.length;
-  assert.ok(error<.02,`${100*error}% mask disagreement`);
+  assert.ok(error<(jpeg?.03:.02),`${100*error}% mask disagreement`);
   const exported=reviewMaterialSamples(observations,{mask:rendered.mask,resolution:prepared.preview.resolution,quad:crop.quad,phase:classified.phase});
   assert.equal(exported.correct,28);assert.equal(exported.covered,28);
   assert.deepEqual(source.rgba,before);
-});
+}
+test('fresh automatic blue-star crop preserves photographed details through template export',()=>checkStar());
+test('JPEG recompression preserves the automatic crop and photographed details through export',()=>checkStar(true));

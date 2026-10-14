@@ -23,6 +23,31 @@ export function close(prob,w,h,radius){const n=w*h,m=new Uint8Array(n),d=new Uin
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){let v=1;for(let dy=-radius;dy<=radius&&v;dy++)for(let dx=-radius;dx<=radius;dx++){const xx=clamp(x+dx,0,w-1),yy=clamp(y+dy,0,h-1);if(!d[yy*w+xx]){v=0;break;}}out[y*w+x]=v;}
  return out;
 }
+/** Small enclosed omissions in a physical-paper registration mask. Eight-way
+ * background connectivity preserves diagonal openings to the image exterior.
+ * This never edits the photograph or the red/white artwork classification.
+ */
+export function fillSmallMaskHoles(mask,w,h,{maxArea,canFill=()=>true}){
+ const n=w*h;
+ if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||mask.length!==n||!Number.isFinite(maxArea)||maxArea<0)throw new Error('Expected a rectangular mask and nonnegative hole area.');
+ const out=mask.slice(),seen=new Uint8Array(n),queue=new Uint32Array(n);let filledPixels=0,filledComponents=0;
+ for(let start=0;start<n;start++)if(!mask[start]&&!seen[start]){
+  let head=0,tail=1,border=false;queue[0]=start;seen[start]=1;
+  while(head<tail){
+   const i=queue[head++],x=i%w,y=Math.floor(i/w);
+   border||=x===0||y===0||x===w-1||y===h-1;
+   for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)if((dx||dy)&&x+dx>=0&&x+dx<w&&y+dy>=0&&y+dy<h){
+    const j=i+dy*w+dx;if(!mask[j]&&!seen[j]){seen[j]=1;queue[tail++]=j;}
+   }
+  }
+  if(border||tail>maxArea)continue;
+  let observed=true;for(let i=0;i<tail&&observed;i++)observed=canFill(queue[i]);
+  if(!observed)continue;
+  for(let i=0;i<tail;i++)out[queue[i]]=1;
+  filledPixels+=tail;filledComponents++;
+ }
+ return{mask:out,filledPixels,filledComponents};
+}
 /** Chamfer distance (8-neighbour), used only as a registration objective, not a geometric certificate. */
 function distance(mask,w,h,inside){const n=w*h,d=new Float32Array(n),sq=Math.SQRT2;for(let i=0;i<n;i++)d[i]=(!!mask[i])===inside?1e4:0;
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=y*w+x;let a=d[i];if(x)a=Math.min(a,d[i-1]+1);if(y){a=Math.min(a,d[i-w]+1);if(x)a=Math.min(a,d[i-w-1]+sq);if(x+1<w)a=Math.min(a,d[i-w+1]+sq);}d[i]=a;}

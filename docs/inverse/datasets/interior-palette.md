@@ -50,7 +50,7 @@ is preserved by the extraction, including the original RGB sampling precision.
 
 ## Evidence so far
 
-All 73 targeted crop tests pass, including rotated inputs, independent lobe
+All 73 targeted crop tests passed for `40f7d7c`, including rotated inputs, independent lobe
 shapes, shadowed photographs, the learned-foreground adapter and the new tests.
 The new synthetic controls cover blue, red and green paper, independent neutral
 shadows, two exposure levels and known physical corners. Rectangle/diamond
@@ -72,9 +72,42 @@ classified masks remain identical, and nested squares/Santa still lack crops.
 The new star proposal takes 1.65 seconds in that comparison. This is detection
 time alone, not whole-pipeline latency or a controlled speed comparison.
 
-Full reconstruction, perturbation and broader release verification are pending.
-The preview continues to serve the preceding checked build until that
-verification is complete. Exploratory scripts, failed attempts, source overlays, masks,
+The first full reconstruction run at `3810a25` improved the original-photo
+benchmark from 24/31 to 25/31, with no lost passes. All 25 accepted pairs also
+passed editable SVG conversion and independent geometry/paper checks. The newly
+detected star had 1.0075% independent disagreement, 1.0125% editable disagreement
+and 28/28 reviewed points retained. Fitting/validation took 9.327 seconds and
+crop detection a separate 1.651 seconds. Other scores still vary slightly with
+time-dependent fitting; this is pass retention, not uniform error reduction.
+
+### JPEG perturbation and registration holes
+
+The first release run stopped at its perturbation assertion: half resolution
+passed at 2.1440% disagreement, but JPEG quality 75 produced no crop. Hunodan,
+the full inverse/application suites, type checking, lint, build and browser
+stages did not run in that attempt. Its terminal failure and earlier successful
+stages remain under `tmp/heart-learning/interior-palette-release-v1/`.
+
+The JPEG pixels in the focused replay match that failed benchmark exactly.
+Its pale-color estimate remains plausible, and both lobes retain strong
+support, but small enclosed foreground omissions interrupt the center scanline.
+Left lower-edge support falls from 0.870 to 0.565. A diagnostic that fills the
+registration mask's enclosed holes restores support without changing color
+probabilities or distance fields.
+
+The follow-up fills only enclosed components of at most 0.05% of the working
+image area (with a four-pixel floor). Every filled pixel must be observed with
+alpha above 200. Eight-neighbor background connectivity preserves even diagonal
+openings to the image exterior. This changes only the mask used to locate the
+physical outline; original RGB, color probabilities, outline distance fields
+and the artwork classification remain unchanged. It does not fill gaps in the
+desired motif or relax the outline-support gates.
+
+All eight focused tests now pass, including fresh original-photo and JPEG
+photo-to-template fitting, 28/28 source observations after export, and controls
+for large holes, unknown pixels and diagonal openings. Full verification for
+this follow-up is pending. The preview continues to serve the preceding checked
+build until verification is complete. Exploratory scripts, failed attempts, source overlays, masks,
 geometry and test logs are retained under
 `tmp/heart-learning/no-crop-diagnosis-v1/`.
 
