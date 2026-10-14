@@ -78,6 +78,12 @@ checker time by 27% across 504 saved representations while preserving every
 reported issue exactly. Its cache expires after each audit, with a regression
 for moved control points. It does not change the app's geometry rules.
 
+An offline [active-return force experiment](short-return-active-forces.md)
+improves two paired fits, but the bird remains worse than the app benchmark
+and visible gift artifacts remain. Actual SVGs pass the stronger geometry
+predicate in all 32 representations; the existing editor still changes its
+verdict for three of the four outputs. The experiment remains outside the app.
+
 The [Pinterest expansion](real-pinterest-expansion.md) includes all four supplied
 pins. Download success, photograph count, heart-instance count and motif-family
 count are different measures. Of the 1,034 source files, 476 are now reserved by
