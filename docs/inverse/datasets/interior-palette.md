@@ -65,9 +65,16 @@ fallback. Visual inspection still finds kinks and small seams in the fitted
 bands. Sparse observations and aggregate error do not certify original cutting
 paths or physical assembly.
 
-Full-corpus crop comparison and broader release verification are pending. The
-preview continues to serve the preceding checked build until that verification
-is complete. Exploratory scripts, failed attempts, source overlays, masks,
+The [probe record](interior-palette-probe.json) pins the diagnostic sources,
+prototype fitting, 73 tests and automatic crop comparison across all 31 complete
+photographs. Only the blue outlined star changes: the 28 existing crops and
+classified masks remain identical, and nested squares/Santa still lack crops.
+The new star proposal takes 1.65 seconds in that comparison. This is detection
+time alone, not whole-pipeline latency or a controlled speed comparison.
+
+Full reconstruction, perturbation and broader release verification are pending.
+The preview continues to serve the preceding checked build until that
+verification is complete. Exploratory scripts, failed attempts, source overlays, masks,
 geometry and test logs are retained under
 `tmp/heart-learning/no-crop-diagnosis-v1/`.
 

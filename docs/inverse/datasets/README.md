@@ -52,6 +52,14 @@ at most 0.041875 percentage points, one improves, and one Hunodan historical
 comparison has the documented paired-run exception. Pass retention does not
 mean every error decreased. Nothing is pushed or deployed.
 
+The subsequent [interior-tint crop fallback](interior-palette.md) recovers the
+previously undetected blue outlined star. All 73 focused crop tests pass,
+including a fresh photo-to-template regression and source-detail checks. Across
+31 complete photos, the 28 existing crops and classified masks remain identical;
+the other two missing crops remain unresolved. Full reconstruction and rebuilt
+browser QA for this follow-up are still running; it is not yet the previewed
+release or a new published full-corpus pass rate.
+
 All neural models remain offline. [Balanced corner training and broader angle
 coverage](boundary-localization.md) improve synthetic junction proposals, but
 [the current app initializer](app-baseline-correction.md) still has better
