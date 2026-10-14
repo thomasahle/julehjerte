@@ -84,6 +84,15 @@ investigate two small broad-photo score increases without replacing the original
 measurements. This is a fitter change, not deployment of the neural cropper or
 an increase in the full-corpus success count.
 
+The [visible shared-return follow-up](visible-shared-returns.md) identifies why
+two star notches escaped cleanup: the visible outline doubles back across two
+sheets, while the old detector only follows each sheet separately. The existing
+contraction/refinement stage now considers these real shared junctions with
+unchanged final image and physical checks. A controlled Chromium pair improves
+editable disagreement from 0.545% to 0.446% in 9.23 seconds; a fresh native solve
+takes 8.70 seconds. The large spikes shrink, but smaller bumps remain. Focused
+tests and all eight fixed crop variants pass; broader release QA is running.
+
 A [fresh neural fallback replay](neural-fallback-current.md) now passes the two
 frozen foreground models through the current binary-mask fitter on the three
 production no-crop failures. Both recover a numerical blue-star pair; neither
