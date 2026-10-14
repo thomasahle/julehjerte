@@ -1,7 +1,7 @@
 {
   "schema": "visible-shared-return-source-support-1",
   "runtimeCommit": "14e6dbfd7d116e87e031af16670f615b047fc2c8",
-  "status": "Focused tests and eight diagnostic replays complete; broad guarded release QA is separate and unfinished.",
+  "status": "Focused tests, eight paired diagnostic replays, eight fresh crop perturbations, sixteen editable replays and 22 Hunodan cases complete. Full photographic/application/inverse/browser release QA remains separate and unfinished.",
   "comparison": {
     "scope": "Fresh full design() solves from photograph pixels and fixed crops; no saved cuts. Three AB/BA/AB pairs with independent exported raster replay, then guarded replays of the two cleanup-sensitive Hunodan cases. Every numerical refinement checkpoint is identical between the six striped-heart runs; the earlier lower historical score remains recorded, not replaced.",
     "rows": [
@@ -255,9 +255,84 @@
   },
   "artifacts": [
     {
+      "path": "tmp/heart-learning/visible-return-guard-v1/editor.log",
+      "bytes": 1105,
+      "sha256": "911dbfb99bac8feff569268adc13e661b2aa8de3f34b0e1725cc0958f3ed7ba1"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/editor/results.json",
+      "bytes": 103361,
+      "sha256": "9a055658748a026ccfbd82a9ce63bb63c9ee9ad374fb48324bc8c857d49cba57"
+    },
+    {
       "path": "tmp/heart-learning/visible-return-guard-v1/engines/production/snapshot.json",
       "bytes": 11111,
       "sha256": "67a53ff7cd0a9b6f73047f9979bf0f2bd7541322df491cc6e8e7bdc51e3a72e3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/hunodan-comparison.json",
+      "bytes": 3653,
+      "sha256": "21c02c0870700124df00b1650c5edf46b5e5ab2ffece762193d3195484b44e96"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/hunodan.log",
+      "bytes": 2864,
+      "sha256": "08ab7c5cf87cab46754d7b0ed8edfc0faccf2146f9ede2b3a19e3e2387ed3be3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/hunodan/results.json",
+      "bytes": 810500,
+      "sha256": "feb10650be6c4fc92ab6bd0dea3f1d867068ce940aec0686f0759a874036ec1a"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix-audit.log",
+      "bytes": 1772,
+      "sha256": "886706aabf1fd3bbcb20c953a0d24303d5d3d3d11bb58b6a196132760a954f77"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/frozen/production/report.json",
+      "bytes": 77874,
+      "sha256": "d709d9ae193b5c11644e654cf4490c22dd495f9b6eea42812147312895f56f46"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/production/production/report.json",
+      "bytes": 59992,
+      "sha256": "7454e375e950bbea25795d8463168f7fb894c26135c2e4a0e923bb3032d29b33"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/real-out-of-fold/production/report.json",
+      "bytes": 75182,
+      "sha256": "067e14de11724548adaefd23e3ac2b4d378bea099d9fc75de2560084269690b1"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/results.json",
+      "bytes": 1399895,
+      "sha256": "36c0ee9334e64578de1cc792f565a74ce655b488dca1ea39500877b3df807cc6"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/synthetic-control/production/report.json",
+      "bytes": 67410,
+      "sha256": "9e4bf58a257a9e1924b310595dec9adfd4f84c6f3ef5e8071bd5de57a4b3460b"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/x-minus-1/production/report.json",
+      "bytes": 58596,
+      "sha256": "10544faea8898d740c623b4d53050d3e6b814205b0212f761ea1bf37b990b6df"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/x-plus-1/production/report.json",
+      "bytes": 78406,
+      "sha256": "309c293942b85cd335780e494037d01c987c9f74313350f2f002b28e04fe03b4"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/y-minus-1/production/report.json",
+      "bytes": 85362,
+      "sha256": "09608139cfb408e2db1faa4f66928175ba26386d605f3404037338e9b9d88a5c"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/matrix/y-plus-1/production/report.json",
+      "bytes": 57754,
+      "sha256": "7f1a8ee079e7233dd3e29c7b402da138d025d06d860fdbd25cb3c407088bebe6"
     },
     {
       "path": "tmp/heart-learning/visible-return-guard-v1/paired-comparison.json",
@@ -268,6 +343,11 @@
       "path": "tmp/heart-learning/visible-return-guard-v1/paired-driver.log",
       "bytes": 2382,
       "sha256": "7ffe6fac2d9167a9de51a91ea4259f2a7e91d9c82655948f15ef7441a0423525"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan-jobs.json",
+      "bytes": 2953,
+      "sha256": "363b422f366c88516f71f67bbed3e7945295a748023a2766277bfeed005e80cc"
     },
     {
       "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan/hjhih-01-production-1/cut_geometry.json",
@@ -790,11 +870,6 @@
       "sha256": "94b32edbb8c436402310ac72376ccb80f520d674414b20c4bf2eb561f0c81ff8"
     },
     {
-      "path": "tmp/heart-learning/visible-return-guard-v1/paired-hunodan-jobs.json",
-      "bytes": 2953,
-      "sha256": "363b422f366c88516f71f67bbed3e7945295a748023a2766277bfeed005e80cc"
-    },
-    {
       "path": "tmp/heart-learning/visible-return-guard-v1/run-paired-hunodan.py",
       "bytes": 929,
       "sha256": "344fdede5f0cb183953f513c5a0aead4cc0653a9c9b3fa7ff5c7437b6346bcb6"
@@ -855,19 +930,181 @@
       "sha256": "fa867c9975414744a58cb88a0f8e3d4a4891bf52e2490d3479f5a4c8f15afe05"
     },
     {
-      "path": "tmp/heart-learning/visible-return-v1/hunodan/results.json",
-      "bytes": 814506,
-      "sha256": "54f66e528152a5d2859da7c7bb8475b7129e760de7ac33ed58e6c24284ee8539"
-    },
-    {
       "path": "tmp/heart-learning/visible-return-v1/hunodan-source-support/results.json",
       "bytes": 120733,
       "sha256": "4076edb6bda6d539cbaf2ce5d0d0221b45a6da6ae4442325b8bb6399be47261c"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-v1/hunodan/results.json",
+      "bytes": 814506,
+      "sha256": "54f66e528152a5d2859da7c7bb8475b7129e760de7ac33ed58e6c24284ee8539"
     },
     {
       "path": "tmp/heart-learning/visible-return-v1/release-driver.log",
       "bytes": 3908,
       "sha256": "7f8a7bee690a6c8592cdd4a36018c254cfb9408222995373698eba93a76f5aea"
     }
-  ]
+  ],
+  "broadChecksCompleted": {
+    "hunodanCases": 22,
+    "maximumHunodanSeconds": 8.101363291999995,
+    "hunodanComparison": [
+      {
+        "id": "hjfig-01",
+        "previousError": 0.009799111111111111,
+        "error": 0.009799111111111111,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjfig-02",
+        "previousError": 0.013340444444444445,
+        "error": 0.013340444444444445,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjfig-03",
+        "previousError": 0.006634666666666666,
+        "error": 0.006634666666666666,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjfig-04",
+        "previousError": 0.013824,
+        "error": 0.013824,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjfig-05",
+        "previousError": 0.009042960667083447,
+        "error": 0.009042960667083447,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjfla-01",
+        "previousError": 0.012166341145833334,
+        "error": 0.012166341145833334,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjcur-01",
+        "previousError": 0.005148444444444444,
+        "error": 0.005148444444444444,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjcur-02",
+        "previousError": 0.005219555555555555,
+        "error": 0.005219555555555555,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjcur-03",
+        "previousError": 0.004522666666666667,
+        "error": 0.004522666666666667,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjcur-04",
+        "previousError": 0.005639111111111111,
+        "error": 0.005639111111111111,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjcur-05",
+        "previousError": 0.009436444444444445,
+        "error": 0.009436444444444445,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjhih-01",
+        "previousError": 0.006040430615586996,
+        "error": 0.006040430615586996,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjhih-02",
+        "previousError": 0.003899406226779104,
+        "error": 0.003899406226779104,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjhih-04",
+        "previousError": 0.007776029627903062,
+        "error": 0.007776029627903062,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjstr-01",
+        "previousError": 0.007550237322696868,
+        "error": 0.007550237322696868,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjstr-02",
+        "previousError": 0.004365548980933596,
+        "error": 0.004365548980933596,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjstr-03",
+        "previousError": 0.0055399085981507066,
+        "error": 0.0056129769369752365,
+        "difference": 7.306833882452998e-05,
+        "pairedTimingEvidence": "paired-comparison.json"
+      },
+      {
+        "id": "hjsta-01",
+        "previousError": 0.007929362880886427,
+        "error": 0.007929362880886427,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjsta-02",
+        "previousError": 0.0038045247395833335,
+        "error": 0.0038045247395833335,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjsta-03",
+        "previousError": 0.012332213049376572,
+        "error": 0.012332213049376572,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjsta-04",
+        "previousError": 0.0050250552896055544,
+        "error": 0.0050250552896055544,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      },
+      {
+        "id": "hjsta-05",
+        "previousError": 0.010624446293860237,
+        "error": 0.010624446293860237,
+        "difference": 0.0,
+        "pairedTimingEvidence": null
+      }
+    ],
+    "nativeCropCases": 8,
+    "editableReplays": 16
+  }
 }

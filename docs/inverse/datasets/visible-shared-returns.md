@@ -119,8 +119,13 @@ remains the likely explanation, not an established exact cause.
 The new broader driver keeps the frozen quality and ten-second gates. Its
 additional previous-release comparison permits only this investigated case
 to reach the identical fresh old/new score, and records that exception explicitly.
-All other cases still require no increase over the previous release. Broader
-validation is running serially under `visible-return-guard-v1/`; the stopped
-unguarded run and failed tip-only test are preserved. The controlled browser
+All other cases still require no increase over the previous release. The guarded
+replay now passes all 22 Hunodan cases, with a maximum of 8.102 seconds: 21
+independent errors are exactly unchanged, and `hjstr-03` matches the six fresh
+paired scores above. All eight fixed crop variants pass below ten seconds and
+survive editable conversion; all sixteen old/new editable replays pass.
+The remaining photo, application, inverse, build and browser checks continue
+serially under `visible-return-guard-v1/`; the stopped unguarded run and failed
+tip-only test are preserved. The controlled browser
 numbers above describe `86901fd`, not this follow-up or the ordinary preview.
 Nothing is pushed or deployed; the neural models remain offline.
