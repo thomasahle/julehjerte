@@ -5,7 +5,9 @@ The new fallback learns a pale-paper tint inside a confidently colored region,
 then runs the unchanged outline fitting and support checks. A fresh automatic
 photo-to-template regression now passes geometry and paper checks, stays below
 2% independent mask disagreement and preserves all 28 source-photo observations.
-This does not yet establish a new full-corpus pass rate or perfect contours.
+The completed release run improves the fixed hard-photo benchmark from 24/31
+to 25/31 without losing existing passes. This is not a benchmark of all 573
+collected photographic files, and the fitted contours are not perfect.
 
 ## Diagnosis and rejected alternatives
 
@@ -103,16 +105,69 @@ physical outline; original RGB, color probabilities, outline distance fields
 and the artwork classification remain unchanged. It does not fill gaps in the
 desired motif or relax the outline-support gates.
 
-All eight focused tests now pass, including fresh original-photo and JPEG
+All eight focused tests pass, including fresh original-photo and JPEG
 photo-to-template fitting, 28/28 source observations after export, and controls
-for large holes, unknown pixels and diagonal openings. Full verification for
-this follow-up is pending. The preview continues to serve the preceding checked
-build until verification is complete. Exploratory scripts, failed attempts, source overlays, masks,
-geometry and test logs are retained under
-`tmp/heart-learning/no-crop-diagnosis-v1/`.
+for large holes, unknown pixels and diagonal openings. The completed verification
+below supersedes the failed first release attempt. Its evidence remains intact.
+Exploratory scripts and diagnostic overlays are under
+`tmp/heart-learning/no-crop-diagnosis-v1/` and
+`tmp/heart-learning/interior-jpeg-v1/`.
 
 The focused regression is reproducible with:
 
 ```sh
 node --test --test-concurrency=1 scripts/inverse/interior-palette-crop.test.mjs
 ```
+
+## Completed release verification
+
+The [release record](interior-palette-release.json) pins runtime `4469b9f`,
+458 source hashes and 925 retained artifacts. All ten serial release stages
+completed successfully under `tmp/heart-learning/interior-palette-release-v2/`.
+The browser report names the later data-only commit `cefa7ca`; its runtime and
+harness hashes match the recorded release snapshot.
+
+- **25/31** eligible photographs pass, retaining all previous 24. All 25 accepted
+  pairs also pass production editable conversion, editor intersection rules and
+  independent geometry/paper validation. For the other 28 previously detected
+  photographs, crop corners, classified masks and fitting probabilities are
+  byte-identical to the preceding release.
+- **22/22** regular Hunodan designs pass below ten seconds; maximum 8.05 seconds.
+  Every error is exactly unchanged from the immediately preceding completed run.
+- **789 inverse tests**, **855 application tests** and one skipped application
+  test; type checking reports zero errors and seven warnings, lint zero errors
+  and one warning, and the production build succeeds.
+- **Ten Chromium flows** pass through actual upload/example selection, solving,
+  opening in Draw and editable SVG export. Five selected flows additionally
+  download files with PDF signatures. Geometry and paper checks run on the
+  editable outputs. All 153 served build assets, including 84 inverse-engine
+  assets, match the built bytes; inverse assets also match their source files.
+
+The original blue star takes 1.69 seconds for detection and a separate 9.34
+seconds for fitting/validation, with 1.2919% independent mask disagreement.
+Both JPEG quality 75 and half-resolution variants pass at 1.7481% and 2.1440%
+respectively. This is not a direct comparison with the first prototype's
+1.0075%: its crop, and consequently its target, differ.
+
+The browser uses its recorded 180-second allowance and separate clocks. It
+reaches an enabled Open in Draw button in 21.88 seconds for the original star,
+9.51 seconds for half resolution and 4.51 seconds for JPEG. Exported source-mask
+errors are 1.2313%, 1.3288% and 1.7644%. The original and JPEG runs each retain
+all 28 reviewed source-photo observations at classification and export. These
+browser results do not establish a ten-second browser latency bound; the Viking
+takes 28.01 seconds. The full-size and JPEG crop proposals remain `needs_review`.
+
+Actual screenshot inspection confirms plausible paper corners and retained
+star/border structure. It also finds local kinks, protrusions and seams in the
+original and half-resolution reconstructions. JPEG happens to produce smoother
+bands in this run; that difference itself remains a robustness issue. Aggregate
+error and sparse point checks do not certify original cutting paths.
+
+The six unsuccessful cases remain nested squares and Santa (no crop), jigsaw
+and bauble (high disagreement, with visibly misplaced crop proposals), and the
+collage outline star and crossed ribbons (small source-mask features lost despite
+low aggregate error). These categories are diagnostic leads, not proof that each
+failure has a single cause. No acceptance gate was relaxed to raise the pass rate.
+
+The verified build is available at `http://127.0.0.1:5232/editor/mal/`. Nothing
+has been pushed or deployed. Physical assembly remains untested.

@@ -33,36 +33,34 @@ existing QA or connected source groups; the rest still need family, instance
 and usage review before allocation. See the [real audit](real-validation.json)
 and [synthetic asset checks](synthetic-batch.json).
 
-The [latest completed fitter release](visible-shared-returns.md) passed all 22
-regular Hunodan designs below ten seconds (maximum 8.32 seconds) and retained
-24/31 hard photographs, with 781 inverse tests, 855 application tests and eleven
-Chromium flows. These
+The [latest completed fitter release](interior-palette.md) passes all 22
+regular Hunodan designs below ten seconds (maximum 8.05 seconds, unchanged
+errors) and improves hard-photo recovery from 24/31 to **25/31**. All 25 pairs
+also pass production editable conversion and independent geometry/paper checks.
+Verification includes 789 inverse tests, 855 application tests, ten Chromium
+flows, type checking, lint and build. These
 31 photographs are a fixed reconstruction benchmark, not the full collected
 573-file photographic corpus.
 
 The [shared-return follow-up](visible-shared-returns.md) reduces two star notches
 and protects real corners against one-pixel source shifts. Its latest scheduling
 fix, `fa7774c`, reserves time for shared-cut alignment after speculative repairs.
-Fresh checks retain eight fixed crop variants through editable conversion;
-the Viking's 15.21 mm alignment is restored. Full inverse and application
-tests, type checking, lint, build and rebuilt-browser QA pass. The preview at
-`http://127.0.0.1:5232/editor/mal/` serves the checked build. Small score
-differences remain visible in the reports: six photograph errors increase by
-at most 0.041875 percentage points, one improves, and one Hunodan historical
-comparison has the documented paired-run exception. Pass retention does not
-mean every error decreased. Nothing is pushed or deployed.
+Its completed checks retain eight fixed crop variants through editable conversion
+and restore the Viking's 15.21 mm alignment. Historical score differences and
+the earlier Hunodan paired-run exception remain recorded in that report.
 
-The subsequent [interior-tint crop fallback](interior-palette.md) recovers the
-previously undetected blue outlined star. All 73 focused crop tests pass,
-including a fresh photo-to-template regression and source-detail checks. Across
-31 complete photos, the 28 existing crops and classified masks remain identical;
-the other two missing crops remain unresolved. The first full reconstruction run
-improved to 25/31, and all 25 pairs passed editable conversion, but its release
-driver stopped when JPEG recompression caused a missing crop. A bounded repair
-to the physical-paper registration mask now passes eight focused tests,
-including fresh original/JPEG fitting and all 28 reviewed star points. Full
-release QA for that repair is pending; the preview still serves the preceding
-checked release.
+The [interior-tint crop fallback](interior-palette.md) recovers the previously
+undetected blue outlined star. All 28 existing crops and classified masks remain
+identical; the other two missing crops remain unresolved. The first release run
+stopped when JPEG recompression caused a missing crop. A bounded repair to the
+physical-paper registration mask resolves that failure, and the complete replay
+now passes original, JPEG and half-resolution uploads through the browser and
+editable export. Original and JPEG exports retain all 28 reviewed star points.
+The preview at `http://127.0.0.1:5232/editor/mal/` serves the checked build.
+Visible contour defects remain, and the browser's longer search allowance takes
+21.88 seconds for the original star and 28.01 seconds for the Viking; native
+ten-second benchmarks are not browser latency guarantees. Nothing is pushed or
+deployed.
 
 All neural models remain offline. [Balanced corner training and broader angle
 coverage](boundary-localization.md) improve synthetic junction proposals, but
@@ -182,9 +180,9 @@ The Node dataset tests are included in `npm run test:inverse`. The Python
 collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
-The [latest completed release record](visible-shared-returns-release.json) pins
-its solver, application and browser checks, including all 152 served build
-assets. The [release report](visible-shared-returns.md) records focused tests,
+The [latest completed release record](interior-palette-release.json) pins
+its solver, application and browser checks, including all 153 served build
+assets. The [release report](interior-palette.md) records focused tests,
 interrupted attempts, visual limitations and the completed QA separately.
 Earlier validation records remain in the [experiment history](experiment-history.md).
 The synthetic verifiers checked all 5,952 referenced assets, and the real-image
