@@ -53,6 +53,11 @@ node scripts/inverse/diagnostics/return-projection-study.mjs \
 
 Use `--runtime=<inverse directory>` for a frozen runtime copy. The output must
 be new and stays inside this worktree. It records source hashes, stopping
-reasons, geometry identities and timing scope. Full QA and the Hunodan,
-photographic and browser release replays remain required before calling this
-a validated release.
+reasons, geometry identities and timing scope.
+
+The complete QA run on runtime revision `c000d30` passes **853 inverse tests**,
+**857 application tests** (one existing skip), type checking, lint and build.
+All 845 pinned source files remain unchanged. The inverse suite takes 876.88
+seconds; that is test-suite duration, not a solver benchmark. The Hunodan,
+photographic, editable-export and browser comparisons are still pending, so
+`99399ff` remains the last fully validated release.

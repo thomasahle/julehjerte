@@ -128,6 +128,83 @@
     "Timing observations came from serial processes on a shared machine. They do not establish browser or mobile latency.",
     "The anchor comparison contains two fresh processes per method; the baseline succeeds once and fails once.",
     "Independent SVG comparisons cover the repaired anchor at 400 and 800 pixels. The 104 projection probes use separate full geometry checks, not a photographic target.",
-    "Full application/inverse QA and Hunodan/photo/browser release replays are pending on the adopted change."
-  ]
+    "Full QA passes. Fresh Hunodan/photo/editable/browser release comparisons are still pending; 99399ff remains the last fully validated release."
+  ],
+  "fullQA": {
+    "baseCommit": "c000d30f82e323190bb3370c4d9582a8243eed3d",
+    "sourceFilesVerified": 845,
+    "status": "passed",
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.908422958
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.225188082999999
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 24.371685833
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 14.946506458999998
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 876.877963833,
+        "tests": 853,
+        "pass": 853,
+        "fail": 0,
+        "skipped": 0
+      }
+    ],
+    "applicationPassed": 857,
+    "applicationSkipped": 1,
+    "inversePassed": 853,
+    "inverseFailed": 0,
+    "sourceScope": "Pinned application, runtime, harness and existing data files at c000d30. The later eee5518 commit adds only separately verified material annotations and documentation; pinned files are unchanged.",
+    "artifactsSha256": {
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/source.json": "628069ded10264542980061feb7d7ea2d22cdbc2ff026c68c6a2e120a14052b3",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/checks.json": "88108230d3942279e559c301c63efbe3cd3bc99270cf6cc63ea81d912b443053",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/running.json": "d38b7e2d4d8755bb3457d9f8dbca6cf6a2ab3675a921f0d1d08ce384dd7d63d3",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/app.log": "c1b897711e1b2821e158bae877705bdfd63618c22006bab654c1d42c57eab9de",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/build.log": "0c3a2b88dd75d8907e6a3a46fda31e62c0ce075ea017ed2537300cc680448753",
+      "tmp/heart-learning/return-projection-speed-v1/production-qa/inverse.log": "b26669f8eaf71d50c8131618336301bfbaba6f4b0f6b084caf433fc8d3c12099"
+    }
+  }
 }

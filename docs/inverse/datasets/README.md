@@ -46,40 +46,37 @@ with an estimated photographic mask is not agreement with unavailable original
 artwork. Native ten-second results are not browser latency guarantees; the
 Viking browser flow takes 29.12 seconds with its ordinary 180-second allowance.
 
-### Changes undergoing full validation
+### Latest code: full QA passed, release comparisons pending
+
+Runtime revision `c000d30` passes **853/853 inverse tests**, **857 application
+tests** (one existing skip), type checking, lint and build. The pinned run
+verifies all 845 recorded source files. Fresh Hunodan, photographic, editable
+export and browser comparisons are running separately; `99399ff` remains the
+last fully validated release until those comparisons finish.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
-curve-refinement time for grids that nearly meet the image limit, while keeping
-routing priority when the grid loses a protected feature. It also permits
-bounded repair and final paper checks within the caller's original deadline.
-A fixed shifted-star prototype improves independent disagreement from 2.9869%
-to 0.7569%, and the leaf from 2.5625% to 1.32875%; the original benchmark still
-has 25/31 successes. A first full run exposed a missing-region regression,
-which is corrected and retained in [the validation record](routing-budget-blend.json).
-The next full run passes 848/850 inverse tests, exposing a skipped junction
-retry and another weak-region routing regression. The [subsequent routing correction](routing-retry-budget.json) preserves
-feature-tradeoff routing and admits a useful smaller junction probe. Focused
-validation remains incomplete, including deadline-sensitive failures under
-concurrent system load. Corpus and browser jobs have not run on this correction.
-The latest production focused run passes 11/14. Offline
-[initialization-budget trials](routing-initialization-budget.md) recover a
-failing sloth mask in isolation. Shortening initialization alone passes only
-11/14 focused tests; also allowing more repair within the caller deadline passes
-14/14. Those budget changes are not adopted. A separate confirmed bug charged
-earlier native HiGHS time twice on later rounds; resetting its native clocks
-while retaining the outer deadline fixes the new regression test. Eighteen
-targeted tests, type checking and lint pass. Broad application QA has one anchor
-repair failure (856 pass, one skip), also reproduced on the frozen validated
-runtime. Build and all 852 inverse tests pass; full QA is not green. Diagnostic reports now retain
-per-round search timing, skipped-repair reasons and initialization costs even
-when recovery succeeds.
+curve-refinement time for nearly fitting grids while retaining routing priority
+when a grid loses a protected feature. Its fixed shifted-star prototype improves
+independent disagreement from 2.9869% to 0.7569%, and the leaf from 2.5625% to
+1.32875%; these are earlier experimental results, not new corpus measurements.
+Subsequent fixes preserve feature-tradeoff routing and useful small junction
+probes. A confirmed HiGHS clock bug charged previous native solve time again
+on later rounds; resetting native clocks preserves the outer deadline and
+restores the intended per-round budget. Reports retain search timing,
+skipped-repair reasons and initialization costs.
 
-The adopted [return-projection optimization](return-projection-speed.md)
-addresses the anchor repair's repeated validation cost. It preserves all 104
-probe decisions and all 27 accepted cut geometries while reducing their total
-projection time by about 30%. Twelve focused geometry tests and the anchor
-application test pass. Broad QA and release comparisons are pending on this
-change; the initialization and repair-budget experiments remain unadopted.
+The [return-projection optimization](return-projection-speed.md) addresses a
+separate anchor-repair timeout, also reproduced on the older validated runtime.
+It preserves all 104 probe decisions and all 27 accepted cut geometries while
+reducing their total projection time by about 30%. Intermediate iterations check
+the return constraints; the complete geometry validator still gates every
+returned repair. The full QA run includes the previously failing anchor case.
+This is a local-operation speed result, not whole-pipeline or browser latency.
+
+Earlier failed checks remain in the [routing](routing-budget-blend.json),
+[retry](routing-retry-budget.json) and
+[clock/initialization](routing-initialization-budget.md) records. The separate
+initialization and repair-budget experiments remain unadopted.
 
 A separate [render-test correction](shape-render-validation.md) avoids system
 font discovery for text-free SVGs. All 152 paired renders are byte-identical;
@@ -225,8 +222,9 @@ collector tests are offline and require Pillow, which is already present in
 the collection environment. No new project dependencies were installed.
 
 The [latest completed release record](small-feature-release.json) pins
-its solver, application and browser checks. Newer scheduling changes are still
-under verification in [their separate record](routing-budget-blend.json).
+its solver, application and browser checks. The newer runtime passes full QA
+in [its separate record](return-projection-speed.json); release replays remain
+pending.
 Earlier and interrupted validation runs remain in the
 [experiment history](experiment-history.md).
 The synthetic verifiers checked all 5,952 referenced assets, and the real-image
