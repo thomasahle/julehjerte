@@ -98,6 +98,16 @@ gold paper and hands occluding a heart, with uncertain contact regions withheld.
 More checked real labels, distinct motif
 families and complete photo-to-export measurements are the next data priorities.
 
+The [six-label frozen follow-up](real-supplement-diagnostic.md) now evaluates
+the additions without training. The scene-trained model has 87.20% mean
+known-region foreground IoU, versus 50.28% for its background-only control.
+Complete reconstruction checks pass 2/6 with its fields, 0/6 with the control
+and 1/6 with the current production cropper. All three accepted pairs survive
+editable conversion. Reflective wood, hands and inadequate lobe-outline evidence
+remain failures, and the blue/yellow checker still uses an extra slit. These
+six inspected observations are separate from both the original ten-photo pilot
+and the fixed 31-photo benchmark; the model is not deployed.
+
 The [experiment history](experiment-history.md) retains the earlier studies,
 failed alternatives and verification records without mixing their historical
 scores into the current summary.
