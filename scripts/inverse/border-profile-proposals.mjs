@@ -8,6 +8,14 @@ import { alternatingRuns } from '../../static/inverse/core/direct/initialize.js'
 
 const compareCost = (a, b) => Math.round(a * 1e10) - Math.round(b * 1e10);
 
+function validateInput(mask, n, width, minimumWidth) {
+  if (!Number.isInteger(n) || n < 4 || n > 2048 || mask.length !== n * n ||
+      !mask.every(p => p === 0 || p === 1)) throw new Error('Expected a square binary mask, 4–2048 pixels per side.');
+  if (!Number.isFinite(width) || width <= 0 || !Number.isFinite(minimumWidth) || minimumWidth <= 0) {
+    throw new Error('Expected positive finite physical dimensions.');
+  }
+}
+
 /** Minimum expected pixel disagreement for alternating binary runs, for both
  * phases and each positive transition count. Prefix costs plus a running
  * minimum give O(n * maximumCount), including minimum outer-edge spacing.
@@ -73,10 +81,8 @@ export function proposeBoundaryProfiles(mask, n, width, minimumWidth, {
   maximumCount = 16, editRadius = Math.min(3, .08 * width),
   profileStart = Math.min(1, .04 * width), profileEnd = Math.min(4, .16 * width), limit = 8,
 } = {}) {
-  if (!Number.isInteger(n) || n < 4 || n > 2048 || mask.length !== n * n ||
-      !mask.every(p => p === 0 || p === 1)) throw new Error('Expected a square binary mask, 4–2048 pixels per side.');
-  if (!Number.isFinite(width) || width <= 0 || !Number.isFinite(minimumWidth) || minimumWidth <= 0 ||
-      !Number.isFinite(editRadius) || editRadius <= 0 || editRadius > Math.min(3, .08 * width) ||
+  validateInput(mask, n, width, minimumWidth);
+  if (!Number.isFinite(editRadius) || editRadius <= 0 || editRadius > Math.min(3, .08 * width) ||
       !Number.isFinite(profileStart) || !Number.isFinite(profileEnd) || profileStart < 0 ||
       profileEnd < profileStart || profileEnd > .16 * width) throw new Error('Invalid physical strip spacing or bounded border/profile radii.');
   if (!Number.isInteger(maximumCount) || maximumCount < 1 || maximumCount > 16 ||
@@ -133,8 +139,10 @@ export function proposeBoundaryProfiles(mask, n, width, minimumWidth, {
 /** Experimental alternative to extruding one edge profile. Start inside the
  * bounded band and fit each row outward, penalizing transition jumps from the
  * preceding row. This can remove a narrow fringe all the way to its inward end
- * instead of turning it into an enclosed notch. Counts/phase still come only
- * from image evidence. Neither this mask nor its inferred counts are labels.
+ * instead of turning it into an enclosed notch. Require all four inner rows to
+ * support one coherent count/phase pair and strip spacing without edits. This
+ * cheap check avoids forcing continuity from contradictory photographic data.
+ * At most one proposal is returned; its counts are hypotheses, never labels.
  *
  * The prior is deliberately soft: steep real cuts may move, and every candidate
  * still requires independent checks against the unmodified source. This is not
@@ -142,54 +150,61 @@ export function proposeBoundaryProfiles(mask, n, width, minimumWidth, {
  * border-seed bound of eight percent, capped here at eight millimeters.
  */
 export function proposeSmoothBoundaryProfiles(mask, n, width, minimumWidth, {
-  limit = 3, depthMm = Math.min(8, .08 * width), rowPriorWeight = 100,
+  limit = 1, depthMm = Math.min(8, .08 * width), rowPriorWeight = 100,
 } = {}) {
+  validateInput(mask, n, width, minimumWidth);
   if (!Number.isFinite(depthMm) || depthMm <= 0 || depthMm > Math.min(8, .08 * width) ||
       !Number.isFinite(rowPriorWeight) || rowPriorWeight < 0 || rowPriorWeight > 1000) {
     throw new Error('Use a bounded positive border depth and a finite row prior between zero and 1000.');
   }
-  const seeds = proposeBoundaryProfiles(mask, n, width, minimumWidth, { limit });
+  if (!Number.isInteger(limit) || limit < 1 || limit > 8) throw new Error('Use a proposal limit between one and eight.');
   const depth = Math.floor(depthMm * n / width), minimum = Math.ceil(minimumWidth * n / width);
-  if (!depth || !seeds.length) return [];
+  if (!depth) return [];
   const read = (side, k) => Float64Array.from({ length: n }, (_, t) =>
     mask[side === 0 ? k * n + t : side === 1 ? t * n + n - 1 - k :
       side === 2 ? (n - 1 - k) * n + t : t * n + k]);
-  const inner = Array.from({ length: 4 }, (_, side) => new Map(
-    fitBoundaryProfile(read(side, depth), minimum).map(f => [f.count + ':' + f.phase, f])));
-  return seeds.map(seed => {
-    const [a, b] = seed.metadata.counts, p = seed.metadata.phase;
-    const counts = [a, b, a, b], phases = [p, p ^ (a % 2), p ^ (b % 2), p];
-    const profiles = Array.from({ length: 4 }, () => []);
-    for (let side = 0; side < 4; side++) {
-      let prior = inner[side].get(counts[side] + ':' + phases[side]).transitions.map(t => t / n);
-      for (let k = depth - 1; k >= 0; k--) {
-        const cuts = alternatingRuns(read(side, k), counts[side], phases[side], prior,
-          { minimum, weight: rowPriorWeight });
-        prior = cuts;
-        const row = new Uint8Array(n);
-        let color = phases[side], start = 0;
-        for (const end of [...cuts.map(t => Math.round(t * n)), n]) {
-          row.fill(color, start, end); color ^= 1; start = end;
-        }
-        profiles[side][k] = row;
-      }
-    }
-    const out = mask.slice();
-    let changed = 0;
-    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
-      const distances = [y, n - 1 - x, n - 1 - y, x], k = Math.min(...distances);
-      if (k >= depth) continue;
-      const side = distances.indexOf(k), i = y * n + x;
-      out[i] = profiles[side][k][side % 2 ? y : x];
-      changed += out[i] !== mask[i];
-    }
-    return { mask: out, metadata: { ...seed.metadata,
-      method: 'smooth-row-wise-minimum-run-border', rowPriorWeight,
-      profileTransitions: seed.metadata.transitions,
-      transitions: profiles.map(rows => Array.from({ length: n - 1 }, (_, i) => i + 1)
-        .filter(i => rows[0][i] !== rows[0][i - 1])),
-      editRadiusMm: depthMm, editedBandWidthMm: depth * width / n, depthPixels: depth,
-      changedPixels: changed, changeFraction: changed / mask.length,
-    } };
+  const inner = Array.from({ length: 4 }, (_, side) => {
+    const row = read(side, depth), transitions = [];
+    for (let i = 1; i < n; i++) if (row[i] !== row[i - 1]) transitions.push(i);
+    const points = [0, ...transitions, n];
+    return { count: transitions.length, phase: row[0], transitions,
+      minimumRun: Math.min(...points.slice(1).map((end, i) => end - points[i])) };
   });
+  const [a, b] = inner.map(row => row.count), p = inner[0].phase;
+  const counts = [a, b, a, b], phases = [p, p ^ (a % 2), p ^ (b % 2), p];
+  if (inner.some((row, side) => row.count < 1 || row.count > 16 || row.minimumRun < minimum ||
+      row.count !== counts[side] || row.phase !== phases[side])) return [];
+  const profiles = Array.from({ length: 4 }, () => []);
+  for (let side = 0; side < 4; side++) {
+    let prior = inner[side].transitions.map(t => t / n);
+    for (let k = depth - 1; k >= 0; k--) {
+      const cuts = alternatingRuns(read(side, k), counts[side], phases[side], prior,
+        { minimum, weight: rowPriorWeight });
+      prior = cuts;
+      const row = new Uint8Array(n);
+      let color = phases[side], start = 0;
+      for (const end of [...cuts.map(t => Math.round(t * n)), n]) {
+        row.fill(color, start, end); color ^= 1; start = end;
+      }
+      profiles[side][k] = row;
+    }
+  }
+  const out = mask.slice();
+  let changed = 0;
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+    const distances = [y, n - 1 - x, n - 1 - y, x], k = Math.min(...distances);
+    if (k >= depth) continue;
+    const side = distances.indexOf(k), i = y * n + x;
+    out[i] = profiles[side][k][side % 2 ? y : x];
+    changed += out[i] !== mask[i];
+  }
+  return [{ mask: out, metadata: {
+    method: 'smooth-row-wise-minimum-run-border', rowPriorWeight,
+    initializationOnly: true, counts: [a, b], phase: p, minimumPixels: minimum,
+    innerSupport: inner,
+    transitions: profiles.map(rows => Array.from({ length: n - 1 }, (_, i) => i + 1)
+      .filter(i => rows[0][i] !== rows[0][i - 1])),
+    editRadiusMm: depthMm, editedBandWidthMm: depth * width / n, depthPixels: depth,
+    changedPixels: changed, changeFraction: changed / mask.length,
+  } }];
 }

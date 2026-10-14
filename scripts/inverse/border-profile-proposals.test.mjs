@@ -157,5 +157,21 @@ test('smooth border proposals preserve clean slanted cuts and the interior at th
   const d=out.metadata.depthPixels;
   for(let y=d;y<n-d;y++)for(let x=d;x<n-d;x++)assert.equal(out.mask[y*n+x],noisy[y*n+x]);
   assert.deepEqual(noisy,before);
-  for(const options of [{depthMm:9},{depthMm:0},{rowPriorWeight:NaN},{rowPriorWeight:-1}])assert.throws(()=>proposeSmoothBoundaryProfiles(clean,n,100,2.5,options));
+  for(const options of [{depthMm:9},{depthMm:0},{rowPriorWeight:NaN},{rowPriorWeight:-1},{limit:0},{limit:9}])assert.throws(()=>proposeSmoothBoundaryProfiles(clean,n,100,2.5,options));
+});
+
+test('a continuity proposal needs observed inner endpoints rather than fitted-away contradictions',()=>{
+  const n=128,depth=Math.floor(.08*n),clean=Uint8Array.from({length:n*n},(_,i)=>(Math.floor(i%n/32)+Math.floor(Math.floor(i/n)/32))%2);
+  assert.equal(proposeSmoothBoundaryProfiles(clean,n,100,2.5).length,1);
+  const contradictory=clean.slice();
+  // Two additional well-spaced transitions on one inner row. Both counts are
+  // plausible alone, but continuity through this band cannot assume they agree.
+  for(let x=14;x<22;x++)contradictory[depth*n+x]^=1;
+  const before=contradictory.slice();
+  assert.deepEqual(proposeSmoothBoundaryProfiles(contradictory,n,100,2.5),[]);
+  assert.deepEqual(contradictory,before);
+  const uncertain=clean.slice();uncertain[depth*n+17]^=1;
+  assert.deepEqual(proposeSmoothBoundaryProfiles(uncertain,n,100,2.5),[],'A sub-strip run is not a reliable anchor for the strong row prior.');
+  assert.deepEqual(proposeSmoothBoundaryProfiles(new Uint8Array(n*n),n,100,2.5),[],'A blank inner band does not establish a pair of slit families.');
+  assert.throws(()=>proposeSmoothBoundaryProfiles(new Uint8Array(n*n).fill(2),n,100,2.5));
 });
