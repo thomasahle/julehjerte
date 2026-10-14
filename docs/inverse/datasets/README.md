@@ -22,7 +22,7 @@ The 2026-10-14 snapshot contains:
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
-| Real visible-body annotations | 14 | Twelve source groups outside reserved source QA; uncertain pixels excluded. The original ten-instance adaptation pilot is unchanged; four reviewed additions have not entered training. |
+| Real visible-body annotations | 16 | Fourteen source groups outside reserved source QA; uncertain pixels excluded. The original ten-instance adaptation pilot is unchanged; six reviewed additions have not entered training. |
 
 ## Current results and limits
 
@@ -83,7 +83,9 @@ unknown pixels, grouping and scope. A [two-image supplement](real-annotation-sup
 adds blue/yellow paper and decorated baskets on pale backgrounds, with no model
 replay yet. [Two more annotations](real-motif-annotations.md) add boar/rabbit
 motifs, a clipped lobe and textured fabric with strong shadows; they also remain
-outside training. More checked real labels, distinct motif
+outside training. The [scene supplement](real-scene-annotations.md) adds reflective
+gold paper and hands occluding a heart, with uncertain contact regions withheld.
+More checked real labels, distinct motif
 families and complete photo-to-export measurements are the next data priorities.
 
 The [experiment history](experiment-history.md) retains the earlier studies,

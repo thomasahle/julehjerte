@@ -1,0 +1,185 @@
+{
+  "schema": "real-scene-body-annotation-review-1",
+  "scope": "Reflective paper and hand-occlusion body labels; no cuts, exact corners or model training. Original pilot and supplementary annotations unchanged.",
+  "verification": {
+    "passed": true,
+    "instances": 2,
+    "sourceGroups": 2,
+    "approximateOverlapReferences": 0,
+    "manifestSha256": "9c56cb19aa21fe5bd9e68dd4a39bdb1540dc612b5774a458fd1f2cbb6fc556b8",
+    "annotationsSha256": "7d185809520a82ea2eb2a7fd2da569140baacf9f2642f256b0573eecc95ec43a",
+    "scope": "All source hashes, inherited groups, transforms, known/unknown labels and RGB pixels; not an independent human annotation audit."
+  },
+  "totalInstances": 16,
+  "totalSourceGroups": 14,
+  "addedInstances": 2,
+  "addedGroups": 2,
+  "newGroupsDisjointFromEarlierLabels": true,
+  "globalAllocation": "unassigned",
+  "crossCorpusMotifReview": "pending",
+  "sourceHashes": {
+    "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+    "scripts/inverse/datasets/real-annotations-supplement.json": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25",
+    "scripts/inverse/datasets/real-annotations-motifs.json": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e",
+    "scripts/inverse/datasets/real-annotations-scenes.json": "7d185809520a82ea2eb2a7fd2da569140baacf9f2642f256b0573eecc95ec43a",
+    "docs/inverse/datasets/real-manifest.json": "a900f3f3baaeba87e4d5bb3eedc595f0276ca1684110cdd4dc1f3ba1cc531dd8",
+    "scripts/inverse/datasets/real_annotations.py": "c494ee86dd54020e0f8a6ad61e62d88ed20d05552469e798878fbbd3a402176a"
+  },
+  "sources": [
+    {
+      "id": "real-4066fe9f9aafb3e4",
+      "sha256": "4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d",
+      "localPath": "tmp/heart-training-real/assets/4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d.jpg",
+      "splitGroupId": "real-split-5c5fcfc680c78574",
+      "splitStatus": "unassigned",
+      "nearDuplicateGroup": "real-4066fe9f9aafb3e4",
+      "trainingRightsStatus": "not-cleared"
+    },
+    {
+      "id": "real-cdae5c890b6933cd",
+      "sha256": "cdae5c890b6933cdbdf4182133239e0cfd3e965bf289617aea32a74266e59c51",
+      "localPath": "tmp/heart-training-real/assets/cdae5c890b6933cdbdf4182133239e0cfd3e965bf289617aea32a74266e59c51.jpg",
+      "splitGroupId": "real-split-e15997e1ba929b7f",
+      "splitStatus": "unassigned",
+      "nearDuplicateGroup": "real-cdae5c890b6933cd",
+      "trainingRightsStatus": "not-cleared"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/943-outline.png",
+      "bytes": 445065,
+      "sha256": "e62b400cf5bf14551e246cd83597e63f3855ec0451c50ad7c53e5fc0a3e17e81"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/977-outline.png",
+      "bytes": 259948,
+      "sha256": "78fc3b99166cf29b0d54d6b0339e0c25b1ee9deba67061f026980a89cf3be6e1"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/build-draft.py",
+      "bytes": 4191,
+      "sha256": "abe9926fc6f02113b9c193c228a229cb8c4b979de80a66ea7a90bb06f2f59ab4"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/candidates.json",
+      "bytes": 69051,
+      "sha256": "0e234a732c1592207a4c7c84cfc39666d9740fc1ca0293b6f333a72ad935184e"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/contact.png",
+      "bytes": 863450,
+      "sha256": "1c96e6f2e3b9a5818595c04968483aba79264b58a9d1f2ea4672d8585f6c72ba"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft-export-v2.log",
+      "bytes": 419,
+      "sha256": "ea98214f86d836978b22c837825ca070fd6309a8de1fd71a42ef96104e5116e5"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft-export.log",
+      "bytes": 1164,
+      "sha256": "754b59e0dabb476bd0b1a02b7fdb01cfc212dbcba9ea71a9ab1b7ab080e88944"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft-labels/index.html",
+      "bytes": 1644,
+      "sha256": "b7b61c668d908da75c0974b57dfa1b2cec771492e20920b264120b4b68d95302"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft-labels/manifest.json",
+      "bytes": 3292,
+      "sha256": "3d6436aa957809623f2f7fb22e4ed5f76bd8be35423c65beec062da1cfdba7fe"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft-labels/real-4066fe9f9aafb3e4-body-1-labels.png",
+      "bytes": 1339,
+      "sha256": "301692f8357525e17711440a4cbf3c9b0ab6097c412b1b228db034d0ae5f3444"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft-labels/real-4066fe9f9aafb3e4-body-1-overlay.png",
+      "bytes": 57690,
+      "sha256": "af798944e0944c4d23b4fa62dfdcef183f0be4b5df23f34f874f6cc3b040989d"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft-labels/real-4066fe9f9aafb3e4-body-1-rgb.png",
+      "bytes": 59692,
+      "sha256": "93cab5ca4861463b579c18139579554592b7820482ee056ede4da0f9697c7760"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft-labels/real-cdae5c890b6933cd-body-1-labels.png",
+      "bytes": 1230,
+      "sha256": "82034f178126c4545cfccbea02c829b30aed0e511caf73ebea89c582383c79fe"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft-labels/real-cdae5c890b6933cd-body-1-overlay.png",
+      "bytes": 45098,
+      "sha256": "f9073c68a266f72434c238dc3d49c167367ebc13b4fccc640a92056c84f9fd35"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft-labels/real-cdae5c890b6933cd-body-1-rgb.png",
+      "bytes": 46753,
+      "sha256": "76b64dca5c7ab64e4da6ab4a00fb68aa1a06e1ebb914a3f629b9deb38878d1c5"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/draft.json",
+      "bytes": 9162,
+      "sha256": "1ac08e145f80393491ca3ad2f61648033c66a614a54d6a7b514b6d19c9b7ff43"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/reviewed-export.log",
+      "bytes": 419,
+      "sha256": "5bd593cc52a88a335b3b06e9977d69dbba9805282c62f06a7089a61224a987d5"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels/index.html",
+      "bytes": 1776,
+      "sha256": "73bfdd5db30d9fdcac0b49c68f875c4a04bbf596097f36a1a983f4a638938635"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels/manifest.json",
+      "bytes": 3292,
+      "sha256": "9c56cb19aa21fe5bd9e68dd4a39bdb1540dc612b5774a458fd1f2cbb6fc556b8"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels/real-4066fe9f9aafb3e4-body-1-labels.png",
+      "bytes": 1339,
+      "sha256": "301692f8357525e17711440a4cbf3c9b0ab6097c412b1b228db034d0ae5f3444"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels/real-4066fe9f9aafb3e4-body-1-overlay.png",
+      "bytes": 57690,
+      "sha256": "af798944e0944c4d23b4fa62dfdcef183f0be4b5df23f34f874f6cc3b040989d"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels/real-4066fe9f9aafb3e4-body-1-rgb.png",
+      "bytes": 59692,
+      "sha256": "93cab5ca4861463b579c18139579554592b7820482ee056ede4da0f9697c7760"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels/real-cdae5c890b6933cd-body-1-labels.png",
+      "bytes": 1230,
+      "sha256": "82034f178126c4545cfccbea02c829b30aed0e511caf73ebea89c582383c79fe"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels/real-cdae5c890b6933cd-body-1-overlay.png",
+      "bytes": 45098,
+      "sha256": "f9073c68a266f72434c238dc3d49c167367ebc13b4fccc640a92056c84f9fd35"
+    },
+    {
+      "path": "tmp/heart-learning/real-scene-annotation-v1/reviewed-labels/real-cdae5c890b6933cd-body-1-rgb.png",
+      "bytes": 46753,
+      "sha256": "76b64dca5c7ab64e4da6ab4a00fb68aa1a06e1ebb914a3f629b9deb38878d1c5"
+    },
+    {
+      "path": "tmp/heart-training-real/assets/4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d.jpg",
+      "bytes": 52363,
+      "sha256": "4066fe9f9aafb3e438164061c8d0c56d2b3db2e5ea5ad654aea46acf760ef49d"
+    },
+    {
+      "path": "tmp/heart-training-real/assets/cdae5c890b6933cdbdf4182133239e0cfd3e965bf289617aea32a74266e59c51.jpg",
+      "bytes": 31104,
+      "sha256": "cdae5c890b6933cdbdf4182133239e0cfd3e965bf289617aea32a74266e59c51"
+    }
+  ]
+}
