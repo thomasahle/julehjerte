@@ -88,8 +88,26 @@ retained ordinary finalist, requires its geometry/paper/colour checks, caches
 both preparations and keeps the original queue. Genuine missing-feature starts
 retain their previous policy. A fresh replay recovers the checker at 2.279%
 disagreement. Both the new checker regression and the existing faded-frame
-weak-region regression pass. The full suite and corpus still need a fresh run.
+weak-region regression pass.
+
+The fresh full native run on `87a612b` passes all **22 Hunodan designs**, with a
+maximum of **7.827 seconds** and all errors exactly equal to the last fully
+validated release. The 31 complete hard photographs retain all **25** accepted
+pairs. All 25 pass editable conversion, SVG serialization/parsing, the editor's
+intersection rules, and independent geometry/paper and source-feature checks.
+All 47 catalogue entries retain their previous source pixels, crop coordinates
+and classified/fitting targets. The six unresolved complete photographs remain
+in the denominator.
+
+Against the preceding full photo run, 12 accepted errors improve, 11 are equal,
+and two increase; the largest increase is 0.00375 percentage points for the orb.
+The checker measures 2.168% in this full run. Visual review still finds rounded
+cell corners and thin border details, so the pass count is not a claim of exact
+artwork recovery. The [native evidence](row-initialization-native.json) pins 217
+artifacts and the checked 553-file source manifest.
 
 The previous full inverse run was not green; focused passes do not replace that
-result. The preview remains on its previously checked build until the new corpus
-and repository checks complete. Nothing is pushed or deployed.
+result. The current type check, lint and all 855 application tests pass (one
+existing application skip). Full inverse tests, build and browser checks are
+still running or queued. The preview remains on its previously checked build
+until those checks complete. Nothing is pushed or deployed.

@@ -28,6 +28,13 @@ The 2026-10-14 snapshot contains:
 
 ## Current results and limits
 
+The [row-initialization and scheduling candidate](row-initialization.md) now
+passes all 22 regular Hunodan designs below ten seconds (maximum 7.827 seconds,
+unchanged validated errors) and retains 25/31 hard-photo recoveries. All 25
+editable exports pass independent geometry/paper checks. Native comparisons
+preserve every source image, crop and target. Full inverse/build/browser QA is
+still pending, so this is not yet a replacement for the completed release below.
+
 The [Pinterest expansion](real-pinterest-expansion.md) includes all four supplied
 pins. Download success, photograph count, heart-instance count and motif-family
 count are different measures. Of the 1,034 source files, 476 are now reserved by
