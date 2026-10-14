@@ -1,0 +1,813 @@
+{
+  "schema": "visible-return-alignment-budget-1",
+  "runtimeCommit": "fa7774c2aff124def820e0423cf28f2920d6e24b",
+  "status": "Focused tests and controlled cleanup/fresh-photo probes complete. New full serial release QA is separate and unfinished.",
+  "scope": "Reserve final shared-alignment time from new cross-sheet topology proposals. The frozen-geometry continuations isolate scheduling; fresh photo solves have different earlier trajectories and do not establish a quality gain. Local phase cutoffs are soft at completed candidate checks: measured cleanup duration can exceed its nominal 250/350 ms allowance, within the caller\u2019s overall export reserve.",
+  "continuations": [
+    {
+      "policy": "prior-release",
+      "repeat": "1",
+      "budgetMilliseconds": 250,
+      "runtimeCommit": "14e6dbfd7d116e87e031af16670f615b047fc2c8",
+      "sourceSha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+      "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "geometrySha256": "77e3bc51283862083072c7443e5eb14e349f7bc8b3ff2840e5f481852d04b2c4",
+      "diagnostic": "Continuation from one frozen unaligned incumbent, not a fresh photo solve. Identical source, coordinates and nominal cleanup allowance.",
+      "errorBefore": 0.02024375,
+      "errorAfter": 0.02024375,
+      "cleanupSeconds": 0.31294041600000017,
+      "passed": true,
+      "repair": {
+        "segmentsBefore": 221,
+        "segmentsAfter": 219,
+        "removedOccurrences": 2,
+        "conflictingJunctions": 0,
+        "visibleBoundaryContractions": 2,
+        "sourceErrorBefore": 0.02011875,
+        "applied": false,
+        "refinementSteps": 0,
+        "rejection": "refinement_geometry",
+        "seconds": 0.15055549999999993
+      },
+      "sharing": {
+        "accepted": [],
+        "rejected": [],
+        "errorBefore": 0.02011875,
+        "errorAfter": 0.02011875,
+        "applied": false,
+        "seconds": 0.12016870900000004
+      }
+    },
+    {
+      "policy": "prior-release",
+      "repeat": "1",
+      "budgetMilliseconds": 350,
+      "runtimeCommit": "14e6dbfd7d116e87e031af16670f615b047fc2c8",
+      "sourceSha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+      "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "geometrySha256": "77e3bc51283862083072c7443e5eb14e349f7bc8b3ff2840e5f481852d04b2c4",
+      "diagnostic": "Continuation from one frozen unaligned incumbent, not a fresh photo solve. Identical source, coordinates and nominal cleanup allowance.",
+      "errorBefore": 0.02024375,
+      "errorAfter": 0.0202375,
+      "cleanupSeconds": 0.569928541,
+      "passed": true,
+      "repair": {
+        "segmentsBefore": 221,
+        "segmentsAfter": 219,
+        "removedOccurrences": 2,
+        "conflictingJunctions": 0,
+        "visibleBoundaryContractions": 2,
+        "sourceErrorBefore": 0.02011875,
+        "applied": false,
+        "refinementSteps": 0,
+        "rejection": "refinement_geometry",
+        "seconds": 0.1585586659999999
+      },
+      "sharing": {
+        "accepted": [
+          {
+            "i": 2,
+            "j": 1,
+            "a0": 1.1750544274893635,
+            "a1": 2.198447769698326,
+            "b0": 12.346259311729408,
+            "b1": 10.483179529795045,
+            "length": 15.21342694554668,
+            "blend": 0.5,
+            "errorBefore": 0.0216522216796875,
+            "errorAfter": 0.0216522216796875,
+            "bigErrorBefore": 0.020294189453125,
+            "bigErrorAfter": 0.02027130126953125,
+            "sourceErrorBefore": 0.02011875,
+            "sourceErrorAfter": 0.0201125
+          }
+        ],
+        "rejected": [],
+        "errorBefore": 0.02011875,
+        "errorAfter": 0.0201125,
+        "applied": true,
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        },
+        "seconds": 0.36539695800000027
+      }
+    },
+    {
+      "policy": "production",
+      "repeat": "1",
+      "budgetMilliseconds": 250,
+      "runtimeCommit": "fa7774c2aff124def820e0423cf28f2920d6e24b",
+      "sourceSha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+      "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "geometrySha256": "77e3bc51283862083072c7443e5eb14e349f7bc8b3ff2840e5f481852d04b2c4",
+      "diagnostic": "Continuation from one frozen unaligned incumbent, not a fresh photo solve. Identical source, coordinates and nominal cleanup allowance.",
+      "errorBefore": 0.02024375,
+      "errorAfter": 0.0202375,
+      "cleanupSeconds": 0.4641983330000001,
+      "passed": true,
+      "repair": null,
+      "sharing": {
+        "accepted": [
+          {
+            "i": 2,
+            "j": 1,
+            "a0": 1.1750544274893635,
+            "a1": 2.198447769698326,
+            "b0": 12.346259311729408,
+            "b1": 10.483179529795045,
+            "length": 15.21342694554668,
+            "blend": 0.5,
+            "errorBefore": 0.0216522216796875,
+            "errorAfter": 0.0216522216796875,
+            "bigErrorBefore": 0.020294189453125,
+            "bigErrorAfter": 0.02027130126953125,
+            "sourceErrorBefore": 0.02011875,
+            "sourceErrorAfter": 0.0201125
+          }
+        ],
+        "rejected": [],
+        "errorBefore": 0.02011875,
+        "errorAfter": 0.0201125,
+        "applied": true,
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        },
+        "seconds": 0.38465112499999987
+      }
+    },
+    {
+      "policy": "production",
+      "repeat": "1",
+      "budgetMilliseconds": 350,
+      "runtimeCommit": "fa7774c2aff124def820e0423cf28f2920d6e24b",
+      "sourceSha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+      "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "geometrySha256": "77e3bc51283862083072c7443e5eb14e349f7bc8b3ff2840e5f481852d04b2c4",
+      "diagnostic": "Continuation from one frozen unaligned incumbent, not a fresh photo solve. Identical source, coordinates and nominal cleanup allowance.",
+      "errorBefore": 0.02024375,
+      "errorAfter": 0.0202375,
+      "cleanupSeconds": 0.48192616700000007,
+      "passed": true,
+      "repair": null,
+      "sharing": {
+        "accepted": [
+          {
+            "i": 2,
+            "j": 1,
+            "a0": 1.1750544274893635,
+            "a1": 2.198447769698326,
+            "b0": 12.346259311729408,
+            "b1": 10.483179529795045,
+            "length": 15.21342694554668,
+            "blend": 0.5,
+            "errorBefore": 0.0216522216796875,
+            "errorAfter": 0.0216522216796875,
+            "bigErrorBefore": 0.020294189453125,
+            "bigErrorAfter": 0.02027130126953125,
+            "sourceErrorBefore": 0.02011875,
+            "sourceErrorAfter": 0.0201125
+          }
+        ],
+        "rejected": [],
+        "errorBefore": 0.02011875,
+        "errorAfter": 0.0201125,
+        "applied": true,
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        },
+        "seconds": 0.4048810839999999
+      }
+    }
+  ],
+  "fresh": [
+    {
+      "id": "flettede-viking",
+      "policy": "prior-release",
+      "repeat": 1,
+      "runtimeCommit": "14e6dbfd7d116e87e031af16670f615b047fc2c8",
+      "sourceSha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+      "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "sourceMode": "fixed photograph and production crop, fresh binary target, no saved cuts",
+      "preparedSeconds": 0.48864554200000004,
+      "solveSeconds": 9.415901416999999,
+      "independentImageError": 0.02035,
+      "passed": true,
+      "outlineDetail": {
+        "residualCoreFraction": 0.00089375,
+        "addedCurves": 51,
+        "fixedBorderMm": 8,
+        "maximumLengthMm": 4,
+        "frozenCoordinates": 382,
+        "applied": true,
+        "errorBefore": 0.0243125,
+        "errorAfter": 0.02031875,
+        "steps": 70,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    },
+    {
+      "id": "flettede-viking",
+      "policy": "production",
+      "repeat": 1,
+      "runtimeCommit": "fa7774c2aff124def820e0423cf28f2920d6e24b",
+      "sourceSha256": "c45ccc34f7db2462485c138435c4b258665a450dd51e8c9ff59d12ef41b0dd96",
+      "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "sourceMode": "fixed photograph and production crop, fresh binary target, no saved cuts",
+      "preparedSeconds": 0.51704575,
+      "solveSeconds": 9.392662291,
+      "independentImageError": 0.02096875,
+      "passed": true,
+      "outlineDetail": {
+        "residualCoreFraction": 0.00096875,
+        "addedCurves": 51,
+        "fixedBorderMm": 8,
+        "maximumLengthMm": 4,
+        "frozenCoordinates": 388,
+        "applied": true,
+        "errorBefore": 0.02475625,
+        "errorAfter": 0.02088125,
+        "steps": 70,
+        "geometryPassed": true,
+        "paperStatus": "pass"
+      }
+    }
+  ],
+  "sourceHashes": {
+    "static/inverse/LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+    "static/inverse/THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+    "static/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/crop.js": "e44d3179ca229cb645779af3550ab2736547104c46684e0ccee402a1d1875ea6",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+    "static/inverse/core/direct/fit.js": "c2a838f842a6a9c4ca6e13eac1526e0f819f14a5cae58ac8a5c44c7ce2067fd6",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "50ec70198f735c32be604ae73e0c1d68dd4c8b30b9586595014c0f9adbfdd833",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+    "static/inverse/examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+    "static/inverse/examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+    "static/inverse/examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+    "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+    "static/inverse/locator/anchored.js": "c4f5276af229a7b9bbc1f686ea308697200cdd787bcdee2692d87a60bcdad991",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/fields.js": "b217ba9d932e82833e64cbd8d6ce0ebdfd88c31e44417fb0a2c84ac166bc138a",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/locator.js": "f4c769870e13481a30d149dbdad5a743b52d55d949bc9d898c2c7db0af434773",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "e6163193c14d753c2b93168c2e2e25602fb240117e1846a1c92a92308bc9084b",
+    "static/inverse/vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+    "static/inverse/vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+    "static/inverse/vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036",
+    "static/inverse/vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+    "static/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+    "static/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+    "static/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+    "src/lib/inverse/presets.js": "17d4f9be7dded0eb6619be3449eb962b67ee04ca96fd61db2777cbf3efb8d954",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "scripts/inverse/short-returns.test.mjs": "e5784a6265f0a4df7b24181ebc235d3960bfe76d614569f7e13343288067f0bf",
+    "scripts/inverse/refinement-checkpoints.test.mjs": "4f3471e895bee54b89e882802dffbab0b622a298d2b02df12d124dd426d45192"
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/engines/production/snapshot.json",
+      "bytes": 11081,
+      "sha256": "495345235f9174a8dedbdf7740c30f60c59029397ac80989fc5f14abdb21a0dc"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/fresh-star-test.log",
+      "bytes": 210,
+      "sha256": "d3af9db9d3411fd67d0b24b0d06549435b785f9b457fb0e9f0d398c899af3d0a"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/cut_geometry.json",
+      "bytes": 101838,
+      "sha256": "7d8bd095065fcaccaa3f2447f006d9b2d5bdd338c395f8ea046fe20cbe1c4954"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/manufacturability_left.svg",
+      "bytes": 2521209,
+      "sha256": "823bc967d3d0daa0618ddebf22c66191241ddd0358a4e1c25284b6a965ffb953"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/manufacturability_right.svg",
+      "bytes": 2535621,
+      "sha256": "5e33d795c6efb3a9e6328762711a71ef49044460e983846ade368ce74f5069ad"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/print_templates.html",
+      "bytes": 22837,
+      "sha256": "67b65a5c5d46196959a38e2d2bfb16b6873645995bc0fe05eeb331e0f65b2eff"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/processed_design.svg",
+      "bytes": 15618,
+      "sha256": "3ae538a3b6ad2e9f89a44e23cd7fc7042fe83dc119b3242eab588ad1693fd5a3"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/report.html",
+      "bytes": 5133396,
+      "sha256": "a8cb84b68f2b0916cc4bb07344e23d810ae0072ef694349c9ec49f83b0977766"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/report.json",
+      "bytes": 52019,
+      "sha256": "43280a99323aa82cf708b1871a3cb49d8b2efeb61cd5da019f92438a8a31ff90"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/template_left.svg",
+      "bytes": 11376,
+      "sha256": "4ff0c446d83e8732a00cd113fed89cdbd0fe9e1807e6d5f6e938e6894a99ef5e"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/template_right.svg",
+      "bytes": 10549,
+      "sha256": "1d983f6dfd3e19b12623d4867c676d2eede86ef98b9f026909c045bcdeb6d36f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/vector_target.svg",
+      "bytes": 21724,
+      "sha256": "967773d10e01fcad5b0a01a9fc3e63bdc8c6257b04ee6939c62e63f083553f39"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/weave_preview.svg",
+      "bytes": 18378,
+      "sha256": "c720408f9ab9f70fb37177080ad7deb532d1361caa1ca4dddf23cd35dd0d48c7"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-prior-release-1/woven.png",
+      "bytes": 17480,
+      "sha256": "22933926e238aab296f69bb4541f270dd9d29ff0bcc3c1422290569e55fe2de0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/cut_geometry.json",
+      "bytes": 101884,
+      "sha256": "1b09f81aa1e899210da904bbcc538223d22cba13669f3153aa219e0211043a84"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/manufacturability_left.svg",
+      "bytes": 2521749,
+      "sha256": "45f6e0406955ef7896d3b4c84b82b2c07ba27fbca389d41a84feff7ad248a54d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/manufacturability_right.svg",
+      "bytes": 2534893,
+      "sha256": "104e1cbb379f1cdc9f59879a8dcf656967afec63b529a860ce7555235aacb0c4"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/print_templates.html",
+      "bytes": 22833,
+      "sha256": "458323e222b2aa1665aaa48921728e43e08efaf459075d8f8da00b0553946e47"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/processed_design.svg",
+      "bytes": 15619,
+      "sha256": "ff62d5de4ab0824840d6c94d14536cbe0eff7383032ab86576503571e2875465"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/report.html",
+      "bytes": 5132588,
+      "sha256": "46e30f8bda402e5fc423677e879400d4c6578d06936eac63392b0ee09af4337f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/report.json",
+      "bytes": 51392,
+      "sha256": "c2a9c4c86ee8ffa0fbb5aa099805b6f56df80117fbbd2c8e1b67214e24f81c0f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/template_left.svg",
+      "bytes": 11375,
+      "sha256": "b83ec2c4548d840403ea1a4f12fcbeb358f8b3a245c0de89cd12f3d8212af791"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/template_right.svg",
+      "bytes": 10546,
+      "sha256": "12d2a8e2c22f67629516bce692197a39e3452952838fce7559ef0a6ffec3427f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/vector_target.svg",
+      "bytes": 21736,
+      "sha256": "12b8dc4a371891832c2789a8ae9ed9ba9849c5deb64460ca1abfd24df9cf3ca5"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/weave_preview.svg",
+      "bytes": 18378,
+      "sha256": "9ae3a78c76d002ef1b9231d51df1dccf8821d7609599b9d75c361aaa4e2197b0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/paired-photos/flettede-viking-production-1/woven.png",
+      "bytes": 17506,
+      "sha256": "e8002602e97375c82ff719dd08a6f2dea1a48777899d164ea1661dce2c8a45f0"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/replay-viking.mjs",
+      "bytes": 4202,
+      "sha256": "26c0b79324a608d2f9628f9a90e9b753d1cf656c375a63326d7229bc7a4f0ecb"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/short-return-tests.log",
+      "bytes": 1873,
+      "sha256": "90e0579edaf3eb09da2230bba48d0b16f5bebc7953fa13ee468474f795787a48"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/solve-photo.mjs",
+      "bytes": 3613,
+      "sha256": "947f3753e67f44e494f0585975c30b1e0d59179fc1530c46848d1700a14e77f9"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/cut_geometry.json",
+      "bytes": 104025,
+      "sha256": "77e3bc51283862083072c7443e5eb14e349f7bc8b3ff2840e5f481852d04b2c4"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/manufacturability_left.svg",
+      "bytes": 2521379,
+      "sha256": "171bf57c08b6b64afa93454f82ea43078301b42d742a17e6f4df94525047e97e"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/manufacturability_right.svg",
+      "bytes": 2536959,
+      "sha256": "f53e53600473cdd8bf91e2e8ee4d603d7cf4d691f23e28cb5405b48ca7578682"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/print_templates.html",
+      "bytes": 23556,
+      "sha256": "c8e1533b942cf8468300764210e31dd9ece3591bdd57115ccee302ab98611076"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/processed_design.svg",
+      "bytes": 15526,
+      "sha256": "d847d99c73ad566d1ccee556515c3ccd380b5abf2b54a8ad2a0bb8d257d6da42"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/record.json",
+      "bytes": 16062,
+      "sha256": "8ccee254aa3b3c02f33013cdf5fc4a1624f8ecd6b22884465575cd3042292f3b"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/report.html",
+      "bytes": 5096004,
+      "sha256": "1d3e0832ec26d349c70acc209c3a34d96c8b98a5557b149b55baf5b0cae950dc"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/report.json",
+      "bytes": 14371,
+      "sha256": "7329cc6db1a811898649049d8d8e3c0cac3079ef26e6a01dec2e9828f7f16a81"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/template_left.svg",
+      "bytes": 11696,
+      "sha256": "c5dcd859e3f3f8a13e5aa19159fa4187274f83ef4f564be171544332cb48eb76"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/template_right.svg",
+      "bytes": 10948,
+      "sha256": "1d128e621e957b8ab9507f8a8cd294f5f85eef5d86b36decb4a2795c80a1952a"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/vector_target.svg",
+      "bytes": 21621,
+      "sha256": "f458d83978fc690b41e25ecf78928ddc2092e5c11c140e7749a9f2abce42fe0d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/weave_preview.svg",
+      "bytes": 19044,
+      "sha256": "82df80bc86fb335f79e3e8d2a992ccf8507199431eab21282c505ee572eedfef"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-250-1/woven.png",
+      "bytes": 17202,
+      "sha256": "1fe6a5d8051adc42abbd34b3d21a442c7c53ad53bd079f47d393fcc76feab4f7"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/cut_geometry.json",
+      "bytes": 107813,
+      "sha256": "a520c47a16fb69bfa940907065655f3b8f3e33e3c671a313e62c90c05bb7a574"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/manufacturability_left.svg",
+      "bytes": 2521343,
+      "sha256": "c06193a285162ebdb46d42cdd3afffb22fa7287c1caa9efe32adf4496931e190"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/manufacturability_right.svg",
+      "bytes": 2537013,
+      "sha256": "e79e8b0c54c8cc6be60ee26efe3cb3980f100846779319d0e92b203fc9ecdf6e"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/print_templates.html",
+      "bytes": 24720,
+      "sha256": "0a8a231eeaa901edcf9caebf7937db67642246385caf291d5c35e1293a873a0f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/processed_design.svg",
+      "bytes": 15433,
+      "sha256": "b544bc9bec3fefc293a2702926dc16f76a78c7979a9d58902204008ec935bd66"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/record.json",
+      "bytes": 16904,
+      "sha256": "c4a954df88c574f417670f5d291ebc19887304db21ce42b044b2c8fae0118b92"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/report.html",
+      "bytes": 5098130,
+      "sha256": "9e077f1e316061f198370ff6daed5adebdabbe238ff16e82a774f2331b6a9cff"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/report.json",
+      "bytes": 15174,
+      "sha256": "f3fba651a99f86e85bed84ec87ae31f3006b298a728504727dbfb1e17196d0a2"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/template_left.svg",
+      "bytes": 12235,
+      "sha256": "1788f3eb5c5894a089461e8ee09de99b2f905add2c64aad2aace99757cc23b78"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/template_right.svg",
+      "bytes": 11573,
+      "sha256": "9fa5ef20826f7b3115e4e681a06c2a5d541efa0f7fc06aa14b6ca8bfd51ab2bd"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/vector_target.svg",
+      "bytes": 21507,
+      "sha256": "0c5216198e0dce08fc97bcd9312339e08a27729ba72751eeb7d4fbb3b88b3378"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/weave_preview.svg",
+      "bytes": 20149,
+      "sha256": "674249cb21d6f52f513d61698f93b1025640ed208ee53543b0a304af19b08d26"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/prior-release-350-1/woven.png",
+      "bytes": 17087,
+      "sha256": "851735c75d512c7017072d00a786f022a6614f0acae325c126109ff8048468b2"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/cut_geometry.json",
+      "bytes": 107813,
+      "sha256": "a520c47a16fb69bfa940907065655f3b8f3e33e3c671a313e62c90c05bb7a574"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/manufacturability_left.svg",
+      "bytes": 2521343,
+      "sha256": "c06193a285162ebdb46d42cdd3afffb22fa7287c1caa9efe32adf4496931e190"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/manufacturability_right.svg",
+      "bytes": 2537013,
+      "sha256": "e79e8b0c54c8cc6be60ee26efe3cb3980f100846779319d0e92b203fc9ecdf6e"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/print_templates.html",
+      "bytes": 24720,
+      "sha256": "0a8a231eeaa901edcf9caebf7937db67642246385caf291d5c35e1293a873a0f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/processed_design.svg",
+      "bytes": 15433,
+      "sha256": "b544bc9bec3fefc293a2702926dc16f76a78c7979a9d58902204008ec935bd66"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/record.json",
+      "bytes": 16373,
+      "sha256": "fb1e292ae47f0f2e662f9c1e6ba2a70eb32af6fcb59cae954ee59aadd2f3f878"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/report.html",
+      "bytes": 5097459,
+      "sha256": "55a790fdcf7ba223176bf0726731b474f8a6e92d0b7769e7d9bcccd82e5367ee"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/report.json",
+      "bytes": 14673,
+      "sha256": "b3689cf8abd892d86f07222902dd0b0fb7aeb56e16b3080978ee67ccc5d75696"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/template_left.svg",
+      "bytes": 12235,
+      "sha256": "1788f3eb5c5894a089461e8ee09de99b2f905add2c64aad2aace99757cc23b78"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/template_right.svg",
+      "bytes": 11573,
+      "sha256": "9fa5ef20826f7b3115e4e681a06c2a5d541efa0f7fc06aa14b6ca8bfd51ab2bd"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/vector_target.svg",
+      "bytes": 21507,
+      "sha256": "0c5216198e0dce08fc97bcd9312339e08a27729ba72751eeb7d4fbb3b88b3378"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/weave_preview.svg",
+      "bytes": 20149,
+      "sha256": "674249cb21d6f52f513d61698f93b1025640ed208ee53543b0a304af19b08d26"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-250-1/woven.png",
+      "bytes": 17087,
+      "sha256": "851735c75d512c7017072d00a786f022a6614f0acae325c126109ff8048468b2"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/cut_geometry.json",
+      "bytes": 107813,
+      "sha256": "a520c47a16fb69bfa940907065655f3b8f3e33e3c671a313e62c90c05bb7a574"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/manufacturability_left.svg",
+      "bytes": 2521343,
+      "sha256": "c06193a285162ebdb46d42cdd3afffb22fa7287c1caa9efe32adf4496931e190"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/manufacturability_right.svg",
+      "bytes": 2537013,
+      "sha256": "e79e8b0c54c8cc6be60ee26efe3cb3980f100846779319d0e92b203fc9ecdf6e"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/print_templates.html",
+      "bytes": 24720,
+      "sha256": "0a8a231eeaa901edcf9caebf7937db67642246385caf291d5c35e1293a873a0f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/processed_design.svg",
+      "bytes": 15433,
+      "sha256": "b544bc9bec3fefc293a2702926dc16f76a78c7979a9d58902204008ec935bd66"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/record.json",
+      "bytes": 16378,
+      "sha256": "690cc8d658a39a81ddbff779df9eb4cba8083ce942ad839971e340ac60d7687d"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/report.html",
+      "bytes": 5097463,
+      "sha256": "787ac5ac9123a30bca09d7aaca5154dd9140faf898f1618ae056961fce2ef167"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/report.json",
+      "bytes": 14677,
+      "sha256": "ea13266e0d659df4b0030a84d0186014f65ce5bffd14b5f7d65322e9099913ec"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/template_left.svg",
+      "bytes": 12235,
+      "sha256": "1788f3eb5c5894a089461e8ee09de99b2f905add2c64aad2aace99757cc23b78"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/template_right.svg",
+      "bytes": 11573,
+      "sha256": "9fa5ef20826f7b3115e4e681a06c2a5d541efa0f7fc06aa14b6ca8bfd51ab2bd"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/vector_target.svg",
+      "bytes": 21507,
+      "sha256": "0c5216198e0dce08fc97bcd9312339e08a27729ba72751eeb7d4fbb3b88b3378"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/weave_preview.svg",
+      "bytes": 20149,
+      "sha256": "674249cb21d6f52f513d61698f93b1025640ed208ee53543b0a304af19b08d26"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation/production-350-1/woven.png",
+      "bytes": 17087,
+      "sha256": "851735c75d512c7017072d00a786f022a6614f0acae325c126109ff8048468b2"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation-prior-1.log",
+      "bytes": 964,
+      "sha256": "b1ee9b0dd505a3d07bb609c81c8c78ade1cd5b33b91c0818c078212db1885824"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation-prior-250-1.log",
+      "bytes": 551,
+      "sha256": "75d661992240ca6bdb46b734e24f8acced7998bdc743074d574b964eb5238c2f"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation-production-1.log",
+      "bytes": 706,
+      "sha256": "be2438276bc01a1e785921651ab29c6198ba4c46809284812338735c59a3fdad"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-continuation-production-250-1.log",
+      "bytes": 706,
+      "sha256": "ebb5bcc93ade826ef6ab5ca4c6c7168671006ef19c924d1cdb0935a32c391fcc"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-prior-release-1.log",
+      "bytes": 483,
+      "sha256": "db29b1beefd9d7c022271a7b845d5e675847d9667f9c97ebf6733cd7e4cdd896"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-budget-v1/viking-production-1.log",
+      "bytes": 478,
+      "sha256": "3791d8cafbf2b7443467b83caec26df759fa3d310160f575f03bd83545ec9d79"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/checks-release.json",
+      "bytes": 5288,
+      "sha256": "22e2803e62c2795f5ad8040c1bfe8f8e7b2a032523ced52fd0d1f9b0dbdb4a32"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/hard-photos/results.json",
+      "bytes": 4443681,
+      "sha256": "6aadafcc574d67f25dc69de37babdf69f84f887733646d421d7c552e59a479df"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/interrupted.json",
+      "bytes": 335,
+      "sha256": "f858414816ada55b1faf7e5d4f8d6d498a60ce34e35f84e5f5131aa1791d8455"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/inverse.log",
+      "bytes": 34904,
+      "sha256": "11964209d03a2dbf522fde2c8100707bf354971562c4a305cfe59f466fe6f038"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/photo-comparison.json",
+      "bytes": 567889,
+      "sha256": "b8b307f03dd46ee631ab40aef5fa5190c140e4b54f8a85a4dcbcce6e866efcda"
+    },
+    {
+      "path": "tmp/heart-learning/visible-return-guard-v1/vitest.log",
+      "bytes": 258,
+      "sha256": "8827f6cf487a26aff3b7db4b017f1d7be3390c329cddabd64830213131929d32"
+    }
+  ]
+}

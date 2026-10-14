@@ -150,5 +150,26 @@ shared-cut alignment. They do not start when their earlier cutoff leaves only
 the refiner's existing 200 ms verification reserve. Existing single-sheet
 repairs keep their original allowance. A completed checkpoint can still be
 accepted before the overall export reserve, with every physical and source
-check unchanged. Twenty-one short-return tests and the fresh blue-star regression
-pass; fresh Viking and broader release checks remain to be completed.
+check unchanged. The change is committed as `fa7774c`. Twenty-one short-return
+tests and the fresh blue-star regression pass. The [budget probe](visible-shared-returns-budget-probe.json)
+records two controlled allowances applied to the same frozen Viking geometry
+and original source pixels:
+
+| Nominal cleanup allowance | Previous scheduler | Reserved alignment time |
+| --- | --- | --- |
+| 350 ms | 15.21 mm alignment recovered; 2.02375% error | Same alignment and error |
+| 250 ms | Alignment missed; 2.024375% error | 15.21 mm alignment recovered; 2.02375% error |
+
+These are saved-geometry continuations, not fresh image reconstructions. Local
+phase cutoffs permit an already started candidate check to finish: actual cleanup
+times are 0.313–0.570 seconds, exceeding those nominal phase allowances but
+remaining within the caller's overall export reserve. The comparisons preserve
+all attempts, including the 350 ms pair where both policies succeeded.
+
+Separate fresh-photo Viking runs pass with both schedulers, taking 9.39–9.42
+seconds for fitting and export. Their errors are 2.097% for the reserved version
+and 2.035% for the prior version. Their candidates already differ before this
+cleanup, so this pair does not establish a fresh-solve quality gain. The fixed
+incumbent replay isolates the budget conflict; broader committed-runtime QA
+is running serially under `visible-return-budget-v1/`. The ordinary preview
+still serves the preceding fully validated build.
