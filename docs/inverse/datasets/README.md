@@ -45,7 +45,8 @@ passes **846/848 inverse tests**, all 857 application tests, checking, lint and
 build. Only the two shifted-bird eye-retention regressions fail that full run. The next
 [scoped polishing correction](small-feature-polishing.md) passes both fresh
 regressions and improves eye shape overlap at two resolutions; all seven focused
-tests pass. Full QA and fresh corpus validation for that correction remain pending. See the
+tests pass. Type checking, lint, all 857 application tests and the build also
+pass; the full inverse run is in progress and fresh corpus validation remains pending. See the
 [repair findings](final-return-integration.md#repair-eligibility-and-time-reserved-for-validation).
 The benchmark figures below
 describe the earlier completed releases; fresh release and browser QA are pending.

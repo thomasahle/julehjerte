@@ -758,6 +758,31 @@
       "path": "tmp/heart-learning/eye-routing-v1/fresh-local-halo-180/capture.log",
       "sha256": "f0c2c301f446d92622e27661951dad4256d82e611d9c340995eaba371e2e68b4",
       "bytes": 1453
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/qa/source.json",
+      "sha256": "f194b58c21827ed52acff8ced87ad47cf4a970856edde955fac3e98b50c3b794",
+      "bytes": 98716
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/qa/check.log",
+      "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "bytes": 13474
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/qa/lint.log",
+      "sha256": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+      "bytes": 293
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/qa/app.log",
+      "sha256": "3379c035e4e6aaddeb377d2e041bd08cc490e230cffac7bc3a60a2e66c68c46f",
+      "bytes": 258
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/qa/build.log",
+      "sha256": "bf0694859378121101e30b1fb68e2dc26667c88f1c89d39ca94ff29a0fc41bac",
+      "bytes": 26053
     }
   ],
   "productionSources": {
@@ -770,8 +795,61 @@
   },
   "limitations": [
     "The head outline still contains a visible step and tiny false seams; the improved eye is not a complete visual reconstruction.",
-    "Full inverse/app/build and fresh 22/31 benchmark and editable/browser QA are pending for this change.",
+    "Full inverse run is in progress; fresh 22/31 benchmark and editable/browser QA are pending for this change.",
     "Timing samples are native runs with process startup and independent rendering excluded from solverSeconds.",
     "No physical cutting or assembly validation."
-  ]
+  ],
+  "preflight": {
+    "implementationCommit": "99399ff",
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 9.323093375000001
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.007591042000001
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 32.270373625
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 12.317328249999996
+      }
+    ],
+    "applicationTests": {
+      "passed": 857,
+      "skipped": 1
+    },
+    "fullInverseStatus": "running",
+    "fullInverseLog": "tmp/heart-learning/eye-routing-v1/qa/inverse.log",
+    "sourceRecord": "tmp/heart-learning/eye-routing-v1/qa/source.json"
+  }
 }

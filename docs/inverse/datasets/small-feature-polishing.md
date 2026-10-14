@@ -11,8 +11,8 @@ The old forty-step checkpoint interval missed useful early movements. The
 eye improved during refinement, but later steps produced a tight return on
 the same cutting path. Complete geometry validation correctly rejected those
 steps, and rollback discarded the unrecorded intermediate improvements.
-Allowing the whole template to move also introduced paper uncertainty outside
-the small region being repaired.
+Some whole-template intermediate candidates were also rejected by the paper
+check. Those trials did not isolate where that uncertainty arose.
 
 Changing only the image weights or resolution did not resolve the failure.
 Neither did a longer MILP search on the same captured boundary: it lowered
@@ -79,11 +79,14 @@ The eye tests retain their 90% retention and 2.7% whole-mask limits, and now
 require more than 85% component IoU at both rendering scales, up from 45%.
 A new regression runs the ordinary refiner through the scoped graph, checking
 fixed controls at every checkpoint, shared-cut identity, intermediate/final
-checkpoint coverage and unchanged input geometry and pixels.
+checkpoint coverage and unchanged input geometry and pixels. Type checking,
+lint, all 857 application tests (one existing skip) and the production build
+also pass at `99399ff`. The complete inverse suite is running against recorded
+source hashes; its outcome is not yet known.
 
 The [measurements and artifact hashes](small-feature-polishing.json) preserve
 the negative trials, captured boundary, runtime variants, fresh exports and
-focused test log. Full suite, fresh corpus, editable SVG and browser validation
+focused test log. Full inverse, fresh corpus, editable SVG and browser validation
 remain pending. No changes have been pushed or deployed.
 
 ```sh
