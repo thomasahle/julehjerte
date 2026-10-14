@@ -1,0 +1,29 @@
+{
+  "schema": "fixed-photo-border-1",
+  "description": "Historical approximate Santa crop, not verified overlap corners or original cutting paths. Border-profile diagnostic; not an automatically recovered photograph.",
+  "sourceCatalogue": "scripts/inverse/hard-photo-cases.json",
+  "sourceCase": "santa",
+  "sourceFileSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+  "decodedPixelsSha256": "dffdcaf0934dd144a6a501a724832245e78bb0729614a1a9497a70b0554bed97",
+  "quad": [
+    [
+      1344.1875,
+      380.21500000000003
+    ],
+    [
+      1442.6875,
+      464.925
+    ],
+    [
+      1363.8875,
+      542.74
+    ],
+    [
+      1275.2375,
+      452.12
+    ]
+  ],
+  "maskSha256": "e45aca01a4c94c9caa7d4ddde017518cb09c0eba73d539f7fcc53508599d48d6",
+  "resolution": 400,
+  "width": 100
+}
