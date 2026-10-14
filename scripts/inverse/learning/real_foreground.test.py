@@ -12,6 +12,7 @@ from foreground import foreground_loss
 from real_foreground import known_region_metrics, load_real_labels, masked_foreground_loss
 from real_annotations import build, checked_annotations, digest, photo_tensor, rasterize, validate_polygon, verify
 from real_probe import export_real_probe
+from real_annotation_probe import foreground_bound
 
 
 def fixture(root):
@@ -33,6 +34,21 @@ def fixture(root):
 
 
 class RealForegroundTests(unittest.TestCase):
+    def test_annotation_bounds_preserve_known_pixels_and_never_fill_letterbox_padding(self):
+        target = np.zeros((8, 8), np.float32); target[3:5, 2:6] = 1
+        weight = np.ones_like(target); weight[:2] = 0; weight[6:] = 0; weight[2:6, 1:3] = 0
+        transform = {'resolution': 8, 'scale': 1, 'offset': [0, 2]}
+        lower = foreground_bound(target, weight, transform, [8, 4], False)
+        upper = foreground_bound(target, weight, transform, [8, 4], True)
+        self.assertTrue(np.all(lower <= upper))
+        np.testing.assert_array_equal(lower[weight == 1], target[weight == 1])
+        np.testing.assert_array_equal(upper[weight == 1], target[weight == 1])
+        self.assertFalse(upper[:2].any()); self.assertFalse(upper[6:].any())
+        self.assertTrue(np.all(upper[2:6, 1:3] == 1))
+        changed = target.copy(); changed[weight == 0] = 1-changed[weight == 0]
+        np.testing.assert_array_equal(lower, foreground_bound(changed, weight, transform, [8, 4], False))
+        np.testing.assert_array_equal(upper, foreground_bound(changed, weight, transform, [8, 4], True))
+
     def test_full_photo_probe_preserves_pixels_field_and_letterbox_without_geometry_hints(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); _, source, _, _, mp, ap = fixture(root)

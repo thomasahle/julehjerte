@@ -18,16 +18,19 @@ import {hardPhotoTarget} from '../hard-photo-target.mjs';
 import {reviewMaterialSamples,validateMaterialSamples} from '../photo-material-samples.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds','ids','solve-ids','methods','refinement','target'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10 --ids=id1,id2 --solve-ids=id1,id2 --methods=production,learned,oracle --refinement=none|seeded-rgb|fill-holes --target=photo|mask].');
+if(!args.probe||!args.output||Object.keys(args).some(k=>!['probe','output','seconds','ids','solve-ids','methods','refinement','target'].includes(k)))throw new Error('Use --probe=directory --output=new-directory [--seconds=10 --ids=id1,id2 --solve-ids=id1,id2 --methods=production,learned,oracle,annotation --refinement=none|seeded-rgb|fill-holes --target=photo|mask].');
 const methods=(args.methods||'production,learned,oracle').split(','),refinement=args.refinement||'none';
 const targetMode=args.target||'photo';
 if(!['photo','mask'].includes(targetMode))throw new Error('Use --target=photo|mask.');
 const refinements={none:undefined,'seeded-rgb':refineForegroundRGB,'fill-holes':fillForegroundHoles};
-if(methods.some(m=>!['production','learned','oracle'].includes(m))||new Set(methods).size!==methods.length||!Object.hasOwn(refinements,refinement))throw new Error('Invalid replay methods or foreground refinement.');
+if(methods.some(m=>!['production','learned','oracle','annotation'].includes(m))||new Set(methods).size!==methods.length||!Object.hasOwn(refinements,refinement))throw new Error('Invalid replay methods or foreground refinement.');
 const probe=path.resolve(args.probe),output=path.resolve(args.output),seconds=Number(args.seconds||10),solveIds=new Set((args['solve-ids']||'').split(','));
 if(!Number.isFinite(seconds)||seconds<1||seconds>180)throw new Error('Invalid solver budget.');
 const hash=b=>createHash('sha256').update(b).digest('hex'),bytes=await fs.readFile(path.join(probe,'manifest.json')),manifest=JSON.parse(bytes);
 if(manifest.status!=='complete'||manifest.schema!=='woven-heart-foreground-probe-1')throw new Error('Require a completed foreground probe.');
+const annotated=manifest.fieldOrigin?.kind==='reviewed-annotation-bound';
+if(annotated&&methods.some(m=>m!=='production'&&m!=='annotation'))throw new Error('Reviewed annotation fields are diagnostic only; use --methods=annotation, never learned or oracle.');
+if(methods.includes('annotation')&&(!annotated||manifest.fieldOrigin.diagnosticOnly!==true||typeof manifest.fieldOrigin.includeUnknown!=='boolean'||refinement!=='none'))throw new Error('Annotation replay requires an explicitly diagnostic reviewed bound and no foreground refinement.');
 const ids=args.ids?.split(','),inputs=ids?manifest.rows.filter(row=>ids.includes(row.id)||ids.includes(row.caseId)):manifest.rows;
 if(ids&&ids.some(id=>!id||!inputs.some(row=>row.id===id||row.caseId===id)))throw new Error('Every --ids entry must identify an input in the probe.');
 const materialSampleFile='scripts/inverse/fixtures/photo-material-samples.json',materialSampleBytes=await fs.readFile(materialSampleFile),materialSamples=JSON.parse(materialSampleBytes);
@@ -35,7 +38,7 @@ if(materialSamples.schema!=='woven-heart-photo-material-samples-1')throw new Err
 materialSamples.cases.forEach(validateMaterialSamples);
 await fs.mkdir(path.dirname(output),{recursive:true});await fs.mkdir(output);
 const report={schema:'woven-heart-foreground-replay-1',status:'running',probe,probeManifestSha256:hash(bytes),configuration:{...AUTOMATIC_PRESET,timeLimit:seconds,trials:0},
-  inputIds:inputs.map(row=>row.id),probeInputCount:manifest.rows.length,solveIds:[...solveIds].filter(Boolean),methods,foregroundRefinement:refinement,targetMode,sourceHashes:{},rows:[],limitations:['Synthetic oracle isolates the foreground task; it is not a deployable input.',
+  inputIds:inputs.map(row=>row.id),probeInputCount:manifest.rows.length,solveIds:[...solveIds].filter(Boolean),methods,fieldOrigin:manifest.fieldOrigin||null,foregroundRefinement:refinement,targetMode,sourceHashes:{},rows:[],limitations:['Synthetic oracle and reviewed annotation bounds isolate the foreground task; they are not deployable inputs or learned results.',
   'checkedPair measures the derived mask and geometry. materialReview checks sparse original-photo observations separately; these observations never enter reconstruction and do not certify unsampled details.',
   'Real-photo corner annotations are approximate and are not used as ground truth.', 'Successful outline checks against a predicted silhouette are not independent physical evidence. Review against RGB and latent synthetic geometry is still required.']};
 for(const file of [materialSampleFile,'scripts/inverse/photo-material-samples.mjs','scripts/inverse/learning/foreground-replay.mjs','scripts/inverse/learning/foreground-crop.mjs','scripts/inverse/learning/foreground-refine.mjs','scripts/inverse/learning/photo-labels.mjs','scripts/inverse/hard-photo-target.mjs','scripts/inverse/export-renderer.mjs',...(await fs.readdir('static/inverse',{recursive:true})).filter(p=>/^(core|locator)\/.+\.js$/.test(p)).map(p=>`static/inverse/${p}`)])report.sourceHashes[file]=hash(await fs.readFile(file));
@@ -75,7 +78,8 @@ for(const input of inputs){
       const started=performance.now(),detected=method==='production'?detectHeartCrops(source,{roi:input.roi||undefined}):await detectForegroundCrop(source,{roi:input.roi||undefined,
         probability:prediction(await checked(input.assets[method==='oracle'?'oracle.f32':'probability.f32'],probe),manifest.resolution),resolution:manifest.resolution,window:input.window,
         refineFields:method==='learned'?refinements[refinement]:undefined});
-      row.cropSeconds=(performance.now()-started)/1000;row.inferenceSeconds=method==='learned'?input.inferenceSeconds:0;
+      row.cropSeconds=(performance.now()-started)/1000;row.inferenceSeconds=['learned','annotation'].includes(method)?input.inferenceSeconds:0;
+      if(method==='annotation')for(const candidate of detected.candidates)candidate.provenance={method:'Reviewed body foreground bound plus unchanged locator geometry and support gates; diagnostic only',humanReviewed:false,fieldOrigin:manifest.fieldOrigin};
       row.cropStatus=detected.status;await store('detection.json',JSON.stringify(detected,null,2));
       const selected=detected.candidates[0];row.cropEvidence=cropEvidence(selected,{width:source.imageWidth,height:source.imageHeight});
       const roi=input.roi||[0,0,source.imageWidth,source.imageHeight],scale=Math.min(384/(roi[2]-roi[0]),384/(roi[3]-roi[1]));
