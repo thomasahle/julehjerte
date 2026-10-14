@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {prepare,design} from '../../static/inverse/core/engine.js';
+import {Cubic} from '../../static/inverse/core/bezier.js';
+import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {preprocessMask,sampleTarget} from '../../static/inverse/core/input.js';
 import {loadSolutionJSON,solutionJSON} from '../../static/inverse/core/graph.js';
@@ -33,8 +35,8 @@ test('visible-chain evidence detects the raster return before assigning either s
   assert.ok(rows[1].error<rows[0].error);
 });
 
-test('continuous repair retains the original pixels and independently passes exported geometry',async()=>{
-  const source=input(),initial=proposal(.5),before=JSON.stringify(solutionJSON(initial)),probability=source.sourceImage.probability.slice();
+for(const radius of [.3,.5])test(`continuous repair of radius ${radius} retains the original pixels and independently passes exported geometry`,async()=>{
+  const source=input(),initial=proposal(radius),before=JSON.stringify(solutionJSON(initial)),probability=source.sourceImage.probability.slice();
   assert.equal(validate(initial,cfg).passed,false);
   const repaired=repairRejectedRouting(initial,source,cfg);
   assert.ok(repaired.solution,JSON.stringify(repaired.report));
@@ -48,9 +50,14 @@ test('continuous repair retains the original pixels and independently passes exp
   assert.equal(JSON.stringify(solutionJSON(initial)),before);
 });
 
-test('repair does not accept severe returns, expired work, different artwork or unsupported constraints',()=>{
+test('repair does not accept crossings, expired work, different artwork or unsupported constraints',()=>{
   const source=input(),initial=proposal(.5);
-  assert.equal(repairRejectedRouting(proposal(.3),source,cfg).report.reason,'geometry_not_near_valid');
+  const points=[[50,0],[50,30],[65,50],[35,50],[50,30],[50,100]];
+  const graph=new CurveGraph([[points.slice(1).map((p,i)=>Cubic.line(points[i],p).p)],[[Cubic.line([0,80],[100,80]).p]]]);
+  const crossing=graph.solution(graph.points,1);
+  assert.ok(validate(crossing,cfg).issues.some(i=>i.type==='self_intersection'));
+  const rejected=repairRejectedRouting(crossing,source,cfg);
+  assert.equal(rejected.solution,null);assert.equal(rejected.report.reason,'geometry_not_repairable');
   assert.equal(repairRejectedRouting(initial,source,cfg,{deadline:performance.now()-1}).report.reason,'insufficient_time');
   assert.equal(repairRejectedRouting(initial,source,{...cfg,maxImageError:0}).report.reason,'initial_image');
   assert.equal(repairRejectedRouting(initial,source,{...cfg,symmetry:{transpose:true}}).report.reason,'unsupported_constraints');

@@ -199,3 +199,59 @@ INVERSE_SPEED_OUT=tmp/consistent-hunodan-replay INVERSE_SPEED_SECONDS=10 \
 Use a fresh benchmark directory. Its historical acceptance baseline includes
 the owner's matching-sheet allowance; compare the recorded per-case errors
 against the most recent validated run as well as checking its pass count.
+
+## Repair eligibility and time reserved for validation
+
+The follow-up restores the sloth routing regressions without changing source
+pixels or final geometry, feature, image-error and paper limits. Three causes
+were separate from crop quality:
+
+- A four-warning eligibility cap rejected six diagnostic records on only two
+  or three cutting paths. Repair scope now counts affected cuts, at most four.
+- The return checker reports bounded lists of witnesses, not the narrowest
+  gap on a cut. Exact subdivision changes which witness appears first, so a
+  15% reported-deficit cutoff could reject identical geometry. That cutoff is
+  removed from repair eligibility; the observed deficit remains diagnostic.
+  The separate visible-chain trace-order heuristic retains its own threshold.
+- Complete checkpoint checks need more time than the former 700 ms local
+  repair allowance. Repair can now use 1.5 seconds within the existing caller
+  deadline, reserving 250 ms for final audits. The fitter also avoids repeating
+  an unsuccessful projection after just one gradient step. The initial and
+  later checkpoints still run the complete checks, and ordinary validation and
+  rollback remain active at the first step.
+
+The intermediate 100 ms validation reserve let a late synthetic-control
+proposal pass every check and then miss its recovery deadline. The larger
+reserve keeps this work inside its existing phase instead of increasing the
+overall solve budget. Checkpoint and audit operations are indivisible, so
+these allowances are not a hard wall-clock guarantee on arbitrary hardware.
+
+All **16 focused routing tests pass**. Fresh frozen and synthetic-control crops,
+both one-pixel clearance shifts, the positive vertical shift, the mixed-model
+crop and the Paint resampling case all recover checked templates. Their test
+durations, including independent rendering where applicable, range from
+7.51 to 9.49 seconds. The subdivision regression covers both clearance
+fixtures in four representations and two reflections, **16 cases**: every
+input remains correctly invalid, and every representation remains eligible
+for a bounded repair attempt. Eligibility is never an acceptance certificate.
+
+The gold-heart fixture now repairs its first sparse routing instead of needing
+the earlier smoothing fallback. A captured fresh solve passes at 0.818125%
+independent mask disagreement in 7.18 seconds; the final focused replay retains
+the stricter-than-1.2% image assertion and passes in 7.21 seconds. Its regression
+now checks sparse recovery and output quality without requiring the obsolete
+route through the third trace.
+
+Both saved sloth proposals, including the formerly rejected radius-0.3 route,
+pass actual editable conversion, SVG serialization/reimport, editor geometry,
+independent paper checks and feature checks. Independent mask disagreements
+are 0.8608% and 0.8512%; the editable versions measure 0.8576% and 0.8432%.
+A real crossing replaces the obsolete negative fixture and remains rejected.
+The replay tool supports `--bounded=true` to exercise production repair rather
+than only the standalone optimizer. These are saved-route measurements, not
+fresh total-solve timings or physical assembly tests.
+
+The [evidence record](bounded-routing-followup.json) pins sources, focused
+results and the editable replay. Full QA, both complete native benchmarks and
+fresh browser verification remain pending. The two shifted-bird eye-retention
+regressions remain unresolved by the evidence in this follow-up.

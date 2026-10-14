@@ -161,7 +161,10 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     }
     // Repair a failed checkpoint before rollback, using the same complete
     // geometry rule as accepted candidates and final export. Reuse its audit.
-    if(finalGeometry&&!accepted&&performance.now()<deadline-50){
+    // The initial checkpoint already tried projection. One gradient step is
+    // too little progress to justify another expensive attempt at step zero;
+    // validate/rollback normally there and let image fitting advance first.
+    if(finalGeometry&&!accepted&&step!==0&&performance.now()<deadline-50){
       const base=proposals.find(v=>!v.straightened&&v.validation?.issues.length&&v.validation.issues.every(i=>i.type==='short_self_clearance'));
       if(base){
         // Preserve the visible artwork when a shared hidden connector alone

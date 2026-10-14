@@ -6,9 +6,12 @@ import {solveBoundary} from './routing.js';
 import {sampleWeave,validate} from './validate.js';
 import {materialAudit,verifiedPaperSettings} from './material.js';
 import {auditFeatureFidelity} from './feature-shapes.js';
-import {visibleReturnEvidence,rejectedRoutingQuality,repairRejectedRouting,MAX_REPAIRABLE_CLEARANCE_DEFICIT} from './direct/rejected-routing.js';
+import {visibleReturnEvidence,rejectedRoutingQuality,repairRejectedRouting} from './direct/rejected-routing.js';
 import {visibleMarginIssue} from './solver.js';
 import {visibleSelfIntersectionIssue} from './self-intersections.js';
+
+// Trace-order heuristic only; bounded repair has no witness-deficit cutoff.
+const VISIBLE_RETURN_TRACE_DEFICIT=.15;
 
 export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
   const start=performance.now(),report={method:'trace-milp',budgetSeconds:seconds,accepted:false,attempts:[]};
@@ -101,8 +104,8 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
     };
     let initialRadius=.3;
     const original=trace(.3),boundary=reindex({target:original,edges:original.curves.map(curve=>({curve,visible:true}))});
-    // Keep near-repairable traces unless smoothing improves both their deficit
-    // and image fit. For larger raster returns, fewer troublesome chains can
+    // Keep traces with small observed defects unless smoothing improves both
+    // their deficit and image fit. For larger raster returns, fewer chains can
     // earn the first routing attempt even with slightly worse trace fidelity.
     // Hidden edges can switch sheets along a chain, so neither its worst gap
     // nor its return count proves that the final routing will be valid. Every
@@ -114,10 +117,10 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         const mismatch=target=>{const mask=sampleTarget(target,source.resolution);return{mask,error:mask.reduce((s,v,i)=>s+Number(v!==source.mask[i]),0)/mask.length};};
         const a=mismatch(original),b=mismatch(smoother);
         const graph=reindex({target:smoother,edges:smoother.curves.map(curve=>({curve,visible:true}))}),endpoints=inspectBoundaryEndpoints(graph,cfg.nominalWidth).issue;
-        const severeReturns=before.maximumRelativeDeficit>MAX_REPAIRABLE_CLEARANCE_DEFICIT;
+        const severeReturns=before.maximumRelativeDeficit>VISIBLE_RETURN_TRACE_DEFICIT;
         const betterTrace=after.maximumRelativeDeficit<=before.maximumRelativeDeficit&&b.error<=a.error;
         const preferred=!endpoints&&!visibleMarginIssue(graph,cfg)&&!visibleSelfIntersectionIssue(graph,cfg)&&after.shortReturns<before.shortReturns&&(severeReturns||betterTrace)&&b.error<=cfg.maxImageError&&auditFeatureFidelity(source,b.mask,cfg).passed;
-        report.traceQualityPreference={preferred,severeReturns,before:{smoothRadius:.3,shortReturns:before.shortReturns,maximumRelativeDeficit:before.maximumRelativeDeficit,imageError:a.error},after:{smoothRadius:.5,shortReturns:after.shortReturns,maximumRelativeDeficit:after.maximumRelativeDeficit,imageError:b.error},reason:severeReturns?'fewer visible-chain returns beyond the local repair allowance':'fewer visible-chain returns with no worse deficit or source-image disagreement'};
+        report.traceQualityPreference={preferred,severeReturns,before:{smoothRadius:.3,shortReturns:before.shortReturns,maximumRelativeDeficit:before.maximumRelativeDeficit,imageError:a.error},after:{smoothRadius:.5,shortReturns:after.shortReturns,maximumRelativeDeficit:after.maximumRelativeDeficit,imageError:b.error},reason:severeReturns?'fewer visible-chain returns above the trace-order deficit threshold':'fewer visible-chain returns with no worse deficit or source-image disagreement'};
         if(preferred)initialRadius=.5;
       }
     }

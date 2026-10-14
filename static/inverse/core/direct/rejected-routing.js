@@ -1,4 +1,4 @@
-/** Bounded continuous repair of a nearly valid, explicitly rejected routing.
+/** Bounded continuous repair of clearance violations in a rejected routing.
  * This does not relax any cut rule or confer the original MILP's objective bound.
  */
 import {curvesOf,reindex} from '../graph.js';
@@ -10,9 +10,6 @@ import {CurveGraph} from './curves.js';
 import {refineCurves} from './refine.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {shortSelfReturns} from '../self-returns.js';
-
-// Eligibility for attempting refinement, never a physical acceptance limit.
-export const MAX_REPAIRABLE_CLEARANCE_DEFICIT=.15;
 
 /** Quality evidence, not an infeasibility proof: optional hidden connectors
  * can switch sheets along these unbranched visible chains.
@@ -41,23 +38,36 @@ export function rejectedRoutingQuality(solution,cfg){
   // conservative chord-distance bound has a different required width. This
   // only selects proposals for a bounded repair; it certifies no geometry.
   const gaps=issues.map(i=>i.type==='short_self_clearance'?{distance:i.distanceUpper,required:i.required}:i.type==='nonlocal_self_clearance'?{distance:i.distanceLower,required:cfg.nominalWidth}:null);
-  const clearanceOnly=issues.length>0&&issues.length<=4&&gaps.every(g=>g&&g.required>0&&Number.isFinite(g.distance));
+  // One physical return can produce several witnesses, including records
+  // from both local and nonlocal checks. Bound repair scope by affected cuts,
+  // not a count that changes when the same cutting path is subdivided.
+  const affectedCuts=new Set(issues.map(i=>`${i.family}:${i.slit}`)).size;
+  const clearanceOnly=issues.length>0&&affectedCuts<=4&&gaps.every(g=>g&&g.required>0&&Number.isFinite(g.distance));
+  // These are bounded witness lists, not the narrowest gap on each cut.
+  // Exact subdivision can expose a different witness for the same shape.
+  // Keep the observed deficit for diagnostics, never as a repair cutoff.
+  // Time and affected cuts bound the attempt; final checks decide acceptance.
   const relativeDeficit=clearanceOnly?Math.max(...gaps.map(g=>(g.required-g.distance)/g.required)):null;
-  return{geometry,clearanceOnly,relativeDeficit,repairable:clearanceOnly&&relativeDeficit<=MAX_REPAIRABLE_CLEARANCE_DEFICIT};
+  return{geometry,clearanceOnly,affectedCuts,relativeDeficit,repairable:clearanceOnly};
 }
 
 export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,quality=null}={}){
-  const started=performance.now(),until=Math.min(deadline,started+700),report={accepted:false,method:'continuous-rejected-routing'};
+  // Complete return checks and constraint projection need room to retain a
+  // valid checkpoint. This local allowance never extends the caller deadline.
+  const started=performance.now(),until=Math.min(deadline,started+1500),report={accepted:false,method:'continuous-rejected-routing'};
   const finish=reason=>({solution:null,report:{...report,reason,seconds:(performance.now()-started)/1000}});
   if(until-started<250)return finish('insufficient_time');
   if(!input.sourceImage||input.sourceImage.weights||requestedSymmetry(cfg.symmetry).length)return finish('unsupported_constraints');
   const initial=quality||rejectedRoutingQuality(proposal,cfg);report.initialGeometry=initial.geometry;report.relativeDeficit=initial.relativeDeficit;
-  if(!initial.repairable)return finish('geometry_not_near_valid');
+  if(!initial.repairable)return finish('geometry_not_repairable');
   const source=input.sourceImage,initialMask=sampleWeave(proposal,source.resolution);
   report.initialImageError=maskDisagreement(source,initialMask);
   if(report.initialImageError>cfg.maxImageError||!auditFeatureFidelity(source,initialMask,cfg).passed)return finish('initial_image');
   const graph=new CurveGraph(proposal.paths.map((family,f)=>family.map((_,i)=>curvesOf(proposal,f,i).map(c=>c.p))),cfg.width),phase=proposal.graph.target.phase?-1:1;
-  const fitted=refineCurves(graph,source.probability||Float32Array.from(source.mask),source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:until-100});
+  // Leave room for the final geometry, source-image and paper audits. A late
+  // integer proposal can otherwise produce a valid checkpoint and then lose
+  // it solely because those required checks overrun the recovery allowance.
+  const fitted=refineCurves(graph,source.probability||Float32Array.from(source.mask),source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:until-250});
   report.steps=fitted.steps;report.history=fitted.history;
   // The local allowance stops further optimization. Its last checkpoint may
   // finish just after that cutoff; retain it for final checks when the overall

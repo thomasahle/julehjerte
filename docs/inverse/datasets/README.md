@@ -38,7 +38,12 @@ five regressions but exposes insufficient eye retention in the shifted bird.
 Hidden-first checkpoint repair and additional bounded refinement improve the
 ordinary Hunodan bird to 0.842% in 5.68 seconds. Its full inverse run passes
 834/846 tests and exposes additional repair/scheduling and fixture failures;
-the integration remains incomplete. The benchmark figures below
+the integration remains incomplete. The subsequent bounded-repair follow-up
+restores all 16 focused routing tests, including the failed sloth crop shifts,
+and independently verifies both repaired sloth SVGs. Full QA for that change
+is pending; the shifted-bird eye regressions remain unresolved. See the
+[repair findings](final-return-integration.md#repair-eligibility-and-time-reserved-for-validation).
+The benchmark figures below
 describe the earlier completed releases; fresh release and browser QA are pending.
 
 The [row-initialization and scheduling release](row-initialization.md) now

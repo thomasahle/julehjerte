@@ -11,6 +11,12 @@ repair to nonlocal narrow sections and preserves finer paper verification.
 That separate run reaches five of these eight fixed crops; the historical
 measurements below still describe `f7056e3`.
 
+The later [complete-check follow-up](final-return-integration.md#repair-eligibility-and-time-reserved-for-validation)
+replaces warning-count and observed-gap eligibility limits with a bound on
+affected cuts. It also successfully repairs both saved sloth proposals under
+the stronger geometry rule. The failure and timing descriptions below remain
+the historical results for `f7056e3`.
+
 ## Why the previous search failed
 
 The [real adaptation study](real-adaptation.md) found that a subpixel change in
