@@ -58,6 +58,15 @@ have not recovered a valid pair. The experiment remains outside the app; the
 automatic benchmark is unchanged. The latest completed QA passes 805 inverse
 tests, 855 application tests and three refreshed Chromium flows.
 
+A [controlled border-noise diagnostic](controlled-border-perturbations.md)
+separates endpoint failures from complete reconstruction. The current fitter
+already recovers all five valid synthetic designs after paired narrow fringes.
+An experimental depth-varying border initializer reduces the observed solve
+times to 1.03–2.15 seconds and makes four outputs identical to their clean-input
+cuts. All twenty baseline/experimental pairs pass editable checks, but two
+reference errors increase slightly. This initializer remains offline pending
+broader noise and photograph comparisons.
+
 The [shared-return follow-up](visible-shared-returns.md) reduces two star notches
 and protects real corners against one-pixel source shifts. Its latest scheduling
 fix, `fa7774c`, reserves time for shared-cut alignment after speculative repairs.
