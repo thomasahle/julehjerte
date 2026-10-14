@@ -138,6 +138,18 @@ class MaterialLabelTests(unittest.TestCase):
 
 
 class MaterialLossTests(unittest.TestCase):
+    def test_fractional_synthetic_coverage_preserves_the_boundary_gradient(self):
+        body = torch.ones((1, 1, 1))
+        materials = torch.full_like(body, .25)
+        logits = torch.zeros((1, 2, 1, 1), requires_grad=True)
+        joint_material_loss(logits, body, materials).backward()
+        # d BCE / d logit = sigmoid(logit) - coverage = .5 - .25.
+        # Thresholding the target would produce .5; ignoring it gives zero.
+        self.assertEqual(float(logits.grad[0, 1, 0, 0]), .25)
+        chosen = torch.tensor([[[[2.]], [[2.]]]])
+        torch.testing.assert_close(joint_material_loss(chosen, body, materials),
+                                   joint_material_loss(chosen, body, 1-materials))
+
     def test_swapping_whole_sheet_labels_is_equivalent_but_local_swaps_are_not(self):
         body = torch.ones((1, 2, 4), dtype=torch.uint8)
         materials = torch.tensor([[[0, 0, 1, 1], [1, 1, 0, 0]]], dtype=torch.uint8)

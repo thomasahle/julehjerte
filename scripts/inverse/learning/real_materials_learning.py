@@ -1,4 +1,8 @@
-"""Joint body/material supervision with image-wide exchangeable paper labels."""
+"""Joint body/material supervision with image-wide exchangeable paper labels.
+
+Reviewed real labels use 0/1/255. Synthetic material coverage may be fractional
+in [0, 1]; preserve that boundary evidence rather than thresholding it away.
+"""
 import json
 from pathlib import Path
 
@@ -24,13 +28,13 @@ class MaterialNet(ForegroundNet):
 def joint_material_loss(logits, body, materials):
     if logits.ndim != 4 or logits.shape[1] != 2 or body.shape != logits[:, 0].shape or materials.shape != body.shape:
         raise ValueError('Require two logits and matching batch/height/width labels')
-    if not torch.isfinite(logits).all() or not ((body == 0) | (body == 1) | (body == 255)).all() or not ((materials == 0) | (materials == 1) | (materials == 255)).all():
+    if not torch.isfinite(logits).all() or not ((body == 0) | (body == 1) | (body == 255)).all() or not (((materials >= 0) & (materials <= 1)) | (materials == 255)).all():
         raise ValueError('Require finite logits and known label semantics')
     known = materials != 255
     if (known & (body != 1)).any():
         raise ValueError('Material supervision requires known selected paper')
     body_loss = masked_foreground_loss(logits[:, :1], (body == 1)[:, None].to(logits.dtype), (body != 255)[:, None].to(logits.dtype))
-    target = (materials == 1).to(logits.dtype)
+    target = torch.where(known, materials, 0).to(logits.dtype)
     count = known.sum((1, 2)).clamp_min(1)
     direct = (F.binary_cross_entropy_with_logits(logits[:, 1], target, reduction='none')*known).sum((1, 2))/count
     exchanged = (F.binary_cross_entropy_with_logits(logits[:, 1], 1-target, reduction='none')*known).sum((1, 2))/count
