@@ -215,10 +215,11 @@ were separate from crop quality:
   The separate visible-chain trace-order heuristic retains its own threshold.
 - Complete checkpoint checks need more time than the former 700 ms local
   repair allowance. Repair can now use 1.5 seconds within the existing caller
-  deadline, reserving 250 ms for final audits. The fitter also avoids repeating
-  an unsuccessful projection after just one gradient step. The initial and
-  later checkpoints still run the complete checks, and ordinary validation and
-  rollback remain active at the first step.
+  deadline, reserving 250 ms for final audits. When less than a second remains,
+  the fitter avoids repeating a failed initial projection after just one
+  gradient step. With more time, or after a successful initial projection, it
+  retains the ordinary retry. All checkpoints still validate geometry, and
+  ordinary rollback remains active at the first step.
 
 The intermediate 100 ms validation reserve let a late synthetic-control
 proposal pass every check and then miss its recovery deadline. The larger
@@ -255,3 +256,11 @@ The [evidence record](bounded-routing-followup.json) pins sources, focused
 results and the editable replay. Full QA, both complete native benchmarks and
 fresh browser verification remain pending. The two shifted-bird eye-retention
 regressions remain unresolved by the evidence in this follow-up.
+
+The first full application run for `1059bad` passed 856 tests but caught an
+anchor regression: unconditionally skipping the first-step projection lost a
+useful image-preserving repair in a longer refinement. The retry suppression
+is now limited to a failed initial projection with less than one second left.
+The unchanged anchor regression passes again, including its strict image
+improvement and actual Draw conversion. Full QA is being rerun on the corrected
+policy; the earlier failed application run remains recorded.

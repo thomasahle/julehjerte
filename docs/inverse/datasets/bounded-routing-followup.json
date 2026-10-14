@@ -129,5 +129,27 @@
       }
     ]
   },
-  "remaining": "Full QA, both full native corpora, and fresh browser verification pending. Two shifted-bird eye-retention regressions were unresolved before this change; no recovery is claimed here."
+  "remaining": "Full QA, both full native corpora, and fresh browser verification pending. Two shifted-bird eye-retention regressions were unresolved before this change; no recovery is claimed here.",
+  "retryCorrection": {
+    "reason": "Full application QA of 1059bad found an anchor regression from unconditionally skipping the first post-gradient projection. Retry suppression now requires both an initially failed projection and less than one second remaining.",
+    "previousFullQA": {
+      "directory": "tmp/heart-learning/final-integration-v1/qa-repair-v1",
+      "check": "pass",
+      "lint": "pass",
+      "appPassed": 856,
+      "appFailed": 1,
+      "appSkipped": 1,
+      "build": "not run",
+      "inverse": "not run"
+    },
+    "source": "static/inverse/core/direct/refine.js",
+    "sourceSha256": "d3020fff836da449d0525b8cc9a45dd9a5bfef0152db339c114599a399a0d36c",
+    "focusedAnchor": {
+      "log": "tmp/heart-learning/final-integration-v1/repair-anchor-reserve.log",
+      "sha256": "f358628bc80f9c122e417543e5be94b7ebbdc5bc848bcf9681fd3a7c4e0bb5ee",
+      "passed": 1,
+      "failed": 0
+    },
+    "fullQA": "pending"
+  }
 }

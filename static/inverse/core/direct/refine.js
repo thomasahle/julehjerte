@@ -113,7 +113,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
   const clampAxes=new Uint8Array(points.length);
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
   const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);return projected;};
-  clampPoints();let safe=null,best=null,bestUncertain=null,bestInvalid=null,completed=0,skippedSteps=0,lastRollback=null;
+  clampPoints();let safe=null,best=null,bestUncertain=null,bestInvalid=null,completed=0,skippedSteps=0,lastRollback=null,initialReturnProjectionFailed=false;
   // A preferred image checkpoint competes only within the same physical
   // validity class. Preference never certifies paper, changes rollback safety,
   // or substitutes weighted errors for the caller's original-source checks.
@@ -161,10 +161,12 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     }
     // Repair a failed checkpoint before rollback, using the same complete
     // geometry rule as accepted candidates and final export. Reuse its audit.
-    // The initial checkpoint already tried projection. One gradient step is
-    // too little progress to justify another expensive attempt at step zero;
-    // validate/rollback normally there and let image fitting advance first.
-    if(finalGeometry&&!accepted&&step!==0&&performance.now()<deadline-50){
+    // Under a tight deadline, avoid spending another projection allowance
+    // after just one gradient step failed to change a troublesome initial
+    // shape. With a second left, or after a successful initial repair, retain
+    // the ordinary retry: even a small step can then unlock a useful repair.
+    const retryProjection=step!==0||!initialReturnProjectionFailed||deadline-performance.now()>=1000;
+    if(finalGeometry&&!accepted&&retryProjection&&performance.now()<deadline-50){
       const base=proposals.find(v=>!v.straightened&&v.validation?.issues.length&&v.validation.issues.every(i=>i.type==='short_self_clearance'));
       if(base){
         // Preserve the visible artwork when a shared hidden connector alone
@@ -176,6 +178,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
           repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:projectionDeadline,initialAudit:base.validation,maxIterations:64,maxMilliseconds:400});
           repair.report.hiddenAttempt=hiddenAttempt;
         }
+        if(step===-1)initialReturnProjectionFailed=!repair.points;
         if(repair.points){
           const p=repair.points,error=mismatch(renderCurves(graph,p,phase,n,32),prob,weights),imageScore=(imageValue(p,phase)+transposedImageValue(p,phase))/2+objective.offset;
           const value={graph,points:p,phase,error,score:imageScore+primitiveCost(graph,p,n)+(cfg.preferMatchingSheets?matchingPenalty(graph,p).loss:0),primitives:primitiveComplexity(graph,p),straightened:false,validation:repair.validation,returnProjection:repair.report};
