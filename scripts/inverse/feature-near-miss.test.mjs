@@ -63,7 +63,10 @@ for(const translation of [null,'horizontal','vertical','negative-diagonal'])test
   const {prepared,cfg}=await nearMiss(translation),source=prepared.target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
   const answer=await design(prepared.target,cfg);
   const initialization=answer.report.solver.earlyFeatureInitialization;
-  if(translation!=='negative-diagonal')assert.equal((translation==='horizontal'?initialization.alternativeRefinement:initialization.coarseRefinement).accepted,true);
+  if(translation!=='negative-diagonal'){
+    assert.ok(initialization,JSON.stringify({message:'Feature initialization was skipped',selectedInitialization:answer.report.solver.selectedInitialization,seconds:answer.report.solver.seconds,stages:answer.report.solver.stages,fine:answer.report.solver.attempts.filter(a=>a.stage==='fine'),finalistPreference:answer.report.solver.finalistPreference}));
+    assert.equal((translation==='horizontal'?initialization.alternativeRefinement:initialization.coarseRefinement).accepted,true);
+  }
   if(['vertical','negative-diagonal'].includes(translation)){
     assert.equal(answer.report.solver.samplingRecovery.scheduled,1);
     assert.equal(answer.report.solver.selectedInitialization,'feature-sampling-grid');
@@ -92,7 +95,7 @@ for(const translation of [null,'horizontal','vertical','negative-diagonal'])test
       // review window never enters initialization, fitting or acceptance.
       let wrong=0;
       for(let y=50;y<225;y++)for(let x=60;x<230;x++)wrong+=replay.mask[y*n+x]!==mask[y*n+x];
-      assert.ok(wrong/(175*170)<.04,'The sun outline must improve on the former 7.66% local disagreement');
+      assert.ok(wrong/(175*170)<.04,JSON.stringify({message:'The sun outline must improve on the former 7.66% local disagreement',error:wrong/(175*170),outlineDetail:answer.report.solver.outlineDetail,stages:answer.report.solver.stages}));
       assert.ok(answer.report.solver.outlineDetail?.applied);
     }
   }
