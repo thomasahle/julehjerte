@@ -13,8 +13,9 @@ The 2026-10-14 snapshot contains:
 | Real-source image files | 1,034 | Includes templates, process shots and rejected/uncertain material. |
 | Files containing assembled-heart photographs | 573 | Includes multi-heart scenes and mixed photo/template pages; 461 reviewed near-duplicate groups. |
 | Public Pinterest imports | 470 of 487 selected pins | 198 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
-| Synthetic cutting geometries | 192 | Original 128 plus 64 mixed-angle lattices; color phase is excluded from geometry identity; still only three recipe groups. |
-| Synthetic photographic views | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
+| Synthetic cutting geometries in existing experiments | 192 | Original 128 plus 64 mixed-angle lattices; color phase is excluded from geometry identity; still only three recipe groups. |
+| Synthetic photographic views in existing experiments | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
+| Unassigned radial-motif candidates | 64 geometries / 256 views | One additional recipe group with exact shared approaches; not used in training. All 1,984 referenced assets verified. |
 | Pretrained encoder checkpoints | 2 | MobileNetV3-Small: researched timm LAMB weights and the TorchVision weights used by the experiment. |
 | Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
 | Trained foreground models | 5 | RGB-only, 880,449 parameters; random/ImageNet, background augmentation, and paired clutter/control runs, all offline. |
@@ -137,6 +138,13 @@ geometry/paper and rendering comparisons, including four whose initial raster
 disagreement falls below the limit at finer resolution with unchanged curves.
 Visual review flags faint seams in two candidates. None has entered training:
 source-family and QA overlap must be reviewed before allocation.
+
+The optional [radial motif generator](synthetic-training.md#optional-radial-motifs)
+adds clean procedural flowers and polygonal shapes with four exactly shared
+approaches and known cuts. Its first batch has 64 validated geometries and
+256 views; seven invalid candidates were rejected. All 64 canonical/first-photo
+pairs were inspected. The group stays unassigned, and existing experiment inputs
+remain unchanged. [Generation evidence](synthetic-radial-motifs.json)
 
 The [experiment history](experiment-history.md) retains the earlier studies,
 failed alternatives and verification records without mixing their historical

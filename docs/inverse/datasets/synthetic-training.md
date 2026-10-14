@@ -130,6 +130,22 @@ node scripts/inverse/datasets/synthetic-verify.mjs \
   tmp/heart-training-synthetic/radial-motif-v1
 ```
 
+The first batch contains **64 admitted geometries and 256 views**: 35 smooth
+and 29 polygonal motifs. Seven candidates failed the unchanged turn/clearance
+checks and were rejected. Independent renderer disagreement is at most
+**0.1614%** at 512 pixels. All **1,984 assets** pass the integrity and projective
+label verifier. Across 1,280 interior samples on the four shared approaches,
+the independent canonical PNG has exactly the expected background channel,
+without a fractional grey seam at those samples. All 64 canonical/first-photo
+pairs were visually inspected; other views were checked numerically.
+[Batch evidence](synthetic-radial-motifs.json)
+
+The 15 stored incidence signatures include changes in curve subdivision and
+must not be interpreted as 15 independent routing families. This batch remains
+separate from the 192 geometries and 768 views used in the existing experiments.
+Thirteen focused tests pass. The broader inverse suite and build are pending
+at this generation checkpoint; the live algorithm and preview are unchanged.
+
 ## Controlled photographic interventions
 
 `syntheticPhoto` also accepts an optional `interventions` object for paired diagnostics. Supply identical coverage, graph, seed and resolutions to compare one change while keeping the camera, lighting, texture/noise draws and all other sampled parameters fixed:

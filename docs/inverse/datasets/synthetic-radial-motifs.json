@@ -1,0 +1,2670 @@
+{
+  "schema": "synthetic-radial-motif-evidence-1",
+  "dataset": "tmp/heart-training-synthetic/radial-motif-v1",
+  "implementationCommit": "9162bceee216a59963e5f72616de21b806b075ec",
+  "generationParentCommit": "5a2144c9c093b2d9abda471044d0fdea8c7719c7",
+  "commitQualification": "Generation preceded the implementation commit; every recorded implementation source hash was verified against commit 9162bce.",
+  "sourceHashes": {
+    "scripts/inverse/datasets/synthetic-generate.mjs": "004941a6c577d68a184f36ab07c02543bdfab6c340d25fd7c435a98f80505a31",
+    "scripts/inverse/datasets/synthetic-geometry.mjs": "57832799ec34075de10da364c9d8dcdba65ad72ef5f249dab49a9550fcb89811",
+    "scripts/inverse/datasets/synthetic-photo.mjs": "f6b989dc9513b244d79bb0e1e1639466b224bb7f0c039dc4eec14a9a0ef9414a",
+    "scripts/inverse/datasets/synthetic-motif.mjs": "994e5fa4b55bc267a04cb7b8ae6c4e09a5ea9eaf111f15d8a5be66d07494f546",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "package-lock.json": "c2f54196ad3330233440428238539cc2cb12119454ac4da0f35693832bb7e6c6"
+  },
+  "options": {
+    "designs": 64,
+    "views": 4,
+    "seed": 920413,
+    "resolution": 384,
+    "canonicalResolution": 512,
+    "recipes": [
+      "radial-motif"
+    ]
+  },
+  "summary": {
+    "baseDesigns": 64,
+    "distinctGeometry": 64,
+    "distinctTopologies": 15,
+    "broadFamilies": 1,
+    "photographicViews": 256,
+    "bySplit": {
+      "train": {
+        "designs": 0,
+        "views": 0
+      },
+      "validation": {
+        "designs": 0,
+        "views": 0
+      },
+      "test": {
+        "designs": 0,
+        "views": 0
+      },
+      "unassigned": {
+        "designs": 64,
+        "views": 256
+      }
+    },
+    "rejectedCandidates": 7,
+    "maximumRendererDisagreement": 0.001613616943359375
+  },
+  "verification": {
+    "passed": true,
+    "designs": 64,
+    "views": 256,
+    "familyGroups": 1,
+    "checkedAssets": 1984,
+    "manifestSha256": "78021c200ffc901613219c59851db0d63983546c0ef07250e2ebacbbb0ffe725",
+    "scope": "Asset integrity, recorded admission checks, recipe-group isolation (not topology disjointness) and projective label consistency; does not rerun physical or image simulation."
+  },
+  "styleCounts": {
+    "polygonal-radial-motif": 29,
+    "smooth-radial-motif": 35
+  },
+  "lobeCounts": {
+    "3": 13,
+    "7": 9,
+    "6": 8,
+    "8": 11,
+    "5": 12,
+    "4": 11
+  },
+  "rejected": [
+    {
+      "id": "radial-motif-947656",
+      "geometryIssueTypes": [
+        "nonlocal_self_clearance"
+      ]
+    },
+    {
+      "id": "radial-motif-951692",
+      "geometryIssueTypes": [
+        "maximum_turn",
+        "nonlocal_self_clearance",
+        "short_self_clearance"
+      ]
+    },
+    {
+      "id": "radial-motif-959764",
+      "geometryIssueTypes": [
+        "nonlocal_self_clearance"
+      ]
+    },
+    {
+      "id": "radial-motif-1959767",
+      "geometryIssueTypes": [
+        "nonlocal_self_clearance"
+      ]
+    },
+    {
+      "id": "radial-motif-962791",
+      "geometryIssueTypes": [
+        "maximum_turn",
+        "nonlocal_self_clearance",
+        "short_self_clearance"
+      ]
+    },
+    {
+      "id": "radial-motif-980953",
+      "geometryIssueTypes": [
+        "short_self_clearance"
+      ]
+    },
+    {
+      "id": "radial-motif-981962",
+      "geometryIssueTypes": [
+        "maximum_turn",
+        "nonlocal_self_clearance"
+      ]
+    }
+  ],
+  "sharedCoverage": {
+    "designs": 64,
+    "samples": 1280,
+    "maximumChannelDeviation": 0,
+    "scope": "Five interior points on each of four exactly shared approaches in each independent 512px canonical render; fractional channel check, not whole-curve certification.",
+    "rows": [
+      {
+        "id": "radial-motif-920413",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-921422",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-922431",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-923440",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-924449",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-925458",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-926467",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-927476",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-928485",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-929494",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-930503",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-931512",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-932521",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-933530",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-934539",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-935548",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-936557",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-937566",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-938575",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-939584",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-940593",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-941602",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-942611",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-943620",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-944629",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-945638",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-946647",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-1947659",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-948665",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-949674",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-950683",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-1951695",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-952701",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-953710",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-954719",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-955728",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-956737",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-957746",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-958755",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-2959770",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-960773",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-961782",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-1962794",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-963800",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-964809",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-965818",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-966827",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-967836",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-968845",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-969854",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-970863",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-971872",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-972881",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-973890",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-974899",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-975908",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-976917",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-977926",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-978935",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-979944",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-1980956",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-1981965",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-982971",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      },
+      {
+        "id": "radial-motif-983980",
+        "sharedCurves": 4,
+        "samples": 20,
+        "maximumChannelDeviation": 0
+      }
+    ]
+  },
+  "designs": [
+    {
+      "id": "radial-motif-920413",
+      "seed": 920413,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 3,
+        "radius": 22.33110939944163,
+        "amplitude": 0.11305972807109355,
+        "rotation": 6.221686195826175,
+        "center": [
+          48.99144126009196,
+          50.07413010112941
+        ],
+        "scale": [
+          0.9400802801549435,
+          0.8910582056920976
+        ],
+        "gridHalfExtent": 28.30893927158304
+      },
+      "geometrySha256": "b3a5b8c4da3ae520a54d36220ecb094e875f68606bb3fadd9f08d5e5144814a4",
+      "serializedDesignSha256": "64345233f126f610db1d8e553827987f5c965a89ced3fe63362158a8b2a05566",
+      "topologySha256": "7c3d8b4f35b1052ae0fc22f662f9cb8718216109f114d4471b54854f714e85ea",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-921422",
+      "seed": 921422,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 7,
+        "radius": 21.11936950776726,
+        "amplitude": 0.1644366872124374,
+        "rotation": 4.333147974057396,
+        "center": [
+          50.990926765836775,
+          48.40784026496112
+        ],
+        "scale": [
+          1.026205146657303,
+          1.0152830606978387
+        ],
+        "gridHalfExtent": 30.213053808515834
+      },
+      "geometrySha256": "fbf4fadb48d96ac857093ffd94ad10b7b368c0bbde82ee6c776218b933f7bbf3",
+      "serializedDesignSha256": "b8072f8587447a23383efcea7add963039473f00676bb9204db7a952c2552ddd",
+      "topologySha256": "7c6bb52c2fd69a56959df6bb1d79e4b25265586e05195a69eabc0b463694e798",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-922431",
+      "seed": 922431,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 6,
+        "radius": 22.193133365828544,
+        "amplitude": 0.10765517777297645,
+        "rotation": 2.5372793586354017,
+        "center": [
+          49.43174552265555,
+          50.444130348041654
+        ],
+        "scale": [
+          1.0451263249106706,
+          0.8937549952138215
+        ],
+        "gridHalfExtent": 29.263681128135165
+      },
+      "geometrySha256": "5b613ac141fd3cad052eb371a84b6b749fde33ed10fba4f957d435ad288a0399",
+      "serializedDesignSha256": "11c987b0a5f819a0227045b18c19a119006f38b4109f84d64a3d196946eea44e",
+      "topologySha256": "df9c739163bb4fb491a4e43da6663333d21ed8cf26e51f8e23d87b36f772a465",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-923440",
+      "seed": 923440,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 8,
+        "radius": 23.532726051751524,
+        "amplitude": 0.06382611516863107,
+        "rotation": 4.920738017541238,
+        "center": [
+          51.68497349880636,
+          49.98916886840016
+        ],
+        "scale": [
+          0.9374961312115193,
+          1.0134088325034827
+        ],
+        "gridHalfExtent": 29.156990711692046
+      },
+      "geometrySha256": "bf63b2e1a03336202cf5122ceab9b07e41da0e3e12f9d168a354dac845b630d6",
+      "serializedDesignSha256": "a22fd75127e72f8caf418d060a3cd71021fc0632af63bc6335274fc919be9f2b",
+      "topologySha256": "d133ddb01680bf9e060055591f03cc88dcf170153722a1d05e4a4d4f4f4054b7",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-924449",
+      "seed": 924449,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 8,
+        "radius": 25.072668445296586,
+        "amplitude": 0.1339828157052398,
+        "rotation": 0.9191308912966416,
+        "center": [
+          49.99825963843614,
+          49.3036267273128
+        ],
+        "scale": [
+          0.9851172011066228,
+          0.9999727593455464
+        ],
+        "gridHalfExtent": 32.91328806994227
+      },
+      "geometrySha256": "bf128ec0e25de3b64ef1c293c7e840d6557a753c8c0edb393bac0ce8b23d9690",
+      "serializedDesignSha256": "bc1de85e8e3889dad86dd0eb61f85779b8332bb50da6eb4cbda4c6424fc056a0",
+      "topologySha256": "d133ddb01680bf9e060055591f03cc88dcf170153722a1d05e4a4d4f4f4054b7",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-925458",
+      "seed": 925458,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 8,
+        "radius": 26.490621896926314,
+        "amplitude": 0.061319316099397836,
+        "rotation": 0.3614241621499332,
+        "center": [
+          49.09305022004992,
+          50.33475789055228
+        ],
+        "scale": [
+          0.9309882553014904,
+          1.0552319239545613
+        ],
+        "gridHalfExtent": 34.16104750200446
+      },
+      "geometrySha256": "eb2828e50d120f58fb4d44881f03aa6e733ce1805c36120e08f73991d30c5bde",
+      "serializedDesignSha256": "9808b3fcfaf03bfc3258eb2de6bd8e4e85fb8679fec929a2ab756360bc21757d",
+      "topologySha256": "7e08f7f18d77050ffacf69300580d94ef53e4cbb7eb10b5e40198512abf4428b",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-926467",
+      "seed": 926467,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 5,
+        "radius": 26.657971363049,
+        "amplitude": 0.16714106251019983,
+        "rotation": 2.6522083753759773,
+        "center": [
+          48.763482137583196,
+          50.456918499432504
+        ],
+        "scale": [
+          0.9856005535647273,
+          0.973644846137613
+        ],
+        "gridHalfExtent": 34.00411266557094
+      },
+      "geometrySha256": "6cd7020d7c831b3d9f80dc6368cce732783173e67a64452877e805e19cba6dec",
+      "serializedDesignSha256": "d84dca44a3af0e13c51e52bcd83dd011e8f5897bd6543f818bd49ec5e2cec08a",
+      "topologySha256": "4f33b785bf19320f2a1b66e660707b980aa8248111a99e18ba0557e7ba9fe299",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-927476",
+      "seed": 927476,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 5,
+        "radius": 23.53456199169159,
+        "amplitude": 0.17209794791415334,
+        "rotation": 2.0396679773182904,
+        "center": [
+          51.27311332989484,
+          51.113247827626765
+        ],
+        "scale": [
+          0.9043355653714389,
+          0.904601433891803
+        ],
+        "gridHalfExtent": 28.209472535963044
+      },
+      "geometrySha256": "49b958b86b09659ce15df3221cad9d32869cc3ddb1ef203aa27115fed6fbb14a",
+      "serializedDesignSha256": "7dd5812e45d72eed993a08338fc154745fdd54ce4ae248b1ca6adbc6752e6b82",
+      "topologySha256": "4f33b785bf19320f2a1b66e660707b980aa8248111a99e18ba0557e7ba9fe299",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-928485",
+      "seed": 928485,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 4,
+        "radius": 23.016743034124374,
+        "amplitude": 0.15703775372821838,
+        "rotation": 1.4175044997464297,
+        "center": [
+          51.497003983706236,
+          51.8617445230484
+        ],
+        "scale": [
+          0.9629320744145662,
+          1.0317503030132502
+        ],
+        "gridHalfExtent": 31.301771543235688
+      },
+      "geometrySha256": "dd7e66bb72a617bb8f4c657ac309c3e796bcdb84379f4ba8e623c2e7ebf5d00a",
+      "serializedDesignSha256": "93ff414aaf7af095ae9ec20ac8c50b4b18911baf4ef5ce5cb4fca44d5e9c9e6e",
+      "topologySha256": "d894498de682bea5af37d376f081b2a9e521557fec9ef124db9b12c1a561eb08",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-929494",
+      "seed": 929494,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 3,
+        "radius": 24.031410839874297,
+        "amplitude": 0.11817713985219597,
+        "rotation": 5.169663633103719,
+        "center": [
+          50.780594752170146,
+          51.65861033741385
+        ],
+        "scale": [
+          1.0147384155727923,
+          0.9401244000717998
+        ],
+        "gridHalfExtent": 31.899581834733887
+      },
+      "geometrySha256": "b9d992a3b6e7fc262e07f2e3848e8dcbaa0728e94914816caead9d1af1f438e0",
+      "serializedDesignSha256": "9441907d7390e39080923468a91aa20fec14baaeeffbdc2ae177d613b42f710e",
+      "topologySha256": "913350e35f5352dc23e479008529283f88c13d21b4eeeaddc36bd3a8f015f02a",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-930503",
+      "seed": 930503,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 3,
+        "radius": 26.596245042979717,
+        "amplitude": 0.09478533341549336,
+        "rotation": 2.913266087603267,
+        "center": [
+          50.0459168208763,
+          49.28939335141331
+        ],
+        "scale": [
+          0.93662633292377,
+          0.9457634155359119
+        ],
+        "gridHalfExtent": 30.773982019785976
+      },
+      "geometrySha256": "d70de899f93ab3b48bcee3b0686e70a8b24880278eb345e7e8f10aaf3fabfa3c",
+      "serializedDesignSha256": "248d151b5beea9d20c4917cbddae01037676c292ba4ef7aec1282f795b77acac",
+      "topologySha256": "975a3b446e81f03b279fd91ccd9c8c1bb325be0b87211f0d5436847503a2a564",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-931512",
+      "seed": 931512,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 6,
+        "radius": 26.72992282686755,
+        "amplitude": 0.13624873365275564,
+        "rotation": 5.124370684344886,
+        "center": [
+          48.42282394040376,
+          48.90005929861218
+        ],
+        "scale": [
+          0.9872268636897207,
+          0.9163681802060455
+        ],
+        "gridHalfExtent": 34.56923563446949
+      },
+      "geometrySha256": "abd3f09472b0adc5582c07a64ccb68d4d22b43c52a645cb0bb999aea83f417a3",
+      "serializedDesignSha256": "30204fba3d5fdfac48d11d2d0188e08a13570fd9e5a619a6a39eb975efcffae5",
+      "topologySha256": "df9c739163bb4fb491a4e43da6663333d21ed8cf26e51f8e23d87b36f772a465",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-932521",
+      "seed": 932521,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 3,
+        "radius": 23.66332828067243,
+        "amplitude": 0.20081445034593343,
+        "rotation": 2.8813684521044287,
+        "center": [
+          49.93159667868167,
+          48.18300376366824
+        ],
+        "scale": [
+          0.9175379201490432,
+          0.9651558074355125
+        ],
+        "gridHalfExtent": 32.2329076847819
+      },
+      "geometrySha256": "1dc0ad7243fa5aab23b94aade9d7aeb6069bb49c8e99c11e8df9fc75a15235d1",
+      "serializedDesignSha256": "404020d48f9ebeaae42d74f66a6c38ddaeb5f114b7d29de3540b7d356d156edf",
+      "topologySha256": "7c3d8b4f35b1052ae0fc22f662f9cb8718216109f114d4471b54854f714e85ea",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-933530",
+      "seed": 933530,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 3,
+        "radius": 22.708327112719417,
+        "amplitude": 0.06705646277870983,
+        "rotation": 3.8185780806358998,
+        "center": [
+          51.71793851163238,
+          48.997051366604865
+        ],
+        "scale": [
+          0.9793230273481459,
+          1.0575107824243606
+        ],
+        "gridHalfExtent": 29.657398869202222
+      },
+      "geometrySha256": "da0ae28aa8cfe7501075ca680ebfc0c1e2cb9ef758e94e13226317ef4d67690c",
+      "serializedDesignSha256": "643ce99d79284f31a96a69664eca254038840a3eaf942722db77094bd962a37c",
+      "topologySha256": "975a3b446e81f03b279fd91ccd9c8c1bb325be0b87211f0d5436847503a2a564",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-934539",
+      "seed": 934539,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 4,
+        "radius": 23.83340841298923,
+        "amplitude": 0.13961873865686358,
+        "rotation": 4.751848516969918,
+        "center": [
+          48.42301826085895,
+          48.746640691533685
+        ],
+        "scale": [
+          0.8993503882735968,
+          1.0096237770002336
+        ],
+        "gridHalfExtent": 31.322977362979504
+      },
+      "geometrySha256": "6d61514f420a34d38847d070fc5e329863073eef316c52913e437b150b094537",
+      "serializedDesignSha256": "7d71e77a5e32ce0641c44dd649d4a121334e09297cf72e200ccefa20a0027627",
+      "topologySha256": "d894498de682bea5af37d376f081b2a9e521557fec9ef124db9b12c1a561eb08",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-935548",
+      "seed": 935548,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 4,
+        "radius": 26.169998582918197,
+        "amplitude": 0.14165405430365355,
+        "rotation": 1.1430924286507758,
+        "center": [
+          50.123967949301004,
+          51.52495912183076
+        ],
+        "scale": [
+          0.9148245191387833,
+          0.8871198407094926
+        ],
+        "gridHalfExtent": 31.62561205558274
+      },
+      "geometrySha256": "2f046372529ef44bb194f8cb1a0c5bbf0561cd276862af61cd780fc273fc51e3",
+      "serializedDesignSha256": "2f017bbc515bb154dd0472b838502f425c93dccf3de0f0ffbfe534ed2a0429f4",
+      "topologySha256": "d894498de682bea5af37d376f081b2a9e521557fec9ef124db9b12c1a561eb08",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-936557",
+      "seed": 936557,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 5,
+        "radius": 26.388292553834617,
+        "amplitude": 0.10475381158757954,
+        "rotation": 2.2672587364726513,
+        "center": [
+          51.14765995554626,
+          50.16575970221311
+        ],
+        "scale": [
+          0.9136196186486631,
+          1.0789366841502488
+        ],
+        "gridHalfExtent": 34.875176092351325
+      },
+      "geometrySha256": "10f74d6f083b10abfd7c9d1fc17956a6fecb3ccbad948dc634522491b5f2048c",
+      "serializedDesignSha256": "555b89f3fa35e96f5363e2cdedd8be6c871cd58efb9d93b7115a9bdd46b878bb",
+      "topologySha256": "4f33b785bf19320f2a1b66e660707b980aa8248111a99e18ba0557e7ba9fe299",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-937566",
+      "seed": 937566,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 3,
+        "radius": 22.08043623296544,
+        "amplitude": 0.1491701436135918,
+        "rotation": 5.735097913939686,
+        "center": [
+          50.6264737797901,
+          49.069507581181824
+        ],
+        "scale": [
+          1.0438085801620036,
+          1.0422861770913006
+        ],
+        "gridHalfExtent": 30.182498953109153
+      },
+      "geometrySha256": "09213ceebe7261ce73624a749ae0279dfe80cf2124cbb7addb89ee2814363cfe",
+      "serializedDesignSha256": "36e2d769471eed8e6cdc60b22d4a35091c7e046bc14ca68fd2ddb5628206189c",
+      "topologySha256": "975a3b446e81f03b279fd91ccd9c8c1bb325be0b87211f0d5436847503a2a564",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-938575",
+      "seed": 938575,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 7,
+        "radius": 23.487316723912954,
+        "amplitude": 0.18166093664243815,
+        "rotation": 4.353370143751933,
+        "center": [
+          51.115212951786816,
+          51.614215014502406
+        ],
+        "scale": [
+          0.9830541128013284,
+          0.9994103992078454
+        ],
+        "gridHalfExtent": 32.63827679355997
+      },
+      "geometrySha256": "af4bdedee6ab9d5a1b2850a518c1fee2add0b46cd0e8d0ca34ddb9b46304b24f",
+      "serializedDesignSha256": "cb9a570dee25506d4bd7764573649ba22f6ed7d7512d276712aa7ca2b03fb967",
+      "topologySha256": "9ca15ee3dfa0b9e815e5b8bf987f0ce1dc81c928a6ce0b2cb1eaa8836f39edb6",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-939584",
+      "seed": 939584,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 7,
+        "radius": 22.872582445386797,
+        "amplitude": 0.2053917346894741,
+        "rotation": 0.35258294359197817,
+        "center": [
+          51.0531139485538,
+          48.541998201049864
+        ],
+        "scale": [
+          1.021015950217843,
+          1.0443397886306047
+        ],
+        "gridHalfExtent": 32.99655567327863
+      },
+      "geometrySha256": "f343ab62b42461025e6c15a837653e4a3f52c11b9a4d86663104018a8528f6fc",
+      "serializedDesignSha256": "53fa88c71abd5040f93a49a5bddd3029505877639394f44c309e258d892dbe63",
+      "topologySha256": "825836bb5c8c12d556082a41cd808b196b3a827aba31b5b8eec75262805d23f1",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-940593",
+      "seed": 940593,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 4,
+        "radius": 26.58925808267668,
+        "amplitude": 0.09873218346387147,
+        "rotation": 5.5330587350426335,
+        "center": [
+          50.08262580819428,
+          51.475241255015135
+        ],
+        "scale": [
+          1.0315171848703177,
+          1.0591879069060088
+        ],
+        "gridHalfExtent": 34.138406296776935
+      },
+      "geometrySha256": "3a3268bb5a3ceb7dd91604338cb9eca0a451a35200afa9ce3e37adf089e19b65",
+      "serializedDesignSha256": "cf84ac625d3cd0ddd4d5c792c19892310cb187b93369324286f7218c14d34ad3",
+      "topologySha256": "4ab7b6a8cde232960bce13ade4b6833c062dd857fc3163427d9a3b0cfc60e46a",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-941602",
+      "seed": 941602,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 4,
+        "radius": 23.04641346540302,
+        "amplitude": 0.09968316335231064,
+        "rotation": 3.2860853443817732,
+        "center": [
+          50.10733020398766,
+          51.935199468396604
+        ],
+        "scale": [
+          1.0365172226633876,
+          0.9843341470882296
+        ],
+        "gridHalfExtent": 29.507554295999675
+      },
+      "geometrySha256": "8168b2c1539e4a83eb9c276f94e3b7266614874fa27a26269e67a907de70287f",
+      "serializedDesignSha256": "f5afbdd22b1eaeb1ec7fe5e4791b92a1ad06b1e2ed973ff9e97cc1676ab4ca7d",
+      "topologySha256": "4ab7b6a8cde232960bce13ade4b6833c062dd857fc3163427d9a3b0cfc60e46a",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-942611",
+      "seed": 942611,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 7,
+        "radius": 21.906718684360385,
+        "amplitude": 0.08248724788427353,
+        "rotation": 2.369259615527257,
+        "center": [
+          48.73957137577236,
+          49.2278787298128
+        ],
+        "scale": [
+          1.0191749127302319,
+          0.9884089145995677
+        ],
+        "gridHalfExtent": 28.076876280781935
+      },
+      "geometrySha256": "1583ae5e7c6ff8e6a1c02505ade0fa71eaf8cb82d93654cedf46f5c2984fca3a",
+      "serializedDesignSha256": "7db7631cb49a7e2dcce1ca717b5e8844a2edf65d1d39850857783a1bde2d4536",
+      "topologySha256": "825836bb5c8c12d556082a41cd808b196b3a827aba31b5b8eec75262805d23f1",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-943620",
+      "seed": 943620,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 8,
+        "radius": 23.30813806504011,
+        "amplitude": 0.16724555656313894,
+        "rotation": 2.8316101360879844,
+        "center": [
+          48.51902756933123,
+          51.63219421450049
+        ],
+        "scale": [
+          0.8953285508044064,
+          1.0108313090354204
+        ],
+        "gridHalfExtent": 31.83781913039306
+      },
+      "geometrySha256": "071b7b5f12cebe43539e7011eecc9334d57dc21b35e605ef1ade7a4ab3ec9776",
+      "serializedDesignSha256": "021419464318954c7e346b71b9b418ad7f6913b49016b78940184e351adef3ed",
+      "topologySha256": "d133ddb01680bf9e060055591f03cc88dcf170153722a1d05e4a4d4f4f4054b7",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-944629",
+      "seed": 944629,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 8,
+        "radius": 22.285055401269346,
+        "amplitude": 0.21650036841630935,
+        "rotation": 3.1404413385243277,
+        "center": [
+          50.87211555428803,
+          48.779506949707866
+        ],
+        "scale": [
+          0.9632461808808148,
+          1.043111622678116
+        ],
+        "gridHalfExtent": 33.06609920569031
+      },
+      "geometrySha256": "92f4acc60069fc6a0bbd726dda5b51ff0ea1ddbb67622c80c5c03b095296ec9f",
+      "serializedDesignSha256": "1791eb29fbbe5df85f09a54bb8c4501fd7cfca8aacbbd5230d01bda8314db932",
+      "topologySha256": "d133ddb01680bf9e060055591f03cc88dcf170153722a1d05e4a4d4f4f4054b7",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-945638",
+      "seed": 945638,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 8,
+        "radius": 21.927449997514486,
+        "amplitude": 0.0869006501790136,
+        "rotation": 0.07111328023356374,
+        "center": [
+          48.06199946440756,
+          51.42063465807587
+        ],
+        "scale": [
+          0.9576080384850503,
+          0.9750696880463511
+        ],
+        "gridHalfExtent": 26.54009650639313
+      },
+      "geometrySha256": "835a288a8183b8db69dc21906890a103935b84cd0d9561a5caa36b75a26c958a",
+      "serializedDesignSha256": "cc1deeb9465b02ba0932ed6ac88c86e892e7fe5c7d73173d607a2d8ab72dc092",
+      "topologySha256": "7e08f7f18d77050ffacf69300580d94ef53e4cbb7eb10b5e40198512abf4428b",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-946647",
+      "seed": 946647,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 5,
+        "radius": 23.186354083009064,
+        "amplitude": 0.15034731772262605,
+        "rotation": 4.139855393639849,
+        "center": [
+          48.71740250848234,
+          51.09737821109593
+        ],
+        "scale": [
+          1.0427311203163119,
+          0.9323320322390646
+        ],
+        "gridHalfExtent": 32.46649314549042
+      },
+      "geometrySha256": "7b91d6ed4a4e96a8befec9813f614b443f66d676f34fafb1c29cc7e611598ab4",
+      "serializedDesignSha256": "0fe3f9cd8c4b9441cf89a0c2bbdaee467ec5c96626404c0a01399e3b9064a915",
+      "topologySha256": "4f33b785bf19320f2a1b66e660707b980aa8248111a99e18ba0557e7ba9fe299",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-1947659",
+      "seed": 1947659,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 4,
+        "radius": 26.235333820804954,
+        "amplitude": 0.0715428217453882,
+        "rotation": 1.3779023052417834,
+        "center": [
+          51.0126594491303,
+          51.36032618675381
+        ],
+        "scale": [
+          1.063129179943353,
+          0.8959133996348828
+        ],
+        "gridHalfExtent": 34.10588732384468
+      },
+      "geometrySha256": "3dbb2bf12fc936a3445ea6df4014cdf206f8f7a087e3eef69988e27618ed1e7b",
+      "serializedDesignSha256": "4aab2614e938d75a52d435a57a0182065d2a1ae111614921ee35f43ac7939044",
+      "topologySha256": "d894498de682bea5af37d376f081b2a9e521557fec9ef124db9b12c1a561eb08",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-948665",
+      "seed": 948665,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 7,
+        "radius": 23.70629562344402,
+        "amplitude": 0.06939146832562983,
+        "rotation": 1.2512992870779043,
+        "center": [
+          51.23089541401714,
+          49.84132760297507
+        ],
+        "scale": [
+          0.9929902906250209,
+          1.0526568762212993
+        ],
+        "gridHalfExtent": 30.046423928854527
+      },
+      "geometrySha256": "0a99dba3eea2ef9f2c7bc3ac1d86c6c6201de853f02ee1151bf5cd2584d6d3e4",
+      "serializedDesignSha256": "4ed659e11ec626ba0ddfb92076b3f213fd2d02a066f50a2407aa0cddee64af70",
+      "topologySha256": "7c6bb52c2fd69a56959df6bb1d79e4b25265586e05195a69eabc0b463694e798",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-949674",
+      "seed": 949674,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 8,
+        "radius": 26.669699493795633,
+        "amplitude": 0.08682846279349178,
+        "rotation": 6.137343165160403,
+        "center": [
+          51.70240845344961,
+          50.52431030757725
+        ],
+        "scale": [
+          0.9932030616514385,
+          0.8942219009809196
+        ],
+        "gridHalfExtent": 32.92387691578996
+      },
+      "geometrySha256": "df1c572b841d85ec68a29b75f43e5fe7f274add328f06bd0fc290857c09bd546",
+      "serializedDesignSha256": "4752f2b64ae04112c765065e8e39ab9818af3c3b21dd8ce1498c7a9f93321cc5",
+      "topologySha256": "7e08f7f18d77050ffacf69300580d94ef53e4cbb7eb10b5e40198512abf4428b",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-950683",
+      "seed": 950683,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 6,
+        "radius": 22.21257818257436,
+        "amplitude": 0.15268403185531498,
+        "rotation": 3.380591037266076,
+        "center": [
+          51.0210343869403,
+          48.27359352726489
+        ],
+        "scale": [
+          0.928525103321299,
+          1.0168490377906712
+        ],
+        "gridHalfExtent": 29.724862036888062
+      },
+      "geometrySha256": "264935de590067399cec22356cc0482f717661e88fa77875f791c63723e5d21e",
+      "serializedDesignSha256": "7714dc6797b57481473f470eb6588041bd95a64d23cbf6271f6765cd8d2e7600",
+      "topologySha256": "887439cc6a395a6c84d55e6f3014837fcfd51da7ca59db9eeeb19a64855f55b3",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-1951695",
+      "seed": 1951695,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 7,
+        "radius": 23.457901434972882,
+        "amplitude": 0.06193550205789506,
+        "rotation": 5.465153768745366,
+        "center": [
+          49.251666938886046,
+          50.6379021005705
+        ],
+        "scale": [
+          0.9687087849434466,
+          0.8833420379273593
+        ],
+        "gridHalfExtent": 27.765604950342862
+      },
+      "geometrySha256": "df3a46de0e9bfaf4cffcde0660bd0b5059c63afab18f9eb1f3c6e1f3392af17f",
+      "serializedDesignSha256": "dc7c434f225dbcc67d55efe21ee1a890c9a485fbfb4e7f8726f7606600eed8bd",
+      "topologySha256": "7c6bb52c2fd69a56959df6bb1d79e4b25265586e05195a69eabc0b463694e798",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-952701",
+      "seed": 952701,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 6,
+        "radius": 24.224022639915347,
+        "amplitude": 0.2615451967343688,
+        "rotation": 1.5834845941921631,
+        "center": [
+          49.09744941443205,
+          50.165899235755205
+        ],
+        "scale": [
+          1.0280304159689695,
+          0.9987727288808674
+        ],
+        "gridHalfExtent": 34.42578710050975
+      },
+      "geometrySha256": "c521cd3f4231c160e6178df94f81fba62d8c4ea42791520d4daa387ed80ac3e9",
+      "serializedDesignSha256": "57e1e60156eb58ad45b3ebc3c5a655176b67a2318d1f07ba3a7c2f684706d551",
+      "topologySha256": "887439cc6a395a6c84d55e6f3014837fcfd51da7ca59db9eeeb19a64855f55b3",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-953710",
+      "seed": 953710,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 5,
+        "radius": 24.678226518910378,
+        "amplitude": 0.09416454626247286,
+        "rotation": 4.706986937402202,
+        "center": [
+          51.79917971137911,
+          50.06743638776243
+        ],
+        "scale": [
+          0.9274303775466979,
+          0.8914451854955405
+        ],
+        "gridHalfExtent": 28.08976457341384
+      },
+      "geometrySha256": "7b5ff972da8921accda0b2e4ca61f442d49cb8608b0cd5109a88b0ac6ed3ddd0",
+      "serializedDesignSha256": "831f166e95e94c88003a165d8bf3e3de2fc09276f716323f1b9e3ab6b1b0f6a7",
+      "topologySha256": "4f33b785bf19320f2a1b66e660707b980aa8248111a99e18ba0557e7ba9fe299",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-954719",
+      "seed": 954719,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 5,
+        "radius": 25.11505842441693,
+        "amplitude": 0.18257062286138537,
+        "rotation": 3.306816226283359,
+        "center": [
+          50.61671483237296,
+          50.70956794451922
+        ],
+        "scale": [
+          0.9578452050406486,
+          0.9342227079626173
+        ],
+        "gridHalfExtent": 31.53687142345619
+      },
+      "geometrySha256": "7b19d05003f2279d5ce16cf094c01c21f86fc71f881d50130b8bbae27c676c35",
+      "serializedDesignSha256": "319ccb47f8bf97bd32828c9049e446c9ac0d491eb81fcbda0ea9e59a726c7eb0",
+      "topologySha256": "4f33b785bf19320f2a1b66e660707b980aa8248111a99e18ba0557e7ba9fe299",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-955728",
+      "seed": 955728,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 3,
+        "radius": 24.073712095152587,
+        "amplitude": 0.12156676657497884,
+        "rotation": 0.2274263988452372,
+        "center": [
+          49.76166929025203,
+          49.11233078595251
+        ],
+        "scale": [
+          0.8955289997346699,
+          0.9556616942118854
+        ],
+        "gridHalfExtent": 29.971692502760106
+      },
+      "geometrySha256": "224735dd1a4fba0756eb311513c4cd5a5404c71fecf896318c827cab796d1c6e",
+      "serializedDesignSha256": "d6acbfc3fbc11874339fb234f88d5d963f3d65d56340079fe2197825a24e9a3a",
+      "topologySha256": "975a3b446e81f03b279fd91ccd9c8c1bb325be0b87211f0d5436847503a2a564",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-956737",
+      "seed": 956737,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 5,
+        "radius": 25.749451529234648,
+        "amplitude": 0.09725220272317528,
+        "rotation": 0.5313013211411904,
+        "center": [
+          49.216354850679636,
+          48.93398441653699
+        ],
+        "scale": [
+          0.978015935253352,
+          0.9912643919419497
+        ],
+        "gridHalfExtent": 32.116882347387815
+      },
+      "geometrySha256": "a3f4e46fd12534c842a423df79f283fcd9d0a13da77b212c7906f22c91e72b95",
+      "serializedDesignSha256": "c181d0c1c1ddfdac42d4a0a97e1353f900119d6a82a1c4a45feb741c59d2ed0f",
+      "topologySha256": "4f33b785bf19320f2a1b66e660707b980aa8248111a99e18ba0557e7ba9fe299",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-957746",
+      "seed": 957746,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 7,
+        "radius": 24.67905516643077,
+        "amplitude": 0.19946089680306614,
+        "rotation": 2.8407337475744527,
+        "center": [
+          49.988848799839616,
+          51.49343808274716
+        ],
+        "scale": [
+          1.0303583771176636,
+          0.9072316996473819
+        ],
+        "gridHalfExtent": 34.49826757961581
+      },
+      "geometrySha256": "e0f804540ed6ba294871f0ed572af49d002f533006234b2557e4cfeceb3d981f",
+      "serializedDesignSha256": "26dd650e3607598d6de85af1d7f035f9923aad2e2493f78c962989d453012a98",
+      "topologySha256": "7c6bb52c2fd69a56959df6bb1d79e4b25265586e05195a69eabc0b463694e798",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-958755",
+      "seed": 958755,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 4,
+        "radius": 26.965925484895706,
+        "amplitude": 0.11208747895434498,
+        "rotation": 1.2344744359467499,
+        "center": [
+          49.31204827968031,
+          51.46539169177413
+        ],
+        "scale": [
+          1.0454321315698327,
+          0.9059288450703025
+        ],
+        "gridHalfExtent": 36.26568229095801
+      },
+      "geometrySha256": "3d4cfabeb124be9f2c85ce960f73776e613c7bd680e9771ce70c4eeba6899121",
+      "serializedDesignSha256": "f5f3c453fe7ef6ebd6a321a62a6ce060b74e2a921b8ef7b6f9d3ddefa7fdbc4c",
+      "topologySha256": "d894498de682bea5af37d376f081b2a9e521557fec9ef124db9b12c1a561eb08",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-2959770",
+      "seed": 2959770,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 4,
+        "radius": 24.36952303396538,
+        "amplitude": 0.07638881049584598,
+        "rotation": 5.006374958286416,
+        "center": [
+          51.93888175673783,
+          51.152007007971406
+        ],
+        "scale": [
+          1.051918258117512,
+          0.9334300549887121
+        ],
+        "gridHalfExtent": 32.26351970682582
+      },
+      "geometrySha256": "6aee017efce0158203c63756f41c0f60d06c65a04d94424da3229e1e5a80a478",
+      "serializedDesignSha256": "d5d418cee96a0311e183cfcb84516e9352713d554d9111d302049328aafe56df",
+      "topologySha256": "d894498de682bea5af37d376f081b2a9e521557fec9ef124db9b12c1a561eb08",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-960773",
+      "seed": 960773,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 6,
+        "radius": 26.461804860737175,
+        "amplitude": 0.21794812101870775,
+        "rotation": 5.564189089026831,
+        "center": [
+          48.068047638982534,
+          49.73976733535528
+        ],
+        "scale": [
+          1.0482724211830647,
+          0.9867403534892947
+        ],
+        "gridHalfExtent": 38.666634763056734
+      },
+      "geometrySha256": "a9c9ff23c7d35df931ce448eb410a458df28bf7ca9e61e1eb19b02c60c47b9d4",
+      "serializedDesignSha256": "fb8ef04a483dc2e02c3ea2693c05633c7ff12351603e91009839a11396834583",
+      "topologySha256": "887439cc6a395a6c84d55e6f3014837fcfd51da7ca59db9eeeb19a64855f55b3",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-961782",
+      "seed": 961782,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 8,
+        "radius": 22.78822284657508,
+        "amplitude": 0.06914929261431098,
+        "rotation": 5.397686710883028,
+        "center": [
+          49.589923880063,
+          49.813928900286555
+        ],
+        "scale": [
+          1.079976587528363,
+          1.0358942060917617
+        ],
+        "gridHalfExtent": 30.89445066217875
+      },
+      "geometrySha256": "290497b3a7722de4b5e3a30858d01500bdfd16e63af4bbde079df92207e30dd3",
+      "serializedDesignSha256": "1aa1a19e2db12dde3b8b8fad8a0e3deba558754cf0bce9dfdcb5aeb3f95a863a",
+      "topologySha256": "d133ddb01680bf9e060055591f03cc88dcf170153722a1d05e4a4d4f4f4054b7",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-1962794",
+      "seed": 1962794,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 3,
+        "radius": 26.166806048713624,
+        "amplitude": 0.12518809843808412,
+        "rotation": 0.09901075788691441,
+        "center": [
+          51.94902272988111,
+          49.99511069338769
+        ],
+        "scale": [
+          0.962479783333838,
+          0.9600012129824609
+        ],
+        "gridHalfExtent": 32.65487596069851
+      },
+      "geometrySha256": "ff0a24dd0e3d11228463e23eb556558e23ca1e7af81c5e6bef2394162789e263",
+      "serializedDesignSha256": "ec2e4c8ae3e6fa7e42c667300dc178c071d0003b649a2d99e8be547b17638afa",
+      "topologySha256": "7c3d8b4f35b1052ae0fc22f662f9cb8718216109f114d4471b54854f714e85ea",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-963800",
+      "seed": 963800,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 6,
+        "radius": 21.204128648154438,
+        "amplitude": 0.19268382478505372,
+        "rotation": 2.5154908952184436,
+        "center": [
+          50.882590600289404,
+          51.96084492933005
+        ],
+        "scale": [
+          0.8952164502535015,
+          0.9876417263131589
+        ],
+        "gridHalfExtent": 28.94243521561004
+      },
+      "geometrySha256": "8adcb5998805ba05e2daa3d4818a3b33145fc91fbfc0ebacc539e26975b31a62",
+      "serializedDesignSha256": "e044d903e99b8ed9dc05358fa07f6d1b7bc6a1dea2c979dc300fe02d9d8dd207",
+      "topologySha256": "887439cc6a395a6c84d55e6f3014837fcfd51da7ca59db9eeeb19a64855f55b3",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-964809",
+      "seed": 964809,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 3,
+        "radius": 22.172535836230963,
+        "amplitude": 0.1876774836657569,
+        "rotation": 1.2413569081379137,
+        "center": [
+          51.86748506873846,
+          50.10766317509115
+        ],
+        "scale": [
+          1.0627898925170303,
+          0.9421009337250144
+        ],
+        "gridHalfExtent": 31.066465881017123
+      },
+      "geometrySha256": "bdd7affa8fabcd1c1b7890b780313210e4c27bd6b0666ee283c947bb056aca07",
+      "serializedDesignSha256": "fef27b5ebe2caf3939410d8a1cd1555e45c31f50607a61c311be04a7fde44012",
+      "topologySha256": "975a3b446e81f03b279fd91ccd9c8c1bb325be0b87211f0d5436847503a2a564",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-965818",
+      "seed": 965818,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 8,
+        "radius": 26.46896289009601,
+        "amplitude": 0.11199621198233217,
+        "rotation": 5.321271125032867,
+        "center": [
+          51.72542450670153,
+          50.898974417708814
+        ],
+        "scale": [
+          1.0725013847649099,
+          0.9781109667103738
+        ],
+        "gridHalfExtent": 35.44646339337349
+      },
+      "geometrySha256": "d4314d6d403759a790afe9e2c982ea545bc5f4ba51c2fc8d8be55889bc6ca30b",
+      "serializedDesignSha256": "0c5777363964eeadb1fffecb37fecdcf5b487c6130cf75e60bf6ad0ce6bd314d",
+      "topologySha256": "7e08f7f18d77050ffacf69300580d94ef53e4cbb7eb10b5e40198512abf4428b",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-966827",
+      "seed": 966827,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 5,
+        "radius": 24.570439639035612,
+        "amplitude": 0.06309281816706061,
+        "rotation": 3.707665268489223,
+        "center": [
+          48.48576505947858,
+          48.637326845899224
+        ],
+        "scale": [
+          1.0688174430001527,
+          0.8969411094393581
+        ],
+        "gridHalfExtent": 32.81068706806265
+      },
+      "geometrySha256": "2069a154d2b59d05b6da5e1c8dd0840ed05cc11bb8ca2e7815fc276236e93ee1",
+      "serializedDesignSha256": "01a57b6d180399b1327d81578a0761834f9af0fa432a5a07c98324deae6a4196",
+      "topologySha256": "30765221324b4ca89e839ec8cb773be1b03db4b15e4b28afc4aeb8a57485fdb2",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-967836",
+      "seed": 967836,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 3,
+        "radius": 26.07241279631853,
+        "amplitude": 0.10910621378570795,
+        "rotation": 2.746185807078939,
+        "center": [
+          49.50462947227061,
+          49.22756685689092
+        ],
+        "scale": [
+          1.0103017836995423,
+          0.9239646353945137
+        ],
+        "gridHalfExtent": 33.195204770961546
+      },
+      "geometrySha256": "13b20b2f5036ee671a6736b6f0db1ebb6a3cc443e727ce391d70c2e279a494c6",
+      "serializedDesignSha256": "0f0b9d85187001329a4526658c510c5ddb97bcac0b2f6eedded9816de31f654d",
+      "topologySha256": "975a3b446e81f03b279fd91ccd9c8c1bb325be0b87211f0d5436847503a2a564",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-968845",
+      "seed": 968845,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 3,
+        "radius": 22.421366422902793,
+        "amplitude": 0.2571414677426219,
+        "rotation": 3.6496128521102067,
+        "center": [
+          51.41681152023375,
+          48.0698580564931
+        ],
+        "scale": [
+          0.9799484015163035,
+          0.962569393189624
+        ],
+        "gridHalfExtent": 31.09045117111816
+      },
+      "geometrySha256": "c5f708d072e2b8542c8ec0d287c6872ba850d7f326f4268086633fe89e4882d2",
+      "serializedDesignSha256": "bf19076b5ca092334831b5a1d8177ec1e2f05293f86a908bee4ea93606c1a2ef",
+      "topologySha256": "7c3d8b4f35b1052ae0fc22f662f9cb8718216109f114d4471b54854f714e85ea",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-969854",
+      "seed": 969854,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 6,
+        "radius": 23.50369493337348,
+        "amplitude": 0.1331766850501299,
+        "rotation": 2.575712621615072,
+        "center": [
+          49.61025232821703,
+          49.030424144119024
+        ],
+        "scale": [
+          1.0024352716468274,
+          1.0570407278090717
+        ],
+        "gridHalfExtent": 31.512962930776595
+      },
+      "geometrySha256": "4079895c21712ef2b662e689ae145c3ad4523caf4d558d6bc1bb2baa15d34475",
+      "serializedDesignSha256": "92f975126f3015fde6dea977efb9b861de766cebeb26165254eab3c69d55c3eb",
+      "topologySha256": "887439cc6a395a6c84d55e6f3014837fcfd51da7ca59db9eeeb19a64855f55b3",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-970863",
+      "seed": 970863,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 4,
+        "radius": 26.970487616490573,
+        "amplitude": 0.10250697379000485,
+        "rotation": 2.5896985763462252,
+        "center": [
+          51.20867570489645,
+          50.364885401912034
+        ],
+        "scale": [
+          0.932627955377102,
+          0.9752357177156955
+        ],
+        "gridHalfExtent": 32.78091051194241
+      },
+      "geometrySha256": "214fe3b36f0ddfe03ce9fb295c46d4c2e1fa4605b0a0e74df3321353eb1ae025",
+      "serializedDesignSha256": "5c5d05f8acf5940af5884021a7010906eeb797af8dd729f93e6802152ce3f837",
+      "topologySha256": "d894498de682bea5af37d376f081b2a9e521557fec9ef124db9b12c1a561eb08",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-971872",
+      "seed": 971872,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 3,
+        "radius": 21.539989138953388,
+        "amplitude": 0.1821303621772677,
+        "rotation": 2.3591114713077452,
+        "center": [
+          50.94766760524362,
+          51.0490294303745
+        ],
+        "scale": [
+          0.9320367308985442,
+          1.0052592822071165
+        ],
+        "gridHalfExtent": 29.840854147864967
+      },
+      "geometrySha256": "2aa2482fe8a4f70f43b0be18d120cc86287057fecaced00fa6b1d89e2e4267d9",
+      "serializedDesignSha256": "0ea5054e83992c234b4662e379c038206a6438ba886d42e9391995c0bdf51463",
+      "topologySha256": "975a3b446e81f03b279fd91ccd9c8c1bb325be0b87211f0d5436847503a2a564",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-972881",
+      "seed": 972881,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 8,
+        "radius": 26.302703018300235,
+        "amplitude": 0.28866679798811673,
+        "rotation": 3.4730117544341996,
+        "center": [
+          50.295404655858874,
+          50.70887377113104
+        ],
+        "scale": [
+          1.021534692980349,
+          0.941678546993062
+        ],
+        "gridHalfExtent": 38.5153106937111
+      },
+      "geometrySha256": "dd36233c10d17fb824b655ce14e74f314be12856903862b886357c5edf4a563a",
+      "serializedDesignSha256": "07e4d3c05c26ee53e62f261de43294a2f8de537e1dcef66b450568585a7bcf8c",
+      "topologySha256": "d133ddb01680bf9e060055591f03cc88dcf170153722a1d05e4a4d4f4f4054b7",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-973890",
+      "seed": 973890,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 4,
+        "radius": 24.691837378777564,
+        "amplitude": 0.185493229245767,
+        "rotation": 2.0278219835422435,
+        "center": [
+          50.73951293621212,
+          50.990524728782475
+        ],
+        "scale": [
+          0.9468967932928354,
+          0.9462410114891827
+        ],
+        "gridHalfExtent": 32.38697495294827
+      },
+      "geometrySha256": "aaf37b98e840d27d01314b86a0de59659ee3a3a4aebb13e82cd9d98bfe7e50cc",
+      "serializedDesignSha256": "f8050fd715be577b9379ee7a726356fbf7db5b152647af27a11c05395a646f1c",
+      "topologySha256": "d894498de682bea5af37d376f081b2a9e521557fec9ef124db9b12c1a561eb08",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-974899",
+      "seed": 974899,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 5,
+        "radius": 23.95369982952252,
+        "amplitude": 0.1327508316747844,
+        "rotation": 5.867028505241229,
+        "center": [
+          50.618281091563404,
+          49.24485736526549
+        ],
+        "scale": [
+          1.0547305690310895,
+          1.073097303621471
+        ],
+        "gridHalfExtent": 33.75840974217171
+      },
+      "geometrySha256": "908ffe2b6f11d527c89842fe9bf85bf502a3fd7952cfd1b6c8eb1967146eb332",
+      "serializedDesignSha256": "e42ec50764ce040f0dedaf5093ccebdabe2390c410ae8994d91bc056822f1abc",
+      "topologySha256": "30765221324b4ca89e839ec8cb773be1b03db4b15e4b28afc4aeb8a57485fdb2",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-975908",
+      "seed": 975908,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 6,
+        "radius": 24.57755480473861,
+        "amplitude": 0.07439774779602885,
+        "rotation": 4.738588561668127,
+        "center": [
+          50.778344955295324,
+          51.05690192524344
+        ],
+        "scale": [
+          1.0670071976911277,
+          0.9409791189432144
+        ],
+        "gridHalfExtent": 31.467078248031466
+      },
+      "geometrySha256": "9481edd8e094aa89faa3253d4964ff42169d4dda463177ee3d3180796a62bff0",
+      "serializedDesignSha256": "9947d0a145bbc1cfa507f4d300c1591f15be757211ac8fe2312fa035b8e050b1",
+      "topologySha256": "887439cc6a395a6c84d55e6f3014837fcfd51da7ca59db9eeeb19a64855f55b3",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-976917",
+      "seed": 976917,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 5,
+        "radius": 24.834796131122857,
+        "amplitude": 0.20958632016554474,
+        "rotation": 1.4705245408382444,
+        "center": [
+          49.821808078326285,
+          50.460394175723195
+        ],
+        "scale": [
+          1.0392698147986086,
+          0.9509257228299975
+        ],
+        "gridHalfExtent": 35.11319392909343
+      },
+      "geometrySha256": "113edcc7736bcc07f5a06b48223578fb46b2d688d0fe7cf3f337a4a403dc8c33",
+      "serializedDesignSha256": "5d9555637439edb89dc17cf7065fb8efebfdb522a456af0925acf694f2d78522",
+      "topologySha256": "a1c36a22b3a24d3502285e1b738f002808919223c7f6ad68df835635f53970ca",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-977926",
+      "seed": 977926,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 8,
+        "radius": 26.43233574880287,
+        "amplitude": 0.11118266119156034,
+        "rotation": 3.637687056152936,
+        "center": [
+          51.19941280595958,
+          48.57072552386671
+        ],
+        "scale": [
+          0.9033628133311867,
+          1.0578523372020574
+        ],
+        "gridHalfExtent": 35.80706723025406
+      },
+      "geometrySha256": "d36d4fccde58c58179ead93a09c08c13d4c076e79ae037db1ad97bb8f3051198",
+      "serializedDesignSha256": "a31c29d3ee64845536c564a6f6fbe9a302b6905fad253e74def61f1d6c431e1d",
+      "topologySha256": "7e08f7f18d77050ffacf69300580d94ef53e4cbb7eb10b5e40198512abf4428b",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-978935",
+      "seed": 978935,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 3,
+        "radius": 21.464968507178128,
+        "amplitude": 0.18184694884344935,
+        "rotation": 0.7759618195244208,
+        "center": [
+          50.63808236736804,
+          50.34474115073681
+        ],
+        "scale": [
+          0.9295844625402242,
+          0.9138390594813973
+        ],
+        "gridHalfExtent": 28.574778979785428
+      },
+      "geometrySha256": "294490fa509eb71f574fa35d97e80ef491c0af5d6bfe0785e195e95205796575",
+      "serializedDesignSha256": "d0f6a3a80d603a4bc30c83898d1b54a7ea69c9e000aec9586793ddde031c814e",
+      "topologySha256": "7c3d8b4f35b1052ae0fc22f662f9cb8718216109f114d4471b54854f714e85ea",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-979944",
+      "seed": 979944,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 7,
+        "radius": 22.25693887565285,
+        "amplitude": 0.12018192508723588,
+        "rotation": 1.397358662191432,
+        "center": [
+          48.527099100872874,
+          51.29558623209596
+        ],
+        "scale": [
+          0.98031355782412,
+          0.9832860818784684
+        ],
+        "gridHalfExtent": 28.24163779128898
+      },
+      "geometrySha256": "293c4e64f056059308c720dbde272db1e1c922508536fce8f74e0cc65e6c70d2",
+      "serializedDesignSha256": "491ad3ae68a6d0840b85f06734c53dabe6a8ab747d63890c59398e2823ca3e9e",
+      "topologySha256": "7c6bb52c2fd69a56959df6bb1d79e4b25265586e05195a69eabc0b463694e798",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-1980956",
+      "seed": 1980956,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 7,
+        "radius": 21.292959151323885,
+        "amplitude": 0.07864105079323053,
+        "rotation": 4.082943807592423,
+        "center": [
+          50.96695482823998,
+          51.959765791893005
+        ],
+        "scale": [
+          0.9550653710216284,
+          0.9410270131379366
+        ],
+        "gridHalfExtent": 25.614483684172313
+      },
+      "geometrySha256": "e03112af9c128a204e306d44e979ef0c7399128f09e28b1a5439b7ecf2d02f2b",
+      "serializedDesignSha256": "9a270b6e6e0cd5f293899ad0f2c005820b6f66361fafc7848868ee12807750e4",
+      "topologySha256": "9ca15ee3dfa0b9e815e5b8bf987f0ce1dc81c928a6ce0b2cb1eaa8836f39edb6",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-1981965",
+      "seed": 1981965,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 5,
+        "radius": 25.10164421238005,
+        "amplitude": 0.20704283488914368,
+        "rotation": 3.874105839807095,
+        "center": [
+          51.99762848671526,
+          48.58633978944272
+        ],
+        "scale": [
+          0.9114912371337414,
+          0.968569913432002
+        ],
+        "gridHalfExtent": 32.42829646382023
+      },
+      "geometrySha256": "dcf45c9e2ed4dc6354c179c9e1745915f3c8834ea1697e4281f4c0a8cbc81a2b",
+      "serializedDesignSha256": "bdeee900cf840fd294cba338ab588560255efc1c6998e50ca36abcdcfdb306fc",
+      "topologySha256": "30765221324b4ca89e839ec8cb773be1b03db4b15e4b28afc4aeb8a57485fdb2",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-982971",
+      "seed": 982971,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "smooth-radial-motif",
+        "lobes": 5,
+        "radius": 22.86962737189606,
+        "amplitude": 0.14499537326861173,
+        "rotation": 3.705872370219242,
+        "center": [
+          50.67806329485029,
+          51.790098573081195
+        ],
+        "scale": [
+          0.8840792788378894,
+          0.9362034104950726
+        ],
+        "gridHalfExtent": 28.792197803313602
+      },
+      "geometrySha256": "902b9d85a7fbdca80ea00f3a6792efd162054b27a84e9ee7762d0605fc6db199",
+      "serializedDesignSha256": "eff7b0f0f11439edb4163c6a4a82688c4c135dc57245f710f5cbaf88a52dc500",
+      "topologySha256": "4f33b785bf19320f2a1b66e660707b980aa8248111a99e18ba0557e7ba9fe299",
+      "sharedEdges": 4
+    },
+    {
+      "id": "radial-motif-983980",
+      "seed": 983980,
+      "recipe": "radial-motif",
+      "familyId": "procedural-radial-motif",
+      "groupId": "procedural-radial-motif",
+      "split": "unassigned",
+      "parameters": {
+        "counts": [
+          2,
+          2
+        ],
+        "style": "polygonal-radial-motif",
+        "lobes": 4,
+        "radius": 23.355904188472778,
+        "amplitude": 0.15191168842837213,
+        "rotation": 4.852995275692698,
+        "center": [
+          50.15755013935268,
+          49.18905331753194
+        ],
+        "scale": [
+          1.011294398009777,
+          0.9148426908720285
+        ],
+        "gridHalfExtent": 30.383119762132896
+      },
+      "geometrySha256": "69a2eedea1a22f2ab21ad8f4e403e1235dc19f38b7c584736c80fcad035f574c",
+      "serializedDesignSha256": "0b7a59d300676d259ec246083bb25ec365b178fc893b629e300d580ecde7ebc6",
+      "topologySha256": "4ab7b6a8cde232960bce13ade4b6833c062dd857fc3163427d9a3b0cfc60e46a",
+      "sharedEdges": 4
+    }
+  ],
+  "visualInspection": {
+    "canonicalDesigns": 64,
+    "firstPhotographicViews": 64,
+    "contactSheets": [
+      "tmp/heart-learning/radial-motif-v1/contact-0.png",
+      "tmp/heart-learning/radial-motif-v1/contact-1.png",
+      "tmp/heart-learning/radial-motif-v1/contact-2.png",
+      "tmp/heart-learning/radial-motif-v1/contact-3.png",
+      "tmp/heart-learning/radial-motif-v1/contact-4.png",
+      "tmp/heart-learning/radial-motif-v1/contact-5.png",
+      "tmp/heart-learning/radial-motif-v1/contact-6.png",
+      "tmp/heart-learning/radial-motif-v1/contact-7.png"
+    ],
+    "notes": "All eight sheets inspected. Central motif and corner patches agree visually across the canonical/photo pairs. No approach-cut seam is visible at contact-sheet scale. Low-contrast cream/beige pairs and blurred corners remain deliberately difficult. The simulation remains visibly planar."
+  },
+  "focusedTests": 13,
+  "broaderQa": "Type checking, lint and application tests passed. Serial full inverse tests and build are in progress; see the subsequent completed QA record when available.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/generation.log",
+      "bytes": 4554,
+      "sha256": "5e66e71c8d20a4ddb71525a42811577df78f06feacfe5e154e14a94396ed9bc9"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/focused-tests.log",
+      "bytes": 1625,
+      "sha256": "39db63e1bc9914ed19ef9ac5320d3ab9fdc783675fa3310c0f8d1bde8cb1bb12"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/verification.json",
+      "bytes": 376,
+      "sha256": "200ed7943bb8451021604f891cf35667f7a9e504248b162c4c7dec5256dbe67e"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/shared-coverage.json",
+      "bytes": 8527,
+      "sha256": "b8190975c0edacd2f43a55cbc9ad9f9d8cce7849aadc25cb807b483ba397f6dc"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/probe.json",
+      "bytes": 5462,
+      "sha256": "90c36cd683b2055dd7dd760308d3f376b51ecf145fc7579c5bd62ecf32f5e42f"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/collect.py",
+      "bytes": 3956,
+      "sha256": "890f89e16c657372f83afab852a55982d99a04bdd4a2a55f921f939d5399dfc4"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-0.png",
+      "bytes": 332058,
+      "sha256": "ec7f2632c388ad54baf7d368cf65a5fd5b2165020f4b758eed8d022fc45e5892"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-1.png",
+      "bytes": 337071,
+      "sha256": "1e06cae54858154634b0da7003793bc9df6ae8da20329a471217482c037c65f6"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-2.png",
+      "bytes": 327066,
+      "sha256": "092266e5bb1f7feaaec8e6e098796692f1cc066866434ccd8a10b791ebe1653d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-3.png",
+      "bytes": 325499,
+      "sha256": "58c71e9e9dd4afdb1347c8027d33a3da9dfc1510dd74ff828ea842a8053b2dd2"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-4.png",
+      "bytes": 343900,
+      "sha256": "aa9c190598167fc6b99338db149b38ee8159d1ed5621806932ead2589603ed3d"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-5.png",
+      "bytes": 339166,
+      "sha256": "9185f7355b97bb87cc12b003ce3b7452031ce7ddba1e8dd0a85c394d75ce2e1c"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-6.png",
+      "bytes": 311026,
+      "sha256": "cfffdad20d515d42a0ab54c2a2e9eb6107fafb5f8038dbd23ae2a061530935a8"
+    },
+    {
+      "path": "tmp/heart-learning/radial-motif-v1/contact-7.png",
+      "bytes": 304316,
+      "sha256": "a7d55d0b4a84e3da2ec4c431f8448e0b729c93979f8751cb1c42654159e2d504"
+    }
+  ],
+  "limitations": [
+    "Unassigned candidates, not added training data or a new model result.",
+    "One recipe group with equivalent simplified routing topologies; 15 stored incidence signatures are not 15 independent topology families.",
+    "No original photographic/cutting-template source was used, but motif-family overlap with evaluation designs has not been ruled out.",
+    "Visual review covered every canonical/first-photo pair, not all 256 photographic views.",
+    "Shared-coverage measurements are discrete samples, not a proof of full-curve cancellation.",
+    "No reconstruction benchmark or physical assembly test is reported here."
+  ]
+}
