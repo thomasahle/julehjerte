@@ -1,27 +1,27 @@
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-weave-parity="0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" data-weave-parity="0">
   <title>Sildeben</title>
-  <desc></desc>
   <metadata>
     <rdf:RDF>
       <cc:Work rdf:about="">
         <dc:title>Sildeben</dc:title>
         <dc:creator>
           <cc:Agent>
-            <dc:title>Claude</dc:title>
+            <dc:title>Thomas Ahle &amp; Claude</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:description></dc:description>
         <dc:source>juleflet.dk</dc:source>
+        <dc:date>2026-10-14</dc:date>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <path d="M 100 10 C 93.333 14 86.667 18 80 22 C 73.333 18 66.667 14 60 10 C 53.333 14 46.667 18 40 22 C 33.333 18 26.667 14 20 10 C 13.333 14 6.667 18 0 22" stroke="orange" fill="none"/>
-  <path d="M 100 27 C 93.333 31 86.667 35 80 39 C 73.333 35 66.667 31 60 27 C 53.333 31 46.667 35 40 39 C 33.333 35 26.667 31 20 27 C 13.333 31 6.667 35 0 39" stroke="orange" fill="none"/>
-  <path d="M 100 44 C 93.333 48 86.667 52 80 56 C 73.333 52 66.667 48 60 44 C 53.333 48 46.667 52 40 56 C 33.333 52 26.667 48 20 44 C 13.333 48 6.667 52 0 56" stroke="orange" fill="none"/>
-  <path d="M 100 61 C 93.333 65 86.667 69 80 73 C 73.333 69 66.667 65 60 61 C 53.333 65 46.667 69 40 73 C 33.333 69 26.667 65 20 61 C 13.333 65 6.667 69 0 73" stroke="orange" fill="none"/>
-  <path d="M 100 78 C 93.333 82 86.667 86 80 90 C 73.333 86 66.667 82 60 78 C 53.333 82 46.667 86 40 90 C 33.333 86 26.667 82 20 78 C 13.333 82 6.667 86 0 90" stroke="orange" fill="none"/>
-  <path d="M 20 100 C 20 66.667 20 33.333 20 0" stroke="green" fill="none"/>
-  <path d="M 40 100 C 40 66.667 40 33.333 40 0" stroke="green" fill="none"/>
-  <path d="M 60 100 C 60 66.667 60 33.333 60 0" stroke="green" fill="none"/>
-  <path d="M 80 100 C 80 66.667 80 33.333 80 0" stroke="green" fill="none"/>
+  <path d="M 100 11.667 C 94.444 15 88.889 18.334 83.333 21.667 C 77.778 18.334 72.222 15 66.667 11.667 C 61.111 15 55.556 18.334 50 21.667 C 44.444 18.334 38.889 15 33.333 11.667 C 27.778 15 22.222 18.334 16.667 21.667 C 11.111 18.334 5.556 15 0 11.667" stroke="orange" fill="none"/>
+  <path d="M 100 28.333 C 94.444 31.666 88.889 35 83.333 38.333 C 77.778 35 72.222 31.666 66.667 28.333 C 61.111 31.666 55.556 35 50 38.333 C 44.444 35 38.889 31.666 33.333 28.333 C 27.778 31.666 22.222 35 16.667 38.333 C 11.111 35 5.556 31.666 0 28.333" stroke="orange" fill="none"/>
+  <path d="M 100 45 C 94.444 48.333 88.889 51.667 83.333 55 C 77.778 51.667 72.222 48.333 66.667 45 C 61.111 48.333 55.556 51.667 50 55 C 44.444 51.667 38.889 48.333 33.333 45 C 27.778 48.333 22.222 51.667 16.667 55 C 11.111 51.667 5.556 48.333 0 45" stroke="orange" fill="none"/>
+  <path d="M 100 61.667 C 94.444 65 88.889 68.334 83.333 71.667 C 77.778 68.334 72.222 65 66.667 61.667 C 61.111 65 55.556 68.334 50 71.667 C 44.444 68.334 38.889 65 33.333 61.667 C 27.778 65 22.222 68.334 16.667 71.667 C 11.111 68.334 5.556 65 0 61.667" stroke="orange" fill="none"/>
+  <path d="M 100 78.333 C 94.444 81.666 88.889 85 83.333 88.333 C 77.778 85 72.222 81.666 66.667 78.333 C 61.111 81.666 55.556 85 50 88.333 C 44.444 85 38.889 81.666 33.333 78.333 C 27.778 81.666 22.222 85 16.667 88.333 C 11.111 85 5.556 81.666 0 78.333" stroke="orange" fill="none"/>
+  <path d="M 16.667 100 C 16.667 66.667 16.667 33.333 16.667 0" stroke="green" fill="none"/>
+  <path d="M 33.333 100 C 33.333 66.667 33.333 33.333 33.333 0" stroke="green" fill="none"/>
+  <path d="M 50 100 C 50 66.667 50 33.333 50 0" stroke="green" fill="none"/>
+  <path d="M 66.667 100 C 66.667 66.667 66.667 33.333 66.667 0" stroke="green" fill="none"/>
+  <path d="M 83.333 100 C 83.333 66.667 83.333 33.333 83.333 0" stroke="green" fill="none"/>
 </svg>

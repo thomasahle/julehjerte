@@ -343,7 +343,7 @@
   },
   "stjernegitter": {
     "name": "Stjernegitter",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -366,7 +366,7 @@
   },
   "stjernerogkors": {
     "name": "Stjerner og kors",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -696,22 +696,22 @@
   },
   "sildeben": {
     "name": "Sildeben",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
     "source": "juleflet.dk",
-    "date": null,
+    "date": "2026-10-14",
     "description": null,
     "gridSize": {
-      "x": 5,
+      "x": 6,
       "y": 6
     },
     "difficulty": "medium",
     "symmetry": {
       "isClassic": false,
       "curveSymmetry": true,
-      "lobeSymmetry": true,
+      "lobeSymmetry": false,
       "mirrorSymmetry": false,
       "sharedTemplate": false
     },
@@ -719,7 +719,7 @@
   },
   "puslespil": {
     "name": "Puslespil",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -742,7 +742,7 @@
   },
   "koelbuer": {
     "name": "Kølbuer",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -765,7 +765,7 @@
   },
   "roserude": {
     "name": "Roserude",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -788,7 +788,7 @@
   },
   "hanefod": {
     "name": "Hanefod",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -811,7 +811,7 @@
   },
   "flyvendegaes": {
     "name": "Flyvende gæs",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -834,7 +834,7 @@
   },
   "origami": {
     "name": "Origami",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -857,7 +857,7 @@
   },
   "drageskael": {
     "name": "Drageskæl",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -880,7 +880,7 @@
   },
   "hermanngitter": {
     "name": "Hermann-gitter",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -903,7 +903,7 @@
   },
   "tragt": {
     "name": "Tragt",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -926,7 +926,7 @@
   },
   "boelgebrud": {
     "name": "Bølgebrud",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -949,7 +949,7 @@
   },
   "glaskuppel": {
     "name": "Glaskuppel",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -972,7 +972,7 @@
   },
   "hvirvel": {
     "name": "Hvirvel",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -1137,7 +1137,7 @@
   },
   "dagognat": {
     "name": "Dag og nat",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
@@ -1275,7 +1275,7 @@
   },
   "hjertekloever": {
     "name": "Hjertekløver",
-    "author": "Claude",
+    "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
     "publisherUrl": null,
