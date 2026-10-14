@@ -6,6 +6,7 @@ import {basisTable} from './math.js';
 import {gridControls,gridSamples,gridModel,gridMask,gridParity} from './grid.js';
 import {imageWeights} from './image-objective.js';
 import {initializationImage} from './initialization-image.js';
+import {nativeGridRows} from '../numerical-kernel.js';
 
 /** Least-cost alternating runs with exactly `count` transitions. Pixel costs
  * can be soft probabilities. The minimum run length applies to edge runs too.
@@ -147,19 +148,21 @@ export function borderGrid(counts,evidence,{k=16,floor=.008,resolution=96,shared
   }
   return supported?model:null;
 }
-export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=size,deadline=Infinity,sharedWork=true,weights=null}={}){
-  return initializeFromImage(initializationImage(prob,size,weights,{reuse:sharedWork}),counts,phase,{resolution,rounds,k,floor,weight,initial,scoreResolution,deadline,sharedWork});
+export function initializeGrid(prob,size,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=size,deadline=Infinity,sharedWork=true,weights=null,native=true}={}){
+  return initializeFromImage(initializationImage(prob,size,weights,{reuse:sharedWork}),counts,phase,{resolution,rounds,k,floor,weight,initial,scoreResolution,deadline,sharedWork,native});
 }
-function initializeFromImage(image,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=96,deadline=Infinity,sharedWork=true}={}){
+function initializeFromImage(image,counts,phase,{resolution=96,rounds=18,k=16,floor=.008,weight=.3,initial=null,scoreResolution=96,deadline=Infinity,sharedWork=true,native=true}={}){
   const n=resolution,resized=image(n),target=resized.probability,importance=resized.weights,weightScale=resized.weightScale,model=gridModel(counts,k,0,initial);if(!initial)model.z.fill(0);
   let best={z:model.z.slice(),error:resized.score(gridMask(model,n,phase,floor))},completed=0;const previous=[null,null];
   let termination='round_limit';
   for(let round=0;round<rounds;round++){
     if(performance.now()>deadline){termination='deadline';break;}
     for(const f of round%2?[1,0]:[0,1]){
-      const samples=gridSamples(gridControls(model,floor),model,basisTable(n,k),n),count=counts[f],positions=new Float64Array(n*count);
+      const samples=gridSamples(gridControls(model,floor),model,basisTable(n,k),n),count=counts[f];
       const flips=sharedWork?gridParity(samples[1-f],counts[1-f],n,true):null;
-      for(let y=0;y<n;y++){
+      const accelerated=sharedWork&&native?nativeGridRows(target,importance,flips,samples[f],n,count,f,Number(phase===-1),Math.max(1,Math.ceil(n*floor)),weight,weightScale):null;
+      const positions=accelerated||new Float64Array(n*count);
+      for(let y=0;!accelerated&&y<n;y++){
         const row=new Float64Array(n),prior=Array.from(samples[f].slice(y*count,(y+1)*count)),rowWeights=importance?new Float64Array(n):null;
         let allOne=true;
         for(let x=0;x<n;x++){
@@ -189,10 +192,10 @@ function initializeFromImage(image,counts,phase,{resolution=96,rounds=18,k=16,fl
 }
 
 /** One fixed image supplies all count, phase and starting-layout candidates. */
-export function gridInitializer(prob,size,{weights=null,sharedWork=true}={}){
+export function gridInitializer(prob,size,{weights=null,sharedWork=true,native=true}={}){
   const image=initializationImage(prob,size,weights,{reuse:sharedWork});
   return{
-    initialize:(counts,phase,options={})=>initializeFromImage(image,counts,phase,{scoreResolution:size,...options,sharedWork}),
+    initialize:(counts,phase,options={})=>initializeFromImage(image,counts,phase,{scoreResolution:size,...options,sharedWork,native}),
     separable:(counts,phase,options={})=>separableFromImage(image,counts,phase,{...options,sharedWork})
   };
 }

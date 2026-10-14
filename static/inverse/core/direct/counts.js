@@ -114,8 +114,8 @@ export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit
 
 // Reuse projection work without pruning any count or phase. The explicit false
 // option preserves the original initializer for paired benchmark comparisons.
-export function initializeCounts({options,fullProb,resolution,prob,n,evidence,weights=null,fullWeights=null,guideProb=null},{rounds=18,k=16,sharedWork=true,retainAlternatives=false,initializationResolution=96}={}){
-    const seeds=[],fitter=gridInitializer(fullProb,resolution,{weights:fullWeights,sharedWork}),guideFitter=guideProb?gridInitializer(guideProb,resolution,{sharedWork}):null;
+export function initializeCounts({options,fullProb,resolution,prob,n,evidence,weights=null,fullWeights=null,guideProb=null},{rounds=18,k=16,sharedWork=true,retainAlternatives=false,initializationResolution=96,native=true}={}){
+    const seeds=[],fitter=gridInitializer(fullProb,resolution,{weights:fullWeights,sharedWork,native}),guideFitter=guideProb?gridInitializer(guideProb,resolution,{sharedWork,native}):null;
     const score=sharedWork?initializationImage(prob,n,weights)(n).score:mask=>mismatch(mask,prob,weights);
     for(const o of options){
       const uniform=gridModel(o.counts,k);uniform.z.fill(0);

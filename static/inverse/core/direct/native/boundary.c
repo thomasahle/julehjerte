@@ -1,7 +1,65 @@
-/* Continuous boundary gradient and discrete paper-lattice operations, matching
- * boundary.js and material.js. No libc, imports or fast-math. */
+/* Continuous boundary gradient, row initialization and paper-lattice operations.
+ * Match the JavaScript arithmetic and tie order. No libc, imports or fast-math. */
 static double clamp(double x, double lo, double hi) {
   return x < lo ? lo : x > hi ? hi : x;
+}
+
+/* One family update from initialize.js. Batch all rows across the JS/Wasm
+ * boundary; retain the exact prefix sums, strict DP ties and infeasible-row
+ * fallback of fitRuns(). Spline projection remains in JavaScript. */
+void grid_rows(const double *target, const double *weights,
+    const unsigned char *flips, const double *priors, int n, int count,
+    int family, int phase, int minimum, double weight, double weight_scale,
+    double *scratch, int *back, double *out) {
+  const int stride=n+1;
+  double *prefix0=scratch, *prefix1=scratch+stride;
+  for (int y=0; y<n; ++y) {
+    double *previous=scratch+2*stride, *next=scratch+3*stride;
+    const double *prior=priors+y*count;
+    int weighted=0;
+    if (weights) {
+      weighted=weight_scale!=1;
+      for (int x=0; x<n && !weighted; ++x)
+        if (weights[family?x*n+y:y*n+x]!=1) weighted=1;
+    }
+    prefix0[0]=prefix1[0]=0;
+    for (int x=0; x<n; ++x) {
+      const int index=family?x*n+y:y*n+x;
+      const double p=flips[y*n+x]?1-target[index]:target[index];
+      if (weighted) {
+        const double w=weights[index]*weight_scale;
+        prefix0[x+1]=prefix0[x]+w*p;
+        prefix1[x+1]=prefix1[x]+w*(1-p);
+      } else {
+        prefix0[x+1]=prefix0[x]+p;
+        prefix1[x+1]=prefix1[x]+1-p;
+      }
+    }
+    for (int i=0; i<stride; ++i) previous[i]=__builtin_inf();
+    previous[0]=0;
+    for (int region=0; region<=count; ++region) {
+      const double *costs=(phase+region)%2?prefix1:prefix0;
+      for (int i=0; i<stride; ++i) next[i]=__builtin_inf();
+      double best=__builtin_inf(); int at=-1;
+      for (int end=(region+1)*minimum; end<=n-(count-region)*minimum; ++end) {
+        const int start=end-minimum;
+        const double delta=region?(double)start/n-prior[region-1]:0;
+        const double penalty=region?weight*n*(delta*delta):0;
+        const double value=previous[start]-costs[start]+penalty;
+        if (value<best) { best=value; at=start; }
+        next[end]=best+costs[end]; back[region*stride+end]=at;
+      }
+      double *swap=previous; previous=next; next=swap;
+    }
+    if (!__builtin_isfinite(previous[n])) {
+      for (int i=0; i<count; ++i) out[y*count+i]=prior[i];
+    } else {
+      int end=n;
+      for (int region=count; region>0; --region) {
+        end=back[region*stride+end]; out[y*count+region-1]=(double)end/n;
+      }
+    }
+  }
 }
 
 /* The paper audit's squared Euclidean distance transform. Keep the original
