@@ -45,6 +45,10 @@ for(const entry of fixture.cases){
     assert.ok(seconds<10,`Complete preparation, fitting and export took ${seconds} seconds.`);
     assert.equal(report.templateChecksPassed,true);assert.deepEqual(report.slits,{left:2,right:2});
     assert.ok(report.solver.featureRecovery.attempts.some(a=>a.continuousRepair?.accepted));
+    const attempt=report.solver.featureRecovery.attempts.find(a=>a.continuousRepair?.accepted);
+    const observed=attempt.rejectedCandidates.find(r=>r.reason==='repair_attempted');
+    assert.equal(observed.integerCandidateSeconds,attempt.continuousRepair.integerCandidateSeconds);
+    assert.ok(observed.repairBudgetSeconds>0);
     assert.equal(report.settings.materialResolution,entry.expectedPaperResolution);
     if(entry.expectedPaperResolution>cfg.materialResolution)assert.equal(report.solver.paperVerification.resolution,700);
     const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],n);

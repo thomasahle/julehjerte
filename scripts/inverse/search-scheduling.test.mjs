@@ -26,6 +26,8 @@ for(const entry of [...fixture.cases,paint])test(`fresh ${entry.id} routing reta
   assert.equal(report.templateChecksPassed,true);
   assert.equal(report.validation.passed,true);
   assert.equal(report.manufacturing.status,'pass');
+  assert.ok(Number.isFinite(report.solver.topologyInitialization?.seconds),
+    'A successful recovery must retain the earlier initialization cost.');
   for(const scale of[1,2]){
     const resolution=n*scale,reference={resolution,mask:Uint8Array.from({length:resolution*resolution},(_,i)=>mask[Math.floor(Math.floor(i/resolution)/scale)*n+Math.floor((i%resolution)/scale)])};
     const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],resolution);

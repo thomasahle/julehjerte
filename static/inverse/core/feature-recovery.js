@@ -64,21 +64,25 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
         // early and leaves later graphs and boundary interpretations available.
         const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=left,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{}),...(denseRetryOf!==null?{denseRetryOf}:{})};report.attempts.push(attempt);
         const observeRejected=async(proposal,timing)=>{
+          const observation={round:timing.round,integerCandidateSeconds:timing.elapsedSeconds,remainingSeconds:seedRemaining()};
+          (attempt.rejectedCandidates??=[]).push(observation);
           try{
-            if(rejectedRepairUsed||seedRemaining()<.75)return false;
+            if(rejectedRepairUsed){observation.reason='repair_already_attempted';return false;}
+            if(seedRemaining()<.75){observation.reason='insufficient_phase_time';return false;}
             const quality=rejectedRoutingQuality(proposal,cfg);
-            if(!quality.repairable)return false;
+            if(!quality.repairable){observation.reason='geometry_not_repairable';return false;}
             rejectedRepairUsed=true;
             const phaseDeadline=Math.min(start+seconds*1000,seedStarted+maximumSeconds*1000);
             // The caller can lend a bounded tail from its remaining search
             // allowance to repair and verify this image-faithful candidate.
             // It never extends the discrete routing search or caller deadline.
             const deadline=Math.max(phaseDeadline,Math.min(repairDeadline??phaseDeadline,phaseDeadline+500));
+            observation.reason='repair_attempted';observation.repairBudgetSeconds=(deadline-performance.now())/1000;
             const repaired=repairRejectedRouting(proposal,input,cfg,{deadline,quality});
             attempt.continuousRepair={...repaired.report,additionalBudgetSeconds:(deadline-phaseDeadline)/1000,integerCandidateSeconds:timing.elapsedSeconds};
             if(repaired.solution){solution=repaired.solution;return true;}
             return false;
-          }catch(error){attempt.continuousProbeError=error.message;return false;}
+          }catch(error){observation.reason='repair_error';attempt.continuousProbeError=error.message;return false;}
         };
         try{
           // This recovery phase already announced graph work before tracing.

@@ -61,6 +61,16 @@ retry and another weak-region routing regression. The [subsequent routing correc
 feature-tradeoff routing and admits a useful smaller junction probe. Focused
 validation remains incomplete, including deadline-sensitive failures under
 concurrent system load. Corpus and browser jobs have not run on this correction.
+The latest production focused run passes 11/14. Offline
+[initialization-budget trials](routing-initialization-budget.md) recover a
+failing sloth mask in isolation. Shortening initialization alone passes only
+11/14 focused tests; also allowing more repair within the caller deadline passes
+14/14. Those budget changes are not adopted. A separate confirmed bug charged
+earlier native HiGHS time twice on later rounds; resetting its native clocks
+while retaining the outer deadline fixes the new regression test. Eighteen
+targeted tests pass; full QA is pending. Diagnostic reports now retain
+per-round search timing, skipped-repair reasons and initialization costs even
+when recovery succeeds.
 
 A separate [render-test correction](shape-render-validation.md) avoids system
 font discovery for text-free SVGs. All 152 paired renders are byte-identical;

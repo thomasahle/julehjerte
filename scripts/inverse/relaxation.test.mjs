@@ -28,6 +28,10 @@ test('an integral LP routing passes the original binary residual and independent
   assert.equal(solution.report.relaxationOnly,true);
   assert.ok(solution.report.binaryVariables>0,'The reference model must retain its binary requirements.');
   assert.equal(solution.report.history.length,1);
+  const timing=solution.report.history[0];
+  assert.ok(timing.budgetSeconds>0&&timing.budgetSeconds<=cfg.timeLimit);
+  assert.ok(timing.solveSeconds>=0&&timing.solveSeconds<=timing.elapsedSeconds);
+  assert.ok(timing.elapsedSeconds<=solution.report.elapsedSeconds);
   assert.ok(solution.report.history[0].relaxationResidual<=2e-5);
   assert.equal(solution.report.validation.passed,true);
   assert.equal(solution.report.validation.materialCore.status,'pass');

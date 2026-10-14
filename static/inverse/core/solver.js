@@ -80,8 +80,16 @@ export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coef
   try{native=highs.createModel(data);native.options.set({output_flag:false,time_limit:cfg.timeLimit,mip_rel_gap:cfg.relativeGap,random_seed:cfg.seed%2147483647});
     const append=(terms,lo=-Infinity,hi=Infinity)=>{const row=m.row(terms,lo,hi);native.addRow(lo,hi,{indices:row.entries.map(([j])=>j),values:row.entries.map(([,v])=>v)});};
     for(let round=0;round<cfg.maxRounds;round++){const remaining=cfg.timeLimit-(performance.now()-start)/1000;if(remaining<=0)break;onProgress({stage:'solving',round:round+1,remaining,validatedIncumbent:!!best},best);native.options.set({time_limit:remaining,mip_max_improving_sols:best?2147483647:1});let last=0;
+      // HiGHS applies time_limit to cumulative native run time on this model.
+      // `remaining` already subtracts all earlier search and validation work,
+      // so reset only its clocks before giving this round that reduced budget.
+      // Retain the model, exclusions, incumbent and outer wall-clock deadline.
+      native.raw.zeroAllClocks();
+      const roundStarted=performance.now();
       const result=native.run({[highs.constants.callbackType.mipLogging](event){const now=performance.now();if(now-last>500){last=now;onProgress({stage:'solving',round:round+1,nodes:Number(event.data.mip_node_count||0),gap:Number.isFinite(event.data.mip_gap)?event.data.mip_gap:null,...(cfg.progressGeometry&&best?{validatedIncumbent:true}:{})},best);}}});
-      const status=result.modelStatus,info={round:round+1,status};history.push(info);const bound=relaxationOnly?(status===highs.constants.modelStatus.optimal?native.getObjectiveValue():-Infinity):native.info.get('mip_dual_bound');if(Number.isFinite(bound))lower=Math.max(lower,bound);
+      // Record native search separately from model construction and subsequent
+      // validation/repair. A total timeout alone cannot explain late candidates.
+      const roundFinished=performance.now(),status=result.modelStatus,info={round:round+1,status,budgetSeconds:remaining,solveSeconds:(roundFinished-roundStarted)/1000,elapsedSeconds:(roundFinished-start)/1000};history.push(info);const bound=relaxationOnly?(status===highs.constants.modelStatus.optimal?native.getObjectiveValue():-Infinity):native.info.get('mip_dual_bound');if(Number.isFinite(bound))lower=Math.max(lower,bound);
       if(native.info.get('primal_solution_status')!==highs.constants.solutionStatus.feasible){if(status===highs.constants.modelStatus.infeasible)break;continue;}
       const values=native.getSolution().colValue,residual=m.residual(values);
       if(relaxationOnly){info.relaxationResidual=residual;if(residual>2e-5)break;}
