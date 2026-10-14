@@ -588,6 +588,54 @@
     "targetedPassed": 18,
     "targetedFailed": 0,
     "targetedSeconds": 2.690482917,
-    "change": "Reset native clocks before each run; preserve the decreasing outer wall-clock allowance and persistent MILP model."
+    "change": "Reset native clocks before each run; preserve the decreasing outer wall-clock allowance and persistent MILP model.",
+    "productionQA": {
+      "path": "tmp/heart-learning/routing-clock-v1/production-qa",
+      "checkPassed": true,
+      "lintPassed": true,
+      "applicationPassed": 856,
+      "applicationFailed": 1,
+      "applicationSkipped": 1,
+      "failure": "src/lib/inverse/shortReturns.test.ts: anchor repair applied=false",
+      "buildAndInverse": "Remaining checks not yet complete."
+    }
+  },
+  "anchorRepairDiagnostic": {
+    "replays": [
+      {
+        "path": "tmp/heart-learning/routing-clock-v1/anchor-probe.json",
+        "sha256": "f266a36ce4846f8750169b103b11f85f4a20ea4676b433bda39465e6ca9f63d6",
+        "applied": false,
+        "reason": "refinement_geometry",
+        "seconds": 3.902642,
+        "refinementSteps": 160,
+        "sourceErrorBefore": 0.0090375,
+        "sourceErrorAfter": null,
+        "scope": "Direct local repair only; no MILP, final export or Draw conversion."
+      },
+      {
+        "path": "tmp/heart-learning/routing-clock-v1/anchor-baseline.json",
+        "sha256": "3bf425a94be3f70084a77efd180d60f64c5008adf5bb647db36e4c680b854154",
+        "applied": false,
+        "reason": "refinement_geometry",
+        "seconds": 3.609250334,
+        "refinementSteps": 160,
+        "sourceErrorBefore": 0.0090375,
+        "sourceErrorAfter": null,
+        "scope": "Direct local repair only; no MILP, final export or Draw conversion."
+      },
+      {
+        "path": "tmp/heart-learning/routing-clock-v1/anchor-history.json",
+        "sha256": "dbcade775e99312768c9360dbe833c173bba98c66d8a394ebb8f1ff4ad999d07",
+        "applied": true,
+        "reason": null,
+        "seconds": 2.5335928749999996,
+        "refinementSteps": 160,
+        "sourceErrorBefore": 0.0090375,
+        "sourceErrorAfter": 0.008425,
+        "scope": "Direct local repair only; no MILP, final export or Draw conversion."
+      }
+    ],
+    "observation": "Both current and frozen 99399ff direct replays fail. A third instrumented replay succeeds; its hidden/all-control projections share a 400 ms cutoff. This is a separate timing-sensitive repair, not proof of a regression from clock reset."
   }
 }

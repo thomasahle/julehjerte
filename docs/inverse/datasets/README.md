@@ -68,7 +68,9 @@ failing sloth mask in isolation. Shortening initialization alone passes only
 14/14. Those budget changes are not adopted. A separate confirmed bug charged
 earlier native HiGHS time twice on later rounds; resetting its native clocks
 while retaining the outer deadline fixes the new regression test. Eighteen
-targeted tests pass; full QA is pending. Diagnostic reports now retain
+targeted tests, type checking and lint pass. Broad application QA has one anchor
+repair failure (856 pass, one skip), also reproduced on the frozen validated
+runtime; full QA is not green. Diagnostic reports now retain
 per-round search timing, skipped-repair reasons and initialization costs even
 when recovery succeeds.
 

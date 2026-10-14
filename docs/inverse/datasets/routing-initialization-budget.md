@@ -26,6 +26,17 @@ incumbent and all validation gates are retained. The regression and 17 existing
 solver/progress/relaxation tests pass. This does not establish a complete-pipeline
 speed or success-rate improvement; broad QA remains required.
 
+The first broad QA run passes type checking and lint, then fails one application
+test: 856 pass, one fails and one is skipped. The failing anchor short-return
+repair reports `refinement_geometry`. Its direct replay fails both with the
+current runtime and the frozen `99399ff` runtime, without entering MILP. These
+two replays retain three short-clearance violations through 160 refinement
+steps. An instrumented third replay succeeds and shows the hidden-control and
+all-control projection attempts sharing a 400 ms cutoff. This is evidence of a
+separate deadline-sensitive local repair, not evidence that the clock correction
+caused it. The full application suite is not green; build and inverse checks
+are recorded separately as they complete.
+
 ## Findings
 
 The failed production focused run in
