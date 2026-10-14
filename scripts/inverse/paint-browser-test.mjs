@@ -104,6 +104,7 @@ report.harnessSourceHashes['scripts/inverse/fixtures/sloth-clearance-routing.jso
 report.harnessSourceHashes['scripts/inverse/fixtures/sloth-search-scheduling.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/sloth-search-scheduling.json')).digest('hex');
 report.workspaceSourceHashes['static/inverse/core/direct/rejected-routing.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/direct/rejected-routing.js')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/blue-star-polishing.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/blue-star-polishing.json')).digest('hex');
+report.harnessSourceHashes['scripts/inverse/fixtures/photographic-gold-routing.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-gold-routing.json')).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/clamped-features.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['static/inverse/locator/interior-palette.js']=createHash('sha256').update(await fs.readFile('static/inverse/locator/interior-palette.js')).digest('hex');
@@ -117,7 +118,7 @@ try{
    const slothShift={'sloth-x-shift-mask':'x-plus-1','sloth-y-shift-mask':'y-minus-1'}[name];
    const slothSearch={'sloth-frozen-mask':'frozen','sloth-synthetic-mask':'synthetic-control','sloth-y-plus-mask':'y-plus-1'}[name],slothVariant=slothShift||slothSearch;
    const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask',slothMask=name==='sloth-routing-mask'||Boolean(slothVariant);
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['blue-star-polishing-mask','near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['gold-routing-mask','blue-star-polishing-mask','near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -187,6 +188,11 @@ try{
         maskSha256:resizedHashes[slothVariant]||'f76e4c8a4a16d227f13d36d1feeee4fb84681b35d128c6ab4b14bb3f775a47b7'}};
        fixedMask=new Uint8Array(data.resolution**2);for(const[start,length]of data.maskRuns)fixedMask.fill(1,start,start+length);
        row.sourceMaskFixture={file,sha256:createHash('sha256').update(bytes).digest('hex'),scope:'Classified pixels only; saved rejected routing proposals are not supplied to the worker.'};
+      }else if(name==='gold-routing-mask'){
+       const file='scripts/inverse/fixtures/photographic-gold-routing.json',bytes=await fs.readFile(file),data=JSON.parse(bytes);
+       fixture={sourceCase:'reviewed-crop-gold-angel',quad:null,maskSha256:data.maskSha256};
+       fixedMask=new Uint8Array(data.resolution**2);for(const[start,length]of data.maskRuns)fixedMask.fill(1,start,start+length);
+       row.sourceMaskFixture={file,sha256:createHash('sha256').update(bytes).digest('hex'),scope:'Fixed classified pixels from an annotation-assisted crop. Tests the worker and export, not automatic photograph cropping.'};
       }else if(name==='blue-star-polishing-mask'){
        fixture={...JSON.parse(await fs.readFile('scripts/inverse/fixtures/blue-star-polishing.json')),sourceCase:'bibel-star-outline'};
        photo=await readHardPhoto(fixture.source);
@@ -563,6 +569,7 @@ try{
      assert.equal(row.shortReturnRepair?.applied,true);assert.equal(row.shortReturnRepair.visibleBoundaryContractions,2);
      assert.ok(row.sourceEditableError<.0052,'The finer checkpoint and visible return cleanup must survive editable export.');
     }
+    if(name==='gold-routing-mask'&&!engineReference&&!stopMode)assert.ok(row.sourceEditableError<.012,'Alternative trace recovery must preserve the angel through editable SVG export.');
     // Check the actual downloaded result, not just the converter's own success
     // flag. Compare the same honoured symmetry with simplification disabled.
     const raw=convertCutGeometry(geometry,{name:'unsimplified',tolerance:0,enforce:row.honouredSymmetry});

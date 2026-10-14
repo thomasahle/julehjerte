@@ -267,7 +267,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // boundary before it can compete with the ordinary grid. Its first 160
       // steps can pass the image limit while still visibly underfitting. Keep
       // optimizing that new proposal within the existing overall deadline.
-      const topologyRetry=recovery.report.seedTopologyRetry?.recovered===true;
+      const topologyRetry=recovery.report.selectedTrace?.smoothRadius>=.75;
       const polishDeadline=topologyRetry?Math.min(until,performance.now()+4000):recovery.solution?until:Math.min(until,performance.now()+700);
       const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,recoveryCfg,{input,steps:topologyRetry?800:160,rate:.008,selection:'mask',deadline:polishDeadline,onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>{
         if(verification)solution.report={...solution.report,paperVerification:{...verification,status:r.paper}};

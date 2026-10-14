@@ -16,7 +16,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
     onProgress({stage:'graph'});
     const source=input.sourceImage,remaining=()=>seconds-(performance.now()-start)/1000;
     const choices=[{neighbors:Math.min(8,cfg.neighbors),connectorVariants:1},{neighbors:cfg.neighbors,connectorVariants:cfg.connectorVariants}];
-    let solution=null,rejectedRepairUsed=false;const deferred=[],ordinaryTargets=new Map();
+    let solution=null,rejectedRepairUsed=false;const deferred=[],denseSeeds=[],ordinaryTargets=new Map();
     const trace=(smoothRadius,borderSeed=null)=>{
       if(!borderSeed&&ordinaryTargets.has(smoothRadius))return ordinaryTargets.get(smoothRadius);
       const target=preprocessMask(borderSeed?.mask||source.mask,source.resolution,{...cfg,algorithm:'trace',fitTolerance:.75,smoothRadius,snapRadius:1.5,maxSpan:30,borderRadius:borderSeed?0:3},input.metadata.preprocessing);
@@ -26,12 +26,12 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
       if(!borderSeed)ordinaryTargets.set(smoothRadius,target);
       return target;
     };
-    const runSeed=async(smoothRadius,borderSeed=null,maximumSeconds=Infinity)=>{
+    const runSeed=async(smoothRadius,borderSeed=null,maximumSeconds=Infinity,denseRetryOf=null)=>{
       const seedStarted=performance.now();
       const seedRemaining=()=>Math.min(remaining(),maximumSeconds-(performance.now()-seedStarted)/1000);
       // Explore these provisional edge interpretations with the sparse graph;
       // densifying an earlier seed can consume the whole remaining budget.
-      const graphChoices=borderSeed?choices.slice(0,1):choices,target=trace(smoothRadius,borderSeed);
+      const graphChoices=borderSeed?choices.slice(0,1):denseRetryOf!==null?choices.slice(1):choices,target=trace(smoothRadius,borderSeed);
       if(borderSeed){
         const sampled=sampleTarget(target,source.resolution),imageError=sampled.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/sampled.length;
         // A larger inset may reach the motif itself. Keep this provisional
@@ -59,7 +59,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         // validation round just before it finds a sound, simpler pair. Use
         // the remaining phase allowance here; proven exhaustion still returns
         // early and leaves later graphs and boundary interpretations available.
-        const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=left,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{})};report.attempts.push(attempt);
+        const onlyChoice=graphChoices.length===1||graphChoices[0].neighbors===graphChoices[1].neighbors&&graphChoices[0].connectorVariants===graphChoices[1].connectorVariants,budget=left,attempt={...graphChoices[i],smoothRadius,budgetSeconds:budget,...(borderSeed?{borderSeed: {...borderSeed.metadata}}:{}),...(denseRetryOf!==null?{denseRetryOf}:{})};report.attempts.push(attempt);
         const observeRejected=async(proposal,timing)=>{
           try{
             if(rejectedRepairUsed||seedRemaining()<.75)return false;
@@ -81,11 +81,22 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
           if(solution)break;
           // This boundary needs a new trace, not more optional connections.
           if(error.report?.connectorIndependentIssue)break;
+          // Let the sparse graph finish, including all its validation rounds.
+          // Once exhausted, try alternative boundary interpretations before
+          // spending the remaining allowance on denser hidden connections.
+          // Keep that ordinary dense graph queued; exhaustion of a sparse
+          // graph does not prove its boundary or the whole design impossible.
+          if(error.report?.termination==='candidate_graph_exhausted'&&!onlyChoice&&i===0){
+            denseSeeds.push({smoothRadius,initialAttempt:report.attempts.length-1,maximumSeconds:seedRemaining()});break;
+          }
           // The later ordinary graph covers this sparse proposal. Defer only
           // the final exhausted pool for each boundary interpretation.
           if(error.report?.termination==='candidate_graph_exhausted'&&(onlyChoice||i===graphChoices.length-1))deferred.push({target,graphCfg,initialAttempt:report.attempts.length-1});
         }
-        finally{attempt.seconds=(performance.now()-at)/1000;}
+        finally{
+          attempt.seconds=(performance.now()-at)/1000;
+          if(solution)report.selectedTrace={smoothRadius,...graphChoices[i],...(borderSeed?{borderSeed:{...borderSeed.metadata}}:{})};
+        }
       }
     };
     let initialRadius=.3;
@@ -163,6 +174,11 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
         }
       }
     }
+    report.deferredDenseGraphs=denseSeeds.length;
+    for(const pending of denseSeeds){
+      if(solution||remaining()<.1)break;
+      if(pending.maximumSeconds>=.1)await runSeed(pending.smoothRadius,null,pending.maximumSeconds,pending.initialAttempt);
+    }
     // All established border/smoothing alternatives get their turn before
     // densifying one speculative interpretation. The leaf photo needs a later
     // border seed; immediate expansion spent its entire remaining budget on an
@@ -182,6 +198,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
       try{
         solution=await solveBoundary(pending.target,{...pending.graphCfg,timeLimit:budget},{initialGraph:graph,expandNeighbors:false,unconnectedNeighbors:true,announceGraph:false,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
         attempt.solver=solution.report;
+        report.selectedTrace={smoothRadius:original.smoothRadius,neighbors:pending.graphCfg.neighbors,connectorVariants:pending.graphCfg.connectorVariants,...(original.borderSeed?{borderSeed:{...original.borderSeed}}:{}),neighborExpansion:true};
       }catch(error){attempt.error=error.message;attempt.solver=error.report;report.solver=error.report;}
       finally{attempt.seconds=(performance.now()-at)/1000;}
     }
