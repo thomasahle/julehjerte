@@ -56,7 +56,9 @@ A fixed shifted-star prototype improves independent disagreement from 2.9869%
 to 0.7569%, and the leaf from 2.5625% to 1.32875%; the original benchmark still
 has 25/31 successes. A first full run exposed a missing-region regression,
 which is corrected and retained in [the validation record](routing-budget-blend.json).
-Full verification of the corrected implementation is still in progress.
+The next full run passes 848/850 inverse tests, exposing a skipped junction
+retry and another weak-region routing regression. Both are under diagnosis;
+the corpus and browser jobs stopped at this failed prerequisite.
 
 A separate [render-test correction](shape-render-validation.md) avoids system
 font discovery for text-free SVGs. All 152 paired renders are byte-identical;
@@ -112,8 +114,11 @@ pairs, then varies paper color, lighting, background, pose, perspective, blur,
 compression and crop error. Every image retains its exact canonical curves,
 phase, shared-edge identities and coordinate transforms. Geometry and nominal
 paper checks run before admission, followed by an independent exported render.
-These are planar simulations with limited procedural motif diversity, not
-substitutes for real photographs.
+The [current geometry re-audit](synthetic-current-geometry.md) checks all 256
+saved witnesses, including the 64 unassigned radial designs, against today’s
+geometry and paper rules. All pass, with consistent decisions across 768
+original/subdivided/reflected representations. These are planar simulations
+with limited procedural motif diversity, not substitutes for real photographs.
 
 The selected first encoder is [MobileNetV3-Small](pretrained-models.md). The
 research document compares eight pretrained alternatives and records their

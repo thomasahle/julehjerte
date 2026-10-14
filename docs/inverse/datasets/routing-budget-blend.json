@@ -783,7 +783,7 @@
     "targetedPassed": 11
   },
   "production": {
-    "status": "Corrected after broader QA exposed missing-feature routing and late repair/verification failures; five clearance regressions and focused lint pass. Full repository, corpus and rebuilt-browser verification pending.",
+    "status": "full-suite-regressions-under-diagnosis",
     "initialIntegration": {
       "status": "Integrated; all 11 focused production tests pass; full repository and rebuilt-browser QA pending",
       "sourceHashes": {
@@ -957,6 +957,81 @@
         }
       ],
       "status": "Stopped before build/inverse after an unrelated shape-rendering timeout. The queued corpus/browser jobs did not execute. See shape-render-validation.json for the root cause, byte-identical rendering comparison and correction."
+    },
+    "fullRepositoryV3": {
+      "sourceFilesVerified": 842,
+      "checks": [
+        {
+          "stage": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "exitCode": 0,
+          "seconds": 10.859381375
+        },
+        {
+          "stage": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "exitCode": 0,
+          "seconds": 7.441384375
+        },
+        {
+          "stage": "app",
+          "command": [
+            "npx",
+            "vitest",
+            "run",
+            "--maxWorkers=2"
+          ],
+          "exitCode": 0,
+          "seconds": 29.402133667
+        },
+        {
+          "stage": "build",
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "exitCode": 0,
+          "seconds": 13.559323624999998
+        },
+        {
+          "stage": "inverse",
+          "command": [
+            "npm",
+            "run",
+            "test:inverse"
+          ],
+          "exitCode": 1,
+          "seconds": 901.660970791
+        }
+      ],
+      "inversePassed": 848,
+      "inverseFailed": 2,
+      "failures": [
+        {
+          "test": "junction-routing.test.mjs: common fitter refines alternative junction routing",
+          "failure": "seedTopologyRetry was undefined; the shorter probe skipped the simpler topology."
+        },
+        {
+          "test": "search-scheduling.test.mjs: fresh frozen routing",
+          "failure": "Shortened routing found no valid pair; final mismatch was 6.0272%."
+        }
+      ],
+      "corpusAndBrowserStarted": false,
+      "artifacts": {
+        "tmp/heart-learning/routing-budget-blend-v3/production-qa/source.json": "daec91b18ba2eab9bdfbcd1b1a7cb6ac77f9f92cd79dae560c663702a1f7bac8",
+        "tmp/heart-learning/routing-budget-blend-v3/production-qa/checks.json": "48bd1a64bf6264d19615f49cd6fda409030af7d3ed3c8759d6aaaa40c5967086",
+        "tmp/heart-learning/routing-budget-blend-v3/production-qa/inverse.log": "abc0cfc4f46d9ccdbedf978b102d10507ca0df11618e573c06af5244bd37acc6",
+        "tmp/heart-learning/routing-budget-blend-v3/production-qa/failed-routing.json": "b031006e8bc9b7941496455be91102fb52df44f950f9c9ec204c8ac7bf2ca7db"
+      }
     }
   },
   "visualReview": {
