@@ -13,7 +13,7 @@ import {visibleSelfIntersectionIssue} from './self-intersections.js';
 // Trace-order heuristic only; bounded repair has no witness-deficit cutoff.
 const VISIBLE_RETURN_TRACE_DEFICIT=.15;
 
-export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
+export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{repairDeadline=null}={}){
   const start=performance.now(),report={method:'trace-milp',budgetSeconds:seconds,accepted:false,attempts:[]};
   try{
     onProgress({stage:'graph'});
@@ -69,8 +69,13 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{}){
             const quality=rejectedRoutingQuality(proposal,cfg);
             if(!quality.repairable)return false;
             rejectedRepairUsed=true;
-            const repaired=repairRejectedRouting(proposal,input,cfg,{deadline:Math.min(start+seconds*1000,seedStarted+maximumSeconds*1000),quality});
-            attempt.continuousRepair={...repaired.report,integerCandidateSeconds:timing.elapsedSeconds};
+            const phaseDeadline=Math.min(start+seconds*1000,seedStarted+maximumSeconds*1000);
+            // The caller can lend a bounded tail from its remaining search
+            // allowance to repair and verify this image-faithful candidate.
+            // It never extends the discrete routing search or caller deadline.
+            const deadline=Math.max(phaseDeadline,Math.min(repairDeadline??phaseDeadline,phaseDeadline+500));
+            const repaired=repairRejectedRouting(proposal,input,cfg,{deadline,quality});
+            attempt.continuousRepair={...repaired.report,additionalBudgetSeconds:(deadline-phaseDeadline)/1000,integerCandidateSeconds:timing.elapsedSeconds};
             if(repaired.solution){solution=repaired.solution;return true;}
             return false;
           }catch(error){attempt.continuousProbeError=error.message;return false;}

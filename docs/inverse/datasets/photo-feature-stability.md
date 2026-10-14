@@ -115,8 +115,50 @@ The production regression starts from the original photograph and translated
 corners, verifies its mask hash, requires useful validated refinement
 checkpoints, and independently renders the result at 400 and 800 pixels. It
 requires less than 1.1% disagreement, passing geometry/paper checks, unchanged
-source arrays and a complete solve/export below ten seconds. All **11 production
-focused tests pass**. Full repository and rebuilt-browser verification are pending.
+source arrays and a complete solve/export below ten seconds. All **11 initial production
+focused tests pass**. Broader verification subsequently exposed the limitation
+below; these focused results are not a completed release check.
+
+### Missing-region recovery and late paper verification
+
+The first full suite caught a failure on the sloth's one-pixel vertical crop
+perturbation. Its best grid had 4.8% average error but retained only 34.5% of a
+64 mm² white region. Interpolation shortened its routing allowance to 2.90
+seconds, and no integer candidate arrived. Low aggregate image error did not
+establish that local refinement could recover the absent region.
+
+The corrected policy interpolates only when the current grid passes the existing
+source-feature check. Missing-region cases keep ordinary routing priority.
+Restoring that allowance exposed a second timing issue: a late integer proposal
+could be repaired geometrically, yet have too little time to resolve an uncertain
+paper audit. Another replay reached the finer audit but still had an uncertain
+early checkpoint. Neither candidate was accepted.
+
+When the ordinary grid loses a feature and has no refinement reserve, the caller
+now lends at most 0.5 seconds of its remaining search allowance to repairing and
+checking such a proposal. The discrete search budget stays unchanged, and the
+additional work cannot pass the caller's original deadline. The local repair cap
+is two seconds, with 0.5 seconds reserved for final checks. Image fidelity,
+geometry, paper-core requirements and the 160-step repair limit are unchanged.
+Both fresh clearance regressions now also require complete preparation, fitting
+and export below ten seconds. All five clearance regressions pass, including
+both fresh solves (8.33 and 9.33 seconds including their independent replay),
+and focused harness lint passes. The three engine files are excluded by the
+repository lint configuration and separately pass `node --check`. Full
+verification of this correction is pending.
+
+A saved-proposal test also exposed cold JavaScript timing sensitivity: its first
+repair stopped before a valid checkpoint, while the same proposal passed after
+warming or loading the numerical kernel. Initializing that kernel in the test
+alone did not reliably resolve the failure, so that test-only change was rejected.
+The production repair allocation is the correction under test. Earlier failures
+and timing probes remain in the evidence record.
+
+The browser harness now supports a separate `INVERSE_TEST_SECONDS=10` diagnostic
+and a fixed shifted-star upload. It records the ordinary 180-second request and
+the actual constrained worker request. This is not a new visitor setting, and
+normal-browser measurements remain separate. Uploaded pixels, actual downloaded
+SVGs, paper checks and feature checks remain the test inputs and outputs.
 
 ## Reproduction and evidence
 

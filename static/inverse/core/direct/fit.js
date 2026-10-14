@@ -242,8 +242,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // Giving it the full routing budget creates a cliff: a one-pixel crop shift
   // can consume the remaining time in MILP before any curve update survives.
   // Blend toward routing priority as its error grows to twice the limit.
+  // A missing source region still needs routing: low aggregate error cannot
+  // establish that local curve refinement can create the absent feature.
   // This changes short-search scheduling only, never final acceptance.
-  const gridRoutingWeight=shortBudget&&cfg.maxImageError>0?Math.max(0,Math.min(1,Math.min(...fine.map(r=>r.error))/cfg.maxImageError-1)):1;
+  const gridRoutingWeight=shortBudget&&features.passed&&cfg.maxImageError>0?Math.max(0,Math.min(1,Math.min(...fine.map(r=>r.error))/cfg.maxImageError-1)):1;
   const reservedRecoverySeconds=Math.max(0,(refinementTimeLeft(deadline)-2000)/1000),ordinaryRecoverySeconds=(deadline-performance.now())/1000*.9;
   const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?reservedRecoverySeconds:reservedRecoverySeconds+(ordinaryRecoverySeconds-reservedRecoverySeconds)*gridRoutingWeight);
   const needsRecovery=(!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights;
@@ -253,7 +255,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // retaining a source region never certifies the resulting cutting geometry.
   const deferredFeatureRecovery=!shortBudget&&probeRouting&&needsRecovery?{maximumSeconds:fullRecoverySeconds,attempted:false}:null;
   const attemptRecovery=async(seconds,budgetPolicy,until=deadline)=>{
-    recovery=await recoverImageFeatures(input,cfg,seconds,onProgress);
+    // A grid missing a source region cannot replace a nearly verified route.
+    // Lend its remaining tail to bounded repair and independent checks, within
+    // this search deadline; the MILP allowance stays fixed.
+    recovery=await recoverImageFeatures(input,cfg,seconds,onProgress,{repairDeadline:!reserveRefinement&&!features.passed?until:null});
     recovery.report.trigger=features;
     recovery.report.budgetPolicy=budgetPolicy;
     recovery.report.gridRoutingWeight=reserveRefinement?0:gridRoutingWeight;

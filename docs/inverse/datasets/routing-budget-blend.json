@@ -783,23 +783,143 @@
     "targetedPassed": 11
   },
   "production": {
-    "status": "Integrated; all 11 focused production tests pass; full repository and rebuilt-browser QA pending",
-    "sourceHashes": {
-      "static/inverse/core/direct/fit.js": "9357e841f607951521bd306910941ee7f1457ca184c83e70f7f9ba41fa6c1548",
-      "scripts/inverse/photographic-refinement-budget.test.mjs": "cb139703363de04e3cd5ad39621e6a23cbcc88c5533ad51d9955b3fb2e3b7fa6"
+    "status": "Corrected after broader QA exposed missing-feature routing and late repair/verification failures; five clearance regressions and focused lint pass. Full repository, corpus and rebuilt-browser verification pending.",
+    "initialIntegration": {
+      "status": "Integrated; all 11 focused production tests pass; full repository and rebuilt-browser QA pending",
+      "sourceHashes": {
+        "static/inverse/core/direct/fit.js": "9357e841f607951521bd306910941ee7f1457ca184c83e70f7f9ba41fa6c1548",
+        "scripts/inverse/photographic-refinement-budget.test.mjs": "cb139703363de04e3cd5ad39621e6a23cbcc88c5533ad51d9955b3fb2e3b7fa6"
+      },
+      "differenceFromPrototype": "Same allocation formula. The reported interpolation weight is zero when the pre-existing refinement reserve overrides it.",
+      "focused": {
+        "passed": 11,
+        "failed": 0,
+        "durationMilliseconds": 100409.616041,
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "scripts/inverse/photographic-refinement-budget.test.mjs",
+          "scripts/inverse/weak-feature-routing.test.mjs",
+          "scripts/inverse/feature-refinement.test.mjs"
+        ]
+      }
     },
-    "differenceFromPrototype": "Same allocation formula. The reported interpolation weight is zero when the pre-existing refinement reserve overrides it.",
+    "initialRepositoryChecks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 9.635022875
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.163414167000001
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 39.688373375
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 13.186752082999995
+      }
+    ],
+    "initialFullInverseStatus": "Intentionally stopped after the recorded fresh y-minus-1 clearance-routing failure; not a completed suite. The queued release/browser jobs were stopped before executing their checks.",
+    "regression": {
+      "test": "fresh y-minus-1 fitting carries repaired clearance through final export",
+      "initialError": 0.04824,
+      "initialRecoverySeconds": 2.8971632941,
+      "initialRoutingWeight": 0.6000000000000001,
+      "missingRegion": {
+        "value": 0,
+        "areaMm2": 64.00000000000001,
+        "centerMm": [
+          37.253,
+          55.51
+        ],
+        "retainedFraction": 0.345
+      }
+    },
+    "correction": {
+      "routing": "Interpolate only when the current grid retains source features; preserve ordinary routing priority otherwise.",
+      "repair": "For a grid missing a source feature without a refinement reserve, lend at most 0.5 seconds of remaining overall search time to repairing/checking an image-faithful integer candidate. MILP time and the caller deadline remain fixed. Local repair is bounded by two seconds and 160 steps, with a 0.5-second audit reserve.",
+      "test": "Fresh clearance tests now require complete preparation, fitting and export below ten seconds. Their original image and validity assertions remain. No kernel-warmup-only change is retained.",
+      "browser": "The normal 180-second app request and an explicitly constrained ten-second diagnostic remain separate. The shifted-star fixture reaches the actual worker as imported pixels; no saved cut geometry is supplied."
+    },
+    "sourceHashes": {
+      "static/inverse/core/direct/fit.js": "f8e9eb5a2541421e0aa730c05df79733b6100459c59c2e8785b067eb42b72b75",
+      "static/inverse/core/direct/rejected-routing.js": "0c683586205f582975567c8bed43681307cfee563f38b638508efc4502141b68",
+      "static/inverse/core/feature-recovery.js": "414d9f6c507c381e2ee456556e72124e071e85f962907e0e7b9c7414b54d64dd",
+      "scripts/inverse/clearance-routing.test.mjs": "af4264a0a3dd5a7c1b7bf038c408d9ea53e3b617055ad83d55a5e8e21946e027",
+      "scripts/inverse/paint-browser-test.mjs": "731da7e1ff4254d918bce5b9fe33a755c2f26a57edc8fff429ffc210b9a0ba1e"
+    },
     "focused": {
-      "passed": 11,
-      "failed": 0,
-      "durationMilliseconds": 100409.616041,
       "command": [
         "node",
         "--test",
         "--test-concurrency=1",
-        "scripts/inverse/photographic-refinement-budget.test.mjs",
-        "scripts/inverse/weak-feature-routing.test.mjs",
-        "scripts/inverse/feature-refinement.test.mjs"
+        "scripts/inverse/clearance-routing.test.mjs"
+      ],
+      "passed": 5,
+      "failed": 0,
+      "durationMilliseconds": 21617.268333,
+      "log": "tmp/heart-learning/routing-budget-blend-v2/clearance-reserve.log"
+    },
+    "previousCorrectionAttempts": [
+      {
+        "log": "tmp/heart-learning/routing-budget-blend-v2/focused.log",
+        "passed": 15,
+        "failed": 1,
+        "finding": "Preserving full routing reached a repair but its coarse paper audit stayed uncertain without time for finer verification."
+      },
+      {
+        "log": "tmp/heart-learning/routing-budget-blend-v2/focused-with-verification.log",
+        "passed": 21,
+        "failed": 1,
+        "finding": "Both fresh perturbed solves passed; a cold saved-proposal repair stopped before its valid checkpoint."
+      },
+      {
+        "log": "tmp/heart-learning/routing-budget-blend-v2/clearance-initialized.log",
+        "passed": 3,
+        "failed": 2,
+        "finding": "Kernel initialization alone did not cure the timing sensitivity; an earlier uncertain candidate also remained uncertain at the finer paper resolution."
+      }
+    ],
+    "lint": {
+      "exitCode": 0,
+      "checked": [
+        "scripts/inverse/clearance-routing.test.mjs",
+        "scripts/inverse/paint-browser-test.mjs"
+      ],
+      "warnings": "Three static engine files are ignored by the repository ESLint configuration; all three separately pass node --check.",
+      "syntaxChecked": [
+        "static/inverse/core/direct/fit.js",
+        "static/inverse/core/direct/rejected-routing.js",
+        "static/inverse/core/feature-recovery.js"
       ]
     }
   },
@@ -1059,6 +1179,110 @@
     "tmp/heart-learning/routing-budget-blend-v1/production-focused.log": {
       "sha256": "35eb7fc3ff921dfa2781fd824439a69ae687d73e81bf2514995f884e890beec2",
       "bytes": 1228
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/production-qa/running.json": {
+      "sha256": "9b1a33eec760a5b8a7283e5fd8a7aa0d17534fd55e03f1d153724a519465f367",
+      "bytes": 340
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/production-qa/failed-clearance.json": {
+      "sha256": "afe2ab76c2b3731c2056e4cb59bec7e8d6951ff3d6e9966db3dd84b59019b1ec",
+      "bytes": 100801
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/production-qa/source.json": {
+      "sha256": "77af2e80ec2313b525945c83157a9e43b710fc78c15e42d201cba2f396df285f",
+      "bytes": 98847
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/production-qa/checks.json": {
+      "sha256": "2132b89cfa30554d4b08513e396e475718944a370b56578a87d66b2c46c371d4",
+      "bytes": 602
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/production-qa/runner.json": {
+      "sha256": "62cbfb0c43e039e22cccdff28d8ffe1d86b486ffedd4ec5f99b79c7e45dece3b",
+      "bytes": 15
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/production-qa/interrupted.json": {
+      "sha256": "dcabf0daa238d6bb738759caa94460dfad7bc0617855f4d17679fe90f7790314",
+      "bytes": 277
+    },
+    "tmp/heart-learning/routing-budget-blend-v1/production-qa/inverse.log": {
+      "sha256": "488012f97598ebef37ea34d1e72c8cfd2e04f32e2adc3345b4571af2878079bf",
+      "bytes": 129264
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/failed-clearance.json": {
+      "sha256": "1451c9ae1353ad4649d3f4c95e1d1dd7135310d3cb338ee81d5ef893f8749288",
+      "bytes": 139047
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/repair-backend-results.json": {
+      "sha256": "8e683771cd61f774277ff2337618094dc8d139277e80d5d61cd1dabbadcdac59",
+      "bytes": 121107
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/failed-clearance-initialized.json": {
+      "sha256": "85db84525384e9ffb80ad88ddaf7a3334232f634560842cf3f9aad4c858e7f89",
+      "bytes": 138041
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/failed-direct-repair.json": {
+      "sha256": "59b3d0f39f10857e49adbe0acedbb7ecd6b621178b3dcc5b010e3c7977d97e09",
+      "bytes": 30141
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/late-repair-results.json": {
+      "sha256": "03501b67e9d1288ff04e4fbcf0fc3439aced1d8d0ece412d061b34682470d840",
+      "bytes": 9788
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/failed-repair-initialized.json": {
+      "sha256": "d2329be3feeca3b3e9c10df34aa5021b4c68d022cd2b827295cfced7dbd0aa7e",
+      "bytes": 31758
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/clearance-reserve.log": {
+      "sha256": "c2d1f1205461e3cf44ac573125acd0003134522af990cc367b5d203522f4e459",
+      "bytes": 601
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/late-repair-probe.log": {
+      "sha256": "f4774109211b5771aa438490a54525589ab6b4e315cd2868d0dce536a1328b57",
+      "bytes": 4942
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/repair-backend-probe.log": {
+      "sha256": "fb246d30632b895673aa9fb508b68bfdb5cf7bc82bd2e2d70f3369625f39a2c6",
+      "bytes": 958
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/focused-with-verification.log": {
+      "sha256": "9de9d9ff1f26b7c5567e3fe5f4ef6df330725500cb86f9958a0632d57e692589",
+      "bytes": 18693
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/clearance-initialized.log": {
+      "sha256": "9d6153882df85460d4e9fea91f02a2f35ab47f8cc69455e08b961991b3f41b96",
+      "bytes": 106287
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/focused.log": {
+      "sha256": "d7c9472340723c6ced0db527461c6a87038727c079023e8381df89ec8050da5c",
+      "bytes": 90664
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/focused-lint.log": {
+      "sha256": "cd25608f9fda7c0773bba744fd07cd7d20f34ed41bb1adc4fef64b51ba378ac2",
+      "bytes": 824
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/late-repair-probe.mjs": {
+      "sha256": "155453850d4bd12afbf7c611b8ac8f5c01217d36d3c09d0b6d8365df2658e8bf",
+      "bytes": 1795
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/repair-backend-probe.mjs": {
+      "sha256": "b9054bba20f764ef2eeace1b31855fc34b0778db33f7ba6d6cbc4bcc16b0f1cd",
+      "bytes": 1981
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/repair-250.mjs": {
+      "sha256": "770abd3d90a6d08e40957aceff3aac8463033ab1e4ec6fe9f46e12d8c32c9dc8",
+      "bytes": 7550
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/repair-500.mjs": {
+      "sha256": "6b69c16ad54e5a1270d57ac6666e292f7487740739f909788e34f31f5a47b143",
+      "bytes": 7550
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/repair-400.mjs": {
+      "sha256": "e4f693dfb4f275c16b8883f375feec25ca8f4d79fe93958b85275a112f8435e2",
+      "bytes": 7550
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/repair-600.mjs": {
+      "sha256": "45f244ca17dba53481d1091e0ecb85cba8631b9373719370ee3cd84d0015f415",
+      "bytes": 7550
     }
   }
 }

@@ -32,11 +32,28 @@ const cases=(process.env.INVERSE_TEST_CASES||'star,hat,house,circle,hunodan,top-
 const output=process.env.INVERSE_TEST_OUTPUT||`tmp/paint-browser/${new Date().toISOString().replace(/[:.]/g,'-')}`;
 const repeats=Number(process.env.INVERSE_TEST_REPEATS||1);
 const stopMode=process.env.INVERSE_TEST_STOP||null;
+const solveTimeLimit=process.env.INVERSE_TEST_SECONDS===undefined?null:Number(process.env.INVERSE_TEST_SECONDS);
+assert.ok(solveTimeLimit===null||Number.isInteger(solveTimeLimit)&&solveTimeLimit>=1&&solveTimeLimit<=180,'The browser diagnostic search budget must be an integer between 1 and 180 seconds.');
+// A controlled browser experiment, not a visitor setting: change only the
+// solve request's allowance, after the ordinary UI has prepared its input.
+function installSearchBudget(seconds){
+ const Worker=window.Worker;
+ window.Worker=class extends Worker{
+  postMessage(data,...rest){
+   if(data.action==='solve'){
+    window.__paintBudgetQA={requested:data.settings.timeLimit,applied:seconds};
+    data={...data,settings:{...data.settings,timeLimit:seconds}};
+   }
+   return super.postMessage(data,...rest);
+  }
+ };
+}
 const viewport=process.env.INVERSE_TEST_MOBILE==='1'?{width:390,height:844}:{width:1440,height:1100};
 assert.ok(Number.isInteger(repeats)&&repeats>=1&&repeats<=10,'Replay count must be between 1 and 10.');
 const engineReference=process.env.INVERSE_TEST_ENGINE_REFERENCE?execFileSync('git',['rev-parse','--verify','--end-of-options',process.env.INVERSE_TEST_ENGINE_REFERENCE+'^{commit}'],{encoding:'utf8'}).trim():null;
 const referenceFiles=new Map(),referenceSourceHashes={},referenceRequestCounts={};
 assert.ok(!stopMode||!engineReference,'Stop interventions and a reference-engine replay are separate experiments.');
+assert.ok(solveTimeLimit===null||!stopMode&&!engineReference,'Budget interventions must run separately from stop/reference-engine diagnostics.');
 const intervention=stopMode?await stopIntervention(stopMode,origin):null;
 let interventionArmed=Boolean(intervention);
 let referenceServer=null;
@@ -79,9 +96,11 @@ const {resample,maskMismatch}=await loader.ssrLoadModule('/src/lib/paint/mask.ts
 const {convertCutGeometry}=await loader.ssrLoadModule('/src/lib/inverse/toHeartDesign.ts');
 const {conversionFidelity}=await loader.ssrLoadModule('/src/lib/inverse/conversionFidelity.ts');
 const results=[];
-const report={origin,upstreamOrigin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,referenceRequestCounts,stopMode,viewport,intervention:intervention&&{hashes:intervention.hashes,method:intervention.method},
+const report={origin,upstreamOrigin,gitCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,solveTimeLimit,disableNumericalKernel,repeats,engineReference,referenceSourceHashes,referenceRequestCounts,stopMode,viewport,intervention:intervention&&{hashes:intervention.hashes,method:intervention.method},
  timingVersion:2,timingMethod:'Page-clock timestamps from the Find click, worker requests/replies and the first visible, enabled Open in Draw button. DOM readiness is not a paint timestamp. Result capture and artifact writes happen afterward and have separate Node-clock durations. Version 1 solveAndConversionSeconds included harness capture and artifact writes and is not directly comparable.',
  harnessSourceHashes:{},workspaceSourceHashes:{},results};
+report.harnessEntry={file:new URL(import.meta.url).pathname,sha256:createHash('sha256').update(await fs.readFile(new URL(import.meta.url))).digest('hex')};
+report.harnessSourceHashes['scripts/inverse/fixtures/photographic-outline-star-fit.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-outline-star-fit.json')).digest('hex');
 for(const file of['scripts/inverse/paint-browser-test.mjs','scripts/inverse/paint-observer.mjs','scripts/inverse/motif-fixture.mjs','scripts/inverse/tree-fixture.mjs','scripts/inverse/crop-fixture.mjs','scripts/inverse/web-photo-data.mjs','scripts/inverse/hard-photo-data.mjs','scripts/inverse/editable-paper-audit.mjs','scripts/inverse/feature-component-metrics.mjs','scripts/inverse/fixtures/photographic-bird-fit.json','scripts/inverse/fixtures/photographic-leaf-routing.json','scripts/inverse/fixtures/photographic-checkerboard-fits.json','scripts/inverse/stop-browser-hooks.mjs'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of['static/inverse/worker.js','static/inverse/worker-bootstrap.js','static/inverse/worker-controller.js','static/inverse/compute-worker.js','static/inverse/core/engine.js','static/inverse/core/stopped.js','static/inverse/core/progress.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/feature-recovery.js','static/inverse/core/solver.js','static/inverse/core/routing.js','static/inverse/core/crop.js','static/inverse/locator/locator.js','static/inverse/locator/fields.js','static/inverse/locator/math.js','static/inverse/locator/palette.js','static/inverse/locator/anchored.js','static/inverse/locator/grid-refine.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -118,7 +137,7 @@ try{
    const slothShift={'sloth-x-shift-mask':'x-plus-1','sloth-y-shift-mask':'y-minus-1'}[name];
    const slothSearch={'sloth-frozen-mask':'frozen','sloth-synthetic-mask':'synthetic-control','sloth-y-plus-mask':'y-plus-1'}[name],slothVariant=slothShift||slothSearch;
    const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask',slothMask=name==='sloth-routing-mask'||Boolean(slothVariant);
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['gold-routing-mask','blue-star-polishing-mask','near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['outline-star-shift-mask','gold-routing-mask','blue-star-polishing-mask','near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -134,7 +153,8 @@ try{
     page=await context.newPage();page.on('pageerror',e=>row.pageErrors.push(e.message));
     // Observe the real worker; no target, seed, count or fitted geometry is
     // supplied to it by this test. Capture what the visitor actually solved.
-    await page.addInitScript(installPaintObservation);
+    if(solveTimeLimit===null)await page.addInitScript(installPaintObservation);
+    else await page.addInitScript({content:`(${installPaintObservation.toString()})();(${installSearchBudget.toString()})(${solveTimeLimit});`});
     if(stopMode)await page.addInitScript(installStopObservation);
     await page.goto(`${origin}/en/editor/paint/`);
     // The root layout sets the inline paper colours in onMount. Production
@@ -188,6 +208,11 @@ try{
         maskSha256:resizedHashes[slothVariant]||'f76e4c8a4a16d227f13d36d1feeee4fb84681b35d128c6ab4b14bb3f775a47b7'}};
        fixedMask=new Uint8Array(data.resolution**2);for(const[start,length]of data.maskRuns)fixedMask.fill(1,start,start+length);
        row.sourceMaskFixture={file,sha256:createHash('sha256').update(bytes).digest('hex'),scope:'Classified pixels only; saved rejected routing proposals are not supplied to the worker.'};
+      }else if(name==='outline-star-shift-mask'){
+       const data=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-outline-star-fit.json'));
+       fixture={...data,quad:data.quad.map(([x,y])=>[x+1,y]),maskSha256:'3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4'};
+       const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));photo=await readHardPhoto(catalogue.source);
+       assert.equal(photo.fileSha256,fixture.sourceFileSha256);assert.equal(photo.rgbaSha256,fixture.decodedPixelsSha256);
       }else if(name==='gold-routing-mask'){
        const file='scripts/inverse/fixtures/photographic-gold-routing.json',bytes=await fs.readFile(file),data=JSON.parse(bytes);
        fixture={sourceCase:'reviewed-crop-gold-angel',quad:null,maskSha256:data.maskSha256};
@@ -351,6 +376,13 @@ try{
      assert.deepEqual(observed.result.report.slits,{left:3,right:3});
     }
     row.solveSettings=observed.solveSettings;
+    if(solveTimeLimit!==null){
+     row.budgetConstraint=await page.evaluate(()=>window.__paintBudgetQA);
+     assert.equal(row.budgetConstraint.requested,180,'The visitor flow still uses its ordinary maximum allowance.');
+     assert.equal(row.budgetConstraint.applied,solveTimeLimit);
+     assert.equal(row.solveSettings.timeLimit,solveTimeLimit,'The real worker must receive the constrained allowance.');
+     assert.equal(observed.result.report.settings.timeLimit,solveTimeLimit);
+    }
     row.matchingPreference=observed.result.report.solver.matchingPreference;
     row.primitiveSelection=observed.result.report.solver.finalPrimitiveSelection;
     row.curvePrimitiveSelection=observed.result.report.solver.finalCurvePrimitiveSelection;
@@ -564,6 +596,11 @@ try{
     row.physical=auditEditablePaper(design,overlap,observed.result.report.settings,observed.result.report.slits);
     if(observed.result.report.validation.passed)assert.equal(row.physical.geometry.passed,true,'Downloaded SVG must retain the engine geometry constraints');
     if(observed.result.report.templateChecksPassed)assert.equal(row.physical.paper?.status,'pass','Downloaded SVG must retain the verified paper support');
+    if(name==='outline-star-shift-mask'&&!engineReference&&!stopMode){
+     assert.equal(row.templateChecksPassed,true,'The slightly shifted star must produce a checked pair.');
+     assert.ok(row.sourceEditableError<.011,'The downloaded SVG must retain the refined star.');
+     if(solveTimeLimit!==null&&solveTimeLimit<=10)assert.ok(row.featureRecovery.gridRoutingWeight<.1,'The near-fitting grid must reserve time for refinement.');
+    }
     if(name==='sloth-x-shift-mask'&&!stopMode)assert.ok(row.sourceEditableError<.02,'A timed-out routing must not replace this known close fit with a fragmented larger grid.');
     if(name==='blue-star-polishing-mask'&&!engineReference&&!stopMode){
      assert.equal(row.shortReturnRepair?.applied,true);assert.equal(row.shortReturnRepair.visibleBoundaryContractions,2);

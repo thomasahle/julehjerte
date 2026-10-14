@@ -39,8 +39,10 @@ for(const entry of fixture.cases){
     assert.equal(JSON.stringify(solutionJSON(proposal)),before);assert.deepEqual(source.sourceImage.mask,mask);
   });
   test(`fresh ${entry.id} fitting carries repaired clearance through final export`,async t=>{
-    const source=input(),answer=await design(source,cfg),report=answer.report;
+    const started=performance.now(),source=input(),answer=await design(source,cfg),report=answer.report;
+    const seconds=(performance.now()-started)/1000;
     if(!report.templateChecksPassed)t.diagnostic(JSON.stringify({report,cuts:answer.files['cut_geometry.json']}));
+    assert.ok(seconds<10,`Complete preparation, fitting and export took ${seconds} seconds.`);
     assert.equal(report.templateChecksPassed,true);assert.deepEqual(report.slits,{left:2,right:2});
     assert.ok(report.solver.featureRecovery.attempts.some(a=>a.continuousRepair?.accepted));
     assert.equal(report.settings.materialResolution,entry.expectedPaperResolution);
