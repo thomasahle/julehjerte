@@ -129,7 +129,7 @@
       }
     ]
   },
-  "remaining": "Full QA, both full native corpora, and fresh browser verification pending. Two shifted-bird eye-retention regressions were unresolved before this change; no recovery is claimed here.",
+  "remaining": "Two shifted-bird regressions fail at the 90% eye-retention assertion. All other full-suite cases pass. Both complete native corpora and fresh browser QA remain pending.",
   "retryCorrection": {
     "reason": "Full application QA of 1059bad found an anchor regression from unconditionally skipping the first post-gradient projection. Retry suppression now requires both an initially failed projection and less than one second remaining.",
     "previousFullQA": {
@@ -150,6 +150,139 @@
       "passed": 1,
       "failed": 0
     },
-    "fullQA": "pending"
+    "fullQA": {
+      "baseCommit": "b18b263fde66d4a0505b456588bfd990647dea35",
+      "directory": "tmp/heart-learning/final-integration-v1/qa-repair-v2",
+      "checks": [
+        {
+          "stage": "focused",
+          "command": [
+            "node",
+            "--test",
+            "--test-concurrency=1",
+            "scripts/inverse/clearance-routing.test.mjs",
+            "scripts/inverse/rejected-routing.test.mjs",
+            "scripts/inverse/search-scheduling.test.mjs",
+            "scripts/inverse/trace-order.test.mjs"
+          ],
+          "exitCode": 0,
+          "seconds": 76.461774125
+        },
+        {
+          "stage": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "exitCode": 0,
+          "seconds": 8.689166917000009
+        },
+        {
+          "stage": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "exitCode": 0,
+          "seconds": 6.260907333000006
+        },
+        {
+          "stage": "app",
+          "command": [
+            "npx",
+            "vitest",
+            "run",
+            "--maxWorkers=2"
+          ],
+          "exitCode": 0,
+          "seconds": 32.48454445799999
+        },
+        {
+          "stage": "build",
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "exitCode": 0,
+          "seconds": 13.242699584000007
+        },
+        {
+          "stage": "editable-repair",
+          "command": [
+            "node",
+            "scripts/inverse/learning/rejected-routing-replay.mjs",
+            "--fixture=scripts/inverse/fixtures/sloth-rejected-routing.json",
+            "--output=tmp/heart-learning/final-integration-v1/qa-repair-v2/editable-repair",
+            "--bounded=true"
+          ],
+          "exitCode": 0,
+          "seconds": 4.534857375000001
+        },
+        {
+          "stage": "inverse",
+          "command": [
+            "npm",
+            "run",
+            "test:inverse"
+          ],
+          "exitCode": 1,
+          "seconds": 876.083565709
+        }
+      ],
+      "sourceFilesVerified": 840,
+      "sourceManifestSha256": "862a27d8c96fdee7f8a6be7a40d128a168ff352e6793e46ac7796693975df2ab",
+      "application": {
+        "passed": 857,
+        "skipped": 1,
+        "failed": 0
+      },
+      "inverse": {
+        "tests": 848,
+        "passed": 846,
+        "failed": 2,
+        "logSha256": "f022d9056954644c1c4c487f97153a197d6726627d8c8f14041f73abfcfa58f5",
+        "failures": [
+          {
+            "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+            "test": "\u2716 a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance (10213.604375ms)",
+            "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+            "stack": [
+              "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:75:50)",
+              "at async Test.run (node:internal/test_runner/test:1125:7)",
+              "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+            ]
+          },
+          {
+            "location": "scripts/inverse/fitted-rerouting.test.mjs:53:33",
+            "test": "\u2716 a fresh shifted bird fit reroutes its rejected eye with a 180-second allowance (15125.676667ms)",
+            "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+            "stack": [
+              "at TestContext.<anonymous> (file:///Users/ahle/repos/julehjerte-solver-initialization/scripts/inverse/fitted-rerouting.test.mjs:75:50)",
+              "at async Test.run (node:internal/test_runner/test:1125:7)",
+              "at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {"
+            ]
+          }
+        ]
+      },
+      "editableRepair": [
+        {
+          "radius": 0.3,
+          "enginePassed": true,
+          "editablePassed": true,
+          "error": 0.008608,
+          "editableError": 0.008576
+        },
+        {
+          "radius": 0.5,
+          "enginePassed": true,
+          "editablePassed": true,
+          "error": 0.008512,
+          "editableError": 0.008432
+        }
+      ]
+    }
   }
 }

@@ -253,8 +253,8 @@ than only the standalone optimizer. These are saved-route measurements, not
 fresh total-solve timings or physical assembly tests.
 
 The [evidence record](bounded-routing-followup.json) pins sources, focused
-results and the editable replay. Full QA, both complete native benchmarks and
-fresh browser verification remain pending. The two shifted-bird eye-retention
+results and the editable replay. Both complete native benchmarks and fresh
+browser verification remain pending. The two shifted-bird eye-retention
 regressions remain unresolved by the evidence in this follow-up.
 
 The first full application run for `1059bad` passed 856 tests but caught an
@@ -262,5 +262,10 @@ anchor regression: unconditionally skipping the first-step projection lost a
 useful image-preserving repair in a longer refinement. The retry suppression
 is now limited to a failed initial projection with less than one second left.
 The unchanged anchor regression passes again, including its strict image
-improvement and actual Draw conversion. Full QA is being rerun on the corrected
-policy; the earlier failed application run remains recorded.
+improvement and actual Draw conversion. Full QA for the corrected policy at
+`b18b263` passes **846/848 inverse tests**, all 857 application tests (one
+existing skip), checking, lint and build. All 16 focused routing tests pass
+again, and both repaired sloth pairs pass the actual editable-SVG replay.
+All 840 captured source files retain their recorded hashes. Only the shifted
+bird fails, at the unchanged 90% eye-retention assertion, with both ten- and
+180-second allowances. The earlier failed application run remains recorded.

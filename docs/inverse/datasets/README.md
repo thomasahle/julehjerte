@@ -40,8 +40,9 @@ ordinary Hunodan bird to 0.842% in 5.68 seconds. Its full inverse run passes
 834/846 tests and exposes additional repair/scheduling and fixture failures;
 the integration remains incomplete. The subsequent bounded-repair follow-up
 restores all 16 focused routing tests, including the failed sloth crop shifts,
-and independently verifies both repaired sloth SVGs. Full QA for that change
-is pending; the shifted-bird eye regressions remain unresolved. See the
+and independently verifies both repaired sloth SVGs. Its corrected full QA
+passes **846/848 inverse tests**, all 857 application tests, checking, lint and
+build. Only the two shifted-bird eye-retention regressions remain unresolved. See the
 [repair findings](final-return-integration.md#repair-eligibility-and-time-reserved-for-validation).
 The benchmark figures below
 describe the earlier completed releases; fresh release and browser QA are pending.
