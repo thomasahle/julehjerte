@@ -140,6 +140,7 @@ export class CutGeometryError extends Error {
 export type { SymmetryMode, SymmetrySettings };
 
 export type CutGeometryOptions = {
+  overlapAspectRatio?: number;
   /** Relative gap threshold; dense generated grids can use finer cuts. */
   clearanceScale?: number;
   name: string;
@@ -548,6 +549,7 @@ export function convertCutGeometry(
       author: opts.author ?? '',
       weaveParity: geometry.phase,
       gridSize: { x: right.length + 1, y: left.length + 1 },
+      overlapAspectRatio: opts.overlapAspectRatio,
       colors,
       fingers: [
         ...left.map((segments, i) => toRawFinger(segments, 'left', i)),

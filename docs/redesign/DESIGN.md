@@ -420,12 +420,16 @@ panels separate the gift's bow and box pieces into a 5×5 grid.
 “Gentag som mønster” is a text frame, not a separate mode or control. It makes one n×n square
 of cyclic letter shifts: ANNA / NNAA / NAAN / AANN, with no surrounding checkerboard cells.
 Rows follow the paper grid; individual letters stay upright in the heart. Spaces and line breaks
-do not create empty cells. Each diagonal has an independent pair of open cuts, joined between
-letters by coincident cuts; narrow edge strips connect them to the paper boundaries. Enclosed
-letters also use coincident cuts, never cut-outs. Matching glyphs reuse their contour routing.
-An n-letter word needs 2n strips per lobe, so the shared 20-strip limit permits up to ten letters.
-Longer messages are rejected before construction, not silently truncated. Fidelity covers the
-whole woven square, including its edge strips. SVG import deduplicates actual path geometry,
+do not create empty cells. The letters occupy a staggered 2n×n cut lattice, with their centres
+aligned into n×n letter positions. Inner cells have four shared connections, edge cells two,
+and corner cells one. The outer letter strokes extend directly to the paper edges; there is no
+separate rim. Boundary counters and detached accents attach only to inward connections, so
+opening an outer stroke cannot discard them. Matching glyphs reuse their contour routing.
+A single initial repeats in a 2×2 field. The shared 20-strip limit permits up to ten letters;
+longer messages are rejected before construction, not silently truncated. The paper remains
+square despite different strip counts: JSON and SVG preserve the physical overlap ratio.
+Fidelity covers the whole woven square, including the explicitly extended edge strokes, and
+tests check that the white spaces between letters reach the paper edges. SVG import deduplicates actual path geometry,
 not nearby starting positions, so these densely spaced cuts survive export and editing intact.
 
 Spacing follows grid density: use 1.5 normalized units for grids up to 4×4, then scale the gap

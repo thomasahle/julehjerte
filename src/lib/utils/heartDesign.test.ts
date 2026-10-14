@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import type { Finger, HeartDesign, LobeId, Vec } from '$lib/types/heart';
 import { MAX_GRID_SIZE } from '$lib/constants';
-import { getCenteredRectParams } from '$lib/utils/overlapRect';
+import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect';
 import {
   normalizeHeartDesign,
   parseHeartFromSVG,
@@ -50,6 +50,28 @@ function expectClose(actual: number[], expected: number[]) {
 }
 
 describe('heartDesign round trips', () => {
+  it('preserves square paper with unequal numbers of strips through JSON and SVG', () => {
+    const raw = serializeHeartDesign(makeGridDesign(4));
+    raw.fingers = raw.fingers.filter(f => f.lobe === 'right' || f.id === 'L-2');
+    raw.gridSize = { x: 4, y: 2 };
+    raw.overlapAspectRatio = 1;
+    const design = normalizeHeartDesign(raw)!;
+    expect(design.gridSize).toEqual({ x: 4, y: 2 });
+    expect(serializeHeartDesign(design).overlapAspectRatio).toBe(1);
+    for (const restored of [design, normalizeHeartDesign(serializeHeartDesign(design))!, parseHeartFromSVG(serializeHeartToSVG(design))!]) {
+      const rect = inferOverlapRect(restored.fingers, restored.gridSize);
+      expect(rect.width / rect.height).toBeCloseTo(1);
+      expectClose(boundaryPositions(restored.fingers, 'left'), boundaryPositions(design.fingers, 'left'));
+      expectClose(boundaryPositions(restored.fingers, 'right'), boundaryPositions(design.fingers, 'right'));
+    }
+    // Existing files retain their strip-based proportions; malformed metadata
+    // cannot turn the paper into a zero-sized or unbounded rectangle.
+    for (const value of [undefined, 0, -1, Infinity, '1']) {
+      const legacy = normalizeHeartDesign({ ...raw, overlapAspectRatio: value })!;
+      const rect = inferOverlapRect(legacy.fingers, legacy.gridSize);
+      expect(rect.width / rect.height).toBeCloseTo(2);
+    }
+  });
   it('keeps closely spaced cuts while removing duplicate SVG geometry', () => {
     const parsed = parseHeartFromSVG(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
       <path d="M .75 100 L .75 0" stroke="green"/>

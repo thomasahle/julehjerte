@@ -659,12 +659,18 @@ export function generateCheckedText(
 	};
 }
 
+/** Boundary cells restrict counters to inward gates, so opening an outer cap
+ * cannot discard a counter or its bridges. Their route validator checks the
+ * retained paths with the new paper-edge endpoints, instead of the cap that
+ * will be removed. Other constructions keep the original four-route check. */
 export function fourPortMotif(
 	edges: Edge[],
 	contours: Ring[],
 	gates: Point[],
 	angles: number[],
-	margin = 1.5
+	margin = 1.5,
+	bridgePorts: readonly number[] = [0, 1, 2, 3],
+	acceptRoutes?: (routes: Ring[]) => boolean
 ) {
 	const nodes = forest(contours).sort(
 		(a, b) => Math.abs(area(b.ring)) - Math.abs(area(a.ring))
@@ -726,22 +732,22 @@ export function fourPortMotif(
 			a.reduce((x, y) => x + y, 0) - b.reduce((x, y) => x + y, 0)
 	);
 	const seenPorts = new Set<string>();
-	for (const indices of combinations) {
+	routing: for (const indices of combinations) {
 		const ports = indices.map((index, j) => candidates[j][index]);
 		if (!ports.every((p): p is Port => p !== null) || !cyclic(base.ring, ports))
 			continue;
 		const portKey = ports.map((p) => p.index.toFixed(8)).join(',');
 		if (seenPorts.has(portKey)) continue;
 		seenPorts.add(portKey);
-		for (const interior of perforatedOutline(base, ports)) {
+		for (const interior of perforatedOutline(base, ports, bridgePorts)) {
 			const local = interior.slice();
 			const extras = Array.from({ length: 4 }, () => [] as Contour[]);
 			for (const node of nodes.slice(1)) {
 				const c = centroid(node.ring);
-				const j = gates.reduce(
-					(best, p, i) =>
-						distance(c, p) < distance(c, gates[best]) ? i : best,
-					0
+				const j = bridgePorts.reduce(
+					(best, i) =>
+						distance(c, gates[i]) < distance(c, gates[best]) ? i : best,
+					bridgePorts[0]
 				);
 				extras[j].push(node);
 			}
@@ -754,13 +760,14 @@ export function fourPortMotif(
 				const routes = localRoutes(local, gates);
 				if (!routes || !clearSharedCuts(local, contours)) continue;
 				fallback ??= local;
-				if (usableRoutes(routes, margin)) {
+				if (acceptRoutes ? acceptRoutes(routes) : usableRoutes(routes, margin)) {
 					edges.push(...local);
 					return;
 				}
 				// Bound routing work on fine artwork. This is not an acceptance:
 				// the final fitted cuts must still pass the full-sheet validator.
 				if (++attempts >= 128) {
+					if (acceptRoutes) break routing;
 					edges.push(...fallback);
 					return;
 				}
@@ -770,7 +777,7 @@ export function fourPortMotif(
 		}
 	}
 	// Fitted curves get their own full-sheet clearance check before export.
-	if (fallback) {
+	if (fallback && !acceptRoutes) {
 		edges.push(...fallback);
 		return;
 	}
@@ -781,7 +788,7 @@ export function fourPortMotif(
  * outline arcs preserves the four external path pairings. A bridge pair on an
  * arc with no external port would instead create a closed cutting cycle.
  * Sibling holes share a chain; nested contours use the two-terminal block. */
-function* perforatedOutline(node: Contour, ports: Port[]): Generator<Edge[]> {
+function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[]): Generator<Edge[]> {
 	if (!node.children.length) {
 		const edges: Edge[] = [];
 		outline(edges, node.ring, ports, 'B');
@@ -837,18 +844,18 @@ function* perforatedOutline(node: Contour, ports: Port[]): Generator<Edge[]> {
 	};
 
 	const nearest = node.children.map((h) =>
-		ports.reduce(
-			(best, p, i) =>
-				distance(centroid(h.ring), p.point) <
+		bridgePorts.reduce(
+			(best, i) =>
+				distance(centroid(h.ring), ports[i].point) <
 				distance(centroid(h.ring), ports[best].point)
 					? i
 					: best,
-			0
+			bridgePorts[0]
 		)
 	);
 	const partitions = [
 		nearest,
-		...[0, 1, 2, 3].map((j) => node.children.map(() => j))
+		...bridgePorts.map((j) => node.children.map(() => j))
 	];
 	const seenPartitions = new Set<string>();
 	for (const assignment of partitions) {

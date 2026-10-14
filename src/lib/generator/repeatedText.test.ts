@@ -28,18 +28,11 @@ describe('repeated text frame', () => {
   expect(repeatedText('ABCDEFGHIJ').split('\n')).toHaveLength(10);
   expect(repeatedText('A\u030A')).toBe('Å');
  });
- it('fills the paper grid with letters, keeping all visible connectors at the rim', () => {
+ it('uses sixteen letters with open edge strokes and no extra frame cells', () => {
   const r = generateRepeatedGrid('ANNA',font);
   expect(r.geometry.A_overlap_paths).toHaveLength(7);
-  expect(r.geometry.B_overlap_paths).toHaveLength(7);
-  // A row of four letters has four diagonals in each direction, sharing the
-  // middle one. The outer weave must not grow a second grid around them.
-  for(const e of r.edges.filter(e => e.kind === 'frame')) {
-   expect([0,1].some(axis =>
-    (e.from[axis] < 12.5 && e.to[axis] < 12.5) ||
-    (e.from[axis] > 87.5 && e.to[axis] > 87.5)
-   )).toBe(true);
-  }
+  expect(r.geometry.B_overlap_paths).toHaveLength(3);
+  expect(r.edges.some(e => e.kind === 'frame')).toBe(false);
   const mask = rasterizeDesign(make('ANNA').design,400).data;
   const sample = (x:number,y:number) => mask[Math.floor(y*4)*400+Math.floor(x*4)];
   // Probe the crossbars and counters against the explicit 4×4 specification.
@@ -50,9 +43,15 @@ describe('repeated text frame', () => {
     const x=(col+.5)*25,y=(row+.5)*25;
     expect(sample(x,y)).toBe(char==='N'?1:0);
     if(char==='A') expect(sample(x+2,y+2)).toBe(1);
-    expect(sample(col*25+5,row*25+5)).toBe(0);
-    expect(sample(col*25+20,row*25+20)).toBe(0);
    }
+  // The white spaces between letters reach all four paper edges. A routing
+  // rim (even a very thin one) or an extra checkerboard fails these probes.
+  for(const p of [25,50,75])for(const inset of [.5,1,2]) {
+   expect(sample(p,inset)).toBe(0);
+   expect(sample(p,100-inset)).toBe(0);
+   expect(sample(inset,p)).toBe(0);
+   expect(sample(100-inset,p)).toBe(0);
+  }
  });
  it('is a shareable, cached frame and appears in the actual template previews', () => {
   const state = { ...defaults, mode: 'text' as const, text: 'LOVE', textFrame: 'repeat' as const };
@@ -60,11 +59,13 @@ describe('repeated text frame', () => {
   expect(templateVariants(state).find(v => v.id === 'repeat')?.state).toEqual(state);
   expect(geometryKey(state)).not.toBe(geometryKey({...state, textFrame: 'woven'}));
  });
- for (const text of ['LOVE','JUL','ANNA','JULE\nMAND'])
+ for (const text of ['LOVE','JUL','ANNA','JULE\nMAND','AN','O'])
   it(`constructs ${JSON.stringify(text)} using open, spaced cuts`, () => {
    const { design } = make(text);
-   const n = [...text.replace(/\s+/g,'')].length;
-   expect(design.gridSize).toEqual({x:2*n,y:2*n});
+   const n = Math.max(2,[...text.replace(/\s+/g,'')].length);
+   expect(design.gridSize).toEqual({x:2*n,y:n});
+   const rect=inferOverlapRect(design.fingers,design.gridSize);
+   expect(rect.width).toBeCloseTo(rect.height);
    expect(design).not.toHaveProperty('rightCutouts');
    const margin=intersectionMarginPx(inferOverlapRect(design.fingers,design.gridSize),gridClearanceScale(design.gridSize.x,design.gridSize.y));
    expect(findFingersWithIssues(design.fingers,margin).size).toBe(0);
@@ -75,6 +76,8 @@ describe('repeated text frame', () => {
   for (const restored of [normalizeHeartDesign(serializeHeartDesign(design)),parseHeartFromSVG(serializeHeartToSVG(design))]) {
    expect(restored?.gridSize).toEqual(design.gridSize);
    expect(restored?.fingers.length).toBe(design.fingers.length);
+   const rect=inferOverlapRect(restored!.fingers,restored!.gridSize);
+   expect(rect.width).toBeCloseTo(rect.height);
    const actual=rasterizeDesign(restored!,200).data;
    expect(actual.reduce((n,v,i)=>n+Number(v!==original[i]),0)/actual.length).toBeLessThan(0.002);
   }

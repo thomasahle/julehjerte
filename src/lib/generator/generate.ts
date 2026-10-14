@@ -256,6 +256,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		r: ReturnType<typeof generateFigure> & {
 			domain?: Ring[];
 			background?: Ring[];
+			overlapAspectRatio?: number;
 		},
 		recipe: GeneratorResult['recipe']
 	) => {
@@ -275,7 +276,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			name: request.name,
 			colors: request.colors,
 			tolerance: 0.025,
-			clearanceScale
+			clearanceScale,
+			overlapAspectRatio: r.overlapAspectRatio
 		});
 		const domain = r.domain ?? [
 			frameRing(request.frame ?? 'circle', request.frameSize ?? 70)

@@ -62,7 +62,11 @@ export interface HeartDesign {
 }
 
 // On-disk format for gallery hearts and shared designs.
-export type HeartDesignJson = Omit<HeartDesign, 'fingers'> & { fingers: FingerPathData[] };
+export type HeartDesignJson = Omit<HeartDesign, 'fingers'> & {
+  fingers: FingerPathData[];
+  /** Physical overlap proportions, independent of the number of strips. */
+  overlapAspectRatio?: number;
+};
 
 /**
  * The credit and facts the heart detail page shows beside the drawing.
