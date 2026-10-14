@@ -24,7 +24,7 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
 | Real visible-body annotations | 18 | Seventeen instances in fifteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the eight additions to the original ten-instance pilot have not entered training. |
-| Real partial paper-material annotations | 5 existing heart instances | Blue/yellow, printed purple/blue, floral blue/gold, red/white and green/pale. Separate body and material uncertainty; no additional photographs and no material-trained checkpoint. |
+| Real partial paper-material annotations | 7 existing heart instances | Five earlier paper pairs plus red/green boar and pale/green rabbit silhouettes. Separate body and material uncertainty; no additional photographs and no material-trained checkpoint. |
 
 ## Current results and limits
 
@@ -122,10 +122,12 @@ still passes 3/10 with the learned fields versus 4/10 with the existing cropper.
 A separate [six-label diagnostic](real-supplement-diagnostic.md) passes 2/6 with
 the frozen scene model versus 1/6 with the existing cropper. These small,
 repeatedly inspected sets are distinct from the 31-photo benchmark and do not
-justify a global replacement. The five partial material labels and joint loss
+justify a global replacement. The seven partial material labels and joint loss
 are implemented and checked, but no material model has been trained. The
-[two latest Pinterest annotations](pinterest-material-labels.md) include uneven
-lighting on the same pale paper and retain the existing body labels unchanged.
+[earlier Pinterest annotations](pinterest-material-labels.md) include uneven
+lighting on the same pale paper. The [two silhouette annotations](motif-material-labels.md)
+add boar and rabbit interiors with contour shadows; all retain the existing
+body labels unchanged.
 
 The [experiment history](experiment-history.md) preserves earlier measurements,
 failed alternatives and superseded verification states. Individual reports
