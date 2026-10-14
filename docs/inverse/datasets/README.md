@@ -116,6 +116,12 @@ An alternative trace on the fixed gold-angel mask reduces error from 7.07% to
 0.76%, retaining editable geometry/paper checks. This is an annotation-assisted
 search diagnostic, not a learned or automatic-upload improvement.
 
+The [trace-order follow-up](trace-search-order.md) queues dense graphs behind
+alternative traces after sparse exhaustion. Its gold fixed-mask regression and
+twelve existing routing tests pass; all 22 Hunodan errors remain unchanged,
+with a maximum 8.22 seconds. The broader release replay is still running, so
+the completed-release results above remain the latest verified app benchmark.
+
 The [experiment history](experiment-history.md) retains the earlier studies,
 failed alternatives and verification records without mixing their historical
 scores into the current summary.
