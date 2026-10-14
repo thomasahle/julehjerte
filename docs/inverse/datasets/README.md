@@ -125,6 +125,12 @@ eleven browser checks pass. The gold fixed-mask browser upload takes 6.76
 seconds with 0.73625% editable disagreement; its annotation-assisted crop is
 not an automatic full-photo success. The preview serves this verified build.
 
+A [rotated-support diagnostic](locator-support-consistency.md) tests another
+possible cropper failure: inconsistent width-based tolerances during candidate
+selection and final validation. Using one tolerance changes neither the selected
+fit nor acceptance across 120 paired poses of the six frozen foreground fields.
+It does not explain their four missed crops, so the cropper is unchanged.
+
 The [experiment history](experiment-history.md) retains the earlier studies,
 failed alternatives and verification records without mixing their historical
 scores into the current summary.
