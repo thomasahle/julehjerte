@@ -13,11 +13,15 @@ export function finalizeFittedSolution(solution,cfg,{startedAt=performance.now()
   // small topology repair can unlock substantial refinement; comparing a
   // matching pair against the unrepaired error grants an inflated allowance.
   const completionDeadline=startedAt+timeLimit*1000-1000;
-  const independent=finalizeShortReturns(solution,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,onProgress});
+  // A speculative visible-boundary contraction must not spend the last half
+  // second needed by ordinary shared-cut alignment. It can still complete a
+  // verified checkpoint before the overall export reserve begins.
+  const visibleDeadline=completionDeadline-500;
+  const independent=finalizeShortReturns(solution,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,visibleDeadline,onProgress});
   const matching=searchMatching?preferMatchingSolution(independent,cfg,{deadline:startedAt+Math.min(timeLimit,10)*1000-400,onProgress,gridSeeds:matchingSeeds}):independent;
   // A replacement pair can introduce different returns and shared seams.
   // Repair that selected geometry too, within the same export reserve.
-  const repaired=matching===independent?matching:finalizeShortReturns(matching,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,onProgress});
+  const repaired=matching===independent?matching:finalizeShortReturns(matching,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,visibleDeadline,onProgress});
   const sharingStart=performance.now();
   const shared=finalizeShared(repaired,cfg,{deadline:Math.min(completionDeadline,sharingStart+2000),onProgress});
   const sharingRemaining=Math.max(0,2000-(performance.now()-sharingStart));

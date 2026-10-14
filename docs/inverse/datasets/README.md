@@ -97,7 +97,10 @@ were slightly higher than the immediately previous release. A source-support
 guard now preserves real corners under one-pixel shifts and restores the
 cleanup-sensitive Hunodan cases' earlier scores. Six fresh old/new runs of
 the remaining case have identical scores and refinement checkpoints. The
-historical lower score remains recorded; broader guarded validation is running.
+historical lower score remains recorded. The photo replay retained 24/31 passes
+but exposed a rejected Viking repair consuming a later shared-alignment budget.
+The fitter now reserves that time; focused tests pass and broader validation
+of the scheduling correction remains outstanding.
 
 A [fresh neural fallback replay](neural-fallback-current.md) now passes the two
 frozen foreground models through the current binary-mask fitter on the three

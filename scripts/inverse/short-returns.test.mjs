@@ -72,6 +72,28 @@ test('unobserved source pixels cannot justify a cross-sheet boundary contraction
   }
 });
 
+test('visible returns leave the shared-alignment reserve untouched when no refinement time remains',t=>{
+  t.mock.method(performance,'now',()=>0);
+  const before=visibleReturn(),saved=solutionJSON(before);let checkpoints=0;
+  const after=finalizeShortReturns(before,settings(visibleFixture.settings),{
+    deadline:1000,visibleDeadline:200,completionDeadline:1500,onProgress:()=>checkpoints++,
+  });
+  assert.equal(after,before);assert.equal(checkpoints,0);
+  assert.deepEqual(solutionJSON(after),saved,'A deferred topology search must leave all shared branches untouched.');
+});
+
+test('visible return refinement observes its earlier cutoff while retaining a completed checkpoint',t=>{
+  let now=0;t.mock.method(performance,'now',()=>now);
+  const before=visibleReturn(),after=finalizeShortReturns(before,settings(visibleFixture.settings),{
+    deadline:2000,visibleDeadline:1000,completionDeadline:2500,
+    onProgress:r=>{if(r.step===40)now=801;},
+  });
+  const report=after.report.shortReturnRepair;
+  assert.equal(report.refinementSteps,45,'The visible repair must stop before spending the later shared-alignment allowance.');
+  assert.equal(report.applied,true);assert.equal(report.visibleBoundaryContractions,2);
+  assert.ok(report.sourceErrorAfter<report.sourceErrorBefore);
+});
+
 test('a short return becomes a span while matching sheets stay identical',()=>{
   const graph=new CurveGraph([[A],[transpose(A)]]),original=graph.points.slice(),p=shortReturnProposal(graph,graph.points,cfg);
   assert.ok(p);assert.equal(p.removedOccurrences,2);assert.equal(p.segmentsAfter,p.segmentsBefore-2);
@@ -150,7 +172,7 @@ for(const overallExpired of [false,true])test(`a late repair checkpoint ${overal
   // Reproduce a checkpoint finishing just after the local cleanup allowance.
   // This is virtual elapsed time, independent of test-machine throughput.
   let now=0;t.mock.method(performance,'now',()=>now);
-  const result=finalizeShortReturns(seed,cfg,{deadline:1000,completionDeadline:overallExpired?1000:9000,onProgress:r=>{if(r.step===120)now=1002;}});
+  const result=finalizeShortReturns(seed,cfg,{deadline:1000,visibleDeadline:0,completionDeadline:overallExpired?1000:9000,onProgress:r=>{if(r.step===120)now=1002;}});
   const report=result.report.shortReturnRepair;
   assert.equal(report.refinementSteps,125,'Further refinement stops at the phase cutoff.');
   assert.ok(report.sourceErrorAfter<report.sourceErrorBefore);

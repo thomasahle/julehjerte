@@ -124,8 +124,31 @@ replay now passes all 22 Hunodan cases, with a maximum of 8.102 seconds: 21
 independent errors are exactly unchanged, and `hjstr-03` matches the six fresh
 paired scores above. All eight fixed crop variants pass below ten seconds and
 survive editable conversion; all sixteen old/new editable replays pass.
-The remaining photo, application, inverse, build and browser checks continue
-serially under `visible-return-guard-v1/`; the stopped unguarded run and failed
-tip-only test are preserved. The controlled browser
+The photographic replay retained all 24/31 accepted cases, and all 855
+application tests passed (one skipped). Five photograph errors increased by
+at most 0.040625 percentage points without a short-return proposal; their
+saved histories differ earlier in refinement or polishing. A sixth change,
+one pixel for `flettede-viking`, exposed a real scheduling conflict described
+below. The inverse suite was interrupted after this finding, before build or
+browser stages; no complete guarded release is claimed. The stopped unguarded
+run, failed tip-only test and interrupted guarded run are preserved. The controlled browser
 numbers above describe `86901fd`, not this follow-up or the ordinary preview.
 Nothing is pushed or deployed; the neural models remain offline.
+
+### Preserve time for shared-cut alignment
+
+The old and guarded Viking fits retained identical refinement checkpoints.
+The guarded run then spent 0.193 seconds on a visible-return proposal, performed
+only five refinement steps, and rejected it for geometry. The remaining sharing
+pass received 0.116 seconds instead of 0.306 seconds. It lost an earlier accepted
+15.21 mm shared-span alignment, with a one-pixel independent-error increase.
+The rejected candidate did not mutate the incumbent; it consumed time needed
+by the next stage.
+
+New visible-boundary searches now leave a half-second for the existing final
+shared-cut alignment. They do not start when their earlier cutoff leaves only
+the refiner's existing 200 ms verification reserve. Existing single-sheet
+repairs keep their original allowance. A completed checkpoint can still be
+accepted before the overall export reserve, with every physical and source
+check unchanged. Twenty-one short-return tests and the fresh blue-star regression
+pass; fresh Viking and broader release checks remain to be completed.

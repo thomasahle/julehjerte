@@ -128,11 +128,19 @@ export function shortReturnProposal(graph,points,cfg,{source=null}={}){
   return {graph:proposal,removedOccurrences,segmentsBefore:graph.edges.length,segmentsAfter:proposal.edges.length,conflictingJunctions:blocked.size,visibleBoundaryContractions:[...plans.keys()].filter(id=>boundaryPlans.has(id)).length};
 }
 
-export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionDeadline=deadline,onProgress=()=>{}}={}){
+export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionDeadline=deadline,visibleDeadline=deadline,onProgress=()=>{}}={}){
   const input=solution.graph.target,source=input.sourceImage;
   if(!source?.mask||input.metadata?.originalCubicsPreserved||performance.now()>=deadline)return solution;
   const start=performance.now(),graph=new CurveGraph(solution.paths.map((f,k)=>f.map((_,i)=>curvesOf(solution,k,i).map(c=>c.p))),input.width);
-  const proposal=shortReturnProposal(graph,graph.points,cfg,{source});if(!proposal||performance.now()>=deadline)return solution;
+  // New cross-sheet topology searches must leave time for the caller's shared
+  // alignment pass. With only the existing 200 ms verification reserve left,
+  // the refiner cannot even start its iterative search. Keep established
+  // single-sheet proposals available under their original phase allowance.
+  const visibleEnd=Math.min(deadline,visibleDeadline);
+  const proposal=shortReturnProposal(graph,graph.points,cfg,{source:visibleEnd-performance.now()>200?source:null});
+  if(!proposal||performance.now()>=deadline)return solution;
+  const refinementDeadline=proposal.visibleBoundaryContractions?visibleEnd:deadline;
+  if(proposal.visibleBoundaryContractions&&performance.now()>=refinementDeadline-200)return solution;
   const phase=input.phase?-1:1,n=source.resolution,weights=sourceWeights(source),beforeMatching=matchingSummary(solution);
   const before=sampleWeave(solution,n);
   const report={segmentsBefore:proposal.segmentsBefore,segmentsAfter:proposal.segmentsAfter,removedOccurrences:proposal.removedOccurrences,conflictingJunctions:proposal.conflictingJunctions,visibleBoundaryContractions:proposal.visibleBoundaryContractions,sourceErrorBefore:referenceError(source,before).mismatchFraction,applied:false};
@@ -144,7 +152,7 @@ export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionD
     // Topology changes can initially cost a few pixels. Let the ordinary
     // constrained fitter recover that loss; do not grant extra image error.
     const objective=orbitObjective(Float64Array.from(source.mask),n,symmetryOrbit(cfg.symmetry),weights);
-    const fitted=refineCurves(proposal.graph,objective.probability,n,phase,{...cfg,preferMatchingSheets:false},{input,weights:objective.weights,steps:160,rate:.008,selection:'mask',identicalSheets:beforeMatching.identical,deadline:deadline-200,onProgress:(r,s)=>onProgress({stage:'directPolishing',detail:'short-return-refinement',...r},s)});
+    const fitted=refineCurves(proposal.graph,objective.probability,n,phase,{...cfg,preferMatchingSheets:false},{input,weights:objective.weights,steps:160,rate:.008,selection:'mask',identicalSheets:beforeMatching.identical,deadline:refinementDeadline-200,onProgress:(r,s)=>onProgress({stage:'directPolishing',detail:'short-return-refinement',...r},s)});
     report.refinementSteps=fitted.steps;
     if(!fitted.geometryPassed||!fitted.paperPassed)return 'refinement_geometry';
     const candidate=fitted.graph.solution(fitted.points,phase,input),woven=sampleWeave(candidate,n);report.sourceErrorAfter=referenceError(source,woven).mismatchFraction;
