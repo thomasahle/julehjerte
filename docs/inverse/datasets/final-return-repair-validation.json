@@ -1,0 +1,86 @@
+{
+  "scope": "Complete QA of the bounded final hidden-cut repair in fbb701e, plus an exact replay from its committed runtime builder. App runtime unchanged; no new browser workflows. This predates symmetry-preserving repair changes.",
+  "sourceCommit": "fbb701e84d959959f69d751961b41ed0854bb149",
+  "checks": [
+    {
+      "stage": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 8.684617125
+    },
+    {
+      "stage": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.941228458000001
+    },
+    {
+      "stage": "app",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 30.461539042
+    },
+    {
+      "stage": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 800.341556292
+    },
+    {
+      "stage": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 13.658914374999995
+    }
+  ],
+  "applicationPassed": 855,
+  "applicationSkipped": 1,
+  "inversePassed": 832,
+  "inverseFailed": 0,
+  "sourceFilesVerified": 827,
+  "portableReplay": {
+    "selectedGeometries": [
+      "hjfig-05-hidden",
+      "gift-free"
+    ],
+    "result": "byte-identical to the selected prototype"
+  },
+  "artifacts": {
+    "tmp/heart-learning/editor-bend-v1/after-checks.json": "8d4d727dd2d72b13715089dbaa5b2e46ee14f9549c3995ccd667b412170ac682",
+    "tmp/heart-learning/editor-bend-v1/after-running.json": "b53cdf256d2012cd4d6a73dc701b9e8bbb8c51ed3eb46cc78bbd49e4941208c7",
+    "tmp/heart-learning/editor-bend-v1/portable-build.log": "b5bce1c87de45b932ca25c21c095014c48c1f3aa5447f6eb4a0e5021775e67a7",
+    "tmp/heart-learning/editor-bend-v1/portable-final-repair/results.json": "1c866ea03bc861f82daca51e7eb85b5e883564084ef0d037351d6643c935e138",
+    "tmp/heart-learning/editor-bend-v1/portable-repair.log": "324e9bf5c9fedeb439bc7dd178e8cb7097809af4a8f44beac05f99dc8a9aa296",
+    "tmp/heart-learning/editor-bend-v1/qa/app.log": "7bd37f4144d742e281177daf3c1a34016e5bfc83ef250f17c415fd56c9e235d0",
+    "tmp/heart-learning/editor-bend-v1/qa/build.log": "ed737d0618958ba59dd12adc24384628058a95e34aeb6286b945a5fe27855647",
+    "tmp/heart-learning/editor-bend-v1/qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/editor-bend-v1/qa/checks.json": "8225b5d336af1f8733282e960bd6111297acf45136421fb2a630722f744acda1",
+    "tmp/heart-learning/editor-bend-v1/qa/inverse.log": "28e1d62c3d1911273b29bc5e6f9ec123a2ddd7f60e2c3f2036f652a8add6522e",
+    "tmp/heart-learning/editor-bend-v1/qa/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+    "tmp/heart-learning/editor-bend-v1/qa/run.py": "3886dec771de750bc7716a32b28bb16d8f532a4574371bece23405f94b93fcd6",
+    "tmp/heart-learning/editor-bend-v1/qa/runner.json": "a910542bf19ce8906d4710eebcf9eb3297e6f5d37d14ccf79cc4e9ceee93fbd2",
+    "tmp/heart-learning/editor-bend-v1/qa/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/editor-bend-v1/qa/source.json": "4d8fe172110c94b56d1ba3110747ef9fb0fd2a85462838199d16fe32f528920a"
+  }
+}

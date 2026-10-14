@@ -70,3 +70,10 @@ rejected repairs, target/geometry hashes, SVG audits, the rejected editor source
 and visual observations. The preceding complete cache QA (830 inverse and 855
 application tests) is recorded separately; it does not cover these new tests.
 No application code was changed, pushed or deployed by this experiment.
+
+The subsequent [complete verification](final-return-repair-validation.json) passes
+832 inverse tests and 855 application tests (one existing skip), type checking,
+lint and the production build. All 827 recorded source-file hashes remain
+unchanged through the run. Rebuilding the isolated runtime from the committed
+patch reproduces both selected repaired geometries byte for byte. This verifies
+the recorded unconstrained experiment; symmetry-aware integration remains open.
