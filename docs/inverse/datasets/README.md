@@ -94,8 +94,10 @@ takes 8.70 seconds. The large spikes shrink, but smaller bumps remain. Focused
 tests and all eight fixed crop variants pass. Broader QA stopped after all 22
 Hunodan cases passed their frozen quality and speed gates, because two scores
 were slightly higher than the immediately previous release. A source-support
-guard now preserves real corners under one-pixel shifts; its broader validation
-and the separate timing diagnosis remain in progress.
+guard now preserves real corners under one-pixel shifts and restores the
+cleanup-sensitive Hunodan cases' earlier scores. Six fresh old/new runs of
+the remaining case have identical scores and refinement checkpoints. The
+historical lower score remains recorded; broader guarded validation is running.
 
 A [fresh neural fallback replay](neural-fallback-current.md) now passes the two
 frozen foreground models through the current binary-mask fitter on the three

@@ -101,10 +101,26 @@ notch because of raster phase; the midpoint check fixes that regression.
 
 All nineteen short-return tests now pass, including one-pixel source shifts
 and unknown-image regions. The fresh blue-star solve regression also passes.
-The tip-only intermediate replay restored `hjhih-01`'s previous independent
-score exactly; it is not evidence for the final midpoint variant. Those logs
-are preserved under `visible-return-probe-v1/` and
-`visible-return-v1/hunodan-source-support/`. Broader validation of the guarded
-variant remains outstanding. The controlled browser numbers above describe
-`86901fd`, not this follow-up or the ordinary preview. Nothing is pushed or
-deployed; the neural models remain offline.
+The final guard is committed as `14e6dbf`; its [diagnostic record](visible-shared-returns-guard-probe.json)
+pins the source, tests and subsequent fresh replays. Both `hjhih-01` and
+`hjsta-01` retain exactly their previous-release independent scores. This also
+rejects the unguarded cleanup's tiny `hjsta-01` improvement: boundary support
+is ambiguous there, so that gain is not retained at the expense of the guard.
+
+Three fresh old/new pairs for `hjstr-03`, in AB/BA/AB order, return exactly
+0.5612977% disagreement in all six runs, taking 8.78–8.94 seconds. All numerical
+refinement checkpoints are identical, and all six finish 750 refinement steps.
+Neither engine proposes a short-return repair. The preceding historical score
+of 0.5539909% remains recorded. These paired results establish no regression
+from the changed cleanup in this case; they do not reproduce the historical
+lower score or prove its precise cutoff. Time-dependent checkpoint selection
+remains the likely explanation, not an established exact cause.
+
+The new broader driver keeps the frozen quality and ten-second gates. Its
+additional previous-release comparison permits only this investigated case
+to reach the identical fresh old/new score, and records that exception explicitly.
+All other cases still require no increase over the previous release. Broader
+validation is running serially under `visible-return-guard-v1/`; the stopped
+unguarded run and failed tip-only test are preserved. The controlled browser
+numbers above describe `86901fd`, not this follow-up or the ordinary preview.
+Nothing is pushed or deployed; the neural models remain offline.
