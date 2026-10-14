@@ -261,7 +261,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       recoveredCandidates.push({graph,points:graph.points.slice(),phase,counts,seed:'feature-recovery',error:mismatch(renderCurves(graph,graph.points,phase,n,32),prob),geometryPassed:validation.passed,paperPassed:paper.passed,validation,history:[],...(verification?{paperVerification:verification}:{})});
       // A recovered routing can still differ substantially from the image.
       // Give it the normal polishing step count within the same time reserve;
-      // eighty steps could return while the image fit was still improving.
+      // Constraint projection can interrupt the image trajectory. Allow up to
+      // 320 steps so the repaired routing can regain its fit, under the same
+      // overall deadline and without displacing a better checked checkpoint.
       // An already accepted route needs no reserved grid search. A fixed
       // 0.7-second polish could lose known image quality on a slow checkpoint
       // even with seconds left in the requested budget. Provisional routings
@@ -272,7 +274,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // optimizing that new proposal within the existing overall deadline.
       const topologyRetry=recovery.report.selectedTrace?.smoothRadius>=.75;
       const polishDeadline=topologyRetry?Math.min(until,performance.now()+4000):recovery.solution?until:Math.min(until,performance.now()+700);
-      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,recoveryCfg,{input,steps:topologyRetry?800:160,rate:.008,selection:'mask',deadline:polishDeadline,onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>{
+      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,recoveryCfg,{input,steps:topologyRetry?800:320,rate:.008,selection:'mask',deadline:polishDeadline,onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>{
         if(verification)solution.report={...solution.report,paperVerification:{...verification,status:r.paper}};
         onProgress({stage:'directRefining',counts,...r},solution);
       }:undefined}));

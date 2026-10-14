@@ -23,10 +23,10 @@ it('repairs the real anchor return without increasing source error, and opens in
   const exported = solutionJSON(result) as CutGeometry;
   const common = new Set(exported.A_overlap_paths[2]!.map(r => r.curve));
   expect(exported.B_overlap_paths[1]!.some(r => common.has(r.curve))).toBe(true);
-  // Topology cleanup is only an intermediate fit. Final export applies the
-  // complete return rule and repairs defects the cheaper search guide missed.
+  // Cleanup now checks the complete return rule too. Final export may receive
+  // an already valid fit; require the same certified result in either case.
   const final = finish(result, cfg, () => {}, { refine: false });
-  expect(final.report.finalReturnRepair).toMatchObject({ accepted: true });
+  expect(final.report.validation).toMatchObject({ passed: true, finalGeometry: true });
   expect(final.report.templateChecksPassed).toBe(true);
   expect(error(loadSolutionJSON(final.files['cut_geometry.json']!))).toBeLessThanOrEqual(error(result));
   const converted = convertValidatedCutGeometry(final.files['cut_geometry.json']!, { name: 'Anchor', reference: { mask: { size: source.resolution, data: mask } } });

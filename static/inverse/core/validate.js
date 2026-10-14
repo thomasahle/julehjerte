@@ -20,7 +20,9 @@ export function sampleRings(rings,w,phase,n=101,rows=null){
   return mask;
 }
 export function sampleWeave(solution,n=101){const phase=solution.graph.target.phase^(solution.paths[0].length%2)^(solution.paths[1].length%2);return sampleRings(closedRings(solution).flat(),solution.graph.target.width,phase,n);}
-export function validate(solution,cfg,{checkImage=true,checkSelfNecks=true,finalGeometry=false}={}){
+// Accepted candidates, refinement checkpoints and export share the editor rule.
+// The legacy predicate is available only for explicit diagnostic comparisons.
+export function validate(solution,cfg,{checkImage=true,checkSelfNecks=true,finalGeometry=true}={}){
   const {graph,paths}=solution,w=graph.target.width,tol=cfg.geometryTolerance,issues=[],multiplicity=[new Uint16Array(graph.edges.length),new Uint16Array(graph.edges.length)];let separation=Infinity,side=Infinity;const ownVertices=[new Set(),new Set()];
   for(const k of[0,1]){const polylines=[];for(let pi=0;pi<paths[k].length;pi++){const path=paths[k][pi];if(!path.length){issues.push({type:'empty_slit',family:k,slit:pi});continue;}if(path.some(([e])=>!graph.edges[e])){issues.push({type:'unknown_edge'});continue;}const cs=curvesOf(solution,k,pi),axis=k===0?1:0;if(Math.abs(cs[0].p[0][axis])>1e-6||Math.abs(cs.at(-1).p[3][axis]-w)>1e-6)issues.push({type:'wrong_endpoints',family:k,slit:pi});const vs=new Set();for(const[e,fw]of path){multiplicity[k][e]++;const edge=graph.edges[e];vs.add(edge.u);vs.add(edge.v);}for(const v of vs){if(ownVertices[k].has(v))issues.push({type:'shared_vertex_in_sheet',family:k,vertex:v});ownVertices[k].add(v);}
       for(let i=1;i<cs.length;i++){if(distance(cs[i-1].p[3],cs[i].p[0])>1e-6)issues.push({type:'discontinuous_slit',family:k,slit:pi});const a=turnAngle(cs[i-1],cs[i]);if(a>cfg.maxTurn+1e-5)issues.push({type:'maximum_turn',family:k,slit:pi,angle:a});}

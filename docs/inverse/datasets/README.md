@@ -33,7 +33,10 @@ shared whole-cut checker and bounded repair to the engine and editor. Its
 frozen-output replay retains all 47 accepted outputs without increasing image
 error. Full inverse QA subsequently finds seven photographic regressions
 (837/844 passing), so this integration is not release-ready. Consistent geometry
-checks throughout fitting are under evaluation. The benchmark figures below
+checks throughout fitting are now applied locally; their focused trial resolves
+five regressions but exposes insufficient eye retention in the shifted bird.
+Hidden-first checkpoint repair and additional bounded refinement improve the
+ordinary Hunodan bird to 0.842% in 5.68 seconds; full QA is running. The benchmark figures below
 describe the earlier completed releases; fresh release and browser QA are pending.
 
 The [row-initialization and scheduling release](row-initialization.md) now

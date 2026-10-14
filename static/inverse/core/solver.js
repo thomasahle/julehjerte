@@ -7,7 +7,7 @@ import {dot,mul,angle} from './bezier.js';
 import {boundaryEndpoints} from './graph.js';
 import {nearbyPairs,lineDistance,improperIntersection} from './geometry.js';
 import {validate,selfNecks} from './validate.js';
-import {shortSelfReturns} from './self-returns.js';
+import {completeSelfReturns} from './complete-self-returns.js';
 import {selfIntersectionChains} from './self-intersections.js';
 let runtimePromise;
 export async function solverRuntime(){return runtimePromise??=loadHighs({locateFile:file=>new URL('../vendor/'+file,import.meta.url).href,print:()=>{},printErr:()=>{}});}
@@ -86,7 +86,7 @@ export async function solveGraph(graph,cfg,{onProgress=()=>{},coreGate=null,coef
       const values=native.getSolution().colValue,residual=m.residual(values);
       if(relaxationOnly){info.relaxationResidual=residual;if(residual>2e-5)break;}
       else if(residual>2e-5)throw new Error(`MILP result fails independent integrality/row checks (${residual}).`);
-      const candidate={graph,paths:extract(graph,x,z,values,endpoints),report:{}},obj=native.getObjectiveValue(),shortReturns=shortSelfReturns(candidate,cfg),necks=[...selfNecks(candidate,cfg),...shortReturns];info.objective=obj;info.selfNeckChains=necks.length;info.shortReturnChains=shortReturns.length;onProgress({stage:'validating',round:round+1});
+      const candidate={graph,paths:extract(graph,x,z,values,endpoints),report:{}},obj=native.getObjectiveValue(),shortReturns=completeSelfReturns(candidate,cfg),necks=[...selfNecks(candidate,cfg),...shortReturns];info.objective=obj;info.selfNeckChains=necks.length;info.shortReturnChains=shortReturns.length;onProgress({stage:'validating',round:round+1});
       // This private observer sees rejected geometry only. It cannot certify a
       // MILP solution or publish an incumbent. Returning true stops with an
       // explicit failure; a caller's separately repaired pair needs its own

@@ -9,6 +9,7 @@ import {validate} from '../../static/inverse/core/validate.js';
 import {finish} from '../../static/inverse/core/engine.js';
 import {solutionJSON,loadSolutionJSON,curvesOf} from '../../static/inverse/core/graph.js';
 import {completeSelfReturns} from '../../static/inverse/core/complete-self-returns.js';
+import {refineCurves} from '../../static/inverse/core/direct/refine.js';
 import {repairFinalReturns} from '../../static/inverse/core/direct/final-return-repair.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 
@@ -52,7 +53,8 @@ test('final inter-cut clearance includes the editor margin when it exceeds the r
   const cfg=settings({...AUTOMATIC_PRESET,width:300});
   const graph=new CurveGraph([[[Cubic.line([100,0],[100,300]).p],[Cubic.line([103.6,0],[103.6,300]).p]],[[Cubic.line([0,250],[300,250]).p]]],300);
   const solution=graph.solution(graph.points,1);
-  assert.equal(validate(solution,cfg,{checkImage:false}).passed,true,'The search guidance still uses the requested manufacturing width.');
+  assert.equal(validate(solution,cfg,{checkImage:false,finalGeometry:false}).passed,true,'The explicitly selected legacy diagnostic uses only the manufacturing width.');
+  assert.equal(validate(solution,cfg,{checkImage:false}).passed,false,'Ordinary candidate validation must use the same clearance as export.');
   const final=validate(solution,cfg,{checkImage:false,finalGeometry:true});
   assert.equal(final.passed,false);
   assert.ok(final.issues.some(i=>i.type==='inter_slit_clearance'));
@@ -98,4 +100,31 @@ test('a visible return repair is rejected when it worsens the original image',as
   assert.equal(repair.solution,input);
   assert.equal(repair.report.accepted,false);
   assert.ok(repair.report.attempts.some(a=>a.gates?.imageNotWorse===false));
+});
+
+
+test('ordinary refinement never advertises a checkpoint that fails the editor clearance',()=>{
+  const cfg=settings({...AUTOMATIC_PRESET,width:300}),graph=new CurveGraph([[[Cubic.line([100,0],[100,300]).p],[Cubic.line([103.6,0],[103.6,300]).p]],[[Cubic.line([0,250],[300,250]).p]]],300);
+  const original=graph.points.slice(),checkpoints=[];
+  const result=refineCurves(graph,new Float64Array(64*64),64,1,cfg,{steps:1,onProgress:(row,solution)=>{
+    const checked=validate(solution,cfg,{checkImage:false,finalGeometry:true});
+    assert.equal(row.geometry,checked.passed);
+    checkpoints.push(row);
+  }});
+  assert.ok(checkpoints.length);
+  assert.equal(result.geometryPassed,false,'Fixed endpoints cannot be separated to the editor margin.');
+  assert.deepEqual(graph.points,original);
+});
+
+test('an ordinary refinement checkpoint repairs hidden connectors without changing the exported image',async()=>{
+  const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/final-hidden-return.json'));
+  const graph=new CurveGraph(fixture.paths,fixture.settings.width),before=graph.points.slice();
+  const initial=graph.solution(before,fixture.phase),woven=await renderExportedWeave(solutionJSON(initial),400);
+  assert.equal(validate(initial,fixture.settings,{checkImage:false}).passed,false);
+  const result=refineCurves(graph,Float64Array.from(woven.mask),400,fixture.phase,fixture.settings,{steps:0,input:{sourceImage:{mask:woven.mask,resolution:400}}});
+  assert.ok(result.geometryPassed&&result.paperPassed);
+  assert.ok(result.history.some(row=>row.returnProjection?.policy==='hidden-controls-only'&&row.returnProjection.accepted));
+  const exported=await renderExportedWeave(solutionJSON(graph.solution(result.points,fixture.phase)),400);
+  assert.deepEqual(exported.mask,woven.mask);
+  assert.deepEqual(graph.points,before);
 });

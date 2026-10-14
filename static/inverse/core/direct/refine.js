@@ -98,7 +98,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=false}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true}={}){
   // Compile the weighted force field once, not on every optimization step.
   const objective=boundaryObjective(prob,weights),force=objective.target;
   const imageValue=createBoundaryEvaluator(graph,force,n),transposedImageValue=createBoundaryEvaluator(graph,force,n,{transpose:true,rows:193});
@@ -159,12 +159,20 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     for(const value of proposals){
       if(consider(value)&&(!preferCheckpoint||value.preferred))break;
     }
-    // Final repair can alternate image steps with constraint projection. The
-    // ordinary fitter retains its cheaper guidance; reuse each failed audit.
+    // Repair a failed checkpoint before rollback, using the same complete
+    // geometry rule as accepted candidates and final export. Reuse its audit.
     if(finalGeometry&&!accepted&&performance.now()<deadline-50){
       const base=proposals.find(v=>!v.straightened&&v.validation?.issues.length&&v.validation.issues.every(i=>i.type==='short_self_clearance'));
       if(base){
-        const repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline,initialAudit:base.validation});
+        // Preserve the visible artwork when a shared hidden connector alone
+        // can resolve the return. Both attempts share one bounded allowance.
+        const projectionDeadline=Math.min(deadline,performance.now()+400);
+        let repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:projectionDeadline,initialAudit:base.validation,hiddenOnly:true,maxIterations:64,maxMilliseconds:400});
+        if(!repair.points&&performance.now()<projectionDeadline){
+          const hiddenAttempt=repair.report;
+          repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:projectionDeadline,initialAudit:base.validation,maxIterations:64,maxMilliseconds:400});
+          repair.report.hiddenAttempt=hiddenAttempt;
+        }
         if(repair.points){
           const p=repair.points,error=mismatch(renderCurves(graph,p,phase,n,32),prob,weights),imageScore=(imageValue(p,phase)+transposedImageValue(p,phase))/2+objective.offset;
           const value={graph,points:p,phase,error,score:imageScore+primitiveCost(graph,p,n)+(cfg.preferMatchingSheets?matchingPenalty(graph,p).loss:0),primitives:primitiveComplexity(graph,p),straightened:false,validation:repair.validation,returnProjection:repair.report};
