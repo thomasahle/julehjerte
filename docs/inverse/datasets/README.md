@@ -84,6 +84,9 @@ and visible gift artifacts remain. Actual SVGs pass the stronger geometry
 predicate in all 32 representations; the existing editor still changes its
 verdict for three of the four outputs. The experiment remains outside the app.
 
+A [symmetry-preserving final repair](final-return-symmetry.md) retains matching
+sheets and requested transforms, with a complete 51-output saved-corpus replay.
+
 A [final shared-cut repair](final-return-repair.md) fixes the saved bird's
 experimental clearance defects with a pixel-identical weave, and slightly
 improves the gift's error. Both actual SVGs pass all eight stronger geometry

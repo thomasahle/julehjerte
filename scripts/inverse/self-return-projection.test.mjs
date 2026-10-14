@@ -69,3 +69,55 @@ test('a final repair can move hidden shared controls farther while preserving th
     assert.equal(projectShortReturns(graph,before,phase,{},cfg,{deadline:-Infinity,hiddenOnly:true,maxIterations:64,maxMilliseconds:2000}).points,null);
   }finally{await fs.rm(scratch,{recursive:true,force:true});}
 });
+
+test('final return repair preserves identical sheets and requested cutting symmetries',async()=>{
+  await fs.mkdir('tmp',{recursive:true});const scratch=await fs.mkdtemp('tmp/symmetric-return-test-');
+  try{
+    const directory=await buildShortReturnRuntime(path.join(scratch,'runtime'));
+    const load=file=>import(pathToFileURL(path.join(directory,'inverse/core',file)).href);
+    const {CurveGraph}=await load('direct/curves.js'),{projectShortReturns}=await load('direct/short-return-project.js');
+    const {validate}=await load('validate.js'),{Cubic}=await load('bezier.js');
+    const {symmetryReport}=await load('direct/symmetry.js'),{matchingSummary}=await load('direct/matching.js');
+    const entry=(await returnDiagnosticCases()).find(c=>c.name==='curved-return-1'),cut=entry.paths[0][0],line=entry.paths[1][0];
+    const map=(p,fn)=>p.map(c=>c.map(fn)),reverse=p=>p.toReversed().map(c=>c.toReversed()),transpose=p=>map(p,([x,y])=>[y,x]);
+    const upper=[Cubic.line([50,0],[50,30]).p,[[50,30],[53,30],[53,31],[50,31]],Cubic.line([50,31],[50,50]).p];
+    const mirrored=[map(cut,([x,y])=>[x-20,y]),map(cut,([x,y])=>[120-x,y])];
+    const cases=[
+      {name:'matching without a requested symmetry',paths:[[cut],[transpose(cut)]],symmetry:{}},
+      {name:'matching with an additional pinned control',paths:[[cut],[transpose(cut)]],symmetry:{},pin:true},
+      {name:'transpose',paths:[[cut],[transpose(cut)]],symmetry:{transpose:true}},
+      {name:'antiTranspose',paths:[[cut],[reverse(map(cut,([x,y])=>[100-y,100-x]))]],symmetry:{antiTranspose:true}},
+      {name:'mirrorX',paths:[mirrored,[line]],symmetry:{mirrorX:true}},
+      {name:'mirrorY',paths:[[transpose(line)],mirrored.map(transpose)],symmetry:{mirrorY:true}},
+      {name:'rotate180',paths:[[map(cut,([x,y])=>[x-20,y]),reverse(map(cut,([x,y])=>[120-x,100-y]))],[line,reverse(map(line,([x,y])=>[100-x,100-y]))]],symmetry:{rotate180:true}},
+    ];
+    for(const mode of ['sym','anti']){
+      const own=[...upper,...reverse(map(upper,([x,y])=>[mode==='sym'?x:100-x,100-y]))];
+      cases.push({name:'withinCurve '+mode,paths:[[own],[line]],symmetry:{withinCurve:mode}});
+      cases.push({name:'withinCurve '+mode+' and matching',paths:[[own],[transpose(own)]],symmetry:{withinCurve:mode,transpose:true}});
+    }
+    for(const c of cases){
+      const graph=new CurveGraph(c.paths),cfg={...entry.cfg,symmetry:c.symmetry};
+      if(c.pin){const [edge]=graph.paths[graph.families[0][0]][1];graph.fixed[2*graph.edges[edge][1]+1]=1;}
+      const before=graph.points.slice(),initial=graph.solution(before,1),initialAudit=validate(initial,cfg,{checkImage:false}),matching=matchingSummary(initial);
+      assert.ok(!initialAudit.passed&&initialAudit.issues.every(i=>i.type==='short_self_clearance'),c.name);
+      const originalSymmetry=symmetryReport(initial,cfg.symmetry);
+      assert.deepEqual(originalSymmetry.honoured,originalSymmetry.requested,c.name);
+      const repaired=projectShortReturns(graph,before,1,{},cfg,{initialAudit,maxIterations:64,maxMilliseconds:2000});
+      assert.ok(repaired.points&&repaired.report.accepted,c.name);
+      const solution=graph.solution(repaired.points,1),symmetry=symmetryReport(solution,cfg.symmetry);
+      assert.deepEqual(symmetry.honoured,symmetry.requested,c.name);
+      if(matching.identical)assert.equal(matchingSummary(solution).identical,true,c.name);
+      for(let i=0;i<before.length;i++)if(graph.fixed[i])assert.equal(repaired.points[i],before[i],c.name);
+      assert.deepEqual(graph.points,before,c.name);
+      for(const knots of Object.values(diagnosticSubdivisions))for(const reflect of [false,true]){
+        const divided=subdivideDiagnosticPaths(graph.nested(repaired.points),knots,reflect,graph.width),other=new CurveGraph(divided.paths,graph.width);
+        assert.equal(validate(other.solution(other.points,1),cfg,{checkImage:false}).passed,true,c.name+' after exact subdivision/reflection');
+      }
+    }
+    const inconsistent=new CurveGraph(entry.paths),before=inconsistent.points.slice();
+    const rejected=projectShortReturns(inconsistent,before,1,{}, {...entry.cfg,symmetry:{transpose:true}});
+    assert.equal(rejected.points,null,'A final repair must not silently impose a symmetry missing from its input.');
+    assert.equal(rejected.report.rejected,'initial_symmetry');assert.deepEqual(inconsistent.points,before);
+  }finally{await fs.rm(scratch,{recursive:true,force:true});}
+});
