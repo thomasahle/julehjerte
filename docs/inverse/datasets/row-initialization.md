@@ -106,8 +106,25 @@ cell corners and thin border details, so the pass count is not a claim of exact
 artwork recovery. The [native evidence](row-initialization-native.json) pins 217
 artifacts and the checked 553-file source manifest.
 
-The previous full inverse run was not green; focused passes do not replace that
-result. The current type check, lint and all 855 application tests pass (one
-existing application skip). Full inverse tests, build and browser checks are
-still running or queued. The preview remains on its previously checked build
-until those checks complete. Nothing is pushed or deployed.
+The corrected run completes all **822 inverse tests**, **855 application
+tests** (one existing skip), type checking, lint and build. All **thirteen
+Chromium flows** pass, including editable conversion, geometric checks and
+the recorded download checks. Their result screenshots and two Draw screenshots
+were visually inspected. Small contour irregularities remain in the flower,
+outlined stars, tree and angel; the Viking retains thin seams along parts of
+its frame. Passing the measured criteria is not exact artwork recovery.
+
+An independent pixel comparison examines the two small accepted-error increases.
+The orb changes fourteen predicted pixels: four errors are corrected and ten
+introduced, a net increase of six. The faceted star changes forty-five pixels:
+twenty-two corrected and twenty-three introduced, a net increase of one. Both
+retain their previous counts and initial/clearance grid results. Differences
+arise during subsequent refinement/polishing; the evidence is consistent with
+time-allocation sensitivity but does not prove the cause of every changed pixel.
+
+The [complete validation record](row-initialization-validation.json) verifies
+the native artifacts, current runtime source hashes, all thirteen browser
+results and 153 served assets against the build. The refreshed preview is
+available at `http://127.0.0.1:5232/editor/mal/`. Browser timings use each flow's
+recorded settings and remain distinct from the native ten-second benchmark.
+Nothing is pushed or deployed.

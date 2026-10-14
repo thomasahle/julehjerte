@@ -28,12 +28,16 @@ The 2026-10-14 snapshot contains:
 
 ## Current results and limits
 
-The [row-initialization and scheduling candidate](row-initialization.md) now
+The [row-initialization and scheduling release](row-initialization.md) now
 passes all 22 regular Hunodan designs below ten seconds (maximum 7.827 seconds,
 unchanged validated errors) and retains 25/31 hard-photo recoveries. All 25
 editable exports pass independent geometry/paper checks. Native comparisons
-preserve every source image, crop and target. Full inverse/build/browser QA is
-still pending, so this is not yet a replacement for the completed release below.
+preserve every source image, crop and target. Completed QA passes 822 inverse
+tests, 855 application tests and thirteen Chromium flows, plus type checking,
+lint and build. The preview serves 153 hash-verified build assets. Visible
+contour defects and six unresolved photographs remain; these native timings
+do not establish a universal ten-second browser latency. See the
+[full validation record](row-initialization-validation.json).
 
 The [Pinterest expansion](real-pinterest-expansion.md) includes all four supplied
 pins. Download success, photograph count, heart-instance count and motif-family
@@ -48,7 +52,7 @@ caller supplies an older label/catalog snapshot. Explicit diagnostic replays
 remain available. All sixteen rebuilt annotation instances preserve their
 previous RGB, label and overlay bytes; no model was retrained.
 
-The [latest completed fitter release](trace-search-order.md) passes all 22
+The [earlier trace-order fitter release](trace-search-order.md) passes all 22
 regular Hunodan designs below ten seconds (maximum 8.22 seconds, unchanged
 errors) and retains hard-photo recovery at **25/31**. All 25 pairs
 also pass production editable conversion and independent geometry/paper checks.
