@@ -90,8 +90,8 @@ foreground IoU from 76.95% to 78.63% on the ten-instance pilot. Its full mask-to
 pipeline still checks only 3/10 pairs, compared with 4/10 for the current cropper
 on that diagnostic. The [annotation report](real-annotation-pilot.md) explains
 unknown pixels, grouping and scope. A [two-image supplement](real-annotation-supplement.md)
-adds blue/yellow paper and decorated baskets on pale backgrounds, with no model
-replay yet. [Two more annotations](real-motif-annotations.md) add boar/rabbit
+adds blue/yellow paper and decorated baskets on pale backgrounds.
+[Two more annotations](real-motif-annotations.md) add boar/rabbit
 motifs, a clipped lobe and textured fabric with strong shadows; they also remain
 outside training. The [scene supplement](real-scene-annotations.md) adds reflective
 gold paper and hands occluding a heart, with uncertain contact regions withheld.

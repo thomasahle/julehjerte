@@ -25,6 +25,10 @@ prove motif-family independence. None of the six supplemental instances has
 entered training. The original ten-instance adaptation pilot, folds and five
 approximate corner references remain unchanged. No new model score is claimed.
 
+A subsequent [frozen-model diagnostic](real-supplement-diagnostic.md) evaluates
+all six supplemental instances through segmentation and template reconstruction.
+They still have not entered training.
+
 Source images and generated labels remain local under
 `tmp/heart-learning/real-scene-annotation-v1/` and `tmp/heart-training-real/`.
 
