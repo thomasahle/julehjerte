@@ -62,6 +62,13 @@ Visible contour defects remain, and the browser's longer search allowance takes
 ten-second benchmarks are not browser latency guarantees. Nothing is pushed or
 deployed.
 
+An offline [star input intervention](star-input-factorial.md) separates JPEG
+pixel changes from crop changes. A stronger provisional trace followed by longer
+common Bézier refinement reduces the original fixed-mask error from 1.3063% to
+1.1556%, with fewer curves; editable export and all 28 source observations pass.
+This is one controlled case, not a deployed strategy or a whole-pipeline speed
+result. It exposes sensitivity in routing topology and refinement scheduling.
+
 All neural models remain offline. [Balanced corner training and broader angle
 coverage](boundary-localization.md) improve synthetic junction proposals, but
 [the current app initializer](app-baseline-correction.md) still has better

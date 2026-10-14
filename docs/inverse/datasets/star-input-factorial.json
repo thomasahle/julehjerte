@@ -1,0 +1,4351 @@
+{
+  "schema": "star-input-factorial-study-1",
+  "runtimeCommit": "3fcde1e250bc69b96564fe8c1755a2472bda101e",
+  "collectionCommit": "3fcde1e250bc69b96564fe8c1755a2472bda101e",
+  "scope": "Offline fixed-input intervention and fresh routed-seed refinement. No production runtime changes; no neural training or deployment.",
+  "catalog": {
+    "source": {
+      "file": "scripts/inverse/fixtures/hard-photos/bibel-star-outline.png",
+      "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+      "decodedPixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+      "width": 995,
+      "height": 661
+    },
+    "cases": [
+      {
+        "id": "original-pixels-original-crop",
+        "originalId": "bibel-star-outline",
+        "roi": [
+          0,
+          0,
+          995,
+          661
+        ],
+        "quad": [
+          [
+            508.93214738809337,
+            139.42154594591744
+          ],
+          [
+            733.0890556479761,
+            381.63384919139503
+          ],
+          [
+            503.36343799983547,
+            612.548994160581
+          ],
+          [
+            269.2275949887735,
+            367.7991156114501
+          ]
+        ],
+        "cropInsetFraction": 0,
+        "cropStatus": "needs_review",
+        "provenance": "Controlled fixed production crop from release 4469b9f; no crop optimization or ground-truth template",
+        "pixelVariant": "original",
+        "quadVariant": "original"
+      },
+      {
+        "id": "jpeg-pixels-original-crop",
+        "originalId": "bibel-star-outline",
+        "roi": [
+          0,
+          0,
+          995,
+          661
+        ],
+        "quad": [
+          [
+            508.93214738809337,
+            139.42154594591744
+          ],
+          [
+            733.0890556479761,
+            381.63384919139503
+          ],
+          [
+            503.36343799983547,
+            612.548994160581
+          ],
+          [
+            269.2275949887735,
+            367.7991156114501
+          ]
+        ],
+        "cropInsetFraction": 0,
+        "cropStatus": "needs_review",
+        "provenance": "Controlled fixed production crop from release 4469b9f; no crop optimization or ground-truth template",
+        "pixelVariant": "jpeg",
+        "quadVariant": "original",
+        "variant": {
+          "name": "jpeg-75",
+          "jpeg": 0.75
+        }
+      },
+      {
+        "id": "original-pixels-jpeg-crop",
+        "originalId": "bibel-star-outline",
+        "roi": [
+          0,
+          0,
+          995,
+          661
+        ],
+        "quad": [
+          [
+            509.052522180449,
+            138.68718622680595
+          ],
+          [
+            733.965800801256,
+            381.18699300648086
+          ],
+          [
+            503.16889308065186,
+            612.0577741142569
+          ],
+          [
+            275.44447189585776,
+            374.22188793130806
+          ]
+        ],
+        "cropInsetFraction": 0,
+        "cropStatus": "needs_review",
+        "provenance": "Controlled fixed production crop from release 4469b9f; no crop optimization or ground-truth template",
+        "pixelVariant": "original",
+        "quadVariant": "jpeg"
+      },
+      {
+        "id": "jpeg-pixels-jpeg-crop",
+        "originalId": "bibel-star-outline",
+        "roi": [
+          0,
+          0,
+          995,
+          661
+        ],
+        "quad": [
+          [
+            509.052522180449,
+            138.68718622680595
+          ],
+          [
+            733.965800801256,
+            381.18699300648086
+          ],
+          [
+            503.16889308065186,
+            612.0577741142569
+          ],
+          [
+            275.44447189585776,
+            374.22188793130806
+          ]
+        ],
+        "cropInsetFraction": 0,
+        "cropStatus": "needs_review",
+        "provenance": "Controlled fixed production crop from release 4469b9f; no crop optimization or ground-truth template",
+        "pixelVariant": "jpeg",
+        "quadVariant": "jpeg",
+        "variant": {
+          "name": "jpeg-75",
+          "jpeg": 0.75
+        }
+      }
+    ]
+  },
+  "productionComparison": [
+    {
+      "id": "original-pixels-original-crop",
+      "pixels": "original",
+      "crop": "original",
+      "quad": [
+        [
+          508.93214738809337,
+          139.42154594591744
+        ],
+        [
+          733.0890556479761,
+          381.63384919139503
+        ],
+        [
+          503.36343799983547,
+          612.548994160581
+        ],
+        [
+          269.2275949887735,
+          367.7991156114501
+        ]
+      ],
+      "input": {
+        "fileSha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "rgbaSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+        "width": 995,
+        "height": 661
+      },
+      "maskSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+      "passed": true,
+      "error": 0.0130625,
+      "seconds": 9.41659325,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "traceUsed": false,
+      "curves": 167,
+      "recoveryAttempted": true,
+      "recoveryRoutingAvailable": false
+    },
+    {
+      "id": "jpeg-pixels-original-crop",
+      "pixels": "jpeg",
+      "crop": "original",
+      "quad": [
+        [
+          508.93214738809337,
+          139.42154594591744
+        ],
+        [
+          733.0890556479761,
+          381.63384919139503
+        ],
+        [
+          503.36343799983547,
+          612.548994160581
+        ],
+        [
+          269.2275949887735,
+          367.7991156114501
+        ]
+      ],
+      "input": {
+        "fileSha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "rgbaSha256": "e093340ebd81d3336aebf238865deeb5a7e01ad83dc4034ba78d93776daba239",
+        "width": 995,
+        "height": 661
+      },
+      "maskSha256": "19a6c8758fd9a8f5f5667955154c2364a64cfe7e5f487ca8f29916c90d055c76",
+      "passed": true,
+      "error": 0.0160875,
+      "seconds": 7.222382124999998,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "traceUsed": false,
+      "curves": 152,
+      "recoveryAttempted": true,
+      "recoveryRoutingAvailable": false
+    },
+    {
+      "id": "original-pixels-jpeg-crop",
+      "pixels": "original",
+      "crop": "jpeg",
+      "quad": [
+        [
+          509.052522180449,
+          138.68718622680595
+        ],
+        [
+          733.965800801256,
+          381.18699300648086
+        ],
+        [
+          503.16889308065186,
+          612.0577741142569
+        ],
+        [
+          275.44447189585776,
+          374.22188793130806
+        ]
+      ],
+      "input": {
+        "fileSha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "rgbaSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+        "width": 995,
+        "height": 661
+      },
+      "maskSha256": "53f90ce8e8e8ceef9751ee44a52e61b6b8c87f2d7efd425a20ad499976468e18",
+      "passed": true,
+      "error": 0.0129125,
+      "seconds": 9.300000457999998,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "traceUsed": false,
+      "curves": 118,
+      "recoveryAttempted": false,
+      "recoveryRoutingAvailable": false
+    },
+    {
+      "id": "jpeg-pixels-jpeg-crop",
+      "pixels": "jpeg",
+      "crop": "jpeg",
+      "quad": [
+        [
+          509.052522180449,
+          138.68718622680595
+        ],
+        [
+          733.965800801256,
+          381.18699300648086
+        ],
+        [
+          503.16889308065186,
+          612.0577741142569
+        ],
+        [
+          275.44447189585776,
+          374.22188793130806
+        ]
+      ],
+      "input": {
+        "fileSha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+        "rgbaSha256": "e093340ebd81d3336aebf238865deeb5a7e01ad83dc4034ba78d93776daba239",
+        "width": 995,
+        "height": 661
+      },
+      "maskSha256": "8a80f192fca54bd8205a22c335572b8acfd4a5a2f4c4042a804cbf85f08a196e",
+      "passed": true,
+      "error": 0.01748125,
+      "seconds": 3.310403707999998,
+      "selectedCounts": [
+        4,
+        4
+      ],
+      "traceUsed": true,
+      "curves": 65,
+      "recoveryAttempted": true,
+      "recoveryRoutingAvailable": true
+    }
+  ],
+  "traceProbes": [
+    {
+      "id": "original-pixels-original-crop",
+      "smoothRadius": 0.3,
+      "curves": 62,
+      "traceImageError": 0.03449375,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 34,
+        "4": 10
+      },
+      "seconds": 0.147224833,
+      "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "no_validated_solution",
+      "solverTermination": "candidate_graph_exhausted",
+      "geometryPassed": null,
+      "paperStatus": null,
+      "candidateImageError": null
+    },
+    {
+      "id": "original-pixels-original-crop",
+      "smoothRadius": 0.5,
+      "curves": 56,
+      "traceImageError": 0.03375625,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 34,
+        "4": 7
+      },
+      "seconds": 0.09727812499999994,
+      "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "no_validated_solution",
+      "solverTermination": "candidate_graph_exhausted",
+      "geometryPassed": null,
+      "paperStatus": null,
+      "candidateImageError": null
+    },
+    {
+      "id": "original-pixels-original-crop",
+      "smoothRadius": 0.75,
+      "curves": 57,
+      "traceImageError": 0.03585,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 39,
+        "4": 5
+      },
+      "seconds": 0.749114,
+      "error": null,
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "solved",
+      "solverTermination": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "candidateImageError": 0.03585
+    },
+    {
+      "id": "original-pixels-original-crop",
+      "smoothRadius": 1,
+      "curves": 61,
+      "traceImageError": 0.0371875,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 49,
+        "4": 2
+      },
+      "seconds": 1.338367458,
+      "error": null,
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "solved",
+      "solverTermination": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "candidateImageError": 0.0371875
+    },
+    {
+      "id": "jpeg-pixels-original-crop",
+      "smoothRadius": 0.3,
+      "curves": 61,
+      "traceImageError": 0.03771875,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 35,
+        "4": 9
+      },
+      "seconds": 0.07887745799999993,
+      "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "no_validated_solution",
+      "solverTermination": "candidate_graph_exhausted",
+      "geometryPassed": null,
+      "paperStatus": null,
+      "candidateImageError": null
+    },
+    {
+      "id": "jpeg-pixels-original-crop",
+      "smoothRadius": 0.5,
+      "curves": 58,
+      "traceImageError": 0.0359,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 36,
+        "4": 7
+      },
+      "seconds": 0.0728877080000002,
+      "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "no_validated_solution",
+      "solverTermination": "candidate_graph_exhausted",
+      "geometryPassed": null,
+      "paperStatus": null,
+      "candidateImageError": null
+    },
+    {
+      "id": "jpeg-pixels-original-crop",
+      "smoothRadius": 0.75,
+      "curves": 57,
+      "traceImageError": 0.03681875,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 41,
+        "4": 4
+      },
+      "seconds": 0.6398592919999997,
+      "error": null,
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "solved",
+      "solverTermination": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "candidateImageError": 0.03681875
+    },
+    {
+      "id": "jpeg-pixels-original-crop",
+      "smoothRadius": 1,
+      "curves": 59,
+      "traceImageError": 0.037075,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 47,
+        "4": 2
+      },
+      "seconds": 0.7402515830000002,
+      "error": null,
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "solved",
+      "solverTermination": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "candidateImageError": 0.037075
+    },
+    {
+      "id": "original-pixels-jpeg-crop",
+      "smoothRadius": 0.3,
+      "curves": 65,
+      "traceImageError": 0.0369375,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 39,
+        "4": 9
+      },
+      "seconds": 0.06583758300000045,
+      "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "no_validated_solution",
+      "solverTermination": "candidate_graph_exhausted",
+      "geometryPassed": null,
+      "paperStatus": null,
+      "candidateImageError": null
+    },
+    {
+      "id": "original-pixels-jpeg-crop",
+      "smoothRadius": 0.5,
+      "curves": 54,
+      "traceImageError": 0.0345875,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 30,
+        "4": 8
+      },
+      "seconds": 0.0498144999999995,
+      "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "no_validated_solution",
+      "solverTermination": "candidate_graph_exhausted",
+      "geometryPassed": null,
+      "paperStatus": null,
+      "candidateImageError": null
+    },
+    {
+      "id": "original-pixels-jpeg-crop",
+      "smoothRadius": 0.75,
+      "curves": 55,
+      "traceImageError": 0.03594375,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 35,
+        "4": 6
+      },
+      "seconds": 0.5497657500000005,
+      "error": null,
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "solved",
+      "solverTermination": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "candidateImageError": 0.03594375
+    },
+    {
+      "id": "original-pixels-jpeg-crop",
+      "smoothRadius": 1,
+      "curves": 59,
+      "traceImageError": 0.038625,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 51
+      },
+      "seconds": 0.6408868750000002,
+      "error": null,
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "solved",
+      "solverTermination": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "candidateImageError": 0.038625
+    },
+    {
+      "id": "jpeg-pixels-jpeg-crop",
+      "smoothRadius": 0.3,
+      "curves": 59,
+      "traceImageError": 0.03718125,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 33,
+        "4": 9
+      },
+      "seconds": 0.057550624999999855,
+      "error": "No validated template pair was found within this candidate graph and time budget. Increase the budget or simplify the artwork; this does not prove the design impossible.",
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "no_validated_solution",
+      "solverTermination": "candidate_graph_exhausted",
+      "geometryPassed": null,
+      "paperStatus": null,
+      "candidateImageError": null
+    },
+    {
+      "id": "jpeg-pixels-jpeg-crop",
+      "smoothRadius": 0.5,
+      "curves": 56,
+      "traceImageError": 0.0348,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 34,
+        "4": 7
+      },
+      "seconds": 0.30055191700000067,
+      "error": null,
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "solved",
+      "solverTermination": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "candidateImageError": 0.0348
+    },
+    {
+      "id": "jpeg-pixels-jpeg-crop",
+      "smoothRadius": 0.75,
+      "curves": 55,
+      "traceImageError": 0.03700625,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 39,
+        "4": 4
+      },
+      "seconds": 0.30266800000000055,
+      "error": null,
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "solved",
+      "solverTermination": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "candidateImageError": 0.03700625
+    },
+    {
+      "id": "jpeg-pixels-jpeg-crop",
+      "smoothRadius": 1,
+      "curves": 58,
+      "traceImageError": 0.03915,
+      "vertexDegreeHistogram": {
+        "1": 16,
+        "2": 50
+      },
+      "seconds": 0.312087125,
+      "error": null,
+      "skipped": null,
+      "boundaryIssue": null,
+      "margin": null,
+      "selfIntersection": null,
+      "shortReturns": 0,
+      "solverStatus": "solved",
+      "solverTermination": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "candidateImageError": 0.03915
+    }
+  ],
+  "fixedStepRefinement": [
+    {
+      "id": "original-pixels-original-crop",
+      "smoothRadius": 0.75,
+      "sourceErrorBefore": 0.03585,
+      "error": 0.01583125,
+      "steps": 160,
+      "segments": 68,
+      "seconds": 1.790813333,
+      "passed": true
+    },
+    {
+      "id": "original-pixels-original-crop",
+      "smoothRadius": 1,
+      "sourceErrorBefore": 0.0371875,
+      "error": 0.0164,
+      "steps": 160,
+      "segments": 75,
+      "seconds": 1.297178042,
+      "passed": true
+    },
+    {
+      "id": "jpeg-pixels-original-crop",
+      "smoothRadius": 0.75,
+      "sourceErrorBefore": 0.03681875,
+      "error": 0.01611875,
+      "steps": 160,
+      "segments": 69,
+      "seconds": 1.0957409589999998,
+      "passed": true
+    },
+    {
+      "id": "jpeg-pixels-original-crop",
+      "smoothRadius": 1,
+      "sourceErrorBefore": 0.037075,
+      "error": 0.021775,
+      "steps": 160,
+      "segments": 73,
+      "seconds": 1.0008342080000001,
+      "passed": true
+    },
+    {
+      "id": "original-pixels-jpeg-crop",
+      "smoothRadius": 0.75,
+      "sourceErrorBefore": 0.03594375,
+      "error": 0.01641875,
+      "steps": 160,
+      "segments": 65,
+      "seconds": 1.0547052919999997,
+      "passed": true
+    },
+    {
+      "id": "original-pixels-jpeg-crop",
+      "smoothRadius": 1,
+      "sourceErrorBefore": 0.038625,
+      "error": 0.0178125,
+      "steps": 160,
+      "segments": 75,
+      "seconds": 1.115730625,
+      "passed": true
+    },
+    {
+      "id": "jpeg-pixels-jpeg-crop",
+      "smoothRadius": 0.75,
+      "sourceErrorBefore": 0.03700625,
+      "error": 0.0254,
+      "steps": 160,
+      "segments": 67,
+      "seconds": 0.6680510830000003,
+      "passed": true
+    },
+    {
+      "id": "jpeg-pixels-jpeg-crop",
+      "smoothRadius": 1,
+      "sourceErrorBefore": 0.03915,
+      "error": 0.01720625,
+      "steps": 160,
+      "segments": 74,
+      "seconds": 0.6222997080000005,
+      "passed": true
+    }
+  ],
+  "extendedRefinement": {
+    "id": "original-pixels-original-crop",
+    "smoothRadius": 0.75,
+    "sourceErrorBefore": 0.03585,
+    "error": 0.01155625,
+    "steps": 800,
+    "history": [
+      {
+        "step": -1,
+        "error": 0.0358625,
+        "score": 0.03730037439088058,
+        "primitives": {
+          "curved": 53,
+          "straight": 15
+        },
+        "straightened": true,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 0,
+        "error": 0.0354,
+        "score": 0.03678947941627122,
+        "primitives": {
+          "curved": 53,
+          "straight": 15
+        },
+        "straightened": true,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 40,
+        "error": 0.02316875,
+        "score": 0.02619363263852876,
+        "primitives": {
+          "curved": 66,
+          "straight": 2
+        },
+        "straightened": true,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 80,
+        "error": 0.01899375,
+        "score": 0.022665728101505484,
+        "primitives": {
+          "curved": 64,
+          "straight": 4
+        },
+        "straightened": true,
+        "geometry": false,
+        "issues": [
+          {
+            "type": "nonlocal_self_clearance",
+            "family": 1,
+            "slit": 1,
+            "edgeChain": [
+              5,
+              48
+            ],
+            "distanceLower": 2.4988725801531326,
+            "point": [
+              24.05031933756206,
+              43.050164955502986
+            ]
+          }
+        ]
+      },
+      {
+        "step": 80,
+        "error": 0.01899375,
+        "score": 0.0227155604331187,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 120,
+        "error": 0.0170125,
+        "score": 0.021011958409867037,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 160,
+        "error": 0.0158125,
+        "score": 0.01992675695270815,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 200,
+        "error": 0.014725,
+        "score": 0.019046163394769385,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 240,
+        "error": 0.01394375,
+        "score": 0.018475846222148356,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 280,
+        "error": 0.01339375,
+        "score": 0.017942149255570194,
+        "primitives": {
+          "curved": 60,
+          "straight": 8
+        },
+        "straightened": true,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 320,
+        "error": 0.0130125,
+        "score": 0.017771997074521883,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 360,
+        "error": 0.012725,
+        "score": 0.017623955644039953,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 400,
+        "error": 0.01251875,
+        "score": 0.01748966360648457,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 440,
+        "error": 0.01236875,
+        "score": 0.01738575092297374,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 480,
+        "error": 0.0122375,
+        "score": 0.017295994534936184,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 520,
+        "error": 0.0121625,
+        "score": 0.01721326683652513,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 560,
+        "error": 0.012025,
+        "score": 0.017135196202673394,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 600,
+        "error": 0.01193125,
+        "score": 0.017055281174612077,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 640,
+        "error": 0.01180625,
+        "score": 0.016965433837585763,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 680,
+        "error": 0.0116875,
+        "score": 0.016876134114569546,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 720,
+        "error": 0.01158125,
+        "score": 0.016784365116435714,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 760,
+        "error": 0.0115125,
+        "score": 0.01670092193682043,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      {
+        "step": 799,
+        "error": 0.01141875,
+        "score": 0.016624082958641675,
+        "primitives": {
+          "curved": 68,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      }
+    ],
+    "geometry": {
+      "passed": true,
+      "issues": [],
+      "nominalWidthRequired": 2.50501002004008,
+      "minimumInterSlitDistanceLower": 3.045526469841842,
+      "minimumOuterSideClearance": 3.077040528950519,
+      "boundaryParityMatches": true,
+      "forwardSampleMismatchPixels": null,
+      "forwardBoundaryAmbiguousPixels": 0,
+      "forwardSampleResolution": 101,
+      "geometryTolerance": 0.01,
+      "sharedCurvesStoredOnce": true,
+      "physicalAssemblyTested": false,
+      "limitations": [
+        "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+        "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+        "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+        "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+      ]
+    },
+    "paper": {
+      "status": "pass",
+      "requiredRemainingWidth": 2,
+      "nominalDiameter": 2.50501002004008,
+      "gridSpacing": 0.14285714285714285,
+      "clearanceGuard": 0.11101525445522108,
+      "families": [
+        {
+          "family": 0,
+          "status": "pass",
+          "detachedCertainCoreIslands": 0,
+          "detachedPossibleCoreIslands": 0,
+          "detachedPossibleArea": 0,
+          "foldIntervals": [
+            {
+              "interval": [
+                0,
+                6.908617377274596
+              ],
+              "certainCoreLength": 4.1428571428571415,
+              "possibleCoreLength": 4.571428571428571
+            },
+            {
+              "interval": [
+                6.908617377274596,
+                14.883251236119879
+              ],
+              "certainCoreLength": 5.285714285714287,
+              "possibleCoreLength": 5.571428571428574
+            },
+            {
+              "interval": [
+                14.883251236119879,
+                82.99145925503791
+              ],
+              "certainCoreLength": 65.00000000000057,
+              "possibleCoreLength": 65.57142857142912
+            },
+            {
+              "interval": [
+                82.99145925503791,
+                90.32876686277133
+              ],
+              "certainCoreLength": 4.714285714285714,
+              "possibleCoreLength": 5.000000000000001
+            },
+            {
+              "interval": [
+                90.32876686277133,
+                100
+              ],
+              "certainCoreLength": 6.857142857142863,
+              "possibleCoreLength": 7.428571428571436
+            }
+          ]
+        },
+        {
+          "family": 1,
+          "status": "pass",
+          "detachedCertainCoreIslands": 0,
+          "detachedPossibleCoreIslands": 0,
+          "detachedPossibleArea": 0,
+          "foldIntervals": [
+            {
+              "interval": [
+                0,
+                5.1785757816445965
+              ],
+              "certainCoreLength": 2.428571428571428,
+              "possibleCoreLength": 2.8571428571428563
+            },
+            {
+              "interval": [
+                5.1785757816445965,
+                14.41869088487478
+              ],
+              "certainCoreLength": 6.428571428571433,
+              "possibleCoreLength": 6.857142857142863
+            },
+            {
+              "interval": [
+                14.41869088487478,
+                88.58178921864756
+              ],
+              "certainCoreLength": 70.42857142857184,
+              "possibleCoreLength": 71.0000000000004
+            },
+            {
+              "interval": [
+                88.58178921864756,
+                91.6473156884894
+              ],
+              "certainCoreLength": 0.2857142857142857,
+              "possibleCoreLength": 0.857142857142857
+            },
+            {
+              "interval": [
+                91.6473156884894,
+                100
+              ],
+              "certainCoreLength": 5.142857142857144,
+              "possibleCoreLength": 5.714285714285717
+            }
+          ]
+        }
+      ],
+      "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+      "seconds": 0.0810945410000004,
+      "limitations": [
+        "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+        "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+        "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+        "Small tips and features below the explicitly stated area threshold are not certified."
+      ]
+    },
+    "features": {
+      "passed": true,
+      "referenceAvailable": true,
+      "minimumRetention": 0.6,
+      "minimumAreaFraction": 0.0003,
+      "minimumCoreRadiusFraction": 0.005,
+      "borderClearancePixels": 1,
+      "regions": [
+        {
+          "value": 0,
+          "areaMm2": 1020.875,
+          "centerMm": [
+            49.88263744336966,
+            51.60196522590914
+          ],
+          "retainedFraction": 0.9967552344802253
+        },
+        {
+          "value": 1,
+          "areaMm2": 1653.125,
+          "centerMm": [
+            50.70525519848771,
+            50.487873345935725
+          ],
+          "retainedFraction": 0.9939130434782608
+        },
+        {
+          "value": 1,
+          "areaMm2": 96.3125,
+          "centerMm": [
+            91.40987994808566,
+            87.16945165476963
+          ],
+          "retainedFraction": 0.9857235561323816
+        },
+        {
+          "value": 1,
+          "areaMm2": 92.4375,
+          "centerMm": [
+            6.567697768762677,
+            88.94667004732928
+          ],
+          "retainedFraction": 0.9844489519945909
+        }
+      ],
+      "missing": [],
+      "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+    },
+    "passed": true,
+    "ease": {
+      "totalCutLength": 972.0145927614784,
+      "sharpTurns": 11,
+      "sharpLocations": [
+        {
+          "family": 0,
+          "slit": 0,
+          "angle": 106.2028314485368,
+          "point": [
+            18.30584697820892,
+            24.195653054504934
+          ]
+        },
+        {
+          "family": 0,
+          "slit": 0,
+          "angle": 153.37802240086327,
+          "point": [
+            9.552124244373232,
+            19.955003801457448
+          ]
+        },
+        {
+          "family": 0,
+          "slit": 1,
+          "angle": 63.658888638892996,
+          "point": [
+            26.220825286908514,
+            74.70973818869257
+          ]
+        },
+        {
+          "family": 0,
+          "slit": 2,
+          "angle": 65.67447659336024,
+          "point": [
+            75.56261859829831,
+            83.33788421100164
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 0,
+          "angle": 104.69876402289039,
+          "point": [
+            79.24929386045915,
+            16.354630747155294
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 0,
+          "angle": 69.69100137954389,
+          "point": [
+            80.00577286786258,
+            15.587854896998536
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 1,
+          "angle": 141.06762335499462,
+          "point": [
+            29.542926633912383,
+            50.68900477498078
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 1,
+          "angle": 115.54746258961083,
+          "point": [
+            19.179108438850488,
+            25.430621539036416
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 1,
+          "angle": 91.04874888486034,
+          "point": [
+            72.69098200896113,
+            29.19194320073937
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 1,
+          "angle": 73.40569570511018,
+          "point": [
+            84.31847149407876,
+            22.483587647109545
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 2,
+          "angle": 65.92040627871778,
+          "point": [
+            16.332254594707,
+            79.35839289502643
+          ]
+        }
+      ],
+      "maximumTurn": 153.37802240086327,
+      "bendingEnergy": 25.088018897460557,
+      "minimumRadius": 0.6347259410321918,
+      "hiddenCurvesBelowRadius": 5,
+      "weightedObjective": 1809.9543281994725,
+      "curvatureMethod": "floating-point polynomial critical points; not an exact certificate"
+    },
+    "segments": 68,
+    "seconds": 4.502116375
+  },
+  "editable": {
+    "id": "original-pixels-original-crop",
+    "preset": "stronger-trace",
+    "engineChecksPassed": true,
+    "independentEngineError": 0.01155625,
+    "geometrySha256": "fba6c0024e66c5ac0c40e1dca173837c8d43b9589250ae736bb687d921df02ca",
+    "maskSha256": "069c4d534547341c69dc2233d6e210d5607f284d2d81b0d18623b06c148d4fe4",
+    "editorIssues": [],
+    "fidelity": {
+      "passed": true,
+      "maximumWeaveDrift": 0.001,
+      "weaveDrift": [
+        {
+          "resolution": 400,
+          "mismatch": 0
+        },
+        {
+          "resolution": 800,
+          "mismatch": 0
+        }
+      ],
+      "originalSourceError": 0.01153125,
+      "sourceError": 0.01153125
+    },
+    "editableError": 0.01153125,
+    "missingFeatures": 0,
+    "featureComponents": [
+      {
+        "centerMm": [
+          49.88263744336966,
+          51.60196522590914
+        ],
+        "sourceAreaMm2": 1020.875,
+        "intersectionPixels": 16285,
+        "retention": 0.9970001224439818,
+        "predictedComponentAreaMm2": 1021.625,
+        "touchesBorder": false,
+        "componentIoU": 0.993290637389448
+      },
+      {
+        "centerMm": [
+          50.70525519848771,
+          50.487873345935725
+        ],
+        "sourceAreaMm2": 1653.125,
+        "intersectionPixels": 26267,
+        "retention": 0.9930812854442344,
+        "predictedComponentAreaMm2": 1651.25,
+        "touchesBorder": false,
+        "componentIoU": 0.9873698455061459
+      },
+      {
+        "centerMm": [
+          91.40987994808566,
+          87.16945165476963
+        ],
+        "sourceAreaMm2": 96.3125,
+        "intersectionPixels": 1518,
+        "retention": 0.9850746268656716,
+        "predictedComponentAreaMm2": 103.0625,
+        "touchesBorder": true,
+        "componentIoU": 0.9078947368421053
+      },
+      {
+        "centerMm": [
+          6.567697768762677,
+          88.94667004732928
+        ],
+        "sourceAreaMm2": 92.4375,
+        "intersectionPixels": 1458,
+        "retention": 0.9858012170385395,
+        "predictedComponentAreaMm2": 200.1875,
+        "touchesBorder": true,
+        "componentIoU": 0.4522332506203474
+      }
+    ],
+    "physical": {
+      "geometry": {
+        "passed": true,
+        "issues": [],
+        "nominalWidthRequired": 2.50501002004008,
+        "minimumInterSlitDistanceLower": 3.045526469841842,
+        "minimumOuterSideClearance": 3.077040528950519,
+        "boundaryParityMatches": true,
+        "forwardSampleMismatchPixels": 0,
+        "forwardBoundaryAmbiguousPixels": 0,
+        "forwardSampleResolution": 101,
+        "geometryTolerance": 0.01,
+        "sharedCurvesStoredOnce": true,
+        "physicalAssemblyTested": false,
+        "limitations": [
+          "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+          "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+          "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+          "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+        ]
+      },
+      "paper": {
+        "status": "pass",
+        "requiredRemainingWidth": 2,
+        "nominalDiameter": 2.50501002004008,
+        "gridSpacing": 0.14285714285714285,
+        "clearanceGuard": 0.11101525445522108,
+        "families": [
+          {
+            "family": 0,
+            "status": "pass",
+            "detachedCertainCoreIslands": 0,
+            "detachedPossibleCoreIslands": 0,
+            "detachedPossibleArea": 0,
+            "foldIntervals": [
+              {
+                "interval": [
+                  0,
+                  6.908617377274594
+                ],
+                "certainCoreLength": 4.1428571428571415,
+                "possibleCoreLength": 4.571428571428571
+              },
+              {
+                "interval": [
+                  6.908617377274594,
+                  14.88325123611988
+                ],
+                "certainCoreLength": 5.285714285714287,
+                "possibleCoreLength": 5.571428571428574
+              },
+              {
+                "interval": [
+                  14.88325123611988,
+                  82.99145925503791
+                ],
+                "certainCoreLength": 65.00000000000057,
+                "possibleCoreLength": 65.57142857142912
+              },
+              {
+                "interval": [
+                  82.99145925503791,
+                  90.32876686277133
+                ],
+                "certainCoreLength": 4.714285714285714,
+                "possibleCoreLength": 5.000000000000001
+              },
+              {
+                "interval": [
+                  90.32876686277133,
+                  100
+                ],
+                "certainCoreLength": 6.857142857142863,
+                "possibleCoreLength": 7.428571428571436
+              }
+            ]
+          },
+          {
+            "family": 1,
+            "status": "pass",
+            "detachedCertainCoreIslands": 0,
+            "detachedPossibleCoreIslands": 0,
+            "detachedPossibleArea": 0,
+            "foldIntervals": [
+              {
+                "interval": [
+                  0,
+                  5.1785757816446
+                ],
+                "certainCoreLength": 2.428571428571428,
+                "possibleCoreLength": 2.8571428571428563
+              },
+              {
+                "interval": [
+                  5.1785757816446,
+                  14.41869088487478
+                ],
+                "certainCoreLength": 6.428571428571433,
+                "possibleCoreLength": 6.857142857142863
+              },
+              {
+                "interval": [
+                  14.41869088487478,
+                  88.58178921864756
+                ],
+                "certainCoreLength": 70.42857142857184,
+                "possibleCoreLength": 71.0000000000004
+              },
+              {
+                "interval": [
+                  88.58178921864756,
+                  91.6473156884894
+                ],
+                "certainCoreLength": 0.2857142857142857,
+                "possibleCoreLength": 0.857142857142857
+              },
+              {
+                "interval": [
+                  91.6473156884894,
+                  100
+                ],
+                "certainCoreLength": 5.142857142857144,
+                "possibleCoreLength": 5.714285714285717
+              }
+            ]
+          }
+        ],
+        "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+        "seconds": 0.21857020799999988,
+        "limitations": [
+          "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+          "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+          "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+          "Small tips and features below the explicitly stated area threshold are not certified."
+        ]
+      },
+      "materialResolution": 700
+    },
+    "conversionPassed": true,
+    "completeCandidatePassed": true,
+    "tolerance": 0.1,
+    "seconds": 0.5742694580000001
+  },
+  "materialReview": {
+    "method": "Same 28 reserved source-photo observations and same phase for classified, independently rendered native and production editable outputs. Sparse observations, not cutting-path ground truth.",
+    "source": {
+      "file": "scripts/inverse/fixtures/hard-photos/bibel-star-outline.png",
+      "sha256": "50182945f46ea5e51dc4ab75227d73abfd332e07a4568a1acc52ae43c1c8638c",
+      "decodedPixelsSha256": "a58dc34d7dd3f2bf65fc981a7cd9fc934d59ca4db5c3d90d00abf00757c723f0",
+      "width": 995,
+      "height": 661,
+      "paperNames": [
+        "blue paper",
+        "cream paper"
+      ]
+    },
+    "quad": [
+      [
+        508.93214738809337,
+        139.42154594591744
+      ],
+      [
+        733.0890556479761,
+        381.63384919139503
+      ],
+      [
+        503.36343799983547,
+        612.548994160581
+      ],
+      [
+        269.2275949887735,
+        367.7991156114501
+      ]
+    ],
+    "classified": {
+      "total": 28,
+      "covered": 28,
+      "correct": 28,
+      "mismatched": 0,
+      "outsideCrop": 0,
+      "unavailable": 0,
+      "coverage": 1,
+      "agreementAllSamples": 1,
+      "agreementCovered": 1,
+      "phase": 1,
+      "phaseInferred": true,
+      "phaseAmbiguous": false,
+      "allReviewedSamplesMatch": true,
+      "groups": [
+        {
+          "id": "upper-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "left-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "right-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "lower-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "upper-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "left-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "right-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "lower-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "white-star-centre",
+          "paper": 1,
+          "total": 5,
+          "covered": 5,
+          "correct": 5,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "white-surround-and-gaps",
+          "paper": 1,
+          "total": 7,
+          "covered": 7,
+          "correct": 7,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        }
+      ],
+      "rows": [
+        {
+          "group": "upper-star-arms",
+          "point": [
+            480,
+            298
+          ],
+          "paper": 0,
+          "cropPoint": [
+            113.2828570886524,
+            159.0506587959122
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "upper-star-arms",
+          "point": [
+            524,
+            296
+          ],
+          "paper": 0,
+          "cropPoint": [
+            148.16093173093356,
+            118.02340923793128
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-star-arms",
+          "point": [
+            412,
+            350
+          ],
+          "paper": 0,
+          "cropPoint": [
+            101.56279167829744,
+            262.2736103015396
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-star-arms",
+          "point": [
+            416,
+            397
+          ],
+          "paper": 0,
+          "cropPoint": [
+            144.78067734547955,
+            297.6246971136384
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-star-arms",
+          "point": [
+            587,
+            359
+          ],
+          "paper": 0,
+          "cropPoint": [
+            255.3939152575281,
+            114.2929061073096
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-star-arms",
+          "point": [
+            586,
+            397
+          ],
+          "paper": 0,
+          "cropPoint": [
+            287.2394033849396,
+            147.21398845938626
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-star-arms",
+          "point": [
+            481,
+            450
+          ],
+          "paper": 0,
+          "cropPoint": [
+            243.88022555293344,
+            284.72851204851247
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-star-arms",
+          "point": [
+            520,
+            450
+          ],
+          "paper": 0,
+          "cropPoint": [
+            276.68904746780976,
+            250.42318220927154
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "upper-border-diamonds",
+          "point": [
+            490,
+            183
+          ],
+          "paper": 0,
+          "cropPoint": [
+            22.829924849682232,
+            53.794385916176516
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "upper-border-diamonds",
+          "point": [
+            521,
+            199
+          ],
+          "paper": 0,
+          "cropPoint": [
+            62.195163301856056,
+            39.18851290709622
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-border-diamonds",
+          "point": [
+            310,
+            359
+          ],
+          "paper": 0,
+          "cropPoint": [
+            26.179734986534296,
+            357.99660570825955
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-border-diamonds",
+          "point": [
+            315,
+            390
+          ],
+          "paper": 0,
+          "cropPoint": [
+            56.35354618423137,
+            379.0432549295794
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-border-diamonds",
+          "point": [
+            687,
+            367
+          ],
+          "paper": 0,
+          "cropPoint": [
+            348.05413303600767,
+            29.97749258891198
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-border-diamonds",
+          "point": [
+            688,
+            397
+          ],
+          "paper": 0,
+          "cropPoint": [
+            374.92776354640813,
+            54.63090310340439
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-border-diamonds",
+          "point": [
+            481,
+            567
+          ],
+          "paper": 0,
+          "cropPoint": [
+            343.2632319980462,
+            381.66047873197385
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-border-diamonds",
+          "point": [
+            512,
+            573
+          ],
+          "paper": 0,
+          "cropPoint": [
+            374.6490985113074,
+            359.72982167068005
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            500,
+            377
+          ],
+          "paper": 1,
+          "cropPoint": [
+            197.5151314316515,
+            207.22034998084357
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            504,
+            336
+          ],
+          "paper": 1,
+          "cropPoint": [
+            165.7753041437938,
+            169.42118663337882
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            503,
+            415
+          ],
+          "paper": 1,
+          "cropPoint": [
+            232.494113778971,
+            236.25512578457815
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            464,
+            370
+          ],
+          "paper": 1,
+          "cropPoint": [
+            161.53349899273906,
+            233.20746288853869
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            546,
+            373
+          ],
+          "paper": 1,
+          "cropPoint": [
+            232.72890622964266,
+            162.91241947003985
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            455,
+            295
+          ],
+          "paper": 1,
+          "cropPoint": [
+            90.05977381806825,
+            178.76602442521337
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            552,
+            303
+          ],
+          "paper": 1,
+          "cropPoint": [
+            177.62878280899184,
+            98.70088217241236
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            451,
+            439
+          ],
+          "paper": 1,
+          "cropPoint": [
+            209.4593399835034,
+            301.8435675779383
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            552,
+            437
+          ],
+          "paper": 1,
+          "cropPoint": [
+            292.6599089521813,
+            211.20357819980174
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            428,
+            374
+          ],
+          "paper": 1,
+          "cropPoint": [
+            135.13912422725363,
+            268.134178988884
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            581,
+            382
+          ],
+          "paper": 1,
+          "cropPoint": [
+            270.08907967573697,
+            139.0805557721704
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            501,
+            577
+          ],
+          "paper": 1,
+          "cropPoint": [
+            368.6933190202341,
+            372.60233696901804
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        }
+      ],
+      "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+    },
+    "native": {
+      "total": 28,
+      "covered": 28,
+      "correct": 28,
+      "mismatched": 0,
+      "outsideCrop": 0,
+      "unavailable": 0,
+      "coverage": 1,
+      "agreementAllSamples": 1,
+      "agreementCovered": 1,
+      "phase": 1,
+      "phaseInferred": false,
+      "phaseAmbiguous": false,
+      "allReviewedSamplesMatch": true,
+      "groups": [
+        {
+          "id": "upper-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "left-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "right-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "lower-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "upper-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "left-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "right-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "lower-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "white-star-centre",
+          "paper": 1,
+          "total": 5,
+          "covered": 5,
+          "correct": 5,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "white-surround-and-gaps",
+          "paper": 1,
+          "total": 7,
+          "covered": 7,
+          "correct": 7,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        }
+      ],
+      "rows": [
+        {
+          "group": "upper-star-arms",
+          "point": [
+            480,
+            298
+          ],
+          "paper": 0,
+          "cropPoint": [
+            113.2828570886524,
+            159.0506587959122
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "upper-star-arms",
+          "point": [
+            524,
+            296
+          ],
+          "paper": 0,
+          "cropPoint": [
+            148.16093173093356,
+            118.02340923793128
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-star-arms",
+          "point": [
+            412,
+            350
+          ],
+          "paper": 0,
+          "cropPoint": [
+            101.56279167829744,
+            262.2736103015396
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-star-arms",
+          "point": [
+            416,
+            397
+          ],
+          "paper": 0,
+          "cropPoint": [
+            144.78067734547955,
+            297.6246971136384
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-star-arms",
+          "point": [
+            587,
+            359
+          ],
+          "paper": 0,
+          "cropPoint": [
+            255.3939152575281,
+            114.2929061073096
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-star-arms",
+          "point": [
+            586,
+            397
+          ],
+          "paper": 0,
+          "cropPoint": [
+            287.2394033849396,
+            147.21398845938626
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-star-arms",
+          "point": [
+            481,
+            450
+          ],
+          "paper": 0,
+          "cropPoint": [
+            243.88022555293344,
+            284.72851204851247
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-star-arms",
+          "point": [
+            520,
+            450
+          ],
+          "paper": 0,
+          "cropPoint": [
+            276.68904746780976,
+            250.42318220927154
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "upper-border-diamonds",
+          "point": [
+            490,
+            183
+          ],
+          "paper": 0,
+          "cropPoint": [
+            22.829924849682232,
+            53.794385916176516
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "upper-border-diamonds",
+          "point": [
+            521,
+            199
+          ],
+          "paper": 0,
+          "cropPoint": [
+            62.195163301856056,
+            39.18851290709622
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-border-diamonds",
+          "point": [
+            310,
+            359
+          ],
+          "paper": 0,
+          "cropPoint": [
+            26.179734986534296,
+            357.99660570825955
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-border-diamonds",
+          "point": [
+            315,
+            390
+          ],
+          "paper": 0,
+          "cropPoint": [
+            56.35354618423137,
+            379.0432549295794
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-border-diamonds",
+          "point": [
+            687,
+            367
+          ],
+          "paper": 0,
+          "cropPoint": [
+            348.05413303600767,
+            29.97749258891198
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-border-diamonds",
+          "point": [
+            688,
+            397
+          ],
+          "paper": 0,
+          "cropPoint": [
+            374.92776354640813,
+            54.63090310340439
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-border-diamonds",
+          "point": [
+            481,
+            567
+          ],
+          "paper": 0,
+          "cropPoint": [
+            343.2632319980462,
+            381.66047873197385
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-border-diamonds",
+          "point": [
+            512,
+            573
+          ],
+          "paper": 0,
+          "cropPoint": [
+            374.6490985113074,
+            359.72982167068005
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            500,
+            377
+          ],
+          "paper": 1,
+          "cropPoint": [
+            197.5151314316515,
+            207.22034998084357
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            504,
+            336
+          ],
+          "paper": 1,
+          "cropPoint": [
+            165.7753041437938,
+            169.42118663337882
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            503,
+            415
+          ],
+          "paper": 1,
+          "cropPoint": [
+            232.494113778971,
+            236.25512578457815
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            464,
+            370
+          ],
+          "paper": 1,
+          "cropPoint": [
+            161.53349899273906,
+            233.20746288853869
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            546,
+            373
+          ],
+          "paper": 1,
+          "cropPoint": [
+            232.72890622964266,
+            162.91241947003985
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            455,
+            295
+          ],
+          "paper": 1,
+          "cropPoint": [
+            90.05977381806825,
+            178.76602442521337
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            552,
+            303
+          ],
+          "paper": 1,
+          "cropPoint": [
+            177.62878280899184,
+            98.70088217241236
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            451,
+            439
+          ],
+          "paper": 1,
+          "cropPoint": [
+            209.4593399835034,
+            301.8435675779383
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            552,
+            437
+          ],
+          "paper": 1,
+          "cropPoint": [
+            292.6599089521813,
+            211.20357819980174
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            428,
+            374
+          ],
+          "paper": 1,
+          "cropPoint": [
+            135.13912422725363,
+            268.134178988884
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            581,
+            382
+          ],
+          "paper": 1,
+          "cropPoint": [
+            270.08907967573697,
+            139.0805557721704
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            501,
+            577
+          ],
+          "paper": 1,
+          "cropPoint": [
+            368.6933190202341,
+            372.60233696901804
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        }
+      ],
+      "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+    },
+    "editable": {
+      "total": 28,
+      "covered": 28,
+      "correct": 28,
+      "mismatched": 0,
+      "outsideCrop": 0,
+      "unavailable": 0,
+      "coverage": 1,
+      "agreementAllSamples": 1,
+      "agreementCovered": 1,
+      "phase": 1,
+      "phaseInferred": false,
+      "phaseAmbiguous": false,
+      "allReviewedSamplesMatch": true,
+      "groups": [
+        {
+          "id": "upper-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "left-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "right-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "lower-star-arms",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "upper-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "left-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "right-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "lower-border-diamonds",
+          "paper": 0,
+          "total": 2,
+          "covered": 2,
+          "correct": 2,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "white-star-centre",
+          "paper": 1,
+          "total": 5,
+          "covered": 5,
+          "correct": 5,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        },
+        {
+          "id": "white-surround-and-gaps",
+          "paper": 1,
+          "total": 7,
+          "covered": 7,
+          "correct": 7,
+          "mismatched": 0,
+          "outsideCrop": 0,
+          "unavailable": 0,
+          "coverage": 1,
+          "agreementAllSamples": 1,
+          "agreementCovered": 1
+        }
+      ],
+      "rows": [
+        {
+          "group": "upper-star-arms",
+          "point": [
+            480,
+            298
+          ],
+          "paper": 0,
+          "cropPoint": [
+            113.2828570886524,
+            159.0506587959122
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "upper-star-arms",
+          "point": [
+            524,
+            296
+          ],
+          "paper": 0,
+          "cropPoint": [
+            148.16093173093356,
+            118.02340923793128
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-star-arms",
+          "point": [
+            412,
+            350
+          ],
+          "paper": 0,
+          "cropPoint": [
+            101.56279167829744,
+            262.2736103015396
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-star-arms",
+          "point": [
+            416,
+            397
+          ],
+          "paper": 0,
+          "cropPoint": [
+            144.78067734547955,
+            297.6246971136384
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-star-arms",
+          "point": [
+            587,
+            359
+          ],
+          "paper": 0,
+          "cropPoint": [
+            255.3939152575281,
+            114.2929061073096
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-star-arms",
+          "point": [
+            586,
+            397
+          ],
+          "paper": 0,
+          "cropPoint": [
+            287.2394033849396,
+            147.21398845938626
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-star-arms",
+          "point": [
+            481,
+            450
+          ],
+          "paper": 0,
+          "cropPoint": [
+            243.88022555293344,
+            284.72851204851247
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-star-arms",
+          "point": [
+            520,
+            450
+          ],
+          "paper": 0,
+          "cropPoint": [
+            276.68904746780976,
+            250.42318220927154
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "upper-border-diamonds",
+          "point": [
+            490,
+            183
+          ],
+          "paper": 0,
+          "cropPoint": [
+            22.829924849682232,
+            53.794385916176516
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "upper-border-diamonds",
+          "point": [
+            521,
+            199
+          ],
+          "paper": 0,
+          "cropPoint": [
+            62.195163301856056,
+            39.18851290709622
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-border-diamonds",
+          "point": [
+            310,
+            359
+          ],
+          "paper": 0,
+          "cropPoint": [
+            26.179734986534296,
+            357.99660570825955
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "left-border-diamonds",
+          "point": [
+            315,
+            390
+          ],
+          "paper": 0,
+          "cropPoint": [
+            56.35354618423137,
+            379.0432549295794
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-border-diamonds",
+          "point": [
+            687,
+            367
+          ],
+          "paper": 0,
+          "cropPoint": [
+            348.05413303600767,
+            29.97749258891198
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "right-border-diamonds",
+          "point": [
+            688,
+            397
+          ],
+          "paper": 0,
+          "cropPoint": [
+            374.92776354640813,
+            54.63090310340439
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-border-diamonds",
+          "point": [
+            481,
+            567
+          ],
+          "paper": 0,
+          "cropPoint": [
+            343.2632319980462,
+            381.66047873197385
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "lower-border-diamonds",
+          "point": [
+            512,
+            573
+          ],
+          "paper": 0,
+          "cropPoint": [
+            374.6490985113074,
+            359.72982167068005
+          ],
+          "covered": true,
+          "maskValue": 1,
+          "predictedPaper": 0,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            500,
+            377
+          ],
+          "paper": 1,
+          "cropPoint": [
+            197.5151314316515,
+            207.22034998084357
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            504,
+            336
+          ],
+          "paper": 1,
+          "cropPoint": [
+            165.7753041437938,
+            169.42118663337882
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            503,
+            415
+          ],
+          "paper": 1,
+          "cropPoint": [
+            232.494113778971,
+            236.25512578457815
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            464,
+            370
+          ],
+          "paper": 1,
+          "cropPoint": [
+            161.53349899273906,
+            233.20746288853869
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-star-centre",
+          "point": [
+            546,
+            373
+          ],
+          "paper": 1,
+          "cropPoint": [
+            232.72890622964266,
+            162.91241947003985
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            455,
+            295
+          ],
+          "paper": 1,
+          "cropPoint": [
+            90.05977381806825,
+            178.76602442521337
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            552,
+            303
+          ],
+          "paper": 1,
+          "cropPoint": [
+            177.62878280899184,
+            98.70088217241236
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            451,
+            439
+          ],
+          "paper": 1,
+          "cropPoint": [
+            209.4593399835034,
+            301.8435675779383
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            552,
+            437
+          ],
+          "paper": 1,
+          "cropPoint": [
+            292.6599089521813,
+            211.20357819980174
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            428,
+            374
+          ],
+          "paper": 1,
+          "cropPoint": [
+            135.13912422725363,
+            268.134178988884
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            581,
+            382
+          ],
+          "paper": 1,
+          "cropPoint": [
+            270.08907967573697,
+            139.0805557721704
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        },
+        {
+          "group": "white-surround-and-gaps",
+          "point": [
+            501,
+            577
+          ],
+          "paper": 1,
+          "cropPoint": [
+            368.6933190202341,
+            372.60233696901804
+          ],
+          "covered": true,
+          "maskValue": 0,
+          "predictedPaper": 1,
+          "correct": true
+        }
+      ],
+      "meaning": "Sparse assistant-reviewed photo samples, not complete pixel accuracy or cutting-path truth. Cropped-out and unavailable samples remain in the denominator."
+    }
+  },
+  "sourceHashes": {
+    "static/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+    "static/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+    "static/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+    "static/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+    "static/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+    "static/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "static/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+    "static/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+    "static/inverse/core/direct/counts.js": "efdfa3fc371dc9d9cfbbc9ce763df8b8cdca6f8f6324b55fde9d23ed05f31d8e",
+    "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+    "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+    "static/inverse/core/direct/feature-details.js": "d856b254ecf1febfadae02d0fc7fa8c6a8f9143b5dff5fd39f455ca4b97c7b09",
+    "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+    "static/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+    "static/inverse/core/direct/fit.js": "c2a838f842a6a9c4ca6e13eac1526e0f819f14a5cae58ac8a5c44c7ce2067fd6",
+    "static/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+    "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+    "static/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+    "static/inverse/core/direct/initialize.js": "0ead745337c3679f1f418fcc5afd502785db228ba799ef0b80ac4c7370c13a46",
+    "static/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+    "static/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+    "static/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+    "static/inverse/core/direct/native/PROVENANCE.json": "e9fbaef090fc05bdc9450210f527b1fb3fa6bc77ee86c1902eb97bb6ed0acd2a",
+    "static/inverse/core/direct/native/boundary.c": "dd46c0955543c5a9d3e7fbd5cb74140f73d901dea7df91df35b15700095ecef4",
+    "static/inverse/core/direct/native/boundary.wasm": "335690f431efefdb613b7466a455f4a62697d137e66a4641056a5968fceafc58",
+    "static/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+    "static/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+    "static/inverse/core/direct/polish.js": "3f9df26508076465860a62ce72c2de3aeb67413a1d67ab1927dc37b89b7b622e",
+    "static/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+    "static/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "static/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+    "static/inverse/core/direct/refine.js": "91858b89e1ab21be39169331999c7d0d27bf5e3da7724e43d85d945739c456bb",
+    "static/inverse/core/direct/rejected-routing.js": "26be56dd3367eeb0648833ca347f008af73c8717d58358664ff1d15bbd240540",
+    "static/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+    "static/inverse/core/direct/share.js": "1af9e802733299f786a526c489a0ab40a19f5912d21ddde209bdc6afaa395d12",
+    "static/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+    "static/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+    "static/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+    "static/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+    "static/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+    "static/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+    "static/inverse/core/engine.js": "ed2cb5b1da342f6b20659b23688fc93c9f057c39d27996a7b0904663e93d0390",
+    "static/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+    "static/inverse/core/feature-recovery.js": "50ec70198f735c32be604ae73e0c1d68dd4c8b30b9586595014c0f9adbfdd833",
+    "static/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+    "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+    "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+    "static/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+    "static/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+    "static/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+    "static/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+    "static/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+    "static/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+    "static/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+    "static/inverse/core/numerical-kernel.js": "8c357614a21d6c03010cb6467939f65c600488f1911083d0bb5fbca63796b22e",
+    "static/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+    "static/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+    "static/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+    "static/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+    "static/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+    "static/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+    "static/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+    "static/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+    "static/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+    "static/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+    "static/inverse/core/solver.js": "29eeca095cfe123f378a424f099954e5ae082866b8ad437f1a6dbb064eddbbf1",
+    "static/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+    "static/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+    "static/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+    "static/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+    "static/inverse/core/validate.js": "31cc29c6873896f53a2f999782dcd2292f0924611166932114b45534f5cbebd7",
+    "static/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+    "static/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+    "static/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+    "static/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+    "static/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+    "static/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+    "static/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+    "static/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+    "static/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+    "static/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+    "static/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+    "scripts/inverse/hard-photo-cases.json": "a104debdefa7629136a238106304a877daa57fee31abef9ebf09d48c69f87917",
+    "scripts/inverse/photo-cases.json": "a366d97e5a81384eb8745bcfa0fb3201b76cf3f92710ae65bedf88a95fc42385",
+    "scripts/inverse/hard-photo-data.mjs": "84ba890531eab12a9a22e056a2e4a0043414eaca7db3f82b5956718869556d9f",
+    "scripts/inverse/hard-photo-target.mjs": "69bdd88cd8f4c992d6b958082ce5b60d88abfab6c3f0299346b7b4a143f80d4a",
+    "scripts/inverse/hard-photo-benchmark.mjs": "7b5448b56181d7e5d6c52dd70065fe826b1a101579f5ef18d63d5157ebf21217",
+    "scripts/inverse/hard-photo-report.mjs": "156d754048477f45b84a9d97ea9f041391b9249da8a13a88d129921ee1f39db4",
+    "scripts/inverse/crop-evidence.mjs": "52872ad6028a15b5746f51a004d0d5f8a216850559f4dbbbce4235213373b260",
+    "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe",
+    "src/lib/inverse/presets.js": "17d4f9be7dded0eb6619be3449eb962b67ee04ca96fd61db2777cbf3efb8d954",
+    "scripts/inverse/fixtures/photo-material-samples.json": "30b1d24b9a380cb8cfda5fda26d32b20750d64335f99a71b7ebb37b6a8985eb6",
+    "scripts/inverse/photo-material-samples.mjs": "8a28ea92b7206bb517d2561c8e14211cdb0a6fcfaea9de587f13a920b0f43c3d",
+    "tmp/heart-learning/star-input-factorial-v1/catalog.json": "5df00967793f5b6528a69ba532c0ff6847f1fcb8b6434bfdd683cfac67747f9b",
+    "src/lib/inverse/toHeartDesign.ts": "eb405a8bb15abebd46f07ed17457ebc44735221e92b9bc866a4ad5dc3c05c66f",
+    "src/lib/inverse/conversionFidelity.ts": "45db43e0919b98cfe03c115bda7473896de0da1aeec89e94ee74bbaeffdbb589",
+    "src/lib/inverse/simplifyCurves.ts": "c693b9eb86084926d941d7e60a1a38178156d081657feabce41ff03261714173",
+    "src/lib/utils/heartDesign.ts": "c4d79388b56ca2332e6b42fd08716b3e9bfcd79b07ce9f7992ce46f1db998637",
+    "src/lib/editor/curveIssues.ts": "293535d5f73d3dd4c9a7bbfc1c83b25ba81558d593644743496cf9e8afa5358e",
+    "src/lib/paint/rasterize.ts": "c8e227d34063a9e87d45c223910f821255daf4527f7dd6dc38684eb774fda96e",
+    "scripts/inverse/hard-photo-editor-replay.mjs": "543f762b1b67b5cafb20dbcb9c9ff1e5f2872630bb814e43f5a8e2a189d5599f",
+    "scripts/inverse/editable-paper-audit.mjs": "f34d170dfb9830c4ba51c5fa2565a0740977a994130313afd2dcd79f065c2429",
+    "scripts/inverse/feature-component-metrics.mjs": "655cb4d75a7e5e09c4386204409eabb41fb8cf98bc5c9b5f32a143759d86fc8e"
+  },
+  "artifactLedger": [
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/catalog.json",
+      "bytes": 3511,
+      "sha256": "5df00967793f5b6528a69ba532c0ff6847f1fcb8b6434bfdd683cfac67747f9b"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/collect-study.py",
+      "bytes": 5673,
+      "sha256": "3be2021cc5faac726ddf9e40c22975def38bcc9069f55aaa0d5ff8f274b63f2c"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/long-editor/original-pixels-original-crop-stronger-trace-weave.png",
+      "bytes": 6375,
+      "sha256": "4e593fe68f06c7286302260152758d7d024b92d1fe61a3c59a6e71fa49c88e1d"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/long-editor/original-pixels-original-crop-stronger-trace.svg",
+      "bytes": 9791,
+      "sha256": "f2913c24cfdae7d8b566d13facacbea32b4248ba65fc5495d17ac5b93afb831e"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/long-editor/results.json",
+      "bytes": 9868,
+      "sha256": "65d46326b685a10694140519c0b14b04741830cf2a493393a593d711f02e184f"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/long-editor-input/original-pixels-original-crop/stronger-trace/cut_geometry.json",
+      "bytes": 16300,
+      "sha256": "fba6c0024e66c5ac0c40e1dca173837c8d43b9589250ae736bb687d921df02ca"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/long-editor-input/original-pixels-original-crop/stronger-trace/mask.png",
+      "bytes": 6294,
+      "sha256": "3d193006a6dfd33df8adffbbbca60d3c0a3a47c7325a407ab4ea20be63c636f0"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/long-editor-input/results.json",
+      "bytes": 8215,
+      "sha256": "24bf3d4ad579e071bd35ec1bda24d1ce4de15102293a5f973e84664ce0c6245c"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/long-editor.log",
+      "bytes": 90,
+      "sha256": "aaf7904c985b2c585364e584668e59a7519ade9cba9e52198b8395a3bf403b29"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/material-review.json",
+      "bytes": 39222,
+      "sha256": "6ea8681f9fb73236e9d2b12316820a1d02bf3c094af0ed2493f7ca86d019795f"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/material-review.mjs",
+      "bytes": 2260,
+      "sha256": "0415eb29e52b136bad0635aea5e0e49547ef60ad23f3100e20d9e5b153e524d4"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/jpeg-pixels-jpeg-crop-0.75.json",
+      "bytes": 16098,
+      "sha256": "b07eb07ab5f5989be78294a9758cc7c3b5beb2445598a0579bbbeb0b88c6d60a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/jpeg-pixels-jpeg-crop-0.75.png",
+      "bytes": 14854,
+      "sha256": "e3011497767e0efc8bfc691cf069899e6d19b681308bcd8c51f76c6b26aef446"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/jpeg-pixels-jpeg-crop-1.json",
+      "bytes": 17860,
+      "sha256": "67069282211f0ff58ec68780abbbed358880ecab39fbae12b2b9be4031bc2c86"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/jpeg-pixels-jpeg-crop-1.png",
+      "bytes": 15408,
+      "sha256": "13b282670cb98ca21b28739c7d6c958ee0e12de4ffb22e0f12de20393e274837"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/jpeg-pixels-original-crop-0.75.json",
+      "bytes": 16598,
+      "sha256": "2a2b67ca8ccb4ba769594a94b5d03aab8f0132dd5f3b4f1417183a97e2a5388a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/jpeg-pixels-original-crop-0.75.png",
+      "bytes": 15427,
+      "sha256": "8b6b0c41095d6a361da52d30fc14a63cdad7dc2b8c4fdab98ad2939113a65aea"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/jpeg-pixels-original-crop-1.json",
+      "bytes": 17588,
+      "sha256": "822d0dc056640cf55e9f9b9cf41f3c723b05c2bf280c73b2cac90d725ce20a5b"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/jpeg-pixels-original-crop-1.png",
+      "bytes": 14825,
+      "sha256": "4ca3fc5e1cc2fc266e3836d899f892fd7c1610670b2a4e0885ecbe085c6c1357"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/original-pixels-jpeg-crop-0.75.json",
+      "bytes": 15571,
+      "sha256": "e8fbfecc85b2c21649909721777317093b4fd8f1778c7a1a352d22ef2300efdd"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/original-pixels-jpeg-crop-0.75.png",
+      "bytes": 15464,
+      "sha256": "7a577687e8aad194e0e8df7e9c582cee5d90cbc9fcfcbb65940834e48025ec5e"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/original-pixels-jpeg-crop-1.json",
+      "bytes": 18112,
+      "sha256": "63076b6af53afaadaa4963b5a030cab03686750a402ae3ecdaf6b38b1db90bba"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/original-pixels-jpeg-crop-1.png",
+      "bytes": 15182,
+      "sha256": "9fa522f4666cdac1d52f0207802cd26a8c096dde290f149f9e0f5e1cf7603813"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/original-pixels-original-crop-0.75.json",
+      "bytes": 16306,
+      "sha256": "8d50dcd44d3868fbce2efb3efad0af49091f8b5442b080e5e165f9b32dc08df0"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/original-pixels-original-crop-0.75.png",
+      "bytes": 14880,
+      "sha256": "9e04aaa3e521bf73a145f4f79f5802ee9ce9541655bb089477c33558224c097d"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/original-pixels-original-crop-1.json",
+      "bytes": 18032,
+      "sha256": "da61b4dccdced2c177a40cc39bf7391714f16502ebbbc64b436bc0a5b0affc3a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/original-pixels-original-crop-1.png",
+      "bytes": 15011,
+      "sha256": "af1b56f5754487c055cf0b1d9dac6f842c4792d1eeab8633900ee038c21a5137"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe/results.json",
+      "bytes": 88110,
+      "sha256": "e4da9d1390c7b502a162b0b042ef0b337d86dd796497fe4fe2393189b7cca96b"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe.log",
+      "bytes": 534,
+      "sha256": "0bec3aba14b052492e5e31556616178a21331a438a0952cbed05a31fe82d3096"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-kernel-probe.mjs",
+      "bytes": 4206,
+      "sha256": "726946fb12122538272b7f0e83672de3e99a936bbad046949ad315f9c3c192ca"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-long-probe/original-pixels-original-crop-0.75.json",
+      "bytes": 16300,
+      "sha256": "fba6c0024e66c5ac0c40e1dca173837c8d43b9589250ae736bb687d921df02ca"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-long-probe/original-pixels-original-crop-0.75.png",
+      "bytes": 15787,
+      "sha256": "4ea5358f2ebce354b6065781f68a57f9c653f00947425241d5431e68f88f3f37"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-long-probe/results.json",
+      "bytes": 17692,
+      "sha256": "a1308de945659d64a407a358da9e0aa7c84556c95cc944e43263977a7939107f"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-long-probe.log",
+      "bytes": 67,
+      "sha256": "f49da72c3fe1ca1d81fc7ed3a8f0103df9509610b72e01d6c915eaf04d90f938"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-long-probe.mjs",
+      "bytes": 4322,
+      "sha256": "3363027992307a9d8bed32ba5b53a9f1bda9c09059b10089645edfae12375c16"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/jpeg-pixels-jpeg-crop-0.75.json",
+      "bytes": 16098,
+      "sha256": "b07eb07ab5f5989be78294a9758cc7c3b5beb2445598a0579bbbeb0b88c6d60a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/jpeg-pixels-jpeg-crop-0.75.png",
+      "bytes": 14854,
+      "sha256": "e3011497767e0efc8bfc691cf069899e6d19b681308bcd8c51f76c6b26aef446"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/jpeg-pixels-jpeg-crop-1.json",
+      "bytes": 17860,
+      "sha256": "67069282211f0ff58ec68780abbbed358880ecab39fbae12b2b9be4031bc2c86"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/jpeg-pixels-jpeg-crop-1.png",
+      "bytes": 15408,
+      "sha256": "13b282670cb98ca21b28739c7d6c958ee0e12de4ffb22e0f12de20393e274837"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/jpeg-pixels-original-crop-0.75.json",
+      "bytes": 16579,
+      "sha256": "49eb020488290d056a815c3e0c6b0f28c9fcc97ed5d092e03c727d12da3bdca0"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/jpeg-pixels-original-crop-0.75.png",
+      "bytes": 15196,
+      "sha256": "84d1e0cc34391d310e2d1104092a8eb9c2de726cfa8c0c1007bb3c3b19f5af49"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/jpeg-pixels-original-crop-1.json",
+      "bytes": 17590,
+      "sha256": "4df42d7a549aebf5270c0d0ba09a7f44ffb1ca3ed094e92341877cc8a1a98cca"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/jpeg-pixels-original-crop-1.png",
+      "bytes": 14588,
+      "sha256": "8f8091c0ad9e556e9631a5dfdd6d1f242f555fd3f3d728b8c5edfebcec090e3d"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/original-pixels-jpeg-crop-0.75.json",
+      "bytes": 15542,
+      "sha256": "aba291ffd1b51ef53ce53121ecde099d01701345a96ae1ba73872909a4e60b43"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/original-pixels-jpeg-crop-0.75.png",
+      "bytes": 15303,
+      "sha256": "1cf2f61ff290f066710570f787fd4a747034768107bed61ef39dcbc5c0e193b0"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/original-pixels-jpeg-crop-1.json",
+      "bytes": 18097,
+      "sha256": "9cdff6f7c7a8262af87417681aff56a5a6726e43594ac5f9adffffae189acd70"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/original-pixels-jpeg-crop-1.png",
+      "bytes": 14561,
+      "sha256": "2d6ace55390bdbad97f92bb0349743ce46bec66a935ef89912d40176608d6c7b"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/original-pixels-original-crop-0.75.json",
+      "bytes": 16290,
+      "sha256": "4f1c935f099db82272372a4924d8f3eb56f6f9643c2b0449848c969f5bd42c16"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/original-pixels-original-crop-0.75.png",
+      "bytes": 14939,
+      "sha256": "c80f7d20b95856c17938312faa1fbf9cef5ff726580ce381ad9a3ba5934953f7"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/original-pixels-original-crop-1.json",
+      "bytes": 18039,
+      "sha256": "cb0ef7435ce4d90c1c585e298b8c9ba09e623395406f4865f4b14a3d34e34409"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/original-pixels-original-crop-1.png",
+      "bytes": 14756,
+      "sha256": "4ecff5b35023e046f21fe95aeb9f908c1ebabc1e9c4617042942ec904b285969"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe/results.json",
+      "bytes": 90616,
+      "sha256": "fe40ba7cf43cb1ea8882fb3f467d3835b6f49f0520672643aad75aa0842f0002"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe.log",
+      "bytes": 520,
+      "sha256": "b6bd05ae2407c079869cc4434910de35eb8f0641a271bc243937519eb0ef9857"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-probe.mjs",
+      "bytes": 4036,
+      "sha256": "7828b4c2bcb56e56f836b248e267f0911c3b5b967858b4daf9af5054cd92f692"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/jpeg-pixels-jpeg-crop-0.75.json",
+      "bytes": 16098,
+      "sha256": "b07eb07ab5f5989be78294a9758cc7c3b5beb2445598a0579bbbeb0b88c6d60a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/jpeg-pixels-jpeg-crop-0.75.png",
+      "bytes": 14854,
+      "sha256": "e3011497767e0efc8bfc691cf069899e6d19b681308bcd8c51f76c6b26aef446"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/jpeg-pixels-jpeg-crop-1.json",
+      "bytes": 17860,
+      "sha256": "67069282211f0ff58ec68780abbbed358880ecab39fbae12b2b9be4031bc2c86"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/jpeg-pixels-jpeg-crop-1.png",
+      "bytes": 15408,
+      "sha256": "13b282670cb98ca21b28739c7d6c958ee0e12de4ffb22e0f12de20393e274837"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/jpeg-pixels-original-crop-0.75.json",
+      "bytes": 16594,
+      "sha256": "fd78027f430fb667e5934c8df1b8e98082c89b5b88875e2ccb2b772e7df6d4ac"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/jpeg-pixels-original-crop-0.75.png",
+      "bytes": 15320,
+      "sha256": "1914f9817b3b36f1e48f756f7e5a2bf032d78fedbbc3c0b5832961439f43aee5"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/jpeg-pixels-original-crop-1.json",
+      "bytes": 17583,
+      "sha256": "304cdbed4ef89e0aef5b9f97ad3ec080018867bcff2bdb9d17778ca405041f67"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/jpeg-pixels-original-crop-1.png",
+      "bytes": 14771,
+      "sha256": "993f0d302d3d8e0bae3bb821c61a0a331db1a1eee250461e0045280b305aad4b"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/original-pixels-jpeg-crop-0.75.json",
+      "bytes": 15561,
+      "sha256": "d51880699b903d41ec17d3d2243b8f008e4c248f0916ea16277f8242f8252986"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/original-pixels-jpeg-crop-0.75.png",
+      "bytes": 15550,
+      "sha256": "184f5faa39b87ebabee9861e9e611975e45842c16069f98d937de22bd82ee652"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/original-pixels-jpeg-crop-1.json",
+      "bytes": 18079,
+      "sha256": "a2dd42239a8d9fde9cb4c0901c898ff854a5fa3e8652fe802829489221950b8a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/original-pixels-jpeg-crop-1.png",
+      "bytes": 15259,
+      "sha256": "8df401241d3fbc9aba752dda04f313c00770f02cf497f7ee52a6f23b78c2cb07"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/original-pixels-original-crop-0.75.json",
+      "bytes": 16303,
+      "sha256": "5e9b09447e6830e541b75b5dc77f825c3efe1a603328ca87d0ad004be84ce86c"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/original-pixels-original-crop-0.75.png",
+      "bytes": 15578,
+      "sha256": "5c9a3233fb0957d171a8fcbd28ff6d2ef2ecb181d2d7ba5176cb884a26e58aa3"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/original-pixels-original-crop-1.json",
+      "bytes": 18086,
+      "sha256": "2f48dbe000404b63100d16dc9c08e3d1ba5f9a5f48661877495eca1e66aba02e"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/original-pixels-original-crop-1.png",
+      "bytes": 15585,
+      "sha256": "213f82cd48978e344fce8ab6566ff29b28cd1c40024ba98c351fca95f32b7286"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe/results.json",
+      "bytes": 85353,
+      "sha256": "f55627899e61b7733f4228e6ab9f0f59407166831b7ba0d88ade0893202f38f8"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe.log",
+      "bytes": 516,
+      "sha256": "ee6ec38a5dc0c54aa9389d8a2f0e04e39f0237e2294f80d5de0acb1ec0af04ef"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/refine-step-probe.mjs",
+      "bytes": 4251,
+      "sha256": "490972c503d8d970ef48411600fcf4f9f5ee48bc8b8a69ecc40934a349a73a7d"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/index.html",
+      "bytes": 16230,
+      "sha256": "229ad9a448e2c354b46cfd8bfedb9a39d10adc81c115658a0da240a80e5dbb65"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/cut_geometry.json",
+      "bytes": 30803,
+      "sha256": "29d3f86fad59e7f595012fd5ca02977449782f6c3bc56c08ff051b5804ef4ab8"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/independent-weave.png",
+      "bytes": 15750,
+      "sha256": "6eec4e6c4eba5f7f0bb002203992b58cf56468e3ae5633164213427828638a1c"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/manufacturability_left.svg",
+      "bytes": 958159,
+      "sha256": "57b680cb9ed5c467240eaaf4abb663afac8bfa21d933cf980226431841411b8b"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/manufacturability_right.svg",
+      "bytes": 957289,
+      "sha256": "20490fa7c1d432d1fed6d103f8df23a0d91a893aaa238aa8e3329f4ee24e87d4"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/mask.png",
+      "bytes": 6347,
+      "sha256": "543d96ed3b993e0c7fb1f23009db6eae1bcc8ebb27c80b4ca692614c78fd241b"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/print_templates.html",
+      "bytes": 9674,
+      "sha256": "94076fecb6dda16a4a672d4c79fe8966e932af8210f871a901dc904de686125b"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/processed_design.svg",
+      "bytes": 5043,
+      "sha256": "b6cd5da5fcbe78c57441aca9a20b0975be57f0f930d8f153f86ace57e262bc0c"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/report.html",
+      "bytes": 1997836,
+      "sha256": "22d2967c72e5d11578f35bea4b71a2302512e639a974a7e68e82979579e83100"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/report.json",
+      "bytes": 61499,
+      "sha256": "44d5487e1b58249e61f4b13ede333ae065469d10223307a4611846e481ecf375"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/target.svg",
+      "bytes": 21907,
+      "sha256": "a3768b3c9707a48bec6f683816b1cbb371b2135b1128408f758ddc7eac4728a2"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/template_left.svg",
+      "bytes": 4531,
+      "sha256": "e3a8d56c381e6f2233480a35d9347e547bb9b133b62e2bee840177f5c0d43eb8"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/template_right.svg",
+      "bytes": 4231,
+      "sha256": "d7b301e2aa68e15b56663d5483cdd38c1aa9b331ed8cf43690fa55a4fe6a689a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/vector_target.svg",
+      "bytes": 6415,
+      "sha256": "cfae830760ac8fb4dd73bce4f6bd89b787bf218a0f49e4f19e58d79ec431b423"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/automatic/weave_preview.svg",
+      "bytes": 6178,
+      "sha256": "7e27f63f2c04947580fba39a1826f2f3358a228b0ac1193affc1a709fedbff4a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/crop.png",
+      "bytes": 203812,
+      "sha256": "24dc426bf5a00530ce2545bc2ec5819069c124e421e641111444bec5b31ecf0f"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-jpeg-crop/source.png",
+      "bytes": 45218,
+      "sha256": "ace55b5a773c97ff3c27f880ecdedc4f4b79d1f36f68b13e606f5ca3ce575336"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/cut_geometry.json",
+      "bytes": 70597,
+      "sha256": "9a2d95151cc66b334f1fe815648632e1aecb1fcf1f0ca151c8b94ba8e4951359"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/independent-weave.png",
+      "bytes": 16983,
+      "sha256": "cdd8b068e272857555f1e183a0ff2e5f6444fa1cc6008138e91f29fad1900df4"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/manufacturability_left.svg",
+      "bytes": 1862759,
+      "sha256": "35e20f12bbabe631d807f340ec599599ced0cda2d8fc05509a8f91cadbc7cdcb"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/manufacturability_right.svg",
+      "bytes": 1857301,
+      "sha256": "3962034de5fb7c8ac6eebd1c8df68c680f137af9b3496d9b4a48bb8fa7bbc956"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/mask.png",
+      "bytes": 6299,
+      "sha256": "821ff61a375189b43bad5a90302ae5aea946294b13e3797000431b8957498d9e"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/print_templates.html",
+      "bytes": 15799,
+      "sha256": "af50727bf5c11f83617f8f6e08872d9a5c0f3bf7852b7cb2721b10730092a3a5"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/processed_design.svg",
+      "bytes": 12076,
+      "sha256": "a06192d71e35ea6631500a00e7e42e2d38314a1a47f7d601f2db45f09cfa34e7"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/report.html",
+      "bytes": 3816234,
+      "sha256": "ec1fce7ea39c7ee97cdff79fadbeadf914459311c94c3e7d5722294272a189fa"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/report.json",
+      "bytes": 65691,
+      "sha256": "5eb18d9cade2904ad91297a5728eb1985708a13598a58ecd7210bd7b1638b09a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/target.svg",
+      "bytes": 22032,
+      "sha256": "c48425071a33dd069c914b9ae9bf3e57adb181da658ef0004e055688a4586e2c"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/template_left.svg",
+      "bytes": 7436,
+      "sha256": "bf73c0a24297d454d2e542d67067b3c65023ab9a31789b3fe61f9c16a986dde3"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/template_right.svg",
+      "bytes": 7451,
+      "sha256": "7743170ddd0ac0d5c1ccf819f0a64c96da1df6610b24b7586b4ce0a3910cd42a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/vector_target.svg",
+      "bytes": 16964,
+      "sha256": "c65a2f6f670b921443a4529a30a883d1071e39ef6f5ee4beea9b2c51326008b4"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/automatic/weave_preview.svg",
+      "bytes": 11912,
+      "sha256": "16046ee3205a06a9c82c442dbe9172963ffee6477a599ea0f7d2617ca9b0d769"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/crop.png",
+      "bytes": 203606,
+      "sha256": "8190cfe55522f252ef8bd1db21b04d38b54f6277696d8deae22950db2bd77bd4"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/jpeg-pixels-original-crop/source.png",
+      "bytes": 45418,
+      "sha256": "b90d0010a7b9328cf2bbcd684bce67af19954a0b1b55bf4644dff740b320d7fa"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/cut_geometry.json",
+      "bytes": 55601,
+      "sha256": "f18c593470871b9de8f1a79e0d3fd24ac371977eceacbbd1612175320f0de2db"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/independent-weave.png",
+      "bytes": 16897,
+      "sha256": "8d88f1196b67424a86c98a4448b8836c10bcc1522cd7bbfcbd3c0ebb656698ca"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/manufacturability_left.svg",
+      "bytes": 1859001,
+      "sha256": "964a5e811bd4a44fd6ab8eab7f6b5ab187ed92ed89ed67e19077ca1a8842a433"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/manufacturability_right.svg",
+      "bytes": 1859817,
+      "sha256": "847c9676d8bd64f2429ff668ecb52dfc17e8b3846f04ba5d317cfd28367eaffa"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/mask.png",
+      "bytes": 6287,
+      "sha256": "91e12a934c5aeb83d8f18839094806ac780deea6d964d89fff8171cf62e2159d"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/print_templates.html",
+      "bytes": 14133,
+      "sha256": "0da74f299c7201e4921bb0a5dd7877e349074709c23fbbff3ffa63a7e5ffa44a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/processed_design.svg",
+      "bytes": 8593,
+      "sha256": "7630614b13871fa720bbbe03af18729401b8d6efe62f5d261d17386ef4f07f68"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/report.html",
+      "bytes": 3782434,
+      "sha256": "d8f39b52a2c63148518aa33c8d3266211b7939d20937d1144cf0e8d092545361"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/report.json",
+      "bytes": 41016,
+      "sha256": "b10c4630e3699fc841c2289bd94125a5647b803f53fe3b8c05d8b20265703956"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/target.svg",
+      "bytes": 21947,
+      "sha256": "7e6b8a69c1cc187277088ca2d064ade0abe3286193908f6ab68e2ad5ff6be585"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/template_left.svg",
+      "bytes": 6654,
+      "sha256": "7f4b8a67526ddf5e67a495b0e392d2d36f87333be1173a0c043b71a99823adcd"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/template_right.svg",
+      "bytes": 6567,
+      "sha256": "cfa55e5e544fa3ca0c6914513c4274d7653ceb163b34460d541a072a9991e415"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/vector_target.svg",
+      "bytes": 11811,
+      "sha256": "485daef04bef48d2159a2d908b5bf49c4d661e3a9c281dfa17b745320e385b7a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/automatic/weave_preview.svg",
+      "bytes": 10389,
+      "sha256": "4a2ad25dfd1eb43d54a254ffd058157ebd4f781dd96a5d6c9e8777bdf56f0b66"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/crop.png",
+      "bytes": 208411,
+      "sha256": "21fa5a4699b37a155469986156d530e06137be206a58a85f90a7651193e77a46"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-jpeg-crop/source.png",
+      "bytes": 48234,
+      "sha256": "6c724bf590fe755225bf77a9f4e57fce18ec5ba66a27774f5da8ef5771d86aaf"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/cut_geometry.json",
+      "bytes": 78535,
+      "sha256": "59cedb90c0a9b19d2ab5c38f06753df7fb4afd80bfe92a8ea8e2969776b84dae"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/independent-weave.png",
+      "bytes": 16895,
+      "sha256": "b2553e84ac142e33797a6f7bc7193bb0cccb9d9cdb6880b2e2b2ea0f6d85c102"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/manufacturability_left.svg",
+      "bytes": 1859843,
+      "sha256": "01c703ebe955df6a5e7bb765ae896514858576a3cb915362bcd322ed1bb53700"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/manufacturability_right.svg",
+      "bytes": 1859223,
+      "sha256": "efd19c03119a661e4029aa07eef4ae46f06573fdca7d47714411177669089b0c"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/mask.png",
+      "bytes": 6294,
+      "sha256": "3d193006a6dfd33df8adffbbbca60d3c0a3a47c7325a407ab4ea20be63c636f0"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/print_templates.html",
+      "bytes": 18212,
+      "sha256": "66fa8c7c9d111a043fc4308c0128dedb776baf732ddcb947632bcfd76a3df859"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/processed_design.svg",
+      "bytes": 12017,
+      "sha256": "9fbe185a49d60415cd30d6e44a1f4375b415e2814c25836901fc5e74b1050f72"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/report.html",
+      "bytes": 3808045,
+      "sha256": "0a92892d7e0fd235f7f9d430187fb99b9c9a896d8af776781483d1114e42ab78"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/report.json",
+      "bytes": 58330,
+      "sha256": "76559e1c409d99948e76ad530e6253734a8fbb98eb23d99ebfd23b1d2570acf4"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/target.svg",
+      "bytes": 22084,
+      "sha256": "2a4e2b9a270b3ece66dedab377bb7a6b3caa2425a8820cb3eb00ada0fe9df58e"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/template_left.svg",
+      "bytes": 9021,
+      "sha256": "42d0c31e3749dd3f081f7cf119369a3e6bbcf8b4120736269756cf0de38f6d70"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/template_right.svg",
+      "bytes": 8279,
+      "sha256": "ecd92bd80c1e501055185949c9e2eb7fcf6d8d4527154a029e35fb4f3a448ac0"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/vector_target.svg",
+      "bytes": 16904,
+      "sha256": "7c5e6066f513801cfbce78c47baea59b59803962ce419144cff7088b5220450a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/automatic/weave_preview.svg",
+      "bytes": 14238,
+      "sha256": "03d46f077b8add5a65fbe8981e0d63b48d2e6d24ba051eaf19c051a3f339dc31"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/crop.png",
+      "bytes": 208629,
+      "sha256": "f76562375bc454fd023c791d8ee392abfe20ab37d2dd27c5bacf058d849fe5dc"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/original-pixels-original-crop/source.png",
+      "bytes": 48374,
+      "sha256": "a0b366fb4712ad9540c5a652a4df69cbac3914249e0ca55249e422af00d50ac8"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/results/results.json",
+      "bytes": 427562,
+      "sha256": "ce97c417488e29379dac6f99b42725b710408eab9fe7b965cabdea39afb43617"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/run.log",
+      "bytes": 413,
+      "sha256": "2178f9b862b42da795a7ebe76a25aae791b498617c1450ad73ae068f0f5fccc7"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/study.json",
+      "bytes": 687,
+      "sha256": "41645fb8631e17c5d437e70d4ff10afbe99f1c37874fd5d80bb38aa73cedec8e"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/jpeg-pixels-jpeg-crop-0.3.svg",
+      "bytes": 5699,
+      "sha256": "7559e515a570ef84486cc8068f5a967828bb723d839e92f94d9acca9ba2ec143"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/jpeg-pixels-jpeg-crop-0.5.svg",
+      "bytes": 5612,
+      "sha256": "ccfdf95fdf17cdf35ffe450585c6e05b642d92ec449bf9f66607a85c98060bd2"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/jpeg-pixels-jpeg-crop-0.75.svg",
+      "bytes": 5103,
+      "sha256": "22f562bcc6ee8fe5e2f217614cd256bdc62e7c9842a85f9152381e723145cfd3"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/jpeg-pixels-jpeg-crop-1.svg",
+      "bytes": 5320,
+      "sha256": "5f734316de1f3b66a38867d9ef83c1843b2ca642d6658decbcada8939d01264a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/jpeg-pixels-original-crop-0.3.svg",
+      "bytes": 5975,
+      "sha256": "748ddf9c5171fd4d96bdc59767ebdc493b63dac13f71a2c8b9d043e346350dd7"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/jpeg-pixels-original-crop-0.5.svg",
+      "bytes": 5692,
+      "sha256": "bec3d71b2954c52e50cb8d7117f42bc1561234dac1a974f4084260170a855d60"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/jpeg-pixels-original-crop-0.75.svg",
+      "bytes": 5223,
+      "sha256": "7382bda2825e79bffbc05041c4522a73e277ed768a40e0dd7b1c387388f3748a"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/jpeg-pixels-original-crop-1.svg",
+      "bytes": 5527,
+      "sha256": "2a27e1cbb7441e6f8e95270d7283a06b2895fc2dab6b22615273cd0c7c4c39d2"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/original-pixels-jpeg-crop-0.3.svg",
+      "bytes": 6397,
+      "sha256": "75f1627153b37b100583db21fcf131a4051da5859681e312c9e4e3ec29703a5c"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/original-pixels-jpeg-crop-0.5.svg",
+      "bytes": 5371,
+      "sha256": "fa866546a72be7f8eaf83338775f9b35a02d9a7bd57a51928948905044a109fd"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/original-pixels-jpeg-crop-0.75.svg",
+      "bytes": 5304,
+      "sha256": "6ad3fb45fa78682a6384f44b54d462c91dfaa9b10a355fc5ef1fce8a70e9a4fa"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/original-pixels-jpeg-crop-1.svg",
+      "bytes": 5382,
+      "sha256": "5375795742589173732dc067fd214217e31cf449e0e38052fd5bddba6271f9c0"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/original-pixels-original-crop-0.3.svg",
+      "bytes": 6150,
+      "sha256": "c283153fb58eced7d7c930ca575bad7bbb3d60c22128d896e410e0bc71480b2c"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/original-pixels-original-crop-0.5.svg",
+      "bytes": 5433,
+      "sha256": "7d0818883b242ef9be098a2b40d3127386daaae23f3e54f8bad56a2dd105d46c"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/original-pixels-original-crop-0.75.svg",
+      "bytes": 5365,
+      "sha256": "44172daa62004c473fd1da962b8987d031d11c07e8a429091ded0a4ca7c3cd95"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/original-pixels-original-crop-1.svg",
+      "bytes": 5683,
+      "sha256": "be9be7880238e715a3e8f89063a4f4ddd1e5149b44b69dc4bf6e963d17557c71"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe/results.json",
+      "bytes": 492566,
+      "sha256": "84869e79f4f15dc8b0853d68fcc268165365d836853e17c60ee1451c048bdeff"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe.log",
+      "bytes": 1162,
+      "sha256": "74bc3b0e21dd51129517c1069e90dc26e48a5c90305fc07deeb30ad423570520"
+    },
+    {
+      "path": "tmp/heart-learning/star-input-factorial-v1/trace-probe.mjs",
+      "bytes": 4913,
+      "sha256": "a9116e120bb199ea01ef76f195f53f5d73fdb52c996dafc4f8536df13577c8cc"
+    }
+  ],
+  "qualifications": [
+    "Each pixel/crop combination has a different target; compare methods within one fixed target.",
+    "The 800-step timing includes refinement and independent checks, not decoding/cropping/count search/routing or browser latency.",
+    "Short timed probes are retained and show cold runtime sensitivity; the first loaded-kernel 700 ms probe failed the source-error gate.",
+    "Smoothing changes a provisional routing seed only. Raw seeds exceed the three-percent source-image limit and require refinement.",
+    "This is one reserved photo, not evidence of whole-benchmark improvement."
+  ]
+}
