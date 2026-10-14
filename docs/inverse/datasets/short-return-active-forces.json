@@ -148,7 +148,43 @@
     "tmp/heart-learning/angular-return-v1/active-force-runtime/inverse/core/direct/refine.js": "0c2ab6b386abc1fcc22bb1f17013208d9abef7b540b88be1757e2a89d0d89561",
     "tmp/heart-learning/angular-return-v1/active-force-runtime/inverse/core/direct/short-return-project.js": "1729c349b7bb1d90b6e6e5dc13ce48d09e391f94d0df762cff446ddacbc92a17",
     "tmp/heart-learning/angular-return-v1/iterations-16-fits/fit-results.json": "660922de799b35763ce076f7f2c2afe3520419379f3c4f7ca273d4d5bc54aa0b",
-    "tmp/heart-learning/angular-return-v1/iterations-16-fit-replay.mjs": "578b865d5c658923879e85b757edea6a1134a87bff99cefe758e172304adf21a"
+    "tmp/heart-learning/angular-return-v1/iterations-16-fit-replay.mjs": "578b865d5c658923879e85b757edea6a1134a87bff99cefe758e172304adf21a",
+    "tmp/heart-learning/angular-return-v1/fixed-force.mjs": "a36a9ab1d277d974b874d0464f740893e7149dcfd6b69bd3fc47fcfe5f0955d7",
+    "tmp/heart-learning/angular-return-v1/fixed-force/results.json": "ffa8971fd4cf088a7c39c6cc49fe20c87f9ff7f52958e50852658a1e1a581b27",
+    "tmp/heart-learning/angular-return-v1/fixed-control-runtime/source.json": "cc6cf996893c152e91b64ba814a163dfc9be285b1edb3878f8e397378c80020a",
+    "tmp/heart-learning/angular-return-v1/fixed-active-runtime/source.json": "aa0adfd0939929f3cabbdb5e5e63716ed3915708b7bb4a54d513cd557e21652f",
+    "tmp/heart-learning/angular-return-v1/editor-witnesses.ts": "e4d3827b33b277089b1383c331f64aaf7a54d4f35c3f9ab20a18c94c3352bc17",
+    "tmp/heart-learning/angular-return-v1/editor-witnesses.mjs": "4aea0571c9c10a51b560d876601f64b5def9e65e66d767c62157ec9786f009ac",
+    "tmp/heart-learning/angular-return-v1/editor-witnesses.json": "3c759b6e1d269b7a4b3622cd6e6ad2a0d02adcec25a204fe09c722d1cb392d6d",
+    "tmp/heart-learning/angular-return-v1/editor-witnesses.log": "d4cdb1b424ffe268f525717529b1e8314b31ef286a3bf9b668014418b9f526b0",
+    "tmp/heart-learning/angular-return-v1/after-qa.json": "c512c0da0c81e395bc7547be989a6e909831d31330e1338f1c9067b7b5ce9daf"
   },
-  "qaStatus": "Full repository checks are running separately for cache commit ab71e1d. No completed QA claim is made by this record."
+  "qaStatus": "Complete cache verification is recorded in short-return-cache-validation.json. App runtime unchanged; no new browser interaction claim.",
+  "controlledLateGift": {
+    "scope": "Same captured late gift graph, target and 320 steps, with all time caps removed from both refinement arms. This isolates active forces, not whole-pipeline latency or fresh-grid reconstruction. No acceptance thresholds change.",
+    "input": "tmp/heart-learning/turn-limit-v1/fixed-gift-input.json",
+    "inputSha256": "23fb94fe724d429531cac278b5e9eb82d08959ce747b5b0334e554e9f83bdb63",
+    "rows": [
+      {
+        "name": "control",
+        "seconds": 4.4134213330000005,
+        "steps": 320,
+        "edgeCount": 174,
+        "error": 0.0240375,
+        "geometry": true,
+        "paper": true,
+        "pointsSha256": "eb9685a61af45e6ebfd54e07e0644b12568a1ac599349a12d3a3f5253f1cfef4"
+      },
+      {
+        "name": "candidate",
+        "seconds": 5.665927625,
+        "steps": 320,
+        "edgeCount": 174,
+        "error": 0.0240375,
+        "geometry": true,
+        "paper": true,
+        "pointsSha256": "eb9685a61af45e6ebfd54e07e0644b12568a1ac599349a12d3a3f5253f1cfef4"
+      }
+    ]
+  }
 }

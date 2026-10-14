@@ -45,6 +45,16 @@ field. Version 2 uses the normalized report settings and reproduces the same
 target hashes, geometry and errors. The initial failed flags are retained;
 the corrected checks do not refit the outputs or change their acceptance limit.
 
-The next diagnostic records the editor's exact rejecting point pairs. A
-separate fixed-start, fixed-step experiment is prepared to distinguish force
-behavior from time-dependent pipeline changes; it has not yet been run.
+The instrumented editor identifies nonstationary spans with 138.0, 170.6 and
+174.6 degrees of total turning. Their distances along the curve are 3.21–4.20 mm,
+beyond the editor's two-margin bend exemption. These warnings therefore differ
+from the experimental predicate's stationary-or-180-degree return rule. A
+separate ordinary-bend correction is being audited; these measurements do not
+establish a complete or physically validated clearance rule.
+
+A controlled follow-up replays the same saved late gift graph, binary target
+and 320 refinement steps with every time cap removed in both arms. Both select
+**exactly the same control coordinates**, at **2.40375%** independent error.
+All eight representations pass experimental geometry. This isolates no benefit
+at that late stage; the fresh whole-pipeline difference may arise earlier in
+routing/refinement and does not prove that every stage benefits from the force.

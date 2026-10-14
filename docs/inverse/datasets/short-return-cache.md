@@ -37,3 +37,8 @@ node scripts/inverse/diagnostics/short-return-cache-study.mjs \
 The output directory must be new. This numerical speedup does not resolve the
 experimental rule's physical interpretation or the current editor's subdivision
 inconsistency. Fresh fitting and actual SVG checks remain separate gates.
+
+The [complete repository run](short-return-cache-validation.json) passes type
+checking, lint, **855 application tests** (one existing skip), **830 inverse
+tests** and build. All 825 recorded source-file hashes match. The app runtime
+remains unchanged; these are not new browser workflow results.

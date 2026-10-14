@@ -1,0 +1,74 @@
+{
+  "scope": "Complete repository checks after experimental per-audit critical-point caching. Application runtime unchanged since 932b1f8; no new browser workflows in this verification.",
+  "sourceCommit": "ab71e1defe02895e383fa7cf4054f73a0965d154",
+  "checks": [
+    {
+      "stage": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 8.339662541000001
+    },
+    {
+      "stage": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.952214417
+    },
+    {
+      "stage": "app",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 30.588823124999998
+    },
+    {
+      "stage": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 801.866888041
+    },
+    {
+      "stage": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 13.761632291999945
+    }
+  ],
+  "applicationPassed": 855,
+  "applicationSkipped": 1,
+  "inversePassed": 830,
+  "inverseFailed": 0,
+  "sourceFilesVerified": 825,
+  "artifacts": {
+    "tmp/heart-learning/angular-return-v1/qa/app.log": "7134b994886f703bc2d580c74723e368a8bb0a2f2346de0e44d5824009303795",
+    "tmp/heart-learning/angular-return-v1/qa/build.log": "f7181d1988ed0dcb0ff17277112f7291e571af7dcb0953bef3755e3d1b7c3be0",
+    "tmp/heart-learning/angular-return-v1/qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/angular-return-v1/qa/checks.json": "b6406318e786f34abfca8b642cccb49b38a5ac2c7bbadf708248874b08292757",
+    "tmp/heart-learning/angular-return-v1/qa/inverse.log": "d6140256dbae9d7a20ff9c960fa7a993e6a2371a361d2ad6692ed0c2bc0a3668",
+    "tmp/heart-learning/angular-return-v1/qa/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+    "tmp/heart-learning/angular-return-v1/qa/run.py": "3886dec771de750bc7716a32b28bb16d8f532a4574371bece23405f94b93fcd6",
+    "tmp/heart-learning/angular-return-v1/qa/runner.json": "765bdc4d514bc0aa96741f6ab574341f83800498d1cb120ebb8e26b6e9ed1acd",
+    "tmp/heart-learning/angular-return-v1/qa/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/angular-return-v1/qa/source.json": "9861cbc181274eeddadeead54fae640567ebfe49d627f1781e1e45154139c556"
+  }
+}
