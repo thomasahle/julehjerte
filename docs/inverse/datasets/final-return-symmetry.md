@@ -90,3 +90,9 @@ The preceding full QA passed 832 inverse and 855 application tests; it predates
 this symmetry change and is recorded [separately](final-return-repair-validation.json).
 Production integration still needs a consistent editor validator and fresh
 end-to-end speed/quality checks within the existing budgets.
+
+The subsequent [complete QA](final-return-symmetry-validation.json) passes all
+833 inverse tests and 855 application tests (one existing skip), type checking,
+lint and the production build. All recorded source hashes remain unchanged
+through the run. This covers the committed repair and regression cases; it does
+not certify the later editor prototype or fresh integrated reconstruction.

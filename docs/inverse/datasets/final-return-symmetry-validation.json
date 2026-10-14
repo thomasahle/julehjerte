@@ -1,0 +1,74 @@
+{
+  "scope": "Complete repository checks for the symmetry-preserving offline final repair. No application runtime change or new browser workflows. The later whole-cut editor prototype is not covered by these checks.",
+  "sourceCommit": "bbdfcfdba147e7313919ca6e01e0a2b88ffddab1",
+  "checks": [
+    {
+      "stage": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 8.728956292000001
+    },
+    {
+      "stage": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 6.000723833
+    },
+    {
+      "stage": "app",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 30.406704625000003
+    },
+    {
+      "stage": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 807.7977016250001
+    },
+    {
+      "stage": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 13.345763000000034
+    }
+  ],
+  "applicationPassed": 855,
+  "applicationSkipped": 1,
+  "inversePassed": 833,
+  "inverseFailed": 0,
+  "sourceFilesVerified": 828,
+  "artifacts": {
+    "tmp/heart-learning/final-return-corpus-v1/qa/app.log": "02c126224ea0e2666dfbc34077cbdae94921b78c6cd2cf88dbd58f813cba974b",
+    "tmp/heart-learning/final-return-corpus-v1/qa/build.log": "83f7e0f1f7afb7696a40a26391fbf190bf36112a749c0b25b8dadeedba9138c7",
+    "tmp/heart-learning/final-return-corpus-v1/qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/final-return-corpus-v1/qa/checks.json": "0cfd7f7f3b76efcc08c0e2bdb09c7058a89e5c1db2a8192d167e61650ed6fa47",
+    "tmp/heart-learning/final-return-corpus-v1/qa/inverse.log": "6b58f831ffd3bbbfc9f422ff48a84ba72c20cd3424073aadbf27bea161a9b398",
+    "tmp/heart-learning/final-return-corpus-v1/qa/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+    "tmp/heart-learning/final-return-corpus-v1/qa/run.py": "3886dec771de750bc7716a32b28bb16d8f532a4574371bece23405f94b93fcd6",
+    "tmp/heart-learning/final-return-corpus-v1/qa/runner.json": "9e47c9bbd4390609e89b9de9ec18478fc3c3927a27855fadab87cc8857f03824",
+    "tmp/heart-learning/final-return-corpus-v1/qa/running.json": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df",
+    "tmp/heart-learning/final-return-corpus-v1/qa/source.json": "bf04154c2c4b59077b087826ff6c584a339ef7843e00a082e6480d162ea0d034"
+  }
+}
